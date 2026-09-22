@@ -4,13 +4,13 @@
   "work_unit": "RIBASIM-DUMMY-20H5",
   "branch": "work/ribasim-dummy-01",
   "baseline": "bfd32e350419ebe712c4761e667f034769db1246",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Complete runner/workflow and execute frozen DUMMY-20H5 zero-storage factor causality control.",
+  "next_action": "Execute frozen DUMMY-20H5 zero-storage factor causality qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -23,5 +23,16 @@
     "note": "Prepared while DUMMY-20H4 is active. No runner, workflow gate or execution before DUMMY-20H4 closeout and qualification."
   },
   "implementation_baseline": "04458b9197a2115b7479790d938ac5a965977114",
-  "recovery_point": "DUMMY-20H4 qualified; prospectively frozen DUMMY-20H5 generator/verifier are now implementation-ready."
+  "recovery_point": "DUMMY-20H5 executable gate persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H5_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H5_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H5_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H5_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_ribasim_dummy_20h5_zero_storage.py",
+    "tests/research/real_ribasim_20h5_zero_storage_causality.jl",
+    "tests/research/run_ribasim_dummy_20h5.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
