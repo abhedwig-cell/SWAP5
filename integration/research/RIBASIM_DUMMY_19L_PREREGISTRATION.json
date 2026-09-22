@@ -1,0 +1,134 @@
+{
+  "schema": "swap5.coupling.real_ribasim_explicit_apply_trajectory_equivalence.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19L",
+  "title": "Native 6-hour saveat versus explicit UserDemand apply accepted-state trajectory equivalence",
+  "baseline": "9701e987fb98e6607c4af904788e175765a080e6",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_19K_ACTIVE",
+    "execute_after": "DUMMY-19K closeout",
+    "rationale": "Freeze segment-state equivalence expectations before observing the explicit-apply qualification."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "purpose": "Test whether a test-only explicit UserDemand solve→apply seam with daily output is transactionally equivalent, at every accepted 6-hour state boundary, to native 6-hour saveat allocation application.",
+  "routes": {
+    "native": {
+      "solver_saveat_seconds": 21600,
+      "allocation_dt_seconds": 86400,
+      "allocation_application": "native saveat-aligned parse/apply"
+    },
+    "explicit_apply": {
+      "solver_saveat_seconds": 86400,
+      "allocation_dt_seconds": 86400,
+      "coupling_endpoints_seconds": [
+        21600,
+        43200,
+        64800,
+        86400
+      ],
+      "allocation_application": "test-only solve record=false then explicit UserDemand/per-link apply at 6h boundaries"
+    }
+  },
+  "shared_model": {
+    "horizon_seconds": 86400,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "independent_reference": {
+    "endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "common_basin": {
+      "level_m": [
+        1.0000039988002398,
+        1.000005994903268,
+        1.0000069906366162,
+        1.0000074871795686
+      ],
+      "storage_gain_m3": [
+        3.9988002398239075,
+        5.994903268025098,
+        6.990636616244217,
+        7.487179568554936
+      ],
+      "cumulative_total_supplied_m3": [
+        4.001199760004028,
+        10.005096731410507,
+        17.009363382977337,
+        24.51282043070043
+      ]
+    },
+    "root_first": {
+      "cumulative_root_supplied_m3": [
+        4.001199760004028,
+        9.004947510764467,
+        14.009817152853525,
+        19.01524636786452
+      ],
+      "cumulative_external_supplied_m3": [
+        0,
+        1.0001492206460414,
+        2.9995462301238116,
+        5.497574062835911
+      ]
+    },
+    "external_first": {
+      "cumulative_root_supplied_m3": [
+        1.5004499100013697,
+        5.002473005916709,
+        9.504304836328377,
+        14.505047276435288
+      ],
+      "cumulative_external_supplied_m3": [
+        2.5007498500022827,
+        5.002623725382635,
+        7.505058546427442,
+        10.00777315393317
+      ]
+    }
+  },
+  "hypotheses": [
+    "For each priority case, native 6-hour saveat and daily-saveat explicit-apply routes reach the same accepted Basin level at every 6-hour boundary within tolerance.",
+    "Cumulative physical UserDemand delivery by recipient is equal between routes at every 6-hour boundary within tolerance.",
+    "The common physical ledger closes at every accepted boundary.",
+    "Final equivalence is therefore a consequence of segment-by-segment transactional equivalence, not compensating endpoint error.",
+    "Output-record cadence and UserDemand application cadence can be conceptually separated if an explicit apply seam exists."
+  ],
+  "tolerances": {
+    "cumulative_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "route_difference_volume_m3": 0.05,
+    "route_difference_level_m": 5e-8
+  },
+  "forbidden": [
+    "no pinned Ribasim source modification",
+    "no changing frozen segment references after DUMMY-19K output",
+    "no production API claim",
+    "no inference to Pump/Outlet semantics",
+    "no claim that arbitrary output cadence is already neutral in current Ribasim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+  "fail_decision": "RIBASIM_DUMMY_19L_BLOCKED"
+}
