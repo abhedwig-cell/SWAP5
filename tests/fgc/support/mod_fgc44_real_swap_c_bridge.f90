@@ -107,6 +107,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
   public :: fgc44_raw_corrector_diagnostics_c
+  public :: fgc44_committed_profile_observables_c
 
 contains
 
@@ -350,6 +351,44 @@ contains
     time_day=t; ledger_count=int(snap%committed_exchange_count,c_int); ledger_exchange_m=snap%committed_swap_outward_exchange_m
     fgc44_state_c=0_c_int
   end function fgc44_state_c
+
+
+  integer(c_int) function fgc44_committed_profile_observables_c(profile_water_cm,root_water_cm,distribution_moment_cm, &
+       groundwater_level_cm) bind(C,name="fgc44_committed_profile_observables_c")
+    real(c_double), intent(out) :: profile_water_cm,root_water_cm,distribution_moment_cm,groundwater_level_cm
+    class(transaction_state_t),allocatable :: snapshot
+    logical :: available
+    integer :: i
+    real(real64) :: wi, depth_top, depth_bottom, overlap, weighted_z
+
+    fgc44_committed_profile_observables_c=1_c_int
+    profile_water_cm=0.0_c_double; root_water_cm=0.0_c_double
+    distribution_moment_cm=0.0_c_double; groundwater_level_cm=0.0_c_double
+    if(.not.initialized)return
+    call committed%snapshot(snapshot,available)
+    if(.not.available .or. .not.allocated(snapshot))return
+    select type(typed=>snapshot)
+    class is(fmr_b110_physical_state_t)
+      weighted_z=0.0_real64
+      do i=1,typed%active_nodes
+        wi=typed%water_content(i)*predictor_parameters%dz(i)
+        profile_water_cm=profile_water_cm+wi
+        weighted_z=weighted_z+wi*predictor_parameters%z(i)
+        ! z is measured upward from the lower datum in this carrier.  The
+        ! root-zone diagnostic is the upper 30 cm by geometric cell overlap.
+        depth_top=max(0.0_real64, predictor_parameters%z(typed%active_nodes)+0.5_real64*predictor_parameters%dz(typed%active_nodes) - &
+             (predictor_parameters%z(i)+0.5_real64*predictor_parameters%dz(i)))
+        depth_bottom=depth_top+predictor_parameters%dz(i)
+        overlap=max(0.0_real64,min(depth_bottom,30.0_real64)-min(depth_top,30.0_real64))
+        if(overlap>0.0_real64)root_water_cm=root_water_cm+typed%water_content(i)*overlap
+      end do
+      if(profile_water_cm>0.0_real64)distribution_moment_cm=weighted_z/profile_water_cm
+      groundwater_level_cm=typed%groundwater_level
+      fgc44_committed_profile_observables_c=0_c_int
+    class default
+      return
+    end select
+  end function fgc44_committed_profile_observables_c
 
   integer(c_int) function fgc44_predictor_run_diagnostics_c(available,result_status,completed,direction_available, &
        transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections,temporal_rejections, &

@@ -41,6 +41,8 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*14),
             *([ctypes.POINTER(ctypes.c_double)]*3),
         ]
+        self.lib.fgc44_committed_profile_observables_c.restype=ctypes.c_int
+        self.lib.fgc44_committed_profile_observables_c.argtypes=[ctypes.POINTER(ctypes.c_double)]*4
         self.lib.fgc44_raw_corrector_diagnostics_c.restype=ctypes.c_int
         self.lib.fgc44_raw_corrector_diagnostics_c.argtypes=[
             ctypes.c_double,
@@ -109,6 +111,12 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_state_c(ctypes.byref(revision),ctypes.byref(time),ctypes.byref(count),ctypes.byref(exchange))
         if status: raise RuntimeError(f"state query failed: {status}")
         return revision.value,time.value,count.value,exchange.value
+
+    def committed_profile_observables(self) -> dict[str,float]:
+        v=[ctypes.c_double() for _ in range(4)]
+        status=self.lib.fgc44_committed_profile_observables_c(*[ctypes.byref(x) for x in v])
+        if status: raise RuntimeError(f"committed profile diagnostics failed: {status}")
+        return dict(zip(["profile_water_cm","root_water_cm","distribution_moment_cm","groundwater_level_cm"],[x.value for x in v]))
 
     def predictor_run_diagnostics(self) -> dict[str,int|float|bool]:
         ints=[ctypes.c_int() for _ in range(14)]
