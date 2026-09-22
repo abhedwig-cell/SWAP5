@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12a.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12A",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G12A_PREREGISTRATION.json",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G12_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_map09_groundwater_calibration_g12a.py",
+  "runner": "tests/research/run_gc_real_swap_map09.sh",
+  "workflow": ".github/workflows/gc-real-swap-map09.yml",
+  "production_changes": false,
+  "next_action": "Execute all three frozen one-shot biases, local q(H) fits, and fixed 20-step direct href inversions. Persist whether the G12 miss is bias anchoring error or fit error before proposing any G12B oracle."
+}
