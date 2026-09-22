@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e02.fixed_hc_h2_probe_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E02",
+  "authority": "preregistered immutable-pair H2 response probe",
+  "production_changes": false,
+  "parent_program_commit": "c85670a73d5f8be7ba73984a04dd1c25026f354a",
+  "selected_pair_authority": {
+    "result_path": "integration/research/GC_ROOTZONE_MEMORY_RZM06E01_RESULT.json",
+    "result_commit": "e53816189389121cc0b3ff5130e7229d6eddd815",
+    "decision": "QUALIFIED_RESPONSE_BLIND_ZERO_DIVERGENCE_H2_ORIGIN_PAIR_SELECTED",
+    "A": {
+      "family": "EQ",
+      "step": 1
+    },
+    "B": {
+      "family": "CLOSED",
+      "step": 14
+    },
+    "immutable": true,
+    "reselection_forbidden": true
+  },
+  "common_time_authority": {
+    "work_unit": "GC-RZM06D02R1",
+    "decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+    "t0_day": 0
+  },
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "backend": "serialized strict Reference HeadCalc",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "hard_mass_gate_cm": 1e-12
+  },
+  "reconstruction_gate": {
+    "source": "persisted E01 selected_pair pressure_head_cm and water_content arrays",
+    "nodes": 16,
+    "recompute_profile_water_cm": "sum(theta_i*10 cm)",
+    "recompute_distribution_moment_cm": "sum(theta_i*10 cm*z_i)/W, z=[-5,-15,...,-155] cm",
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "require_reconstructed_values_match_persisted_roundtrip": true,
+    "require_committed_snapshot_bit_identity_to_input": true,
+    "on_failure": "STOP_BEFORE_RESPONSE"
+  },
+  "probe": {
+    "common_t0_day": 0,
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "top_flux_cm_per_day": 0,
+    "bottom_mode": 5,
+    "fixed_interface_head_m": -1.897937090169065,
+    "bottom_boundary_elevation_m": -1.6,
+    "expected_bottom_pressure_head_cm": -29.793709016906497,
+    "forcing_materializer": "fmr_groundwater_head_forcing_materializer_t",
+    "strict_reference_sample_only": true,
+    "automatic_temporal_subdivision": false,
+    "commit": false,
+    "primary_response": "bottom_outward_exchange_native",
+    "response_unit": "native cm whole-window exchange",
+    "support_threshold_abs_delta_exchange_cm": 1e-18,
+    "descriptive_response": [
+      "terminal_bottom_outward_flux_native",
+      "mass accounting",
+      "solver counters"
+    ]
+  },
+  "contamination_control": {
+    "executions": [
+      "A_then_B",
+      "B_then_A"
+    ],
+    "each_probe_uses_fresh_committed_origin": true,
+    "each_probe_uses_fresh_backend": true,
+    "require_bit_identity_for_same_origin_across_execution_orders": true
+  },
+  "decisions": [
+    "SUPPORTED_H2_VERTICAL_DISTRIBUTION_MEMORY_FOR_SELECTED_REAL_SWAP_PAIR",
+    "NO_SUPPORT_H2_AT_SELECTED_PAIR",
+    "PROBE_NOT_ADMITTED",
+    "RECONSTRUCTION_FAILED"
+  ],
+  "interpretation_boundary": [
+    "Support means this prospectively selected same-water/different-distribution pair yields different next fixed-Hc whole-window bottom exchange.",
+    "A no-support result applies to this selected pair and frozen probe only; it is not a global proof that vertical distribution never matters.",
+    "No second MODFLOW hydraulic state is introduced; both probes share one physical fixed-plane H_c.",
+    "No production coupling or response-linearization admission follows from E02."
+  ],
+  "controls": [
+    "no origin reselection after E01",
+    "no H2 state-threshold change",
+    "no response-threshold change",
+    "no HELD_OUT access",
+    "no research fallback",
+    "no direct mutation of live committed state",
+    "no production source change",
+    "no H5/RZM06B work"
+  ]
+}
