@@ -172,6 +172,12 @@
       "decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
       "run": 35707251106,
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20A",
+      "decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
+      "run": 35719937261,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6"
     }
   ],
   "pending": [
@@ -185,15 +191,15 @@
     },
     {
       "work_unit": "RIBASIM-DUMMY-20B",
-      "state": "IMPLEMENTED_PERSISTED_BLOCKED_BY_20A",
+      "state": "IMPLEMENTED_PERSISTED_IMPLEMENTATION_READY_AFTER_20A",
       "intended_decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
-      "dependency": "DUMMY-20A closeout",
+      "dependency": "qualified DUMMY-20A",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Close DUMMY-20A, then execute prepared DUMMY-20B product-release clock contract.",
+  "next_authority_action": "Rebind and execute DUMMY-20B exact Ribasim v2026.1.1 product-release clock contract.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
