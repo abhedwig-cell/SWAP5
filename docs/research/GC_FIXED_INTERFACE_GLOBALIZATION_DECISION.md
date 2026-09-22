@@ -1525,3 +1525,64 @@ RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: ADJACENT-HEAD PHYSICAL-SOLVER FORENSICS.
 ```
+## G21H disposition: final retry isolates the physical-solver status bifurcation
+
+G21H decomposed the frozen G21G transaction signature into its nine retry
+durations without changing runtime, solver or participant policy. Each probe
+copied the saved corrector numerical configuration, set `max_retries=0` only in
+that copy, captured a fresh immutable-origin checkpoint and discarded any raw
+backend candidate before returning.
+
+The authority run, workflow `35740488540`, job `106788659599`, reproduced
+the exact mechanism at both representative opposite-direction island
+boundaries:
+
+```text
+retry levels 0..7:
+    physical solver status       CONVERGED
+    temporal rejection           1 per isolated attempt
+    temporal certificate         available
+
+retry level 8, status-6 side:
+    duration                     3.90625e-5 day
+    physical solver status       NONCONVERGED
+    solver rejection             1
+    temporal rejection           0
+    nonlinear iterations         16
+    Jacobian builds              16
+    linear solves                16
+    internal retries             1
+
+retry level 8, adjacent status-0 side:
+    physical solver status       CONVERGED
+    candidate/result             accepted for the isolated duration
+```
+
+The same pattern holds for both the frozen `6 -> 0` and `0 -> 6` boundaries.
+Thus the full participant status split does not require hidden transaction
+history to explain the terminal classification. The first eight retry levels
+are physically converged but fail the temporal certificate; after the retry
+ladder reaches its smallest duration, the immediately adjacent binary64 heads
+split in the physical nonlinear solver itself.
+
+The two failing final-retry heads both exhaust 16 nonlinear iterations, but
+their backtracking work differs materially: 104 attempts at the first boundary
+and 39 at the second. That makes the next unresolved mechanism local to the
+physical nonlinear-solver trajectory rather than the transaction retry ladder.
+
+The research probe was also checked functionally for configuration leakage.
+After all isolated attempts, a normal G16 session at the same four frozen heads
+reproduced exactly `6, 0, 0, 6`, with four physical trials, zero cache hits and
+unchanged accepted revision/time/ledger authority.
+
+```text
+G21H RETRY-LEVEL MECHANISM = QUALIFIED.
+LEVELS 0..7 = SOLVER-CONVERGED, TEMPORALLY REJECTED.
+LEVEL 8 STATUS-6 SIDE = PHYSICAL-SOLVER NONCONVERGENCE.
+LEVEL 8 ADJACENT STATUS-0 SIDE = PHYSICAL-SOLVER CONVERGENCE.
+TRANSACTION-HISTORY DEPENDENCE = NOT REQUIRED FOR THIS TERMINAL SPLIT.
+STATUS SMOOTHING / RETRY POLICY / SOLVER TOLERANCE CHANGE = NOT ADMITTED.
+RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: FINAL-RETRY NEWTON / BACKTRACKING TRAJECTORY FORENSICS.
+```
