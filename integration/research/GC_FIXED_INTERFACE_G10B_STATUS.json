@@ -7,11 +7,11 @@
   "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G10B_PREREGISTRATION.json",
   "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G10A_RESULT.json",
-  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G10_RESULT.json",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G10_FIRST_EXECUTION_RESULT.json",
   "test": "tests/research/test_gc_fixed_interface_fgc44_local_groundwater_g10b.py",
   "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
   "production_changes": false,
-  "recovery_point": "f5fdb2258ef44024ef4c9b6081011ff188956619",
-  "next_action": "Execute exact G10B postimage; require <=1e-16 local GW fit error, local root within 5e-10 m of G10A direct root, and P4-E3 convergence from both frozen ±1e-5 m B4 starts."
+  "recovery_point": "78f0a66a1825e84bbe44fe7f0407de2c081383be",
+  "next_action": "Execute exact amended G10B postimage; require <=1e-16 local GW fit error, local root within 5e-10 m of G10A direct root, and P4-E3 convergence from both frozen ±1e-5 m B4 starts."
 }
