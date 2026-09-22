@@ -180,6 +180,27 @@ def main()->None:
     else:
         classification="TRANSACTION_HISTORY_CONTEXT_REQUIRED"
 
+    # Functional proof that the test-only max_retries=0 probe never mutated the
+    # saved corrector_config: the normal G16 participant route must still
+    # reproduce the frozen parent status at the same four binary64 heads.
+    swap.g16_begin_session()
+    postprobe_statuses=[]
+    for boundary_id,side,index,head,parent_status in frozen_heads:
+        obs=swap.g16_observe_head(head)
+        observed=int(obs["participant_status"])
+        postprobe_statuses.append({
+            "boundary":boundary_id,"side":side,"index":index,
+            "head_m":head,"expected_status":parent_status,"observed_status":observed,
+        })
+        require(observed==parent_status,
+                f"G21H saved corrector config changed {boundary_id} {side}: {observed} != {parent_status}")
+        require(swap.state()==origin and not swap.g15_has_live_candidate(),
+                f"G21H postprobe normal G16 route changed authority {boundary_id} {side}")
+    post_counts=swap.g16_counts()
+    require(post_counts==(4,4,0,4),f"G21H postprobe G16 accounting drift {post_counts}")
+    swap.g16_end_session()
+    require(swap.g16_counts()==(0,0,0,0),"G21H postprobe G16 cache not cleared")
+
     summary={
         "classification":classification,
         "boundary_count":len(boundaries),
@@ -188,6 +209,9 @@ def main()->None:
         "retry_durations_day":durations,
         "details":details,
         "rows":rows,
+        "saved_corrector_config_postprobe_statuses":postprobe_statuses,
+        "saved_corrector_config_postprobe_g16_counts":list(post_counts),
+        "saved_corrector_config_functional_postcondition":"PASS",
         "accepted_state_ledger_mutation":0,
         "participant_candidate_leakage":0,
         "production_policy_claim":"NONE",
