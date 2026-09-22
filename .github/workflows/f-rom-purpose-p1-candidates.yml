@@ -1,0 +1,231 @@
+name: F-ROM-PURPOSE P1 placement candidates
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P1_CANDIDATE_EXECUTION_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-purpose-p1-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  candidate:
+    name: candidate-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.member }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B01, B14]
+        member: [S4, G4, U4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify candidate authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P1_CANDIDATE_EXECUTION_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json'))
+          m=json.load(open('integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json'))
+          assert b['status']=='BOUND_AFTER_REFERENCE_QUALIFICATION_BEFORE_FIRST_CANDIDATE_RESPONSE'
+          assert r['status']=='P1_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED'
+          assert r['candidate_response_authorized'] is True
+          assert p['scientific_firewall']['candidate_response_generated'] is False
+          assert m['candidate_response_seen'] is False
+          def blob(path):
+              return subprocess.check_output(['git','hash-object',path],text=True).strip()
+          for path,expected in b['implementation_blobs'].items():
+              assert blob(path)==expected,(path,blob(path),expected)
+          print('ROM_PURPOSE_P1_CANDIDATE_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile tests/rom/run_rom_purpose_p1_candidate.py tests/rom/analyze_rom_purpose_p1_candidates.py
+
+      - name: Execute frozen Layer-ROM candidate
+        run: |
+          set -euo pipefail
+          mkdir -p candidate
+          out="candidate/${{ matrix.purpose }}_${{ matrix.material }}_${{ matrix.member }}.json"
+          python3 tests/rom/run_rom_purpose_p1_candidate.py             --purpose "${{ matrix.purpose }}"             --material "${{ matrix.material }}"             --member "${{ matrix.member }}"             --prereg integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --reference-result integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json             --output "$out"
+          test -s "$out"
+          sha256sum "$out" > candidate/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: romp1-candidate-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.member }}
+          path: candidate/
+          if-no-files-found: error
+
+  analyze:
+    needs: candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      h4_required: ${{ steps.analyze.outputs.h4_required }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - id: ref
+        name: Resolve qualified Reference run
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P1_STATUS.json'))
+          assert s['qualified'] is True
+          print('run_id='+str(s['source_workflow_run']))
+          PY
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1ref-*
+          path: /tmp/romp1/reference-download
+          merge-multiple: false
+          repository: abhedwig-cell/SWAP5
+          run-id: ${{ steps.ref.outputs.run_id }}
+          github-token: ${{ github.token }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: romp1-candidate-*
+          path: /tmp/romp1/candidate-download
+          merge-multiple: false
+
+      - name: Reconstruct evidence sets
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/romp1/reference /tmp/romp1/candidates ROM_PURPOSE_P1_CANDIDATE_EVIDENCE
+          for kind in surface gw; do
+            for material in B01 B14; do
+              for route in R512_T32 R2048_T32; do
+                name="${kind}_${material}_${route}_o0.txt"
+                src="$(find /tmp/romp1/reference-download -type f -name "$name" -print -quit)"
+                test -n "$src"; cp "$src" "/tmp/romp1/reference/$name"
+              done
+            done
+          done
+          for purpose in SURF_P GW_LB; do
+            for material in B01 B14; do
+              for member in S4 G4 U4; do
+                name="${purpose}_${material}_${member}.json"
+                src="$(find /tmp/romp1/candidate-download -type f -name "$name" -print -quit)"
+                test -n "$src"; cp "$src" "/tmp/romp1/candidates/$name"
+              done
+            done
+          done
+
+      - id: analyze
+        name: Execute frozen componentwise placement analysis
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_rom_purpose_p1_candidates.py             --prereg integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --reference-result integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json             --reference-root /tmp/romp1/reference             --candidate-root /tmp/romp1/candidates             --output ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/ROM_PURPOSE_P1_PLACEMENT_RESULT.json             | tee ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/runner.txt
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          r=json.load(open('ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/ROM_PURPOSE_P1_PLACEMENT_RESULT.json'))
+          print('h4_required='+str(bool(r['hypotheses']['H4_same_partition_corichards_diagnostic_required'])).lower())
+          PY
+          cp integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P1_CANDIDATE_EXECUTION_BINDING.json ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/
+          sha256sum ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/* > ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p1-placement
+          path: ROM_PURPOSE_P1_CANDIDATE_EVIDENCE/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p1-placement
+          path: /tmp/evidence
+
+      - name: Persist placement result
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          EXECUTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/evidence/ROM_PURPOSE_P1_PLACEMENT_RESULT.json integration/f-rom/ROM_PURPOSE_P1_PLACEMENT_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P1_PLACEMENT_RESULT.json'))
+          h=r['hypotheses']
+          follow=r['closure_followup']
+          lines=[
+            '# ROM-PURPOSE P1 placement discriminator closeout','',
+            '## Scope','',
+            'Equal-dimensional S4, G4 and U4 were evaluated with the frozen CURRENT_LAYER_FACE closure after independent Reference qualification. No application tolerance or weighted score was used.','',
+            '## Placement decisions','',
+            '| Purpose | Material | Decision | Aligned partition | Crosses R512 comparator |',
+            '| --- | --- | --- | --- | --- |'
+          ]
+          for p in ('SURF_P','GW_LB'):
+              for m in ('B01','B14'):
+                  x=r['placement'][p][m]
+                  lines.append(f"| {p} | {m} | {x['primary']['decision']} | {x['aligned_partition']} | {x['aligned_crosses_R512_T32_comparator']} |")
+          lines += [
+            '','## Hypotheses','',
+            f"* H1 groundwater aligned placement supported for both materials: **{h['H1_groundwater_aligned_placement_supported']}**",
+            f"* H2 surface aligned placement supported for both materials: **{h['H2_surface_aligned_placement_supported']}**",
+            f"* H3 at least one equal-dimensional purpose-aligned information gain: **{h['H3_any_equal_dimension_purpose_aligned_information_value']}**",
+            f"* H4 same-partition CoRichards follow-up required: **{h['H4_same_partition_corichards_diagnostic_required']}**",
+            '','## Interpretation boundary','',
+            'A placement result is representation evidence only. It is not application acceptance. Where an aligned four-state Layer-ROM does not cross the frozen R512_T32 numerical comparator, the preregistered same-partition CoRichards diagnostic remains necessary before assigning the deficit to propagation/closure.',
+            '','## Next step','',
+            ('Execute only the preregistered same-partition CoRichards diagnostics listed in closure_followup.' if follow else
+             'No H4 CoRichards diagnostic is required by the frozen rule; proceed to P1 purpose-map closeout without a closure-family expansion.')
+          ]
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P1_PLACEMENT_CLOSEOUT.md').write_text('\n'.join(lines)+'\n')
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P1_STATUS.json'))
+          s.update({
+            'checkpoint_commit':os.environ['EXECUTED_SHA'],
+            'candidate_response_generated':True,
+            'placement_result':'integration/f-rom/ROM_PURPOSE_P1_PLACEMENT_RESULT.json',
+            'placement_workflow_run':int(os.environ['SOURCE_RUN']),
+            'next_action':'EXECUTE_H4_SAME_PARTITION_CORICHARDS' if follow else 'CLOSE_P1_PURPOSE_MAP',
+            'blockers':[],
+          })
+          s['evidence_paths']=list(dict.fromkeys(s.get('evidence_paths',[])+[
+            'integration/f-rom/ROM_PURPOSE_P1_PLACEMENT_RESULT.json',
+            'docs/science/F-ROM_PURPOSE_P1_PLACEMENT_CLOSEOUT.md'
+          ]))
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P1_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P1_PLACEMENT_RESULT.json                   integration/f-rom/ROM_PURPOSE_P1_STATUS.json                   docs/science/F-ROM_PURPOSE_P1_PLACEMENT_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P1: persist equal-dimension placement result" || exit 0
+          git push origin HEAD:work/f-rom-purpose
