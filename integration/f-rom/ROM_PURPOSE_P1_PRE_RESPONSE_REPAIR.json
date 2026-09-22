@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.rom-purpose.p1.pre-response-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "status": "PRE_RESPONSE_TECHNICAL_REPAIRS_COMPLETE",
+  "scientific_effect": "NONE",
+  "hydrological_response_generated": false,
+  "candidate_response_generated": false,
+  "repairs": [
+    {
+      "path": "tests/rom/materialize_rom_purpose_p1_surface_reference.py",
+      "issue": "Completion marker accidentally duplicated SURFACE in its generated marker.",
+      "repaired_commit": "1a638f7e363bed4f04b88eed3ef88c8ebf0c6d94",
+      "postimage_blob": "933cda92b62ca313e4720c866afe25c3e70ce72a",
+      "postimage_marker": "LAREDYN0R_ROMPURP_P1_SURFACE_REFERENCE_GENERATED=TRUE"
+    },
+    {
+      "path": "tests/rom/materialize_rom_purpose_p1_gw_reference.py",
+      "issue": "A literal escaped newline was present between argparse declarations, making the Python materializer unparsable.",
+      "repaired_commit": "356a29b8c19718bd07b5e4b552d8cc6c42734657",
+      "postimage_blob": "b7832852a2023a776ae2212ebe5713ec294ff1e0",
+      "postimage_marker": "LAREGW1_ROMPURP_P1_GW_REFERENCE_GENERATED=TRUE"
+    }
+  ],
+  "frozen_scientific_design": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json@c618a433545426a0af8c333be0f8d09926069def",
+  "next_action": "Bind and execute Reference-only P1 qualification. No candidate response before qualification."
+}
