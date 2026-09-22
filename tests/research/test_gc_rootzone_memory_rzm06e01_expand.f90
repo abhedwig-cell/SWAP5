@@ -39,7 +39,7 @@ program test_gc_rootzone_memory_rzm06e01_expand
        '|QEQ=',qeq,'|CLOSED_STEPS=',closed_steps
 
   call run_family('EQ',1,qeq,parameters,initial_state,column,template,lineage_base)
-  call run_family('CLOSED',closed_steps,0.0_real64,parameters,initial_state,column,template,lineage_base+1_int64)
+  call run_family('CLOSED',closed_steps,0.0_real64,parameters,initial_state,column,template,lineage_base)
 
   write(*,'(A)') 'GC_RZM06E01_ZERO_DIVERGENCE_GENERATION=PASS'
 
