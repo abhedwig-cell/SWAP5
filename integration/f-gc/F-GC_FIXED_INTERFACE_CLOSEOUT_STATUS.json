@@ -1,7 +1,7 @@
 {
   "schema": "swap5.fgc.fixed_interface.closeout.status.v1",
   "date": "2026-09-22",
-  "state": "ADMISSION_CANDIDATE_GATE_PENDING",
+  "state": "ADMISSION_CANDIDATE_STOPPING_COMPATIBILITY_PREREGISTERED",
   "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-fixed-interface-closeout",
   "authority": {
@@ -48,5 +48,14 @@
     "fixed-interface head equals phreatic elevation"
   ],
   "authoritative_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
-  "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md"
+  "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+  "latest_scientific_blocker": {
+    "run": 35775725953,
+    "tested_head": "d884a0c659989a98a31822e07c783675bc68a8d9",
+    "finding": "ONE_CELL_PRODUCTION_AFFINE_RESIDUAL_CLOSES_BUT_INDEPENDENT_PHYSICAL_RESIDUAL_AND_NATIVE_MODFLOW_BALANCE_DO_NOT",
+    "independent_physical_residual_m_per_s": -2.6143686684926482e-14,
+    "frozen_gate_m_per_s": 1e-15,
+    "disposition": "PRESERVED_NOT_RETUNED"
+  },
+  "next_bounded_unit": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
 }
