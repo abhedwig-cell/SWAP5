@@ -1,0 +1,627 @@
+name: F-ROM-PURPOSE P1 segmented Reference recovery
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json'
+
+concurrency:
+  group: f-rom-purpose-p1-reference-segmented-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify_checkpoint:
+    name: checkpoint-topology-${{ matrix.purpose }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        purpose: [surface, gw]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify segmented recovery authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          export WORKFLOW_BLOB="$(git hash-object .github/workflows/f-rom-purpose-p1-reference-segmented.yml)"
+          python3 - <<'PY'
+          import json,os,subprocess
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json'))
+          assert r['status']=='BOUND_SEGMENTED_R2048_RECOVERY_NO_SCIENTIFIC_CHANGE'
+          assert r['repair']['scientific_effect']=='NONE'
+          assert r['scientific_firewall']['candidate_response_generated'] is False
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P1_REFERENCE_OR_CANDIDATE_RESPONSE'
+          def blob(path):
+              return subprocess.check_output(['git','hash-object',path],text=True).strip()
+          for path,expected in r['implementation_blobs'].items():
+              assert blob(path)==expected,(path,blob(path),expected)
+          assert os.environ['WORKFLOW_BLOB']==r['workflow_blob']
+          print('ROM_PURPOSE_P1_SEGMENTED_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p1_surface_reference.py             tests/rom/materialize_rom_purpose_p1_gw_reference.py             tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py             tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py             tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py             tests/rom/analyze_rom_purpose_p1_reference.py
+
+      - name: Prove exact-state restart equivalence
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"
+          mkdir -p /tmp/q
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output canonical/p1q_stubs.f90 --nodes 512 --dz-cm 0.3125
+
+          run_segment() {
+            id="$1"; first="$2"; last="$3"; input="${4:-}"
+            target="canonical/tests/rom/test_p1q_${id}.f90"
+            manifest="/tmp/q/${id}_manifest.json"
+            if [[ "$purpose" == "surface" ]]; then
+              python3 tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py                 --base-materializer tests/rom/materialize_rom_purpose_p1_surface_reference.py                 --source tests/rom/rom_purpose_p1_surface_b01_source.f90                 --material B01 --temporal-factor 8                 --segment-start "$first" --segment-end "$last"                 --output "$target" --manifest "$manifest"
+            else
+              python3 tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py                 --slice-materializer tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py                 --base-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py                 --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py                 --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py                 --source tests/rom/rom_purpose_p1_gw_source.f90                 --material B01 --temporal-factor 8 --history-index 1                 --segment-start "$first" --segment-end "$last"                 --output "$target" --manifest "$manifest"
+            fi
+            build="/tmp/q/build_${id}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub p1q_stubs.f90               --target "tests/rom/test_p1q_${id}.f90"               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt 2
+            if [[ -n "$input" ]]; then
+              if [[ "$purpose" == "surface" ]]; then
+                ROMPURP_P1_CHECKPOINT_IN="$input" ROMPURP_P1_CHECKPOINT_OUT="/tmp/q/${id}.chk"                 LARE_DYN0A_CASE_FILTER=S01 "$build/rom0_test" > "/tmp/q/${id}.txt" 2>&1
+              else
+                ROMPURP_P1_CHECKPOINT_IN="$input" ROMPURP_P1_CHECKPOINT_OUT="/tmp/q/${id}.chk"                 "$build/rom0_test" > "/tmp/q/${id}.txt" 2>&1
+              fi
+            else
+              if [[ "$purpose" == "surface" ]]; then
+                ROMPURP_P1_CHECKPOINT_OUT="/tmp/q/${id}.chk" LARE_DYN0A_CASE_FILTER=S01                 "$build/rom0_test" > "/tmp/q/${id}.txt" 2>&1
+              else
+                ROMPURP_P1_CHECKPOINT_OUT="/tmp/q/${id}.chk"                 "$build/rom0_test" > "/tmp/q/${id}.txt" 2>&1
+              fi
+            fi
+          }
+
+          run_segment continuous 1 2048
+          run_segment a 1 1024
+          run_segment b 1025 2048 /tmp/q/a.chk
+          cat /tmp/q/a.txt /tmp/q/b.txt > /tmp/q/split.txt
+          cmp /tmp/q/continuous.chk /tmp/q/b.chk
+
+          PURPOSE="$purpose" python3 - <<'PY'
+          import os,pathlib,re
+          root=pathlib.Path('/tmp/q')
+          purpose=os.environ['PURPOSE']
+          state_prefix='LAREDYN0R_STATE|' if purpose=='surface' else 'LAREGW1_STATE|'
+          profile_prefix='LAREDYN0R_PROFILE|' if purpose=='surface' else 'LAREGW1_PROFILE|'
+          def selected(path,prefix,strip_rev=False):
+              out=[]
+              for line in path.read_text(errors='replace').splitlines():
+                  if line.startswith(prefix):
+                      if strip_rev:
+                          line=re.sub(r'\|REV=[^|]+','',line)
+                      out.append(line)
+              return out
+          a=selected(root/'continuous.txt',state_prefix,True)
+          b=selected(root/'split.txt',state_prefix,True)
+          assert len(a)==len(b)==2048,(len(a),len(b))
+          assert a==b
+          pa=selected(root/'continuous.txt',profile_prefix)
+          pb=selected(root/'split.txt',profile_prefix)
+          assert pa==pb and len(pa)==256*16,(len(pa),len(pb))
+          print('ROM_PURPOSE_P1_CHECKPOINT_HYDROLOGICAL_IDENTITY=PASS',purpose)
+          PY
+          mkdir -p qualification
+          cp /tmp/q/continuous.chk /tmp/q/b.chk qualification/
+          sha256sum qualification/* > qualification/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-checkpoint-qualification-${{ matrix.purpose }}
+          path: qualification/
+          if-no-files-found: error
+
+  coarse:
+    needs: qualify_checkpoint
+    name: full-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        purpose: [surface, gw]
+        material: [B01, B14]
+        route: [R512_T32, R1024_T32]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - id: cfg
+        run: |
+          set -euo pipefail
+          case "${{ matrix.route }}" in
+            R512_T32) echo "nodes=512" >> "$GITHUB_OUTPUT"; echo "dz=0.3125" >> "$GITHUB_OUTPUT" ;;
+            R1024_T32) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT" ;;
+          esac
+          printf -v h "%02d" "${{ matrix.history }}"; echo "h=$h" >> "$GITHUB_OUTPUT"
+      - name: Execute complete independent history
+        env:
+          LARE_DYN0A_CASE_FILTER: S${{ steps.cfg.outputs.h }}
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"
+          route="${{ matrix.route }}"; opt="${{ matrix.opt }}"; h="${{ steps.cfg.outputs.h }}"
+          target="canonical/tests/rom/test_p1full.f90"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor 32               --output "$target" --manifest /tmp/manifest.json
+          else
+            python3 tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py               --base-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90               --material "$material" --temporal-factor 32 --history-index "${{ matrix.history }}"               --output "$target" --manifest /tmp/manifest.json
+          fi
+          stub="canonical/p1full_${purpose}_${material}_${route}_o${opt}_h${h}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "${{ steps.cfg.outputs.nodes }}" --dz-cm "${{ steps.cfg.outputs.dz }}"
+          build="/tmp/p1full_${purpose}_${material}_${route}_o${opt}_h${h}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical --stub "p1full_${purpose}_${material}_${route}_o${opt}_h${h}_stubs.f90"             --target tests/rom/test_p1full.f90 --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
+          mkdir -p slice
+          log="slice/${purpose}_${material}_${route}_o${opt}_h${h}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          if [[ "$purpose" == "surface" ]]; then
+            test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq 32768
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 16384
+          else
+            test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq 32768
+            test "$(grep -c '^LAREGW1_PROFILE|' "$log")" -eq 16384
+          fi
+          cp /tmp/manifest.json slice/
+          sha256sum slice/* > slice/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1full-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: slice/
+          if-no-files-found: error
+
+  segment1:
+    needs: qualify_checkpoint
+    name: s1-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        purpose: [surface, gw]
+        material: [B01, B14]
+        route: [R2048_T32, R2048_T16, R2048_T8]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Execute segment 1 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"; route="${{ matrix.route }}"; history="${{ matrix.history }}"
+          case "$route" in R2048_T32) factor=32;; R2048_T16) factor=16;; R2048_T8) factor=8;; esac
+          printf -v h "%02d" "$history"
+          target="canonical/tests/rom/test_p1seg.f90"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py               --base-materializer tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor "$factor"               --segment-start 1 --segment-end 8192 --output "$target" --manifest /tmp/manifest.json
+          else
+            python3 tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py               --slice-materializer tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py               --base-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90               --material "$material" --temporal-factor "$factor" --history-index "$history"               --segment-start 1 --segment-end 8192 --output "$target" --manifest /tmp/manifest.json
+          fi
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p1seg_s1_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p1seg_s1_${purpose}_${material}_${route}_h${h}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p1seg_s1_o${opt}_stubs.f90" --target tests/rom/test_p1seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            if [[ "$purpose" == "surface" ]]; then
+              ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin" LARE_DYN0A_CASE_FILTER="S${h}"               "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+              test "$(grep -c '^LAREDYN0R_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+              test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/segment_o${opt}.txt")" -eq $((8192/factor*16))
+            else
+              ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+              test "$(grep -c '^LAREGW1_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+              test "$(grep -c '^LAREGW1_PROFILE|' "evidence/segment_o${opt}.txt")" -eq $((8192/factor*16))
+            fi
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1seg1-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment2:
+    needs: segment1
+    name: s2-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        purpose: [surface, gw]
+        material: [B01, B14]
+        route: [R2048_T32, R2048_T16]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1seg1-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+          path: previous
+      - name: Execute segment 2 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"; route="${{ matrix.route }}"; history="${{ matrix.history }}"
+          if [[ "$route" == "R2048_T32" ]]; then factor=32; else factor=16; fi
+          printf -v h "%02d" "$history"; target="canonical/tests/rom/test_p1seg.f90"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py               --base-materializer tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor "$factor"               --segment-start 8193 --segment-end 16384 --output "$target" --manifest /tmp/manifest.json
+          else
+            python3 tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py               --slice-materializer tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py               --base-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90               --material "$material" --temporal-factor "$factor" --history-index "$history"               --segment-start 8193 --segment-end 16384 --output "$target" --manifest /tmp/manifest.json
+          fi
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p1seg_s2_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p1seg_s2_${purpose}_${material}_${route}_h${h}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p1seg_s2_o${opt}_stubs.f90" --target tests/rom/test_p1seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            if [[ "$purpose" == "surface" ]]; then
+              ROMPURP_P1_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="S${h}" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+              test "$(grep -c '^LAREDYN0R_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+            else
+              ROMPURP_P1_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+              test "$(grep -c '^LAREGW1_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+            fi
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt; mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/; sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1seg2-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment3:
+    needs: segment2
+    name: s3-${{ matrix.purpose }}-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        purpose: [surface, gw]
+        material: [B01, B14]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1seg2-${{ matrix.purpose }}-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: previous
+      - name: Execute segment 3 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"; history="${{ matrix.history }}"
+          printf -v h "%02d" "$history"; target="canonical/tests/rom/test_p1seg.f90"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py               --base-materializer tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor 32               --segment-start 16385 --segment-end 24576 --output "$target" --manifest /tmp/manifest.json
+          else
+            python3 tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py               --slice-materializer tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py               --base-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90 --material "$material"               --temporal-factor 32 --history-index "$history"               --segment-start 16385 --segment-end 24576 --output "$target" --manifest /tmp/manifest.json
+          fi
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p1seg_s3_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p1seg_s3_${purpose}_${material}_h${h}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p1seg_s3_o${opt}_stubs.f90" --target tests/rom/test_p1seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            if [[ "$purpose" == "surface" ]]; then
+              ROMPURP_P1_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="S${h}" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            else
+              ROMPURP_P1_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            fi
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt; cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt; mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin; cp /tmp/manifest.json evidence/; sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1seg3-${{ matrix.purpose }}-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment4:
+    needs: segment3
+    name: s4-${{ matrix.purpose }}-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        purpose: [surface, gw]
+        material: [B01, B14]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1seg3-${{ matrix.purpose }}-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: previous
+      - name: Execute segment 4 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"; history="${{ matrix.history }}"
+          printf -v h "%02d" "$history"; target="canonical/tests/rom/test_p1seg.f90"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py               --base-materializer tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor 32               --segment-start 24577 --segment-end 32768 --output "$target" --manifest /tmp/manifest.json
+          else
+            python3 tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py               --slice-materializer tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py               --base-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90 --material "$material"               --temporal-factor 32 --history-index "$history"               --segment-start 24577 --segment-end 32768 --output "$target" --manifest /tmp/manifest.json
+          fi
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p1seg_s4_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p1seg_s4_${purpose}_${material}_h${h}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p1seg_s4_o${opt}_stubs.f90" --target tests/rom/test_p1seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            if [[ "$purpose" == "surface" ]]; then
+              ROMPURP_P1_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="S${h}" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            else
+              ROMPURP_P1_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            fi
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt; cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt; mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin; cp /tmp/manifest.json evidence/; sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1seg4-${{ matrix.purpose }}-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  assemble:
+    needs: [coarse, segment1, segment2, segment3, segment4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1full-*
+          path: /tmp/full
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1seg1-*
+          path: /tmp/s1
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1seg2-*
+          path: /tmp/s2
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1seg3-*
+          path: /tmp/s3
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1seg4-*
+          path: /tmp/s4
+          merge-multiple: false
+
+      - name: Assemble full scientific routes
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          for purpose in surface gw; do
+            for material in B01 B14; do
+              for route in R512_T32 R1024_T32; do
+                for opt in 0 2; do
+                  out="routes/${purpose}_${material}_${route}_o${opt}.txt"; : > "$out"
+                  for i in 1 2 3 4; do
+                    printf -v h "%02d" "$i"
+                    src="$(find /tmp/full -type f -name "${purpose}_${material}_${route}_o${opt}_h${h}.txt" -print -quit)"
+                    test -n "$src"; cat "$src" >> "$out"
+                  done
+                done
+              done
+              for route in R2048_T32 R2048_T16 R2048_T8; do
+                out0="routes/${purpose}_${material}_${route}_o0.txt"; : > "$out0"
+                for i in 1 2 3 4; do
+                  cat "/tmp/s1/p1seg1-${purpose}-${material}-${route}-h${i}/segment.txt" >> "$out0"
+                  if [[ "$route" != "R2048_T8" ]]; then
+                    cat "/tmp/s2/p1seg2-${purpose}-${material}-${route}-h${i}/segment.txt" >> "$out0"
+                  fi
+                  if [[ "$route" == "R2048_T32" ]]; then
+                    cat "/tmp/s3/p1seg3-${purpose}-${material}-R2048_T32-h${i}/segment.txt" >> "$out0"
+                    cat "/tmp/s4/p1seg4-${purpose}-${material}-R2048_T32-h${i}/segment.txt" >> "$out0"
+                  fi
+                done
+                cp "$out0" "routes/${purpose}_${material}_${route}_o2.txt"
+              done
+
+              for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+                cmp "routes/${purpose}_${material}_${route}_o0.txt" "routes/${purpose}_${material}_${route}_o2.txt"
+                case "$route" in *_T32) factor=32;; *_T16) factor=16;; *) factor=8;; esac
+                if [[ "$purpose" == "surface" ]]; then
+                  test "$(grep -c '^LAREDYN0R_STATE|' "routes/${purpose}_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+                  test "$(grep -c '^LAREDYN0R_PROFILE|' "routes/${purpose}_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+                else
+                  test "$(grep -c '^LAREGW1_STATE|' "routes/${purpose}_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+                  test "$(grep -c '^LAREGW1_PROFILE|' "routes/${purpose}_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+                fi
+              done
+            done
+          done
+          sha256sum routes/* > routes/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1ref-routes
+          path: routes/
+          if-no-files-found: error
+
+  analyze:
+    needs: assemble
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1ref-routes
+          path: /tmp/routes
+      - name: Execute unchanged frozen Reference qualification
+        run: |
+          set -euo pipefail
+          mkdir -p P1_REFERENCE_EVIDENCE
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p1_reference.py             --prereg integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json             --root /tmp/routes             --output P1_REFERENCE_EVIDENCE/ROM_PURPOSE_P1_REFERENCE_RESULT.json             | tee P1_REFERENCE_EVIDENCE/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 0 -o "$rc" -eq 3
+          cp integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json P1_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json P1_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json P1_REFERENCE_EVIDENCE/
+          sha256sum P1_REFERENCE_EVIDENCE/* > P1_REFERENCE_EVIDENCE/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p1-reference
+          path: P1_REFERENCE_EVIDENCE/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p1-reference
+          path: /tmp/evidence
+      - name: Persist segmented Reference result
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          EXECUTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/evidence/ROM_PURPOSE_P1_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json'))
+          qualified=bool(r['candidate_response_authorized'])
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P1_STATUS.json'))
+          s.update({
+            'checkpoint_commit':os.environ['EXECUTED_SHA'],
+            'tested':True,'qualified':qualified,
+            'phase':'REFERENCE_QUALIFIED' if qualified else 'REFERENCE_SCIENTIFICALLY_NOT_QUALIFIED',
+            'reference_status':r['status'],
+            'candidate_response_generated':False,
+            'candidate_response_authorized':qualified,
+            'next_action':'BIND_AND_EXECUTE_FROZEN_P1_CANDIDATES' if qualified else 'STOP_BEFORE_CANDIDATES_REFERENCE_QUALITY_BLOCKER',
+            'recovery_point':'integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json',
+            'blockers':[] if qualified else ['P1_REFERENCE_QUALIFICATION_FAILED'],
+            'last_reconciled_head':os.environ['EXECUTED_SHA'],
+            'source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'reference_execution_repair':'R2048_EXACT_STATE_SEGMENTED_R512_R1024_FULL_HISTORY'
+          })
+          s['scientific_firewall']={
+            'reference_qualification_result_generated':True,
+            'usable_reference_evidence_persisted':True,
+            'candidate_response_generated':False,
+            'representation_retuned':False,
+            'reference_metric_values_used_to_design_execution_repair':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'production_rom_authorized':False
+          }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P1_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          rows=[]
+          for purpose,materials in r['results'].items():
+              for material,v in materials.items():
+                  rows.append(f"| {purpose} | {material} | {'PASS' if v['qualified'] else 'FAIL'} | {v['max_abs_transaction_mass_cm']:.3e} |")
+          lines=[
+            '# ROM-PURPOSE P1 Reference qualification closeout','',
+            '## Decision','',f"**{r['status']}**",'',
+            f"Candidate response authorized: **{str(qualified).lower()}**.",'',
+            'R512_T32 and R1024_T32 were executed as complete independent histories. R2048 routes were recovered through exact physical-state checkpoint segments only after checkpoint/restart hydrological identity was qualified. The hosted-runner exit-143 failures are infrastructure failures, not scientific failures.','',
+            '## Qualified scope','',
+            '| Purpose | Material | Reference gate | Max transaction mass residual (cm) |',
+            '| --- | --- | --- | ---: |',*rows,'',
+            'R2048_T32 remains a numerical Reference with preregistered three-level space/time uncertainty. Numerical uncertainty is not an application tolerance.','',
+            '## Firewall','',
+            'No S4, G4 or U4 response was generated before this gate. No production solver, physics, RossFast or production coupling code changed. No performance or production-ROM claim follows.','',
+            '## Next step','',
+            ('Bind and execute the already-frozen equal-dimension S4/G4/U4 discriminator.' if qualified else
+             'Stop before candidate response. Any new Reference design requires new prospective authority.')
+          ]
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P1_REFERENCE_CLOSEOUT.md').write_text('\n'.join(lines)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P1_STATUS.json docs/science/F-ROM_PURPOSE_P1_REFERENCE_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P1: persist segmented Reference qualification" || exit 0
+          git push origin HEAD:work/f-rom-purpose
