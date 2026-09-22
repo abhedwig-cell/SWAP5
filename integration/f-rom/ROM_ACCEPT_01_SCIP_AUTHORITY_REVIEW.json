@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.rom-accept.scip-authority-review.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01-SCIP",
+  "date": "2026-09-22",
+  "purpose": "SCI-P scientific soil-moisture/profile representation",
+  "decision": "PARTIAL_TEMPORAL_SOIL_MOISTURE_ENDPOINT_ONLY__NO_PROFILE_FIDELITY_AUTHORITY",
+  "accepted_external_endpoint": {
+    "source": "LHM 4.1 validation, unsaturated zone / summary report",
+    "source_locator": "https://nhi.nu/documents/232/20210528_Rapportage_Validatie_LHM_Samenvatting_def.pdf",
+    "quantity": "monthly soil-moisture temporal pattern during growing season",
+    "metric": "correlation",
+    "thresholds": {
+      "national_mean_min": 0.6,
+      "each_area_type_min": 0.6,
+      "field_sensor_population_rule": {
+        "correlation_min": 0.6,
+        "population_fraction_min": 0.8
+      }
+    },
+    "area_types": [
+      "Pleistoceen",
+      "Holoceen",
+      "Sterk hellend"
+    ],
+    "error_class": "APPLICATION_PRODUCT_TEMPORAL_ASSOCIATION",
+    "source_limitation": "The report explicitly states that vertical scale differences between observed and modeled soil moisture prevent conclusions about absolute observed-model soil-moisture differences for the satellite comparison."
+  },
+  "requested_profile_vector_not_covered": {
+    "absolute_volumetric_water_content_error": null,
+    "storage_by_depth_interval": null,
+    "vertical_profile_shape_error": null,
+    "wetting_front_timing": null,
+    "drying_front_timing": null,
+    "extreme_state_bias": null,
+    "local_vertical_flux_or_gradient": null
+  },
+  "rejected_sources_or_transfer_rules": [
+    {
+      "type": "measurement-error cutoff in a recharge-estimability study",
+      "example": "Xie et al. 2018 use soil-moisture measurement error as an added cutoff above calibrated-model RMSE.",
+      "reason": "The rule is study-specific and calibration-relative, not an independent general application bound for scientific vertical-profile fidelity."
+    },
+    {
+      "type": "generic NSE or goodness-of-fit thresholds",
+      "reason": "They lack a matched SCI-P purpose contract, depth support and profile/timing semantics."
+    },
+    {
+      "type": "satellite surface-soil-moisture product accuracy",
+      "reason": "Observation/product uncertainty does not automatically equal acceptable model structural error, especially across mismatched vertical support."
+    }
+  ],
+  "uncertainty_separation": {
+    "observational_uncertainty": "REPORT_SEPARATELY",
+    "numerical_resolution_error": "REQUIRES_OWN_QUALIFICATION",
+    "application_tolerance": "ONLY_CORRELATION_ENDPOINT_IS_FROZEN",
+    "model_structural_error": "UNRESOLVED"
+  },
+  "frozen_envelope": {
+    "requested_SCI_P_profile_purpose": "NOT_FROZEN",
+    "reusable_LHM_like_temporal_endpoint": "FROZEN_AT_STATED_SUPPORT_ONLY",
+    "candidate_execution_authorized": false,
+    "terminal_statement": "NO INDEPENDENT ABSOLUTE_OR_DEPTH_RESOLVED_PROFILE FIDELITY AUTHORITY FOUND"
+  },
+  "candidate_response_used": false
+}
