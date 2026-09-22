@@ -4,13 +4,26 @@
   "work_unit": "RIBASIM-DUMMY-20H11",
   "branch": "work/ribasim-dummy-01",
   "baseline": "3fa962cc200fdcd6d7db197b36d5279df9f0c8e8",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute the frozen exact-release four-case BMI clock-lattice test.",
+  "next_action": "Execute the frozen exact-release four-case BMI clock-lattice qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "729b3daf00e5fd21de70876996e1b45c3127d30a",
+  "recovery_point": "DUMMY-20H11 preregistered after qualified H10 product aliasing; exact-release four-case grid test implemented without production/reference changes.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H11_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H11_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H11_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H11_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_ribasim_dummy_20h11_clock_lattice.py",
+    "tests/research/real_ribasim_20h11_clock_lattice.jl",
+    "tests/research/run_ribasim_dummy_20h11.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
