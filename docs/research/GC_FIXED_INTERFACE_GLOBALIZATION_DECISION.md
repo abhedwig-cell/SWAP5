@@ -1283,3 +1283,74 @@ E3 / RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: RESOLVE THE OUTER-2 STATUS-0 / STATUS-6 ADMISSIBILITY BOUNDARY.
 ```
+## G21E disposition: both solver configurations close physically, but by different paths and costs
+
+G21E widened the G21D mechanism result into a complete dynamic coupling
+comparison. Two independent real-FGC44 arms used the same G16/E3
+response-space safeguard logic, accepted groundwater origin, forcing, physical
+tolerances and transaction boundaries. STANDARD retained MODERATE
+delta-bar-delta (`NONMETH=3`); NOUR disabled nonlinear under-relaxation at
+solver initialization (`NONMETH=0`).
+
+The first execution was a technical preregistration-status mismatch and ran
+neither comparison arm. It is preserved separately. The repaired authority run,
+workflow `35735804287`, job `106772601959`, reproduced the archived G21
+STANDARD control exactly and completed both configurations.
+
+STANDARD converged in three accepted outer updates:
+
+```text
+MODFLOW solve calls                  17
+response contractions                2
+physical SWAP diagnostic trials     34
+final head              -0.7150099306206908 m
+G17 endpoint error       -1.2789380665623185e-10 m
+final coupling residual   2.950512426424542e-16 m/s
+status topology           [6,6,0,0,0]
+```
+
+Its outer-2 G17 trajectory error is again
+`7.215394948190124e-11 m`, so the strict G21 trajectory-equivalence
+falsification remains intact. Nevertheless, the final external coupling
+residual is below `1e-15 m/s` and the endpoint lies inside the independently
+preregistered `5e-10 m` reference guard.
+
+NOUR also converged, but along a substantially different safeguard path:
+
+```text
+MODFLOW solve calls                  24
+response contractions                7
+physical SWAP diagnostic trials     63
+accepted outer updates               5
+final head              -0.7150099304927987 m
+G17 endpoint error       -1.6653345369377348e-15 m
+final coupling residual  -6.906353885229705e-21 m/s
+status topology           [6,6,0,6,6,0,6,6,6,0,0,0]
+```
+
+Thus removing delta-bar-delta removes the strict prepared-solve path memory
+identified by G21D, but does not recreate the G17 accepted trajectory. At the
+second outer update, the NOUR lambda-1 head lies essentially on the fresh/G17
+response root yet is participant status 6, so the safeguard contracts to a
+different status-0 branch and subsequently requires additional outer updates.
+
+This distinction matters. Both configurations are physically reference-qualified
+in this one frozen case, while STANDARD is cheaper in MODFLOW and SWAP
+diagnostic work. NOUR gives an endpoint much closer to the independent G17
+reference, but that alone is not a basis for solver-configuration selection.
+The next uncertainty is local participant admissibility around the outer-2
+fresh response root: a head displacement of only about `7e-11 m` separates
+the NOUR status-6 raw response from the STANDARD status-0 accepted response.
+
+```text
+G21E MATCHED DYNAMIC COMPARISON = QUALIFIED RESEARCH.
+STANDARD DBD PHYSICAL ENDPOINT = QUALIFIED IN FROZEN CASE.
+NOUR PHYSICAL ENDPOINT = QUALIFIED IN FROZEN CASE.
+STANDARD STRICT G17 TRAJECTORY = REMAINS FALSIFIED.
+NOUR STRICT G17 TRAJECTORY = NOT RECOVERED.
+SOLVER-CONFIGURATION SELECTION = NOT MADE.
+PRODUCTION IMS CONFIGURATION = UNCHANGED.
+E3 / RESPONSE-SPACE GLOBALIZATION = NOT PRODUCTION-ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: LOCAL OUTER-2 PARTICIPANT ADMISSIBILITY-BOUNDARY DIAGNOSTIC.
+```
