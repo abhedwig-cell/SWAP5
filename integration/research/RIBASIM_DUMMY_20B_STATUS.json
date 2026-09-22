@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Pinned Ribasim v2026.1.1 source contract for fixed allocation.dt, BMI.update_until and saveat independence.",
-  "next_action": "Execute frozen DUMMY-20B v1 release-clock qualification from the post-20A source-scope base.",
+  "next_action": "Execute DUMMY-20B v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "recovery_point": "DUMMY-20A qualified; DUMMY-20B source gate is implementation-ready.",
@@ -26,5 +26,7 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "implementation_baseline": "c807372374682a4ab8d9d6dbd4cf7b2253cf129c",
-  "qualification_scope_base": "f5b28aed2c3c752c7310d54e108b2a00160c80f2"
+  "qualification_scope_base": "f5b28aed2c3c752c7310d54e108b2a00160c80f2",
+  "qualification_attempt": "v1_frozen_product_release_clock_contract",
+  "qualification_base": "work/ribasim-dummy-01@e6db55ecc43336961d242bbd3e53700959bec5aa"
 }
