@@ -4,14 +4,15 @@
   "work_unit": "RIBASIM-DUMMY-20H7",
   "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
   "authority": {
-    "qualification_head": "b97b7520a6b0d3ec075b3af501d3de9497a04e76",
-    "workflow_run": 35745769522,
-    "workflow_job": 106806882790,
+    "qualification_head": "84f05671bafcd0cd8fe22d115980889bc5491a00",
+    "workflow_run": 35745915889,
+    "workflow_job": 106807390064,
     "conclusion": "success",
     "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
     "ribasim_release": "v2026.1.1",
     "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-    "modflow_release": "6.7.0"
+    "modflow_release": "6.7.0",
+    "observability_guard": "allocation.nc first two records explicitly verified as t=0 and t=24 h"
   },
   "accepted_states": [
     {
@@ -97,5 +98,13 @@
     "No implicit same-window coupled fixed point is established.",
     "No production SWAP5 admission, storage-partition decision or drainage-ownership decision."
   ],
-  "downstream": "Use H7 as the end-to-end authority for the accepted-memory/current-forcing separation. Any further work should vary topology, priority, forcing direction or temporal regime rather than re-prove this same single-Basin case."
+  "downstream": "Use H7 as the end-to-end authority for the accepted-memory/current-forcing separation. Any further work should vary topology, priority, forcing direction or temporal regime rather than re-prove this same single-Basin case.",
+  "confirming_run": {
+    "qualification_head": "b97b7520a6b0d3ec075b3af501d3de9497a04e76",
+    "workflow_run": 35745769522,
+    "workflow_job": 106806882790,
+    "conclusion": "success",
+    "disposition": "supporting duplicate only; PR #573 was closed as technically superseded before authority reconciliation",
+    "scientific_difference": "none"
+  }
 }
