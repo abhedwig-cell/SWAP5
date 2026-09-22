@@ -201,8 +201,7 @@
       "run": 35723571953,
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0",
-      "day_end_allocation_dt_separation_m3": 8.493748372914066
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
@@ -217,7 +216,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20E2 real passive groundwater transfer activated after the accepted daily allocation.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-20E2 delayed groundwater-transfer product experiment.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -289,7 +288,8 @@
   "product_clock_authority": {
     "latest": "RIBASIM-DUMMY-20D",
     "decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
-    "meaning": "For bundled Ribasim v2026.1.1 under actual RibaMod runtime, fixed UserDemand management cadence is owned by allocation.dt; solver.saveat does not materially alter the fixed-dt allocation trajectory."
+    "meaning": "In the actual bundled v2026.1.1 product route, allocation.dt owns UserDemand management cadence; saveat does not create a competing management regime.",
+    "matrix": "RIBASIM-DUMMY-20D"
   },
   "product_runtime_authority": {
     "latest": "RIBASIM-DUMMY-20C",
