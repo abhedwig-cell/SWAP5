@@ -276,10 +276,17 @@ def bitsame(a:float,b:float)->bool:
     return float(a).hex()==float(b).hex()
 
 def run_case_fresh_process(case_id:str)->dict[str,object]:
-    child=subprocess.run(
-        [sys.executable,str(Path(__file__).resolve()),"--arm",case_id],
-        check=True,capture_output=True,text=True,env=os.environ.copy(),
-    )
+    try:
+        child=subprocess.run(
+            [sys.executable,str(Path(__file__).resolve()),"--arm",case_id],
+            check=True,capture_output=True,text=True,env=os.environ.copy(),
+        )
+    except subprocess.CalledProcessError as exc:
+        if exc.stdout:
+            print(exc.stdout,end="")
+        if exc.stderr:
+            print(exc.stderr,end="",file=sys.stderr)
+        raise
     marker="FGC44_G23_CHILD_ARM_JSON="
     line=next((x for x in child.stdout.splitlines() if x.startswith(marker)),None)
     require(line is not None,f"G23 child marker missing for {case_id}")
