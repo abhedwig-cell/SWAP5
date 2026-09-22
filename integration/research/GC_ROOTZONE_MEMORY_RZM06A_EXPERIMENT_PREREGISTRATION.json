@@ -1,0 +1,143 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a.experiment_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A",
+  "authority": "preregistered research experiment",
+  "production_changes": false,
+  "scientific_response_seen": false,
+  "basis": {
+    "infrastructure_documentation_head": "48a01440f0c26357ec0ff97289935316862c7001",
+    "infrastructure_evidence": "integration/research/GC_ROOTZONE_MEMORY_RZM06A_INFRASTRUCTURE.json",
+    "qualification_workflow_run": 35724746750,
+    "qualification_job": 106735623011,
+    "selected_interface_head_m": -0.7149999706136307,
+    "top_flux_sign": "negative_into_profile_positive_out_of_profile",
+    "units": "use exact native carrier values; do not infer a global cm-vs-m reconciliation from historical suffixes"
+  },
+  "frozen_common": {
+    "H_star_m": -0.7149999706136307,
+    "antecedent_duration_day": 0.01,
+    "wet_top_flux_native_per_day": -0.00001,
+    "dry_top_flux_native_per_day": 0.00001,
+    "forcing_free_probe_top_flux_native_per_day": 0,
+    "primary_probe_duration_day": 0.0001,
+    "tangent_probe_durations_day": [
+      0.0001,
+      0.001
+    ],
+    "tangent_delta_H_m": 0.000001,
+    "mass_residual_abs_gate_native": 1e-12,
+    "response_difference_abs_threshold_native": 1e-18,
+    "tangent_difference_abs_threshold_native_per_m": 1e-12,
+    "repeatability_rule": "fresh-process deterministic reruns must be exactly equal in serialized numeric evidence before a positive scientific disposition is admitted"
+  },
+  "H1": {
+    "hypothesis": "same fixed-plane H_c does not uniquely determine the next whole-window real-SWAP E_c when accepted internal states differ",
+    "antecedent_A": [
+      "WET",
+      "DRY"
+    ],
+    "antecedent_B": [
+      "DRY",
+      "WET"
+    ],
+    "same_integrated_top_forcing": true,
+    "pair_selection": "first response-blind sequentially admissible symmetric forcing pair from frozen characterization order",
+    "state_separation_required": true,
+    "probe": {
+      "top_flux": "ZERO",
+      "head": "H_star",
+      "duration_day": 0.0001,
+      "commit": false
+    },
+    "response_quantity": "accepted whole-window bottom_outward_exchange_native",
+    "support_rule": "both origins and probes valid, mass-complete and repeatable, endpoint states differ, and abs(E_A-E_B) > 1e-18 native exchange",
+    "otherwise": "if valid repeatable difference is <= threshold, H1 is not supported at this preregistered resolution; do not tune threshold"
+  },
+  "H2": {
+    "hypothesis": "same H_c and approximately same total profile water can yield different response when vertical water distribution differs",
+    "endpoint_time_rule": "compare only trajectories with the same total antecedent duration",
+    "candidate_group": {
+      "interval_duration_day": 0.01,
+      "alphabet_order": [
+        {
+          "symbol": "W10",
+          "top_flux_native_per_day": -0.0001
+        },
+        {
+          "symbol": "D10",
+          "top_flux_native_per_day": 0.0001
+        },
+        {
+          "symbol": "W",
+          "top_flux_native_per_day": -0.00001
+        },
+        {
+          "symbol": "D",
+          "top_flux_native_per_day": 0.00001
+        },
+        {
+          "symbol": "Z",
+          "top_flux_native_per_day": 0
+        }
+      ],
+      "enumeration": "all ordered length-2 trajectories in alphabet product order; fixed H_star in every interval; failed trajectories retained and excluded from pair matching"
+    },
+    "pair_enumeration": "lexicographic (i,j), i<j, over accepted endpoint trajectories in frozen trajectory order",
+    "profile_water_match_abs_native": 0.000001,
+    "distribution_moment_separation_abs_native": 0.0001,
+    "selection_rule": "select first pair satisfying both endpoint criteria without inspecting probe E_c",
+    "no_match_rule": "if no accepted pair satisfies the frozen criteria, disposition NO_MATCH and do not relax thresholds",
+    "probe": {
+      "top_flux": "ZERO",
+      "head": "H_star",
+      "duration_day": 0.0001,
+      "commit": false
+    },
+    "support_rule": "for a prospectively selected match, abs(E_i-E_j) > 1e-18 native exchange with valid mass-complete repeatable probes"
+  },
+  "H3": {
+    "hypothesis": "the local interface response derivative depends on committed internal state and coupling window",
+    "origins": [
+      "H1_WET_THEN_DRY",
+      "H1_DRY_THEN_WET"
+    ],
+    "H_star_m": -0.7149999706136307,
+    "delta_H_m": 0.000001,
+    "probe_durations_day": [
+      0.0001,
+      0.001
+    ],
+    "derivative": "central finite difference [E(H*+deltaH)-E(H*-deltaH)]/(2*deltaH)",
+    "immutable_origin_method": "fresh-process deterministic replay of the full antecedent trajectory before every plus or minus probe; no hidden candidate/state reuse",
+    "state_dependence_rule": "at a fixed duration, abs(dE_dH_originA-dE_dH_originB) > 1e-12 native exchange per m",
+    "window_dependence_rule": "for a fixed origin, abs(dE_dH_short-dE_dH_long) > 1e-12 native exchange per m",
+    "disposition": "report state and window components separately; call full H3 supported only if both components have at least one valid above-threshold comparison"
+  },
+  "H4": {
+    "hypothesis": "accepted whole-window bottom exchange is a ledger quantity semantically distinct from terminal flux and predictor/tangent coefficients",
+    "required_observables": [
+      "accepted whole-window bottom_outward_exchange_native",
+      "terminal_bottom_outward_flux_native",
+      "q_swap_m_per_s derived from whole-window exchange",
+      "H3 physical local derivative",
+      "baseline F-GC44 predictor u and affine hcof/rhs with baseline-origin provenance"
+    ],
+    "rule": "retain provenance and units separately; do not infer a production sign defect from slope-sign differences; do not treat baseline predictor coefficients as antecedent-origin physical tangents"
+  },
+  "anti_bias": [
+    "no scientific pair is selected using probe E_c",
+    "no post-hoc threshold relaxation",
+    "failed antecedent and probe trials are retained as evidence",
+    "each H3 +/- probe begins from a deterministic fresh replay of the same committed origin",
+    "read-only probes must leave committed revision, time and observables unchanged",
+    "convergence is necessary but not equivalent to physical correctness"
+  ],
+  "nonclaims": [
+    "no production coupling admission",
+    "no second MODFLOW hydraulic state variable",
+    "no production sign-flip admission",
+    "no H5 management conclusion",
+    "no global state sufficiency result outside the frozen B110 carrier and experiment windows"
+  ]
+}
