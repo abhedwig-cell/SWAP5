@@ -8,7 +8,7 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "phase": "REFERENCE_EXECUTION_RECOVERY_QUEUED",
+  "phase": "REFERENCE_HISTORY_SHARDED_RECOVERY_EXECUTING",
   "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
   "reference_workflow_run": 35749982543,
   "stale_duplicate_workflow_run": 35748342142,
@@ -16,10 +16,10 @@
   "candidate_response_authorized": false,
   "candidate_response_generated": false,
   "candidate_implementation_staged": true,
-  "next_action": "EXECUTE_HISTORY_SHARDED_REFERENCE_THEN_ADJUDICATE_FROZEN_GATE",
+  "next_action": "COMPLETE_SHARDED_REFERENCE_QUALIFICATION_THEN_ADJUDICATE_GATE",
   "recovery_point": "work/f-rom-purpose; use ROM_PURPOSE_P1_REFERENCE_EXECUTION_RECONCILIATION.json and workflow run 35749982543.",
   "blockers": [
-    "EXTERNAL_GITHUB_ACTIONS_QUEUE"
+    "GITHUB_ACTIONS_CAPACITY_AND_ACTIVE_REFERENCE_EXECUTION"
   ],
   "last_reconciled_head": "d52fefab7902f6d82539634a38c5f7579ca8032a",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -40,7 +40,8 @@
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_RECONCILIATION.json",
     "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py",
     ".github/workflows/f-rom-purpose-p1-reference-sharded.yml",
-    "integration/f-rom/ROM_PURPOSE_P1_H4_DIAGNOSTIC_CONTRACT.json"
+    "integration/f-rom/ROM_PURPOSE_P1_H4_DIAGNOSTIC_CONTRACT.json",
+    "integration/f-rom/ROM_PURPOSE_P1_PROTOCOL_TIMELINE_RECONCILIATION.json"
   ],
   "dependency_surface": [
     "src/",
@@ -50,9 +51,11 @@
     "tests/rom/materialize_f_rom0_headcalc_stubs.py"
   ],
   "scientific_firewall": {
-    "reference_response_generated": false,
+    "reference_qualification_result_generated": false,
+    "usable_reference_evidence_persisted": false,
     "candidate_response_generated": false,
     "representation_retuned": false,
+    "reference_metric_values_used_to_design_execution_repair": false,
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
@@ -63,5 +66,8 @@
     35748342142,
     35749728663,
     35749780410
-  ]
+  ],
+  "original_reference_workflow_run": 35748342021,
+  "original_reference_execution_disposition": "TECHNICALLY_INVALID_INCOMPLETE_EXIT_143",
+  "reference_execution_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_RECONCILIATION.json"
 }
