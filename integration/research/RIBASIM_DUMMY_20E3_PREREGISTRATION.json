@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.coupling.real_ribamod_two_cell_postallocation_groundwater.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20E3",
+  "title": "Two-cell MF6 realization of post-allocation groundwater transfer into real RibaMod",
+  "baseline": "07e9f1ba6762e03a5b43b3e4e310fff153539d77",
+  "relation_to_20e2": {
+    "decision": "NEW_WORK_UNIT_AFTER_UNREALIZED_INTERVENTION",
+    "blocked_authority": "RIBASIM_DUMMY_20E2_BLOCKED_GROUNDWATER_INTERVENTION_NOT_REALIZED",
+    "preserved_science": "same Ribasim topology, same daily allocation, same intended groundwater arrival after 6 h, same root-first management hypothesis",
+    "changed_representation": "replace one cell carrying both CHD and DRN by separate CHD source cell and active DRN cell"
+  },
+  "authorities": {
+    "product_driver": "DUMMY-20A",
+    "product_release": "DUMMY-20B",
+    "product_runtime_clock": "DUMMY-20C/DUMMY-20D",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "frozen_modflow_fixture": {
+    "grid": "1 layer x 1 row x 2 columns",
+    "cell_size_m": {
+      "dx": 1,
+      "dy": 1,
+      "thickness": 1
+    },
+    "hydraulic_conductivity_m_per_day": 1000000,
+    "specific_storage": 0.00001,
+    "specific_yield": 0.1,
+    "cell_0": {
+      "role": "CHD groundwater source",
+      "head_m": 0.5,
+      "drain": false
+    },
+    "cell_1": {
+      "role": "active groundwater cell carrying the sole DRN boundary",
+      "initial_head_m": 0.5,
+      "drain_conductance_m2_per_day": 16,
+      "drain_elevation_schedule": [
+        {
+          "from_s": 0,
+          "to_s": 21600,
+          "elevation_m": 0.5
+        },
+        {
+          "from_s": 21600,
+          "to_s": 86400,
+          "elevation_m": 0
+        }
+      ]
+    },
+    "analytical_postactivation_steady_reference": {
+      "connection_conductance_m2_per_day": 1000000,
+      "active_cell_head_m": 0.49999200012799794,
+      "drain_flux_to_drain_m3_per_day": 7.999872002047967,
+      "reciprocal_transfer_into_ribasim_m3_per_day": 7.999872002047967,
+      "note": "Storage relaxation time is negligible relative to the 6 h product step; exact runtime flux is still measured and qualified, not assumed."
+    }
+  },
+  "frozen_ribasim": {
+    "horizon_seconds": 86400,
+    "product_timestep_seconds": 21600,
+    "allocation_dt_seconds": 86400,
+    "saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_source_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "user_demand_min_level_m": 0.99
+  },
+  "idealized_transfer_reference": {
+    "intended_groundwater_m3_per_day": [
+      0,
+      8,
+      8,
+      8
+    ],
+    "cumulative_groundwater_m3": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "basin_level_m": [
+      1.00000399880024,
+      1.0000099946020402,
+      1.0000159868074423,
+      1.0000219754186088
+    ],
+    "root_cumulative_m3": [
+      4.001199759954048,
+      8.005397959791367,
+      12.013192557696925,
+      16.024581391178316
+    ],
+    "external_cumulative_m3": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "meaning": "Same prospectively derived physical target as DUMMY-20E2; the two-cell MF6 analytical flux differs from 8 m3/day by only about 1.28e-4 m3/day."
+  },
+  "hypotheses": [
+    "The first 0-6 h MF6 DRN flux is zero because the active-cell drain elevation equals the initial/support head.",
+    "After 6 h, the separate active DRN cell produces a nonzero drainage flux of approximately 7.999872 m3/day rather than the zero flux observed in DUMMY-20E2.",
+    "RibaMod transfers that MF6 DRN flux reciprocally into Ribasim Basin drainage.",
+    "Ribasim cumulative groundwater transfer is approximately 2, 4 and 6 m3 at 12, 18 and 24 h.",
+    "The daily t=0 root-first allocation remains frozen during day 1, so external UserDemand remains unsupplied.",
+    "Groundwater arriving after the t=0 allocation changes Basin storage and root physical realization without retroactively reallocating management.",
+    "The coupled source + groundwater = UserDemand + Basin-storage ledger closes at every accepted boundary."
+  ],
+  "tolerances": {
+    "drain_rate_m3_per_day": 0.01,
+    "cumulative_groundwater_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "cumulative_user_volume_m3": 0.05,
+    "external_zero_m3": 0.001,
+    "ledger_m3": 0.05
+  },
+  "forbidden": [
+    "no use of DUMMY-20E2 no-exchange observations as treated reference",
+    "no change to Ribasim allocation.dt, saveat, demand or priorities",
+    "no active drain on the CHD cell itself",
+    "no post-output tuning of idealized physical references",
+    "no production admission"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
+  "fail_decision": "RIBASIM_DUMMY_20E3_BLOCKED"
+}
