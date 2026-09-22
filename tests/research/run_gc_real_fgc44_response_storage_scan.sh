@@ -16,7 +16,9 @@ cd "$ROOT"
 PATCHED_RUNNER="tests/fgc/.dsw22-current-source-fgc44-runner.sh"
 G21L_BACKEND="tests/fgc/.g21l_mod_fmr_serialized_reference_backend.f90"
 G21L_BRIDGE="tests/fgc/.g21l_mod_fgc44_real_swap_c_bridge.f90"
+G21M_HEADCALC="tests/fgc/.g21m_headcalc.f90"
 python3 tests/research/prepare_gc_g21l_residual_observer.py
+python3 tests/research/prepare_gc_g21m_headcalc_observer.py
 python3 - <<'PY'
 from pathlib import Path
 source = Path("tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh")
@@ -26,21 +28,25 @@ root_sink = "  src/solver/mod_b110_root_sink_provider.f90\n"
 temporal = "  src/solver/mod_reference_richards_temporal_indicator.f90\n"
 backend = "  src/runtime/mod_fmr_serialized_reference_backend.f90\n"
 bridge = "  tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90\n"
+headcalc = "  src/legacy/b1_10_port/headcalc.f90\n"
 if root_sink not in text or temporal not in text:
     raise SystemExit("DSW22 dependency-order repair anchors not found")
 if backend not in text or bridge not in text:
     raise SystemExit("G21L research-build replacement anchors not found")
+if headcalc not in text:
+    raise SystemExit("G21M HeadCalc replacement anchor not found")
 text = text.replace(root_sink, "", 1)
 text = text.replace(temporal, root_sink + temporal, 1)
 text = text.replace(backend, "  tests/fgc/.g21l_mod_fmr_serialized_reference_backend.f90\n", 1)
 text = text.replace(bridge, "  tests/fgc/.g21l_mod_fgc44_real_swap_c_bridge.f90\n", 1)
+text = text.replace(headcalc, "  tests/research/mod_gc_g21m_residual_observer.f90\n  tests/fgc/.g21m_headcalc.f90\n", 1)
 target.write_text(text)
 PY
 
 # Sourcing deliberately keeps BUILD and libfgc44_swap.so alive until this
 # outer research runner exits. It still executes the complete F-GC44 e2e gate.
 source "$PATCHED_RUNNER"
-rm -f "$PATCHED_RUNNER" "$G21L_BACKEND" "$G21L_BRIDGE"
+rm -f "$PATCHED_RUNNER" "$G21L_BACKEND" "$G21L_BRIDGE" "$G21M_HEADCALC"
 
 test -f "$BUILD/bridge/libfgc44_swap.so" || {
   echo "GC_DSW22_FAIL missing reused F-GC44 bridge library" >&2
@@ -475,5 +481,17 @@ FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
 
 grep -Fq 'GC_FIXED_INTERFACE_G21L_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21l.txt" || {
   echo "GC_FGC44_G21L_FAIL missing direct residual-state gate" >&2
+  exit 1
+}
+
+# G21M residual arithmetic/cancellation qualification. A temporary HeadCalc
+# copy records the already-computed final residual vector and node-4 signed
+# expression terms; independent arithmetic is performed without changing them.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21m_residual_arithmetic.py \
+  | tee "$BUILD/fgc44-globalization-g21m.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21M_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21m.txt" || {
+  echo "GC_FGC44_G21M_FAIL missing residual arithmetic qualification gate" >&2
   exit 1
 }
