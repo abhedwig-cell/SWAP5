@@ -333,21 +333,25 @@
     "RZM06E05 tightened the response-blind storage match: 14 H16-separated pairs exist at 1e-4 cm, 3 at 1e-5 cm, exactly 1 at 1e-6 cm, and none at 1e-7 cm or tighter; no exact pair exists in the current library.",
     "RZM06E06 supports non-unique next fixed-Hc exchange at the tighter 1e-6 cm aggregate-storage resolution: |ΔE|=1.0814909231271486e-05 cm with |ΔW_profile|=7.105427357601002e-15 cm and |ΔW_root30|=5.002116250096833e-07 cm.",
     "RZM06E07 prospectively constructed a deep internal redistribution pair using equal qssdi/qdra below 30 cm. The selected one-step 0.0625*K0 direction twin has ΔW_profile=0, |ΔW_root30|=5.560298887985482e-10 cm and |ΔH16|=0.01425320747482317 cm.",
-    "RZM06E07 moves the storage-matching state-space boundary from 1e-6 cm to 1e-9 cm. No H16-separated twin was found at 1e-10 cm or exact root30 equality under the frozen grid."
+    "RZM06E07 moves the storage-matching state-space boundary from 1e-6 cm to 1e-9 cm. No H16-separated twin was found at 1e-10 cm or exact root30 equality under the frozen grid.",
+    "RZM06E07 prospectively constructed opposite net-zero deep matrix redistributions below 30 cm and selected a strict twin at joint 1e-9 cm aggregate-storage resolution: ΔW_profile=0, |ΔW_root30|=5.560298887985482e-10 cm and |ΔH16|=0.01425320747482317 cm.",
+    "The E07 construction breaks the retrospective-library ceiling from E05 by three orders of magnitude. No qualifying E07 twin exists at 1e-10 cm or tighter and no exact W_profile/W_root30 twin was produced under the frozen grid.",
+    "E07 uses qssdi/qdra only as controlled state-construction provenance. It does not alter the fixed-Hc response forcing and does not constitute a production coupling design."
   ],
   "next_work_unit": {
     "id": "GC-RZM06E08",
-    "status": "PREREGISTERED_QUEUED_EXTERNAL_RUNNER",
+    "status": "PREREGISTERED_QUALIFICATION_QUEUED",
     "preregistration_commit": "91d00f62a1150a8310296ba0ee877b9c1842cfa4",
     "workflow_run": 35749131548,
-    "scope": "Common-time reconstruct the immutable E07 1e-9 pair and run the unchanged forcing-free fixed-Hc strict Reference response probe.",
+    "scope": "Probe the immutable E07 1e-9 storage-matched deep-redistribution twin at the unchanged forcing-free fixed H_c and determine whether whole-window interface exchange remains non-unique.",
+    "prerequisite": "E07 selected one prospectively constructed twin with |ΔW_profile|<=1e-9 cm, |ΔW_root30|<=1e-9 cm and |ΔH16|>=0.01 cm.",
     "constraints": [
-      "no origin reselection",
-      "retain |ΔW_profile|<=1e-9 cm, |ΔW_root30|<=1e-9 cm and |ΔH16|>=0.01 cm",
-      "retain H_c=-1.8979370901690651 m and dt=3435974/2^32 day",
-      "retain response threshold 1e-18 cm",
-      "E07 qssdi/qdra are provenance only and are absent from E08 response forcing",
-      "same-origin order independence and O0/O2 identity required",
+      "use only persisted E07 selected H/theta vectors",
+      "canonical t0=0 under D02R1 common-time reseed authority",
+      "retain fixed H_c, dt, zero top forcing and 1e-18 response threshold from E04/E06",
+      "joint storage gates fixed at 1e-9 cm and H16 gate fixed at 0.01 cm",
+      "strict Reference sample, no commit, fallback or automatic temporal subdivision",
+      "same-origin response must be order-independent and O0/O2 byte-identical",
       "no production source changes and no H5/RZM06B work"
     ]
   },
@@ -361,6 +365,7 @@
     "no exact global sufficiency falsification from tolerance-matched W_root30 alone",
     "no exact-valued H_c + W_profile + W_root30 sufficiency falsification",
     "H16 is not admitted as a unique or minimal reduced-state coordinate",
-    "no E08 response conclusion before workflow 35749131548 completes"
+    "no E08 response conclusion before workflow 35749131548 completes",
+    "no E08 qualification claim before workflow 35749131548 completes"
   ]
 }
