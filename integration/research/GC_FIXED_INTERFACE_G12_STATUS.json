@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "GROUNDWATER_CALIBRATION_GATE_FALSIFIED_AFTER_BOUNDED_R05_REPLAY",
+  "state": "GROUNDWATER_CALIBRATION_GATE_FALSIFIED_AFTER_R05_POLICY_PASS",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
   "parent_live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
   "parent_active_drainage": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
@@ -13,7 +13,7 @@
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
   "recovery_point": "425b6d2d56ccd0dcd60bf49d24ff4a4be98163be",
-  "next_action": "Preregister G12A as a diagnostic of the one-shot groundwater translation calibration across all three frozen regimes; quantify the exact qref->href bias/root map without relaxing G12 or replaying P1/P4.",
+  "next_action": "Execute preregistered G12A translation-calibration diagnostic for all three frozen groundwater regimes. Do not change G12 bias rule or tolerance.",
   "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G12_FIRST_EXECUTION_RESULT.json",
   "first_execution": {
     "tested_commit": "f5840e2127194055caf9173f805b27074c3ed6a9",
@@ -76,12 +76,13 @@
     "conclusion": "failure"
   },
   "disposition": {
-    "active_drainage_e3": "PASS_BEFORE_FAILURE",
-    "map09a_crosscheck": "PASS_BEFORE_FAILURE",
+    "active_drainage_e3": "PASS",
+    "map09a_crosscheck": "PASS",
     "nonbottom_measurement": "J_NONBOTTOM_ZERO_AT_SELECTED_SCALE",
-    "groundwater_R05": "CALIBRATION_PASS_AND_ALL_4_POLICY_CASES_CONVERGED",
-    "groundwater_R2": "HREF_CALIBRATION_FALSIFIED_AT_7.559605E-15_GT_1E-15",
-    "remaining_groundwater_regimes": "NOT_QUALIFIED",
+    "gw_r05_policy_block": "PASS_BOUNDED",
+    "groundwater_href_calibration": "FALSIFIED_AT_GW_R2_STORAGE_7.559605E-15_GT_1E-15",
+    "gw_r2_policy": "NOT_REACHED",
+    "gw_mixed_policy": "NOT_REACHED",
     "production_admission": "NO"
   }
 }
