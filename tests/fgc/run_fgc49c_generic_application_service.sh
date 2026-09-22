@@ -12,7 +12,7 @@ for token in [
     'modflow6preparedsolvesession',
     'trial_cell_heads',
     'evaluate_groundwater_fluxes',
-    'reanchor_terms',
+    'relinearize_terms',
     'timestep_ready_for_finalize',
     'finalize_time_step_once',
     'commit_swaps',
