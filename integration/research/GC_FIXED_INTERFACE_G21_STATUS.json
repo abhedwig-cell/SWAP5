@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "FALSIFIED_DYNAMIC_PATH_EQUIVALENCE",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21_FIRST_EXECUTION_RESULT.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+  "tested_commit": "b140b5c27a396f4486c5b24c695b40206f2b712a",
+  "workflow_run": 35729235133,
+  "workflow_job": 106750375892,
+  "workflow_conclusion": "failure",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "g19_affine_response_space_bridge": "REMAINS_QUALIFIED_BOUNDED_RESEARCH",
+    "g20_continuous_first_update_bridge": "REMAINS_QUALIFIED_BOUNDED_RESEARCH",
+    "g21_full_dynamic_g17_path_equivalence": "FALSIFIED",
+    "e3_tangent_estimator": "REMAINS_QUALIFIED_RESEARCH_ONLY",
+    "p4_head_space_safeguard": "REMAINS_RESEARCH_EVIDENCE",
+    "response_space_globalization": "NOT_PRODUCTION_ADMITTED",
+    "modflow_timestep_publication": "NOT_REACHED",
+    "crash_atomic_multi_participant_publication": "STILL_OPEN",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "failure_boundary": {
+    "last_passed_outer": 1,
+    "first_failing_outer": 2,
+    "outer2_head_error_m": 7.215394948190124e-11,
+    "preregistered_head_tolerance_m": 1e-12,
+    "outer2_participant_status": 0,
+    "outer2_merit_accept": true
+  },
+  "next_action": "Open diagnostic G21A. Hold the G21 outer-2 current head fixed and separately evaluate (1) fresh-origin solve with the dynamically recomputed E3 tangent, (2) continuous prepared-solve solve with the same exact response, (3) persisted G17 response parameters, and (4) sensitivity to the 4.44e-16 m outer-1 head offset. Attribute the 7.22e-11 m divergence before any new policy proposal."
+}
