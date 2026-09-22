@@ -88,3 +88,45 @@ DO NOT CHANGE PRODUCTION HCOF SIGN YET.
 DO NOT ADMIT P0, P2 OR P3 AS UNIVERSAL FALLBACKS.
 P4 = LEADING RESEARCH CANDIDATE, NOT PRODUCTION AUTHORITY.
 ```
+
+
+## G08 disposition: safeguarded Newton over configured real-SWAP regimes
+
+G08 executed the preregistered four-case real-SWAP matrix against three
+independently measured MODFLOW response classes. The workflow execution,
+transaction-authority checks and groundwater response oracles passed.
+
+The result does **not** provide the missing production admission.
+
+- none of the four SWAP cases reached the preregistered 5% material-nonlinearity
+  threshold; the largest observed admissible secant-slope change was about
+  1.94%;
+- 21/24 P1 cases and 21/24 P4 cases converged;
+- P4 performed zero factor-1/2 contractions, because no raw Newton proposal was
+  inadmissible and no raw proposal increased the frozen coupled-residual merit;
+- the remaining three starts for each policy all occurred at the C2
+  high-forcing negative admissibility edge and stopped before proposal
+  generation because the two-sided central tangent could not be obtained even
+  after the preregistered probe-width halvings.
+
+This is a useful negative result. It moves the unresolved production-candidate
+question one level earlier in the algorithm:
+
+> how is a trustworthy physical tangent obtained when the accepted real-SWAP
+> trial lies on, or sufficiently close to, a one-sided corrector admissibility
+> boundary?
+
+The next bounded work unit is G09. It must compare the existing central secant
+with an admissibility-aware tangent estimator that may use a one-sided or
+asymmetric secant only when trial status demonstrates that the opposite probe is
+unavailable. Rejected probes retain zero state and mass authority. The
+estimator must be prospectively frozen before re-running P1/P4.
+
+The production disposition therefore remains unchanged:
+
+```text
+NO PRODUCTION HCOF/RHS CHANGE.
+P4 REMAINS A RESEARCH CANDIDATE.
+G08 DID NOT EXERCISE THE SAFEGUARD.
+CENTRAL TWO-SIDED TANGENT ACQUISITION IS NOT SUFFICIENT AT ALL REAL-SWAP BOUNDARY STATES.
+```
