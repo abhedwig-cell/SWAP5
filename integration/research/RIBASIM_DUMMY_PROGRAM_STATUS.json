@@ -288,8 +288,6 @@
       "work_unit": "RIBASIM-DUMMY-20H9",
       "decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
       "run": 35749109620,
-      "workflow_job": 106818261995,
-      "qualification_head": "ad833c879493764f5f087efcbff5edb8203f674a",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
@@ -308,7 +306,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "H7-H9 close the aligned-boundary sign-sensitive accepted-memory/current-forcing product contract. Next investigate asynchronous allocation-boundary timing or a different topology/priority structure.",
+  "next_authority_action": "H5-H9 closes the tested single-Basin accepted-memory/current-forcing chain. Select a distinct next falsification axis: priority permutation, multi-Basin allocation coupling, or asynchronous management boundary timing.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -466,5 +464,21 @@
     "latest": "RIBASIM-DUMMY-20H9",
     "decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
     "meaning": "At the tested t=24 boundary, current positive Basin drainage is admitted explicitly in addition to accepted storage memory, while the paired H7/H8 negative infiltration direction remains separately low_storage_factor-attenuable."
+  },
+  "product_positive_groundwater_forecast_authority": {
+    "latest": "RIBASIM-DUMMY-20H9",
+    "decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
+    "meaning": "In the actual pinned RibaMod product, current passive-groundwater drainage is admitted as positive forecast supply at t=24 in addition to accepted Basin-storage memory, producing direct 40/20 UserDemand allocation rather than the preregistered memory-only 40/13.9748888743 alternative."
+  },
+  "product_forcing_direction_synthesis": {
+    "negative_direction": {
+      "authority": "RIBASIM-DUMMY-20H7 / RIBASIM-DUMMY-20H8",
+      "meaning": "Current River/infiltration loss is an implicit negative forecast term and can be attenuated by low_storage_factor while accepted storage memory remains admitted."
+    },
+    "positive_direction": {
+      "authority": "RIBASIM-DUMMY-20H8 / RIBASIM-DUMMY-20H9",
+      "meaning": "Current groundwater drainage is explicit positive forecast supply and is admitted directly in the actual product t=24 allocation."
+    },
+    "invariant": "Accepted physical memory and current forecast forcing are distinct semantic inputs; forcing representation is direction-sensitive in the tested v2026.1.1 topology."
   }
 }
