@@ -1,0 +1,111 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10b.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10B",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G10B_PREREGISTRATION.json",
+  "tested_commit": "78f0a66a1825e84bbe44fe7f0407de2c081383be",
+  "workflow_run": 35703686725,
+  "workflow_job": 106667411876,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_LOCAL_GROUNDWATER_ORACLE_REPLAY_FOR_B4_GW_MIXED",
+  "local_groundwater_fit": {
+    "a_per_s": 0.0002331483316502975,
+    "intercept": 0.00016670099454302857,
+    "max_fit_error_m_per_s": 3.2087535372820145e-19,
+    "point_count": 13,
+    "gate": "PASS"
+  },
+  "reference_root": {
+    "local_affine_root_m": -0.7149997332272907,
+    "g10a_direct_root_m": -0.7149997332230622,
+    "head_difference_m": -4.228506433889834e-12,
+    "gate": "PASS"
+  },
+  "policy_summary": {
+    "p1_case_count": 2,
+    "p1_converged_count": 2,
+    "p4_case_count": 2,
+    "p4_converged_count": 2,
+    "p4_raw_inadmissible_total": 0,
+    "p4_total_contractions": 0,
+    "safeguard_recovery_exercised": false
+  },
+  "policy_results": [
+    {
+      "start_side": "NEG",
+      "start_dh_m": -0.00001,
+      "policy": "P1_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "final_head_m": -0.7149997332233566,
+      "final_residual_m_per_s": 9.375653661868815e-21,
+      "head_error_m": 3.934075287759242e-12,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "modes": [
+        "FORWARD_CENTER_CLASS",
+        "BACKWARD_CENTER_CLASS"
+      ]
+    },
+    {
+      "start_side": "NEG",
+      "start_dh_m": -0.00001,
+      "policy": "P4_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "final_head_m": -0.7149997332233566,
+      "final_residual_m_per_s": 9.375653661868815e-21,
+      "head_error_m": 3.934075287759242e-12,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "modes": [
+        "FORWARD_CENTER_CLASS",
+        "BACKWARD_CENTER_CLASS"
+      ]
+    },
+    {
+      "start_side": "POS",
+      "start_dh_m": 0.00001,
+      "policy": "P1_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "final_head_m": -0.7149997332233566,
+      "final_residual_m_per_s": 9.375653661868815e-21,
+      "head_error_m": 3.934075287759242e-12,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "modes": [
+        "CENTRAL_PAIR_CLASS",
+        "BACKWARD_CENTER_CLASS"
+      ]
+    },
+    {
+      "start_side": "POS",
+      "start_dh_m": 0.00001,
+      "policy": "P4_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "final_head_m": -0.7149997332233566,
+      "final_residual_m_per_s": 9.375653661868815e-21,
+      "head_error_m": 3.934075287759242e-12,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "modes": [
+        "CENTRAL_PAIR_CLASS",
+        "BACKWARD_CENTER_CLASS"
+      ]
+    }
+  ],
+  "bounded_conclusions": [
+    "The G10 B4/GW_MIXED path converges from both frozen starts when only the groundwater merit/reference oracle is localized; E3, starts, P4 backtracking rule and tolerances remain unchanged.",
+    "The preregistered G10 broad-affine failure is therefore attributable to oracle inadequacy at the 1e-15 m/s scale for this path, not to intrinsic instability of the E3 Newton proposal.",
+    "G10 remains formally falsified; G10B is separate positive research evidence.",
+    "P4 performed zero contractions, so live safeguard recovery from a genuinely bad physical Newton proposal remains unqualified.",
+    "No production HCOF/RHS or coupling-source change is authorized."
+  ],
+  "production_admission": "NO"
+}
