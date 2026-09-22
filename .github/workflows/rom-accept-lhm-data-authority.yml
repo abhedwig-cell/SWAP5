@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/rom-accept-lhm-data-authority.yml"
       - "tools/rom/inspect_lhm41_validation_archive.py"
+      - "tools/rom/extract_lhm41_validation_metadata.py"
       - "integration/f-rom/ROM_ACCEPT_01_*.json"
   workflow_dispatch:
 
@@ -43,6 +44,15 @@ jobs:
             evidence/validatiedata.zip \
             --out evidence/lhm41_validation_archive_inventory.json
 
+      - name: Extract allowlisted population metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/rom/extract_lhm41_validation_metadata.py \
+            evidence/validatiedata.zip \
+            --out-dir evidence/lhm41_population_metadata \
+            --manifest evidence/lhm41_validation_metadata_manifest.json
+
       - name: Persist provenance artifact
         uses: actions/upload-artifact@v4
         with:
@@ -50,5 +60,7 @@ jobs:
           path: |
             evidence/validatiedata.sha256
             evidence/lhm41_validation_archive_inventory.json
+            evidence/lhm41_validation_metadata_manifest.json
+            evidence/lhm41_population_metadata/
           if-no-files-found: error
           retention-days: 30
