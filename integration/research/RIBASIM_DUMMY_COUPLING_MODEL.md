@@ -767,72 +767,84 @@ The coupled transaction must define:
 
 ## 16. Current evidence ladder
 
-The qualified research sequence currently runs through DUMMY-14:
+The qualified research sequence now runs through DUMMY-19L.
+
+### Analytical coupling ladder
 
 ```text
-DUMMY-02
-  transaction / forecast / realization skeleton
-
-DUMMY-03
-  head-dependent exchange
-
-DUMMY-04
-  exact fixed-point mechanism
-
-DUMMY-05
-  exact management complementarity
-
-DUMMY-06
-  active-set iteration failure
-
-DUMMY-07
-  bounded stabilization
-
-DUMMY-08
-  temporal partition and management event timing
-
-DUMMY-09
-  reciprocal finite surface + groundwater storage
-
-DUMMY-10
-  management with both heads dynamic
-
-DUMMY-11
-  multi-window shared-state groundwater memory
-
-DUMMY-12
-  persistent analytical root demand state
-  shortage explicitly nonpersistent
-
-DUMMY-13
-  root + surface + groundwater internal-transfer ledger
-
-DUMMY-14
-  external root forcing and physical demand memory
+DUMMY-02  transaction / forecast / realization skeleton
+DUMMY-03  head-dependent exchange
+DUMMY-04  exact fixed-point mechanism
+DUMMY-05  exact management complementarity
+DUMMY-06  active-set iteration failure mechanism
+DUMMY-07  bounded stabilization
+DUMMY-08  temporal partition and management-event timing
+DUMMY-09  reciprocal finite surface + groundwater storage
+DUMMY-10  management with both heads dynamic
+DUMMY-11  multi-window shared-state groundwater memory
+DUMMY-12  persistent analytical root demand state
+DUMMY-13  root + surface + groundwater internal-transfer ledger
+DUMMY-14  external root forcing and physical demand memory
+DUMMY-15  competing managed claims and exact priority oracle
+DUMMY-15B allocation-versus-realization policy contrast
+DUMMY-16  management event-clock semantics
+DUMMY-17  two-Basin shared-groundwater interaction
+DUMMY-15C irrigation-event realization policies
+DUMMY-15D canopy irrigation ledger
+DUMMY-18  real-model authority map
 ```
 
-### Active qualification
+### Pinned real-Ribasim qualification ladder
 
 ```text
-DUMMY-15
-  competing managed claims and exact same-state priority oracle
+DUMMY-19A
+  allocation / supplied observability
+
+DUMMY-19B
+  real priority conflict under management scarcity
+
+DUMMY-19C
+  common-factor allocation-realization conflict
+
+DUMMY-19D
+  heterogeneous per-recipient physical realization
+
+DUMMY-19E
+  FALSIFIED: hourly saveat caused within-day reallocation
+  rather than one frozen daily allocation
+
+DUMMY-19E2
+  daily clock-aligned priority then physical realization
+
+DUMMY-19F
+  SUPERSEDED UNEXECUTED after 19E falsification
+
+DUMMY-19G
+  quantified saveat-driven allocation-clock sensitivity
+
+DUMMY-19H
+  no-scarcity negative control isolating management re-optimization
+
+DUMMY-19I
+  FALSIFIED: sub-saveat BMI solve did not apply new UserDemand state
+
+DUMMY-19I2
+  qualified shadow-LP versus applied-UserDemand separation
+
+DUMMY-19J
+  qualified fine-saveat precedence over coarser BMI cadence
+
+DUMMY-19K
+  qualified explicit UserDemand solve-to-apply seam
+
+DUMMY-19L
+  qualified accepted-state trajectory equivalence:
+  native 6-hour saveat == daily saveat + explicit 6-hour apply
 ```
 
-DUMMY-15 is not qualified until its explicit corrected gate closes.
-
-### Preregistered downstream research
-
-```text
-DUMMY-15B
-  forecast allocation versus physical supply
-  realization-policy contrast
-
-DUMMY-16
-  management-clock event synchronization with invariant physical trajectory
-```
-
-Neither work unit may be described as implemented or qualified while its
-dependency gate remains closed.
+The falsified and superseded work units remain part of the evidence record. They
+must not be silently rewritten into passes because their failures exposed the
+clock and application semantics that the later work units then isolated.
 
 ## 17. Current real-model authority boundaries
 
@@ -841,16 +853,35 @@ authority.
 
 ### Ribasim
 
-Current public and pinned-source work establishes useful semantics around:
+DUMMY-19A through DUMMY-19L use a pinned real Ribasim authority:
 
-- Basin storage/level;
-- UserDemand allocation;
-- demand priorities;
-- allocated versus supplied abstraction;
-- physical low-storage/min-level reduction.
+```text
+Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a
+```
 
-The dummy does not reproduce the full network optimizer or its physical
-solver.
+Within the tested UserDemand topology they establish real implementation
+semantics for:
+
+- Basin storage and level;
+- demand priorities and scarce allocation;
+- allocated versus physically supplied abstraction;
+- per-path `min_level` realization reduction;
+- allocation history on `saveat` boundaries;
+- sub-`saveat` BMI allocation solves;
+- separation between LP shadow allocation and applied UserDemand state;
+- the record-gated `parse_allocations!` application seam;
+- explicit test-only application of optimized UserDemand/per-link targets;
+- segment-by-segment equivalence between native 6-hour application and an
+  explicit 6-hour apply seam with daily output.
+
+Source inspection also found the same saveat/allocation-loop structure and the
+same record-gated UserDemand application seam on the observed upstream `main`
+head during this research block.
+
+These results do **not** establish that the research helper is a supported
+production Ribasim API, nor that every Ribasim managed component has identical
+application semantics. In particular, Pump/Outlet allocation controls are
+applied through different code paths and are outside the DUMMY-19K/19L claim.
 
 ### MODFLOW
 
@@ -891,21 +922,40 @@ ownership.
 
 The harness intentionally remains smaller than the real coupled system.
 
-It does not yet establish:
+It now establishes substantially more than the early analytical programme: a
+controlled real-Ribasim UserDemand evidence chain exists through allocation,
+physical realization, clock interaction, solve/application separation and
+accepted-state trajectory equivalence.
+
+It still does not establish:
 
 - production SWAP irrigation behavior;
-- exact Ribasim network-allocation behavior;
+- arbitrary/full Ribasim network-allocation equivalence beyond the tested
+  UserDemand topology;
+- a supported production Ribasim API for explicit UserDemand apply;
 - exact RIV/DRN package response;
 - actual MODFLOW storage aggregation;
 - real SWAP/MODFLOW storage non-overlap;
 - production drainage ownership;
-- real asynchronous coupling-clock policy;
+- the final product-level asynchronous clock policy;
 - product-level iMOD Coupler admission.
 
-Its value is that these real components can be substituted one at a time
-against explicit conservation, state, management, timing and transaction
-invariants rather than being introduced simultaneously.
+The next substitution step should therefore preserve the qualified semantic
+contract rather than re-open it implicitly:
 
+```text
+accepted physical state
+  -> allocation SOLVE
+  -> explicit APPLY / ADMIT
+  -> physical REALIZE
+  -> coupled ACCEPT / COMMIT
+  -> independent RECORD
+```
+
+A real coupler integration should be judged against that contract with the same
+state, transfer, priority, clock and conservation observables. The objective is
+not to force production software to copy the research helper, but to require an
+equivalent explicit ownership boundary.
 
 ## 19. Production irrigation adds management state and canopy state
 
