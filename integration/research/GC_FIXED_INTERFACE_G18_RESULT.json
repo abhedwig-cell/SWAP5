@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.gc_fixed_interface.g18.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G18",
+  "title": "Head-space P4 versus MODFLOW prepared-solve ownership reconciliation",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G18_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G18_FIRST_EXECUTION_RESULT.json",
+  "tested_commit": "7370e6540ea6f3e36904c3b3c3fca0c24b40a873",
+  "workflow_run": 35725715857,
+  "workflow_job": 106738743115,
+  "workflow_conclusion": "success",
+  "decision": "FALSIFIED_EXACT_HEAD_SPACE_P4_COMPATIBILITY_WITH_CURRENT_FGC38_FGC39_PREPARED_SOLVE_CONTRACT",
+  "interpretation": "COMPOSITION_GAP_ONLY_P4_AND_FGC38_FGC39_REMAIN_INDIVIDUALLY_VALID",
+  "production_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "frozen_g11_transition": {
+    "current_head_m": -0.7149999311459918,
+    "raw_head_m": -0.7150110934482893,
+    "raw_participant_status": 6,
+    "contractions": 2,
+    "first_accepted_head_m": -0.7150027217215662,
+    "sequential_halving_reconstructed_head_m": -0.7150027217215662,
+    "sequential_halving_exact_match": true,
+    "reported_fraction_alpha": 0.25000000000248657,
+    "raw_minus_contracted_head_m": -0.000008371726723077622
+  },
+  "prepared_solve_surface": {
+    "public_methods": [
+      "acquire_after_prepare_time_step",
+      "finalize_prepared_solve",
+      "finalize_time_step_once",
+      "invalidate_without_finalize",
+      "open_prepared_solve",
+      "publish_and_solve_iteration",
+      "timestep_ready_for_finalize"
+    ],
+    "unexpected_public_methods": [],
+    "forbidden_state_control_methods_present": [],
+    "invalidate_without_finalize_calls": [
+      "_invalidate"
+    ],
+    "invalidate_impl_calls": [],
+    "invalidate_impl_state_assignments": [
+      "invalid",
+      "solve_open"
+    ],
+    "solve_iteration_calls": [
+      "_invalidate",
+      "array_equal",
+      "copy",
+      "publisher",
+      "solve"
+    ],
+    "solve_iteration_groundwater_array_mutations": [],
+    "continuous_x_no_rollback_contract": "CONFIRMED"
+  },
+  "gates": {
+    "current_branch_fgc38_fgc39_audit": "PASS",
+    "exact_public_surface": "PASS",
+    "no_head_set_restore_or_iteration_rollback_primitive": "PASS",
+    "invalidate_is_invalidation_not_restore": "PASS",
+    "solve_iteration_no_direct_x_xold_mutation": "PASS",
+    "frozen_g11_p4_sequential_halving": "PASS_EXACT",
+    "exact_p4_representable_with_admitted_surface": "FALSIFIED"
+  },
+  "technical_history": {
+    "first_execution_classification": "TECHNICAL_FLOATING_POINT_ASSERTION_FAILURE_BEFORE_COMPATIBILITY_CLASSIFICATION",
+    "mechanism": "The first harness divided two near-equal head differences to infer a dimensionless contraction fraction. The ratio accumulated approximately 2.49e-12 absolute floating-point error even though exact sequential factor-1/2 arithmetic reproduced the persisted accepted head bit-for-bit.",
+    "repair": "Use the actual sequential P4 factor-1/2 arithmetic as the gate. No physical, numerical, ownership or compatibility criterion changed."
+  },
+  "bounded_conclusions": [
+    "The frozen G11/G17 P4 recovery genuinely requires two sequential head-space contractions; the first accepted head is reproduced exactly by applying factor 1/2 twice to the raw proposal around the current head.",
+    "The current F-GC38 prepared-solve participant exposes response publication and solve progression, but no admitted operation that sets X to an externally prescribed contracted head, restores the previous X, rolls back one external nonlinear iteration, clones an open solve, or restarts the same open solve from XOLD.",
+    "F-GC39 explicitly requires continuous MODFLOW X across nonconverged coupling iterations and forbids groundwater rollback/discard between them.",
+    "Therefore exact G11/G17 head-space P4 cannot be composed unchanged with the current F-GC38/F-GC39 prepared-solve ownership contract.",
+    "This does not invalidate P4 as research evidence and does not invalidate the prepared-solve architecture. It identifies a missing composition bridge.",
+    "Direct mutation of the live NumPy X pointer is not an admitted solution because it would bypass the qualified F-GC38 ownership contract.",
+    "A response-space globalization rule is a distinct candidate and must be separately derived and qualified rather than relabelled as P4."
+  ],
+  "next_natural_unit": "Derive and qualify a prepared-solve-native response-space damping bridge. First test whether interpolating the affine response intercept reproduces the frozen head-space P4 contractions in the G11 affine-groundwater stress; only then test the rule inside a continuous live F-GC38 prepared solve."
+}
