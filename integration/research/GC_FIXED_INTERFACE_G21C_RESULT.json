@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21c.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21C",
+  "title": "Read-only MODFLOW/XMI prepared-solve state forensics for persistent path memory",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21C_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21C_FIRST_EXECUTION_RESULT.json",
+  "parent_diagnosis": "integration/research/GC_FIXED_INTERFACE_G21B_RESULT.json",
+  "tested_commit": "07536552634f9e24da8960dd78b5c8232a6240b8",
+  "workflow_run": 35732842184,
+  "workflow_job": 106762486571,
+  "workflow_conclusion": "success",
+  "supporting_run": {
+    "tested_commit": "2d6b573b703bdfa87d847739acf1be02e9bd8081",
+    "workflow_run": 35732761840,
+    "workflow_job": 106762220486,
+    "conclusion": "success",
+    "disposition": "SUPPORTING_ONLY_SAME_FORENSIC_RESULT"
+  },
+  "decision": "QUALIFIED_DIAGNOSTIC_MIXED_VISIBLE_STATE_WITH_DELTA_BAR_DELTA_HISTORY",
+  "preregistered_classification": "MIXED_OR_UNRESOLVED",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "production_hcof_rhs_change": false,
+  "authority_reproduction": {
+    "persisted_g21b_history_minus_fresh_call12_m": 7.235112509107466e-11,
+    "observed_history_minus_fresh_call12_m": 7.235112509107466e-11,
+    "fresh_first_convergence_call": 2,
+    "history_first_convergence_call": 6
+  },
+  "invariant_state": {
+    "xold_bitwise_equal_between_arms_all_stages": true,
+    "api_hcof_rhs_bitwise_equal_all_forensic_stages": true,
+    "nonmeth_fresh_history": 3,
+    "solver_configuration_equal": true,
+    "sto_state_equal_call12": true,
+    "direct_pointer_mutation": false,
+    "normal_api_response_staging": true
+  },
+  "call12_state_forensics": {
+    "model": {
+      "X": {
+        "fresh_middle_m": -0.7150100297648362,
+        "history_middle_m": -0.7150100296924851,
+        "max_abs_difference_m": 7.235112509107466e-11
+      },
+      "XOLD": {
+        "fresh_middle_m": -0.71503325,
+        "history_middle_m": -0.71503325,
+        "bitwise_equal": true
+      }
+    },
+    "api": {
+      "HCOF_m2_per_day": -0.13785986219261193,
+      "RHS_m3_per_day": 0.0985698022484409,
+      "bitwise_equal": true
+    },
+    "solver_configuration": {
+      "NONMETH": 3,
+      "THETA": 0.9,
+      "AKAPPA": 0.0001,
+      "GAMMA": 0,
+      "AMOMENTUM": 0,
+      "bitwise_equal": true
+    },
+    "solver_history_differences": {
+      "fields": [
+        "RES_NEW",
+        "DXOLD",
+        "WSAVE",
+        "HCHOLD",
+        "DEOLD"
+      ],
+      "delta_bar_delta_fields": [
+        "WSAVE",
+        "HCHOLD",
+        "DEOLD"
+      ],
+      "WSAVE_middle": {
+        "fresh": 1,
+        "history": 0.9004,
+        "difference": 0.09960000000000002
+      },
+      "HCHOLD_middle": {
+        "fresh": 0.00002322023516376781,
+        "history": -7.264273627072271e-10
+      },
+      "DEOLD_middle": {
+        "fresh": 0.00002322023516376781,
+        "history": -7.264273627072271e-10
+      },
+      "DXOLD_middle": {
+        "fresh": 0.00002322023516376781,
+        "history": -7.264273627072271e-10
+      },
+      "RES_NEW_interpretation": "DIFFERENT_BUT_NOT_USED_AS_CAUSAL_EVIDENCE"
+    },
+    "current_iterate_related": {
+      "XTEMP_differs": true,
+      "interpretation": "XTEMP differs consistently with the distinct current iterate and is not treated as an independent memory carrier by this result."
+    },
+    "npf": {
+      "differing_dynamic_fields": [
+        "SAT"
+      ],
+      "SAT_middle": {
+        "fresh": 0.6424951276127094,
+        "history": 0.6424951276488853,
+        "max_abs_difference": 3.617584010129349e-11
+      },
+      "equal_fields": [
+        "CONDSAT",
+        "K11",
+        "ICELLTYPE"
+      ],
+      "interpretation": "SAT is observable package-state difference consistent with the different current head; G21C does not claim it independently causes the path effect."
+    },
+    "sto": {
+      "equal_fields": [
+        "SS",
+        "SY",
+        "STRGSS",
+        "STRGSY",
+        "ICONVERT"
+      ]
+    },
+    "bookkeeping": {
+      "handled_separately": true,
+      "reason": "FRESH and HISTORY intentionally have different solve-call histories."
+    }
+  },
+  "source_semantics": {
+    "modflow_version": "6.8.0",
+    "complexity": "MODERATE",
+    "under_relaxation": "delta-bar-delta",
+    "source_observation": "NumericalSolution allocates persistent WSAVE/HCHOLD/DEOLD for NONMETH=3 and updates them from previous nonlinear-iteration changes; G21C only reads these memory-manager values."
+  },
+  "gates": {
+    "reproduce_g21b_path_offset": "PASS_EXACT",
+    "required_probe_resolution": "PASS",
+    "xold_fixed_and_equal": "PASS",
+    "fixed_api_response": "PASS_BITWISE",
+    "solver_configuration_equal": "PASS",
+    "delta_bar_delta_history_reported": "PASS",
+    "no_diagnostic_pointer_mutation": "PASS",
+    "complete_three_stage_forensics": "PASS",
+    "causal_attribution": "NOT_CLAIMED"
+  },
+  "bounded_conclusions": [
+    "The persistent G21B call-12 head offset is reproduced exactly under the G21C forensic run.",
+    "Accepted XOLD, the frozen outer-2 API HCOF/RHS values and the relevant solver configuration are identical between FRESH and HISTORY, so those quantities do not explain the observed arm difference.",
+    "At call 12, explicit delta-bar-delta solver-history carriers WSAVE, HCHOLD and DEOLD remain materially different between FRESH and HISTORY; DXOLD also differs, while both arms report MODFLOW convergence.",
+    "NPF SAT differs as well, so the preregistered formal classification is MIXED_OR_UNRESOLVED rather than a solver-only classification.",
+    "The NPF SAT difference is consistent with the different current head, while the DBD arrays are source-defined history carriers. This localizes a concrete causal candidate but does not prove that resetting or disabling DBD would remove the path effect.",
+    "STO state, NPF conductance/static fields and accepted XOLD remain equal in this fixture.",
+    "No MODFLOW state was modified by the forensic diagnostic and no reset, convergence-rule change or production coupling policy is admitted."
+  ],
+  "next_natural_unit": "Preregister a paired causal-isolation diagnostic that repeats the G21B FRESH/HISTORY experiment with the same physical model and response sequence but with delta-bar-delta under-relaxation disabled from solver initialization. Compare the standard DBD arm pair with the no-under-relaxation arm pair without mutating state mid-solve or altering any existing G21 evidence."
+}
