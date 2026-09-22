@@ -24,10 +24,13 @@ jobs:
     timeout-minutes: 20
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 2
       matrix:
-        material: [B01, B14]
-        history: [V01, V02, V03, V04]
+        include:
+          - material: B01
+            history: V02
+          - material: B14
+            history: V01
     steps:
       - uses: actions/checkout@v4
         with:
