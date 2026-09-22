@@ -105,6 +105,7 @@ for source in "${MODULE_SRC[@]}"; do
 done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc44_swap.so" || fail "link F-GC44 shared library"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_c' || fail "missing SWAP C ABI"
+nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_research_interval_c' || fail "missing RZM06A research interval C ABI"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py | tee "$BUILD/e2e.txt"
@@ -114,4 +115,6 @@ for marker in   'FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS'   'FGC44_REAL_SWAP_COR
 done
 FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test_gc_rootzone_memory_rzm06a_observables.py | tee "$BUILD/rzm06a.txt"
 grep -Fq 'GC_RZM06A_OBSERVABLE_EXTRACTION=PASS' "$BUILD/rzm06a.txt" || fail "RZM06A observable extraction"
+FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test_gc_rootzone_memory_rzm06a_sequential.py | tee "$BUILD/rzm06a-sequential.txt"
+grep -Fq 'GC_RZM06A_SEQUENTIAL_INTERVAL_INFRASTRUCTURE=PASS' "$BUILD/rzm06a-sequential.txt" || fail "RZM06A sequential interval infrastructure"
 echo 'F-GC44 REAL SWAP + MODFLOW6 END-TO-END GATE PASS'
