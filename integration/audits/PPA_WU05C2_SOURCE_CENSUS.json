@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.ppa_wu05c2.source_census.v1",
+  "work_unit": "PPA-WU05-C2",
+  "parent_work_unit": "PPA-WU05-C",
+  "status": "B1_11_SOURCE_MATERIALIZED_CALL_PATHS_TRACED_REVIEW_ONLY",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "materialized_location": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/wu05b-b111/full_source (flat extracted B1.11 source tree)",
+    "files": {
+      "SWAP/rootextraction.f90": {
+        "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+        "bytes": 22013,
+        "b0_b1_11_identity": "UNCHANGED",
+        "macro_call_site": "RootExtraction_MACRO; oxygen branch lines 383-421; reduction application lines 449-451",
+        "micro_call_site": "RootExtraction_MICRO; oxygen branch lines 151-191"
+      },
+      "SWAP/oxygenstress.f90": {
+        "sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+        "bytes": 63738,
+        "b0_b1_11_identity": "UNCHANGED",
+        "scope_note": "Contains SWOXYGEN=2 Bartholomeus physical/reproduction routines, not the SWOXYGEN=1 Feddes leaf equation. OxygenStress is type 1 of SWOXYGEN=2 and is explicitly not PPA-WU05-C2."
+      },
+      "SWAP/interface_plant.f90": {
+        "sha256": "PINNED_BY_B1_11_MEMBER_MANIFEST",
+        "role": "SWOXYGEN switch and run configuration declarations"
+      }
+    },
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "equation_and_call_order": {
+    "activation": "SWOXYGEN=1 selects Feddes wetness reduction; SWOXYGEN=2 follows separate Bartholomeus branches and is excluded from C2.",
+    "initialization": "alpwet is reset to 1 before each root extraction path.",
+    "hlim2_selection": "Both macro and micro select hlim2l when node > botcom(1), otherwise hlim2u.",
+    "source_ordered_leaf": [
+      "if (h(node) <= hlim1 AND h(node) > hlim2): alpwet = (hlim1 - h(node))/(hlim1 - hlim2)",
+      "if (h(node) > hlim1): alpwet = 0",
+      "otherwise alpwet retains its initialized value 1"
+    ],
+    "macro_application": "The factor is multiplied with drought, salinity and any admitted frost factors to form qrot; the single root-extraction path then accumulates actual qrosum and stress attribution.",
+    "micro_application": "alpwet is passed to do_RWU_micro alongside other stress factors; this census does not claim equivalent macro/micro total-composition order or admit the MICRO owner.",
+    "other_modifiers": "Drought/salt/frost/compensation and SWWR T NONOX root-extension signals are not part of the scalar C2 factor."
+  },
+  "state_and_mass_census": {
+    "factor_state": "No persistent oxygen state. alpwet is an existing per-call root-extraction factor initialized by the root owner.",
+    "inputs": ["current pressure head h(node)", "hlim1", "selected hlim2"],
+    "accepted_water_mass_owner": "Existing root-water-uptake owner only; oxygen creates no separate water mass or receipt.",
+    "restart_retry": "C2 scalar equation has no continuation state; root-sink retry/publication remains unqualified and outside scope.",
+    "SWOXYGEN_2": "Separate authority families C1/C3; unchanged and not admitted by this census."
+  },
+  "scope_guards": {
+    "production_admission": "NONE_REVIEW_ONLY",
+    "macro_runtime_changed": false,
+    "micro_runtime_changed": false,
+    "root_sink_owner_changed": false,
+    "modifier_order_changed": false,
+    "coupling_parallel_admitted": false
+  },
+  "next_preregistered_slice": "PPA-WU05-C2 pure scalar Feddes wetness factor oracle only; runtime hlim selection and root-owner binding held"
+}
