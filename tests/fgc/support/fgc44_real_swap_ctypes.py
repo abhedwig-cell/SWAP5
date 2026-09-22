@@ -49,6 +49,15 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*20),
             *([ctypes.POINTER(ctypes.c_double)]*5),
         ]
+        self.lib.fgc44_research_interval_c.restype=ctypes.c_int
+        self.lib.fgc44_research_interval_c.argtypes=[
+            ctypes.c_double,ctypes.c_double,ctypes.c_double,ctypes.c_int
+        ]
+        self.lib.fgc44_research_last_interval_diagnostics_c.restype=ctypes.c_int
+        self.lib.fgc44_research_last_interval_diagnostics_c.argtypes=[
+            *([ctypes.POINTER(ctypes.c_int)]*18),
+            *([ctypes.POINTER(ctypes.c_double)]*11),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -195,4 +204,38 @@ class Fgc44RealSwap:
         result["completed_t"]=reals[2].value
         result["candidate_t0"]=reals[3].value
         result["candidate_t1"]=reals[4].value
+        return result
+
+
+    def research_interval(self, top_flux_cm_per_day: float, head_m: float, duration_day: float, *, commit: bool) -> tuple[int,dict[str,int|float|bool]]:
+        status=self.lib.fgc44_research_interval_c(
+            float(top_flux_cm_per_day),float(head_m),float(duration_day),int(bool(commit))
+        )
+        return int(status),self.research_last_interval_diagnostics()
+
+    def research_last_interval_diagnostics(self) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(18)]
+        reals=[ctypes.c_double() for _ in range(11)]
+        status=self.lib.fgc44_research_last_interval_diagnostics_c(
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"RZM06A research diagnostics unavailable: {status}")
+        ikeys=[
+            "available","call_status","forcing_status","result_status","completed","candidate_ready",
+            "mass_complete","committed","transaction_calls","accepted_substeps","attempts","retries",
+            "trial_rollbacks","solver_rejections","temporal_rejections",
+            "temporal_unavailable_rejections","mass_rejections","internal_retries",
+        ]
+        rkeys=[
+            "requested_top_flux_cm_per_day","requested_head_m","duration_day","t0_day","t1_day",
+            "materialized_top_flux_cm_per_day","materialized_bottom_head_cm",
+            "bottom_outward_exchange_native","terminal_bottom_outward_flux_native",
+            "mass_residual_native","q_swap_m_per_s",
+        ]
+        result={k:v.value for k,v in zip(ikeys,ints)}
+        for key in ["available","completed","candidate_ready","mass_complete","committed"]:
+            result[key]=bool(result[key])
+        result.update({k:v.value for k,v in zip(rkeys,reals)})
         return result
