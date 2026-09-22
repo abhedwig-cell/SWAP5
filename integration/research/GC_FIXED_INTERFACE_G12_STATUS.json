@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "TECHNICAL_REPAIR_IMPLEMENTED_AWAITING_REEXECUTION",
+  "state": "SECOND_TECHNICAL_REPAIR_IMPLEMENTED_AWAITING_REEXECUTION",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
   "parent_live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
   "parent_active_drainage": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
@@ -12,8 +12,8 @@
   "runner": "tests/research/run_gc_real_swap_map09.sh",
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
-  "recovery_point": "ed2bf3b438bd031b4e51cc8e571d0dd50ed4c135",
-  "next_action": "Execute repaired G12 postimage and require all original scientific gates; do not use the failed pre-repair groundwater run as policy evidence.",
+  "recovery_point": "425b6d2d56ccd0dcd60bf49d24ff4a4be98163be",
+  "next_action": "Reexecute exact G12 postimage after one-line solve_term import repair; all scientific gates remain unchanged.",
   "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G12_FIRST_EXECUTION_RESULT.json",
   "first_execution": {
     "tested_commit": "f5840e2127194055caf9173f805b27074c3ed6a9",
@@ -22,6 +22,16 @@
     "conclusion": "failure",
     "classification": "TECHNICAL_HARNESS_DATUM_MISMATCH_BEFORE_POLICY"
   },
-  "technical_repair_commit": "ed2bf3b438bd031b4e51cc8e571d0dd50ed4c135",
-  "technical_repair_scope": "G12-only MODFLOW vertical-datum translation; scientific matrix and gates unchanged."
+  "technical_repair_commit": "425b6d2d56ccd0dcd60bf49d24ff4a4be98163be",
+  "technical_repair_scope": "G12-only MODFLOW vertical-datum translation; scientific matrix and gates unchanged.",
+  "technical_predecessor_executions": [
+    {
+      "tested_commit": "bd70fe2155081c470e2015f2f90372ec6a962ece",
+      "workflow_run": 35706282031,
+      "workflow_job": 106675895029,
+      "conclusion": "failure",
+      "classification": "TECHNICAL_NAMEERROR_BEFORE_GROUNDWATER_POLICY",
+      "failure": "solve_term_map09 referenced solve_term after import refactor; no P1/P4 result was reached."
+    }
+  ]
 }
