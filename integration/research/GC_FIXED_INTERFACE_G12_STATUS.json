@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "GROUNDWATER_R2_CALIBRATION_GATE_FALSIFIED_AFTER_R05_POLICY_PASS",
+  "state": "GROUNDWATER_CALIBRATION_GATE_FALSIFIED_AFTER_BOUNDED_R05_REPLAY",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
   "parent_live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
   "parent_active_drainage": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
@@ -13,7 +13,7 @@
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
   "recovery_point": "425b6d2d56ccd0dcd60bf49d24ff4a4be98163be",
-  "next_action": "Preregister G12A diagnostic of the one-shot groundwater head-bias translation for R05, R2 and mixed regimes. Measure bias->href residual sensitivity and direct q_gw(H) around href without changing G12, then decide whether a mathematically exact translation/calibration contract can be frozen in a new work unit.",
+  "next_action": "Preregister G12A as a diagnostic of the one-shot groundwater translation calibration across all three frozen regimes; quantify the exact qref->href bias/root map without relaxing G12 or replaying P1/P4.",
   "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G12_FIRST_EXECUTION_RESULT.json",
   "first_execution": {
     "tested_commit": "f5840e2127194055caf9173f805b27074c3ed6a9",
@@ -76,12 +76,12 @@
     "conclusion": "failure"
   },
   "disposition": {
-    "active_drainage_e3": "QUALIFIED_ON_HREF_AND_FROZEN_STARTS",
-    "map09a_crosscheck": "PASS",
+    "active_drainage_e3": "PASS_BEFORE_FAILURE",
+    "map09a_crosscheck": "PASS_BEFORE_FAILURE",
     "nonbottom_measurement": "J_NONBOTTOM_ZERO_AT_SELECTED_SCALE",
-    "GW_R05_STORAGE": "CALIBRATION_PASS_AND_ALL_P1_P4_REPLAYS_CONVERGED",
-    "GW_R2_STORAGE": "HREF_CALIBRATION_FALSIFIED_AT_7.5596E-15_GT_1E-15",
-    "GW_MIXED": "NOT_REACHED",
+    "groundwater_R05": "CALIBRATION_PASS_AND_ALL_4_POLICY_CASES_CONVERGED",
+    "groundwater_R2": "HREF_CALIBRATION_FALSIFIED_AT_7.559605E-15_GT_1E-15",
+    "remaining_groundwater_regimes": "NOT_QUALIFIED",
     "production_admission": "NO"
   }
 }
