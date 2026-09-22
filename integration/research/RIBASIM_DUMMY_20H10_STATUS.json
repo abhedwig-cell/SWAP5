@@ -4,13 +4,26 @@
   "work_unit": "RIBASIM-DUMMY-20H10",
   "branch": "work/ribasim-dummy-01",
   "baseline": "4449e2a2edec312aeff316437d9fa40d953ee38c",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute the frozen A5/A6 actual-product noncommensurate clock matrix.",
+  "next_action": "Execute the frozen A5/A6 actual-product noncommensurate allocation-clock qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "75dde070e41272c89c1ebd564b73b7fda47e431a",
+  "recovery_point": "DUMMY-20H10 preregistered after H9 closeout; A5/A6 product cases, frozen verifier, runner and workflow gate implemented without production/reference changes.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H10_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H10_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H10_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H10_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20h10_noncommensurate_case.py",
+    "tests/research/verify_ribasim_dummy_20h10_noncommensurate_clock.py",
+    "tests/research/run_ribasim_dummy_20h10.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
