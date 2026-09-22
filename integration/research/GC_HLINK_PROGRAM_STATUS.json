@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.gc_hlink.program_status.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_changes": false,
+  "current_frontier": "LOW01 owner qualification -> HLINK04 real-SWAP phreatic response -> HLINK05 comparison to current mode-5 u",
+  "units": {
+    "HLINK01": {
+      "state": "QUALIFIED",
+      "evidence": "integration/research/GC_HLINK01_RESULT.json",
+      "meaning": "Synthetic one-volume shared-phreatic storage replacement is executable; duplicate storage gives predicted signature."
+    },
+    "HLINK02": {
+      "state": "REPAIRED_AWAITING_OWNER_RUN",
+      "preregistration": "integration/research/GC_HLINK02_PREREGISTRATION.json",
+      "diagnostic": "integration/research/GC_HLINK02D_PREREGISTRATION.json",
+      "blocker": "Research-harness lifecycle bug repaired; live rerun still queued."
+    },
+    "HLINK03": {
+      "state": "IMPLEMENTED_BLOCKED_PARENT_HLINK02",
+      "preregistration": "integration/research/GC_HLINK03_PREREGISTRATION.json",
+      "blocker": "Requires qualified HLINK02 before execution."
+    },
+    "HLINK04": {
+      "state": "PREREGISTERED_BLOCKED_LOW01_READINESS",
+      "preregistration": "integration/research/GC_HLINK04_PREREGISTRATION.json",
+      "blocker": "Requires qualified LOW01-A2, constitutive bridge, carrier, OUTPUT01, B, D; C1 characterization and C2 policy."
+    },
+    "HLINK05": {
+      "state": "PREREGISTERED_BLOCKED_PARENT_HLINK04",
+      "preregistration": "integration/research/GC_HLINK05_PREREGISTRATION.json",
+      "purpose": "Prospective comparison of real-SWAP dS/dH_phreatic and dt*dqbot/dH_phreatic with current mode-5 finite-window u from the same origin/window."
+    }
+  },
+  "low01_owner_runs": {
+    "A2": {
+      "run_id": 35585026030,
+      "status": "queued"
+    },
+    "constitutive": {
+      "run_id": 35585026055,
+      "status": "queued"
+    },
+    "carrier01": {
+      "run_id": 35582147651,
+      "status": "queued"
+    },
+    "output01": {
+      "run_id": 35582454328,
+      "status": "queued"
+    },
+    "C2": {
+      "run_id": 35582463417,
+      "status": "queued"
+    },
+    "B_prerequisite": {
+      "run_id": 35582476823,
+      "status": "queued"
+    },
+    "D_prerequisite": {
+      "run_id": 35582488480,
+      "status": "queued"
+    },
+    "C1_prerequisite": {
+      "run_id": 35582516508,
+      "status": "queued"
+    }
+  },
+  "decisions": [
+    "Do not infer live qualification from source review or local reasoning while owner Actions jobs remain queued.",
+    "Do not activate HLINK04 before the persisted LOW01 readiness predicates are satisfied.",
+    "Keep current production mode-5 F-GC route unchanged throughout this research program.",
+    "Keep shared interface head and shared phreatic head as distinct semantic objects.",
+    "Keep physical storage response, qbot response, process response and numerical Jacobian as separate observables."
+  ],
+  "next_when_runner_capacity_resumes": [
+    "Persist successful A2/constitutive/CARRIER01/OUTPUT01/C2 owner results from newest non-superseded runs.",
+    "Allow LOW01-B and LOW01-D to activate only through their declared prerequisite predicates.",
+    "After qualified LOW01-B, complete C1 characterization.",
+    "Re-evaluate HLINK04 readiness matrix.",
+    "Execute HLINK02/02D repaired synthetic gates; if HLINK02 qualifies, execute HLINK03.",
+    "Execute HLINK04 only when LOW01 readiness is complete; then activate HLINK05 unchanged."
+  ]
+}

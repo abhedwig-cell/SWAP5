@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw01.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW01",
+  "title": "Zero-resistance shared-storage oracle",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "purpose": "Replace real SWAP physics with an analytically transparent bucket while retaining the admitted coupling interpretation and a live MODFLOW6 prepared-solve probe.",
+  "fixed_case": {
+    "area_m2": 1,
+    "surface_elevation_m": 10,
+    "bottom_elevation_m": 0,
+    "initial_head_m": 8,
+    "initial_groundwater_depth_m": 2,
+    "storage_coefficient": 0.2,
+    "precipitation_m": 0.01,
+    "duration_day": 1,
+    "runoff_m": 0,
+    "evapotranspiration_m": 0,
+    "drainage_m": 0,
+    "capillary_effect": "NONE",
+    "vertical_resistance": "NONE",
+    "horizontal_groundwater_flow": "NONE"
+  },
+  "independent_oracles": {
+    "physical_head_rise_m": 0.05,
+    "physical_final_head_m": 8.05,
+    "dummy_swap_u": 0.2,
+    "dummy_swap_q_u_m_per_day": 0.01,
+    "predictor_q_bot_m_per_day": 0,
+    "predictor_h_ref_m": 8.05
+  },
+  "analytic_gate": [
+    "physical single-storage rise is precipitation/storage",
+    "historical coupling transform recovers u=S",
+    "historical coupling transform recovers q_u=R",
+    "affine q_u(H) passes through zero at initial head for q_bot=0",
+    "coupling slope u/dt equals MODFLOW local storage slope when sy=u"
+  ],
+  "live_modflow_control": {
+    "version": "6.8.0",
+    "topology": "one convertible 1 m2 cell, no horizontal-flow boundary",
+    "sy": 0.2,
+    "api_hcof_m2_per_day": 0,
+    "api_rhs_m3_per_day": -0.01,
+    "required_final_head_m": 8.05,
+    "tolerance_m": 1e-8
+  },
+  "live_current_coupling_probe": {
+    "reference_head_m": 8.05,
+    "reference_flux_m3_per_day": 0.01,
+    "hcof_m2_per_day": 0.2,
+    "rhs_m3_per_day": 1.6,
+    "required_behavior": "record without retuning",
+    "pass_condition": "control oracle passes and probe produces a finite classified result or a classified solve failure"
+  },
+  "forbidden": [
+    "no production coupling change",
+    "no Reference Richards change",
+    "no RossFast change",
+    "no coefficient tuning after live observation",
+    "no claim that numerical convergence alone establishes physical correctness"
+  ],
+  "next_if_completed": "Interpret DSW-01 against explicit storage ownership, then preregister DSW-02 vertical resistance."
+}

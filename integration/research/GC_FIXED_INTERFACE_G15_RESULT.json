@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.gc_fixed_interface.g15.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G15",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G15_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G15_FIRST_EXECUTION_RESULT.json",
+  "parent_reference": "integration/research/GC_FIXED_INTERFACE_G14_RESULT.json",
+  "tested_commit": "2b75808135a74bcae474ffb8793ee7252348b709",
+  "inherited_on_status_postimage": "a5a1e5ec951b25f2e0549b7b02eb36ebbb5648bc",
+  "inheritance_basis": "The only change between the tested commit and the status postimage is GC_FIXED_INTERFACE_G15_STATUS.json metadata; runtime, bridge, test and workflow sources are unchanged.",
+  "workflow_run": 35720172440,
+  "workflow_job": 106720961706,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_PRODUCTION_FACING_FMR_READ_ONLY_SAME_TRIAL_OBSERVATION_BUILDING_BLOCK",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "first_execution": {
+    "tested_commit": "bfea235dd30168812e1e7af19205fb4dc11b5fa5",
+    "workflow_run": 35719665899,
+    "workflow_job": 106719335800,
+    "conclusion": "failure",
+    "classification": "TECHNICAL_TEST_HARNESS_FAILURE_AFTER_SCIENTIFIC_MATRIX_PASS",
+    "disposition": "PRESERVED_NOT_RELABELLED",
+    "repair": "Commit baseline and observed paths were isolated into fresh subprocesses; runtime, numerical thresholds, ledger semantics and coupling policy were unchanged."
+  },
+  "gates": {
+    "frozen_fgc44_heads": "PASS_62_OF_62",
+    "participant_status_equivalence_to_g14": "PASS",
+    "status0_q_equivalence_to_g14": "PASS_MAX_DIFF_0",
+    "execution_diagnostics_equivalence_to_g14": "PASS",
+    "repeated_read_stability": "PASS",
+    "read_only_candidate_liveness": "PASS",
+    "status0_observe_discard_authority": "PASS",
+    "status6_observe_then_admissible_recovery": "PASS",
+    "observe_before_preflight_commit_equivalence": "PASS",
+    "one_participant_trial_per_observed_head": "PASS_62_CALLS_FOR_62_HEADS",
+    "accessor_additional_backend_runs": "PASS_0",
+    "source_api_ownership_audit": "PASS"
+  },
+  "summary": {
+    "state_count": 8,
+    "streaming_unique_heads": 62,
+    "participant_trial_calls": 62,
+    "qualification_reference_oracle_runs": 62,
+    "qualification_reference_oracle_note": "These are deliberately separate G14 research-oracle runs used only to compare observations. They are not part of the G15 accessor path or its production-facing cost claim.",
+    "accessor_additional_backend_runs": 0,
+    "max_q_diff_m_per_s": 0,
+    "status6_state_count": 5,
+    "explicit_failure_recovery_statuses": [
+      6,
+      0
+    ],
+    "commit_baseline_state": [
+      1,
+      0.0001,
+      1,
+      -1e-12
+    ],
+    "commit_observed_state": [
+      1,
+      0.0001,
+      1,
+      -1e-12
+    ]
+  },
+  "source_contract": {
+    "accessor_self_intent": "in",
+    "accessor_mutable_collaborators": [],
+    "accessor_procedure_calls": 0,
+    "direct_participant_owned_snapshot_copy": true,
+    "trial_backend_run_call_sites": 1,
+    "observation_reset_before_trial_validation": true,
+    "failed_trial_observation_captured_before_candidate_discard": true
+  },
+  "bounded_conclusions": [
+    "The FMR groundwater-SWAP participant can expose participant status, q and execution diagnostics from the exact already-executed physical trial through a read-only participant-owned observation snapshot.",
+    "Observation reads do not change candidate liveness, accepted revision/time, ledger authority, discard semantics or commit semantics.",
+    "A status-6 whole-window failure leaves a diagnostic observation with q unavailable, discards any backend candidate, and does not leak candidate-busy state into the next admissible trial.",
+    "Across all 62 frozen FGC44 G14 streaming heads, G15 participant observations match G14 participant status, q and execution diagnostics; max q difference is zero.",
+    "The production-facing G15 accessor adds zero backend runs. The qualification test additionally performs one independent G14 research-oracle run per head solely for equivalence checking.",
+    "This qualifies only the FMR-specific read-only same-trial observation API as a production-facing building block. E3, P4, tangent-service orchestration and production HCOF/RHS policy remain unadmitted."
+  ],
+  "production_admission": "BUILDING_BLOCK_ONLY_NO_COUPLING_POLICY_ADMISSION"
+}

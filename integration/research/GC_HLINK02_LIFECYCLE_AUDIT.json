@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.gc_hlink.hlink02.lifecycle_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02-LIFECYCLE-AUDIT",
+  "title": "Prepared-solve lifecycle audit of the original HLINK02 failure",
+  "production_changes": false,
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "original_failure": {
+    "workflow_run": 35578161179,
+    "workflow_job": 106264624906,
+    "last_pass_marker": "GC_HLINK02_ANALYTIC_STORAGE_ORACLE=PASS",
+    "reported_failure": "MODFLOW did not certify convergence"
+  },
+  "source_findings": [
+    "Modflow6PreparedSolveSession.timestep_ready_for_finalize() is true only after finalize_prepared_solve(): finalized must be true and solve_open must be false.",
+    "The original HLINK02 harness called timestep_ready_for_finalize() before finalize_prepared_solve(). That readiness check was therefore structurally false independent of the MODFLOW convergence flag.",
+    "The original HLINK02 loop did not persist a separate converged boolean before the impossible readiness assertion, so run 35578161179 cannot be used to conclude that MODFLOW itself failed to converge.",
+    "HLINK02D inherited the same ordering error by storing ready=timestep_ready_for_finalize() before finalize_prepared_solve() and later requiring that stale false value.",
+    "HLINK01 uses the correct sequence: require convergence, finalize_prepared_solve(), then check timestep_ready_for_finalize(), then finalize_time_step_once().",
+    "The shared one-cell build_model helper is bit-for-bit identical between the qualified HLINK01 execution commit and the current branch.",
+    "The HLINK02 test file is bit-for-bit identical between failure run 35578161179 and the pre-repair current branch, so the audit addresses the exact failing harness.",
+    "MODFLOW 6.8.0 STO sto_fc reads this%sy(n) directly when assembling SyTerms; no separate same-value-write cache/dirty-state mechanism was identified in the audited source path."
+  ],
+  "repair": {
+    "scope": "research harness lifecycle only",
+    "hlink02": [
+      "track iterate.modflow_converged explicitly",
+      "require that convergence flag before solve finalization",
+      "call finalize_prepared_solve() before timestep_ready_for_finalize()",
+      "keep all storage formulas, RCLOSE, head tolerance, mass tolerance and outer iteration rules unchanged"
+    ],
+    "hlink02d": [
+      "record ready_before_finalize for observability",
+      "for converged variants call finalize_prepared_solve() before evaluating the preregistered readiness output",
+      "keep the 2x2 write_sy/rclose matrix unchanged"
+    ]
+  },
+  "decision": "ORIGINAL_HLINK02_FAILURE_RECLASSIFIED_AS_INVALID_NUMERICAL_EVIDENCE_DUE_TO_HARNESS_LIFECYCLE_ORDERING",
+  "forbidden_inference": [
+    "Do not mark HLINK02 scientifically qualified from source review alone.",
+    "Do not infer the write_sy/rclose outcome before live execution.",
+    "Do not change production MODFLOW6 or F-GC code from this research harness repair."
+  ]
+}

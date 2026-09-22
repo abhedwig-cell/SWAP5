@@ -1,0 +1,32 @@
+name: GC LOW01-A2 live below-profile reduction
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01A2_PREREGISTRATION.json'
+      - 'tests/research/test_gc_low01a2_live_below_profile.f90'
+      - 'tests/research/run_gc_low01a2.sh'
+      - '.github/workflows/gc-low01a2.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-low01a2-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  low01a2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-A2 qualification
+        run: bash tests/research/run_gc_low01a2.sh

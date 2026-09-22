@@ -1,0 +1,25 @@
+name: GC DSW22D real-SWAP predictor matrix
+on:
+  push:
+    branches: [work/f-gc-dummy-swap-shared-storage]
+    paths:
+      - 'integration/research/GC_DUMMY_SWAP_DSW22D*.json'
+      - 'tests/research/test_gc_real_swap_dsw22d_matrix.py'
+      - 'tests/research/run_gc_real_swap_dsw22d_matrix.sh'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - '.github/workflows/gc-real-swap-dsw22d.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  dsw22d:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run full fixed predictor matrix diagnostic
+        run: bash tests/research/run_gc_real_swap_dsw22d_matrix.sh

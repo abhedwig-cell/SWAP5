@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw11.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW11",
+  "title": "Shared groundwater head with independent unsaturated memory state",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "shared_storage_oracle": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "physical_system": {
+    "initial_head_m": 8,
+    "groundwater_storage_coefficient": 0.2,
+    "internal_memory_state": "w [m water]",
+    "relaxation_per_day": 1,
+    "equilibrium_head_coupling_gamma": 0.1,
+    "duration_day": 1,
+    "external_forcing_m": 0
+  },
+  "implicit_memory_law": {
+    "state_update": "w1=w0-dt*k*(w1-gamma*(h1-h0))",
+    "eliminated_state": "w1=(w0+k*dt*gamma*(h1-h0))/(1+k*dt)",
+    "groundwater_inflow": "q_mem=k/(1+k*dt)*(w0-gamma*(h1-h0))"
+  },
+  "cases": [
+    {
+      "name": "dry_memory",
+      "w0_m": 0,
+      "exact_final_head_m": 8,
+      "exact_final_memory_m": 0
+    },
+    {
+      "name": "wet_memory",
+      "w0_m": 0.02,
+      "exact_final_head_m": 8.04,
+      "exact_final_memory_m": 0.012,
+      "exact_transfer_to_groundwater_m": 0.008
+    }
+  ],
+  "api_mapping": {
+    "hcof": "-k*gamma/(1+k*dt)",
+    "q_ref_at_h0": "k*w0/(1+k*dt)",
+    "rhs": "HCOF*h0-q_ref"
+  },
+  "gates": [
+    "same initial shared head but different w0 produces different final head",
+    "live MODFLOW head agrees with closed form for both memory states",
+    "groundwater storage gain equals memory storage loss",
+    "total water is conserved exactly",
+    "head alone is therefore not a complete state descriptor for a column with memory"
+  ],
+  "forbidden": [
+    "do not interpret w as a calibrated SWAP state",
+    "do not claim this surrogate proves which real SWAP state variables are minimal",
+    "no production coupling change"
+  ]
+}

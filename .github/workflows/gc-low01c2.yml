@@ -1,0 +1,28 @@
+name: GC LOW01-C2 lower-half-cell policy
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01C2_PREREGISTRATION.json'
+      - 'tests/research/test_gc_low01c2_lower_half_cell_policy.py'
+      - 'tests/research/run_gc_low01c2.sh'
+      - '.github/workflows/gc-low01c2.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-low01c2-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  low01c2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run LOW01-C2 policy qualification
+        run: bash tests/research/run_gc_low01c2.sh

@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.gc_hlink.hlink01.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK01",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow_run": 35572899763,
+  "workflow_job": 106248159927,
+  "decision": "QUALIFIED_SYNTHETIC_HLINK_STORAGE_REPLACEMENT",
+  "cases": {
+    "unreplaced": {
+      "configured_sy": 0.15,
+      "runtime_sy": 0.15,
+      "head_m": 8.066666666666668,
+      "expected_head_m": 8.066666666666666
+    },
+    "replacement": {
+      "configured_sy": 0.15,
+      "runtime_sy": 0.2,
+      "head_m": 8.049999999999999,
+      "expected_head_m": 8.05,
+      "geometric_gain_m3": 0.009999999999999787
+    },
+    "duplicate": {
+      "configured_sy": 0.15,
+      "runtime_sy": 0.2,
+      "head_m": 8.024999999999999,
+      "expected_head_m": 8.025,
+      "geometric_gain_m3": 0.0049999999999997165,
+      "sto_bookkeeping_gain_m3": 0.0049999999999997165,
+      "api_bookkeeping_gain_m3": 0.0049999999999997165,
+      "total_bookkeeping_m3": 0.009999999999999433
+    }
+  },
+  "gates": {
+    "xmi_storage_replacement": "PASS",
+    "one_volume_mass": "PASS",
+    "duplicate_storage_signature": "PASS",
+    "live_gate": "PASS"
+  },
+  "bounded_conclusions": [
+    "MODFLOW STO Sy can be replaced at runtime through XMI for this one-cell research mechanism.",
+    "Replacing the overlapping storage by the one physical shared response reproduces the one-volume h-link oracle.",
+    "Retaining the same storage again through an API response reproduces the predictable duplicate-storage signature while bookkeeping can still appear closed.",
+    "This is synthetic mechanism evidence only and does not determine real SWAP/MODFLOW storage ownership."
+  ]
+}

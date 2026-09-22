@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_low01a.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-A",
+  "title": "Below-profile prescribed groundwater-level to lower-face-head equivalence",
+  "status": "PREREGISTERED_BEFORE_TEST_EXECUTION",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "legacy_source": "src/legacy/b1_10_port/headcalc.f90",
+    "source_audit": "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "hlink04_readiness": "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json",
+    "current_datum_contract": "src/runtime/mod_groundwater_coupling_contract.f90"
+  },
+  "frozen_geometry_m": {
+    "node_z": [
+      -0.25,
+      -0.75,
+      -1.5,
+      -2.5
+    ],
+    "node_dz": [
+      0.5,
+      0.5,
+      1,
+      1
+    ],
+    "bottom_face_elevation": -3
+  },
+  "legacy_relation": "For SWBOTB=1 below the profile: hbot = gwlinp - z_bottom_node + 0.5*dz_bottom = gwlinp - z_bottom_face.",
+  "current_relation": "interface_head_m_to_swap_bottom_pressure_head_cm: hbot_cm=(H_interface-z_bottom_face)*100.",
+  "equivalence_hypothesis": "When the mode-1 prescribed groundwater-level elevation is below the profile and H_interface is identified with that same hydraulic elevation for this slice, both mappings produce identical lower-face pressure head and therefore enter the same mode-5 residual/Jacobian branch.",
+  "prescribed_groundwater_levels_m": [
+    -3.1,
+    -3.5,
+    -5,
+    -10
+  ],
+  "gates": [
+    "all prescribed levels are below the -3.0 m bottom face",
+    "legacy hbot and current datum hbot agree within 1e-12 cm at every fixed level",
+    "roundtrip hbot->hydraulic head returns the prescribed groundwater level within 1e-14 m",
+    "the source-bound residual/Jacobian branch identity is recorded: SWBOTB=5 OR (SWBOTB=1 AND fllowgwl)"
+  ],
+  "nonclaims": [
+    "does not qualify inside-profile mode-1 active-domain truncation",
+    "does not qualify above-profile groundwater-level behavior",
+    "does not establish current F-GC interface head as a phreatic state generally",
+    "does not modify or admit production mode 1"
+  ],
+  "next_if_pass": "Proceed to LOW01-B typed inside-profile state-machine/hydraulic-domain research and LOW01-C branch-boundary characterization."
+}

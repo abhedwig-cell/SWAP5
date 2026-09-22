@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.gc_real_swap.map14.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP14",
+  "title": "Equivalence and nonequivalence between shared-phreatic storage coupling and lower-boundary-head coupling",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "current_fgc_semantics": "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json",
+    "external_hlink_reference": "integration/research/GC_REAL_SWAP_MAP13_EXTERNAL_HLINK_REFERENCE.json",
+    "finite_resistance_oracle": "integration/research/GC_DUMMY_SWAP_DSW08_RESULT.json",
+    "shared_storage_oracle": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "purpose": "Establish mathematically when a lower-boundary exchange formulation can reproduce the same phreatic head as a one-state h-link, while preserving the distinction between the two coupling contracts.",
+  "common_case": {
+    "initial_head_m": 8,
+    "duration_day": 1,
+    "input_m": 0.01,
+    "column_storage": 0.1,
+    "groundwater_storage": 0.1,
+    "total_storage": 0.2,
+    "exact_shared_head_m": 8.05
+  },
+  "formulations": {
+    "shared_phreatic": {
+      "state": "one common H_phi",
+      "balance": "(S_column+S_groundwater)*(H1-H0)=I",
+      "numerical_representation": "MODFLOW STO owns the combined storage once; API contributes only the external input",
+      "expected_head_m": 8.05
+    },
+    "zero_resistance_boundary": {
+      "state": "the imposed lower-boundary head is algebraically identical to the groundwater head for this manufactured limit",
+      "column_balance": "E_bottom(H)=I-S_column*(H-H0)",
+      "groundwater_balance": "S_groundwater*(H-H0)=E_bottom(H)",
+      "numerical_representation": "MODFLOW STO owns S_groundwater; API publishes the mass-complete column bottom exchange",
+      "expected_head_m": 8.05
+    },
+    "finite_resistance_boundary": {
+      "states": [
+        "H_column",
+        "H_groundwater"
+      ],
+      "exchange": "q=C*(H_column-H_groundwater)",
+      "conductance_per_day": 0.1,
+      "expected_column_head_m": 8.066666666666666,
+      "expected_groundwater_head_m": 8.033333333333333,
+      "expected_shared_head_nonequivalence": true
+    }
+  },
+  "gates": [
+    "shared-phreatic and zero-resistance boundary formulations each converge in live MODFLOW and both reproduce 8.05 m within 1e-10 m",
+    "their total external-input and storage ledgers each close within 1e-12 m",
+    "the finite-resistance formulation reproduces the independent two-reservoir closed form within 1e-10 m",
+    "finite-resistance H_column and H_groundwater are distinct and neither equals the 8.05 m shared-state solution within 1e-3 m",
+    "a high-conductance control C=1000/day approaches the 8.05 m shared-head limit within 1e-5 m"
+  ],
+  "interpretation_rules": [
+    "Equal numerical heads in the zero-resistance manufactured limit establish conditional equation equivalence, not identity of coupling architecture.",
+    "The equivalence requires the boundary exchange to include the column storage response exactly once.",
+    "Finite interface resistance introduces a second physical head and breaks one-state h-link equivalence.",
+    "Current production F-GC is not reclassified as phreatic shared-state by this test; MAP11/MAP12 remain the domain/semantics authority."
+  ],
+  "forbidden": [
+    "no production code change",
+    "no inference that current F-GC has zero physical resistance",
+    "no inference that MODFLOW STO and real SWAP storage overlap in a deployment without explicit domain ownership",
+    "no reuse of MetaSWAP numerical coefficients as SWAP5 authority"
+  ]
+}

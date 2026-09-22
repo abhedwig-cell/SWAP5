@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.gc_hlink.hlink04.low01_readiness_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK04-PPA-LOW01-READINESS",
+  "title": "Typed prescribed-groundwater-level state-machine requirements for real-SWAP h-link research",
+  "status": "SOURCE_BOUND_READINESS_AUDIT_BLOCKED_TYPED_ROUTE_REQUIRED",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "lower_boundary_audit": "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "selector_classification": "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "legacy_solver": "src/legacy/b1_10_port/headcalc.f90",
+    "legacy_orchestration": "src/legacy/b1_10_port/soilwater.f90",
+    "current_fmr_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "map12": "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json"
+  },
+  "current_reachability": {
+    "serialized_reference_admitted_bottom_modes": [
+      7,
+      -2,
+      5,
+      2
+    ],
+    "bottom_mode_1_typed_application": false,
+    "conclusion": "A real HLINK04 trial cannot currently be constructed through the admitted FMR typed boundary surface without adding new boundary/state semantics."
+  },
+  "source_semantics": {
+    "prescribed_state": "gwlinp, prescribed groundwater-level elevation",
+    "output_state": "gwl plus accepted hydraulic profile and qbot",
+    "branch_above_or_at_top": {
+      "condition": "gwlinp >= top-node elevation minus source tolerance",
+      "behavior": [
+        "construct vertical fluxes from top/process balance and storage changes",
+        "reconstruct the hydraulic profile upward/downward relative to prescribed gwlinp",
+        "qbot is diagnosed from the resulting flux chain",
+        "the generic nonlinear lower-boundary solve is bypassed for this source branch"
+      ]
+    },
+    "branch_groundwater_inside_profile": {
+      "behavior": [
+        "reduce the active Richards unknown domain NN to the nodes above the prescribed groundwater level",
+        "represent saturated continuation below the active Richards domain",
+        "bottom gradient uses h(NN)/(z(NN)-gwlinp)+1",
+        "bottom Jacobian adds Kmean/(z(NN)-gwlinp)",
+        "fllowgwl=false"
+      ]
+    },
+    "branch_groundwater_below_profile": {
+      "behavior": [
+        "set fllowgwl=true",
+        "convert prescribed groundwater level to lower-face pressure head hbot=gwlinp-z_bottom_node+0.5*dz_bottom",
+        "use the same lower-face Darcy-gradient form as prescribed-head mode 5",
+        "bottom Jacobian adds Kmean/distance"
+      ]
+    },
+    "branch_switching": "The branch can change as prescribed groundwater level crosses the profile bottom or internal node geometry; the branch state is part of the physical/application semantics, not a cosmetic selector.",
+    "qbot_semantics": "qbot is an output of the groundwater-level boundary solution, not an independently prescribed input."
+  },
+  "minimum_typed_contract": {
+    "control_coordinate": "H_phreatic / prescribed groundwater-level elevation, distinct from mode-5 bottom pressure head",
+    "required_state": [
+      "prescribed trial groundwater level",
+      "accepted/profile groundwater level",
+      "inside-profile versus below-profile continuation state or an equivalent deterministically reconstructible branch state",
+      "complete SWAP hydraulic/process state from the immutable accepted origin",
+      "active-domain geometry/NN semantics when groundwater lies inside the profile"
+    ],
+    "required_outputs": [
+      "candidate complete-profile SWAP state",
+      "accepted/diagnosed bottom flux qbot with source sign convention",
+      "complete-profile storage change over the window",
+      "all non-groundwater external process amounts needed for the h-link balance",
+      "branch/provenance diagnostics sufficient to prove which state-machine path was used"
+    ],
+    "transaction_rules": [
+      "Every H_phreatic trial starts from the same immutable accepted origin.",
+      "Rejected trials restore all hydraulic, groundwater-level, branch and numerical-continuation state.",
+      "Only the conjunctively accepted trial may advance SWAP lineage and physical mass authority.",
+      "No mode-1 state may leak into the existing mode-5 F-GC route."
+    ],
+    "time_rule": "HLINK04 should use an explicit coupling-trial H_phreatic coordinate. Legacy DATE1/GWLEVEL interpolation is lineage evidence, not required as the first research control surface.",
+    "storage_rule": "The typed trial must expose complete-profile storage change independently of qbot so the shared-phreatic residual can assign storage once."
+  },
+  "required_qualification_slices": [
+    {
+      "id": "LOW01-A",
+      "scope": "Groundwater below the SWAP profile, where mode-1 must reduce exactly to the derived lower-face hbot relation.",
+      "purpose": "Establish mode-1/mode-5 boundary equivalence in the source-declared below-profile branch."
+    },
+    {
+      "id": "LOW01-B",
+      "scope": "Groundwater inside the profile without optional processes.",
+      "purpose": "Qualify active Richards-domain truncation, saturated continuation, qbot output, Jacobian and mass closure."
+    },
+    {
+      "id": "LOW01-C",
+      "scope": "Groundwater-level sweep across an internal node and the profile bottom.",
+      "purpose": "Qualify deterministic branch switching, rollback and continuity/discontinuity behavior."
+    },
+    {
+      "id": "LOW01-D",
+      "scope": "Transactional replay/rejection from one accepted origin.",
+      "purpose": "Prove no branch or profile state leaks between H_phreatic trials."
+    }
+  ],
+  "hlink04_activation_rule": "Do not implement GC-HLINK04 real-SWAP shared-phreatic trials until a research-only typed LOW01-A/B/D surface exists and LOW01-C branch-boundary behavior is at least characterized.",
+  "forbidden": [
+    "do not expose legacy SWBOTB=1 wholesale as production",
+    "do not alias H_phreatic to bottom_head",
+    "do not use current mode-5 forcing adapter as evidence of groundwater-level-state semantics",
+    "do not bypass active-domain truncation or saturated continuation in the inside-profile branch",
+    "do not infer production admission from a research-only LOW01 harness"
+  ],
+  "next": [
+    "Keep current production F-GC mode 5 unchanged.",
+    "Close HLINK01 before implementing nonlinear h-link storage research.",
+    "If real h-link research remains desired, preregister a research-only LOW01-A/B/D adapter/harness as its own workstream rather than embedding it in HLINK04."
+  ]
+}

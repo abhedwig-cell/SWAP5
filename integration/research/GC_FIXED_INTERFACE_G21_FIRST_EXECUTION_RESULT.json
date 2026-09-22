@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21_PREREGISTRATION.json",
+  "tested_commit": "854b97a96c9e86534d19fc40cb34b962e2fb3797",
+  "workflow_run": 35728861327,
+  "workflow_job": 106749140669,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_HARNESS_SCHEMA_MISMATCH_BEFORE_G21_LIVE_EXECUTION",
+  "failure": {
+    "exception": "KeyError: 'local_contractions'",
+    "mechanism": "The G21 authority-binding precheck referenced a non-existent G11 trace field. G11 persists cumulative_contractions; the preregistered G21 per-outer contractions are the difference of adjacent cumulative values, yielding [2,0,0].",
+    "scientific_interpretation": "NO_G21_DYNAMIC_GLOBALIZATION_VERDICT_FROM_THIS_RUN"
+  },
+  "repair_contract": [
+    "Preserve the preregistered local contraction sequence [2,0,0].",
+    "Derive each local contraction count from the persisted G11 cumulative_contractions field without changing G11 evidence.",
+    "Do not change E3 rules, response damping, MODFLOW lifecycle, reference heads, tolerances or production source."
+  ],
+  "disposition": "PRESERVED_NOT_RELABELLED"
+}

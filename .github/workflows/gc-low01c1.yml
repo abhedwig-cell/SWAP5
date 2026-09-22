@@ -1,0 +1,54 @@
+name: GC LOW01-C1 internal-node snap characterization
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01B_RESULT.json'
+      - 'integration/research/GC_LOW01C1_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01C1_PREREGISTRATION_AMENDMENT.json'
+      - 'tests/research/test_gc_low01c1_internal_node_snap.f90'
+      - 'tests/research/run_gc_low01c1.sh'
+      - '.github/workflows/gc-low01c1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-low01c1-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  prerequisite:
+    runs-on: ubuntu-24.04
+    outputs:
+      low01b_ready: ${{ steps.gate.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        name: Check LOW01-B authority
+        shell: bash
+        run: |
+          if test -f integration/research/GC_LOW01B_RESULT.json &&              python3 -c 'import json,pathlib,sys; d=json.loads(pathlib.Path("integration/research/GC_LOW01B_RESULT.json").read_text()); sys.exit(0 if d.get("conclusion")=="success" and str(d.get("decision","")).startswith("QUALIFIED") else 1)'; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo 'GC_LOW01C1_PREREQUISITE_LOW01B=READY'
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo 'GC_LOW01C1_PREREQUISITE_LOW01B=BLOCKED'
+          fi
+
+  low01c1:
+    needs: prerequisite
+    if: needs.prerequisite.outputs.low01b_ready == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run prerequisite-bound LOW01-C1 characterization
+        run: bash tests/research/run_gc_low01c1.sh

@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.gc_low01.state01.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-STATE01",
+  "title": "Deterministic branch and active-domain mapping for prescribed groundwater level",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+  "fixed_geometry_cm": {
+    "z": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "dz": [
+      50,
+      50,
+      100,
+      100
+    ],
+    "bottom_face": -300
+  },
+  "fixed_cases": [
+    {
+      "name": "ABOVE_TOP",
+      "gwl_cm": -10,
+      "expected_branch": "ABOVE_OR_AT_TOP"
+    },
+    {
+      "name": "TOP_TOLERANCE",
+      "gwl_cm": -25.00005,
+      "expected_branch": "ABOVE_OR_AT_TOP"
+    },
+    {
+      "name": "INSIDE_UPPER",
+      "gwl_cm": -100,
+      "expected_branch": "INSIDE_PROFILE",
+      "expected_active_nodes": 2,
+      "expected_lower_distance_cm": 25
+    },
+    {
+      "name": "INSIDE_LOWER",
+      "gwl_cm": -200,
+      "expected_branch": "INSIDE_PROFILE",
+      "expected_active_nodes": 3,
+      "expected_lower_distance_cm": 50
+    },
+    {
+      "name": "NODE_SNAP_BELOW_Z3",
+      "gwl_cm": -150.00005,
+      "expected_branch": "INSIDE_PROFILE",
+      "expected_effective_gwl_cm": -150,
+      "expected_active_nodes": 2
+    },
+    {
+      "name": "NODE_NO_SNAP_ABOVE_Z3",
+      "gwl_cm": -149.99995,
+      "expected_branch": "INSIDE_PROFILE",
+      "expected_active_nodes": 2
+    },
+    {
+      "name": "BELOW_BOTTOM_NODE_INSIDE_HALF_CELL",
+      "gwl_cm": -275,
+      "expected_branch": "BELOW_BOTTOM_NODE",
+      "expected_hbot_cm": 25
+    },
+    {
+      "name": "BELOW_PROFILE_FACE",
+      "gwl_cm": -350,
+      "expected_branch": "BELOW_BOTTOM_NODE",
+      "expected_hbot_cm": -50
+    }
+  ],
+  "gates": [
+    "all fixed branch ids match the frozen source rules",
+    "inside-profile active-node counts and lower distances match the preregistered values",
+    "node-snap behavior uses the frozen 1e-4 cm tolerance exactly",
+    "below-bottom-node hbot mapping matches gwl-z_bottom+0.5*dz_bottom",
+    "replaying the case sequence in reverse produces identical per-case state objects"
+  ],
+  "nonclaims": [
+    "does not solve Richards equations",
+    "does not qualify qbot or mass closure inside profile",
+    "does not yet satisfy HLINK04 LOW01-B or LOW01-D solver-level requirements"
+  ],
+  "next_if_pass": "Use this immutable branch-state mapping as the control surface for a research-only inside-profile solver harness; then qualify saturated continuation, qbot, mass closure and rejection/replay."
+}

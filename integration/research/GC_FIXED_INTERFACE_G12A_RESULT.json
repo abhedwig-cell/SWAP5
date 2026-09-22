@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12a.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12A",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G12A_PREREGISTRATION.json",
+  "tested_commit": "a60a45812f8d2ba38b4466caa84d1c5af9979f3c",
+  "workflow_run": 35707047122,
+  "workflow_job": 106678387170,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_DIAGNOSTIC_G12_MISS_IS_ONE_SHOT_BIAS_ANCHORING_NOT_LOCAL_AFFINE_FIT_ERROR",
+  "gates": {
+    "map09_authority": "PASS",
+    "local_groundwater_fits": "PASS",
+    "direct_href_inversion": "PASS",
+    "transaction_authority": "PASS"
+  },
+  "summary": {
+    "max_abs_fit_minus_direct_href_q_m_per_s": 1.5038162943939165e-16,
+    "max_abs_qref_minus_direct_href_m_per_s": 1.748466491699059e-12,
+    "max_abs_qref_minus_fit_href_m_per_s": 1.7483161100696195e-12,
+    "max_local_fit_error_m_per_s": 1.7360453105956668e-22,
+    "regime_count": 3,
+    "regimes_missing_g12_href_gate": [
+      "GW_R2_STORAGE",
+      "GW_MIXED"
+    ]
+  },
+  "regime_results": [
+    {
+      "regime_id": "GW_R05_STORAGE",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy": 0.0002863453524293378,
+      "one_shot_calibration": {
+        "frozen_bias_m": 0.0019489516252102195,
+        "translated_head_error_m": -1.6251836751357551e-9,
+        "translated_iterations": 2,
+        "translated_qref_head_m": 0.0129328946333826,
+        "zero_bias_head_m": 0.010983944633356056,
+        "zero_bias_iterations": 2
+      },
+      "local_fit": {
+        "a_per_s": 3.3141856588372273e-7,
+        "q_at_href_m_per_s": -6.459194539643423e-10,
+        "qref_minus_q_at_href_m_per_s": -5.386160432139392e-16,
+        "max_fit_error_m_per_s": 7.237830359838992e-25
+      },
+      "direct_href_inversion": {
+        "q_direct_href_m_per_s": -6.459194203757957e-10,
+        "qref_minus_q_direct_href_m_per_s": -5.7220458983208e-16,
+        "head_at_q_direct_m": 0.012932896359914089,
+        "head_error_m": 1.0134781382176161e-10,
+        "final_q_bracket_width_m_per_s": 3.8146972658918585e-16
+      },
+      "fit_minus_direct_href_q_m_per_s": -3.358854661814076e-17
+    },
+    {
+      "regime_id": "GW_R2_STORAGE",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy": 0.0011453814097173512,
+      "one_shot_calibration": {
+        "frozen_bias_m": 0.0004872357024683395,
+        "translated_head_error_m": -5.7024677722894435e-9,
+        "translated_iterations": 2,
+        "translated_qref_head_m": 0.012932890556098503,
+        "zero_bias_head_m": 0.012445660556097936,
+        "zero_bias_iterations": 2
+      },
+      "local_fit": {
+        "a_per_s": 0.0000013256726249492045,
+        "q_at_href_m_per_s": -6.459124329749632e-10,
+        "qref_minus_q_at_href_m_per_s": -7.559605422306433e-15,
+        "max_fit_error_m_per_s": 1.9645539548134407e-24
+      },
+      "direct_href_inversion": {
+        "q_direct_href_m_per_s": -6.459125539207175e-10,
+        "qref_minus_q_direct_href_m_per_s": -7.438659668023835e-15,
+        "head_at_q_direct_m": 0.012932896167332777,
+        "head_error_m": -9.123349818673798e-11,
+        "final_q_bracket_width_m_per_s": 3.8146972658918585e-16
+      },
+      "fit_minus_direct_href_q_m_per_s": 1.2094575428259855e-16
+    },
+    {
+      "regime_id": "GW_MIXED",
+      "k_m_per_day": 1,
+      "ss_per_m": 0.02,
+      "sy": 0.15,
+      "one_shot_calibration": {
+        "frozen_bias_m": 0.000002568586162581682,
+        "translated_head_error_m": -7.498725095728132e-9,
+        "translated_iterations": 2,
+        "translated_qref_head_m": 0.01293288875984118,
+        "zero_bias_head_m": 0.012930327672403694,
+        "zero_bias_iterations": 2
+      },
+      "local_fit": {
+        "a_per_s": 0.00023314844692068825,
+        "q_at_href_m_per_s": -6.441716764703159e-10,
+        "qref_minus_q_at_href_m_per_s": -1.7483161100696195e-12,
+        "max_fit_error_m_per_s": 1.7360453105956668e-22
+      },
+      "direct_href_inversion": {
+        "q_direct_href_m_per_s": -6.441715260886865e-10,
+        "qref_minus_q_direct_href_m_per_s": -1.748466491699059e-12,
+        "head_at_q_direct_m": 0.01293289625921128,
+        "head_error_m": 6.450048828376964e-13,
+        "final_q_bracket_width_m_per_s": 3.8146972658918585e-16
+      },
+      "fit_minus_direct_href_q_m_per_s": -1.5038162943939165e-16
+    }
+  ],
+  "bounded_conclusions": [
+    "All three local groundwater q(H) fits are substantially more accurate than the 1e-15 m/s G12 merit scale; the maximum fit error is 1.736e-22 m/s.",
+    "The fitted q_at_href agrees with an independent 20-bisection direct MODFLOW q->H inversion within at most 1.504e-16 m/s.",
+    "GW_R05_STORAGE satisfies the original G12 href flux gate, while GW_R2_STORAGE and GW_MIXED do not.",
+    "The largest one-shot anchoring error is GW_MIXED: q_swap(href)-q_gw(href) is about -1.7483e-12 m/s.",
+    "Therefore the G12 href-calibration failure is an anchoring error from applying one head-translation inferred at qref to a nonlinear/finite-conductance MODFLOW response, not an affine-fit accuracy problem.",
+    "G12 remains formally falsified. A separate G12B may replay the active-drainage policies using the measured local groundwater response without relabeling G12."
+  ],
+  "production_admission": "NO"
+}

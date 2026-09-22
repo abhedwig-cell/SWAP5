@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.gc_real_swap.map01.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP01",
+  "workflow_run": 35565298284,
+  "decision": "PREREGISTERED_FIXED_HEAD_PROBE_OUTSIDE_ACCEPTED_CORRECTOR_DOMAIN",
+  "predictor_reference": {
+    "href_m": -0.7149999706136307,
+    "hcof_m2_per_day": 0.3402936037279093,
+    "rhs_m3_per_day": -0.24330990700660954,
+    "affine_qref_m_per_s": -1.1179226975717078e-13,
+    "affine_slope_per_s": 0.000003938583376480432,
+    "affine_u_equivalent": 0.00003402936037279093
+  },
+  "failed_probe": {
+    "first_offset_m": -0.00001,
+    "requested_head_m": -0.7150099706136307,
+    "status": 6,
+    "status_name": "GW_SWAP_PARTICIPANT_TRIAL_FAILED"
+  },
+  "bounded_conclusion": "The preregistered +/- micrometre fixed-head characterization is not admissible for this short-window real-SWAP F-GC45 fixture. No finite-difference response conclusion is drawn from MAP01.",
+  "forbidden_inference": [
+    "do not shrink MAP01 offsets post hoc and call the original test passed",
+    "do not infer a production defect from corrector inadmissibility outside its admitted window"
+  ]
+}

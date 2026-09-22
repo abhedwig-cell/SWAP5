@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw05v.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW05V",
+  "title": "Irregular timestep convergence flag versus IMS under-relaxation",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_case": {
+    "previous_head_m": 8.0035,
+    "dt_day": 0.13,
+    "recharge_rate_m_per_day": 0.01,
+    "s_swap": 0.1,
+    "s_modflow": 0.1,
+    "exact_final_head_m": 8.01
+  },
+  "variants": [
+    {
+      "name": "MODERATE_DEFAULT",
+      "under_relaxation": "MODFLOW complexity default"
+    },
+    {
+      "name": "MODERATE_NO_UR",
+      "under_relaxation": "NONE"
+    }
+  ],
+  "method": "Solve the exact same fixed affine equation in fresh MODFLOW6 6.8.0 sessions. No reanchoring is performed.",
+  "purpose": "Determine whether the DSW-05 convergence-flag failure is a general strict-IMS/under-relaxation issue rather than a timestep-dependent error in the coupling equation.",
+  "forbidden": [
+    "do not alter DSW-05 preregistered gate",
+    "no production solver recommendation from this diagnostic alone"
+  ]
+}

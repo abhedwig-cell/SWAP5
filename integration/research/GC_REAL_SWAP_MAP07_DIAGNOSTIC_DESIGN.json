@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_real_swap.map07.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP07",
+  "title": "Partial versus total derivative of the historical q_u response",
+  "status": "RETROSPECTIVE_EQUATION_LEVEL_DIAGNOSTIC_ON_FROZEN_EVIDENCE",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "production_formula": "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "cell_slope": "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "e4_flux_points": "docs/publication/evidence/PUB_GC_E4_RAW_FLUX_POINTS.json",
+    "e4_head_scans": "docs/publication/evidence/PUB_GC_E4_RAW_HEAD_SCANS.json",
+    "e4_result": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json"
+  },
+  "question": "Is production dq_u/dH=+u/dt the total derivative of historical q_u across the flux-driven predictor family, or the partial derivative of an affine extension with q_bot and u held fixed?",
+  "historical_definition": "q_u = u*(H_end_cm-H_start_cm)/dt_day - q_bot",
+  "production_affine_slope": "partial q_u / partial H_end_cm at fixed u and q_bot = +u/dt_day",
+  "predictor_family_identity": "u = dt_day/(dH_end_cm/dq_bot), hence dq_bot/dH_end_cm = u_FD/dt_day and approximately u/dt_day on E4 predictor plateaus",
+  "total_derivative": "dq_u/dH = (du/dH)*(H_end-H_start)/dt + u/dt - dq_bot/dH",
+  "fixed_primary_case": {
+    "baseline": "B3",
+    "window_day": 0.001,
+    "qbot_cm_per_day": 0.0001,
+    "u_A": 0.0002665743709457589,
+    "h_start_m": -0.71499716161412,
+    "selected_flux_fractions": [
+      0.001,
+      0.003,
+      0.01
+    ],
+    "selection_reason": "These scales belong to the already-qualified E4 B3 u_FD plateau region. The 1e-4 fraction is excluded because E4 itself records a pathological wrong-sign u_FD there; no new selection is made from MAP07 output."
+  },
+  "outputs": [
+    "reconstructed q_u at each plus/minus predictor point using that point's u_A_point",
+    "finite-difference total dq_u/dH_cm along the predictor family",
+    "production partial slope u_A/dt",
+    "ratio total slope / production partial slope",
+    "frozen-u decomposition (u_A-u_FD)/dt showing first-order cancellation of +u/dt and dq_bot/dH"
+  ],
+  "interpretation_rules": [
+    "A near-zero total derivative does not make the production slope mathematically wrong; it establishes that the production slope is a partial affine-extension derivative, not the total derivative of q_u across neighboring predictor states.",
+    "Do not identify either derivative with physical bottom exchange without the separate MAP02/MAP03 corrector and mass-ledger evidence.",
+    "Use MAP03 to distinguish physical storage sensitivity (+u in the simple fixture) from bottom-outward exchange sensitivity (-u).",
+    "No production change follows from this retrospective diagnostic alone."
+  ],
+  "forbidden": [
+    "no production source changes",
+    "no post-hoc replacement of E4 plateau selection",
+    "do not use the B3 1e-4 flux fraction as primary evidence",
+    "do not call the partial-versus-total distinction a defect without an explicit coupling-contract requirement"
+  ]
+}

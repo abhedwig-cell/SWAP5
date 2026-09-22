@@ -1,0 +1,46 @@
+name: GC LOW01-B inside-profile typed research slice
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01A2_RESULT.json'
+      - 'integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json'
+      - 'integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json'
+      - 'integration/research/GC_LOW01_OUTPUT01_RESULT.json'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-low01b-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  prerequisite:
+    runs-on: ubuntu-24.04
+    outputs:
+      ready: ${{ steps.gate.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        name: Check qualified prerequisite results
+        shell: bash
+        run: |
+          python3 -c 'import json,pathlib,sys; paths=["integration/research/GC_LOW01A2_RESULT.json","integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json","integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json","integration/research/GC_LOW01_OUTPUT01_RESULT.json"]; ok=all(pathlib.Path(p).is_file() and (lambda d: d.get("conclusion")=="success" and str(d.get("decision","")).startswith("QUALIFIED"))(json.loads(pathlib.Path(p).read_text())) for p in paths); print("ready=true" if ok else "ready=false")' >> "$GITHUB_OUTPUT"
+
+  low01b:
+    needs: prerequisite
+    if: needs.prerequisite.outputs.ready == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run prerequisite-bound LOW01-B qualification
+        run: bash tests/research/run_gc_low01b.sh

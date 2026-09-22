@@ -1,0 +1,27 @@
+name: GC real-SWAP MAP08 raw corrector failure
+on:
+  push:
+    branches: [work/f-gc-dummy-swap-shared-storage]
+    paths:
+      - 'integration/research/GC_REAL_SWAP_MAP08*.json'
+      - 'tests/research/test_gc_real_swap_map08_raw_corrector_failure.py'
+      - 'tests/research/run_gc_real_swap_map08.sh'
+      - '.github/workflows/gc-real-swap-map08.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  map08:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run raw B3 corrector failure diagnostic
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map08.sh

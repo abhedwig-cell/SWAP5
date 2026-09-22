@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.gc_real_swap.map05a.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP05A",
+  "title": "Complete B3 slope-policy characterization with the independently qualified local corrector slope",
+  "status": "PREREGISTERED_AFTER_MAP05_FAILURE_BEFORE_MAP05A_EXECUTION",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "map05_observation": "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
+    "e4_response_authority": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json"
+  },
+  "fixed_case": {
+    "window_day": 0.001,
+    "predictor_qbot_cm_per_day": 0.0001,
+    "k_m_per_day": 0.1,
+    "chd_offset_m": 0,
+    "coupled_flux_tolerance_m_per_s": 1e-15,
+    "max_coupling_outer": 40
+  },
+  "policy": {
+    "name": "E4_B3_CORRECTOR_JR",
+    "hcof_m2_per_day": -0.288217671950983,
+    "source": "PUB-GC E4 B3 J_R",
+    "reanchor_rule": "retain this HCOF and update only RHS to pass through each accepted real-SWAP corrector point"
+  },
+  "fixed_current_control": {
+    "source": "MAP05 CURRENT_PLUS_U child result",
+    "iterations": 3,
+    "final_head_m": -0.7149962561412444,
+    "final_q_swap_m_per_s": -1.2492277961483046e-11,
+    "final_ledger_m": -1.079332815872135e-9
+  },
+  "gates": [
+    "E4_B3_CORRECTOR_JR converges within 40 coupling outer iterations without changing SWAP or MODFLOW tolerances.",
+    "Final coupled residual <=1e-15 m/s.",
+    "Exactly one SWAP candidate and one interface ledger entry are committed.",
+    "Ledger equals q_swap_final*window_seconds within 1e-12 m.",
+    "Accepted head differs from the fixed CURRENT_PLUS_U control by <=5e-10 m.",
+    "Accepted q_swap differs from the fixed CURRENT_PLUS_U control by <=2e-15 m/s.",
+    "Accepted ledger differs from the fixed CURRENT_PLUS_U control by <=2e-13 m."
+  ],
+  "characterization_only": [
+    "outer iteration count relative to CURRENT_PLUS_U=3",
+    "head path",
+    "residual path",
+    "MODFLOW convergence path"
+  ],
+  "interpretation_rules": [
+    "A MAP05A pass does not rescue MAP05: INTERCEPT_ONLY remains a preregistered failure.",
+    "If MAP05A converges to the same accepted physics, report that the independently measured negative corrector slope is admissible in this B3 case.",
+    "If MAP05A changes work, report only this one-case numerical observation; do not generalize performance.",
+    "If MAP05A fails its corrector domain, retain the failure and stop before any production change."
+  ],
+  "forbidden": [
+    "no production source change",
+    "no tolerance or corrector-envelope relaxation",
+    "no post-observation slope retuning",
+    "no claim that J_R should replace u_A in production from this single case"
+  ]
+}

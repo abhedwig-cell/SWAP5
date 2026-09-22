@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.gc_hlink.hlink02.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "HARNESS_LIFECYCLE_BUG_IDENTIFIED_REPAIR_QUEUED",
+  "preregistration": "integration/research/GC_HLINK02_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_hlink02_nonlinear_storage.py",
+  "production_changes": false,
+  "activation_rule": "Do not execute until GC-HLINK01 live gate is qualified exactly as preregistered.",
+  "implemented_cases": [
+    "SECANT_STO_ITERATION",
+    "TANGENT_STO_WITH_AFFINE_CORRECTION",
+    "TANGENT_STO_WITHOUT_CORRECTION adversarial control"
+  ],
+  "numerical_isolation": "Each outer storage representation update uses a fresh MODFLOW solve from immutable H0. This isolates nonlinear storage representation from prepared-solve history.",
+  "physical_acceptance": [
+    "exact integrated V(H)-I residual",
+    "final head against independent analytic root",
+    "numerical affine correction reported separately from physical input"
+  ],
+  "next_action": "Rerun HLINK02 with the preregistered physics, RCLOSE, head and mass gates unchanged after correcting only the prepared-solve finalize/readiness ordering. Execute HLINK02D in the same carrier to retain the planned write_sy/rclose characterization.",
+  "blocker": "Original run 35578161179 is not valid evidence of MODFLOW non-convergence because the research harness called timestep_ready_for_finalize() before finalize_prepared_solve(), a state in which readiness is contractually false.",
+  "parent_evidence": "integration/research/GC_HLINK01_RESULT.json",
+  "activation_evidence": {
+    "workflow_run": 35572899763,
+    "workflow_job": 106248159927,
+    "hlink01_live_gate": "PASS"
+  },
+  "failure_evidence": {
+    "workflow_run": 35578161179,
+    "workflow_job": 106264624906,
+    "last_marker": "GC_HLINK02_ANALYTIC_STORAGE_ORACLE=PASS",
+    "failure": "MODFLOW did not certify convergence in first SECANT_STO_ITERATION solve",
+    "reclassified_as": "RESEARCH_HARNESS_LIFECYCLE_ORDERING_FAILURE_NOT_MODFLOW_CONVERGENCE_EVIDENCE"
+  },
+  "diagnostic": "integration/research/GC_HLINK02D_PREREGISTRATION.json",
+  "source_lifecycle_audit": "integration/research/GC_HLINK02_LIFECYCLE_AUDIT.json"
+}

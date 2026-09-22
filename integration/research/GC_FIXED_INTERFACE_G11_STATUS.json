@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.gc_fixed_interface.g11.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G11",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_RESEARCH_GATE_CLOSED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G11_PREREGISTRATION.json",
+  "parent_tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+  "parent_local_oracle": "integration/research/GC_FIXED_INTERFACE_G10B_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_live_safeguard_g11.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "0f1b1f40acf0fb86f84d917346116f3c4755c19f",
+  "next_action": "Open production-readiness work: retain E3 as reference tangent, quantify its probe cost, and prospectively compare cheaper physically signed tangent approximations/history updates across the qualified F-GC44/B4 regimes before any production coupling mutation.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+  "execution": {
+    "tested_commit": "0f1b1f40acf0fb86f84d917346116f3c4755c19f",
+    "workflow_run": 35704878501,
+    "workflow_job": 106671289436,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "first_raw_newton": "PARTICIPANT_INADMISSIBLE_AT_DH_-1_11623E_5_M",
+    "p1": "RAW_PROPOSAL_INADMISSIBLE",
+    "p4": "CONVERGED_AFTER_TWO_BACKTRACK_CONTRACTIONS",
+    "live_safeguard_recovery": "QUALIFIED_BOUNDED_B4_STRESS",
+    "transaction_authority": "PASS",
+    "production_admission": "NO"
+  }
+}

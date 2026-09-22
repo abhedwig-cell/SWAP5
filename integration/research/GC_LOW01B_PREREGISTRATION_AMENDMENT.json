@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.gc_low01b.preregistration_amendment.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B",
+  "status": "PRE_EXECUTION_OBSERVABILITY_CLARIFICATION",
+  "original": "integration/research/GC_LOW01B_PREREGISTRATION.json",
+  "reason": "Legacy HeadCalc keeps the active-domain index NN as a local variable and exposes no runtime diagnostic for it. Production instrumentation is forbidden in this research slice.",
+  "clarification": {
+    "active_nn_gate": "Reconstruct NN from the frozen geometry and prescribed gwlinp using the exact source algorithm (NN=0; increment while z(NN+1)>gwlinp). Verify the resulting branch classification against the source-bound inside-profile predicate. The live HeadCalc call then independently verifies fllowgwl=false and the resulting saturated continuation/profile.",
+    "unchanged_gates": [
+      "live HeadCalc convergence",
+      "fllowgwl=false",
+      "saturated continuation below NN",
+      "finite diagnosed qbot",
+      "complete-profile mass closure",
+      "bitwise replay from immutable origin"
+    ]
+  },
+  "forbidden": [
+    "Do not add NN instrumentation to production HeadCalc for this test."
+  ]
+}

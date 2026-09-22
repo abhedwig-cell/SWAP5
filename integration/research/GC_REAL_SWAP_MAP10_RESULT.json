@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.gc_real_swap.map10.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP10",
+  "status": "RETROSPECTIVE_FROZEN_EVIDENCE_RESULT",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_e4": "docs/publication/evidence/PUB_GC_E4_FULL_RESULT.json",
+    "fgc45_modflow_fixture": "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  },
+  "governance": {
+    "prospective": false,
+    "blind": false,
+    "note": "Baseline summary values were inspected before the retrospective design was written; this result is synthesis, not preregistered validation."
+  },
+  "modflow_fixture_reference": {
+    "sy": 0.15,
+    "ss_per_m": 0.02,
+    "cell_area_m2": 1,
+    "cell_thickness_m": 2
+  },
+  "baselines": [
+    {
+      "id": "B1",
+      "window_day": 0.0001,
+      "qbot_cm_per_day": 0.000001,
+      "u_A": 0.00003402936037279093,
+      "J_S": 0.00003402833570476105,
+      "J_R": -0.00003402833570476105,
+      "u_per_day": 0.3402936037279093,
+      "u_over_modflow_sy": 0.00022686240248527288,
+      "J_S_over_u": 0.9999698887073205,
+      "minus_J_R_over_u": 0.9999698887073205
+    },
+    {
+      "id": "B2",
+      "window_day": 0.001,
+      "qbot_cm_per_day": 0.000001,
+      "u_A": 0.0002686106425118591,
+      "J_S": 0.0002686095790238596,
+      "J_R": -0.0002686095790238594,
+      "u_per_day": 0.2686106425118591,
+      "u_over_modflow_sy": 0.0017907376167457275,
+      "J_S_over_u": 0.9999960407823401,
+      "minus_J_R_over_u": 0.9999960407823393
+    },
+    {
+      "id": "B4",
+      "window_day": 0.01,
+      "qbot_cm_per_day": 0.000001,
+      "u_A": 0.00119027208545508,
+      "J_S": 0.0011902723251466796,
+      "J_R": -0.001190272325146675,
+      "u_per_day": 0.11902720854550798,
+      "u_over_modflow_sy": 0.0079351472363672,
+      "J_S_over_u": 1.0000002013754692,
+      "minus_J_R_over_u": 1.0000002013754654
+    }
+  ],
+  "successive_ratios": [
+    {
+      "from": "B1",
+      "to": "B2",
+      "window_ratio": 10,
+      "u_ratio": 7.893496661977632,
+      "u_per_day_ratio": 0.7893496661977633
+    },
+    {
+      "from": "B2",
+      "to": "B4",
+      "window_ratio": 10,
+      "u_ratio": 4.431217148823616,
+      "u_per_day_ratio": 0.4431217148823616
+    }
+  ],
+  "gates": {
+    "same_qbot_and_ready_response": "PASS",
+    "J_S_matches_u_within_1e_4_relative": "PASS",
+    "minus_J_R_matches_u_within_1e_4_relative": "PASS",
+    "u_not_window_invariant": "PASS",
+    "u_over_dt_not_window_invariant": "PASS",
+    "no_double_counting_claim_from_u_over_sy_ratio": "PASS"
+  },
+  "bounded_conclusions": [
+    "For the frozen B1/B2/B4 real-Richards evidence, u_A is locally a finite-window whole-column storage sensitivity because J_S/u_A remains within roughly 3e-5 of unity.",
+    "The same accepted corrector evidence gives J_R approximately -u_A, so storage sensitivity and bottom-outward exchange sensitivity remain equal and opposite in this drainage-free family.",
+    "u_A depends strongly on coupling-window duration: increasing the window by 10x increases u_A by about 7.89x from B1 to B2 and 4.43x from B2 to B4.",
+    "Consequently u_A/dt decreases from about 0.3403/day to 0.2686/day to 0.1190/day across B1/B2/B4.",
+    "This window dependence is incompatible with treating u_A as a universal time-independent specific yield. It is consistent with transient penetration of a prescribed terminal-head perturbation through the SWAP column.",
+    "The scale ratios u_A/Sy are recorded only descriptively. They do not establish shared-volume partition or duplicate storage because the F-GC45 MODFLOW Sy and SWAP finite-window response are not yet proven to represent the same physical volume and constitutive storage relation."
+  ],
+  "next": [
+    "Perform an equation/domain ownership audit before making any real-coupling double-storage claim.",
+    "Distinguish static/equilibrium storage from finite-window dynamic storage response.",
+    "If needed, design a prospective long-window continuation only after MAP08/MAP09 close and without reusing these inspected values as blind validation."
+  ]
+}

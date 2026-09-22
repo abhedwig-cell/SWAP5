@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw15.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW15",
+  "original_workflow_run": 35562694437,
+  "superseding_workflow_run": 35563369096,
+  "decision": "SUPERSEDED_HARNESS_SERIALIZATION_ARTIFACT",
+  "original_observation": {
+    "requested_restart_head_m": 8.033333333333333,
+    "observed_second_step_head_m": 8.055555552222222,
+    "analytic_second_step_head_m": 8.055555555555555,
+    "head_error_m": -3.33333360913457e-9,
+    "mass_error_m": -6.666667374394253e-10
+  },
+  "diagnosis": "The fresh-simulation IC path serialized the accepted restart head through formatted input. That rounded the previous state before the next substep and contaminated a mass gate much tighter than the input formatting precision.",
+  "repair": "The research harness now sets MODFLOW X and XOLD exactly through XMI after initialize and before prepare_time_step.",
+  "superseding_result": "integration/research/GC_DUMMY_SWAP_DSW15_RESULT.json",
+  "verification": {
+    "early_final_head_m": 8.055555555555552,
+    "late_final_head_m": 8.033333333333331,
+    "fixed_substep_mass_error_m": -1.5612511283791264e-17,
+    "original_1e_12_mass_gate": "PASS"
+  },
+  "bounded_conclusion": "The original DSW-15 red result was not hydrological or solver-closure evidence. It was a test-harness restart-state precision artifact and must not be used as coupling evidence."
+}

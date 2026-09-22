@@ -1,0 +1,192 @@
+{
+  "schema": "swap5.gc_fixed_interface.g11.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G11",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G11_PREREGISTRATION.json",
+  "tested_commit": "0f1b1f40acf0fb86f84d917346116f3c4755c19f",
+  "workflow_run": 35704878501,
+  "workflow_job": 106671289436,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_LIVE_P4_SAFEGUARD_RECOVERY_FROM_REAL_B4_NEWTON_OVERSHOOT",
+  "gates": {
+    "carrier_authority": "PASS",
+    "groundwater_affine_oracle": "PASS",
+    "target_edge_calibration": "PASS",
+    "first_raw_bad": "PASS",
+    "first_raw_overshoot": "PASS",
+    "p4_contraction_exercised": "PASS",
+    "p4_converged": "PASS",
+    "transaction_authority": "PASS"
+  },
+  "groundwater_points": [
+    {
+      "head_m": -0.715323603488889,
+      "mf_iterations": 2,
+      "q_m_per_s": -2e-10
+    },
+    {
+      "head_m": -0.7151784267444412,
+      "mf_iterations": 2,
+      "q_m_per_s": -1e-10
+    },
+    {
+      "head_m": -0.71503325,
+      "mf_iterations": 1,
+      "q_m_per_s": 0
+    },
+    {
+      "head_m": -0.7148880732555455,
+      "mf_iterations": 2,
+      "q_m_per_s": 1e-10
+    },
+    {
+      "head_m": -0.7147428965110976,
+      "mf_iterations": 2,
+      "q_m_per_s": 2e-10
+    }
+  ],
+  "groundwater_fit": {
+    "a_per_s": 6.888155563778139e-7,
+    "intercept": 4.925260259273828e-7,
+    "max_fit_error_m_per_s": 3.705769144237564e-21,
+    "point_count": 5
+  },
+  "target_edge": {
+    "calibration_limit_m_per_s": 5e-13,
+    "dh_m": -0.00001,
+    "head_m": -0.7150099311459918,
+    "q_groundwater_m_per_s": 1.6062389394100273e-11,
+    "q_swap_m_per_s": 1.6063896369803534e-11,
+    "residual_m_per_s": 1.5069757032601632e-15,
+    "status": 0
+  },
+  "policy_results": [
+    {
+      "classification": "RAW_PROPOSAL_INADMISSIBLE",
+      "contractions": 0,
+      "first_raw": {
+        "bad": true,
+        "current_residual_m_per_s": -2.306628568830163e-11,
+        "dh_m": -0.000011162302297473836,
+        "head_m": -0.7150110934482893,
+        "outer": 1,
+        "residual_m_per_s": null,
+        "status": 6,
+        "tangent_d_m": 1.25e-7,
+        "tangent_mode": "CENTRAL_PAIR_CLASS",
+        "tangent_per_s": -0.000001377629615322778
+      },
+      "outer": 1,
+      "policy": "P1_E3",
+      "raw_head_m": -0.7150110934482893,
+      "raw_inadmissible": 1,
+      "raw_status": 6,
+      "trace": []
+    },
+    {
+      "classification": "CONVERGED",
+      "contractions": 2,
+      "final_dh_m": -0.000009999346805233955,
+      "final_head_m": -0.715009930492797,
+      "final_residual_m_per_s": -1.0640987109201395e-20,
+      "first_raw": {
+        "bad": true,
+        "current_residual_m_per_s": -2.306628568830163e-11,
+        "dh_m": -0.000011162302297473836,
+        "head_m": -0.7150110934482893,
+        "outer": 1,
+        "residual_m_per_s": null,
+        "status": 6,
+        "tangent_d_m": 1.25e-7,
+        "tangent_mode": "CENTRAL_PAIR_CLASS",
+        "tangent_per_s": -0.000001377629615322778
+      },
+      "merit_increases": 0,
+      "outer": 3,
+      "policy": "P4_E3",
+      "raw_inadmissible": 1,
+      "trace": [
+        {
+          "accepted_dh_m": -0.0000027905755743962146,
+          "accepted_head_m": -0.7150027217215662,
+          "accepted_residual_m_per_s": -1.6694609609232303e-11,
+          "cumulative_contractions": 2,
+          "current_dh_m": 0,
+          "current_head_m": -0.7149999311459918,
+          "current_residual_m_per_s": -2.306628568830163e-11,
+          "mf_iterations": 2,
+          "outer": 1,
+          "raw_dh_m": -0.000011162302297473836,
+          "raw_head_m": -0.7150110934482893,
+          "raw_residual_m_per_s": null,
+          "raw_status": 6,
+          "tangent_d_m": 1.25e-7,
+          "tangent_mode": "CENTRAL_PAIR_CLASS",
+          "tangent_per_s": -0.000001377629615322778
+        },
+        {
+          "accepted_dh_m": -0.000010098618646536828,
+          "accepted_head_m": -0.7150100297646383,
+          "accepted_residual_m_per_s": 2.2903000010084604e-13,
+          "cumulative_contractions": 2,
+          "current_dh_m": -0.0000027905755743962146,
+          "current_head_m": -0.7150027217215662,
+          "current_residual_m_per_s": -1.6694609609232303e-11,
+          "mf_iterations": 2,
+          "outer": 2,
+          "raw_dh_m": -0.000010098618646536828,
+          "raw_head_m": -0.7150100297646383,
+          "raw_residual_m_per_s": 2.2903000010084604e-13,
+          "raw_status": 0,
+          "tangent_d_m": 6.25e-8,
+          "tangent_mode": "BACKWARD_CENTER_CLASS",
+          "tangent_per_s": -0.0000015956003185379992
+        },
+        {
+          "accepted_dh_m": -0.000009999346805233955,
+          "accepted_head_m": -0.715009930492797,
+          "accepted_residual_m_per_s": -1.0640987109201395e-20,
+          "cumulative_contractions": 2,
+          "current_dh_m": -0.000010098618646536828,
+          "current_head_m": -0.7150100297646383,
+          "current_residual_m_per_s": 2.2903000010084604e-13,
+          "mf_iterations": 2,
+          "outer": 3,
+          "raw_dh_m": -0.000009999346805233955,
+          "raw_head_m": -0.715009930492797,
+          "raw_residual_m_per_s": -1.0640987109201395e-20,
+          "raw_status": 0,
+          "tangent_d_m": 6.25e-8,
+          "tangent_mode": "FORWARD_CENTER_CLASS",
+          "tangent_per_s": -0.0000016182837991462862
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "first_raw_bad": true,
+    "first_raw_dh_m": -0.000011162302297473836,
+    "first_raw_residual_m_per_s": null,
+    "first_raw_status": 6,
+    "gw_fit_error_m_per_s": 3.705769144237564e-21,
+    "gw_slope_per_s": 6.888155563778139e-7,
+    "p1_classification": "RAW_PROPOSAL_INADMISSIBLE",
+    "p4_classification": "CONVERGED",
+    "p4_contractions": 2,
+    "p4_final_dh_m": -0.000009999346805233955,
+    "p4_final_residual_m_per_s": -1.0640987109201395e-20,
+    "safeguard_recovery": "EXERCISED_AND_CONVERGED",
+    "start_residual_m_per_s": -2.306628568830163e-11,
+    "target_edge_residual_m_per_s": 1.5069757032601632e-15
+  },
+  "bounded_conclusions": [
+    "The unchanged E3 physical Newton proposal from the B4 href state overshoots beyond the frozen negative edge and is participant-inadmissible.",
+    "P1 therefore stops immediately with RAW_PROPOSAL_INADMISSIBLE.",
+    "P4 uses the unchanged factor-1/2 safeguard, performs exactly two contractions on the first outer update, and continues to convergence.",
+    "The final P4 residual is approximately 1.06e-20 m/s, far below the unchanged 1e-15 m/s tolerance.",
+    "Every diagnostic SWAP trial is discarded and accepted revision/time/ledger authority remains unchanged.",
+    "This is bounded live evidence that safeguard recovery itself works with the qualified E3 tangent and an independently adequate groundwater merit oracle.",
+    "It is not yet production admission: broader process coverage, cost/efficiency, and a concrete production integration design remain open."
+  ],
+  "production_admission": "NO"
+}

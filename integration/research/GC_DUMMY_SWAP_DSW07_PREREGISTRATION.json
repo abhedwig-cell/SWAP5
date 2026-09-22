@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw07.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW07",
+  "title": "Exact MODFLOW STO plus API residual/Jacobian audit",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "modflow_version": "6.8.0",
+    "modflow_sources": [
+      "src/Model/GroundWaterFlow/gwf-sto.f90",
+      "src/Model/ModelUtilities/GwfStorageUtils.f90",
+      "src/Model/GroundWaterFlow/gwf-api.f90"
+    ]
+  },
+  "scope": "one unconfined interior cell, Newton smoothing disabled, ss=0, one API boundary term",
+  "assembled_balance": "S_mf*(H-H0)/dt = HCOF*H - RHS",
+  "residual": "F(H)=S_mf*(H-H0)/dt - HCOF*H + RHS",
+  "exact_jacobian": "dF/dH=S_mf/dt-HCOF",
+  "hypotheses": [
+    {
+      "name": "consistent_shared_storage",
+      "hcof": "-S_swap/dt",
+      "expected_jacobian": "(S_mf+S_swap)/dt"
+    },
+    {
+      "name": "positive_storage_like_response",
+      "hcof": "+u/dt",
+      "expected_jacobian": "(S_mf-u)/dt"
+    },
+    {
+      "name": "DSW01_overlap",
+      "s_mf": 0.2,
+      "u": 0.2,
+      "expected_jacobian": 0,
+      "expected_residual": "identically zero for the preregistered HCOF=0.2 RHS=1.6 H0=8 case"
+    }
+  ],
+  "gates": [
+    "analytic residual identity",
+    "centered finite-difference Jacobian agrees with exact expression",
+    "consistent partition gives total storage Jacobian",
+    "DSW01 current positive-u overlap gives zero residual and zero Jacobian across multiple heads",
+    "existing live DSW01 head=8 observation remains explanatory evidence, not a new production claim"
+  ],
+  "forbidden": [
+    "no production source change",
+    "do not rename u to physical storage outside the transparent dummy where u=S is analytically proven",
+    "no extrapolation to nonlinear real-SWAP response without separate audit"
+  ]
+}

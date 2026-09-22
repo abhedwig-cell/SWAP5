@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw10.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW10",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow_run": 35561244651,
+  "workflow_job": 106214393747,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_DEPTH_VARYING_STORAGE",
+  "physical_law": {
+    "storage_profile": "S(z)=0.40-0.03*z",
+    "initial_head_m": 8,
+    "input_m": 0.01,
+    "integrated_storage_change": "0.40*(h-h0)-0.015*(h^2-h0^2)"
+  },
+  "expected_head_m": 8.062870566386035,
+  "observed_head_m": 8.062870566386035,
+  "final_storage_change_m": 0.010000000000000214,
+  "coupling_iterations": 4,
+  "iteration_trace": [
+    {
+      "iteration": 1,
+      "href_m": 8,
+      "hcof": -0.16000000000000003,
+      "head_m": 8.0625,
+      "residual": 0.00005859374999999875,
+      "modflow_converged": false
+    },
+    {
+      "iteration": 2,
+      "href_m": 8.0625,
+      "hcof": -0.15812500000000004,
+      "head_m": 8.062870553359682,
+      "residual": 2.0596471732997612e-9,
+      "modflow_converged": false
+    },
+    {
+      "iteration": 3,
+      "href_m": 8.062870553359682,
+      "hcof": -0.15811388339920956,
+      "head_m": 8.062870566386035,
+      "residual": -2.1337098754514727e-16,
+      "modflow_converged": false
+    },
+    {
+      "iteration": 4,
+      "href_m": 8.062870566386035,
+      "hcof": -0.15811388300841897,
+      "head_m": 8.062870566386035,
+      "residual": -2.1337098754514727e-16,
+      "modflow_converged": true
+    }
+  ],
+  "gates": {
+    "integrated_storage_root": "PASS",
+    "local_storage_tangent": "PASS",
+    "reanchor_exercised": "PASS",
+    "mass_closure": "PASS",
+    "live_modflow": "PASS"
+  },
+  "bounded_conclusions": [
+    "A nonlinear depth-varying storage volume can be coupled through its exact local tangent while preserving the independently integrated storage law.",
+    "The HCOF tangent is not the physical storage volume; the physical oracle is the integral of S(z).",
+    "Production-style one-solve-iteration then reanchor semantics can converge exactly for this nonlinear storage law."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_hlink.hlink02d.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02D",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "HARNESS_LIFECYCLE_REPAIRED_QUEUED_IN_RESEARCH_TESTBANK",
+  "production_changes": false,
+  "parent": "GC-HLINK02",
+  "preregistration": "integration/research/GC_HLINK02D_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_hlink02d_first_solve.py",
+  "parent_failure": {
+    "workflow_run": 35578161179,
+    "workflow_job": 106264624906,
+    "last_pass_marker": "GC_HLINK02_ANALYTIC_STORAGE_ORACLE=PASS",
+    "failure": "first secant solve failed MODFLOW convergence certification before any nonlinear outer update"
+  },
+  "factor_isolation": [
+    "HLINK01 control: configured SY=0.15, no same-value SY write, rclose=1e-15.",
+    "HLINK02 first secant solve: same physical SY=0.15 written through XMI, rclose=1e-13, zero API correction.",
+    "HLINK02D crosses write_sy={false,true} with rclose={1e-15,1e-13}; all other physical and solver inputs are fixed."
+  ],
+  "decision": "RERUN_REPAIRED_PARENT_AND_2X2_DIAGNOSTIC_WITH_PREREGISTERED_PHYSICS_UNCHANGED",
+  "next_action": "Use the next non-superseded central owner carrier to rerun repaired HLINK02 and HLINK02D. Persist numerical classification only from that run; do not reuse run 35578161179 as convergence evidence.",
+  "preexecution_review": "integration/research/GC_HLINK02D_PREEXECUTION_REVIEW.json",
+  "runner_governance_repair_commit": "7042f5a93a97a06d151e37c81fd8e9ac47a2a77d",
+  "latest_owner_carrier": {
+    "workflow": "GC dummy-SWAP concept testbank",
+    "run_id": 35583474773,
+    "run_number": 638,
+    "status": "queued",
+    "head_sha": "7042f5a93a97a06d151e37c81fd8e9ac47a2a77d"
+  },
+  "blocker": "GitHub Actions capacity is queued; source review identified and repaired a pre-finalize readiness check that made the earlier carrier structurally unable to pass.",
+  "source_lifecycle_audit": "integration/research/GC_HLINK02_LIFECYCLE_AUDIT.json"
+}

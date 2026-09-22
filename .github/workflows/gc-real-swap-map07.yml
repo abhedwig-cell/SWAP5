@@ -1,0 +1,19 @@
+name: GC real-SWAP MAP07 q_u derivative audit
+on:
+  push:
+    branches: [work/f-gc-dummy-swap-shared-storage]
+    paths:
+      - 'integration/research/GC_REAL_SWAP_MAP07*.json'
+      - 'tests/research/test_gc_real_swap_map07_qu_derivative.py'
+      - 'tests/research/run_gc_real_swap_map07.sh'
+      - '.github/workflows/gc-real-swap-map07.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  map07:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run frozen-evidence derivative audit
+        run: bash tests/research/run_gc_real_swap_map07.sh

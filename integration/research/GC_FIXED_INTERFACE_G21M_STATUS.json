@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21m.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21M",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_FINAL_AGGREGATION_NOT_CAUSAL_AT_CAPTURED_TERM_LEVEL",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21M_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21M_RESULT.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21L_RESULT.json",
+  "tested_commit": "48338432a339ea61afa089cab687e915731810a9",
+  "workflow_run": 35746989392,
+  "workflow_job": 106811046874,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_arithmetic_change": "NONE",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "b2_final_sum_order": "NOT_CAUSAL_AT_CAPTURED_COMPONENT_LEVEL",
+    "b1_node4_final_term_order": "NOT_CAUSAL_AT_CAPTURED_TERM_LEVEL",
+    "b1_large_cancellation": "QUALIFIED_AS_SENSITIVITY_AMPLIFIER_NOT_CAUSE_BY_ITSELF",
+    "upstream_term_formation": "OPEN",
+    "nonlinear_path_sensitivity": "OPEN",
+    "production_change": "NOT_ADMITTED"
+  },
+  "next_action": "Open G21N for adjacent-head residual-term delta attribution, then decide whether to close solver forensics and return to endpoint-based coupling qualification."
+}

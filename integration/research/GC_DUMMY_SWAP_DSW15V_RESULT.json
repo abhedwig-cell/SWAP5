@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw15v.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW15V",
+  "workflow_run": 35563369096,
+  "decision": "DIAGNOSED_FORMATTED_RESTART_STATE_PRECISION_ARTIFACT",
+  "expected_head_m": 8.055555555555555,
+  "variants": [
+    {
+      "name": "MODERATE_DEFAULT",
+      "head_m": 8.055555555555555,
+      "head_error_m": 0,
+      "mass_error_m": -1.5612511283791264e-17,
+      "converged": true,
+      "iterations": 2
+    },
+    {
+      "name": "MODERATE_NO_UR",
+      "head_m": 8.055555555555555,
+      "head_error_m": 0,
+      "mass_error_m": -1.5612511283791264e-17,
+      "converged": true,
+      "iterations": 2
+    }
+  ],
+  "diagnosis": [
+    "Before exact XMI state injection, the same replay was 3.3333336e-9 m low with 6.6666674e-10 m storage error.",
+    "After exact X/XOLD initialization, both solver variants reproduce the analytic head exactly and mass error drops to approximately 1.6e-17 m.",
+    "The former DSW-15 failure was caused by formatted restart-head serialization in the research harness, not by the memory law or coupling physics."
+  ]
+}

@@ -4,17 +4,22 @@ module mod_fgc44_real_swap_c_bridge
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
+       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
-  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
-  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
+  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t, &
+       fmr_groundwater_swap_trial_observation_t
+  use mod_fmr_groundwater_swap_tangent_observation_service, only: &
+       fmr_groundwater_swap_tangent_observation_service_t, FMR_GW_TANGENT_OBSERVATION_OK
+  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK, &
+       GW_SWAP_PARTICIPANT_TRIAL_FAILED, GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
        groundwater_interface_state_t, groundwater_interface_lineage_t, &
        swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, pair_groundwater_flux_from_swap, GW_INTERFACE_OK
@@ -64,6 +69,7 @@ module mod_fgc44_real_swap_c_bridge
   type(fmr_serialized_reference_backend_t), save :: predictor_backend, corrector_backend
   type(fmr_groundwater_head_forcing_materializer_t), save :: materializer
   type(fmr_groundwater_swap_participant_t), save :: participant
+  type(fmr_groundwater_swap_tangent_observation_service_t), save :: tangent_observation_service
   type(groundwater_swap_trial_t), save :: last_trial
   type(groundwater_head_datum_t), save :: datum
   type(groundwater_coupling_window_t), save :: window
@@ -74,6 +80,8 @@ module mod_fgc44_real_swap_c_bridge
   logical, save :: ledger_prepared=.false.
   real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), save :: active_predictor_qbot=DEFAULT_PREDICTOR_QBOT
+  integer(int64), save :: g14_fused_corrector_runs=0_int64
+  integer(int64), save :: g15_participant_trial_calls=0_int64
 
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by F-GC44. They are test/qualification evidence,
@@ -106,6 +114,15 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
+  public :: fgc44_raw_corrector_diagnostics_c
+  public :: fgc44_g14_fused_observation_c, fgc44_g14_fused_run_count_c
+  public :: fgc44_g15_last_trial_observation_c, fgc44_g15_trial_call_count_c, fgc44_g15_has_live_candidate_c
+  public :: fgc44_g16_begin_session_c, fgc44_g16_observe_head_c, fgc44_g16_counts_c, fgc44_g16_end_session_c
+  public :: fgc44_g21g_backend_observation_c
+  public :: fgc44_g21h_isolated_attempt_c
+  public :: fgc44_g21i_solver_prefix_c
+  public :: fgc44_g21j_criterion_probe_c
+  public :: fgc44_g21k_tolerance_probe_c
 
 contains
 
@@ -150,6 +167,9 @@ contains
 
     c_status=101_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
     initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
+    g14_fused_corrector_runs=0_int64
+    g15_participant_trial_calls=0_int64
+    call tangent_observation_service%end_session()
     e3d2_predictor_diagnostics_ready=.false.
     e3d2_predictor_result=kernel_result_t()
     e3d2_predictor_diagnostics=kernel_diagnostics_t()
@@ -260,6 +280,7 @@ contains
     integer :: status
     fgc44_swap_trial_c=1_c_int; q_swap_m_per_s=0.0_c_double
     if(.not.initialized)return
+    g15_participant_trial_calls=g15_participant_trial_calls+1_int64
     call participant%trial_from_origin(corrector_backend,column,template,corrector_parameters,committed,materializer, &
          corrector_config,datum,window,real(head_m,real64),last_trial,status)
     if(status/=GW_SWAP_PARTICIPANT_OK .or. .not.last_trial%valid)then
@@ -386,6 +407,699 @@ contains
     min_substep=e3d2_predictor_diagnostics%min_accepted_substep_duration
     max_substep=e3d2_predictor_diagnostics%max_accepted_substep_duration
   end function fgc44_predictor_run_diagnostics_c
+
+  integer(c_int) function fgc44_raw_corrector_diagnostics_c(head_m,forcing_status,result_status,completed, &
+       candidate_ready,bottom_available,bottom_finite,terminal_finite,requested_match,completed_match,interval_match, &
+       transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections,temporal_rejections, &
+       temporal_unavailable_rejections,mass_rejections,internal_retries,min_substep,max_substep,completed_t, &
+       candidate_t0,candidate_t1) bind(C,name="fgc44_raw_corrector_diagnostics_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: forcing_status,result_status,completed,candidate_ready,bottom_available
+    integer(c_int), intent(out) :: bottom_finite,terminal_finite,requested_match,completed_match,interval_match
+    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: min_substep,max_substep,completed_t,candidate_t0,candidate_t1
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    integer :: raw_forcing_status
+    logical :: ok, interval_available
+    real(real64) :: ct0,ct1,scale
+
+    fgc44_raw_corrector_diagnostics_c=1_c_int
+    forcing_status=-1_c_int; result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    bottom_available=0_c_int; bottom_finite=0_c_int; terminal_finite=0_c_int
+    requested_match=0_c_int; completed_match=0_c_int; interval_match=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    min_substep=0.0_c_double; max_substep=0.0_c_double; completed_t=0.0_c_double
+    candidate_t0=0.0_c_double; candidate_t1=0.0_c_double
+    if(.not.initialized)return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,raw_forcing_status)
+    forcing_status=int(raw_forcing_status,c_int)
+    if(raw_forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_raw_corrector_diagnostics_c=2_c_int
+      return
+    end if
+
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_raw_corrector_diagnostics_c=3_c_int
+      return
+    end if
+
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_raw_corrector_diagnostics_c=4_c_int
+      return
+    end select
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    if(raw_result%bottom_interface_exchange_available)bottom_available=1_c_int
+    if(ieee_is_finite(raw_result%bottom_outward_exchange_native))bottom_finite=1_c_int
+    if(ieee_is_finite(raw_result%terminal_bottom_outward_flux_native))terminal_finite=1_c_int
+
+    scale=max(1.0_real64,abs(raw_result%requested_t0),abs(window%t0))
+    if(abs(raw_result%requested_t0-window%t0)<=64.0_real64*epsilon(1.0_real64)*scale)then
+      scale=max(1.0_real64,abs(raw_result%requested_t1),abs(window%t1))
+      if(abs(raw_result%requested_t1-window%t1)<=64.0_real64*epsilon(1.0_real64)*scale)requested_match=1_c_int
+    end if
+    scale=max(1.0_real64,abs(raw_result%completed_t),abs(window%t1))
+    if(abs(raw_result%completed_t-window%t1)<=64.0_real64*epsilon(1.0_real64)*scale)completed_match=1_c_int
+
+    call raw_candidate%origin_interval(ct0,ct1,interval_available)
+    if(interval_available)then
+      candidate_t0=ct0; candidate_t1=ct1
+      scale=max(1.0_real64,abs(ct0),abs(window%t0))
+      if(abs(ct0-window%t0)<=64.0_real64*epsilon(1.0_real64)*scale)then
+        scale=max(1.0_real64,abs(ct1),abs(window%t1))
+        if(abs(ct1-window%t1)<=64.0_real64*epsilon(1.0_real64)*scale)interval_match=1_c_int
+      end if
+    end if
+
+    transaction_calls=int(raw_diagnostics%transaction_calls,c_int)
+    accepted_substeps=int(raw_diagnostics%accepted_substeps,c_int)
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    trial_rollbacks=int(raw_diagnostics%trial_rollbacks,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    min_substep=raw_diagnostics%min_accepted_substep_duration
+    max_substep=raw_diagnostics%max_accepted_substep_duration
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_raw_corrector_diagnostics_c=0_c_int
+  end function fgc44_raw_corrector_diagnostics_c
+
+  integer(c_int) function fgc44_g16_begin_session_c() bind(C,name="fgc44_g16_begin_session_c")
+    integer :: status
+    fgc44_g16_begin_session_c=1_c_int
+    if(.not.initialized)return
+    call tangent_observation_service%begin_session(participant,status)
+    fgc44_g16_begin_session_c=int(status,c_int)
+  end function fgc44_g16_begin_session_c
+
+  integer(c_int) function fgc44_g16_observe_head_c(head_m,available,participant_status,q_available,result_status, &
+       completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
+       solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries, &
+       q_swap_m_per_s,min_substep,max_substep) bind(C,name="fgc44_g16_observe_head_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: available,participant_status,q_available,result_status,completed,candidate_ready
+    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: q_swap_m_per_s,min_substep,max_substep
+    type(fmr_groundwater_swap_trial_observation_t) :: observation
+    integer :: status
+
+    fgc44_g16_observe_head_c=1_c_int
+    available=0_c_int; participant_status=-1_c_int; q_available=0_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    q_swap_m_per_s=0.0_c_double; min_substep=0.0_c_double; max_substep=0.0_c_double
+    if(.not.initialized)return
+
+    call tangent_observation_service%observe_head(participant,corrector_backend,column,template,corrector_parameters, &
+         committed,materializer,corrector_config,datum,window,real(head_m,real64),observation,status)
+    if(status/=FMR_GW_TANGENT_OBSERVATION_OK)then
+      fgc44_g16_observe_head_c=int(status,c_int)
+      return
+    end if
+
+    if(observation%available)available=1_c_int
+    participant_status=int(observation%participant_status,c_int)
+    if(observation%q_available)q_available=1_c_int
+    q_swap_m_per_s=observation%q_swap_m_per_s
+    result_status=int(observation%result_status,c_int)
+    if(observation%completed)completed=1_c_int
+    if(observation%candidate_ready)candidate_ready=1_c_int
+    transaction_calls=int(observation%transaction_calls,c_int)
+    accepted_substeps=int(observation%accepted_substeps,c_int)
+    attempts=int(observation%attempts,c_int)
+    retries=int(observation%retries,c_int)
+    trial_rollbacks=int(observation%trial_rollbacks,c_int)
+    solver_rejections=int(observation%solver_rejections,c_int)
+    temporal_rejections=int(observation%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(observation%temporal_unavailable_rejections,c_int)
+    mass_rejections=int(observation%mass_rejections,c_int)
+    internal_retries=int(observation%internal_retries,c_int)
+    min_substep=observation%min_accepted_substep_duration
+    max_substep=observation%max_accepted_substep_duration
+    fgc44_g16_observe_head_c=0_c_int
+  end function fgc44_g16_observe_head_c
+
+  integer(c_int) function fgc44_g16_counts_c(requests,trials,hits,cached) bind(C,name="fgc44_g16_counts_c")
+    integer(c_int), intent(out) :: requests,trials,hits,cached
+    requests=int(tangent_observation_service%request_count(),c_int)
+    trials=int(tangent_observation_service%trial_count(),c_int)
+    hits=int(tangent_observation_service%hit_count(),c_int)
+    cached=int(tangent_observation_service%cached_head_count(),c_int)
+    fgc44_g16_counts_c=0_c_int
+  end function fgc44_g16_counts_c
+
+  integer(c_int) function fgc44_g16_end_session_c() bind(C,name="fgc44_g16_end_session_c")
+    call tangent_observation_service%end_session()
+    fgc44_g16_end_session_c=0_c_int
+  end function fgc44_g16_end_session_c
+
+
+  integer(c_int) function fgc44_g21g_backend_observation_c(solver_executed,solver_status,nonlinear_iterations, &
+       jacobian_builds,linear_solves,backtracking_attempts,alternative_solver_calls,internal_retries, &
+       temporal_indicator_enabled,temporal_previous_available,temporal_current_available,temporal_indicator_status, &
+       temporal_indicator_available,temporal_head_budget_supplied,temporal_head_budget_valid, &
+       temporal_certificate_available,temporal_head_inf_bound,temporal_head_budget,temporal_normalized_indicator) &
+       bind(C,name="fgc44_g21g_backend_observation_c")
+    integer(c_int), intent(out) :: solver_executed,solver_status,nonlinear_iterations,jacobian_builds,linear_solves
+    integer(c_int), intent(out) :: backtracking_attempts,alternative_solver_calls,internal_retries
+    integer(c_int), intent(out) :: temporal_indicator_enabled,temporal_previous_available,temporal_current_available
+    integer(c_int), intent(out) :: temporal_indicator_status,temporal_indicator_available
+    integer(c_int), intent(out) :: temporal_head_budget_supplied,temporal_head_budget_valid,temporal_certificate_available
+    real(c_double), intent(out) :: temporal_head_inf_bound,temporal_head_budget,temporal_normalized_indicator
+    type(fmr_serialized_physical_observation_t) :: observation
+
+    fgc44_g21g_backend_observation_c=1_c_int
+    solver_executed=0_c_int; solver_status=0_c_int; nonlinear_iterations=0_c_int
+    jacobian_builds=0_c_int; linear_solves=0_c_int; backtracking_attempts=0_c_int
+    alternative_solver_calls=0_c_int; internal_retries=0_c_int
+    temporal_indicator_enabled=0_c_int; temporal_previous_available=0_c_int; temporal_current_available=0_c_int
+    temporal_indicator_status=0_c_int; temporal_indicator_available=0_c_int
+    temporal_head_budget_supplied=0_c_int; temporal_head_budget_valid=0_c_int; temporal_certificate_available=0_c_int
+    temporal_head_inf_bound=0.0_c_double; temporal_head_budget=0.0_c_double; temporal_normalized_indicator=0.0_c_double
+    if(.not.initialized)return
+
+    observation=corrector_backend%observation()
+    if(observation%solver_executed)solver_executed=1_c_int
+    solver_status=int(observation%solver_status,c_int)
+    nonlinear_iterations=int(observation%solver_diagnostics%nonlinear_iterations,c_int)
+    jacobian_builds=int(observation%solver_diagnostics%jacobian_builds,c_int)
+    linear_solves=int(observation%solver_diagnostics%linear_solves,c_int)
+    backtracking_attempts=int(observation%solver_diagnostics%backtracking_attempts,c_int)
+    alternative_solver_calls=int(observation%solver_diagnostics%alternative_solver_calls,c_int)
+    internal_retries=int(observation%solver_diagnostics%internal_retries,c_int)
+    if(observation%temporal_indicator_enabled)temporal_indicator_enabled=1_c_int
+    if(observation%temporal_previous_derivative_available)temporal_previous_available=1_c_int
+    if(observation%temporal_current_derivative_available)temporal_current_available=1_c_int
+    temporal_indicator_status=int(observation%temporal_indicator_status,c_int)
+    if(observation%temporal_indicator_available)temporal_indicator_available=1_c_int
+    if(observation%temporal_head_budget_supplied)temporal_head_budget_supplied=1_c_int
+    if(observation%temporal_head_budget_valid)temporal_head_budget_valid=1_c_int
+    if(observation%temporal_certificate_available)temporal_certificate_available=1_c_int
+    temporal_head_inf_bound=observation%temporal_head_inf_bound
+    temporal_head_budget=observation%temporal_head_budget
+    temporal_normalized_indicator=observation%temporal_normalized_indicator
+    fgc44_g21g_backend_observation_c=0_c_int
+  end function fgc44_g21g_backend_observation_c
+
+  integer(c_int) function fgc44_g21h_isolated_attempt_c(head_m,duration_day,result_status,completed,candidate_ready, &
+       attempts,retries,solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections, &
+       internal_retries,completed_t) bind(C,name="fgc44_g21h_isolated_attempt_c")
+    real(c_double), value, intent(in) :: head_m,duration_day
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,attempts,retries,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: completed_t
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    type(canonical_numerical_config_t) :: probe_config
+    integer :: forcing_status
+    logical :: ok
+    real(real64) :: probe_t1
+
+    fgc44_g21h_isolated_attempt_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    attempts=0_c_int; retries=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    completed_t=0.0_c_double
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(head_m,real64)) .or. .not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double .or. duration_day>real(window%t1-window%t0,c_double))return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_g21h_isolated_attempt_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_g21h_isolated_attempt_c=3_c_int
+      return
+    end if
+
+    probe_config=corrector_config
+    probe_config%transaction%max_retries=0
+    probe_t1=window%t0+real(duration_day,real64)
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,probe_config, &
+           window%t0,probe_t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_g21h_isolated_attempt_c=4_c_int
+      return
+    end select
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_g21h_isolated_attempt_c=0_c_int
+  end function fgc44_g21h_isolated_attempt_c
+
+  integer(c_int) function fgc44_g21i_solver_prefix_c(head_m,duration_day,max_iterations,result_status,completed, &
+       candidate_ready,attempts,retries,solver_rejections,temporal_rejections,temporal_unavailable_rejections, &
+       mass_rejections,internal_retries,completed_t) bind(C,name="fgc44_g21i_solver_prefix_c")
+    real(c_double), value, intent(in) :: head_m,duration_day
+    integer(c_int), value, intent(in) :: max_iterations
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,attempts,retries,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: completed_t
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    type(canonical_numerical_config_t) :: probe_config
+    type(fmr_b110_physical_parameters_t) :: probe_parameters
+    integer :: forcing_status
+    logical :: ok
+    real(real64) :: probe_t1
+
+    fgc44_g21i_solver_prefix_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    attempts=0_c_int; retries=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    completed_t=0.0_c_double
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(head_m,real64)) .or. .not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double .or. duration_day>real(window%t1-window%t0,c_double))return
+    if(max_iterations<1_c_int .or. max_iterations>int(corrector_parameters%max_iterations,c_int))return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_g21i_solver_prefix_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_g21i_solver_prefix_c=3_c_int
+      return
+    end if
+
+    probe_config=corrector_config
+    probe_config%transaction%max_retries=0
+    probe_parameters=corrector_parameters
+    probe_parameters%max_iterations=int(max_iterations)
+    probe_t1=window%t0+real(duration_day,real64)
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,probe_parameters,committed,typed_forcing,probe_config, &
+           window%t0,probe_t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_g21i_solver_prefix_c=4_c_int
+      return
+    end select
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_g21i_solver_prefix_c=0_c_int
+  end function fgc44_g21i_solver_prefix_c
+
+  integer(c_int) function fgc44_g21j_criterion_probe_c(head_m,duration_day,max_iterations,criterion_mask, &
+       result_status,completed,candidate_ready,attempts,retries,solver_rejections,temporal_rejections, &
+       temporal_unavailable_rejections,mass_rejections,internal_retries,completed_t) &
+       bind(C,name="fgc44_g21j_criterion_probe_c")
+    real(c_double), value, intent(in) :: head_m,duration_day
+    integer(c_int), value, intent(in) :: max_iterations,criterion_mask
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,attempts,retries,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: completed_t
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    type(canonical_numerical_config_t) :: probe_config
+    type(fmr_b110_physical_parameters_t) :: probe_parameters
+    integer :: forcing_status,mask
+    logical :: ok
+    real(real64) :: probe_t1
+    real(real64), parameter :: RELAXED_TOL=1.0e6_real64
+    integer, parameter :: MASK_HEAD=1, MASK_TOTAL=2, MASK_POND=4, MASK_COMPARTMENT=8
+
+    fgc44_g21j_criterion_probe_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    attempts=0_c_int; retries=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    completed_t=0.0_c_double
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(head_m,real64)) .or. .not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double .or. duration_day>real(window%t1-window%t0,c_double))return
+    if(max_iterations<1_c_int .or. max_iterations>int(corrector_parameters%max_iterations,c_int))return
+    mask=int(criterion_mask)
+    if(mask<0 .or. mask>15)return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_g21j_criterion_probe_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_g21j_criterion_probe_c=3_c_int
+      return
+    end if
+
+    probe_config=corrector_config
+    probe_config%transaction%max_retries=0
+    probe_parameters=corrector_parameters
+    probe_parameters%max_iterations=int(max_iterations)
+    if(iand(mask,MASK_HEAD)/=0)then
+      probe_parameters%head_abs_tolerance=RELAXED_TOL
+      probe_parameters%head_rel_tolerance=RELAXED_TOL
+    end if
+    if(iand(mask,MASK_TOTAL)/=0)probe_parameters%total_balance_tolerance=RELAXED_TOL
+    if(iand(mask,MASK_POND)/=0)probe_parameters%ponding_tolerance=RELAXED_TOL
+    if(iand(mask,MASK_COMPARTMENT)/=0)probe_parameters%compartment_balance_tolerance=RELAXED_TOL
+
+    probe_t1=window%t0+real(duration_day,real64)
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,probe_parameters,committed,typed_forcing,probe_config, &
+           window%t0,probe_t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_g21j_criterion_probe_c=4_c_int
+      return
+    end select
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_g21j_criterion_probe_c=0_c_int
+  end function fgc44_g21j_criterion_probe_c
+
+  integer(c_int) function fgc44_g21k_tolerance_probe_c(head_m,duration_day,max_iterations,comp_tol,total_tol, &
+       head_abs_tol,head_rel_tol,pond_tol,result_status,completed,candidate_ready,attempts,retries,solver_rejections, &
+       temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries,completed_t) &
+       bind(C,name="fgc44_g21k_tolerance_probe_c")
+    real(c_double), value, intent(in) :: head_m,duration_day
+    integer(c_int), value, intent(in) :: max_iterations
+    real(c_double), value, intent(in) :: comp_tol,total_tol,head_abs_tol,head_rel_tol,pond_tol
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,attempts,retries,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: completed_t
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    type(canonical_numerical_config_t) :: probe_config
+    type(fmr_b110_physical_parameters_t) :: probe_parameters
+    integer :: forcing_status
+    logical :: ok
+    real(real64) :: probe_t1
+
+    fgc44_g21k_tolerance_probe_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    attempts=0_c_int; retries=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    completed_t=0.0_c_double
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(head_m,real64)) .or. .not.ieee_is_finite(real(duration_day,real64)))return
+    if(.not.ieee_is_finite(real(comp_tol,real64)) .or. comp_tol<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(total_tol,real64)) .or. total_tol<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(head_abs_tol,real64)) .or. head_abs_tol<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(head_rel_tol,real64)) .or. head_rel_tol<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(pond_tol,real64)) .or. pond_tol<=0.0_c_double)return
+    if(duration_day<=0.0_c_double .or. duration_day>real(window%t1-window%t0,c_double))return
+    if(max_iterations<1_c_int .or. max_iterations>int(corrector_parameters%max_iterations,c_int))return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_g21k_tolerance_probe_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_g21k_tolerance_probe_c=3_c_int
+      return
+    end if
+
+    probe_config=corrector_config
+    probe_config%transaction%max_retries=0
+    probe_parameters=corrector_parameters
+    probe_parameters%max_iterations=int(max_iterations)
+    probe_parameters%compartment_balance_tolerance=real(comp_tol,real64)
+    probe_parameters%total_balance_tolerance=real(total_tol,real64)
+    probe_parameters%head_abs_tolerance=real(head_abs_tol,real64)
+    probe_parameters%head_rel_tolerance=real(head_rel_tol,real64)
+    probe_parameters%ponding_tolerance=real(pond_tol,real64)
+
+    probe_t1=window%t0+real(duration_day,real64)
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,probe_parameters,committed,typed_forcing,probe_config, &
+           window%t0,probe_t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_g21k_tolerance_probe_c=4_c_int
+      return
+    end select
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_g21k_tolerance_probe_c=0_c_int
+  end function fgc44_g21k_tolerance_probe_c
+
+  integer(c_int) function fgc44_g15_last_trial_observation_c(available,participant_status,q_available, &
+       result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
+       solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries, &
+       q_swap_m_per_s,min_substep,max_substep) bind(C,name="fgc44_g15_last_trial_observation_c")
+    integer(c_int), intent(out) :: available,participant_status,q_available,result_status,completed,candidate_ready
+    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: q_swap_m_per_s,min_substep,max_substep
+    type(fmr_groundwater_swap_trial_observation_t) :: observation
+
+    fgc44_g15_last_trial_observation_c=1_c_int
+    available=0_c_int; participant_status=-1_c_int; q_available=0_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    q_swap_m_per_s=0.0_c_double; min_substep=0.0_c_double; max_substep=0.0_c_double
+    if(.not.initialized)return
+
+    call participant%observe_last_trial(observation)
+    if(observation%available)available=1_c_int
+    participant_status=int(observation%participant_status,c_int)
+    if(observation%q_available)q_available=1_c_int
+    q_swap_m_per_s=observation%q_swap_m_per_s
+    result_status=int(observation%result_status,c_int)
+    if(observation%completed)completed=1_c_int
+    if(observation%candidate_ready)candidate_ready=1_c_int
+    transaction_calls=int(observation%transaction_calls,c_int)
+    accepted_substeps=int(observation%accepted_substeps,c_int)
+    attempts=int(observation%attempts,c_int)
+    retries=int(observation%retries,c_int)
+    trial_rollbacks=int(observation%trial_rollbacks,c_int)
+    solver_rejections=int(observation%solver_rejections,c_int)
+    temporal_rejections=int(observation%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(observation%temporal_unavailable_rejections,c_int)
+    mass_rejections=int(observation%mass_rejections,c_int)
+    internal_retries=int(observation%internal_retries,c_int)
+    min_substep=observation%min_accepted_substep_duration
+    max_substep=observation%max_accepted_substep_duration
+    fgc44_g15_last_trial_observation_c=0_c_int
+  end function fgc44_g15_last_trial_observation_c
+
+  integer(c_int) function fgc44_g15_trial_call_count_c(value) bind(C,name="fgc44_g15_trial_call_count_c")
+    integer(c_int), intent(out) :: value
+    value=int(g15_participant_trial_calls,c_int)
+    fgc44_g15_trial_call_count_c=0_c_int
+  end function fgc44_g15_trial_call_count_c
+
+  integer(c_int) function fgc44_g15_has_live_candidate_c(value) bind(C,name="fgc44_g15_has_live_candidate_c")
+    integer(c_int), intent(out) :: value
+    value=0_c_int
+    if(participant%has_live_candidate())value=1_c_int
+    fgc44_g15_has_live_candidate_c=0_c_int
+  end function fgc44_g15_has_live_candidate_c
+
+  integer(c_int) function fgc44_g14_fused_observation_c(head_m,participant_status,result_status,completed, &
+       candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections, &
+       temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries,q_swap_m_per_s, &
+       min_substep,max_substep) bind(C,name="fgc44_g14_fused_observation_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: participant_status,result_status,completed,candidate_ready,transaction_calls
+    integer(c_int), intent(out) :: accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: q_swap_m_per_s,min_substep,max_substep
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    real(real64) :: duration_day,qbot_mean_cm_per_day
+    integer :: forcing_status,interface_status
+    logical :: ok
+
+    fgc44_g14_fused_observation_c=1_c_int
+    participant_status=GW_SWAP_PARTICIPANT_TRIAL_FAILED
+    q_swap_m_per_s=0.0_c_double
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    min_substep=0.0_c_double; max_substep=0.0_c_double
+    if(.not.initialized)return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_g14_fused_observation_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_g14_fused_observation_c=3_c_int
+      return
+    end if
+
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      g14_fused_corrector_runs=g14_fused_corrector_runs+1_int64
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      fgc44_g14_fused_observation_c=4_c_int
+      return
+    end select
+
+    result_status=int(result%status,c_int)
+    if(result%completed)completed=1_c_int
+    if(candidate%ready())candidate_ready=1_c_int
+    transaction_calls=int(diagnostics%transaction_calls,c_int)
+    accepted_substeps=int(diagnostics%accepted_substeps,c_int)
+    attempts=int(diagnostics%attempts,c_int)
+    retries=int(diagnostics%retries,c_int)
+    trial_rollbacks=int(diagnostics%trial_rollbacks,c_int)
+    solver_rejections=int(diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(diagnostics%mass_rejections,c_int)
+    internal_retries=int(diagnostics%internal_retries,c_int)
+    min_substep=diagnostics%min_accepted_substep_duration
+    max_substep=diagnostics%max_accepted_substep_duration
+
+    if(g14_whole_window_ok(result,candidate))then
+      duration_day=window%t1-window%t0
+      qbot_mean_cm_per_day=-result%bottom_outward_exchange_native/duration_day
+      call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean_cm_per_day,q_swap_m_per_s,interface_status)
+      if(interface_status==GW_INTERFACE_OK .and. ieee_is_finite(real(q_swap_m_per_s,real64)))then
+        participant_status=GW_SWAP_PARTICIPANT_OK
+      else
+        participant_status=GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
+        q_swap_m_per_s=0.0_c_double
+      end if
+    else
+      participant_status=GW_SWAP_PARTICIPANT_TRIAL_FAILED
+    end if
+
+    if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+    fgc44_g14_fused_observation_c=0_c_int
+  end function fgc44_g14_fused_observation_c
+
+  integer(c_int) function fgc44_g14_fused_run_count_c(value) bind(C,name="fgc44_g14_fused_run_count_c")
+    integer(c_int), intent(out) :: value
+    value=int(g14_fused_corrector_runs,c_int)
+    fgc44_g14_fused_run_count_c=0_c_int
+  end function fgc44_g14_fused_run_count_c
+
+  logical function g14_whole_window_ok(result,candidate) result(valid)
+    type(kernel_result_t), intent(in) :: result
+    type(kernel_candidate_state_t), intent(in) :: candidate
+    real(real64) :: ct0,ct1
+    logical :: available
+    valid=.false.
+    if(.not.result%completed)return
+    if(.not.candidate%ready())return
+    if(.not.result%bottom_interface_exchange_available)return
+    if(.not.ieee_is_finite(result%bottom_outward_exchange_native))return
+    if(.not.ieee_is_finite(result%terminal_bottom_outward_flux_native))return
+    if(.not.g14_same_time(result%requested_t0,window%t0))return
+    if(.not.g14_same_time(result%requested_t1,window%t1))return
+    if(.not.g14_same_time(result%completed_t,window%t1))return
+    call candidate%origin_interval(ct0,ct1,available)
+    if(.not.available)return
+    if(.not.g14_same_time(ct0,window%t0) .or. .not.g14_same_time(ct1,window%t1))return
+    valid=.true.
+  end function g14_whole_window_ok
+
+  pure logical function g14_same_time(a,b) result(matches)
+    real(real64), intent(in) :: a,b
+    real(real64) :: scale
+    matches=.false.
+    if(.not.ieee_is_finite(a) .or. .not.ieee_is_finite(b))return
+    scale=max(1.0_real64,abs(a),abs(b))
+    matches=abs(a-b)<=64.0_real64*epsilon(1.0_real64)*scale
+  end function g14_same_time
 
   integer(c_int) function fgc44_e1_diagnostics_c(mass_complete,q_bot,q_u,u,h_start,h_end, &
        bottom_exchange,terminal_flux,storage_start,storage_end,storage_change,total_in,total_out,residual) &

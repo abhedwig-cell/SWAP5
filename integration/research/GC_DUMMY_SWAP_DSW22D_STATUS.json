@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw22d.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW22D",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "parent_preregistration": "integration/research/GC_DUMMY_SWAP_DSW22_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_DUMMY_SWAP_DSW22_RESULT.json",
+  "diagnostic_design": "integration/research/GC_DUMMY_SWAP_DSW22D_DIAGNOSTIC_DESIGN.json",
+  "test": "tests/research/test_gc_real_swap_dsw22d_matrix.py",
+  "runner": "tests/research/run_gc_real_swap_dsw22d_matrix.sh",
+  "workflow": ".github/workflows/gc-real-swap-dsw22d.yml",
+  "production_changes": false,
+  "fixed_matrix": {
+    "duration_day": [
+      0.00005,
+      0.0001,
+      0.0002
+    ],
+    "predictor_qbot_cm_per_day": [
+      5e-7,
+      0.000001,
+      0.000002
+    ]
+  },
+  "preserved_falsification": "The original DSW22 all-nine-success gate remains failed at duration=5e-5 day, qbot=5e-7 cm/day with configured initialize status 104.",
+  "positive_control": "F-GC44 default duration=1e-4 day, qbot=1e-6 cm/day must remain status 0.",
+  "next_action": "Run the unchanged 3x3 matrix once, record predictor execution topology, and enforce q_u/HCOF/RHS/mass identities only on status-0 points.",
+  "blockers": [
+    "GitHub Actions queue is heavily saturated; do not retune the matrix while waiting."
+  ]
+}

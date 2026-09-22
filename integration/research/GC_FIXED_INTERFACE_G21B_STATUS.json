@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21b.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21B",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_DIAGNOSTIC_PERSISTENT_PREPARED_SOLVE_PATH_MEMORY",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21B_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21B_RESULT.json",
+  "tested_commit": "c84a90dcb1c8afeff80ebfe49996ba6cb7db5fe2",
+  "workflow_run": 35731373754,
+  "workflow_job": 106757502990,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "g21_dynamic_g17_path_equivalence": "REMAINS_FALSIFIED",
+    "g21a_outer2_path_diagnosis": "REMAINS_QUALIFIED_DIAGNOSTIC",
+    "first_convergence_tolerance_explanation": "REJECTED_IN_FROZEN_DIAGNOSTIC",
+    "persistent_prepared_solve_path_memory": "SUPPORTED_AT_STRICT_G21_SCALE",
+    "post_convergence_extra_solve_calls": "DIAGNOSTIC_ONLY_NOT_PRODUCTION_ADMITTED",
+    "fgc38_fgc39": "UNCHANGED",
+    "e3_p4_response_space_globalization": "NOT_PRODUCTION_ADMITTED",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "key_numbers": {
+    "fresh_first_convergence_call": 2,
+    "history_first_convergence_call": 6,
+    "history_first_path_offset_m": 7.235179122488944e-11,
+    "history_call12_path_offset_m": 7.235112509107466e-11,
+    "post_convergence_total_offset_reduction_m": 6.661338147750939e-16,
+    "post_convergence_per_call_head_increment_m": 1.1102230246251565e-16
+  },
+  "next_action": "Open G21C as read-only MODFLOW/XMI state forensics to identify which accessible non-XOLD state differs between fresh and history prepared solves under bitwise-identical outer-2 HCOF/RHS. Do not introduce a reset/setter or new acceptance rule."
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_low01b.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B",
+  "title": "Typed research-only prescribed-groundwater-level state machine inside the SWAP profile",
+  "status": "PREREGISTERED_PENDING_LOW01A_PASS",
+  "production_changes": false,
+  "activation_dependency": "GC-LOW01-A must pass before LOW01-B execution is treated as qualified evidence.",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "legacy_source": "src/legacy/b1_10_port/headcalc.f90",
+    "state_binding": "src/solver/mod_reference_richards_state_binding.f90",
+    "public_adapter_guard": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "hlink04_readiness": "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json"
+  },
+  "frozen_geometry_cm": {
+    "z": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "dz": [
+      50,
+      50,
+      100,
+      100
+    ],
+    "bottom_face": -300
+  },
+  "prescribed_groundwater_levels_cm": [
+    {
+      "gwl": -60,
+      "expected_active_nodes_NN": 1
+    },
+    {
+      "gwl": -120,
+      "expected_active_nodes_NN": 2
+    },
+    {
+      "gwl": -200,
+      "expected_active_nodes_NN": 3
+    }
+  ],
+  "source_state_machine": [
+    "Start NN=0 and increment while z(NN+1)>gwlinp.",
+    "For inside-profile mode 1, fllowgwl remains false.",
+    "The active Richards residual is solved only on nodes 1:NN.",
+    "The lower gradient is h(NN)/(z(NN)-gwlinp)+1.",
+    "The lower Jacobian adds Kmean(NN+1)/(z(NN)-gwlinp).",
+    "After convergence, theta(NN+1:numnod) is set saturated and h(NN+1:numnod) is reconstructed from the vertical flux chain.",
+    "qbot is diagnosed from the complete vertical flux chain, not prescribed."
+  ],
+  "research_surface": {
+    "scope": "tests/research/support only",
+    "approach": "Call the existing HeadCalc explicit-state route directly with bottom_mode=1 from a test-only bridge, bypassing the production adapter's intentional mode-1 admission guard.",
+    "control": "prescribed groundwater-level coordinate in native SWAP cm, kept distinct from mode-5 lower-face pressure head.",
+    "immutable_origin": "Every fixed-gwl trial is rebuilt from the same frozen base state; no accepted mode-1 state is fed into another trial."
+  },
+  "gates": [
+    "LOW01-A prerequisite PASS is recorded.",
+    "For each fixed groundwater level, the research-only HeadCalc trial converges without dt reduction or alternative solver.",
+    "Observed fllowgwl is false and active NN equals the preregistered 1/2/3 value.",
+    "Nodes NN+1:numnod end saturated at cofgen(2,i) to 1e-12 water-content units.",
+    "Observed lower-gradient denominator equals z(NN)-gwlinp and the source-bound Jacobian branch is the inside-profile Kmean/(z(NN)-gwlinp) branch.",
+    "qbot is finite and is reconstructed as an output; no prescribed qbot is supplied.",
+    "Complete-profile storage change plus integrated boundary/process fluxes closes within 1e-10 cm for each case.",
+    "Repeated execution of the same fixed-gwl case from the frozen origin is bitwise identical in candidate pressure head, water content, qbot, gwl, gwlinp and fllowgwl."
+  ],
+  "forbidden": [
+    "do not change src/adapter/mod_reference_richards_legacy_binding.f90 to admit mode 1",
+    "do not expose mode 1 through the production FMR serialized backend",
+    "do not alias gwlinp to the existing groundwater-coupling mode-5 bottom_head contract",
+    "do not use LOW01-B as HLINK04 production evidence",
+    "do not include near-node or profile-bottom branch switching in LOW01-B; that belongs to LOW01-C"
+  ],
+  "next_if_pass": [
+    "Execute LOW01-C branch-boundary sweep around internal nodes and the profile bottom.",
+    "Execute LOW01-D transactional replay/rejection with explicit mode-1 branch state.",
+    "Only after A/B/D pass and C is characterized may HLINK04 real-SWAP trials be activated."
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw20.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW20",
+  "title": "Manufactured multi-window coupled trajectory with explicit memory and mass ledger",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "state": {
+    "initial_head_m": 8.02,
+    "initial_memory_m": 0.005,
+    "groundwater_storage": 0.2,
+    "memory_release_rate_per_day": 0.8,
+    "drain_slope_per_day": 0.03,
+    "drain_reference_head_m": 8,
+    "et_rate_m_per_day": 0.001
+  },
+  "windows": [
+    {
+      "dt_day": 0.25,
+      "memory_input_m": 0.004,
+      "lateral_input_m": 0.001
+    },
+    {
+      "dt_day": 0.5,
+      "memory_input_m": 0,
+      "lateral_input_m": 0.002
+    },
+    {
+      "dt_day": 0.75,
+      "memory_input_m": 0.006,
+      "lateral_input_m": 0
+    },
+    {
+      "dt_day": 0.4,
+      "memory_input_m": 0.001,
+      "lateral_input_m": 0.0015
+    },
+    {
+      "dt_day": 0.6,
+      "memory_input_m": 0.003,
+      "lateral_input_m": 0
+    }
+  ],
+  "equations": [
+    "W1=(W0+I)/(1+k*dt)",
+    "T=k*dt*W1",
+    "S*(H1-H0)=T+L-ET*dt-D*dt*(H1-Hd)",
+    "API Q(H)=T/dt+L/dt-ET-D*(H-Hd)"
+  ],
+  "numerical_harness": {
+    "ims_rclose": 1e-13,
+    "reason": "preregistered research-harness residual certificate; physical head and mass gates remain independent and stricter than the solver certificate in their own units"
+  },
+  "gates": [
+    "every live window converges",
+    "every head matches the independent recurrence within 1e-10 m",
+    "every window mass ledger closes within 1e-12 m",
+    "cumulative total-state ledger closes within 1e-12 m",
+    "the final state equals the independently manufactured trajectory"
+  ],
+  "forbidden": [
+    "do not infer production IMS settings",
+    "do not treat the memory-release coefficient as calibrated SWAP physics",
+    "no production code change"
+  ]
+}

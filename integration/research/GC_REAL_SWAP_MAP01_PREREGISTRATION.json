@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.gc_real_swap.map01.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP01",
+  "title": "Map production affine q_u/u response to real SWAP corrector flux and accepted interface ledger",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "fixture": "F-GC45 real MultiSWAP + live MODFLOW6",
+    "production_sources_read_only": [
+      "src/runtime/mod_modflow6_swap_predictor_response.f90",
+      "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+      "src/runtime/mod_modflow6_linear_response_backend.f90",
+      "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+      "src/runtime/mod_groundwater_interface_mass_ledger.f90"
+    ]
+  },
+  "fixture": {
+    "tiles": 2,
+    "area_fractions": [
+      0.35,
+      0.65
+    ],
+    "modflow_cells": 1,
+    "window_day": 0.0001,
+    "real_fmr_richards": true,
+    "active_processes": {
+      "drainage": false,
+      "root_extraction": false,
+      "macropores": false,
+      "snow": false,
+      "soil_temperature": false
+    }
+  },
+  "production_affine_identity": {
+    "tile_u": "u = dt_day / (dH_bot_cm / dq_bot_cm_per_day)",
+    "tile_q_u": "q_u = u*(H_end_cm-H_start_cm)/dt_day - q_bot",
+    "cell_response": "q_affine(H)=q_ref + (u_cell/dt_s)*(H-H_ref)",
+    "modflow_transform": "Q(H)=HCOF*H-RHS"
+  },
+  "corrector_authority": "Real SWAP corrector q_swap is reconstructed from the accepted whole-window bottom outward exchange for a prescribed groundwater head. Accepted ledger exchange is the integrated mass authority after publication.",
+  "characterization_offsets_m": [
+    -0.00001,
+    -0.000005,
+    -0.000001,
+    0,
+    0.000001,
+    0.000005,
+    0.00001
+  ],
+  "preregistered_outputs": [
+    "initial HCOF, RHS and H_ref",
+    "initial affine q at H_ref and production affine slope dq_u/dH",
+    "real area-weighted corrector q_swap(H) at all fixed offsets from H_ref",
+    "central finite-difference corrector slopes at 1e-6, 5e-6 and 1e-5 m",
+    "u_equivalent_fd = dq_corrector/dH * duration_s",
+    "ratio of corrector FD slope to production affine slope, when denominator is nonzero",
+    "initial affine/corrector intercept mismatch at H_ref",
+    "live coupled final head and per-tile corrector fluxes",
+    "accepted per-tile ledger exchange and equality to area_fraction*q_tile*duration_s"
+  ],
+  "gates": [
+    "all fixed-head real SWAP trials are valid, finite and discarded back to the immutable origin",
+    "area-weighted corrector flux equals 0.35*q1+0.65*q2 within machine-scale arithmetic",
+    "repeated H_ref trial is deterministic within machine-scale arithmetic",
+    "all finite-difference slopes are finite; no equality to production u/dt is required",
+    "existing F-GC45 live coupled window converges and publishes once",
+    "ledger1 = 0.35*q1_final*duration_s and ledger2 = 0.65*q2_final*duration_s within 1e-12 m",
+    "sum of tile ledgers = q_weighted_final*duration_s within 1e-12 m"
+  ],
+  "interpretation_rules": [
+    "Treat q_u/u as a production response approximation until separately matched to physical mass/storage terms.",
+    "Treat corrector q_swap and committed ledger exchange as physical interface-exchange authority for the accepted window.",
+    "A numerical match between u and an FD slope does not by itself prove u is physical storage.",
+    "A mismatch does not by itself prove the production coupling is wrong; distinguish predictor approximation, reference choice and corrector nonlinearity.",
+    "Do not infer a finite-resistance q-link unless two distinct physical interface heads and a physical conductance law are independently present."
+  ],
+  "forbidden": [
+    "no production F-GC source change",
+    "no retuning of offsets or tolerances after observing results",
+    "no claim about heterogeneous upscaling from this identical-physics two-tile fixture"
+  ]
+}

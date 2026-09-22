@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw15.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW15",
+  "title": "Forcing-order invariance without memory and path dependence with memory",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "memory_result": "integration/research/GC_DUMMY_SWAP_DSW11_RESULT.json"
+  },
+  "window": {
+    "initial_head_m": 8,
+    "groundwater_storage": 0.2,
+    "steps_day": [
+      0.5,
+      0.5
+    ],
+    "total_input_m": 0.02
+  },
+  "forcing_histories": {
+    "early": [
+      0.02,
+      0
+    ],
+    "late": [
+      0,
+      0.02
+    ]
+  },
+  "memoryless_control": {
+    "routing": "input directly to groundwater storage",
+    "exact_final_head_both_m": 8.1
+  },
+  "memory_case": {
+    "routing": "input enters internal reservoir w; implicit relaxation k=1/day transfers k*w_end to groundwater",
+    "k_per_day": 1,
+    "initial_w_m": 0,
+    "step_law": "w_new=(w_old+P)/(1+k*dt); transfer=k*dt*w_new; S*dh=transfer",
+    "exact_early": {
+      "final_head_m": 8.055555555555555,
+      "final_w_m": 0.008888888888888889
+    },
+    "exact_late": {
+      "final_head_m": 8.033333333333333,
+      "final_w_m": 0.013333333333333334
+    }
+  },
+  "gates": [
+    "memoryless early and late histories end at same 8.1 m",
+    "memory case reproduces both exact path-dependent heads",
+    "for each memory history S*(H-H0)+w_final equals 0.02 m",
+    "different head response is attributed to retained internal memory, not mass error"
+  ],
+  "forbidden": [
+    "do not infer real SWAP memory timescale from k=1/day",
+    "no production source change"
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10a.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10A",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G10A_PREREGISTRATION.json",
+  "tested_commit": "b1370babace6ae90fa77ef90058c0d9e371fa104",
+  "workflow_run": 35703060395,
+  "workflow_job": 106665379427,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_DIAGNOSTIC_G10_FAILURE_IS_BROAD_AFFINE_GROUNDWATER_ORACLE_INDUCED",
+  "carrier_binding": "INHERITED_PASS_FROM_G10_AND_RECHECKED",
+  "transaction_authority": "PASS",
+  "broad_groundwater_fit": {
+    "slope_per_s": 0.0002331483228518438,
+    "intercept": 0.0001667009886758551,
+    "max_fit_error_m_per_s": 2.54919007508863e-13,
+    "fit_error_over_g10_residual_tolerance": 254.91900750886296
+  },
+  "local_groundwater_fits": [
+    {
+      "qmax_m_per_s": 2e-10,
+      "point_count": 7,
+      "slope_per_s": 0.00023314833164730825,
+      "max_fit_error_m_per_s": 8.131516293641283e-20
+    },
+    {
+      "qmax_m_per_s": 5e-10,
+      "point_count": 9,
+      "slope_per_s": 0.0002331483316614319,
+      "max_fit_error_m_per_s": 6.208269670667209e-20
+    },
+    {
+      "qmax_m_per_s": 1e-9,
+      "point_count": 11,
+      "slope_per_s": 0.0002331483316467858,
+      "max_fit_error_m_per_s": 3.497764239453448e-20
+    },
+    {
+      "qmax_m_per_s": 2e-9,
+      "point_count": 13,
+      "slope_per_s": 0.0002331483316502975,
+      "max_fit_error_m_per_s": 3.2087535372820145e-19
+    }
+  ],
+  "frozen_failure_heads": [
+    {
+      "name": "outer1_accepted",
+      "head_m": -0.7149997334398905,
+      "broad_residual_m_per_s": -3.729357375784469e-13,
+      "direct_residual_m_per_s": 5.058366775476179e-14,
+      "broad_minus_direct_qgw_m_per_s": 4.235194053332087e-13
+    },
+    {
+      "name": "outer2_raw",
+      "head_m": -0.7149997332233566,
+      "broad_residual_m_per_s": -4.237185595364478e-13,
+      "direct_residual_m_per_s": 2.174630945046849e-16,
+      "broad_minus_direct_qgw_m_per_s": 4.239360226309525e-13
+    },
+    {
+      "name": "broad_affine_reference_root",
+      "head_m": -0.7149997350308794,
+      "broad_residual_m_per_s": 1.9243763294567137e-16,
+      "direct_residual_m_per_s": 4.2375477039414164e-13,
+      "broad_minus_direct_qgw_m_per_s": 4.23562332761196e-13
+    }
+  ],
+  "direct_coupled_root": {
+    "head_m": -0.7149997332230622,
+    "q_groundwater_m_per_s": -3.8833618164062504e-13,
+    "q_swap_m_per_s": -3.884052268948336e-13,
+    "residual_m_per_s": -6.904525420857912e-17,
+    "bisections": 16,
+    "head_difference_from_broad_affine_root_m": 1.8078172292490535e-9
+  },
+  "line_search_diagnosis": {
+    "current_head_m": -0.7149997334398905,
+    "raw_head_m": -0.7149997332233566,
+    "current_broad_merit_m_per_s": 3.729357375784469e-13,
+    "current_direct_merit_m_per_s": 5.058366775476179e-14,
+    "raw_broad_merit_m_per_s": 4.237185595364478e-13,
+    "raw_direct_merit_m_per_s": 2.174630945046849e-16,
+    "first_broad_nonincrease_contraction": null,
+    "first_direct_nonincrease_contraction": 0,
+    "merit_ordering_differs": true
+  },
+  "bounded_conclusions": [
+    "The preregistered G10 broad affine GW_MIXED response is adequate for coarse characterization but not for a 1e-15 m/s globalization merit or root reference in this near-zero-flux neighborhood.",
+    "The raw G10 Newton proposal rejected by the broad-affine P4 merit is, under direct MODFLOW inversion, already essentially at the physical coupled root.",
+    "G10 remains formally falsified because its preregistered P4 gate used the broad affine oracle and exhausted 12 contractions.",
+    "The G10 failure must not be interpreted as evidence that the E3 physical-Newton proposal or P4 concept is intrinsically unstable in B4.",
+    "A subsequent work unit may re-evaluate the frozen G10 paths with a direct or locally resolved groundwater merit, but must not retroactively relabel G10 as PASS.",
+    "Live safeguard activation against a genuinely bad physical Newton proposal remains open."
+  ],
+  "production_admission": "NO"
+}

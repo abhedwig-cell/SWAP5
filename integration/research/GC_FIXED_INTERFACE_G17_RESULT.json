@@ -1,0 +1,128 @@
+{
+  "schema": "swap5.gc_fixed_interface.g17.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G17",
+  "title": "G16-backed safeguarded tangent coupling orchestration and final publication seam",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G17_PREREGISTRATION.json",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G15_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json"
+  ],
+  "tested_commit": "5842622ce18348c53092357f39121e9caf986561",
+  "workflow_run": 35724160855,
+  "workflow_job": 106733698777,
+  "workflow_conclusion": "success",
+  "earlier_validation_run": {
+    "tested_commit": "47b86bbaaa8659ea343ac5d57e4577b4478fc942",
+    "workflow_run": 35723915756,
+    "workflow_job": 106732909530,
+    "conclusion": "success",
+    "disposition": "SUPPORTING_ONLY_NOT_FINAL_AUTHORITY",
+    "reason": "The subsequent harness postimage added explicit binding checks for all frozen G17 preregistration constants and workflow path tracking without changing runtime or numerical orchestration semantics."
+  },
+  "decision": "QUALIFIED_RESEARCH_G16_BACKED_SAFEGUARDED_ORCHESTRATION_AND_FMR_LEDGER_FINAL_HANDOFF",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "scope_limitations": {
+    "persistent_modflow_transaction_publication": "NOT_TESTED_NOT_ADMITTED",
+    "crash_atomic_multi_participant_commit": "NOT_TESTED_NOT_ADMITTED",
+    "e3_production_policy": "NOT_ADMITTED",
+    "p4_production_policy": "NOT_ADMITTED"
+  },
+  "groundwater_fit": {
+    "a_per_s": 6.888155563779977e-7,
+    "intercept": 4.925260259275142e-7,
+    "max_fit_error_m_per_s": 3.705769144237564e-21,
+    "gate": "PASS"
+  },
+  "safeguard_path": {
+    "first_raw_dh_m": -0.000011162302297473836,
+    "first_raw_status": 6,
+    "total_contractions": 2,
+    "outer_updates": 3,
+    "final_head_m": -0.715009930492797,
+    "final_dh_m": -0.000009999346805233955,
+    "final_residual_m_per_s": -1.0640987109201395e-20,
+    "g11_reference_equivalence": "PASS"
+  },
+  "diagnostic_accounting": {
+    "logical_requests": 67,
+    "participant_physical_trials": 34,
+    "cache_hits": 33,
+    "unique_cached_heads": 34,
+    "status6_logical_observations": 10,
+    "ordinary_publication_path_trials_during_diagnostics": 0,
+    "accounting_identity": "67 = 34 physical diagnostic trials + 33 cache hits",
+    "diagnostic_non_authority": "PASS"
+  },
+  "final_candidate_handoff": {
+    "service_session_closed_before_reacquisition": true,
+    "preflight_before_reacquisition": false,
+    "ledger_preflight_before_reacquisition": false,
+    "ordinary_participant_reacquisition_trials": 1,
+    "cached_vs_reacquired_q_diff_m_per_s": 0,
+    "final_q_swap_m_per_s": 1.6062839314125978e-11,
+    "final_bottom_exchange_cm": 0.0000013878293167404844,
+    "expected_ledger_exchange_m": 1.3878293167404843e-8,
+    "fmr_preflight": "PASS",
+    "ledger_prepare_preflight": "PASS"
+  },
+  "publication": {
+    "state_before_publication": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "state_after_swap_commit_before_ledger_commit": [
+      1,
+      0.01,
+      0,
+      0
+    ],
+    "final_state": [
+      1,
+      0.01,
+      1,
+      1.3878293167404843e-8
+    ],
+    "fresh_process_direct_publication_state": [
+      1,
+      0.01,
+      1,
+      1.3878293167404843e-8
+    ],
+    "direct_publication_equivalence": "PASS",
+    "nominal_preflight_publication_sequence": "PASS",
+    "crash_atomicity_claim": "NOT_MADE"
+  },
+  "gates": {
+    "preregistration_binding": "PASS",
+    "frozen_g11_first_raw_failure": "PASS_STATUS_6",
+    "frozen_p4_contractions": "PASS_EXACTLY_2",
+    "frozen_g11_final_head": "PASS",
+    "final_residual": "PASS_BELOW_1E-15_M_PER_S",
+    "g16_cache_accounting": "PASS",
+    "diagnostic_live_candidate_leakage": "PASS_0",
+    "diagnostic_committed_authority_mutation": "PASS_0",
+    "diagnostic_publication_readiness": "PASS_FALSE",
+    "final_reacquisition_exactly_one_trial": "PASS",
+    "cached_vs_reacquired_q": "PASS_DIFF_0",
+    "ledger_exchange_from_final_candidate": "PASS",
+    "direct_publication_equivalence": "PASS"
+  },
+  "bounded_conclusions": [
+    "The qualified G16 service can supply every SWAP-side diagnostic evaluation needed by the unchanged research E3/P4 safeguard path in the frozen G11 live-overshoot stress.",
+    "The raw physical-Newton proposal remains participant status 6 and P4 performs exactly two factor-1/2 contractions before converging in three outer updates to the persisted G11 solution.",
+    "Across the complete solve, 67 logical observation requests are served by 34 physical participant trials and 33 exact-head cache hits; no ordinary publication-path trial is used during diagnostics.",
+    "Every diagnostic trial remains non-authoritative: no live participant candidate survives an observation, FMR preflight remains false, ledger preflight remains false, and accepted revision/time/committed-ledger state remain unchanged.",
+    "After convergence, closing G16 still leaves no publication authority. Exactly one ordinary participant trial at the converged head reacquires the final candidate; its q is identical to the cached diagnostic q.",
+    "The existing FMR preflight plus ledger prepare/preflight and nominal sequential commit path publishes the final candidate and reproduces a fresh-process direct-publication control exactly.",
+    "The observed intermediate state after SWAP commit but before ledger commit demonstrates why this result is not evidence of crash-atomic publication.",
+    "The live MODFLOW6 calculations in G17 remain proposal/merit solves, not a persistent transactional MODFLOW participant. Production coupling orchestration is therefore not yet admitted."
+  ],
+  "production_admission": "RESEARCH_ORCHESTRATION_ONLY_NO_COUPLING_POLICY_ADMISSION",
+  "next_natural_unit": "Define and qualify the missing publication/transaction architecture: persistent MODFLOW participant ownership plus crash-safe multi-participant publication semantics, before any E3/P4 or HCOF/RHS production admission."
+}

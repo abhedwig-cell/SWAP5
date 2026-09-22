@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw08.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW08",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "observed_head": "c9c589f99bd0ff76ebcdc11efa65305448ebafc9",
+  "workflow_run": 35560913799,
+  "workflow_job": 106213488965,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_FINITE_RESISTANCE_Q_LINK",
+  "conductance_results": [
+    {
+      "C_per_day": 0.001,
+      "h_dummy_m": 8.099019607843138,
+      "h_modflow_m": 8.000980392156862,
+      "q_ex_m_per_day": 0.00009803921568627594,
+      "head_gap_m": 0.09803921568627594
+    },
+    {
+      "C_per_day": 0.01,
+      "h_dummy_m": 8.091666666666667,
+      "h_modflow_m": 8.008333333333333,
+      "q_ex_m_per_day": 0.0008333333333333392,
+      "head_gap_m": 0.08333333333333393
+    },
+    {
+      "C_per_day": 0.1,
+      "h_dummy_m": 8.066666666666666,
+      "h_modflow_m": 8.033333333333333,
+      "q_ex_m_per_day": 0.003333333333333322,
+      "head_gap_m": 0.033333333333333215
+    },
+    {
+      "C_per_day": 1,
+      "h_dummy_m": 8.052380952380952,
+      "h_modflow_m": 8.047619047619047,
+      "q_ex_m_per_day": 0.004761904761904745,
+      "head_gap_m": 0.004761904761904745
+    },
+    {
+      "C_per_day": 10,
+      "h_dummy_m": 8.050248756218906,
+      "h_modflow_m": 8.049751243781094,
+      "q_ex_m_per_day": 0.004975124378123752,
+      "head_gap_m": 0.0004975124378123752
+    },
+    {
+      "C_per_day": 1000,
+      "h_dummy_m": 8.050002499875008,
+      "h_modflow_m": 8.049997500124995,
+      "q_ex_m_per_day": 0.004999750013112703,
+      "head_gap_m": 0.000004999750013112703
+    }
+  ],
+  "gates": {
+    "closed_form_modflow_head": "PASS",
+    "exchange_equals_modflow_storage": "PASS",
+    "total_two_reservoir_mass": "PASS",
+    "head_gap_monotone": "PASS",
+    "zero_resistance_shared_state_limit": "PASS"
+  },
+  "bounded_conclusions": [
+    "A finite-resistance q-link has two legitimate physical heads and a physical exchange flux.",
+    "Increasing conductance monotonically collapses the two heads toward one shared state.",
+    "In the high-conductance limit the common head approaches the 8.05 m solution obtained from the sum of the two physically disjoint storages.",
+    "A physical q-link conductance C is not the same object as the storage-derived response u/dt."
+  ],
+  "forbidden_inference": [
+    "Do not use this result to claim real SWAP has a finite physical interface resistance at the coupling location.",
+    "Do not identify the C->infinity numerical limit with the current production affine-u implementation without a separate equation-level mapping."
+  ]
+}

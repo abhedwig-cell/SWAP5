@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09x.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09X",
+  "title": "Residual-certification sweep after removing prepared-solve nonlinear under-relaxation",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_observations": [
+    "integration/research/GC_DUMMY_SWAP_DSW09V_OBSERVATION.json",
+    "integration/research/GC_DUMMY_SWAP_DSW09W_OBSERVATION.json"
+  ],
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "input_m": 0.01,
+    "exact_head_m": 8.056155281280883,
+    "external_residual_gate_m_per_day": 1e-12,
+    "head_gate_m": 1e-10
+  },
+  "fixed_solver_choice": {
+    "complexity": "MODERATE",
+    "under_relaxation": "NONE",
+    "outer_dvclose_m": 1e-12,
+    "inner_dvclose_m": 1e-14
+  },
+  "rclose_variants": [
+    1e-15,
+    1e-14,
+    1e-13,
+    1e-12
+  ],
+  "method": "Use one prepared solve per rclose variant and the unchanged one-solve-iteration then exact-tangent reanchor sequence. Accept only when MODFLOW convergence and the original external nonlinear residual gate are both satisfied.",
+  "preregistered_gate": [
+    "The 1e-13 variant must close both the MODFLOW certificate and external residual <=1e-12 m/day.",
+    "Its final head must remain within 1e-10 m of the closed-form root.",
+    "1e-15 and 1e-14 are expected characterization failures; 1e-12 is a coarser control and is not used to select the threshold after observation."
+  ],
+  "forbidden": [
+    "do not alter original DSW-09 tolerance",
+    "do not infer a production IMS rclose recommendation",
+    "no production coupling change"
+  ]
+}

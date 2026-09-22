@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.gc_fixed_interface.g14.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G14",
+  "title": "Research-only fused SWAP trial-observation contract",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_cost_result": "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+  "production_changes": false,
+  "question": "Can q/status and the E3 execution-class diagnostics be obtained from one physical real-SWAP corrector run, while remaining observationally equivalent to the current separate participant-trial plus raw-diagnostics route?",
+  "implementation_boundary": {
+    "allowed": [
+      "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+      "tests/fgc/support/fgc44_real_swap_ctypes.py",
+      "tests/research/support/mod_gc_map09_active_drainage_bridge.f90",
+      "tests/research/support/gc_map09_e6_ctypes.py",
+      "tests/research/*",
+      "integration/research/*",
+      ".github/workflows/* research workflows only"
+    ],
+    "forbidden": [
+      "src/runtime/*",
+      "production HCOF/RHS logic",
+      "production coupling API/source"
+    ]
+  },
+  "frozen_matrix": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+    "states": "All 11 G13 states.",
+    "heads": "Exactly the unique head offsets required by the G13 streaming path through the confirming scale for each state."
+  },
+  "fused_observation_contract": [
+    "Exactly one backend corrector run is invoked per fused observation.",
+    "Return participant-style status and q_swap from that same run.",
+    "Return result_status/completed/candidate_ready and all E3 execution-class fields from that same run.",
+    "Discard any research candidate before returning; committed revision/time/ledger remain unchanged.",
+    "No fused observation is granted commit/publication authority."
+  ],
+  "regression_gates": [
+    "For every frozen streaming head, fused participant-style status equals the existing participant trial status.",
+    "For every status-0 head, fused q_swap equals the participant q within 1e-18 m/s.",
+    "Fused raw result_status/completed/candidate_ready and E3 execution-class fields equal the existing independent raw-diagnostics observation.",
+    "Each fused call increments a research-only backend-run counter by exactly one.",
+    "Reconstruct E3 streaming from fused observations alone and recover every persisted G13 selected/confirming scale, mode and slope within floating-point tolerance.",
+    "Accepted SWAP revision/time/ledger remain unchanged for both FGC44 and MAP09 carriers."
+  ],
+  "interpretation": [
+    "PASS qualifies a research integration shape that can attain the G13 fused lower-bound run count without changing E3 semantics on the frozen matrix.",
+    "PASS does not authorize a production participant diagnostics accessor or production tangent service.",
+    "Any runtime API change requires a separate production-facing design/admission work unit."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}

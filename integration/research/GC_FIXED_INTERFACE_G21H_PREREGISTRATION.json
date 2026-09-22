@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21h.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21H",
+  "title": "Isolated retry-level physical-solver forensics across deterministic G21G status islands",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "6e952da9ca4427c4f9049c0c4337c8745cd06fa1",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21G_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21F_RESULT.json",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90"
+  ],
+  "question": "For representative adjacent heads across deterministic G21G 6->0 and 0->6 island boundaries, does isolating each of the nine retry durations from the immutable origin reproduce the inferred sequence of eight solver-converged temporal rejections followed by a smallest-duration physical-solver failure only on the status-6 side?",
+  "frozen_transaction": {
+    "requested_duration_day": 0.01,
+    "retry_scale": 0.5,
+    "max_retries": 8,
+    "retry_durations_day": [
+      0.01,
+      0.005,
+      0.0025,
+      0.00125,
+      0.000625,
+      0.0003125,
+      0.00015625,
+      0.000078125,
+      0.0000390625
+    ],
+    "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "status6_full_signature": {
+      "attempts": 9,
+      "retries": 8,
+      "temporal_rejections": 8,
+      "solver_rejections": 1,
+      "accepted_substeps": 0
+    }
+  },
+  "frozen_boundaries": [
+    {
+      "id": "B1_6_TO_0",
+      "left": {
+        "index": 1,
+        "head_m": -0.7150100297648301,
+        "status": 6
+      },
+      "right": {
+        "index": 2,
+        "head_m": -0.715010029764824,
+        "status": 0
+      }
+    },
+    {
+      "id": "B2_0_TO_6",
+      "left": {
+        "index": 7,
+        "head_m": -0.715010029764793,
+        "status": 0
+      },
+      "right": {
+        "index": 8,
+        "head_m": -0.7150100297647868,
+        "status": 6
+      }
+    }
+  ],
+  "experiment_contract": [
+    "Add only test-bridge/wrapper infrastructure that copies the frozen corrector numerical config, sets transaction.max_retries=0 in the copy, and invokes the existing serialized-reference backend from a fresh checkpoint over a caller-supplied retry duration.",
+    "The isolated-attempt probe is research instrumentation, not participant policy. It may not mutate the saved production corrector_config, committed state, participant candidate, ledger or G16 service.",
+    "For every frozen boundary head, run all nine retry durations independently from the same immutable committed origin and prescribed groundwater head.",
+    "After each raw backend trial read the existing backend observation snapshot and report raw result status, candidate readiness, solver status, nonlinear iterations, Jacobian builds, linear solves, backtracking attempts, internal retries, temporal-indicator status/availability/certificate and normalized indicator.",
+    "Discard any raw candidate through the backend before returning from the test bridge.",
+    "Bind source assertions to attempt_dt = attempt_dt*retry_scale and retry exhaustion at retry_index >= max_retries.",
+    "Compare isolated retry-level solver outcomes with the G21G full-transaction terminal classification. Do not require the max_retries=0 raw result status itself to equal participant status because temporal rejection intentionally exhausts the one-attempt research probe.",
+    "Require accepted revision/time and ledger to remain unchanged and participant/G16 liveness/preflights to remain false."
+  ],
+  "classification_rules": {
+    "ISOLATED_FINAL_RETRY_SOLVER_BIFURCATION_CONFIRMED": "For both frozen boundaries, each status-6 head has solver-converged observations at retry levels 0..7 and a non-converged physical solver at level 8, while the immediately adjacent status-0 head has a converged physical solver at level 8. Earlier converged levels on status-6 heads must expose temporal rejection/certificate evidence consistent with the full G21G eight-temporal-rejection signature.",
+    "ISOLATED_RETRY_SEQUENCE_PARTIAL_SUPPORT": "The isolated probes distinguish status-6 and status-0 sides at one or both boundaries but do not reproduce the exact inferred level-0..8 sequence.",
+    "TRANSACTION_HISTORY_CONTEXT_REQUIRED": "The isolated level-8 physical solver classification does not reproduce the G21G status-6 versus status-0 terminal solver split, indicating that prior transaction/substep context is required to explain the bifurcation.",
+    "SOURCE_OR_INSTRUMENTATION_UNRESOLVED": "The isolated backend probe cannot be implemented read-only with a copied numerical configuration and fresh checkpoint."
+  },
+  "gates": [
+    "All four frozen heads match their G21G binary64 values exactly.",
+    "Nine isolated durations are executed for every head.",
+    "The saved corrector_config is unchanged before/after the diagnostic.",
+    "Every probe begins from revision 0/time 0 and leaves revision/time/ledger unchanged.",
+    "No participant or G16 candidate/preflight authority is created.",
+    "Backend candidates are discarded before the next isolated probe.",
+    "All solver and temporal observations are reported; no production source is changed."
+  ],
+  "pass_interpretation": "PASS qualifies only the retry-level mechanism classification. Even a confirmed final-retry physical-solver bifurcation does not justify status smoothing, numerical tolerance changes, retry-policy changes, solver-configuration selection or production globalization admission.",
+  "fail_interpretation": "Preserve failure and classify transaction-history dependence if isolated probes do not reproduce the terminal split. Do not alter retry levels, heads or solver tolerances after observation.",
+  "allowed_mutation": [
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "tests/fgc/support/fgc44_real_swap_ctypes.py",
+    "tests/research/test_gc_fixed_interface_g21h_retry_level_forensics.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21H_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/solver/**",
+    "src/transaction/**",
+    "src/adapter/**",
+    "saved corrector_config semantics",
+    "participant acceptance/retry semantics",
+    "G16 service semantics",
+    "G09D/G13 E3 rules",
+    "MODFLOW IMS configuration",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}

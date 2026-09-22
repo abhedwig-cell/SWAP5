@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.gc_fixed_interface.g15.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G15",
+  "title": "FMR participant same-trial observation contract",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "521cdf6eb9bf1d313133fd317bee68d8503adbb7",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G14_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G12B_RESULT.json"
+  ],
+  "production_changes": {
+    "hcof_rhs": false,
+    "coupling_policy": false,
+    "runtime_api_surface": "FMR participant read-only observation accessor only"
+  },
+  "question": "Can the FMR groundwater-SWAP participant expose q/status and execution diagnostics from the exact already-executed trial, without performing another backend run or changing candidate/commit/discard semantics?",
+  "scope": {
+    "admitted_mutation": [
+      "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+      "tests/fgc/support/*",
+      "tests/research/*",
+      "integration/research/*",
+      "docs/research/*",
+      ".github/workflows/* relevant research test trigger only"
+    ],
+    "forbidden": [
+      "production HCOF/RHS sign or formula",
+      "MODFLOW boundary-term policy",
+      "groundwater application/coupling orchestration behavior",
+      "generic groundwater_swap_transaction_participant API widening unless FMR-specific route is impossible"
+    ]
+  },
+  "observation_contract": {
+    "type": "fmr_groundwater_swap_trial_observation_t",
+    "accessor": "observe_last_trial",
+    "ownership": "read-only view copied from participant-owned last trial_result/diagnostics/candidate state",
+    "backend_access": "Accessor accepts no backend/executor/materializer and therefore cannot launch a new physical trial.",
+    "fields": [
+      "available",
+      "participant_status",
+      "q_available",
+      "q_swap_m_per_s",
+      "result_status",
+      "completed",
+      "candidate_ready",
+      "transaction_calls",
+      "accepted_substeps",
+      "attempts",
+      "retries",
+      "trial_rollbacks",
+      "solver_rejections",
+      "temporal_rejections",
+      "temporal_unavailable_rejections",
+      "mass_rejections",
+      "internal_retries",
+      "min_accepted_substep_duration",
+      "max_accepted_substep_duration"
+    ]
+  },
+  "lifecycle_rules": [
+    "A trial attempt resets the prior observation before validation/execution.",
+    "After a status-0 trial, observation is available while the candidate remains live; reading it must not alter live-candidate state or publication readiness.",
+    "After status-6 whole-window trial failure, observation remains available even though any backend candidate has been discarded; q_available is false.",
+    "Discarding a successful candidate does not change committed authority. Observation may remain as historical diagnostics until the next trial/capture/commit reset; it grants no publication authority.",
+    "Commit semantics remain controlled only by publication_ready/commit_candidate; observation data cannot commit or stage ledger mass.",
+    "Accessor is intent(in), accepts no mutable collaborator, and performs no backend call."
+  ],
+  "frozen_regression_matrix": {
+    "fgc44": "All 62 FGC44 G14 streaming heads across eight frozen G13 states.",
+    "expected_reference": "G14 fused FGC44 observations and G13 E3 decisions.",
+    "commit_subset": [
+      "one ordinary successful FGC44 control head",
+      "one nontrivial successful boundary head if publication preflight remains valid"
+    ],
+    "failure_subset": "At least one frozen status-6 head, followed by a successful independent trial from the same accepted origin."
+  },
+  "gates": [
+    "Participant status on all 62 heads equals G14.",
+    "For status-0 heads q equals G14 within 1e-18 m/s.",
+    "All execution-class fields equal G14 fused reference.",
+    "Repeated observation reads are bitwise/value stable and do not change participant candidate liveness, committed revision/time or ledger.",
+    "After status-0 observation then discard, accepted authority is unchanged.",
+    "After status-6 observation, a next admissible trial succeeds without candidate-busy leakage.",
+    "Observation before normal preflight/commit does not change the accepted state/ledger result relative to the existing baseline path.",
+    "The accessor source has no backend/executor/materializer argument and the live regression invokes exactly one participant trial per observed head."
+  ],
+  "interpretation": [
+    "PASS qualifies the FMR-specific read-only same-trial observation API as a production-facing building block, not the E3/P4 coupling policy itself.",
+    "PASS makes the G14 fused integration shape implementable without duplicate physical trials while preserving participant ownership.",
+    "Generic participant abstraction, tangent service orchestration, and HCOF/RHS integration remain separate admission steps."
+  ],
+  "production_admission": "NO_COUPLING_POLICY_ADMISSION"
+}

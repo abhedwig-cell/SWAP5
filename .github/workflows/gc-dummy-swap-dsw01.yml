@@ -1,0 +1,183 @@
+name: GC dummy-SWAP concept testbank
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'docs/research/GC_*.md'
+      - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
+      - 'integration/research/GC_HLINK*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP05*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP08*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP09*.json'
+      - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
+      - 'tests/research/test_gc_dummy_swap_dsw*.py'
+      - 'tests/research/test_gc_analytic_swap_component.py'
+      - 'tests/research/support/gc_analytic_swap.py'
+      - 'tests/research/test_gc_hlink*.py'
+      - 'tests/research/run_gc_dummy_swap_dsw01.sh'
+      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
+      - 'tests/research/test_gc_real_swap_map05_b3_slope_policy.py'
+      - 'tests/research/run_gc_real_swap_map05_b3.sh'
+      - 'tests/research/test_gc_real_swap_map08_raw_corrector_failure.py'
+      - 'tests/research/run_gc_real_swap_map08.sh'
+      - 'tests/research/test_gc_real_swap_map09_active_drainage.py'
+      - 'tests/research/run_gc_real_swap_map09.sh'
+      - 'tests/research/test_gc_low01_state_machine.py'
+      - 'tests/research/test_gc_low01a_below_profile_equivalence.py'
+      - 'tests/research/test_gc_low01a_source_branch.py'
+      - 'tests/research/run_gc_low01a.sh'
+      - '.github/workflows/gc-dummy-swap-dsw01.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'docs/research/GC_*.md'
+      - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
+      - 'integration/research/GC_HLINK*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP05*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP08*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP09*.json'
+      - 'tests/research/test_gc_dummy_swap_dsw*.py'
+      - 'tests/research/test_gc_analytic_swap_component.py'
+      - 'tests/research/support/gc_analytic_swap.py'
+      - 'tests/research/test_gc_hlink*.py'
+      - 'tests/research/run_gc_dummy_swap_dsw01.sh'
+      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
+      - 'tests/research/test_gc_real_swap_map05_b3_slope_policy.py'
+      - 'tests/research/run_gc_real_swap_map05_b3.sh'
+      - 'tests/research/test_gc_real_swap_map08_raw_corrector_failure.py'
+      - 'tests/research/run_gc_real_swap_map08.sh'
+      - 'tests/research/test_gc_real_swap_map09_active_drainage.py'
+      - 'tests/research/run_gc_real_swap_map09.sh'
+      - '.github/workflows/gc-dummy-swap-dsw01.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-dummy-swap-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  concept-testbank:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python dependencies
+        run: python3 -m pip install --upgrade pip flopy xmipy numpy
+      - name: Run dummy-SWAP coupling concept testbank
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_dummy_swap_dsw01.sh
+
+  real-swap-map01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run real-SWAP response mapping probe
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map01_fgc45.sh
+
+  real-swap-map05:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run stronger-response slope-policy probe
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map05_b3.sh
+
+  real-swap-map08:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install flopy numpy
+      - name: Run raw B3 corrector-domain diagnostic
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map08.sh
+
+  real-swap-map09:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install flopy numpy
+      - name: Run active-drainage prescribed-head feasibility
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map09.sh
+
+
+  low01a-state01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-A and STATE01 qualification
+        run: bash tests/research/run_gc_low01a.sh
+
+
+  low01-constitutive-bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01 constitutive bridge qualification
+        run: bash tests/research/run_gc_low01_constitutive_bridge.sh
+
+  low01a2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-A2 live below-profile qualification
+        run: bash tests/research/run_gc_low01a2.sh

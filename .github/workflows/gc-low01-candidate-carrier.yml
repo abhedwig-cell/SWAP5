@@ -1,0 +1,32 @@
+name: GC LOW01 mode1 candidate carrier
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION_AMENDMENT.json'
+      - 'integration/research/GC_LOW01_RESULT_CONTRACT_V1.json'
+      - 'tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90'
+      - 'tests/research/test_gc_low01_mode1_candidate_carrier.f90'
+      - 'tests/research/run_gc_low01_candidate_carrier.sh'
+      - '.github/workflows/gc-low01-candidate-carrier.yml'
+  workflow_dispatch:
+concurrency:
+  group: gc-low01-carrier-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+jobs:
+  carrier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run candidate carrier qualification
+        run: bash tests/research/run_gc_low01_candidate_carrier.sh

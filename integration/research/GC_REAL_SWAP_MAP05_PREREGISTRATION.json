@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.gc_real_swap.map05.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP05",
+  "title": "Stronger-response live MODFLOW affine slope-policy invariance",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "fixture": "F-GC44 configured real SWAP + live MODFLOW6 E3-R geometry",
+    "e3r": "docs/publication/PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.json",
+    "e4": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json",
+    "map04": "integration/research/GC_REAL_SWAP_MAP04_RESULT.json"
+  },
+  "fixed_case": {
+    "window_day": 0.001,
+    "predictor_qbot_cm_per_day": 0.0001,
+    "k_m_per_day": 0.1,
+    "chd_offset_m": 0,
+    "reason": "This preregistered E3-R case had the largest already-recorded loose-to-iterative head correction in the 24-case E3-R matrix while remaining fully convergent under the unchanged component envelope.",
+    "prior_e3r_head_correction_m": -1.8311455685093847e-9,
+    "prior_e3r_outer_iterations": 3,
+    "coupled_flux_tolerance_m_per_s": 1e-15,
+    "max_coupling_outer": 40
+  },
+  "response_authority": {
+    "u_A": 0.0002665743709457589,
+    "J_R": -0.00028821767195098304,
+    "magnitude_ratio_abs_JR_over_uA": 1.081190479521484,
+    "current_expected_hcof_m2_per_day": 0.2665743709457589,
+    "local_corrector_expected_hcof_m2_per_day": -0.288217671950983,
+    "source": "PUB-GC E4 B3"
+  },
+  "slope_policies": [
+    {
+      "name": "CURRENT_PLUS_U",
+      "rule": "Use the configured production HCOF returned by F-GC44/F-GC33."
+    },
+    {
+      "name": "INTERCEPT_ONLY",
+      "rule": "HCOF=0; retain real-corrector RHS reanchoring."
+    },
+    {
+      "name": "E4_B3_CORRECTOR_JR",
+      "rule": "HCOF=A*J_R/window_day using the independently qualified E4 B3 plateau estimate."
+    }
+  ],
+  "common_initial_point": "All variants pass through the same configured production (H_ref,q_ref) before the first MODFLOW solve.",
+  "iteration_contract": [
+    "Use the unchanged E3-R zero-background-gradient MODFLOW model.",
+    "For each policy start a fresh real SWAP fixture and fresh MODFLOW prepared solve from the same accepted origins.",
+    "After each MODFLOW solve, run the unchanged real SWAP prescribed-head corrector and evaluate q_swap-q_groundwater.",
+    "If the conjunctive gate is not closed, discard the candidate and reanchor only RHS while retaining the policy HCOF.",
+    "On convergence publish MODFLOW once, commit the SWAP candidate once and commit the interface ledger once."
+  ],
+  "gates": [
+    "The CURRENT_PLUS_U variant reproduces the already qualified E3-R B3 K=0.1 case within the existing residual and envelope.",
+    "All three policies converge within 40 coupling outer iterations without changing any SWAP or MODFLOW tolerance.",
+    "Each final coupled residual is <=1e-15 m/s.",
+    "Each variant commits exactly one SWAP candidate and one ledger entry.",
+    "Each ledger equals q_swap_final*window_seconds within 1e-12 m.",
+    "Pairwise final accepted head spread <=5e-10 m, a bound fixed before execution at the same order as the 1e-15 m/s residual tolerance divided by the independently qualified B3 response scale.",
+    "Pairwise final q_swap spread <=2e-15 m/s.",
+    "Pairwise final ledger spread <=2e-13 m."
+  ],
+  "characterization_only": [
+    "outer iterations",
+    "head path",
+    "residual path",
+    "MODFLOW convergence path",
+    "relative work versus MAP04"
+  ],
+  "interpretation_rules": [
+    "If all policies preserve accepted physical state but work differs, slope remains an iteration-policy object in this stronger response regime.",
+    "If E4_B3_CORRECTOR_JR materially reduces work relative to CURRENT_PLUS_U, report the bounded numerical advantage without generalizing beyond this regime.",
+    "If a policy changes accepted state beyond fixed gates despite satisfying the same coupled residual/publication contract, classify a coupling-algorithm dependency and stop before production changes.",
+    "A failed policy is retained as evidence; do not relax component or coupling tolerances."
+  ],
+  "forbidden": [
+    "no production source change",
+    "no post-observation policy retuning",
+    "no widening of the corrector envelope",
+    "no performance claim beyond this one B3/K=0.1 case"
+  ]
+}

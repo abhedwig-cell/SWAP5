@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.gc_real_swap.map07.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP07",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_changes": false,
+  "execution": {
+    "workflow_run": 35568628419,
+    "workflow_job": 106235349163,
+    "conclusion": "success"
+  },
+  "result_path": "integration/research/GC_REAL_SWAP_MAP07_RESULT.json",
+  "decision": "QUALIFIED_PARTIAL_VERSUS_TOTAL_QU_DERIVATIVE_DISTINCTION",
+  "authority_paths": [
+    "integration/research/GC_REAL_SWAP_MAP07_DIAGNOSTIC_DESIGN.json",
+    "docs/publication/evidence/PUB_GC_E4_RAW_FLUX_POINTS.json",
+    "docs/publication/evidence/PUB_GC_E4_RAW_HEAD_SCANS.json",
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90"
+  ],
+  "next_action": "Reconcile MAP03/MAP05A/MAP06/MAP07 into a coupling-response taxonomy; keep production coupling read-only while MAP08/MAP09 diagnose component-domain and non-bottom process response.",
+  "blockers": []
+}

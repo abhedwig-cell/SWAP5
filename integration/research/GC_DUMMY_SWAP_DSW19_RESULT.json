@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw19.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW19",
+  "workflow_run": 35563873238,
+  "workflow_job": 106221736326,
+  "decision": "QUALIFIED_ADVERSARIAL_ORACLE_CONVERGENCE_NOT_CORRECTNESS",
+  "physical_oracle": {
+    "expected_head_m": 8.05,
+    "total_storage": 0.2,
+    "intended_input_m": 0.01
+  },
+  "cases": {
+    "CORRECT_CONTROL": {
+      "head_m": 8.049999999999999,
+      "physical_head_error_m": -1.7763568394002505e-15,
+      "physical_mass_error_m": -2.1337098754514727e-16,
+      "modflow_converged": true
+    },
+    "DUPLICATE_STORAGE": {
+      "head_m": 8.024999999999999,
+      "physical_head_error_m": -0.02500000000000213,
+      "physical_mass_error_m": -0.005000000000000284,
+      "modflow_converged": true
+    },
+    "WRONG_STORAGE_SIGN": {
+      "head_m": 8.100000000000003,
+      "physical_head_error_m": 0.05000000000000249,
+      "physical_mass_error_m": 0.010000000000000642,
+      "modflow_converged": true
+    },
+    "REVERSED_FORCING_SIGN": {
+      "head_m": 7.95,
+      "physical_head_error_m": -0.10000000000000053,
+      "physical_mass_error_m": -0.019999999999999966,
+      "modflow_converged": true
+    }
+  },
+  "gates": {
+    "all_subsystem_solves_converged": "PASS",
+    "wrong_signatures_predicted": "PASS",
+    "physical_oracle_distinguishes_errors": "PASS",
+    "convergence_not_correctness": "PASS"
+  },
+  "bounded_conclusions": [
+    "MODFLOW can converge cleanly for coupling equations that are scientifically wrong.",
+    "Duplicate storage, a wrong storage-response sign, and a reversed forcing sign each produce deterministic but incorrect physical states.",
+    "Subsystem convergence must therefore be conjunctive with independent coupling residual and physical mass/state acceptance."
+  ]
+}

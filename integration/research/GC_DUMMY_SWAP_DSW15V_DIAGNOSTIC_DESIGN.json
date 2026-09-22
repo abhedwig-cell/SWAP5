@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw15v.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW15V",
+  "title": "Memory substep mass residual versus IMS under-relaxation",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_test": "GC-DUMMY-SWAP-DSW15",
+  "observed_failure": "Early-forcing history, second 0.5-day substep: MODFLOW reports convergence but the pre-registered 1e-12 m transfer/storage equality gate fails.",
+  "fixed_state": {
+    "head_before_m": 8.033333333333333,
+    "memory_before_m": 0.013333333333333334,
+    "input_m": 0,
+    "dt_day": 0.5,
+    "storage": 0.2,
+    "k_per_day": 1,
+    "exact_memory_after_m": 0.008888888888888889,
+    "exact_transfer_m": 0.0044444444444444444,
+    "exact_head_after_m": 8.055555555555555
+  },
+  "variants": [
+    {
+      "name": "MODERATE_DEFAULT",
+      "under_relaxation": "MODFLOW complexity default"
+    },
+    {
+      "name": "MODERATE_NO_UR",
+      "under_relaxation": "NONE"
+    }
+  ],
+  "method": "Solve the identical fixed constant-flux groundwater substep in fresh MODFLOW6 6.8.0 sessions. No coupling reanchor occurs. Record head error and transfer/storage mass error.",
+  "purpose": "Determine whether DSW-15's strict mass-gate miss is physical/memory-law error or a solver convergence-resolution effect.",
+  "forbidden": [
+    "do not relax DSW-15 preregistered 1e-12 m mass gate",
+    "do not infer a production solver setting from this diagnostic alone"
+  ]
+}

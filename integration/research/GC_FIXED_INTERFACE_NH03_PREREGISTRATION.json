@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.gc_fixed_interface.nh03.preregistration.v1",
+  "date": "2026-09-21",
+  "status": "PREREGISTERED_THEORY_ONLY",
+  "production_changes": false,
+  "purpose": "Test fixed-interface response condensation with nonlinear top-system storage before adding ET, drainage or memory.",
+  "storage_law": {
+    "coordinate": "z_p",
+    "definition": "DeltaV_S = S0*Delta_z + 0.5*S1*(Delta_z)^2",
+    "tangent": "dV_S/dz_p = S0 + S1*(z_p-z_p0)",
+    "parameters": {
+      "S0": 0.10,
+      "S1_per_m": 1.0
+    }
+  },
+  "other_parameters": {
+    "z_p0_m": 8.0,
+    "H_c0_m": 8.0,
+    "S_M": 0.10,
+    "C_per_day": 0.20,
+    "W_S_m": 0.010,
+    "W_M_m": 0.0,
+    "dt_day": 1.0
+  },
+  "equations": [
+    "S0*x + 0.5*S1*x^2 = W_S - C*dt*(z_p1-H_c1), where x=z_p1-z_p0",
+    "S_M*(H_c1-H_c0) = W_M + C*dt*(z_p1-H_c1)"
+  ],
+  "questions": [
+    "Does the exact nonlinear coupled root close the complete mass balance?",
+    "How does local dV/dz_p at the accepted state differ from the finite-window secant storage response?",
+    "What does predictor-derived u measure when dH_c/dq_b varies with predictor trajectory?",
+    "Does a locally reanchored affine response recover the exact nonlinear root under iteration?"
+  ],
+  "gates_before_implementation": [
+    "Derive the exact or high-precision independent root without using production u/q_u.",
+    "Derive the implicit response derivative analytically.",
+    "Freeze predictor perturbations and tolerances.",
+    "Keep physical storage tangent, finite-window secant, predictor inverse sensitivity and corrector derivative as separate reported quantities."
+  ],
+  "nonclaims": [
+    "NH03 will not yet test ET, drainage or memory.",
+    "A local tangent match will not be treated as equality with integrated storage.",
+    "Solver convergence will not be treated as proof of the nonlinear equations."
+  ]
+}

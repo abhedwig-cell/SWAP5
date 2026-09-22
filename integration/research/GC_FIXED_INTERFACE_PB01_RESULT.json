@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_fixed_interface.pb01.result.v1",
+  "date": "2026-09-21",
+  "status": "SIGN_SEMANTICS_DISCREPANCY_SHARPENED_AWAITING_EXECUTION_AND_LIVE_FIXTURE",
+  "production_changes": false,
+  "derivation": "docs/research/GC_FIXED_INTERFACE_PB01_RESIDUAL_DERIVATION.md",
+  "implementation": "tests/research/test_gc_fixed_interface_pb01.py",
+  "result": {
+    "physical_exchange_law": "q_phys(H)=beta*W_S/dt-(u/dt)*(H-H0)",
+    "physical_exchange_slope": "-u/dt",
+    "production_affine_law": "q_prod(H)=q_u_star+(u/dt)*(H-H_pred)",
+    "production_affine_slope": "+u/dt",
+    "physical_root_m": 8.04,
+    "finding": "For NH01 the unchanged positive-slope production affine law is not an exact physical-exchange condensation and generally yields predictor-dependent groundwater roots if inserted directly as positive MODFLOW infiltration."
+  },
+  "severity": "CONCEPTUAL_DISCREPANCY_CANDIDATE_NOT_PRODUCTION_DEFECT",
+  "why_not_defect_yet": [
+    "PB01 is a transparent analytical surrogate, not real SWAP.",
+    "The production response may be intended as a different residual object whose missing companion term is outside the minimal oracle.",
+    "Execution evidence for the new PB01 test is not yet available."
+  ],
+  "required_next": [
+    "Execute PB01 and orientation A/B oracles in CI or equivalent environment.",
+    "Build a live one-cell MODFLOW storage fixture for both coherent orientations without changing production.",
+    "Inspect historical SWAP4/MODFLOW derivation/source if available.",
+    "Only then decide whether production sign/documentation requires repair."
+  ],
+  "governance": "Do not modify production sign or architecture until the discrepancy is independently reproduced and the historical response contract is reconciled.",
+  "historical_equation_audit": "docs/research/GC_FIXED_INTERFACE_PB01_HISTORICAL_EQUATION_AUDIT.md",
+  "orientation_ab_test": "tests/research/test_gc_fixed_interface_pb01_orientation_ab.py",
+  "sign_hypothesis": {
+    "native_qbot": "positive tangent +u/dt is mathematically consistent when response variable is q_bot positive into SWAP",
+    "groundwater_outward": "physical q_out=-q_bot requires tangent -u/dt and predictor-origin value -q_bot",
+    "current_mix": "current documentation/aggregation appears to assign outward q_u semantics while retaining native-qbot positive tangent"
+  }
+}

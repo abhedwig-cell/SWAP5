@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw18.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW18",
+  "workflow_run": 35563873238,
+  "workflow_job": 106221736326,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_DISTINCT_STORAGE_AND_QLINK_LIMITS",
+  "storage_family": [
+    {
+      "storage": 0.02,
+      "head_m": 8.500000000000002,
+      "head_rise_m": 0.5000000000000018,
+      "mass_m": 0.010000000000000035
+    },
+    {
+      "storage": 0.2,
+      "head_m": 8.049999999999999,
+      "head_rise_m": 0.049999999999998934,
+      "mass_m": 0.009999999999999787
+    },
+    {
+      "storage": 0.8,
+      "head_m": 8.012500000000001,
+      "head_rise_m": 0.012500000000001066,
+      "mass_m": 0.010000000000000854
+    }
+  ],
+  "q_link_family": [
+    {
+      "conductance_per_day": 0.001,
+      "h_dummy_m": 8.099019607843138,
+      "h_modflow_m": 8.000980392156862,
+      "head_gap_m": 0.09803921568627594,
+      "transfer_m_per_day": 0.00009803921568627594
+    },
+    {
+      "conductance_per_day": 0.1,
+      "h_dummy_m": 8.066666666666666,
+      "h_modflow_m": 8.033333333333333,
+      "head_gap_m": 0.033333333333333215,
+      "transfer_m_per_day": 0.003333333333333322
+    },
+    {
+      "conductance_per_day": 1000,
+      "h_dummy_m": 8.050002499875008,
+      "h_modflow_m": 8.049997500124995,
+      "head_gap_m": 0.000004999750013112703,
+      "transfer_m_per_day": 0.004999750013112703
+    }
+  ],
+  "gates": {
+    "storage_sensitivity_limits": "PASS",
+    "q_link_conductance_limits": "PASS",
+    "distinct_limit_signatures": "PASS",
+    "mass_closure": "PASS",
+    "live_modflow": "PASS"
+  },
+  "bounded_conclusions": [
+    "Increasing physical storage reduces head response to a fixed net water volume while leaving the one-state mass law unchanged.",
+    "Increasing finite-resistance q-link conductance instead collapses the head difference between two distinct storages and increases internal exchange.",
+    "Storage sensitivity and physical interface conductance therefore have different limiting signatures and must not be identified from matching units alone."
+  ]
+}

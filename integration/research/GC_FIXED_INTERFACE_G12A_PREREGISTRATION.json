@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12a.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12A",
+  "title": "MAP09 groundwater translation-calibration diagnostic",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G12_RESULT.json",
+  "production_changes": false,
+  "question": "Why does the frozen one-shot MAP09 groundwater translation calibration miss q_gw(href)=q_swap(href) at the 1e-15 m/s gate, and can the local groundwater response at href be measured consistently without changing the bias or G12?",
+  "frozen_authority": {
+    "href_m": 0.012932896258566275,
+    "q_swap_href_m_per_s": -6.459199925803855e-10,
+    "e3_href_slope_per_s": -6.628364639568004e-7,
+    "duration_day": 0.01,
+    "g12_groundwater_datum_translation": "Reuse solve_term_map09 from the repaired G12 test exactly.",
+    "g12_one_shot_bias_rule": "For each regime solve q=q_ref with zero bias, then set bias=href-returned_head exactly once."
+  },
+  "groundwater_regimes": "Reuse all three G12 preregistered groundwater regimes unchanged.",
+  "local_probe_offsets_m_per_s": [
+    -2e-10,
+    -1e-10,
+    -5e-11,
+    0,
+    5e-11,
+    1e-10,
+    2e-10
+  ],
+  "local_fit": {
+    "form": "q_gw = a*(H-href)+q_at_href",
+    "require_positive_slope": true,
+    "max_fit_error_m_per_s": 1e-16
+  },
+  "direct_href_inversion": {
+    "initial_q_bracket_offsets_m_per_s": [
+      -2e-10,
+      2e-10
+    ],
+    "fixed_bisection_iterations": 20,
+    "rule": "With the frozen one-shot bias, solve fresh constant-flux MODFLOW at the bracket endpoints; require returned heads to bracket href. Perform exactly 20 bisections in imposed q using sign of H(q)-href. The final midpoint q_direct_href is diagnostic only and does not alter the bias.",
+    "no_bias_retuning": true
+  },
+  "required_execution_gates": [
+    "MAP09 href/q/u authority reproduces and E3_MAP href remains available.",
+    "All three one-shot G12 biases are reproduced from the unchanged rule.",
+    "Every local fixed q probe converges and each centered affine fit has positive slope and max error <=1e-16 m/s.",
+    "The fixed direct-q bracket contains href for every regime and all 20 bisection solves complete.",
+    "Accepted MAP09 revision/time/ledger remain unchanged."
+  ],
+  "interpretation_rules": [
+    "G12 remains falsified regardless of G12A outcome.",
+    "Compare q_ref-q_at_href and q_ref-q_direct_href; do not relax the G12 1e-15 gate post hoc.",
+    "If q_at_href and q_direct_href agree closely while both differ from q_ref, the G12 miss is a one-shot translation-calibration offset rather than affine-fit error.",
+    "A later G12B may preregister a local/direct groundwater oracle, but only after G12A is persisted."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}

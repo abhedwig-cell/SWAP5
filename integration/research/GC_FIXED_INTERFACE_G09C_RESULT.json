@@ -1,0 +1,242 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09c.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09C",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09C_PREREGISTRATION.json",
+  "tested_commit": "9f3679ba47e004c458453bb1e8595a19b8162083",
+  "workflow_run": 35700498264,
+  "workflow_job": 106657099125,
+  "workflow_conclusion": "success",
+  "diagnostic_gate": "PASS",
+  "summary": {
+    "control": {
+      "exact_integer_signature_match_count": 11,
+      "exact_partition_signature_match_count": 11,
+      "participant_failure_count": 10,
+      "raw_ready_count": 11,
+      "stable_adjacent_slope_pair_count": 11
+    },
+    "target": {
+      "exact_integer_signature_match_count": 2,
+      "exact_partition_signature_match_count": 2,
+      "participant_failure_count": 12,
+      "raw_ready_count": 9,
+      "stable_adjacent_slope_pair_count": 4
+    }
+  },
+  "compact_state_results": [
+    {
+      "state_id": "TARGET_C1_NEG",
+      "case_id": "C1_LOW_FORCING",
+      "center_integer_signature": [
+        2,
+        4,
+        2,
+        1,
+        1,
+        1
+      ],
+      "center_partition_signature": [
+        2,
+        0.000025,
+        0.00007500000000000001
+      ],
+      "participant_failure_count": 12,
+      "raw_ready_count": 9,
+      "exact_integer_signature_match_count": 2,
+      "exact_partition_signature_match_count": 2,
+      "stable_adjacent_slope_pairs": [
+        {
+          "coarser_scale_m": 1.25e-7,
+          "coarser_slope_per_s": -0.000003971583350258776,
+          "finer_scale_m": 6.25e-8,
+          "finer_slope_per_s": -0.000003971584378243066,
+          "metric": "central_per_s",
+          "relative_difference": 2.5883481051763483e-7
+        },
+        {
+          "coarser_scale_m": 1.25e-7,
+          "coarser_slope_per_s": -0.000003971583350258778,
+          "finer_scale_m": 6.25e-8,
+          "finer_slope_per_s": -0.000003971583555855651,
+          "metric": "least_squares_per_s",
+          "relative_difference": 5.1766976491104126e-8
+        },
+        {
+          "coarser_scale_m": 6.25e-8,
+          "coarser_slope_per_s": -0.000003971583555855651,
+          "finer_scale_m": 3.125e-8,
+          "finer_slope_per_s": -0.0000039340004505035,
+          "metric": "least_squares_per_s",
+          "relative_difference": 0.009463002558951284
+        },
+        {
+          "coarser_scale_m": 3.125e-8,
+          "coarser_slope_per_s": -0.0000039340004505035,
+          "finer_scale_m": 1.5625e-8,
+          "finer_slope_per_s": -0.0000037836623898669913,
+          "metric": "least_squares_per_s",
+          "relative_difference": 0.03821505933413587
+        }
+      ]
+    },
+    {
+      "state_id": "CONTROL_C0_POS",
+      "case_id": "C0_CONTROL",
+      "center_integer_signature": [
+        2,
+        3,
+        1,
+        0,
+        1,
+        0
+      ],
+      "center_partition_signature": [
+        2,
+        0.00005,
+        0.00005
+      ],
+      "participant_failure_count": 10,
+      "raw_ready_count": 11,
+      "exact_integer_signature_match_count": 11,
+      "exact_partition_signature_match_count": 11,
+      "stable_adjacent_slope_pairs": [
+        {
+          "coarser_scale_m": 6.25e-8,
+          "coarser_slope_per_s": -0.000003971584378243066,
+          "finer_scale_m": 3.125e-8,
+          "finer_slope_per_s": -0.000003971584378243041,
+          "metric": "central_per_s",
+          "relative_difference": 6.3981993072674496e-15
+        },
+        {
+          "coarser_scale_m": 3.125e-8,
+          "coarser_slope_per_s": -0.000003971584378243041,
+          "finer_scale_m": 7.8125e-9,
+          "finer_slope_per_s": -0.000003971572042431668,
+          "metric": "central_per_s",
+          "relative_difference": 0.0000031060176993392006
+        },
+        {
+          "coarser_scale_m": 7.8125e-9,
+          "coarser_slope_per_s": -0.000003971572042431668,
+          "finer_scale_m": 1.953125e-9,
+          "finer_slope_per_s": -0.00000397153914693419,
+          "metric": "central_per_s",
+          "relative_difference": 0.000008282739712806468
+        },
+        {
+          "coarser_scale_m": 3.125e-8,
+          "coarser_slope_per_s": -0.0000039715638185573494,
+          "finer_scale_m": 3.90625e-9,
+          "finer_slope_per_s": -0.000003971539146935016,
+          "metric": "backward_second_order_per_s",
+          "relative_difference": 0.000006212067452586897
+        },
+        {
+          "coarser_scale_m": 3.90625e-9,
+          "coarser_slope_per_s": -0.000003971539146935016,
+          "finer_scale_m": 1.953125e-9,
+          "finer_slope_per_s": -0.000003971275982956021,
+          "metric": "backward_second_order_per_s",
+          "relative_difference": 0.0000662624663281908
+        },
+        {
+          "coarser_scale_m": 6.25e-8,
+          "coarser_slope_per_s": -0.0000039715843782430655,
+          "finer_scale_m": 3.125e-8,
+          "finer_slope_per_s": -0.00000397158437824302,
+          "metric": "least_squares_per_s",
+          "relative_difference": 1.1516758753081411e-14
+        },
+        {
+          "coarser_scale_m": 3.125e-8,
+          "coarser_slope_per_s": -0.00000397158437824302,
+          "finer_scale_m": 1.5625e-8,
+          "finer_slope_per_s": -0.00000397158437824302,
+          "metric": "least_squares_per_s",
+          "relative_difference": 0
+        },
+        {
+          "coarser_scale_m": 1.5625e-8,
+          "coarser_slope_per_s": -0.00000397158437824302,
+          "finer_scale_m": 7.8125e-9,
+          "finer_slope_per_s": -0.000003971572042431683,
+          "metric": "least_squares_per_s",
+          "relative_difference": 0.0000031060176901684647
+        },
+        {
+          "coarser_scale_m": 7.8125e-9,
+          "coarser_slope_per_s": -0.000003971572042431683,
+          "finer_scale_m": 3.90625e-9,
+          "finer_slope_per_s": -0.000003971572982303286,
+          "metric": "least_squares_per_s",
+          "relative_difference": 2.3664971212762336e-7
+        },
+        {
+          "coarser_scale_m": 3.90625e-9,
+          "coarser_slope_per_s": -0.000003971572982303286,
+          "finer_scale_m": 1.953125e-9,
+          "finer_slope_per_s": -0.000003971565463332936,
+          "metric": "least_squares_per_s",
+          "relative_difference": 0.0000018931970742611342
+        },
+        {
+          "coarser_scale_m": 1.953125e-9,
+          "coarser_slope_per_s": -0.000003971565463332936,
+          "finer_scale_m": 9.765625e-10,
+          "finer_slope_per_s": -0.000003971539146934344,
+          "metric": "least_squares_per_s",
+          "relative_difference": 0.000006626202900295979
+        }
+      ]
+    }
+  ],
+  "derived_interpretation": {
+    "target_c1_negative": {
+      "center_integer_signature": [
+        2,
+        4,
+        2,
+        1,
+        1,
+        1
+      ],
+      "center_partition_signature": [
+        2,
+        0.000025,
+        0.00007500000000000001
+      ],
+      "neighbor_class_signature": [
+        2,
+        3,
+        1,
+        0,
+        1,
+        0
+      ],
+      "neighbor_partition_signature": [
+        2,
+        0.00005,
+        0.00005
+      ],
+      "central_slope_d_1_25e_7_per_s": -0.000003971583350258776,
+      "central_slope_d_6_25e_8_per_s": -0.000003971584378243066,
+      "relative_change": 2.5883481051763483e-7,
+      "conclusion": "The center is on an atypical retry/solver branch, while symmetric neighboring probes at two adjacent scales share one another's cleaner execution class and produce a stable central derivative. Requiring equality to the center therefore rejects useful derivative evidence."
+    },
+    "control_c0_positive": {
+      "central_slope_d_6_25e_8_per_s": -0.000003971584378243066,
+      "central_slope_d_3_125e_8_per_s": -0.000003971584378243041,
+      "conclusion": "The qualified control also supports pairwise same-class central differencing with adjacent-scale agreement."
+    }
+  },
+  "bounded_conclusions": [
+    "G09C confirms that the G09B failure is caused by the requirement that probes exactly match the center execution route, not by absence of a stable local response estimate.",
+    "For a central finite difference, the two probe executions can form a coherent local execution class even when the center trial belongs to a different retry branch.",
+    "For one-sided formulas that use q(h), center and both same-side probes must still share one execution class.",
+    "Any replacement estimator must prospectively combine stencil-internal execution-class consistency with multi-scale slope consistency; participant status alone remains insufficient.",
+    "G09C is diagnostic only and authorizes no production change."
+  ],
+  "production_admission": "NO"
+}

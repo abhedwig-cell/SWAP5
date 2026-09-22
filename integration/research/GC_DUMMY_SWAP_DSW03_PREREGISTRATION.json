@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw03.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW03",
+  "title": "MODFLOW-owned source acting on shared storage",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "dsw01_dsw02_result": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "physical_case": {
+    "area_m2": 1,
+    "initial_head_m": 8,
+    "total_storage_coefficient": 0.2,
+    "duration_day": 1,
+    "atmospheric_input_m": 0,
+    "modflow_owned_injection_m3_per_day": 0.01,
+    "et_m": 0,
+    "drain_m": 0,
+    "physical_final_head_m": 8.05
+  },
+  "partition_sweep": {
+    "alpha_swap": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "s_swap": "alpha*S_total",
+    "s_modflow": "(1-alpha)*S_total",
+    "dummy_api_law": "Q_dummy(H)=-(S_swap/dt)*(H-H0)",
+    "expected": "all consistent partitions reproduce H=8.05"
+  },
+  "diagnostic_positive_slope_probe": {
+    "alpha_swap": 0.5,
+    "s_modflow": 0.1,
+    "positive_response": "Q_dummy(H)=+(S_swap/dt)*(H-H0)",
+    "expected_classification": "record convergence/head without coefficient retuning; this is not part of the physical-pass gate",
+    "purpose": "isolate the algebraic consequence of the positive storage-like response when the forcing originates entirely on the MODFLOW side"
+  },
+  "numerical_route": {
+    "modflow_version": "6.8.0",
+    "newton": false,
+    "source_package": "WEL",
+    "storage_package": "STO",
+    "coupling_package": "API",
+    "head_tolerance_m": 1e-8
+  },
+  "gates": [
+    "analytic physical balance",
+    "live partition invariance",
+    "exact total-volume closure",
+    "MODFLOW-owned source changes shared head even when alpha_swap=1",
+    "diagnostic positive-slope probe recorded"
+  ],
+  "forbidden": [
+    "no production source change",
+    "no retuning after observation",
+    "no inference that WEL is itself a groundwater-coupling interface",
+    "no general production-defect claim from the diagnostic positive-slope probe"
+  ]
+}

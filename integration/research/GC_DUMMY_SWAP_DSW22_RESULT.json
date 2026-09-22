@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw22.preregistered_result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW22",
+  "preregistration": "integration/research/GC_DUMMY_SWAP_DSW22_PREREGISTRATION.json",
+  "workflow_run": 35564514215,
+  "workflow_job": 106223575467,
+  "decision": "PREREGISTERED_ALL_NINE_SUCCESS_GATE_FALSIFIED",
+  "positive_control": {
+    "f_gc44_end_to_end_gate": "PASS",
+    "meaning": "current-source F-GC44 build and real-SWAP/live-MODFLOW baseline completed before DSW22"
+  },
+  "first_prespecified_case": {
+    "duration_day": 0.00005,
+    "predictor_qbot_cm_per_day": 5e-7,
+    "configured_initialize_status": 104,
+    "stage": "PREDICTOR_WHOLE_WINDOW_TRIAL_INCOMPLETE"
+  },
+  "reached_semantic_coefficients": false,
+  "conclusions": [
+    "The DSW22 hypothesis that all nine configured predictors initialize successfully is falsified at the first matrix point.",
+    "The failure is inside the real SWAP predictor whole-window execution before F-GC30 response assembly, F-GC40 aggregation, or F-GC33 HCOF/RHS transformation.",
+    "Because the F-GC44 positive control passed immediately beforehand, this is not a generic build or coupling-backend failure.",
+    "The original DSW22 matrix and all-success gate must not be retuned or relabeled as passed."
+  ],
+  "next": "Execute the complete unchanged 3x3 matrix as a post-falsification diagnostic using try_initialize_configured and predictor_run_diagnostics; retain successful-case semantic algebra checks."
+}

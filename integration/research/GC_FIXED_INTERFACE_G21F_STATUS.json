@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21f.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21F",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_DIAGNOSTIC_NONMONOTONE_OR_UNRESOLVED_LOCAL_STATUS_TOPOLOGY",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21F_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21F_FIRST_EXECUTION_RESULT.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21F_RESULT.json",
+  "tested_commit": "b48690d57ff999347db4018501181d880ae57293",
+  "workflow_run": 35737526010,
+  "workflow_job": 106778498746,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_solver_configuration_change": false,
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "disposition": {
+    "g21e_standard_vs_nour": "REMAINS_QUALIFIED_MATCHED_BOUNDED_COMPARISON",
+    "local_participant_boundary": "NONMONOTONE_OR_UNRESOLVED",
+    "single_head_threshold_model": "REJECTED_BY_COARSE_TOPOLOGY",
+    "direct_head_snapping_or_tolerance": "NOT_JUSTIFIED",
+    "status6_semantics": "UNCHANGED_INADMISSIBLE_DIAGNOSTIC_TRIAL",
+    "production_solver_configuration_selection": "NOT_MADE",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "key_numbers": {
+    "frozen_interval_width_m": 1.979527652906654e-13,
+    "frozen_interval_ulps": 1783,
+    "coarse_heads": 33,
+    "status_transitions": 5,
+    "status_reversals_0_to_6": 2,
+    "nour_status6_solver_rejections": 1,
+    "nour_status6_temporal_rejections": 8,
+    "g17_status0_solver_rejections": 0,
+    "g17_status0_temporal_rejections": 80
+  },
+  "next_action": "Preregister a source-level causal diagnostic over representative status islands. Record per-attempt temporal-step/retry/solver outcomes and identify the exact solver/retry branch that separates status-0 completion from status-6 failure. No participant smoothing, tolerance change or solver-configuration selection."
+}

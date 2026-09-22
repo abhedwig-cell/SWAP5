@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.gc_real_swap.map02.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP02",
+  "workflow_run": 35565666655,
+  "workflow_job": 106226862130,
+  "decision": "QUALIFIED_LOCAL_RESPONSE_MAPPING_SIGN_INVERSION_OBSERVED",
+  "predictor": {
+    "href_m": -0.7149999706136307,
+    "hcof_m2_per_day": 0.3402936037279093,
+    "rhs_m3_per_day": -0.24330990700660954,
+    "affine_slope_per_s": 0.000003938583376480432,
+    "affine_u_equivalent": 0.00003402936037279093
+  },
+  "admitted_band": {
+    "center_head_m": -0.7149999677331765,
+    "live_shift_scale_m": 2.8804542084870377e-9,
+    "samples": [
+      {
+        "multiplier": -0.5,
+        "head_m": -0.7149999691734037,
+        "q_m_per_s": -1.2141290101307912e-13
+      },
+      {
+        "multiplier": -0.25,
+        "head_m": -0.7149999684532901,
+        "q_m_per_s": -1.2424936664335409e-13
+      },
+      {
+        "multiplier": 0,
+        "head_m": -0.7149999677331765,
+        "q_m_per_s": -1.2708557527755854e-13
+      },
+      {
+        "multiplier": 0.25,
+        "head_m": -0.714999967013063,
+        "q_m_per_s": -1.29921783911763e-13
+      },
+      {
+        "multiplier": 0.5,
+        "head_m": -0.7149999662929494,
+        "q_m_per_s": -1.3275799254596744e-13
+      }
+    ]
+  },
+  "finite_difference": {
+    "radius_0_25": {
+      "delta_m": 7.201135521217594e-10,
+      "corrector_slope_per_s": -0.000003938557503671165,
+      "u_equivalent": -0.000034029136831718864,
+      "ratio_to_production_slope": -0.999993430935239
+    },
+    "radius_0_5": {
+      "delta_m": 1.4402271042435189e-9,
+      "corrector_slope_per_s": -0.000003938646724346763,
+      "u_equivalent": -0.000034029907698356036,
+      "ratio_to_production_slope": -1.0000160839216226
+    }
+  },
+  "intercept": {
+    "affine_q_at_center_m_per_s": -1.0044736069149252e-13,
+    "corrector_q_at_center_m_per_s": -1.2708557527755854e-13,
+    "corrector_minus_affine_m_per_s": -2.6638214586066016e-14
+  },
+  "live_coupling": {
+    "iteration_1": {
+      "head_m": -0.7149999677331176,
+      "q_groundwater_m_per_s": -1.004471284312938e-13,
+      "q_swap_m_per_s": -1.2708557527755854e-13,
+      "residual_m_per_s": -2.6638446846264738e-14,
+      "modflow_converged": false
+    },
+    "iteration_2": {
+      "head_m": -0.7149999677331765,
+      "q_groundwater_m_per_s": -1.2708580747683645e-13,
+      "q_swap_m_per_s": -1.2708557527755854e-13,
+      "residual_m_per_s": 2.3219927791065243e-19,
+      "modflow_converged": true
+    }
+  },
+  "ledger": {
+    "tile1_m": -3.8430677963933704e-13,
+    "tile2_m": -7.137125907587689e-13,
+    "total_m": -1.098019370398106e-12,
+    "expected_from_corrector_flux_m": -1.098019370398106e-12,
+    "verdict": "PASS"
+  },
+  "gates": {
+    "admitted_band_probes": "PASS",
+    "area_weighted_corrector_closure": "PASS",
+    "center_repeat_determinism": "PASS",
+    "finite_difference_response_characterized": "PASS",
+    "live_coupled_window": "PASS",
+    "ledger_flux_integral_closure": "PASS"
+  },
+  "bounded_conclusions": [
+    "Within the empirically admitted F-GC45 head band, the real SWAP corrector flux response is locally linear and deterministic.",
+    "The magnitude of the real corrector derivative matches the production affine slope to about 1e-5 relative, but the sign is opposite.",
+    "The initial affine intercept is also offset from the real corrector flux at the accepted head; production reanchoring corrects the intercept and closes the coupled residual on the next iteration.",
+    "The accepted whole-window mass ledger exactly matches the integrated real SWAP corrector flux.",
+    "No production-defect claim is made until q_u, q_swap and MODFLOW sign conventions are reconciled equation by equation."
+  ],
+  "next": [
+    "Audit sign conventions from predictor qbot through q_u, cell response, linear backend, API HCOF/RHS and q_groundwater evaluation.",
+    "Determine whether the observed sign inversion is intended convention mapping or an actual tangent-sign inconsistency.",
+    "Only after that audit compare u-equivalent magnitude with a physically derived storage response."
+  ]
+}

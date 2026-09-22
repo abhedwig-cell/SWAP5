@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_low01d.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-D",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_BLOCKED_PARENT_LOW01A2",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_LOW01D_PREREGISTRATION.json",
+  "result_contract": "integration/research/GC_LOW01_RESULT_CONTRACT_V1.json",
+  "support": "tests/research/support/mod_gc_low01_trial_transaction.f90",
+  "test": "tests/research/test_gc_low01d_below_profile_transaction.f90",
+  "runner": "tests/research/run_gc_low01d.sh",
+  "scope": "Below-profile H_phreatic reduction only through qualified mode-5 Reference Richards. No bottom_mode=1 call and no inside-profile claim.",
+  "implemented_gates": [
+    "A1-B-A2 trials all rebuild requests from the same accepted origin",
+    "A1 and B rejection clear candidate only and preserve accepted pressure head, water content, compatibility GWL, ponding, revision and accepted mass bitwise",
+    "A1/A2 candidate pressure head, water content, qbot, mass residual and solver iteration counts replay identically",
+    "B differs from A1 in qbot or candidate hydraulic state",
+    "only A2 acceptance advances revision exactly once",
+    "only A2 qbot*dt is published to accepted interface mass",
+    "candidate preserves requested/effective H_phreatic, below-profile branch id, hbot and qbot materialization provenance",
+    "candidate does not claim derived_profile_GWL authority from the focused mode-5 solve"
+  ],
+  "activation_dependency": "GC-LOW01-A2 live qualification must PASS unchanged before LOW01-D execution is treated as evidence.",
+  "blockers": [
+    "LOW01-A2 workflow evidence is still queued/pending at this checkpoint."
+  ],
+  "nonclaims": [
+    "does not qualify inside-profile mode 1",
+    "does not resolve KSATEXM-enabled saturated continuation",
+    "does not activate HLINK04",
+    "does not change production F-GC or Reference Richards admission"
+  ],
+  "next_action": "When LOW01-A2 passes, execute run_gc_low01d.sh unchanged and persist the transaction result. Keep LOW01-B and HLINK04 blocked independently."
+}

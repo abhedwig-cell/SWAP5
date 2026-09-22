@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.gc_fixed_interface.g16.baseline_reconciliation.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G16",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G16_PREREGISTRATION.json",
+  "state": "RECONCILED_BEFORE_IMPLEMENTATION",
+  "initial_race_read_baseline": "9c7d510a7b53170d507d10ad5b65a39c8c50bc81",
+  "intervening_commit": "aff45edc5f2ce9438dfb1119884fa2d4f4036a6f",
+  "preregistration_reconciliation_commit": "cf246c01bbeb45899312794a64d57b07ff40ba1d",
+  "effective_preregistered_baseline_head": "aff45edc5f2ce9438dfb1119884fa2d4f4036a6f",
+  "classification": "TECHNICAL_TEST_BUILD_ORDER_ONLY",
+  "delta": "tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh moves mod_b110_root_sink_provider.f90 earlier in MODULE_SRC so current-source dependencies compile in order.",
+  "semantic_effect": {
+    "runtime_source": false,
+    "g15_result_or_status": false,
+    "g09d_g13_g14_authority": false,
+    "e3_rules": false,
+    "participant_observation_contract": false,
+    "hcof_rhs": false,
+    "coupling_policy": false
+  },
+  "disposition": "The G16 preregistration itself was corrected to the actual pre-implementation parent aff45ed... before any G16 implementation or execution. This companion record only preserves the race/reconciliation history and adds no alternate baseline authority.",
+  "production_admission": "NO"
+}

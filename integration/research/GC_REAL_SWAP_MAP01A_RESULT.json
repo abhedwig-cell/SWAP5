@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.gc_real_swap.map01a.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP01A",
+  "workflow_run": 35565445905,
+  "decision": "DIAGNOSTIC_QUALIFIED_EXISTING_FGC45_ADMITTED_HEAD_PATH",
+  "predictor_reference_head_m": -0.7149999706136307,
+  "iterations": [
+    {
+      "iteration": 1,
+      "head_m": -0.7149999677331176,
+      "q_corrector_m_per_s": -1.2708557527755854e-13,
+      "q_groundwater_affine_m_per_s": -1.004471284312938e-13,
+      "residual_m_per_s": -2.6638446846264738e-14,
+      "modflow_converged": false
+    },
+    {
+      "iteration": 2,
+      "head_m": -0.7149999677331765,
+      "q_corrector_m_per_s": -1.2708557527755854e-13,
+      "q_groundwater_affine_m_per_s": -1.2708580747683645e-13,
+      "residual_m_per_s": 2.3219927791065243e-19,
+      "modflow_converged": true
+    }
+  ],
+  "accepted_head_shift_from_predictor_reference_m": 2.8804542084870377e-9,
+  "accepted_head_shift_nm": 2.8804542084870377,
+  "initial_predictor_q_at_final_head_m_per_s": -1.0044736069491064e-13,
+  "initial_predictor_vs_corrector_difference_m_per_s": -2.66382145826479e-14,
+  "final_head_m": -0.7149999677331765,
+  "final_corrector_q_m_per_s": -1.2708557527755854e-13,
+  "final_flux_residual_m_per_s": 2.3219927791065243e-19,
+  "existing_fgc45_gate": "PASS",
+  "bounded_conclusions": [
+    "The existing real-SWAP corrector is admitted at a head only a few nanometres from the predictor reference for this very short F-GC45 window.",
+    "The initial affine predictor and real corrector flux differ materially relative to the tiny flux scale at the first accepted head.",
+    "Keeping the production slope fixed while reanchoring the affine intercept to the real SWAP corrector closes the coupled residual on the second iteration.",
+    "This supports interpreting the affine term as a local predictor/corrector response object; it does not yet identify u with physical storage."
+  ]
+}

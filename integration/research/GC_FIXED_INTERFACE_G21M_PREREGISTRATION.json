@@ -1,0 +1,124 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21m.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21M",
+  "title": "Residual arithmetic and cancellation qualification at G21L balance boundaries",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "bdc05ed9ef25e3bdb8575b2e99b47942da1528f8",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21L_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21K_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21J_RESULT.json",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "question": "Are the B2 total-balance split and B1 node-4 compartment split explainable by binary64 aggregation order/cancellation of the already-computed HeadCalc residual terms, or do the threshold classifications survive independent exact-float and compensated recombination?",
+  "separation": {
+    "arm_b2": "Full final residual-vector aggregation at B2 status-0/status-6 heads.",
+    "arm_b1": "Final node-4 residual expression term aggregation at the B1 status-6 head, with the adjacent status-0 state as control.",
+    "not_claimed": [
+      "That stable aggregation proves absence of floating-point sensitivity inside constitutive, storage, gradient or conductivity term construction.",
+      "That higher-precision diagnostic arithmetic should replace production binary64 arithmetic.",
+      "That any observed cancellation justifies changing solver tolerances.",
+      "That G21 dynamic path equivalence is restored."
+    ]
+  },
+  "frozen_source": {
+    "headcalc_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "compiler_contract": "existing FGC44 research semantic build flags; no fast-math option",
+    "numnod": 4,
+    "bottom_mode": 5,
+    "swkimpl": 0,
+    "swkmean": 1,
+    "production_balance_tolerance": 1e-12
+  },
+  "research_build_instrumentation": {
+    "rule": "Generate a temporary copy of HeadCalc from the pinned production blob and insert a read-only call immediately after the existing sump, sum1 and Fmax calculations. The call records the already-computed residual vector and separately materialized node-4 expression terms. Do not modify any committed src/** file.",
+    "recorded_vector": [
+      "residual(1:NN)",
+      "HeadCalc native sum1",
+      "HeadCalc native Fmax",
+      "solver_numbit",
+      "cumulative iBackTr"
+    ],
+    "b1_node4_terms": [
+      "storage=(theta4-thetm1_4)*matrix_fraction4*dz4/dt",
+      "sink=+sink4",
+      "source=-source4",
+      "root=+root_sink_term4",
+      "upper_flux=-kmean4*head_gradient4",
+      "lower_flux=+kmean5*head_gradient5 for bottom_mode=5"
+    ],
+    "observer_semantics": "overwrite research scratch on every Newton iteration; after HeadCalc returns the snapshot is therefore the final evaluated iteration. Read only after the frozen prefix solve."
+  },
+  "frozen_cases": [
+    {
+      "id": "B1_STATUS6",
+      "head_m": -0.7150100297648301,
+      "max_iterations": 4,
+      "expected_solver_status": 2,
+      "expected_backtracking": 8
+    },
+    {
+      "id": "B1_STATUS0",
+      "head_m": -0.715010029764824,
+      "max_iterations": 4,
+      "expected_solver_status": 1,
+      "expected_backtracking": 8
+    },
+    {
+      "id": "B2_STATUS0",
+      "head_m": -0.715010029764793,
+      "max_iterations": 3,
+      "expected_solver_status": 1,
+      "expected_backtracking": 3
+    },
+    {
+      "id": "B2_STATUS6",
+      "head_m": -0.7150100297647868,
+      "max_iterations": 3,
+      "expected_solver_status": 2,
+      "expected_backtracking": 3
+    }
+  ],
+  "independent_arithmetic_contract": [
+    "Recover every final residual component as its binary64 value and require the native vector, sum and Fmax to reproduce G21L.",
+    "For each residual vector compute ordinary left-to-right binary64 sum, reverse-order binary64 sum, every permutation sum for four components, Python math.fsum, and a high-precision Decimal sum constructed exactly from each binary64 input.",
+    "Classify whether abs(total residual) > 1e-12 is invariant over all these recombinations. Do not change the residual components themselves.",
+    "For B1 node 4 recover the six signed expression terms and repeat ordinary, reverse, every-permutation, math.fsum and exact-binary64 Decimal recombination.",
+    "Require the recorded node-4 native residual to reproduce G21L. Separately report whether its >1e-12 classification is invariant under recombination of the already-rounded terms.",
+    "Compute cancellation ratio=sum(abs(terms))/abs(exact sum) for B1 node 4 and sum(abs(residual_i))/abs(exact vector sum) for each vector.",
+    "If a classification crosses 1e-12 under permitted recombination, classify AGGREGATION_ORDER_SENSITIVE. If it is invariant, classify AGGREGATION_ORDER_NOT_CAUSAL_AT_CAPTURED_TERM_LEVEL; do not extrapolate that statement upstream."
+  ],
+  "gates": [
+    "Pinned production HeadCalc blob matches and contains no G21M observer.",
+    "Full existing FGC44 end-to-end and G21L gates pass in the research build.",
+    "All four frozen solver-status/backtracking tuples reproduce.",
+    "Recorded native residual vectors reproduce G21L sum/max values to binary64 equality where the same native operations are recorded.",
+    "B2 status-6 and status-0 aggregation classifications are reported prospectively from all recombination methods.",
+    "B1 node-4 native residual reproduces G21L and its recombination classification is reported prospectively.",
+    "No committed src/** or standard FGC44 bridge source changes.",
+    "Normal G16 diagnostic non-authority postconditions remain unchanged."
+  ],
+  "pass_interpretation": "PASS determines whether final aggregation order/cancellation of already-computed binary64 residual components or node terms is sufficient to explain the observed threshold flips. A stable result narrows any remaining floating-point mechanism to upstream term construction or nonlinear path sensitivity; it does not prove exact-real arithmetic equivalence.",
+  "fail_interpretation": "Preserve any aggregation-order sensitivity or reconstruction mismatch. Do not alter term grouping, compiler flags, tolerances, frozen heads or solver prefixes after seeing the result.",
+  "allowed_mutation": [
+    "tests/research/mod_gc_g21m_residual_observer.f90",
+    "tests/research/prepare_gc_g21m_headcalc_observer.py",
+    "tests/research/test_gc_fixed_interface_g21m_residual_arithmetic.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    "integration/research/GC_FIXED_INTERFACE_G21M_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/**",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "production compiler flags",
+    "production solver tolerances",
+    "retry policy",
+    "participant acceptance semantics",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.gc_hlink.hlink02.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02",
+  "title": "Nonlinear complete-profile storage under MODFLOW STO replacement",
+  "status": "PREREGISTERED_CONDITIONAL_ON_HLINK01_PASS",
+  "activation_rule": "Execute only after GC-HLINK01 live gate passes without changing its preregistered storage-replacement semantics.",
+  "basis": [
+    "GC-HLINK candidate contract v1",
+    "GC-DUMMY-SWAP-DSW09 nonlinear storage oracle",
+    "GC-DUMMY-SWAP-DSW10 depth-varying integrated storage",
+    "GC-DUMMY-SWAP-DSW19 convergence-is-not-correctness control"
+  ],
+  "physical_storage": {
+    "initial_head_m": 8,
+    "x": "H-H0",
+    "volume_change_m3": "V(x)=S0*x+0.5*k*x^2 for A=1 m2",
+    "S0": 0.15,
+    "k_per_m": 1,
+    "external_input_m3": 0.01,
+    "duration_day": 1,
+    "exact_root_increment_m": 0.05615528128088301,
+    "exact_final_head_m": 8.056155281280883,
+    "exact_secant_storage": 0.17807764064044157,
+    "exact_tangent_storage": 0.206155281280883
+  },
+  "cases": [
+    {
+      "name": "SECANT_STO_ITERATION",
+      "representation": "At coupling iterate x_k, overwrite MODFLOW Sy with S_sec(x_k)=V(x_k)/x_k; use S0 at x_k=0; keep the physical external input fixed at 0.010 m3.",
+      "fixed_point_identity": "S_sec(x)*x=V(x)=0.010",
+      "expected": "converges to H=8.056155281280883 and physical mass closes without any numerical source term"
+    },
+    {
+      "name": "TANGENT_STO_WITH_AFFINE_CORRECTION",
+      "representation": "Overwrite MODFLOW Sy with S_tan(x_k)=S0+k*x_k and add only the Newton linearization correction Q_corr=[-V(x_k)+S_tan*x_k]/dt as a numerical API intercept.",
+      "fixed_point_identity": "S_tan*x = I + Q_corr*dt is the tangent linearization of V(x)=I",
+      "expected": "converges to the exact physical root; Q_corr is excluded from the physical external-water ledger"
+    },
+    {
+      "name": "TANGENT_STO_WITHOUT_CORRECTION",
+      "representation": "Overwrite MODFLOW Sy with S_tan(x_k) but retain only the physical input I.",
+      "wrong_fixed_point_equation": "(S0+k*x)*x=I",
+      "expected_wrong_increment_m": 0.05,
+      "expected_wrong_head_m": 8.05,
+      "role": "adversarial converged-but-wrong control"
+    }
+  ],
+  "gates": [
+    "Independent analytic V(H) oracle remains exactly the preregistered DSW09 curve.",
+    "Secant STO iteration converges to 8.056155281280883 m within 1e-10 m and V(H)-I closes within 1e-12 m3.",
+    "Tangent STO plus affine correction converges to the same physical root and physical V(H)-I closes within 1e-12 m3.",
+    "The tangent affine correction is reported separately and is not counted as physical external input.",
+    "Tangent STO without correction converges to the independently predicted wrong head 8.05 m within 1e-10 m.",
+    "The adversarial tangent-only case violates the exact nonlinear physical storage law by more than 1e-4 m3 despite subsystem convergence."
+  ],
+  "interpretation_rules": [
+    "A nonlinear h-link cannot in general be represented by inserting a local derivative into MODFLOW Sy and calling that derivative the complete storage law.",
+    "A secant response can represent an integrated one-window storage balance, while a tangent requires a consistent affine correction to represent the same nonlinear residual.",
+    "Numerical affine corrections are not additional physical water sources.",
+    "The correct representation must be derived from the chosen time-discrete physical residual before mapping to MODFLOW STO/API arrays."
+  ],
+  "forbidden": [
+    "do not execute before HLINK01 passes",
+    "no production source change",
+    "do not infer that real SWAP storage is quadratic",
+    "do not treat the Newton affine correction as physical recharge",
+    "do not select secant versus tangent for production from this toy case alone"
+  ]
+}

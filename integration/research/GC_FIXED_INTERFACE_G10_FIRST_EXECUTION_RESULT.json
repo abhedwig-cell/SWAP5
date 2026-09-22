@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G10_PREREGISTRATION.json",
+  "tested_commit": "e59ce03f06137f2cc961526a0dc1dd9491508d34",
+  "workflow_run": 35702164449,
+  "workflow_job": 106662496499,
+  "workflow_conclusion": "failure",
+  "decision": "PREREGISTERED_P4_ROBUSTNESS_GATE_FALSIFIED",
+  "carrier_binding": {
+    "status": "PASS",
+    "reference_head_m": -0.7149999311459918,
+    "predictor_u": 0.00119027208545508,
+    "qbot_cm_per_day": 0.000001
+  },
+  "nonlinear_carrier": {
+    "status": "PASS",
+    "href_e3_slope_per_s": -0.000001377629615322778,
+    "max_relative_slope_change": 0.1747243798783314,
+    "max_change_dh_m": 0.00001,
+    "max_change_e3_slope_per_s": -0.0000016183350955620745,
+    "frozen_threshold_fraction": 0.05,
+    "selected_starts_m": {
+      "negative": -0.00001,
+      "positive": 0.00001
+    }
+  },
+  "groundwater_regimes": [
+    {
+      "id": "GW_R05_STRESS",
+      "a_per_s": 6.888155563784176e-7,
+      "fit_error_m_per_s": 4.385349716238161e-22,
+      "realized_r": 0.5000005434820943,
+      "reference_root_m": -0.7149975688413043
+    },
+    {
+      "id": "GW_R2_STRESS",
+      "a_per_s": 0.000002755257387867109,
+      "fit_error_m_per_s": 2.1926748581190804e-22,
+      "realized_r": 1.9999986623556678,
+      "reference_root_m": null
+    },
+    {
+      "id": "GW_MIXED",
+      "a_per_s": 0.0002331483228518438,
+      "fit_error_m_per_s": 2.54919007508863e-13,
+      "realized_r": 169.23875638171242,
+      "reference_root_m": -0.7149997350308794
+    }
+  ],
+  "completed_policy_results": [
+    {
+      "regime_id": "GW_R05_STRESS",
+      "start_side": "NEG",
+      "policy": "P1_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "head_error_m": 1.8656554079399257e-10
+    },
+    {
+      "regime_id": "GW_R05_STRESS",
+      "start_side": "NEG",
+      "policy": "P4_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "head_error_m": 1.8656554079399257e-10
+    },
+    {
+      "regime_id": "GW_R05_STRESS",
+      "start_side": "POS",
+      "policy": "P1_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "head_error_m": 1.8656620692780734e-10
+    },
+    {
+      "regime_id": "GW_R05_STRESS",
+      "start_side": "POS",
+      "policy": "P4_E3",
+      "classification": "CONVERGED",
+      "outer": 2,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 0,
+      "head_error_m": 1.8656620692780734e-10
+    },
+    {
+      "regime_id": "GW_MIXED",
+      "start_side": "NEG",
+      "policy": "P1_E3",
+      "classification": "OUTER_BUDGET_EXHAUSTED",
+      "outer": 12,
+      "contractions": 0,
+      "raw_inadmissible": 0,
+      "merit_increases": 1,
+      "final_head_m": -0.7149997332233566,
+      "head_error_m": 1.807522798102923e-9,
+      "final_residual_m_per_s": -4.237185595364478e-13
+    },
+    {
+      "regime_id": "GW_MIXED",
+      "start_side": "NEG",
+      "policy": "P4_E3",
+      "classification": "SAFEGUARD_EXHAUSTED",
+      "outer": 2,
+      "contractions": 12,
+      "raw_head_m": -0.7149997332233566,
+      "raw_status": 0
+    }
+  ],
+  "important_observations": [
+    "The frozen E4 B4 carrier is reproduced exactly and satisfies the preregistered material-nonlinearity gate.",
+    "The storage-dominated r≈0.5 regime converges for P1-E3 and P4-E3 from both frozen extreme starts without safeguarding.",
+    "The r≈2 storage regime has no admissible reference root inside the frozen scan and is not forced into the replay matrix.",
+    "The mixed groundwater regime has an affine-fit error of 2.54919e-13 m/s, much larger than the 1e-15 coupled residual tolerance.",
+    "For the mixed negative start P1-E3 reaches a status-0 head but then stagnates after a merit increase; P4-E3 activates the line search and exhausts all 12 factor-1/2 contractions at outer iteration 2.",
+    "This is the first live real-SWAP case in this line where the P4 safeguard is genuinely exercised, but it fails rather than recovers."
+  ],
+  "bounded_conclusions": [
+    "G10 does not qualify P4 research robustness.",
+    "Do not relax the 12-contraction budget, 1e-15 residual tolerance, frozen starts, or groundwater fit gate post hoc.",
+    "Before changing the safeguard, diagnose whether the failure is driven by the affine groundwater merit/reference oracle, by real-SWAP local response structure, or by both.",
+    "No production HCOF/RHS or coupling change is authorized."
+  ],
+  "production_admission": "NO"
+}

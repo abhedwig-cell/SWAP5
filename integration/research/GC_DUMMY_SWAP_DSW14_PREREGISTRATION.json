@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw14.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW14",
+  "title": "Composition of storage, atmospheric input, MODFLOW source, ET and drain",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "components": [
+      "GC-DUMMY-SWAP-DSW03",
+      "GC-DUMMY-SWAP-DSW12",
+      "GC-DUMMY-SWAP-DSW13"
+    ]
+  },
+  "physical_system": {
+    "initial_head_m": 8,
+    "storage_coefficient": 0.2,
+    "duration_day": 1,
+    "atmospheric_input_m_per_day": 0.02,
+    "modflow_source_m3_per_day": 0.01,
+    "et_threshold_m": 8.02,
+    "et_slope_per_day": 0.1,
+    "drain_elevation_m": 8.04,
+    "drain_conductance_per_day": 0.2
+  },
+  "active_branch_balance": "S*(H-H0)/dt = R_atm + Q_mf - a_et*(H-H_et) - C_d*(H-H_d)",
+  "exact_final_head_m": 8.08,
+  "exact_terms_m": {
+    "atmospheric_input": 0.02,
+    "modflow_source": 0.01,
+    "et_loss": 0.006,
+    "drain_loss": 0.008,
+    "storage_gain": 0.016
+  },
+  "api_mapping": {
+    "hcof_per_day": -0.3,
+    "rhs_m_per_day": -2.43,
+    "interpretation": "API term contains atmospheric input plus two state-dependent sinks; MODFLOW WEL supplies the independent groundwater source and STO supplies physical storage."
+  },
+  "gates": [
+    "final head equals 8.08 m",
+    "ET and drain both active",
+    "storage+ET+drain equals atmospheric plus MODFLOW input",
+    "composed response equals sum of independently declared mechanism terms"
+  ],
+  "forbidden": [
+    "no new mechanism calibration",
+    "no production source change",
+    "do not infer that real SWAP process composition is linear"
+  ]
+}

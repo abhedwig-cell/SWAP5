@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw05w.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW05W",
+  "title": "Irregular timestep inner residual closure diagnostic",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_observation": "integration/research/GC_DUMMY_SWAP_DSW05_OBSERVATION.json",
+  "fixed_case": {
+    "initial_head_m": 8.0035,
+    "dt_day": 0.13,
+    "s_swap": 0.1,
+    "s_modflow": 0.1,
+    "recharge_rate_m_per_day": 0.01,
+    "exact_head_m": 8.01,
+    "outer_dvclose": 1e-12,
+    "inner_dvclose": 1e-14
+  },
+  "variants": [
+    {
+      "rclose": 1e-15,
+      "label": "STRICT_1E15"
+    },
+    {
+      "rclose": 1e-14,
+      "label": "STRICT_1E14"
+    },
+    {
+      "rclose": 1e-13,
+      "label": "STRICT_1E13"
+    }
+  ],
+  "method": "Solve the same fixed one-cell affine transient equation in fresh MODFLOW6 6.8.0 sessions. Keep all physics, dt, outer closure, inner head closure and API terms fixed. Change only IMS strict residual closure.",
+  "diagnostic_logic": "If looser residual closure certifies the same machine-precision head while 1e-15 does not, DSW-05 is an inner-linear residual certification effect rather than a timestep-dependent physical error.",
+  "gate": "At least the 1e-13 variant must converge and remain within 1e-10 m of the exact head; 1e-15 and 1e-14 are characterization points.",
+  "forbidden": [
+    "do not alter DSW-05 preregistered gate",
+    "do not recommend a production tolerance from this diagnostic alone"
+  ]
+}

@@ -1,0 +1,31 @@
+name: GC LOW01-D below-profile replay isolation
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01A2_RESULT.json'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-low01d-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  low01d:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guard qualified LOW01-A2 authority
+        run: |
+          python3 -c 'import json,pathlib,sys; d=json.loads(pathlib.Path("integration/research/GC_LOW01A2_RESULT.json").read_text()); sys.exit(0 if d.get("conclusion")=="success" and str(d.get("decision","")).startswith("QUALIFIED") else 1)'
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-D qualification
+        run: bash tests/research/run_gc_low01d.sh

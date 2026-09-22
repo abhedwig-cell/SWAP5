@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw13.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW13",
+  "title": "Threshold linear drain sink",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "shared_storage": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "physical_system": {
+    "initial_head_m": 8,
+    "storage_coefficient": 0.2,
+    "duration_day": 1,
+    "drain_elevation_m": 8.03,
+    "drain_conductance_per_day": 0.2,
+    "drain_law": "q_d=C_d*max(0,H-H_d)"
+  },
+  "cases": [
+    {
+      "name": "inactive_drain",
+      "recharge_m_per_day": 0.002,
+      "exact_final_head_m": 8.01,
+      "exact_drain_m_per_day": 0
+    },
+    {
+      "name": "active_drain",
+      "recharge_m_per_day": 0.02,
+      "exact_final_head_m": 8.065,
+      "exact_drain_m_per_day": 0.007
+    }
+  ],
+  "api_mapping": {
+    "inactive": "Q(H)=R",
+    "active": "Q(H)=R-C_d*(H-H_d)",
+    "active_hcof": "-C_d"
+  },
+  "gates": [
+    "inactive and active branches match exact water balance",
+    "drain volume plus storage gain equals recharge",
+    "threshold activation is correct",
+    "drain conductance is a physical sink conductance and must remain distinct from storage response u/dt"
+  ],
+  "forbidden": [
+    "do not interpret this as SWAP drainage production physics",
+    "no production source change"
+  ]
+}

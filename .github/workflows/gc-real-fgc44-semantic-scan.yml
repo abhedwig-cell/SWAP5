@@ -1,0 +1,130 @@
+name: GC real-SWAP FGC44 semantic scan
+on:
+  push:
+    branches: [work/f-gc-dummy-swap-shared-storage]
+    paths:
+      - 'integration/research/GC_DUMMY_SWAP_DSW22_PREREGISTRATION.json'
+      - 'tests/research/test_gc_real_fgc44_response_storage_scan.py'
+      - 'tests/research/run_gc_real_fgc44_response_storage_scan.sh'
+      - 'tests/research/test_gc_fixed_interface_fgc44_globalization_g03.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_regime_sweep_g07a.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_safeguarded_newton_g08.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_boundary_tangent_g09.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_tangent_topology_g09a.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_topology_tangent_g09b.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_signature_decomposition_g09c.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_stencil_multiscale_g09d.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G09D_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09C_RESULT.json'
+      - 'tests/research/test_gc_fixed_interface_fgc44_multiscale_tangent_g09d.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G09D_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09C_RESULT.json'
+      - 'tests/research/test_gc_fixed_interface_fgc44_stencil_class_tangent_g09d.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_nonlinear_b4_g10.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_groundwater_oracle_g10a.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_local_groundwater_replay_g10b.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G10B_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_fgc44_local_groundwater_g10b.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_live_safeguard_g11.py'
+      - 'tests/research/test_gc_fixed_interface_g14_fused_fgc44.py'
+      - 'tests/research/test_gc_fixed_interface_g15_participant_observation.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G15_PREREGISTRATION.json'
+      - 'src/runtime/mod_fmr_groundwater_swap_tangent_observation_service.f90'
+      - 'tests/research/test_gc_fixed_interface_g16_tangent_observation_service.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G16_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g17_safeguarded_orchestration.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G17_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21i_solver_prefix_forensics.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21I_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21j_convergence_criteria.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21J_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21k_balance_thresholds.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21K_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21l_residual_state.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21L_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21m_residual_arithmetic.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21M_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21n_term_delta_scan.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21N_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g23_endpoint_transaction_matrix.py'
+      - 'tests/research/run_gc_fixed_interface_g23_endpoint_transaction_matrix.sh'
+      - 'integration/research/GC_FIXED_INTERFACE_G23_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g24_dvclose_compatibility.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G24_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21g_island_repeatability.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21G_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21h_retry_level_forensics.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21H_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g18_prepared_solve_p4_contract.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G18_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g19_response_space_bridge.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G19_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g20_continuous_response_damping.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G20_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21_dynamic_response_globalization.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21a_outer2_divergence.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21A_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21b_prepared_solve_convergence.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21B_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21c_xmi_state_forensics.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21C_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21d_under_relaxation_causal.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21D_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21f_admissibility_boundary.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21F_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21e_dynamic_solver_configuration.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21E_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21f_admissibility_boundary.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21F_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g21c_xmi_state_forensics.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G21C_PREREGISTRATION.json'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'integration/research/GC_FIXED_INTERFACE_G14_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G13_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G11_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G10B_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G10A_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G10A_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G10_FIRST_EXECUTION_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G10_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09D_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09C_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09C_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09B_FIRST_EXECUTION_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09B_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09A_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09A_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09_FIRST_EXECUTION_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G09_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G08_PREREGISTRATION.json'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py'
+      - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
+      - '.github/workflows/gc-real-fgc44-semantic-scan.yml'
+  workflow_dispatch:
+
+# CI trigger marker: groundwater-response-g03-20260921
+permissions: {contents: read}
+jobs:
+  semantic-scan:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run preregistered DSW22 semantic scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash tests/research/run_gc_real_fgc44_response_storage_scan.sh
+      - name: Run G23 and G24 on clean standard F-GC44 build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash tests/research/run_gc_fixed_interface_g23_endpoint_transaction_matrix.sh
+ 

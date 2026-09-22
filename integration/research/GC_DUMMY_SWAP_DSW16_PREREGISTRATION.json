@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw16.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW16",
+  "title": "N:1 heterogeneous dummy-column aggregation to one MODFLOW cell",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "aggregation_authority": "F-GC40-style area-weighted cell response"
+  },
+  "cell": {
+    "area_m2": 1,
+    "initial_head_m": 8,
+    "modflow_sy": 0,
+    "duration_day": 1
+  },
+  "columns": [
+    {
+      "id": 1,
+      "area_fraction": 0.2,
+      "storage": 0.1,
+      "recharge_m_per_day": 0.004
+    },
+    {
+      "id": 2,
+      "area_fraction": 0.3,
+      "storage": 0.2,
+      "recharge_m_per_day": 0.01
+    },
+    {
+      "id": 3,
+      "area_fraction": 0.5,
+      "storage": 0.3,
+      "recharge_m_per_day": 0.02
+    }
+  ],
+  "aggregate": {
+    "weighted_storage": 0.23,
+    "weighted_recharge_m_per_day": 0.0138,
+    "exact_head_increment_m": 0.06,
+    "exact_final_head_m": 8.06,
+    "response": "Q_cell(H)=sum_i a_i[R_i-S_i*(H-H0)/dt]"
+  },
+  "permutations": "all six column orderings",
+  "gates": [
+    "area fractions sum to one",
+    "aggregated HCOF equals -0.23/day",
+    "aggregated recharge equals 0.0138 m/day",
+    "all six permutations produce identical HCOF/RHS and head",
+    "final head equals 8.06 m",
+    "area-weighted individual storage gains equal area-weighted inputs"
+  ],
+  "forbidden": [
+    "no production F-GC40 change",
+    "do not infer heterogeneous Richards equivalence from this linear aggregate test",
+    "no order-dependent aggregation"
+  ]
+}

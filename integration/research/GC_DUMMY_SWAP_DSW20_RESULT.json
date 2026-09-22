@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw20.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW20",
+  "workflow_run": 35563873238,
+  "workflow_job": 106221736326,
+  "decision": "QUALIFIED_MANUFACTURED_MULTIWINDOW_COUPLED_TRAJECTORY",
+  "settings": {
+    "groundwater_storage": 0.2,
+    "memory_release_rate_per_day": 0.8,
+    "drain_slope_per_day": 0.03,
+    "drain_reference_head_m": 8,
+    "et_rate_m_per_day": 0.001,
+    "ims_rclose": 1e-13
+  },
+  "windows": [
+    {
+      "step": 1,
+      "dt_day": 0.25,
+      "head_m": 8.030120481927709,
+      "memory_m": 0.0075000000000000015,
+      "transfer_m": 0.0015000000000000005,
+      "drain_m": 0.00022590361445781415,
+      "window_mass_error_m": -3.885780586188048e-16,
+      "cumulative_mass_error_m": -3.877106968808164e-16
+    },
+    {
+      "step": 2,
+      "dt_day": 0.5,
+      "head_m": 8.044962574550693,
+      "memory_m": 0.005357142857142859,
+      "transfer_m": 0.002142857142857144,
+      "drain_m": 0.0006744386182603978,
+      "window_mass_error_m": 1.8279648628105605e-16,
+      "cumulative_mass_error_m": -2.0556473190325164e-16
+    },
+    {
+      "step": 3,
+      "dt_day": 0.75,
+      "head_m": 8.056186262838507,
+      "memory_m": 0.007098214285714287,
+      "transfer_m": 0.004258928571428572,
+      "drain_m": 0.0012641909138664032,
+      "window_mass_error_m": 5.542441505745899e-16,
+      "cumulative_mass_error_m": 3.5041414214731503e-16
+    },
+    {
+      "step": 4,
+      "dt_day": 0.4,
+      "head_m": 8.067454981277853,
+      "memory_m": 0.006135010822510823,
+      "transfer_m": 0.0019632034632034636,
+      "drain_m": 0.0008094597753342397,
+      "window_mass_error_m": 7.936359902593892e-17,
+      "cumulative_mass_error_m": 4.2847669856627135e-16
+    },
+    {
+      "step": 5,
+      "dt_day": 0.6,
+      "head_m": 8.072723405817785,
+      "memory_m": 0.00617230460980461,
+      "transfer_m": 0.0029627062127062123,
+      "drain_m": 0.0013090213047201222,
+      "window_mass_error_m": 1.6046192152785466e-16,
+      "cumulative_mass_error_m": 5.915407053080912e-16
+    }
+  ],
+  "final_state": {
+    "head_m": 8.072723405817785,
+    "memory_m": 0.00617230460980461
+  },
+  "gates": {
+    "all_windows_converged": "PASS",
+    "independent_head_recurrence": "PASS",
+    "window_mass_ledger": "PASS",
+    "cumulative_mass_ledger": "PASS",
+    "manufactured_final_state": "PASS"
+  },
+  "bounded_conclusions": [
+    "A multi-window coupled trajectory with unequal timesteps can preserve exact state continuation when groundwater head and an internal memory state are both carried explicitly.",
+    "Internal transfer cancels from the complete-system mass ledger while ET, drainage and lateral or memory inputs remain externally accountable.",
+    "The manufactured trajectory demonstrates why a coupling acceptance contract needs state continuity plus explicit mass accounting, not only a final MODFLOW convergence flag."
+  ],
+  "forbidden_inference": [
+    "The memory-release coefficient is illustrative, not calibrated SWAP physics.",
+    "The preregistered rclose is a research-harness setting, not a production recommendation."
+  ]
+}

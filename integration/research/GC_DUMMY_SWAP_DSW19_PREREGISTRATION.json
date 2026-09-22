@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw19.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW19",
+  "title": "Adversarial convergence-versus-correctness controls",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "physical_oracle": {
+    "initial_head_m": 8,
+    "total_storage": 0.2,
+    "intended_input_m": 0.01,
+    "dt_day": 1,
+    "expected_head_m": 8.05
+  },
+  "cases": [
+    {
+      "name": "CORRECT_CONTROL",
+      "description": "single physical storage and correctly signed input",
+      "expected_head_m": 8.05,
+      "expected_physical_mass_error_m": 0
+    },
+    {
+      "name": "DUPLICATE_STORAGE",
+      "description": "MODFLOW owns full S=0.20 while API also removes another full S=0.20 response",
+      "expected_head_m": 8.025,
+      "expected_physical_head_error_m": -0.025
+    },
+    {
+      "name": "WRONG_STORAGE_SIGN",
+      "description": "MODFLOW owns S=0.15 while intended S=0.05 API storage share is published with positive rather than negative HCOF",
+      "expected_head_m": 8.1,
+      "expected_physical_mass_error_m": 0.01
+    },
+    {
+      "name": "REVERSED_FORCING_SIGN",
+      "description": "the intended +0.010 m input is published as -0.010 m",
+      "expected_head_m": 7.95,
+      "expected_physical_head_error_m": -0.1
+    }
+  ],
+  "gates": [
+    "all four MODFLOW cases converge",
+    "correct control matches physical head within 1e-10 m",
+    "each adversarial case matches its independently predicted wrong signature within 1e-10 m",
+    "each adversarial case is distinguishable from the intended physical oracle",
+    "at least one converged adversarial case violates the intended physical mass ledger by more than 1e-3 m"
+  ],
+  "interpretation": "subsystem numerical convergence is necessary but not sufficient evidence of coupling correctness.",
+  "forbidden": [
+    "do not weaken mass or physics gates because MODFLOW converged",
+    "no production source change"
+  ]
+}

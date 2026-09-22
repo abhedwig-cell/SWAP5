@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.gc.coupling_mode_contract.v1",
+  "date": "2026-09-21",
+  "status": "RESEARCH_CONTRACT_PRODUCTION_READ_ONLY",
+  "purpose": "Declare physical domain relation, head semantics, storage ownership and exchange meaning before constructing or interpreting a SWAP-MODFLOW coupling.",
+  "modes": {
+    "DISTINCT_DOMAIN_INTERFACE": {
+      "head_semantics": "SHARED_INTERFACE_HYDRAULIC_HEAD",
+      "domain_relation": "DISJOINT_CONTROL_VOLUMES_MEETING_AT_INTERFACE",
+      "physical_state_count": "at least one state in each subsystem; interface head continuity may be imposed without identifying complete subsystem states",
+      "storage_rule": "Each subsystem owns storage in its own physical control volume. No shared-volume partition identity is implied.",
+      "exchange_kind": "PHYSICAL_BOUNDARY_TRANSFER",
+      "mass_authority": "Accepted interface exchange is loss from one control volume and gain to the other, counted exactly once.",
+      "derivative_rule": "A coupling response slope may approximate the interface response but is not storage ownership unless separately derived.",
+      "evidence": [
+        "MAP11",
+        "F-GC45 ledger",
+        "DSW17"
+      ]
+    },
+    "ZERO_RESISTANCE_DISJOINT_SHARED_HEAD": {
+      "head_semantics": "COMMON_HEAD_LIMIT_OF_TWO_PHYSICAL_STATES",
+      "domain_relation": "DISJOINT_STORAGE_VOLUMES_WITH_VANISHING_HYDRAULIC_RESISTANCE",
+      "storage_rule": "Physical storages are additive because the volumes are distinct: S_total=S_1+S_2.",
+      "exchange_kind": "PHYSICAL_INTERNAL_TRANSFER_FOR_FINITE_RESISTANCE; limiting constraint variable as resistance tends to zero",
+      "equivalence_condition": "As resistance tends to zero, head gap tends to zero while total storage remains the sum of the two disjoint physical storages.",
+      "evidence": [
+        "DSW08",
+        "DSW18",
+        "DSW24"
+      ]
+    },
+    "COEXTENSIVE_SHARED_PHREATIC": {
+      "head_semantics": "ONE_PHYSICAL_PHREATIC_HEAD",
+      "domain_relation": "SAME_PHYSICAL_STORAGE_VOLUME_REPRESENTED_BY_MULTIPLE_NUMERICAL_COMPONENTS",
+      "storage_rule": "Owned storage contributions must partition one physical storage response with no overlap and no gap: S_phys = sum_i S_owned_i.",
+      "exchange_kind": "INTER_COMPONENT_NUMERICAL_DECOMPOSITION_UNLESS_A_SEPARATE_PHYSICAL_INTERFACE_IS_DECLARED",
+      "mass_authority": "The one geometric/shared physical volume change is authoritative; subsystem bookkeeping must reconcile to it.",
+      "endpoint_controls": {
+        "MODFLOW_OWNS_ALL_SHARED_STORAGE": "S_MODFLOW=S_phys, S_SWAP=0; SWAP coupling term excludes that shared storage.",
+        "SWAP_OWNS_ALL_SHARED_STORAGE": "S_MODFLOW=0, S_SWAP=S_phys.",
+        "PARTITIONED": "S_MODFLOW+S_SWAP=S_phys pointwise or over the declared finite-window storage map."
+      },
+      "duplicate_signature": "If both components claim the same full physical storage, numerical bookkeeping can close while the one physical volume responds with doubled effective storage.",
+      "evidence": [
+        "DSW02",
+        "DSW23",
+        "DSW24"
+      ]
+    }
+  },
+  "required_configuration_fields": [
+    "coupling_mode",
+    "head_state_kind",
+    "physical_control_volume_ids owned by SWAP and MODFLOW",
+    "domain_relation between those volumes",
+    "physical storage law for every shared/coextensive volume",
+    "MODFLOW Sy/Ss ownership mapping to physical volume ids",
+    "SWAP storage-response ownership mapping to physical volume ids",
+    "accepted physical exchange object and sign convention",
+    "iteration-response derivative provenance and whether it owns physical mass",
+    "independent residual, volume-balance and ledger acceptance gates"
+  ],
+  "required_invariants": [
+    {
+      "id": "NO_STORAGE_OVERLAP",
+      "applies_to": "COEXTENSIVE_SHARED_PHREATIC",
+      "equation": "sum(storage shares for one physical volume) = physical storage response",
+      "failure": "duplicate ownership"
+    },
+    {
+      "id": "NO_STORAGE_GAP",
+      "applies_to": "COEXTENSIVE_SHARED_PHREATIC",
+      "equation": "all physical storage response is assigned to exactly one declared owner partition",
+      "failure": "missing ownership / excessive head response or underdetermination"
+    },
+    {
+      "id": "INTERFACE_TRANSFER_CONSERVATION",
+      "applies_to": "DISTINCT_DOMAIN_INTERFACE and finite-resistance disjoint modes",
+      "equation": "DeltaM_A_interface + DeltaM_B_interface = 0",
+      "failure": "interface mass created or destroyed"
+    },
+    {
+      "id": "HEAD_SEMANTIC_IDENTITY",
+      "applies_to": "all modes",
+      "equation": "A head may be declared shared only for the same physical location/state meaning.",
+      "failure": "interface head silently reinterpreted as phreatic water-table state"
+    },
+    {
+      "id": "RESPONSE_IS_NOT_OWNERSHIP_BY_UNITS",
+      "applies_to": "all modes",
+      "equation": "storage-like units do not assign physical storage ownership",
+      "failure": "u_A/HCOF/Jacobian interpreted as physical storage without domain derivation"
+    }
+  ],
+  "rejection_examples": [
+    "COEXTENSIVE_SHARED_PHREATIC with MODFLOW owning 100% of S_phys and SWAP also owning 100% of S_phys.",
+    "COEXTENSIVE_SHARED_PHREATIC with neither subsystem owning a known nonzero part of S_phys.",
+    "DISTINCT_DOMAIN_INTERFACE configured with one interface exchange added as a source to both physical ledgers with the same sign.",
+    "Current F-GC lower-interface head relabeled as shared phreatic state without a typed phreatic state machine and storage contract.",
+    "Using finite-window u_A as static MODFLOW Sy without an explicit state/window-to-storage derivation."
+  ],
+  "current_evidence_classification": {
+    "F_GC45_fixture": "DISTINCT_DOMAIN_INTERFACE / shared lower-interface hydraulic head; not demonstrated coextensive phreatic storage",
+    "legacy_SWBOTB1": "scientific lineage for PHREATIC_STATE boundary semantics, not currently production-typed",
+    "DSW23": "prospective coextensive shared-phreatic ownership oracle awaiting live MODFLOW qualification",
+    "DSW24": "prospective interface-to-phreatic equivalence/nonequivalence oracle awaiting live MODFLOW qualification"
+  },
+  "production_decision_boundary": [
+    "No current production storage rewrite follows from this research contract.",
+    "A product configuration intended to be COEXTENSIVE_SHARED_PHREATIC must declare and validate the physical storage partition before admission.",
+    "A boundary-coupled configuration may keep physically distinct storages on both sides when their volumes are genuinely distinct.",
+    "Partial physical overlap is not covered by this v1 contract and must be rejected or separately derived."
+  ]
+}

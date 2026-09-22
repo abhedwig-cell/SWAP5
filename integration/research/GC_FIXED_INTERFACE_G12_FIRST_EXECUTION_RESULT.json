@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
+  "tested_commit": "f5840e2127194055caf9173f805b27074c3ed6a9",
+  "workflow_run": 35705747725,
+  "workflow_job": 106674107253,
+  "workflow_conclusion": "failure",
+  "decision": "TECHNICAL_GROUNDWATER_HARNESS_DATUM_FAILURE_BEFORE_POLICY_REPLAY",
+  "completed_scientific_gates": {
+    "map09_carrier_binding": "PASS",
+    "e3_map_href_and_both_starts": "PASS",
+    "map09a_tangent_crosscheck": "PASS",
+    "symmetric_mass_decomposition": "PASS"
+  },
+  "observed": {
+    "href_e3_slope_per_s": -6.628364639568004e-7,
+    "href_e3_selected_d_m": 0.000001,
+    "href_e3_confirming_d_m": 5e-7,
+    "href_e3_relative_difference": 5.8157936272754e-9,
+    "decomposition_J_S": 0.0005726907048586583,
+    "decomposition_J_R": -0.0005726907048586583,
+    "decomposition_J_nonbottom": 0
+  },
+  "failure": {
+    "phase": "first groundwater calibration solve, before any P1/P4 policy result",
+    "assertion": "G08 MODFLOW solve did not converge",
+    "mechanism": "The reused G08 groundwater harness fixes model top at 0 m. MAP09 href is +0.012932896 m, so the convertible cell is above top; with ss=0 the intended sy-dominated storage response is not active in the same way as in the negative-head G08 fixtures.",
+    "classification": "TECHNICAL_HARNESS_DATUM_MISMATCH"
+  },
+  "repair_rule": {
+    "allowed": "Translate only the groundwater model vertical datum so the MAP09 href retains the same 0.715 m depth below model top as the original G08 geometry; preserve 2 m layer thickness, CHD +/-0.002 m offsets, K, ss, sy, q probes, calibration rule, starts, tangent estimator, policy rules and tolerances.",
+    "forbidden": "No retuning from policy outcomes; no policy result was observed in this execution."
+  },
+  "production_admission": "NO"
+}

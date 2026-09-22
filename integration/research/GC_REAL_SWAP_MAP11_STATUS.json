@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.gc_real_swap.map11.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP11",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_RETROSPECTIVE_SOURCE_AUDIT",
+  "prospective": false,
+  "production_changes": false,
+  "result": "integration/research/GC_REAL_SWAP_MAP11_RESULT.json",
+  "authority": [
+    "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90",
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90"
+  ],
+  "decision": "CURRENT_FGC_INTERFACE_HEAD_NOT_ESTABLISHED_AS_PHREATIC_SHARED_STATE",
+  "next_action": "Close MAP08 and MAP09; use MAP09A only if its preregistered activation rule is satisfied. Keep any storage-overlap claim deployment-specific until geometric and constitutive domain ownership is explicit.",
+  "blockers": []
+}

@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw23.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW23",
+  "title": "Coextensive 10 m shared-phreatic storage-ownership oracle",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "purpose": "Turn the original 10 m gravel-column thought experiment into an explicit physical-volume oracle for storage ownership when dummy-SWAP and MODFLOW are declared to represent the same phreatic storage volume.",
+  "geometry": {
+    "area_m2": 1,
+    "bottom_elevation_m": 0,
+    "ground_surface_elevation_m": 10,
+    "initial_shared_phreatic_head_m": 8,
+    "initial_water_table_depth_below_surface_m": 2,
+    "uniform_drainable_porosity": 0.2,
+    "modflow_cell_top_m": 10,
+    "modflow_cell_bottom_m": 0,
+    "coextensive_domain_declaration": true
+  },
+  "forcing": {
+    "duration_day": 1,
+    "atmospheric_net_input_m": 0.01,
+    "atmospheric_net_input_m3": 0.01,
+    "et_m": 0,
+    "drain_m": 0,
+    "lateral_groundwater_input_m3": 0
+  },
+  "physical_oracle": {
+    "drainable_volume_function_m3": "V(H)=area*n_d*(H-bottom)",
+    "initial_drainable_volume_m3": 1.6,
+    "final_drainable_volume_m3": 1.61,
+    "required_volume_change_m3": 0.01,
+    "expected_head_rise_m": 0.05,
+    "expected_final_head_m": 8.05
+  },
+  "correct_partition_sweep": {
+    "alpha_swap": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "s_swap": "alpha*0.20",
+    "sy_modflow": "(1-alpha)*0.20",
+    "dummy_swap_response": "Q_swap_to_shared(H)=R-S_swap*(H-H0)/dt",
+    "expected": "Every partition reproduces H=8.05 and the sum of owned storage-volume increments equals the one geometric physical volume increment 0.010 m3."
+  },
+  "deliberate_duplicate_ownership": {
+    "sy_modflow": 0.2,
+    "s_swap": 0.2,
+    "interpretation": "Both components claim the same geometric 0.20 drainable storage.",
+    "expected_numerical_head_m": 8.025,
+    "expected_modflow_bookkeeping_gain_m3": 0.005,
+    "expected_swap_bookkeeping_gain_m3": 0.005,
+    "expected_bookkeeping_total_m3": 0.01,
+    "expected_geometric_physical_gain_m3": 0.005,
+    "expected_physical_volume_deficit_m3": 0.005
+  },
+  "gates": [
+    "The analytical geometric volume law gives exactly 0.010 m3 for a rise from 8.00 to 8.05 m.",
+    "All five correct ownership partitions converge and reproduce 8.05 m within 1e-10 m.",
+    "For every correct partition, MODFLOW-owned gain plus SWAP-owned gain equals both the atmospheric input and geometric physical volume gain within 1e-12 m3.",
+    "The alpha=0 and alpha=1 endpoint controls both reproduce the same physical state.",
+    "The deliberate duplicate-ownership run converges to 8.025 m within 1e-10 m.",
+    "For duplicate ownership, numerical bookkeeping closes to 0.010 m3 while the single declared geometric volume changes by only 0.005 m3."
+  ],
+  "interpretation_rules": [
+    "Storage coefficients alone do not determine whether two terms are duplicate; domain ownership does.",
+    "The same algebra can be valid for two distinct physical reservoirs and invalid for one coextensive physical reservoir.",
+    "In a true coextensive shared-phreatic contract, the sum of subsystem-owned storage responses must equal the one physical geometric storage response, with no overlap and no gap.",
+    "This test does not imply that current F-GC45 is duplicate-storage, because MAP11 established that F-GC45 does not declare coextensive phreatic storage."
+  ],
+  "forbidden": [
+    "no production coupling change",
+    "do not set production MODFLOW Sy/Ss to zero from this oracle alone",
+    "do not reinterpret finite-window real-SWAP u_A as a static Sy",
+    "do not apply the coextensive ownership conclusion to boundary-coupled distinct-domain configurations"
+  ]
+}

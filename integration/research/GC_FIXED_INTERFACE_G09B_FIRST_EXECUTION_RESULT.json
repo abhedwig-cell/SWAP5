@@ -1,0 +1,279 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09b.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09B",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09B_PREREGISTRATION.json",
+  "tested_commit": "b0f99c0ef6636f065afc47a8072e8e128ba2ca64",
+  "workflow_run": 35700067828,
+  "workflow_job": 106655703514,
+  "workflow_conclusion": "failure",
+  "decision": "PREREGISTERED_ALL_BOUNDARY_E2_AVAILABILITY_GATE_FALSIFIED",
+  "completed_estimator_rows": [
+    {
+      "baseline_e0": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039385829988360785
+      },
+      "case_id": "C0_CONTROL",
+      "consistency": {
+        "half_mode": "CENTRAL_TOPOLOGY_MATCH",
+        "half_slope_per_s": -0.000003938582998836084,
+        "pass": true,
+        "relative_difference": 1.2903619614027875e-15
+      },
+      "dh_m": -0.000002,
+      "duration_day": 0.0001,
+      "e2": {
+        "attempts": [
+          {
+            "center_signature": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "d_m": 2.5e-7,
+            "minus1": {
+              "eligible": true,
+              "signature": [
+                1,
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 0
+            },
+            "minus2": {
+              "eligible": true,
+              "signature": [
+                1,
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 0
+            },
+            "plus1": {
+              "eligible": true,
+              "signature": [
+                1,
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 0
+            },
+            "plus2": {
+              "eligible": true,
+              "signature": [
+                1,
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 0
+            }
+          }
+        ],
+        "center_signature": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL_TOPOLOGY_MATCH",
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039385829988360785
+      },
+      "qbot_cm_per_day": 0.000001,
+      "side": "NEG"
+    },
+    {
+      "baseline_e0": {
+        "classification": "AVAILABLE",
+        "halvings": 2,
+        "selected_d_m": 6.25e-8,
+        "slope_per_s": -0.000003971584378243066
+      },
+      "case_id": "C0_CONTROL",
+      "consistency": {
+        "half_mode": "CENTRAL_TOPOLOGY_MATCH",
+        "half_slope_per_s": -0.000003971584378243041,
+        "pass": true,
+        "relative_difference": 6.3981993072674496e-15
+      },
+      "dh_m": 0.000005,
+      "duration_day": 0.0001,
+      "e2": {
+        "attempts": [
+          {
+            "center_signature": [
+              2,
+              3,
+              1,
+              0,
+              1,
+              0
+            ],
+            "d_m": 2.5e-7,
+            "minus1": {
+              "eligible": true,
+              "signature": [
+                2,
+                3,
+                1,
+                0,
+                1,
+                0
+              ],
+              "status": 0
+            },
+            "minus2": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            },
+            "plus1": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            },
+            "plus2": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            }
+          },
+          {
+            "center_signature": [
+              2,
+              3,
+              1,
+              0,
+              1,
+              0
+            ],
+            "d_m": 1.25e-7,
+            "minus1": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            },
+            "minus2": {
+              "eligible": true,
+              "signature": [
+                2,
+                3,
+                1,
+                0,
+                1,
+                0
+              ],
+              "status": 0
+            },
+            "plus1": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            },
+            "plus2": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            }
+          },
+          {
+            "center_signature": [
+              2,
+              3,
+              1,
+              0,
+              1,
+              0
+            ],
+            "d_m": 6.25e-8,
+            "minus1": {
+              "eligible": true,
+              "signature": [
+                2,
+                3,
+                1,
+                0,
+                1,
+                0
+              ],
+              "status": 0
+            },
+            "minus2": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            },
+            "plus1": {
+              "eligible": true,
+              "signature": [
+                2,
+                3,
+                1,
+                0,
+                1,
+                0
+              ],
+              "status": 0
+            },
+            "plus2": {
+              "eligible": false,
+              "signature": null,
+              "status": 6
+            }
+          }
+        ],
+        "center_signature": [
+          2,
+          3,
+          1,
+          0,
+          1,
+          0
+        ],
+        "classification": "AVAILABLE",
+        "halvings": 2,
+        "mode": "CENTRAL_TOPOLOGY_MATCH",
+        "selected_d_m": 6.25e-8,
+        "slope_per_s": -0.000003971584378243066
+      },
+      "qbot_cm_per_day": 0.000001,
+      "side": "POS"
+    }
+  ],
+  "failure": {
+    "case_id": "C1_LOW_FORCING",
+    "side": "NEG",
+    "dh_m": -0.000005,
+    "gate": "E2_AVAILABLE_ON_ALL_EIGHT_FROZEN_BOUNDARY_STATES",
+    "assertion": "G09B E2 unavailable C1_LOW_FORCING NEG"
+  },
+  "bounded_conclusions": [
+    "G09B must remain failed; exact center execution-signature equality does not produce a tangent on every frozen boundary state.",
+    "The failure occurs before policy replay, so G09B provides no P1-E2/P4-E2 qualification.",
+    "C0 negative and positive states provide bounded positive evidence that the topology rule can recover stable tangents where a matching stencil exists.",
+    "The next diagnostic must characterize C1-low-forcing-negative status, q(H), and execution signatures over fixed scales before any weaker or alternative topology criterion is proposed."
+  ],
+  "production_admission": "NO"
+}

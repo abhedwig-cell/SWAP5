@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw23.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW23",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_ANALYTIC_ORACLE_CLOSED_AWAITING_LIVE_MODFLOW",
+  "preregistration": "integration/research/GC_DUMMY_SWAP_DSW23_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_dummy_swap_dsw23_coextensive_storage.py",
+  "runner": "tests/research/run_gc_dummy_swap_dsw01.sh",
+  "execution_commit": "080cbaeb1a6dbf21025c985f40dc3de8e6c6b5ad",
+  "queued_workflow_run": 35571443979,
+  "production_changes": false,
+  "analytic_checks": {
+    "correct_partition_final_head_m": 8.05,
+    "correct_partition_total_owned_storage": 0.2,
+    "correct_partition_geometric_gain_m3": 0.01,
+    "duplicate_effective_bookkeeping_storage": 0.4,
+    "duplicate_final_head_m": 8.025,
+    "duplicate_bookkeeping_total_gain_m3": 0.01,
+    "duplicate_single_geometric_gain_m3": 0.005,
+    "duplicate_physical_volume_deficit_m3": 0.005
+  },
+  "decision_boundary": [
+    "Do not mark DSW23 qualified until the live MODFLOW6 6.8.0 gate passes.",
+    "If live values match the preregistered oracle, this is direct evidence that duplicate storage is a domain-ownership error in an explicitly coextensive shared-phreatic system.",
+    "Do not transfer that conclusion to current F-GC45; MAP11 establishes different interface/domain semantics."
+  ],
+  "next_action": "Await live MODFLOW gate without changing the physical oracle; in parallel derive equivalence conditions between lower-interface coupling and a true coextensive phreatic h-link."
+}

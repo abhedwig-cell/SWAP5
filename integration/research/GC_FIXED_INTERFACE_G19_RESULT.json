@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.gc_fixed_interface.g19.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G19",
+  "title": "Affine response-space damping bridge for frozen G11 head-space P4 contraction",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G19_PREREGISTRATION.json",
+  "tested_commit": "7c6ad1437aa363dce1fa1fa8c8e96fc316b11f16",
+  "workflow_run": 35726466434,
+  "workflow_job": 106741215877,
+  "workflow_conclusion": "success",
+  "supporting_run": {
+    "tested_commit": "87bffd359efa1b0ed38151ece02dc231646993c3",
+    "workflow_run": 35726395609,
+    "workflow_job": 106740978622,
+    "conclusion": "success",
+    "disposition": "SUPPORTING_ONLY_DUPLICATE_RUNNER_POSTIMAGE",
+    "note": "The supporting postimage executed the same G19 block twice because two parallel runner edits duplicated it. The deduplicated final postimage is the authority."
+  },
+  "decision": "QUALIFIED_BOUNDED_AFFINE_RESPONSE_SPACE_TO_HEAD_SPACE_P4_BRIDGE",
+  "production_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "groundwater_fit": {
+    "a_per_s": 6.888155563779977e-7,
+    "intercept": 4.925260259275142e-7,
+    "max_fit_error_m_per_s": 3.705769144237564e-21,
+    "gate": "PASS_LE_1E-16"
+  },
+  "frozen_bridge": {
+    "current_head_m": -0.7149999311459918,
+    "physical_tangent_per_s": -0.000001377629615322778,
+    "current_residual_m_per_s": -2.306628568830163e-11,
+    "rule": "At h0 keep slope p fixed and set q_ref(lambda)=G(h0)+lambda*(q_swap(h0)-G(h0)); solve the resulting affine response from the same accepted groundwater origin.",
+    "affine_identity": "h_lambda = h0 + lambda*(h_raw-h0)"
+  },
+  "lambda_results": [
+    {
+      "lambda": 1,
+      "analytic_head_m": -0.7150110934482895,
+      "live_head_m": -0.7150110934482893,
+      "frozen_expected_head_m": -0.7150110934482893,
+      "live_minus_expected_m": 0,
+      "participant_status": 6,
+      "p4_acceptance": false,
+      "mf_iterations": 2
+    },
+    {
+      "lambda": 0.5,
+      "analytic_head_m": -0.7150055122971407,
+      "live_head_m": -0.7150055122971404,
+      "frozen_expected_head_m": -0.7150055122971406,
+      "live_minus_expected_m": 2.220446049250313e-16,
+      "participant_status": 6,
+      "p4_acceptance": false,
+      "mf_iterations": 2
+    },
+    {
+      "lambda": 0.25,
+      "analytic_head_m": -0.7150027217215662,
+      "live_head_m": -0.7150027217215658,
+      "frozen_expected_head_m": -0.7150027217215662,
+      "live_minus_expected_m": 4.440892098500626e-16,
+      "participant_status": 0,
+      "coupling_residual_m_per_s": -1.66946096121199e-11,
+      "p4_acceptance": true,
+      "mf_iterations": 2
+    }
+  ],
+  "diagnostic_accounting": {
+    "g16_logical_requests": 4,
+    "g16_participant_trials": 4,
+    "g16_cache_hits": 0,
+    "g16_unique_heads": 4,
+    "accepted_state_or_ledger_mutation": 0,
+    "live_candidate_leakage": 0
+  },
+  "gates": {
+    "affine_identity": "PASS",
+    "live_fresh_solve_equivalence": "PASS",
+    "lambda_1_raw_head_and_status": "PASS",
+    "lambda_half_rejected_under_unchanged_p4_rule": "PASS",
+    "lambda_quarter_first_accepted_p4_head": "PASS",
+    "lambda_quarter_head_error_m": 4.440892098500626e-16,
+    "diagnostic_non_authority": "PASS",
+    "continuous_prepared_solve_equivalence": "NOT_TESTED"
+  },
+  "bounded_conclusions": [
+    "For the frozen G11 groundwater stress, the measured groundwater response is affine to approximately 3.71e-21 m/s maximum fit error.",
+    "With the physical SWAP tangent held fixed, interpolation of only the affine response intercept maps algebraically to the same head interpolation as head-space damping.",
+    "The live MODFLOW fresh-solve route reproduces the full raw Newton head at lambda=1, the first half-step at lambda=1/2, and the second half-step at lambda=1/4 to floating-point head precision.",
+    "The real SWAP participant reproduces the exact G11 acceptance topology: lambda=1 and lambda=1/2 are participant status 6, while lambda=1/4 is status 0 and passes the unchanged merit rule.",
+    "This provides a concrete bridge around the G18 direct state-control gap without setting or restoring MODFLOW X.",
+    "The result is bounded to fresh solves from the same accepted groundwater origin and an affine groundwater response. It is not yet evidence that the same response-damping sequence works inside one continuous F-GC38 prepared solve.",
+    "No production coupling policy or HCOF/RHS semantics are changed."
+  ],
+  "next_natural_unit": "Qualify the same lambda=1 -> 1/2 -> 1/4 response sequence inside one continuous live F-GC38 prepared solve with fixed XOLD and evolving X, comparing each converged response state to the G19 fresh-origin references and preserving SWAP diagnostic non-authority."
+}

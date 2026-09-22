@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12b.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12B",
+  "title": "Active-drainage E3/P4 replay with G12A local groundwater authority",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parents": {
+    "g12_falsification": "integration/research/GC_FIXED_INTERFACE_G12_RESULT.json",
+    "groundwater_diagnostic": "integration/research/GC_FIXED_INTERFACE_G12A_RESULT.json",
+    "active_drainage_carrier": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
+    "tangent_reference": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+    "live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json"
+  },
+  "production_changes": false,
+  "question": "With the G12 one-shot href calibration removed from the acceptance logic, do the unchanged E3_MAP physical tangent and P4 safeguard converge on the MAP09 active-drainage real-SWAP carrier when each MODFLOW regime uses its independently qualified G12A local groundwater response?",
+  "frozen_carrier": {
+    "duration_day": 0.01,
+    "reference_head_m": 0.012932896258566275,
+    "reference_q_swap_m_per_s": -6.459199925803855e-10,
+    "starts_dh_m": [
+      -0.000001,
+      0.000001
+    ]
+  },
+  "groundwater_authority": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G12A_RESULT.json",
+    "rule": [
+      "For each of GW_R05_STORAGE, GW_R2_STORAGE and GW_MIXED use the persisted G12A one-shot bias, sy, local slope a and q_at_href.",
+      "Before policy replay, remeasure the same seven fixed q probes with the unchanged one-shot bias.",
+      "Require positive slope and max centered local affine fit error <=1e-16 m/s.",
+      "Require remeasured slope to agree with G12A within 1e-8 relative and q_at_href within 2e-16 m/s absolute.",
+      "Do not modify the bias to force q_swap(href)=q_gw(href)."
+    ]
+  },
+  "reference_root": {
+    "residual": "q_swap(H)-[a*(H-href)+q_at_href]",
+    "bracket_dh_m": [
+      -0.000001,
+      0.000001
+    ],
+    "rule": "Require both bracket heads participant-status 0 and a sign change or exact zero. Perform 50 fixed bisections from immutable SWAP origin.",
+    "head_tolerance_m": 5e-10
+  },
+  "tangent": "Use G12 E3_MAP unchanged, including its fixed scale ladder, stencil-internal execution class, and <=5% adjacent-scale consistency rule.",
+  "policies": {
+    "P1_E3_MAP": "Raw physical Newton with E3_MAP re-estimated at each iterate.",
+    "P4_E3_MAP": "Same proposal with unchanged factor-1/2 backtracking until participant status 0 and local-groundwater residual magnitude does not increase."
+  },
+  "convergence": {
+    "max_outer": 12,
+    "max_backtracks": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "merit_abs_tolerance_m_per_s": 1e-18,
+    "head_error_tolerance_m": 5e-10
+  },
+  "required_gates": [
+    "MAP09 active-drainage carrier authority and immutable origin reproduce.",
+    "E3_MAP is AVAILABLE at href and both frozen starts.",
+    "All three G12A local groundwater responses remeasure within the frozen fit/authority tolerances.",
+    "A reference root is obtained inside the frozen +/-1e-6 bracket for every regime.",
+    "P4 converges from both frozen starts in all three regimes within 12 outer iterations and final head is within 5e-10 m of the independent reference root.",
+    "P1 outcomes, P4 contractions and inadmissible raw proposals are recorded without being required for PASS.",
+    "All SWAP diagnostics and rejected candidates are discarded; accepted revision/time/ledger remain unchanged."
+  ],
+  "interpretation": [
+    "G12B is separate evidence and cannot retroactively pass G12.",
+    "PASS would extend E3/P4 research qualification to the frozen MAP09 active-drainage process configuration across three groundwater response classes.",
+    "PASS would leave estimator computational cost and production integration/ownership as open gates.",
+    "No production HCOF/RHS or production coupling source change is authorized."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}

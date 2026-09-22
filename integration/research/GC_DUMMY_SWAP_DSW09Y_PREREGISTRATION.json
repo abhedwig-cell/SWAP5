@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09y.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09Y",
+  "title": "Fresh-solve starting-distance control at the near-root affine reanchor",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC_PREREGISTERED_BEFORE_RUN",
+  "source_evidence": [
+    "integration/research/GC_DUMMY_SWAP_DSW09W_OBSERVATION.json",
+    "integration/research/GC_DUMMY_SWAP_DSW09R_RESULT.json",
+    "MODFLOW6 6.8.0 NumericalSolution/ImsLinear source reconciliation"
+  ],
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "input_m": 0.01,
+    "exact_nonlinear_head_m": 8.056155281280883,
+    "anchor_head_m": 8.056155281280944,
+    "anchor_exact_external_residual_m_per_day": -1.2533377113932431e-14
+  },
+  "fixed_affine_term": "For all variants use qref=INPUT-V(anchor), HCOF=dq/dh(anchor), RHS=HCOF*anchor-qref. No term changes occur during a variant.",
+  "variants": [
+    {
+      "name": "FAR_START_R1E15",
+      "initial_head_m": 8,
+      "rclose": 1e-15
+    },
+    {
+      "name": "NEAR_START_R1E15",
+      "initial_head_m": 8.056155281280944,
+      "rclose": 1e-15
+    },
+    {
+      "name": "NEAR_START_R1E13",
+      "initial_head_m": 8.056155281280944,
+      "rclose": 1e-13
+    }
+  ],
+  "preregistered_gate": [
+    "FAR_START_R1E15 must converge to the exact affine root within 1e-10 m.",
+    "NEAR_START_R1E15 is expected not to receive a MODFLOW convergence certificate while remaining within 1e-10 m of the affine root.",
+    "NEAR_START_R1E13 must converge and remain within 1e-10 m of the same affine root."
+  ],
+  "interpretation_logic": [
+    "If the prediction holds, fresh-solve success in DSW09N/R is partly a starting-distance effect, not evidence that prepare_solve alone clears a hidden linear-solver state.",
+    "The near-root strict failure then follows from a nonzero affine residual below representable useful head correction but above the requested residual closure.",
+    "This does not remove the separately demonstrated MODERATE nonlinear under-relaxation history effect."
+  ],
+  "forbidden": [
+    "do not change the original DSW09 gate",
+    "do not infer a production rclose recommendation",
+    "no production coupling change"
+  ]
+}

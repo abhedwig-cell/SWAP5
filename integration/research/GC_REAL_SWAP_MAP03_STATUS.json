@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.gc_real_swap.map03.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP03",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "eeefdcd15e2752a9904098d72344e9702c9f52de",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_changes": false,
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "integration/research/GC_REAL_SWAP_MAP02_RESULT.json",
+    "integration/research/GC_REAL_SWAP_MAP03_PREREGISTRATION.json"
+  ],
+  "relevant_paths": [
+    "tests/research/test_gc_real_swap_map03_storage_decomposition.py",
+    "tests/research/run_gc_real_swap_map03_fgc45.sh",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py"
+  ],
+  "interfaces_held_fixed": [
+    "F-GC33 response mathematics",
+    "F-GC40 aggregation",
+    "F-GC45 physical fixture",
+    "F-GC49D production ownership",
+    "Reference Richards production path"
+  ],
+  "dependency_surface": [
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py"
+  ],
+  "next_action": "Audit the complete historical q_u = u*dH/dt - qbot semantics and derivative before extending the decomposition to active drainage.",
+  "recovery_point": "MAP03 is qualified. Resume from GC_REAL_SWAP_MAP03_RESULT.json and the historical q_u semantic audit; rerun MAP03 only if its recorded dependency surface changes.",
+  "blockers": [],
+  "last_reconciled_head": "eeefdcd15e2752a9904098d72344e9702c9f52de",
+  "instrumentation_history": [
+    {
+      "workflow_run": 35566311361,
+      "conclusion": "BLOCKED_BEFORE_SCIENTIFIC_EXECUTION",
+      "cause": "Research bridge referenced transaction-result fields directly on kernel_result_t instead of kernel_result_t%mass; no MAP03 trial executed."
+    },
+    {
+      "repair_commit": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
+      "change": "Read storage/total-in/total-out/residual from result%mass, bottom exchange from result%bottom_outward_exchange_native, and accepted duration from completed_t-requested_t0.",
+      "production_change": false
+    }
+  ],
+  "qualification_evidence": [
+    {
+      "workflow_run": 35566369303,
+      "workflow_job": 106228868985,
+      "role": "first qualified MAP03 result authority"
+    },
+    {
+      "workflow_run": 35566604668,
+      "workflow_job": 106229590120,
+      "role": "independent preservation rerun after observability repair"
+    }
+  ]
+}

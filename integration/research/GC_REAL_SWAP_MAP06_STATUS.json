@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.gc_real_swap.map06.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP06",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "737e80226f90860f61fb2c204cc1818f139cc292",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_changes": false,
+  "authority_paths": [
+    "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
+    "integration/research/GC_REAL_SWAP_MAP06_PREREGISTRATION.json",
+    "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json"
+  ],
+  "relevant_paths": [
+    "tests/research/test_gc_real_swap_map06_b3_corrector_domain.py",
+    "tests/research/run_gc_real_swap_map06_b3.sh",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90"
+  ],
+  "interfaces_held_fixed": [
+    "B3 real SWAP physics and configured origin",
+    "prescribed-head corrector implementation",
+    "component tolerances and transaction semantics",
+    "production coupling code"
+  ],
+  "next_action": "Complete MAP07 q_u partial-versus-total derivative audit, then reconcile MAP05A+MAP06+MAP07 into the coupling-response taxonomy. Keep production coupling read-only.",
+  "recovery_point": "MAP06 qualified by workflow 35568529617 / job 106235070871. Resume from GC_REAL_SWAP_MAP06_RESULT.json; do not adaptively refine the preregistered grid.",
+  "blockers": [],
+  "execution": {
+    "workflow_run": 35568529617,
+    "workflow_job": 106235070871,
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "qualification": {
+    "workflow_run": 35568529617,
+    "workflow_job": 106235070871,
+    "conclusion": "success",
+    "result_path": "integration/research/GC_REAL_SWAP_MAP06_RESULT.json",
+    "decision": "QUALIFIED_DETERMINISTIC_NONMONOTONE_B3_CORRECTOR_ADMISSIBILITY_TOPOLOGY"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.gc_low01.output01.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-OUTPUT01",
+  "title": "Research-only complete candidate carrier for prescribed-groundwater-level inside-profile trials",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "state_contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "typed_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "constitutive_audit": "integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json",
+    "source": "src/legacy/b1_10_port/headcalc.f90"
+  },
+  "scope": {
+    "branch": "INSIDE_PROFILE only",
+    "ksatexm_extension_enabled": false,
+    "optional_processes": false,
+    "node_snap_cases": false,
+    "branch_boundaries": false,
+    "purpose": "Provide a complete research trial object around direct HeadCalc without changing the production Reference solver admission guard."
+  },
+  "input": [
+    "immutable origin reference_richards_state_binding_t",
+    "explicit H_phreatic_cm control coordinate",
+    "explicit parameter geometry",
+    "single provider-owned constitutive/source/sink/top-boundary evaluation context",
+    "explicit numerical and physical configuration",
+    "window duration"
+  ],
+  "output": [
+    "valid flag",
+    "requested H_phreatic_cm",
+    "effective H_phreatic_cm after frozen source snap rule",
+    "branch id",
+    "source-derived active Richards node count",
+    "fllowgwl diagnostic",
+    "diagnosed qbot_cm_per_day",
+    "complete candidate reference_richards_state_binding_t",
+    "solver/retry diagnostics",
+    "independent complete-profile storage change",
+    "independent zero-process mass residual"
+  ],
+  "rules": [
+    "The carrier deep-copies the immutable origin before HeadCalc; the caller-owned origin is intent(in) and must remain bitwise unchanged.",
+    "The carrier sets candidate gwlinp from H_phreatic and carries H_phreatic explicitly; it does not overload mode-5 bottom_head semantics.",
+    "For inside-profile trials, qbot authority is the value diagnosed by legacy HeadCalc's complete vertical-flux reconstruction.",
+    "The branch/active-node classifier is a frozen source-derived control diagnostic, not new physics.",
+    "No result is committed and no mass authority is published outside the returned trial object."
+  ],
+  "gates": [
+    "For the preregistered LOW01-B levels -60, -120 and -200 cm, branch=INSIDE_PROFILE and active nodes are 1,2,3.",
+    "Carrier output effective H_phreatic equals the source-effective gwlinp and fllowgwl=false.",
+    "Carrier qbot exactly equals candidate_state%qbot.",
+    "Carrier candidate state and diagnostics are deterministic on A-B-A/repeated immutable-origin calls.",
+    "Caller-owned origin is bitwise unchanged after every trial.",
+    "The carrier refuses above-top, below-bottom-node and branch-boundary cases in OUTPUT01 rather than silently widening scope."
+  ],
+  "nonclaims": [
+    "not production soil-water ABI",
+    "not HLINK04 admission",
+    "not KSATEXM semantics",
+    "not LOW01-C boundary qualification"
+  ],
+  "next_if_pass": "Bind LOW01-B live inside-profile qualification to this carrier; then design LOW01-D at the enclosing FMR transaction layer."
+}

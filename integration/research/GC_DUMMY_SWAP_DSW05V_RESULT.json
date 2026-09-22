@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw05v.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW05V",
+  "workflow_run": 35562694437,
+  "decision": "DIAGNOSTIC_EXCLUDES_NONLINEAR_UNDER_RELAXATION_AS_DSW05_CAUSE",
+  "variants": [
+    {
+      "name": "MODERATE_DEFAULT",
+      "converged": false,
+      "iterations": 100,
+      "head_m": 8.010000000000002
+    },
+    {
+      "name": "MODERATE_NO_UR",
+      "converged": false,
+      "iterations": 100,
+      "head_m": 8.010000000000002
+    }
+  ],
+  "exact_head_m": 8.01,
+  "bounded_conclusion": "Disabling nonlinear under-relaxation does not alter the DSW-05 convergence flag or head. Combined with DSW-05W, the active mechanism is the stricter inner residual certification."
+}

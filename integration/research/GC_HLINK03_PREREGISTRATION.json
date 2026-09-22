@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_hlink.hlink03.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK03",
+  "title": "Shared-phreatic process and internal-memory decomposition",
+  "status": "PREREGISTERED_CONDITIONAL_ON_HLINK02_PASS",
+  "activation_rule": "Execute only after HLINK01 and HLINK02 have both passed their preregistered live gates.",
+  "basis": [
+    "GC-HLINK candidate contract v1",
+    "GC-DUMMY-SWAP-DSW11 shared head with independent memory",
+    "GC-DUMMY-SWAP-DSW12 ET sink",
+    "GC-DUMMY-SWAP-DSW13 drain sink",
+    "GC-DUMMY-SWAP-DSW17 equal-and-opposite internal transfer"
+  ],
+  "physical_system": {
+    "initial_shared_head_m": 8,
+    "shared_storage_coefficient": 0.2,
+    "duration_day": 1,
+    "atmospheric_process_input_m": 0.012,
+    "modflow_lateral_input_m3": 0.004,
+    "et_threshold_head_m": 8.02,
+    "et_slope_per_day": 0.05,
+    "drain_threshold_head_m": 8.04,
+    "drain_slope_per_day": 0.1,
+    "memory_relaxation_per_day": 1,
+    "memory_input_m": 0,
+    "area_m2": 1
+  },
+  "memory_law": {
+    "update": "W1=(W0+I_mem)/(1+k*dt)",
+    "transfer_to_shared_storage": "T=W0+I_mem-W1=k*dt*W1",
+    "ownership": "T is internal transfer: +T to shared phreatic storage and -T in SWAP memory; it is not an external whole-system source."
+  },
+  "cases": [
+    {
+      "name": "DRY_MEMORY",
+      "initial_memory_m": 0,
+      "memory_transfer_m": 0,
+      "exact_final_head_m": 8.06,
+      "exact_et_m": 0.002,
+      "exact_drain_m": 0.002,
+      "exact_shared_storage_gain_m": 0.012,
+      "exact_final_memory_m": 0
+    },
+    {
+      "name": "WET_MEMORY",
+      "initial_memory_m": 0.01,
+      "memory_transfer_m": 0.005,
+      "exact_final_head_m": 8.074285714285715,
+      "exact_et_m": 0.0027142857142857,
+      "exact_drain_m": 0.0034285714285714,
+      "exact_shared_storage_gain_m": 0.0148571428571428,
+      "exact_final_memory_m": 0.005
+    }
+  ],
+  "modflow_mapping": {
+    "runtime_sy": 0.2,
+    "sto_role": "owns the one shared phreatic storage response exactly once",
+    "well_role": "MODFLOW-owned lateral input +0.004 m3/day",
+    "api_role": "SWAP process remainder only: atmospheric input + internal memory transfer - ET(H) - drain(H)",
+    "api_active_branch_slope_per_day": -0.15,
+    "storage_excluded_from_api": true
+  },
+  "whole_system_mass_gate": "shared_storage_gain + (W1-W0) = atmospheric_input + lateral_input - ET - drain",
+  "gates": [
+    "Both cases use the same initial shared head, same shared storage ownership and same external forcing except internal memory W0.",
+    "Both live MODFLOW solves converge.",
+    "DRY_MEMORY ends at 8.06 m within 1e-10 m and closes whole-system mass within 1e-12 m.",
+    "WET_MEMORY ends at 8.074285714285714 m within 1e-10 m and closes whole-system mass within 1e-12 m.",
+    "The wet-memory case transfers exactly 0.005 m internally; this transfer appears with opposite signs in shared storage and memory ledgers.",
+    "ET and drain are reconstructed independently from the accepted shared head and match the analytical amounts.",
+    "The different final heads prove that H_phreatic alone is not a complete SWAP state even in a valid shared-phreatic storage contract."
+  ],
+  "adversarial_followup_not_in_primary_gate": "A later control may deliberately count the memory transfer as an external source without reducing W to demonstrate whole-system mass creation; do not add that control before this primary decomposition passes.",
+  "forbidden": [
+    "do not execute before HLINK02 passes",
+    "no production changes",
+    "do not count internal memory transfer as external recharge",
+    "do not infer these linear ET/drain laws are production SWAP process formulations",
+    "do not infer shared head is sufficient to reconstruct SWAP internal state"
+  ]
+}

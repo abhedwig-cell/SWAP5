@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.gc_low01b.premature_execution_quarantine.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B",
+  "state": "NON_AUTHORITATIVE_PRE_CARRIER_EXECUTIONS",
+  "reason": "Three push-triggered LOW01-B runs were created before reconciliation of GC_LOW01B_STATUS.json showed that the research-only complete mode-1 candidate output carrier remained a hard activation prerequisite.",
+  "runs": [
+    {
+      "run_id": 35580400611,
+      "head_sha": "f19ad9d0e4c11e31cfcfbd98d7c7be29c2a7af1b"
+    },
+    {
+      "run_id": 35580433783,
+      "head_sha": "346bc8157917d61e59a32ec1c4b466873be08a08"
+    },
+    {
+      "run_id": 35580447736,
+      "head_sha": "55dd7d418f349038e64f76fb38391efe78e8ae88"
+    }
+  ],
+  "rule": "Any result from these runs is observation-only and MUST NOT change LOW01-B status or qualify HLINK04. A valid LOW01-B qualification must postdate the candidate-carrier qualification and the LOW01-A/A2 prerequisites.",
+  "production_changes": false
+}

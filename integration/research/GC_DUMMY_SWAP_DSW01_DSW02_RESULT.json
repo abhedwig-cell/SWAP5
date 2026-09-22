@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw01_dsw02.result.v1",
+  "date": "2026-09-21",
+  "workstream": "GC-DUMMY-SWAP",
+  "work_units": [
+    "GC-DUMMY-SWAP-DSW01",
+    "GC-DUMMY-SWAP-DSW02"
+  ],
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "qualified_head": "b7fca7b366325b05a3eaf860eca178e9be5d40b2",
+  "workflow_run": 35559860500,
+  "workflow_job": 106210544380,
+  "conclusion": "success",
+  "decision": "QUALIFIED_RESEARCH_ORACLE_SHARED_STORAGE_PARTITION",
+  "dsw01": {
+    "physical_control": {
+      "expected_head_m": 8.05,
+      "observed_head_m": 8.049999999999999,
+      "error_m": -1.7763568394002505e-15,
+      "modflow_dt_day": 1,
+      "newton": false,
+      "verdict": "PASS"
+    },
+    "modflow_newton_regularization_control": {
+      "expected_from_modflow_6_8_0_source_m": 8.04999995,
+      "observed_head_m": 8.049999949999998,
+      "error_m": -1.7763568394002505e-15,
+      "verdict": "PASS"
+    },
+    "current_positive_u_overlap_probe": {
+      "physical_expected_head_m": 8.05,
+      "observed_head_m": 8,
+      "sy": 0.2,
+      "u": 0.2,
+      "hcof_m2_per_day": 0.2,
+      "rhs_m3_per_day": 1.6,
+      "converged": true,
+      "iterations": 1,
+      "classification": "BOUNDED_COUNTEREXAMPLE_FOR_SAME_STORAGE_OVERLAP",
+      "scope": "Shows that assigning the same S=0.20 physical storage to MODFLOW STO and simultaneously using the current positive +u/dt affine response does not reproduce the one-storage dummy system. This is not a general F-GC49 production-defect claim."
+    }
+  },
+  "dsw02": {
+    "physical_total_storage": 0.2,
+    "expected_head_m": 8.05,
+    "partitions": [
+      {
+        "alpha_swap": 0,
+        "observed_head_m": 8.049999999999999
+      },
+      {
+        "alpha_swap": 0.25,
+        "observed_head_m": 8.05
+      },
+      {
+        "alpha_swap": 0.5,
+        "observed_head_m": 8.049999999999999
+      },
+      {
+        "alpha_swap": 0.75,
+        "observed_head_m": 8.05
+      },
+      {
+        "alpha_swap": 1,
+        "observed_head_m": 8.049999999999999
+      }
+    ],
+    "max_partition_spread_m": 1.7763568394002505e-15,
+    "consistent_partition_api_law": "q_api = R - S_swap*(H-H0)/dt",
+    "api_hcof_sign": "negative for the storage-removal term under Q=HCOF*H-RHS",
+    "deliberate_duplicate_storage": {
+      "s_swap": 0.2,
+      "s_modflow": 0.2,
+      "expected_head_m": 8.025,
+      "observed_head_m": 8.024999999999999,
+      "error_m": -1.7763568394002505e-15,
+      "verdict": "PASS_DOUBLE_STORAGE_SIGNATURE"
+    },
+    "verdict": "PASS_STORAGE_OWNERSHIP_PARTITION_INVARIANCE"
+  },
+  "bounded_conclusions": [
+    "One physical storage may be repartitioned between MODFLOW STO and an algebraically consistent dummy-side storage term without changing the solution.",
+    "Counting the same 0.20 storage twice produces the independently predicted half head rise.",
+    "The current positive +u/dt overlap probe is not equivalent to the consistent shared-storage partition for this transparent zero-resistance system.",
+    "MODFLOW Newton saturation smoothing is a separately identified numerical regularization and not the cause of the five-centimetre current-u discrepancy."
+  ],
+  "forbidden_inference": [
+    "Do not infer that all current production SWAP5-MODFLOW6 coupling is defective.",
+    "Do not change production coupling from this research result alone.",
+    "Do not equate q_u, q_bot, physical exchange conductance and solver Jacobian without a separately derived contract."
+  ],
+  "next": [
+    "DSW-03 MODFLOW-owned lateral forcing with storage ownership sweep",
+    "DSW-06 reference-point invariance",
+    "DSW-07 exact residual/Jacobian audit",
+    "DSW-08 finite-resistance q-link and zero-resistance limit"
+  ]
+}

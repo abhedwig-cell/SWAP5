@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.gc_real_swap.map07.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP07",
+  "workflow_run": 35568628419,
+  "workflow_job": 106235349163,
+  "decision": "QUALIFIED_PARTIAL_VERSUS_TOTAL_QU_DERIVATIVE_DISTINCTION",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "production_formula": "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "production_cell_slope": "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "frozen_e4_flux_points": "docs/publication/evidence/PUB_GC_E4_RAW_FLUX_POINTS.json",
+    "frozen_e4_head_scans": "docs/publication/evidence/PUB_GC_E4_RAW_HEAD_SCANS.json"
+  },
+  "b3": {
+    "window_day": 0.001,
+    "u_A": 0.0002665743709457589,
+    "production_partial_slope_per_day": 0.2665743709457589,
+    "selected_fractions": [
+      0.001,
+      0.003,
+      0.01
+    ],
+    "rows": [
+      {
+        "fraction": 0.001,
+        "u_fd": 0.00026657436127347695,
+        "e4_relative_u_match": 3.6283615449440356e-8,
+        "frozen_total_slope_per_day": 9.672287852144799e-9,
+        "frozen_to_partial_ratio": 3.6283637537356745e-8,
+        "pointwise_total_slope_per_day": 2.6041498649415057e-7,
+        "pointwise_total_to_partial_ratio": 9.768943112207077e-7
+      },
+      {
+        "fraction": 0.003,
+        "u_fd": 0.00026657438099712106,
+        "e4_relative_u_match": 3.770565687149893e-8,
+        "frozen_total_slope_per_day": -1.0051363068756196e-8,
+        "frozen_to_partial_ratio": -3.770566177497007e-8,
+        "pointwise_total_slope_per_day": 2.406913240192103e-7,
+        "pointwise_total_to_partial_ratio": 9.029049685657322e-7
+      },
+      {
+        "fraction": 0.01,
+        "u_fd": 0.00026657437310767025,
+        "e4_relative_u_match": 8.109974353526223e-9,
+        "frozen_total_slope_per_day": -2.1619113820457136e-9,
+        "frozen_to_partial_ratio": -8.109974617498422e-9,
+        "pointwise_total_slope_per_day": 2.485807965849406e-7,
+        "pointwise_total_to_partial_ratio": 9.325007340466367e-7
+      }
+    ],
+    "max_abs_frozen_total_to_partial_ratio": 3.770566177497007e-8,
+    "max_abs_pointwise_total_to_partial_ratio": 9.768943112207077e-7
+  },
+  "gates": {
+    "production_formula_authority": "PASS",
+    "historical_q_u_reconstruction": "PASS",
+    "predictor_family_cancellation_identity": "PASS",
+    "e4_plateau_authority_preserved": "PASS"
+  },
+  "bounded_conclusions": [
+    "Production +u/dt is the partial derivative of the affine q_u extension with predictor u and q_bot held fixed.",
+    "Along the already-qualified E4 B3 flux-driven predictor family, q_bot changes with H and cancels +u/dt to first order because dq_bot/dH is approximately u/dt.",
+    "With baseline u frozen, the total q_u slope is at most about 3.8e-8 of the production partial slope on the fixed E4 plateau points.",
+    "Using each predictor point's own u leaves the observed total q_u slope below about 9.8e-7 of the production partial slope.",
+    "Therefore production dq_u/dH=+u/dt must not be described as the total derivative of historical q_u across neighboring predictor trajectories.",
+    "This distinction does not by itself invalidate the production slope: MAP04 and MAP05A show that an affine iteration-response slope can be a numerical policy while accepted physics is certified by the real corrector and ledger."
+  ],
+  "synthesis_with_prior_maps": [
+    "MAP03 identifies u with local whole-column storage sensitivity in the simple drainage-free fixture and bottom-outward exchange sensitivity with -u.",
+    "MAP05A shows both current +u and independently measured negative J_R can converge to equivalent accepted B3 physics.",
+    "MAP06 shows slope policy matters for path robustness because the B3 corrector admissibility set is deterministic but fragmented."
+  ],
+  "forbidden_inference": [
+    "Do not relabel +u/dt as a physical interface-exchange Jacobian.",
+    "Do not call the partial-versus-total distinction a production defect without an explicit coupling-contract requirement.",
+    "Do not replace production u_A by J_R from this diagnostic."
+  ],
+  "next": [
+    "Reconcile MAP03/MAP05A/MAP06/MAP07 into one coupling-response taxonomy.",
+    "Complete MAP08 raw failure diagnosis.",
+    "Run the preregistered MAP09 research-only active-drainage prescribed-head feasibility before attempting a non-bottom derivative decomposition."
+  ]
+}

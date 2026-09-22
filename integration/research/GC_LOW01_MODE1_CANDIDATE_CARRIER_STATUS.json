@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.gc_low01.mode1_candidate_carrier.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-CARRIER01",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_PENDING_OWNER_RUN",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json",
+  "source": "tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90",
+  "test": "tests/research/test_gc_low01_mode1_candidate_carrier.f90",
+  "runner": "tests/research/run_gc_low01_candidate_carrier.sh",
+  "workflow": ".github/workflows/gc-low01-candidate-carrier.yml",
+  "qualified": false,
+  "next": "Persist result only after a successful owner workflow; then it may satisfy LOW01-G4/G5 for the bounded research slice."
+}

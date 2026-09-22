@@ -1,0 +1,187 @@
+{
+  "schema": "swap5.gc_fixed_interface.g16.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G16",
+  "title": "FMR immutable-origin tangent observation service qualification",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G16_PREREGISTRATION.json",
+  "baseline_reconciliation": "integration/research/GC_FIXED_INTERFACE_G16_BASELINE_RECONCILIATION.json",
+  "parent_observation_result": "integration/research/GC_FIXED_INTERFACE_G15_RESULT.json",
+  "parent_fused_reference": "integration/research/GC_FIXED_INTERFACE_G14_RESULT.json",
+  "parent_streaming_reference": "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+  "tested_commit": "c6bd22a3d421e79f6fe2a5aedba5fc969c1e3a90",
+  "checkpoint_postimage": "fae60b43e0407ae29debf50f185cad5cca609c15",
+  "workflow_run": 35721804825,
+  "workflow_job": 106726183971,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_PRODUCTION_FACING_FMR_IMMUTABLE_ORIGIN_TANGENT_OBSERVATION_SERVICE_BUILDING_BLOCK",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "gates": {
+    "frozen_fgc44_states": "PASS_8_OF_8",
+    "frozen_streaming_unique_heads": "PASS_62",
+    "logical_observe_requests": "PASS_103",
+    "participant_physical_trials": "PASS_62",
+    "exact_head_cache_hits": "PASS_41",
+    "cache_accounting": "PASS",
+    "same_trial_participant_observation_equivalence": "PASS",
+    "g15_g14_reference_equivalence_chain": "PASS",
+    "g13_e3_decision_equivalence": "PASS_8_OF_8",
+    "returned_live_candidate": "PASS_0",
+    "immutable_origin_authority": "PASS",
+    "cross_session_cache_isolation": "PASS",
+    "accessor_service_additional_backend_runs": "PASS_0",
+    "source_ownership_audit": "PASS"
+  },
+  "summary": {
+    "state_count": 8,
+    "logical_observe_requests": 103,
+    "participant_trials": 62,
+    "cache_hits": 41,
+    "streaming_unique_heads": 62,
+    "cache_identity": "exact prescribed-head real64 bit pattern within one session",
+    "additional_backend_runs_from_cache_or_observation": 0,
+    "max_service_vs_participant_same_trial_q_diff_m_per_s": 0,
+    "g14_reference_status6_heads": 13,
+    "g14_reference_states_containing_status6": 5,
+    "session_reset_control": {
+      "same_numeric_head_m": -0.7149999706136307,
+      "first_session_counts": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "second_session_counts": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "cross_session_cache_reuse": false
+    }
+  },
+  "reference_equivalence_chain": {
+    "live_g16_observation_check": "Every G16 cache miss is compared to participant%observe_last_trial from that exact physical trial; all observation fields are equal.",
+    "participant_runtime_stability": "src/runtime/mod_fmr_groundwater_swap_participant.f90 is unchanged between G15 tested commit 2b75808135a74bcae474ffb8793ee7252348b709 and G16 tested commit c6bd22a3d421e79f6fe2a5aedba5fc969c1e3a90.",
+    "inherited_g15_authority": "G15 independently established exact participant-status, q and execution-diagnostic equivalence to G14 on the same 62 frozen FGC44 streaming heads, with maximum q difference 0.",
+    "interpretation": "The G16 qualification therefore reuses the frozen G15/G14 observation authority transitively rather than paying for another independent G14 backend execution per head. This does not weaken the G16 service-path trial-count gate."
+  },
+  "state_results": [
+    {
+      "state_id": "C0_CONTROL_NEG",
+      "logical_requests": 11,
+      "participant_trials": 7,
+      "cache_hits": 4,
+      "selected_scale_m": 2.5e-7,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_slope_per_s": -0.0000039385829988360785,
+      "confirming_scale_m": 1.25e-7,
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_slope_per_s": -0.000003938582998836084
+    },
+    {
+      "state_id": "C0_CONTROL_POS",
+      "logical_requests": 21,
+      "participant_trials": 11,
+      "cache_hits": 10,
+      "selected_scale_m": 6.25e-8,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_slope_per_s": -0.000003971584378243066,
+      "confirming_scale_m": 3.125e-8,
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_slope_per_s": -0.000003971584378243041
+    },
+    {
+      "state_id": "C1_LOW_FORCING_NEG",
+      "logical_requests": 16,
+      "participant_trials": 9,
+      "cache_hits": 7,
+      "selected_scale_m": 1.25e-7,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_slope_per_s": -0.000003971583350258776,
+      "confirming_scale_m": 6.25e-8,
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_slope_per_s": -0.000003971584378243066
+    },
+    {
+      "state_id": "C1_LOW_FORCING_POS",
+      "logical_requests": 11,
+      "participant_trials": 7,
+      "cache_hits": 4,
+      "selected_scale_m": 2.5e-7,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_slope_per_s": -0.0000039715859202194815,
+      "confirming_scale_m": 1.25e-7,
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_slope_per_s": -0.000003971583350258815
+    },
+    {
+      "state_id": "C2_HIGH_FORCING_NEG",
+      "logical_requests": 11,
+      "participant_trials": 7,
+      "cache_hits": 4,
+      "selected_scale_m": 2.5e-7,
+      "selected_mode": "BACKWARD_CENTER_CLASS",
+      "selected_slope_per_s": -0.0000039715828362666386,
+      "confirming_scale_m": 1.25e-7,
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_slope_per_s": -0.000003971581294290262
+    },
+    {
+      "state_id": "C2_HIGH_FORCING_POS",
+      "logical_requests": 11,
+      "participant_trials": 7,
+      "cache_hits": 4,
+      "selected_scale_m": 2.5e-7,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_slope_per_s": -0.000003938583512828217,
+      "confirming_scale_m": 1.25e-7,
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_slope_per_s": -0.000003938582998836077
+    },
+    {
+      "state_id": "C3_LONG_HIGH_NEG",
+      "logical_requests": 11,
+      "participant_trials": 7,
+      "cache_hits": 4,
+      "selected_scale_m": 2.5e-7,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_slope_per_s": -0.000003857614587847805,
+      "confirming_scale_m": 1.25e-7,
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_slope_per_s": -0.000003857614844843884
+    },
+    {
+      "state_id": "C3_LONG_HIGH_POS",
+      "logical_requests": 11,
+      "participant_trials": 7,
+      "cache_hits": 4,
+      "selected_scale_m": 2.5e-7,
+      "selected_mode": "BACKWARD_CENTER_CLASS",
+      "selected_slope_per_s": -0.00000381274769986514,
+      "confirming_scale_m": 1.25e-7,
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_slope_per_s": -0.0000038127489848454936
+    }
+  ],
+  "source_contract": {
+    "direct_backend_run_calls": 0,
+    "direct_backend_commit_calls": 0,
+    "direct_backend_discard_calls": 0,
+    "groundwater_interface_ledger_dependencies": 0,
+    "hcof_rhs_dependencies": 0,
+    "participant_trial_delegation": true,
+    "participant_same_trial_observation_delegation": true,
+    "participant_candidate_cleanup_delegation": true,
+    "public_commit_or_publication_method": false
+  },
+  "bounded_conclusions": [
+    "The FMR-specific tangent-observation service can schedule and cache immutable-origin diagnostic probes while leaving physical trial and candidate ownership with the existing FMR participant/backend boundary.",
+    "The frozen research E3 caller receives exactly the observations needed to reproduce all eight G13 streaming decisions, with 103 logical requests served by 62 physical participant trials and 41 exact-head cache hits.",
+    "Every successful diagnostic probe is observed before participant-level discard and no G16 call returns a live diagnostic candidate; failed participant trials retain diagnostic observation authority only and do not acquire accepted-state or ledger authority.",
+    "The accepted revision/time and groundwater interface ledger remain unchanged across complete service sessions, and cache authority is cleared across sessions even when a numeric head repeats.",
+    "G16 qualifies only FMR-specific tangent observation service mechanics, ownership and exact-head cache lifetime as a production-facing building block. The E3 tangent estimator, P4 safeguard policy, coupling orchestration and production HCOF/RHS policy remain unadmitted."
+  ],
+  "production_admission": "BUILDING_BLOCK_ONLY_NO_COUPLING_POLICY_ADMISSION",
+  "next_natural_unit": "Preregister an end-to-end safeguarded tangent coupling orchestration unit that consumes the qualified G16 service while preserving diagnostic-trial non-authority through Newton/P4 convergence and final candidate publication."
+}

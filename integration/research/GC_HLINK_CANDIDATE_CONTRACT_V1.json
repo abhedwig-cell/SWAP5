@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.gc_hlink.candidate_contract.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK-DESIGN01",
+  "title": "Candidate shared-phreatic coupling contract for SWAP5-MODFLOW6",
+  "status": "RESEARCH_DESIGN_NOT_PRODUCTION_AUTHORITY",
+  "basis": {
+    "dummy_oracles": [
+      "GC-DUMMY-SWAP-DSW23 coextensive storage ownership",
+      "GC-DUMMY-SWAP-DSW24 interface-to-phreatic equivalence limit"
+    ],
+    "real_swap_audits": [
+      "GC-REAL-SWAP-MAP10 finite-window storage response",
+      "GC-REAL-SWAP-MAP11 current-domain ownership",
+      "GC-REAL-SWAP-MAP12 legacy GWL versus lower-face-head semantics"
+    ],
+    "external_reference": [
+      "Van Walsum and Veldhuizen (2011) shared-state SIMGRO concept",
+      "Deltares imod_coupler current MetaSWAP-MODFLOW6 storage/head mapping at commit 8907fb13f8301ba1e0f32dd90a64ea475d4896d6"
+    ]
+  },
+  "scope": "Define a mathematically testable alternative coupling family. Do not replace or modify the admitted current mode-5 interface-head F-GC route.",
+  "state_contract": {
+    "shared_state": "H_phreatic, one physical water-table hydraulic head per coupled groundwater cell",
+    "swap_internal_state": "All unsaturated/process memory xi_swap remains SWAP-owned and is not reconstructed from H_phreatic alone.",
+    "modflow_internal_state": "Regional saturated-flow state and lateral-flow degrees of freedom remain MODFLOW-owned.",
+    "distinction": "H_phreatic is not H_interface unless a separately proven geometric/hydraulic mapping makes them identical."
+  },
+  "geometric_contract": {
+    "required": "For every coupled cell, declare which vertical physical volume is represented by SWAP complete-profile storage and which MODFLOW layers/storage volumes overlap or lie outside it.",
+    "overlap_rule": "Any physical storage volume represented by the SWAP complete-profile H_phreatic response must not simultaneously retain an independent MODFLOW Sy/Ss storage contribution.",
+    "complement_rule": "MODFLOW storage outside the SWAP-owned complete-profile volume may remain active if its physical volume is disjoint and explicitly documented.",
+    "moving_phreatic_layer": "If H_phreatic crosses MODFLOW layers, the storage/recharge/head mapping must move to the currently phreatic layer or use another independently derived equivalent representation."
+  },
+  "swap_trial_contract": {
+    "required_new_semantic_owner": "A typed prescribed-groundwater-level / phreatic-state trial, scientifically reconciled to legacy SWBOTB=1 lineage or independently derived. Current bottom_mode=5 is not sufficient authority.",
+    "immutable_origin": "Every nonlinear coupling trial starts from the same accepted SWAP origin for the window.",
+    "outputs": [
+      "complete-profile storage change DeltaV_swap(H_phreatic; xi0, forcing)",
+      "all non-groundwater external process amounts over the window",
+      "candidate internal SWAP state",
+      "a storage response suitable for the groundwater solve, with provenance and time-window support"
+    ],
+    "not_authoritative_in_hlink": "Current mode-5 bottom-interface exchange must not automatically be added as an independent whole-system transfer if it is internal to the declared coextensive shared-phreatic domain."
+  },
+  "groundwater_contract": {
+    "role": "Solve regional/lateral saturated groundwater flow for H_phreatic using the SWAP-owned coupled phreatic storage response and process remainder.",
+    "storage_rule": "For the coextensive phreatic storage volume, MODFLOW STO must use the SWAP-derived storage response or an exactly equivalent partition whose sum equals the one physical response.",
+    "lateral_flow": "MODFLOW retains ownership of lateral/boundary groundwater-flow contributions.",
+    "head_return": "Accepted/trial MODFLOW H_phreatic is the shared state supplied to the SWAP phreatic trial."
+  },
+  "nonlinear_balance": {
+    "exact_conceptual_residual": "F(H)=DeltaV_profile(H;xi0,forcing) - V_process_net_in(H;xi0,forcing) - V_groundwater_lateral_net_in(H) = 0, with one sign convention fixed before implementation.",
+    "alternative_incremental_form": "mu_eff(H_ref)*(H-H_ref) = process_remainder + groundwater_lateral_contribution only as a linearization of the same one-volume balance.",
+    "tangent_rule": "Storage derivative, process derivatives and groundwater-flow Jacobian must be derived from this residual. Do not infer physical ownership from HCOF units."
+  },
+  "storage_response_questions_to_close": [
+    "Whether the appropriate MODFLOW storage object is an endpoint derivative dDeltaV/dH, a finite-window secant, or another shared-state response for the chosen time discretization.",
+    "How MAP10's window-dependent u_A relates to the storage response required by the h-link residual.",
+    "How head-dependent ET, drainage and capillary/internal-memory processes enter the residual separately from storage."
+  ],
+  "multiswap_contract": {
+    "shared_cell_head": "All SWAP tiles mapped to one groundwater cell receive the same H_phreatic trial value.",
+    "storage_aggregation": "Area-weighted physical storage responses are summed once for the groundwater cell.",
+    "process_aggregation": "Area-weighted process remainders/recharge contributions are summed separately from storage.",
+    "transaction": "Each tile keeps independent SWAP lineage, candidate and internal memory; cell publication is atomic across all mapped tiles and groundwater state."
+  },
+  "acceptance_contract": [
+    "subsystem numerical convergence",
+    "shared H_phreatic residual closure",
+    "one-volume storage/mass closure",
+    "lateral-groundwater plus SWAP process balance closure",
+    "transaction provenance and atomic publication",
+    "restart/replay equivalence"
+  ],
+  "minimum_research_program": [
+    "HLINK01: coextensive analytical one-cell reproduction using DSW23 geometry and live MODFLOW storage replacement.",
+    "HLINK02: nonlinear storage curve, compare exact integrated storage residual with tangent/iteration formulations.",
+    "HLINK03: head-dependent ET/drain/internal-memory decomposition under shared phreatic state.",
+    "HLINK04: typed real-SWAP prescribed-GWL trial from immutable origin, initially with no optional processes.",
+    "HLINK05: compare real-SWAP H_phreatic storage derivative against current mode-5 finite-window u_A without assuming equality.",
+    "HLINK06: N:1 heterogeneous tiles to one MODFLOW cell with area-weighted storage/process ownership.",
+    "HLINK07: moving phreatic layer across MODFLOW vertical layers.",
+    "HLINK08: lateral MODFLOW forcing only and mixed atmospheric/lateral forcing.",
+    "HLINK09: q-link finite-resistance convergence to h-link limit with identical physical domain declaration.",
+    "HLINK10: restart, rejected-trial and mass-ledger qualification."
+  ],
+  "coexistence_with_current_fgc": {
+    "current_route": "Keep admitted mode-5 interface-head/bottom-exchange F-GC unchanged during research.",
+    "comparison_goal": "Determine for which physical domain decompositions the boundary-head route and shared-phreatic route are each appropriate and whether they converge in controlled limits.",
+    "no_assumed_winner": true
+  },
+  "forbidden": [
+    "no production source changes from this design",
+    "do not disable MODFLOW STO globally",
+    "do not reuse current u as phreatic Sy without a new residual/storage derivation",
+    "do not relabel bottom_mode=5 as a groundwater-level state",
+    "do not infer MetaSWAP numerical choices are automatically correct for SWAP5"
+  ]
+}

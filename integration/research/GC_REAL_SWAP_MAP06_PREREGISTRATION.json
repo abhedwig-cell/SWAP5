@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_real_swap.map06.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP06",
+  "title": "B3 real-SWAP prescribed-head corrector admissibility topology near the accepted fixed point",
+  "status": "POST_OBSERVATION_DIAGNOSTIC_PREREGISTERED_BEFORE_EXECUTION",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "map05_observation": "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
+    "e4": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json"
+  },
+  "fixed_case": {
+    "window_day": 0.001,
+    "predictor_qbot_cm_per_day": 0.0001,
+    "current_plus_u_accepted_head_m": -0.7149962561412444,
+    "current_plus_u_corrector_q_m_per_s": -1.2492277961483046e-11,
+    "intercept_only_failed_head_m": -0.7149962561385227,
+    "failed_head_offset_from_current_m": 2.721711744868128e-12
+  },
+  "grid_offsets_picometres": [
+    -8,
+    -6,
+    -4,
+    -3,
+    -2,
+    -1.5,
+    -1,
+    -0.5,
+    0,
+    0.5,
+    1,
+    1.5,
+    2,
+    2.5,
+    2.721711744868128,
+    3,
+    3.5,
+    4,
+    5,
+    6,
+    8,
+    10
+  ],
+  "repeated_critical_offsets_picometres": [
+    0,
+    2.5,
+    2.721711744868128,
+    3,
+    4
+  ],
+  "execution_contract": [
+    "Each head is evaluated in a fresh child process with a newly initialized F-GC44 B3 real-SWAP origin.",
+    "No MODFLOW solve is used; only the unchanged prescribed-head SWAP corrector is evaluated.",
+    "Record raw participant status and q_swap when status=0.",
+    "No head is moved or retried after observing status."
+  ],
+  "gates": [
+    "The CURRENT_PLUS_U accepted head (0 pm offset) is admissible and reproduces its recorded corrector flux within 1e-18 m/s.",
+    "The exact MAP05 INTERCEPT_ONLY failed head reproduces participant status 6.",
+    "At least one grid point is admissible and at least one grid point is inadmissible.",
+    "Repeated critical offsets reproduce the same admissibility status.",
+    "Every admissible q_swap is finite."
+  ],
+  "characterization_only": [
+    "number and ordering of valid/invalid intervals",
+    "q_swap variation over admissible points",
+    "distance from current accepted head to nearest invalid sample",
+    "whether admissibility appears monotone over the fixed grid"
+  ],
+  "interpretation_rules": [
+    "This is a post-observation numerical-domain diagnostic, not blind validation.",
+    "A nonmonotone validity pattern is evidence about the corrector solve envelope, not about discontinuous physical hydrology.",
+    "Do not infer a physical head tolerance from the grid spacing.",
+    "Do not enlarge or shrink the corrector envelope in production from this diagnostic alone."
+  ],
+  "forbidden": [
+    "no production changes",
+    "no adaptive bisection after seeing the grid",
+    "no tolerance relaxation",
+    "do not use MAP06 to retroactively pass MAP05"
+  ]
+}

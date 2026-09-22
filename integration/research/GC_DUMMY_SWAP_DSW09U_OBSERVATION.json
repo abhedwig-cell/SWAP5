@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09u.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09U",
+  "workflow_run": 35562694437,
+  "decision": "HYPOTHESIS_NOT_SUPPORTED_SIMPLE_DOES_NOT_CLOSE",
+  "moderate": {
+    "last_head_m": 8.05615528129362,
+    "last_residual_m_per_day": -2.62577459775315e-12,
+    "iterations": 80,
+    "modflow_converged": false
+  },
+  "simple": {
+    "last_head_m": 8.0561552813002,
+    "last_residual_m_per_day": -3.982199986429791e-12,
+    "iterations": 80,
+    "modflow_converged": false
+  },
+  "bounded_conclusion": "Changing IMS complexity from MODERATE to SIMPLE does not close the externally reanchored within-prepared-solve problem, so the complexity class by itself is not the causal explanation."
+}

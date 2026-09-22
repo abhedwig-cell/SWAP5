@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_fixed_interface.g23.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G23",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G23_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G23_RESULT.json",
+  "tested_commit": "e165556b9821ac1f0df7cc47de6215480a78f5cd",
+  "workflow_run": 35751962699,
+  "workflow_job": 106828111702,
+  "workflow_conclusion": "success",
+  "disposition": {
+    "physical_endpoint_matrix": "PARTIAL_19_OF_21",
+    "nominal_swap_ledger_handoff_on_converged_arms": "QUALIFIED_19_OF_19",
+    "diagnostic_non_authority": "QUALIFIED_21_OF_21",
+    "fresh_process_replay": "QUALIFIED_BITWISE",
+    "c0_mixed_pos": "SCIENTIFIC_FAILURE_EXTERNAL_RESIDUAL_BUDGET_EXHAUSTED",
+    "c3_mixed_neg": "SCIENTIFIC_FAILURE_EXTERNAL_RESIDUAL_BUDGET_EXHAUSTED",
+    "g21_exact_path_equivalence": "REMAINS_FALSIFIED",
+    "tolerance_compatibility_hypothesis": "OPEN_G24",
+    "production_change": "NOT_ADMITTED"
+  },
+  "next_action": "Preregister G24 to test whether the two GW_MIXED failures are caused by incompatibility between the 1e-15 m/s external residual gate and STANDARD MODFLOW head convergence tolerances. Do not alter G23 classification."
+}

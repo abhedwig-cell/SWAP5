@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw05.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW05",
+  "title": "Time-step invariance of linear shared storage",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "shared_storage_result": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "physical_case": {
+    "initial_head_m": 8,
+    "total_storage": 0.2,
+    "s_swap": 0.1,
+    "s_modflow": 0.1,
+    "recharge_rate_m_per_day": 0.01,
+    "total_duration_day": 1,
+    "exact_final_head_m": 8.05
+  },
+  "schedules": [
+    [
+      1
+    ],
+    [
+      0.5,
+      0.5
+    ],
+    [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ],
+    [
+      0.07,
+      0.13,
+      0.2,
+      0.15,
+      0.45
+    ]
+  ],
+  "per_step_mapping": "Q_dummy(H)=R-S_swap*(H-H_previous)/dt",
+  "implementation_note": "Each accepted substep is replayed as a fresh one-cell MODFLOW transient solve with its accepted previous head as XOLD/initial head. This isolates timestep partitioning from prepared-solve history.",
+  "gates": [
+    "each schedule totals one day",
+    "every substep closes its exact storage balance",
+    "all schedules finish at 8.05 m within 1e-10 m",
+    "schedule spread <=1e-10 m"
+  ],
+  "forbidden": [
+    "no nonlinear physics",
+    "no production source change",
+    "do not infer path independence for systems with memory or nonlinear sinks"
+  ]
+}

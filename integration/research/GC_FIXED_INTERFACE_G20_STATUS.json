@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.gc_fixed_interface.g20.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G20",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_BOUNDED_CONTINUOUS_PREPARED_SOLVE_BRIDGE",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G20_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G20_RESULT.json",
+  "tested_commit": "5033a94fc5e51f4ecc9e784078edc972b1ce7891",
+  "workflow_run": 35727618026,
+  "workflow_job": 106745027381,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "disposition": {
+    "g18_direct_head_space_p4_composition": "REMAINS_FALSIFIED",
+    "g19_affine_fresh_origin_response_bridge": "REMAINS_QUALIFIED_BOUNDED_RESEARCH",
+    "g20_continuous_fgc38_response_bridge": "QUALIFIED_BOUNDED_RESEARCH",
+    "full_response_space_outer_coupling_algorithm": "NOT_YET_QUALIFIED",
+    "e3_tangent_estimator": "REMAINS_QUALIFIED_RESEARCH_ONLY",
+    "p4_head_space_safeguard": "REMAINS_RESEARCH_EVIDENCE_NOT_DIRECT_PREPARED_SOLVE_POLICY",
+    "modflow_timestep_publication": "NOT_PERFORMED",
+    "crash_atomic_multi_participant_publication": "STILL_OPEN",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "accounting": {
+    "lambda_phases": 3,
+    "modflow_solve_calls": 6,
+    "prepare_time_step_calls": 1,
+    "prepare_solve_calls": 1,
+    "finalize_solve_calls": 1,
+    "finalize_time_step_calls": 0,
+    "g16_diagnostic_trials": 3,
+    "max_continuous_vs_fresh_head_difference_m": 1.1102230246251565e-16
+  },
+  "next_action": "Open G21 as a full continuous prepared-solve response-space safeguarded outer-coupling qualification. Recompute the real-SWAP E3 tangent at each accepted coupling iterate, keep XOLD fixed, require conjunctive MODFLOW-plus-interface convergence, and retain all probe/safeguard trials as non-authoritative. Do not yet publish the MODFLOW timestep."
+}

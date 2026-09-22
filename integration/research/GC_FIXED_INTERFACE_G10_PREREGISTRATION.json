@@ -1,0 +1,126 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10",
+  "title": "Long-window B4 real-SWAP nonlinear carrier and safeguarded-Newton challenge",
+  "status": "PREREGISTERED_BEFORE_EXECUTION_AMENDED",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+  "carrier_authority": "docs/publication/evidence/PUB_GC_E4_FULL_RESULT.json",
+  "carrier_selection": {
+    "baseline_id": "B4",
+    "selection_is_blind": false,
+    "reason": "Frozen E4 already shows a READY 0.01-day, qbot=1e-6 cm/day real-Richards response with all centered head pairs available through ±1e-5 m and a >5% scale change in J_R. B5 is excluded because E4 records no symmetric derivative plateau.",
+    "frozen_e4": {
+      "duration_day": 0.01,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "reference_head_m": -0.7149999311459918,
+      "u_A": 0.00119027208545508,
+      "local_J_R": -0.001190272325146675,
+      "centered_J_R_at_1e_5_m": -0.001398219521941968
+    }
+  },
+  "production_changes": false,
+  "configured_swap": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001
+  },
+  "fixed_head_scan_offsets_m": [
+    -0.00001,
+    -0.000008,
+    -0.000005,
+    -0.000003,
+    -0.000001,
+    -3e-7,
+    0,
+    3e-7,
+    0.000001,
+    0.000003,
+    0.000005,
+    0.000008,
+    0.00001
+  ],
+  "tangent_estimator": "Use G09D E3 unchanged: stencil-internal execution-class consistency plus first adjacent-scale <=5% slope agreement.",
+  "material_nonlinearity_gate": {
+    "method": "Compute E3 at href and at every fixed scan point that is participant-status 0 and E3-available. Compare each local E3 slope against href E3.",
+    "threshold_fraction": 0.05,
+    "pass_rule": "At least one nonzero fixed scan point must differ from the href E3 slope by >=5%.",
+    "no_post_hoc_head_selection": true
+  },
+  "start_selection": {
+    "rule": "For each sign choose the largest-magnitude fixed scan offset that is participant-status 0 and E3-available. Do not invent intermediate offsets.",
+    "require_both_signs": true
+  },
+  "groundwater_regimes": [
+    {
+      "id": "GW_R05_STRESS",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy_formula": "0.5*u_predictor",
+      "initial_head_bias_m": 0.000008,
+      "q_probes_m_per_s": [
+        -2e-10,
+        -1e-10,
+        1e-10,
+        2e-10
+      ]
+    },
+    {
+      "id": "GW_R2_STRESS",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy_formula": "2.0*u_predictor",
+      "initial_head_bias_m": -0.000008,
+      "q_probes_m_per_s": [
+        -2e-10,
+        -1e-10,
+        1e-10,
+        2e-10
+      ]
+    },
+    {
+      "id": "GW_MIXED",
+      "k_m_per_day": 1,
+      "ss_per_m": 0.02,
+      "sy_formula": "0.15",
+      "initial_head_bias_m": 0,
+      "q_probes_m_per_s": [
+        -4e-8,
+        -2e-8,
+        2e-8,
+        4e-8
+      ]
+    }
+  ],
+  "groundwater_response": "Fresh converged constant-flux MODFLOW6 probes; require positive affine slope and max fit error <=5e-12 m/s.",
+  "root_reference": "Use real-SWAP trial residual q_swap(H)-[aH+b] and bisection inside a sign-changing interval formed by adjacent admissible fixed-scan points. If no bracket exists, classify NO_ADMISSIBLE_ROOT for that regime and do not invent a bracket.",
+  "policies": {
+    "P1_E3": "Raw physical Newton; E3 re-estimated at each iterate.",
+    "P4_E3": "Same E3 tangent with factor-1/2 backtracking until participant admissible and coupled-residual magnitude non-increasing; max 12 contractions per outer step."
+  },
+  "convergence": {
+    "max_outer": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "head_error_tolerance_m": 5e-10
+  },
+  "decision_rules": [
+    "Carrier qualification requires the frozen >=5% real-SWAP nonlinearity gate to pass.",
+    "P4 research robustness requires convergence for every regime/start pair that has an admissible reference root.",
+    "P1 outcomes are characterization; a P1 failure or merit increase followed by P4 recovery is stronger safeguard evidence but is not required for execution completion.",
+    "If P4 performs zero contractions everywhere, live safeguard activation remains open even if P4 converges.",
+    "All probes/candidates remain trial->evaluate->discard and may not mutate revision/time/ledger.",
+    "No production HCOF/RHS or production coupling change is authorized by G10."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT",
+  "pre_execution_amendment": {
+    "reason": "Bind the live configured F-GC44 carrier explicitly to the frozen E4 B4 authority before interpreting any G10 response.",
+    "timing": "Added while the first G10 workflow was queued; no G10 live execution result had been inspected or admitted.",
+    "carrier_binding_gate": {
+      "reference_head_m": -0.7149999311459918,
+      "u_A": 0.00119027208545508,
+      "abs_tolerance": 1e-14,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "rule": "Live configured initialization must reproduce all three values; otherwise classify carrier mismatch and stop before the nonlinear scan."
+    }
+  }
+}

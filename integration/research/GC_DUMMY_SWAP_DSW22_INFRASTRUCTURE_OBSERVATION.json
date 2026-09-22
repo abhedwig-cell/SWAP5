@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw22.infrastructure_observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW22",
+  "workflow_run": 35564420631,
+  "workflow_job": 106223313102,
+  "classification": "PRE_EXPERIMENT_QUALIFICATION_DEPENDENCY_ORDER_DRIFT",
+  "reached_experiment": false,
+  "failure": {
+    "source": "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "missing_module": "mod_b110_root_sink_provider.mod",
+    "historical_runner_order": "mod_reference_richards_temporal_indicator compiled before mod_b110_root_sink_provider",
+    "current_dependency": "temporal indicator now imports mod_b110_root_sink_provider"
+  },
+  "disposition": [
+    "Do not alter DSW22 matrix, gates, or physics.",
+    "Do not modify production code.",
+    "Do not use this run as scientific evidence.",
+    "Repair only the research-time reuse of the historical F-GC44 compile list by moving the already-existing root-sink module before its current consumer."
+  ]
+}

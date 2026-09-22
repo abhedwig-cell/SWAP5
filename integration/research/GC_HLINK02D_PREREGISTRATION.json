@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.gc_hlink.hlink02d.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02D",
+  "title": "First-secant solve lifecycle and IMS certification diagnostic",
+  "status": "POST_FAILURE_DIAGNOSTIC",
+  "source_failure": {
+    "parent": "GC-HLINK02",
+    "workflow_run": 35578161179,
+    "workflow_job": 106264624906,
+    "failure": "first SECANT_STO_ITERATION solve returned a finite candidate but MODFLOW did not certify timestep convergence"
+  },
+  "fixed_physics": {
+    "initial_head_m": 8,
+    "configured_sy": 0.15,
+    "runtime_sy_target": 0.15,
+    "input_m3_per_day": 0.01,
+    "dt_day": 1,
+    "api_hcof": 0,
+    "api_rhs": 0,
+    "analytic_head_m": 8.066666666666666
+  },
+  "variants": [
+    {
+      "name": "NO_WRITE_R1E15",
+      "write_sy": false,
+      "rclose": 1e-15
+    },
+    {
+      "name": "WRITE_SAME_R1E15",
+      "write_sy": true,
+      "rclose": 1e-15
+    },
+    {
+      "name": "NO_WRITE_R1E13",
+      "write_sy": false,
+      "rclose": 1e-13
+    },
+    {
+      "name": "WRITE_SAME_R1E13",
+      "write_sy": true,
+      "rclose": 1e-13
+    }
+  ],
+  "outputs": [
+    "configured and runtime SY",
+    "candidate head after every MODFLOW solve call",
+    "MODFLOW convergence flag and call count",
+    "head error to the independent linear oracle",
+    "timestep_ready_for_finalize"
+  ],
+  "gates": [
+    "All variants must reach the analytic physical head within 1e-10 m even if a subsystem convergence flag remains false.",
+    "NO_WRITE_R1E15 must reproduce the already-qualified HLINK01 unreplaced control.",
+    "The diagnostic records rather than retunes any convergence-flag differences."
+  ],
+  "interpretation": [
+    "If same-value SY write changes certification, isolate XMI STO mutation lifecycle.",
+    "If rclose changes certification at identical head, classify it as IMS certification behavior.",
+    "If no variant reproduces HLINK01, compare exact harness lifecycle before changing HLINK02."
+  ],
+  "forbidden": [
+    "do not modify HLINK02 preregistration",
+    "do not relax HLINK02 gates",
+    "no production code or solver-setting change"
+  ]
+}

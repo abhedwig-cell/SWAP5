@@ -1,0 +1,40 @@
+name: GC real-SWAP MAP09 active drainage corrector
+on:
+  push:
+    branches: [work/f-gc-dummy-swap-shared-storage]
+    paths:
+      - 'integration/research/GC_REAL_SWAP_MAP09*.json'
+      - 'tests/research/support/mod_gc_map09_active_drainage_bridge.f90'
+      - 'tests/research/support/gc_map09_e6_ctypes.py'
+      - 'tests/research/test_gc_real_swap_map09_active_drainage.py'
+      - 'tests/research/test_gc_fixed_interface_map09_active_drainage_g12.py'
+      - 'tests/research/test_gc_fixed_interface_map09_groundwater_calibration_g12a.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G12B_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G12A_RESULT.json'
+      - 'tests/research/test_gc_fixed_interface_map09_local_groundwater_g12b.py'
+      - 'tests/research/test_gc_fixed_interface_g14_fused_map09.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G14_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G13_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G12A_PREREGISTRATION.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G12_RESULT.json'
+      - 'integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json'
+      - 'tests/research/run_gc_real_swap_map09.sh'
+      - '.github/workflows/gc-real-swap-map09.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  map09:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run MAP09 active-drainage prescribed-head feasibility
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map09.sh

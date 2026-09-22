@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.gc_real_swap.map08.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP08",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED",
+  "preregistration": "integration/research/GC_REAL_SWAP_MAP08_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_real_swap_map08_raw_corrector_failure.py",
+  "runner": "tests/research/run_gc_real_swap_map08.sh",
+  "production_changes": false,
+  "fixed_offsets_pm": [
+    -4,
+    -3,
+    -0.5,
+    0,
+    2,
+    2.5,
+    2.721711744868128,
+    3
+  ],
+  "expected_participant_status": {
+    "0": 0,
+    "2": 0,
+    "3": 0,
+    "-4": 6,
+    "-3": 0,
+    "-0.5": 6,
+    "2.5": 6,
+    "2.721711744868128": 6
+  },
+  "next_action": "Use MAP08 only as bounded numerical corrector-domain evidence. No production tolerance/retry change. MAP09 reference feasibility is independently qualified; continue along separately preregistered downstream research gates.",
+  "blockers": [],
+  "result": "integration/research/GC_REAL_SWAP_MAP08_RESULT.json",
+  "qualification": {
+    "workflow_run": 35572899763,
+    "workflow_job": 106248160164,
+    "live_gate": "PASS"
+  }
+}

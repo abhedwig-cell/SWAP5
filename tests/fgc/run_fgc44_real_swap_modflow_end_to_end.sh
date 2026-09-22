@@ -62,13 +62,13 @@ MODULE_SRC=(
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -83,6 +83,7 @@ MODULE_SRC=(
   src/runtime/mod_groundwater_swap_transaction_participant.f90
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
   src/runtime/mod_fmr_groundwater_swap_participant.f90
+  src/runtime/mod_fmr_groundwater_swap_tangent_observation_service.f90
   src/runtime/mod_groundwater_interface_mass_ledger.f90
   src/runtime/mod_groundwater_tile_aggregation.f90
   src/runtime/mod_groundwater_multiswap_types.f90

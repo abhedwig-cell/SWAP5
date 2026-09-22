@@ -1,0 +1,248 @@
+{
+  "schema": "swap5.gc_fixed_interface.g14.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G14",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G14_PREREGISTRATION.json",
+  "parent_cost_result": "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+  "decision": "QUALIFIED_RESEARCH_ONLY_FUSED_TRIAL_OBSERVATION_EQUIVALENT_ON_FULL_STREAMING_MATRIX",
+  "production_changes": false,
+  "executions": {
+    "fgc44": {
+      "tested_commit": "510f2379f0e67a14c8e88aeb4f45ad9411983140",
+      "workflow_run": 35718711087,
+      "workflow_job": 106716249813,
+      "conclusion": "success"
+    },
+    "map09": {
+      "tested_commit": "612cb87d0895ad316ee58148a39e14944f670e1a",
+      "workflow_run": 35718721922,
+      "workflow_job": 106716284282,
+      "conclusion": "success"
+    }
+  },
+  "gates": {
+    "fgc44_fused_equivalence": "PASS",
+    "map09_fused_equivalence": "PASS",
+    "participant_status_equivalence": "PASS",
+    "q_equivalence": "PASS",
+    "raw_execution_diagnostics_equivalence": "PASS",
+    "one_backend_run_per_fused_observation": "PASS",
+    "e3_streaming_decision_equivalence": "PASS",
+    "transaction_authority": "PASS"
+  },
+  "summary": {
+    "state_count": 11,
+    "fgc44_state_count": 8,
+    "map09_state_count": 3,
+    "streaming_unique_heads": 83,
+    "fused_backend_runs": 83,
+    "previous_streaming_two_run_cost": 166,
+    "fused_run_reduction_fraction": 0.5,
+    "max_q_diff_m_per_s": 0
+  },
+  "fgc44_state_results": [
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 1.25e-7,
+      "confirming_slope_per_s": -0.000003938582998836084,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 2.5e-7,
+      "selected_slope_per_s": -0.0000039385829988360785,
+      "state_id": "C0_CONTROL_NEG",
+      "status_counts": {
+        "0": 7
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 3.125e-8,
+      "confirming_slope_per_s": -0.000003971584378243041,
+      "fused_backend_runs": 11,
+      "head_count": 11,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 6.25e-8,
+      "selected_slope_per_s": -0.000003971584378243066,
+      "state_id": "C0_CONTROL_POS",
+      "status_counts": {
+        "0": 6,
+        "6": 5
+      },
+      "streaming_scale_count": 4,
+      "streaming_unique_heads": 11
+    },
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 6.25e-8,
+      "confirming_slope_per_s": -0.000003971584378243066,
+      "fused_backend_runs": 9,
+      "head_count": 9,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 1.25e-7,
+      "selected_slope_per_s": -0.000003971583350258776,
+      "state_id": "C1_LOW_FORCING_NEG",
+      "status_counts": {
+        "0": 5,
+        "6": 4
+      },
+      "streaming_scale_count": 3,
+      "streaming_unique_heads": 9
+    },
+    {
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_scale_m": 1.25e-7,
+      "confirming_slope_per_s": -0.000003971583350258815,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 2.5e-7,
+      "selected_slope_per_s": -0.0000039715859202194815,
+      "state_id": "C1_LOW_FORCING_POS",
+      "status_counts": {
+        "0": 6,
+        "6": 1
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_scale_m": 1.25e-7,
+      "confirming_slope_per_s": -0.000003971581294290262,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "BACKWARD_CENTER_CLASS",
+      "selected_scale_m": 2.5e-7,
+      "selected_slope_per_s": -0.0000039715828362666386,
+      "state_id": "C2_HIGH_FORCING_NEG",
+      "status_counts": {
+        "0": 5,
+        "6": 2
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 1.25e-7,
+      "confirming_slope_per_s": -0.000003938582998836077,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 2.5e-7,
+      "selected_slope_per_s": -0.000003938583512828217,
+      "state_id": "C2_HIGH_FORCING_POS",
+      "status_counts": {
+        "0": 7
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 1.25e-7,
+      "confirming_slope_per_s": -0.000003857614844843884,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 2.5e-7,
+      "selected_slope_per_s": -0.000003857614587847805,
+      "state_id": "C3_LONG_HIGH_NEG",
+      "status_counts": {
+        "0": 6,
+        "6": 1
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_scale_m": 1.25e-7,
+      "confirming_slope_per_s": -0.0000038127489848454936,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "BACKWARD_CENTER_CLASS",
+      "selected_scale_m": 2.5e-7,
+      "selected_slope_per_s": -0.00000381274769986514,
+      "state_id": "C3_LONG_HIGH_POS",
+      "status_counts": {
+        "0": 7
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    }
+  ],
+  "map09_state_results": [
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 5e-7,
+      "confirming_slope_per_s": -6.628364678117205e-7,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 0.000001,
+      "selected_slope_per_s": -6.628364639568004e-7,
+      "state_id": "HREF",
+      "status_counts": {
+        "0": 7
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 5e-7,
+      "confirming_slope_per_s": -6.628883887278815e-7,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 0.000001,
+      "selected_slope_per_s": -6.628883887278297e-7,
+      "state_id": "NEG",
+      "status_counts": {
+        "0": 7
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    },
+    {
+      "confirming_mode": "CENTRAL_PAIR_CLASS",
+      "confirming_scale_m": 5e-7,
+      "confirming_slope_per_s": -6.627845340457224e-7,
+      "fused_backend_runs": 7,
+      "head_count": 7,
+      "max_q_diff_m_per_s": 0,
+      "selected_mode": "CENTRAL_PAIR_CLASS",
+      "selected_scale_m": 0.000001,
+      "selected_slope_per_s": -6.627845314758274e-7,
+      "state_id": "POS",
+      "status_counts": {
+        "0": 7
+      },
+      "streaming_scale_count": 2,
+      "streaming_unique_heads": 7
+    }
+  ],
+  "bounded_conclusions": [
+    "The fused research observation returns participant-style status/q and E3 execution-class diagnostics from one backend corrector run.",
+    "Across all 83 G13 streaming heads, including FGC44 trial-failure points, fused observations are observationally equivalent to the existing participant-plus-independent-raw route.",
+    "Fused E3 streaming reproduces all persisted G13 selected and confirming scales, modes and slopes.",
+    "The observed fused cost is 83 backend corrector runs versus 166 for the current streaming research implementation, exactly the G13 lower bound.",
+    "All fused candidates are discarded; committed revision/time/ledger remain unchanged.",
+    "This qualifies a research integration shape only. No src/runtime API, production tangent service or HCOF/RHS logic has been changed."
+  ],
+  "production_admission": "NO"
+}

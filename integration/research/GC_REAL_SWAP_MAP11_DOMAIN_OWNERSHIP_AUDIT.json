@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_real_swap.map11.domain_ownership_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP11",
+  "title": "Domain and state ownership audit for the F-GC45 real-SWAP/MODFLOW fixture",
+  "status": "SOURCE_BOUND_RESEARCH_AUDIT",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "modflow_fixture": "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py",
+    "swap_fixture": "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "grid_stub": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "interface_contract": "src/runtime/mod_groundwater_coupling_contract.f90",
+    "bottom_face_mapping": "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90",
+    "head_corrector_mapping": "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90"
+  },
+  "modflow_domain": {
+    "grid": "1 layer x 1 row x 3 columns",
+    "delr_m": 1,
+    "delc_m": 1,
+    "top_m": 0,
+    "bottom_m": -2,
+    "coupled_cell_area_m2": 1,
+    "storage": {
+      "iconvert": 1,
+      "sy": 0.15,
+      "ss_per_m": 0.02
+    }
+  },
+  "swap_fixture_domain": {
+    "active_nodes": 4,
+    "z_native": [
+      -0.25,
+      -0.75,
+      -1.5,
+      -2.5
+    ],
+    "dz_native": [
+      0.5,
+      0.5,
+      1,
+      1
+    ],
+    "native_length_unit": "centimetre for the lower-face hydraulic construction, because dz/2 is passed as bottom_half_distance_cm",
+    "represented_compartment_thickness_native_sum_cm": 3,
+    "initial_groundwater_level_field": -2,
+    "initial_pressure_head_profile_rule": "heads(1)=-75 cm; each next node adds node_distance=1 native cm"
+  },
+  "coupled_head_semantics": {
+    "predictor": "SWAP bottom-face pressure head is converted to hydraulic interface head H=z_face+psi.",
+    "canonical_source_statement": "The prescribed-qbot bottom-face module states: 'This is the coupling-plane head. It is not the freatic groundwater level.'",
+    "corrector": "MODFLOW/interface hydraulic head is converted back to SWAP bottom pressure head and assigned to bottom_head under bottom mode 5.",
+    "internal_groundwater_level_mutation": "No source-level evidence that the head forcing adapter overwrites the SWAP physical state's groundwater_level field; it materializes bottom_head forcing only.",
+    "classification": "SHARED_INTERFACE_HEAD / DIRICHLET_BOUNDARY_STATE, not established as SHARED_PHREATIC_WATER_TABLE_STATE"
+  },
+  "ownership_findings": [
+    "The F-GC45 MODFLOW STO volume and the F-GC45 SWAP/FMR column are not declared or constructed as the same geometrically coextensive physical storage volume.",
+    "The synthetic MODFLOW cell is 2 m thick with Sy/Ss storage, whereas the SWAP test column uses the legacy four-node centimetre-scale fixture geometry.",
+    "Therefore coexistence of MODFLOW STO and a nonzero finite-window SWAP response u in F-GC45 does not by itself demonstrate duplicate physical storage.",
+    "MAP10's u approximately J_S relation characterizes the SWAP column's finite-window response to its bottom-interface head; it does not establish identity with the MODFLOW cell's Sy.",
+    "The current real-SWAP fixture is closer to a head-matched boundary coupling than to the Van Walsum/Veldhuizen complete-profile phreatic shared-state h-link."
+  ],
+  "implications_for_dummy_testbank": [
+    "DSW02 remains a valid proof of what duplicate storage would look like if two components represent the same physical storage volume.",
+    "DSW08 remains the valid two-state finite-resistance comparison.",
+    "A new transparent coextensive-domain test is required to map the shared-phreatic h-link concept onto MODFLOW STO; F-GC45 cannot serve as that proof."
+  ],
+  "vocabulary_correction": [
+    "Use 'shared interface hydraulic head' for current F-GC production unless a specific fixture proves that the interface head is the phreatic water-table state.",
+    "Reserve 'shared phreatic state' for models where both components explicitly represent the same water-table state and combined profile storage ownership is defined."
+  ],
+  "forbidden_inference": [
+    "Do not claim F-GC45 has double-counted storage from u and Sy alone.",
+    "Do not claim F-GC45 implements the SIMGRO/MetaSWAP h-link complete-profile storage contract.",
+    "Do not infer a physical finite-resistance q-link merely because the coupling occurs at a lower boundary.",
+    "No production source change follows from this audit."
+  ],
+  "next": [
+    "Update research taxonomy/primer to distinguish shared interface head from shared phreatic state.",
+    "Design a coextensive-domain manufactured SWAP/MODFLOW ownership experiment if production architecture is intended to support a true phreatic shared-state h-link.",
+    "Keep MAP08/MAP09 as independent corrector-domain/process-response investigations."
+  ]
+}

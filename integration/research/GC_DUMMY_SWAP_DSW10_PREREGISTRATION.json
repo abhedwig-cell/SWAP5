@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw10.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW10",
+  "title": "Depth-varying drainable-storage profile",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "nonlinear_predecessor": "GC-DUMMY-SWAP-DSW09"
+  },
+  "geometry": {
+    "bottom_elevation_m": 0,
+    "surface_elevation_m": 10,
+    "initial_head_m": 8
+  },
+  "storage_profile": {
+    "law": "S(z)=0.40-0.03*z",
+    "bottom_value": 0.4,
+    "surface_value": 0.1,
+    "interpretation": "dummy drainable storage per metre water-table rise; equal to dummy porosity only because capillary retention is deliberately absent"
+  },
+  "forcing": {
+    "input_m": 0.01,
+    "duration_day": 1
+  },
+  "exact_volume_change": "DeltaV(h)=integral_h0^h S(z) dz = 0.40*(h-h0)-0.015*(h^2-h0^2)",
+  "equivalent_dx_form": "DeltaV=0.16*dx-0.015*dx^2 for h0=8 m",
+  "exact_root": "small positive root of 0.16*dx-0.015*dx^2=0.01",
+  "tangent_response": {
+    "q_residual": "Q(H)=input/dt-DeltaV(H)/dt",
+    "derivative": "dQ/dH=-S(H)/dt",
+    "api_hcof": "exact derivative at H_ref",
+    "api_rhs": "HCOF*H_ref-Q(H_ref)"
+  },
+  "modflow_configuration": {
+    "version": "6.8.0",
+    "sy": 0,
+    "ss": 0,
+    "newton": false
+  },
+  "gates": [
+    "closed-form integrated-storage root",
+    "live MODFLOW tangent/reanchor solve reaches exact root",
+    "final integrated storage change equals 0.01 m",
+    "published tangent equals local profile S(H)",
+    "multiple reanchors exercised"
+  ],
+  "forbidden": [
+    "do not reinterpret the profile as a real soil hydraulic retention curve",
+    "no Richards physics",
+    "no production source change"
+  ]
+}

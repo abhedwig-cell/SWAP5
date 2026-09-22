@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw14.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW14",
+  "workflow_run": 35561954101,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_COMPOSED_MECHANISMS",
+  "final_head_m": 8.08,
+  "storage_gain_m": 0.016000000000000014,
+  "et_loss_m": 0.00600000000000005,
+  "drain_loss_m": 0.008000000000000186,
+  "total_input_m": 0.03,
+  "gates": {
+    "final_head": "PASS",
+    "et_active": "PASS",
+    "drain_active": "PASS",
+    "total_mass": "PASS",
+    "component_accounting": "PASS"
+  },
+  "bounded_conclusion": "Storage, atmospheric input, an independent MODFLOW source, ET and drainage can be composed consistently when each term retains explicit physical ownership. Equal slope units do not erase the distinction between storage response and physical sinks."
+}

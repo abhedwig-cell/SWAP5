@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.gc_fixed_interface.g15.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G15",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G15_PREREGISTRATION.json",
+  "tested_commit": "bfea235dd30168812e1e7af19205fb4dc11b5fa5",
+  "workflow_run": 35719665899,
+  "workflow_job": 106719335800,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_TEST_HARNESS_FAILURE_AFTER_SCIENTIFIC_MATRIX_PASS",
+  "qualified_partial_evidence": {
+    "frozen_streaming_states": 8,
+    "frozen_streaming_unique_heads": 62,
+    "max_q_diff_m_per_s": 0,
+    "g14_status_q_execution_field_equivalence": "PASS_ON_ALL_EXECUTED_HEADS",
+    "repeated_observation_read_stability": "PASS",
+    "candidate_liveness_read_only": "PASS",
+    "discard_authority": "PASS",
+    "explicit_status6_then_status0_same_origin_recovery": "PASS",
+    "failure_recovery_statuses": [
+      6,
+      0
+    ]
+  },
+  "technical_failure": {
+    "gate": "commit-path baseline versus observed equivalence",
+    "assertion": "dirty G15 origin (0, 0.0, 1, -1e-12)",
+    "mechanism": "The test executed the baseline commit and then the observed commit in the same Fortran process. The first legitimate mass-ledger commit persists across configured fixture reinitialization, so the second path was not an independent baseline. This is test-process contamination, not participant observation mutation.",
+    "repair": "Run baseline and observed commit paths in separate fresh subprocesses; keep runtime code, thresholds, observations and commit semantics unchanged."
+  },
+  "production_admission": "NO",
+  "forbidden_inference": [
+    "Do not relabel this failed workflow as G15 PASS.",
+    "Do not reset production ledger semantics merely to make the test independent.",
+    "Do not change G15 observation or coupling policy from this failure."
+  ]
+}

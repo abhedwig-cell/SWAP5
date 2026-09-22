@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw01.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW01",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "observed_head": "212f57a89f145ea0f1e97ca1aa604dd3d8b578a6",
+  "workflow_run": 35559661870,
+  "workflow_job": 106209969429,
+  "conclusion": "failure",
+  "decision": "DIAGNOSTIC_COUNTEREXAMPLE_OBSERVED_QUALIFICATION_BLOCKED",
+  "analytic": {
+    "physical_single_storage": "PASS",
+    "dummy_u_equals_storage": "PASS",
+    "dummy_q_u_equals_recharge": "PASS",
+    "affine_zero_at_initial_head": "PASS",
+    "shared_storage_slope_identity": "PASS"
+  },
+  "live_control": {
+    "expected_head_m": 8.05,
+    "observed_head_m": 8.049999949999998,
+    "error_m": -5.000000236066171e-8,
+    "tolerance_m": 1e-8,
+    "converged": true,
+    "disposition": "CONTROL_NUMERICAL_GATE_NOT_CLOSED"
+  },
+  "current_u_probe": {
+    "hcof_m2_per_day": 0.2,
+    "rhs_m3_per_day": 1.6,
+    "sy": 0.2,
+    "observed_head_m": 8,
+    "converged": true,
+    "iterations": 1,
+    "interpretation": "For the deliberately overlapping case Sy=u=0.20, the current positive u/dt affine response does not reproduce the 8.05 m physical oracle. This is a bounded counterexample to treating the same physical storage as both MODFLOW STO and the current affine response; it is not yet a general production-coupling defect claim."
+  },
+  "dsw02_partial": {
+    "alpha_heads_m": {
+      "0.00": 8.049999949999998,
+      "0.25": 8.049999962499989,
+      "0.50": 8.049999974999986,
+      "0.75": 8.049999987499989,
+      "1.00": 8.049999999999999
+    },
+    "partition_spread_m": 5.000000058430487e-8,
+    "note": "Error decreases linearly with the share left in MODFLOW STO and is essentially zero for the pure API-storage partition. Fixed 1e-8 gate remains closed pending numerical-characterization work."
+  },
+  "scope_boundary": [
+    "no production source modified",
+    "no Reference Richards change",
+    "no RossFast change",
+    "no conclusion yet on the general F-GC49 production envelope",
+    "do not weaken the preregistered DSW-01 control tolerance"
+  ],
+  "next": [
+    "log the actual MODFLOW time step used by XMI",
+    "complete DSW-02 deliberate-overlap observation",
+    "derive exact STO plus API assembled equation and sign convention",
+    "then open lateral-forcing and finite-resistance tests"
+  ]
+}

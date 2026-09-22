@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_low01.c.preregistration_amendment.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-C",
+  "status": "PRE_EXECUTION_AUTHORITY_CLARIFICATION",
+  "original": "integration/research/GC_LOW01C_PREREGISTRATION.json",
+  "geometry_reconciliation": "integration/research/GC_LOW01_GEOMETRY_BOUNDARY_RECONCILIATION.json",
+  "reason": "The legacy HeadCalc source references grid_z(NN+1) after the node-count loop, but the admitted typed geometry and current test stubs expose only n node-centre z values. The historical n+1 sentinel value is therefore not typed/source-bound authority.",
+  "source_bound_scope": {
+    "internal_node_snap": "The asymmetric 1e-4 cm snap rule around declared node centres is directly source-bound and remains a legacy-semantics characterization.",
+    "above_top": "The top tolerance rule is directly source-bound.",
+    "lower_half_cell": "The branch assigned when H_phreatic lies below the last node centre but above the declared bottom face is NOT established as historical source-equivalent by the current typed repository authority."
+  },
+  "typed_policy_scope": {
+    "classifier": "The current research classifier uses BELOW_BOTTOM_NODE once all declared node centres are above H_phreatic. This is a deterministic typed research policy, not a recovered historical sentinel fact.",
+    "bottom_face": "The declared bottom face remains the geometry used for hbot mapping in LOW01-A/A2/D and is not silently redefined as a node centre.",
+    "characterization": "LOW01-C may record the typed classifier behavior across the bottom node and bottom face, but must label it as typed-policy characterization."
+  },
+  "marker_changes": [
+    "Replace GC_LOW01C_SOURCE_AUTHORITY=PASS with GC_LOW01C_LEGACY_TEXT_MARKERS=PASS.",
+    "Replace bottom-node historical implication with GC_LOW01C_TYPED_BOTTOM_NODE_POLICY=PASS.",
+    "Retain internal node-snap and replay checks unchanged."
+  ],
+  "unchanged": [
+    "all fixed control values",
+    "the node-snap tolerance",
+    "the deterministic classifier implementation",
+    "no continuity acceptance requirement",
+    "no production changes"
+  ],
+  "forbidden": [
+    "do not claim the typed bottom-node switch is proven legacy SWBOTB=1 behavior",
+    "do not invent z(numnod+1)",
+    "do not retune controls after observation"
+  ]
+}

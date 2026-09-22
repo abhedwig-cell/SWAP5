@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09uv.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09U-DSW09V",
+  "workflow_run": 35562694437,
+  "decision": "OPEN_CONVERGENCE_CERTIFICATION_AFTER_PHYSICAL_ROOT_CLOSURE",
+  "exact_head_m": 8.056155281280883,
+  "moderate_default": {
+    "last_head_m": 8.05615528129362,
+    "last_residual_m_per_day": -2.62577459775315e-12,
+    "modflow_converged": false
+  },
+  "simple": {
+    "last_head_m": 8.0561552813002,
+    "last_residual_m_per_day": -3.982199986429791e-12,
+    "modflow_converged": false
+  },
+  "moderate_no_under_relaxation": {
+    "last_head_m": 8.056155281280944,
+    "last_residual_m_per_day": -1.2533377113932431e-14,
+    "modflow_converged": false
+  },
+  "bounded_conclusions": [
+    "SIMPLE does not remove the in-place prepared-solve convergence problem.",
+    "Disabling MODERATE nonlinear under-relaxation allows the external nonlinear residual to reach the analytic root to approximately 1.3e-14 m/day, but MODFLOW still does not set its convergence flag.",
+    "Therefore delta-bar-delta history contributes to the physical-root stall but is not sufficient to explain the remaining subsystem convergence certification failure.",
+    "DSW-09R remains the positive control: fresh solve per reanchor closes both the external residual and MODFLOW convergence."
+  ],
+  "next": "Hold under-relaxation disabled and sweep IMS residual closure during the same prepared-solve reanchor sequence."
+}

@@ -1,0 +1,140 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21a.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21A",
+  "title": "Outer-2 dynamic response divergence decomposition",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21A_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21A_FIRST_EXECUTION_RESULT.json",
+  "parent_g21": "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+  "tested_commit": "8bf0b23c53270b99401b446b545df3a0d1330a89",
+  "workflow_run": 35730386461,
+  "workflow_job": 106754206540,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_DIAGNOSTIC_PREPARED_SOLVE_PATH_DOMINATES_G21_OUTER2_DIVERGENCE",
+  "production_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "technical_history": {
+    "first_execution": {
+      "tested_commit": "824e3728e3067d69bc5302c7ac1665f41146ea10",
+      "workflow_run": 35729908788,
+      "workflow_job": 106752612768,
+      "conclusion": "failure",
+      "classification": "TECHNICAL_RUNNER_BLOCKED_BY_ALREADY_ADMITTED_G21_NEGATIVE_TEST",
+      "g21a_started": false
+    },
+    "repair": "The general research runner now treats the exact persisted G21 outer-2 assertion as an expected-negative regression. G21 success or any different G21 failure remains fail-closed. No G21 or G21A scientific gate changed."
+  },
+  "anchor_characterization": {
+    "g17_outer1": {
+      "head_m": -0.7150027217215662,
+      "q_swap_m_per_s": 4.33374348168581e-12,
+      "residual_m_per_s": -1.6694609609232303e-11,
+      "mode": "BACKWARD_CENTER_CLASS",
+      "selected_scale_m": 6.25e-8,
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_scale_m": 3.125e-8,
+      "slope_per_s": -0.0000015956003185379992,
+      "adjacent_relative_difference": 7.731142618446247e-8
+    },
+    "g21_outer1": {
+      "head_m": -0.7150027217215658,
+      "q_swap_m_per_s": 4.333743479115849e-12,
+      "residual_m_per_s": -1.66946096121199e-11,
+      "mode": "BACKWARD_CENTER_CLASS",
+      "selected_scale_m": 6.25e-8,
+      "confirming_mode": "BACKWARD_CENTER_CLASS",
+      "confirming_scale_m": 3.125e-8,
+      "slope_per_s": -0.0000015956002568589343,
+      "adjacent_relative_difference": 1.288523076352343e-8
+    },
+    "anchor_head_offset_m": 4.440892098500626e-16,
+    "q_swap_difference_m_per_s": -2.569961475274025e-21,
+    "residual_difference_m_per_s": -2.8875970455431216e-21,
+    "tangent_difference_per_s": 6.167906494690411e-14
+  },
+  "fresh_response_variants": [
+    {
+      "name": "G17_NATIVE",
+      "fresh_head_m": -0.7150100297646383,
+      "g17_outer2_reference_error_m": 0,
+      "slope_per_s": -0.0000015956003185379992
+    },
+    {
+      "name": "G21_NATIVE",
+      "fresh_head_m": -0.7150100297648362,
+      "g17_outer2_reference_error_m": -1.978417429882029e-13,
+      "slope_per_s": -0.0000015956002568589343
+    },
+    {
+      "name": "G21_ANCHOR_G17_TANGENT",
+      "fresh_head_m": -0.7150100297646392,
+      "g17_outer2_reference_error_m": -8.881784197001252e-16,
+      "interpretation": "Changing only anchor/q-reference at the G21 anchor while retaining the G17 tangent has negligible head effect."
+    },
+    {
+      "name": "G17_ANCHOR_G21_TANGENT",
+      "fresh_head_m": -0.7150100297648356,
+      "g17_outer2_reference_error_m": -1.9739763577835282e-13,
+      "interpretation": "The subthreshold fresh-response difference is almost entirely associated with the tiny E3 tangent change, not the anchor head offset itself."
+    }
+  ],
+  "continuous_identical_response": {
+    "outer1_replay_heads_m": [
+      -0.7150110934482893,
+      -0.7150055122971403,
+      -0.7150027217215658
+    ],
+    "outer1_lambdas": [
+      1,
+      0.5,
+      0.25
+    ],
+    "outer1_solve_calls_each": [
+      2,
+      2,
+      2
+    ],
+    "outer2_g21_native_response_head_m": -0.7150100296924844,
+    "outer2_solve_calls": 6,
+    "total_solve_calls": 12,
+    "identical_response_continuous_minus_fresh_m": 7.235179122488944e-11
+  },
+  "decomposition": {
+    "observed_g21_outer2_divergence_m": 7.215394948190124e-11,
+    "response_parameter_effect_m": -1.978417429882029e-13,
+    "prepared_solve_path_effect_m": 7.235179122488944e-11,
+    "reconstructed_divergence_m": 7.215394948190124e-11,
+    "reconstruction_error_m": 0,
+    "response_parameter_effect_exceeds_1e_12": false,
+    "prepared_solve_path_effect_exceeds_1e_12": true,
+    "classification": "PREPARED_SOLVE_PATH_DOMINATED"
+  },
+  "diagnostic_accounting": {
+    "g16_logical_requests": 61,
+    "g16_participant_physical_trials": 31,
+    "g16_cache_hits": 30,
+    "g16_unique_heads": 31,
+    "ordinary_publication_trials": 0,
+    "accepted_state_or_ledger_mutation": 0,
+    "diagnostic_non_authority": "PASS"
+  },
+  "gates": {
+    "g21_persisted_falsification_reproduced": "PASS",
+    "fresh_heads_vs_analytic_roots": "PASS_LE_1E-12",
+    "g17_native_fresh_reference": "PASS_EXACT",
+    "identical_response_continuous_vs_fresh_reported": "PASS",
+    "measured_decomposition_closure": "PASS_RECONSTRUCTION_ERROR_0",
+    "g16_non_authority": "PASS",
+    "no_policy_or_production_change": "PASS"
+  },
+  "bounded_conclusions": [
+    "The 4.440892098500626e-16 m outer-1 head offset changes the independently fresh-solved outer-2 response head by only -1.978417429882029e-13 m, below the preregistered 1e-12 m materiality threshold.",
+    "Cross-evaluation shows that this already-small response-parameter effect is almost entirely associated with a 6.167906494690411e-14 s^-1 change in the finite-difference E3 tangent; the anchor/q-reference shift with the G17 tangent changes the fresh root by less than 1e-15 m.",
+    "Applying the exact same G21-native outer-2 affine response after the continuous outer-1 lambda history produces a head 7.235179122488944e-11 m away from its fresh-origin solution.",
+    "The response-parameter and prepared-solve-path components sum exactly to the observed G21 outer-2 divergence of 7.215394948190124e-11 m.",
+    "G21 is therefore falsified because of prepared-solve path dependence at the strict G17 trajectory-equivalence scale, not because the dynamic E3 response materially changed after the outer-1 floating-point head offset.",
+    "This diagnosis does not invalidate G20: 7.24e-11 m remains far inside the much looser inherited F-GC38 path-equivalence envelope, while G21 deliberately imposed a stricter 1e-12 m path-reproduction requirement.",
+    "No production policy, F-GC38/F-GC39 contract, E3/P4 rule, HCOF/RHS semantics or accepted state was changed."
+  ],
+  "next_natural_unit": "Open G21B to diagnose the continuous prepared-solve path effect itself: determine whether the first MODFLOW convergence report under the changed outer-2 response is path-dependent at the strict G17 scale, whether additional same-response solve calls reduce the 7.24e-11 m offset, and what internal convergence/state criterion would be required before proposing any new research coupling acceptance rule."
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21n.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21N",
+  "title": "ULP-resolved residual-term attribution across the B1 and B2 status boundaries",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "1e1b68df87d1e61ff1cb24ffe0a50f419a14da8d",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21M_RESULT.json",
+  "question": "Across every representable binary64 groundwater head between each frozen G21L boundary pair, which final residual components and node-4 flux terms carry the pass/fail change, and is that change smooth within a fixed solver path or dominated by path switching?",
+  "frozen_intervals": [
+    {
+      "id": "B1",
+      "low_head_m": -0.7150100297648301,
+      "high_head_m": -0.715010029764824,
+      "max_iterations": 4,
+      "active_criterion": "max_abs_compartment_residual",
+      "reference_fail_residual": 1.1378075673480759e-12,
+      "reference_pass_max_abs_residual": 9.495369239693498e-13
+    },
+    {
+      "id": "B2",
+      "low_head_m": -0.715010029764793,
+      "high_head_m": -0.7150100297647868,
+      "max_iterations": 3,
+      "active_criterion": "abs_total_residual",
+      "reference_pass_total": -9.755467635457958e-13,
+      "reference_fail_total": -1.1858268037760853e-12
+    }
+  ],
+  "enumeration_contract": [
+    "Enumerate every binary64 value in the closed interval by repeated math.nextafter from the lower numeric endpoint toward the upper numeric endpoint.",
+    "Abort if more than 128 representable heads are required; do not thin or resample after observing outcomes.",
+    "At each head execute one fresh immutable-origin G21I-style prefix solve with frozen production tolerances, max_retries=0 and the interval-specific max_iterations.",
+    "Capture solver status, nonlinear iterations, cumulative backtracking, full four-component residual vector and the six already-rounded node-4 terms through the existing G21M research-build observer.",
+    "Do not cache across heads and do not publish candidates, accepted state or ledger entries."
+  ],
+  "attribution_contract": [
+    "For B1 compute node-4 residual, storage, upper-flux and lower-flux sequences; zero sink/source/root terms must remain zero for this frozen case.",
+    "For B2 compute all four residual-component sequences and the total residual sequence.",
+    "Between successive heads compute exact binary64 value deltas for every captured quantity.",
+    "For each interval report the total endpoint delta and the fraction attributable to each captured component/term, using signed deltas.",
+    "Partition samples by the exact tuple (solver_status, nonlinear_iterations, cumulative_backtracking). Within each partition ordered by head, report monotonicity of the active residual metric and of the dominant attributed term.",
+    "Report every transition where the solver-path tuple changes and every transition where status changes without a path-tuple change.",
+    "No smoothing, regression threshold or post-hoc neighborhood selection is allowed."
+  ],
+  "prospective_classification": [
+    "TERM_SMOOTH_WITHIN_PATH if, within every path tuple containing at least three ordered samples, the active residual metric and dominant term are monotone and all status changes occur at criterion crossings without a path-tuple change.",
+    "PATH_SWITCH_DOMINATED if at least one status transition coincides with a path-tuple change and the same-path subsets are individually monotone.",
+    "TERM_JAGGED_WITHIN_PATH if a same-path subset with at least three samples is nonmonotone in the active residual metric or dominant term.",
+    "MIXED if both path-switch and within-path jagged mechanisms are observed."
+  ],
+  "gates": [
+    "G21M parent result and temporary observer contract reproduce.",
+    "Both closed intervals are exhaustively enumerated with <=128 binary64 heads.",
+    "Frozen endpoint solver/residual observations reproduce G21M.",
+    "No accepted-state, candidate or ledger mutation occurs.",
+    "All sample records and path transitions are persisted.",
+    "Classification follows the preregistered rules without rebinning."
+  ],
+  "pass_interpretation": "PASS attributes the observed threshold crossings to captured term evolution and/or solver-path switching at binary64 head resolution. It does not admit production changes. If same-path behavior is orderly and path switches explain the islands, G21 solver forensics should close and the coupling line should return to endpoint/residual-based qualification.",
+  "fail_interpretation": "Preserve any endpoint mismatch, observer mismatch, >128-point interval or unclassified behavior. Do not change the frozen heads or classification rules.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21n_term_delta_scan.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    "integration/research/GC_FIXED_INTERFACE_G21N_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/**",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "production solver tolerances",
+    "retry policy",
+    "coupling policy",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}

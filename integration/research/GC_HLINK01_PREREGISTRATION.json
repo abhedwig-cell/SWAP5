@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.gc_hlink.hlink01.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK01",
+  "title": "Live MODFLOW STO replacement versus additive duplicate storage",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "basis": [
+    "GC-DUMMY-SWAP-DSW23 coextensive 10 m storage oracle",
+    "GC-REAL-SWAP-MAP13 external MetaSWAP h-link reference"
+  ],
+  "physical_case": {
+    "area_m2": 1,
+    "top_m": 10,
+    "bottom_m": 0,
+    "initial_phreatic_head_m": 8,
+    "declared_complete_profile_storage_coefficient": 0.2,
+    "external_input_m3": 0.01,
+    "duration_day": 1,
+    "exact_final_head_m": 8.05
+  },
+  "modflow_input": {
+    "configured_sy_before_coupling": 0.15,
+    "ss_per_m": 0,
+    "iconvert": 1,
+    "external_input_route": "known WEL +0.010 m3/day",
+    "newton": false
+  },
+  "cases": [
+    {
+      "name": "UNREPLACED_MODFLOW_STORAGE",
+      "runtime_sy": 0.15,
+      "api_storage_response": 0,
+      "expected_head_m": 8.066666666666666,
+      "role": "control showing the configured MODFLOW storage governs head if the coupler does not replace it"
+    },
+    {
+      "name": "HLINK_STORAGE_REPLACEMENT",
+      "runtime_sy_overwrite": 0.2,
+      "api_storage_response": 0,
+      "expected_head_m": 8.05,
+      "role": "coextensive h-link ownership control: one shared storage response is represented once in MODFLOW STO"
+    },
+    {
+      "name": "REPLACEMENT_PLUS_DUPLICATE_API_STORAGE",
+      "runtime_sy_overwrite": 0.2,
+      "api_storage_response": 0.2,
+      "api_law": "Q_api=-0.20*(H-H0)/dt",
+      "expected_head_m": 8.025,
+      "role": "adversarial duplicate-storage control"
+    }
+  ],
+  "live_pointer_contract": {
+    "pointer": "MODFLOW STO/SY through XMI",
+    "timing": "overwrite after MODFLOW initialize and before prepare_time_step/prepare_solve",
+    "evidence": [
+      "record configured SY pointer value",
+      "record overwritten value",
+      "read value back bit-for-bit"
+    ]
+  },
+  "gates": [
+    "All three MODFLOW6 6.8.0 cases converge.",
+    "Unreplaced control ends at 8.066666666666666 m within 1e-10 m.",
+    "Runtime replacement reads back SY=0.20 and ends at 8.05 m within 1e-10 m.",
+    "Replacement plus duplicate API storage ends at 8.025 m within 1e-10 m.",
+    "The replacement case closes the one-volume geometric mass oracle while the duplicate case reproduces the DSW23 physical-volume deficit signature."
+  ],
+  "interpretation_rules": [
+    "This proves a storage-replacement coupling mechanism is executable through the MODFLOW API/XMI surface.",
+    "It does not prove SWAP5 should use this mechanism in production.",
+    "The adversarial case shows why replacing STO and also publishing the same physical storage response as an additive API term is inconsistent for a coextensive h-link."
+  ],
+  "forbidden": [
+    "no production source changes",
+    "no global MODFLOW storage disablement",
+    "do not identify real-SWAP u with 0.20 Sy from this synthetic test",
+    "do not apply the conclusion to distinct-domain lower-boundary coupling"
+  ]
+}

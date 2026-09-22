@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.gc_real_swap.map14.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP14",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "SUPERSEDED_BEFORE_EXECUTION_BY_STRONGER_EXISTING_ORACLES",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_REAL_SWAP_MAP14_PREREGISTRATION.json",
+  "unexecuted_test": "tests/research/test_gc_real_swap_map14_contract_equivalence.py",
+  "superseding_evidence": [
+    "integration/research/GC_DUMMY_SWAP_DSW08_RESULT.json",
+    "integration/research/GC_DUMMY_SWAP_DSW24_PREREGISTRATION.json",
+    "integration/research/GC_DUMMY_SWAP_DSW24_STATUS.json",
+    "integration/research/GC_HLINK01_RESULT.json",
+    "integration/research/GC_HLINK01_STATUS.json"
+  ],
+  "rationale": [
+    "MAP14's finite-resistance two-head branch duplicates the already qualified DSW08 q-link oracle.",
+    "MAP14's high-conductance interface-to-shared-head limit is covered more sharply by DSW24, which additionally distinguishes correct from duplicate storage ownership.",
+    "MAP14's one-volume shared-phreatic storage representation is already live-qualified by HLINK01 through runtime MODFLOW STO replacement.",
+    "Executing MAP14 would add test duplication without closing a new scientific or architectural uncertainty."
+  ],
+  "preserved_unique_statement": "Conditional numerical equivalence between a zero-resistance mass-complete boundary formulation and a one-state h-link does not imply architectural identity; current F-GC remains lower-interface coupling under MAP11/MAP12 authority.",
+  "decision": "DO_NOT_EXECUTE_DUPLICATE_MAP14",
+  "next_action": "Use DSW24/HLINK01 as the equivalence authority and proceed with HLINK02/HLINK03 plus LOW01 research for a typed real-SWAP prescribed-groundwater-level state."
+}

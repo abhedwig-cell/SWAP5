@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21a.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21A",
+  "title": "Outer-2 dynamic response divergence decomposition",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "7aa52ce7ab22286aae8d5826d406284570646240",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G20_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json"
+  ],
+  "question": "What causes the preregistered G21 outer-2 accepted-head divergence of 7.215394948190124e-11 m: dynamic E3/response-parameter sensitivity, continuous prepared-solve path dependence, or the 4.440892098500626e-16 m outer-1 head offset?",
+  "scope": {
+    "diagnostic_only": true,
+    "no_policy_selection": true,
+    "no_gate_repair": true,
+    "production_admission": "NO"
+  },
+  "frozen_points": {
+    "g17_outer1_head_m": -0.7150027217215662,
+    "g21_outer1_head_m": -0.7150027217215658,
+    "outer1_head_offset_m": 4.440892098500626e-16,
+    "g17_outer2_head_m": -0.7150100297646383,
+    "g21_outer2_head_m": -0.7150100296924844,
+    "outer2_divergence_m": 7.215394948190124e-11,
+    "g17_outer2_tangent_per_s": -0.0000015956003185379992,
+    "groundwater_a_per_s": 6.888155563779977e-7,
+    "groundwater_intercept": 4.925260259275142e-7
+  },
+  "experiments": [
+    "Using one G16 immutable-origin session, independently estimate E3 and q_swap at the exact G17 outer-1 head and exact G21 outer-1 head. Preserve all G09D/G13 E3 rules.",
+    "For each anchor, construct the lambda=1 affine response from that anchor's own q_swap and dynamically estimated E3 tangent.",
+    "Solve each response in a fresh live MODFLOW model from the same accepted groundwater origin and record the settled head.",
+    "Compute the analytical affine root h + r/(a-p) for each response and compare it with the corresponding fresh live solution.",
+    "Replay the frozen outer-1 lambda sequence [1,1/2,1/4] inside one continuous prepared solve, then apply the exact G21 outer-2 response in that same solve and record its settled head.",
+    "Compare the continuous outer-2 head with the fresh solution for the identical G21 response. This isolates prepared-solve path dependence from response-parameter differences.",
+    "Cross-evaluate the G17 tangent at the G21 anchor and the G21 tangent at the G17 anchor to quantify tangent versus anchor/q-reference sensitivity algebraically and with fresh solves."
+  ],
+  "gates": [
+    "All G16 observations remain non-authoritative and use zero ordinary publication-path participant trials.",
+    "Fresh live heads agree with their analytical affine roots within 1e-12 m.",
+    "The identical-response continuous-versus-fresh head difference is reported without post-hoc acceptance threshold changes.",
+    "The E3 mode, selected scale, slope and current residual are reported at both anchors.",
+    "A numerical decomposition accounts for the observed G21 outer-2 divergence to within 1e-12 m using measured response variants; otherwise the cause remains unresolved.",
+    "No G21, G17, E3, P4, F-GC38/F-GC39 or production HCOF/RHS rule is modified."
+  ],
+  "interpretation_rules": {
+    "response_parameter_dominated": "If the fresh G21-response head already differs from the G17 reference by approximately the observed G21 divergence while identical-response continuous-versus-fresh difference is <=1e-12 m.",
+    "prepared_solve_path_dominated": "If the fresh G21-response head remains within 1e-12 m of the G17 reference but the continuous identical-response head reproduces the G21 divergence.",
+    "mixed": "If both effects exceed 1e-12 m and materially contribute.",
+    "unresolved": "If measured components do not account for the observed divergence within 1e-12 m."
+  },
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21a_outer2_divergence.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21A_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "G16 semantics",
+    "G09D/G13 E3 rules",
+    "G11/G17 P4 rules",
+    "G21 gates or result",
+    "F-GC38/F-GC39 contracts",
+    "production HCOF/RHS"
+  ]
+}

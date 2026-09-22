@@ -9,6 +9,13 @@ class Fgc45RealMultiSwap:
         self.lib.fgc45_initialize_c.argtypes=[ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
         self.lib.fgc45_trial_c.restype=ctypes.c_int
         self.lib.fgc45_trial_c.argtypes=[ctypes.c_double,ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
+        self.lib.fgc45_direct_trial_diagnostics_c.restype=ctypes.c_int
+        self.lib.fgc45_direct_trial_diagnostics_c.argtypes=[
+            ctypes.c_int,ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+        ]
         for name in ["fgc45_discard_c","fgc45_swap_preflight_c","fgc45_ledgers_prepare_c","fgc45_ledgers_preflight_c",
                      "fgc45_swap_commit_c","fgc45_ledgers_commit_c","fgc45_abort_prepublication_c"]:
             fn=getattr(self.lib,name); fn.restype=ctypes.c_int; fn.argtypes=[]
@@ -31,6 +38,17 @@ class Fgc45RealMultiSwap:
         s=self.lib.fgc45_trial_c(float(head_m),ctypes.byref(qw),ctypes.byref(q1),ctypes.byref(q2))
         if s: raise RuntimeError(f"F-GC45 trial failed: {s}")
         return qw.value,q1.value,q2.value
+
+    def direct_trial_diagnostics(self,tile_index:int,head_m:float)->tuple[float,float,float,float,float,float]:
+        storage=ctypes.c_double(); total_in=ctypes.c_double(); total_out=ctypes.c_double()
+        bottom=ctypes.c_double(); residual=ctypes.c_double(); dt=ctypes.c_double()
+        s=self.lib.fgc45_direct_trial_diagnostics_c(
+            int(tile_index),float(head_m),
+            ctypes.byref(storage),ctypes.byref(total_in),ctypes.byref(total_out),
+            ctypes.byref(bottom),ctypes.byref(residual),ctypes.byref(dt),
+        )
+        if s: raise RuntimeError(f"F-GC45 direct trial diagnostics failed: {s}")
+        return storage.value,total_in.value,total_out.value,bottom.value,residual.value,dt.value
 
     def discard(self)->None:
         s=self.lib.fgc45_discard_c()

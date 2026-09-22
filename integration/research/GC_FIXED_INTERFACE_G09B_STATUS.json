@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09b.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09B",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "FIRST_EXECUTION_FALSIFIED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09B_PREREGISTRATION.json",
+  "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G09A_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_topology_tangent_g09b.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "b0f99c0ef6636f065afc47a8072e8e128ba2ca64",
+  "next_action": "Preregister G09C fixed-scale execution-signature diagnostic at C1_LOW_FORCING negative edge, with C0_CONTROL positive edge as a qualified topology-match control. Do not weaken G09B retrospectively.",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G09B_FIRST_EXECUTION_RESULT.json",
+  "first_execution": {
+    "tested_commit": "b0f99c0ef6636f065afc47a8072e8e128ba2ca64",
+    "workflow_run": 35700067828,
+    "workflow_job": 106655703514,
+    "conclusion": "failure"
+  },
+  "disposition": {
+    "all_boundary_e2": "FALSIFIED_AT_C1_LOW_FORCING_NEG",
+    "policy_replay": "NOT_REACHED",
+    "production_admission": "NO"
+  }
+}

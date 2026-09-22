@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.gc_low01b.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "BLOCKED_PENDING_PREREQUISITE_OWNER_RUNS",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_LOW01B_PREREGISTRATION.json",
+  "amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
+  "blocking_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+  "blockers": [
+    "LOW01-A2 owner qualification has not yet been persisted.",
+    "The KSATEXM-disabled constitutive bridge is implemented but its owner qualification has not yet been persisted.",
+    "The research-only complete mode-1 candidate output carrier is implemented but its owner qualification has not yet been persisted.",
+    "The live OUTPUT01 direct-HeadCalc carrier is implemented but its owner qualification has not yet been persisted."
+  ],
+  "preserved_value": [
+    "The original preregistration remains a useful source-behavior specification.",
+    "GC-LOW01-STATE01 may still qualify deterministic branch classification independently because it makes no solver-level or provider-ownership claim."
+  ],
+  "decision": "DO_NOT_EXECUTE_LOW01B_QUALIFICATION_UNTIL_PREREQUISITE_RESULTS_EXIST",
+  "activation_rule": "LOW01-B may execute only after GC_LOW01A2_RESULT.json, GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json, GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json and GC_LOW01_OUTPUT01_RESULT.json all exist with conclusion=success and a QUALIFIED decision.",
+  "next": [
+    "Persist LOW01-A2 owner result when Actions completes.",
+    "Persist constitutive-bridge result when its owner run completes.",
+    "Persist candidate-carrier result when its owner run completes.",
+    "Persist OUTPUT01 result when its owner run completes.",
+    "The event-driven LOW01-B workflow will activate only when all four prerequisite results are qualified.",
+    "Keep HLINK04 blocked regardless of LOW01-B implementation state."
+  ],
+  "constitutive_scope": {
+    "ksatexm_extension_enabled": false,
+    "authority": "integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json",
+    "bridge": "tests/research/support/mod_gc_low01_constitutive_bridge.f90",
+    "ownership": "explicit B110 default provider is the sole constitutive authority; legacy HeadCalc scalar/saturated calls are rebound to that same provider parameters"
+  },
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "test_path": "tests/research/test_gc_low01b_inside_profile.f90",
+  "runner": "tests/research/run_gc_low01b.sh",
+  "constitutive_bridge": {
+    "scope": "research-only KSATEXM-disabled slice",
+    "runner": "tests/research/run_gc_low01_constitutive_bridge.sh",
+    "bridge": "tests/research/support/mod_gc_low01_constitutive_bridge.f90",
+    "test": "tests/research/test_gc_low01_constitutive_bridge.f90",
+    "status": "IMPLEMENTED_PENDING_OWNER_RUN",
+    "resolved_blocker": "LOW01-G3-CONSTITUTIVE-OWNERSHIP for the bounded default-MVG/KSATEXM-disabled research slice"
+  },
+  "deferred_semantics": [
+    "KSATEXM-enabled mode-1 continuation remains a separate unresolved semantics question because preserved legacy mode-1 uses cofgen(3) while the opt-in typed provider may use cofgen(10)."
+  ],
+  "result_contract": "integration/research/GC_LOW01_RESULT_CONTRACT_V1.json",
+  "latest_amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json",
+  "resolved_research_gaps": {
+    "LOW01-G3-CONSTITUTIVE-OWNERSHIP": "Resolved for the bounded KSATEXM-disabled research slice by rebinding legacy scalar/saturated constitutive calls to the same typed B110 default-provider parameter authority.",
+    "LOW01-G4-TYPED-OUTPUT-STATE": "Resolved at research-contract level by separating requested_H_phreatic, effective_H_phreatic and derived_profile_GWL. No forced alias candidate_state.groundwater_level=gwlinp.",
+    "LOW01-G5-QBOT-MATERIALIZATION": "Resolved at research-contract level by one qbot output with branch-specific provenance: inside-profile HeadCalc flux-chain qbot; below-profile mode-5-equivalent accepted-step materialization."
+  },
+  "immutable_origin": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json",
+  "execution_runs": [
+    {
+      "run_id": 35580400611,
+      "run_number": 4,
+      "status": "queued"
+    },
+    {
+      "run_id": 35580433783,
+      "run_number": 5,
+      "status": "queued"
+    },
+    {
+      "run_id": 35580447736,
+      "run_number": 6,
+      "status": "queued",
+      "preferred": true
+    }
+  ],
+  "dependency_resolution": {
+    "LOW01-G1-BOUNDARY-ADMISSION": "Production bottom_mode=1 remains forbidden. The bounded LOW01-B research slice uses direct HeadCalc only and must not be cited as production solver-ABI admission.",
+    "LOW01-G2-EXPLICIT-GEOMETRY-SENTINEL": "The fixed inside-profile controls -60/-120/-200 cm terminate with NN=1/2/3 and do not enter the undeclared lower-sentinel branch. Bottom-face behavior is owned separately by LOW01-A/A2.",
+    "LOW01-G3-CONSTITUTIVE-OWNERSHIP": "Implemented for the bounded KSATEXM-disabled slice by tests/research/support/mod_gc_low01_constitutive_bridge.f90; pending owner qualification.",
+    "LOW01-G4-TYPED-OUTPUT-STATE": "Implemented research-only by the candidate/trial carrier contracts, which keep requested_H_phreatic and effective_H_phreatic distinct from raw legacy gwl and do not claim derived_profile_GWL authority unless a source-equivalent task-3 diagnostic has run; pending owner qualification.",
+    "LOW01-G5-QBOT-MATERIALIZATION": "The same research carrier publishes diagnosed HeadCalc qbot as an explicit candidate output for the inside-profile slice; pending owner qualification."
+  },
+  "candidate_carrier": {
+    "status": "IMPLEMENTED_PENDING_OWNER_RUN",
+    "source": "tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90",
+    "test": "tests/research/test_gc_low01_mode1_candidate_carrier.f90",
+    "runner": "tests/research/run_gc_low01_candidate_carrier.sh",
+    "preregistration": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json",
+    "preregistration_amendment": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION_AMENDMENT.json"
+  },
+  "execution_workflow": ".github/workflows/gc-low01b.yml",
+  "execution_mode": "EVENT_DRIVEN_PREREQUISITE_GATED"
+}

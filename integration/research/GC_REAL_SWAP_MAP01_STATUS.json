@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.gc_real_swap.map01.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP01",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "77632aaf35cb49b541323c51223b2be5ef6c0501",
+  "last_reconciled_head": "884424e861e941b97987673addd63946cce191a3",
+  "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_changes": false,
+  "owned_surface": [
+    "integration/research/GC_REAL_SWAP_MAP01_PREREGISTRATION.json",
+    "integration/research/GC_REAL_SWAP_MAP01_STATUS.json",
+    "tests/research/test_gc_real_swap_map01_fgc45.py",
+    "tests/research/run_gc_real_swap_map01_fgc45.sh",
+    "research workflow wiring only"
+  ],
+  "read_only_authorities": [
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  ],
+  "interfaces_allowed_to_change": [
+    "research tests",
+    "research evidence",
+    "research CI wiring"
+  ],
+  "interfaces_held_fixed": [
+    "F-GC33 response mathematics",
+    "F-GC40 aggregation",
+    "F-GC45 real FMR fixture physics",
+    "F-GC49D production ABI and ownership",
+    "Reference Richards production semantics"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py",
+    "tests/fgc/run_fgc45_real_multiswap_modflow_end_to_end.sh"
+  ],
+  "test_paths": [
+    "tests/research/test_gc_real_swap_map01_fgc45.py",
+    "tests/research/run_gc_real_swap_map01_fgc45.sh"
+  ],
+  "evidence_paths": [
+    "integration/research/GC_REAL_SWAP_MAP01_PREREGISTRATION.json"
+  ],
+  "next_action": "Preserve MAP01 as a falsified micrometre-scale probe and use MAP01A/MAP02 for the admitted nanometre-scale response envelope.",
+  "recovery_point": "Resume from this status and branch head; no authority reconstruction is needed unless the recorded dependency surface changes.",
+  "blockers": [
+    "The preregistered +/- micrometre fixed-head probes are outside the accepted F-GC45 corrector domain; this is a bounded fixture-envelope result, not a production defect."
+  ]
+}

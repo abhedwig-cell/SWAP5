@@ -1,9 +1,10 @@
 module mod_fgc45_real_multiswap_c_bridge
   use, intrinsic :: iso_c_binding, only: c_double, c_int
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
@@ -12,6 +13,7 @@ module mod_fgc45_real_multiswap_c_bridge
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
+  use mod_groundwater_swap_forcing_adapter, only: GW_SWAP_FORCING_OK
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
@@ -77,7 +79,7 @@ module mod_fgc45_real_multiswap_c_bridge
   public :: fgc45_initialize_c, fgc45_trial_c, fgc45_discard_c
   public :: fgc45_swap_preflight_c, fgc45_ledgers_prepare_c, fgc45_ledgers_preflight_c
   public :: fgc45_swap_commit_c, fgc45_ledgers_commit_c, fgc45_abort_prepublication_c
-  public :: fgc45_state_c
+  public :: fgc45_state_c, fgc45_direct_trial_diagnostics_c
 
 contains
 
@@ -153,6 +155,68 @@ contains
     q_weighted=FRACTION(1)*q(1)+FRACTION(2)*q(2); q1=q(1); q2=q(2)
     fgc45_trial_c=0_c_int
   end function fgc45_trial_c
+
+  integer(c_int) function fgc45_direct_trial_diagnostics_c(tile_index,head_m,storage_change_cm,total_in_cm, &
+       total_out_cm,bottom_outward_cm,mass_residual_cm,accepted_dt_day) &
+       bind(C,name="fgc45_direct_trial_diagnostics_c")
+    integer(c_int),value,intent(in)::tile_index
+    real(c_double),value,intent(in)::head_m
+    real(c_double),intent(out)::storage_change_cm,total_in_cm,total_out_cm,bottom_outward_cm,mass_residual_cm,accepted_dt_day
+    type(kernel_checkpoint_t)::checkpoint
+    type(kernel_result_t)::result
+    type(kernel_candidate_state_t)::candidate
+    type(kernel_diagnostics_t)::diagnostics
+    class(canonical_forcing_t),allocatable::forcing
+    integer::i,forcing_status
+    logical::ok
+
+    fgc45_direct_trial_diagnostics_c=1_c_int
+    storage_change_cm=0.0_c_double; total_in_cm=0.0_c_double; total_out_cm=0.0_c_double
+    bottom_outward_cm=0.0_c_double; mass_residual_cm=0.0_c_double; accepted_dt_day=0.0_c_double
+    if(.not.initialized)return
+    i=int(tile_index)
+    if(i<1 .or. i>NTILE)return
+    if(.not.ieee_is_finite(real(head_m,real64)))return
+
+    call fmr_capture_checkpoint(committed(i),checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())return
+    call materializer(i)%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=GW_SWAP_FORCING_OK .or. .not.allocated(forcing))return
+
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend(i)%run_trial(column(i),template(i),corrector_parameters(i),committed(i),typed_forcing, &
+           corrector_config,window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      return
+    end select
+
+    if(.not.result%completed .or. .not.candidate%ready())then
+      if(candidate%ready())call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+    if(.not.result%mass%complete .or. .not.result%bottom_interface_exchange_available)then
+      call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+    if(.not.ieee_is_finite(result%mass%storage_change) .or. &
+       .not.ieee_is_finite(result%mass%total_in) .or. .not.ieee_is_finite(result%mass%total_out) .or. &
+       .not.ieee_is_finite(result%bottom_outward_exchange_native) .or. &
+       .not.ieee_is_finite(result%mass%residual) .or. .not.ieee_is_finite(result%completed_t) .or. &
+       .not.ieee_is_finite(result%requested_t0))then
+      call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    storage_change_cm=result%mass%storage_change
+    total_in_cm=result%mass%total_in
+    total_out_cm=result%mass%total_out
+    bottom_outward_cm=result%bottom_outward_exchange_native
+    mass_residual_cm=result%mass%residual
+    accepted_dt_day=result%completed_t-result%requested_t0
+    call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
+    fgc45_direct_trial_diagnostics_c=0_c_int
+  end function fgc45_direct_trial_diagnostics_c
 
   integer(c_int) function fgc45_discard_c() bind(C,name="fgc45_discard_c")
     integer :: i

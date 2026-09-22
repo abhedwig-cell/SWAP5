@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.gc_dummy_swap.testbank.status.v2",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_changes": false,
+  "current_scope": "Research-only analytical/manufactured proof programme for the fixed geometric SWAP-MODFLOW interface: theory and exact balances first, numerical implementation second; no production changes.",
+  "states": {
+    "DSW01": "QUALIFIED_LINEAR_SHARED_STORAGE_ORACLE",
+    "DSW02": "QUALIFIED_STORAGE_OWNERSHIP_PARTITION",
+    "DSW03": "QUALIFIED_MODFLOW_SOURCE_RESPONSE",
+    "DSW04": "QUALIFIED_LINEAR_SUPERPOSITION",
+    "DSW05": "PHYSICAL_TIMESTEP_INVARIANCE_SUPPORTED_ORIGINAL_R1E15_CERTIFICATE_FALSIFIED",
+    "DSW05V": "DIAGNOSTIC_QUALIFIED_UNDER_RELAXATION_EXCLUDED",
+    "DSW05W": "DIAGNOSTIC_QUALIFIED_INNER_RESIDUAL_CERTIFICATION",
+    "DSW06": "QUALIFIED_REFERENCE_REANCHOR_INVARIANCE",
+    "DSW07": "QUALIFIED_ANALYTIC_JACOBIAN",
+    "DSW08": "QUALIFIED_FINITE_RESISTANCE_Q_LINK",
+    "DSW09": "PHYSICAL_NONLINEAR_STORAGE_ORACLE_SUPPORTED_ORIGINAL_DEFAULT_SOLVER_GATE_FALSIFIED",
+    "DSW09N": "DIAGNOSTIC_QUALIFIED_FRESH_TANGENT_RESOLUTION",
+    "DSW09R": "DIAGNOSTIC_QUALIFIED_FRESH_SOLVE_REANCHOR_CONTROL",
+    "DSW09U": "DIAGNOSTIC_FALSIFIED_SIMPLE_ALONE_NOT_SUFFICIENT",
+    "DSW09V": "DIAGNOSTIC_QUALIFIED_UNDER_RELAXATION_ROOT_EFFECT",
+    "DSW09W": "DIAGNOSTIC_FALSIFIED_R1E14_CERTIFICATION_TARGET",
+    "DSW09X": "DIAGNOSTIC_QUALIFIED_RESIDUAL_CERTIFICATION_SWEEP",
+    "DSW09Y": "DIAGNOSTIC_QUALIFIED_START_DISTANCE_EFFECT",
+    "DSW10": "QUALIFIED_DEPTH_VARYING_STORAGE",
+    "DSW11": "QUALIFIED_SHARED_HEAD_WITH_INTERNAL_MEMORY",
+    "DSW12": "QUALIFIED_HEAD_DEPENDENT_ET_SINK",
+    "DSW13": "QUALIFIED_DRAIN_SINK",
+    "DSW14": "QUALIFIED_COMPOSED_MECHANISMS",
+    "DSW15": "QUALIFIED_FORCING_ORDER_MEMORY",
+    "DSW15V": "DIAGNOSTIC_QUALIFIED_RESTART_PRECISION_ARTIFACT",
+    "DSW16": "QUALIFIED_N_TO_1_LINEAR_AGGREGATION",
+    "DSW17": "QUALIFIED_EQUAL_OPPOSITE_INTERNAL_TRANSFER",
+    "DSW18": "QUALIFIED_DISTINCT_STORAGE_AND_QLINK_LIMITS",
+    "DSW19": "QUALIFIED_ADVERSARIAL_CONVERGENCE_NOT_CORRECTNESS",
+    "DSW20": "QUALIFIED_MANUFACTURED_MULTIWINDOW_TRAJECTORY"
+  },
+  "evidence": {
+    "DSW01_DSW02": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
+    "DSW03": "integration/research/GC_DUMMY_SWAP_DSW03_RESULT.json",
+    "DSW05_observation": "integration/research/GC_DUMMY_SWAP_DSW05_OBSERVATION.json",
+    "DSW05V": "integration/research/GC_DUMMY_SWAP_DSW05V_RESULT.json",
+    "DSW05W": "integration/research/GC_DUMMY_SWAP_DSW05W_RESULT.json",
+    "DSW08": "integration/research/GC_DUMMY_SWAP_DSW08_RESULT.json",
+    "DSW09_observation": "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
+    "DSW09N": "integration/research/GC_DUMMY_SWAP_DSW09N_RESULT.json",
+    "DSW09R": "integration/research/GC_DUMMY_SWAP_DSW09R_RESULT.json",
+    "DSW09V": "integration/research/GC_DUMMY_SWAP_DSW09V_OBSERVATION.json",
+    "DSW09W": "integration/research/GC_DUMMY_SWAP_DSW09W_OBSERVATION.json",
+    "DSW09X": "integration/research/GC_DUMMY_SWAP_DSW09X_RESULT.json",
+    "DSW09Y": "integration/research/GC_DUMMY_SWAP_DSW09Y_RESULT.json",
+    "DSW10": "integration/research/GC_DUMMY_SWAP_DSW10_RESULT.json",
+    "DSW11": "integration/research/GC_DUMMY_SWAP_DSW11_RESULT.json",
+    "DSW12": "integration/research/GC_DUMMY_SWAP_DSW12_RESULT.json",
+    "DSW13": "integration/research/GC_DUMMY_SWAP_DSW13_RESULT.json",
+    "DSW14": "integration/research/GC_DUMMY_SWAP_DSW14_RESULT.json",
+    "DSW15": "integration/research/GC_DUMMY_SWAP_DSW15_RESULT.json",
+    "DSW15V": "integration/research/GC_DUMMY_SWAP_DSW15V_RESULT.json",
+    "DSW16": "integration/research/GC_DUMMY_SWAP_DSW16_RESULT.json",
+    "DSW17": "integration/research/GC_DUMMY_SWAP_DSW17_RESULT.json",
+    "DSW18": "integration/research/GC_DUMMY_SWAP_DSW18_RESULT.json",
+    "DSW19": "integration/research/GC_DUMMY_SWAP_DSW19_RESULT.json",
+    "DSW20": "integration/research/GC_DUMMY_SWAP_DSW20_RESULT.json"
+  },
+  "current_bounded_findings": [
+    "A shared phreatic head and a true finite-resistance q-link are different physical coupling families.",
+    "Physical storage ownership must be declared exactly once. Consistent repartition is invariant; duplicated storage has a predictable signature.",
+    "A response tangent HCOF is not by itself a physical storage coefficient or a physical interface conductance.",
+    "Depth-varying and nonlinear storage must be checked against integrated water volume, not only a local derivative.",
+    "Head-dependent ET and drain derivatives are sink-response tangents with different physical ownership from storage.",
+    "A shared groundwater head can be a valid shared state while remaining an incomplete state descriptor when the unsaturated column has internal memory.",
+    "Forcing order is irrelevant in the memoryless linear control but becomes physically relevant in the transparent memory surrogate without violating mass conservation.",
+    "Linear N:1 aggregation is the area-weighted sum of cell response terms and is permutation invariant. This does not establish heterogeneous Richards transferability.",
+    "MODFLOW subsystem convergence, external coupled residual closure and physical mass closure are distinct acceptance objects.",
+    "DSW05 shows that an extremely strict IMS inner residual certificate can remain false even when the analytic head is reached to machine precision.",
+    "DSW09 separates two numerical effects. MODERATE delta-bar-delta under-relaxation changes the reanchor trajectory; after removing it, near-root strict residual certification can still fail when the remaining affine residual exceeds rclose but no useful floating-point head correction is available.",
+    "Fresh-solve success can depend on starting distance from the affine root. It must not be interpreted automatically as proof of hidden prepared-solve linear-solver state.",
+    "Bit-exact transfer of accepted state matters for substep/restart oracles. Text-formatted initial-head serialization produced a false DSW15 mass defect that disappeared when X and XOLD were set exactly through XMI.",
+    "Equal-and-opposite internal transfers conserve the complete coupled inventory in both directions; a transfer into groundwater is not automatically net recharge to the complete system.",
+    "Storage sensitivity and finite-resistance q-link conductance have different limiting signatures. Storage controls head response to net volume, whereas q-link conductance controls head separation and internal exchange between distinct storages.",
+    "Numerical convergence is not scientific acceptance: duplicate storage, a wrong storage-response sign and a reversed forcing sign all converge to deterministic but physically wrong states.",
+    "A five-window manufactured trajectory with unequal timesteps, explicit memory, lateral input, ET and drainage closes both window and cumulative mass ledgers to machine precision when state continuation is explicit."
+  ],
+  "unresolved_scientific_questions": [
+    "For the fixed coupling plane z_c, derive the exact top-system response and complete coupled residual while keeping interface hydraulic head H_c distinct from SWAP phreatic elevation.",
+    "Construct the minimal nonhydrostatic analytical oracle in which H_c != z_phreatic and both are independently known.",
+    "Determine algebraically whether the current production u/q_u condensation follows from the derived fixed-interface residual, and under which finite-window assumptions.",
+    "Which real SWAP internal states beyond H_c materially control the next-window interface response while preserving committed-state transaction semantics?"
+  ],
+  "unresolved_numerical_questions": [
+    "What production tolerance envelope should jointly govern MODFLOW subsystem convergence, coupling residual and mass conservation without demanding unattainable floating-point residuals?",
+    "Should external reanchoring use MODFLOW nonlinear under-relaxation history unchanged, disable/reset that acceleration, or move coupling acceleration explicitly to the outer coupling level?",
+    "How do these one-cell observations scale to multi-cell mixed-topology production windows?"
+  ],
+  "next_safe_steps": [
+    "Keep all production F-GC code unchanged.",
+    "Use docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md as the primary conceptual/mathematical research contract.",
+    "Treat HLINK/shared-phreatic and finite-resistance q-link work as comparison/limit evidence, not the main proof path.",
+    "Derive and preregister a nonhydrostatic fixed-interface analytical oracle before writing its numerical implementation.",
+    "Only after the independent derivation, map u/q_u and HCOF/RHS onto the exact residual and test numerical correctness separately from numerical quality."
+  ],
+  "latest_integral_research_run": {
+    "workflow_run": 35563873238,
+    "workflow_job": 106221736326,
+    "conclusion": "success",
+    "qualified_through": "DSW20"
+  },
+  "concept_synthesis": {
+    "state": "FIXED_INTERFACE_REFRAMING_PERSISTED_THEORY_FIRST",
+    "document": "docs/research/GC_COUPLING_CONCEPT_SYNTHESIS.md",
+    "initial_commit": "60f7c6f0d71000757c1c70b503cf52dc610f45c6",
+    "reconciled_commit": "0961138fa6913fa21d44fe31596049dbf5ea8f71",
+    "conclusions": [
+      "The intended coupling variable is hydraulic head at a fixed geometric plane at the bottom of the SWAP profile, not phreatic groundwater elevation by definition.",
+      "Hydrostatic equality between interface head and SWAP phreatic elevation is a limiting result, not state identity.",
+      "The primary physical interface conditions are head continuity at the plane and equal/opposite interface flux.",
+      "Physical/conceptual correctness, mathematical correctness, numerical correctness and numerical quality are separate evidence layers.",
+      "u/q_u and HCOF/RHS must be derived/interpreted after the exact fixed-interface residual is established, not used to define the physics.",
+      "HLINK and finite-resistance q-link evidence is retained as comparison/limit evidence but removed from the main proof path."
+    ],
+    "fixed_interface_theory": "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md"
+  },
+  "fixed_interface_program": {
+    "state": "THEORY_CHAIN_ACTIVE_NH01_NH03",
+    "theory": "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md",
+    "proof_plan": "docs/research/GC_FIXED_INTERFACE_PROOF_PLAN.md",
+    "NH01": {
+      "preregistration": "integration/research/GC_FIXED_INTERFACE_NH01_PREREGISTRATION.json",
+      "implementation": "tests/research/test_gc_fixed_interface_nh01.py",
+      "result": "integration/research/GC_FIXED_INTERFACE_NH01_RESULT.json",
+      "elimination": "docs/research/GC_FIXED_INTERFACE_NH01_ELIMINATION.md",
+      "production_mapping": "docs/research/GC_FIXED_INTERFACE_NH01_PRODUCTION_MAPPING.md",
+      "state": "MATHEMATICS_PERSISTED_IMPLEMENTED_AWAITING_EXECUTION"
+    },
+    "NH02": {
+      "preregistration": "integration/research/GC_FIXED_INTERFACE_NH02_PREREGISTRATION.json",
+      "implementation": "tests/research/test_gc_fixed_interface_nh02.py",
+      "state": "ANALYTIC_RESPONSE_IMPLEMENTED_AWAITING_EXECUTION_AND_BACKEND_SIGN_RECONCILIATION"
+    },
+    "NH03": {
+      "preregistration": "integration/research/GC_FIXED_INTERFACE_NH03_PREREGISTRATION.json",
+      "state": "NONLINEAR_STORAGE_THEORY_PREREGISTERED_NOT_IMPLEMENTED"
+    },
+    "key_mathematical_result": "For the linear nonhydrostatic fixed-interface oracle, u = S_S*C*dt/(S_S+C*dt) exactly. Thus u is a finite-window condensed top-system response coefficient; physical corrector dq_c/dH_c = -u/dt while the historical production affine partial slope is +u/dt.",
+    "architecture_implication": "This result supports fixed-interface response condensation without requiring MODFLOW head to equal SWAP phreatic elevation and without interpreting u as a finite-resistance q-link conductance."
+  }
+}

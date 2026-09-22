@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21d.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21D",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21D_PREREGISTRATION.json",
+  "tested_commit": "26d9f448115c69929e197617d1ac560d014b1de9",
+  "workflow_run": 35733730206,
+  "workflow_job": 106765510971,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_PARENT_AUTHORITY_BINDING_FAILURE_BEFORE_CAUSAL_ARMS",
+  "failure": {
+    "exception": "KeyError: tail_calls",
+    "location": "G21B_PREREGISTRATION.frozen_case.tail_calls",
+    "mechanism": "G21B freezes the 12-call tail in experiment_contract/quantitative_gates and its qualified result records response_identity.fixed_for_all_12_tail_calls=true; tail_calls is not a member of G21B frozen_case.",
+    "causal_observation": "NONE",
+    "nonmeth_observation": "NONE",
+    "intervention_executed": false
+  },
+  "repair_contract": [
+    "Keep G21D tail_calls fixed at 12.",
+    "Bind the parent 12-call authority to the closed G21B result response_identity.fixed_for_all_12_tail_calls rather than a nonexistent G21B frozen_case member.",
+    "Do not change solver configuration, roots, response sequence, thresholds, causal classification rules or production source."
+  ],
+  "disposition": "PRESERVED_NOT_RELABELLED"
+}

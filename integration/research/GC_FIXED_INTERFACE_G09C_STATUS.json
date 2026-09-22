@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09c.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09C",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "DIAGNOSTIC_CLOSED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09C_PREREGISTRATION.json",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G09B_FIRST_EXECUTION_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_signature_decomposition_g09c.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "9f3679ba47e004c458453bb1e8595a19b8162083",
+  "next_action": "Preregister G09D as a new estimator: central stencil requires the two symmetric probes to share an execution class; one-sided stencil requires center and both same-side probes to share a class; accept only after adjacent-scale slope agreement. Then replay C1/C2/C3 problematic states.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G09C_RESULT.json",
+  "execution": {
+    "tested_commit": "9f3679ba47e004c458453bb1e8595a19b8162083",
+    "workflow_run": 35700498264,
+    "workflow_job": 106657099125,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "exact_center_signature_rule": "TOO_STRICT",
+    "participant_status_only_rule": "TOO_WEAK_FROM_G09A",
+    "next_estimator_basis": "STENCIL_INTERNAL_CLASS_CONSISTENCY_PLUS_ADJACENT_SCALE_SLOPE_CONSISTENCY",
+    "production_admission": "NO"
+  }
+}

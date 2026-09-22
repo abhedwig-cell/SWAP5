@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "FIRST_EXECUTION_FALSIFIED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G08_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_boundary_tangent_g09.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "ac35addc81162d7bc723cd85a0d619921b5130cc",
+  "next_action": "Run G09A fixed-scale diagnostic at C3_LONG_HIGH positive edge, with C2_HIGH_FORCING negative edge as control; record status topology, q(H), derivative estimates and raw-corrector diagnostics without changing thresholds or production.",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G09_FIRST_EXECUTION_RESULT.json",
+  "first_execution": {
+    "tested_commit": "ac35addc81162d7bc723cd85a0d619921b5130cc",
+    "workflow_run": 35699061533,
+    "workflow_job": 106652483320,
+    "conclusion": "failure"
+  },
+  "disposition": {
+    "c2_negative_specific_gap": "RECOVERED_BY_E1_PARTIAL_EVIDENCE",
+    "broad_estimator_consistency": "FALSIFIED_AT_C3_LONG_HIGH_POS",
+    "production_admission": "NO"
+  }
+}

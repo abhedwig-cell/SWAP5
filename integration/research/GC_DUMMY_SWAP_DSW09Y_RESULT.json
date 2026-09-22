@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09y.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09Y",
+  "workflow_run": 35563422199,
+  "decision": "DIAGNOSTIC_QUALIFIED_NEAR_ROOT_STRICT_STAGNATION",
+  "anchor_head_m": 8.056155281280944,
+  "anchor_qref_m_per_day": -1.2533377113932431e-14,
+  "affine_root_m": 8.056155281280883,
+  "variants": {
+    "FAR_START_R1E15": {
+      "initial_head_m": 8,
+      "rclose": 1e-15,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.056155281280883,
+      "head_error_m": 0
+    },
+    "NEAR_START_R1E15": {
+      "initial_head_m": 8.056155281280944,
+      "rclose": 1e-15,
+      "converged": false,
+      "iterations": 100,
+      "head_m": 8.056155281280944,
+      "head_error_m": 6.039613253960852e-14
+    },
+    "NEAR_START_R1E13": {
+      "initial_head_m": 8.056155281280944,
+      "rclose": 1e-13,
+      "converged": true,
+      "iterations": 1,
+      "head_m": 8.056155281280944,
+      "head_error_m": 6.039613253960852e-14
+    }
+  },
+  "gates": {
+    "far_start_strict_certifies": "PASS",
+    "near_start_strict_stagnation_reproduced": "PASS",
+    "near_start_1e_13_certifies": "PASS"
+  },
+  "bounded_conclusions": [
+    "Fresh prepared-solve success is not by itself evidence that prepare_solve clears a hidden linear-solver history defect.",
+    "For the same affine equation, strict rclose=1e-15 converges when started far from the root but can fail when the current head is already about 6e-14 m from that root.",
+    "The near-root state remains well inside the pre-registered 1e-10 m physical head gate, while its affine residual is too large for the stricter residual certificate and too small to produce a useful floating-point head correction.",
+    "DSW-09 exposes two distinct numerical effects: MODERATE nonlinear under-relaxation history changes the reanchor trajectory, and near-root strict convergence can withhold the subsystem certificate after the external physical residual is already closed."
+  ],
+  "forbidden_inference": [
+    "Do not infer a production residual tolerance from this one-cell diagnostic.",
+    "Do not weaken the original DSW-09 preregistered gate post hoc."
+  ]
+}

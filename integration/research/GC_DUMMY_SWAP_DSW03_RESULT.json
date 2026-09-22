@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw03.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW03",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "qualified_head": "d224f8b6d4fccd3829c0a79d59b00e8571ea172c",
+  "workflow_run": 35560040522,
+  "workflow_job": 106211064716,
+  "conclusion": "success",
+  "decision": "QUALIFIED_RESEARCH_ORACLE_MODFLOW_SOURCE_SHARED_STATE",
+  "physical_oracle": {
+    "initial_head_m": 8,
+    "total_storage": 0.2,
+    "modflow_owned_injection_m3_per_day": 0.01,
+    "duration_day": 1,
+    "expected_head_m": 8.05
+  },
+  "partition_results": [
+    {
+      "alpha_swap": 0,
+      "head_m": 8.049999999999999,
+      "error_m": -1.7763568394002505e-15
+    },
+    {
+      "alpha_swap": 0.25,
+      "head_m": 8.05,
+      "error_m": 0
+    },
+    {
+      "alpha_swap": 0.5,
+      "head_m": 8.049999999999999,
+      "error_m": -1.7763568394002505e-15
+    },
+    {
+      "alpha_swap": 0.75,
+      "head_m": 8.05,
+      "error_m": 0
+    },
+    {
+      "alpha_swap": 1,
+      "head_m": 8.049999999999999,
+      "error_m": -1.7763568394002505e-15
+    }
+  ],
+  "partition_spread_m": 1.7763568394002505e-15,
+  "positive_slope_diagnostic": {
+    "alpha_swap": 0.5,
+    "hcof_m2_per_day": 0.1,
+    "status": "iterating",
+    "converged": false,
+    "iterations": 100,
+    "head_m": 8.999999999999801,
+    "classification": "ADVERSARIAL_POSITIVE_STORAGE_LIKE_RESPONSE_NOT_PHYSICAL_PARTITION"
+  },
+  "bounded_conclusions": [
+    "A MODFLOW-owned external groundwater source changes the shared head correctly even when all physical storage is represented by the dummy-SWAP side.",
+    "Consistent repartition of one storage volume remains invariant when forcing originates on the MODFLOW side.",
+    "The positive storage-like response is not interchangeable with the consistently signed shared-storage contribution in this transparent case."
+  ],
+  "forbidden_inference": [
+    "Do not treat WEL as the actual production coupling interface.",
+    "Do not infer a general production defect without deriving the exact meaning of production q_u and u.",
+    "Do not modify production coupling from this result."
+  ],
+  "next": [
+    "DSW-04 superposition of SWAP-owned and MODFLOW-owned forcing",
+    "DSW-06 affine reference-point invariance",
+    "DSW-07 physical residual versus API Jacobian audit",
+    "DSW-08 finite-resistance q-link"
+  ]
+}

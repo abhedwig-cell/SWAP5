@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_real_swap.map04.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP04",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "2f8acad64bf8139eba6185d09186ea5fa31aa76a",
+  "last_reconciled_head": "9429e7cedab37f5e833f0b06a47b9542a874c9a5",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_changes": false,
+  "authority_paths": [
+    "AGENTS.md",
+    "integration/research/GC_REAL_SWAP_MAP04_PREREGISTRATION.json",
+    "integration/research/GC_REAL_SWAP_MAP02_RESULT.json",
+    "integration/research/GC_REAL_SWAP_MAP03_RESULT.json",
+    "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json",
+    "docs/publication/PUB_GC_E5_INFORMATION_VALUE_RESULT.json"
+  ],
+  "relevant_paths": [
+    "tests/research/test_gc_real_swap_map04_slope_policy.py",
+    "tests/research/run_gc_real_swap_map04_fgc45.sh",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  ],
+  "interfaces_held_fixed": [
+    "real F-GC45 SWAP corrector",
+    "MODFLOW6 6.8.0 model and solver settings",
+    "coupled residual tolerance",
+    "publication order and exactly-once ledger semantics",
+    "F-GC33/F-GC40/F-GC49D production code"
+  ],
+  "dependency_surface": [
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  ],
+  "next_action": "Use a stronger qualified real-SWAP response regime where u_A and local corrector response differ materially, and repeat the same immutable-physics slope-policy comparison.",
+  "recovery_point": "MAP04 qualified by workflow 35567251749 / job 106231422040. Resume from GC_REAL_SWAP_MAP04_RESULT.json; do not rerun unless its dependency surface changes.",
+  "blockers": [],
+  "qualification": {
+    "workflow_run": 35567251749,
+    "workflow_job": 106231422040,
+    "conclusion": "success",
+    "result_path": "integration/research/GC_REAL_SWAP_MAP04_RESULT.json",
+    "decision": "QUALIFIED_ACCEPTED_PHYSICS_INVARIANT_TO_AFFINE_SLOPE_POLICY_IN_FGC45_FIXTURE"
+  }
+}

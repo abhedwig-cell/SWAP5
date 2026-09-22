@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21j.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21J",
+  "title": "HeadCalc convergence-criterion causal isolation at G21I split iterations",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "9d42cc7f96dd292a3ab5f2e38a738bb09e58b2b9",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21I_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21H_RESULT.json",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90"
+  ],
+  "question": "At the B1 iteration-4 and B2 iteration-3 convergence splits, which existing HeadCalc convergence criterion prevents the binary64-adjacent status-6 head from accepting the otherwise backtracking-count-equivalent Newton prefix?",
+  "frozen_cases": [
+    {
+      "id": "B1",
+      "duration_day": 0.0000390625,
+      "max_iterations": 4,
+      "status6_head_m": -0.7150100297648301,
+      "status0_head_m": -0.715010029764824,
+      "baseline_backtracking": 8
+    },
+    {
+      "id": "B2",
+      "duration_day": 0.0000390625,
+      "max_iterations": 3,
+      "status6_head_m": -0.7150100297647868,
+      "status0_head_m": -0.715010029764793,
+      "baseline_backtracking": 3
+    }
+  ],
+  "production_tolerances": {
+    "compartment_balance": 1e-12,
+    "total_balance": 1e-12,
+    "head_abs": 1e-12,
+    "head_rel": 1e-12,
+    "ponding": 1e-12
+  },
+  "diagnostic_relaxed_tolerance": 1000000,
+  "headcalc_semantics": [
+    "Compartment residual sets nonconvergence when abs(residual_i) > CritDevBalCp.",
+    "Head change sets nonconvergence from CritDevh2Cp or CritDevh1Cp depending on old-head magnitude.",
+    "Ponding balance may set nonconvergence when the applicable ponding branch exceeds CritDevPondDt.",
+    "Total residual sets nonconvergence when abs(sum(residual)) > CritDevBalTot.",
+    "CritDevBalCp is additionally used inside backtracking through Fmax < CritDevBalCp; therefore changing it can alter the Newton/backtracking trajectory and is excluded from the primary no-path-change criterion knockout.",
+    "Head, total-balance and ponding tolerances are evaluated in the convergence section and do not control the preceding backtracking accept test."
+  ],
+  "primary_intervention_contract": [
+    "Use a fresh immutable-origin raw backend solve for every arm, max_retries=0, frozen final-retry duration and frozen max_iterations for that boundary.",
+    "Copy corrector_parameters and corrector_config only. Never mutate saved production/test fixture values.",
+    "Run baseline status-6 and status-0 arms first and require exact G21I solver status, nonlinear-iteration and cumulative-backtracking reproduction.",
+    "At the status-6 head, run all seven non-empty subsets of {HEAD, TOTAL, POND} with only those copied tolerances set to 1e6 while compartment_balance remains exactly 1e-12.",
+    "For every primary intervention arm require cumulative backtracking to remain identical to the baseline status-6 split-prefix count. A changed count invalidates direct convergence-criterion interpretation for that arm.",
+    "Identify minimal relaxing subsets that switch the physical solver from nonconverged to converged."
+  ],
+  "secondary_compartment_contract": [
+    "Only if the union HEAD+TOTAL+POND still does not converge, infer from HeadCalc source semantics that compartment balance remains a necessary blocker among the ordinary non-macropore criteria.",
+    "Then run a secondary COMPARTMENT-only and ALL-criteria relaxed arm as support, explicitly recording whether backtracking count changes because CritDevBalCp also participates in backtracking.",
+    "A compartment-relaxed convergence result is supportive, not by itself proof of a pure convergence-only effect if backtracking changes."
+  ],
+  "classification_rules": {
+    "HEAD_CHANGE_BLOCKER": "A minimal primary subset containing HEAD but not TOTAL/POND switches the status-6 head to convergence with unchanged backtracking.",
+    "TOTAL_BALANCE_BLOCKER": "A minimal primary subset containing TOTAL but not HEAD/POND switches it with unchanged backtracking.",
+    "PONDING_BLOCKER": "A minimal primary subset containing POND but not HEAD/TOTAL switches it with unchanged backtracking.",
+    "MULTIPLE_NONCOMPARTMENT_CRITERIA_REQUIRED": "No single primary criterion switches convergence, but a multi-criterion subset does with unchanged backtracking.",
+    "COMPARTMENT_BALANCE_NECESSARY_BLOCKER": "HEAD+TOTAL+POND relaxed still fails at unchanged backtracking, leaving compartment balance as the necessary active ordinary criterion under the source-audited non-macropore route.",
+    "MIXED_OR_UNRESOLVED": "Primary interventions change backtracking unexpectedly or source/fixture conditions prevent unique causal classification."
+  },
+  "gates": [
+    "Production HeadCalc source confirms the exact criterion and backtracking roles stated above.",
+    "Corrector macropore physics is disabled in the frozen FGC44 fixture, excluding macropore convergence branches.",
+    "B1 and B2 baseline adjacent heads reproduce G21I at max_iterations 4 and 3 respectively.",
+    "All seven HEAD/TOTAL/POND primary subsets are executed for each status-6 head.",
+    "Compartment tolerance remains bitwise equal to 1e-12 in every primary arm.",
+    "Primary-arm backtracking count remains equal to the corresponding frozen G21I baseline or the arm is classified path-interfering.",
+    "Saved corrector parameters/configuration remain functionally unchanged after all interventions, proven by the normal G16 status vector [6,0,0,6].",
+    "Accepted revision/time/ledger and participant/G16 publication authority remain unchanged.",
+    "No production source is modified."
+  ],
+  "pass_interpretation": "PASS qualifies only causal localization of the frozen convergence predicate. Diagnostic tolerance knockout is not a proposed tolerance change and creates no production admission.",
+  "fail_interpretation": "Preserve ambiguity. Do not change production tolerances, smooth statuses, reinterpret status 6, or broaden participant admissibility to manufacture a single blocker.",
+  "allowed_mutation": [
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "tests/fgc/support/fgc44_real_swap_ctypes.py",
+    "tests/research/test_gc_fixed_interface_g21j_convergence_criteria.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21J_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/solver/**",
+    "src/legacy/**",
+    "src/transaction/**",
+    "src/adapter/**",
+    "saved corrector parameter/config semantics",
+    "participant acceptance/retry semantics",
+    "G16 service semantics",
+    "G09D/G13 E3 rules",
+    "MODFLOW IMS configuration",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}

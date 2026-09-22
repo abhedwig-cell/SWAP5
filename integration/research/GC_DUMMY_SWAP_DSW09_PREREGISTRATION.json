@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09",
+  "title": "Nonlinear shared-storage volume with exact tangent reanchoring",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "linear_oracles": [
+      "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
+      "integration/research/GC_DUMMY_SWAP_DSW03_RESULT.json"
+    ]
+  },
+  "physical_law": {
+    "initial_head_m": 8,
+    "x": "h-h0",
+    "storage_volume_change_m": "V(x)=S0*x+0.5*k*x^2",
+    "S0": 0.15,
+    "k_per_m": 1,
+    "input_m": 0.01,
+    "duration_day": 1,
+    "exact_positive_root": "x=(-S0+sqrt(S0^2+2*k*input))/k"
+  },
+  "dummy_flux_residual": "Q(H)=input/dt - V(H)/dt",
+  "tangent_linearization": {
+    "derivative": "dQ/dH=-(S0+k*(H-H0))/dt",
+    "hcof": "dQ/dH at H_ref",
+    "rhs": "HCOF*H_ref-Q(H_ref)",
+    "reanchor": "after every unconverged MODFLOW/API iteration"
+  },
+  "modflow_configuration": {
+    "version": "6.8.0",
+    "sy": 0,
+    "ss": 0,
+    "newton": false,
+    "note": "all physical storage belongs to the nonlinear dummy volume; MODFLOW supplies the nonlinear root solve through the API tangent"
+  },
+  "gates": [
+    "closed-form physical root",
+    "exact mass V(h)-V(h0)=input",
+    "MODFLOW converges to closed-form head",
+    "each published HCOF equals exact local derivative",
+    "final exact nonlinear residual is below 1e-12 m/day",
+    "more than one reanchor is required so the test actually exercises nonlinear tangent updates"
+  ],
+  "forbidden": [
+    "no finite-difference-derived tangent in the primary gate",
+    "no tuning after observing convergence",
+    "do not call HCOF a physical conductance",
+    "no production source change"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10b.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10B",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_RESEARCH_GATE_CLOSED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G10B_PREREGISTRATION.json",
+  "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G10A_RESULT.json",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G10_FIRST_EXECUTION_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_local_groundwater_g10b.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "78f0a66a1825e84bbe44fe7f0407de2c081383be",
+  "next_action": "Preregister a new bounded work unit to exercise genuine live P4 safeguard recovery with E3 and an adequate groundwater merit oracle; do not manufacture failure by corrupting the tangent or relaxing SWAP numerics.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G10B_RESULT.json",
+  "execution": {
+    "tested_commit": "78f0a66a1825e84bbe44fe7f0407de2c081383be",
+    "workflow_run": 35703686725,
+    "workflow_job": 106667411876,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "local_groundwater_oracle": "QUALIFIED_FOR_FROZEN_B4_GW_MIXED_PATH",
+    "p1_e3": "CONVERGED_BOTH_STARTS",
+    "p4_e3": "CONVERGED_BOTH_STARTS_ZERO_CONTRACTIONS",
+    "safeguard_recovery": "NOT_EXERCISED",
+    "g10_formal_result": "REMAINS_FALSIFIED",
+    "production_admission": "NO"
+  }
+}

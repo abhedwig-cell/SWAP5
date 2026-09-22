@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw17.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW17",
+  "workflow_run": 35563873238,
+  "workflow_job": 106221736326,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_EQUAL_OPPOSITE_INTERNAL_TRANSFER",
+  "cases": {
+    "MEMORY_TO_GROUNDWATER": {
+      "head_m": 8.03,
+      "memory_m": 0.014,
+      "groundwater_storage_change_m": 0.005999999999999873,
+      "memory_change_m": -0.006,
+      "combined_change_m": -1.2750217548429532e-16
+    },
+    "GROUNDWATER_TO_MEMORY": {
+      "head_m": 8.03,
+      "memory_m": 0.014,
+      "groundwater_storage_change_m": -0.00400000000000027,
+      "memory_change_m": 0.004,
+      "combined_change_m": -2.697495005143935e-16
+    }
+  },
+  "gates": {
+    "bidirectional_transfer": "PASS",
+    "equal_opposite_ledger": "PASS",
+    "complete_storage_invariance": "PASS",
+    "live_modflow": "PASS"
+  },
+  "bounded_conclusions": [
+    "A transfer between an internal memory state and groundwater must appear with exactly opposite signs in the two state ledgers.",
+    "Both transfer directions preserve the complete water inventory to machine precision.",
+    "An internal transfer may change groundwater head while remaining zero net source to the complete coupled system."
+  ]
+}

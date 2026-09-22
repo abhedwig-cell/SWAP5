@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw08.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW08",
+  "title": "Finite-resistance q-link and zero-resistance shared-state limit",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "shared_storage_oracle": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
+    "modflow_source_oracle": "integration/research/GC_DUMMY_SWAP_DSW03_RESULT.json"
+  },
+  "physical_system": {
+    "initial_dummy_head_m": 8,
+    "initial_modflow_head_m": 8,
+    "dummy_storage": 0.1,
+    "modflow_storage": 0.1,
+    "rain_into_dummy_m_per_day": 0.01,
+    "duration_day": 1,
+    "exchange_law": "q_ex=C*(h_dummy-h_modflow), positive dummy->MODFLOW",
+    "time_discretization": "implicit end-of-window exchange"
+  },
+  "conductance_per_day": [
+    0.001,
+    0.01,
+    0.1,
+    1,
+    10,
+    1000
+  ],
+  "exact_dummy_elimination": {
+    "a": "S_dummy/dt",
+    "beta": "C/(a+C)",
+    "h_dummy_of_hm": "(a*h0+R+C*h_m)/(a+C)",
+    "q_to_modflow_of_hm": "beta*R-beta*a*(h_m-h0)",
+    "api_hcof": "-beta*a",
+    "api_rhs": "HCOF*h0-beta*R"
+  },
+  "exact_modflow_head_increment": "beta*R/(S_mf/dt+beta*a)",
+  "zero_resistance_limit": {
+    "conductance": "infinity",
+    "common_head_m": 8.05,
+    "total_storage": 0.2,
+    "interpretation": "two physically disjoint storages become one combined storage relation when the states coincide"
+  },
+  "gates": [
+    "live MODFLOW h_m agrees with closed-form solution for every conductance",
+    "reconstructed dummy h agrees with exact eliminated equation",
+    "exchange flux equals MODFLOW storage change",
+    "total two-reservoir mass closes",
+    "head difference decreases monotonically with conductance",
+    "large-C result approaches common-head 8.05 m limit"
+  ],
+  "forbidden": [
+    "do not identify C with coupling_storage_coefficient_u",
+    "do not call the finite-resistance q-link a shared state before the C->infinity limit",
+    "no production coupling change"
+  ]
+}

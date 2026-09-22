@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw15.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW15",
+  "workflow_run": 35563369096,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_FORCING_ORDER_MEMORY",
+  "harness_repair": "Fresh-substep current and previous heads are set exactly through XMI before prepare_time_step, avoiding formatted IC restart-state rounding.",
+  "memoryless": {
+    "early_final_head_m": 8.1,
+    "late_final_head_m": 8.1,
+    "order_invariance": "PASS"
+  },
+  "memory": {
+    "early": {
+      "final_head_m": 8.055555555555552,
+      "final_memory_m": 0.008888888888888889
+    },
+    "late": {
+      "final_head_m": 8.033333333333331,
+      "final_memory_m": 0.013333333333333334
+    }
+  },
+  "gates": {
+    "memoryless_order_invariance": "PASS",
+    "memory_path_dependence": "PASS",
+    "total_mass": "PASS",
+    "original_mass_tolerance_1e_12": "PASS"
+  },
+  "bounded_conclusions": [
+    "Without internal memory, redistributing the same linear input within the window does not change the final shared head.",
+    "With an explicit internal storage memory, the same total input produces different final groundwater heads when the forcing order changes, while total water remains conserved.",
+    "Shared groundwater head is therefore insufficient to characterize path-dependent column response when internal memory states are present.",
+    "The surrogate memory timescale is illustrative and is not a calibrated SWAP parameter."
+  ]
+}

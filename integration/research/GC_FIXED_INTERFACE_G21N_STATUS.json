@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21n.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21N",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_MIXED_NUMERICAL_MICROSTRUCTURE_FORENSICS_COMPLETE",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21N_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21N_RESULT.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21M_RESULT.json",
+  "tested_commit": "f4d30a1ca5078fdfab5d2fff8f350f8486154d8d",
+  "workflow_run": 35748285932,
+  "workflow_job": 106815430814,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "original_g21_dynamic_path_equivalence": "REMAINS_FALSIFIED",
+    "g21_solver_forensics": "CLOSED_BOUNDED_NUMERICAL_MICROSTRUCTURE_CHARACTERIZED",
+    "final_aggregation_order": "NOT_CAUSAL_AT_CAPTURED_LEVEL",
+    "lower_boundary_term_attribution": "QUALIFIED",
+    "further_constitutive_arithmetic_forensics": "DEFER_SEPARATE_SOLVER_ROBUSTNESS_WORKSTREAM",
+    "production_change": "NOT_ADMITTED"
+  },
+  "next_action": "Open endpoint-based coupling qualification with physical/transactional endpoint criteria rather than exact G17 trajectory fidelity.",
+  "evidence_persistence": "PASS_113_OF_113"
+}

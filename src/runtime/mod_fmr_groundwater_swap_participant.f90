@@ -18,6 +18,28 @@ module mod_fmr_groundwater_swap_participant
   implicit none
   private
 
+  type, public :: fmr_groundwater_swap_trial_observation_t
+    logical :: available = .false.
+    integer :: participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
+    logical :: q_available = .false.
+    real(real64) :: q_swap_m_per_s = 0.0_real64
+    integer :: result_status = -1
+    logical :: completed = .false.
+    logical :: candidate_ready = .false.
+    integer :: transaction_calls = 0
+    integer :: accepted_substeps = 0
+    integer :: attempts = 0
+    integer :: retries = 0
+    integer :: trial_rollbacks = 0
+    integer :: solver_rejections = 0
+    integer :: temporal_rejections = 0
+    integer :: temporal_unavailable_rejections = 0
+    integer :: mass_rejections = 0
+    integer :: internal_retries = 0
+    real(real64) :: min_accepted_substep_duration = 0.0_real64
+    real(real64) :: max_accepted_substep_duration = 0.0_real64
+  end type fmr_groundwater_swap_trial_observation_t
+
   ! F-GC44 concrete binding of the admitted F-GC43 participant contract to the
   ! encapsulated FMR backend. The FMR backend keeps its kernel executor private;
   ! this adapter therefore holds only checkpoint/candidate provenance and calls
@@ -33,6 +55,7 @@ module mod_fmr_groundwater_swap_participant
     real(real64) :: origin_time = 0.0_real64
     logical :: origin_captured = .false.
     logical :: live_candidate = .false.
+    type(fmr_groundwater_swap_trial_observation_t) :: last_observation
   contains
     procedure, public :: capture_origin => fmr_swap_capture_origin
     procedure, public :: trial_from_origin => fmr_swap_trial_from_origin
@@ -43,6 +66,7 @@ module mod_fmr_groundwater_swap_participant
     procedure, public :: has_live_candidate => fmr_swap_has_live_candidate
     procedure, public :: captured_lineage_id => fmr_swap_lineage_id
     procedure, public :: captured_revision => fmr_swap_revision
+    procedure, public :: observe_last_trial => fmr_swap_observe_last_trial
   end type fmr_groundwater_swap_participant_t
 
 contains
@@ -54,6 +78,7 @@ contains
     logical :: available
 
     status = GW_SWAP_PARTICIPANT_ORIGIN_CAPTURE_FAILED
+    self%last_observation = fmr_groundwater_swap_trial_observation_t()
     if (self%live_candidate) then
       status = GW_SWAP_PARTICIPANT_CANDIDATE_BUSY
       return
@@ -93,6 +118,7 @@ contains
     integer :: forcing_status, interface_status
 
     trial = groundwater_swap_trial_t()
+    self%last_observation = fmr_groundwater_swap_trial_observation_t()
     status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
     if (.not. self%origin_captured) return
     if (.not. self%origin_checkpoint%ready()) return
@@ -132,8 +158,9 @@ contains
     end select
 
     if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then
-      if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       status = GW_SWAP_PARTICIPANT_TRIAL_FAILED
+      call capture_trial_observation(self, status, .false., 0.0_real64)
+      if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       return
     end if
 
@@ -142,8 +169,9 @@ contains
     call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean_cm_per_day, &
          trial%q_swap_m_per_s, interface_status)
     if (interface_status /= GW_INTERFACE_OK .or. .not. ieee_is_finite(trial%q_swap_m_per_s)) then
-      call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       status = GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
+      call capture_trial_observation(self, status, .false., 0.0_real64)
+      call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       return
     end if
 
@@ -152,6 +180,7 @@ contains
     trial%prescribed_head_m = prescribed_head_m
     trial%bottom_outward_exchange_cm = self%trial_result%bottom_outward_exchange_native
     status = GW_SWAP_PARTICIPANT_OK
+    call capture_trial_observation(self, status, .true., trial%q_swap_m_per_s)
   end subroutine fmr_swap_trial_from_origin
 
   subroutine fmr_swap_discard_candidate(self, backend)
@@ -211,8 +240,45 @@ contains
     end if
     self%live_candidate = .false.
     self%origin_captured = .false.
+    self%last_observation = fmr_groundwater_swap_trial_observation_t()
     status = GW_SWAP_PARTICIPANT_OK
   end subroutine fmr_swap_commit_candidate
+
+  subroutine fmr_swap_observe_last_trial(self, observation)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    type(fmr_groundwater_swap_trial_observation_t), intent(out) :: observation
+
+    observation = self%last_observation
+  end subroutine fmr_swap_observe_last_trial
+
+  subroutine capture_trial_observation(self, participant_status, q_available, q_swap_m_per_s)
+    class(fmr_groundwater_swap_participant_t), intent(inout) :: self
+    integer, intent(in) :: participant_status
+    logical, intent(in) :: q_available
+    real(real64), intent(in) :: q_swap_m_per_s
+
+    self%last_observation = fmr_groundwater_swap_trial_observation_t()
+    self%last_observation%available = .true.
+    self%last_observation%participant_status = participant_status
+    self%last_observation%q_available = q_available
+    if (q_available) self%last_observation%q_swap_m_per_s = q_swap_m_per_s
+    self%last_observation%result_status = self%trial_result%status
+    self%last_observation%completed = self%trial_result%completed
+    self%last_observation%candidate_ready = self%candidate%ready()
+    self%last_observation%transaction_calls = self%diagnostics%transaction_calls
+    self%last_observation%accepted_substeps = self%diagnostics%accepted_substeps
+    self%last_observation%attempts = self%diagnostics%attempts
+    self%last_observation%retries = self%diagnostics%retries
+    self%last_observation%trial_rollbacks = self%diagnostics%trial_rollbacks
+    self%last_observation%solver_rejections = self%diagnostics%solver_rejections
+    self%last_observation%temporal_rejections = self%diagnostics%temporal_rejections
+    self%last_observation%temporal_unavailable_rejections = &
+         self%diagnostics%temporal_certificate_unavailable_rejections
+    self%last_observation%mass_rejections = self%diagnostics%mass_rejections
+    self%last_observation%internal_retries = self%diagnostics%internal_retries
+    self%last_observation%min_accepted_substep_duration = self%diagnostics%min_accepted_substep_duration
+    self%last_observation%max_accepted_substep_duration = self%diagnostics%max_accepted_substep_duration
+  end subroutine capture_trial_observation
 
   logical function origin_still_current(self, committed) result(current)
     class(fmr_groundwater_swap_participant_t), intent(in) :: self

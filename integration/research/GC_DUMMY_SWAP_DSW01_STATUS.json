@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw01.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC-DUMMY-SWAP",
+  "work_unit": "GC-DUMMY-SWAP-DSW01",
+  "baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "122027280f4044175d460cecf05c09090b918410",
+  "last_reconciled_head": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "scope": "Analytic and live MODFLOW6 one-cell diagnosis of zero-resistance dummy-SWAP storage/flux semantics.",
+  "read_only_authorities": [
+    "AGENTS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "integration/f-gc/F-GC33_STATUS.json",
+    "integration/f-gc/F-GC39_STATUS.json",
+    "integration/f-gc/F-GC40_STATUS.json",
+    "integration/f-gc/F-GC41_STATUS.json",
+    "integration/f-gc/F-GC49_STATUS.json",
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/adapter/modflow6_prepared_solve_session.py"
+  ],
+  "relevant_paths": [
+    "docs/research/GC_DUMMY_SWAP_SHARED_STORAGE.md",
+    "integration/research/GC_DUMMY_SWAP_DSW01_PREREGISTRATION.json",
+    "tests/research/test_gc_dummy_swap_dsw01_analytic.py",
+    "tests/research/test_gc_dummy_swap_dsw01_live_modflow.py",
+    "tests/research/run_gc_dummy_swap_dsw01.sh",
+    "docs/research/GC_COUPLING_CONCEPT_TESTBANK.md",
+    "docs/research/GC_SHARED_STATE_STORAGE_MAPPING.md",
+    "integration/research/GC_DUMMY_SWAP_DSW01_OBSERVATION.json",
+    "tests/research/test_gc_dummy_swap_dsw02_partition.py",
+    "tests/research/test_gc_dummy_swap_dsw02_live_partition.py"
+  ],
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "no production semantics changed",
+    "transaction/coupling ownership remains read-only",
+    "mass and storage claims require an independent oracle"
+  ],
+  "next_action": "Preregister and execute DSW-03 MODFLOW-owned lateral forcing while preserving the DSW-01/02 oracle and leaving production coupling read-only.",
+  "recovery_point": "DSW-01/02 research oracle qualified at b7fca7b366325b05a3eaf860eca178e9be5d40b2. Resume from current branch head for DSW-03; DSW-01/02 need not be redesigned unless their declared numerical/source dependency changes.",
+  "blockers": [],
+  "last_tested": {
+    "head": "212f57a89f145ea0f1e97ca1aa604dd3d8b578a6",
+    "workflow_run": 35559661870,
+    "workflow_job": 106209969429,
+    "conclusion": "failure",
+    "analytic": "PASS",
+    "live_control": "FAIL_1E8_ORACLE_BY_5E8_M",
+    "diagnostic_current_u": "CONVERGED_AT_8_000000_M_VS_8_050000_M_PHYSICAL_ORACLE",
+    "dsw02": "PARTIAL_OBSERVATIONS_CAPTURED"
+  },
+  "observation_path": "integration/research/GC_DUMMY_SWAP_DSW01_OBSERVATION.json",
+  "qualification": {
+    "head": "b7fca7b366325b05a3eaf860eca178e9be5d40b2",
+    "workflow_run": 35559860500,
+    "workflow_job": 106210544380,
+    "conclusion": "success",
+    "result_path": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
+    "decision": "QUALIFIED_RESEARCH_ORACLE_SHARED_STORAGE_PARTITION"
+  }
+}

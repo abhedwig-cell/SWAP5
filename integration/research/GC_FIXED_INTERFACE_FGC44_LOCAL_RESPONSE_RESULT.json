@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.fgc44_local_response.v2",
+  "date": "2026-09-21",
+  "workflow_run_id": 35611202121,
+  "workflow_conclusion": "success",
+  "window_day": 0.0001,
+  "u": 0.00003402936037279093,
+  "positive_surrogate_slope_per_s": 0.000003938583376480432,
+  "central_real_swap_physical_slope_per_s": -0.000003938581713855724,
+  "ratio_physical_to_positive_surrogate": -0.9999995778618,
+  "interpretation": "The accepted local real-SWAP response points establish that the physical outward exchange derivative is equal in magnitude and opposite in sign to +u/dt to numerical precision. The earlier status-4 first scan point is not admissibility evidence because status 4 is CANDIDATE_BUSY; a replacement clean G06 scan is required for any head-envelope claim. F-GC44's ordinary two-iteration closure starts essentially at the fixed point and therefore does not by itself qualify finite-perturbation stability of the positive surrogate.",
+  "production_disposition": "NO_SIGN_CHANGE_IN_THIS_COMMIT",
+  "admissibility_correction": {
+    "prior_workflow_run_id": 35611202121,
+    "prior_negative_2e6_status": 4,
+    "status_4_meaning": "GW_SWAP_PARTICIPANT_CANDIDATE_BUSY",
+    "corrected_classification": "INVALID_AS_HEAD_ADMISSIBILITY_EVIDENCE",
+    "mechanism": "The historical test called trial(href) and left that candidate live before the first local-scan point. The -2e-6 m call therefore returned CANDIDATE_BUSY before the corrector executed. The finally-discard then cleared the candidate, so later scan points were independent.",
+    "effect_on_tangent_claim": "NONE. The physical tangent estimate used accepted clean points after the candidate was discarded.",
+    "replacement_qualification": {
+      "workflow_run_id": 35618874403,
+      "result": "PASS",
+      "result_file": "integration/research/GC_FIXED_INTERFACE_FGC44_GLOBALIZATION_G03_RESULT.json",
+      "clean_status_4_points": 0,
+      "cold_scan_summary": "status 6 at -5e-6 m and more negative sampled points; status 0 at -2e-6 m through +5e-6 m sampled points; status 6 at +1e-5 m and larger positive sampled points"
+    }
+  }
+}

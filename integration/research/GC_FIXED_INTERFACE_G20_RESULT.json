@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.gc_fixed_interface.g20.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G20",
+  "title": "Continuous prepared-solve response-space damping path equivalence",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G20_PREREGISTRATION.json",
+  "parent_bridge": "integration/research/GC_FIXED_INTERFACE_G19_RESULT.json",
+  "parent_composition_falsification": "integration/research/GC_FIXED_INTERFACE_G18_RESULT.json",
+  "tested_commit": "5033a94fc5e51f4ecc9e784078edc972b1ce7891",
+  "workflow_run": 35727618026,
+  "workflow_job": 106745027381,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_BOUNDED_CONTINUOUS_FGC38_RESPONSE_SPACE_SAFEGUARD_BRIDGE",
+  "production_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "lifecycle": {
+    "prepare_time_step_calls": 1,
+    "prepare_solve_calls": 1,
+    "modflow_solve_calls": 6,
+    "finalize_solve_calls": 1,
+    "finalize_time_step_calls": 0,
+    "session_invalidated_during_sequence": false,
+    "xold_bitwise_fixed": true,
+    "direct_x_control_used": false
+  },
+  "lambda_results": [
+    {
+      "lambda": 1,
+      "solve_iterations": 2,
+      "cumulative_solve_iterations": 2,
+      "continuous_head_m": -0.7150110934482893,
+      "fresh_g19_head_m": -0.7150110934482893,
+      "head_difference_m": 0,
+      "participant_status": 6
+    },
+    {
+      "lambda": 0.5,
+      "solve_iterations": 2,
+      "cumulative_solve_iterations": 4,
+      "continuous_head_m": -0.7150055122971403,
+      "fresh_g19_head_m": -0.7150055122971404,
+      "head_difference_m": 1.1102230246251565e-16,
+      "participant_status": 6
+    },
+    {
+      "lambda": 0.25,
+      "solve_iterations": 2,
+      "cumulative_solve_iterations": 6,
+      "continuous_head_m": -0.7150027217215658,
+      "fresh_g19_head_m": -0.7150027217215658,
+      "head_difference_m": 0,
+      "participant_status": 0
+    }
+  ],
+  "numerical_equivalence": {
+    "maximum_continuous_vs_fresh_head_difference_m": 1.1102230246251565e-16,
+    "preregistered_fgc38_path_equivalence_guard_m": 1.4901161193847656e-8,
+    "gate": "PASS",
+    "note": "The observed path spread is about 1.34e8 times smaller than the inherited F-GC38 guard; the guard was not tightened post hoc."
+  },
+  "swap_diagnostics": {
+    "status_topology": [
+      6,
+      6,
+      0
+    ],
+    "g16_logical_requests": 3,
+    "g16_participant_trials": 3,
+    "g16_cache_hits": 0,
+    "accepted_state_or_ledger_mutation": 0,
+    "live_candidate_leakage": 0,
+    "diagnostic_non_authority": "PASS"
+  },
+  "gates": {
+    "parent_g18_g19_authority_binding": "PASS",
+    "exactly_one_prepare_time_step": "PASS",
+    "exactly_one_prepare_solve": "PASS",
+    "continuous_open_noninvalid_session": "PASS",
+    "xold_fixed": "PASS",
+    "no_direct_x_xold_control": "PASS",
+    "no_rollback_or_reopen_between_lambda_phases": "PASS",
+    "all_lambda_phases_reach_modflow_convergence": "PASS",
+    "g19_fresh_path_equivalence": "PASS",
+    "swap_status_topology": "PASS_6_6_0",
+    "exactly_one_finalize_solve": "PASS",
+    "zero_finalize_time_step": "PASS",
+    "no_production_runtime_change": "PASS"
+  },
+  "bounded_conclusions": [
+    "The G19 affine response-space sequence lambda=1 -> 1/2 -> 1/4 can be transported through one continuously evolving live F-GC38 prepared solve without restoring, prescribing or directly mutating MODFLOW X.",
+    "The accepted groundwater origin XOLD remains bitwise fixed while X evolves across all six external nonlinear solve calls.",
+    "Each response level requires two MODFLOW solve calls in this frozen case, and all three settled heads are numerically equivalent to the corresponding G19 fresh-origin response solutions by a margin far inside the existing F-GC38 path-equivalence guard.",
+    "The real SWAP participant sees exactly the frozen G19/G11 topology [status 6, status 6, status 0] at lambda [1, 1/2, 1/4], with every SWAP check remaining diagnostic-only through G16.",
+    "G20 therefore provides the missing bounded composition bridge identified by G18: globalization can act on the published affine response rather than rewinding groundwater state.",
+    "This does not qualify the complete outer coupling algorithm. Only the first safeguarded G11 update was transported through the continuous prepared solve.",
+    "The MODFLOW solve is finalized once for lifecycle closure, but finalize_time_step is never called; no groundwater timestep publication is claimed.",
+    "No E3, response-space damping, P4, HCOF/RHS, or multi-participant publication policy is production-admitted by G20."
+  ],
+  "next_natural_unit": "Qualify a full multi-outer-update response-space safeguarded coupling loop inside one continuous F-GC38 prepared solve, recomputing/transporting the real-SWAP tangent through G16/E3 at each accepted coupling iterate while preserving fixed XOLD, diagnostic non-authority and conjunctive MODFLOW-plus-interface convergence."
+}

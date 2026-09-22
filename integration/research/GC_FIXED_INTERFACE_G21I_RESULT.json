@@ -1,0 +1,163 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21i.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21I",
+  "title": "Final-retry Newton iteration-prefix tomography across G21H adjacent status boundaries",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21I_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21H_RESULT.json",
+  "tested_commit": "d26b3a686c036e3a4c543a7f25873eb210c30efe",
+  "workflow_run": 35741871585,
+  "workflow_job": 106793410206,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_PREFIX_CONVERGENCE_BRANCH_WITHOUT_PRIOR_BACKTRACKING_SPLIT",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "runtime_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "mutation_boundary": {
+    "base": "4d2c80c3e2e9a1fc4d440c34de3e0ba5b1fd6762",
+    "production_source_changes": 0,
+    "changed_surfaces": [
+      "integration/research/GC_FIXED_INTERFACE_G21I_PREREGISTRATION.json",
+      "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+      "tests/fgc/support/fgc44_real_swap_ctypes.py",
+      "tests/research/test_gc_fixed_interface_g21i_solver_prefix_forensics.py",
+      "tests/research/run_gc_real_fgc44_response_storage_scan.sh"
+    ]
+  },
+  "boundary_results": [
+    {
+      "id": "B1_6_TO_0",
+      "status6_head_m": -0.7150100297648301,
+      "status0_head_m": -0.715010029764824,
+      "status0_first_convergence_prefix": 4,
+      "cumulative_backtracking_status6_prefixes_1_4": [
+        1,
+        2,
+        5,
+        8
+      ],
+      "cumulative_backtracking_status0_prefixes_1_4": [
+        1,
+        2,
+        5,
+        8
+      ],
+      "first_cumulative_backtracking_divergence_before_or_at_convergence": null,
+      "status6_full_prefix16_cumulative_backtracking": [
+        1,
+        2,
+        5,
+        8,
+        16,
+        24,
+        32,
+        40,
+        48,
+        56,
+        64,
+        72,
+        80,
+        88,
+        96,
+        104
+      ],
+      "status6_backtracking_increment_by_iteration": [
+        1,
+        1,
+        3,
+        3,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "classification": "PREFIX_CONVERGENCE_BRANCH_WITHOUT_PRIOR_BACKTRACKING_SPLIT"
+    },
+    {
+      "id": "B2_0_TO_6",
+      "status0_head_m": -0.715010029764793,
+      "status6_head_m": -0.7150100297647868,
+      "status0_first_convergence_prefix": 3,
+      "cumulative_backtracking_status0_prefixes_1_3": [
+        1,
+        2,
+        3
+      ],
+      "cumulative_backtracking_status6_prefixes_1_3": [
+        1,
+        2,
+        3
+      ],
+      "first_cumulative_backtracking_divergence_before_or_at_convergence": null,
+      "status6_full_prefix16_cumulative_backtracking": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        9,
+        12,
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        36,
+        39
+      ],
+      "status6_backtracking_increment_by_iteration": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "classification": "PREFIX_CONVERGENCE_BRANCH_WITHOUT_PRIOR_BACKTRACKING_SPLIT"
+    }
+  ],
+  "gates": {
+    "probe_count": "PASS_64",
+    "prefix16_reproduces_g21h": "PASS_4_OF_4",
+    "b1_status0_first_convergence_prefix": "PASS_4",
+    "b2_status0_first_convergence_prefix": "PASS_3",
+    "status6_nonconverged_through_prefix16": "PASS_2_OF_2",
+    "nonconverged_prefix_exhaustion": "PASS",
+    "converged_prefix_stability": "PASS",
+    "saved_config_postcondition": "PASS_STATUS_VECTOR_6_0_0_6",
+    "postprobe_g16_accounting": "PASS_4_4_0_4",
+    "accepted_state_ledger_mutation": "PASS_0",
+    "participant_candidate_leakage": "PASS_0",
+    "no_production_source_change": "PASS"
+  },
+  "bounded_conclusions": [
+    "Iteration-prefix tomography reproduces the complete G21H final-retry classification for all four frozen heads without changing production HeadCalc or solver state.",
+    "At B1, the adjacent status-6 and status-0 heads have identical cumulative backtracking counts [1,2,5,8] through iteration 4; the status-0 head converges at iteration 4 while the status-6 head does not.",
+    "At B2, the adjacent heads have identical cumulative backtracking counts [1,2,3] through iteration 3; the status-0 head converges at iteration 3 while the status-6 head does not.",
+    "Therefore the adjacent-head status bifurcation is not preceded by an observable difference in backtracking-count trajectory up to the successful side's convergence point. The causal branch is localized to the convergence decision after an otherwise count-equivalent Newton/backtracking prefix, or to numerical state differences inside that prefix not represented by the aggregate backtracking count.",
+    "After the split, the status-6 trajectories continue and eventually saturate at much larger backtracking work: 104 attempts for B1 and 39 for B2 at iteration 16.",
+    "The next diagnostic must decompose the exact HeadCalc convergence criteria at the split iteration: compartment balance, head-change, total balance and any ponding criterion. A deeper Newton-state trace is only needed if those criteria do not localize the branch.",
+    "No solver tolerance, retry policy, participant acceptance rule, status smoothing, response-space globalization policy or production HCOF/RHS behavior is changed or admitted."
+  ],
+  "next_natural_unit": "Open G21J as convergence-criterion forensics at B1 iteration 4 and B2 iteration 3. Obtain read-only end-of-iteration criterion diagnostics for the adjacent status-6/status-0 heads and identify which HeadCalc convergence predicate flips. Keep production HeadCalc byte-unchanged if a test-only observational seam can expose the needed scratch safely."
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09d.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09D",
+  "title": "Stencil-internal execution-class physical tangent estimator",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G09C_RESULT.json",
+  "production_changes": false,
+  "question": "Can a tangent estimator remain available and stable across the frozen real-SWAP boundary states when execution consistency is enforced inside the derivative stencil rather than by exact equality to the center trial?",
+  "boundary_states": "Reuse the same eight frozen negative/positive boundary states from G09/G09B.",
+  "scale_ladder_m": [
+    2.5e-7,
+    1.25e-7,
+    6.25e-8,
+    3.125e-8,
+    1.5625e-8,
+    7.8125e-9,
+    3.90625e-9
+  ],
+  "execution_class": {
+    "fields": [
+      "accepted_substeps",
+      "attempts",
+      "retries",
+      "solver_rejections",
+      "temporal_rejections",
+      "internal_retries",
+      "min_substep",
+      "max_substep"
+    ],
+    "readiness": "participant status 0, raw result_status 0, completed true, candidate_ready true",
+    "equality": "all listed fields exactly equal within one candidate stencil"
+  },
+  "estimator_E3": {
+    "candidate_generation": [
+      "At every fixed d evaluate center, h±d and h±2d from the immutable accepted origin.",
+      "CENTRAL candidate: h-d and h+d are both ready and share one execution class with each other. Center class is irrelevant because q(h) is not used by the central secant.",
+      "BACKWARD candidate: center, h-d and h-2d are all ready and share one execution class.",
+      "FORWARD candidate: center, h+d and h+2d are all ready and share one execution class.",
+      "At one scale choose CENTRAL first, otherwise BACKWARD, otherwise FORWARD. Require finite negative slope."
+    ],
+    "multiscale_acceptance": [
+      "Do not accept a single-scale candidate.",
+      "Scan the fixed ladder from coarse to fine and find the first adjacent pair of scales that both yield candidates and whose slopes differ by <=5% relative to their larger magnitude.",
+      "Return the coarser member of that first qualifying adjacent pair.",
+      "Candidate mode may differ across the two scales; each candidate must independently satisfy its stencil-internal execution-class rule.",
+      "If no adjacent pair qualifies, classify TANGENT_UNAVAILABLE."
+    ],
+    "no_adaptive_scale_invention": true
+  },
+  "required_estimator_outcomes": [
+    "All eight frozen boundary states must produce E3 AVAILABLE with <=5% adjacent-scale agreement.",
+    "C1_LOW_FORCING negative dh=-5e-6 must be recovered by a CENTRAL candidate pair whose ± probes share a class even though the center does not.",
+    "C2_HIGH_FORCING negative dh=-5e-6 must remain recoverable without using status-6 probes.",
+    "C3_LONG_HIGH positive dh=+2e-6 must reject central stencils that cross the one-substep/two-substep branch and use a class-consistent alternative."
+  ],
+  "policy_replays": [
+    {
+      "case_id": "C1_LOW_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 5e-7,
+      "start_dh_m": -0.000005
+    },
+    {
+      "case_id": "C2_HIGH_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "start_dh_m": -0.000005
+    },
+    {
+      "case_id": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "start_dh_m": 0.000002
+    }
+  ],
+  "groundwater_regimes": "Reuse all three frozen G08 groundwater regimes and independently remeasure q_gw(H) in each replay.",
+  "policies": [
+    "P1-E3 raw physical Newton with E3 re-estimated at every outer iterate.",
+    "P4-E3 same E3 tangent plus fixed factor-1/2 backtracking on participant inadmissibility or coupled-residual increase."
+  ],
+  "convergence": {
+    "max_outer": 12,
+    "max_backtracks": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "head_error_tolerance_m": 5e-10
+  },
+  "hard_rules": [
+    "Every SWAP probe and policy candidate is trial->evaluate->discard; accepted state and ledger remain immutable.",
+    "Do not alter SWAP tolerances, retry budget or temporal-substep policy.",
+    "Do not change G09/G09B historical results or thresholds.",
+    "No production HCOF/RHS or coupling-source changes.",
+    "G09D may qualify E3 only as a research tangent estimator; production admission and computational-cost qualification remain separate."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}

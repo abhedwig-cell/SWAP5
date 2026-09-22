@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.gc_fixed_interface.g13.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G13",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_RESEARCH_OPTIMIZATION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G13_PREREGISTRATION.json",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G12B_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json"
+  ],
+  "test": "tests/research/test_gc_fixed_interface_g13_streaming_cost.py",
+  "workflow": ".github/workflows/gc-fixed-interface-research.yml",
+  "production_changes": false,
+  "recovery_point": "6ce1b81c9f19293eeb0c75d242f913f8a2da6418",
+  "next_action": "G14: qualify a research-only fused trial-observation contract that returns q/status and execution-class diagnostics from one physical SWAP corrector trial, regressed against separate participant+raw observations and E3 streaming decisions.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+  "execution": {
+    "tested_commit": "6ce1b81c9f19293eeb0c75d242f913f8a2da6418",
+    "workflow_run": 35717948604,
+    "workflow_job": 106713775903,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "streaming_early_stop": "QUALIFIED_EQUIVALENT",
+    "full_current_corrector_runs": 386,
+    "streaming_current_corrector_runs": 166,
+    "fused_trial_lower_bound_runs": 83,
+    "production_admission": "NO"
+  }
+}

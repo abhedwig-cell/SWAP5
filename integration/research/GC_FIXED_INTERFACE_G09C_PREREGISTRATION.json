@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09c.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09C",
+  "title": "Fixed-scale execution-signature decomposition at the G09B C1-low-forcing failure",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G09B_FIRST_EXECUTION_RESULT.json",
+  "production_changes": false,
+  "frozen_states": [
+    {
+      "id": "TARGET_C1_NEG",
+      "case_id": "C1_LOW_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 5e-7,
+      "dh_m": -0.000005,
+      "role": "G09B E2-unavailable target"
+    },
+    {
+      "id": "CONTROL_C0_POS",
+      "case_id": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "dh_m": 0.000005,
+      "role": "G09B E2-qualified control"
+    }
+  ],
+  "scale_ladder_m": [
+    2.5e-7,
+    1.25e-7,
+    6.25e-8,
+    3.125e-8,
+    1.5625e-8,
+    7.8125e-9,
+    3.90625e-9,
+    1.953125e-9,
+    9.765625e-10
+  ],
+  "sample_rule": "At every scale evaluate h0,h0±d,h0±2d from the immutable accepted origin; record participant status, q, and raw corrector diagnostics for each unique head.",
+  "signature_fields": [
+    "accepted_substeps",
+    "attempts",
+    "retries",
+    "solver_rejections",
+    "temporal_rejections",
+    "internal_retries",
+    "min_substep",
+    "max_substep"
+  ],
+  "derived_diagnostics": [
+    "status-only central/backward/forward/least-squares slopes where constructible",
+    "exact G09B signature eligibility per sample",
+    "per-field equality against the center signature",
+    "accepted substep partition equality against center",
+    "stable slope plateaus that span more than one scale"
+  ],
+  "questions": [
+    "Does C1 negative fail E2 because no status-0 stencil exists, or because status-0 samples differ only in some execution-signature fields?",
+    "Which signature fields actually correlate with derivative contamination in the target versus the qualified control?",
+    "Can a narrower execution-class criterion be motivated from evidence without retrospectively changing G09B?"
+  ],
+  "hard_rules": [
+    "No change to G09B estimator or thresholds.",
+    "No adaptive scale selection or scale deletion.",
+    "No production changes.",
+    "Every trial is discarded; accepted revision/time/ledger remain unchanged.",
+    "G09C is diagnostic-only and cannot qualify a replacement estimator."
+  ],
+  "next_if_informative": "Preregister a new estimator only after identifying the minimum execution-class fields needed to exclude contaminated derivative samples."
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21k.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21K",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_B2_TOTAL_THRESHOLD_B1_BACKTRACKING_OCCLUSION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21K_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21K_RESULT.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21J_RESULT.json",
+  "tested_commit": "159cc1c2634f15f342c58f31b154915da4ea49cb",
+  "workflow_run": 35744199328,
+  "workflow_job": 106801444245,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "b2_total_balance": "PATH_PRESERVING_THRESHOLD_RESOLVED",
+    "b1_compartment_balance": "ORIGINAL_PATH_THRESHOLD_OCCLUDED_BY_DUAL_BACKTRACKING_ROLE",
+    "tolerance_relaxation": "NOT_ADMITTED",
+    "retry_policy_change": "NOT_ADMITTED",
+    "head_snapping_or_status_smoothing": "NOT_ADMITTED",
+    "response_space_globalization": "REMAINS_RESEARCH_ONLY"
+  },
+  "next_action": "Open G21L as direct read-only final-residual observation on the unchanged B1 and B2 solver paths. Validate B2 sum residual against the G21K threshold and directly measure B1 max compartment residual without changing CritDevBalCp."
+}

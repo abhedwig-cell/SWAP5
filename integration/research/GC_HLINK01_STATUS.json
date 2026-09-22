@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.gc_hlink.hlink01.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK01",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED",
+  "preregistration": "integration/research/GC_HLINK01_PREREGISTRATION.json",
+  "candidate_contract": "integration/research/GC_HLINK_CANDIDATE_CONTRACT_V1.json",
+  "test": "tests/research/test_gc_hlink01_storage_replacement.py",
+  "execution_runner": "tests/research/run_gc_dummy_swap_dsw01.sh",
+  "execution_commit": "0a90e4d03bc2d5164b099e0a7c669d630b213b1b",
+  "production_changes": false,
+  "expected_cases": {
+    "unreplaced_modflow_storage": {
+      "runtime_sy": 0.15,
+      "expected_head_m": 8.066666666666666
+    },
+    "hlink_storage_replacement": {
+      "runtime_sy": 0.2,
+      "expected_head_m": 8.05
+    },
+    "replacement_plus_duplicate_api": {
+      "runtime_sy": 0.2,
+      "api_storage": 0.2,
+      "expected_head_m": 8.025
+    }
+  },
+  "decision_boundary": [
+    "A PASS will establish that runtime replacement of coupled MODFLOW Sy through XMI is executable and reproduces the one-volume h-link oracle.",
+    "A PASS will also establish that retaining the same storage again through an API response reproduces the duplicate-storage signature.",
+    "This is a synthetic mechanism qualification, not a production decision and not authority to set real SWAP5 MODFLOW storage globally."
+  ],
+  "next_action": "Activate HLINK02 exactly as preregistered. Keep HLINK01 synthetic-only; do not use it to assign real SWAP/MODFLOW storage ownership.",
+  "blockers": [],
+  "result": "integration/research/GC_HLINK01_RESULT.json",
+  "qualification": {
+    "workflow_run": 35572899763,
+    "workflow_job": 106248159927,
+    "live_gate": "PASS"
+  }
+}

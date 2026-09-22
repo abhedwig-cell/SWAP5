@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21k.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21K",
+  "title": "Path-preserving balance-threshold tomography at G21J convergence splits",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "bd22f829438ff914cfc1802bb807325a27a0741a",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21J_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21I_RESULT.json",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "question": "What binary64 tolerance threshold corresponds to the identified B2 total-balance blocker and B1 compartment-balance blocker, when only path-preserving diagnostic interventions are admitted?",
+  "constants": {
+    "baseline_tolerance": 1e-12,
+    "diagnostic_nonblocking_tolerance": 1000000,
+    "duration_day": 0.0000390625,
+    "max_doublings": 60,
+    "max_binary64_bisections": 128
+  },
+  "cases": [
+    {
+      "id": "B2_TOTAL",
+      "head_m": -0.7150100297647868,
+      "max_iterations": 3,
+      "target_criterion": "TOTAL",
+      "expected_baseline_backtracking": 3,
+      "other_tolerances": "all frozen production values 1e-12",
+      "search_event": "physical solver converges",
+      "path_guard": "backtracking remains exactly 3"
+    },
+    {
+      "id": "B1_COMPARTMENT",
+      "head_m": -0.7150100297648301,
+      "max_iterations": 4,
+      "target_criterion": "COMPARTMENT",
+      "expected_baseline_backtracking": 8,
+      "other_tolerances": "HEAD, TOTAL and POND fixed at diagnostic 1e6; compartment starts at frozen 1e-12",
+      "search_event": "physical solver converges OR backtracking changes from 8",
+      "path_guard": "a convergence threshold is authoritative only when backtracking remains exactly 8"
+    }
+  ],
+  "search_contract": [
+    "Every evaluation is a fresh immutable-origin raw backend solve with max_retries=0 and copied corrector parameters/configuration.",
+    "At the case baseline require physical nonconvergence and the preregistered backtracking count.",
+    "Starting from 1e-12, double only the target tolerance until the case search event occurs or 60 doublings are exhausted.",
+    "Once bracketed, binary-search in ordinary binary64 arithmetic between the last no-event tolerance and first event tolerance. Stop when math.nextafter(low,+inf) >= high or after 128 bisections.",
+    "For B2, any backtracking count other than 3 at any evaluated tolerance invalidates path-preserving interpretation.",
+    "For B1, HEAD/TOTAL/POND remain fixed at 1e6 throughout the search. If the first binary64 event tolerance changes backtracking before physical convergence, classify the original-path compartment threshold as occluded by its dual role in backtracking.",
+    "If B1 first event is physical convergence with backtracking still 8, the adjacent [largest fail, smallest pass] binary64 tolerances bracket the maximum compartment residual at the original iteration-4 state.",
+    "For B2, because TOTAL is not used in the backtracking acceptance test and G21J established it as the sole minimal primary blocker, the adjacent [largest fail, smallest pass] tolerances bracket abs(sum(residual)) at the original iteration-3 state.",
+    "No tolerance value from this diagnostic becomes a proposed runtime tolerance."
+  ],
+  "classifications": {
+    "B2_TOTAL_THRESHOLD_RESOLVED": "Adjacent binary64 fail/pass total tolerances found with backtracking exactly 3.",
+    "B2_PATH_INTERFERENCE": "Any total-tolerance arm changes backtracking or fails monotonic physical convergence.",
+    "B1_COMPARTMENT_THRESHOLD_RESOLVED_PATH_PRESERVING": "Adjacent binary64 fail/pass compartment tolerances found and both retain backtracking exactly 8.",
+    "B1_COMPARTMENT_THRESHOLD_OCCLUDED_BY_BACKTRACKING": "The first tolerance event changes backtracking before a same-path convergence threshold can be established.",
+    "B1_SEARCH_UNRESOLVED": "No event bracket or nonmonotonic event behavior."
+  },
+  "gates": [
+    "G21J baseline classifications reproduce before threshold search.",
+    "B2 search never changes backtracking from 3.",
+    "B2 bracket terminates at adjacent binary64 tolerance values and low fails/high converges.",
+    "B1 noncompartment-relaxed baseline still fails with exactly 8 backtracking attempts.",
+    "B1 result is classified strictly by the preregistered event rule; no tolerance is selected post hoc.",
+    "Saved corrector parameters/configuration remain unchanged, proven by normal G16 [6,0,0,6] postcondition.",
+    "Accepted revision/time/ledger and participant/G16 publication authority remain unchanged.",
+    "No production source is modified."
+  ],
+  "pass_interpretation": "PASS yields diagnostic numerical magnitudes for the existing balance predicates. It does not justify relaxing tolerances or changing acceptance policy.",
+  "fail_interpretation": "Preserve unresolved/path-interfering outcomes. Do not expose production scratch, weaken criteria or choose a tolerance for operational robustness.",
+  "allowed_mutation": [
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "tests/fgc/support/fgc44_real_swap_ctypes.py",
+    "tests/research/test_gc_fixed_interface_g21k_balance_thresholds.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21K_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/solver/**",
+    "src/legacy/**",
+    "src/transaction/**",
+    "src/adapter/**",
+    "saved corrector parameters/configuration",
+    "participant acceptance/retry semantics",
+    "G16 service semantics",
+    "production solver tolerances",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}

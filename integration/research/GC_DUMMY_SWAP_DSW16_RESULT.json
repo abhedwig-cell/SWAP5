@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw16.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW16",
+  "workflow_run": 35562694437,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_N_TO_1_AGGREGATION",
+  "weighted_storage": 0.23,
+  "weighted_recharge_m_per_day": 0.0138,
+  "expected_head_m": 8.06,
+  "observed_head_m": 8.059999999999999,
+  "permutations": 6,
+  "head_spread_m": 0,
+  "hcof_spread": 0,
+  "rhs_spread": 0,
+  "gates": {
+    "area_weighted_aggregation": "PASS",
+    "permutation_invariance": "PASS",
+    "aggregate_mass": "PASS",
+    "live_modflow": "PASS"
+  },
+  "bounded_conclusions": [
+    "For linear shared-state column responses, N:1 aggregation to one MODFLOW cell is exactly the area-weighted sum of HCOF and RHS contributions.",
+    "Column ordering has no effect on the aggregated term or final head.",
+    "This is an algebraic aggregation result, not evidence that heterogeneous nonlinear Richards columns can always be replaced by one aggregated column."
+  ]
+}

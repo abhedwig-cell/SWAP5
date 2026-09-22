@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21a.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21A",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_DIAGNOSTIC_PREPARED_SOLVE_PATH_DOMINATED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21A_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21A_FIRST_EXECUTION_RESULT.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21A_RESULT.json",
+  "tested_commit": "8bf0b23c53270b99401b446b545df3a0d1330a89",
+  "workflow_run": 35730386461,
+  "workflow_job": 106754206540,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "g21_dynamic_path_equivalence": "REMAINS_FALSIFIED",
+    "response_parameter_effect": "SUBTHRESHOLD_1_98E_13_M",
+    "prepared_solve_path_effect": "DOMINANT_7_235E_11_M",
+    "decomposition_closure": "EXACT_TO_REPORTED_FLOAT_PRECISION",
+    "g19_affine_bridge": "REMAINS_QUALIFIED_BOUNDED_RESEARCH",
+    "g20_first_update_continuous_bridge": "REMAINS_QUALIFIED_BOUNDED_RESEARCH",
+    "e3": "REMAINS_QUALIFIED_RESEARCH_ONLY",
+    "response_space_globalization": "NOT_PRODUCTION_ADMITTED",
+    "fgc38_fgc39": "UNCHANGED",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "next_action": "Open G21B as diagnostic-only prepared-solve convergence/path analysis. Hold the exact G21 outer-2 response fixed after the G20/G21 outer-1 history and probe what happens if same-response solve calls continue after the first MODFLOW convergence report. Do not alter G21 or production convergence policy."
+}

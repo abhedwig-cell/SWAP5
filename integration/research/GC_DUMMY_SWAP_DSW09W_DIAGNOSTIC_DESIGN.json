@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09w.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09W",
+  "title": "Factorial diagnosis of prepared-solve reanchor history and IMS residual closure",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_evidence": [
+    "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
+    "integration/research/GC_DUMMY_SWAP_DSW09N_RESULT.json",
+    "integration/research/GC_DUMMY_SWAP_DSW09R_RESULT.json",
+    "integration/research/GC_DUMMY_SWAP_DSW05_OBSERVATION.json"
+  ],
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "initial_head_m": 8,
+    "input_m": 0.01,
+    "exact_head_m": 8.056155281280883,
+    "coupled_residual_gate_m_per_day": 1e-12,
+    "head_gate_m": 1e-10,
+    "outer_dvclose_m": 1e-12,
+    "inner_dvclose_m": 1e-14
+  },
+  "variants": [
+    {
+      "name": "DEFAULT_R1E15",
+      "complexity": "MODERATE",
+      "under_relaxation": "default",
+      "rclose": 1e-15
+    },
+    {
+      "name": "DEFAULT_R1E14",
+      "complexity": "MODERATE",
+      "under_relaxation": "default",
+      "rclose": 1e-14
+    },
+    {
+      "name": "NO_UR_R1E15",
+      "complexity": "MODERATE",
+      "under_relaxation": "NONE",
+      "rclose": 1e-15
+    },
+    {
+      "name": "NO_UR_R1E14",
+      "complexity": "MODERATE",
+      "under_relaxation": "NONE",
+      "rclose": 1e-14
+    }
+  ],
+  "method": "For each variant use one MODFLOW6 prepared solve and exactly the admitted application-service iteration order: publish one exact local tangent, solve once, evaluate the exact nonlinear residual, then reanchor HCOF/RHS for the next outer coupling iteration.",
+  "preregistered_diagnostic_gate": [
+    "NO_UR_R1E14 must achieve MODFLOW convergence and exact nonlinear residual <=1e-12 m/day",
+    "NO_UR_R1E14 head must be within 1e-10 m of the closed-form root",
+    "the other three variants are characterization points and are not retuned after observation"
+  ],
+  "interpretation_logic": [
+    "Difference DEFAULT_R1E15 versus NO_UR_R1E15 isolates nonlinear under-relaxation history at fixed inner residual closure.",
+    "Difference NO_UR_R1E15 versus NO_UR_R1E14 isolates the inner linear residual certification floor after the physical nonlinear root has been reached.",
+    "If NO_UR_R1E14 closes, the DSW-09 failure is explained by two numerically distinct effects rather than coupling algebra."
+  ],
+  "forbidden": [
+    "do not change the original DSW-09 preregistered gate",
+    "do not infer that disabling under-relaxation or choosing rclose=1e-14 is a production recommendation",
+    "no production source change"
+  ]
+}

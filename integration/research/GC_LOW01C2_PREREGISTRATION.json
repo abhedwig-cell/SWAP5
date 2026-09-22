@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.gc_low01c2.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-C2",
+  "title": "Explicit lower-half-cell policy for typed prescribed-H_phreatic research",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "geometry_reconciliation": "integration/research/GC_LOW01_GEOMETRY_BOUNDARY_RECONCILIATION.json",
+    "state_contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "candidate_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "c_amendment": "integration/research/GC_LOW01C_PREREGISTRATION_AMENDMENT.json"
+  },
+  "fixed_geometry_cm": {
+    "node_centres": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "cell_thickness": [
+      50,
+      50,
+      100,
+      100
+    ],
+    "bottom_node_center": -250,
+    "bottom_face": -300
+  },
+  "problem_statement": [
+    "The admitted typed geometry has no z(n+1) sentinel, so legacy source text cannot source-bind the mode-1 branch for H_phreatic between the last node centre and the declared bottom face.",
+    "The current typed state classifier and the explicit-bottom-face candidate geometry therefore cannot both be cited as recovered legacy semantics in that interval."
+  ],
+  "initial_research_policy": {
+    "name": "EXPLICIT_GEOMETRY_GAP_EXCLUSION",
+    "inside_profile_admitted": "H_phreatic >= bottom_node_center and below the top-boundary envelope, subject to the existing source-bound node-snap rules.",
+    "below_profile_admitted": "H_phreatic <= bottom_face, with hbot=H_phreatic-bottom_face and LOW01-A/A2/D authority.",
+    "unadmitted_gap": "bottom_face < H_phreatic < bottom_node_center",
+    "rule": "No HLINK04 trial, LOW01-B claim, or source-equivalence claim may be made for a control inside the unadmitted gap.",
+    "rationale": "Exclusion preserves declared geometry and avoids inventing historical sentinel semantics while allowing source-safe inside-profile and below-profile slices to be researched independently."
+  },
+  "frozen_cases": [
+    {
+      "label": "ABOVE_LAST_NODE",
+      "H_phreatic_cm": -249.99995,
+      "expected_policy": "INSIDE_PROFILE_ADMITTED"
+    },
+    {
+      "label": "LAST_NODE_EXACT",
+      "H_phreatic_cm": -250,
+      "expected_policy": "INSIDE_PROFILE_ADMITTED"
+    },
+    {
+      "label": "JUST_BELOW_LAST_NODE",
+      "H_phreatic_cm": -250.00005,
+      "expected_policy": "UNADMITTED_GEOMETRY_GAP"
+    },
+    {
+      "label": "MID_LOWER_HALF_CELL",
+      "H_phreatic_cm": -275,
+      "expected_policy": "UNADMITTED_GEOMETRY_GAP"
+    },
+    {
+      "label": "JUST_ABOVE_BOTTOM_FACE",
+      "H_phreatic_cm": -299.9999,
+      "expected_policy": "UNADMITTED_GEOMETRY_GAP"
+    },
+    {
+      "label": "BOTTOM_FACE_EXACT",
+      "H_phreatic_cm": -300,
+      "expected_policy": "BELOW_PROFILE_ADMITTED",
+      "expected_hbot_cm": 0
+    },
+    {
+      "label": "BELOW_BOTTOM_FACE",
+      "H_phreatic_cm": -300.0001,
+      "expected_policy": "BELOW_PROFILE_ADMITTED",
+      "expected_hbot_cm": -0.0001
+    }
+  ],
+  "gates": [
+    "Every frozen case receives the preregistered policy classification with no tolerance expansion or retuning.",
+    "UNADMITTED_GEOMETRY_GAP cases expose neither an inside-profile active-domain claim nor a below-profile hbot solve request.",
+    "BELOW_PROFILE_ADMITTED cases derive hbot only from the declared bottom face.",
+    "Repeating cases in reverse order produces identical policy objects.",
+    "The result explicitly states that exclusion is a bounded research-envelope decision, not recovered legacy source behavior."
+  ],
+  "effect_on_hlink04": {
+    "research_activation": "HLINK04 may later be activated only on the union of qualified inside-profile and below-profile slices, excluding the lower-half-cell gap.",
+    "production_nonclaim": "This exclusion is not acceptable as a complete production groundwater-level boundary contract; the gap requires an independent geometric/physical derivation before production admission."
+  },
+  "forbidden": [
+    "do not invent z(numnod+1)",
+    "do not silently classify the lower-half-cell gap using either node-centre or bottom-face policy as historical truth",
+    "do not smooth or interpolate across the excluded interval",
+    "no production bottom_mode=1 admission"
+  ],
+  "next_if_pass": [
+    "Record C2 as the bounded HLINK04 research-envelope policy.",
+    "Keep production mode-1 blocked on a complete lower-half-cell physical derivation.",
+    "After LOW01-A2/B/D qualify and C1 is characterized, reassess HLINK04 readiness only for controls outside the excluded gap."
+  ]
+}

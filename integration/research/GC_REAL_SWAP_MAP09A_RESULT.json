@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.gc_real_swap.map09a.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP09A",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow_run": 35578161179,
+  "workflow_job": 106264624573,
+  "decision": "QUALIFIED_ACTIVE_DRAINAGE_STORAGE_BOTTOM_DECOMPOSITION",
+  "selected_delta_m": 1e-8,
+  "reference_head_m": 0.012932896258566275,
+  "production_u": 0.0005760442426568357,
+  "minus": {
+    "storage_change_native": -0.00000419308533206042,
+    "bottom_outward_exchange_native": -0.00005580691466793958,
+    "total_in_native": 0.00005580691466793958,
+    "total_out_native": 0.00006000000000000001,
+    "mass_residual_native": 6.776263578034403e-21
+  },
+  "plus": {
+    "storage_change_native": -0.000004191939950715096,
+    "bottom_outward_exchange_native": -0.000055808060049284906,
+    "total_in_native": 0.000055808060049284906,
+    "total_out_native": 0.00006000000000000001,
+    "mass_residual_native": 6.776263578034403e-21
+  },
+  "derivatives": {
+    "J_S": 0.0005726906726621905,
+    "J_R": -0.0005726906726621905,
+    "J_nonbottom": 0,
+    "J_S_over_u": 0.9941782770379273,
+    "minus_J_R_over_u": 0.9941782770379273,
+    "J_nonbottom_over_u": 0
+  },
+  "gates": {
+    "parent_activation": "PASS",
+    "symmetric_pair_fixed": "PASS",
+    "both_trials_mass_complete": "PASS",
+    "storage_ledger_identity": "PASS",
+    "derivatives_finite": "PASS",
+    "zero_authority_mutation": "PASS",
+    "live_gate": "PASS"
+  },
+  "bounded_conclusions": [
+    "At the preregistered active-drainage reference and 1e-8 m symmetric pair, the accepted whole-window storage derivative and bottom-outward exchange derivative are equal and opposite to reported precision.",
+    "The resulting non-bottom derivative J_S+J_R is zero at this local scale even though drainage is active in the fixture.",
+    "The production predictor u is about 0.58 percent larger than the local accepted-corrector storage derivative; equality is therefore not exact in this fixture.",
+    "This result does not prove drainage is generally head-insensitive. It is local to the frozen window, staging and symmetric pair."
+  ],
+  "forbidden_inference": [
+    "Do not identify production u with exact physical storage under active drainage.",
+    "Do not infer zero drainage sensitivity outside this local frozen corrector window.",
+    "Do not change production drainage staging or coupling ownership from this result alone."
+  ]
+}

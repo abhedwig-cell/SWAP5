@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.gc_low01.typed_seam_gap_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-SEAM-AUDIT",
+  "title": "Source-bound gaps between legacy SWBOTB=1 state machine and current explicit Reference-Richards seam",
+  "status": "SOURCE_BOUND_BLOCKER_CONFIRMED",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "headcalc": "src/legacy/b1_10_port/headcalc.f90",
+    "solver_contract": "src/solver/mod_soil_water_solver_contract.f90",
+    "state_binding": "src/solver/mod_reference_richards_state_binding.f90",
+    "solver_adapter": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "prior_readiness": "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json"
+  },
+  "confirmed_gaps": [
+    {
+      "id": "LOW01-G1-BOUNDARY-ADMISSION",
+      "finding": "reference_richards_legacy_solve rejects bottom_mode=1 in validate_legacy_request before HeadCalc",
+      "consequence": "No typed mode-1 trial is reachable through the admitted soil-water solver ABI."
+    },
+    {
+      "id": "LOW01-G2-EXPLICIT-GEOMETRY-SENTINEL",
+      "finding": "The mode-1 branch increments NN while grid_z(NN+1)>gwlinp and subsequently evaluates grid_z(NN+1). The explicit parameter contract allocates z with exactly active_nodes entries; grid_z uses parameter_set%z(node) without an explicit n+1 lower sentinel.",
+      "consequence": "The legacy below-profile branch cannot be claimed safe/source-equivalent on the current explicit geometry contract. A typed route must derive the below-profile test from declared bottom-face geometry without relying on an implicit legacy z(n+1) convention."
+    },
+    {
+      "id": "LOW01-G3-CONSTITUTIVE-OWNERSHIP",
+      "finding": "Mode-1 special branches call legacy watcon/hconduc/cofgen directly: above-top initialization uses watcon/hconduc and inside-profile saturated continuation assigns theta=cofgen(2,i), even when an explicit constitutive provider is active.",
+      "consequence": "A mode-1 explicit trial would mix provider-owned hydraulics with legacy-global constitutive state. LOW01-B cannot be called a typed provider-owned route until saturated continuation and special-branch constitutive evaluation have one explicit owner."
+    },
+    {
+      "id": "LOW01-G4-TYPED-OUTPUT-STATE",
+      "finding": "initialize_reference_state_binding maps boundary.bottom_head to gwlinp, but soil_water_solve_result_t exposes candidate groundwater_level from state%gwl. The mode-1 special branch does not establish a typed result rule that candidate groundwater_level equals the prescribed gwlinp.",
+      "consequence": "The control coordinate and the returned shared phreatic state are not yet the same typed object."
+    },
+    {
+      "id": "LOW01-G5-QBOT-MATERIALIZATION",
+      "finding": "reference_richards_legacy_solve has accepted-step qbot materialization for bottom_mode=5 and residual publication for mode=2, but no mode-1 typed post-solve materialization. Inside-profile HeadCalc diagnoses qbot internally; below-profile mode 1 follows the mode-5 residual branch but lacks an equivalent typed accepted-step qbot publication rule.",
+      "consequence": "HLINK04 cannot obtain a branch-independent authoritative qbot output from the current solver result contract."
+    }
+  ],
+  "what_is_already_reusable": [
+    "soil_water_boundary_conditions_t already carries a scalar bottom_head field that can be superseded by a dedicated groundwater-level control rather than overloaded",
+    "reference_richards_state_binding_t already carries gwlinp, gwl, fllowgwl, hbot and complete hydraulic arrays",
+    "HeadCalc already contains the B1.11 mode-1 active-domain/Jacobian/state-machine physics",
+    "transactional immutable-origin semantics already exist in FMR and F-GC and can be reused once a typed trial exists"
+  ],
+  "decision": "DO_NOT_BYPASS_WITH_STUBBED_MODE1_ADAPTER",
+  "rationale": [
+    "A test-only wrapper that simply calls HeadCalc with bottom_mode=1 would hide unresolved geometry, constitutive ownership and output-state semantics.",
+    "Passing such a harness would overstate typed readiness and would not be sufficient authority for HLINK04."
+  ],
+  "next": [
+    "Define GC-LOW01 candidate typed contract with an explicit H_phreatic control coordinate, branch diagnostics and bottom-face geometry.",
+    "Preregister LOW01-A as below-profile equivalence using derived bottom-face distance rather than implicit z(n+1).",
+    "Preregister LOW01-B only after saturated continuation is provider-owned or source-equivalent through an independently qualified legacy constitutive binding.",
+    "Preregister LOW01-D rollback/replay only after the candidate trial object has complete branch and output state."
+  ]
+}

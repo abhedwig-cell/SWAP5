@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.gc_fixed_interface.g11.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G11",
+  "title": "Live safeguarded-Newton recovery from a physically consistent B4 overshoot",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+  "parent_local_oracle": "integration/research/GC_FIXED_INTERFACE_G10B_RESULT.json",
+  "production_changes": false,
+  "question": "Can P4 recover a genuinely bad live E3 physical-Newton proposal caused by real B4 nonlinearity, while the groundwater merit oracle itself is independently adequate and no tangent/numerical tolerance is degraded?",
+  "frozen_carrier": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "reference_head_m": -0.7149999311459918,
+    "predictor_u": 0.00119027208545508,
+    "start_dh_m": 0,
+    "start_q_swap_m_per_s": -1.1574073046089793e-13,
+    "start_e3_slope_per_s": -0.000001377629615322778,
+    "target_edge_dh_m": -0.00001,
+    "target_edge_q_swap_m_per_s": 1.6063896369803534e-11
+  },
+  "groundwater_stress": {
+    "id": "GW_R05_NEGATIVE_EDGE",
+    "k_m_per_day": 1e-10,
+    "ss_per_m": 0,
+    "sy_formula": "0.5*u_predictor",
+    "q_probes_m_per_s": [
+      -2e-10,
+      -1e-10,
+      0,
+      1e-10,
+      2e-10
+    ],
+    "initial_head_bias_m": -0.00003332218778007957,
+    "derivation": {
+      "source_slope_per_s": 6.888155563784176e-7,
+      "source_zero_crossing_minus_requested_bias_m": 1.145998970394e-9,
+      "desired_zero_crossing_dh_m": -0.00003332104178110917,
+      "predicted_raw_newton_dh_m": -0.000011163031557732362,
+      "rationale": "Choose a live storage-dominated response using the already measured G10 r≈0.5 slope so q_gw equals the known B4 q_swap at dh=-1e-5. From the frozen href state, the previously measured physical E3 tangent then predicts a Newton overshoot past the known negative edge."
+    }
+  },
+  "groundwater_oracle": {
+    "fit": "ordinary affine least-squares q_gw(H)=aH+b over all five fresh constant-flux probes",
+    "max_fit_error_m_per_s": 1e-16,
+    "require_positive_slope": true
+  },
+  "reference_contract": {
+    "target_check": "The live residual magnitude at the frozen dh=-1e-5 edge must be <=5e-13 m/s; otherwise classify STRESS_CALIBRATION_MISSED and do not retune.",
+    "root_method": "Search only the unchanged G10 fixed scan status-0 heads plus the frozen target edge. If a sign-changing admissible pair exists without crossing a sampled status-6 point, bisect. Otherwise convergence is judged by coupled residual only and the target-edge calibration remains diagnostic.",
+    "no_adaptive_head_bias": true
+  },
+  "policies": {
+    "P1_E3": "Raw physical Newton with unchanged G09D E3 at every accepted iterate.",
+    "P4_E3": "Same E3 proposal with unchanged factor-1/2 backtracking until participant status is 0 and coupled-residual magnitude does not increase."
+  },
+  "convergence": {
+    "max_outer": 12,
+    "max_backtracks": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "merit_abs_tolerance_m_per_s": 1e-18
+  },
+  "required_gates": [
+    "B4 href/u/qbot authority reproduces within 1e-14.",
+    "Groundwater affine fit error <=1e-16 m/s and slope >0.",
+    "The frozen target-edge residual satisfies the preregistered <=5e-13 m/s calibration gate; no head-bias retuning is allowed.",
+    "The first raw P1/P4 proposal from href is identical before safeguarding and lies at dh<-1e-5 m.",
+    "That raw proposal is either participant-inadmissible or increases the adequate groundwater-merit residual relative to href.",
+    "P4 performs at least one factor-1/2 contraction and converges within 12 outer iterations.",
+    "P1 outcome is recorded but P1 failure is not required if the raw first proposal is demonstrably bad.",
+    "Every diagnostic SWAP trial is discarded and revision/time/ledger remain at immutable origin."
+  ],
+  "interpretation_rules": [
+    "A PASS is bounded evidence that the unchanged P4 safeguard can recover a live bad physical-Newton proposal in this B4 stress regime.",
+    "Failure to trigger the safeguard is a falsification of this stress design, not permission to retune the head bias post hoc.",
+    "G10 remains falsified and G10B remains separately qualified.",
+    "No production HCOF/RHS or coupling-source change follows from G11."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}

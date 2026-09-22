@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.gc_fixed_interface.g20.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G20",
+  "title": "Continuous prepared-solve response-space damping path equivalence",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "f92a4dbef0c3f1b811ee3b95957f25f40a229142",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G19_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G18_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md",
+    "src/adapter/modflow6_prepared_solve_session.py"
+  ],
+  "question": "Can the G19 lambda=1 -> 1/2 -> 1/4 affine-response damping sequence be traversed inside one continuously evolving live F-GC38 MODFLOW prepared solve, with fixed XOLD and no direct X control, while each settled response state remains numerically equivalent to its G19 fresh-origin reference and preserves the frozen SWAP status topology?",
+  "separation": {
+    "research_subject": "Prepared-solve transport/path equivalence of an already-qualified bounded response-space bridge.",
+    "not_claimed": [
+      "That response-space damping is identical to head-space P4 outside the G19 affine case.",
+      "That one MODFLOW solve iteration per lambda is sufficient for coupling globalization.",
+      "That the final prepared solve is an accepted/published MODFLOW timestep.",
+      "That E3 or response-space damping is production policy.",
+      "Crash-atomic SWAP/MODFLOW/ledger publication.",
+      "Any production HCOF/RHS change."
+    ]
+  },
+  "frozen_g19": {
+    "lambda_sequence": [
+      1,
+      0.5,
+      0.25
+    ],
+    "current_head_m": -0.7149999311459918,
+    "physical_tangent_per_s": -0.000001377629615322778,
+    "current_residual_m_per_s": -2.306628568830163e-11,
+    "groundwater_a_per_s": 6.888155563779977e-7,
+    "groundwater_intercept": 4.925260259275142e-7,
+    "fresh_reference_heads_m": {
+      "1.0": -0.7150110934482893,
+      "0.5": -0.7150055122971404,
+      "0.25": -0.7150027217215658
+    },
+    "fresh_reference_status": {
+      "1.0": 6,
+      "0.5": 6,
+      "0.25": 0
+    }
+  },
+  "frozen_groundwater_model": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "k_m_per_day": 1e-10,
+    "ss_per_m": 0,
+    "sy_formula": "0.5*u_predictor",
+    "initial_head_bias_m": -0.00003332218778007957,
+    "model_builder": "tests/research/test_gc_fixed_interface_fgc44_safeguarded_newton_g08.py::build_model",
+    "modflow_version": "6.8.0"
+  },
+  "response_construction": {
+    "q_groundwater_at_h0": "a*h0+b",
+    "q_reference_lambda": "G(h0)+lambda*r0",
+    "hcof_m2_per_day": "p*AREA_M2*DAY_TO_S",
+    "rhs_m3_per_day": "hcof*h0-q_reference_lambda*AREA_M2*DAY_TO_S",
+    "direct_groundwater_head_control": "FORBIDDEN"
+  },
+  "prepared_solve_protocol": [
+    "Initialize one live MODFLOW kernel from the frozen G11 groundwater model and call prepare_time_step once.",
+    "Acquire and open exactly one Modflow6PreparedSolveSession; capture accepted XOLD.",
+    "For lambda=1, publish the corresponding G19 affine response repeatedly in the same prepared solve until MODFLOW first reports convergence; record the current X head.",
+    "Without finalizing, resetting, restoring or directly mutating X, switch the published response to lambda=1/2 and continue the same prepared solve until first reported convergence.",
+    "Repeat for lambda=1/4.",
+    "At every solve iteration require accepted XOLD to remain bitwise identical to the captured origin.",
+    "After each settled lambda state, obtain one real-SWAP G16 diagnostic observation at the MODFLOW head and require no accepted-state/ledger/candidate authority.",
+    "After lambda=1/4, finalize_solve exactly once but do not call finalize_time_step. Kernel teardown is test cleanup, not timestep acceptance."
+  ],
+  "gates": [
+    "Exactly one prepare_solve and one prepared-solve session for all three lambdas.",
+    "XOLD bitwise unchanged for every external nonlinear iteration.",
+    "No direct mutation or restore of X/XOLD and no session invalidation.",
+    "Each lambda reaches a MODFLOW convergence flag before switching to the next response.",
+    "Prepared-solve settled head for each lambda agrees with the corresponding G19 fresh-origin head within sqrt(machine epsilon float64) * max(1 m, absolute head scale), the existing F-GC38 nonlinear-path equivalence guard.",
+    "The SWAP status topology at the prepared-solve settled heads is exactly [6,6,0] for lambda [1,1/2,1/4].",
+    "All SWAP checks use G16 diagnostic observations and leave revision/time/ledger unchanged with no live candidate.",
+    "Exactly one finalize_solve and zero finalize_time_step calls.",
+    "No production runtime source changes."
+  ],
+  "pass_interpretation": "PASS qualifies the bounded numerical/ownership fact that the G19 response-space sequence can steer one continuous F-GC38 prepared solve through states equivalent, at the existing F-GC38 path-equivalence scale, to the G19 fresh-origin response solutions without groundwater state rollback. It does not yet qualify an outer coupling algorithm or production globalization policy.",
+  "fail_interpretation": "Preserve the failure. Do not relax the F-GC38 path-equivalence guard, G19 lambda sequence, G11 groundwater model, SWAP status topology or continuous-X ownership semantics retrospectively.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g20_continuous_response_damping.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G20_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "src/runtime coupling policy",
+    "G16/G19 semantics",
+    "F-GC38/F-GC39 semantics",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}

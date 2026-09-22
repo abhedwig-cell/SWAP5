@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09w.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09W",
+  "workflow_run": 35563078044,
+  "decision": "PREREGISTERED_R1E14_CERTIFICATION_HYPOTHESIS_NOT_SUPPORTED",
+  "exact_head_m": 8.056155281280883,
+  "variants": {
+    "DEFAULT_R1E15": {
+      "head_m": 8.05615528129362,
+      "residual_m_per_day": -2.62577459775315e-12,
+      "modflow_converged": false,
+      "iterations": 80
+    },
+    "DEFAULT_R1E14": {
+      "head_m": 8.05615528129362,
+      "residual_m_per_day": -2.62577459775315e-12,
+      "modflow_converged": false,
+      "iterations": 80
+    },
+    "NO_UR_R1E15": {
+      "head_m": 8.056155281280944,
+      "residual_m_per_day": -1.2533377113932431e-14,
+      "modflow_converged": false,
+      "iterations": 80
+    },
+    "NO_UR_R1E14": {
+      "head_m": 8.056155281280944,
+      "residual_m_per_day": -1.2533377113932431e-14,
+      "modflow_converged": false,
+      "iterations": 80
+    }
+  },
+  "source_reconciliation": [
+    "IMS linear apply resets ICNVG on every call; the nonconvergence flag is not simply sticky state from an earlier outer iteration.",
+    "With nonlinear under-relaxation disabled, the physical root is reached to about 1.25e-14 m/day exact external residual.",
+    "The remaining affine matrix residual is therefore of the same order as the 1e-14 strict inner residual closure; no further representable head change occurs."
+  ],
+  "bounded_conclusions": [
+    "Nonlinear under-relaxation history and inner residual certification remain distinct effects.",
+    "rclose=1e-14 is still slightly too strict for this floating-point affine residual and therefore does not certify the already adequate physical root.",
+    "The original DSW-09 strict coupled gate remains open and is not relaxed."
+  ],
+  "next": "DSW-09X preregisters a no-under-relaxation residual-closure sweep including 1e-13 before observation."
+}

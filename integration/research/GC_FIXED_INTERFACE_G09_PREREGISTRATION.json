@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09",
+  "title": "Admissibility-aware physical tangent acquisition at real-SWAP corrector boundaries",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G08_RESULT.json",
+  "production_changes": false,
+  "question": "Can the physical q_swap(H) tangent be estimated transaction-safely at one-sided real-SWAP admissibility boundaries, without hard-coding the admissible direction, and does that remove the G08 TANGENT_UNAVAILABLE failure mode?",
+  "frozen_boundary_states": [
+    {
+      "case_id": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "negative_dh_m": -0.000002,
+      "positive_dh_m": 0.000005
+    },
+    {
+      "case_id": "C1_LOW_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 5e-7,
+      "negative_dh_m": -0.000005,
+      "positive_dh_m": 0.000005
+    },
+    {
+      "case_id": "C2_HIGH_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "negative_dh_m": -0.000005,
+      "positive_dh_m": 0.000002
+    },
+    {
+      "case_id": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "negative_dh_m": -0.000005,
+      "positive_dh_m": 0.000002
+    }
+  ],
+  "estimators": {
+    "E0_CENTRAL": {
+      "initial_half_width_m": 2.5e-7,
+      "max_halvings": 6,
+      "rule": "Use (q(h+d)-q(h-d))/(2d) only when both probes are status 0; otherwise halve d. No one-sided fallback."
+    },
+    "E1_ADMISSIBILITY_AWARE": {
+      "initial_half_width_m": 2.5e-7,
+      "max_halvings": 6,
+      "rule": [
+        "Current h must itself be status 0.",
+        "Probe h-d and h+d from the same immutable accepted origin.",
+        "If both probes are status 0, use the central secant.",
+        "If exactly one first probe is status 0, infer the admissible direction only from those statuses; probe a second point at 2d in that same direction.",
+        "If the second one-sided point is status 0, use the fixed three-point second-order one-sided derivative formula.",
+        "If neither side, or the required second point, is admissible, halve d and retry.",
+        "Require a finite negative slope; otherwise classify TANGENT_UNAVAILABLE."
+      ],
+      "no_direction_hardcoding": true
+    }
+  },
+  "estimator_consistency": {
+    "method": "Recompute E1 from half the selected d where possible, with the same status-driven rule.",
+    "max_relative_difference": 0.05,
+    "central_crosscheck_when_available": 0.05
+  },
+  "targeted_policy_replay": {
+    "state": {
+      "case_id": "C2_HIGH_FORCING",
+      "start_dh_m": -0.000005
+    },
+    "reason": "This exact preregistered G08 boundary start produced all six TANGENT_UNAVAILABLE policy runs.",
+    "groundwater_regimes": "Reuse the three frozen G08 groundwater regimes without changing K, storage, head bias or probe sets.",
+    "policies": [
+      "P1-E1: raw physical Newton using E1 at every iterate.",
+      "P4-E1: same E1 tangent plus the existing factor-1/2 admissibility and residual-nonincrease safeguard."
+    ],
+    "max_outer": 12,
+    "max_backtracks": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "head_error_tolerance_m": 5e-10
+  },
+  "qualification_rules": [
+    "All estimator probes and policy diagnostics are trial->evaluate->discard and leave revision/time/ledger unchanged.",
+    "E0 failure and E1 success at C2 negative edge is required to close the specific G08 tangent-acquisition gap.",
+    "Every E1 boundary estimate must satisfy the frozen 5% half-step consistency gate.",
+    "Where E0 is available, E1 must agree with E0 within 5%.",
+    "The C2 negative policy replay must no longer classify TANGENT_UNAVAILABLE under E1.",
+    "P4 safeguard exercise is recorded but not required for G09 success; G09 is an estimator work unit.",
+    "No production HCOF/RHS or production coupling source is changed."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}

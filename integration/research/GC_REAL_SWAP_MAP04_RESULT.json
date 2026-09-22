@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.gc_real_swap.map04.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP04",
+  "workflow_run": 35567251749,
+  "workflow_job": 106231422040,
+  "decision": "QUALIFIED_ACCEPTED_PHYSICS_INVARIANT_TO_AFFINE_SLOPE_POLICY_IN_FGC45_FIXTURE",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "production_fixture": "F-GC45 real MultiSWAP + MODFLOW6",
+    "existing_fgc45_baseline": "PASS"
+  },
+  "policies": {
+    "CURRENT_PLUS_U": {
+      "hcof_m2_per_day": 0.3402936037279093,
+      "iterations": 2,
+      "final_head_m": -0.7149999677331765,
+      "final_q_swap_m_per_s": -1.2708557527755854e-13,
+      "final_ledger_total_m": -1.098019370398106e-12
+    },
+    "INTERCEPT_ONLY": {
+      "hcof_m2_per_day": 0,
+      "iterations": 2,
+      "final_head_m": -0.714999967733686,
+      "final_q_swap_m_per_s": -1.2708351930899442e-13,
+      "final_ledger_total_m": -1.098001606829712e-12
+    },
+    "LOCAL_CORRECTOR_FD": {
+      "hcof_m2_per_day": -0.34029136831718865,
+      "authority": "MAP02 radius_0_25 corrector finite-difference slope",
+      "iterations": 2,
+      "final_head_m": -0.7149999677342317,
+      "final_q_swap_m_per_s": -1.270814633404303e-13,
+      "final_ledger_total_m": -1.097983843261318e-12
+    }
+  },
+  "spreads": {
+    "accepted_head_m": 1.0551559626037488e-12,
+    "accepted_corrector_flux_m_per_s": 4.111937128231971e-18,
+    "accepted_ledger_m": 3.55271367879727e-17
+  },
+  "gates": {
+    "all_policies_converged": "PASS",
+    "accepted_head_invariance_le_1e_10_m": "PASS",
+    "accepted_corrector_flux_invariance_le_1e_15_m_per_s": "PASS",
+    "coupled_residual_each_le_1e_15_m_per_s": "PASS",
+    "ledger_integral_each": "PASS",
+    "accepted_ledger_invariance_le_1e_14_m": "PASS",
+    "exactly_once_publication_each": "PASS"
+  },
+  "bounded_conclusions": [
+    "For the very short F-GC45 real-SWAP window, changing only the retained affine slope policy from +u_A/dt to zero or to the independently measured local corrector slope does not materially change the accepted physical state, corrector flux or published interface mass within the preregistered gates.",
+    "All three policies converged in two coupling iterations, so this fixture provides no evidence for a performance ranking among slope policies.",
+    "The head and residual paths differ, while the accepted physical solution remains invariant to approximately picometre head scale and 1e-17 m ledger scale.",
+    "Within this bounded fixture, the affine slope is therefore supported as iteration-response policy rather than authoritative physical mass.",
+    "This does not establish slope-policy invariance for stronger nonlinear response regimes or longer windows."
+  ],
+  "next": [
+    "Use a stronger real-SWAP response regime where qualified evidence already shows u_A and local corrector response magnitude differ materially.",
+    "Repeat the same immutable-physics slope-policy comparison without changing acceptance or ledger rules.",
+    "Do not rank slope policies for performance until multiple response regimes are qualified."
+  ]
+}

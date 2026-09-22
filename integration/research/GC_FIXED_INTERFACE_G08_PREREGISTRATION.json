@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.gc_fixed_interface.g08.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-FIXED-INTERFACE-G08",
+  "title": "Real-SWAP safeguarded physical-Newton qualification across configured SWAP windows and groundwater response regimes",
+  "status": "PREREGISTERED_BEFORE_EXECUTION_AMENDED",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "branch_baseline": "b0e44320c216fd1ce1de51ea61c20b4a232a13a5",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_changes": false,
+  "question": "Can a transaction-safe physical-tangent Newton corrector, with fixed backtracking on SWAP admissibility and residual non-increase, remain robust across materially different real-SWAP configured windows/forcings and MODFLOW storage/conductance regimes?",
+  "prior_evidence": {
+    "g04": "Analytical NH03 shows raw physical Newton can make a large excursion while safeguarded Newton remains bounded.",
+    "g06": "Real F-GC44 shows true corrector inadmissibility is participant status 6 and factor-1/2 contraction can recover it without accepted-state mutation.",
+    "g07a": "Live real-SWAP/MODFLOW phase-transition sweep validates local response theory but remains nearly affine in the SWAP fixture.",
+    "dsw22d": "Configured predictor matrix shows duration 5e-5 day fails at predictor status 104; durations 1e-4 and 2e-4 day are READY for qbot 5e-7,1e-6,2e-6 cm/day."
+  },
+  "frozen_swap_cases": [
+    {
+      "id": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001
+    },
+    {
+      "id": "C1_LOW_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 5e-7
+    },
+    {
+      "id": "C2_HIGH_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000002
+    },
+    {
+      "id": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002
+    }
+  ],
+  "excluded_preserved_control": {
+    "duration_day": 0.00005,
+    "reason": "Known DSW22 predictor status 104 before corrector construction; preserved as prior falsification, not retuned into G08."
+  },
+  "fixed_head_offsets_m": [
+    -0.00002,
+    -0.00001,
+    -0.000005,
+    -0.000002,
+    -0.000001,
+    -5e-7,
+    -2.5e-7,
+    0,
+    2.5e-7,
+    5e-7,
+    0.000001,
+    0.000002,
+    0.000005,
+    0.00001,
+    0.00002
+  ],
+  "tangent_estimator": {
+    "method": "central_secant",
+    "initial_half_width_m": 2.5e-7,
+    "max_halvings": 6,
+    "acceptance": "both side trials status 0, finite slope, slope < 0",
+    "no_commits": true
+  },
+  "material_nonlinearity": {
+    "metric": "maximum relative change of admissible local secant/tangent slope from the href tangent over the fixed scan",
+    "threshold_fraction": 0.05,
+    "note": "Threshold is frozen before G08 execution. Failure to reach it means this fixture does not establish genuinely nonlinear real-SWAP qualification."
+  },
+  "groundwater_regimes": [
+    {
+      "id": "GW_R075_STORAGE_STRESS",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy_formula": "0.75*u_predictor",
+      "initial_head_bias_m": 0.000004,
+      "q_probes_m_per_s": [
+        -2e-10,
+        -1e-10,
+        1e-10,
+        2e-10
+      ]
+    },
+    {
+      "id": "GW_R2_STORAGE_STRESS",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy_formula": "2.0*u_predictor",
+      "initial_head_bias_m": -0.0000015,
+      "q_probes_m_per_s": [
+        -2e-10,
+        -1e-10,
+        1e-10,
+        2e-10
+      ]
+    },
+    {
+      "id": "GW_MIXED",
+      "k_m_per_day": 1,
+      "ss_per_m": 0.02,
+      "sy_formula": "0.15",
+      "initial_head_bias_m": 0,
+      "q_probes_m_per_s": [
+        -4e-8,
+        -2e-8,
+        2e-8,
+        4e-8
+      ]
+    }
+  ],
+  "groundwater_response_contract": {
+    "method": "fresh converged constant-flux MODFLOW6 probes; affine q_gw(H)=aH+b fit used only as an independent diagnostic/merit oracle",
+    "max_fit_error_m_per_s": 5e-12
+  },
+  "starts": {
+    "method": "for each sign, choose the largest-magnitude status-0 point from the fixed head-offset scan; no post-hoc hand selection",
+    "require_both_signs": false
+  },
+  "policies": {
+    "P1": "At each accepted trial head, re-estimate the physical SWAP tangent, solve live MODFLOW with the reanchored tangent term, and take the raw Newton proposal if the SWAP trial is admissible.",
+    "P4": "Same physical-tangent proposal, then factor-1/2 backtracking toward the current head until the SWAP trial is admissible and |q_swap-q_gw_oracle| does not increase. Maximum 12 contractions."
+  },
+  "convergence": {
+    "max_outer": 12,
+    "flux_residual_tolerance_m_per_s": 1e-15,
+    "reference_root": "bisection on the independently fitted groundwater response and real-SWAP trial residual inside an admissible sign-changing fixed-scan bracket",
+    "head_error_tolerance_m": 5e-10
+  },
+  "authority_invariants": [
+    "Every diagnostic trial is discarded.",
+    "Committed SWAP revision/time and interface ledger remain at the immutable origin throughout G08.",
+    "Participant status 4 is lifecycle misuse, never head inadmissibility; only status 6 is corrector trial failure.",
+    "No production HCOF/RHS source or production coupling policy is changed."
+  ],
+  "decision_rules": [
+    "Execution PASS means the frozen matrix ran with transaction invariants and independent groundwater-response checks intact; it is not production admission.",
+    "If no tested real-SWAP case exceeds the frozen 5% nonlinearity threshold, nonlinear real-SWAP qualification remains open.",
+    "If P4 never backtracks on any real-SWAP case, the real-SWAP safeguard mechanism remains unexercised even if all solves converge.",
+    "A stronger P4 result requires at least one case where a raw P1 proposal is inadmissible or increases the frozen merit function and P4 contracts to an admissible non-increasing proposal.",
+    "Production HCOF/RHS remains unchanged regardless of G08 outcome; any production mutation requires a separate admission work unit."
+  ],
+  "pre_execution_amendment": {
+    "reason": "Add a fixed accepted-groundwater head mismatch so Newton proposals traverse a nontrivial fraction of the real-SWAP corrector envelope. No G08 execution had occurred before this amendment.",
+    "effect": "Groundwater model STRT and symmetric CHD center are shifted by the declared bias; SWAP reference/origin remains unchanged."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_hlink.hlink04.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK04",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "PREREGISTERED_BLOCKED_ON_LOW01_READINESS",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_HLINK04_PREREGISTRATION.json",
+  "readiness_audit": "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json",
+  "readiness_matrix": "integration/research/GC_HLINK04_LOW01_READINESS_MATRIX.json",
+  "synthetic_parent": {
+    "hlink01": "QUALIFIED",
+    "hlink02": "NUMERICAL_CERTIFICATION_DIAGNOSTIC_ACTIVE",
+    "hlink03": "BLOCKED_PARENT_HLINK02"
+  },
+  "execution_allowed": false,
+  "activation_predicate": "All LOW01 predicates in the readiness matrix must be satisfied and persisted; HLINK04 remains observational/research-only and must not widen production bottom_mode=1.",
+  "next_action": "Persist owner results for LOW01-A2, CONST, CARRIER01, OUTPUT01 and C2 as their owner runs complete; allow event-driven B/D/C1 to activate; only after the readiness matrix is fully true implement the preregistered HLINK04 observational harness unchanged.",
+  "blockers": [
+    "LOW01-A2 result not yet persisted",
+    "LOW01-CONST result not yet persisted",
+    "LOW01-CARRIER01 result not yet persisted",
+    "LOW01-OUTPUT01 result not yet persisted",
+    "LOW01-B result not yet persisted",
+    "LOW01-C1 characterization not yet persisted",
+    "LOW01-C2 policy result not yet persisted",
+    "LOW01-D result not yet persisted"
+  ],
+  "nonclaims": [
+    "No MODFLOW h-link execution has been admitted.",
+    "No secant/tangent/storage ownership choice has been made for real SWAP.",
+    "No production mode-1 or F-GC semantics changed."
+  ]
+}

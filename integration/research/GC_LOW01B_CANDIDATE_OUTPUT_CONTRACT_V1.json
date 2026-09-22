@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.gc_low01b.candidate_output_contract.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B-OUT01",
+  "title": "Research-only complete candidate output for prescribed groundwater-level mode-1 trials",
+  "status": "RESEARCH_CONTRACT_NOT_PRODUCTION_ABI",
+  "production_changes": false,
+  "authority": [
+    "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "integration/research/GC_LOW01B_PREREGISTRATION.json",
+    "integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json"
+  ],
+  "control": {
+    "field": "groundwater_level_cm",
+    "authority": "requested H_phreatic / raw state.gwlinp",
+    "rule": "candidate groundwater_level_cm equals the prescribed trial coordinate, not raw legacy state.gwl",
+    "raw_legacy_gwl": "diagnostic only; may remain the immutable accepted-origin groundwater level"
+  },
+  "required_fields": [
+    "valid",
+    "branch_id",
+    "active_richards_nodes",
+    "requested_groundwater_level_cm",
+    "effective_groundwater_level_cm",
+    "groundwater_level_cm",
+    "raw_legacy_gwl_cm",
+    "raw_gwlinp_cm",
+    "fllowgwl",
+    "pressure_head_cm(1:n)",
+    "water_content(1:n)",
+    "ponding_depth_cm",
+    "qtop_cm_per_day",
+    "qbot_cm_per_day",
+    "complete_profile_storage_change_cm",
+    "mass_residual_cm",
+    "dt_reduction_requested",
+    "alternative_solver_calls"
+  ],
+  "materialization_rules": [
+    "Materialize only after one HeadCalc trial from an immutable origin.",
+    "For LOW01-B inside-profile trials branch_id=INSIDE_PROFILE and effective groundwater level equals the requested level because near-node branch switching is reserved for LOW01-C.",
+    "groundwater_level_cm=requested_groundwater_level_cm when raw_gwlinp matches the request and the trial is valid.",
+    "qbot is copied from the HeadCalc diagnosed output and is never prescribed by the carrier.",
+    "complete-profile storage uses all declared layers, including saturated continuation below active Richards nodes.",
+    "valid requires finite state/qbot, no dt reduction, no alternative solver, expected inside-profile branch, and mass residual within the declared gate."
+  ],
+  "transaction_semantics": {
+    "origin": "owned outside the candidate and immutable",
+    "reject": "destroy candidate only; no publication or mutation of origin",
+    "accept": "not part of LOW01-B; later HLINK research may consume a valid candidate after conjunctive coupled acceptance"
+  },
+  "forbidden": [
+    "do not overwrite raw HeadCalc state.gwl to make it look like the requested coordinate",
+    "do not expose this research carrier through production soil-water or F-GC ABI",
+    "do not infer branch continuity from LOW01-B",
+    "do not admit bottom_mode=1 in production"
+  ]
+}

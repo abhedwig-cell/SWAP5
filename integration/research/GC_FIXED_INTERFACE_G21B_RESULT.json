@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21b.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21B",
+  "title": "Prepared-solve first-convergence versus fixed-response continuation diagnosis",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21B_PREREGISTRATION.json",
+  "parent_diagnosis": "integration/research/GC_FIXED_INTERFACE_G21A_RESULT.json",
+  "tested_commit": "c84a90dcb1c8afeff80ebfe49996ba6cb7db5fe2",
+  "workflow_run": 35731373754,
+  "workflow_job": 106757502990,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_DIAGNOSTIC_PERSISTENT_PREPARED_SOLVE_PATH_MEMORY",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "production_hcof_rhs_change": false,
+  "response_identity": {
+    "hcof_m2_per_day": -0.13785986219261193,
+    "rhs_m3_per_day": 0.0985698022484409,
+    "fresh_history_terms_bitwise_identical": true,
+    "fixed_for_all_12_tail_calls": true
+  },
+  "fresh_arm": {
+    "prepare_time_step_calls": 1,
+    "prepare_solve_calls": 1,
+    "first_convergence_call": 2,
+    "first_convergence_head_m": -0.7150100297648362,
+    "frozen_fresh_reference_error_m": 0,
+    "final_call_12_head_m": -0.7150100297648362,
+    "final_error_m": 0,
+    "convergence_flags": [
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "post_first_convergence_head_change_m": 0,
+    "xold_bitwise_fixed": true,
+    "finalize_solve_calls": 1,
+    "finalize_time_step_calls": 0
+  },
+  "history_arm": {
+    "outer1_replay_heads_m": [
+      -0.7150110934482893,
+      -0.7150055122971403,
+      -0.7150027217215658
+    ],
+    "outer1_replay_first_convergence_calls": [
+      2,
+      2,
+      2
+    ],
+    "prepare_time_step_calls": 1,
+    "prepare_solve_calls": 1,
+    "outer2_first_convergence_call": 6,
+    "outer2_first_convergence_head_m": -0.7150100296924844,
+    "outer2_first_error_to_fresh_reference_m": 7.235179122488944e-11,
+    "outer2_call_12_head_m": -0.7150100296924851,
+    "outer2_call_12_error_to_fresh_reference_m": 7.235112509107466e-11,
+    "convergence_flags": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "head_errors_to_fresh_reference_m": [
+      7.308043269427245e-7,
+      7.300735205273412e-8,
+      7.286133696382535e-9,
+      7.264271406626222e-10,
+      7.23519022471919e-11,
+      7.235179122488944e-11,
+      7.235168020258698e-11,
+      7.235156918028451e-11,
+      7.235145815798205e-11,
+      7.235134713567959e-11,
+      7.235123611337713e-11,
+      7.235112509107466e-11
+    ],
+    "first_five_head_vector_increments_m": [
+      0.000006577238943483721,
+      6.577969748899903e-7,
+      6.572121835635159e-8,
+      6.559706555719913e-9,
+      6.540752384154302e-10
+    ],
+    "post_convergence_head_vector_increment_m": 1.1102230246251565e-16,
+    "reduction_in_path_offset_from_first_convergence_to_call_12_m": 6.661338147750939e-16,
+    "xold_bitwise_fixed": true,
+    "finalize_solve_calls": 1,
+    "finalize_time_step_calls": 0
+  },
+  "matched_comparison": {
+    "first_convergence_path_offset_m": 7.235179122488944e-11,
+    "final_call_12_history_minus_fresh_m": 7.235112509107466e-11,
+    "final_offset_above_1e_12_gate": true,
+    "final_offset_fraction_of_first": 0.999990793126148,
+    "path_effect_below_1e_12_by_call_12": false
+  },
+  "gates": {
+    "frozen_outer1_history_reproduced": "PASS",
+    "fresh_first_convergence_reference": "PASS_EXACT",
+    "history_first_convergence_reference": "PASS",
+    "twelve_fixed_response_calls_each_arm": "PASS",
+    "hcof_rhs_constant": "PASS_BITWISE",
+    "xold_fixed": "PASS",
+    "post_convergence_trace_recorded": "PASS",
+    "finalize_solve_exactly_once_per_arm": "PASS",
+    "finalize_time_step_zero": "PASS",
+    "diagnostic_execution": "PASS"
+  },
+  "bounded_conclusions": [
+    "The G21A path effect is not a transient first-convergence-report artifact that disappears under additional identical-response solve calls.",
+    "The fresh arm reaches the frozen fresh-response head on its first solve call, reports convergence on call 2, and remains bitwise stationary at the middle cell through call 12.",
+    "The history arm approaches a different fixed head after the outer-1 response history. It first reports convergence on outer-2 call 6 with a 7.235179122488944e-11 m offset from the fresh solution.",
+    "Six further identical-response calls after that convergence report change the history head by only 6.66e-16 m in total; the call-12 path offset remains 7.235112509107466e-11 m.",
+    "After first convergence, each history head-vector update is only 1.11e-16 m while MODFLOW continues to report convergence. The offset therefore behaves as persistent prepared-solve path memory at the strict G21 scale.",
+    "XOLD remains bitwise fixed and HCOF/RHS are identical between fresh and history arms, so the measured difference is associated with other path-dependent prepared-solve state or finite-precision nonlinear assembly/history, not accepted-origin drift or response differences.",
+    "G21 remains falsified. G21B is diagnostic evidence only and does not redefine MODFLOW convergence or authorize post-convergence solve calls as production behavior."
+  ],
+  "next_natural_unit": "Open G21C as a read-only state-forensics diagnostic. Compare accessible MODFLOW/XMI state and package arrays between FRESH and HISTORY at the identical fixed response and converged heads to identify which non-XOLD state retains path memory. Prefer existing exposed arrays and source-backed semantics; do not add a production state-reset primitive."
+}

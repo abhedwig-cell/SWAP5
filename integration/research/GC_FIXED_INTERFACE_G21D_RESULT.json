@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21d.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21D",
+  "title": "Paired causal isolation of delta-bar-delta path memory on the real FGC44 carrier",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21D_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21D_FIRST_EXECUTION_RESULT.json",
+  "parent_forensics": "integration/research/GC_FIXED_INTERFACE_G21C_RESULT.json",
+  "parent_path_memory": "integration/research/GC_FIXED_INTERFACE_G21B_RESULT.json",
+  "tested_commit": "07c8cc000ffc5da7c58ad1d6eaa8db8e8f5d9644",
+  "workflow_run": 35734305678,
+  "workflow_job": 106767481903,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_DIAGNOSTIC_DELTA_BAR_DELTA_CAUSAL_SUPPORT_IN_FROZEN_REAL_FGC44_CASE",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "production_hcof_rhs_change": false,
+  "production_solver_configuration_change": false,
+  "technical_history": {
+    "first_execution_classification": "TECHNICAL_PARENT_AUTHORITY_BINDING_FAILURE_BEFORE_CAUSAL_ARMS",
+    "repair": "Bind the fixed 12-call tail to the closed G21B result authority instead of a nonexistent G21B frozen_case.tail_calls member. No causal gate, solver configuration, response, threshold or production source changed."
+  },
+  "matched_pairs": {
+    "standard_delta_bar_delta": {
+      "nonmeth_fresh": 3,
+      "nonmeth_history": 3,
+      "fresh_first_convergence_call": 2,
+      "history_first_convergence_call": 6,
+      "fresh_call12_head_m": -0.7150100297648362,
+      "history_call12_head_m": -0.7150100296924851,
+      "history_minus_fresh_call12_m": 7.235112509107466e-11
+    },
+    "no_under_relaxation": {
+      "nonmeth_fresh": 0,
+      "nonmeth_history": 0,
+      "fresh_first_convergence_call": 2,
+      "history_first_convergence_call": 2,
+      "fresh_call12_head_m": -0.7150100297648362,
+      "history_call12_head_m": -0.7150100297648363,
+      "history_minus_fresh_call12_m": -1.1102230246251565e-16
+    }
+  },
+  "causal_isolation": {
+    "strict_path_scale_m": 1e-12,
+    "standard_g21b_reproduction": "PASS",
+    "absolute_offset_reduction_m": 7.23510140687722e-11,
+    "absolute_offset_reduction_fraction": 0.9999984655068967,
+    "nour_fresh_root_error_m": 0,
+    "nour_outer1_root_errors_m": [
+      0,
+      0,
+      0
+    ],
+    "nour_max_outer1_root_error_m": 0,
+    "root_comparability_at_strict_scale": true,
+    "classification": "DELTA_BAR_DELTA_CAUSAL_SUPPORT"
+  },
+  "invariants": {
+    "outer2_hcof_hex": "-0x1.1a56457c62fd8p-3",
+    "outer2_rhs_hex": "0x1.93bdedd07bddfp-4",
+    "outer2_response_identical_all_arms": "PASS",
+    "xold_fixed_all_arms": "PASS",
+    "no_mid_solve_state_mutation": true,
+    "finalize_time_step_calls_total": 0
+  },
+  "gates": {
+    "standard_reproduces_g21b": "PASS",
+    "standard_nonmeth_3": "PASS",
+    "nour_nonmeth_0": "PASS",
+    "nour_fresh_root_comparability": "PASS_EXACT",
+    "nour_outer1_root_comparability": "PASS_EXACT_3_OF_3",
+    "nour_history_minus_fresh_below_1e_12": "PASS_1.1102230246251565E-16",
+    "xold_fixed": "PASS",
+    "identical_outer2_response": "PASS",
+    "no_mid_solve_state_mutation": "PASS",
+    "no_production_change": "PASS"
+  },
+  "bounded_conclusions": [
+    "The closed G21B persistent prepared-solve path offset is reproduced exactly under the standard MODERATE delta-bar-delta configuration.",
+    "Disabling nonlinear under-relaxation from solver initialization changes NONMETH from 3 to 0 while preserving the frozen outer-2 response and accepted XOLD.",
+    "The intervention does not move the matched response roots at the strict G21 scale: the NOUR fresh outer-2 root error is zero and all three NOUR outer-1 history roots reproduce their frozen standard references exactly.",
+    "Under those matched conditions, the call-12 HISTORY-minus-FRESH offset collapses from 7.235112509107466e-11 m to -1.1102230246251565e-16 m, a 99.99984655068967% reduction in absolute offset.",
+    "This supports delta-bar-delta nonlinear under-relaxation history as a causal carrier of the strict prepared-solve path memory in this frozen real-FGC44 experiment.",
+    "The result does not imply that delta-bar-delta is physically or numerically wrong in MODFLOW, nor that production coupling should disable under-relaxation. It establishes a coupling-composition interaction when the externally assembled affine response is changed between solve calls.",
+    "G21 remains falsified as exact G17 trajectory equivalence under the standard configuration. G21D explains the dominant path-memory mechanism but does not retroactively change that verdict.",
+    "No production runtime, adapter, HCOF/RHS policy, E3/P4 rule or IMS configuration was changed."
+  ],
+  "next_natural_unit": "Open a solver-configuration/coupling-policy qualification unit that compares full dynamic response-space coupling under standard DBD and a preregistered no-under-relaxation research configuration, using physical convergence, coupling residual, cost and robustness gates. Do not change production IMS defaults or claim production admission before that broader comparison."
+}

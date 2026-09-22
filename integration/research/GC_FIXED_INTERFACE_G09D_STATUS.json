@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09d.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09D",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_RESEARCH_ESTIMATOR",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09D_PREREGISTRATION.json",
+  "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G09C_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_stencil_class_tangent_g09d.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "deeeb600aaaf5026fe170e4d0d0beacb19ad1ab0",
+  "next_action": "Move to G10 real-process nonlinearity/safeguard-carrier qualification. Reuse E3 as the frozen tangent estimator, but do not alter production coupling. Prefer an existing active-process real-SWAP fixture rather than further tuning F-GC44.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+  "execution": {
+    "tested_commit": "deeeb600aaaf5026fe170e4d0d0beacb19ad1ab0",
+    "workflow_run": 35701090778,
+    "workflow_job": 106659036572,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "e3": "QUALIFIED_RESEARCH_ONLY",
+    "safeguard_activation": "NOT_EXERCISED",
+    "nonlinear_real_swap": "OPEN",
+    "production_cost": "OPEN",
+    "production_admission": "NO"
+  }
+}

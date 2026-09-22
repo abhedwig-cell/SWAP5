@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09u.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09U",
+  "title": "Prepared-solve reanchor replay with IMS SIMPLE versus MODERATE",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_observation": "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
+  "source_findings": [
+    "XMI prepare_solve resets iterationCounter once; each solve increments kiter.",
+    "MODFLOW6 6.8.0 IMS MODERATE sets nonmeth=3 delta-bar-delta under-relaxation.",
+    "delta-bar-delta wsave/hchold/deold are initialized only when kiter==1."
+  ],
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "input_m": 0.01,
+    "exact_head_m": 8.056155281280883,
+    "residual_gate_m_per_day": 1e-12
+  },
+  "variants": [
+    "MODERATE",
+    "SIMPLE"
+  ],
+  "method": "Use one prepared solve per variant and the same one-solve-iteration then exact-tangent reanchor sequence. SIMPLE removes the MODERATE delta-bar-delta nonlinear under-relaxation default while retaining the same physical model/API law.",
+  "diagnostic_logic": "If SIMPLE closes the exact gate while MODERATE reproduces the DSW-09 stall, persistent nonlinear solver history is causally implicated.",
+  "forbidden": [
+    "do not change DSW-09 prospectively registered result",
+    "do not infer that SIMPLE is the production solution",
+    "no production source change"
+  ]
+}

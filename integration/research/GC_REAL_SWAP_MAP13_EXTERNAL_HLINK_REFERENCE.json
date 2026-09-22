@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.gc_real_swap.map13.external_hlink_reference.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP13",
+  "title": "Current MetaSWAP-MODFLOW6 phreatic storage-coupling reference",
+  "status": "EXTERNAL_SOURCE_BOUND_REFERENCE_AUDIT",
+  "production_authority": false,
+  "external_authority": {
+    "repository": "Deltares/imod_coupler",
+    "commit": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "documentation": "https://deltares.github.io/imod_coupler/technical.html",
+    "paper": {
+      "authors": "P.E.V. van Walsum, A.A. Veldhuizen",
+      "year": 2011,
+      "doi": "10.1016/j.jhydrol.2011.08.036"
+    }
+  },
+  "classic_metamod": {
+    "implementation": "imod_coupler/drivers/metamod/metamod.py",
+    "exchange_sequence": [
+      "MODFLOW heads -> MetaSWAP",
+      "MetaSWAP solve",
+      "MetaSWAP storage -> MODFLOW STO",
+      "MetaSWAP recharge -> MODFLOW RCH",
+      "MODFLOW solve",
+      "new MODFLOW heads -> MetaSWAP"
+    ],
+    "storage_mapping": [
+      "MetaSWAP provides storage coefficient times SVAT area.",
+      "If MODFLOW uses storage coefficient, divide by MODFLOW cell area.",
+      "If MODFLOW uses specific storage, divide additionally by layer thickness.",
+      "The exchange writes the MODFLOW STO storage pointer directly rather than adding a second independent API storage term."
+    ]
+  },
+  "newton_phreatic_mapping": {
+    "implementation": [
+      "imod_coupler/drivers/metamod/metamod.py:MetaModNewton",
+      "imod_coupler/drivers/metamod/utils.py:CoupledPhreaticStorage/CoupledPhreaticHeads/CoupledPhreaticRecharge",
+      "imod_coupler/kernelwrappers/mf6_newton_wrapper.py:PhreaticModelArray/PhreaticBCArray"
+    ],
+    "phreatic_layer_definition": "For each coupled vertical MODFLOW column, select the first layer whose NPF saturation is > 0, bounded by a configured maximum coupled layer.",
+    "storage_semantics": [
+      "Reset coupled MODFLOW Sy and Ss arrays before every exchange.",
+      "Write the MetaSWAP-provided storage coefficient only at the selected phreatic MODFLOW layer.",
+      "Set coupled Ss at that phreatic layer to zero.",
+      "Move recharge package nodes to the selected phreatic layer.",
+      "Read MODFLOW head at the selected phreatic layer and provide it to MetaSWAP."
+    ],
+    "ownership_interpretation": "The unsaturated/SVAT model owns the phreatic storage response supplied to the groundwater solve; MODFLOW does not independently retain a second coupled phreatic Sy/Ss contribution at that location."
+  },
+  "literature_alignment": [
+    "Van Walsum and Veldhuizen (2011) describe phreatic elevation as a shared state and state that both connecting models use the same combined storage relationship.",
+    "The current iMOD Coupler technical documentation states that MetaSWAP provides recharge and sets storage in coupled MODFLOW cells.",
+    "The current iMOD example explicitly sets specific_yield=0 and describes MetaSWAP as responsible for computing the storage coefficient."
+  ],
+  "comparison_to_swap5_fgc": {
+    "current_swap5": "MAP11/MAP12 classify current F-GC as lower coupling-plane hydraulic-head / bottom-exchange coupling through SWAP mode 5.",
+    "key_difference": "Current F-GC does not overwrite MODFLOW STO from a shared complete-profile SWAP storage law and does not establish its interface head as the phreatic water-table state.",
+    "consequence": "The current F-GC route and the MetaSWAP h-link reference are different coupling contracts, not merely different implementations of an already-proven identical equation."
+  },
+  "design_lessons_for_future_swap5_hlink": [
+    "Declare H_phreatic separately from H_interface.",
+    "Identify the active MODFLOW phreatic cell/layer if groundwater heads can move vertically across layers.",
+    "Assign coupled phreatic storage once, with a documented rule for replacing or complementing MODFLOW Sy/Ss.",
+    "Map multiple SWAP tiles to one MODFLOW phreatic cell by area-weighted storage and recharge.",
+    "Keep internal SWAP unsaturated memory separate from the shared phreatic state.",
+    "Preserve accepted whole-window mass accounting and transaction semantics from the current F-GC architecture."
+  ],
+  "forbidden_inference": [
+    "This external implementation is not SWAP5 production authority.",
+    "Do not copy MetaSWAP coefficients or numerical policies into SWAP5 without independent qualification.",
+    "Do not conclude that current SWAP5 F-GC is defective because it implements a different coupling family."
+  ]
+}
