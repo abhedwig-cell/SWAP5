@@ -292,6 +292,17 @@
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H10",
+      "decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+      "run": 35750549610,
+      "workflow_job": 106823238949,
+      "qualification_head": "fd66d678f242941cbcffec251931418fa5c80ecd",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
@@ -303,22 +314,10 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20H10",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
-      "dependency": "DUMMY-20H9 qualified by run 35749109620.",
-      "scientific_baseline": "4449e2a2edec312aeff316437d9fa40d953ee38c",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "modflow_release": "6.7.0",
-      "implementation_baseline": "198c9ac1c8b2866ceb818c48a699ff4bf0eee721"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H10 noncommensurate allocation.dt versus 6-hour RibaMod clock qualification.",
+  "next_authority_action": "Generalize H10 with a preregistered clock-lattice matrix testing whether effective fixed-allocation execution follows intersections of allocation and BMI call-start grids.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -492,5 +491,10 @@
       "meaning": "Current groundwater drainage is explicit positive forecast supply and is admitted directly in the actual product t=24 allocation."
     },
     "invariant": "Accepted physical memory and current forecast forcing are distinct semantic inputs; forcing representation is direction-sensitive in the tested v2026.1.1 topology."
+  },
+  "product_noncommensurate_clock_authority": {
+    "latest": "RIBASIM-DUMMY-20H10",
+    "decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+    "meaning": "In tested fixed-dt v2026.1.1 RibaMod, noncommensurate allocation boundaries crossed inside BMI update_until are skipped; execution occurs only at qualifying BMI call-start times."
   }
 }
