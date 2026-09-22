@@ -189,6 +189,8 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_COMPOSITION=PASS'
   print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_HARD_MASS=PASS'
   print '(a)', 'PPA_ATM02_OWNER_COMMITTED_TOP_SNAPSHOT=PASS'
+  print '(a)', 'PPA_ATM02_TWO_INTERVAL_OWNER_CONTINUATION=PASS'
+  print '(a)', 'PPA_ATM02_TWO_INTERVAL_HARD_MASS=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -391,6 +393,7 @@ contains
     type(ppa_atm02_production_forcing_diagnostics_t) :: atm_diagnostics
     type(fmr_committed_top_state_t), allocatable :: committed_top(:)
     integer :: tile, local_status, node
+    real(real64) :: t2
 
     atm_config = base_config
     do tile = 1, NTILE
@@ -441,8 +444,40 @@ contains
          'ATM02 committed top snapshot')
     call require(all(committed_top%revision == 1_int64) .and. all(committed_top%committed_time == T1), &
          'ATM02 committed top provenance')
+    t2 = T1 + (T1 - T0)
+    forcing_interval%t0 = T1; forcing_interval%t1 = t2
+    decoded%source_record_index = 45
+    decoded%t0 = T1 - 0.25_real64; decoded%t1 = t2 + 0.25_real64
+    do tile = 1, NTILE
+      geometry%parameter_set_id = atm_config%tiles(tile)%parameters%parameter_set_id
+      geometry%active_nodes = atm_config%tiles(tile)%parameters%active_nodes
+      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+      geometry%z = atm_config%tiles(tile)%parameters%z; geometry%dz = atm_config%tiles(tile)%parameters%dz
+      geometry%node_distance = atm_config%tiles(tile)%parameters%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics, atm_config%tiles(tile)%parameters%cofgen)
+      root_input%crop_emerged = .true.; root_input%rooted_nodes = min(4, geometry%active_nodes)
+      allocate(root_input%cumulative_root_fraction(root_input%rooted_nodes + 1))
+      do node = 1, root_input%rooted_nodes + 1
+        root_input%cumulative_root_fraction(node) = real(node - 1, real64) / real(root_input%rooted_nodes, real64)
+      end do
+      top_request = b110_dynamic_top_boundary_request_t()
+      top_request%conductivity_mean_method = atm_config%tiles(tile)%parameters%swkmean
+      top_request%pressure_head_top_cm = committed_top(tile)%pressure_head_top_cm
+      top_request%water_content_top = committed_top(tile)%water_content_top
+      top_request%previous_ponding_depth_cm = committed_top(tile)%ponding_depth_cm
+      top_request%ponding_max_cm = 2.0_real64; top_request%runoff_resistance_day = 1.0_real64; top_request%runoff_exponent = 1.0_real64
+      call materialize_ppa_atm02_pmdirect_production_forcing(decoded, forcing_interval, site, canopy, 0.0_real64, root_input, &
+           geometry, hydraulics, top_request, atm_config%tiles(tile)%base_forcing, atm02_forcing(tile), provenance, atm_diagnostics)
+      call require(atm_diagnostics%status == PPA_ATM02_PRODUCTION_FORCING_OK .and. atm_diagnostics%result_produced, &
+           'ATM02 continuation forcing composition')
+      deallocate(geometry%z, geometry%dz, geometry%node_distance, root_input%cumulative_root_fraction)
+    end do
+    call atm_app%run_standalone_with_forcing(T1, t2, atm02_forcing, results, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), &
+         'ATM02 continuation owner commit')
+    call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 continuation hard mass')
     call atm_app%copy_committed_revisions(revisions, local_status)
-    call require(local_status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'ATM02 owner revisions')
+    call require(local_status == FMR_APP_BOOT_OK .and. all(revisions == 2_int64), 'ATM02 owner revisions')
     call atm_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'ATM02 owner close')
     deallocate(atm02_forcing)
