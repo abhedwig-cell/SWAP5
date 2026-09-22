@@ -589,31 +589,112 @@ A real system has several clocks:
 
 - root/SWAP state-update clock;
 - management demand-refresh clock;
-- Ribasim allocation clock;
+- Ribasim allocation-solve clock;
+- Ribasim allocation-application clock;
 - physical Ribasim solver clock;
+- output/`saveat` clock;
 - MODFLOW timestep;
 - outer coupled transaction/commit window.
 
-DUMMY-16 is preregistered to isolate one clock question without changing the
-physical window partition.
+DUMMY-16 established analytically that physical trajectory authority and
+management event-clock authority are distinct. The real-Ribasim DUMMY-19
+sequence then exposed how these clocks interact in the pinned implementation.
 
-The canonical design keeps both physical half-windows and their total managed
-withdrawal identical while changing only whether a priority event at `t=0.5`
-is observed.
+### Saveat is not observationally neutral when allocation can change
 
-The event-synchronized and stale schedules therefore end with the same
-surface/groundwater state but different root storage and future root demand.
-
-This establishes the distinction:
+DUMMY-19G held `allocation.dt = 24 h` fixed and varied only `solver.saveat`:
 
 ```text
-physical trajectory authority
-!=
-management event-clock authority.
+saveat   allocation records   total physical UserDemand supply
+24 h     1                    about 16.0192 m3
+12 h     2                    about 20.0207 m3
+ 6 h     4                    about 24.5179 m3
+ 1 h    24                    about 29.0918 m3
 ```
 
-Conservation cannot decide between clock semantics because each schedule can
-close its own correct ledger.
+The shorter output grid exposed retained Basin water to repeated management
+re-optimization within the same nominal 24-hour allocation interval.
+
+DUMMY-19H removed management scarcity. Allocation then stayed demand-capped at
+40/20 m3/day for every solve. The cross-`saveat` physical spread collapsed to
+about 0.0025 m3 over the day, well inside the frozen 0.05 m3 tolerance. Thus
+the dominant DUMMY-19G sensitivity is caused by state-dependent management
+re-optimization, not by output sampling alone.
+
+### BMI boundaries can solve without applying UserDemand allocation
+
+DUMMY-19I used daily `saveat` but advanced through 6-hour
+`BMI.update_until` boundaries. The preregistered assumption that this would
+produce the native 6-hour UserDemand behavior was falsified.
+
+DUMMY-19I2 identified the exact separation:
+
+```text
+sub-saveat BMI boundary
+  -> allocation LP is solved
+  -> shadow optimum changes
+  -> UserDemand applied allocation remains unchanged
+```
+
+For the root-first case, for example:
+
+```text
+represented solve time   shadow LP       applied UserDemand
+0 h                      32 / 0          32 / 0
+6 h                      40 / 7.995      32 / 0
+12 h                     40 / 20         32 / 0
+18 h                     40 / 20         32 / 0
+```
+
+Pinned source reconciliation explains this: `update_allocation!` invokes
+`parse_allocations!` only when `record=true`, and that parse path is where
+the optimized UserDemand allocation is written into the state used by physical
+realization.
+
+### A finer saveat clock dominates a coarser BMI cadence
+
+DUMMY-19J combined 6-hour BMI calls with 1-hour `saveat`. The result had 24
+hourly allocation records and followed the 1-hour DUMMY-19G physical
+trajectory. The applied allocation had already reached full 40/20 by the first
+observed 6-hour BMI endpoint.
+
+Therefore a coupler cannot claim exclusive ownership of a coarser management
+clock while a finer `saveat` grid independently causes allocation
+solve-and-apply events.
+
+### Explicit application separates management cadence from output cadence
+
+DUMMY-19K kept daily `saveat`, solved allocation at accepted 6-hour
+boundaries with `record=false`, and then explicitly copied only the optimized
+UserDemand and per-link allocation values into the applied physical state.
+
+This recovered the native 6-hour physical result without:
+
+- writing an allocation output record;
+- resetting cumulative supplied-volume accounting;
+- modifying pinned Ribasim source.
+
+DUMMY-19L then demonstrated accepted-state trajectory equivalence at every
+6-hour boundary between:
+
+```text
+native 6-hour saveat application
+and
+daily saveat + explicit 6-hour UserDemand apply
+```
+
+For the tested topology the routes were identical at logged precision in Basin
+level, storage change, cumulative root delivery and cumulative external-demand
+delivery.
+
+The qualified research contract is therefore:
+
+```text
+SOLVE -> APPLY / ADMIT -> REALIZE -> ACCEPT / COMMIT -> RECORD
+```
+
+These stages may share a clock in a particular implementation, but the coupling
+architecture must not assume that they are semantically the same operation.
 
 ## 15. What must eventually be shared between real models
 
