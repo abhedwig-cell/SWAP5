@@ -6,11 +6,11 @@
   "baseline": "7fa8550ab4ffd5332370391f01bf4850117c9e2a",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute the frozen exact-release equal-magnitude positive/negative forcing comparison.",
+  "next_action": "Use qualified forcing-sign asymmetry as authority; release prospectively frozen DUMMY-20H9 actual positive-groundwater product bridge.",
   "production_delta": [],
   "reference_delta": [],
   "relevant_paths": [
@@ -24,5 +24,35 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "implementation_baseline": "1ad663aa00aa52ed89c27cb42f0608cce7250983",
-  "recovery_point": "DUMMY-20H8 preregistered after H7; exact-release verifier, runner and qualification gate implemented without production/reference changes."
+  "recovery_point": "DUMMY-20H8 qualified by frozen run 35747089993.",
+  "decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+  "workflow_run": 35747089993,
+  "workflow_job": 106811387712,
+  "qualification_head": "b860a5b13a09ef40bd33056f65617b8bb3491237",
+  "observed_cases": {
+    "control": {
+      "explicit_positive_forcing_m3": 0,
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "negative_infiltration": {
+      "explicit_positive_forcing_m3": 0,
+      "implicit_negative_forcing_m3": 8.000042512171305,
+      "low_storage_factor": 0,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "positive_drainage": {
+      "explicit_positive_forcing_m3": 8.000042512171305,
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 40.00000000000001,
+      "external_allocation_m3_per_day": 7.990414893227958
+    }
+  }
 }
