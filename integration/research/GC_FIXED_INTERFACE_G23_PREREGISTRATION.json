@@ -1,0 +1,187 @@
+{
+  "schema": "swap5.gc_fixed_interface.g23.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G23",
+  "title": "Endpoint-based physical and transactional qualification of continuous response-space coupling",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "9c6ddfbf1583a1246abe54d96001feb8e8a3169b",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21N_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21E_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G08_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G08_PREREGISTRATION.json"
+  ],
+  "question": "Does the continuous prepared-solve response-space coupling reach the independently defined physical fixed-interface endpoint while preserving transaction ownership during diagnostics and the existing nominal SWAP+ledger final handoff across a preregistered matrix of groundwater response strength, SWAP forcing/duration and admissible initialization side?",
+  "distinction_from_g21": {
+    "g21_claim": "Exact reproduction of the G17 accepted internal trajectory in one continuous prepared solve.",
+    "g21_status": "FALSIFIED_AND_PRESERVED",
+    "g23_claim": "Physical endpoint and transaction semantics without requiring internal Newton/path equivalence.",
+    "forbidden_reinterpretation": "A G23 pass must not be used to relabel G21 as passed."
+  },
+  "physical_gates": {
+    "external_interface_residual_abs_m_per_s": 1e-15,
+    "independent_reference_head_abs_m": 5e-10,
+    "max_outer_updates": 12,
+    "max_response_contractions_per_outer": 12,
+    "merit_absolute_slack_m_per_s": 1e-18,
+    "pairwise_same_scenario_endpoint_spread_m": 5e-10,
+    "cached_vs_reacquired_q_abs_m_per_s": 1e-18
+  },
+  "algorithm": {
+    "configuration": "STANDARD MODERATE delta-bar-delta / NONMETH=3",
+    "prepared_solve": "exactly one prepare_time_step and one prepare_solve per arm",
+    "xold": "fixed for the entire prepared solve",
+    "state_control": "no direct X/XOLD mutation",
+    "swap_observation": "G16 diagnostic service only until endpoint convergence",
+    "tangent": "existing G17 E3 execution-class-aware estimator",
+    "globalization": "response-space factor-1/2 contraction on participant inadmissibility or merit failure",
+    "reference_oracle": "independent G08 fresh-solve affine groundwater response plus ordinary SWAP trial/discard root oracle"
+  },
+  "executed_matrix": [
+    {
+      "id": "C0_R075_NEG",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "NEG",
+      "start_dh_m": -0.000002
+    },
+    {
+      "id": "C0_R075_POS",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "POS",
+      "start_dh_m": 0.000005
+    },
+    {
+      "id": "C0_R2_NEG",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "NEG",
+      "start_dh_m": -0.000002
+    },
+    {
+      "id": "C0_R2_POS",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "POS",
+      "start_dh_m": 0.000005
+    },
+    {
+      "id": "C0_MIXED_NEG",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "start_dh_m": -0.000002
+    },
+    {
+      "id": "C0_MIXED_POS",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "start_dh_m": 0.000005
+    },
+    {
+      "id": "C2_MIXED_POS",
+      "swap_case": "C2_HIGH_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "start_dh_m": 0.000002
+    },
+    {
+      "id": "C3_MIXED_NEG",
+      "swap_case": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "start_dh_m": -0.000005
+    },
+    {
+      "id": "C3_MIXED_POS",
+      "swap_case": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "start_dh_m": 0.000002
+    }
+  ],
+  "inherited_hard_stress_control": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G21E_RESULT.json",
+    "configuration": "STANDARD_DBD",
+    "required": [
+      "comparison_classification == BOTH_PHYSICALLY_CONVERGED",
+      "standard.physical_reference_qualified == true",
+      "standard.residual_gate == true",
+      "standard.endpoint_gate_5e_10 == true",
+      "standard.diagnostic_non_authority == PASS"
+    ],
+    "purpose": "Retain the previously exercised status-6 and safeguard-contraction stress without duplicating it in the broad matrix."
+  },
+  "excluded_known_envelope_points": [
+    {
+      "scope": "C2_HIGH_FORCING negative starts in the three G08 groundwater regimes",
+      "reason": "G08 already classified these starts TANGENT_UNAVAILABLE before response globalization. G23 qualifies endpoint behavior only where the prospectively inherited E3 tangent service is available and does not erase this envelope limitation."
+    }
+  ],
+  "per_arm_gates": [
+    "Independent G08 oracle yields a finite positive groundwater response and a reference root.",
+    "Initial head is participant-admissible and E3 tangent is available when needed.",
+    "Continuous response-space loop reaches CONVERGED within the frozen outer/backtracking budgets.",
+    "Absolute external interface residual is <= 1e-15 m/s.",
+    "Final head differs from the independent reference root by <= 5e-10 m.",
+    "Exactly one prepared MODFLOW solve is used, XOLD remains bitwise fixed and finalize_solve occurs exactly once.",
+    "No finalize_time_step is issued by the research coupling loop.",
+    "All diagnostic SWAP observations are non-authoritative: no live candidate, no SWAP preflight, no ledger preflight, no committed-state mutation and zero ordinary publication trials.",
+    "After closing G16, exactly one ordinary final candidate reacquisition reproduces the cached final q to <= 1e-18 m/s.",
+    "Existing SWAP preflight -> ledger prepare/preflight -> SWAP commit -> ledger commit sequence produces revision 1, accepted time equal to the arm duration, ledger count 1 and ledger exchange equal to the final candidate bottom exchange.",
+    "No persistent MODFLOW transaction publication or crash-atomic multi-participant claim is made."
+  ],
+  "cross_arm_gates": [
+    "For each scenario with NEG and POS starts, both arms pass and their final heads differ by <= 5e-10 m.",
+    "Replay C0_MIXED_NEG from a fresh initialization and require bitwise-equal final head, final q, response status topology and committed ledger exchange.",
+    "The inherited G21E hard-stress STANDARD control remains physically reference-qualified.",
+    "The original G21 path-equivalence falsification remains unchanged.",
+    "No production solver, response-space, tangent, HCOF/RHS, retry or publication policy changes."
+  ],
+  "classification": [
+    "QUALIFIED_ENDPOINT_MATRIX if every eligible executed arm, all same-scenario start-pair gates, replay, inherited hard-stress control and transaction postconditions pass.",
+    "PARTIAL_ENDPOINT_ENVELOPE if at least one preregistered eligible arm produces scientific evidence but fails a frozen endpoint/transaction gate; preserve the failing arm and do not shrink the matrix.",
+    "TECHNICAL_FAILURE only for build/download/API failures occurring before an arm produces scientific evidence."
+  ],
+  "pass_interpretation": "A pass qualifies a bounded research claim that the continuous response-space coupling reaches the same independently defined physical fixed-interface endpoint across the executed eligible matrix and preserves current SWAP/ledger transaction ownership semantics. It does not admit production solver configuration, response-space policy, persistent MODFLOW publication, crash atomicity or HCOF/RHS semantics.",
+  "fail_interpretation": "Preserve any eligible-arm failure. Do not alter the matrix, endpoint guard, residual guard, tangent scales, safeguard rule, solver configuration or reference oracle after observing results.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g23_endpoint_transaction_matrix.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G23_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/**",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "production solver tolerances/configuration",
+    "participant acceptance/retry semantics",
+    "production HCOF/RHS",
+    "persistent MODFLOW transaction semantics"
+  ],
+  "production_admission": "NO"
+}
