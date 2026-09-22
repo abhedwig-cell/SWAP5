@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.coupling.real_ribasim_saveat_negative_control.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19H",
+  "decision": "RIBASIM_DUMMY_19H_QUALIFIED_SAVEAT_NEGATIVE_CONTROL",
+  "authority": {
+    "qualification_head": "e4123dc759859e5930647f47e6ce573a0918e0b7",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35623292076,
+    "workflow_job": 106411370655,
+    "conclusion": "success"
+  },
+  "fixed_case": {
+    "allocation_dt_seconds": 86400,
+    "fixed_supply_m3_per_day": 60,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "allocated_root_m3_per_day": 40,
+    "allocated_external_m3_per_day": 20
+  },
+  "observations": {
+    "3600": {
+      "root": 20.046621646239593,
+      "external": 10.023310823119797,
+      "total": 30.06993246935939,
+      "level": 1.0000299300675306,
+      "storage": 29.930067530603566,
+      "records": 24
+    },
+    "21600": {
+      "root": 20.04562437186302,
+      "external": 10.02281218593151,
+      "total": 30.06843655779453,
+      "level": 1.0000299315634422,
+      "storage": 29.931563442220366,
+      "records": 4
+    },
+    "43200": {
+      "root": 20.045557680813587,
+      "external": 10.022778840406794,
+      "total": 30.06833652122038,
+      "level": 1.0000299316634786,
+      "storage": 29.931663478643955,
+      "records": 2
+    },
+    "86400": {
+      "root": 20.044934744824467,
+      "external": 10.022467372412233,
+      "total": 30.0674021172367,
+      "level": 1.0000299325978828,
+      "storage": 29.932597882753598,
+      "records": 1
+    }
+  },
+  "cross_saveat": {
+    "total_supplied_spread_m3": 0.0025303521226902603,
+    "preregistered_volume_tolerance_m3": 0.05,
+    "interpretation": "All cases remain within the single frozen continuous reference and within cross-saveat tolerance. A small solver/output-grid numerical spread remains, but it is orders of magnitude smaller than the management-reoptimization effect qualified in DUMMY-19G."
+  },
+  "qualified_claims": [
+    "Repeated saveat-synchronized allocation solves do not change the allocation map when supply already satisfies the full 40/20 m3/day demand.",
+    "All four saveat cases remain within the same preregistered physical-volume and endpoint tolerances.",
+    "The large DUMMY-19G saveat sensitivity therefore requires state-dependent management reoptimization of retained storage; it is not explained by output-saving/numerical-grid effects alone.",
+    "A small residual numerical saveat sensitivity remains and should not be described as exact bitwise hydrological invariance."
+  ],
+  "boundaries": [
+    "This negative control isolates the dominant mechanism but does not claim mathematically exact saveat invariance.",
+    "No upstream defect classification.",
+    "No SWAP/MODFLOW or production prescription."
+  ],
+  "downstream": "Proceed to preregistered DUMMY-19I BMI-owned 6-hour management clock."
+}
