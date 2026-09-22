@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Repeat unchanged frozen product case with observables printed before assertions to classify the 12 h deviation.",
+  "next_action": "Execute head-checkout full-trajectory diagnostic with frozen references and tolerances unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -51,7 +51,7 @@
       "frozen piecewise references and tolerances unchanged"
     ]
   },
-  "qualification_attempt": "v2_same_model_diagnostic_order_only",
+  "qualification_attempt": "v1b_head_checkout_full_trajectory",
   "qualification_base": "work/ribasim-dummy-01@a1acdf8cfcfa98acf429ee0ab10097cf5412ce02",
   "qualification_history": [
     {
@@ -71,6 +71,15 @@
       "failure_at_s": 43200,
       "reason": "Basin level exceeded frozen tolerance, but assertion occurred before the second-step reciprocal-transfer observables were printed.",
       "scientific_disposition": "UNRESOLVED; diagnostic-only rerun required with unchanged model, references and tolerances."
+    }
+  ],
+  "qualification_attempts": [
+    {
+      "attempt": "v1",
+      "run": 35724680525,
+      "state": "FIRST_REFERENCE_MISMATCH_DIAGNOSTIC_INCOMPLETE",
+      "scientific_effect": "unresolved until full four-boundary trajectory is logged",
+      "note": "first 6h state matched; assertion at 12h stopped observation before raw second state was printed"
     }
   ]
 }
