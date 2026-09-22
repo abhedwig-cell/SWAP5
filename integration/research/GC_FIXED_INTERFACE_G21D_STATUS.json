@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21d.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21D",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_DIAGNOSTIC_DELTA_BAR_DELTA_CAUSAL_SUPPORT",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21D_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21D_FIRST_EXECUTION_RESULT.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21D_RESULT.json",
+  "tested_commit": "07c8cc000ffc5da7c58ad1d6eaa8db8e8f5d9644",
+  "workflow_run": 35734305678,
+  "workflow_job": 106767481903,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "production_solver_configuration_change": false,
+  "disposition": {
+    "g21_dynamic_g17_path_equivalence": "REMAINS_FALSIFIED_UNDER_STANDARD_CONFIGURATION",
+    "g21b_persistent_path_memory": "EXPLAINED_DOMINANTLY_BY_DBD_IN_FROZEN_CASE",
+    "g21c_delta_bar_delta_candidate": "UPGRADED_TO_CAUSAL_SUPPORT_IN_MATCHED_DIAGNOSTIC",
+    "standard_modflow_dbd_configuration": "UNCHANGED_AND_STILL_QUALIFIED_IN_EXISTING_FGC38_ENVELOPE",
+    "no_under_relaxation_configuration": "RESEARCH_INTERVENTION_ONLY_NOT_PRODUCTION_ADMITTED",
+    "response_space_globalization": "REMAINS_RESEARCH_ONLY",
+    "e3_p4": "REMAIN_RESEARCH_ONLY",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "key_numbers": {
+    "standard_history_minus_fresh_call12_m": 7.235112509107466e-11,
+    "no_under_relaxation_history_minus_fresh_call12_m": -1.1102230246251565e-16,
+    "absolute_offset_reduction_fraction": 0.9999984655068967,
+    "nour_fresh_root_error_m": 0,
+    "nour_max_outer1_root_error_m": 0
+  },
+  "next_action": "Preregister a full dynamic solver-configuration comparison using the real G16/E3 response-space loop. Compare STANDARD DBD and NOUR as research configurations on convergence, trajectory, physical/coupling residuals and cost before considering any production solver-policy change."
+}
