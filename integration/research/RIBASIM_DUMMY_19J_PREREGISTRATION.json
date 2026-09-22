@@ -5,9 +5,13 @@
   "title": "Pinned real Ribasim conflict between 6-hour BMI management calls and 1-hour saveat allocation boundaries",
   "baseline": "40c93b3f29511c4a8cf317500463025f8aa7b002",
   "sequencing": {
-    "state": "PREREGISTERED_BEFORE_19H_AND_19I_CLOSEOUT",
-    "execute_after": "DUMMY-19I closeout",
-    "rationale": "Freeze the clock-conflict hypothesis before observing the no-scarcity negative control or BMI-owned-clock experiment."
+    "state": "SATISFIED_AFTER_DUMMY_19I2_CLOSEOUT",
+    "execute_after": "DUMMY-19I2 qualified",
+    "rationale": "Freeze the clock-conflict hypothesis before observing the no-scarcity negative control or BMI-owned-clock experiment.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_19I2_QUALIFIED_SHADOW_APPLIED_SEPARATION",
+      "workflow_run": 35700640906
+    }
   },
   "pins": {
     "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
@@ -94,5 +98,11 @@
     "no production prescription before the clock contract is explicitly resolved"
   ],
   "pass_decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
-  "fail_decision": "RIBASIM_DUMMY_19J_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19J_BLOCKED",
+  "implementation_baseline": "225d52997b9a92d40df0dfd081109582e1e8ed76",
+  "authority_rebind": {
+    "repository_head": "225d52997b9a92d40df0dfd081109582e1e8ed76",
+    "scientific_change": false,
+    "meaning": "Execution rebound after DUMMY-19I2. The prospectively frozen 1-hour versus 6-hour clock-conflict model, reference and tolerances are unchanged."
+  }
 }
