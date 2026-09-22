@@ -7,7 +7,7 @@
   "baseline": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
   "canonical_authority": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "frozen_core_evidence": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
-  "phase": "CLOSED_WITH_FROZEN_GWD_ENVELOPE__OFFICIAL_ARCHIVE_QUALIFIED__ORIGINAL_POPULATION_INCOMPLETE",
+  "phase": "CLOSED_AUTHORITY_REVIEW__NO_CURRENT_LAYER_ROM_ACCEPTANCE_EXECUTION_AUTHORIZED",
   "process_completion": {
     "RECONCILE": "COMPLETE",
     "SOURCE_AUTHORITY": "COMPLETE",
@@ -32,13 +32,17 @@
     "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
     "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
     "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json",
-    "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json"
+    "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json",
+    "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
+    "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json"
   ],
   "purpose_status": {
     "GW-R": {
       "decision": "NO_INDEPENDENT_QUANTITATIVE_APPLICATION_AUTHORITY_FOUND",
       "frozen_components": [],
-      "blocker": "No quantitative recharge/cumulative-exchange bias, seasonal, annual, or drift requirement with matching temporal semantics."
+      "blocker": "No quantitative recharge/cumulative-exchange bias, seasonal, annual, or drift requirement with matching temporal semantics.",
+      "authority_review": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
+      "downstream_context": "Formal LHM surface-water cumulative system criteria exist but are not direct recharge authority."
     },
     "GW-D": {
       "decision": "FROZEN_NARROW_LHM_END2END_ROUTE__COMPONENT_FIDELITY_ROUTE_PARTIAL",
@@ -72,7 +76,9 @@
       "frozen_components": [
         "For an explicitly LHM-like validation endpoint only: monthly growing-season soil-moisture correlation >= 0.6 at the stated national/regional support and for 80% of field-sensor points under the report criterion."
       ],
-      "blocker": "No independent absolute/depth-resolved storage, profile-shape, wetting/drying-front timing, or extreme-state fidelity requirement for the requested scientific-profile purpose."
+      "blocker": "No independent absolute/depth-resolved storage, profile-shape, wetting/drying-front timing, or extreme-state fidelity requirement for the requested scientific-profile purpose.",
+      "authority_review": "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json",
+      "source_limit": "Formal LHM soil-moisture validation constrains monthly temporal correlation only; it explicitly does not justify absolute profile error under vertical scale mismatch."
     }
   },
   "critical_classification": {
@@ -135,8 +141,8 @@
       ]
     }
   },
-  "terminal_scientific_statement": "ROM-ACCEPT has resolved the LHM archive-availability question: the official NHI public validation archive is byte-qualified. The remaining GW-D direct-route blocker is population authority, because the distributable archive explicitly omits non-public measurements and therefore cannot reproduce the complete population behind the published LHM 4.1 acceptance statistics. The component/synthetic route still lacks a structural-error allocation.",
-  "next_safe_step": "No Layer-ROM acceptance run. Seek complete LHM 4.1 population authority from Rijkswaterstaat/NHI/data owners, or an independent purpose-owner decision defining the qualified public subset as a new governed validation population. GW-R and SCI-P remain as previously unresolved.",
+  "terminal_scientific_statement": "ROM-ACCEPT has completed the independent authority review for GW-R, GW-D and SCI-P without viewing Layer-ROM candidate response. GW-R has no direct quantitative recharge acceptance authority. GW-D has bounded numerical/transaction authority and a frozen LHM-like direct application envelope, but exact replication is blocked by original population authority and component-level synthetic acceptance still lacks structural-error allocation. SCI-P has only a formal monthly soil-moisture correlation endpoint, not absolute/depth-resolved profile fidelity authority.",
+  "next_safe_step": "No current Layer-ROM acceptance run. Further progress requires new external authority: a GW-R purpose-owner error budget; a GW-D complete original validation population, public-subset purpose contract, or component structural-error allocation; or a SCI-P absolute/depth-resolved profile requirement. ROM-PURPOSE may continue representation research without application pass/fail claims.",
   "external_blockers": [
     {
       "id": "LHM41_COMPLETE_VALIDATION_POPULATION_AUTHORITY",
