@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21e.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21E",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21E_PREREGISTRATION.json",
+  "tested_commit": "43c0f5e459ddad93aa493a463a71a6810e6866b4",
+  "workflow_run": 35735399238,
+  "workflow_job": 106771218783,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_PREREGISTRATION_STATUS_BINDING_FAILURE_BEFORE_COMPARISON_ARMS",
+  "failure": {
+    "assertion": "G21E preregistration not frozen",
+    "mechanism": "The preregistration had been prospectively amended to PREREGISTERED_BEFORE_EXECUTION_AMENDED to bind STANDARD control reproduction, while this harness postimage still required the pre-amendment status string.",
+    "standard_arm_executed": false,
+    "nour_arm_executed": false,
+    "scientific_classification": "NONE"
+  },
+  "repair_contract": [
+    "Accept only the amended preregistration status.",
+    "Bind the archived G21 STANDARD control reproduction before interpreting STANDARD/NOUR differences.",
+    "Do not change physical endpoint guard, strict trajectory reporting guard, solver settings, E3/P4 rules, residual tolerance or forcing."
+  ],
+  "disposition": "PRESERVED_NOT_RELABELLED"
+}
