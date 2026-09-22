@@ -1,0 +1,109 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03c.gentle_bottom_first_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03C",
+  "authority": "preregistered response-blind strict-Reference rate-discriminator experiment",
+  "production_changes": false,
+  "parent_result_commit": "b6fa91663af9ff1b6cfc5b69294dabae36887747",
+  "scientific_question": "Is the E03B bottom-first construction blocked primarily by instantaneous lower-boundary extraction rate, or by cumulative state displacement, and can a gentler bottom-first transfer yield an equal-total-water, equal-root30 but deeper-distribution-separated origin pair?",
+  "derivation": [
+    "E03B established a strong direction asymmetry: every full-rate BOTTOM_THEN_TOP family failed at bottom phase step 7.",
+    "The next discriminator changes only transfer rate and compensating phase length, while keeping complete-family integrated top and bottom transfer equal.",
+    "No state threshold or response threshold is changed."
+  ],
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "constitutive": "B110 default MvG",
+    "backend": "serialized strict Reference HeadCalc",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "initial_effective_saturation": 0.85,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "time_design": {
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "closed_perturbation_steps": 10
+  },
+  "family_grid": [
+    {
+      "rate_fraction_of_K0": 0.5,
+      "phase_steps": [
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24
+      ]
+    },
+    {
+      "rate_fraction_of_K0": 0.25,
+      "phase_steps": [
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48
+      ]
+    }
+  ],
+  "forcing_order": {
+    "order": "BOTTOM_THEN_TOP",
+    "bottom_phase": "q_top=0; q_bottom=rate_fraction*q_eq",
+    "top_phase": "q_top=rate_fraction*q_eq; q_bottom=0",
+    "q_eq_rule": "q_eq=-K0",
+    "complete_family_mass": "same rate magnitude and same number of bottom-only and top-only intervals, so integrated top transfer equals integrated bottom transfer exactly"
+  },
+  "baseline": "one strict BASE_EQ interval with q_top=q_bottom=q_eq",
+  "execution_contract": [
+    "every family starts from the same fresh B01 Se=0.85 origin",
+    "every non-baseline family first executes exactly 10 strict CLOSED intervals",
+    "only families completing CLOSED, BOTTOM and TOP phases contribute endpoints",
+    "one strict Reference physical advance per interval; no automatic temporal subdivision",
+    "no fallback, retry, tolerance relaxation or direct physical-state mutation",
+    "failed intervals terminate the family and preserve the latest committed state bit-identically",
+    "only family/rate/step/time and committed H/theta are emitted for selection"
+  ],
+  "response_blind_selection": {
+    "candidate_set": "BASE_EQ plus all completed gentle BOTTOM_THEN_TOP endpoints",
+    "pair_set": "all distinct-history pairs",
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "smaller rate fraction",
+      "smaller phase length"
+    ],
+    "no_match": "Close E03C NO_MATCH without extending the rate grid, phase grid, timestep or thresholds."
+  },
+  "rate_discriminator": {
+    "primary_diagnostic": "completion/failure boundary by rate fraction and cumulative bottom-only transfer",
+    "interpretation": [
+      "If a lower rate survives materially greater cumulative bottom-only transfer than full-rate E03B, rate sensitivity is supported.",
+      "If failure occurs at approximately the same cumulative removed water despite lower rate, cumulative state displacement is the more likely limiter.",
+      "This diagnostic is about construction admissibility, not production solver robustness."
+    ]
+  },
+  "next_if_selected": "GC-RZM06E04 preregisters common-time reconstruction of the immutable E03C selected pair and an identical forcing-free fixed-Hc response probe with W_profile and W_root30 gates enforced.",
+  "controls": [
+    "retain all E03/E03B state thresholds unchanged",
+    "response-blind selection",
+    "no HELD_OUT/FALLBACK access",
+    "no production source changes",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "E03C is not a production solver stress test",
+    "E03C selection alone does not establish deeper-profile response memory",
+    "no second MODFLOW hydraulic state is introduced"
+  ]
+}
