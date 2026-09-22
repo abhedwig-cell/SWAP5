@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.rom-purpose.p1.metric-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "status": "ONE_METRIC_AUTHORITY_RETAINED_BEFORE_CANDIDATE_RESPONSE",
+  "retained": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+  "removed": "integration/f-rom/ROM_PURPOSE_P1_METRIC_SEMANTICS.json@069a819a27595059c3a5ade3b1750b1cdeb5217b",
+  "rationale": [
+    "The retained contract preserves the established LARE anti-cancellation convention: signed bias is computed per history before absolute aggregation across histories.",
+    "The retained contract is the bound input of the staged candidate analyzer.",
+    "No candidate response had been generated when this reconciliation was made.",
+    "The choice was not made from Reference or candidate error magnitudes."
+  ],
+  "scientific_change": "NONE_TO_PREREGISTERED_PURPOSES_REPRESENTATIONS_OR_METRIC_NAMES",
+  "candidate_response_seen": false,
+  "application_acceptance_adjudicated": false
+}
