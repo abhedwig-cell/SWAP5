@@ -297,19 +297,20 @@
     },
     {
       "work_unit": "RIBASIM-DUMMY-20H9",
-      "state": "PREREGISTERED_VERIFIER_PREPARED_READY_FOR_RELEASE",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
-      "dependency": "DUMMY-20H8 qualified by run 35747089993; runner/workflow may now be added without changing frozen H9 references.",
+      "dependency": "DUMMY-20H8 qualified by run 35747089993.",
       "scientific_baseline": "9220b8bf49138a0cf2b723aa7d6d460583338029",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
       "modflow_release": "6.7.0",
-      "prepared_verifier": "tests/research/test_ribasim_dummy_20h9_positive_groundwater_next_boundary.py"
+      "prepared_verifier": "tests/research/test_ribasim_dummy_20h9_positive_groundwater_next_boundary.py",
+      "implementation_baseline": "f77c434ea090e3a2f305409ab7f281075cb69d23"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Release and execute prospectively frozen DUMMY-20H9 actual positive-groundwater t=24 allocation bridge.",
+  "next_authority_action": "Execute frozen DUMMY-20H9 actual positive-groundwater t=24 allocation bridge.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
