@@ -152,14 +152,6 @@
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19I",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_19I_QUALIFIED_BMI_MANAGEMENT_CLOCK",
-      "dependency": "qualified DUMMY-19H",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
-      "implementation_baseline": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-19J",
       "state": "PREREGISTERED_BLOCKED_BY_19I",
       "intended_decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
@@ -169,7 +161,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-19I BMI management clock; DUMMY-19J remains prospectively frozen.",
+  "next_authority_action": "Preregister and execute a shadow-LP-versus-applied UserDemand BMI diagnostic before DUMMY-19J.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -207,6 +199,13 @@
       "decision": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
       "run": 35616065964,
       "classification": "SCIENTIFIC_CLOCK_SEMANTICS_FALSIFICATION",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19I",
+      "decision": "RIBASIM_DUMMY_19I_FALSIFIED_BMI_SUBSAVEAT_USERDEMAND_NOT_APPLIED",
+      "run": 35698326881,
+      "classification": "SCIENTIFIC_ALLOCATION_APPLICATION_SEMANTICS_FALSIFICATION",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
