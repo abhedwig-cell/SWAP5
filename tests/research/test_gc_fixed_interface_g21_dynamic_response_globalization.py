@@ -139,12 +139,17 @@ def main()->None:
 
     g11_p4=next(x for x in g11["policy_results"] if x["policy"]=="P4_E3")
     require(len(g11_p4["trace"])==3,"G21 frozen G11 trace length drift")
+    previous_cumulative=0
     for expected,authority in zip(ref["accepted_outer_trace"],g11_p4["trace"],strict=True):
         require(int(expected["outer"])==int(authority["outer"]),"G21 outer authority drift")
         require(abs(float(expected["accepted_head_m"])-float(authority["accepted_head_m"]))<=1e-15,
                 "G21 accepted-head prereg authority drift")
-        require(int(expected["contractions"])==int(authority["local_contractions"]),
+        cumulative=int(authority["cumulative_contractions"])
+        local_contractions=cumulative-previous_cumulative
+        require(local_contractions>=0,"G21 G11 cumulative contraction counter regressed")
+        require(int(expected["contractions"])==local_contractions,
                 "G21 local-contraction prereg authority drift")
+        previous_cumulative=cumulative
         require(str(expected["tangent_mode"])==str(authority["tangent_mode"]),"G21 tangent-mode authority drift")
         require(float(expected["tangent_d_m"])==float(authority["tangent_d_m"]),"G21 tangent-scale authority drift")
 
