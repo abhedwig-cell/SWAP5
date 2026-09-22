@@ -3,7 +3,7 @@
   "date": "2026-09-22",
   "work_unit": "GC-FIXED-INTERFACE-G21C",
   "title": "Read-only MODFLOW/XMI prepared-solve state forensics for persistent path memory",
-  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "status": "PREREGISTERED_BEFORE_EXECUTION_AMENDED",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "baseline_head": "f8b58f897852ccb1fd5cd770729edbc2039912cb",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -57,7 +57,10 @@
       "RES_PREV",
       "RES_NEW",
       "XTEMP",
-      "DXOLD"
+      "DXOLD",
+      "WSAVE",
+      "HCHOLD",
+      "DEOLD"
     ],
     "solution_SLN_1_bookkeeping": [
       "ITERTOT_TIMESTEP",
@@ -76,6 +79,13 @@
       "STRGSS",
       "STRGSY",
       "ICONVERT"
+    ],
+    "solution_SLN_1_configuration": [
+      "NONMETH",
+      "THETA",
+      "AKAPPA",
+      "GAMMA",
+      "AMOMENTUM"
     ]
   },
   "snapshot_contract": [
@@ -87,7 +97,8 @@
     "Treat bookkeeping counters separately from physical/solver/package state because FRESH and HISTORY intentionally execute different numbers of solve calls.",
     "Require XOLD bitwise equal between arms and unchanged within each arm.",
     "Require API HCOF/RHS bitwise equal between arms throughout the outer-2 fixed-response tail.",
-    "Do not infer causality solely from a differing derived array; classify only the location of observable path dependence."
+    "Do not infer causality solely from a differing derived array; classify only the location of observable path dependence.",
+    "Require NONMETH=3 in both arms and compare WSAVE/HCHOLD/DEOLD explicitly as the source-backed delta-bar-delta history carriers."
   ],
   "classification_rules": {
     "solver_history_visible": "At call 12, one or more non-bookkeeping SLN_1 state probes other than values trivially identical to current X differ between FRESH and HISTORY.",
@@ -102,7 +113,8 @@
     "Outer-2 API HCOF/RHS remain bitwise identical.",
     "No pointer returned by XMI is mutated by the diagnostic.",
     "Emit complete per-probe comparisons at tail entry, first convergence and call 12.",
-    "Classify observable state location using the preregistered rules without proposing a reset or changing convergence semantics."
+    "Classify observable state location using the preregistered rules without proposing a reset or changing convergence semantics.",
+    "Delta-bar-delta history probes WSAVE/HCHOLD/DEOLD resolve and are reported at every forensic stage; NONMETH is 3 in both arms."
   ],
   "pass_interpretation": "PASS is a forensic classification only. It may identify exposed solver/package state associated with path dependence or may show that no distinct exposed memory beyond current-iterate/derived state is visible. It does not prove causality and does not authorize modification of any MODFLOW state.",
   "fail_interpretation": "Preserve failure. Do not drop unresolved probes, alter MODFLOW tolerances, change the 12-call tail, or add state mutation to obtain a cleaner classification.",
@@ -123,5 +135,16 @@
     "MODFLOW solver tolerances",
     "production HCOF/RHS"
   ],
-  "production_admission": "NO"
+  "production_admission": "NO",
+  "amendment": {
+    "reason": "Pre-execution reconciliation against MODFLOW6 6.8.0 NumericalSolution.f90 showed that MODERATE uses NONMETH=3 delta-bar-delta under-relaxation and allocates persistent WSAVE, HCHOLD and DEOLD arrays. The original inventory omitted those direct history carriers.",
+    "timing": "BEFORE_G21C_LIVE_EXECUTION",
+    "source_evidence": [
+      "NumericalSolution.f90 allocates NONMETH, THETA, AKAPPA, GAMMA and AMOMENTUM in solution memory.",
+      "For NONMETH=3 it reallocates WSAVE, HCHOLD and DEOLD to NEQ.",
+      "sln_underrelax initializes WSAVE/HCHOLD/DEOLD only at kiter==1 and subsequently updates them from prior outer-iteration changes."
+    ],
+    "policy_change": false,
+    "scientific_gate_change": false
+  }
 }
