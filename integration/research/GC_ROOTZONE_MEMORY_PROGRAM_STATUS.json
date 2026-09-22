@@ -214,6 +214,33 @@
       "workflow_job": 106809890643,
       "implementation_head": "bdb2aa3ef12230da6526f63c6c57d823d98fb74f",
       "evidence_commit": "e7ba2db6b5eb4084a61387e1159e76cf77394fd1"
+    },
+    {
+      "work_unit": "GC-RZM06E04",
+      "decision": "SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_AT_FROZEN_AGGREGATE_RESOLUTION",
+      "preregistration_commit": "dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e",
+      "workflow_run": 35747169833,
+      "workflow_job": 106811670658,
+      "implementation_head": "71695af62d0fd73dd2b1d2fd88b1a6a086027ffc",
+      "evidence_commit": "7c8fc83b787ebb633775ff6600cb77ac5ded1492"
+    },
+    {
+      "work_unit": "GC-RZM06E05",
+      "decision": "SELECTED_TIGHTER_STORAGE_MATCHED_INTERFACE_STATE_PAIR",
+      "preregistration_commit": "21bbfdf16edbe842647b345223454bd3507a1a03",
+      "workflow_run": 35747716569,
+      "workflow_job": 106813500493,
+      "implementation_head": "d13438104f8018ee5bcd041de5bc4bcd2e86453d",
+      "evidence_commit": "a92af540a106bcefae9c3eaa99532762bf518e52"
+    },
+    {
+      "work_unit": "GC-RZM06E06",
+      "decision": "SUPPORTED_INTERFACE_MEMORY_AT_1E6_STORAGE_RESOLUTION",
+      "preregistration_commit": "c25258bd0df363c29be693cf5c01b512f4630a27",
+      "workflow_run": 35748057742,
+      "workflow_job": 106814775185,
+      "implementation_head": "ac1b4f3f547e1c21e26a5917b0b0579be2b7c9d1",
+      "evidence_commit": "8f1f2fdcb2a089b017de876c4ecb4e714bb85b60"
     }
   ],
   "current_findings": [
@@ -292,22 +319,25 @@
     "RZM06E03C closed the gentle bottom-first rate-tuning route as nonmonotone: 0.5*K0 survived materially more cumulative bottom-only transfer than 0.25*K0, and no nonbaseline family completed both phases.",
     "RZM06E03D censused 78 qualified state records, 65 unique states and 59 pairs matching both W_profile and W_root30; zero pairs reached the frozen 0.01 cm deep-centroid gate, with a best storage-matched separation of 0.0004048112988499497 cm.",
     "RZM06E03E found 14 of the 59 storage-matched pairs with |ΔH16|>=0.01 cm. The selected E01 CLOSED step 1 versus E03 DRY_RECOVER RECOVER step 19 pair has ΔW_profile=0, |ΔW_root30|=4.3428876926654425e-05 cm and |ΔH16|=0.0738671093353922 cm.",
-    "E03E therefore authorizes an immutable fixed-Hc response probe, but because W_root30 is tolerance-matched rather than mathematically identical, any positive E04 conclusion must be stated at the frozen aggregate-storage resolution rather than as exact global state-sufficiency falsification."
+    "E03E therefore authorizes an immutable fixed-Hc response probe, but because W_root30 is tolerance-matched rather than mathematically identical, any positive E04 conclusion must be stated at the frozen aggregate-storage resolution rather than as exact global state-sufficiency falsification.",
+    "RZM06E04 supports non-unique next fixed-Hc exchange at the preregistered 1e-4 cm aggregate-storage resolution: |ΔE|=5.883852035282189e-05 cm with ΔW_profile=0 and |ΔW_root30|=4.3428876926654425e-05 cm; the claim is resolution-bounded, not exact-valued.",
+    "RZM06E05 tightened the response-blind storage match: 14 H16-separated pairs exist at 1e-4 cm, 3 at 1e-5 cm, exactly 1 at 1e-6 cm, and none at 1e-7 cm or tighter; no exact pair exists in the current library.",
+    "RZM06E06 supports non-unique next fixed-Hc exchange at the tighter 1e-6 cm aggregate-storage resolution: |ΔE|=1.0814909231271486e-05 cm with |ΔW_profile|=7.105427357601002e-15 cm and |ΔW_root30|=5.002116250096833e-07 cm."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E04",
-    "status": "PREREGISTERED_EXECUTION_QUEUED",
-    "preregistration_commit": "dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e",
-    "interpretation_amendment_commit": "964e35b40f5988fbd917ca9bb050bdebaa9d1401",
-    "scope": "Common-time reconstruct the immutable E03E pair and run identical forcing-free fixed-Hc strict Reference probes with total-water, root30-water and H16 gates rechecked before response.",
+    "id": "GC-RZM06E07",
+    "status": "PREREGISTERED_EXECUTING",
+    "preregistration_commit": "0127e46ceee2bb35d6eb739d67b26c3e101c9169",
+    "workflow_run": 35748744856,
+    "scope": "Construct opposite net-zero internal deep redistributions between nodes 6 and 16 under equal equilibrium top/bottom flux, then response-blindly seek an H16-separated pair at 1e-7 cm or tighter joint W_profile/W_root30 resolution.",
     "constraints": [
-      "no origin reselection",
-      "retain |ΔW_profile|<=1e-4 cm, |ΔW_root30|<=1e-4 cm and |ΔH16|>=1e-2 cm",
-      "retain H_c=-1.8979370901690651 m and dt=3435974/2^32 day",
-      "retain response threshold 1e-18 cm",
-      "same-origin order independence and O0/O2 identity required",
-      "no commit, fallback, automatic temporal subdivision or production source change",
-      "interpret support only at the frozen aggregate-storage resolution"
+      "only preregistered fractions 1/64 through 1/2 of K0 and 1,2,4,8 accepted steps",
+      "only same-rate same-duration UPSHIFT/DOWNSHIFT twins are compared",
+      "no direct forcing in nodes 1..3",
+      "no response fields in selection",
+      "no fallback, retry, temporal subdivision, threshold relaxation or post-hoc grid extension",
+      "persist selected H/theta pair before any E08 response work",
+      "no production source changes and no H5/RZM06B work"
     ]
   },
   "blocked": [],
@@ -317,9 +347,9 @@
     "no production sign-flip admission",
     "no RZM06B/H5 management conclusion",
     "no global real-SWAP state sufficiency claim outside the qualified carrier and frozen experiment windows",
-    "no root-matched deeper-profile response-memory causality result yet",
-    "no E04 response conclusion before workflow 35747090068 completes",
     "no exact global sufficiency falsification from tolerance-matched W_root30 alone",
-    "no E04 qualification claim before its named workflow completes"
+    "no exact-valued H_c + W_profile + W_root30 sufficiency falsification",
+    "H16 is not admitted as a unique or minimal reduced-state coordinate",
+    "no E07 qualification claim before workflow 35748744856 completes"
   ]
 }
