@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.coupling.real_ribamod_noncommensurate_allocation_clock.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H10",
+  "title": "Noncommensurate allocation.dt aliasing under actual RibaMod BMI stepping",
+  "baseline": "4449e2a2edec312aeff316437d9fa40d953ee38c",
+  "authorities": {
+    "product_clock_matrix": {
+      "work_unit": "RIBASIM-DUMMY-20D",
+      "decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+      "run": 35723571953
+    },
+    "sign_contract": {
+      "latest": "RIBASIM-DUMMY-20H9",
+      "decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
+      "run": 35749109620
+    },
+    "product": {
+      "imod_coupler_commit": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "ribasim_release": "v2026.1.1",
+      "ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
+    },
+    "source_mechanism": {
+      "ribasim_bmi": "BMI.update_until(time) computes dt=time-current and calls step!(model,dt).",
+      "ribasim_step": "step! runs update_allocation! only when the current step-start time is an exact multiple of allocation.dt, then advances the full requested dt.",
+      "callbacks": "create_callbacks contains no fixed-allocation boundary callback.",
+      "ribamod": "RibaMod advances Ribasim with update_until(MF6 current time) after each MF6 product step."
+    }
+  },
+  "frozen_topology": {
+    "horizon_seconds": 86400,
+    "mf6_timestep_seconds": 21600,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1,
+    "user_demand_min_level_m": 0.99,
+    "groundwater_exchange": "none"
+  },
+  "cases": {
+    "A5_S24": {
+      "allocation_dt_seconds": 18000,
+      "product_step_seconds": 21600,
+      "expected_allocation_record_seconds": [
+        0
+      ],
+      "expected_clock_class": "MISALIGNED_CALL_START_GATED",
+      "expected_trajectory_authority": "DUMMY-20D A24_S24 stale-allocation trajectory",
+      "expected_final_root_m3": 16.019258389454414,
+      "expected_final_external_m3": 0,
+      "expected_final_level_m": 1.0000159807416105
+    },
+    "A6_S24": {
+      "allocation_dt_seconds": 21600,
+      "product_step_seconds": 21600,
+      "expected_allocation_record_seconds": [
+        0,
+        21600,
+        43200,
+        64800
+      ],
+      "expected_clock_class": "ALIGNED_CALL_START_GATED",
+      "expected_trajectory_authority": "DUMMY-20D A6_S24",
+      "expected_final_root_m3": 19.0156248969841,
+      "expected_final_external_m3": 5.49738186538438,
+      "expected_final_level_m": 1.0000074869932376
+    }
+  },
+  "hypotheses": [
+    "With allocation.dt=5 h and 6 h RibaMod/MF6 BMI advances, fixed allocation boundaries at 5, 10, 15 and 20 h are not executed because no BMI step starts at those times.",
+    "A5_S24 therefore writes only a t=0 allocation record through the 24 h product horizon.",
+    "Because its initial t=0 allocation is 32/0 and is never refreshed during day 1, A5_S24 reproduces the qualified DUMMY-20D A24_S24 stale-allocation trajectory within tolerance.",
+    "The aligned A6_S24 control writes allocation records at t=0, 6, 12 and 18 h and reproduces the DUMMY-20D A6_S24 trajectory.",
+    "The day-end total supplied UserDemand differs by more than 8 m3 between A6 and A5, demonstrating a hydrologically material consequence of clock commensurability.",
+    "This establishes call-start-gated fixed-allocation timing for the tested v2026.1.1 BMI/RibaMod composition; it does not by itself classify an upstream software defect."
+  ],
+  "references": {
+    "A5_end": {
+      "root_m3": 16.019258389454414,
+      "external_m3": 0,
+      "total_m3": 16.019258389454414,
+      "level_m": 1.0000159807416105
+    },
+    "A6_end": {
+      "root_m3": 19.0156248969841,
+      "external_m3": 5.49738186538438,
+      "total_m3": 24.51300676236848,
+      "level_m": 1.0000074869932376
+    },
+    "minimum_day_end_total_separation_m3": 8
+  },
+  "tolerances": {
+    "cumulative_volume_m3": 0.05,
+    "level_m": 5e-8,
+    "allocation_record_time_seconds": 0.000001
+  },
+  "forbidden": [
+    "no change to allocation record expectations after output",
+    "no reinterpretation of skipped noncommensurate boundaries as saveat behavior",
+    "no production prescription",
+    "no upstream defect classification from this unit alone",
+    "no production/reference source changes"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+  "fail_decision": "RIBASIM_DUMMY_20H10_FALSIFIED_OR_BLOCKED"
+}
