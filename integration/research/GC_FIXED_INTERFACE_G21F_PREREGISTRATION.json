@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21f.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21F",
+  "title": "Outer-2 real-SWAP participant admissibility boundary at the solver-configuration split",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "4494c79de8091177768985e79c2104e479a657b8",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21E_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21D_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json"
+  ],
+  "question": "At the frozen outer-2 G11/G17 carrier, why does a head displacement of only about 2e-13 m around the independent G17 response root flip the real FMR/SWAP participant from status 0 to status 6, and is that status boundary deterministic, monotone and execution-diagnostically resolvable?",
+  "purpose": "Characterize the local participant-admissibility topology before interpreting solver-configuration path differences as coupling robustness. This is a diagnostic boundary-resolution unit, not an acceptance-policy change.",
+  "frozen_anchors": {
+    "g17_outer2_accepted_head_m": -0.7150100297646383,
+    "g17_outer2_participant_status": 0,
+    "nour_outer2_lambda1_head_m": -0.7150100297648363,
+    "nour_outer2_lambda1_participant_status": 6,
+    "standard_outer2_head_m": -0.7150100296924844,
+    "standard_outer2_participant_status": 0,
+    "nour_minus_g17_head_m": -1.978417429882029e-13,
+    "standard_minus_g17_head_m": 7.215394948190124e-11
+  },
+  "fixed_carrier": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "immutable_origin_required": true,
+    "observation_path": "G16 immutable-origin tangent observation service",
+    "allowed_participant_statuses": [
+      0,
+      6
+    ],
+    "no_publication_authority": true
+  },
+  "experiment_contract": [
+    "Initialize the same real FGC44 carrier and immutable FMR origin used by G17/G21E.",
+    "Begin a fresh G16 session and verify the three frozen anchor heads reproduce their persisted participant statuses before any boundary inference.",
+    "Scan 33 unique ordered binary64 heads spanning the closed NOUR-status6 to G17-status0 bracket; record status, q availability and all G15 execution diagnostics.",
+    "Require the coarse bracket statuses to be monotone from status 6 on the more-negative side to status 0 on the less-negative side before applying binary search. Any status island or reversal yields NONMONOTONE_OR_UNRESOLVED and no single threshold claim.",
+    "If monotone, bisect in binary64 head space until the status-6 lower endpoint and status-0 upper endpoint are adjacent representable floating-point values or no further distinct midpoint exists.",
+    "Record the final boundary width in metres and in binary64 ulps around the transition.",
+    "Probe the final lower/upper endpoints and the nearest four representable neighbours on both sides; retain complete participant observation diagnostics.",
+    "End the session, begin two additional fresh G16 sessions from the same immutable accepted origin, and repeat the final neighbourhood probes to test cross-session determinism with fresh physical participant trials.",
+    "All diagnostic candidates remain discarded through G16. Accepted revision/time, ledger state, FMR preflight and ledger preflight must remain unchanged throughout.",
+    "Do not alter solver tolerances, SWAP numerical configuration, head values, participant status semantics or trial retry policy."
+  ],
+  "quantitative_gates": [
+    "Frozen G17 head reproduces status 0; frozen NOUR lambda=1 head reproduces status 6; frozen STANDARD head reproduces status 0.",
+    "All 33 coarse scan heads are unique binary64 values and return only status 0 or 6.",
+    "Report transition count in the ordered coarse scan; exactly one transition is required for a MONOTONE_SINGLE_BOUNDARY classification.",
+    "For a monotone bracket, final status-6 and status-0 endpoints are adjacent representable binary64 values or midpoint exhaustion is demonstrated.",
+    "The final bracket endpoints retain their status in all three independent G16 sessions.",
+    "Report participant result status, completed, candidate_ready, attempts, retries, solver_rejections, temporal_rejections, temporal_unavailable_rejections, mass_rejections, internal_retries and accepted-substep range for every final-neighbour probe.",
+    "Report whether any execution-diagnostic field changes before the status flip and identify the first field differences across the adjacent boundary endpoints.",
+    "No ordinary publication-path trial is used and no accepted state, ledger or preflight authority changes.",
+    "No production/runtime/adapter source change."
+  ],
+  "interpretation_rules": {
+    "MONOTONE_SINGLE_BOUNDARY": "Coarse scan has exactly one 6-to-0 transition, binary64 bisection resolves one adjacent status-6/status-0 pair, and the boundary statuses reproduce across all three fresh sessions.",
+    "NONMONOTONE_OR_UNRESOLVED": "The bracket contains status islands/reversals, unexpected statuses, nondeterministic repeats, or cannot maintain the frozen endpoint statuses.",
+    "DETERMINISTIC_EXECUTION_THRESHOLD": "MONOTONE_SINGLE_BOUNDARY plus a reproducible discrete change in execution diagnostics across the adjacent endpoints. This labels an execution-level threshold only; it does not identify the physical or source-level cause.",
+    "DETERMINISTIC_STATUS_BOUNDARY_CAUSE_UNRESOLVED": "MONOTONE_SINGLE_BOUNDARY but the available diagnostics do not localize the cause of the status flip."
+  },
+  "pass_interpretation": "PASS means the local status topology and repeatability were measured without changing participant semantics. A deterministic one-ulp boundary is diagnostic evidence, not justification for loosening status 6 or adding a head tolerance.",
+  "fail_interpretation": "Preserve failures. Do not smooth, snap, round, perturb or widen head acceptance after seeing the boundary; do not reinterpret status 6 as admissible.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21f_admissibility_boundary.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21F_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "G16 observation semantics",
+    "FMR participant acceptance/retry semantics",
+    "G09D/G13 E3 rules",
+    "G11/G17 P4 semantics",
+    "MODFLOW IMS configuration",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
