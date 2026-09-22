@@ -146,19 +146,20 @@ echo 'GC REAL SWAP MAP09 MAP09A ACTIVE DRAINAGE DECOMPOSITION PASS'
 
 
 # G12's preregistered all-regime groundwater href-calibration gate was
-# falsified. Preserve that result; do not rerun G12 as a moving acceptance gate.
+# falsified. G12A then qualified the failure mechanism as one-shot bias anchoring.
+# Preserve both; neither is rerun as a moving acceptance gate.
 echo 'GC_FIXED_INTERFACE_G12_EXECUTION=FALSIFIED_PRESERVED'
+echo 'GC_FIXED_INTERFACE_G12A_DIAGNOSTIC=QUALIFIED_PRESERVED'
 
-# G12A diagnostic: reproduce the frozen one-shot groundwater bias for all three
-# regimes, characterize the local affine q(H) response, and directly invert
-# q->H for href with exactly 20 bisections. No bias retuning or policy replay.
+# G12B: remeasure the persisted G12A local groundwater authorities and replay
+# P1/P4 on the active-drainage MAP09 carrier with unchanged E3_MAP and safeguard.
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
-  python3 tests/research/test_gc_fixed_interface_map09_groundwater_calibration_g12a.py \
-  | tee "$BUILD/g12a-groundwater-calibration.txt"
+  python3 tests/research/test_gc_fixed_interface_map09_local_groundwater_g12b.py \
+  | tee "$BUILD/g12b-active-drainage-local-groundwater.txt"
 
-grep -Fq 'GC_FIXED_INTERFACE_G12A_DIAGNOSTIC=PASS' "$BUILD/g12a-groundwater-calibration.txt" || {
-  echo "GC_G12A_FAIL missing groundwater-calibration diagnostic gate" >&2
+grep -Fq 'GC_FIXED_INTERFACE_G12B_EXECUTION=PASS' "$BUILD/g12b-active-drainage-local-groundwater.txt" || {
+  echo "GC_G12B_FAIL missing active-drainage local-groundwater replay gate" >&2
   exit 1
 }
 
