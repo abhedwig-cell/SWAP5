@@ -107,7 +107,7 @@ def _budget_component_sum(data)->float:
 
 def read_modflow_component_balance(
     workdir:Path, expected_api_m3_per_day:float
-)->tuple[float,float,float,float,float,str]:
+)->tuple[float,float,float,float,float,str,bool,bool]:
     listing_path=workdir/"GWF_1.lst"
     listing_budget=flopy.utils.Mf6ListBudget(str(listing_path))
     require(listing_budget.isvalid(),"MODFLOW6 native GWF model budget unavailable")
@@ -132,8 +132,7 @@ def read_modflow_component_balance(
     # Preserve the pre-existing closeout balance gate. This is the same absolute
     # and relative residual criterion used before the listing reader replaced
     # the invalid raw-CBC aggregate; no tolerance is changed after observing a failure.
-    require(abs(residual)<=max(1.0e-9,1.0e-8*scale),
-            "accepted MODFLOW6 native GWF model balance does not close")
+    model_balance_gate=abs(residual)<=max(1.0e-9,1.0e-8*scale)
 
     budget=flopy.utils.CellBudgetFile(str(workdir/"fgc44.cbc"),precision="double")
     api_records=[]
@@ -146,9 +145,9 @@ def read_modflow_component_balance(
     require(api_records,"MODFLOW6 binary budget contains no API package record")
     api_component=float(sum(api_records))
     api_scale=max(1.0,abs(api_component),abs(expected_api_m3_per_day))
-    require(abs(api_component-expected_api_m3_per_day)<=256*np.finfo(float).eps*api_scale,
-            "MODFLOW6 API budget record differs from accepted coupling term")
-    return total_in,total_out,residual,percent_discrepancy,api_component,listing_path.name
+    api_component_gate=abs(api_component-expected_api_m3_per_day)<=256*np.finfo(float).eps*api_scale
+    return (total_in,total_out,residual,percent_discrepancy,api_component,
+            listing_path.name,model_balance_gate,api_component_gate)
 
 def solve_closeout_constant_flux(
     libmf6:Path, swaplib:Path, href:float, q_source_m_per_s:float
@@ -247,9 +246,12 @@ def closeout_independent_endpoint(
         root=0.5*(lo+hi)
         rroot=residual(root)
         for _ in range(80):
+            previous=root
             root=0.5*(lo+hi)
             rroot=residual(root)
-            if abs(rroot)<=FLUX_TOL or abs(hi-lo)<=1.0e-12:
+            if abs(rroot)<=FLUX_TOL:
+                break
+            if root==lo or root==hi or root==previous:
                 break
             if rlo*rroot<=0.0:
                 hi=root
@@ -258,8 +260,8 @@ def closeout_independent_endpoint(
                 lo=root
                 rlo=rroot
 
-    require(abs(rroot)<=FLUX_TOL or abs(hi-lo)<=1.0e-12,
-            "independent physical endpoint bisection did not close")
+    require(abs(rroot)<=FLUX_TOL,
+            "independent physical endpoint oracle itself does not meet the frozen residual gate")
     require(swap.state()==origin_state,
             "independent endpoint qualification changed accepted authority")
     return float(root),float(rroot),float(slope),float(intercept),fit_error
@@ -433,7 +435,8 @@ def main()->None:
                 print("FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE="+("PASS" if independent_residual_gate else "FAIL"))
                 expected_api_m3_per_day=final_q_gw*AREA_M2*DAY_TO_S
                 (mf_total_in,mf_total_out,mf_budget_residual,mf_percent_discrepancy,
-                 mf_api_component,mf_listing_file)=read_modflow_component_balance(
+                 mf_api_component,mf_listing_file,mf_model_balance_gate,
+                 mf_api_component_gate)=read_modflow_component_balance(
                     workdir,expected_api_m3_per_day
                 )
                 print(f"FGC44_MODFLOW_TOTAL_IN_M3_PER_DAY={mf_total_in:.17g}")
@@ -443,6 +446,8 @@ def main()->None:
                 print(f"FGC44_MODFLOW_API_COMPONENT_M3_PER_DAY={mf_api_component:.17g}")
                 print(f"FGC44_MODFLOW_API_EXPECTED_M3_PER_DAY={expected_api_m3_per_day:.17g}")
                 print(f"FGC44_MODFLOW_LISTING_FILE={mf_listing_file}")
+                print("FGC44_MODFLOW_MODEL_BALANCE_GATE="+("PASS" if mf_model_balance_gate else "FAIL"))
+                print("FGC44_MODFLOW_API_COMPONENT_GATE="+("PASS" if mf_api_component_gate else "FAIL"))
 
             print(f"FGC44_FINAL_HEAD_M={final_head:.17g}")
             print(f"FGC44_FINAL_Q_SWAP_M_PER_S={final_q_swap:.17g}")
@@ -470,6 +475,10 @@ def main()->None:
             print("FGC44_REAL_SWAP_PHYSICAL_RESPONSE_RELINEARIZATION=PASS")
             if CLOSEOUT_ONECELL:
                 print("FGC44_CLOSEOUT_ONE_SWAP_ONE_MODFLOW_CELL=PASS")
+                require(mf_model_balance_gate,
+                        "accepted MODFLOW6 native GWF model balance does not close")
+                require(mf_api_component_gate,
+                        "MODFLOW6 API budget record differs from accepted coupling term")
                 print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
                 require(independent_residual_gate,
                         "coupled endpoint does not close independent physical residual")
