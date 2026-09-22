@@ -77,13 +77,10 @@ def solve_term_map09(
     hcof:float,
     rhs_swap:float,
 )->tuple[float,float,int]:
-    """Run unchanged F-GC44 MODFLOW geometry under a pure vertical datum translation."""
-    href_mf=href-MAP09_DATUM_SHIFT
-    rhs_mf=rhs_swap-hcof*MAP09_DATUM_SHIFT
-    h_mf,q,iters=solve_term(
-        libmf6,swaplib,DURATION_DAY,href_mf,k,ss,sy,head_bias,hcof,rhs_mf
+    """Run the preregistered G12 vertical-datum-translated MODFLOW geometry."""
+    return solve_term_g12(
+        libmf6,swaplib,DURATION_DAY,href,k,ss,sy,head_bias,hcof,rhs_swap
     )
-    return h_mf+MAP09_DATUM_SHIFT,q,iters
 
 
 def initialize_checked(swap:Map09ActiveDrainageSwap)->tuple[float,dict[str,object],tuple[int,float,int,float]]:
