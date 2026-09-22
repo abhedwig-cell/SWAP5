@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e05.nested_storage_resolution_census_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E05",
+  "authority": "preregistered response-blind nested-resolution state census",
+  "production_changes": false,
+  "parent_result_commit": "7c8fc83b787ebb633775ff6600cb77ac5ded1492",
+  "scientific_question": "Within the same immutable qualified 16-node state library, how far can the total-profile-water and upper-30-cm-water matching tolerances be tightened while retaining a materially different interface-adjacent H16?",
+  "rationale": [
+    "E04 supports non-unique next interface exchange at the frozen 1e-4 cm aggregate-storage resolution.",
+    "Because E04's selected pair has a nonzero W_root30 mismatch, a stronger exact-valued sufficiency claim requires tighter state matching before another response probe.",
+    "The next step is therefore state-only and response-blind."
+  ],
+  "source_authority": {
+    "inherited_from": "GC-RZM06E03D/E03E",
+    "source_artifacts": "exact immutable D04, E01, E03, E03B and E03C artifact set already verified by E03D/E03E",
+    "state_input": "node-level H/theta plus provenance only",
+    "response_fields_forbidden": true
+  },
+  "frozen_observables": {
+    "profile_water_cm": "sum(theta_i*10), i=1..16",
+    "root30_water_cm": "sum(theta_i*10), i=1..3",
+    "bottom_node_pressure_head_cm": "H16"
+  },
+  "nested_resolution_ladder_cm": [
+    0.0001,
+    0.00001,
+    0.000001,
+    1e-7,
+    1e-8,
+    1e-9,
+    1e-10,
+    1e-12
+  ],
+  "exact_rung": {
+    "profile_water_rule": "numeric equality after deterministic reconstruction",
+    "root30_water_rule": "numeric equality after deterministic reconstruction"
+  },
+  "interface_state_gate": {
+    "min_abs_H16_difference_cm": 0.01
+  },
+  "selection": {
+    "pair_scope": "all distinct bit-nonidentical states in the deduplicated immutable library",
+    "rung_rule": "for each epsilon, a pair qualifies if both |ΔW_profile|<=epsilon and |ΔW_root30|<=epsilon and |ΔH16|>=0.01 cm",
+    "selected_rung": "tightest numeric tolerance with at least one qualifying pair; EXACT only if exact equality also has a qualifying pair",
+    "ranking_within_selected_rung": [
+      "largest abs(delta H16)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "largest abs(delta theta16) as diagnostic tie-breaker",
+      "lexicographic provenance"
+    ],
+    "persistence": "persist all 16 H/theta values for the selected pair before any later response probe",
+    "no_match": "If no rung tighter than 1e-4 cm contains a qualifying pair, close E05 as CURRENT_LIBRARY_RESOLUTION_CEILING without changing source set or thresholds."
+  },
+  "decisions": [
+    "SELECTED_TIGHTER_STORAGE_MATCHED_INTERFACE_STATE_PAIR",
+    "SELECTED_EXACT_STORAGE_MATCHED_INTERFACE_STATE_PAIR",
+    "CURRENT_LIBRARY_RESOLUTION_CEILING"
+  ],
+  "next_if_selected": "Preregister a new fixed-Hc response probe using the immutable E05 pair, the same common-time reseed authority and the unchanged E04 forcing/response threshold.",
+  "next_if_ceiling": "Move to a new independently controlled deep-state construction axis; do not continue retrospective state-library selection or relax H16.",
+  "controls": [
+    "no response information in selection or ranking",
+    "no source artifact additions after result inspection",
+    "no production source changes",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "E05 is a state-space census only.",
+    "Failure to find a tighter pair is not proof of exact state sufficiency.",
+    "H16 remains a mechanistic discriminator, not an admitted reduced-state variable."
+  ]
+}
