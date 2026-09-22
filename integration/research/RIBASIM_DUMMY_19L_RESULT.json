@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.coupling.real_ribasim_explicit_apply_trajectory_equivalence.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19L",
+  "decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+  "authority": {
+    "qualification_head": "ab3b6ebdc03e6db1ae3613c1ab7e5cf4b27ae485",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35707251106,
+    "workflow_job": 106679048188,
+    "conclusion": "success"
+  },
+  "routes": {
+    "native": "solver.saveat=21600 s with native saveat-aligned UserDemand application",
+    "explicit_apply": "solver.saveat=86400 s with 21600 s BMI boundaries and test-only explicit UserDemand/per-link apply"
+  },
+  "observations": {
+    "root_first": [
+      {
+        "endpoint_s": 21600,
+        "root_m3": 4.001204783852691,
+        "external_m3": 0,
+        "total_m3": 4.001204783852691,
+        "level_m": 1.0000039987952163,
+        "storage_gain_m3": 3.9987952162867657
+      },
+      {
+        "endpoint_s": 43200,
+        "root_m3": 9.005081204250612,
+        "external_m3": 1.0001724251570352,
+        "total_m3": 10.005253629407648,
+        "level_m": 1.0000059947463706,
+        "storage_gain_m3": 5.994746370641124
+      },
+      {
+        "endpoint_s": 64800,
+        "root_m3": 14.010080512380034,
+        "external_m3": 2.999542707252727,
+        "total_m3": 17.00962321963276,
+        "level_m": 1.0000069903767803,
+        "storage_gain_m3": 6.990376780313667
+      },
+      {
+        "endpoint_s": 86400,
+        "root_m3": 19.015566901854644,
+        "external_m3": 5.5022859019900325,
+        "total_m3": 24.517852803844676,
+        "level_m": 1.0000074821471963,
+        "storage_gain_m3": 7.482147196258282
+      }
+    ],
+    "external_first": [
+      {
+        "endpoint_s": 21600,
+        "root_m3": 1.5004520090996634,
+        "external_m3": 2.5007533484994404,
+        "total_m3": 4.001205357599104,
+        "level_m": 1.0000039987946423,
+        "storage_gain_m3": 3.998794642301462
+      },
+      {
+        "endpoint_s": 43200,
+        "root_m3": 5.002562110521006,
+        "external_m3": 5.002691382377569,
+        "total_m3": 10.005253492898575,
+        "level_m": 1.0000059947465072,
+        "storage_gain_m3": 5.994746507198556
+      },
+      {
+        "endpoint_s": 64800,
+        "root_m3": 9.504434034923108,
+        "external_m3": 7.50519210367405,
+        "total_m3": 17.009626138597156,
+        "level_m": 1.0000069903738613,
+        "storage_gain_m3": 6.990373861315291
+      },
+      {
+        "endpoint_s": 86400,
+        "root_m3": 14.50992377167344,
+        "external_m3": 10.007936972049215,
+        "total_m3": 24.517860743722657,
+        "level_m": 1.0000074821392564,
+        "storage_gain_m3": 7.482139256387299
+      }
+    ]
+  },
+  "equivalence": "For each priority case, native and explicit-apply routes produced identical logged Basin level, storage gain and cumulative recipient-delivery values at 6, 12, 18 and 24 h.",
+  "qualified_claims": [
+    "The test-only explicit UserDemand solve→apply seam is segment-by-segment transactionally equivalent to native 6-hour saveat application for the tested one-day cases.",
+    "Final endpoint agreement is not compensating error; the accepted physical state and cumulative transfer ledger match at every 6-hour boundary.",
+    "Output record cadence and UserDemand application cadence are separable in the demonstrated contract.",
+    "The necessary coupling primitive is an explicit allocation application/commit at the accepted management boundary, not an allocation output write."
+  ],
+  "architectural_contract": [
+    "SOLVE: compute a candidate allocation from the accepted current physical state.",
+    "APPLY/ADMIT: explicitly publish the selected UserDemand allocation and per-link targets to the physical model state.",
+    "REALIZE: advance physical dynamics using that applied allocation.",
+    "ACCEPT/COMMIT: accept the resulting physical state and transfer ledger at the coupling boundary.",
+    "RECORD: emit diagnostics/output independently of the semantic commit, unless a product API intentionally couples them."
+  ],
+  "boundaries": [
+    "This proves equivalence for the tested UserDemand topology and pinned Ribasim only.",
+    "The explicit helper is research code, not a production Ribasim API.",
+    "No inference to Pump/Outlet semantics.",
+    "No production SWAP5/Ribasim/MODFLOW coupling admission."
+  ],
+  "downstream": "Update the programme synthesis and use solve→apply→realize→accept→record as the research contract for the next real-coupler substitution work."
+}
