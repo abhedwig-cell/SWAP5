@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e04.rootmatched_interface_memory_probe_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E04",
+  "authority": "preregistered fixed-Hc response falsification for immutable E03E pair",
+  "production_changes": false,
+  "parent_pair_authority": {
+    "E03E_result_commit": "e7ba2db6b5eb4084a61387e1159e76cf77394fd1",
+    "decision": "QUALIFIED_RESPONSE_BLIND_STORAGE_MATCHED_INTERFACE_STATE_PAIR_SELECTED",
+    "A": [
+      "E01",
+      "CLOSED",
+      "1"
+    ],
+    "B": [
+      "E03",
+      "DRY_RECOVER",
+      "RECOVER",
+      "19"
+    ]
+  },
+  "common_time_authority": {
+    "work_unit": "GC-RZM06D02R1",
+    "decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+    "evidence_commit": "24277b01740b4c0b7a1f4e68bb44d6bb148dcece",
+    "rule": "Both immutable H/theta profiles are reconstructed at canonical t0=0 before response."
+  },
+  "scientific_question": "At identical fixed-plane H_c, identical canonical time, equal total profile water within 1e-4 cm, and equal upper-30-cm water within 1e-4 cm, does the E03E pair with materially different interface-adjacent H16 produce a different next forcing-free whole-window bottom exchange?",
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "backend": "serialized strict Reference HeadCalc",
+    "bottom_mode": 5,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "frozen_state_gates": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_bottom_node_pressure_head_difference_cm": 0.01,
+    "expected_selected_pair": {
+      "abs_delta_profile_water_cm": 0,
+      "abs_delta_root30_water_cm": 0.000043428876926654425,
+      "abs_delta_H16_cm": 0.0738671093353922
+    }
+  },
+  "frozen_probe": {
+    "fixed_interface_head_m": -1.897937090169065,
+    "bottom_boundary_elevation_m": -1.6,
+    "expected_mapped_bottom_pressure_head_cm": -29.793709016906497,
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "top_flux_cm_per_day": 0,
+    "primary_response": "bottom_outward_exchange_native",
+    "response_unit": "native cm whole-window exchange",
+    "support_threshold_abs_delta_exchange_cm": 1e-18,
+    "terminal_bottom_outward_flux": "descriptive only"
+  },
+  "execution_contract": [
+    "extract origins only from persisted E03E result vectors",
+    "reseed A and B independently at canonical t0=0",
+    "reconstruct W_profile, W_root30 and H16 before any probe and fail closed if any state gate fails",
+    "materialize identical fixed-Hc forcing with the admitted groundwater-head forcing adapter",
+    "run A then B and B then A, each with a fresh committed origin and fresh backend",
+    "strict Reference sample only; one physical advance; no automatic temporal subdivision, fallback or commit",
+    "discard every candidate after observation and require committed origin bit identity",
+    "require same-origin bit-identical response across execution orders",
+    "require complete mass accounting and |residual|<=1e-12 cm for an admitted probe"
+  ],
+  "decisions": [
+    "SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_FOR_SELECTED_REAL_SWAP_PAIR",
+    "NO_SUPPORT_AT_SELECTED_ROOTMATCHED_PAIR",
+    "PROBE_NOT_ADMITTED",
+    "RECONSTRUCTION_FAILED"
+  ],
+  "interpretation_boundary": [
+    "Support means the prospectively selected pair yields different next fixed-Hc whole-window exchange after controlling total storage and upper-30-cm storage.",
+    "Support would show that those two aggregate storage variables are not sufficient for this carrier/window.",
+    "Support would not prove H16 is the unique or minimal missing state coordinate.",
+    "No second MODFLOW hydraulic state or production coupling change follows."
+  ],
+  "controls": [
+    "no origin reselection after E03E",
+    "no state-threshold change",
+    "no response-threshold change",
+    "no production source change",
+    "no H5/RZM06B work"
+  ]
+}
