@@ -195,8 +195,10 @@ def run_arm(case:dict[str,object],reg_auth:dict[str,object],reg_param:dict[str,o
                         require(bool(obs["q_available"]),f"G23 {cid} status0 without q")
                         cres=float(obs["q_swap_m_per_s"])-(a*candidate_head+b)
                         merit=abs(cres)<=abs(float(current_res))+MERIT_ABS_TOL
-                        require(abs(qgw-(a*candidate_head+b))<=1e-15,
-                                f"G23 {cid} settled groundwater response mismatch")
+                        gw_expected=a*candidate_head+b
+                        gw_mismatch=qgw-gw_expected
+                        require(abs(gw_mismatch)<=1e-15,
+                                f"G23 {cid} settled groundwater response mismatch qgw={qgw:.17e} expected={gw_expected:.17e} diff={gw_mismatch:.17e}")
                     else:
                         require(not bool(obs["q_available"]),f"G23 {cid} failed observation retained q")
                     attempts.append({
