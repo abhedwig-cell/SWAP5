@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.coupling.real_ribamod_next_boundary_memory_forecast_bridge.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H7",
+  "title": "Actual RibaMod t=24 accepted-memory versus current-forcing allocation bridge",
+  "baseline": "6deb5c3b08d58f292bc5cf8f369e72cd72daf279",
+  "purpose": "Bridge the qualified DUMMY-20H6 exact-release t=24 allocation oracle back into the actual pinned RibaMod+MF6+Ribasim product route, without changing the accepted-state, current-forcing or allocation references.",
+  "authorities": {
+    "day1_active_river": {
+      "work_unit": "RIBASIM-DUMMY-20H",
+      "decision": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+      "workflow_run": 35732895672,
+      "accepted_t24_level_m": 1.000007990372381,
+      "accepted_t24_storage_excess_m3": 7.990372381083688,
+      "t0_root_allocation_m3_per_day": 32,
+      "t0_external_allocation_m3_per_day": 0
+    },
+    "next_boundary_oracle": {
+      "work_unit": "RIBASIM-DUMMY-20H6",
+      "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+      "workflow_run": 35743163688,
+      "current_river_forcing_m3_per_day": 8.000042512171305,
+      "expected_t24_root_allocation_m3_per_day": 39.99037238108369,
+      "expected_t24_external_allocation_m3_per_day": 0,
+      "expected_free_low_storage_factor": 0
+    },
+    "causality": {
+      "work_unit": "RIBASIM-DUMMY-20H5",
+      "decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY"
+    },
+    "product": {
+      "imod_coupler_commit": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "ribasim_release": "v2026.1.1",
+      "ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
+    }
+  },
+  "frozen_case": {
+    "horizon_for_observation_seconds": 108000,
+    "product_timestep_seconds": 21600,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1,
+    "user_demand_min_level_m": 0.99,
+    "active_river_conductance_m2_per_day": 16
+  },
+  "hypotheses": [
+    "The first four 6-hour accepted states reproduce the qualified DUMMY-20H active-River day-1 prefix, including t=24 Basin level 1.000007990372381 m within tolerance.",
+    "The fifth RibaMod product step uses the newly accepted t=24 Ribasim stage to compute and publish an active-River forcing consistent with the frozen DUMMY-20H6 8.0000425122 m3/day reference within the existing 0.01 m3/day forcing tolerance.",
+    "The actual Ribasim allocation output contains a new fixed-grid t=24 record after the fifth product update.",
+    "The t=24 actual-product root allocation is 39.9903723811 m3/day within 0.05 m3/day and external allocation is zero.",
+    "The increase from the t=0 32 m3/day root allocation to the t=24 allocation equals the accepted day-1 storage excess of 7.9903723811 m3 within 0.05 m3/day.",
+    "The t=24 actual-product allocation therefore matches the DUMMY-20H6 free-alpha oracle rather than the invalidated old same-boundary forcing-subtraction premise.",
+    "External physical supply remains zero through the first post-boundary 6-hour segment and the coupled source/infiltration/UserDemand/storage ledger closes."
+  ],
+  "falsification_signatures": [
+    "t=24 allocation remains 32/0 despite reproduction of the accepted day-1 state",
+    "t=24 allocation is approximately 31.99033/0 or otherwise directly subtracts current River forcing from accepted-memory budget",
+    "no t=24 allocation record is produced when the actual product crosses that fixed allocation boundary",
+    "the actual day-1 accepted state or next-step River forcing does not reproduce its qualified authority within tolerance"
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "accepted_level_m": 5e-8,
+    "cumulative_volume_m3": 0.05,
+    "forcing_m3_per_day": 0.01,
+    "ledger_m3": 0.05,
+    "zero_external_m3": 0.001,
+    "time_seconds": 0.000001
+  },
+  "observability": {
+    "allocation_authority": "Read actual Ribasim results/allocation.nc after finalization; require distinct t=0 and t=24 allocation records.",
+    "physical_authority": "Read XMI Basin level, cumulative UserDemand inflow, cumulative infiltration and MF6 River flux at accepted 6-hour boundaries."
+  },
+  "forbidden": [
+    "no retuning from H7 observed output",
+    "no modification of H6 numerical references or tolerances",
+    "no substitution of physical supplied volume for allocation output",
+    "no production SWAP5 admission",
+    "no generalization beyond the tested active-River/UserDemand topology"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+  "fail_decision": "RIBASIM_DUMMY_20H7_FALSIFIED_OR_BLOCKED"
+}
