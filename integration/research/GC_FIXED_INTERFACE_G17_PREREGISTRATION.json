@@ -1,0 +1,142 @@
+{
+  "schema": "swap5.gc_fixed_interface.g17.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G17",
+  "title": "G16-backed safeguarded tangent coupling orchestration and final publication seam",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "48dcdcdfd035ff875918c38f46a934c1b29c14a0",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G15_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json"
+  ],
+  "question": "Can the qualified G16 immutable-origin tangent-observation service be used by the unchanged research E3/P4 controller to recover the frozen G11 live Newton overshoot, while keeping every diagnostic/probe/safeguard trial non-authoritative and allowing only one explicitly reacquired final FMR candidate to enter the existing preflight/ledger/publication path?",
+  "scope": {
+    "admitted_subject": "Research orchestration semantics across G16 observation service, frozen E3/P4 logic, final FMR candidate reacquisition, existing FMR preflight and groundwater-interface ledger publication seam.",
+    "live_components": [
+      "real FGC44 SWAP corrector/participant",
+      "qualified G16 tangent-observation service",
+      "live MODFLOW6 proposal/groundwater-response solves used by the frozen G11 research oracle",
+      "existing FMR candidate preflight/commit",
+      "existing groundwater-interface mass ledger prepare/preflight/commit"
+    ],
+    "explicit_limitations": [
+      "The live MODFLOW solves remain the existing research proposal/merit oracle and are not themselves a persistent transactional MODFLOW participant commit.",
+      "Sequential SWAP commit followed by ledger commit is not claimed crash-atomic merely because both preflights pass.",
+      "E3 and P4 remain research policy logic outside production runtime authority.",
+      "No HCOF/RHS production policy change is admitted."
+    ]
+  },
+  "frozen_carrier": {
+    "source": "GC_FIXED_INTERFACE_G11_RESULT.json",
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "reference_head_m": -0.7149999311459918,
+    "predictor_u": 0.00119027208545508,
+    "start_dh_m": 0,
+    "negative_target_edge_dh_m": -0.00001
+  },
+  "frozen_groundwater_stress": {
+    "source": "GC_FIXED_INTERFACE_G11_PREREGISTRATION.json",
+    "k_m_per_day": 1e-10,
+    "ss_per_m": 0,
+    "sy_formula": "0.5*u_predictor",
+    "initial_head_bias_m": -0.00003332218778007957,
+    "q_probes_m_per_s": [
+      -2e-10,
+      -1e-10,
+      0,
+      1e-10,
+      2e-10
+    ],
+    "max_affine_fit_error_m_per_s": 1e-16
+  },
+  "frozen_controller": {
+    "policy": "P4_E3",
+    "scale_ladder_m": [
+      2.5e-7,
+      1.25e-7,
+      6.25e-8,
+      3.125e-8,
+      1.5625e-8,
+      7.8125e-9,
+      3.90625e-9
+    ],
+    "execution_class_fields": [
+      "accepted_substeps",
+      "attempts",
+      "retries",
+      "solver_rejections",
+      "temporal_rejections",
+      "internal_retries",
+      "min_substep",
+      "max_substep"
+    ],
+    "central_rule": "Use h-d and h+d only when both status-0/candidate-ready observations share one execution class.",
+    "backward_rule": "Use h, h-d and h-2d only when all share one execution class.",
+    "forward_rule": "Use h, h+d and h+2d only when all share one execution class.",
+    "multiscale_gate": "First adjacent valid candidate pair with relative slope difference <= 0.05; select the coarser.",
+    "convergence_flux_tolerance_m_per_s": 1e-15,
+    "merit_absolute_tolerance_m_per_s": 1e-18,
+    "safeguard": "factor-1/2 contraction",
+    "max_outer": 12,
+    "max_backtrack": 12,
+    "no_policy_retuning": true
+  },
+  "frozen_reference_behavior": {
+    "source": "GC_FIXED_INTERFACE_G11_RESULT.json",
+    "first_raw_dh_m": -0.000011162302297473836,
+    "first_raw_participant_status": 6,
+    "expected_total_contractions": 2,
+    "reference_final_dh_m": -0.000009999346805233955,
+    "reference_final_residual_m_per_s": -1.0640987109201395e-20,
+    "required_classification": "CONVERGED"
+  },
+  "orchestration_contract": [
+    "Initialize and capture one immutable FMR origin; accepted revision/time and committed ledger snapshot define the authority baseline.",
+    "Begin one G16 session and use only G16 observe_head for all SWAP-side current-head, E3 stencil, raw-Newton and P4 safeguard diagnostic evaluations.",
+    "After every G16 observation the participant must have no live candidate, FMR preflight must be false, ledger preflight must be false, and committed revision/time/ledger snapshot must equal the origin baseline.",
+    "Status-6 observations are diagnostic only with q unavailable and may trigger P4 contraction; they must not leak candidate-busy state.",
+    "Within the G16 session exact-head repeats may be served from cache; every unique prescribed head causes at most one participant physical trial.",
+    "After research P4 convergence, retain the cached final observation only as diagnostic evidence, end the G16 session, and prove no publication authority exists yet.",
+    "Reacquire the converged head exactly once through the ordinary participant trial path outside G16. This is the sole candidate allowed to become live/publication-ready.",
+    "The reacquired final trial must reproduce the cached final diagnostic q within 1e-18 m/s.",
+    "Only after final-candidate FMR preflight passes may the interface ledger be prepared. Ledger preflight must pass while committed state remains unchanged.",
+    "Then execute the existing nominal publication order: participant commit followed by prepared-ledger commit. No claim of crash atomicity follows from this nominal-path test.",
+    "A fresh-process direct-publication control at the exact converged head must reproduce the same committed revision/time/ledger count and ledger exchange."
+  ],
+  "quantitative_gates": [
+    "Frozen G11 first raw proposal remains participant status 6 and agrees with the persisted G11 raw head within 1e-12 m.",
+    "P4 performs exactly two factor-1/2 contractions and converges with |residual| <= 1e-15 m/s.",
+    "Final converged head agrees with persisted G11 final head within 1e-12 m.",
+    "For the entire diagnostic solve, service logical_requests = participant_trials + cache_hits and participant_trials = unique cached heads.",
+    "No diagnostic G16 call returns or leaves a live participant candidate.",
+    "No diagnostic call changes accepted revision/time or committed ledger count/exchange.",
+    "Immediately before final reacquisition FMR preflight and ledger preflight are both false.",
+    "Final reacquisition uses exactly one ordinary participant trial and leaves a live candidate before commit.",
+    "Cached-final versus reacquired-final q difference <= 1e-18 m/s.",
+    "Ledger committed exchange equals the final trial bottom_outward_exchange_cm * 0.01 within floating-point roundoff.",
+    "Fresh-process direct-publication control is equivalent to the orchestrated final publication state."
+  ],
+  "pass_interpretation": "PASS qualifies only the research orchestration and existing FMR/ledger publication seam under the frozen G11 safeguard-recovery stress. It demonstrates diagnostic non-authority and final-candidate handoff. It does not production-admit E3, P4, persistent MODFLOW transaction publication, crash-atomic multi-participant commit, or HCOF/RHS policy.",
+  "fail_interpretation": "Preserve technical failures separately from scientific/ownership failures. Do not weaken G16 ownership, G11 safeguard behavior, E3 rules, convergence tolerances or publication gates retrospectively.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g17_safeguarded_orchestration.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml only if needed to execute G17",
+    "integration/research/GC_FIXED_INTERFACE_G17_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence exists"
+  ],
+  "forbidden_mutation": [
+    "src/runtime coupling policy or HCOF/RHS implementation",
+    "G16 service semantics/cache rules",
+    "G15 participant observation semantics",
+    "G09D/G13 E3 thresholds, scale ladder or stencil rules",
+    "G11 P4 safeguard factor, tolerances or groundwater stress",
+    "groundwater interface ledger semantics"
+  ],
+  "production_admission": "NO_COUPLING_POLICY_ADMISSION"
+}
