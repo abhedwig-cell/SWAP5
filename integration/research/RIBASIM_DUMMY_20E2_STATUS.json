@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute clean v6 qualification opened only after the full-trajectory worker, source-scope rebind and exact-head checkout were already present.",
+  "next_action": "Execute unchanged 20E2 product model from the clean execution base; log all four raw states before applying frozen assertions.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -77,6 +77,14 @@
       },
       "interpretation": "First segment matches. The second-segment reference mismatch is real enough to require diagnosis, but v1 logging asserted before emitting the second endpoint's transfer/state observables.",
       "authority_use": "unresolved; not admitted"
+    },
+    {
+      "attempt": "v5",
+      "run": 35726441472,
+      "state": "SCIENTIFIC_MISMATCH_OBSERVABILITY_INCOMPLETE",
+      "reason": "Clean product run reproduced the t=12 Basin-level mismatch, but the v5 head still used the original assert-inside-loop worker and stopped before logging the raw t=12 state.",
+      "scientific_effect": "confirms mismatch exists; does not yet identify transfer magnitude/timing",
+      "authority_use": "diagnostic only"
     }
   ],
   "source_scope_reconciliation": {
@@ -94,6 +102,6 @@
     ],
     "required_next": "clean v5 Windows product qualification"
   },
-  "qualification_attempt": "v6_clean_opened_full_trajectory",
-  "qualification_base": "work/ribasim-dummy-01@fdfe5f71278a8398bfd8a58913a9e063f12b2848"
+  "qualification_attempt": "v6_clean_execution_base_full_trajectory",
+  "qualification_base": "a1ffd10eb2c7fb9946a5f2d116b413a8610b7bf2"
 }
