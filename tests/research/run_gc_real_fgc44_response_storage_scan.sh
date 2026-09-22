@@ -497,3 +497,15 @@ grep -Fq 'GC_FIXED_INTERFACE_G21M_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21M_FAIL missing residual arithmetic qualification gate" >&2
   exit 1
 }
+
+# G21N exhaustive binary64 head scan across the two frozen G21L boundary
+# intervals. Reuses the G21M temporary read-only observer and changes no
+# production solver or coupling source.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21n_term_delta_scan.py \
+  | tee "$BUILD/fgc44-globalization-g21n.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21N_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21n.txt" || {
+  echo "GC_FGC44_G21N_FAIL missing term-delta scan gate" >&2
+  exit 1
+}
