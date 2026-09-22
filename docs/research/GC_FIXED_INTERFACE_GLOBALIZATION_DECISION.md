@@ -130,3 +130,68 @@ P4 REMAINS A RESEARCH CANDIDATE.
 G08 DID NOT EXERCISE THE SAFEGUARD.
 CENTRAL TWO-SIDED TANGENT ACQUISITION IS NOT SUFFICIENT AT ALL REAL-SWAP BOUNDARY STATES.
 ```
+
+
+## G09/G09A disposition: tangent acquisition is execution-topology dependent
+
+G09 prospectively tested a status-driven central/one-sided physical tangent
+estimator on the eight frozen G08 boundary states. Its broad qualification gate
+was **falsified** in workflow `35699061533`.
+
+The result has two distinct parts that must not be conflated:
+
+- at the C2 high-forcing negative edge, the old central estimator remained
+  unavailable while the preregistered one-sided fallback immediately produced
+  a stable negative tangent. This is bounded positive evidence for that one
+  state;
+- the all-boundary 5% scale-consistency gate nevertheless failed at the
+  C3 long-window positive edge. G09 therefore remains failed.
+
+G09A then froze two states and nine probe scales to diagnose the mechanisms
+without changing the G09 tolerance or estimator.
+
+### C2 negative: fragmented numerical admissibility
+
+The participant validity pattern changes repeatedly with decreasing probe
+distance. Every sampled participant failure is reproduced in the raw corrector
+as an incomplete `result_status=2` solve with repeated solver rejections.
+The pattern is therefore numerical/component-domain topology, not evidence of
+a discontinuous hydrological response.
+
+Where negative-side probes are admitted, their accepted execution signature
+matches the center and their one-sided slope is stable near
+`-3.97158e-6 s^-1`.
+
+### C3 positive: admitted probes can still cross an execution branch
+
+All G09A C3-positive probes are participant-status 0. The large positive
+probes, however, switch from the center's one-substep/no-retry execution to a
+two-substep route with one temporal rejection/retry. Finite differences that
+span that switch give strongly scale-dependent slopes.
+
+Once the stencil remains inside the same accepted execution topology as the
+center, central, one-sided and local-regression slopes collapse near
+`-3.81275e-6 s^-1`.
+
+This means participant admissibility alone is not enough to define a local
+physical-response derivative of the executed corrector. A probe can be valid
+yet belong to a different numerical execution branch.
+
+## G09B candidate rule
+
+G09B is preregistered as a new estimator, not a repair of G09. A derivative
+probe may contribute only when:
+
+1. participant status is 0;
+2. the raw trial is complete and candidate-ready; and
+3. accepted substeps, attempts, retries, solver rejections, temporal
+   rejections and internal retries exactly match the current center trial.
+
+Central differencing remains preferred when both sides satisfy that rule.
+Otherwise a fixed second-order one-sided formula is allowed only on a side
+whose first two probes share the center execution topology. The same 5%
+half-scale consistency gate is retained.
+
+No production change follows from G09, G09A or G09B. Even if G09B qualifies,
+cost, broader process coverage and genuinely nonlinear real-SWAP behavior
+remain separate production gates.
