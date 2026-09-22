@@ -6,15 +6,15 @@
   "baseline": "4449e2a2edec312aeff316437d9fa40d953ee38c",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute the frozen A5/A6 actual-product noncommensurate allocation-clock qualification.",
+  "next_action": "Use qualified H10 as product authority for noncommensurate call-start clock aliasing; generalize with a clock-lattice matrix before any generic cadence conclusion.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "75dde070e41272c89c1ebd564b73b7fda47e431a",
-  "recovery_point": "DUMMY-20H10 preregistered after H9 closeout; A5/A6 product cases, frozen verifier, runner and workflow gate implemented without production/reference changes.",
+  "recovery_point": "DUMMY-20H10 qualified by frozen run 35750549610.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H10_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H10_CONCEPT.md",
@@ -25,5 +25,54 @@
     "tests/research/verify_ribasim_dummy_20h10_noncommensurate_clock.py",
     "tests/research/run_ribasim_dummy_20h10.ps1",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+  "workflow_run": 35750549610,
+  "workflow_job": 106823238949,
+  "qualification_head": "fd66d678f242941cbcffec251931418fa5c80ecd",
+  "observed": {
+    "A5_S24": {
+      "allocation_dt_seconds": 18000,
+      "product_step_seconds": 21600,
+      "allocation_record_seconds": [
+        0
+      ],
+      "allocation_root_m3_per_day": [
+        32
+      ],
+      "allocation_external_m3_per_day": [
+        0
+      ],
+      "final_level_m": 1.0000159807416105,
+      "final_root_m3": 16.019258389454414,
+      "final_external_m3": 0,
+      "final_total_m3": 16.019258389454414
+    },
+    "A6_S24": {
+      "allocation_dt_seconds": 21600,
+      "product_step_seconds": 21600,
+      "allocation_record_seconds": [
+        0,
+        21600,
+        43200,
+        64800
+      ],
+      "allocation_root_m3_per_day": [
+        32,
+        40.00000000000001,
+        40.00000000000001,
+        40.00000000000001
+      ],
+      "allocation_external_m3_per_day": [
+        0,
+        7.994917522184543,
+        15.978702316060655,
+        19.96173263480886
+      ],
+      "final_level_m": 1.0000074869932376,
+      "final_root_m3": 19.0156248969841,
+      "final_external_m3": 5.49738186538438,
+      "final_total_m3": 24.51300676236848
+    }
+  }
 }
