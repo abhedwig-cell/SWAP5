@@ -8,7 +8,15 @@ cd "$ROOT"
 # compile ordering in a temporary research copy. The historical runner itself
 # remains untouched. Current mod_reference_richards_temporal_indicator imports
 # mod_b110_root_sink_provider, so the provider must precede it.
+#
+# G21L additionally generates temporary research-build copies of the serialized
+# backend and FGC44 bridge. They add one read-only residual snapshot surface.
+# Committed production/runtime/solver sources remain byte-unchanged, and the
+# ordinary F-GC44 e2e gate is rerun against the instrumented research build.
 PATCHED_RUNNER="tests/fgc/.dsw22-current-source-fgc44-runner.sh"
+G21L_BACKEND="tests/fgc/.g21l_mod_fmr_serialized_reference_backend.f90"
+G21L_BRIDGE="tests/fgc/.g21l_mod_fgc44_real_swap_c_bridge.f90"
+python3 tests/research/prepare_gc_g21l_residual_observer.py
 python3 - <<'PY'
 from pathlib import Path
 source = Path("tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh")
@@ -16,17 +24,23 @@ target = Path("tests/fgc/.dsw22-current-source-fgc44-runner.sh")
 text = source.read_text()
 root_sink = "  src/solver/mod_b110_root_sink_provider.f90\n"
 temporal = "  src/solver/mod_reference_richards_temporal_indicator.f90\n"
+backend = "  src/runtime/mod_fmr_serialized_reference_backend.f90\n"
+bridge = "  tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90\n"
 if root_sink not in text or temporal not in text:
     raise SystemExit("DSW22 dependency-order repair anchors not found")
+if backend not in text or bridge not in text:
+    raise SystemExit("G21L research-build replacement anchors not found")
 text = text.replace(root_sink, "", 1)
 text = text.replace(temporal, root_sink + temporal, 1)
+text = text.replace(backend, "  tests/fgc/.g21l_mod_fmr_serialized_reference_backend.f90\n", 1)
+text = text.replace(bridge, "  tests/fgc/.g21l_mod_fgc44_real_swap_c_bridge.f90\n", 1)
 target.write_text(text)
 PY
 
 # Sourcing deliberately keeps BUILD and libfgc44_swap.so alive until this
 # outer research runner exits. It still executes the complete F-GC44 e2e gate.
 source "$PATCHED_RUNNER"
-rm -f "$PATCHED_RUNNER"
+rm -f "$PATCHED_RUNNER" "$G21L_BACKEND" "$G21L_BRIDGE"
 
 test -f "$BUILD/bridge/libfgc44_swap.so" || {
   echo "GC_DSW22_FAIL missing reused F-GC44 bridge library" >&2
@@ -449,5 +463,17 @@ FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
 
 grep -Fq 'GC_FIXED_INTERFACE_G21K_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21k.txt" || {
   echo "GC_FGC44_G21K_FAIL missing balance-threshold tomography gate" >&2
+  exit 1
+}
+
+# G21L direct final-residual observation. The shared library was built from
+# temporary research-only backend/bridge copies with a read-only workspace
+# observer. Production src/** and the standard FGC44 bridge remain untouched.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21l_residual_state.py \
+  | tee "$BUILD/fgc44-globalization-g21l.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21L_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21l.txt" || {
+  echo "GC_FGC44_G21L_FAIL missing direct residual-state gate" >&2
   exit 1
 }
