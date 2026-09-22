@@ -7,7 +7,7 @@
   "baseline": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
   "canonical_authority": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "frozen_core_evidence": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
-  "phase": "CLOSED_PARTIAL_AUTHORITY__NO_DIRECT_LAYER_ROM_ACCEPTANCE_ENVELOPE",
+  "phase": "CLOSED_WITH_FROZEN_NARROW_GWD_END2END_ROUTE__COMPONENT_ACCEPTANCE_STILL_PARTIAL",
   "process_completion": {
     "RECONCILE": "COMPLETE",
     "SOURCE_AUTHORITY": "COMPLETE",
@@ -22,12 +22,14 @@
     "new_layer_rom_candidate_responses_viewed": false,
     "thresholds_selected_from_candidate_error": false,
     "future_candidate_validation_authorized": false,
-    "reason": "No requested purpose has a complete independently justified reduced-model structural acceptance envelope."
+    "reason": "A narrow LHM-like GW-D end-to-end envelope is frozen, but no matching observation-bound blind application panel is preregistered. Current synthetic Layer-ROM purpose panels still lack a component structural-error envelope.",
+    "matching_lhm_like_end_to_end_envelope_frozen": true
   },
   "persisted_records": [
     "integration/f-rom/ROM_ACCEPT_01_SOURCE_PROVENANCE.json",
     "integration/f-rom/ROM_ACCEPT_01_PURPOSE_CONTRACTS.json",
-    "integration/f-rom/ROM_ACCEPT_01_STATUS_HANDOFF.json"
+    "integration/f-rom/ROM_ACCEPT_01_STATUS_HANDOFF.json",
+    "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json"
   ],
   "purpose_status": {
     "GW-R": {
@@ -36,7 +38,7 @@
       "blocker": "No quantitative recharge/cumulative-exchange bias, seasonal, annual, or drift requirement with matching temporal semantics."
     },
     "GW-D": {
-      "decision": "PARTIAL_AUTHORITY_FROZEN__ROM_STRUCTURAL_ALLOCATION_REQUIRED",
+      "decision": "FROZEN_NARROW_LHM_END2END_ROUTE__COMPONENT_FIDELITY_ROUTE_PARTIAL",
       "frozen_components": [
         "HYDRO-MEMORY Stage 0 total numerical groundwater-head budget: 0.004 m",
         "HYDRO-MEMORY Stage 0 temporal numerical budget: 0.001 m",
@@ -44,9 +46,19 @@
         "immutable accepted-origin semantics",
         "rejected trials publish zero authoritative interface mass",
         "accepted interface transfer is published exactly once",
-        "next-window state derives from current committed accepted state"
+        "next-window state derives from current committed accepted state",
+        "RWS LHM 4.1 direct groundwater application-output criteria in ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json"
       ],
-      "blocker": "The governing head budgets explicitly exclude model structural uncertainty. No independent Layer-ROM structural-error share or direct end-to-end reduced-model criterion is frozen."
+      "routes": {
+        "synthetic_or_component_fidelity": {
+          "state": "BLOCKED",
+          "blocker": "No independent Layer-ROM structural/model-form error share or portable interface-error budget."
+        },
+        "matching_lhm_like_end_to_end": {
+          "state": "ENVELOPE_FROZEN_EXECUTION_NOT_YET_PREREGISTERED",
+          "blocker": "Exact observation dataset/population, model composition, insertion point and blind application panel still require preregistration before candidate execution."
+        }
+      }
     },
     "SCI-P": {
       "decision": "PARTIAL_FORMAL_APPLICATION_ENDPOINT_FOUND__PROFILE_AUTHORITY_UNRESOLVED",
@@ -74,7 +86,9 @@
       "id": "GW_D_ROM_STRUCTURAL_ERROR_ALLOCATION",
       "purpose": "GW-D",
       "required_authority": "Prospectively governed allocation of permissible reduced-model structural/model-form error to a downstream head/exchange consequence, or a direct end-to-end reduced-model application criterion.",
-      "prohibited_resolution": "Do not reuse HM-ACC-APP-001, HM-ACC-TEMP-001, HM-ACC-INT-001, 1e-15 m/s, or 1e-12 cm outside their declared error class without new authority."
+      "prohibited_resolution": "Do not reuse HM-ACC-APP-001, HM-ACC-TEMP-001, HM-ACC-INT-001, 1e-15 m/s, or 1e-12 cm outside their declared error class without new authority.",
+      "applies_to": "COMPONENT_LEVEL_OR_SYNTHETIC_REFERENCE_COMPARISON_ONLY",
+      "note": "Not required for the separately frozen direct LHM-like end-to-end application route, which judges final groundwater outputs directly."
     },
     {
       "id": "GW_D_SIGN_REVERSAL_AND_TIMING",
@@ -92,12 +106,14 @@
       "allowed": [
         "Use these purpose contracts as upstream requirements metadata.",
         "Derive state-support hypotheses without using candidate response to alter requirements.",
-        "For a separately declared LHM-like soil-moisture endpoint, retain the formal monthly-correlation criterion at exactly its stated support."
+        "For a separately declared LHM-like soil-moisture endpoint, retain the formal monthly-correlation criterion at exactly its stated support.",
+        "Use the frozen LHM GW-D envelope only to design a separate observation-bound LHM-like end-to-end application validation route; it does not authorize application verdicts on P1 synthetic Reference-Richards panels."
       ],
       "blocked": [
         "No L4/L6/R8 pass/fail adjudication for GW-R, GW-D, or requested SCI-P profile purpose.",
         "No conversion of Stage 0 numerical head budget into structural ROM tolerance without new independent governance.",
-        "No back-calculation of convenient thresholds from candidate performance."
+        "No back-calculation of convenient thresholds from candidate performance.",
+        "Do not import LHM GHG/GLG/recession thresholds into the current synthetic GW-LB panel; the spatial population and temporal constructions do not match."
       ],
       "next_safe_requirement_step": "For GW-D, seek a purpose-owner structural-error allocation or direct end-to-end replacement criterion before blind candidate validation. For GW-R and SCI-P, obtain missing quantitative application authority."
     },
@@ -112,6 +128,6 @@
       ]
     }
   },
-  "terminal_scientific_statement": "The previous blanket APPLICATION_TOLERANCE_AUTHORITY blocker is refined, not erased. New independent bounded authority exists for GW-D numerical consequence and transaction semantics and for a narrow LHM soil-moisture application endpoint. No complete direct Layer-ROM structural acceptance envelope is independently justified for GW-R, GW-D, or the requested SCI-P profile purpose.",
-  "next_safe_step": "Do not simulate Layer-ROM candidates. Obtain or formally govern the missing purpose-specific structural/application requirement, then freeze the complete comparator, population, temporal allocation, and acceptance rule before blind validation."
+  "terminal_scientific_statement": "The blanket APPLICATION_TOLERANCE_AUTHORITY blocker is now split. A narrow direct LHM-like GW-D application envelope is independently frozen from formal external criteria, while component-level/synthetic Layer-ROM fidelity remains blocked on structural-error allocation. GW-R and the requested SCI-P profile purpose remain unresolved.",
+  "next_safe_step": "Do not run current Layer-ROM candidates for acceptance. If pursuing GW-D application acceptance, first preregister a matching observation-bound LHM-like end-to-end panel. Otherwise obtain a component structural-error allocation for synthetic/reference-comparison use."
 }
