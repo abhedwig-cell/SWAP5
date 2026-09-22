@@ -1133,6 +1133,10 @@ subtracted from the accepted-storage management budget in the qualified
 free-alpha solution. The accepted storage memory and the forecast forcing
 remain separate semantic objects in the actual product composition.
 
+Guarded H7 v2 (run 35745915889) is the primary product authority for this
+bridge; the earlier successful v1 run 35745769522 is retained as a duplicate
+confirmation only.
+
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
 general STO aggregation contract, or arbitrary package/topology equivalence.
 
