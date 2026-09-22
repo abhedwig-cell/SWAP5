@@ -108,12 +108,13 @@
   ],
   "next_work_unit": {
     "id": "GC-RZM06A4",
-    "scope": "Transition-aware response-blind H2 state construction using BASE/ramp bridges between opposite-sign H_c blocks; qualify complete trajectory admissibility before endpoint pair selection.",
-    "prerequisite": "GC-RZM06A3 qualified as transition-admissibility falsification",
+    "scope": "Response-blind stronger top-boundary forcing characterization at fixed H_c, followed by opposite-order zero-net-top-forcing real-SWAP histories for H2 endpoint construction.",
+    "prerequisite": "GC-RZM06A3 qualified; pre-reversal M1 separation remains about 441x below unchanged H2 requirement",
     "constraints": [
-      "use only microsteps already admitted by RZM06A3 baseline characterization",
-      "characterize complete trajectory admissibility before using endpoint W_profile or M1",
-      "insert explicit BASE/ramp transitions rather than changing retry/temporal/solver policy",
+      "determine top-forcing sign convention from provider/backend evidence and use neutral POS/NEG labels until resolved",
+      "characterize symmetric top-forcing admissibility before endpoint-pair construction",
+      "keep H_c fixed at H_star throughout antecedent construction",
+      "do not alter retry budgets, temporal budgets, solver tolerances or mass gates",
       "do not relax |ΔW_profile| <= 1e-6 or |ΔM1| >= 1e-4",
       "do not inspect E_c before endpoint pair selection",
       "keep RZM06B/H5 separate"
