@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute clean DUMMY-20C v2 actual-product runtime differential from the repaired baseline.",
+  "next_action": "Rebind only the DUMMY-20C execution-scope baseline after inert DUMMY-20D preregistration/preparation; rerun frozen runtime differential.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "20C v1 failed before product runtime due missing MF6 STO package; STO-only harness repair persisted.",
+  "recovery_point": "20C v1 package-completeness failure repaired; v2 source-scope failure occurred before runtime and has no scientific effect.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
@@ -57,6 +57,15 @@
       "state": "DUPLICATE_PRE_REPAIR_TECHNICAL_MODEL_PACKAGE_FAIL",
       "reason": "This run was already queued before the STO repair and executed the same pre-repair model.",
       "scientific_effect": "none"
+    },
+    {
+      "attempt": "v2",
+      "run": 35721769070,
+      "job": 106726076618,
+      "state": "TECHNICAL_SOURCE_SCOPE_FAIL",
+      "reason": "Qualification branch inherited prospectively preregistered DUMMY-20D files after the older DUMMY-20C execution-scope base; source-scope gate stopped before runtime.",
+      "scientific_effect": "none",
+      "authority_use": "forbidden"
     }
   ],
   "technical_repair": {
