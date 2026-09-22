@@ -302,3 +302,39 @@ The interpretation rules are deliberately asymmetric:
   non-increasing step;
 - any production algorithm or HCOF/RHS mutation requires a separate admission
   work unit after G08.
+
+
+## G09 boundary tangent acquisition protocol
+
+G09 addresses the concrete failure mode exposed by G08: a valid real-SWAP
+trial can lie on a one-sided corrector admissibility boundary where a symmetric
+central secant cannot be formed.
+
+The machine-readable preregistration is
+`integration/research/GC_FIXED_INTERFACE_G09_PREREGISTRATION.json`.
+
+Two estimators are frozen before execution:
+
+- **E0** retains the G08 central secant and serves as the baseline;
+- **E1** starts with the same symmetric probes. If exactly one side is
+  admissible, it infers the admissible direction only from the trial statuses,
+  takes a second probe at twice that spacing in the same direction, and applies
+  the fixed second-order three-point one-sided derivative formula. If neither
+  construction is available it halves the spacing, up to the same bounded
+  budget.
+
+Every probe is evaluated from the immutable accepted SWAP origin and discarded.
+No rejected probe has state or mass authority.
+
+The eight frozen head states are the negative and positive extreme admissible
+points observed in the four G08 SWAP cases. The critical targeted replay is the
+C2 high-forcing negative state at `dh=-5e-6 m`, where G08 produced all six
+`TANGENT_UNAVAILABLE` policy outcomes. G09 first requires E0 to reproduce that
+failure and E1 to recover a finite negative tangent with a prospectively frozen
+5% half-step consistency bound. It then replays P1 and P4 with E1 across the
+same three G08 groundwater regimes.
+
+G09 does not require safeguard contraction. Its question is narrower: whether
+physical tangent acquisition itself can be made admissibility-aware without
+hard-coded direction or transaction leakage. Production admission remains out
+of scope.
