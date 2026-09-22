@@ -72,6 +72,8 @@ Consequences:
 
 This disposition uses the existing CSR04/MAP11 evidence without repeating the Sy × window matrix. CSR04 Phase B executed all 36 preregistered real-FMR/live-MODFLOW windows. It showed a coherent low-Sy limiting trajectory and separated native MODFLOW head memory from accepted SWAP column memory. Its bounded conclusion supports `HEAD_STATE_CAPACITANCE` when no independently evidenced regional storage volume is declared; it does not authorize treating native STO as an additional physical reservoir.
 
+This role classification does not calibrate or universally admit a particular native `Sy` or `Ss` value. CSR04 showed that finite native STO changes the accepted head/exchange trajectory. A real application must therefore provide independent configuration authority for the chosen head-state capacitance magnitude, or use a separately qualified limiting formulation. The closeout fixture value qualifies coupling mechanics, not field-scale groundwater-storage calibration.
+
 The machine-readable authority is `integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json`.
 
 ## Drainage ownership
@@ -126,6 +128,7 @@ This closeout does not claim:
 - coupled root extraction;
 - MODFLOW STO as independently additive physical groundwater storage;
 - mixed-effective or overlapping physical storage ownership;
+- universal or field-calibrated authority for the numerical magnitude of MODFLOW `Sy`/`Ss` used as head-state capacitance;
 - a new native MODFLOW restart/checkpoint mechanism;
 - mid-iteration restart;
 - heterogeneous field-scale N:1 transferability beyond the qualified production topology mechanics;

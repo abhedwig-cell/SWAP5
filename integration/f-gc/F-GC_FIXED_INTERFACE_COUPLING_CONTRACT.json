@@ -30,7 +30,8 @@
     "physical_independent_modflow_storage": false,
     "combined_swap_plus_sto_physical_balance_authorized": false,
     "u_or_u_over_dt_as_storage_authorized": false,
-    "evidence_boundary": "independent regional physical storage requires separate application-domain authority"
+    "evidence_boundary": "independent regional physical storage requires separate application-domain authority",
+    "parameter_authority": "HEAD_STATE_CAPACITANCE classifies the role of native STO; the magnitude of Sy/Ss remains application-specific and is not calibrated by this closeout"
   },
   "memory_and_provenance": {
     "swap_memory": "committed SWAP physical and numerical continuation state",
@@ -57,6 +58,7 @@
     "active coupled drainage",
     "root extraction in the admitted groundwater profile",
     "physical independent or mixed-effective MODFLOW storage",
+    "universal or field-calibrated Sy/Ss magnitude for HEAD_STATE_CAPACITANCE",
     "native MODFLOW checkpoint or mid-iteration restart",
     "field-scale heterogeneous transferability",
     "finite-resistance q-link semantics",
