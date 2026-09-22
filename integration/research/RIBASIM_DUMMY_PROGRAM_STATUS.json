@@ -166,20 +166,17 @@
       "decision": "RIBASIM_DUMMY_19K_QUALIFIED_EXPLICIT_USERDEMAND_APPLY_SEAM",
       "run": 35705332781,
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
-    }
-  ],
-  "pending": [
+    },
     {
       "work_unit": "RIBASIM-DUMMY-19L",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
-      "dependency": "qualified DUMMY-19K",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
-      "implementation_baseline": "9f4c95cb69b6b5b61fb953e2477d85018cd9f72f"
+      "decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+      "run": 35707251106,
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
+  "pending": [],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-19L accepted-state trajectory-equivalence gate.",
+  "next_authority_action": "Update the central coupling synthesis through DUMMY-19L, then define the next real-coupler substitution experiment from the qualified solve→apply→realize→accept→record contract.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -236,5 +233,10 @@
       "meaning": "Original two-window preregistration assumed one management solve per day despite hourly saveat and is not executable authority."
     }
   ],
-  "supporting_context": "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json"
+  "supporting_context": "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json",
+  "clock_contract_authority": {
+    "latest": "RIBASIM-DUMMY-19L",
+    "decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+    "meaning": "For tested UserDemand coupling, allocation solve, application/commit, physical realization, accepted state and output record are distinct semantic stages; explicit apply at the management boundary can be transactionally equivalent to native saveat-aligned application."
+  }
 }
