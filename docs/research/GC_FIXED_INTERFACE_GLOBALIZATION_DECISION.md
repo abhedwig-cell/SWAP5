@@ -344,3 +344,52 @@ E3 = REFERENCE TANGENT ESTIMATOR, NOT YET A PRODUCTION ALGORITHM.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: COST / TANGENT-ACQUISITION / PROCESS-COVERAGE QUALIFICATION.
 ```
+
+
+## G11 disposition: live safeguard recovery qualified
+
+G11 supplies the live recovery evidence that remained open after G10B.
+
+The carrier is the frozen nonlinear B4 real-SWAP case and the tangent estimator
+is the unchanged qualified E3 estimator from G09D. The groundwater stress was
+preregistered before execution and used a storage-dominated response with an
+independently measured affine fit error of only about
+`3.71e-21 m/s`; no tangent degradation, SWAP tolerance change or retry-budget
+change was used to manufacture the overshoot.
+
+From the accepted B4 reference head, P1 and P4 generate the identical first raw
+physical-Newton proposal:
+
+```text
+raw dh = -1.1162302297473836e-5 m
+participant status = 6
+```
+
+The frozen negative target edge was `dh=-1e-5 m`, so the raw Newton proposal
+overshoots the known admissible edge and is a genuinely bad live proposal.
+P1 therefore terminates as `RAW_PROPOSAL_INADMISSIBLE`.
+
+P4 applies the unchanged factor-1/2 safeguard. Two contractions recover an
+admissible, merit-reducing first update. Subsequent E3 Newton updates converge
+in three outer updates total to
+
+```text
+final dh       = -9.999346805233955e-6 m
+final residual = -1.0640987109201395e-20 m/s
+```
+
+All diagnostic SWAP candidates remain trial-only and are discarded; committed
+revision, committed time and interface ledger authority remain unchanged.
+
+This closes a specific research gap:
+
+- a real nonlinear SWAP carrier can generate a physically consistent Newton
+  overshoot;
+- the same P4 safeguard that was only analytical in G04 and admissibility-only
+  in G06 now recovers that live proposal;
+- G10's earlier safeguard exhaustion remains falsified under its original
+  broad groundwater oracle and is not retroactively relabelled.
+
+The result is still **not production admission**. Broader real-SWAP process
+coverage and the computational/integration contract for obtaining E3 remain
+open before any production HCOF/RHS change.
