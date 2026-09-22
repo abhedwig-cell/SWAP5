@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.coupling.ribasim_release_physical_vs_lp_low_storage_factor.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H4",
+  "decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
+  "authority": {
+    "qualification_head": "e8d08860289629d5491bf2a6780727cea9d9c4cd",
+    "workflow_run": 35737697708,
+    "workflow_job": 106779091247,
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "conclusion": "success"
+  },
+  "observations": {
+    "control": {
+      "physical_low_storage_factor": 1,
+      "lp_low_storage_factor": 1,
+      "physical_infiltration_m3_per_day": 0,
+      "implicit_negative_forcing_m3": 0,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0
+    },
+    "injected": {
+      "physical_low_storage_factor": 1,
+      "lp_low_storage_factor": 0,
+      "physical_infiltration_m3_per_day": 7.999914667576882,
+      "implicit_negative_forcing_m3": 7.999914667576882,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0
+    }
+  },
+  "qualified_claims": [
+    "On the identical accepted t=0 Basin state, the physical state-derived low-storage factor remains 1 while the allocation LP low_storage_factor becomes 0 under the injected infiltration case.",
+    "The physical water balance therefore realizes the full approximately 7.9999147 m3/day infiltration while the allocation forecast multiplies the same implicit negative forcing by zero.",
+    "The physical and allocation factors are distinct state semantics rather than two observations of one common reduction factor.",
+    "The DUMMY-20H3 mechanism is therefore a forecast-realization seam: physical forcing can be fully realized while the allocation forecast attenuates that forcing to protect lexicographically prior management objectives."
+  ],
+  "boundaries": [
+    "No claim that the LP factor should universally equal the physical factor.",
+    "No upstream defect classification.",
+    "No production prescription.",
+    "The result is qualified for the tested v2026.1.1 topology and priority structure."
+  ],
+  "downstream": "Execute prospectively frozen DUMMY-20H5 to isolate whether zero-storage preservation, rather than LevelDemand implementation details, causes the LP factor collapse."
+}
