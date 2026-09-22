@@ -305,3 +305,42 @@ whether P4 can recover a genuinely bad live physical-Newton proposal rather
 than merely agree with P1.
 
 No production HCOF/RHS or coupling-source change follows from G10B.
+
+
+## G11 disposition: live P4 safeguard recovery is exercised
+
+G11 prospectively constructed a storage-dominated B4/MODFLOW stress from
+previously measured B4 and r≈0.5 response evidence. No SWAP solver tolerance,
+retry budget, E3 tangent rule or P4 backtracking rule was changed.
+
+The first physical-Newton proposal from the B4 reference head was
+`dh=-1.1162302297e-5 m`, beyond the frozen `dh=-1e-5 m` negative edge. The
+proposal failed with participant status 6.
+
+The two policies then separate cleanly:
+
+- **P1-E3** stops immediately with `RAW_PROPOSAL_INADMISSIBLE`;
+- **P4-E3** starts from the identical raw proposal, performs two fixed
+  factor-1/2 contractions, accepts `dh=-2.7905756e-6 m`, and subsequently
+  converges in three outer updates to `dh=-9.9993468e-6 m`.
+
+The final P4 residual is approximately `1.06e-20 m/s`. Every rejected or
+diagnostic SWAP trial is discarded, so accepted revision, time and mass-ledger
+authority remain unchanged.
+
+This closes the specific research question whether the unchanged P4 safeguard
+can recover a genuinely bad live physical-Newton step. It can, in the bounded
+B4 stress case.
+
+The production gate is nevertheless still closed. The unresolved questions are
+now cost and implementation rather than local stability: E3 is a research
+finite-difference reference estimator with multiple diagnostic trials, broader
+process coverage remains incomplete, and no production tangent API or
+production HCOF/RHS implementation has been admitted.
+
+```text
+G11 LIVE SAFEGUARD RECOVERY = QUALIFIED RESEARCH EVIDENCE.
+E3 = REFERENCE TANGENT ESTIMATOR, NOT YET A PRODUCTION ALGORITHM.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: COST / TANGENT-ACQUISITION / PROCESS-COVERAGE QUALIFICATION.
+```
