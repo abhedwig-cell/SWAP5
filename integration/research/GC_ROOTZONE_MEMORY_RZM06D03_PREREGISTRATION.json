@@ -1,0 +1,110 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d03.cross_time_origin_selection_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D03",
+  "authority": "preregistered response-blind cross-library-time origin selection",
+  "production_changes": false,
+  "parent_d02r1_result_commit": "24277b01740b4c0b7a1f4e68bb44d6bb148dcece",
+  "prerequisite_decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+  "scientific_question": "Does the qualified ROM1AR2 DISCOVERY library contain two accepted 16-node B01 physical profiles with equal total profile water but materially different vertical distribution when library-generation time is treated only as provenance and both profiles are later reseeded to one common canonical time?",
+  "library_authority": {
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_name": "rom1ar2-35379176697",
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "required_o0_o2_byte_identity": true
+  },
+  "eligibility": {
+    "split": "DISCOVERY",
+    "producing_interval_fallback_flag": "F",
+    "different_history_required": true,
+    "same_library_time_required": false,
+    "expected_eligible_state_records": 475,
+    "held_out_policy": "HELD_OUT state and node observables remain excluded before parsing H/theta.",
+    "provenance_note": "FALLBACK=F applies only to the interval producing that state; antecedent trajectory may include qualified research fallback intervals."
+  },
+  "observable_reconstruction": {
+    "geometry": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "z_cm": [
+        -5,
+        -15,
+        -25,
+        -35,
+        -45,
+        -55,
+        -65,
+        -75,
+        -85,
+        -95,
+        -105,
+        -115,
+        -125,
+        -135,
+        -145,
+        -155
+      ]
+    },
+    "source": "ROM1AR2_NODE H and THETA only plus state provenance/fallback metadata",
+    "profile_water_cm": "sum(theta_i * 10 cm)",
+    "distribution_moment_cm": "sum(theta_i * 10 cm * z_i)/profile_water_cm",
+    "upper_30cm_water_cm": "sum(theta_i * 10 cm), i=1..3; descriptive only",
+    "forbidden_selection_fields": [
+      "TOTAL_STORAGE",
+      "UPPER_STORAGE",
+      "LOWER_STORAGE",
+      "TOP_EXCHANGE",
+      "BOTTOM_OUTWARD_EXCHANGE",
+      "BOTTOM_FLUX",
+      "MASS",
+      "NL",
+      "BACKTRACK",
+      "SYMBOL",
+      "BOTTOM_MODE"
+    ]
+  },
+  "frozen_h2_state_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "physical_origin": "unchanged conversion of RZM06A H2 gates after RZM06A6 unit audit",
+    "no_relaxation": true
+  },
+  "selection_rule": {
+    "candidate_generation": "all unordered eligible pairs from different histories, irrespective of original library time",
+    "qualifying_pair": "both frozen H2 state gates pass",
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_profile)",
+      "lexicographically smallest ordered provenance tuple (history_A,step_A,history_B,step_B)"
+    ],
+    "no_response_access": true,
+    "no_match": "Close D03 NO_MATCH without relaxing thresholds or opening HELD_OUT/FALLBACK=T states."
+  },
+  "persistence_if_selected": [
+    "persist A/B split, history, step and original library T",
+    "persist reconstructed W_profile, M1 and upper-30cm water",
+    "persist all 16 H and theta values for both origins",
+    "persist pair deltas, candidate/qualifying counts and exact artifact authority",
+    "selected pair becomes immutable input to later common-time response qualification"
+  ],
+  "common_time_rule": {
+    "authority": "GC-RZM06D02R1",
+    "later_reseed_time_day": 0,
+    "statement": "Original library times are provenance only. No response comparison may occur until both selected physical profiles are independently reconstructed at the same new committed time."
+  },
+  "next_if_selected": "GC-RZM06D04 preregister and qualify exact common-time reconstruction of the selected pair, then only after reconstruction qualification define the identical fixed-Hc H2 response probe.",
+  "controls": [
+    "D03 performs no HeadCalc solve",
+    "D03 performs no E_c or terminal-flux probe",
+    "no response field may influence pair selection or ranking",
+    "no HELD_OUT node parsing",
+    "no H2 threshold change",
+    "no production source change",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "D03 selection alone does not support or falsify H2",
+    "cross-time selection is valid only because D02R1 qualified common-time reseeding for this pure-hydraulics carrier"
+  ]
+}
