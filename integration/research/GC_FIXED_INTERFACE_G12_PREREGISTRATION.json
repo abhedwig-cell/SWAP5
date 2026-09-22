@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12",
+  "title": "Process-diverse E3/P4 qualification on the active-drainage MAP09 real-SWAP carrier",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parents": {
+    "tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+    "live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+    "active_drainage_carrier": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
+    "active_drainage_decomposition": "integration/research/GC_REAL_SWAP_MAP09A_RESULT.json"
+  },
+  "production_changes": false,
+  "question": "Does the qualified stencil-internal multiscale physical-tangent estimator remain available and does P4 converge when the real-SWAP prescribed-head corrector includes the frozen MAP09 active-drainage process configuration, across materially different live MODFLOW response classes?",
+  "carrier": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.002,
+    "reference_head_m": 0.012932896258566275,
+    "predictor_u": 0.0005760442426568357,
+    "reference_q_swap_m_per_s": -6.459199925803855e-10,
+    "drainage_response_active": true,
+    "corrector_bottom_mode": 5,
+    "corrector_drainage_qbot_smooth_freatic_projection": false,
+    "start_offsets_m": [
+      -0.000001,
+      0.000001
+    ],
+    "note": "Both frozen starts were participant-status 0 in MAP09."
+  },
+  "tangent_E3_MAP": {
+    "scale_ladder_m": [
+      0.000001,
+      5e-7,
+      2.5e-7,
+      1.25e-7,
+      6.25e-8,
+      3.125e-8,
+      1.5625e-8,
+      7.8125e-9
+    ],
+    "execution_class_fields": [
+      "accepted_substeps",
+      "attempts",
+      "retries",
+      "solver_rejections",
+      "temporal_rejections",
+      "internal_retries",
+      "min_accepted_substep_day",
+      "max_accepted_substep_day"
+    ],
+    "readiness": "participant status 0; raw result_status 0; completed and candidate_ready",
+    "central": "h-d and h+d must be ready and share one execution class; center class is irrelevant",
+    "backward": "h, h-d and h-2d must be ready and share one execution class",
+    "forward": "h, h+d and h+2d must be ready and share one execution class",
+    "priority": [
+      "CENTRAL",
+      "BACKWARD",
+      "FORWARD"
+    ],
+    "multiscale_gate": "Return the coarser member of the first adjacent candidate-scale pair whose slopes differ by <=5% relative to the larger magnitude.",
+    "require_finite_negative_slope": true
+  },
+  "map09a_crosscheck": {
+    "expected_J_R": -0.0005726906726621905,
+    "conversion": "p_expected_per_s = J_R / (0.01*86400)",
+    "max_relative_difference": 0.01,
+    "note": "This is a local crosscheck against qualified MAP09A whole-window bottom-outward exchange sensitivity, not an assumption that active drainage contributes a nonzero J_nonbottom."
+  },
+  "nonbottom_measurement": {
+    "method": "At the E3-selected href scale, evaluate corrector mass diagnostics at the two samples defining the selected finite-difference stencil where a symmetric central pair exists; compute J_S, J_R and J_nonbottom=J_S+J_R. If E3 selects one-sided at href, record decomposition as NOT_SYMMETRIC rather than inventing a pair.",
+    "acceptance": "finite/mass-complete only; no requirement that J_nonbottom be nonzero"
+  },
+  "groundwater_regimes": [
+    {
+      "id": "GW_R05_STORAGE",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy_rule": "0.5*abs(p_href)*duration_seconds"
+    },
+    {
+      "id": "GW_R2_STORAGE",
+      "k_m_per_day": 1e-10,
+      "ss_per_m": 0,
+      "sy_rule": "2.0*abs(p_href)*duration_seconds"
+    },
+    {
+      "id": "GW_MIXED",
+      "k_m_per_day": 1,
+      "ss_per_m": 0.02,
+      "sy_rule": "0.15"
+    }
+  ],
+  "groundwater_calibration": {
+    "q_offsets_from_swap_reference_m_per_s": [
+      -2e-10,
+      -1e-10,
+      0,
+      1e-10,
+      2e-10
+    ],
+    "rule": [
+      "For each regime first solve one fresh constant-flux MODFLOW probe at q=q_swap(href) with zero head bias.",
+      "Set the frozen-for-that-regime head bias to href minus the returned MODFLOW head. This is a deterministic translation calibration, not an adaptive convergence tune.",
+      "With that bias, remeasure all five fixed q=q_ref+offset probes and fit q_gw(H)=aH+b.",
+      "Require a>0 and max affine fit error <=1e-16 m/s.",
+      "Require |q_swap(href)-q_gw_fit(href)| <=1e-15 m/s before policy replay."
+    ]
+  },
+  "policies": {
+    "P1_E3_MAP": "Raw physical Newton using E3_MAP re-estimated at each iterate.",
+    "P4_E3_MAP": "Same E3_MAP proposal with unchanged factor-1/2 backtracking until participant status is 0 and |q_swap-q_gw_fit| does not increase."
+  },
+  "convergence": {
+    "max_outer": 12,
+    "max_backtracks": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "merit_abs_tolerance_m_per_s": 1e-18
+  },
+  "required_gates": [
+    "MAP09 predictor identity, active-drainage coverage, reference corrector and immutable origin reproduce.",
+    "E3_MAP is AVAILABLE at href and both frozen +/-1e-6 starts with <=5% adjacent-scale agreement.",
+    "Href E3_MAP slope agrees with the qualified MAP09A J_R/dt crosscheck within 1%.",
+    "Groundwater calibration and local affine-oracle gates pass independently for all three regimes.",
+    "P4 converges from both frozen starts in all three regimes; P1 outcome is recorded.",
+    "No participant probe, rejected policy candidate, or raw diagnostic changes committed revision/time/ledger authority."
+  ],
+  "interpretation": [
+    "PASS would extend E3/P4 research evidence from the drainage-free B1/B4 family to the frozen active-drainage MAP09 corrector process configuration.",
+    "PASS does not prove a nonzero drainage contribution to dq/dH; J_nonbottom is measured rather than assumed.",
+    "PASS does not constitute production admission or justify changing production HCOF/RHS.",
+    "After G12, remaining production-preparation gates are estimator/corrector cost and an explicit production integration/ownership contract."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}
