@@ -1,0 +1,144 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03e.interface_adjacent_state_census_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03E",
+  "preregistration_commit": "446300e92b135c8dffee833f7f5b85876bb75ca2",
+  "production_changes": false,
+  "decision": "QUALIFIED_RESPONSE_BLIND_STORAGE_MATCHED_INTERFACE_STATE_PAIR_SELECTED",
+  "disposition": "SELECTED_RESPONSE_BLIND_STORAGE_MATCHED_INTERFACE_STATE_PAIR",
+  "qualification": {
+    "workflow_run": 35746647393,
+    "workflow_job": 106809890643,
+    "executed_head": "bdb2aa3ef12230da6526f63c6c57d823d98fb74f",
+    "conclusion": "success",
+    "artifact_id": 10702259939,
+    "artifact_digest": "sha256:ebd3f973a868c5de1003146761c5551ac3315e3eb48e26f870084c1bbac1811c",
+    "source_authorities_verified": true,
+    "source_o0_o2_identity_verified": true
+  },
+  "frozen_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_bottom_node_pressure_head_difference_cm": 0.01
+  },
+  "library": {
+    "raw_state_count": 78,
+    "unique_state_count": 65,
+    "storage_matched_pairs": 59,
+    "qualifying_pairs": 14
+  },
+  "selected_pair": {
+    "A": {
+      "provenance": [
+        "E01",
+        "CLOSED",
+        "1"
+      ],
+      "profile_water_cm": 58.619184,
+      "root30_water_cm": 10.987957805878485,
+      "bottom_node_pressure_head_cm": -29.679694379611533,
+      "bottom_node_water_content": 0.36668028106740647,
+      "pressure_head_cm": [
+        -29.907746183500837,
+        -29.79499467484506,
+        -29.79372351143125,
+        -29.793709180317972,
+        -29.7937090187488,
+        -29.79370901692728,
+        -29.793709016906746,
+        -29.793709016906508,
+        -29.793709016906487,
+        -29.79370901690628,
+        -29.793709016885735,
+        -29.79370901506456,
+        -29.79370885352769,
+        -29.79369452527757,
+        -29.792423615794977,
+        -29.679694379611533
+      ],
+      "water_content": [
+        0.36605951963177064,
+        0.3663664004105402,
+        0.3663698605455377,
+        0.36636989955518984,
+        0.3663698999949852,
+        0.3663698999999434,
+        0.3663698999999993,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.3663699000000006,
+        0.3663699000000565,
+        0.3663699000050138,
+        0.36636990044472123,
+        0.36636993944658064,
+        0.36637339889825404,
+        0.36668028106740647
+      ]
+    },
+    "B": {
+      "provenance": [
+        "E03",
+        "DRY_RECOVER",
+        "RECOVER",
+        "19"
+      ],
+      "profile_water_cm": 58.619184,
+      "root30_water_cm": 10.988001234755412,
+      "bottom_node_pressure_head_cm": -29.753561488946925,
+      "bottom_node_water_content": 0.3664791864015696,
+      "pressure_head_cm": [
+        -29.771159772555585,
+        -29.91290852030784,
+        -29.810802403694513,
+        -29.79519989106959,
+        -29.79380804014294,
+        -29.793714475696984,
+        -29.793709278250635,
+        -29.793709028065994,
+        -29.793709016830544,
+        -29.79370900021078,
+        -29.793708515226196,
+        -29.793695524374183,
+        -29.79339655971533,
+        -29.78794028839972,
+        -29.724631456313634,
+        -29.753561488946925
+      ],
+      "water_content": [
+        0.36643128082077864,
+        0.36604547058644715,
+        0.36632337206831544,
+        0.36636584180814985,
+        0.36636963045627097,
+        0.3663698851410344,
+        0.36636989928861463,
+        0.36636989996962355,
+        0.3663699000002067,
+        0.3663699000454461,
+        0.36636990136558645,
+        0.3663699367270144,
+        0.3663707505166045,
+        0.3663856027040922,
+        0.36655794210024484,
+        0.3664791864015696
+      ]
+    },
+    "abs_delta_profile_water_cm": 0,
+    "abs_delta_root30_water_cm": 0.000043428876926654425,
+    "abs_delta_bottom_node_pressure_head_cm": 0.0738671093353922,
+    "abs_delta_bottom_node_water_content": 0.00020109466583684288
+  },
+  "interpretation": [
+    "The existing qualified state library contains multiple pairs that match total profile water and upper-30-cm water while retaining materially different interface-adjacent pressure head.",
+    "The selected pair passes both storage controls and exceeds the frozen H16 state-separation threshold by a factor of about 7.39.",
+    "This provides a mechanically relevant, response-blind origin pair for the next fixed-Hc causality test.",
+    "Selection alone does not establish that H16 causes a different fixed-interface response; E04 is required for that."
+  ],
+  "response_probe_opened": false,
+  "next_step": "GC-RZM06E04 common-time reconstruction of this immutable pair followed by the frozen forcing-free fixed-Hc response probe, with W_profile and W_root30 rechecked before response.",
+  "nonclaims": [
+    "H16 is not admitted as a production reduced-state variable.",
+    "No production coupling or second MODFLOW hydraulic state is admitted.",
+    "No response field influenced selection."
+  ]
+}
