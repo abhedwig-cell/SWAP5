@@ -202,16 +202,24 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20E3",
+      "decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
+      "run": 35728008237,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20E3",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
-      "dependency": "DUMMY-20E2 blocked because intervention was not realized",
+      "work_unit": "RIBASIM-DUMMY-20F2",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20E3",
+      "intended_decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+      "dependency": "qualified DUMMY-20E3",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "ribasim_release": "v2026.1.1",
+      "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
     },
     {
@@ -222,19 +230,10 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20F2",
-      "state": "PREREGISTERED_BLOCKED_BY_20E3",
-      "intended_decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
-      "dependency": "qualified DUMMY-20E3 nonzero intervention",
-      "scientific_baseline": "01a2ce8204525c7a2f5eda2466f84e3fdfbc255a",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "ribasim_release": "v2026.1.1"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-20E3. If it qualifies the nonzero groundwater intervention, rebind and implement prospectively frozen DUMMY-20F2.",
+  "next_authority_action": "Rebind and implement prospectively frozen DUMMY-20F2 two-day next-boundary management-memory admission.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -326,5 +325,10 @@
     "latest": "RIBASIM-DUMMY-20C",
     "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
     "meaning": "The actual RibaMod+MF6 product route is boundary-by-boundary identical to direct bundled Ribasim v2026.1.1 for the isolated no-exchange UserDemand case."
+  },
+  "product_groundwater_transfer_authority": {
+    "latest": "RIBASIM-DUMMY-20E3",
+    "decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
+    "meaning": "Actual RibaMod with real MF6/Ribasim kernels realizes nonzero post-allocation groundwater transfer while the current daily UserDemand allocation remains frozen."
   }
 }
