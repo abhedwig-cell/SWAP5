@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.gc_fixed_interface.g18.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G18",
+  "title": "Head-space P4 versus MODFLOW prepared-solve ownership reconciliation",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "9ca023769a2a475e98de7103cc89bcf2fa8ae23b",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md",
+    "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md",
+    "src/adapter/modflow6_prepared_solve_session.py"
+  ],
+  "question": "Can the exact head-space factor-1/2 P4 safeguard qualified in G11/G17 be represented without semantic change inside the admitted F-GC38/F-GC39 continuous MODFLOW prepared-solve lifecycle?",
+  "frozen_g11_transition": {
+    "current_head_m": -0.7149999311459918,
+    "raw_head_m": -0.7150110934482893,
+    "raw_participant_status": 6,
+    "contraction_count": 2,
+    "first_accepted_head_m": -0.7150027217215662,
+    "expected_head_fraction_from_current_to_raw": 0.25
+  },
+  "prepared_solve_contract": {
+    "accepted_groundwater_origin": "fixed XOLD established at prepare_solve",
+    "evolving_groundwater_state": "X",
+    "nonconverged_iteration": "do not rollback/discard X; update affine response and continue solve inside the same prepared solve",
+    "admitted_service_operations": [
+      "acquire_after_prepare_time_step",
+      "open_prepared_solve",
+      "publish_and_solve_iteration",
+      "finalize_prepared_solve",
+      "timestep_ready_for_finalize",
+      "finalize_time_step_once",
+      "invalidate_without_finalize"
+    ],
+    "absent_or_unadmitted_operations": [
+      "restore_previous_X_inside_open_prepared_solve",
+      "set_prescribed_X_or_head_from_coupling_service",
+      "rollback_one_external_nonlinear_iteration",
+      "clone_open_prepared_solve",
+      "restart_same_window_from_XOLD_without reconstruction"
+    ]
+  },
+  "gates": [
+    "Read the current branch versions of F-GC38 source and F-GC39 contract, not historical summaries only.",
+    "AST-audit the public Modflow6PreparedSolveSession method surface and confirm no admitted head-set/iterate-restore/rollback operation exists.",
+    "Confirm invalidate_without_finalize invalidates the session and does not restore X.",
+    "Confirm F-GC39 explicitly requires continuous X with no groundwater rollback between coupling iterations.",
+    "Reconstruct the exact first G11/G17 P4 contraction and prove the first accepted safeguard head is current + 0.25*(raw-current).",
+    "Classify whether that exact contracted head can become the MODFLOW coupling iterate using only admitted prepared-solve operations, without direct X mutation, session rollback, or whole-window reconstruction.",
+    "Direct mutation of the NumPy X pointer, even if technically possible, is outside the F-GC38/F-GC39 ownership contract and cannot count as an admitted implementation.",
+    "Do not reinterpret a response-space damping algorithm as P4 head-space equivalence without a separately preregistered qualification."
+  ],
+  "pass_interpretation": "PASS means the contracts are compatible with exact G11/G17 P4 without adding a new state-control or reconstruction primitive.",
+  "falsification_interpretation": "If exact P4 requires a state-control/reconstruction primitive absent from the admitted F-GC38/F-GC39 surface, classify the compatibility hypothesis as falsified. This does not falsify P4 or F-GC38 individually; it identifies a composition gap.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g18_prepared_solve_p4_contract.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G18_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "F-GC38 or F-GC39 production/qualified contract semantics",
+    "G11/G17 P4 contraction rule",
+    "G16 tangent service",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
