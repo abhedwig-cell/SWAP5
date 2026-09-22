@@ -8,10 +8,12 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-19H. Scientific expectations are frozen before DUMMY-19G output.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "Daily output plus 6-hour BMI.update_until coupling boundaries for both priority orders.",
-  "next_action": "After DUMMY-19H closes, rebind and execute without changing the frozen 6-hour reference.",
+  "next_action": "Implement and execute the frozen daily-output/6-hour BMI management-clock experiment.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f",
+  "recovery_point": "DUMMY-19I frozen before 19G/19H output; sequencing dependency now satisfied."
 }
