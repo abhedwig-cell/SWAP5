@@ -28,7 +28,9 @@
     "reference_grid_changed": false,
     "metric_changed": false,
     "decision_rule_changed": false,
-    "representation_changed": false
+    "representation_changed": false,
+    "yaml_serialization_repaired": true,
+    "yaml_repair_scientific_effect": "NONE"
   },
   "implementation_blobs": {
     "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json": "c618a433545426a0af8c333be0f8d09926069def",
@@ -38,7 +40,7 @@
     "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
     "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f"
   },
-  "workflow_blob": "37698c019ad36e6e26a8be2cc9eb0d369dea7e50",
+  "workflow_blob": "312e64b18cc80901359b42b75c4a8e97e79f67be",
   "qualification_contract": {
     "histories_per_purpose": 4,
     "each_history_contiguous": true,
