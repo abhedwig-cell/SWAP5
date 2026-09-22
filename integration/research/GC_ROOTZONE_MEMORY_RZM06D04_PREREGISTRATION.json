@@ -1,0 +1,167 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d04.local_strict_continuation_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D04",
+  "authority": "preregistered response-blind local accepted-state construction",
+  "production_changes": false,
+  "parent_d03_result_commit": "d7966cf01477516c99dd29a0a067d927aa6d27f2",
+  "parent_decision": "QUALIFIED_CROSS_TIME_DISCOVERY_NO_MATCH__H2_NOT_PROBED",
+  "immutable_origins": {
+    "A": {
+      "split": "DISCOVERY",
+      "history": "D02",
+      "step": 64,
+      "original_time_day": 0.054400000000000004
+    },
+    "B": {
+      "split": "DISCOVERY",
+      "history": "D08",
+      "step": 44,
+      "original_time_day": 0.038400000000000004
+    },
+    "selection_basis": "D03 best water-matched pair by frozen response-blind state-only ranking",
+    "common_reseed_time_day": 0,
+    "common_time_authority": "GC-RZM06D02R1"
+  },
+  "artifact_authority": {
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f"
+  },
+  "carrier": {
+    "geometry": "16 x 10 cm",
+    "material": "B01",
+    "backend": "serialized strict Reference HeadCalc",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "hard_mass_gate_cm": 1e-12
+  },
+  "continuation_alphabet": {
+    "authority": "exact ROM1AR2 forcing symbols and B01 definitions",
+    "controls": [
+      {
+        "id": "HOLD",
+        "bottom_mode": 2,
+        "top_flux": "qeq",
+        "bottom_flux": "qeq"
+      },
+      {
+        "id": "TOP_PLUS",
+        "bottom_mode": 2,
+        "top_flux": "qeq + 0.01*k0",
+        "bottom_flux": "qeq"
+      },
+      {
+        "id": "TOP_MINUS",
+        "bottom_mode": 2,
+        "top_flux": "qeq - 0.01*k0",
+        "bottom_flux": "qeq"
+      },
+      {
+        "id": "BOTTOM_HEAD_RISE",
+        "bottom_mode": 5,
+        "top_flux": "qeq",
+        "bottom_head": "0.75*h0"
+      },
+      {
+        "id": "BOTTOM_HEAD_FALL",
+        "bottom_mode": 5,
+        "top_flux": "qeq",
+        "bottom_head": "1.25*h0"
+      },
+      {
+        "id": "COMBINED_RISE_PLUS",
+        "bottom_mode": 5,
+        "top_flux": "qeq + 0.01*k0",
+        "bottom_head": "0.75*h0"
+      },
+      {
+        "id": "COMBINED_FALL_MINUS",
+        "bottom_mode": 5,
+        "top_flux": "qeq - 0.01*k0",
+        "bottom_head": "1.25*h0"
+      }
+    ],
+    "identity_endpoint_included": true
+  },
+  "durations": {
+    "base_expression": "3435974 / 2^32 day",
+    "base_day": 0.000800000037997961,
+    "factors": [
+      0.125,
+      0.25,
+      0.5,
+      1,
+      2
+    ],
+    "approximate_days": [
+      0.00010000000474974513,
+      0.00020000000949949026,
+      0.0004000000189989805,
+      0.000800000037997961,
+      0.001600000075995922
+    ],
+    "all_dyadic_binary64": true,
+    "t0_day": 0
+  },
+  "endpoint_admission": [
+    "strict run_reference_floor_sample only",
+    "sample_valid and candidate_ready",
+    "one physical advance",
+    "zero transaction retry/subdivision",
+    "mass complete and |residual|<=1e-12 cm",
+    "origin physical state and revision remain unchanged because candidate is never committed",
+    "no qualified research fallback is permitted in D04"
+  ],
+  "response_firewall": {
+    "fortran_output_allowed": [
+      "origin id",
+      "control id",
+      "duration factor",
+      "status",
+      "mass residual",
+      "solver counts",
+      "16 candidate H values",
+      "16 candidate theta values",
+      "reconstructed W_profile",
+      "M1",
+      "upper30 water"
+    ],
+    "forbidden_output": [
+      "bottom_outward_exchange_native",
+      "terminal_bottom_outward_flux_native",
+      "q_swap",
+      "predictor coefficients",
+      "tangent"
+    ],
+    "selector_response_access": false
+  },
+  "frozen_h2_state_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01
+  },
+  "selection_rule": {
+    "candidates": "all admitted A endpoints including identity crossed with all admitted B endpoints including identity",
+    "qualifying_pair": "both frozen H2 state gates pass",
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_profile)",
+      "deterministic control rank A then duration rank A then control rank B then duration rank B"
+    ],
+    "selected_profiles_immutable": true,
+    "no_match": "Close D04 NO_MATCH; do not extend duration/control grid post hoc."
+  },
+  "next_if_selected": "GC-RZM06D05 exact common-time reconstruction qualification for selected endpoints, then preregister identical fixed-Hc forcing-free H2 response probe.",
+  "controls": [
+    "no E_c probe in D04",
+    "no direct mutation of node state; origins come from accepted artifact and endpoints from accepted Reference candidates",
+    "no threshold relaxation",
+    "no HELD_OUT access",
+    "no FALLBACK=T origin selection",
+    "no production source changes",
+    "failed candidate trials retained as admissibility evidence"
+  ],
+  "nonclaims": [
+    "D04 state-pair construction alone does not support or falsify H2."
+  ]
+}
