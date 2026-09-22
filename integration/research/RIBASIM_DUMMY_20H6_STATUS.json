@@ -6,12 +6,12 @@
   "baseline": "e5b2a00556655a632411b262dc9653af65a2c1a0",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Exact-release t=24 accepted-state LP oracle separating accepted storage memory from current active-River forcing.",
-  "next_action": "Execute frozen DUMMY-20H6 qualification against Ribasim v2026.1.1; do not retune references or tolerances.",
+  "next_action": "Use qualified H6 as exact-release next-boundary oracle; bridge it to an actual two-day RibaMod active-River runtime.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -23,7 +23,7 @@
     "scientific_change": false,
     "note": "Prepared while DUMMY-20H5 is active. No runner/workflow/qualification branch before DUMMY-20H5 closeout."
   },
-  "recovery_point": "DUMMY-20H5 qualified by run 35741211340; H6 released exactly as preregistered.",
+  "recovery_point": "DUMMY-20H6 qualified by frozen run 35743163688.",
   "execution_baseline": "e5b2a00556655a632411b262dc9653af65a2c1a0",
   "implementation_baseline": "220ee3194270f600125c1c0599dcc738b13eabc1",
   "relevant_paths": [
@@ -35,5 +35,32 @@
     "tests/research/real_ribasim_20h6_next_boundary_memory.jl",
     "tests/research/run_ribasim_dummy_20h6.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+  "workflow_run": 35743163688,
+  "workflow_job": 106797852425,
+  "qualification_head": "a6d44fd01f644b02eb162aa0ac664906f98e725d",
+  "observed_cases": {
+    "elevated_control_no_river": {
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "elevated_with_river_free_alpha": {
+      "implicit_negative_forcing_m3": 8.000042512171305,
+      "low_storage_factor": 0,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "elevated_with_river_alpha_fixed_one": {
+      "implicit_negative_forcing_m3": 8.000042512171305,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 31.99032986888535,
+      "external_allocation_m3_per_day": 0
+    }
+  }
 }
