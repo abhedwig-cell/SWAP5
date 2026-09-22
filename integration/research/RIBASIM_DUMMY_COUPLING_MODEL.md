@@ -1188,6 +1188,31 @@ This asymmetry belongs to forecast representation. It must not be described as
 asymmetric physical conservation or as a property of groundwater exchange
 itself.
 
+DUMMY-20H9 closes the positive-direction product bridge. In the real pinned
+RibaMod passive-Drainage route, the accepted t=24 storage excess is
+21.9748888743 m3 and current drainage remains 7.9998720020 m3/day. The directly
+recorded allocation is 40/20 m3/day. A forecast using accepted memory but
+omitting current drainage would have produced only 40/13.9748888743 m3/day.
+That alternative is therefore falsified for the tested product topology.
+
+The combined H7-H9 direction contract is:
+
+```text
+previous physical window
+  -> accepted storage memory M_k
+
+current positive groundwater inflow G+_k
+  -> explicit positive forecast supply
+
+current negative River/infiltration loss G-_k
+  -> alpha_k * implicit negative forecast forcing
+
+(M_k, G+_k, alpha_k * G-_k)
+  -> allocation candidate
+  -> applied allocation
+  -> subsequent physical realization
+```
+
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
 general STO aggregation contract, or arbitrary package/topology equivalence.
 
