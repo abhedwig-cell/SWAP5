@@ -1,107 +1,90 @@
 {
-  "schema": "swap5.gc_rootzone_memory.rzm06c01.carrier_reconciliation.v1",
+  "schema": "swap5.gc_rootzone_memory.rzm06c01.carrier_qualification_result.v2",
   "date": "2026-09-22",
   "work_unit": "GC-RZM06C01",
   "production_changes": false,
-  "decision": "NO_EXISTING_REPOSITORY_NATIVE_RICH_FIXED_HC_CARRIER__BUILD_NATIVE_CM_RESOLUTION_BRIDGE",
-  "candidates": [
-    {
-      "carrier": "Exact typed Hupsel application",
-      "authority": [
-        "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
-        "integration/m1/M1_FINAL_CLOSEOUT_20260918.json"
-      ],
-      "strengths": [
-        "whole Hupsel typed Task2 route canonically admitted",
-        "32518 accepted physical intervals with exact normalized whole-run identity",
-        "authentic forcing and active application-process composition"
-      ],
-      "blockers": [
-        "official SWAP 4.3.1/Hupsel raw case payload is intentionally not stored in the repository",
-        "successful M1-C3 owner and independent qualification runs retained zero GitHub Actions artifacts",
-        "versioned Hupsel evidence does not contain the exact nodal z/dz profile needed to reconstruct a fixed-Hc participant without inventing geometry"
-      ],
-      "disposition": "SCIENTIFICALLY_PREFERRED_BUT_NOT_REPRODUCIBLE_FROM_REPOSITORY_ONLY"
-    },
-    {
-      "carrier": "F-GC44/F-GC49D/MAP serialized-reference coupling fixtures",
-      "authority": [
-        "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
-        "tests/fgc/support/mod_fgc49d_application_context_fixture.f90",
-        "tests/fsi/fsi04_real_headcalc_stubs.f90"
-      ],
-      "strengths": [
-        "transactional fixed-Hc coupling path already qualified",
-        "real HeadCalc route with explicit B110 constitutive provider",
-        "mass/commit/discard semantics available"
-      ],
-      "blockers": [
-        "all inherit the same four-node MOD_grid",
-        "upper 0.30 m RZM diagnostic overlaps only one node",
-        "A2-A6 already qualified a genuine small-state-separation ceiling for this carrier"
-      ],
-      "disposition": "REJECT_FOR_FURTHER_H2_STATE_CONSTRUCTION"
-    },
-    {
-      "carrier": "LOW01 native-unit HeadCalc carrier",
-      "authority": [
-        "tests/research/test_gc_low01b_inside_profile.f90",
-        "tests/research/support/fsi04_real_headcalc_stubs_no_mvg.f90"
-      ],
-      "strengths": [
-        "explicit legacy-native centimetre profile geometry",
-        "real HeadCalc with explicit B110 constitutive ownership",
-        "immutable-origin and mass-closure evidence"
-      ],
-      "blockers": [
-        "still four nodes: z_cm=[-25,-75,-150,-250], dz_cm=[50,50,100,100]",
-        "upper 30 cm still resides within the first node",
-        "LOW01 is a phreatic/inside-profile research route rather than the existing lower fixed-plane Hc participant"
-      ],
-      "disposition": "UNIT_AUTHORITY_REUSED_BUT_NOT_DIRECT_H2_CARRIER"
-    }
-  ],
-  "unit_reconciliation": {
-    "fgc_fixture_grid": {
-      "z": [
-        -0.25,
-        -0.75,
-        -1.5,
-        -2.5
-      ],
-      "dz": [
-        0.5,
-        0.5,
-        1,
-        1
-      ]
-    },
-    "low01_native_cm_grid": {
-      "z_cm": [
-        -25,
-        -75,
-        -150,
-        -250
-      ],
-      "dz_cm": [
-        50,
-        50,
-        100,
-        100
-      ]
-    },
-    "observation": "The focused F-GC fixture geometry is an abstract scaled test geometry. LOW01 provides explicit HeadCalc-native centimetre geometry for the equivalent 3 m column scale.",
-    "implication": "The A6 ceiling is valid for the qualified F-GC fixture but must not be promoted to a full-profile SWAP H2 falsification."
+  "supersedes": {
+    "prior_commit": "b9a74963d326a5d69282be9ba8d8f6504d4ddc20",
+    "prior_decision": "NO_EXISTING_REPOSITORY_NATIVE_RICH_FIXED_HC_CARRIER__BUILD_NATIVE_CM_RESOLUTION_BRIDGE",
+    "reason": "F-ROM1A-I0 and retained ROM1AR2 artifact authority were omitted from the earlier candidate inventory.",
+    "amendment": "integration/research/GC_ROOTZONE_MEMORY_RZM06C01_RECONCILIATION_AMENDMENT.json"
   },
-  "next": {
-    "work_unit": "GC-RZM06C02",
-    "scope": "Build and qualify a research-only real-HeadCalc fixed-Hc resolution bridge using native centimetre geometry, 300 cm total depth and more than one node in the upper 30 cm. Reuse existing B110 hydraulics and transactional participant semantics; no H2 response probe yet.",
-    "boundaries": [
-      "not Hupsel and must never be labelled Hupsel",
-      "no production source or coupling API change",
-      "native HeadCalc geometry units must be explicit",
-      "carrier qualification precedes H2 scientific probing",
-      "H2 thresholds remain frozen"
-    ]
-  }
+  "selected_carrier": {
+    "id": "F-ROM1A-I0-16x10-B01",
+    "geometry": {
+      "active_nodes": 16,
+      "dz_cm": 10,
+      "total_depth_cm": 160,
+      "upper_30cm_nodes": 3
+    },
+    "material": "B01",
+    "solver": "real HeadCalc via serialized Reference backend",
+    "constitutive": "explicit B110 default MvG provider",
+    "process_scope": "pure hydraulics base layout",
+    "bottom_mode": 5,
+    "sample_dt_day": 0.0008,
+    "hard_mass_gate_cm": 1e-12,
+    "bottom_boundary_elevation_m": -1.6,
+    "baseline_pressure_head_cm": -29.793709016906497,
+    "fixed_interface_head_m": -1.897937090169065
+  },
+  "qualification": {
+    "preregistration_commit": "11ae66fb732e404cf9f51391c693a1db21e2470a",
+    "implementation_commit": "0f811f078309fdac0cc988dadea3cdbbfd2f6202",
+    "runner_commit": "14a34b8474c2fab1047215fb0ff58374d09b18ad",
+    "workflow_binding_commit": "a11e3c77264f7d849dc4f22178e965f4ff92d8dd",
+    "executed_head": "0e90165c07dc159f7e7e836effc5ecdfa88d3254",
+    "workflow_run": 35735461762,
+    "workflow_job": 106771442057,
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "gates": {
+      "geometry_16x10_cm": true,
+      "upper_30cm_resolved_by_three_nodes": true,
+      "existing_groundwater_head_materializer_reproduces_mode5_head": true,
+      "strict_sample_mass_complete": true,
+      "exactly_one_physical_advance": true,
+      "zero_automatic_transaction_retries": true,
+      "sample_origin_immutable_before_commit": true,
+      "discard_origin_immutable": true,
+      "explicit_commit_advances_one_revision_and_dt": true,
+      "controlled_failure_origin_immutable": true
+    }
+  },
+  "retained_library_authority": {
+    "closeout": "integration/f-rom/F-ROM1A_SUCCESSOR_CLOSEOUT.json",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "artifact_available_on_2026_09_22": true,
+    "material": "B01",
+    "accepted_states": 768,
+    "strict_no_fallback_states": 711,
+    "research_fallback_states": 57,
+    "discovery_states": 512,
+    "heldout_states": 256,
+    "node_records_per_state": 16,
+    "o0_o2_byte_identity": true
+  },
+  "parallel_candidate": {
+    "id": "GC-RZM06C02-native-cm-17node",
+    "status": "SEPARATELY_PREREGISTERED_AND_QUALIFYING",
+    "role_if_qualified": "secondary F-GC-compatible native-cm cross-check; not needed to establish existence of a richer repository-native carrier",
+    "note": "Its synthetic geometry and unit-switch logic remain research-only."
+  },
+  "physical_threshold_translation_for_future_h2": {
+    "authority": "RZM06A thresholds were frozen on metre-scale geometry despite historical _cm field names; RZM06A6 resolved this semantic mismatch.",
+    "total_profile_water_match_m": 0.000001,
+    "total_profile_water_match_cm": 0.0001,
+    "distribution_moment_separation_m": 0.0001,
+    "distribution_moment_separation_cm": 0.01,
+    "rule": "Future native-centimetre pair selection must use the converted centimetre values, not copy the old numeric values."
+  },
+  "decision": "QUALIFIED_EXISTING_16NODE_FIXED_HEAD_REFERENCE_CARRIER",
+  "next": "Wait for the separately preregistered C02 carrier qualification, then preregister response-blind H2 origin selection with one explicit primary carrier and one secondary cross-check role.",
+  "nonclaims": [
+    "C01 does not test H2.",
+    "C01 does not admit the ROM observation seam to production groundwater coupling.",
+    "C01 does not claim B01 homogeneous material represents Hupsel or a deployment soil."
+  ]
 }
