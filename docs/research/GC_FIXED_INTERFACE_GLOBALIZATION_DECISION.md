@@ -1635,3 +1635,42 @@ RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: G21J CONVERGENCE-CRITERION FORENSICS.
 ```
+## G21J disposition: adjacent status islands are controlled by boundary-specific balance criteria
+
+G21J intervened only on copied numerical parameters at the exact G21I split
+iterations. The primary arms left `CritDevBalCp` unchanged because that same
+criterion participates in HeadCalc backtracking, while HEAD, TOTAL and POND
+convergence checks were neutralized in all seven non-empty combinations.
+
+The authority run, workflow `35743135385`, job `106797749416`, produced two
+different causal classifications.
+
+At B2, relaxing TOTAL alone changes the status-6 head to a physically
+converged solve at iteration 3 while preserving exactly three cumulative
+backtracking attempts. HEAD and POND alone do not. TOTAL plus either other
+criterion also converges. This cleanly identifies the total-balance predicate
+as the B2 blocker on the original Newton/backtracking path.
+
+At B1, HEAD, TOTAL, POND and every combination of those three all remain
+nonconverged at iteration 4 with exactly the original eight backtracking
+attempts. Under the source-audited non-macropore HeadCalc route, compartment
+balance is therefore a necessary blocker. It is not established as the sole
+blocker: relaxing `CritDevBalCp` changes backtracking from eight attempts to
+four and still does not converge, while relaxing every convergence criterion
+converges in one iteration on a different path.
+
+This rejects a universal one-threshold explanation for the G21F/G21G binary64
+islands. Different adjacent transitions can cross different convergence
+predicates even though their earlier aggregate backtracking counts are
+identical. The evidence points to numerical balance/cancellation structure at
+the acceptance surface, not to a smooth hydrological head threshold.
+
+```text
+G21J CONVERGENCE-CRITERION ISOLATION = QUALIFIED DIAGNOSTIC.
+B2 BLOCKER = TOTAL BALANCE, CLEAN PATH-PRESERVING CAUSAL RESULT.
+B1 BLOCKER = COMPARTMENT BALANCE NECESSARY, SOLE-BLOCKER CLAIM NOT ESTABLISHED.
+UNIVERSAL SINGLE-CRITERION ISLAND EXPLANATION = REJECTED.
+TOLERANCE RELAXATION / STATUS SMOOTHING / HEAD SNAPPING = NOT ADMITTED.
+NO PRODUCTION SOLVER OR HCOF/RHS CHANGE.
+NEXT: PATH-PRESERVING BALANCE-THRESHOLD TOMOGRAPHY.
+```
