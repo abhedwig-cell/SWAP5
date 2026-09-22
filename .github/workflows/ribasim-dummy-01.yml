@@ -230,6 +230,11 @@ on:
       - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
       - 'tests/research/test_ribasim_dummy_20f2_two_day_memory.py'
       - 'tests/research/run_ribasim_dummy_20f2.ps1'
+      - 'integration/research/RIBASIM_DUMMY_20G_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20G_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/test_ribasim_dummy_20g_active_river.py'
+      - 'tests/research/run_ribasim_dummy_20g.ps1'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -977,4 +982,30 @@ jobs:
       - name: Run two-day next-boundary groundwater-memory admission
         shell: pwsh
         run: .\tests\research\run_ribasim_dummy_20f2.ps1
+
+  real-ribamod-active-river-reciprocity-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20g-ci')
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout pinned iMOD Coupler
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/imod_coupler
+          ref: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+          path: .imod-coupler-pin
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .imod-coupler-pin
+          environments: dev
+      - name: Run active-river reciprocal stage-feedback bridge
+        shell: pwsh
+        run: .\tests\research\run_ribasim_dummy_20g.ps1
 
