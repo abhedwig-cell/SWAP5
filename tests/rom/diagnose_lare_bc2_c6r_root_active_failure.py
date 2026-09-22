@@ -3,8 +3,9 @@
 
 This tool does not change C6R acceptance semantics. It adds logging around the
 already frozen fail-closed root-active first-attempt path and makes the existing
-direct Richards failure diagnostic replay the prescribed root sink that caused
-the failed attempt.
+direct Richards failure diagnostic replay the prescribed root sink through the
+same dedicated b110_root_sink_provider_t separation used by the serialized
+Reference runtime.
 """
 from __future__ import annotations
 
@@ -26,6 +27,14 @@ def main() -> int:
     args = ap.parse_args()
 
     text = args.input.read_text()
+
+    text = replace_once(
+        text,
+        "  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider\n",
+        "  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider\n"
+        "  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider\n",
+        "root-sink provider diagnostic import",
+    )
 
     old_fail = """    if(p%root_extraction_active)then
       if(allocated(before))deallocate(before)
@@ -50,34 +59,48 @@ def main() -> int:
 """
     text = replace_once(text, old_fail, new_fail, "root-active fail-closed diagnostic hook")
 
-    old_import = "  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider\n"
-    new_import = old_import + "  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider\n"
-    text = replace_once(text, old_import, new_import, "diagnostic root provider import")
+    text = replace_once(
+        text,
+        "    type(b110_source_sink_provider_t),target :: source_sink\n",
+        "    type(b110_source_sink_provider_t),target :: source_sink\n"
+        "    type(b110_root_sink_provider_t),target :: root_provider\n",
+        "root provider diagnostic declaration",
+    )
 
-    old_decl = "    type(b110_source_sink_provider_t),target :: source_sink\n"
-    new_decl = old_decl + "    type(b110_root_sink_provider_t),target :: diagnostic_root_sink\n"
-    text = replace_once(text, old_decl, new_decl, "diagnostic root provider declaration")
+    text = replace_once(
+        text,
+        "    real(real64),target :: drainage(1,numnod),irrigation(numnod),root_sink(numnod)\n",
+        "    real(real64),target :: drainage(1,numnod),irrigation(numnod),root_sink(numnod),root_zero(numnod)\n",
+        "root-zero diagnostic declaration",
+    )
 
-    old_arrays = "    real(real64),target :: drainage(1,numnod),irrigation(numnod),root_sink(numnod)\n"
-    new_arrays = "    real(real64),target :: drainage(1,numnod),irrigation(numnod),root_sink(numnod),source_sink_root_zero(numnod)\n"
-    text = replace_once(text, old_arrays, new_arrays, "diagnostic root zero declaration")
-
-    old_sink = """    drainage=0.0_real64;irrigation=0.0_real64;root_sink=0.0_real64
-    call bind_b110_source_sink_provider(source_sink,drainage,irrigation,root_sink)
-"""
-    new_sink = """    drainage=0.0_real64;irrigation=0.0_real64;root_sink=0.0_real64;source_sink_root_zero=0.0_real64
+    text = replace_once(
+        text,
+        "    drainage=0.0_real64;irrigation=0.0_real64;root_sink=0.0_real64\n",
+        """    drainage=0.0_real64;irrigation=0.0_real64;root_sink=0.0_real64;root_zero=0.0_real64
     if(allocated(forcing%root_extraction_sink))then
       call require(size(forcing%root_extraction_sink)==numnod,'C6R diagnostic root sink shape')
       root_sink=forcing%root_extraction_sink
     end if
-    call bind_b110_source_sink_provider(source_sink,drainage,irrigation,source_sink_root_zero)
-    call bind_b110_root_sink_provider(diagnostic_root_sink,root_sink)
-"""
-    text = replace_once(text, old_sink, new_sink, "root sink diagnostic replay binding")
+""",
+        "root sink diagnostic replay binding",
+    )
 
-    old_eval = "    request%evaluation%constitutive=>constitutive;request%evaluation%source_sink=>source_sink;request%evaluation%top_boundary=>top\n"
-    new_eval = "    request%evaluation%constitutive=>constitutive;request%evaluation%source_sink=>source_sink; &\n         request%evaluation%root_sink=>diagnostic_root_sink;request%evaluation%top_boundary=>top\n"
-    text = replace_once(text, old_eval, new_eval, "diagnostic root provider request binding")
+    text = replace_once(
+        text,
+        "    call bind_b110_source_sink_provider(source_sink,drainage,irrigation,root_sink)\n",
+        "    call bind_b110_source_sink_provider(source_sink,drainage,irrigation,root_zero)\n"
+        "    call bind_b110_root_sink_provider(root_provider,root_sink)\n",
+        "separate source/root provider diagnostic binding",
+    )
+
+    text = replace_once(
+        text,
+        "    request%evaluation%constitutive=>constitutive;request%evaluation%source_sink=>source_sink;request%evaluation%top_boundary=>top\n",
+        "    request%evaluation%constitutive=>constitutive;request%evaluation%source_sink=>source_sink\n"
+        "    request%evaluation%root_sink=>root_provider;request%evaluation%top_boundary=>top\n",
+        "root provider diagnostic request binding",
+    )
 
     args.output.write_text(text)
     return 0
