@@ -1,0 +1,150 @@
+{
+  "schema": "swap5.rom-purpose.p1.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "phase": "PREREGISTERED_BEFORE_ANY_P1_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "title": "Equal-dimension purpose-aligned vertical placement discriminator",
+  "scientific_question": "At fixed four-state dimension and fixed CURRENT_LAYER_FACE closure, does placing state support in the process region required by a declared hydrological purpose improve that purpose response relative to uniform or oppositely aligned placement, and when does residual error identify closure rather than placement?",
+  "authority": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "p0_binding": "integration/f-rom/ROM_PURPOSE_P0_AUTHORITY_BINDING.json",
+    "p0_synthesis": "docs/science/F-ROM_PURPOSE_P0_SYNTHESIS.md",
+    "historical_layer_rom_head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+    "historical_lare_head": "437d5edda08447abbfbdc41e54039f78d4d31560",
+    "historical_evidence_is_design_context_not_candidate_response": true
+  },
+  "representations": {
+    "dimension": 4,
+    "closure": "CURRENT_LAYER_FACE",
+    "S4": [0, 20, 40, 80, 160],
+    "G4": [0, 80, 120, 140, 160],
+    "U4": [0, 40, 80, 120, 160],
+    "selection_basis": {
+      "S4": "Declared surface-purpose integration supports 0-20, 0-40 and 0-80 cm.",
+      "G4": "Exact vertical mirror of the S4 support hierarchy about the 80-cm column midpoint.",
+      "U4": "Equal-dimension uniform placement control."
+    },
+    "response_based_boundary_selection": false,
+    "post_response_repartitioning": false
+  },
+  "materials": ["B01", "B14"],
+  "common_domain": {
+    "column_depth_cm": 160,
+    "root_sink": false,
+    "moving_water_table": false,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "candidate_dt_day": 0.0001,
+    "mass_conservation_required": true
+  },
+  "fresh_blind_workloads": {
+    "GW_LB": {
+      "purpose": "groundwater/lower-boundary response",
+      "top_boundary": "gravity-consistent equilibrium flux",
+      "bottom_boundary": "fresh dynamic prescribed-head sequence with rise/fall/hold phases",
+      "histories": {
+        "G01": {"initial_effective_saturation": 0.68, "phase1": "RISE", "phase1_observations": 192, "phase2": "FALL", "phase2_observations": 320, "hold_observations": 512},
+        "G02": {"initial_effective_saturation": 0.82, "phase1": "FALL", "phase1_observations": 192, "phase2": "RISE", "phase2_observations": 320, "hold_observations": 512},
+        "G03": {"initial_effective_saturation": 0.73, "phase1": "RISE", "phase1_observations": 320, "phase2": "FALL", "phase2_observations": 192, "hold_observations": 512},
+        "G04": {"initial_effective_saturation": 0.90, "phase1": "FALL", "phase1_observations": 320, "phase2": "RISE", "phase2_observations": 192, "hold_observations": 512}
+      },
+      "bottom_head_multipliers": {"RISE": 0.90, "FALL": 1.10, "HOLD": 1.0},
+      "primary_metrics": [
+        "cumulative_bottom_exchange_error_cm",
+        "interval_bottom_flux_error_cm_per_day",
+        "bottom_flux_sign_mismatch_count",
+        "reversal_sequence_mismatch_count",
+        "reversal_timing_error_steps",
+        "total_storage_error_cm",
+        "history_signed_bottom_flux_bias_cm_per_day",
+        "long_horizon_exchange_drift_cm"
+      ]
+    },
+    "SURF_P": {
+      "purpose": "surface and soil-moisture profile response",
+      "top_boundary": "fresh prescribed-flux wet/dry/hold sequence",
+      "bottom_boundary": "fixed gravity-equilibrium flux",
+      "histories": {
+        "S01": {"initial_effective_saturation": 0.68, "phase1": "WET", "phase1_observations": 192, "phase2": "DRY", "phase2_observations": 320, "hold_observations": 512},
+        "S02": {"initial_effective_saturation": 0.82, "phase1": "DRY", "phase1_observations": 192, "phase2": "WET", "phase2_observations": 320, "hold_observations": 512},
+        "S03": {"initial_effective_saturation": 0.73, "phase1": "WET", "phase1_observations": 320, "phase2": "DRY", "phase2_observations": 192, "hold_observations": 512},
+        "S04": {"initial_effective_saturation": 0.90, "phase1": "DRY", "phase1_observations": 320, "phase2": "WET", "phase2_observations": 192, "hold_observations": 512}
+      },
+      "top_flux_multipliers": {"WET": 1.10, "DRY": 0.90, "HOLD": 1.0},
+      "primary_metrics": [
+        "surface_0_20_storage_error_cm",
+        "root_zone_0_40_storage_error_cm",
+        "upper_0_80_storage_error_cm",
+        "mapped_10cm_theta_error",
+        "total_storage_error_cm",
+        "storage_extremum_timing_error_steps",
+        "history_signed_storage_bias_cm"
+      ]
+    }
+  },
+  "reference_qualification": {
+    "must_complete_before_candidate_response": true,
+    "target": "R2048_T32",
+    "spatial_ladder": {
+      "R512_T32": {"nodes": 512, "dz_cm": 0.3125, "temporal_factor": 32},
+      "R1024_T32": {"nodes": 1024, "dz_cm": 0.15625, "temporal_factor": 32},
+      "R2048_T32": {"nodes": 2048, "dz_cm": 0.078125, "temporal_factor": 32}
+    },
+    "temporal_ladder": {
+      "R2048_T8": {"nodes": 2048, "dz_cm": 0.078125, "temporal_factor": 8},
+      "R2048_T16": {"nodes": 2048, "dz_cm": 0.078125, "temporal_factor": 16},
+      "R2048_T32": {"nodes": 2048, "dz_cm": 0.078125, "temporal_factor": 32}
+    },
+    "compiler_optimization_routes": [0, 2],
+    "O0_O2_bit_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "uncertainty_rule": "Use three-level monotone space/time convergence with a GCI-style fine-grid uncertainty per metric. Numerical uncertainty is not an application tolerance.",
+    "fail_closed": true
+  },
+  "comparators": {
+    "placement": ["S4", "G4", "U4"],
+    "same_partition_coarse_richards": true,
+    "purpose_aligned_primary_pairs": {
+      "GW_LB": ["G4", "U4"],
+      "SURF_P": ["S4", "U4"]
+    },
+    "cross_purpose_diagnostic_pairs": {
+      "GW_LB": ["G4", "S4"],
+      "SURF_P": ["S4", "G4"]
+    },
+    "high_resolution_numerical_comparator": "R512_T32 relative to R2048_T32",
+    "no_scalar_weighting": true
+  },
+  "hypotheses": {
+    "H1": "On GW_LB, G4 is componentwise no worse than U4 on the frozen primary groundwater vector, with at least one strict improvement, for each material that remains in the qualified domain.",
+    "H2": "On SURF_P, S4 is componentwise no worse than U4 on the frozen primary surface/profile vector, with at least one strict improvement, for each material that remains in the qualified domain.",
+    "H3": "Equal-dimensional purpose-aligned placement has purpose-specific information value: at least one purpose/material shows the aligned partition strictly improving over U4 without a dimension or closure change.",
+    "H4": "If an aligned Layer-ROM partition is materially weaker than its same-partition coarse-Richards diagnostic while the coarse-Richards route reaches the frozen high-resolution comparator vector, classify a propagation/closure insufficiency for that purpose/partition; do not infer that more states are automatically required."
+  },
+  "decision_rules": {
+    "PLACEMENT_SUPPORTED": "Aligned partition is componentwise no worse than U4 on every primary metric and strictly better on at least one, evaluated per purpose and material.",
+    "PLACEMENT_MIXED": "Neither aligned partition nor U4 is componentwise noninferior.",
+    "UNIFORM_NONINFERIOR": "U4 is componentwise no worse than aligned placement and strictly better on at least one primary metric.",
+    "CLOSURE_DEFICIT_SUPPORTED": "Same-partition coarse Richards crosses the frozen R512_T32 comparator vector while same-partition Layer-ROM does not, with qualified Reference and both routes in-domain.",
+    "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED": "Aligned Layer-ROM and same-partition coarse Richards both fail the comparator vector, so P1 cannot assign the deficit uniquely to closure.",
+    "APPLICATION_STATUS": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE unless independent purpose authority is later bound."
+  },
+  "stop_rules": [
+    "No candidate response before Reference qualification.",
+    "No changes to partitions, histories, metrics, comparator rules or decision rules after first P1 Reference response.",
+    "No application tolerance inferred from numerical uncertainty.",
+    "No closure tuning or new closure family in P1.",
+    "No dynamic root-uptake feedback.",
+    "No performance or speed claim.",
+    "No production-ROM admission."
+  ],
+  "scientific_firewall": {
+    "reference_response_generated": false,
+    "candidate_response_generated": false,
+    "representation_tuned_from_response": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
