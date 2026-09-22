@@ -49,6 +49,12 @@
       "compute_next_allocation_tstop still caps the fixed allocation step at first(allocation.time.tstops)",
       "AllocationTime is still initialized on the solver.saveat grid"
     ],
-    "interpretation": "The saveat-coupled allocation clock is not only historical to the research pin; the same mechanism is present on the observed upstream main head."
+    "interpretation": "Both saveat-driven allocation timing and record-gated UserDemand application are present on the observed upstream main head; coupled-clock ownership must distinguish LP solve time, application/commit time, and output-record time.",
+    "user_demand_application_observation": [
+      "update_allocation! still calls parse_allocations! only when record=true.",
+      "parse_allocations! is the seam that writes UserDemand.allocated and per-link inflow_link_allocated from optimized LP values.",
+      "Sub-saveat allocation solves therefore leave the applied UserDemand allocation state unchanged.",
+      "In contrast, allocation-controlled Pump/Outlet/TabulatedRatingCurve controls are applied outside the record guard, so sub-saveat solve application semantics differ by component type."
+    ]
   }
 }
