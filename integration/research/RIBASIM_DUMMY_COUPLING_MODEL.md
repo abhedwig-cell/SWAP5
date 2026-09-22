@@ -969,6 +969,12 @@ DUMMY-20H6
   accepted day-1 storage excess contributes 7.9903723811 m3 to the next
   management budget, while current 8.0000425122 m3/day River forcing can be
   suppressed in the LP forecast by alpha=0
+
+DUMMY-20H7
+  qualified actual-product next-boundary bridge:
+  the real pinned RibaMod run reproduces the day-1 accepted state, publishes
+  8.0000425122 m3/day River forcing for the next segment, and records the t=24
+  UserDemand allocation as 39.9903723811/0 m3/day, exactly matching H6
 ```
 
 Together these work units establish both one-way passive groundwater arrival and
@@ -1111,9 +1117,24 @@ current forcing F_(k+1)
 These quantities may be numerically related, but they are not interchangeable
 and need not refer to the same time or authority.
 
+DUMMY-20H7 closes the previously open end-to-end bridge for this tested
+topology. The actual pinned RibaMod route produces the H6 t=24 allocation
+oracle after generating the accepted state through real day-1 coupled
+realization. In particular:
+
+```text
+accepted t=24 storage excess = 7.9903723811 m3
+current post-boundary River forcing = 8.0000425122 m3/day
+actual t=24 allocation = 39.9903723811 / 0 m3/day
+```
+
+Thus the current River flux is physically real and current, but it is not
+subtracted from the accepted-storage management budget in the qualified
+free-alpha solution. The accepted storage memory and the forecast forcing
+remain separate semantic objects in the actual product composition.
+
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
-general STO aggregation contract, arbitrary package/topology equivalence, or
-an end-to-end two-day RibaMod observation of the H6 t=24 allocation oracle.
+general STO aggregation contract, or arbitrary package/topology equivalence.
 
 ### SWAP
 
