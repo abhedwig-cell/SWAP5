@@ -8,13 +8,13 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20A closeout. Product-release source verifier and runner are prepared.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "Pinned Ribasim v2026.1.1 source contract for fixed allocation.dt, BMI.update_until and saveat independence.",
-  "next_action": "After DUMMY-20A closes, rebind to its authority and execute the frozen Ribasim v2026.1.1 release-clock gate.",
+  "next_action": "Execute frozen DUMMY-20B product Ribasim v2026.1.1 release-clock qualification.",
   "production_delta": [],
   "reference_delta": [],
-  "recovery_point": "DUMMY-20B verifier/runner persisted prospectively while DUMMY-20A is active.",
+  "recovery_point": "DUMMY-20B verifier/runner prepared prospectively; DUMMY-20A dependency now satisfied.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20B_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20B_CONCEPT.md",
@@ -24,5 +24,6 @@
     "tests/research/test_ribasim_dummy_20b_product_release_clock.py",
     "tests/research/run_ribasim_dummy_20b.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "implementation_baseline": "a508500674285e88ffa0b597491830e6798eeaac"
 }
