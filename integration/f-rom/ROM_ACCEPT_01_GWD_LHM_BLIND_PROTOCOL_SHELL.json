@@ -12,20 +12,34 @@
     {
       "id": "DATASET_BINDING",
       "requirement": "Bind immutable identities/hashes and licenses for the exact groundwater observation datasets and spatial classifications used in the application panel.",
-      "state": "BLOCKED_EXTERNAL_VALIDATION_DATA_ARCHIVE_UNAVAILABLE",
+      "state": "PARTIAL_RESOLVED_PUBLIC_ARCHIVE_IDENTITY",
       "evidence": {
-        "nhi_lhm_page": "https://nhi.nu/modellen/lhm/",
-        "page_statement": "The LHM 4.1 page states that groundwater levels used for validation are downloadable.",
-        "linked_archive": "https://www.dropbox.com/scl/fi/zi1up41kyvnl5t2x6e3qm/validatiedata.zip?dl=0&rlkey=pgtfh1ndf5ueisc3ou0umqyr8",
-        "observed_state_2026_09_22": "DROPBOX_FILE_DELETED",
-        "additional_source_boundary": "The NHI page also states that the full regional and DINO datasets are not available."
+        "official_archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+        "byte_size": 155954643,
+        "crc_test": "PASS",
+        "archive_result": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json"
       },
-      "resolution_requires": "Recover the exact processed LHM 4.1 validation groundwater dataset/population from NHI/Rijkswaterstaat/data owner, or an authoritative replacement manifest that reproduces the same validation population and classifications. Do not substitute a newly assembled DINO/regional sample without new purpose authority."
+      "resolution_requires": "Recover the exact processed LHM 4.1 validation groundwater dataset/population from NHI/Rijkswaterstaat/data owner, or an authoritative replacement manifest that reproduces the same validation population and classifications. Do not substitute a newly assembled DINO/regional sample without new purpose authority.",
+      "remaining": "The public archive is not the complete report population because publication-withheld measurements are absent."
     },
     {
       "id": "POPULATION_BINDING",
       "requirement": "Freeze the exact measurement-point population, hydrotype/area-type mapping, depth-class membership and all inclusion/exclusion rules before any reduced-model output.",
-      "state": "UNRESOLVED"
+      "state": "BLOCKED_COMPLETE_ORIGINAL_POPULATION_AUTHORITY",
+      "evidence": {
+        "public_population_result": "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json",
+        "public_metadata_contains": [
+          "BUIS",
+          "MEETREEKS",
+          "HYDROTYPE",
+          "GEBIEDSTYPE",
+          "WEIGHT",
+          "CLUSTER",
+          "calibration-excluded variants"
+        ],
+        "completeness": "INCOMPLETE_RELATIVE_TO_PUBLISHED_LHM41_STATISTIC_POPULATIONS"
+      },
+      "resolution_requires": "Either obtain the complete original validation population/manifest from Rijkswaterstaat/NHI/data owners, or establish an independent purpose-owner contract that declares the distributable public subset to be the governed population of a new reproducible application test."
     },
     {
       "id": "TEMPORAL_BINDING",
@@ -95,12 +109,18 @@
   "candidate_responses_viewed": false,
   "external_blockers": [
     {
-      "id": "LHM41_GW_VALIDATION_DATASET_AUTHORITY",
-      "class": "EXTERNAL_SOURCE_BLOCKER",
+      "id": "LHM41_COMPLETE_VALIDATION_POPULATION_AUTHORITY",
+      "class": "EXTERNAL_POPULATION_AUTHORITY_BLOCKER",
       "state": "BLOCKED",
-      "description": "The formal quantitative envelope is source-verified, but the exact observation dataset/population needed to execute the direct end-to-end route cannot currently be bound from the public archive because the NHI-linked validation-data file is deleted.",
-      "consequence": "No reduced-model end-to-end application run is authorized."
+      "description": "The official public archive is qualified, but its metadata explicitly states that data withheld by owners were removed. Therefore the exact original population behind the published LHM 4.1 national acceptance statistics is not fully available from public sources.",
+      "consequence": "Do not execute an exact LHM 4.1 acceptance replication and do not relabel the public subset as equivalent.",
+      "resolved_part": "Archive retrieval, byte identity, ZIP integrity and public metadata identity are resolved."
     }
   ],
-  "next_safe_step": "Obtain authoritative access to the exact LHM 4.1 groundwater validation dataset/population and freeze its file identities and spatial-classification manifest. If that cannot be recovered, this direct route remains a valid frozen envelope but non-executable."
+  "next_safe_step": "Obtain authority for the complete report population or a new purpose-owner rule governing the public distributable subset. Until then, keep the direct GW-D envelope frozen but non-executable.",
+  "public_subset_route": {
+    "state": "NOT_AUTHORIZED_AS_ACCEPTANCE_ROUTE",
+    "reason": "A distributable subset is reproducible, but the source does not establish that the 80% acceptance rules retain identical application meaning after owner-dependent omissions.",
+    "allowed_now": "Provenance and design diagnostics only; no Layer-ROM candidate response."
+  }
 }
