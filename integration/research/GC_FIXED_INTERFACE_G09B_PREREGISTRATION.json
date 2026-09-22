@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09b.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09B",
+  "title": "Execution-topology-consistent real-SWAP physical tangent estimator",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G09A_RESULT.json",
+  "production_changes": false,
+  "question": "Can physical q_swap(H) tangent acquisition be made stable across both fragmented corrector admissibility and temporal-substep topology changes by admitting only probe results that share the center trial's execution topology?",
+  "frozen_boundary_states": "Same eight negative/positive extreme states frozen in GC_FIXED_INTERFACE_G09_PREREGISTRATION.json.",
+  "execution_signature": {
+    "fields": [
+      "raw result_status == 0",
+      "raw completed == true",
+      "raw candidate_ready == true",
+      "accepted_substeps",
+      "attempts",
+      "retries",
+      "solver_rejections",
+      "temporal_rejections",
+      "internal_retries"
+    ],
+    "equality_rule": "A probe is topology-compatible only when all integer execution fields exactly equal the current center trial and the raw trial is complete/ready."
+  },
+  "estimator_E2": {
+    "initial_half_width_m": 2.5e-7,
+    "max_halvings": 6,
+    "rule": [
+      "Evaluate center participant trial and raw diagnostics; center must be status 0 and complete/ready.",
+      "At each d evaluate h-d,h+d,h-2d,h+2d from immutable accepted origin.",
+      "Mark a probe eligible only if participant status is 0 and its execution signature exactly matches the center.",
+      "If h-d and h+d are eligible, use the central secant.",
+      "Otherwise, if h-d and h-2d are eligible, use the fixed second-order backward derivative.",
+      "Otherwise, if h+d and h+2d are eligible, use the fixed second-order forward derivative.",
+      "Otherwise halve d and retry.",
+      "Require a finite negative slope; no hard-coded admissible direction."
+    ]
+  },
+  "consistency_gate": {
+    "method": "Recompute E2 starting at half the selected d with the same topology rule.",
+    "max_relative_difference": 0.05
+  },
+  "required_specific_outcomes": [
+    "C2_HIGH_FORCING negative dh=-5e-6: E0 central remains unavailable, E2 becomes available and topology-consistent.",
+    "C3_LONG_HIGH positive dh=+2e-6: E2 must reject the large positive-probe temporal-topology branch and achieve <=5% half-step consistency without changing tolerance.",
+    "All eight frozen boundary states produce an E2 tangent satisfying the same <=5% consistency gate."
+  ],
+  "policy_replays": [
+    {
+      "case_id": "C2_HIGH_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "start_dh_m": -0.000005
+    },
+    {
+      "case_id": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "start_dh_m": 0.000002
+    }
+  ],
+  "groundwater_regimes": "Reuse all three unchanged G08 groundwater regimes and independently remeasure each groundwater response.",
+  "policies": [
+    "P1-E2 raw physical Newton using E2 at each outer iterate.",
+    "P4-E2 same E2 tangent plus fixed factor-1/2 backtracking on corrector inadmissibility or residual increase."
+  ],
+  "convergence": {
+    "max_outer": 12,
+    "max_backtracks": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "head_error_tolerance_m": 5e-10
+  },
+  "hard_rules": [
+    "Every participant probe and policy candidate remains trial->evaluate->discard until a separate production admission work unit.",
+    "No tolerance/retry/substep-policy changes.",
+    "No post-hoc scale removal.",
+    "G09 remains falsified; G09B is a new estimator, not a relabeling of G09.",
+    "No production HCOF/RHS or coupling source change."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}
