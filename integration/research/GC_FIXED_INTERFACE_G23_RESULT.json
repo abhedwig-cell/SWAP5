@@ -1,0 +1,965 @@
+{
+  "schema": "swap5.gc_fixed_interface.g23.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G23",
+  "title": "Endpoint-based physical and transactional qualification across the complete prior-qualified G08 envelope",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G23_PREREGISTRATION.json",
+  "tested_commit": "e165556b9821ac1f0df7cc47de6215480a78f5cd",
+  "workflow_run": 35751962699,
+  "workflow_job": 106828111702,
+  "workflow_conclusion": "success",
+  "execution_gate": "PASS",
+  "decision": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
+  "production_admission": "NO",
+  "production_change": "NONE",
+  "source_provenance": {
+    "standard_fgc44_clean_build": "PASS",
+    "research_g21_residual_observer_absent": "PASS",
+    "modflow_configuration": "STANDARD_MODERATE_DBD_NONMETH_3",
+    "g21_exact_path_equivalence": "FALSIFIED_PRESERVED"
+  },
+  "harness_correction_history": {
+    "diagnostic_run": 35750523794,
+    "diagnostic_job": 106823138830,
+    "diagnostic_commit": "3d01ca30eae83d62e0c717a8b073ffbb6ed009e8",
+    "observed_abort_arm": "C0_MIXED_POS",
+    "observed_abort_difference_m_per_s": 1.0690490416777585e-15,
+    "disposition": "NON_PREREGISTERED_SEMANTICALLY_INVALID_PATH_ASSERTION_REMOVED",
+    "explanation": "The removed assertion compared the response-space affine API term q_reference+p*(H-H_anchor) with the independent G08 groundwater oracle a*H+b at every intermediate candidate. G23 preregistered the oracle for external residual/root qualification, not exact equality of these distinct internal path quantities. The difference remains recorded diagnostically in the final run.",
+    "preregistered_gate_changed": false
+  },
+  "matrix": {
+    "eligible_arm_count": 21,
+    "physical_pass_count": 19,
+    "physical_fail_count": 2,
+    "diagnostic_non_authority_pass_count": 21,
+    "transaction_handoff_attempt_count": 19,
+    "transaction_handoff_pass_count": 19,
+    "paired_scenario_count": 9,
+    "paired_scenario_pass_count": 7,
+    "replay_c0_mixed_neg_bitwise": "PASS",
+    "inherited_g21e_hard_stress": "PASS",
+    "all_reported_final_heads_within_reference_guard": true,
+    "max_abs_reported_final_head_error_m": 1.19249277119593e-10,
+    "total_response_contractions": 0
+  },
+  "failed_arms": [
+    {
+      "id": "C0_MIXED_POS",
+      "classification": "OUTER_BUDGET_EXHAUSTED",
+      "final_head_m": -0.7149999677344778,
+      "reference_root_m": -0.714999967734011,
+      "head_error_m": -4.668487818548783e-13,
+      "last_accepted_residual_m_per_s": 1.0690489807569464e-15,
+      "residual_over_1e_15_gate": 1.0690489807569463,
+      "accepted_outer_updates": 12,
+      "modflow_solve_calls": 13,
+      "total_contractions": 0,
+      "all_participant_status_zero": true,
+      "groundwater_oracle_slope_per_s": 0.020365457254069737,
+      "swap_tangent_per_s": -0.000003938582998836077,
+      "local_abs_external_residual_slope_per_s": 0.020369395837068573,
+      "residual_equivalent_head_correction_m": 5.248309715752457e-14,
+      "standard_outer_dvclose_m": 1e-12,
+      "standard_inner_dvclose_m": 1e-13,
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.0690490416777585e-15
+    },
+    {
+      "id": "C3_MIXED_NEG",
+      "classification": "OUTER_BUDGET_EXHAUSTED",
+      "final_head_m": -0.7149999354815688,
+      "reference_root_m": -0.7149999354814313,
+      "head_error_m": -1.375566327510569e-13,
+      "last_accepted_residual_m_per_s": 2.8454475210978113e-15,
+      "residual_over_1e_15_gate": 2.845447521097811,
+      "accepted_outer_updates": 12,
+      "modflow_solve_calls": 13,
+      "total_contractions": 0,
+      "all_participant_status_zero": true,
+      "groundwater_oracle_slope_per_s": 0.010197624497748336,
+      "swap_tangent_per_s": -0.0000038127482138572835,
+      "local_abs_external_residual_slope_per_s": 0.010201437245962194,
+      "residual_equivalent_head_correction_m": 2.7892614074786974e-13,
+      "standard_outer_dvclose_m": 1e-12,
+      "standard_inner_dvclose_m": 1e-13,
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 2.8567230242882225e-15
+    }
+  ],
+  "pair_results": [
+    {
+      "endpoint_spread_m": 5.2735593669694936e-14,
+      "gate": false,
+      "regime": "GW_MIXED",
+      "swap_case": "C0_CONTROL"
+    },
+    {
+      "endpoint_spread_m": 8.24467161208986e-11,
+      "gate": true,
+      "regime": "GW_R075_STORAGE_STRESS",
+      "swap_case": "C0_CONTROL"
+    },
+    {
+      "endpoint_spread_m": 2.7224777987555626e-11,
+      "gate": true,
+      "regime": "GW_R2_STORAGE_STRESS",
+      "swap_case": "C0_CONTROL"
+    },
+    {
+      "endpoint_spread_m": 1.9761969838327786e-14,
+      "gate": true,
+      "regime": "GW_MIXED",
+      "swap_case": "C1_LOW_FORCING"
+    },
+    {
+      "endpoint_spread_m": 5.927436319552726e-11,
+      "gate": true,
+      "regime": "GW_R075_STORAGE_STRESS",
+      "swap_case": "C1_LOW_FORCING"
+    },
+    {
+      "endpoint_spread_m": 2.7630453480753658e-11,
+      "gate": true,
+      "regime": "GW_R2_STORAGE_STRESS",
+      "swap_case": "C1_LOW_FORCING"
+    },
+    {
+      "endpoint_spread_m": 2.8177460364986473e-13,
+      "gate": false,
+      "regime": "GW_MIXED",
+      "swap_case": "C3_LONG_HIGH"
+    },
+    {
+      "endpoint_spread_m": 1.1607292904614042e-10,
+      "gate": true,
+      "regime": "GW_R075_STORAGE_STRESS",
+      "swap_case": "C3_LONG_HIGH"
+    },
+    {
+      "endpoint_spread_m": 3.7617464698769254e-11,
+      "gate": true,
+      "regime": "GW_R2_STORAGE_STRESS",
+      "swap_case": "C3_LONG_HIGH"
+    }
+  ],
+  "replay": {
+    "cached_final_q_m_per_s": -1.2708043535614824e-13,
+    "final_head_m": -0.7149999677344251,
+    "ledger_exchange_m": -1.097974961477121e-12,
+    "response_status_topology": [
+      0
+    ]
+  },
+  "arms": [
+    {
+      "id": "C0_R075_NEG",
+      "swap_case": "C0_CONTROL",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149982728559221,
+      "reference_root_m": -0.7149982728597246,
+      "head_error_m": 3.802513859341161e-12,
+      "final_residual_m_per_s": -1.3226652220936344e-18,
+      "last_accepted_residual_m_per_s": -1.3226652220936344e-18,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 2.829717020884284e-22,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -5.87736058993139e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -5.87736058993139e-11
+        ]
+      }
+    },
+    {
+      "id": "C0_R075_POS",
+      "swap_case": "C0_CONTROL",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149982729383688,
+      "reference_root_m": -0.7149982728597246,
+      "head_error_m": -7.864420226155744e-11,
+      "final_residual_m_per_s": 5.668060964810952e-16,
+      "last_accepted_residual_m_per_s": 5.668060964810952e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 5.667345197478221e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -5.87708014759537e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -5.87708014759537e-11
+        ]
+      }
+    },
+    {
+      "id": "C0_R2_NEG",
+      "swap_case": "C0_CONTROL",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009800002779,
+      "reference_root_m": -0.715000980013045,
+      "head_error_m": 1.276712069397945e-11,
+      "final_residual_m_per_s": -4.305983562077159e-19,
+      "last_accepted_residual_m_per_s": -4.305983562077159e-19,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 2.8221883848403445e-21,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 3.334878381725071e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          3.334878381725071e-11
+        ]
+      }
+    },
+    {
+      "id": "C0_R2_POS",
+      "swap_case": "C0_CONTROL",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009799730531,
+      "reference_root_m": -0.715000980013045,
+      "head_error_m": 3.9991898681535076e-11,
+      "final_residual_m_per_s": -3.220523024452339e-16,
+      "last_accepted_residual_m_per_s": -3.220523024452339e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 3.2212355793435347e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 3.334785789124817e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          3.334785789124817e-11
+        ]
+      }
+    },
+    {
+      "id": "C0_MIXED_NEG",
+      "swap_case": "C0_CONTROL",
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149999677344251,
+      "reference_root_m": -0.714999967734011,
+      "head_error_m": -4.141131881851834e-13,
+      "final_residual_m_per_s": -5.001846943208508e-18,
+      "last_accepted_residual_m_per_s": -5.001846943208508e-18,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 4.269347221439101e-18,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -1.097974961477121e-12,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -1.097974961477121e-12
+        ]
+      }
+    },
+    {
+      "id": "C0_MIXED_POS",
+      "swap_case": "C0_CONTROL",
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "classification": "OUTER_BUDGET_EXHAUSTED",
+      "physical_gate": false,
+      "transaction_gate": false,
+      "final_head_m": -0.7149999677344778,
+      "reference_root_m": -0.714999967734011,
+      "head_error_m": -4.668487818548783e-13,
+      "final_residual_m_per_s": null,
+      "last_accepted_residual_m_per_s": 1.0690489807569464e-15,
+      "accepted_outer_updates": 12,
+      "modflow_solve_calls": 13,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.0690490416777585e-15,
+      "diagnostic_non_authority": "PASS",
+      "publication": null
+    },
+    {
+      "id": "C1_R075_NEG",
+      "swap_case": "C1_LOW_FORCING",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149982815686426,
+      "reference_root_m": -0.7149982814493934,
+      "head_error_m": -1.19249277119593e-10,
+      "final_residual_m_per_s": 9.720934602023836e-16,
+      "last_accepted_residual_m_per_s": 9.720934602023836e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 9.72446539014062e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -5.847712088195795e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -5.847712088195795e-11
+        ]
+      }
+    },
+    {
+      "id": "C1_R075_POS",
+      "swap_case": "C1_LOW_FORCING",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149982815093683,
+      "reference_root_m": -0.7149982814493934,
+      "head_error_m": -5.997491392406573e-11,
+      "final_residual_m_per_s": 5.636478830321975e-16,
+      "last_accepted_residual_m_per_s": 5.636478830321975e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 5.638718213185462e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -5.847913704697066e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -5.847913704697066e-11
+        ]
+      }
+    },
+    {
+      "id": "C1_R2_NEG",
+      "swap_case": "C1_LOW_FORCING",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009933336565,
+      "reference_root_m": -0.7150009933634559,
+      "head_error_m": 2.9799385181661364e-11,
+      "final_residual_m_per_s": 7.297943125916869e-21,
+      "last_accepted_residual_m_per_s": 7.297943125916869e-21,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 4,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 3.7947072159583534e-21,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 3.3802509721584335e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          3.3802509721584335e-11
+        ]
+      }
+    },
+    {
+      "id": "C1_R2_POS",
+      "swap_case": "C1_LOW_FORCING",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009933060261,
+      "reference_root_m": -0.7150009933634559,
+      "head_error_m": 5.742983866241502e-11,
+      "final_residual_m_per_s": -3.2635139084621347e-16,
+      "last_accepted_residual_m_per_s": -3.2635139084621347e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 3.2660225280006e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 3.38015704729055e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          3.38015704729055e-11
+        ]
+      }
+    },
+    {
+      "id": "C1_MIXED_NEG",
+      "swap_case": "C1_LOW_FORCING",
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149999877217824,
+      "reference_root_m": -0.7149999877219956,
+      "head_error_m": 2.1316282072803006e-13,
+      "final_residual_m_per_s": 1.9753526879639914e-19,
+      "last_accepted_residual_m_per_s": 1.9753526879639914e-19,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 4,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.9043408825218664e-18,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -4.1781907127119667e-13,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -4.1781907127119667e-13
+        ]
+      }
+    },
+    {
+      "id": "C1_MIXED_POS",
+      "swap_case": "C1_LOW_FORCING",
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149999877218022,
+      "reference_root_m": -0.7149999877219956,
+      "head_error_m": 1.9340085088970227e-13,
+      "final_residual_m_per_s": 4.029103777659333e-16,
+      "last_accepted_residual_m_per_s": 4.029103777659333e-16,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 3.389135679899887e-19,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -4.1781685082514743e-13,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -4.1781685082514743e-13
+        ]
+      }
+    },
+    {
+      "id": "C2_R075_POS",
+      "swap_case": "C2_HIGH_FORCING",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149982599989799,
+      "reference_root_m": -0.7149982600749176,
+      "head_error_m": 7.593770057212623e-11,
+      "final_residual_m_per_s": 3.780327440335072e-20,
+      "last_accepted_residual_m_per_s": 3.780327440335072e-20,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.3031762030504122e-21,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -5.921112028567177e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -5.921112028567177e-11
+        ]
+      }
+    },
+    {
+      "id": "C2_R2_POS",
+      "swap_case": "C2_HIGH_FORCING",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009600002789,
+      "reference_root_m": -0.7150009600260896,
+      "head_error_m": 2.5810686921090564e-11,
+      "final_residual_m_per_s": -5.552295896308338e-19,
+      "last_accepted_residual_m_per_s": -5.552295896308338e-19,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.2887449709769163e-21,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 3.266819498143536e-11,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          3.266819498143536e-11
+        ]
+      }
+    },
+    {
+      "id": "C2_MIXED_POS",
+      "swap_case": "C2_HIGH_FORCING",
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149999377402256,
+      "reference_root_m": -0.7149999377401511,
+      "head_error_m": -7.4495964952348e-14,
+      "final_residual_m_per_s": -6.983990057883496e-18,
+      "last_accepted_residual_m_per_s": -6.983990057883496e-18,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 6.581669365891413e-18,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -2.118660636871937e-12,
+        "mid_state": [
+          1,
+          0.0001,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0001,
+          1,
+          -2.118660636871937e-12
+        ]
+      }
+    },
+    {
+      "id": "C3_R075_NEG",
+      "swap_case": "C3_LONG_HIGH",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7149982601153679,
+      "reference_root_m": -0.7149982600888036,
+      "head_error_m": -2.656430631020612e-11,
+      "final_residual_m_per_s": 7.745858433236672e-16,
+      "last_accepted_residual_m_per_s": 7.745858433236672e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 7.745927113122048e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -1.146310976162206e-10,
+        "mid_state": [
+          1,
+          0.0002,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0002,
+          1,
+          -1.146310976162206e-10
+        ]
+      }
+    },
+    {
+      "id": "C3_R075_POS",
+      "swap_case": "C3_LONG_HIGH",
+      "regime": "GW_R075_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.714998259999295,
+      "reference_root_m": -0.7149982600888036,
+      "head_error_m": 8.95086227359343e-11,
+      "final_residual_m_per_s": 1.2070270227809784e-19,
+      "last_accepted_residual_m_per_s": 1.2070270227809784e-19,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.0001259840619662e-21,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -1.1463874483241421e-10,
+        "mid_state": [
+          1,
+          0.0002,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0002,
+          1,
+          -1.1463874483241421e-10
+        ]
+      }
+    },
+    {
+      "id": "C3_R2_NEG",
+      "swap_case": "C3_LONG_HIGH",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "NEG",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009599630243,
+      "reference_root_m": -0.7150009600399754,
+      "head_error_m": 7.695111214900408e-11,
+      "final_residual_m_per_s": -4.2851059506260265e-16,
+      "last_accepted_residual_m_per_s": -4.2851059506260265e-16,
+      "accepted_outer_updates": 2,
+      "modflow_solve_calls": 5,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 4.2866145841225875e-16,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 6.32464506301651e-11,
+        "mid_state": [
+          1,
+          0.0002,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0002,
+          1,
+          6.32464506301651e-11
+        ]
+      }
+    },
+    {
+      "id": "C3_R2_POS",
+      "swap_case": "C3_LONG_HIGH",
+      "regime": "GW_R2_STORAGE_STRESS",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.7150009600006417,
+      "reference_root_m": -0.7150009600399754,
+      "head_error_m": 3.933364745023482e-11,
+      "final_residual_m_per_s": 1.61665700154209e-18,
+      "last_accepted_residual_m_per_s": 1.61665700154209e-18,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 1.2372957909045385e-21,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": 6.324892642751001e-11,
+        "mid_state": [
+          1,
+          0.0002,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0002,
+          1,
+          6.324892642751001e-11
+        ]
+      }
+    },
+    {
+      "id": "C3_MIXED_NEG",
+      "swap_case": "C3_LONG_HIGH",
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "classification": "OUTER_BUDGET_EXHAUSTED",
+      "physical_gate": false,
+      "transaction_gate": false,
+      "final_head_m": -0.7149999354815688,
+      "reference_root_m": -0.7149999354814313,
+      "head_error_m": -1.375566327510569e-13,
+      "final_residual_m_per_s": null,
+      "last_accepted_residual_m_per_s": 2.8454475210978113e-15,
+      "accepted_outer_updates": 12,
+      "modflow_solve_calls": 13,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 2.8567230242882225e-15,
+      "diagnostic_non_authority": "PASS",
+      "publication": null
+    },
+    {
+      "id": "C3_MIXED_POS",
+      "swap_case": "C3_LONG_HIGH",
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "classification": "CONVERGED",
+      "physical_gate": true,
+      "transaction_gate": true,
+      "final_head_m": -0.714999935481287,
+      "reference_root_m": -0.7149999354814313,
+      "head_error_m": 1.4421797089880783e-13,
+      "final_residual_m_per_s": -2.90214031045593e-17,
+      "last_accepted_residual_m_per_s": -2.90214031045593e-17,
+      "accepted_outer_updates": 1,
+      "modflow_solve_calls": 2,
+      "total_contractions": 0,
+      "response_status_topology": [
+        0
+      ],
+      "max_prepared_vs_oracle_qgw_abs_m_per_s": 3.018900715832421e-17,
+      "diagnostic_non_authority": "PASS",
+      "publication": {
+        "ordinary_trials": 1,
+        "expected_ledger_exchange_m": -4.2508016017088725e-12,
+        "mid_state": [
+          1,
+          0.0002,
+          0,
+          0
+        ],
+        "final_state": [
+          1,
+          0.0002,
+          1,
+          -4.2508016017088725e-12
+        ]
+      }
+    }
+  ],
+  "bounded_conclusions": [
+    "G23 does not qualify the full endpoint envelope: 19 of 21 preregistered eligible arms meet both physical endpoint and nominal SWAP+ledger handoff criteria; C0_MIXED_POS and C3_MIXED_NEG do not meet the frozen external residual criterion within 12 outer updates.",
+    "All 21 diagnostic arms preserve non-authority. Every one of the 19 physically converged arms then passes exactly-one ordinary final candidate reacquisition and the existing sequential SWAP-then-ledger handoff.",
+    "The two failures are not participant inadmissibility or safeguard failures: all response attempts have participant status 0, both use zero response contractions, and both end geometrically well inside the 5e-10 m independent-head guard.",
+    "C0_MIXED_POS stalls at one binary64 head for all 12 accepted updates with residual 1.0690489807569464e-15 m/s. C3_MIXED_NEG advances only at binary64-scale head increments and ends with residual 2.8454475210978113e-15 m/s.",
+    "Using the independently frozen G08 groundwater slope and the final SWAP tangent, the residual-equivalent head corrections are about 5.25e-14 m for C0_MIXED_POS and 2.79e-13 m for C3_MIXED_NEG, both below the STANDARD MODFLOW outer_dvclose of 1e-12 m. This is causal motivation for a separate tolerance-compatibility experiment, not proof that tightening MODFLOW tolerances will resolve the failures.",
+    "All reported final heads, including the two failed arms, are within 1.193e-10 m of the independent G08 reference root; therefore the partial classification is driven by the prospectively frozen flux-residual criterion, not the independent head guard.",
+    "The fresh-process C0_MIXED_NEG replay is bitwise deterministic for final head, cached final q, response-status topology and ledger exchange.",
+    "G21 exact internal trajectory equivalence remains falsified and is not reinterpreted by G23.",
+    "No solver tolerance, production coupling policy, tangent rule, response-space globalization rule, retry behavior, HCOF/RHS semantics, or publication architecture is changed or admitted."
+  ],
+  "next_natural_unit": "Open G24 as a preregistered causal tolerance-compatibility experiment on the two G23 GW_MIXED failures, with matched passing controls and an analytically chosen MODFLOW dvclose ladder. Preserve G23 as PARTIAL_ENDPOINT_ENVELOPE regardless of G24 outcome."
+}

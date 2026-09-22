@@ -1770,3 +1770,36 @@ BOUNDARY MICROSTRUCTURE             = MIXED PATH + WITHIN-PATH NUMERICAL EFFECTS
 PRODUCTION SOLVER / COUPLING POLICY = UNCHANGED.
 NEXT = ENDPOINT-BASED PHYSICAL + TRANSACTIONAL COUPLING QUALIFICATION.
 ```
+
+## G23 disposition: partial endpoint envelope, two stiff-groundwater residual-floor failures
+
+G23 replaced exact internal-path fidelity as the correctness target with the preregistered physical endpoint and transaction criteria. Final authority is workflow `35751962699`, job `106828111702`, on commit `e165556b9821ac1f0df7cc47de6215480a78f5cd`. The G23 step ran against a clean standard-source FGC44 build; the temporary G21 residual observers were absent.
+
+Nineteen of the 21 previously G08-qualified P4 arms satisfy both physical criteria and then pass the nominal final SWAP+ledger handoff. All 21 diagnostic arms preserve non-authority. The fresh-process `C0_MIXED_NEG` replay is bitwise deterministic for endpoint head, final q, response-status topology and ledger exchange. The inherited G21E hard-stress control also remains qualified.
+
+The full matrix nevertheless fails prospectively as `PARTIAL_ENDPOINT_ENVELOPE`. The failures are `C0_MIXED_POS` and `C3_MIXED_NEG`, both in `GW_MIXED`. They remain participant-admissible throughout, require no response contractions, and end well within the independent `5e-10 m` head guard. Their external residuals remain above `1e-15 m/s` after all 12 allowed outer updates:
+
+```text
+C0_MIXED_POS  last residual = 1.0690489807569464e-15 m/s
+               head error    = -4.668487818548783e-13 m
+               accepted heads = identical after outer 1
+
+C3_MIXED_NEG  last residual = 2.8454475210978113e-15 m/s
+               head error    = -1.375566327510569e-13 m
+               accepted heads = binary64-scale increments
+```
+
+The local residual slopes implied by the frozen G08 groundwater response and final SWAP tangent map these residuals to head corrections of approximately `5.25e-14 m` and `2.79e-13 m`, respectively. Both are below the standard MODFLOW outer `dvclose = 1e-12 m`. This strongly motivates a separate causal tolerance-compatibility test, but G23 itself does not prove that solver tolerance is the cause and its partial classification is not relaxed.
+
+An earlier diagnostic run aborted at `C0_MIXED_POS` on an additional assertion requiring the published response-space affine term to equal the independent groundwater oracle at every intermediate candidate. That assertion was not preregistered and compares distinct quantities. It was removed while its mismatch was retained as diagnostic output; no G23 matrix, threshold, solver rule or endpoint gate changed.
+
+```text
+G23 EXECUTION                         = PASS
+G23 FULL ENDPOINT ENVELOPE            = FAIL / PARTIAL 19 OF 21
+DIAGNOSTIC NON-AUTHORITY              = PASS 21 OF 21
+NOMINAL SWAP+LEDGER HANDOFF           = PASS 19 OF 19 CONVERGED ARMS
+FAILED ARMS                           = C0_MIXED_POS, C3_MIXED_NEG
+G21 EXACT PATH EQUIVALENCE            = FALSIFIED, PRESERVED
+PRODUCTION CHANGE                     = NONE
+NEXT                                  = G24 TOLERANCE-COMPATIBILITY CAUSAL TEST
+```
