@@ -264,7 +264,27 @@ def commit_path(swap:Fgc44RealSwap,with_observation:bool)->tuple[tuple[int,float
     return final,obs
 
 
+def source_contract()->dict[str,object]:
+    source=(ROOT/"src"/"runtime"/"mod_fmr_groundwater_swap_participant.f90").read_text()
+    start=source.index("  subroutine fmr_swap_observe_last_trial(")
+    end=source.index("  end subroutine fmr_swap_observe_last_trial",start)
+    body=source[start:end].lower()
+    require("class(fmr_groundwater_swap_participant_t), intent(in) :: self" in source[start:end],
+            "G15 accessor self is not intent(in)")
+    for forbidden in ("backend","executor","materializer"):
+        require(forbidden not in body,f"G15 accessor depends on mutable collaborator: {forbidden}")
+    require("observation = self%last_observation" in source[start:end],
+            "G15 accessor is not a direct participant-owned snapshot copy")
+    return {
+        "self_intent":"in",
+        "mutable_collaborators":[],
+        "snapshot_copy":True,
+    }
+
+
 def main()->None:
+    contract=source_contract()
+    print("FGC44_G15_SOURCE_CONTRACT_JSON="+json.dumps(contract,sort_keys=True,separators=(",",":")))
     lib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
     require(lib.is_file(),"missing FGC44 SWAP bridge")
     g13=json.loads(G13.read_text())
@@ -318,6 +338,7 @@ def main()->None:
         "repeated_read_lifecycle":"PASS",
         "discard_authority":"PASS",
         "commit_equivalence":"PASS",
+        "source_contract":"PASS",
     }
     print("FGC44_G15_SUMMARY_JSON="+json.dumps(summary,sort_keys=True,separators=(",",":")))
     print("GC_FIXED_INTERFACE_G15_SAME_TRIAL_OBSERVATION=PASS")
