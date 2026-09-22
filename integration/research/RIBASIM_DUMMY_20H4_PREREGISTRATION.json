@@ -5,9 +5,13 @@
   "title": "Ribasim v2026.1.1 physical versus allocation low-storage factor on the same accepted state",
   "baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20H3_ACTIVE",
-    "execute_after": "DUMMY-20H3 closeout",
-    "rationale": "Freeze the direct forecast-versus-realization state-factor comparison before observing DUMMY-20H3."
+    "state": "SATISFIED_AFTER_DUMMY_20H3_CLOSEOUT",
+    "execute_after": "DUMMY-20H3 qualified",
+    "rationale": "Freeze the direct forecast-versus-realization state-factor comparison before observing DUMMY-20H3.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
+      "workflow_run": 35735546703
+    }
   },
   "authorities": {
     "visibility": {
@@ -61,5 +65,11 @@
     "do not execute as authority if DUMMY-20H3 does not qualify"
   ],
   "pass_decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
-  "fail_decision": "RIBASIM_DUMMY_20H4_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20H4_BLOCKED",
+  "implementation_baseline": "f51de02dd50b2d385eca9833f1b141ccdd672ef4",
+  "authority_rebind": {
+    "repository_head": "f51de02dd50b2d385eca9833f1b141ccdd672ef4",
+    "scientific_change": false,
+    "meaning": "Executable physical-versus-LP factor comparison rebound after 20H3 closeout; frozen state, forcing, factors and tolerances unchanged."
+  }
 }
