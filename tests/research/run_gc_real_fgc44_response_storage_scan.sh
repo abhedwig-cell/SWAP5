@@ -324,3 +324,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G21B_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21B_FAIL missing fixed-response continuation diagnostic gate" >&2
   exit 1
 }
+
+
+# G21C read-only XMI state forensics. Compare the frozen G21B fresh/history
+# prepared-solve paths using only copied memory-manager state. No state setter,
+# rollback, convergence-policy change or production mutation is permitted.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21c_xmi_state_forensics.py \
+  | tee "$BUILD/fgc44-globalization-g21c.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21C_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21c.txt" || {
+  echo "GC_FGC44_G21C_FAIL missing read-only XMI forensic gate" >&2
+  exit 1
+}
