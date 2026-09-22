@@ -1464,3 +1464,64 @@ STANDARD-vs-NOUR PRODUCTION SELECTION = NOT MADE.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: REPEAT ISLAND TOPOLOGY AND LOCALIZE THE EXACT EXECUTION/REJECTION BRANCH.
 ```
+## G21G disposition: deterministic retry-solver bifurcation across the G21F status islands
+
+G21G replayed the exact 33 frozen binary64 heads from G21F in three independent
+fresh G16 sessions and paired every participant result with a read-only snapshot
+of the final corrector-backend physical observation. No runtime execution,
+participant acceptance, solver configuration or production policy was changed.
+
+The live qualification, workflow `35739259365`, job `106784404665`, reproduced
+the same six contiguous status islands in all three sessions:
+
+```text
+indices  0..1   status 6
+indices  2..7   status 0
+indices  8..14  status 6
+indices 15..20  status 0
+indices 21..28  status 6
+indices 29..32  status 0
+```
+
+Each session executed exactly 33 physical participant trials for 33 unique heads
+and zero cache hits. The complete participant-status vectors and island
+boundaries were identical to G21F, and the read-only backend observation
+snapshots were also exactly repeatable in this frozen experiment.
+
+Every status-6 head has one and the same terminal transaction signature:
+
+```text
+attempts                         9
+retries                          8
+temporal rejections              8
+solver rejections                1
+mass rejections                  0
+temporal-unavailable rejections  0
+accepted substeps                0
+final physical solver status     2
+final nonlinear iterations      16
+final internal retries           1
+temporal certificate available  false
+```
+
+The corresponding status-0 heads form one successful execution class in this
+scan: 20 accepted substeps, 100 attempts, 80 temporal rejections, zero solver
+rejections, final solver status 1 and an available temporal certificate.
+
+The interpretation is therefore narrower and stronger than the earlier
+G21F description. The nonmonotone local status topology is not explained by
+fresh-session nondeterminism. It is a deterministic bifurcation in the existing
+transaction/retry plus physical-solver execution path under binary64-adjacent
+head perturbations. Status 6 remains a real inadmissible diagnostic trial; no
+smoothing, retry-limit change or tolerance relaxation is justified by G21G.
+
+```text
+G21G ISLAND REPEATABILITY = QUALIFIED.
+G21G MECHANISM = DETERMINISTIC RETRY-SOLVER BIFURCATION.
+SESSION NONDETERMINISM = REJECTED AS EXPLANATION IN THE FROZEN SCAN.
+STATUS SMOOTHING / RETRY-TOLERANCE CHANGE = NOT JUSTIFIED.
+STANDARD/NOUR PRODUCTION SELECTION = NOT MADE.
+RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: ADJACENT-HEAD PHYSICAL-SOLVER FORENSICS.
+```
