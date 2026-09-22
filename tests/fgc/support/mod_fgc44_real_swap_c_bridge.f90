@@ -6,7 +6,7 @@ module mod_fgc44_real_swap_c_bridge
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
-       kernel_candidate_state_t, kernel_diagnostics_t
+       kernel_candidate_state_t, kernel_diagnostics_t, KERNEL_COMMIT_STATUS_COMMITTED
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
@@ -75,6 +75,38 @@ module mod_fgc44_real_swap_c_bridge
   real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), save :: active_predictor_qbot=DEFAULT_PREDICTOR_QBOT
 
+  ! GC-RZM06A research-only sequential-interval diagnostics.  These are
+  ! deliberately confined to the test bridge and carry no production authority.
+  logical, save :: research_diag_ready=.false.
+  logical, save :: research_completed=.false.
+  logical, save :: research_candidate_ready=.false.
+  logical, save :: research_mass_complete=.false.
+  logical, save :: research_committed=.false.
+  integer, save :: research_call_status=-1
+  integer, save :: research_forcing_status=-1
+  integer, save :: research_result_status=-1
+  integer, save :: research_transaction_calls=0
+  integer, save :: research_accepted_substeps=0
+  integer, save :: research_attempts=0
+  integer, save :: research_retries=0
+  integer, save :: research_trial_rollbacks=0
+  integer, save :: research_solver_rejections=0
+  integer, save :: research_temporal_rejections=0
+  integer, save :: research_temporal_unavailable_rejections=0
+  integer, save :: research_mass_rejections=0
+  integer, save :: research_internal_retries=0
+  real(real64), save :: research_requested_top_flux=0.0_real64
+  real(real64), save :: research_requested_head_m=0.0_real64
+  real(real64), save :: research_duration_day=0.0_real64
+  real(real64), save :: research_t0=0.0_real64
+  real(real64), save :: research_t1=0.0_real64
+  real(real64), save :: research_materialized_top_flux=0.0_real64
+  real(real64), save :: research_materialized_bottom_head=0.0_real64
+  real(real64), save :: research_bottom_exchange=0.0_real64
+  real(real64), save :: research_terminal_bottom_flux=0.0_real64
+  real(real64), save :: research_mass_residual=0.0_real64
+  real(real64), save :: research_q_swap_m_per_s=0.0_real64
+
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by F-GC44. They are test/qualification evidence,
   ! not a production coupling API.
@@ -108,6 +140,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_predictor_run_diagnostics_c
   public :: fgc44_raw_corrector_diagnostics_c
   public :: fgc44_committed_profile_observables_c
+  public :: fgc44_research_interval_c, fgc44_research_last_interval_diagnostics_c
 
 contains
 
@@ -152,6 +185,7 @@ contains
 
     c_status=101_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
     initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
+    research_diag_ready=.false.; research_call_status=-1
     e3d2_predictor_diagnostics_ready=.false.
     e3d2_predictor_result=kernel_result_t()
     e3d2_predictor_diagnostics=kernel_diagnostics_t()
@@ -523,6 +557,217 @@ contains
     if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
     fgc44_raw_corrector_diagnostics_c=0_c_int
   end function fgc44_raw_corrector_diagnostics_c
+
+  integer(c_int) function fgc44_research_interval_c(top_flux,head_m,duration_day,commit_flag) &
+       bind(C,name="fgc44_research_interval_c")
+    real(c_double), value, intent(in) :: top_flux,head_m,duration_day
+    integer(c_int), value, intent(in) :: commit_flag
+    class(canonical_forcing_t), allocatable :: forcing
+    type(fmr_b110_physical_forcing_t) :: requested_forcing
+    type(fmr_groundwater_head_forcing_materializer_t) :: research_materializer
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    type(groundwater_coupling_window_t) :: research_window
+    real(real64) :: committed_time,ct0,ct1,qbot_mean,scale
+    integer :: forcing_status,kernel_status,participant_status,interface_status
+    logical :: available,ok,interval_available,did_commit,accepted
+
+    call reset_research_diagnostics()
+    research_diag_ready=.true.
+    research_requested_top_flux=real(top_flux,real64)
+    research_requested_head_m=real(head_m,real64)
+    research_duration_day=real(duration_day,real64)
+    fgc44_research_interval_c=1_c_int
+    research_call_status=1
+    if(.not.initialized)return
+    fgc44_research_interval_c=2_c_int; research_call_status=2
+    if(.not.ieee_is_finite(research_requested_top_flux) .or. &
+       .not.ieee_is_finite(research_requested_head_m) .or. &
+       .not.ieee_is_finite(research_duration_day) .or. research_duration_day<=0.0_real64)return
+    if(commit_flag/=0_c_int .and. commit_flag/=1_c_int)return
+    if(participant%has_live_candidate() .or. ledger_prepared)return
+
+    call committed%current_time(committed_time,available)
+    fgc44_research_interval_c=3_c_int; research_call_status=3
+    if(.not.available .or. .not.ieee_is_finite(committed_time))return
+    research_window%t0=committed_time
+    research_window%t1=committed_time+research_duration_day
+    research_t0=research_window%t0; research_t1=research_window%t1
+    if(.not.research_window%valid())return
+
+    requested_forcing=base_forcing
+    requested_forcing%top_flux=research_requested_top_flux
+    call research_materializer%initialize(requested_forcing)
+    call research_materializer%materialize(research_requested_head_m,datum,forcing,forcing_status)
+    research_forcing_status=forcing_status
+    fgc44_research_interval_c=4_c_int; research_call_status=4
+    if(forcing_status/=0 .or. .not.allocated(forcing))return
+
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    fgc44_research_interval_c=5_c_int; research_call_status=5
+    if(.not.ok .or. .not.checkpoint%ready())return
+
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      research_materialized_top_flux=typed_forcing%top_flux
+      research_materialized_bottom_head=typed_forcing%bottom_head
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           research_window%t0,research_window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      fgc44_research_interval_c=6_c_int; research_call_status=6
+      return
+    end select
+
+    research_result_status=result%status
+    research_completed=result%completed
+    research_candidate_ready=candidate%ready()
+    research_mass_complete=result%mass%complete
+    research_transaction_calls=diagnostics%transaction_calls
+    research_accepted_substeps=diagnostics%accepted_substeps
+    research_attempts=diagnostics%attempts
+    research_retries=diagnostics%retries
+    research_trial_rollbacks=diagnostics%trial_rollbacks
+    research_solver_rejections=diagnostics%solver_rejections
+    research_temporal_rejections=diagnostics%temporal_rejections
+    research_temporal_unavailable_rejections=diagnostics%temporal_certificate_unavailable_rejections
+    research_mass_rejections=diagnostics%mass_rejections
+    research_internal_retries=diagnostics%internal_retries
+    research_bottom_exchange=result%bottom_outward_exchange_native
+    research_terminal_bottom_flux=result%terminal_bottom_outward_flux_native
+    research_mass_residual=result%mass%residual
+
+    accepted=result%completed .and. candidate%ready() .and. result%bottom_interface_exchange_available
+    accepted=accepted .and. ieee_is_finite(result%bottom_outward_exchange_native)
+    accepted=accepted .and. ieee_is_finite(result%terminal_bottom_outward_flux_native)
+    accepted=accepted .and. research_same_time(result%requested_t0,research_window%t0)
+    accepted=accepted .and. research_same_time(result%requested_t1,research_window%t1)
+    accepted=accepted .and. research_same_time(result%completed_t,research_window%t1)
+    call candidate%origin_interval(ct0,ct1,interval_available)
+    accepted=accepted .and. interval_available
+    if(interval_available)then
+      accepted=accepted .and. research_same_time(ct0,research_window%t0)
+      accepted=accepted .and. research_same_time(ct1,research_window%t1)
+    end if
+    fgc44_research_interval_c=7_c_int; research_call_status=7
+    if(.not.accepted)then
+      if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    fgc44_research_interval_c=8_c_int; research_call_status=8
+    if(.not.result%mass%complete .or. .not.ieee_is_finite(result%mass%residual) .or. &
+       abs(result%mass%residual)>TOL)then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+    qbot_mean=-result%bottom_outward_exchange_native/research_duration_day
+    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean,research_q_swap_m_per_s,interface_status)
+    if(interface_status/=GW_INTERFACE_OK .or. .not.ieee_is_finite(research_q_swap_m_per_s))then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    if(commit_flag==0_c_int)then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      research_committed=.false.
+      research_call_status=0
+      fgc44_research_interval_c=0_c_int
+      return
+    end if
+
+    call corrector_backend%commit_trial_candidate(committed,candidate,diagnostics,did_commit,kernel_status)
+    fgc44_research_interval_c=9_c_int; research_call_status=9
+    if(.not.did_commit .or. kernel_status/=KERNEL_COMMIT_STATUS_COMMITTED)return
+    research_committed=.true.
+
+    ! Keep the legacy participant coherent with the newly accepted research
+    ! origin.  The global production-facing materializer remains unchanged.
+    call participant%capture_origin(committed,participant_status)
+    fgc44_research_interval_c=10_c_int; research_call_status=10
+    if(participant_status/=GW_SWAP_PARTICIPANT_OK)return
+    window%t0=research_window%t1
+    window%t1=window%t0+active_duration_day
+
+    scale=max(1.0_real64,abs(window%t0),abs(research_window%t1))
+    if(abs(window%t0-research_window%t1)>64.0_real64*epsilon(1.0_real64)*scale)return
+    research_call_status=0
+    fgc44_research_interval_c=0_c_int
+  end function fgc44_research_interval_c
+
+  integer(c_int) function fgc44_research_last_interval_diagnostics_c(available,call_status,forcing_status,result_status, &
+       completed,candidate_ready,mass_complete,committed_flag,transaction_calls,accepted_substeps,attempts,retries, &
+       trial_rollbacks,solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections, &
+       internal_retries,requested_top_flux,requested_head_m,duration_day,t0,t1,materialized_top_flux, &
+       materialized_bottom_head,bottom_exchange,terminal_flux,mass_residual,q_swap_m_per_s) &
+       bind(C,name="fgc44_research_last_interval_diagnostics_c")
+    integer(c_int), intent(out) :: available,call_status,forcing_status,result_status,completed,candidate_ready
+    integer(c_int), intent(out) :: mass_complete,committed_flag,transaction_calls,accepted_substeps,attempts,retries
+    integer(c_int), intent(out) :: trial_rollbacks,solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: requested_top_flux,requested_head_m,duration_day,t0,t1,materialized_top_flux
+    real(c_double), intent(out) :: materialized_bottom_head,bottom_exchange,terminal_flux,mass_residual,q_swap_m_per_s
+
+    available=0_c_int; call_status=-1_c_int; forcing_status=-1_c_int; result_status=-1_c_int
+    completed=0_c_int; candidate_ready=0_c_int; mass_complete=0_c_int; committed_flag=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    requested_top_flux=0.0_c_double; requested_head_m=0.0_c_double; duration_day=0.0_c_double
+    t0=0.0_c_double; t1=0.0_c_double; materialized_top_flux=0.0_c_double
+    materialized_bottom_head=0.0_c_double; bottom_exchange=0.0_c_double; terminal_flux=0.0_c_double
+    mass_residual=0.0_c_double; q_swap_m_per_s=0.0_c_double
+    if(.not.research_diag_ready)then
+      fgc44_research_last_interval_diagnostics_c=1_c_int
+      return
+    end if
+
+    available=1_c_int; call_status=int(research_call_status,c_int)
+    forcing_status=int(research_forcing_status,c_int); result_status=int(research_result_status,c_int)
+    if(research_completed)completed=1_c_int
+    if(research_candidate_ready)candidate_ready=1_c_int
+    if(research_mass_complete)mass_complete=1_c_int
+    if(research_committed)committed_flag=1_c_int
+    transaction_calls=int(research_transaction_calls,c_int)
+    accepted_substeps=int(research_accepted_substeps,c_int)
+    attempts=int(research_attempts,c_int); retries=int(research_retries,c_int)
+    trial_rollbacks=int(research_trial_rollbacks,c_int)
+    solver_rejections=int(research_solver_rejections,c_int)
+    temporal_rejections=int(research_temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(research_temporal_unavailable_rejections,c_int)
+    mass_rejections=int(research_mass_rejections,c_int); internal_retries=int(research_internal_retries,c_int)
+    requested_top_flux=research_requested_top_flux; requested_head_m=research_requested_head_m
+    duration_day=research_duration_day; t0=research_t0; t1=research_t1
+    materialized_top_flux=research_materialized_top_flux
+    materialized_bottom_head=research_materialized_bottom_head
+    bottom_exchange=research_bottom_exchange; terminal_flux=research_terminal_bottom_flux
+    mass_residual=research_mass_residual; q_swap_m_per_s=research_q_swap_m_per_s
+    fgc44_research_last_interval_diagnostics_c=0_c_int
+  end function fgc44_research_last_interval_diagnostics_c
+
+  subroutine reset_research_diagnostics()
+    research_diag_ready=.false.; research_completed=.false.; research_candidate_ready=.false.
+    research_mass_complete=.false.; research_committed=.false.
+    research_call_status=-1; research_forcing_status=-1; research_result_status=-1
+    research_transaction_calls=0; research_accepted_substeps=0; research_attempts=0; research_retries=0
+    research_trial_rollbacks=0; research_solver_rejections=0; research_temporal_rejections=0
+    research_temporal_unavailable_rejections=0; research_mass_rejections=0; research_internal_retries=0
+    research_requested_top_flux=0.0_real64; research_requested_head_m=0.0_real64
+    research_duration_day=0.0_real64; research_t0=0.0_real64; research_t1=0.0_real64
+    research_materialized_top_flux=0.0_real64; research_materialized_bottom_head=0.0_real64
+    research_bottom_exchange=0.0_real64; research_terminal_bottom_flux=0.0_real64
+    research_mass_residual=0.0_real64; research_q_swap_m_per_s=0.0_real64
+  end subroutine reset_research_diagnostics
+
+  pure logical function research_same_time(a,b) result(matches)
+    real(real64), intent(in) :: a,b
+    real(real64) :: scale
+    matches=.false.
+    if(.not.ieee_is_finite(a) .or. .not.ieee_is_finite(b))return
+    scale=max(1.0_real64,abs(a),abs(b))
+    matches=abs(a-b)<=64.0_real64*epsilon(1.0_real64)*scale
+  end function research_same_time
 
   integer(c_int) function fgc44_e1_diagnostics_c(mass_complete,q_bot,q_u,u,h_start,h_end, &
        bottom_exchange,terminal_flux,storage_start,storage_end,storage_change,total_in,total_out,residual) &
