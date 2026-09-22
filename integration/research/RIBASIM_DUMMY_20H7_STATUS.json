@@ -29,5 +29,13 @@
     "commit": "8aefb6a5dbc1478f3ee75edacb49f930e6e567d9",
     "scientific_change": false,
     "change": "Verifier now requires allocation.nc record 1 to be t=0 and record 2 to be exactly t=24 h, as already required by the preregistered observability contract."
+  },
+  "qualification_attempt": "v2_guarded_actual_ribamod_next_boundary_bridge",
+  "qualification_base": "work/ribasim-dummy-01@4285454c09e94f9e154005b67e2f71bb514a81e5",
+  "prior_qualification_attempt": {
+    "pr": 573,
+    "state": "SUPERSEDED_PREAUTHORITY",
+    "scientific_effect": "none",
+    "reason": "v1 branch predated explicit t=0/t=24 allocation-record timestamp guard"
   }
 }
