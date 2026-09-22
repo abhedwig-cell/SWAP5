@@ -1,0 +1,224 @@
+{
+  "schema": "swap5.rom_root.rnp01.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP01",
+  "date": "2026-09-22",
+  "status": "CHARACTERIZATION_COMPLETE_NO_POLICY_DECISION",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RNP01_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RNP01_BINDING.json",
+    "analyzer_repair": "integration/f-rom/ROM_ROOT_RNP01_ANALYZER_REPAIR.json",
+    "raw_workflow_run": 35749824809,
+    "raw_head": "2cfa894f85451bef02391d99e722df5c3fecec65",
+    "frozen_total_criterion": 1e-12,
+    "solver_status_contract": {
+      "NOT_RUN": 0,
+      "CONVERGED": 1,
+      "RETRY_ADVISED": 2,
+      "FAILED": 3
+    }
+  },
+  "artifacts": [
+    {
+      "id": 10704214988,
+      "name": "rnp01-B01-R512_T32-V02",
+      "digest": "sha256:8b050584d087d6580c5fcd30f9d4e97ee399300684733ea783260812b05dcd75"
+    },
+    {
+      "id": 10704169988,
+      "name": "rnp01-B01-R1024_T32-V02",
+      "digest": "sha256:85054cf05aaf6ae0966a7859a160e70aac470d61d5f02183670b118a20f48f18"
+    },
+    {
+      "id": 10703344951,
+      "name": "rnp01-B01-R2048_T32-V02",
+      "digest": "sha256:606a47c9b9d65abaffc97ed66bbbce6a36678544f3dc856f9b935a38d2e8b6bf"
+    },
+    {
+      "id": 10704820952,
+      "name": "rnp01-B14-R512_T32-V01"
+    },
+    {
+      "id": 10705015560,
+      "name": "rnp01-B14-R1024_T32-V01"
+    },
+    {
+      "id": 10704349428,
+      "name": "rnp01-B14-R2048_T32-V01"
+    }
+  ],
+  "cases": {
+    "B01_R512_T32_V02": {
+      "primary": {
+        "status": 2,
+        "nl": 16,
+        "backtracking": 16,
+        "naive_sum": -6.194739166076602e-12,
+        "compensated_sum": -6.194739166076602e-12,
+        "max_abs_local": 6.045164369083977e-13,
+        "balance_flags": 0,
+        "head_flags": 0,
+        "cancellation_ratio": 0.11811435324176903
+      },
+      "shadow32": {
+        "status": 2,
+        "nl": 32,
+        "backtracking": 32,
+        "total_residual": -5.500849775685879e-12
+      },
+      "shadow64": {
+        "status": 1,
+        "nl": 33,
+        "backtracking": 33,
+        "total_residual": 7.441547378306268e-13
+      }
+    },
+    "B01_R1024_T32_V02": {
+      "primary": {
+        "status": 2,
+        "nl": 16,
+        "backtracking": 16,
+        "naive_sum": 1.9584889265900074e-12,
+        "compensated_sum": 1.9584889265900074e-12,
+        "max_abs_local": 3.892303146457721e-13,
+        "balance_flags": 0,
+        "head_flags": 0,
+        "cancellation_ratio": 0.036088719679506887
+      },
+      "shadow32": {
+        "status": 2,
+        "nl": 32,
+        "backtracking": 32,
+        "total_residual": 1.2645995361992846e-12
+      },
+      "shadow64": {
+        "status": 2,
+        "nl": 64,
+        "backtracking": 64,
+        "total_residual": 1.9584889265900074e-12
+      }
+    },
+    "B01_R2048_T32_V02": {
+      "primary": {
+        "status": 2,
+        "nl": 16,
+        "backtracking": 16,
+        "naive_sum": 2.045141833662001e-12,
+        "compensated_sum": 2.045141833662001e-12,
+        "max_abs_local": 2.0249080190382074e-13,
+        "balance_flags": 0,
+        "head_flags": 0,
+        "cancellation_ratio": 0.043868767585550764
+      },
+      "shadow32": {
+        "status": 1,
+        "nl": 17,
+        "backtracking": 17,
+        "total_residual": -9.038880754985712e-13
+      },
+      "shadow64": {
+        "status": 1,
+        "nl": 17,
+        "backtracking": 17,
+        "total_residual": -9.038880754985712e-13
+      }
+    },
+    "B14_R512_T32_V01": {
+      "primary": {
+        "status": 2,
+        "nl": 16,
+        "backtracking": 16,
+        "naive_sum": 1.050893226606231e-11,
+        "compensated_sum": 1.050893226606231e-11,
+        "max_abs_local": 9.168053686017807e-13,
+        "balance_flags": 0,
+        "head_flags": 0,
+        "cancellation_ratio": 0.1597427692897018
+      },
+      "shadow32": {
+        "status": 1,
+        "nl": 26,
+        "backtracking": 29,
+        "total_residual": -5.932979801892557e-13
+      },
+      "shadow64": {
+        "status": 1,
+        "nl": 26,
+        "backtracking": 29,
+        "total_residual": -5.932979801892557e-13
+      }
+    },
+    "B14_R1024_T32_V01": {
+      "primary": {
+        "status": 2,
+        "nl": 16,
+        "backtracking": 16,
+        "naive_sum": 5.988243538188054e-12,
+        "compensated_sum": 5.988243538188054e-12,
+        "max_abs_local": 4.580376876395231e-13,
+        "balance_flags": 0,
+        "head_flags": 0,
+        "cancellation_ratio": 0.0863835568698511
+      },
+      "shadow32": {
+        "status": 1,
+        "nl": 17,
+        "backtracking": 17,
+        "total_residual": -2.567604332273654e-13
+      },
+      "shadow64": {
+        "status": 1,
+        "nl": 17,
+        "backtracking": 17,
+        "total_residual": -2.567604332273654e-13
+      }
+    },
+    "B14_R2048_T32_V01": {
+      "primary": {
+        "status": 2,
+        "nl": 16,
+        "backtracking": 16,
+        "naive_sum": 2.1510355345880083e-12,
+        "compensated_sum": 2.1510355345880083e-12,
+        "max_abs_local": 2.552606563621662e-13,
+        "balance_flags": 0,
+        "head_flags": 0,
+        "cancellation_ratio": 0.03082531282059511
+      },
+      "shadow32": {
+        "status": 1,
+        "nl": 17,
+        "backtracking": 17,
+        "total_residual": 9.367281256222881e-13
+      },
+      "shadow64": {
+        "status": 1,
+        "nl": 17,
+        "backtracking": 17,
+        "total_residual": 9.367281256222881e-13
+      }
+    }
+  },
+  "preregistered_classifications": {
+    "SUMMATION_SENSITIVITY": false,
+    "ITERATION_CAP_LIMITED": true,
+    "RESIDUAL_FLOOR_PERSISTS": false,
+    "GRID_DEPENDENT_ACCUMULATION": false
+  },
+  "bounded_interpretation": [
+    "The C6R total-residual-only failures are not caused by ordinary summation-order error in the stored residual vector; naive and compensated sums are identical for all six characterized failures.",
+    "The fixed max_iterations=16 is causally limiting in five of the six characterized cases: the same failed interval converges under unchanged local and total tolerances when the diagnostic shadow ceiling is raised.",
+    "B01 R1024_T32 V02 remains retry-advised through 64 iterations, so iteration ceiling alone does not explain the entire tested envelope.",
+    "The failure magnitude is not monotone with node count for B01 and decreases with node count for B14; RNP01 therefore does not support a simple grid-extensive accumulation explanation."
+  ],
+  "decision": {
+    "numerical_policy_change_authorized": false,
+    "c6r_reopened": false,
+    "reference_qualified": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "next": "RNP02 may diagnose the persistent B01 R1024 interval without changing tolerances, production solver code or C6R admission."
+  },
+  "model_changed": false
+}
