@@ -19,5 +19,13 @@
     "prepared_path": "tests/research/test_ribasim_dummy_20d_runtime_clock_matrix.py",
     "scientific_change": false,
     "note": "Four-case actual-product matrix verifier prepared while DUMMY-20C runs; no runner/workflow/execution until 20C closeout."
-  }
+  },
+  "technical_fixture_repair": {
+    "state": "APPLIED_PROSPECTIVELY",
+    "change": "Add the iMOD-Python-required MF6 SpecificStorage package to the fully fixed-head time-leader cell.",
+    "scientific_change": false,
+    "origin": "Same pre-runtime package-completeness failure observed in DUMMY-20C v1.",
+    "execution_effect": "none until DUMMY-20C closes; DUMMY-20D remains blocked."
+  },
+  "recovery_point": "Clock matrix remains frozen; verifier prepared and STO-only technical fixture completeness mirrored from DUMMY-20C."
 }
