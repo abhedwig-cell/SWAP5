@@ -232,6 +232,9 @@ def main()->None:
             raw.finalize(); initialized=False
 
             mf_budget_residual,mf_budget_scale,mf_budget_components=read_modflow_component_balance(workdir/"fgc44.cbc")
+            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
+            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_SCALE_M3_PER_DAY={mf_budget_scale:.17g}")
+            print("FGC44_MODFLOW_COMPONENTS="+",".join(f"{name}:{value:.17g}" for name,value in mf_budget_components))
             require(math.isfinite(mf_budget_residual) and math.isfinite(mf_budget_scale),
                     "nonfinite MODFLOW component balance")
             require(abs(mf_budget_residual)<=max(1.0e-9,1.0e-8*mf_budget_scale),
@@ -242,9 +245,6 @@ def main()->None:
             print(f"FGC44_FINAL_Q_GW_M_PER_S={final_q_gw:.17g}")
             print(f"FGC44_FINAL_FLUX_RESIDUAL={final_q_swap-final_q_gw:.17g}")
             print(f"FGC44_LEDGER_EXCHANGE_M={ledger_exchange:.17g}")
-            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
-            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_SCALE_M3_PER_DAY={mf_budget_scale:.17g}")
-            print("FGC44_MODFLOW_COMPONENTS="+",".join(f"{name}:{value:.17g}" for name,value in mf_budget_components))
             print(f"PUB_GC_E1_QBOT_PREDICTOR_CM_PER_DAY={float(e1['q_bot_predictor_cm_per_day']):.17g}")
             print(f"PUB_GC_E1_QU_CM_PER_DAY={float(e1['q_u_cm_per_day']):.17g}")
             print(f"PUB_GC_E1_U={float(e1['u']):.17g}")
