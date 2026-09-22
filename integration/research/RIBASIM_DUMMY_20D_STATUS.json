@@ -4,14 +4,14 @@
   "work_unit": "RIBASIM-DUMMY-20D",
   "branch": "work/ribasim-dummy-01",
   "baseline": "2898e2ecf78ad342052cc7653fd8de8ef5b03233",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Four actual-product RibaMod runtime cases at fixed 6-hour MF6 cadence: allocation.dt 24h/6h crossed with saveat 24h/1h.",
-  "next_action": "Implement and execute frozen four-case actual-product clock-ownership matrix.",
+  "next_action": "Execute frozen DUMMY-20D actual-product allocation.dt × saveat clock ownership matrix.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -34,7 +34,7 @@
     "origin": "Same pre-runtime package-completeness failure observed in DUMMY-20C v1.",
     "execution_effect": "none until DUMMY-20C closes; DUMMY-20D remains blocked."
   },
-  "recovery_point": "DUMMY-20C qualified; DUMMY-20D matrix, continuous references and tolerances remain frozen.",
+  "recovery_point": "DUMMY-20D separate-process Windows product matrix runner persisted; first qualification attempt pending.",
   "grid_metadata_repair": {
     "state": "APPLIED_PROSPECTIVELY",
     "change": "Add scalar dx=1.0 and dy=-1.0 coordinates required by iMOD-Python for the one-cell structured grid.",
@@ -42,5 +42,28 @@
     "origin": "Same pre-runtime DIS metadata failure observed in DUMMY-20C v3.",
     "execution_effect": "none until DUMMY-20C closes; DUMMY-20D remains blocked."
   },
-  "implementation_baseline": "888c879fb8b5590f4821e2dc2ffaba2419c2cf20"
+  "implementation_baseline": "888c879fb8b5590f4821e2dc2ffaba2419c2cf20",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20D_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20D_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20D_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20D_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20d_real_ribamod_case.py",
+    "tests/research/verify_ribasim_dummy_20d_clock_matrix.py",
+    "tests/research/run_ribasim_dummy_20d.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "four frozen clock cases A24_S24/A24_S1/A6_S24/A6_S1 unchanged",
+      "each product case runs in a separate Python/native-kernel process",
+      "real upstream get_driver/RibaMod route is used in every case",
+      "real MF6 6.7.0 and Ribasim v2026.1.1 binaries are shared only as binaries, not process state",
+      "one-cell MF6 STO and dx/dy completeness repairs are present",
+      "minimal Ribasim subgrid required by RibaMod.couple() is present",
+      "matrix verifier uses prospectively frozen continuous references and saveat-pair equivalence assertions"
+    ]
+  }
 }
