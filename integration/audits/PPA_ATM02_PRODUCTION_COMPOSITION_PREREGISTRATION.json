@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "PPA-ATM-02-PRODUCTION-COMPOSITION",
+  "state": "PREREGISTERED",
+  "baseline": "9e84afcb3",
+  "purpose": "Deliver one validated typed effective-forcing vector to the existing PPA-WU01 production owner from decoded PMdirect/SWINTER=0 records without creating a second state, transaction, mass or restart owner.",
+  "owner_boundary": {
+    "sole_production_owner": "mod_fmr_production_application_bootstrap:fmr_production_application_bootstrap_t%run_standalone_with_forcing",
+    "adapter_may_do": ["validate one decoded source record per tile", "require one source record to cover the requested generic interval", "materialize PMdirect/SWINTER=0 demand", "bind the already-qualified dynamic-top and root-demand inputs", "produce a complete immutable effective-forcing vector before the owner call"],
+    "adapter_must_not_do": ["open/read files", "parse dates", "advance a cursor", "mutate committed state", "commit/retry/rollback", "publish mass", "serialize restart state", "partially invoke a production run"]
+  },
+  "atomicity": "Any tile validation or composition failure rejects the entire adapter request before run_standalone_with_forcing is called. A successful request calls that owner exactly once for the requested interval and all tiles.",
+  "forcing_semantics": {
+    "profile": "PPA-WU01 standalone Reference Richards bottom_mode=7 only",
+    "meteorology": "immutable decoded daily B1 MOD_meteo fields with explicit source provenance and coverage",
+    "et": "existing PMdirect SWETR=0 daily process",
+    "interception": "SWINTER=0 identity only",
+    "top": "existing dynamic-top owner receives PMdirect net rain and existing demand bindings",
+    "root": "existing root-demand binding receives PMdirect potential transpiration",
+    "excluded": ["SWINTER=1/2/3", "snow/runon", "irrigation scheduler", "groundwater profile", "mixed lower-boundary profile", "file/calendar decoder"]
+  },
+  "invariants": [2, 3, 7, 13, 29],
+  "qualification": [
+    "all-tile composition failure leaves committed revisions unchanged",
+    "successful composition uses the existing production owner once and advances each committed revision once",
+    "hard mass closure is reported by the existing owner result",
+    "two covered generic subdaily intervals preserve owner/restart semantics",
+    "O0/O2 stable output identity",
+    "no parser/cursor/date or second persistent-state surface"
+  ],
+  "required_postimage": [
+    "new stateless outer production-forcing adapter",
+    "PPA-WU01 production-owner integration test",
+    "no mutation of Reference Richards, transaction, restart or mass-ledger implementations"
+  ]
+}
