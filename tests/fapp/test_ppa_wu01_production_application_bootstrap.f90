@@ -28,6 +28,10 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_result_t, B110_DYN_TOP_AVAILABLE, &
+       B110_DYN_TOP_REGIME_FLUX
+  use mod_ppa_wu04c_dynamic_top_forcing_adapter, only: bind_ppa_wu04c_dynamic_top_to_effective_forcing, &
+       PPA_WU04C_TOP_FORCING_OK, PPA_WU04C_TOP_FORCING_REJECTED
   use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
        materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
@@ -47,6 +51,8 @@ program test_ppa_wu01_production_application_bootstrap
   type(fmr_production_application_bootstrap_t) :: app, root_app, gw_app, bad_app, root_bad_app, drainage_bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(fmr_b110_physical_forcing_t), allocatable :: atm02_forcing(:)
+  type(fmr_b110_physical_forcing_t) :: wu04c_forcing
+  type(b110_dynamic_top_boundary_result_t) :: wu04c_top
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
   type(groundwater_topology_t) :: topology
@@ -61,6 +67,15 @@ program test_ppa_wu01_production_application_bootstrap
   ! Standalone authority: use the already-qualified serialized Reference
   ! profile rather than inventing a new mode-5 standalone trajectory.
   call initialize_application_config(config)
+  wu04c_top%status = B110_DYN_TOP_AVAILABLE
+  wu04c_top%regime = B110_DYN_TOP_REGIME_FLUX
+  wu04c_top%actual_top_flux_cm_per_day = -0.0125_real64
+  call bind_ppa_wu04c_dynamic_top_to_effective_forcing(config%tiles(1)%base_forcing, wu04c_top, wu04c_forcing, status)
+  call require(status == PPA_WU04C_TOP_FORCING_OK .and. wu04c_forcing%top_flux == wu04c_top%actual_top_flux_cm_per_day, &
+       'WU04C dynamic top forcing handoff')
+  wu04c_top%runoff_potential = .true.
+  call bind_ppa_wu04c_dynamic_top_to_effective_forcing(config%tiles(1)%base_forcing, wu04c_top, wu04c_forcing, status)
+  call require(status == PPA_WU04C_TOP_FORCING_REJECTED, 'WU04C runoff forcing fails closed')
   call app%initialize(config, status)
   call require(status == FMR_APP_BOOT_OK, 'standalone production bootstrap initialize')
   call require(app%ready(), 'standalone production bootstrap ready')
@@ -199,6 +214,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_ATM02_OWNER_RESTART_CONTINUATION=PASS'
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_RECEIPTS=PASS'
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_PROGRESS=PASS'
+  print '(a)', 'PPA_WU04C_DYNAMIC_TOP_FORCING_HANDOFF=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'

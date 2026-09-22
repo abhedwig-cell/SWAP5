@@ -150,6 +150,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90
   src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90
   src/adapter/mod_ppa_atm02_pmdirect_production_forcing_adapter.f90
+  src/adapter/mod_ppa_wu04c_dynamic_top_forcing_adapter.f90
   src/runtime/mod_fmr_vonhhbraden_source_window_progress.f90
   src/runtime/mod_ppa_wu04c_runtime_publication.f90
 )
