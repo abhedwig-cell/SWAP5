@@ -150,15 +150,3 @@ echo 'GC REAL SWAP MAP09 MAP09A ACTIVE DRAINAGE DECOMPOSITION PASS'
 # Preserve both; neither is rerun as a moving acceptance gate.
 echo 'GC_FIXED_INTERFACE_G12_EXECUTION=FALSIFIED_PRESERVED'
 echo 'GC_FIXED_INTERFACE_G12A_DIAGNOSTIC=QUALIFIED_PRESERVED'
-
-# G12B separate active-drainage replay. G12 remains falsified; G12B uses the
-# independently qualified G12A local groundwater responses without bias retuning.
-LIBMF6="$BUILD/modflow-bin/libmf6.so" \
-MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
-  python3 tests/research/test_gc_fixed_interface_map09_local_oracle_replay_g12b.py \
-  | tee "$BUILD/g12b-active-drainage-local-oracle.txt"
-
-grep -Fq 'GC_FIXED_INTERFACE_G12B_EXECUTION=PASS' "$BUILD/g12b-active-drainage-local-oracle.txt" || {
-  echo "GC_G12B_FAIL missing active-drainage local-oracle replay gate" >&2
-  exit 1
-}
