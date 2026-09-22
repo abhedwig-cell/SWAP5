@@ -148,28 +148,26 @@
       "decision": "RIBASIM_DUMMY_19H_QUALIFIED_SAVEAT_NEGATIVE_CONTROL",
       "run": 35623292076,
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19I2",
+      "decision": "RIBASIM_DUMMY_19I2_QUALIFIED_SHADOW_APPLIED_SEPARATION",
+      "run": 35700640906,
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19I2",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_19I2_QUALIFIED_SHADOW_APPLIED_SEPARATION",
-      "implementation_baseline": "128e5c179686377e577c4626df936e3695d57b51",
-      "dependency": "falsified DUMMY-19I",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-19J",
-      "state": "PREREGISTERED_BLOCKED_BY_19I2",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19I2",
       "intended_decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
-      "dependency": "DUMMY-19I2 closeout",
+      "dependency": "qualified DUMMY-19I2",
       "scientific_baseline": "40c93b3f29511c4a8cf317500463025f8aa7b002",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-19I2 shadow-versus-applied diagnostic; then rebind and execute DUMMY-19J.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-19J BMI versus finer-saveat clock conflict.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
