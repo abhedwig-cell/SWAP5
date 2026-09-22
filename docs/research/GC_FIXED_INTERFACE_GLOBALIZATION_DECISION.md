@@ -1415,3 +1415,52 @@ SOLVER-CONFIGURATION SELECTION = NOT MADE.
 NO PRODUCTION IMS, E3/P4, HCOF/RHS OR PARTICIPANT CHANGE.
 NEXT: SOURCE-LEVEL TRIAL/RETRY/SOLVER ISLAND DIAGNOSIS.
 ```
+## G21F disposition: local participant admissibility is nonmonotone
+
+G21F resolved the local real-SWAP participant topology around the G21E
+STANDARD/NOUR outer-2 split without changing participant acceptance semantics.
+The repaired authority run, workflow `35737526010`, job `106778498746`,
+first reproduced all three frozen anchors:
+
+```text
+NOUR head      -0.7150100297648363 m   participant status 6
+G17 head       -0.7150100297646383 m   participant status 0
+STANDARD head  -0.7150100296924844 m   participant status 0
+```
+
+The NOUR-to-G17 interval is only `1.979527652906654e-13 m`, but still spans
+1783 binary64 representable head values. A preregistered 33-head ordered scan
+across that interval returned:
+
+```text
+6 6 0 0 0 0 0 0 6 6 6 6 6 6 6 0 0 0 0 0 0 6 6 6 6 6 6 6 6 0 0 0 0
+```
+
+This contains five status transitions and two status-0 to status-6 reversals.
+The topology is therefore not a single monotone admissibility threshold. Under
+the preregistered rules, binary64 endpoint bisection and a one-threshold claim
+are forbidden.
+
+The anchor diagnostics show a discrete execution distinction but do not yet
+explain the islands. The NOUR status-6 anchor fails after nine attempts with
+eight temporal rejections, one solver rejection and one internal retry, and no
+accepted substep. The G17 and STANDARD status-0 anchors both complete twenty
+accepted substeps after one hundred attempts and eighty temporal rejections,
+with zero solver rejection. Mass and temporal-unavailable rejection are zero at
+all three anchors.
+
+This makes the G21E interpretation sharper. Tiny head changes can move the
+participant between alternating execution/admissibility islands, so strict
+trajectory fidelity is not a smooth robustness metric and removing MODFLOW
+solver path memory need not reduce coupling cost.
+
+```text
+G21F LOCAL ADMISSIBILITY TOPOLOGY = QUALIFIED DIAGNOSTIC.
+SINGLE HEAD THRESHOLD = REJECTED BY EVIDENCE.
+33-HEAD SCAN = 5 TRANSITIONS, 2 REVERSALS OVER 1.98E-13 m.
+HEAD SNAPPING / STATUS SMOOTHING = NOT JUSTIFIED.
+PARTICIPANT STATUS-6 SEMANTICS = UNCHANGED.
+STANDARD-vs-NOUR PRODUCTION SELECTION = NOT MADE.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: REPEAT ISLAND TOPOLOGY AND LOCALIZE THE EXACT EXECUTION/REJECTION BRANCH.
+```
