@@ -170,7 +170,7 @@ def main():
     if n!=1: raise SystemExit(f"profile replacement found {n}")
 
     text=one(text,"  write(*,'(A)') 'LAREDYN0R_EXECUTION_COMPLETE=PASS'",
-             "  write(*,'(A)') 'LAREDYN0R_ROMPURP_P1_SURFACE_SURFACE_FIXED_FLUX_REFERENCE_GENERATED=TRUE'\n  write(*,'(A)') 'LAREDYN0R_EXECUTION_COMPLETE=PASS'","marker")
+             "  write(*,'(A)') 'LAREDYN0R_ROMPURP_P1_SURFACE_REFERENCE_GENERATED=TRUE'\n  write(*,'(A)') 'LAREDYN0R_EXECUTION_COMPLETE=PASS'","marker")
     a.output.write_text(text)
 
     m={
