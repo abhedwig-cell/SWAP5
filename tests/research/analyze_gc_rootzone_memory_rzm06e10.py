@@ -105,8 +105,8 @@ def main()->int:
         result["decision"]="PROBE_NOT_ADMITTED"
 
     result["interpretation_boundary"]=[
-      "Support means H_c plus W_profile and W_root30 do not determine a unique next interface exchange at the frozen exact E09 aggregate-storage match for this selected C01 pair/window.",
-      "Because W_root30 is tolerance-matched rather than mathematically identical, support is not a proof that exact-valued H_c + W_profile + W_root30 are globally insufficient.",
+      "Support means H_c plus the exact E09-reconstructed W_profile and W_root30 coordinates do not determine a unique next interface exchange for this selected C01 pair/window.",
+      "The exact-match authority is the deterministic binary64 E09 aggregate reconstruction; the independent Fortran sums are consistency checks only.",
       "Support does not establish H16 as the unique or minimal missing state coordinate.",
       "No production coupling admission follows."
     ]
