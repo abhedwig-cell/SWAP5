@@ -27,5 +27,12 @@
     "origin": "Same pre-runtime package-completeness failure observed in DUMMY-20C v1.",
     "execution_effect": "none until DUMMY-20C closes; DUMMY-20D remains blocked."
   },
-  "recovery_point": "Clock matrix remains frozen; verifier prepared and STO-only technical fixture completeness mirrored from DUMMY-20C."
+  "recovery_point": "Clock matrix remains frozen; verifier now mirrors STO and dx/dy fixture completeness from DUMMY-20C.",
+  "grid_metadata_repair": {
+    "state": "APPLIED_PROSPECTIVELY",
+    "change": "Add scalar dx=1.0 and dy=-1.0 coordinates required by iMOD-Python for the one-cell structured grid.",
+    "scientific_change": false,
+    "origin": "Same pre-runtime DIS metadata failure observed in DUMMY-20C v3.",
+    "execution_effect": "none until DUMMY-20C closes; DUMMY-20D remains blocked."
+  }
 }
