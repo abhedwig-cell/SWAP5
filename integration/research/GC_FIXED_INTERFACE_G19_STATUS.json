@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_fixed_interface.g19.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G19",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_BOUNDED_AFFINE_RESPONSE_SPACE_BRIDGE",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G19_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G19_RESULT.json",
+  "tested_commit": "7c6ad1437aa363dce1fa1fa8c8e96fc316b11f16",
+  "workflow_run": 35726466434,
+  "workflow_job": 106741215877,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "disposition": {
+    "g18_direct_head_space_composition": "REMAINS_FALSIFIED",
+    "affine_response_space_bridge": "QUALIFIED_FOR_FROZEN_G11_FRESH_SOLVES",
+    "continuous_fgc38_prepared_solve_response_damping": "NOT_YET_QUALIFIED",
+    "g11_g17_p4": "REMAINS_RESEARCH_EVIDENCE",
+    "e3": "REMAINS_QUALIFIED_RESEARCH_ONLY",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "next_action": "Open G20: execute the G19 lambda sequence inside one live F-GC38 prepared solve with fixed XOLD, no X rollback/set, and compare converged lambda states to the G19 fresh-solve references before considering any prepared-solve-native globalization policy."
+}
