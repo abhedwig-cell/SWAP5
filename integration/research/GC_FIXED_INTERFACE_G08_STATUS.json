@@ -8,7 +8,7 @@
   "test": "tests/research/test_gc_fixed_interface_fgc44_safeguarded_newton_g08.py",
   "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
-  "state": "IMPLEMENTED_AWAITING_POSTIMAGE_EXECUTION",
+  "state": "EXECUTED_RESEARCH_GATE_CLOSED",
   "production_changes": false,
   "invariants": [
     "diagnostic trials discarded",
@@ -16,5 +16,18 @@
     "status 4 is lifecycle misuse, status 6 is trial failure",
     "production HCOF/RHS untouched"
   ],
-  "next_action": "Execute the latest persisted postimage once through the live semantic scan, persist the machine-readable observation, then decide whether real-SWAP nonlinearity and the P4 safeguard were actually exercised."
+  "next_action": "Preregister and execute G09: transaction-safe admissibility-aware tangent acquisition at the real-SWAP boundary, with central secant as frozen baseline and one-sided/asymmetric fallback selected only from trial status, then re-run P1/P4 without production mutation.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G08_RESULT.json",
+  "execution": {
+    "tested_commit": "807d20d428ef1780bd54c5d145fa272f474072a1",
+    "workflow_run": 35622876217,
+    "workflow_job": 106409986227,
+    "conclusion": "success"
+  },
+  "scientific_disposition": {
+    "nonlinear_real_swap_qualification": "NOT_ESTABLISHED",
+    "real_swap_safeguard_qualification": "NOT_EXERCISED",
+    "central_tangent_boundary_qualification": "FALSIFIED_AT_C2_NEGATIVE_EDGE",
+    "production_admission": "NO"
+  }
 }
