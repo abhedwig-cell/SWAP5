@@ -1,0 +1,45 @@
+name: GC rootzone memory RZM06E03B split-boundary state construction
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E03B_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E03B_PREREGISTRATION.md'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e03b_expand.f90'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e03b_select.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e03b.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e03b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e03b-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Generate and select split-boundary states
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E03B-EVIDENCE
+          RZM06E03B_EVIDENCE_DIR="$PWD/RZM06E03B-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e03b.sh
+      - name: Preserve E03B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e03b-${{ github.run_id }}
+          path: RZM06E03B-EVIDENCE
+          if-no-files-found: warn
