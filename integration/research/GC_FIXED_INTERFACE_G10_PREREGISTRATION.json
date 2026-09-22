@@ -3,7 +3,7 @@
   "date": "2026-09-22",
   "work_unit": "GC-FIXED-INTERFACE-G10",
   "title": "Long-window B4 real-SWAP nonlinear carrier and safeguarded-Newton challenge",
-  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "status": "PREREGISTERED_BEFORE_EXECUTION_AMENDED",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "parent_tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
   "carrier_authority": "docs/publication/evidence/PUB_GC_E4_FULL_RESULT.json",
@@ -111,5 +111,16 @@
     "All probes/candidates remain trial->evaluate->discard and may not mutate revision/time/ledger.",
     "No production HCOF/RHS or production coupling change is authorized by G10."
   ],
-  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT",
+  "pre_execution_amendment": {
+    "reason": "Bind the live configured F-GC44 carrier explicitly to the frozen E4 B4 authority before interpreting any G10 response.",
+    "timing": "Added while the first G10 workflow was queued; no G10 live execution result had been inspected or admitted.",
+    "carrier_binding_gate": {
+      "reference_head_m": -0.7149999311459918,
+      "u_A": 0.00119027208545508,
+      "abs_tolerance": 1e-14,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "rule": "Live configured initialization must reproduce all three values; otherwise classify carrier mismatch and stop before the nonlinear scan."
+    }
+  }
 }
