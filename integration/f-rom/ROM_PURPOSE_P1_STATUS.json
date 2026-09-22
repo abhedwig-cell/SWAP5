@@ -3,23 +3,40 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P1",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "PENDING_REFERENCE_BINDING_COMMIT",
+  "checkpoint_commit": "f6c297a9e58439fec7b58d90cce365a9b41c46ea",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "phase": "REFERENCE_IMPLEMENTATION_STAGED_BEFORE_RESPONSE",
-  "next_action": "Create immutable execution binding to trigger Reference-only qualification.",
-  "recovery_point": "work/f-rom-purpose; use this status, P1 preregistration and pre-response repair record.",
-  "blockers": [],
+  "phase": "REFERENCE_EXECUTION_QUEUED",
+  "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
+  "reference_workflow_run": 35748342021,
+  "stale_duplicate_workflow_run": 35748342142,
+  "stale_duplicate_response_capable": false,
+  "candidate_response_authorized": false,
+  "candidate_response_generated": false,
+  "candidate_implementation_staged": true,
+  "next_action": "AWAIT_REFERENCE_EXECUTION_CAPACITY_THEN_ADJUDICATE_GATE",
+  "recovery_point": "work/f-rom-purpose; start from this status, P1 authority binding, preregistration, metric contract and Reference execution binding.",
+  "blockers": [
+    "EXTERNAL_GITHUB_ACTIONS_QUEUE"
+  ],
+  "last_reconciled_head": "f6c297a9e58439fec7b58d90cce365a9b41c46ea",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
+    "integration/f-rom/ROM_PURPOSE_P0_AUTHORITY_BINDING.json",
+    "docs/science/F-ROM_PURPOSE_P0_SYNTHESIS.md",
     "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json",
     "integration/f-rom/ROM_PURPOSE_P1_PRE_RESPONSE_REPAIR.json",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json",
     "tests/rom/materialize_rom_purpose_p1_surface_reference.py",
     "tests/rom/materialize_rom_purpose_p1_gw_reference.py",
     "tests/rom/analyze_rom_purpose_p1_reference.py",
-    ".github/workflows/rom-purpose-p1-reference.yml"
+    ".github/workflows/f-rom-purpose-p1-reference.yml",
+    "tests/rom/run_rom_purpose_p1_candidate.py",
+    "tests/rom/analyze_rom_purpose_p1_candidates.py",
+    ".github/workflows/f-rom-purpose-p1-candidates.yml"
   ],
   "dependency_surface": [
     "src/",
@@ -28,5 +45,12 @@
     "tests/rom/compile_f_rom0_fortran_closure.py",
     "tests/rom/materialize_f_rom0_headcalc_stubs.py"
   ],
-  "candidate_response_authorized": false
+  "scientific_firewall": {
+    "reference_response_generated": false,
+    "candidate_response_generated": false,
+    "representation_retuned": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
 }
