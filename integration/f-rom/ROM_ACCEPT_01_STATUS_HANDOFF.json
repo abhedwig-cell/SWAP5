@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.rom-accept.status-handoff.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "branch": "work/f-rom-accept",
+  "baseline": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
+  "canonical_authority": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "frozen_core_evidence": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+  "phase": "CLOSED_PARTIAL_AUTHORITY__NO_DIRECT_LAYER_ROM_ACCEPTANCE_ENVELOPE",
+  "process_completion": {
+    "RECONCILE": "COMPLETE",
+    "SOURCE_AUTHORITY": "COMPLETE",
+    "PURPOSE_CONTRACT": "COMPLETE",
+    "ERROR_BUDGET": "COMPLETE_WITH_EXPLICIT_UNRESOLVED_COMPONENTS",
+    "TEMPORAL_SEMANTICS": "COMPLETE_WHERE_AUTHORIZED",
+    "FREEZE_ACCEPTANCE_ENVELOPE": "PARTIAL_ONLY",
+    "HANDOFF": "COMPLETE"
+  },
+  "execution_guard": {
+    "layer_rom_candidate_simulations_run": false,
+    "new_layer_rom_candidate_responses_viewed": false,
+    "thresholds_selected_from_candidate_error": false,
+    "future_candidate_validation_authorized": false,
+    "reason": "No requested purpose has a complete independently justified reduced-model structural acceptance envelope."
+  },
+  "persisted_records": [
+    "integration/f-rom/ROM_ACCEPT_01_SOURCE_PROVENANCE.json",
+    "integration/f-rom/ROM_ACCEPT_01_PURPOSE_CONTRACTS.json",
+    "integration/f-rom/ROM_ACCEPT_01_STATUS_HANDOFF.json"
+  ],
+  "purpose_status": {
+    "GW-R": {
+      "decision": "NO_INDEPENDENT_QUANTITATIVE_APPLICATION_AUTHORITY_FOUND",
+      "frozen_components": [],
+      "blocker": "No quantitative recharge/cumulative-exchange bias, seasonal, annual, or drift requirement with matching temporal semantics."
+    },
+    "GW-D": {
+      "decision": "PARTIAL_AUTHORITY_FROZEN__ROM_STRUCTURAL_ALLOCATION_REQUIRED",
+      "frozen_components": [
+        "HYDRO-MEMORY Stage 0 total numerical groundwater-head budget: 0.004 m",
+        "HYDRO-MEMORY Stage 0 temporal numerical budget: 0.001 m",
+        "HYDRO-MEMORY Stage 0 coupling-interface head-residual budget: 0.001 m",
+        "immutable accepted-origin semantics",
+        "rejected trials publish zero authoritative interface mass",
+        "accepted interface transfer is published exactly once",
+        "next-window state derives from current committed accepted state"
+      ],
+      "blocker": "The governing head budgets explicitly exclude model structural uncertainty. No independent Layer-ROM structural-error share or direct end-to-end reduced-model criterion is frozen."
+    },
+    "SCI-P": {
+      "decision": "PARTIAL_FORMAL_APPLICATION_ENDPOINT_FOUND__PROFILE_AUTHORITY_UNRESOLVED",
+      "frozen_components": [
+        "For an explicitly LHM-like validation endpoint only: monthly growing-season soil-moisture correlation >= 0.6 at the stated national/regional support and for 80% of field-sensor points under the report criterion."
+      ],
+      "blocker": "No independent absolute/depth-resolved storage, profile-shape, wetting/drying-front timing, or extreme-state fidelity requirement for the requested scientific-profile purpose."
+    }
+  },
+  "critical_classification": {
+    "hydrological_application_tolerance": "Not interchangeable with numerical solver/coupling tolerance.",
+    "numerical_error_budget": "May be frozen when independently governed, but applies only to its declared numerical error class.",
+    "solver_convergence_tolerance": "Execution control; not automatically hydrological fidelity.",
+    "hard_mass_conservation": "Invariant/accounting authority; not a soft ROM approximation allowance.",
+    "observational_uncertainty": "Evidence uncertainty; not automatically acceptable structural model error.",
+    "model_structural_error": "Requires its own independent allocation or direct purpose criterion."
+  },
+  "unresolved_requirements": [
+    {
+      "id": "GW_R_APPLICATION_ERROR_BUDGET",
+      "purpose": "GW-R",
+      "required_authority": "Purpose-owner or external quantitative bound on recharge/cumulative exchange bias and temporal allocation."
+    },
+    {
+      "id": "GW_D_ROM_STRUCTURAL_ERROR_ALLOCATION",
+      "purpose": "GW-D",
+      "required_authority": "Prospectively governed allocation of permissible reduced-model structural/model-form error to a downstream head/exchange consequence, or a direct end-to-end reduced-model application criterion.",
+      "prohibited_resolution": "Do not reuse HM-ACC-APP-001, HM-ACC-TEMP-001, HM-ACC-INT-001, 1e-15 m/s, or 1e-12 cm outside their declared error class without new authority."
+    },
+    {
+      "id": "GW_D_SIGN_REVERSAL_AND_TIMING",
+      "purpose": "GW-D",
+      "required_authority": "Independent sign/reversal and timing requirements if these are to be acceptance gates rather than diagnostics."
+    },
+    {
+      "id": "SCI_P_PROFILE_ERROR_BUDGET",
+      "purpose": "SCI-P",
+      "required_authority": "Absolute/depth-resolved profile or storage fidelity plus front-timing/extreme-state semantics and a defined population/domain."
+    }
+  ],
+  "handoff": {
+    "ROM-PURPOSE": {
+      "allowed": [
+        "Use these purpose contracts as upstream requirements metadata.",
+        "Derive state-support hypotheses without using candidate response to alter requirements.",
+        "For a separately declared LHM-like soil-moisture endpoint, retain the formal monthly-correlation criterion at exactly its stated support."
+      ],
+      "blocked": [
+        "No L4/L6/R8 pass/fail adjudication for GW-R, GW-D, or requested SCI-P profile purpose.",
+        "No conversion of Stage 0 numerical head budget into structural ROM tolerance without new independent governance.",
+        "No back-calculation of convenient thresholds from candidate performance."
+      ],
+      "next_safe_requirement_step": "For GW-D, seek a purpose-owner structural-error allocation or direct end-to-end replacement criterion before blind candidate validation. For GW-R and SCI-P, obtain missing quantitative application authority."
+    },
+    "ROM-ROOT": {
+      "allowed": [
+        "Use transaction/accepted-state semantics as fixed coupling requirements where the root-feedback experiment depends on GW-D state publication.",
+        "Prepare a preregistration shell that leaves quantitative reduced-model acceptance fields unresolved."
+      ],
+      "blocked": [
+        "Do not use root-feedback candidate behavior to choose acceptance thresholds.",
+        "Do not execute acceptance-driven candidate simulation under ROM-ACCEPT authority until the relevant purpose envelope is independently frozen."
+      ]
+    }
+  },
+  "terminal_scientific_statement": "The previous blanket APPLICATION_TOLERANCE_AUTHORITY blocker is refined, not erased. New independent bounded authority exists for GW-D numerical consequence and transaction semantics and for a narrow LHM soil-moisture application endpoint. No complete direct Layer-ROM structural acceptance envelope is independently justified for GW-R, GW-D, or the requested SCI-P profile purpose.",
+  "next_safe_step": "Do not simulate Layer-ROM candidates. Obtain or formally govern the missing purpose-specific structural/application requirement, then freeze the complete comparator, population, temporal allocation, and acceptance rule before blind validation."
+}
