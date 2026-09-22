@@ -264,6 +264,10 @@ on:
       - 'tests/research/run_ribasim_dummy_20h6.sh'
       - 'integration/research/RIBASIM_DUMMY_20H7_*.json'
       - 'integration/research/RIBASIM_DUMMY_20H8_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H9_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H9_CONCEPT.md'
+      - 'tests/research/test_ribasim_dummy_20h9_positive_groundwater_next_boundary.py'
+      - 'tests/research/run_ribasim_dummy_20h9.ps1'
       - 'integration/research/RIBASIM_DUMMY_20H8_CONCEPT.md'
       - 'tests/research/real_ribasim_20h8_forcing_sign_asymmetry.jl'
       - 'tests/research/run_ribasim_dummy_20h8.sh'
@@ -1242,3 +1246,29 @@ jobs:
           working-directory: .ribasim-product-release
       - name: Run current groundwater forcing-sign asymmetry diagnostic
         run: bash tests/research/run_ribasim_dummy_20h8.sh
+
+  real-ribamod-positive-groundwater-next-boundary-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20h9-ci')
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout pinned iMOD Coupler
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/imod_coupler
+          ref: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+          path: .imod-coupler-pin
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .imod-coupler-pin
+          environments: dev
+      - name: Run actual positive-groundwater next-boundary allocation bridge
+        shell: pwsh
+        run: .\tests\research\run_ribasim_dummy_20h9.ps1
