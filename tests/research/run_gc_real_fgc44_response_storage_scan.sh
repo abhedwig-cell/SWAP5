@@ -484,7 +484,8 @@ grep -Fq 'GC_FIXED_INTERFACE_G21L_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   exit 1
 }
 
-# G21M residual arithmetic/cancellation qualification. A temporary HeadCalc
+# G21M residual arithmetic/cancellation qualification.
+# CI rerun after technical HeadCalc instrumentation-anchor repair. A temporary HeadCalc
 # copy records the already-computed final residual vector and node-4 signed
 # expression terms; independent arithmetic is performed without changing them.
 FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
