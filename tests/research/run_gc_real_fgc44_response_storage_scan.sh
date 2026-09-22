@@ -353,3 +353,19 @@ grep -Fq 'GC_FIXED_INTERFACE_G21D_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21D_FAIL missing under-relaxation causal-isolation gate" >&2
   exit 1
 }
+
+
+# G21E matched dynamic solver-configuration comparison. Run the complete
+# response-space coupling loop under standard MODERATE delta-bar-delta and
+# UNDER_RELAXATION NONE. Physical endpoint qualification, strict trajectory
+# fidelity and solve cost are reported separately; this does not select a
+# production IMS configuration.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21e_dynamic_solver_configuration.py \
+  | tee "$BUILD/fgc44-globalization-g21e.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21E_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21e.txt" || {
+  echo "GC_FGC44_G21E_FAIL missing dynamic solver-configuration comparison gate" >&2
+  exit 1
+}
