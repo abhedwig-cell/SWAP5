@@ -64,6 +64,18 @@ class Fgc44RealSwap:
         self.lib.fgc44_g15_trial_call_count_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
         self.lib.fgc44_g15_has_live_candidate_c.restype=ctypes.c_int
         self.lib.fgc44_g15_has_live_candidate_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
+        self.lib.fgc44_g16_begin_session_c.restype=ctypes.c_int
+        self.lib.fgc44_g16_begin_session_c.argtypes=[]
+        self.lib.fgc44_g16_observe_head_c.restype=ctypes.c_int
+        self.lib.fgc44_g16_observe_head_c.argtypes=[
+            ctypes.c_double,
+            *([ctypes.POINTER(ctypes.c_int)]*16),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
+        self.lib.fgc44_g16_counts_c.restype=ctypes.c_int
+        self.lib.fgc44_g16_counts_c.argtypes=[*([ctypes.POINTER(ctypes.c_int)]*4)]
+        self.lib.fgc44_g16_end_session_c.restype=ctypes.c_int
+        self.lib.fgc44_g16_end_session_c.argtypes=[]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -212,6 +224,48 @@ class Fgc44RealSwap:
         result["min_substep"]=reals[1].value
         result["max_substep"]=reals[2].value
         return result
+
+    def g16_begin_session(self) -> None:
+        status=self.lib.fgc44_g16_begin_session_c()
+        if status:
+            raise RuntimeError(f"G16 begin session failed: {status}")
+
+    def g16_observe_head(self, head_m: float) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(16)]
+        reals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.fgc44_g16_observe_head_c(
+            float(head_m),
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"G16 observe head failed: {status}")
+        names=[
+            "available","participant_status","q_available","result_status",
+            "completed","candidate_ready","transaction_calls","accepted_substeps",
+            "attempts","retries","trial_rollbacks","solver_rejections",
+            "temporal_rejections","temporal_unavailable_rejections",
+            "mass_rejections","internal_retries",
+        ]
+        result={k:v.value for k,v in zip(names,ints)}
+        for key in ["available","q_available","completed","candidate_ready"]:
+            result[key]=bool(result[key])
+        result["q_swap_m_per_s"]=reals[0].value
+        result["min_substep"]=reals[1].value
+        result["max_substep"]=reals[2].value
+        return result
+
+    def g16_counts(self) -> tuple[int,int,int,int]:
+        values=[ctypes.c_int() for _ in range(4)]
+        status=self.lib.fgc44_g16_counts_c(*[ctypes.byref(v) for v in values])
+        if status:
+            raise RuntimeError(f"G16 count query failed: {status}")
+        return tuple(int(v.value) for v in values)
+
+    def g16_end_session(self) -> None:
+        status=self.lib.fgc44_g16_end_session_c()
+        if status:
+            raise RuntimeError(f"G16 end session failed: {status}")
 
     def g14_fused_run_count(self) -> int:
         value=ctypes.c_int()
