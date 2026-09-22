@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20H5 v1 frozen qualification.",
+  "next_action": "Execute DUMMY-20H5 v2 frozen qualification after diagnostic-intervention timing repair.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -23,7 +23,7 @@
     "note": "Prepared while DUMMY-20H4 is active. No runner, workflow gate or execution before DUMMY-20H4 closeout and qualification."
   },
   "implementation_baseline": "04458b9197a2115b7479790d938ac5a965977114",
-  "recovery_point": "DUMMY-20H5 executable gate persisted; first qualification attempt pending.",
+  "recovery_point": "H5 v1 classified technical-only; v2 branch changes only diagnostic constraint timing.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H5_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H5_CONCEPT.md",
@@ -35,6 +35,21 @@
     "tests/research/run_ribasim_dummy_20h5.sh",
     ".github/workflows/ribasim-dummy-01.yml"
   ],
-  "qualification_attempt": "v1_frozen_zero_storage_factor_causality",
-  "qualification_base": "work/ribasim-dummy-01@b507fd90dcaeab91cf79217a800c2d6a720611ae"
+  "qualification_attempt": "v2_frozen_zero_storage_factor_causality",
+  "qualification_base": "work/ribasim-dummy-20h5-ci-v1@e4f6774f2e64d9a6e23a908c4d8375178c67f278",
+  "qualification_attempts": [
+    {
+      "attempt": "v1",
+      "run": 35739618557,
+      "state": "TECHNICAL_DIAGNOSTIC_INTERVENTION_FAIL",
+      "scientific_effect": "none",
+      "authority_use": "forbidden",
+      "evidence": "Free-storage case matched preregistration exactly. The fixed-storage case failed before optimization because JuMP.fix conflicted with Ribasim set_simulation_data! refreshing variable bounds."
+    },
+    {
+      "attempt": "v2",
+      "state": "PENDING",
+      "repair": "Impose the same hard ΔS=0 diagnostic only after Ribasim refreshes allocation variable bounds and before optimize!; no model, expectations or tolerances changed."
+    }
+  ]
 }
