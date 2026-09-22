@@ -170,10 +170,18 @@
       "dependency": "qualified DUMMY-19J",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
       "implementation_baseline": "010d3436258fe66e6b3b3de6808047fc26f4a006"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19L",
+      "state": "PREREGISTERED_BLOCKED_BY_19K",
+      "intended_decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+      "dependency": "DUMMY-19K closeout",
+      "scientific_baseline": "9701e987fb98e6607c4af904788e175765a080e6",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-19K explicit UserDemand solve→apply seam.",
+  "next_authority_action": "Execute frozen DUMMY-19K; DUMMY-19L trajectory-equivalence check is prospectively frozen behind it.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
