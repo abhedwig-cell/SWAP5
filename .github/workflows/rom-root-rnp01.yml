@@ -149,7 +149,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p RNP01_EVIDENCE
-          mapfile -t logs < <(find /tmp/rnp01 -maxdepth 1 -type f -name '*.txt' | sort)
+          mapfile -t logs < <(find /tmp/rnp01 -maxdepth 1 -type f -name 'B*.txt' | sort)
           test "${#logs[@]}" -eq 6
           python3 tests/rom/analyze_rom_root_rnp01.py             --prereg integration/f-rom/ROM_ROOT_RNP01_PREREGISTRATION.json             --logs "${logs[@]}"             --output RNP01_EVIDENCE/ROM_ROOT_RNP01_RESULT.json             | tee RNP01_EVIDENCE/runner.txt
           cp integration/f-rom/ROM_ROOT_RNP01_PREREGISTRATION.json RNP01_EVIDENCE/
