@@ -48,6 +48,23 @@ def assigned_self_attributes(fn:ast.FunctionDef)->set[str]:
     return out
 
 
+def mutated_self_subscript_attributes(fn:ast.FunctionDef)->set[str]:
+    out=set()
+    for node in ast.walk(fn):
+        targets=[]
+        if isinstance(node,(ast.Assign,ast.AnnAssign,ast.AugAssign)):
+            if isinstance(node,ast.Assign):
+                targets=node.targets
+            else:
+                targets=[node.target]
+        for target in targets:
+            if isinstance(target,ast.Subscript):
+                value=target.value
+                if isinstance(value,ast.Attribute) and isinstance(value.value,ast.Name) and value.value.id=="self":
+                    out.add(value.attr)
+    return out
+
+
 def main()->None:
     prereg=json.loads(PREREG.read_text())
     require(prereg["work_unit"]=="GC-FIXED-INTERFACE-G18","wrong G18 preregistration")
@@ -107,6 +124,23 @@ def main()->None:
     assigns=assigned_self_attributes(invalidate)
     require("_invalidate" in calls,"G18 invalidate_without_finalize does not invalidate the session")
     require(not ({"head","xold","accepted_xold"} & assigns),"G18 invalidate unexpectedly rewrites groundwater state")
+    invalidate_impl=methods["_invalidate"]
+    invalidate_impl_calls=called_attributes(invalidate_impl)
+    invalidate_impl_assigns=assigned_self_attributes(invalidate_impl)
+    invalidate_impl_mutations=mutated_self_subscript_attributes(invalidate_impl)
+    require(not invalidate_impl_calls,"G18 _invalidate unexpectedly calls a state-control collaborator")
+    require(invalidate_impl_assigns <= {"invalid","solve_open"},
+            f"G18 _invalidate gained unexpected state assignments {sorted(invalidate_impl_assigns)}")
+    require(not ({"head","xold","accepted_xold"} & invalidate_impl_mutations),
+            "G18 _invalidate mutates groundwater state arrays")
+
+    solve_iteration=methods["publish_and_solve_iteration"]
+    solve_calls=called_attributes(solve_iteration)
+    solve_mutations=mutated_self_subscript_attributes(solve_iteration)
+    require(not ({"set_value","set_value_ptr","set_head","restore_iterate","rollback_iteration"} & solve_calls),
+            "G18 solve iteration gained direct groundwater state-control call")
+    require(not ({"head","xold","accepted_xold"} & solve_mutations),
+            "G18 solve iteration directly mutates groundwater head/origin arrays")
 
     finalize=methods["finalize_time_step_once"]
     finalize_source=ast.get_source_segment(source,finalize) or ""
@@ -141,6 +175,10 @@ def main()->None:
         "prepared_solve_forbidden_state_control_methods_present":actual_forbidden,
         "invalidate_calls":sorted(calls),
         "invalidate_state_assignments":sorted(assigns),
+        "invalidate_impl_calls":sorted(invalidate_impl_calls),
+        "invalidate_impl_state_assignments":sorted(invalidate_impl_assigns),
+        "solve_iteration_calls":sorted(solve_calls),
+        "solve_iteration_groundwater_array_mutations":sorted({"head","xold","accepted_xold"} & solve_mutations),
         "fgc39_continuous_x_no_rollback":"CONFIRMED",
         "exact_head_reposition_required_after_raw_iterate":True,
         "admitted_exact_head_reposition_primitive":False,
