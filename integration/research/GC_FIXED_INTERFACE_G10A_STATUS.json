@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10a.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10A",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_LIVE_DIAGNOSTIC",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G10A_PREREGISTRATION.json",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G10_FIRST_EXECUTION_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_groundwater_oracle_g10a.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "production_changes": false,
+  "recovery_point": "b1370babace6ae90fa77ef90058c0d9e371fa104",
+  "next_action": "Execute direct GW_MIXED oracle diagnostic; compare broad-affine and direct q_gw merits along the exact failed P4 backtracking line and locate a direct coupled root in flux space if the frozen local ladder brackets one."
+}
