@@ -1,0 +1,47 @@
+{
+  "disposition": "NO_MATCH",
+  "library_authority": {
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "artifact_id": 10561841507,
+    "o0_o2_byte_identity": true,
+    "o0_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+    "o2_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+    "workflow_run": 35379176697
+  },
+  "nonclaims": [
+    "D01 performs no HeadCalc solve and no response probe",
+    "D01 does not support or falsify H2 by itself",
+    "HELD_OUT and FALLBACK=T states are excluded"
+  ],
+  "preregistration_commit": "2af534f0455ceb121f9a7965d1fe9f92895b3e4d",
+  "schema": "swap5.gc_rootzone_memory.rzm06d01.rom_library_h2_origin_selection.v1",
+  "selected_pair": null,
+  "selector": {
+    "discovery_strict_states": 475,
+    "distribution_moment_min_separation_cm": 0.01,
+    "heldout_node_observables_parsed": 0,
+    "profile_water_tolerance_cm": 0.0001,
+    "qualifying_pairs": 0,
+    "response_fields_parsed": false,
+    "same_time_different_history_candidate_pairs": 1549
+  },
+  "qualification": {
+    "workflow_run": 35736968701,
+    "workflow_job": 106776591287,
+    "workflow_conclusion": "success",
+    "implementation_commit": "7a5558d8d9ee2dfd52558ddc61189187843ff052",
+    "workflow_commit": "1d74726b71bf84794c6f30b24900bd101d692af0",
+    "production_changes": false
+  },
+  "interpretation": {
+    "classification": "QUALIFIED_SAME_TIME_STRICT_DISCOVERY_NO_MATCH__H2_NOT_PROBED",
+    "meaning": "The additional same-library-time control prevents construction of an H2 origin pair from the strict DISCOVERY subset at the unchanged physical state thresholds.",
+    "next_step": "Qualify absolute-time neutrality and common-time reseeding for the pure-hydraulics 16-node C01 carrier before any broader cross-library-time origin selection.",
+    "prohibited": [
+      "do not relax the physical H2 thresholds",
+      "do not inspect HELD_OUT states",
+      "do not admit FALLBACK=T states",
+      "do not inspect E_c to guide a new selector"
+    ]
+  }
+}
