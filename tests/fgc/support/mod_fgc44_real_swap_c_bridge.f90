@@ -374,12 +374,12 @@ contains
         wi=typed%water_content(i)*predictor_parameters%dz(i)
         profile_water_cm=profile_water_cm+wi
         weighted_z=weighted_z+wi*predictor_parameters%z(i)
-        ! z is measured upward from the lower datum in this carrier.  The
-        ! root-zone diagnostic is the upper 30 cm by geometric cell overlap.
-        depth_top=max(0.0_real64, predictor_parameters%z(typed%active_nodes)+0.5_real64*predictor_parameters%dz(typed%active_nodes) - &
-             (predictor_parameters%z(i)+0.5_real64*predictor_parameters%dz(i)))
-        depth_bottom=depth_top+predictor_parameters%dz(i)
-        overlap=max(0.0_real64,min(depth_bottom,30.0_real64)-min(depth_top,30.0_real64))
+        ! The fixture geometry is metre-scale depth relative to the surface (z<0).
+        ! Integrate the upper 0.30 m by geometric overlap; hydraulic heads and
+        ! native exchange diagnostics retain their separate centimetre convention.
+        depth_top=max(0.0_real64, -(predictor_parameters%z(i)+0.5_real64*predictor_parameters%dz(i)))
+        depth_bottom=max(0.0_real64, -(predictor_parameters%z(i)-0.5_real64*predictor_parameters%dz(i)))
+        overlap=max(0.0_real64,min(depth_bottom,0.30_real64)-min(depth_top,0.30_real64))
         if(overlap>0.0_real64)root_water_cm=root_water_cm+typed%water_content(i)*overlap
       end do
       if(profile_water_cm>0.0_real64)distribution_moment_cm=weighted_z/profile_water_cm
