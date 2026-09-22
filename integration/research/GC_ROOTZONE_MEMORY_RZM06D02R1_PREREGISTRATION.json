@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d02r1.representation_safe_reseed_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D02R1",
+  "authority": "preregistered repair of confounded D02 time-neutrality audit",
+  "production_changes": false,
+  "parent_result_commit": "86e6bcd82b57b363c6d137d93d669febfe336bb3",
+  "parent_decision": "QUALIFICATION_CONFOUNDED_BY_BINARY_DURATION_ALIAS__TIME_NEUTRALITY_NOT_DECIDED",
+  "scientific_question": "With binary-identical step duration enforced, does the same accepted 16-node physical state produce bit-identical pure-hydraulics Reference response when reseeded 7 days apart in absolute committed time?",
+  "audit_origin": {
+    "authority_workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "split": "DISCOVERY",
+    "history": "D01",
+    "step": 1,
+    "selection_rule": "same provenance-only lexicographically first FALLBACK=F discovery record used by D02",
+    "response_blind": true
+  },
+  "carrier": {
+    "source": "GC-RZM06C01 qualified F-ROM1A-I0 16x10-cm B01 BASE carrier",
+    "nodes": 16,
+    "dz_cm": 10,
+    "material": "B01",
+    "bottom_mode": 5,
+    "fixed_interface_head_m": -1.897937090169065,
+    "mapped_bottom_pressure_head_cm": -29.793709016906497,
+    "top_flux_cm_per_day": 0,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "time_design": {
+    "A_initial_time_day": 0,
+    "B_initial_time_day": 7,
+    "duration_expression": "scale(3435974.0_real64,-32)",
+    "duration_day_approx": 0.000800000037997961,
+    "deviation_from_D02_requested_0p0008_day": 3.7997961005974135e-11,
+    "prerequisite": [
+      "same_bits((A_t0+dt)-A_t0, dt)",
+      "same_bits((B_t0+dt)-B_t0, dt)",
+      "same_bits((A_t0+dt)-A_t0, (B_t0+dt)-B_t0)"
+    ],
+    "rationale": "Remove the IEEE-754 duration alias while preserving the original 7-day absolute-time shift and nearly identical physical window length."
+  },
+  "qualification_gate": [
+    "artifact authority exact and audit origin unchanged",
+    "binary step duration preconditions pass before any solver call",
+    "both Reference samples valid, mass complete, one physical advance, zero automatic retries",
+    "committed origins remain unchanged",
+    "candidate pressure_head, water_content, ponding_depth and groundwater_level bitwise identical",
+    "bottom_outward_exchange_native and terminal_bottom_outward_flux_native bitwise identical",
+    "all compared mass and solver-count fields bitwise/integer identical",
+    "candidate intervals equal their own t0/t1 and differ only by exact 7-day translation",
+    "O0/O2 observable output byte-identical"
+  ],
+  "decision_if_pass": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+  "decision_if_fail": "COMMON_TIME_RESEED_NOT_QUALIFIED_AFTER_REPRESENTATION_SAFE_REPAIR",
+  "controls": [
+    "no H2 pair search",
+    "no threshold change",
+    "no HELD_OUT access",
+    "no FALLBACK=T audit-state selection",
+    "no production source change",
+    "do not change audit state or 7-day shift after execution"
+  ],
+  "nonclaims": [
+    "D02R1 does not test H2",
+    "time neutrality is qualified only for the C01 pure-hydraulics BASE carrier and this fixed forcing/window class"
+  ]
+}
