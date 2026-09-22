@@ -23,7 +23,11 @@ AREA_M2=1.0
 WINDOW_DAY=1.0e-4
 FLUX_TOL=1.0e-15
 CLOSEOUT_ONECELL=os.environ.get("FGC44_CLOSEOUT_ONECELL","0")=="1"
+CLOSEOUT_COMPATIBLE_SOLVER=os.environ.get("FGC44_CLOSEOUT_COMPATIBLE_SOLVER","0")=="1"
 CLOSEOUT_ENDPOINT_HEAD_TOL_M=5.0e-10
+CLOSEOUT_COMPAT_OUTER_DVCLOSE_M=1.0e-14
+CLOSEOUT_COMPAT_INNER_DVCLOSE_M=1.0e-15
+CLOSEOUT_COMPAT_RCLOSE_M3_PER_DAY=4.32e-11
 CLOSEOUT_GW_FIT_TOL_M_PER_S=5.0e-12
 CLOSEOUT_ROOT_HALF_WIDTH_M=2.0e-6
 CLOSEOUT_GW_PROBES_M_PER_S=(-2.0e-8,0.0,2.0e-8)
@@ -60,14 +64,19 @@ def require(x:bool,msg:str)->None:
 def build_model(workdir:Path, reference_head:float)->None:
     sim=flopy.mf6.MFSimulation(sim_name="FGC44_REAL_E2E",version="mf6",sim_ws=str(workdir))
     flopy.mf6.ModflowTdis(sim,time_units="DAYS",nper=1,perioddata=[(WINDOW_DAY,1,1.0)])
-    flopy.mf6.ModflowIms(
-        sim,
+    ims_kwargs=dict(
         complexity="MODERATE",
         outer_dvclose=1e-11,
         inner_dvclose=1e-12,
         outer_maximum=100,
         inner_maximum=100,
     )
+    if CLOSEOUT_COMPATIBLE_SOLVER:
+        require(CLOSEOUT_ONECELL,"compatible stopping configuration is qualified only for one-cell closeout")
+        ims_kwargs["outer_dvclose"]=CLOSEOUT_COMPAT_OUTER_DVCLOSE_M
+        ims_kwargs["inner_dvclose"]=CLOSEOUT_COMPAT_INNER_DVCLOSE_M
+        ims_kwargs["rcloserecord"]=[CLOSEOUT_COMPAT_RCLOSE_M3_PER_DAY,"STRICT"]
+    flopy.mf6.ModflowIms(sim,**ims_kwargs)
     gwf=flopy.mf6.ModflowGwf(
         sim,
         modelname="GWF_1",
@@ -446,8 +455,10 @@ def main()->None:
                 print(f"FGC44_MODFLOW_API_COMPONENT_M3_PER_DAY={mf_api_component:.17g}")
                 print(f"FGC44_MODFLOW_API_EXPECTED_M3_PER_DAY={expected_api_m3_per_day:.17g}")
                 print(f"FGC44_MODFLOW_LISTING_FILE={mf_listing_file}")
+                stopping_flow_gate=abs(mf_budget_residual)<=CLOSEOUT_COMPAT_RCLOSE_M3_PER_DAY
                 print("FGC44_MODFLOW_MODEL_BALANCE_GATE="+("PASS" if mf_model_balance_gate else "FAIL"))
                 print("FGC44_MODFLOW_API_COMPONENT_GATE="+("PASS" if mf_api_component_gate else "FAIL"))
+                print("FGC44_MODFLOW_STOPPING_FLOW_GATE="+("PASS" if stopping_flow_gate else "FAIL"))
 
             print(f"FGC44_FINAL_HEAD_M={final_head:.17g}")
             print(f"FGC44_FINAL_Q_SWAP_M_PER_S={final_q_swap:.17g}")
@@ -480,9 +491,15 @@ def main()->None:
                 require(mf_api_component_gate,
                         "MODFLOW6 API budget record differs from accepted coupling term")
                 print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
+                if CLOSEOUT_COMPATIBLE_SOLVER:
+                    require(stopping_flow_gate,
+                            "MODFLOW6 native residual exceeds preregistered stopping-flow allocation")
+                    print("FGC44_STOPPING_FLOW_BUDGET=PASS")
                 require(independent_residual_gate,
                         "coupled endpoint does not close independent physical residual")
                 print("FGC44_INDEPENDENT_PHYSICAL_ENDPOINT=PASS")
+                if CLOSEOUT_COMPATIBLE_SOLVER:
+                    print("FGC44_STOPPING_COMPATIBILITY_CONTRACT=PASS")
             print("FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS")
             print("FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS")
             print("FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS")
