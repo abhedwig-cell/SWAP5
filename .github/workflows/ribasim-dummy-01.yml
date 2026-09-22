@@ -262,6 +262,10 @@ on:
       - 'tests/research/generate_ribasim_dummy_20h6_next_boundary.py'
       - 'tests/research/real_ribasim_20h6_next_boundary_memory.jl'
       - 'tests/research/run_ribasim_dummy_20h6.sh'
+      - 'integration/research/RIBASIM_DUMMY_20H7_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H7_CONCEPT.md'
+      - 'tests/research/test_ribasim_dummy_20h7_active_river_next_boundary.py'
+      - 'tests/research/run_ribasim_dummy_20h7.ps1'
       - 'integration/research/RIBASIM_DUMMY_20H5_CONCEPT.md'
       - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
       - 'tests/research/generate_ribasim_dummy_20h5_zero_storage.py'
@@ -1185,3 +1189,29 @@ jobs:
           working-directory: .ribasim-product-release
       - name: Run next-boundary accepted-memory versus current-forcing forecast separation
         run: bash tests/research/run_ribasim_dummy_20h6.sh
+
+  real-ribamod-next-boundary-memory-forecast-bridge-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20h7-ci')
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout pinned iMOD Coupler
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/imod_coupler
+          ref: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+          path: .imod-coupler-pin
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .imod-coupler-pin
+          environments: dev
+      - name: Run actual t24 accepted-memory versus current-forcing product bridge
+        shell: pwsh
+        run: .\tests\research\run_ribasim_dummy_20h7.ps1
