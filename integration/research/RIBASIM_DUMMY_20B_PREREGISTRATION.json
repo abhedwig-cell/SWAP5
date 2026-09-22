@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.coupling.ribasim_product_release_clock_contract.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20B",
+  "title": "Product-pinned Ribasim v2026.1.1 allocation-clock contract",
+  "baseline": "cd369dba07c106b4cdeee868bcee878045dbbde2",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20A_ACTIVE",
+    "execute_after": "DUMMY-20A closeout",
+    "rationale": "Establish the clock semantics of the exact Ribasim release consumed by the pinned iMOD Coupler product before any dynamic product test."
+  },
+  "pins": {
+    "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "product_ribasim_release": "v2026.1.1",
+    "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "research_ribasim_comparison": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "version_relation": {
+    "release_to_research": "research pin is 103 commits ahead of v2026.1.1",
+    "meaning": "DUMMY-19 clock results against the later research pin are not automatically product-binary authority."
+  },
+  "source_scope": [
+    "core/src/model.jl",
+    "core/src/bmi.jl",
+    "core/src/allocation_optim.jl"
+  ],
+  "hypotheses": [
+    "BMI.update_until in v2026.1.1 delegates to step!(model, dt).",
+    "With fixed allocation.dt, step! solves allocation only when the current physical time lies on the allocation.dt grid before advancing the requested BMI interval.",
+    "The fixed-allocation.dt path does not use solver.saveat to schedule allocation solves.",
+    "update_allocation!(model) defaults record=true, so an allocation.dt-aligned solve applies UserDemand allocation through parse_allocations!.",
+    "The saveat-capped allocation-tstop behavior qualified against f965 is therefore not the clock contract of v2026.1.1.",
+    "For a RibaMod product run with 6-hour MODFLOW steps and allocation.dt=24h, the 6-hour BMI endpoints do not create additional UserDemand allocation decisions within the day.",
+    "For the same product steps with allocation.dt=6h, every 6-hour step start is an allocation boundary and the new UserDemand allocation is applied before that physical segment.",
+    "Changing solver.saveat alone must not change fixed-allocation.dt management cadence in this release."
+  ],
+  "forbidden": [
+    "no transfer of f965 saveat sensitivity claims to v2026.1.1 without direct evidence",
+    "no product-runtime claim from source audit alone",
+    "no upstream defect classification",
+    "no SWAP5 product-driver mutation"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
+  "fail_decision": "RIBASIM_DUMMY_20B_BLOCKED"
+}
