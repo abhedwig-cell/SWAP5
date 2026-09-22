@@ -1,0 +1,137 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06c02.native_cm_resolution_bridge_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06C02",
+  "authority": "preregistered research carrier qualification",
+  "production_changes": false,
+  "parent_c01_commit": "b9a74963d326a5d69282be9ba8d8f6504d4ddc20",
+  "purpose": "Qualify a repository-native real-HeadCalc fixed-Hc research carrier with legacy-native centimetre geometry and resolved upper-30-cm state before any renewed H2 probe.",
+  "classification_boundary": [
+    "real HeadCalc + explicit B110 constitutive provider",
+    "research-only synthetic vertical discretization",
+    "not Hupsel and not a full real-SWAP application case"
+  ],
+  "geometry": {
+    "unit": "cm",
+    "total_depth_cm": 300,
+    "active_nodes": 17,
+    "dz_cm": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      50,
+      50,
+      50,
+      50
+    ],
+    "z_cm": [
+      -2.5,
+      -7.5,
+      -12.5,
+      -17.5,
+      -22.5,
+      -27.5,
+      -35,
+      -45,
+      -55,
+      -65,
+      -75,
+      -85,
+      -95,
+      -125,
+      -175,
+      -225,
+      -275
+    ],
+    "node_distance_cm": [
+      2.5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      7.5,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      30,
+      50,
+      50,
+      50,
+      25
+    ],
+    "upper_30cm_node_count": 6,
+    "rationale": "Preserve the 300 cm column scale visible in LOW01 native-unit authority while resolving the upper 30 cm with six 5 cm compartments."
+  },
+  "hydraulics": {
+    "provider": "existing B110 default MvG provider",
+    "parameters": "same uniform parameter tuple already used by F-GC44 research fixture",
+    "initial_top_pressure_head_cm": -75,
+    "initial_profile": "hydrostatic in native cm geometry, constructed by cumulative node distances",
+    "bottom_datum_rule": "for native-cm research geometry, bottom boundary elevation = -total_depth_cm/100 m",
+    "expected_hydrostatic_total_head_cm": -77.5,
+    "expected_zero_flux_interface_head_m_approx": -0.775
+  },
+  "transaction_contract": {
+    "backend": "serialized-reference HeadCalc",
+    "bottom_mode": 5,
+    "retry_scale": 0.5,
+    "max_retries": 8,
+    "max_committed_substeps": 32,
+    "temporal_head_budget": 0.00001,
+    "mass_gate_abs_native": 1e-12,
+    "production_settings_changed": false
+  },
+  "qualification_gates": [
+    "node diagnostic exposes exactly the frozen 17-node geometry and is read-only",
+    "baseline h_i + z_i is constant within 1e-12 cm",
+    "upper 30 cm overlaps exactly six nodes and reconstructed root-water uses 30 cm in native geometry",
+    "profile-water/root-water/M1 reconstruct from node state within 1e-12 native units",
+    "computed reference interface head is finite and lies within [-0.79,-0.76] m",
+    "a zero-top read-only interval at reference head and 1e-4 d is completed, mass-complete and origin-preserving"
+  ],
+  "forcing_characterization": {
+    "amplitudes_abs_cm_per_day": [
+      1,
+      0.1,
+      0.01,
+      0.001
+    ],
+    "durations_day": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "signs": [
+      "negative_into_profile",
+      "positive_outward"
+    ],
+    "execution": "fresh baseline, commit=false for every point",
+    "selector": "none",
+    "response_access": "bottom exchange is not persisted or used; only transaction/admissibility/mass diagnostics are retained",
+    "disposition_if_no_nonzero_pair": "QUALIFIED_CARRIER_BUT_NO_NONZERO_FORCING_ENVELOPE"
+  },
+  "next_activation": {
+    "rule": "Only if C02 qualifies and at least one magnitude-duration point is admitted in both signs may GC-RZM06C03 preregister an H2 state-construction experiment.",
+    "h2_thresholds": "unchanged from RZM06A"
+  },
+  "nonclaims": [
+    "no H2 support or falsification",
+    "no Hupsel equivalence",
+    "no production coupling admission",
+    "no production vertical-discretization recommendation"
+  ]
+}
