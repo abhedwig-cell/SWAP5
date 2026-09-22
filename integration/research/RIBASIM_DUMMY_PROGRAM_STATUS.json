@@ -297,6 +297,18 @@
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
       "implementation_baseline": "f45aeeef4e8a23c45d791e2f367063dc1fc0055f"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H9",
+      "state": "PREREGISTERED_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+      "intended_decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
+      "dependency": "Execute only if DUMMY-20H8 qualifies.",
+      "scientific_baseline": "9220b8bf49138a0cf2b723aa7d6d460583338029",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0",
+      "prepared_verifier": "tests/research/test_ribasim_dummy_20h9_positive_groundwater_next_boundary.py"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
