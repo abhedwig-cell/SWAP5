@@ -49,6 +49,8 @@ on:
       - 'tests/research/test_gc_fixed_interface_g23_endpoint_transaction_matrix.py'
       - 'tests/research/run_gc_fixed_interface_g23_endpoint_transaction_matrix.sh'
       - 'integration/research/GC_FIXED_INTERFACE_G23_PREREGISTRATION.json'
+      - 'tests/research/test_gc_fixed_interface_g24_dvclose_compatibility.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G24_PREREGISTRATION.json'
       - 'tests/research/test_gc_fixed_interface_g21g_island_repeatability.py'
       - 'integration/research/GC_FIXED_INTERFACE_G21G_PREREGISTRATION.json'
       - 'tests/research/test_gc_fixed_interface_g21h_retry_level_forensics.py'
@@ -121,7 +123,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash tests/research/run_gc_real_fgc44_response_storage_scan.sh
-      - name: Run G23 on clean standard F-GC44 build
+      - name: Run G23 and G24 on clean standard F-GC44 build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash tests/research/run_gc_fixed_interface_g23_endpoint_transaction_matrix.sh

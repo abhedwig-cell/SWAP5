@@ -32,3 +32,15 @@ grep -Fq 'GC_FIXED_INTERFACE_G23_EXECUTION=PASS' "$BUILD/fgc44-g23-endpoint-tran
   echo "GC_FGC44_G23_FAIL missing endpoint transaction matrix gate" >&2
   exit 1
 }
+
+# G24 causal diagnostic: vary only MODFLOW convergence scales on the two
+# G23 GW_MIXED failures and matched passing controls. G23 remains partial.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g24_dvclose_compatibility.py \
+  | tee "$BUILD/fgc44-g24-dvclose-compatibility.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G24_EXECUTION=PASS' "$BUILD/fgc44-g24-dvclose-compatibility.txt" || {
+  echo "GC_FGC44_G24_FAIL missing dvclose compatibility execution gate" >&2
+  exit 1
+}
