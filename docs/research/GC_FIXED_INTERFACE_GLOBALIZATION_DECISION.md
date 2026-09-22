@@ -656,81 +656,6 @@ NEXT: END-TO-END SAFEGUARDED TANGENT COUPLING ORCHESTRATION.
 ```
 ## G17 disposition: G16-backed safeguarded orchestration qualified as research integration
 
-G17 exercised the first complete safeguarded coupling path that consumes the
-qualified G16 tangent-observation service rather than the earlier ad-hoc
-diagnostic trial helpers. The physical/numerical stress was not broadened or
-retuned: it is exactly the frozen G11 live-overshoot case, where the first raw
-physical-Newton proposal is genuinely participant-inadmissible and P4 must
-recover by factor-1/2 contraction.
-
-The final preregistration-bound live qualification, workflow `35724160855`,
-passed. The observed path is:
-
-```text
-first raw Newton dh                 -1.1162302297473836e-5 m
-first raw participant status         6
-P4 factor-1/2 contractions           2
-outer updates to convergence         3
-final dh                            -9.999346805233955e-6 m
-final residual                      -1.0640987109201395e-20 m/s
-
-G16 logical diagnostic requests     67
-physical diagnostic participant runs 34
-exact-head cache hits               33
-ordinary publication-path trials
-  during diagnostics                 0
-final candidate reacquisition trials 1
-cached vs reacquired q difference    0
-```
-
-This closes an important ownership question. Every SWAP-side evaluation used
-for current-head residuals, E3 stencil construction, the failed raw Newton
-proposal and the P4 safeguard is routed through G16. After every diagnostic
-observation the participant has no live candidate, FMR publication preflight is
-false, ledger preflight is false, and accepted revision/time plus committed
-ledger state remain identical to the immutable origin.
-
-The converged head is therefore still only diagnostic information. G17 closes
-the G16 service session and then reacquires that exact head once through the
-ordinary participant trial path. Only this new trial becomes live and
-publication-ready. Its q is exactly equal to the cached final diagnostic q in
-the live qualification.
-
-The existing publication seam then passes both preflights and produces:
-
-```text
-before publication                 [revision 0, time 0, ledger count 0]
-after SWAP commit                  [revision 1, time 0.01 d, ledger count 0]
-after ledger commit                [revision 1, time 0.01 d, ledger count 1]
-committed ledger exchange           1.3878293167404843e-8 m
-```
-
-A fresh-process direct publication at the identical final head reproduces the
-same final revision, time, ledger count and ledger exchange.
-
-That positive result has two deliberate limits. First, the intermediate state
-after the SWAP commit and before the ledger commit proves that this nominal
-two-preflight sequence is not by itself evidence of crash-atomic
-multi-participant publication. Second, the live MODFLOW6 calculations used by
-G17 are still the research proposal/merit solves; MODFLOW is not yet represented
-as a persistent transactional participant whose accepted state is committed in
-the same publication protocol.
-
-Therefore G17 qualifies research orchestration and the FMR/ledger final-candidate
-handoff, not a production coupling policy.
-
-```text
-G17 G16-BACKED SAFEGUARDED ORCHESTRATION = QUALIFIED RESEARCH INTEGRATION.
-FMR FINAL-CANDIDATE HANDOFF = QUALIFIED IN THE FROZEN G11 STRESS.
-E3 = QUALIFIED RESEARCH ONLY.
-P4 = QUALIFIED RESEARCH PATH, NOT PRODUCTION AUTHORITY.
-PERSISTENT MODFLOW TRANSACTION PARTICIPANT = MISSING.
-CRASH-ATOMIC MULTI-PARTICIPANT PUBLICATION = MISSING.
-NO PRODUCTION HCOF/RHS CHANGE.
-NEXT: PUBLICATION / TRANSACTION ARCHITECTURE.
-```
-## G17 disposition: G16-backed safeguarded orchestration qualified as research integration
-
 G17 composes the previously separate G16 tangent-observation service, the
 qualified research E3/P4 logic and the existing FMR/groundwater-interface
 publication seam on the frozen G11 live-overshoot stress. No runtime coupling
@@ -801,4 +726,73 @@ PERSISTENT MODFLOW TIMESTEP PUBLICATION = NOT PRESENT IN G17.
 CRASH-ATOMIC MULTI-PARTICIPANT PUBLICATION = NOT QUALIFIED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: RECONCILE P4 GLOBALIZATION WITH F-GC38/F-GC39 PREPARED-SOLVE SEMANTICS.
+```
+## G18 disposition: exact head-space P4 is not directly composable with continuous prepared solve
+
+G18 reconciled the frozen G11/G17 head-space P4 safeguard with the current
+F-GC38/F-GC39 MODFLOW prepared-solve ownership contract. This was a
+compatibility/falsification unit, not a production-policy implementation.
+
+The first execution failed technically before any compatibility verdict because
+the harness inferred the factor-1/2 contraction fraction by dividing two small
+head differences. It obtained `0.25000000000248657` rather than exactly
+`0.25`. The persisted accepted head itself was correct. The failure is
+preserved in `GC_FIXED_INTERFACE_G18_FIRST_EXECUTION_RESULT.json`. The repair
+replayed the actual P4 arithmetic: two sequential factor-1/2 updates reproduce
+the persisted accepted head exactly.
+
+The final hardened qualification, workflow `35725715857`, job
+`106738743115`, passed its ownership audit and falsified the direct
+composition hypothesis. The frozen transition is:
+
+```text
+current head                     -0.7149999311459918 m
+raw Newton head                  -0.7150110934482893 m
+raw participant status            6
+P4 contractions                   2
+first accepted head              -0.7150027217215662 m
+sequential-halving reconstruction -0.7150027217215662 m
+raw-to-contracted separation      8.371726723077622e-6 m
+```
+
+The current `Modflow6PreparedSolveSession` exposes exactly the admitted
+prepared-solve operations: acquire, open, publish-and-solve, finalize solve,
+timestep readiness/finalization, and invalidate. It exposes no admitted
+operation to prescribe `X`, restore the prior nonlinear iterate, rollback one
+external solve iteration, clone an open prepared solve, or restart that same
+open solve from `XOLD`.
+
+The hardened source audit also confirms that `invalidate_without_finalize`
+only delegates to `_invalidate`; `_invalidate` only changes the session
+flags `invalid` and `solve_open`; and `publish_and_solve_iteration` does
+not directly mutate the live `X`, `XOLD`, or accepted-`XOLD` arrays.
+F-GC39 independently requires continuous `X` and explicitly forbids
+groundwater rollback/discard between nonconverged coupling iterations.
+
+Therefore exact G11/G17 **head-space P4** cannot be inserted unchanged into the
+current F-GC38/F-GC39 continuous prepared-solve lifecycle. Achieving the
+contracted head after observing the bad raw iterate would require an additional
+state-control or reconstruction capability that is not admitted today.
+
+This falsifies only the direct composition hypothesis. It does not falsify the
+G11/G17 P4 research evidence and does not weaken the qualified F-GC38/F-GC39
+prepared-solve architecture. Directly writing through the technically writable
+NumPy `X` pointer is explicitly not an admissible workaround because it would
+bypass the qualified ownership contract.
+
+The next research bridge is response-space globalization. With an affine
+groundwater response and fixed SWAP tangent, damping the affine response
+intercept may map algebraically to the same contracted head without directly
+setting or rolling back MODFLOW `X`. That is a distinct policy and must be
+preregistered and qualified separately before any claim of equivalence or
+production use.
+
+```text
+G18 DIRECT EXACT-P4 / F-GC38-F-GC39 COMPOSITION = FALSIFIED.
+P4 HEAD-SPACE SAFEGUARD = REMAINS QUALIFIED RESEARCH EVIDENCE.
+F-GC38/F-GC39 PREPARED-SOLVE OWNERSHIP = UNCHANGED.
+DIRECT X POINTER MUTATION = NOT ADMITTED.
+E3/P4 PRODUCTION POLICY = NOT ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: RESPONSE-SPACE DAMPING BRIDGE.
 ```
