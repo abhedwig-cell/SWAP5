@@ -182,16 +182,8 @@
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20A",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
-      "dependency": "qualified DUMMY-19L",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "ribasim_context_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-20B",
-      "state": "IMPLEMENTED_PERSISTED_IMPLEMENTATION_READY_AFTER_20A",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
       "dependency": "qualified DUMMY-20A",
       "product_ribasim_release": "v2026.1.1",
@@ -199,7 +191,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute DUMMY-20B exact Ribasim v2026.1.1 product-release clock contract.",
+  "next_authority_action": "Execute frozen DUMMY-20B exact Ribasim v2026.1.1 product-release clock contract; runtime product differential follows only after closeout.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
