@@ -5,9 +5,13 @@
   "title": "Test-only explicit UserDemand apply seam for a coupler-owned 6-hour management clock",
   "baseline": "a670a31f87bfe27c7840f6e8080d247e7d01726f",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_19J_ACTIVE",
-    "execute_after": "DUMMY-19J closeout",
-    "rationale": "Freeze the proposed solve/apply separation before observing the fine-saveat conflict result."
+    "state": "SATISFIED_AFTER_DUMMY_19J_CLOSEOUT",
+    "execute_after": "DUMMY-19J qualified",
+    "rationale": "Freeze the proposed solve/apply separation before observing the fine-saveat conflict result.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
+      "workflow_run": 35702468555
+    }
   },
   "pins": {
     "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
@@ -128,5 +132,11 @@
     "no production admission"
   ],
   "pass_decision": "RIBASIM_DUMMY_19K_QUALIFIED_EXPLICIT_USERDEMAND_APPLY_SEAM",
-  "fail_decision": "RIBASIM_DUMMY_19K_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19K_BLOCKED",
+  "implementation_baseline": "6c5999b086a58641b1c6a84ae96c6d63b83c5e45",
+  "authority_rebind": {
+    "repository_head": "6c5999b086a58641b1c6a84ae96c6d63b83c5e45",
+    "scientific_change": false,
+    "meaning": "Executable explicit-apply experiment rebound after 19J closeout; frozen model, 6-hour references and tolerances are unchanged."
+  }
 }
