@@ -10,7 +10,13 @@
   "qualified": false,
   "blocked": true,
   "blocker": "Execution sequenced after DUMMY-20H3 closeout; factor-separation expectations are frozen prospectively.",
-  "next_action": "After DUMMY-20H3 closeout, rebind and execute only if its low-storage-factor mechanism qualifies.",
+  "next_action": "After DUMMY-20H3 qualification, rebind and complete runner/workflow without changing frozen factor expectations.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/real_ribasim_20h4_physical_lp_factor.jl",
+    "scientific_change": false,
+    "note": "Prepared while DUMMY-20H3 is active. No runner, workflow gate or execution before DUMMY-20H3 closeout and qualification."
+  }
 }
