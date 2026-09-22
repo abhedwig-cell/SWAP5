@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d02r1.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D02R1",
+  "production_changes": false,
+  "preregistration_commit": "2926ffbeb8129656e8656a39e315b31fbbdcb5e8",
+  "execution": {
+    "workflow_run": 35739047845,
+    "workflow_job": 106783673618,
+    "executed_head": "1435b1fa17b0ea1194ad3630663d7fc4c366dd3f",
+    "conclusion": "success",
+    "o0_o2_output_identity": true
+  },
+  "audit_origin": {
+    "split": "DISCOVERY",
+    "history": "D01",
+    "step": 1,
+    "selection": "provenance-only lexicographically first current-interval FALLBACK=F state",
+    "response_fields_used": false,
+    "heldout_node_observables_used": false
+  },
+  "time_design": {
+    "t_a_day": 0,
+    "t_b_day": 7,
+    "dyadic_dt_day": 0.000800000037997961,
+    "dt_bits_a": 4560517921251524600,
+    "dt_bits_b": 4560517921251524600,
+    "binary_duration_identical": true
+  },
+  "observed_identity": {
+    "max_abs_pressure_head_difference_cm": 0,
+    "max_abs_water_content_difference": 0,
+    "ponding_depth_difference_cm": 0,
+    "groundwater_level_difference_cm": 0,
+    "bottom_outward_exchange_difference_native": 0,
+    "terminal_bottom_flux_difference_native": 0,
+    "bottom_outward_exchange_native": 0.0031391986203388456,
+    "terminal_bottom_flux_native": 3.923998089043649,
+    "mass_residual_native": 0
+  },
+  "decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+  "interpretation": [
+    "The D02 failure was a binary-duration representation confound, not evidence that absolute committed time is physical state for the C01 BASE carrier.",
+    "For this pure-hydraulics carrier and fixed forcing/window class, an accepted physical H/theta profile may be reconstructed at a common canonical time without changing the one-window Reference result.",
+    "This qualifies removal of the D01 same-library-time selector constraint, provided selected profiles are reseeded to one common committed time before any response comparison."
+  ],
+  "scope_limit": [
+    "Does not apply to process-active configurations with time-dependent controls, snow, temperature, ET, drainage or management continuation state.",
+    "Does not authorize a production state-reconstruction API.",
+    "Does not test H2."
+  ],
+  "next": "GC-RZM06D03 response-blind cross-library-time origin selection over DISCOVERY current-interval FALLBACK=F states, followed only if selected by immutable persistence of both profiles for a later common-time probe."
+}
