@@ -28,3 +28,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run RZM01 analytical qualification
         run: bash tests/research/run_gc_rootzone_memory_rzm01.sh
+
+  rzm02:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run RZM02 forcing-order and timescale qualification
+        run: bash tests/research/run_gc_rootzone_memory_rzm02.sh
