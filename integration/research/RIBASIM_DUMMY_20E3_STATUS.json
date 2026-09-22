@@ -4,13 +4,37 @@
   "work_unit": "RIBASIM-DUMMY-20E3",
   "branch": "work/ribasim-dummy-01",
   "baseline": "07e9f1ba6762e03a5b43b3e4e310fff153539d77",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement the frozen two-cell MF6 intervention and execute the real-product qualification.",
+  "next_action": "Execute frozen DUMMY-20E3 two-cell groundwater-intervention product qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "07e9f1ba6762e03a5b43b3e4e310fff153539d77",
+  "recovery_point": "Two-cell CHD-source / active-DRN fixture and intervention-first verifier persisted; first qualification pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20E3_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20E3_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20E3_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20E3_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20e3_two_cell_groundwater.py",
+    "tests/research/run_ribasim_dummy_20e3.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "CHD and DRN occupy separate MF6 cells",
+      "DRN cell is hydraulically connected to the CHD source cell at K=1e6 m/day",
+      "drain elevation equals 0.5 m for first 6 h and switches to 0 m afterward",
+      "independent two-cell steady drain-rate reference is about 7.999872 m3/day",
+      "MF6 drain flux and reciprocal Ribasim drainage are asserted before response references",
+      "Ribasim allocation.dt/saveat/demand/priorities are unchanged from the blocked DUMMY-20E2 hypothesis",
+      "frozen idealized 8 m3/day response references and tolerances are unchanged"
+    ]
+  }
 }
