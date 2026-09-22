@@ -1,0 +1,33 @@
+name: GC rootzone memory RZM06C01 carrier
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'tests/research/test_gc_rootzone_memory_rzm06c01_carrier.f90'
+      - 'tests/research/run_gc_rootzone_memory_rzm06c01.sh'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06C01_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06C01_PREREGISTRATION.md'
+      - '.github/workflows/gc-rootzone-memory-rzm06c01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06c01-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify 16-node fixed-head research carrier
+        run: bash tests/research/run_gc_rootzone_memory_rzm06c01.sh
