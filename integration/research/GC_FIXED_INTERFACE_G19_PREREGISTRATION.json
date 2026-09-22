@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.gc_fixed_interface.g19.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G19",
+  "title": "Affine response-space damping bridge for frozen G11 head-space P4 contraction",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "983115bbdb3b6921542a9ab01eea3491a904cd81",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G18_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json"
+  ],
+  "question": "In the frozen G11 storage-dominated case, where the independently measured groundwater response is affine to qualification precision, can damping only the affine SWAP response intercept reproduce the exact factor-1/2 head-space contraction path without prescribing, restoring or rolling back MODFLOW head state?",
+  "separation": {
+    "research_subject": "Algebraic and live fresh-solve equivalence between response-intercept damping and head-space contraction in the frozen G11 affine-groundwater stress.",
+    "not_claimed": [
+      "Equivalence for nonlinear groundwater response.",
+      "Equivalence inside one continuous F-GC38 prepared solve.",
+      "A production globalization policy.",
+      "A change to F-GC39.",
+      "Direct X state control.",
+      "E3/P4 production admission.",
+      "HCOF/RHS production-policy admission."
+    ]
+  },
+  "frozen_g11": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "current_head_m": -0.7149999311459918,
+    "raw_head_m": -0.7150110934482893,
+    "first_accepted_head_m": -0.7150027217215662,
+    "raw_status": 6,
+    "contraction_count": 2,
+    "e3_tangent_per_s": -0.000001377629615322778,
+    "current_residual_m_per_s": -2.306628568830163e-11,
+    "groundwater_k_m_per_day": 1e-10,
+    "groundwater_ss_per_m": 0,
+    "groundwater_sy_formula": "0.5*u_predictor",
+    "groundwater_initial_head_bias_m": -0.00003332218778007957,
+    "groundwater_q_probes_m_per_s": [
+      -2e-10,
+      -1e-10,
+      0,
+      1e-10,
+      2e-10
+    ],
+    "groundwater_fit_error_gate_m_per_s": 1e-16
+  },
+  "derivation_contract": {
+    "notation": [
+      "h0 is the current groundwater head.",
+      "G(h)=a*h+b is the frozen locally affine groundwater response.",
+      "qS0 is the real-SWAP flux at h0 and r0=qS0-G(h0).",
+      "p is the frozen physical SWAP tangent from the G11 first update.",
+      "The full Newton response is L1(h)=qS0+p*(h-h0).",
+      "The neutral response L0(h)=G(h0)+p*(h-h0) intersects G at h0.",
+      "For lambda in [0,1], L_lambda=(1-lambda)*L0+lambda*L1, equivalently q_lambda(h0)=G(h0)+lambda*r0 with unchanged slope p."
+    ],
+    "required_identity": "For affine G and fixed p, the coupled solution of L_lambda(h)=G(h) must satisfy h_lambda = h0 + lambda*(h_raw-h0).",
+    "safeguard_mapping": "Two factor-1/2 contractions correspond to lambda=1/4. Lambda=1/2 is the first contracted candidate; lambda=1/4 is the second."
+  },
+  "live_test_contract": [
+    "Re-measure the five-point G11 groundwater affine response with the unchanged live MODFLOW solve route and require fit error <= 1e-16 m/s.",
+    "Use the real FGC44 SWAP participant/G16 observation path to obtain qS0 at h0 without accepted-state or ledger mutation.",
+    "Use the persisted G11 first-update E3 tangent p unchanged; do not re-tune slope or numerical tolerances.",
+    "Construct response intercepts for lambda = 1, 1/2 and 1/4 from the measured G(h0), qS0, h0 and p.",
+    "For each lambda run a fresh live MODFLOW solve from the same accepted groundwater origin using that affine response.",
+    "Compare each live h_lambda with h0 + lambda*(h_raw-h0); tolerance 1e-12 m.",
+    "Lambda=1 must reproduce the persisted raw head within 1e-12 m and its real-SWAP observation must remain participant status 6.",
+    "Lambda=1/2 must reproduce the first factor-1/2 head candidate. It must remain unaccepted under the unchanged G11 P4 admissibility/merit rule; do not preregister whether rejection is status-based or merit-based.",
+    "Lambda=1/4 must reproduce the persisted first accepted P4 head within 1e-12 m, be participant status 0, and reduce absolute coupling residual relative to h0.",
+    "All SWAP-side observations are diagnostic through G16; no live candidate, accepted revision/time or committed ledger mutation may remain."
+  ],
+  "gates": [
+    "Analytical affine identity holds numerically from the frozen measured coefficients.",
+    "Live MODFLOW lambda heads agree with the analytical identity within 1e-12 m.",
+    "Lambda 1 raw head/status reproduces G11.",
+    "Lambda 1/2 is rejected by the unchanged G11 P4 acceptance rule.",
+    "Lambda 1/4 reproduces the persisted first accepted P4 head and passes the unchanged acceptance rule.",
+    "G16 diagnostic non-authority is preserved.",
+    "No continuous prepared-solve equivalence claim is made."
+  ],
+  "pass_interpretation": "PASS qualifies a bounded response-space-to-head-space bridge for the frozen affine G11 groundwater stress. It shows that affine-response damping can reproduce the P4 contraction geometry without direct groundwater state control when each damped response is solved from the same accepted groundwater origin. It does not yet establish behavior in one continuous prepared solve.",
+  "fail_interpretation": "Preserve a failure. Do not alter the G11 tangent, factor-1/2 sequence, groundwater stress, P4 acceptance rule or tolerances to manufacture equivalence.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g19_response_space_bridge.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G19_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "src/runtime coupling policy",
+    "G16 tangent observation service semantics",
+    "G11/G17 P4 semantics",
+    "F-GC38/F-GC39 semantics",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
