@@ -5,9 +5,13 @@
   "title": "Pinned real Ribasim BMI-driven management clock with daily output",
   "baseline": "6eaa87c7a0f09a63f31fef83b358448cad5cef03",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_19G_ACTIVE",
-    "execute_after": "DUMMY-19H closeout",
-    "rationale": "Freeze the coupler-clock hypothesis and numerical references before observing DUMMY-19G and DUMMY-19H."
+    "state": "SATISFIED_AFTER_DUMMY_19H_CLOSEOUT",
+    "execute_after": "DUMMY-19H qualified",
+    "rationale": "Freeze the coupler-clock hypothesis and numerical references before observing DUMMY-19G and DUMMY-19H.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_19H_QUALIFIED_SAVEAT_NEGATIVE_CONTROL",
+      "workflow_run": 35623292076
+    }
   },
   "pins": {
     "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
@@ -130,5 +134,11 @@
     "no production coupling prescription"
   ],
   "pass_decision": "RIBASIM_DUMMY_19I_QUALIFIED_BMI_MANAGEMENT_CLOCK",
-  "fail_decision": "RIBASIM_DUMMY_19I_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19I_BLOCKED",
+  "implementation_baseline": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f",
+  "authority_rebind": {
+    "repository_head": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f",
+    "scientific_change": false,
+    "meaning": "Executable BMI experiment rebound after 19H closeout; endpoints, references, daily saveat and tolerances remain frozen."
+  }
 }
