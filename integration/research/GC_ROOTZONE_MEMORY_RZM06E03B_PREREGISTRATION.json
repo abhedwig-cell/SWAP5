@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03b.split_boundary_state_construction_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03B",
+  "authority": "preregistered response-blind strict-Reference state-space construction",
+  "production_changes": false,
+  "parent_result_commit": "a85be111f0d7679c25ed1903928fef4e66d691d9",
+  "scientific_question": "Can temporal separation of equal integrated top inflow and bottom outflow produce strict accepted 16-node origins with the same total profile water and same upper-30-cm water as a baseline, but materially different deeper vertical distribution?",
+  "derivation": [
+    "E03 showed that simultaneous equal top/bottom throughflow recovers upper-30-cm storage and M1 along an almost coincident trajectory.",
+    "A stronger simultaneous recovery flux would mainly traverse the same coupled state path faster and is therefore not the preferred next discriminator.",
+    "Separating top refill from bottom drainage preserves the complete-family mass ledger while giving the upper and lower profile distinct forcing phases."
+  ],
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "constitutive": "B110 default MvG",
+    "backend": "serialized strict Reference HeadCalc",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "initial_effective_saturation": 0.85,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "time_and_flux_design": {
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "derive_K0_from_fresh_B01_seed": true,
+    "q_eq_rule": "q_eq=-K0",
+    "closed_perturbation_steps": 10,
+    "split_step_counts": [
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "orders": [
+      "TOP_THEN_BOTTOM",
+      "BOTTOM_THEN_TOP"
+    ],
+    "top_phase": {
+      "top_flux": "q_eq",
+      "bottom_flux": "0"
+    },
+    "bottom_phase": {
+      "top_flux": "0",
+      "bottom_flux": "q_eq"
+    },
+    "complete_family_integral": "For each n, integrated top flux equals integrated bottom flux exactly: n*q_eq*dt on both boundaries; the preceding closed phase contributes zero.",
+    "baseline": "one BASE_EQ interval with q_top=q_bottom=q_eq"
+  },
+  "execution_contract": [
+    "each BASE or split family starts from the same fresh B01 Se=0.85 physical origin",
+    "each split family first executes exactly 10 strict CLOSED intervals with q_top=q_bottom=0",
+    "the two split phases then execute exactly n intervals each in the preregistered order",
+    "only a family completing both split phases contributes a candidate endpoint",
+    "every interval uses one strict Reference physical advance with no automatic temporal subdivision, fallback or tolerance relaxation",
+    "failed intervals terminate that family and leave the latest committed origin bit-identical",
+    "candidate output contains only history provenance plus committed H/theta state; no interface response quantity is emitted"
+  ],
+  "response_blind_selection": {
+    "candidate_set": "BASE_EQ endpoint plus every completed split-family endpoint",
+    "pair_set": "all distinct-history pairs in the candidate set",
+    "reconstruct_profile_water_cm": "sum(theta_i*10 cm), i=1..16",
+    "reconstruct_root30_water_cm": "sum(theta_i*10 cm), i=1..3",
+    "reconstruct_distribution_moment_cm": "sum(theta_i*10 cm*z_i)/W_profile, z=[-5,-15,...,-155] cm",
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "lexicographic family identity"
+    ],
+    "no_match": "Close E03B NO_MATCH without changing n-grid, order set, flux magnitude, dt or thresholds."
+  },
+  "qualification_gates": [
+    "16x10 cm geometry exact",
+    "BASE_EQ strict sample accepted",
+    "complete candidate families contain only strict mass-complete commits",
+    "failed family is transaction-safe and excluded from candidate selection",
+    "O0/O2 complete observable output byte-identical",
+    "selector parses no response, exchange, terminal-flux or tangent fields",
+    "selected pair, if any, is persisted with all 16 H/theta values before any response experiment"
+  ],
+  "next_if_selected": "GC-RZM06E04 preregisters common-time reconstruction of the immutable E03B pair and an identical forcing-free fixed-Hc response probe with both W_profile and W_root30 gates enforced.",
+  "controls": [
+    "unchanged W_profile, W_root30 and M1 thresholds",
+    "no response-guided selection",
+    "no HELD_OUT or FALLBACK state access",
+    "no direct physical-state mutation",
+    "no production source or coupling API changes",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "E03B selection alone does not establish deeper-profile response memory",
+    "split boundary forcing is a research state-construction device, not an admitted production operating mode",
+    "no second MODFLOW hydraulic state is introduced"
+  ]
+}
