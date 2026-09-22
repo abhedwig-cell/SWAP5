@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Pinned upstream iMOD Coupler RibaMod source contract for MF6-led time advancement and absence/presence of explicit UserDemand apply semantics.",
-  "next_action": "Execute frozen DUMMY-20A pinned iMOD Coupler RibaMod product-clock qualification.",
+  "next_action": "Execute DUMMY-20A v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "recovery_point": "Pinned-source verifier and runner persisted; first qualification attempt pending.",
@@ -24,5 +24,7 @@
     "tests/research/test_ribasim_dummy_20a_ribamod_product_clock.py",
     "tests/research/run_ribasim_dummy_20a.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_ribamod_product_clock_contract",
+  "qualification_base": "work/ribasim-dummy-01@cd369dba07c106b4cdeee868bcee878045dbbde2"
 }
