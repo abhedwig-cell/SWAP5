@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a.fixture_binding.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A",
+  "carrier": {
+    "name": "F-GC44 B110 serialized-reference real-Richards carrier",
+    "bridge": "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "python": "tests/fgc/support/fgc44_real_swap_ctypes.py",
+    "production_source_changes": false
+  },
+  "observables": {
+    "profile_water": "sum(theta_i*dz_i)",
+    "root_water": "geometric overlap integral over upper 0.30 m",
+    "distribution_moment": "sum(theta_i*dz_i*z_mid_i)/W_profile",
+    "interface_exchange": "accepted bottom_outward_exchange_native",
+    "interface_head": "fixed groundwater-head control; explicitly not physical groundwater_level"
+  },
+  "frozen": {
+    "probe_duration_day": 0.0001,
+    "tangent_delta_head_m": 0.000001,
+    "matched_profile_water_tolerance_m": 0.000001,
+    "minimum_distribution_moment_difference_m": 0.0001,
+    "pair_selection": "first qualifying pair in prospective enumeration; no E_c inspection"
+  },
+  "scope": {
+    "RZM06A": [
+      "H1",
+      "H2",
+      "H3",
+      "H4"
+    ],
+    "RZM06B": "H5 management-memory after separate forcing-entry qualification"
+  },
+  "stop_conditions": [
+    "top forcing cannot be varied through research-only carrier extension without production edit",
+    "no matched-total-water pair at frozen tolerance",
+    "real-SWAP antecedent trial fails; retain failure as evidence"
+  ]
+}
