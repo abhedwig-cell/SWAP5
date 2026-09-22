@@ -222,13 +222,15 @@ def residual_at(
     swap:Map09ActiveDrainageSwap,
     origin:tuple[int,float,int,float],
     head:float,
+    href:float,
     a:float,
-    b:float,
+    q_at_href:float,
 )->tuple[int,float|None,float|None]:
     status,q=trial_discard(swap,origin,head)
     if status!=0:
         return status,None,None
-    return 0,q,q-(a*head+b)
+    qgw=a*(head-href)+q_at_href
+    return 0,q,q-qgw
 
 
 def build_groundwater_model_g12(
@@ -391,16 +393,19 @@ def calibrate_groundwater(
         points.append({"q_m_per_s":q,"head_m":h,"mf_iterations":iters})
     heads=np.asarray([x["head_m"] for x in points],dtype=float)
     flux=np.asarray([x["q_m_per_s"] for x in points],dtype=float)
-    a,b=np.polyfit(heads,flux,1)
-    a=float(a); b=float(b)
-    fit_error=float(np.max(np.abs(a*heads+b-flux)))
+    x=heads-href
+    a,q_at_href=np.polyfit(x,flux,1)
+    a=float(a); q_at_href=float(q_at_href)
+    b=q_at_href-a*href
+    fit_error=float(np.max(np.abs(a*x+q_at_href-flux)))
     require(math.isfinite(a) and a>0,"G12 groundwater slope invalid")
     require(fit_error<=GW_FIT_TOL,f"G12 groundwater fit error {fit_error}")
-    href_res=qref-(a*href+b)
+    href_res=qref-q_at_href
     require(abs(href_res)<=FLUX_TOL,f"G12 groundwater calibration missed href root {href_res}")
     return {
         "regime_id":regime["id"],"k_m_per_day":k,"ss_per_m":ss,"sy":sy,
         "head_bias_m":bias,"a_per_s":a,"intercept":b,
+        "q_at_href_m_per_s":q_at_href,
         "fit_error_m_per_s":fit_error,"href_residual_m_per_s":href_res,
         "points":points,
     }
@@ -422,10 +427,10 @@ def run_policy(
     merit_increases=0
     modes=[]
     trace=[]
-    a=float(gw["a_per_s"]); b=float(gw["intercept"])
+    a=float(gw["a_per_s"]); q_at_href=float(gw["q_at_href_m_per_s"])
 
     for outer in range(1,MAX_OUTER+1):
-        status,q,res=residual_at(swap,origin,head,a,b)
+        status,q,res=residual_at(swap,origin,head,href,a,q_at_href)
         if status!=0 or q is None or res is None:
             return {"classification":"CURRENT_HEAD_INADMISSIBLE","outer":outer,"status":status}
         if abs(res)<=FLUX_TOL:
@@ -448,7 +453,7 @@ def run_policy(
             float(gw["k_m_per_day"]),float(gw["ss_per_m"]),float(gw["sy"]),
             float(gw["head_bias_m"]),slope_day,rhs,
         )
-        raw_status,_,raw_res=residual_at(swap,origin,raw_head,a,b)
+        raw_status,_,raw_res=residual_at(swap,origin,raw_head,href,a,q_at_href)
         if raw_status!=0:
             raw_inadmissible+=1
 
@@ -473,7 +478,7 @@ def run_policy(
             while not accepted and local<MAX_BACKTRACK:
                 candidate=head+0.5*(candidate-head)
                 local+=1
-                candidate_status,_,candidate_res=residual_at(swap,origin,candidate,a,b)
+                candidate_status,_,candidate_res=residual_at(swap,origin,candidate,href,a,q_at_href)
                 accepted=(
                     candidate_status==0 and candidate_res is not None
                     and abs(candidate_res)<=abs(res)+MERIT_ABS_TOL
@@ -502,7 +507,7 @@ def run_policy(
         })
         head=candidate
 
-    status,_,res=residual_at(swap,origin,head,a,b)
+    status,_,res=residual_at(swap,origin,head,href,a,q_at_href)
     return {
         "classification":"OUTER_BUDGET_EXHAUSTED","outer":MAX_OUTER,
         "status":status,"final_head_m":head,"final_dh_m":head-href,
