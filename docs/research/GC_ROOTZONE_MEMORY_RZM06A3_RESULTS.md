@@ -58,8 +58,10 @@ This also explains why simply making the long RZM06A2 pulse smaller was not suff
 
 RZM06A3 does not falsify H2. No complete opposite-order endpoint pair exists, so no E_c probe was opened and the original H2 thresholds remain untouched.
 
+There is also a practical scale result. Across the frozen N values, the largest separation already present immediately before the failed reversal is only about `2.2664e-7` in M1. The H2 requirement remains `1e-4`. The observed separation is therefore roughly 441 times too small. Repairing only the sign reversal is not a well-supported next primary experiment.
+
 ## Next work unit
 
-RZM06A4 must make transition admissibility explicit. The next construction will insert BASE/ramp intervals between opposite-sign blocks and qualify the *complete trajectory* before endpoint observables are used for H2 pair selection.
+RZM06A4 will instead target stronger vertical redistribution through prospectively characterized top-boundary forcing while keeping H_c fixed. It will first determine a symmetric accepted forcing scale without looking at E_c, then construct opposite-order zero-net-top-forcing histories and apply the unchanged H2 endpoint criteria.
 
 No retry budgets, temporal budgets, mass gates or H2 thresholds will be changed.
