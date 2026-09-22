@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d02.common_time_reseed_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D02",
+  "authority": "preregistered carrier invariance qualification",
+  "production_changes": false,
+  "parent_program_commit": "da81ef8ebc8e6f47be20e27baab2c81194d25e38",
+  "scientific_question": "Can one accepted ROM1AR2 physical profile be reseeded at different absolute committed times and produce an identical one-window pure-hydraulics Reference response, establishing that library-generation time is not physical state for the C01 carrier?",
+  "audit_origin": {
+    "authority_workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "selection_rule": "lexicographically first state by (SPLIT,HISTORY,STEP) satisfying SPLIT=DISCOVERY and FALLBACK=F",
+    "expected_provenance": {
+      "split": "DISCOVERY",
+      "history": "D01",
+      "step": 1
+    },
+    "response_blind": true
+  },
+  "carrier": {
+    "source": "qualified GC-RZM06C01 F-ROM1A-I0 16x10-cm B01 Reference carrier",
+    "nodes": 16,
+    "dz_cm": 10,
+    "material": "B01",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "bottom_mode": 5,
+    "fixed_interface_head_m": -1.897937090169065,
+    "mapped_bottom_pressure_head_cm": -29.793709016906497,
+    "top_flux_cm_per_day": 0,
+    "sample_duration_day": 0.0008,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "time_pair": {
+    "A_initial_time_day": 0,
+    "B_initial_time_day": 7,
+    "rule": "Both probes have identical duration and forcing; only absolute committed/provenance time differs."
+  },
+  "qualification_gate": [
+    "both seeds reconstruct the exact same 16-node H/theta physical state",
+    "both strict Reference samples are valid, mass complete, one physical advance and zero automatic retries",
+    "each sample leaves its committed origin unchanged",
+    "candidate pressure_head, water_content, ponding_depth and groundwater_level are bitwise identical between A and B",
+    "bottom_outward_exchange_native and terminal_bottom_outward_flux_native are bitwise identical",
+    "all non-provenance mass and solver-count fields are bitwise/integer identical",
+    "candidate origin interval differs only by the preregistered absolute time shift",
+    "O0/O2 observable output is byte-identical"
+  ],
+  "source_audit_basis": [
+    "fmr_new_b110_committed_state accepts an explicit initial_time while cloning the physical state",
+    "kernel_sample_reference_floor_interval requires t0 to match committed time but supplies a one-step no-retry Reference floor",
+    "fmr_serialized_advance uses step_duration=t1-t0 for the base hydraulic request",
+    "C01 BASE layout disables legacy SWBOTB2 time control, snow, soil temperature, drainage response, root uptake, Black/Boesten evaporation and temporal-history state"
+  ],
+  "decision_if_pass": "QUALIFIED_COMMON_TIME_RESEED_FOR_PURE_HYDRAULICS; a later response-blind selector may compare strict DISCOVERY profiles generated at different library times because selected profiles will be reseeded to the same new committed time.",
+  "decision_if_fail": "COMMON_TIME_RESEED_NOT_QUALIFIED; retain same-time constraint and do not broaden H2 origin selection.",
+  "controls": [
+    "D02 uses one provenance-selected audit state only and performs no H2 pair search",
+    "no H2 threshold change",
+    "no held-out or FALLBACK=T state access",
+    "no production source change"
+  ],
+  "nonclaims": [
+    "D02 does not support or falsify H2",
+    "time neutrality applies only to this pure-hydraulics C01 carrier profile, not process-active SWAP configurations"
+  ]
+}
