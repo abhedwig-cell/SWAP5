@@ -14,7 +14,8 @@ module mod_fmr_production_application_bootstrap
        fmr_new_b110_boesten_evaporation_committed_state
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
-       fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
+       fmr_serialized_batch_diagnostics_t, fmr_serialized_commit_receipt_record_t, &
+       fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -103,6 +104,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: tile_count => production_application_tile_count
     procedure, public :: run_standalone => production_application_run_standalone
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
+    procedure, public :: run_standalone_with_forcing_receipts => production_application_run_standalone_with_forcing_receipts
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
@@ -341,6 +343,48 @@ contains
     if (.not. all(results%committed)) return
     status = FMR_APP_BOOT_OK
   end subroutine production_application_run_standalone_with_forcing
+
+  subroutine production_application_run_standalone_with_forcing_receipts(self, t0, t1, effective_forcing, results, receipts, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    real(real64), intent(in) :: t0, t1
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out) :: receipts(:)
+    integer, intent(out) :: status
+    type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
+    type(fmr_aggregate_diagnostics_t) :: aggregate
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    integer(int64), allocatable :: receipt_column_ids(:)
+    integer :: dispatch_status, i
+
+    if (allocated(results)) deallocate(results)
+    if (allocated(receipts)) deallocate(receipts)
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready() .or. associated(self%active_context)) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
+      return
+    end if
+    if (size(effective_forcing) /= size(self%columns)) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
+      return
+    end if
+    allocate(receipt_column_ids(size(self%columns)))
+    do i = 1, size(self%columns)
+      receipt_column_ids(i) = self%columns(i)%column_id
+    end do
+    call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+         self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+         aggregate, dispatch_status, runtime, receipt_column_ids, receipts)
+    status = FMR_APP_BOOT_RUNTIME_FAILED
+    if (dispatch_status /= FMR_SERIAL_DISPATCH_OK .or. .not. allocated(results) .or. .not. allocated(receipts)) return
+    if (size(results) /= size(self%columns) .or. size(receipts) /= size(self%columns)) return
+    if (.not. all(results%completed) .or. .not. all(results%committed)) return
+    do i = 1, size(receipts)
+      if (.not. receipts(i)%receipt%ready()) return
+    end do
+    status = FMR_APP_BOOT_OK
+  end subroutine production_application_run_standalone_with_forcing_receipts
 
   subroutine production_application_materialize_groundwater_context(self, topology, predictors, cell_areas, &
        context_handle, status)

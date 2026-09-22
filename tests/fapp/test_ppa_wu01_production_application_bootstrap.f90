@@ -7,6 +7,7 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
+  use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_commit_receipt_record_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, fmr_committed_top_state_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
@@ -193,6 +194,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_ATM02_TWO_INTERVAL_OWNER_CONTINUATION=PASS'
   print '(a)', 'PPA_ATM02_TWO_INTERVAL_HARD_MASS=PASS'
   print '(a)', 'PPA_ATM02_OWNER_RESTART_CONTINUATION=PASS'
+  print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_RECEIPTS=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -394,6 +396,7 @@ contains
     type(ppa_atm02_meteo_provenance_t) :: provenance
     type(ppa_atm02_production_forcing_diagnostics_t) :: atm_diagnostics
     type(fmr_committed_top_state_t), allocatable :: committed_top(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable :: receipts(:)
     type(fmr_committed_restart_bundle_t) :: restart_bundle
     logical :: restart_exported, restart_restored
     integer :: tile, local_status, node
@@ -440,8 +443,10 @@ contains
     end do
     call atm_app%initialize(atm_config, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. atm_app%ready(), 'ATM02 owner initialize')
-    call atm_app%run_standalone_with_forcing(T0, T1, atm02_forcing, results, local_status)
+    call atm_app%run_standalone_with_forcing_receipts(T0, T1, atm02_forcing, results, receipts, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), 'ATM02 owner commit')
+    call require(size(receipts) == NTILE .and. receipts(1)%receipt%ready() .and. receipts(2)%receipt%ready(), &
+         'ATM02 owner accepted receipts')
     call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 owner hard mass')
     call atm_app%copy_committed_top_states(committed_top, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. size(committed_top) == NTILE .and. all(committed_top%available), &
