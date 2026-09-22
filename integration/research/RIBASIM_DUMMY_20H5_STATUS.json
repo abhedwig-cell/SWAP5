@@ -12,5 +12,14 @@
   "blocker": "Execution sequenced after DUMMY-20H4 closeout; causal expectations are frozen prospectively.",
   "next_action": "After DUMMY-20H4 qualification, rebind and implement without changing frozen LP outcomes.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "GENERATOR_AND_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_paths": [
+      "tests/research/generate_ribasim_dummy_20h5_zero_storage.py",
+      "tests/research/real_ribasim_20h5_zero_storage_causality.jl"
+    ],
+    "scientific_change": false,
+    "note": "Prepared while DUMMY-20H4 is active. No runner, workflow gate or execution before DUMMY-20H4 closeout and qualification."
+  }
 }
