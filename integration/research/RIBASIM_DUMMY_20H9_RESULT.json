@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.coupling.real_ribamod_positive_groundwater_next_boundary.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H9",
+  "decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
+  "authority": {
+    "qualification_head": "ad833c879493764f5f087efcbff5edb8203f674a",
+    "workflow_run": 35749109620,
+    "workflow_job": 106818261995,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0",
+    "allocation_observability": "allocation.nc records explicitly verified at t=0 and t=24 h"
+  },
+  "accepted_states": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000039987293805,
+      "root_m3": 4.001270619481194,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "drainage_m3_per_day": 0,
+      "storage_gain_m3": 3.9987293805054946
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000099943718745,
+      "root_m3": 8.005596125858313,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 1.9999680005119933,
+      "drainage_m3_per_day": 7.999872002047973,
+      "storage_gain_m3": 9.994371874544328
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.0000159863657703,
+      "root_m3": 12.013570230756775,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 3.9999360010239866,
+      "drainage_m3_per_day": 7.999872002047973,
+      "storage_gain_m3": 15.986365770270794
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.0000219748888743,
+      "root_m3": 16.02501512716806,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 5.99990400153598,
+      "drainage_m3_per_day": 7.999872002047973,
+      "storage_gain_m3": 21.97488887434318
+    },
+    {
+      "endpoint_s": 108000,
+      "level_m": 1.000024448561855,
+      "root_m3": 21.0425451404563,
+      "external_m3": 2.5087650066441327,
+      "groundwater_cumulative_m3": 7.999872002047974,
+      "drainage_m3_per_day": 7.999872002047973,
+      "storage_gain_m3": 24.448561855017203
+    }
+  ],
+  "allocation_records": {
+    "times": [
+      "2020-01-01T00:00:00",
+      "2020-01-02T00:00:00"
+    ],
+    "t0": {
+      "root_m3_per_day": 32,
+      "external_m3_per_day": 0
+    },
+    "t24": {
+      "root_m3_per_day": 40.00000000000001,
+      "external_m3_per_day": 20.000000000000004
+    },
+    "preregistered_memory_only_alternative": {
+      "root_m3_per_day": 40,
+      "external_m3_per_day": 13.97488887434318
+    }
+  },
+  "qualified_claims": [
+    "The actual pinned RibaMod passive-Drainage route reproduces the preregistered DUMMY-20F2 day-1 accepted-state prefix through t=24 h.",
+    "Current positive groundwater drainage of approximately 7.9998720020 m3/day is physically active at the t=24 management boundary.",
+    "Actual Ribasim allocation output contains distinct t=0 and t=24 records and records 40/20 m3/day at t=24.",
+    "The observed t=24 external allocation is materially above the preregistered memory-only alternative 13.9748888743 m3/day, so current positive groundwater forcing is admitted in addition to accepted physical memory.",
+    "External physical supply remains zero through the t=24 accepted state and becomes positive only in the first post-boundary segment, preserving solve/apply/realize ordering.",
+    "The coupled source plus groundwater equals UserDemand plus Basin-storage ledger closes at all observed boundaries to reported numerical precision."
+  ],
+  "coupling_contract": {
+    "accepted_memory": "Positive groundwater received during day 1 changes accepted Basin state and persists into the t=24 management boundary.",
+    "current_positive_forcing": "The contemporaneous Basin drainage term is explicit positive forecast supply and is admitted in the t=24 allocation in addition to accepted storage memory.",
+    "allocation_decision": "The resulting t=24 managed allocation is full root 40 plus external 20 m3/day.",
+    "realization": "The t=24 allocation governs subsequent physical realization and does not retroactively alter the accepted day-1 state."
+  },
+  "sign_pair_with_h7_h8": {
+    "negative_direction": "Current Basin infiltration is implicit negative forcing and can be attenuated by low_storage_factor=0 while accepted memory remains admitted.",
+    "positive_direction": "Current Basin drainage is explicit positive forcing and is admitted directly alongside accepted memory.",
+    "implication": "The product management forecast is direction-sensitive even though physical exchange itself remains reciprocally mass-conservative."
+  },
+  "boundaries": [
+    "This result applies to the tested passive-Drainage topology and exact pinned product versions.",
+    "No claim that every positive Ribasim forcing or arbitrary network has identical allocation semantics.",
+    "No implicit same-window groundwater-surface-water fixed point is established.",
+    "No production SWAP5 admission, storage-partition decision or drainage-ownership decision."
+  ],
+  "downstream": "Treat H7-H9 as the closed sign-sensitive accepted-memory/current-forcing product contract. Next work should test asynchronous allocation-boundary timing or topology/priority dependence rather than re-proving this same aligned single-Basin case."
+}
