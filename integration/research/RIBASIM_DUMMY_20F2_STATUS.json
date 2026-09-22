@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.coupling.real_ribamod_two_cell_next_boundary_memory.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20F2",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "01a2ce8204525c7a2f5eda2466f84e3fdfbc255a",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20E3 qualification. Two-day references are frozen now.",
+  "next_action": "If and only if DUMMY-20E3 qualifies the nonzero intervention, rebind and implement without changing the frozen t=24 h decision or day-2 trajectory.",
+  "production_delta": [],
+  "reference_delta": []
+}
