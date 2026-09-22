@@ -4,13 +4,13 @@
   "work_unit": "RIBASIM-DUMMY-20C",
   "branch": "work/ribasim-dummy-01",
   "baseline": "e6db55ecc43336961d242bbd3e53700959bec5aa",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute the frozen actual RibaMod versus direct Ribasim v2026.1.1 runtime differential.",
+  "next_action": "Execute frozen DUMMY-20C actual RibaMod versus direct Ribasim v2026.1.1 runtime differential on Windows with real kernels.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,5 +20,26 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "DUMMY-20C runtime verifier was prepared prospectively; DUMMY-20B dependency is now satisfied."
+  "recovery_point": "DUMMY-20C real-product Windows runner persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20C_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20C_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20c_real_ribamod_runtime.py",
+    "tests/research/run_ribasim_dummy_20c.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "actual upstream BaseConfig/get_driver selects the upstream RibaMod class",
+      "actual RibaMod.initialize/update/finalize is used rather than a reconstructed product loop",
+      "real MODFLOW 6.7.0 and Ribasim v2026.1.1 DLLs are downloaded through pinned upstream pixi tasks",
+      "MODFLOW has four 6-hour product timesteps but no coupled river/drain packages, isolating product clock from groundwater flux physics",
+      "product route and fresh direct RibasimWrapper route use the same frozen Ribasim model",
+      "Basin level and cumulative root/external UserDemand delivery are compared after every 6-hour accepted endpoint"
+    ]
+  }
 }
