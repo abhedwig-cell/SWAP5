@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ppa_wu05c3.source_census.v1",
+  "work_unit": "PPA-WU05-C3",
+  "parent_work_unit": "PPA-WU05-C",
+  "status": "B1_11_PHYSICAL_PATH_AND_SAVE_SURFACE_TRACED_REVIEW_ONLY",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "files": {
+      "SWAP/oxygenstress.f90": {"sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87", "bytes": 63738, "materialized_location": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/wu05b-b111/full_source/oxygenstress.f90", "relevant_ranges": ["O2_pars: 58-81", "OxygenStress/calc_ini_pars: 84-324", "MACRO/SWAP-007: 781-884", "SOLVE: 886-1059", "OxygenReproFunction (excluded): 1062-1125", "myfunc: 1275-1294"]},
+      "SWAP/rootextraction.f90": {"sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5", "bytes": 22013, "materialized_location": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/wu05b-b111/full_source/rootextraction.f90", "relevant_ranges": ["RootExtraction dispatch: 17-60", "MICRO SWOXYGEN: 151-191", "MACRO SWOXYGEN: 383-421", "reset_rootextraction: 604-625"]}
+    }
+  },
+  "activation_and_call_graph": {
+    "selector": "SWOXYGEN=2 and SWOXYGENTYPE=1 selects OxygenStress; distinct from C1 reproduction and C2 Feddes.",
+    "owners": [
+      "RootExtraction dispatches to macro or micro according to the drought/root-uptake selector.",
+      "The oxygen branch runs in iTask=2, in ascending node order through noddrz, after per-call factor-array initialization.",
+      "OxygenStress consumes current-node hydraulic, thermal, soil-material, crop and atmospheric inputs and returns a factor to existing root extraction.",
+      "For node 1, c_top(1) is derived from current atmospheric temperature; each node writes c_top(node+1) for the next node in the same profile sweep.",
+      "SOLVE has UseZBREND=.TRUE.; ZBREND evaluates myfunc, which runs MICRO and MACRO. MACRO's inner Newton solve and SWAP-007 guard remain reachable when its depletion branch is entered."
+    ],
+    "output_boundary": "rwu_factor modifies root extraction. The existing root-water-uptake owner remains the only accepted nodewise sink and water-mass authority."
+  },
+  "save_surface_census": {
+    "module_O2_pars_reusable_work_fields": ["w_root", "w_root_z0", "soil_temp", "sat_water_cont", "gas_filled_porosity", "d_o2inwater", "d_root", "perc_org_mat", "soil_density", "d_soil", "depth", "r_microbial_z0", "waterfilm_thickness", "bunsencoeff", "c_min_micro", "c_macro", "ctopnode"],
+    "vertical_profile_buffer": {"field": "c_top(macp)", "writes": ["c_top(1) from atmosphere when node==1 and the gas-filled-porosity early exit is not taken", "c_top(node+1) from computed or early-exit c_macro"], "interpretation": "Saved module storage is used as an in-call sequential vertical profile buffer. It is not proven to be independent physical continuation state; reset/retry/run-lifecycle behavior needs executable characterization."},
+    "one_time_derived_cache": {"fields": ["d_soil_term1(macp)", "d_soil_term2(macp)", "gfp100(macp)", "Capac_term(macp)", "Nmin1(macp)", "Mplus1(macp)"], "declaration": "Local arrays in OxygenStress under procedure SAVE; populated by calc_ini_pars on first entry while ini is true.", "construction_inputs": "watcon at campbell_h100, campbell_h500 and gfp_h100, plus current cofgen node parameters and Campbell thresholds.", "invalidation_evidence": "OxygenStress sets ini false after construction and has no local invalidation path. Whether enclosing application initialization guarantees a fresh process/module instance is not established by this member-only census."},
+    "solver_scratch": "MACRO counters and l/fi/fi_a/lnew plus ZBREND interval variables are local solver variables, not O2_pars fields. myfunc mutates shared O2_pars scratch during root-node evaluations.",
+    "reset_observation": "reset_rootextraction clears root sink/result arrays but does not reference or reset O2_pars or OxygenStress saved ini/cache fields. No end-to-end multi-run reset claim is made."
+  },
+  "swap007_trace": {
+    "source": "B1.11 MACRO inner Newton update",
+    "guard": "abs(fi_a) > max(tiny(1.0d0), abs(fi)/huge(1.0d0)) before fi/fi_a; otherwise lnew=huge(1.0d0)",
+    "existing_restart_route": "lnew > 1.d3 increments lnew_initial by 0.1, resets the sub-counter and retries; the existing global iteration ceiling calls swap_error.",
+    "outer_solver_context": "SOLVE sets UseZBREND=.TRUE.; its callback reaches MACRO, where the guarded inner Newton update lives.",
+    "numerical_authority": "reference/swap-4.3.1/patches/SWAP-007; robustness correction only, no authorization to change physical equations or solver policy."
+  },
+  "unknowns_and_guards": {"restart_payload": "No production restart or transaction rollback test of O2_pars/cache/profile-buffer state was performed.", "multi_simulation_lifecycle": "No source-local invalidation of ini/cache was found; caller process lifecycle and cross-run behavior remain unqualified.", "production_admission": "NONE_REVIEW_ONLY", "physics_or_solver_policy_changed": false, "root_sink_owner_changed": false, "parallel_and_coupling_admitted": false},
+  "next_safe_slice": "PPA-WU05-C3A pure exact derived-cache algebra from explicit sampled source inputs; do not model cache lifecycle or bind runtime"
+}
