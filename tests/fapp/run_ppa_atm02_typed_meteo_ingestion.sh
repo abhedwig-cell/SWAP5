@@ -25,7 +25,11 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/adapter/mod_ppa_atm02_typed_meteo_ingestion.f90 -o "$OUT/atm02.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_atm02_typed_meteo_ingestion.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "$OUT/pmdirect.o" "$OUT/atm02.o" "$OUT/test.o" -o "$OUT/test_atm02"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/adapter/mod_ppa_atm02_pmdirect_daily_binding.f90 -o "$OUT/binding.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_atm02_pmdirect_daily_binding.f90 -o "$OUT/binding_test.o"
+  gfortran -O"$opt" "$OUT/pmdirect.o" "$OUT/atm02.o" "$OUT/binding.o" "$OUT/binding_test.o" -o "$OUT/test_binding"
   "$OUT/test_atm02" > "$OUT/output.txt"
+  "$OUT/test_binding" >> "$OUT/output.txt"
   echo "PPA_ATM02_O${opt}=PASS"
 done
 
