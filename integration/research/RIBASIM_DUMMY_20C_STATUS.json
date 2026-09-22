@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20C v2 after STO-only technical harness repair.",
+  "next_action": "Execute DUMMY-20C v2 frozen qualification after STO-only technical harness repair.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -53,6 +53,6 @@
       "authority_use": "forbidden"
     }
   ],
-  "qualification_attempt": "v2_frozen_real_ribamod_runtime_differential",
-  "qualification_base": "work/ribasim-dummy-01@1b3178c5475e7aee139548591ca5138a5fb3c4dc"
+  "qualification_attempt": "v2_frozen_runtime_after_required_sto_fixture_repair",
+  "qualification_base": "work/ribasim-dummy-01@b2640b267f722fc7405ecfde25c076466c9a5f48"
 }
