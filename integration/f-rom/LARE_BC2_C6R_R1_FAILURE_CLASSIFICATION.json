@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.lare.bc2.c6r.r1-failure-classification.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6R-R1",
+  "date": "2026-09-22",
+  "status": "OPEN_REPAIRED_REFERENCE_REACHES_SOLVER_THEN_FAILS_CLOSED",
+  "authority": {
+    "scientific_preregistration": "integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json",
+    "initial_failure_classification": "integration/f-rom/LARE_BC2_C6R_FAILURE_CLASSIFICATION.json",
+    "repair_binding": "integration/f-rom/LARE_BC2_C6R_REPAIR_BINDING.json"
+  },
+  "repaired_run": {
+    "run_id": 35748220244,
+    "head": "02368b29b73d436f7fa980bc8446090aec716ea3",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6r-r1.yml",
+    "state_when_recorded": "matrix already contains multiple execution failures; qualification analyzer cannot close green from this attempt"
+  },
+  "repair_effectiveness": {
+    "wrapper_admission_repair_effective": true,
+    "reference_solver_reached": true,
+    "root_sink_mass_accounting_active": true,
+    "production_source_persisted": false,
+    "reference_richards_changed": false,
+    "feddes_process_changed": false,
+    "root_sink_provider_changed": false,
+    "retry_policy_changed": false,
+    "candidate_response_generated": false
+  },
+  "observed_execution_evidence": [
+    {
+      "job_id": 106815202817,
+      "case": "B01 R1024_T32 o0 V02",
+      "observation": "STEP=1 committed successfully with NL=3, BACKTRACK=3, FALLBACK=F and mass residual -7.3434918966574537e-14 cm; the next root-active history step then failed closed."
+    },
+    {
+      "job_id": 106815202958,
+      "case": "B01 R1024_T32 o2 V02",
+      "observation": "Optimization-level replay is identical through STEP=1 and then fails closed at the same history boundary."
+    },
+    {
+      "job_id": 106815200571,
+      "case": "B14 R2048_T32 o0 V01 segmented",
+      "observation": "The repaired Reference advances through STEP=193 with no fallback; recent accepted mass residuals remain O(1e-14) cm before the following step is rejected."
+    }
+  ],
+  "current_interpretation": {
+    "initial_pre_solver_entrypoint_blocker_closed": true,
+    "new_failure_is_after_real_reference_execution": true,
+    "mass_gate_failure_not_demonstrated_by_accepted-step evidence": true,
+    "scientific_falsification": "NOT_YET_ADJUDICATED",
+    "reason": "The failing trial status and residual class must be diagnosed before deciding whether this is a solver-convergence qualification failure or another technical issue."
+  },
+  "diagnostic": {
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6r-diagnostic.yml",
+    "run_id": 35748410474,
+    "head": "bf8b6b562d33c6326be7b9b1395650236446e502",
+    "purpose": "Replay repaired C6R cases with fail-closed instrumentation and the exact prescribed root sink in direct failure diagnostics.",
+    "state_when_recorded": "queued"
+  },
+  "constraints": [
+    "Do not enable the legacy DYN0A fallback for root-active C6R.",
+    "Do not change V01-V04, materials, root distributions, potential transpiration, space-time routes, mass gate or convergence metrics.",
+    "Do not generate reduced candidate response until C6R Reference qualification is closed.",
+    "Do not interpret accepted pre-failure trajectory segments as Reference qualification."
+  ],
+  "next": "Classify the first repaired failing trial from diagnostic run 35748410474. If it is a genuine retry/convergence class under the frozen contract, close C6R Reference as not qualified and stop before reduced candidates; only a technical harness defect may be repaired without reopening scientific thresholds.",
+  "model_changed": false
+}
