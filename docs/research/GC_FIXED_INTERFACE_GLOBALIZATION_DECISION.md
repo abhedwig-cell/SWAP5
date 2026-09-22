@@ -1674,3 +1674,27 @@ TOLERANCE RELAXATION / STATUS SMOOTHING / HEAD SNAPPING = NOT ADMITTED.
 NO PRODUCTION SOLVER OR HCOF/RHS CHANGE.
 NEXT: PATH-PRESERVING BALANCE-THRESHOLD TOMOGRAPHY.
 ```
+
+## G21K disposition: B2 threshold resolved, B1 threshold occluded by backtracking
+
+G21K quantified the balance criteria isolated by G21J without turning the diagnostic tolerances into runtime proposals. The definitive semantic run was workflow `35744199328`, job `106801444245`, on commit `159cc1c2634f15f342c58f31b154915da4ea49cb`.
+
+For B2, changing only the total-balance tolerance preserves the exact three-attempt backtracking path. Binary64 bisection terminates at adjacent values:
+
+```text
+largest failing TOTAL tolerance   1.1858268037760851e-12
+smallest passing TOTAL tolerance  1.1858268037760853e-12
+backtracking                      3 -> 3
+```
+
+Because the total-balance tolerance does not participate in the backtracking acceptance condition, this bracket is a path-preserving measurement of the absolute total-balance residual at the original iteration-3 state. It is about 18.58% above the frozen `1e-12` criterion. That numerical proximity is diagnostic evidence only; no tolerance change is proposed or admitted.
+
+B1 behaves differently. The compartment-balance tolerance also appears in the HeadCalc backtracking condition `Fmax < CritDevBalCp`. The first binary64 event occurs between `1.1378075673480757e-12` and `1.1378075673480759e-12`, but at that event the solver path changes from eight backtracking attempts to two and the solver converges. Therefore the value cannot be interpreted as the untouched-path final compartment residual.
+
+```text
+G21K B2 TOTAL THRESHOLD = RESOLVED PATH-PRESERVING.
+G21K B1 COMPARTMENT THRESHOLD = OCCLUDED BY BACKTRACKING DUAL ROLE.
+PRODUCTION SOLVER TOLERANCES = UNCHANGED.
+RETRY POLICY / STATUS SMOOTHING = NOT ADMITTED.
+NEXT: DIRECT READ-ONLY FINAL-RESIDUAL OBSERVATION ON THE UNCHANGED PATH.
+```

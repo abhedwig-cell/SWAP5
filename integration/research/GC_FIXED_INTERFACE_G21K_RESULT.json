@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21k.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21K",
+  "title": "Path-preserving balance-threshold tomography at G21J convergence splits",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21K_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21J_RESULT.json",
+  "tested_commit": "159cc1c2634f15f342c58f31b154915da4ea49cb",
+  "workflow_run": 35744199328,
+  "workflow_job": 106801444245,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_B2_TOTAL_THRESHOLD_AND_B1_BACKTRACKING_OCCLUSION",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "runtime_change": "NONE",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "source_audit": {
+    "compartment_also_controls_backtracking": true,
+    "compartment_threshold_direct_predicate": true,
+    "total_balance_threshold_direct_predicate": true,
+    "probe_uses_saved_config_parameter_copies": true
+  },
+  "b2_total": {
+    "classification": "B2_TOTAL_THRESHOLD_RESOLVED",
+    "production_tolerance": 1e-12,
+    "largest_fail_tolerance": 1.1858268037760851e-12,
+    "smallest_pass_tolerance": 1.1858268037760853e-12,
+    "adjacent_binary64": true,
+    "midpoint_estimate": 1.1858268037760853e-12,
+    "relative_excess_over_production": 0.1858268037760853,
+    "fail_backtracking": 3,
+    "pass_backtracking": 3,
+    "bisections": 52,
+    "interpretation": "Because TOTAL does not participate in the HeadCalc backtracking acceptance test and both bracket endpoints retain exactly three backtracking attempts, the adjacent binary64 fail/pass bracket is a path-preserving measurement of the B2 iteration-3 total-balance residual magnitude."
+  },
+  "b1_compartment": {
+    "classification": "B1_COMPARTMENT_THRESHOLD_OCCLUDED_BY_BACKTRACKING",
+    "production_tolerance": 1e-12,
+    "largest_no_event_tolerance": 1.1378075673480757e-12,
+    "smallest_event_tolerance": 1.1378075673480759e-12,
+    "adjacent_binary64": true,
+    "low_solver_status": 2,
+    "low_backtracking": 8,
+    "high_solver_status": 1,
+    "high_backtracking": 2,
+    "path_preserving_threshold_midpoint": null,
+    "bisections": 52,
+    "interpretation": "The first binary64 compartment-tolerance event changes the Newton/backtracking path before a same-path convergence threshold can be established. The event therefore cannot be used as a measurement of the original-path final compartment residual."
+  },
+  "postconditions": {
+    "saved_config_status_vector": [
+      6,
+      0,
+      0,
+      6
+    ],
+    "g16_counts": [
+      4,
+      4,
+      0,
+      4
+    ],
+    "accepted_state_ledger_mutation": 0,
+    "participant_candidate_leakage": 0
+  },
+  "gates": {
+    "g21j_baseline_reproduction": "PASS",
+    "b2_path_preserved": "PASS_BACKTRACKING_3",
+    "b2_adjacent_binary64_bracket": "PASS",
+    "b1_original_path_baseline": "PASS_BACKTRACKING_8",
+    "b1_preregistered_event_classification": "PASS_OCCLUDED_BY_BACKTRACKING",
+    "saved_configuration_unchanged": "PASS",
+    "diagnostic_non_authority": "PASS",
+    "no_production_source_change": "PASS"
+  },
+  "bounded_conclusions": [
+    "B2 is quantitatively localized: the original iteration-3 total-balance residual magnitude is bracketed by adjacent binary64 tolerances 1.1858268037760851e-12 and 1.1858268037760853e-12 while the three-attempt backtracking path remains unchanged.",
+    "The B2 quantity is only about 18.58% above the frozen 1e-12 production criterion. This is a diagnostic magnitude, not evidence for changing that criterion.",
+    "B1 cannot be quantified by tolerance tomography without changing the algorithmic path because CritDevBalCp is used both as the compartment convergence criterion and as an Fmax backtracking acceptance condition.",
+    "At B1 the first tolerance event occurs between adjacent binary64 values 1.1378075673480757e-12 and 1.1378075673480759e-12, but the event simultaneously changes backtracking from 8 to 2 and produces convergence. It is therefore not an admissible estimate of the original-path final compartment residual.",
+    "The next diagnostic must observe the untouched final HeadCalc residual state directly at the frozen B1 and B2 split iterations. It should not infer B1 residual magnitude by further tolerance perturbation.",
+    "No production tolerance, retry depth, solver configuration, participant acceptance rule, status smoothing, response-space globalization policy or HCOF/RHS behavior is changed or admitted."
+  ],
+  "next_natural_unit": "Open G21L as direct residual-state observation. Preserve production HeadCalc and runtime sources byte-for-byte by using a research-build-only read-only observer if necessary. At the frozen adjacent heads capture the final residual sum, maximum absolute compartment residual and its node at the split iteration, validate B2 against the G21K threshold bracket, and quantify B1 on its untouched eight-backtracking path."
+}
