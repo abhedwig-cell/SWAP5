@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU04-C",
   "title": "SWINTER=1 Von Hoyningen-Huene/Braden source-window interception",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "status": "PROCESS_QUALIFICATION_OPEN_RUNTIME_COMPOSITION_HELD",
+  "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
   "authority": {
     "scientific_transaction_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
     "reference_snapshot": "B1.11",
@@ -36,12 +36,11 @@
     "invalid-input fail-closed behavior",
     "GNU Fortran O0/O2 observable identity"
   ],
-  "production_admission_gates_not_yet_open": [
-    "transactional accepted aggregate-progress receipt",
-    "rejected-trial and changed-dt retry replay",
-    "mid-source-window restart roundtrip",
-    "dedicated runtime/adapter composition",
-    "production application hard mass closure"
+  "qualified_production_evidence": [
+    "owner-issued accepted receipts feed the separate source-window progress ledger only after physical commit",
+    "source-window partition, dynamic top evaluation and safe top-flux forcing handoff are composed statelessly",
+    "two-tile production owner run commits the WU04-C forcing vector with hard mass closure"
   ],
-  "decision": "PROCESS_SLICE_AUTHORIZED; PRODUCTION_RUNTIME_HELD_PENDING_SHARED_RECEIPT_RESTART_CONTRACT"
+  "remaining_qualification": ["rejected-trial and changed-dt retry replay for a nontrivial source window", "mid-source-window combined hydraulic/progress restart replay"],
+  "decision": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED; CONTINUATION_REPLAY_OPEN"
 }
