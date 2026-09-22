@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21j.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21J",
+  "title": "HeadCalc convergence-criterion causal isolation at G21I split iterations",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21J_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21I_RESULT.json",
+  "tested_commit": "715f2fcd19e2943237fcf60c48dd10550c60f707",
+  "workflow_run": 35743135385,
+  "workflow_job": 106797749416,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_BOUNDARY_SPECIFIC_CONVERGENCE_CRITERIA",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "runtime_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "source_contract": {
+    "macropore_active": false,
+    "compartment_check": "abs(residual_i) > CritDevBalCp",
+    "head_change_check": "CritDevh2Cp/CritDevh1Cp",
+    "total_balance_check": "abs(sum(residual)) > CritDevBalTot",
+    "ponding_check": "CritDevPondDt when applicable",
+    "compartment_tolerance_also_controls_backtracking": true
+  },
+  "boundary_results": [
+    {
+      "id": "B1",
+      "status6_head_m": -0.7150100297648301,
+      "status0_head_m": -0.715010029764824,
+      "split_iteration": 4,
+      "baseline_backtracking": 8,
+      "baseline_status6_solver_status": 2,
+      "baseline_status0_solver_status": 1,
+      "primary_noncompartment_masks": {
+        "HEAD": {
+          "solver_status": 2,
+          "backtracking": 8
+        },
+        "TOTAL": {
+          "solver_status": 2,
+          "backtracking": 8
+        },
+        "HEAD_TOTAL": {
+          "solver_status": 2,
+          "backtracking": 8
+        },
+        "POND": {
+          "solver_status": 2,
+          "backtracking": 8
+        },
+        "HEAD_POND": {
+          "solver_status": 2,
+          "backtracking": 8
+        },
+        "TOTAL_POND": {
+          "solver_status": 2,
+          "backtracking": 8
+        },
+        "HEAD_TOTAL_POND": {
+          "solver_status": 2,
+          "backtracking": 8
+        }
+      },
+      "primary_path_interference": false,
+      "classification": "COMPARTMENT_BALANCE_NECESSARY_BLOCKER",
+      "interpretation": "With compartment balance left at the frozen 1e-12 tolerance, neutralizing head-change, total-balance and ponding criteria individually and jointly does not change the failed physical-solver classification or the 8-attempt backtracking prefix. Therefore compartment balance is necessarily active in the B1 nonconvergence decision among the ordinary non-macropore criteria.",
+      "secondary_compartment_only": {
+        "solver_status": 2,
+        "backtracking": 4,
+        "nonlinear_iterations": 4
+      },
+      "secondary_all_relaxed": {
+        "solver_status": 1,
+        "backtracking": 1,
+        "nonlinear_iterations": 1
+      },
+      "sole_blocker_claim": "NOT_MADE",
+      "secondary_caution": "Relaxing CritDevBalCp changes the backtracking path because the same tolerance participates in Fmax backtracking acceptance. The secondary arms therefore cannot establish compartment balance as the sole original-path blocker."
+    },
+    {
+      "id": "B2",
+      "status0_head_m": -0.715010029764793,
+      "status6_head_m": -0.7150100297647868,
+      "split_iteration": 3,
+      "baseline_backtracking": 3,
+      "baseline_status6_solver_status": 2,
+      "baseline_status0_solver_status": 1,
+      "primary_noncompartment_masks": {
+        "HEAD": {
+          "solver_status": 2,
+          "backtracking": 3
+        },
+        "TOTAL": {
+          "solver_status": 1,
+          "backtracking": 3
+        },
+        "HEAD_TOTAL": {
+          "solver_status": 1,
+          "backtracking": 3
+        },
+        "POND": {
+          "solver_status": 2,
+          "backtracking": 3
+        },
+        "HEAD_POND": {
+          "solver_status": 2,
+          "backtracking": 3
+        },
+        "TOTAL_POND": {
+          "solver_status": 1,
+          "backtracking": 3
+        },
+        "HEAD_TOTAL_POND": {
+          "solver_status": 1,
+          "backtracking": 3
+        }
+      },
+      "primary_path_interference": false,
+      "minimal_success_masks": [
+        "TOTAL"
+      ],
+      "classification": "TOTAL_BALANCE_BLOCKER",
+      "interpretation": "Relaxing only the total-balance criterion switches the B2 status-6 head to physical convergence at the same third Newton iteration with the same three backtracking attempts. HEAD or POND alone do not. This is a clean causal isolation of the total-balance predicate for B2."
+    }
+  ],
+  "gates": {
+    "source_semantics": "PASS",
+    "baseline_reproduction": "PASS_2_BOUNDARIES",
+    "primary_subsets": "PASS_7_PER_BOUNDARY",
+    "primary_compartment_tolerance_unchanged": "PASS",
+    "primary_backtracking_path_preserved": "PASS_ALL_ARMS",
+    "b1_compartment_necessary": "PASS",
+    "b1_compartment_sole_blocker": "NOT_ESTABLISHED",
+    "b2_total_balance_blocker": "PASS_CLEAN_CAUSAL",
+    "saved_config_postcondition": "PASS_STATUS_VECTOR_6_0_0_6",
+    "postprobe_g16_accounting": "PASS_4_4_0_4",
+    "accepted_state_ledger_mutation": "PASS_0",
+    "participant_candidate_leakage": "PASS_0"
+  },
+  "bounded_conclusions": [
+    "The two binary64-adjacent solver bifurcations do not arise from one universal convergence predicate.",
+    "At B2, the total-balance convergence check is causally sufficient to explain the split at iteration 3: relaxing TOTAL alone changes the physical solver from nonconverged to converged without changing the three-attempt backtracking trajectory.",
+    "At B1, compartment balance is a necessary blocker at iteration 4: every combination of HEAD, TOTAL and POND relaxation leaves the solver nonconverged with exactly the original eight backtracking attempts.",
+    "B1 does not support a sole-compartment-blocker claim. Relaxing compartment balance changes backtracking, and compartment-only relaxation still does not converge; relaxing all criteria converges immediately on a different path.",
+    "The G21F/G21G islands therefore reflect criterion-sensitive numerical cancellation near the solver acceptance surface, with different adjacent transitions controlled by different aggregate/local balance predicates.",
+    "No evidence supports status smoothing, head snapping, tolerance relaxation, retry-depth change or production solver-configuration selection.",
+    "The next useful diagnostic is quantitative threshold tomography on the identified predicates: total-balance threshold at B2 can be measured without changing backtracking, while B1 compartment-balance magnitude must be bracketed only over arms that preserve the original eight-attempt path."
+  ],
+  "next_natural_unit": "Open G21K as tolerance-threshold tomography. Quantify the B2 total-balance residual magnitude from a path-preserving total-tolerance bracket/bisection; for B1, scan compartment tolerance but admit only same-backtracking arms, then test whether a path-preserving compartment relaxation exists that reveals any co-blocking HEAD/TOTAL/POND predicate."
+}
