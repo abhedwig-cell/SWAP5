@@ -5,9 +5,13 @@
   "title": "Actual RibaMod groundwater transfer activated after the accepted daily allocation",
   "baseline": "796a02ad97524cd94e3103221cb23ee684556ba6",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20D_ACTIVE",
+    "state": "SATISFIED_AFTER_DUMMY_20D_CLOSEOUT",
     "execute_after": "DUMMY-20D qualified",
-    "rationale": "Correct the 20E timing assumption prospectively, before any active-transfer runtime output."
+    "rationale": "Correct the 20E timing assumption prospectively, before any active-transfer runtime output.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+      "workflow_run": 35723571953
+    }
   },
   "authorities": {
     "supersedes": "RIBASIM-DUMMY-20E pre-execution falsification",
@@ -170,5 +174,11 @@
       "hypotheses",
       "tolerances"
     ]
+  },
+  "implementation_baseline": "b8af4adb3e1e328cce7dc5ca79967f4fdb447df9",
+  "authority_rebind": {
+    "repository_head": "b8af4adb3e1e328cce7dc5ca79967f4fdb447df9",
+    "scientific_change": false,
+    "meaning": "Corrected post-allocation physical-transfer experiment rebound after 20D closeout; activation boundary, flux schedule, references and tolerances unchanged."
   }
 }
