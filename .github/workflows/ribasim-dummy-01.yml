@@ -266,6 +266,11 @@ on:
       - 'integration/research/RIBASIM_DUMMY_20H8_*.json'
       - 'integration/research/RIBASIM_DUMMY_20H9_*.json'
       - 'integration/research/RIBASIM_DUMMY_20H10_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H11_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H11_CONCEPT.md'
+      - 'tests/research/generate_ribasim_dummy_20h11_clock_lattice.py'
+      - 'tests/research/real_ribasim_20h11_clock_lattice.jl'
+      - 'tests/research/run_ribasim_dummy_20h11.sh'
       - 'integration/research/RIBASIM_DUMMY_20H10_CONCEPT.md'
       - 'tests/research/test_ribasim_dummy_20h10_noncommensurate_case.py'
       - 'tests/research/verify_ribasim_dummy_20h10_noncommensurate_clock.py'
@@ -1303,3 +1308,26 @@ jobs:
       - name: Run noncommensurate fixed-allocation clock falsification
         shell: pwsh
         run: .\tests\research\run_ribasim_dummy_20h10.ps1
+
+  ribasim-release-clock-lattice-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20h11-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact product Ribasim release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Run fixed-allocation / BMI call-start clock lattice
+        run: bash tests/research/run_ribasim_dummy_20h11.sh
