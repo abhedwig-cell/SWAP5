@@ -1,0 +1,64 @@
+name: GC rootzone memory RZM06E06 tighter root-matched interface-memory probe
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E06_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E06_PREREGISTRATION.md'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E05_RESULT.json'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e06_extract.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e06_probe.f90'
+      - 'tests/research/analyze_gc_rootzone_memory_rzm06e06.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e06.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e06.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e06-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify E05 pair authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          d=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06E05_RESULT.json",encoding="utf-8"))
+          assert d["decision"]=="SELECTED_TIGHTER_STORAGE_MATCHED_INTERFACE_STATE_PAIR"
+          assert d["selected_mode_cm"]==1e-6
+          p=d["selected_pair"]
+          assert p["A"]["provenance"]==["D04","B","HOLD","1","5"]
+          assert p["B"]["provenance"]==["D04","B","IDENTITY","0","0"]
+          assert p["abs_delta_profile_water_cm"]<=1e-6
+          assert p["abs_delta_root30_water_cm"]<=1e-6
+          assert p["abs_delta_H16_cm"]>=1e-2
+          print("GC_RZM06E06_PARENT_PAIR_AUTHORITY=PASS")
+          PY
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run fixed-Hc tighter root-matched response probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E06-EVIDENCE
+          RZM06E06_EVIDENCE_DIR="$PWD/RZM06E06-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e06.sh
+      - name: Preserve E06 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e06-${{ github.run_id }}
+          path: RZM06E06-EVIDENCE
+          if-no-files-found: warn
