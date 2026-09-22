@@ -81,6 +81,12 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*16),
             *([ctypes.POINTER(ctypes.c_double)]*3),
         ]
+        self.lib.fgc44_g21h_isolated_attempt_c.restype=ctypes.c_int
+        self.lib.fgc44_g21h_isolated_attempt_c.argtypes=[
+            ctypes.c_double,ctypes.c_double,
+            *([ctypes.POINTER(ctypes.c_int)]*10),
+            ctypes.POINTER(ctypes.c_double),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -301,6 +307,26 @@ class Fgc44RealSwap:
         result["temporal_head_budget"]=reals[1].value
         result["temporal_normalized_indicator"]=reals[2].value
         return result
+
+    def g21h_isolated_attempt(self,head_m:float,duration_day:float) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(10)]
+        completed_t=ctypes.c_double()
+        status=self.lib.fgc44_g21h_isolated_attempt_c(
+            ctypes.c_double(head_m),ctypes.c_double(duration_day),
+            *[ctypes.byref(v) for v in ints],ctypes.byref(completed_t),
+        )
+        if status:
+            raise RuntimeError(f"G21H isolated attempt failed: {status}")
+        names=[
+            "result_status","completed","candidate_ready","attempts","retries",
+            "solver_rejections","temporal_rejections","temporal_unavailable_rejections",
+            "mass_rejections","internal_retries",
+        ]
+        out={k:int(v.value) for k,v in zip(names,ints)}
+        out["completed"]=bool(out["completed"])
+        out["candidate_ready"]=bool(out["candidate_ready"])
+        out["completed_t"]=completed_t.value
+        return out
 
     def g14_fused_run_count(self) -> int:
         value=ctypes.c_int()
