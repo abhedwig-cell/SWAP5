@@ -56,8 +56,8 @@
           "blocker": "No independent Layer-ROM structural/model-form error share or portable interface-error budget."
         },
         "matching_lhm_like_end_to_end": {
-          "state": "ENVELOPE_FROZEN_EXECUTION_NOT_YET_PREREGISTERED",
-          "blocker": "Exact observation dataset/population, model composition, insertion point and blind application panel still require preregistration before candidate execution.",
+          "state": "ENVELOPE_FROZEN_EXECUTION_BLOCKED_EXTERNAL_DATASET_AUTHORITY",
+          "blocker": "Exact LHM 4.1 validation dataset/population authority is currently unavailable through the public linked archive.",
           "protocol_shell": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
           "next_gate": "Bind exact observation dataset/population, temporal implementation, frozen application composition, ROM identity and blind case manifest."
         }
@@ -132,5 +132,14 @@
     }
   },
   "terminal_scientific_statement": "The blanket APPLICATION_TOLERANCE_AUTHORITY blocker is now split. A narrow direct LHM-like GW-D application envelope is independently frozen from formal external criteria, while component-level/synthetic Layer-ROM fidelity remains blocked on structural-error allocation. GW-R and the requested SCI-P profile purpose remain unresolved.",
-  "next_safe_step": "Do not run current Layer-ROM candidates for acceptance. If pursuing GW-D application acceptance, first preregister a matching observation-bound LHM-like end-to-end panel. Otherwise obtain a component structural-error allocation for synthetic/reference-comparison use."
+  "next_safe_step": "Hold all Layer-ROM acceptance runs. The only active GW-D end-to-end step is recovery of the exact LHM 4.1 validation dataset/population or an authoritative replacement manifest. Component-level synthetic acceptance still requires an independent structural-error allocation.",
+  "external_blockers": [
+    {
+      "id": "LHM41_GW_VALIDATION_DATASET_AUTHORITY",
+      "purpose": "GW-D-LHM-END2END",
+      "state": "BLOCKED_EXTERNAL_SOURCE",
+      "description": "Exact observation/population binding cannot be completed from the current public NHI link because the linked LHM 4.1 groundwater validation archive is deleted.",
+      "non_resolution": "Do not assemble a convenience replacement population from currently available DINO/regional data."
+    }
+  ]
 }
