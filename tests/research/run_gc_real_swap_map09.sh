@@ -143,3 +143,16 @@ git diff --check -- tests/research/test_gc_real_swap_map09_active_drainage.py \
   tests/research/test_gc_real_swap_map09a_decomposition.py
 
 echo 'GC REAL SWAP MAP09 MAP09A ACTIVE DRAINAGE DECOMPOSITION PASS'
+
+
+# G12 process-diverse E3/P4 qualification on the frozen active-drainage MAP09
+# carrier. This remains research-only; all participant candidates are discarded.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_map09_active_drainage_g12.py \
+  | tee "$BUILD/g12-active-drainage.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G12_EXECUTION=PASS' "$BUILD/g12-active-drainage.txt" || {
+  echo "GC_G12_FAIL missing active-drainage process qualification gate" >&2
+  exit 1
+}
