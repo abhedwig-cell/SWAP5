@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute clean v3 qualification with explicit head checkout and full raw trajectory logging.",
+  "next_action": "Execute unchanged full-trajectory v3 from exact PR head; frozen scientific inputs unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -51,7 +51,7 @@
       "frozen piecewise references and tolerances unchanged"
     ]
   },
-  "qualification_attempt": "v3_clean_head_checkout_full_trajectory",
+  "qualification_attempt": "v3_exact_pr_head_full_trajectory",
   "qualification_base": "work/ribasim-dummy-20e2-ci-v2@3e4987219e535d606905074fef2a9c0d2bda45e0",
   "qualification_attempts": [
     {
@@ -68,5 +68,6 @@
       "scientific_effect": "none",
       "repair": "checkout github.event.pull_request.head.sha explicitly before source-scope verification"
     }
-  ]
+  ],
+  "trigger_refresh": "synchronize_after_base_exact_head_checkout_repair"
 }
