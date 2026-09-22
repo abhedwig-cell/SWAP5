@@ -25,7 +25,7 @@ done
 
 python3 tests/research/test_gc_rootzone_memory_rzm06e05_census.py   --d04 "$D04/d04-o2.txt"   --e01 "$E01/e01-o2.txt"   --e03 "$E03/e03-o2.txt"   --e03b "$E03B/e03b-o2.txt"   --e03c "$E03C/e03c-o2.txt" | tee "$EVIDENCE/census.txt"
 
-grep -Fq 'GC_RZM06E05_RESPONSE_BLIND_CENSUS=PASS' "$EVIDENCE/census.txt" || fail "census marker"
+grep -Fq 'GC_RZM06E05_RESPONSE_BLIND_RESOLUTION_CENSUS=PASS' "$EVIDENCE/census.txt" || fail "census marker"
 sha256sum   "$D04/d04-o2.txt" "$E01/e01-o2.txt" "$E03/e03-o2.txt"   "$E03B/e03b-o2.txt" "$E03C/e03c-o2.txt" "$EVIDENCE/census.txt"   > "$EVIDENCE/sha256.txt"
 
 echo 'GC_RZM06E05_QUALIFICATION=PASS'
