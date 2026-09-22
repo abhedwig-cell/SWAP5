@@ -86,3 +86,16 @@ grep -Fq 'GC_FIXED_INTERFACE_G08_EXECUTION=PASS' "$BUILD/fgc44-globalization-g08
   echo "GC_FGC44_G08_FAIL missing safeguarded-Newton execution gate" >&2
   exit 1
 }
+
+
+# G09 boundary-tangent qualification. The estimator direction is chosen only
+# from trial admissibility status; all probes and policy iterates are discarded.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_boundary_tangent_g09.py \
+  | tee "$BUILD/fgc44-globalization-g09.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G09_EXECUTION=PASS' "$BUILD/fgc44-globalization-g09.txt" || {
+  echo "GC_FGC44_G09_FAIL missing boundary-tangent execution gate" >&2
+  exit 1
+}
