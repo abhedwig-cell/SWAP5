@@ -15,6 +15,8 @@ module mod_fgc44_real_swap_c_bridge
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t, &
        fmr_groundwater_swap_trial_observation_t
+  use mod_fmr_groundwater_swap_tangent_observation_service, only: &
+       fmr_groundwater_swap_tangent_observation_service_t, FMR_GW_TANGENT_OBSERVATION_OK
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK, &
        GW_SWAP_PARTICIPANT_TRIAL_FAILED, GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
@@ -66,6 +68,7 @@ module mod_fgc44_real_swap_c_bridge
   type(fmr_serialized_reference_backend_t), save :: predictor_backend, corrector_backend
   type(fmr_groundwater_head_forcing_materializer_t), save :: materializer
   type(fmr_groundwater_swap_participant_t), save :: participant
+  type(fmr_groundwater_swap_tangent_observation_service_t), save :: tangent_observation_service
   type(groundwater_swap_trial_t), save :: last_trial
   type(groundwater_head_datum_t), save :: datum
   type(groundwater_coupling_window_t), save :: window
@@ -113,6 +116,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_raw_corrector_diagnostics_c
   public :: fgc44_g14_fused_observation_c, fgc44_g14_fused_run_count_c
   public :: fgc44_g15_last_trial_observation_c, fgc44_g15_trial_call_count_c, fgc44_g15_has_live_candidate_c
+  public :: fgc44_g16_begin_session_c, fgc44_g16_observe_head_c, fgc44_g16_counts_c, fgc44_g16_end_session_c
 
 contains
 
@@ -159,6 +163,7 @@ contains
     initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
     g14_fused_corrector_runs=0_int64
     g15_participant_trial_calls=0_int64
+    call tangent_observation_service%end_session()
     e3d2_predictor_diagnostics_ready=.false.
     e3d2_predictor_result=kernel_result_t()
     e3d2_predictor_diagnostics=kernel_diagnostics_t()
@@ -493,6 +498,79 @@ contains
     if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
     fgc44_raw_corrector_diagnostics_c=0_c_int
   end function fgc44_raw_corrector_diagnostics_c
+
+  integer(c_int) function fgc44_g16_begin_session_c() bind(C,name="fgc44_g16_begin_session_c")
+    integer :: status
+    fgc44_g16_begin_session_c=1_c_int
+    if(.not.initialized)return
+    call tangent_observation_service%begin_session(participant,status)
+    fgc44_g16_begin_session_c=int(status,c_int)
+  end function fgc44_g16_begin_session_c
+
+  integer(c_int) function fgc44_g16_observe_head_c(head_m,available,participant_status,q_available,result_status, &
+       completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
+       solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries, &
+       q_swap_m_per_s,min_substep,max_substep) bind(C,name="fgc44_g16_observe_head_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: available,participant_status,q_available,result_status,completed,candidate_ready
+    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: q_swap_m_per_s,min_substep,max_substep
+    type(fmr_groundwater_swap_trial_observation_t) :: observation
+    integer :: status
+
+    fgc44_g16_observe_head_c=1_c_int
+    available=0_c_int; participant_status=-1_c_int; q_available=0_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    q_swap_m_per_s=0.0_c_double; min_substep=0.0_c_double; max_substep=0.0_c_double
+    if(.not.initialized)return
+
+    call tangent_observation_service%observe_head(participant,corrector_backend,column,template,corrector_parameters, &
+         committed,materializer,corrector_config,datum,window,real(head_m,real64),observation,status)
+    if(status/=FMR_GW_TANGENT_OBSERVATION_OK)then
+      fgc44_g16_observe_head_c=int(status,c_int)
+      return
+    end if
+
+    if(observation%available)available=1_c_int
+    participant_status=int(observation%participant_status,c_int)
+    if(observation%q_available)q_available=1_c_int
+    q_swap_m_per_s=observation%q_swap_m_per_s
+    result_status=int(observation%result_status,c_int)
+    if(observation%completed)completed=1_c_int
+    if(observation%candidate_ready)candidate_ready=1_c_int
+    transaction_calls=int(observation%transaction_calls,c_int)
+    accepted_substeps=int(observation%accepted_substeps,c_int)
+    attempts=int(observation%attempts,c_int)
+    retries=int(observation%retries,c_int)
+    trial_rollbacks=int(observation%trial_rollbacks,c_int)
+    solver_rejections=int(observation%solver_rejections,c_int)
+    temporal_rejections=int(observation%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(observation%temporal_unavailable_rejections,c_int)
+    mass_rejections=int(observation%mass_rejections,c_int)
+    internal_retries=int(observation%internal_retries,c_int)
+    min_substep=observation%min_accepted_substep_duration
+    max_substep=observation%max_accepted_substep_duration
+    fgc44_g16_observe_head_c=0_c_int
+  end function fgc44_g16_observe_head_c
+
+  integer(c_int) function fgc44_g16_counts_c(requests,trials,hits,cached) bind(C,name="fgc44_g16_counts_c")
+    integer(c_int), intent(out) :: requests,trials,hits,cached
+    requests=int(tangent_observation_service%request_count(),c_int)
+    trials=int(tangent_observation_service%trial_count(),c_int)
+    hits=int(tangent_observation_service%hit_count(),c_int)
+    cached=int(tangent_observation_service%cached_head_count(),c_int)
+    fgc44_g16_counts_c=0_c_int
+  end function fgc44_g16_counts_c
+
+  integer(c_int) function fgc44_g16_end_session_c() bind(C,name="fgc44_g16_end_session_c")
+    call tangent_observation_service%end_session()
+    fgc44_g16_end_session_c=0_c_int
+  end function fgc44_g16_end_session_c
 
   integer(c_int) function fgc44_g15_last_trial_observation_c(available,participant_status,q_available, &
        result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
