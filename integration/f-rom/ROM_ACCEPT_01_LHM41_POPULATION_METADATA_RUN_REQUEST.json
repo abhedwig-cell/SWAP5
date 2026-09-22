@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.rom-accept.lhm41-population-metadata-run-request.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-LHM41-POPULATION-METADATA",
+  "date": "2026-09-22",
+  "parent_archive_qualification": {
+    "run_id": 35749932742,
+    "job_id": 106821117194,
+    "archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+    "archive_byte_size": 155954643,
+    "zip_crc_test": "PASS",
+    "member_count": 13732
+  },
+  "purpose": "Extract and bind only the class-root IPF population tables and explanatory metadata from the exact qualified NHI archive.",
+  "guards": {
+    "hydrological_model_execution": false,
+    "layer_rom_candidate_execution": false,
+    "archive_member_execution": false,
+    "thresholds_changed": false
+  }
+}
