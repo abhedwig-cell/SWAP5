@@ -7,6 +7,8 @@ on:
     paths:
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E04_PREREGISTRATION.json'
       - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E04_PREREGISTRATION.md'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E04_RECONCILIATION_AMENDMENT.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E04_RECONCILIATION_AMENDMENT.md'
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E03E_RESULT.json'
       - 'tests/research/test_gc_rootzone_memory_rzm06e04_extract.py'
       - 'tests/research/test_gc_rootzone_memory_rzm06e04_probe.f90'
@@ -45,6 +47,11 @@ jobs:
           assert p["abs_delta_root30_water_cm"]<=1e-4
           assert p["abs_delta_bottom_node_pressure_head_cm"]>=1e-2
           print("GC_RZM06E04_PARENT_PAIR_AUTHORITY=PASS")
+          amend=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06E04_RECONCILIATION_AMENDMENT.json",encoding="utf-8"))
+          assert amend["preregistration_commit"]=="dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e"
+          assert amend["frozen_experiment_changed"] is False
+          assert amend["corrected_interpretation"]["support_decision_label"]=="SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_AT_FROZEN_AGGREGATE_RESOLUTION"
+          print("GC_RZM06E04_INTERPRETATION_AUTHORITY=PASS")
           PY
       - name: Compiler identity
         run: gfortran --version
