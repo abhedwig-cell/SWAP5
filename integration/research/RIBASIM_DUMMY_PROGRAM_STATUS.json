@@ -218,19 +218,17 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20G",
+      "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+      "run": 35730262593,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
-    {
-      "work_unit": "RIBASIM-DUMMY-20G",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
-      "dependency": "qualified DUMMY-20F2",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0",
-      "implementation_baseline": "a258584729fd43012410928bbf1359de38f880a2"
-    },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
       "state": "PREREGISTERED_BLOCKED_DEPENDENCY_NOT_QUALIFIED",
@@ -242,7 +240,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20G active-river reciprocal stage-feedback product gate.",
+  "next_authority_action": "Preregister the first management-plus-active-river product experiment from the qualified 20F2 management-memory and 20G physical-reciprocity authorities.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -344,5 +342,10 @@
     "latest": "RIBASIM-DUMMY-20F2",
     "decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
     "meaning": "Realized physical groundwater transfer changes accepted state during a daily allocation window without retroactive reallocation and becomes management-visible at the next fixed allocation boundary."
+  },
+  "product_active_exchange_authority": {
+    "latest": "RIBASIM-DUMMY-20G",
+    "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+    "meaning": "Actual RibaMod actively applies accepted Ribasim stage to MF6 River and returns the resulting exchange as reciprocal Ribasim infiltration, with accepted-state sample-and-hold feedback."
   }
 }
