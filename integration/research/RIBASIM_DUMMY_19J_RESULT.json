@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_saveat_clock_conflict.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19J",
+  "decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
+  "authority": {
+    "qualification_head": "3bdc7b0b7fd4087579c78046c41a6d84a4d49115",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35702468555,
+    "workflow_job": 106663493752,
+    "conclusion": "success"
+  },
+  "observations": {
+    "root_first": {
+      "bmi_endpoints_s": [
+        21600,
+        43200,
+        64800,
+        86400
+      ],
+      "applied_at_each_endpoint_m3_day": {
+        "root": 40,
+        "external": 20
+      },
+      "root_supplied_m3": 19.839097529377185,
+      "external_supplied_m3": 9.252711038241413,
+      "total_supplied_m3": 29.0918085676186,
+      "final_level_m": 1.0000029081914323,
+      "storage_gain_m3": 2.908191432338114,
+      "allocation_records": 24
+    },
+    "external_first": {
+      "bmi_endpoints_s": [
+        21600,
+        43200,
+        64800,
+        86400
+      ],
+      "applied_at_each_endpoint_m3_day": {
+        "root": 40,
+        "external": 20
+      },
+      "root_supplied_m3": 19.088922018207217,
+      "external_supplied_m3": 10.00288658461548,
+      "total_supplied_m3": 29.091808602822695,
+      "final_level_m": 1.0000029081913973,
+      "storage_gain_m3": 2.9081913972550666,
+      "allocation_records": 24
+    }
+  },
+  "qualified_claims": [
+    "With solver.saveat=3600 s and BMI.update_until calls every 21600 s, allocation remains hourly in the tested pinned Ribasim configuration.",
+    "The allocation history contains 24 hourly records, not four 6-hour records.",
+    "The applied UserDemand allocation has already reached full 40/20 by the first observed 6-hour BMI endpoint.",
+    "One-day physical volumes and Basin endpoint match the frozen 1-hour DUMMY-19G reference and are materially separated from the 6-hour reference.",
+    "A coarser coupler advance cadence does not establish exclusive management-clock ownership when a finer saveat grid remains active."
+  ],
+  "architectural_consequence": "A coupling contract cannot define management cadence solely through update_until boundaries while a finer saveat grid can independently trigger allocation solve-and-apply events.",
+  "boundaries": [
+    "No claim that saveat should semantically own allocation application.",
+    "No upstream defect classification.",
+    "No production prescription."
+  ],
+  "downstream": "Execute DUMMY-19K test-only explicit UserDemand solve→apply seam with daily saveat."
+}
