@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20E3 two-cell groundwater-intervention product qualification.",
+  "next_action": "Execute DUMMY-20E3 v1 frozen product qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "07e9f1ba6762e03a5b43b3e4e310fff153539d77",
@@ -36,5 +36,7 @@
       "Ribasim allocation.dt/saveat/demand/priorities are unchanged from the blocked DUMMY-20E2 hypothesis",
       "frozen idealized 8 m3/day response references and tolerances are unchanged"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_two_cell_groundwater_intervention",
+  "qualification_base": "work/ribasim-dummy-01@01a2ce8204525c7a2f5eda2466f84e3fdfbc255a"
 }
