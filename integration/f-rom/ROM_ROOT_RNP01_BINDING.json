@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom_root.rnp01.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP01",
+  "date": "2026-09-22",
+  "state": "BOUND_BEFORE_RNP01_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_RNP01_PREREGISTRATION.json",
+  "scientific_semantics_changed": false,
+  "reduced_candidate_response_generated": false,
+  "c6r_reopened": false,
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "implementation_blobs": {
+    ".github/workflows/rom-root-rnp01.yml": "966d319de0ea0e96e7d3c858c39e0de7cfee1db0",
+    "tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py": "269bbc7796a5d7e0535660954f1c0f075b97634b",
+    "tests/rom/materialize_rom_root_rnp01_diagnostic.py": "7d747c285a7cd957ff411caa0186b3275aaee4b5",
+    "tests/rom/analyze_rom_root_rnp01.py": "c4e5985e0e1f7c1dee13d50c070f01a3d68367e8",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1"
+  },
+  "execution": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "histories": {
+      "B01": "V02",
+      "B14": "V01"
+    },
+    "optimization": 0,
+    "primary_max_iterations": 16,
+    "shadow_max_iterations": [
+      32,
+      64
+    ],
+    "total_balance_tolerance": 1e-12,
+    "compartment_balance_tolerance": 1e-12,
+    "shadow_commit": false
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "tolerance_changed": false,
+    "reduced_candidate_response_generated": false,
+    "policy_decision_authorized": false
+  }
+}
