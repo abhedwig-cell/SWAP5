@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm02.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM02",
+  "decision": "QUALIFIED_FORCING_ORDER_AND_TIMESCALE_CONDENSATION",
+  "production_changes": false,
+  "authority": {
+    "preregistration": "integration/research/GC_ROOTZONE_MEMORY_RZM02_PREREGISTRATION.json",
+    "implementation_head": "8aff476a7e7924502d0d3646ec15af0b9b86bed8",
+    "workflow_run": 35701697622,
+    "workflow_job": 106660994056,
+    "conclusion": "success",
+    "rzm01_regression_job": 106660994189,
+    "rzm01_regression_conclusion": "success"
+  },
+  "evidence": [
+    "GC_RZM02_TESTS=7/7",
+    "GC_RZM02_GATE=PASS",
+    "forcing-order frozen early and late targets reproduced with exact component ledgers",
+    "same 0.010 m integrated upper forcing yields different endpoint distribution and E_c when order is reversed",
+    "conductance scaling reproduces preregistered slow/intermediate/fast order-sensitivity signature",
+    "finite-window response sweep reproduces all eight preregistered u(T) targets",
+    "selected u(T) values rise from 0.0024695136748933825 at 0.01 d to 0.29963723589847224 at 10 d while physical S_r+S_l remains 0.30",
+    "low-then-high versus high-then-low H_c trajectories with the same mean head produce opposite-signed cumulative interface exchanges and distinct endpoint states",
+    "path-preserving exact subpartition remains invariant",
+    "fast vertical equilibration probe approaches the exact continuous one-state limit",
+    "continuous one-state condensation remains numerically distinct from the NH01 implicit-Euler finite-window formula",
+    "RZM01 regression job remains successful in the same workflow run"
+  ],
+  "forcing_order": {
+    "integrated_root_input_m": 0.01,
+    "early": {
+      "root_storage_end_m": 0.10479863076424234,
+      "lower_head_end_m": 8.017491004024908,
+      "interface_exchange_m": 0.003452268833266857
+    },
+    "late": {
+      "root_storage_end_m": 0.107150593839904,
+      "lower_head_end_m": 8.018400792708118,
+      "interface_exchange_m": 0.0010093268892842205
+    },
+    "early_minus_late_interface_exchange_m": 0.0024429419439826365
+  },
+  "boundary_trajectory": {
+    "time_mean_head_m": 8,
+    "whole_window_constant_head_interface_exchange_m": 0,
+    "low_then_high_interface_exchange_m": -0.0014699769222886244,
+    "high_then_low_interface_exchange_m": 0.0014699769222885038
+  },
+  "timescale_condensation": {
+    "physical_total_storage_coefficient": 0.3,
+    "u_at_0p01_day": 0.0024695136748933825,
+    "u_at_1_day": 0.14936530755182925,
+    "u_at_10_day": 0.29963723589847224,
+    "interpretation": "finite-window condensed response changes with T although physical storage coefficients do not"
+  },
+  "one_state_limit": {
+    "exact_continuous_u_m_per_m": 0.16962053744787653,
+    "finite_vertical_probe_u_m_per_m": 0.16959639676987978,
+    "implicit_euler_u_m_per_m": 0.13636363636363635
+  },
+  "bounded_conclusions": [
+    "Hydrological memory makes forcing order physically observable when internal and forcing timescales interact.",
+    "Order dependence is not a universal monotone function of slowness. In the tested linear family it vanishes toward both extreme-slow and extreme-fast limits for different reasons.",
+    "A scalar affine response remains exact for each declared constant-H_c linear window, but its finite-window coefficient is window dependent.",
+    "The coupler need not know W_r and h_l individually to solve one such window if it receives an exact response tied to the committed origin. It does need enough temporal resolution or response information to represent a materially varying H_c trajectory.",
+    "A single average interface head cannot generally encode within-window boundary history.",
+    "The simple one-state physical limit is recovered under fast root-to-lower equilibration, but equality of physical limiting structure does not imply equality of continuous-time and implicit-Euler condensed coefficients."
+  ],
+  "nonclaims": [
+    "no claim that the selected intermediate conductance scale is the global maximum of order sensitivity",
+    "no claim that production SWAP response is affine",
+    "no production u/q_u identity or admission",
+    "no claim that production coupling may ignore within-window head variation without an error qualification",
+    "no production timestep prescription"
+  ],
+  "next": "GC-RZM03 should qualify both directions and the zero-flux limit of the existing signed root-to-lower and lower-to-interface laws before adding any nonlinearity."
+}
