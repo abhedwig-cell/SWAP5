@@ -105,15 +105,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G09A_DIAGNOSTIC=PASS' "$BUILD/fgc44-globalization-g
 }
 
 
-# G09B topology-consistent tangent qualification. Probes may contribute to the
-# derivative only when participant status is 0 and raw execution topology
-# matches the current center trial.
-LIBMF6="$BUILD/modflow-bin/libmf6.so" \
-FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
-  python3 tests/research/test_gc_fixed_interface_fgc44_topology_tangent_g09b.py \
-  | tee "$BUILD/fgc44-globalization-g09b.txt"
+# The preregistered G09B all-boundary topology-consistent estimator gate was
+# falsified in workflow 35700067828 at C1_LOW_FORCING negative edge.
+echo 'GC_FIXED_INTERFACE_G09B_FIRST_EXECUTION=FALSIFIED_PRESERVED'
 
-grep -Fq 'GC_FIXED_INTERFACE_G09B_EXECUTION=PASS' "$BUILD/fgc44-globalization-g09b.txt" || {
-  echo "GC_FGC44_G09B_FAIL missing topology-consistent tangent gate" >&2
+# G09C diagnostic: decompose the exact-signature failure at C1 negative against
+# a qualified C0-positive control over the fixed nine-scale ladder.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_signature_decomposition_g09c.py \
+  | tee "$BUILD/fgc44-globalization-g09c.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G09C_DIAGNOSTIC=PASS' "$BUILD/fgc44-globalization-g09c.txt" || {
+  echo "GC_FGC44_G09C_FAIL missing execution-signature diagnostic gate" >&2
   exit 1
 }
