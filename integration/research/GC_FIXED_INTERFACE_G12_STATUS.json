@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "SECOND_TECHNICAL_REPAIR_IMPLEMENTED_AWAITING_REEXECUTION",
+  "state": "TECHNICAL_WIRING_REPAIR_IMPLEMENTED_AWAITING_REEXECUTION",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
   "parent_live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
   "parent_active_drainage": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
@@ -13,7 +13,7 @@
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
   "recovery_point": "425b6d2d56ccd0dcd60bf49d24ff4a4be98163be",
-  "next_action": "Reexecute exact G12 postimage after one-line solve_term import repair; all scientific gates remain unchanged.",
+  "next_action": "Execute latest postimage. Only a run reaching and satisfying all original G12 policy gates may close the process-diverse active-drainage qualification.",
   "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G12_FIRST_EXECUTION_RESULT.json",
   "first_execution": {
     "tested_commit": "f5840e2127194055caf9173f805b27074c3ed6a9",
@@ -33,5 +33,39 @@
       "classification": "TECHNICAL_NAMEERROR_BEFORE_GROUNDWATER_POLICY",
       "failure": "solve_term_map09 referenced solve_term after import refactor; no P1/P4 result was reached."
     }
-  ]
+  ],
+  "technical_failure_history": [
+    {
+      "workflow_run": 35705747725,
+      "workflow_job": 106674107253,
+      "classification": "GROUNDWATER_HARNESS_DATUM_MISMATCH_BEFORE_POLICY",
+      "policy_results_observed": false
+    },
+    {
+      "workflow_run": 35706090101,
+      "workflow_job": 106675257022,
+      "classification": "CALIBRATION_REFERENCE_RESIDUAL_NUMERICAL_CANCELLATION_BEFORE_POLICY",
+      "observed_href_residual_m_per_s": -1.5752280320698642e-15,
+      "policy_results_observed": false
+    },
+    {
+      "workflow_run": 35706125187,
+      "classification": "STALE_PREREGISTRATION_STATUS_CHECK_BEFORE_POLICY",
+      "policy_results_observed": false
+    },
+    {
+      "workflow_run": 35706238990,
+      "workflow_job": 106675754305,
+      "classification": "G12_HARNESS_WRAPPER_NAMEERROR_BEFORE_POLICY",
+      "policy_results_observed": false
+    },
+    {
+      "workflow_run": 35706282031,
+      "workflow_job": 106675895029,
+      "classification": "G12_HARNESS_WRAPPER_NAMEERROR_BEFORE_POLICY",
+      "policy_results_observed": false
+    }
+  ],
+  "latest_repair_commit": "1d756f569586cba80683789ac545e187ff60c4a3",
+  "latest_repair_scope": "G12-only wrapper wiring: call preregistered solve_term_g12 datum-repaired MODFLOW harness; scientific matrix, starts, policies, tolerances and SWAP numerics unchanged."
 }
