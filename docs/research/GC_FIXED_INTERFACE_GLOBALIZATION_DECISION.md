@@ -1174,3 +1174,59 @@ E3 / RESPONSE-SPACE GLOBALIZATION = NOT PRODUCTION-ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: FULL DYNAMIC SOLVER-CONFIGURATION / COUPLING-POLICY COMPARISON.
 ```
+## G21D disposition: delta-bar-delta is causally implicated in the frozen path memory
+
+G21D converted the G21C state localization into a matched causal-isolation
+experiment. Four independent live MODFLOW6 prepared solves were run with the
+same physical model, accepted XOLD, response sequence, solver tolerances and
+12-call outer-2 tail. The only intervention was nonlinear under-relaxation
+chosen before solver initialization:
+
+```text
+STANDARD: MODERATE default      NONMETH = 3  delta-bar-delta
+NOUR:     UNDER_RELAXATION NONE NONMETH = 0
+```
+
+The authority run, workflow `35734305678`, job `106767481903`, first
+reproduced the closed G21B positive control exactly:
+
+```text
+STANDARD FRESH call-12 head       -0.7150100297648362 m
+STANDARD HISTORY call-12 head     -0.7150100296924851 m
+HISTORY minus FRESH                7.235112509107466e-11 m
+```
+
+The no-under-relaxation treatment preserved all matched response roots at the
+strict G21 scale. The FRESH outer-2 root error was zero and all three HISTORY
+outer-1 lambda roots reproduced their frozen references exactly. Under those
+matched conditions:
+
+```text
+NOUR FRESH call-12 head           -0.7150100297648362 m
+NOUR HISTORY call-12 head         -0.7150100297648363 m
+HISTORY minus FRESH               -1.1102230246251565e-16 m
+absolute path-offset reduction     99.99984655068967 %
+```
+
+Thus the persistent path offset collapses from about `7.24e-11 m` to
+floating-point scale when delta-bar-delta under-relaxation history is removed,
+without moving the frozen response roots. Under the preregistered matched
+design this qualifies **DELTA_BAR_DELTA_CAUSAL_SUPPORT** for the strict path
+memory in this one real-FGC44 fixture.
+
+The interpretation is deliberately narrow. Delta-bar-delta is not declared
+wrong, and the qualified F-GC38/F-GC39 solver configuration is not changed.
+The experiment demonstrates an interaction between persistent nonlinear-solver
+history and changing externally assembled affine responses. Whether a no-UR
+coupling route is robust, efficient and scientifically acceptable across the
+full dynamic E3/P4 path remains a separate question.
+
+```text
+G21D DBD CAUSAL ISOLATION = QUALIFIED DIAGNOSTIC.
+DBD HISTORY = CAUSALLY SUPPORTED AS CARRIER OF THE STRICT PATH EFFECT.
+NOUR = RESEARCH INTERVENTION ONLY.
+G21 STANDARD-CONFIGURATION EQUIVALENCE = REMAINS FALSIFIED.
+F-GC38/F-GC39 = UNCHANGED.
+NO PRODUCTION IMS, HCOF/RHS OR COUPLING-POLICY CHANGE.
+NEXT: FULL DYNAMIC STANDARD-DBD VERSUS NOUR COUPLING COMPARISON.
+```
