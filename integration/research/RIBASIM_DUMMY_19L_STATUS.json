@@ -8,10 +8,10 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-19K closeout. Segment references are frozen now.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "Native 6h-saveat versus daily-saveat explicit-apply comparison at all 6h accepted-state boundaries.",
-  "next_action": "After DUMMY-19K closeout, rebind and implement without changing frozen segment references.",
+  "next_action": "Implement and execute frozen native-6h versus explicit-apply accepted-state trajectory comparison.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -19,5 +19,7 @@
     "prepared_path": "tests/research/real_ribasim_explicit_apply_trajectory_bridge.jl",
     "scientific_change": false,
     "note": "Verifier prepared while DUMMY-19K runs; no runner, workflow gate or execution until DUMMY-19K closeout."
-  }
+  },
+  "implementation_baseline": "703f4d8ec605e42124970a9fe7cecc355959f633",
+  "recovery_point": "DUMMY-19L segment references frozen before 19K output; sequencing dependency now satisfied."
 }
