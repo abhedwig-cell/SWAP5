@@ -1,0 +1,85 @@
+name: GC rootzone memory RZM06D04 local strict continuations
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06D04_PREREGISTRATION.json'
+      - 'tests/research/test_gc_rootzone_memory_rzm06d04_extract.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06d04_continuation.f90'
+      - 'tests/research/analyze_gc_rootzone_memory_rzm06d04.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06d04.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06d04.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06d04-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify D02R1 and D03 authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06D02R1_RESULT.json"))
+          d=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06D03_RESULT.json"))
+          assert r["decision"]=="QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS"
+          assert d["decision"]=="QUALIFIED_CROSS_TIME_DISCOVERY_NO_MATCH__H2_NOT_PROBED"
+          b=d["census"]["best_water_matched_pair"]
+          assert (b["A"]["history"],b["A"]["step"])==("D02",64)
+          assert (b["B"]["history"],b["B"]["step"])==("D08",44)
+          print("GC_RZM06D04_PARENT_AUTHORITY=PASS")
+          PY
+
+      - name: Verify ROM1AR2 artifact authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          meta="$(gh api repos/${GITHUB_REPOSITORY}/actions/runs/35379176697/artifacts --jq '.artifacts[] | select(.id == 10561841507) | [.id,.name,.digest,.expired] | @tsv')"
+          expected=$'10561841507\trom1ar2-35379176697\tsha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f\tfalse'
+          test "$meta" = "$expected"
+          echo 'GC_RZM06D04_ARTIFACT_AUTHORITY=PASS'
+
+      - name: Download exact ROM1AR2 authority artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rom1ar2-35379176697
+          path: ROM1AR2-AUTHORITY
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35379176697
+
+      - name: Extract immutable origins without response access
+        run: |
+          set -euo pipefail
+          python3 tests/research/test_gc_rootzone_memory_rzm06d04_extract.py             --artifact-dir ROM1AR2-AUTHORITY             --output-a rzm06d04-A.txt             --output-b rzm06d04-B.txt | tee rzm06d04-origin.txt
+          grep -Fq 'GC_RZM06D04_ORIGIN_EXTRACT=PASS' rzm06d04-origin.txt
+
+      - name: Qualify strict local continuation map
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06D04-EVIDENCE
+          GC_RZM06D04_EVIDENCE_DIR="$PWD/RZM06D04-EVIDENCE"             bash tests/research/run_gc_rootzone_memory_rzm06d04.sh rzm06d04-A.txt rzm06d04-B.txt
+
+      - name: Preserve D04 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06d04-${{ github.run_id }}
+          path: RZM06D04-EVIDENCE
+          if-no-files-found: warn
