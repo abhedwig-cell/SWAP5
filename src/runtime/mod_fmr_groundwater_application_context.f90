@@ -152,13 +152,19 @@ contains
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
-      ! Before capture there is deliberately no participant origin identity yet.
-      ! Bind only the stable tile handle here; response-origin authority is
-      ! checked immediately after capture, before any corrector evaluation.
-      if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. &
-          has_origin .or. has_candidate) then
+      ! A participant may already hold a captured accepted origin after an
+      ! aborted/pre-evaluation context. That is reusable only when it is exactly
+      ! the origin carried by the new predictor response. Live candidates are
+      ! never reusable across application contexts.
+      if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. has_candidate) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
+      end if
+      if (has_origin) then
+        if (lineage_id /= tiles(i)%swap_lineage_id .or. revision /= expected_swap_origin_revisions(i)) then
+          status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
+          return
+        end if
       end if
 
       call ledgers(i)%snapshot(snapshot)
