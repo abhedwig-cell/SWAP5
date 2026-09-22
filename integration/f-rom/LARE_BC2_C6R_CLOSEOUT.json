@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.lare.bc2.c6r.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6R",
+  "date": "2026-09-22",
+  "status": "CLOSED_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_REDUCED_RESPONSE",
+  "question": "Can a fresh root-active fixed-flux Reference panel support the preregistered three-level space-time numerical uncertainty authority before any reduced dynamic root-feedback response is generated?",
+  "answer": "NO_UNDER_FROZEN_C6R_NUMERICAL_CONTRACT",
+  "authority": {
+    "canonical_reconciled_head": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "preregistration": "integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json",
+    "initial_failure_classification": "integration/f-rom/LARE_BC2_C6R_FAILURE_CLASSIFICATION.json",
+    "repair_binding": "integration/f-rom/LARE_BC2_C6R_REPAIR_BINDING.json",
+    "final_failure_classification": "integration/f-rom/LARE_BC2_C6R_R1_FAILURE_CLASSIFICATION.json"
+  },
+  "technical_repair": {
+    "initial_failure": "Public reference-floor wrapper rejected root_extraction_active before Reference Richards execution.",
+    "repair": "Workflow-local admission repair removed only that wrapper-level root-active rejection on the frozen checkout.",
+    "repair_effective": true,
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "feddes_process_changed": false,
+    "root_sink_provider_changed": false,
+    "retry_policy_changed": false,
+    "mass_gate_changed": false
+  },
+  "decisive_reference_evidence": {
+    "repaired_run": 35748220244,
+    "repaired_run_conclusion": "cancelled_after_multiple_failures_to_release_runner_capacity_for_targeted_diagnostics",
+    "diagnostic_run": 35748905656,
+    "diagnostic_head": "dfa008075dbb79129e1bbd1846206fab78f8ae71",
+    "B01": {
+      "job_id": 106817562647,
+      "case": "R512_T32 o0 V02",
+      "solver_route": "legacy-reference-retry",
+      "solver_status": 2,
+      "nonlinear_iterations": 16,
+      "internal_retries": 1,
+      "backtracking_attempts": 16,
+      "failure_class": "RETRY_TOTAL_ONLY",
+      "balance_flags": 0,
+      "head_flags": 0,
+      "max_abs_local_residual": 6.045164369083977e-13,
+      "summed_residual": -6.194739166076602e-12,
+      "dt_day": 2.5000000000000282e-5
+    },
+    "B14": {
+      "job_id": 106817562535,
+      "case": "R512_T32 o0 V01",
+      "solver_route": "legacy-reference-retry",
+      "solver_status": 2,
+      "nonlinear_iterations": 16,
+      "internal_retries": 1,
+      "backtracking_attempts": 16,
+      "failure_class": "RETRY_TOTAL_ONLY",
+      "balance_flags": 0,
+      "head_flags": 0,
+      "max_abs_local_residual": 9.168053686017807e-13,
+      "summed_residual": 1.050893226606231e-11,
+      "dt_day": 2.5000000000000282e-5
+    },
+    "interpretation": "Both frozen materials independently reach a total-residual-only retry boundary. Local balance and head convergence flags are zero, but the total residual violates the frozen fail-closed numerical contract."
+  },
+  "decision": {
+    "reference_qualified": false,
+    "stage_1_closed": true,
+    "stage_2_prescribed_sink_reduced_harness_equivalence_executed": false,
+    "stage_3_dynamic_feedback_preregistered_or_executed": false,
+    "reduced_candidate_response_generated": false,
+    "U4_executed": false,
+    "U8_executed": false,
+    "R8_executed": false,
+    "R16_executed": false,
+    "root_feedback_hypothesis_falsified": false,
+    "new_root_specific_state_selected": false,
+    "reason": "The preregistered C6R pass rule requires a qualified root-active Reference before any reduced response. The frozen root-active failed-first-attempt policy is FAIL_CLOSED_NO_DYN0A_FALLBACK. Relaxing the total-residual gate or enabling a fallback after observing the response is not authorized."
+  },
+  "bounded_conclusion": "C6R does not provide scientific evidence for or against the minimal Layer-ROM root-feedback approximation. It establishes that the selected high-resolution root-active Reference construction is not numerically qualified under its frozen fail-closed total-residual contract.",
+  "not_claimed": [
+    "No conclusion that layer-mean-head Feddes feedback is sufficient or insufficient.",
+    "No crop-model validation.",
+    "No drought-damage validation.",
+    "No operational ET suitability.",
+    "No application acceptance.",
+    "No production-ROM admission.",
+    "No performance claim."
+  ],
+  "restart_boundary": {
+    "required": "Independent Reference/numerical-policy authority outside C6R before any restart.",
+    "forbidden_within_c6r": [
+      "Relaxing total residual tolerance after response.",
+      "Enabling the legacy DYN0A fallback for root-active cases.",
+      "Changing V01-V04, materials, root profiles, demand, spatial or temporal ladder, convergence metrics or qualification formula.",
+      "Generating reduced candidate responses while the Reference remains unqualified."
+    ],
+    "candidate_firewall": "CLOSED"
+  },
+  "model_changed": false
+}
