@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06c01.carrier_selection_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06C01",
+  "authority": "preregistered research carrier qualification",
+  "production_changes": false,
+  "parent_program_commit": "6883f100fda9d8b88e2b76be43f229038bbbe792",
+  "selected_candidate": {
+    "id": "F-ROM1A-I0-16x10-B01",
+    "source_authority": "integration/f-rom/F-ROM1A_I0_RESULT.json",
+    "authority_decision": "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_QUALIFIED",
+    "authority_workflow_run": 35380688867,
+    "geometry": "16 nodes x 10 cm = 160 cm",
+    "material": "B01",
+    "solver": "real HeadCalc via serialized Reference backend",
+    "constitutive": "explicit B110 default MvG provider",
+    "optional_process_scope": "pure hydraulics base layout",
+    "sample_semantics": "exactly one strict physical Reference advance; no automatic temporal retry/subdivision",
+    "transaction_semantics": "immutable committed origin, opaque candidate, explicit commit/discard, hard mass gate"
+  },
+  "rejected_candidates": [
+    {
+      "id": "Hupsel whole-run M1-C3",
+      "reason": "scientifically qualified but exact raw case/snapshot payload is not durably repo- or artifact-materialized for independent coupling-origin reconstruction"
+    },
+    {
+      "id": "F-WOF PP02 fixtures",
+      "reason": "crop-state fixtures, not SWAP hydraulic profile carriers"
+    },
+    {
+      "id": "existing F-GC44/MAP carriers",
+      "reason": "inherit focused four-node FSI geometry already shown by RZM06A6 to have reached its H2 construction ceiling"
+    }
+  ],
+  "current_branch_requalification": {
+    "stub_materializer": "tests/rom/materialize_f_rom0_headcalc_stubs.py",
+    "geometry_nodes": 16,
+    "dz_cm": 10,
+    "root_zone_depth_cm": 30,
+    "required_root_zone_nodes": 3,
+    "material": "B01",
+    "initial_effective_saturation": 0.85,
+    "sample_dt_day": 0.0008,
+    "hard_mass_gate_cm": 1e-12,
+    "bottom_mode": 5,
+    "datum": {
+      "bottom_boundary_elevation_m": -1.6,
+      "rationale": "16 x 10 cm column; lower face is 160 cm below surface"
+    },
+    "fixed_head_mapping": "use fmr_groundwater_head_forcing_materializer_t; mapped bottom pressure head must reproduce the intended mode-5 pressure head at roundoff",
+    "positive_gate": [
+      "sample accepted and mass complete",
+      "one physical advance and zero automatic transaction retries",
+      "read-only sample does not mutate committed origin before explicit commit",
+      "discard does not mutate committed origin",
+      "explicit commit advances exactly one revision and sample dt",
+      "upper 30 cm spans exactly nodes 1..3",
+      "O0/O2 output identity"
+    ],
+    "fail_closed_gate": "a deliberately nonconvergent strict sample leaves committed revision, time and physical state unchanged"
+  },
+  "next_if_pass": "GC-RZM06C02 response-blind search of the already-qualified ROM1AR2 768-state artifact for equal-storage/different-distribution origins, before any response probe.",
+  "controls": [
+    "no production source mutation",
+    "no H2 threshold change",
+    "no response-driven origin selection",
+    "no use of ROM fallback states as a new production policy",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "C01 does not test H2",
+    "C01 does not admit the ROM research seam to production coupling",
+    "C01 does not claim B01 homogeneous material represents Hupsel or a deployment soil profile"
+  ]
+}
