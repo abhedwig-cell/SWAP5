@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21l.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21L",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_DIRECT_BOUNDARY_SPECIFIC_RESIDUAL_STATE",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21L_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21L_RESULT.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21K_RESULT.json",
+  "tested_commit": "97dd0de105d3db3c3c26bc088af21229e9228f1a",
+  "workflow_run": 35745495711,
+  "workflow_job": 106805928495,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_source_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "b1": "ONE_COMPARTMENT_BALANCE_FAILURE_NODE_4_ON_UNTOUCHED_PATH",
+    "b2": "TOTAL_BALANCE_FAILURE_WITH_ALL_COMPARTMENTS_INDIVIDUALLY_WITHIN_TOLERANCE",
+    "g21k_b2_threshold": "DIRECTLY_CROSS_VALIDATED",
+    "g21k_b1_occlusion": "CONFIRMED_DUAL_ROLE_REMAINS_MATERIAL",
+    "tolerance_relaxation": "NOT_ADMITTED",
+    "response_space_globalization": "REMAINS_RESEARCH_ONLY"
+  },
+  "next_action": "Open G21M as residual-vector arithmetic/cancellation qualification, with a separate B1 node-4 term decomposition. Keep the observer research-build-only and all production sources byte-unchanged."
+}

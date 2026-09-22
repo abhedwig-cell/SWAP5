@@ -1698,3 +1698,38 @@ PRODUCTION SOLVER TOLERANCES = UNCHANGED.
 RETRY POLICY / STATUS SMOOTHING = NOT ADMITTED.
 NEXT: DIRECT READ-ONLY FINAL-RESIDUAL OBSERVATION ON THE UNCHANGED PATH.
 ```
+
+## G21L disposition: direct residual state separates local and total balance failures
+
+G21L replaced the remaining tolerance inference with a read-only observation of the untouched final HeadCalc workspace. The observer existed only in temporary research-build copies of the serialized backend and FGC44 test bridge. The pinned production backend, standard bridge and HeadCalc blobs remained unchanged. Workflow `35745495711`, job `106805928495`, passed the full FGC44 end-to-end gate and the G21L gates.
+
+The adjacent B1 pair has the same four-iteration, eight-backtracking prefix, but only the failing side contains a compartment residual above the production criterion:
+
+```text
+B1 status 6  max |residual_i|  1.1378075673480759e-12  node 4
+             total residual     3.3119349789024467e-13
+             balance failures   1
+B1 status 0  max |residual_i|  9.495369239693498e-13   node 3
+             total residual     1.2592008645205868e-13
+             balance failures   0
+```
+
+B2 is different. Its failing side has no individual compartment above `1e-12`, but the total sum fails:
+
+```text
+B2 status 6  max |residual_i|  9.714433542252956e-13
+             total residual    -1.1858268037760853e-12
+B2 status 0  max |residual_i|  9.665029113171410e-13
+             total residual    -9.755467635457958e-13
+```
+
+The direct B2 magnitude equals the G21K smallest passing binary64 total-balance tolerance, independently validating the threshold tomography. At B1, the direct maximum equals the G21K first-event tolerance numerically, but the G21K intervention remains non-equivalent because changing `CritDevBalCp` also changes the `Fmax < CritDevBalCp` backtracking branch.
+
+```text
+G21L B1 LOCAL COMPARTMENT FAILURE = DIRECTLY OBSERVED.
+G21L B2 TOTAL BALANCE FAILURE = DIRECTLY OBSERVED.
+G21K B2 THRESHOLD = CROSS-VALIDATED.
+G21K B1 PATH OCCLUSION = STILL MATERIAL.
+PRODUCTION SOURCE / TOLERANCES = UNCHANGED.
+NEXT: RESIDUAL-ARITHMETIC AND CANCELLATION QUALIFICATION.
+```
