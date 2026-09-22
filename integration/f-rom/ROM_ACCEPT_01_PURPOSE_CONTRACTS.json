@@ -182,7 +182,9 @@
           "structural_error_allocation_required": false,
           "rationale": "The external criteria judge the final groundwater application outputs directly rather than allocating an internal reduced-component error.",
           "current_candidate_execution_authorized": false,
-          "blocker": "MATCHING_OBSERVATION_BOUND_LHM_LIKE_HARNESS_POPULATION_AND_BLIND_PROTOCOL_NOT_PREREGISTERED"
+          "blocker": "MATCHING_OBSERVATION_BOUND_LHM_LIKE_HARNESS_POPULATION_AND_BLIND_PROTOCOL_NOT_PREREGISTERED",
+          "protocol_shell": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
+          "next_gate": "Resolve and freeze the protocol shell bindings before any reduced-model application response."
         }
       }
     },
