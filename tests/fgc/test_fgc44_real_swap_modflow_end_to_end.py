@@ -218,7 +218,8 @@ def main()->None:
                 require(status==PreparedSolveStatus.OK,session.last_error)
                 require(it is not None,f"missing MODFLOW iterate {outer}")
                 require(np.array_equal(it.accepted_head_old_m,accepted_xold),"MODFLOW XOLD drifted")
-                head=float(it.head_m[1])
+                head_index=0 if CLOSEOUT_ONECELL else 1
+                head=float(it.head_m[head_index])
                 q_gw=(current_hcof*head-current_rhs)/(AREA_M2*DAY_TO_S)
                 q_swap=swap.trial(head)
                 q_diag,_,dq_swap_dh,tangent_available=swap.last_trial_response()
