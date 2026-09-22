@@ -52,6 +52,15 @@
       "workflow_job": 106737853660,
       "implementation_head": "199868ff91ebf5faeb0169484f7dadf99585d7f3",
       "evidence_commit": "f4faa5d25e475201018bd84a6bc17c5b35f7a2ec"
+    },
+    {
+      "work_unit": "GC-RZM06A2",
+      "decision": "QUALIFIED_CONSTRUCTION_INADMISSIBLE__H2_NOT_PROBED",
+      "preregistration_commit": "ae06b69b7b861b30934a0591958666d95726ff49",
+      "workflow_run": 35727006391,
+      "workflow_job": 106742998316,
+      "implementation_head": "dac3b3c1cb399c1ca5f379e4f1b3396a27b47957",
+      "evidence_commit": "7af96cdbb4dd39c43494a24237bd180030620094"
     }
   ],
   "current_findings": [
@@ -80,16 +89,21 @@
     "RZM06A H2 is NO_MATCH rather than falsified: 23/25 frozen two-interval trajectories were accepted and 171 endpoint pairs met the total-profile-water tolerance, but the largest M1 separation among those pairs was about 7.04e-7 versus the frozen 1e-4 requirement, so no H2 response probe was opened.",
     "RZM06A H3 supports committed-origin and coupling-window dependence of the local real-SWAP response tangent. The state effect is deterministic but small relative to tangent magnitude; the window effect remains substantial after conversion to an interface-rate derivative.",
     "RZM06A H4 confirms that accepted whole-window bottom exchange, terminal bottom flux, physical local derivative, baseline predictor u and production-facing affine coefficients have distinct semantics and provenance.",
-    "RZM06A does not require a second MODFLOW hydraulic state: the evidence remains compatible with one physical fixed-plane H_c plus SWAP-internal memory used to construct the interface response."
+    "RZM06A does not require a second MODFLOW hydraulic state: the evidence remains compatible with one physical fixed-plane H_c plus SWAP-internal memory used to construct the interface response.",
+    "RZM06A2 falsifies the frozen long-window symmetric H_c pulse construction as an admissible state-preparation route: 0/56 trajectories completed their first interval; representative failures exhausted the temporal retry budget with zero accepted substeps and zero solver rejections.",
+    "RZM06A2 failures are transaction-safe: failed head-pulse trials leave committed revision, time, ledger and profile observables unchanged.",
+    "RZM06A2 does not test H2 itself; no endpoint pair was constructed and no E_c probe was opened."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06A2",
-    "scope": "Response-blind real-SWAP H2 state-pair construction: create stronger vertical-distribution separation at fixed endpoint time and H_c without direct state mutation, then apply the unchanged H2 water and M1 thresholds before any E_c probe.",
-    "prerequisite": "GC-RZM06A qualified with H2=NO_MATCH",
+    "id": "GC-RZM06A3",
+    "scope": "Response-blind short-window H_c admissibility mapping followed by micro-stepped symmetric head-history state construction for H2, retaining the unchanged profile-water and M1 thresholds.",
+    "prerequisite": "GC-RZM06A2 qualified as construction-inadmissible",
     "constraints": [
-      "do not relax |ΔW_profile| <= 1e-6 or |ΔM1| >= 1e-4 post hoc",
-      "preserve immutable origins, mass gates and failed trajectories as evidence",
-      "keep RZM06B/H5 separate until a qualified management-forcing route exists"
+      "map head-pulse admissibility using status/retry/mass evidence before endpoint-pair search",
+      "build longer histories only from admitted micro-intervals; do not increase retry budgets or loosen temporal/mass gates",
+      "do not relax |ΔW_profile| <= 1e-6 or |ΔM1| >= 1e-4",
+      "do not inspect E_c before endpoint-pair selection",
+      "keep RZM06B/H5 separate"
     ]
   },
   "blocked": [],
