@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.coupling.real_ribamod_passive_groundwater_transfer.preexecution_disposition.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20E",
+  "decision": "RIBASIM_DUMMY_20E_FALSIFIED_PREEXECUTION_BY_PRODUCT_CLOCK_ORDER",
+  "classification": "SCIENTIFIC_SOURCE_CONTRACT_FALSIFICATION_BEFORE_RUNTIME",
+  "executed": false,
+  "source_authorities": {
+    "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "Deltares/Ribasim@e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "falsified_assumption": "A groundwater drainage flux active from t=0 would arrive physically after the initial daily UserDemand allocation and therefore leave the initial 32/0 allocation frozen.",
+  "actual_product_order": [
+    "RibaMod.update advances and finalizes the MF6 timestep.",
+    "RibaMod.exchange_mod2rib writes the resulting MF6 drainage/infiltration into Ribasim Basin vertical-flux state.",
+    "RibaMod then calls Ribasim.update_until(MF6 current time).",
+    "Ribasim v2026.1.1 BMI.update_until delegates to step!.",
+    "At model time t=0, step! recognizes the fixed allocation.dt boundary and runs update_allocation! before the physical Ribasim step.",
+    "The allocation LP explicitly includes Basin vertical_flux.drainage as positive forcing."
+  ],
+  "consequence": "A drainage flux already active during the first MF6 product step is visible to the t=0 Ribasim allocation solve. The original frozen 32 m3/day root allocation is therefore not a valid authority assumption.",
+  "downstream": "Use DUMMY-20E2 with drainage inactive for product step 0-6 h and activated only for the 6-12 h and later MF6 steps, so the physical transfer genuinely arrives after the accepted t=0 daily allocation."
+}
