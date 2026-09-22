@@ -207,16 +207,17 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-20E2",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20D",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20E2_QUALIFIED_POSTALLOCATION_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
       "dependency": "qualified DUMMY-20D",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0"
+      "modflow_release": "6.7.0",
+      "implementation_baseline": "a1ffd10eb2c7fb9946a5f2d116b413a8610b7bf2"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20E2 delayed groundwater-transfer product experiment.",
+  "next_authority_action": "Execute frozen DUMMY-20E2 post-allocation real passive groundwater transfer; no production admission claim.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
