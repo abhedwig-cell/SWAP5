@@ -33,11 +33,28 @@
     "provider_scope": "concrete b110_root_sink_provider_t with bound finite prescribed root-extraction vector and matching node count"
   },
   "preserved_c6r_contract": {
-    "materials": ["B01", "B14"],
-    "histories": ["V01", "V02", "V03", "V04"],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
     "root_depth_cm": 80,
-    "root_distributions": ["SHALLOW", "UNIFORM"],
-    "reference_routes": ["R512_T32", "R1024_T32", "R2048_T32", "R2048_T16", "R2048_T8"],
+    "root_distributions": [
+      "SHALLOW",
+      "UNIFORM"
+    ],
+    "reference_routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
     "reference_target": "R2048_T32",
     "max_abs_transaction_mass_cm": 1e-12,
     "failed_first_attempt_policy": "FAIL_CLOSED_NO_DYN0A_FALLBACK",
@@ -67,5 +84,12 @@
     "application_tolerance_selected": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
+  },
+  "execution_trigger": {
+    "purpose": "Trigger the already-bound R1 reference-only workflow after the binding commit was not observed as a workflow run.",
+    "scientific_semantics_changed": false,
+    "candidate_response_generated": false,
+    "bound_workflow": ".github/workflows/f-rom-lare-bc2-c6r-r1.yml",
+    "action": "PUSH_PATH_TRIGGER_ONLY"
   }
 }
