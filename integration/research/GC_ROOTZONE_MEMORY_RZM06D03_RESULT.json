@@ -1,10 +1,10 @@
 {
-  "schema": "swap5.gc_rootzone_memory.rzm06d03.cross_time_origin_selection.v1",
+  "schema": "swap5.gc_rootzone_memory.rzm06d03.result.v1",
   "date": "2026-09-22",
   "work_unit": "GC-RZM06D03",
   "production_changes": false,
   "preregistration_commit": "c1f96aa01d07564c2166f1346ef383ec2357406a",
-  "qualification": {
+  "execution": {
     "workflow_run": 35739393743,
     "workflow_job": 106784863436,
     "executed_head": "455a0112591301c27ee8e40b00a37d70589873ae",
@@ -14,19 +14,18 @@
     "workflow_run": 35379176697,
     "artifact_id": 10561841507,
     "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
-    "o0_o2_byte_identity": true,
     "o0_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
-    "o2_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0"
+    "o2_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+    "o0_o2_byte_identity": true
   },
   "firewall": {
-    "all_state_lines_seen": 768,
     "discovery_metadata_records": 512,
-    "eligible_current_interval_fallback_false_records": 475,
+    "eligible_producing_interval_fallback_false_records": 475,
     "excluded_discovery_fallback_true_records": 37,
     "heldout_node_observables_parsed": 0,
     "response_fields_parsed": false,
-    "same_library_time_required": false,
-    "different_history_required": true
+    "different_history_required": true,
+    "same_library_time_required": false
   },
   "frozen_gate": {
     "max_abs_profile_water_difference_cm": 0.0001,
@@ -52,20 +51,17 @@
       "fraction_of_required_M1_separation": 0.7836912353482717
     }
   },
-  "selected_pair": null,
-  "disposition": "QUALIFIED_CROSS_TIME_STRICT_DISCOVERY_NO_MATCH__H2_NOT_PROBED",
+  "decision": "QUALIFIED_CROSS_TIME_DISCOVERY_NO_MATCH__H2_NOT_PROBED",
   "interpretation": [
-    "Removing the extra same-library-time control after D02R1 substantially expands the state-pair census but still produces no pair satisfying the unchanged H2 state gate.",
-    "The strongest water-matched strict discovery pair reaches about 78.4% of the required M1 separation while remaining inside the frozen total-water tolerance.",
-    "This is a state-space coverage no-match, not an H2 falsification and not a reason to relax the threshold.",
-    "The next justified step is prospective state-space expansion with forcing designed to separate vertical distribution while balancing total storage, still selected without response access."
+    "Removing the same-library-time control after D02R1 increases the response-blind state search from 1549 to 98693 different-history pairs but still yields no H2-qualified origin pair.",
+    "The best water-matched pair is substantially closer to the vertical-distribution gate than the same-time D01 result, justifying targeted state-only accepted continuations rather than threshold relaxation.",
+    "No E_c, bottom exchange, terminal flux or solver response field influenced selection."
   ],
-  "prohibited": [
-    "do not relax the H2 thresholds",
-    "do not open HELD_OUT states",
-    "do not use E_c, terminal flux or response fields to design/select an origin pair",
-    "do not reinterpret current-interval FALLBACK=F as whole-trajectory fallback-free authority",
-    "do not promote synthetic C02 carrier after its frozen initialization no-go"
-  ],
-  "next": "GC-RZM06E01 preregister a response-blind strict-Reference reachable-state expansion on the qualified 16-node C01 carrier, using opposing top-vs-bottom water placement families and a fixed grid chosen before execution."
+  "next": "GC-RZM06D04 response-blind strict accepted-continuation map from immutable D02/64 and D08/44 origins at common time, with state-only endpoint pair selection.",
+  "nonclaims": [
+    "No H2 support or falsification.",
+    "No threshold relaxation.",
+    "No HELD_OUT access.",
+    "No production admission."
+  ]
 }
