@@ -285,3 +285,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G21_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21
   echo "GC_FGC44_G21_FAIL missing dynamic response-globalization gate" >&2
   exit 1
 }
+
+
+# G21A diagnostic decomposition of the falsified G21 outer-2 head divergence.
+# This does not change any G21 gate or production policy; it separates response
+# parameter sensitivity from continuous prepared-solve path dependence.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21a_outer2_divergence.py \
+  | tee "$BUILD/fgc44-globalization-g21a.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21A_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21a.txt" || {
+  echo "GC_FGC44_G21A_FAIL missing outer-2 divergence diagnostic gate" >&2
+  exit 1
+}
