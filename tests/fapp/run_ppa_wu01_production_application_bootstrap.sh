@@ -142,6 +142,14 @@ MODULE_SRC=(
   src/runtime/mod_fmr_groundwater_application_context.f90
   src/adapter/mod_fmr_groundwater_application_c_api.f90
   src/runtime/mod_fmr_production_application_bootstrap.f90
+  src/process/mod_pmdirect_swetr0_process.f90
+  src/crop/mod_crop_root_uptake_input_contract.f90
+  src/adapter/mod_ppa_atm02_typed_meteo_ingestion.f90
+  src/adapter/mod_ppa_atm02_pmdirect_daily_binding.f90
+  src/adapter/mod_ppa_atm02_pmdirect_prescribed_root_sink.f90
+  src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90
+  src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90
+  src/adapter/mod_ppa_atm02_pmdirect_production_forcing_adapter.f90
 )
 
 for opt in 0 2; do

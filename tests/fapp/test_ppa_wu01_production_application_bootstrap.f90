@@ -21,6 +21,14 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c
+  use mod_ppa_atm02_typed_meteo_ingestion, only: ppa_atm02_decoded_daily_meteo_t, ppa_atm02_generic_interval_t, &
+       ppa_atm02_meteo_provenance_t
+  use mod_pmdirect_swetr0_process, only: pmdirect_swetr0_site_t, pmdirect_swetr0_canopy_t
+  use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
+  use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
+       materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
   implicit none
 
   integer, parameter :: NTILE = 2
@@ -33,6 +41,7 @@ program test_ppa_wu01_production_application_bootstrap
   type(fmr_production_application_config_t) :: config, root_config, gw_config, bad_config, root_bad_config, drainage_bad_config
   type(fmr_production_application_bootstrap_t) :: app, root_app, gw_app, bad_app, root_bad_app, drainage_bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
+  type(fmr_b110_physical_forcing_t), allocatable :: atm02_forcing(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
   type(groundwater_topology_t) :: topology
@@ -94,6 +103,8 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'root-enabled committed revisions')
   call root_app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. root_app%ready(), 'clean root-enabled owner close')
+
+  call run_atm02_pmdirect_owner_profile(config)
 
   ! Groundwater authority: the same production bootstrap type owns an admitted
   ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
@@ -175,6 +186,8 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_ROOT_PROFILE_STANDALONE_RUNTIME=PASS'
   print '(a)', 'PPA_WU01_ROOT_PROFILE_HARD_MASS=PASS'
   print '(a)', 'PPA_WU01_ROOT_PROFILE_COMMITTED_OWNER=PASS'
+  print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_COMPOSITION=PASS'
+  print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_HARD_MASS=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -360,6 +373,73 @@ contains
       head_m = 0.0_real64
     end if
   end subroutine compute_reference_head
+
+  subroutine run_atm02_pmdirect_owner_profile(base_config)
+    type(fmr_production_application_config_t), intent(in) :: base_config
+    type(fmr_production_application_config_t) :: atm_config
+    type(fmr_production_application_bootstrap_t) :: atm_app
+    type(ppa_atm02_decoded_daily_meteo_t) :: decoded
+    type(ppa_atm02_generic_interval_t) :: forcing_interval
+    type(pmdirect_swetr0_site_t) :: site
+    type(pmdirect_swetr0_canopy_t) :: canopy
+    type(crop_root_uptake_input_t) :: root_input
+    type(soil_water_parameter_set_t) :: geometry
+    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(b110_dynamic_top_boundary_request_t) :: top_request
+    type(ppa_atm02_meteo_provenance_t) :: provenance
+    type(ppa_atm02_production_forcing_diagnostics_t) :: atm_diagnostics
+    integer :: tile, local_status, node
+
+    atm_config = base_config
+    do tile = 1, NTILE
+      atm_config%tiles(tile)%parameters%root_extraction_active = .true.
+    end do
+    allocate(atm02_forcing(NTILE))
+    forcing_interval%t0 = T0; forcing_interval%t1 = T1
+    decoded%source_id = 9201_int64; decoded%source_record_index = 44
+    decoded%day_of_year = 180; decoded%t0 = T0 - 0.25_real64; decoded%t1 = T1 + 0.25_real64
+    decoded%radiation_j_m2_d = 18.0e6_real64; decoded%minimum_air_temperature_c = 12.0_real64
+    decoded%maximum_air_temperature_c = 24.0_real64; decoded%vapour_pressure_kpa = 1.3_real64
+    decoded%wind_speed_m_s = 2.0_real64; decoded%gross_rain_cm_d = 0.0_real64
+    site%latitude_degrees = 52.0_real64; site%altitude_m = 10.0_real64
+    site%wind_measurement_height_m = 2.0_real64; site%humidity_measurement_height_m = 2.0_real64
+    site%angstrom_a = 0.25_real64; site%angstrom_b = 0.50_real64; site%soil_surface_resistance_s_m = 100.0_real64
+    canopy%crop_emerged = .true.; canopy%lai = 3.0_real64; canopy%vegetation_cover_fraction = 0.7_real64
+    canopy%cofab_cm = 0.5_real64; canopy%albedo = 0.23_real64
+    canopy%dry_canopy_resistance_s_m = 70.0_real64; canopy%wet_canopy_resistance_s_m = 30.0_real64
+    do tile = 1, NTILE
+      geometry%parameter_set_id = atm_config%tiles(tile)%parameters%parameter_set_id
+      geometry%active_nodes = atm_config%tiles(tile)%parameters%active_nodes
+      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+      geometry%z = atm_config%tiles(tile)%parameters%z; geometry%dz = atm_config%tiles(tile)%parameters%dz
+      geometry%node_distance = atm_config%tiles(tile)%parameters%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics, atm_config%tiles(tile)%parameters%cofgen)
+      root_input%crop_emerged = .true.; root_input%rooted_nodes = min(4, geometry%active_nodes)
+      allocate(root_input%cumulative_root_fraction(root_input%rooted_nodes + 1))
+      do node = 1, root_input%rooted_nodes + 1
+        root_input%cumulative_root_fraction(node) = real(node - 1, real64) / real(root_input%rooted_nodes, real64)
+      end do
+      top_request = b110_dynamic_top_boundary_request_t()
+      top_request%conductivity_mean_method = atm_config%tiles(tile)%parameters%swkmean
+      top_request%pressure_head_top_cm = atm_config%tiles(tile)%initial_state%pressure_head(1)
+      top_request%water_content_top = atm_config%tiles(tile)%initial_state%water_content(1)
+      top_request%ponding_max_cm = 2.0_real64; top_request%runoff_resistance_day = 1.0_real64; top_request%runoff_exponent = 1.0_real64
+      call materialize_ppa_atm02_pmdirect_production_forcing(decoded, forcing_interval, site, canopy, 0.0_real64, root_input, &
+           geometry, hydraulics, top_request, atm_config%tiles(tile)%base_forcing, atm02_forcing(tile), provenance, atm_diagnostics)
+      call require(atm_diagnostics%status == PPA_ATM02_PRODUCTION_FORCING_OK .and. atm_diagnostics%result_produced, 'ATM02 forcing composition')
+      deallocate(geometry%z, geometry%dz, geometry%node_distance, root_input%cumulative_root_fraction)
+    end do
+    call atm_app%initialize(atm_config, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. atm_app%ready(), 'ATM02 owner initialize')
+    call atm_app%run_standalone_with_forcing(T0, T1, atm02_forcing, results, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), 'ATM02 owner commit')
+    call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 owner hard mass')
+    call atm_app%copy_committed_revisions(revisions, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'ATM02 owner revisions')
+    call atm_app%close(local_status)
+    call require(local_status == FMR_APP_BOOT_OK, 'ATM02 owner close')
+    deallocate(atm02_forcing)
+  end subroutine run_atm02_pmdirect_owner_profile
 
   subroutine require(condition, message)
     logical, intent(in) :: condition
