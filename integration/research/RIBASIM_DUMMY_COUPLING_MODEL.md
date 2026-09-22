@@ -981,6 +981,11 @@ DUMMY-20H8
   +8.0000425122 m3/day drainage is explicit positive forecast supply and yields
   40/7.9904148932 m3/day, while equal-magnitude infiltration is implicit
   negative forcing with alpha=0 and leaves 39.9903723811/0 m3/day
+
+DUMMY-20H9
+  qualified actual-product positive-groundwater bridge:
+  the real pinned RibaMod passive-Drainage route records 40/20 m3/day at t=24,
+  not the preregistered memory-only alternative 40/13.9748888743 m3/day
 ```
 
 Together these work units establish both one-way passive groundwater arrival and
@@ -1123,7 +1128,7 @@ current forcing F_(k+1)
 These quantities may be numerically related, but they are not interchangeable
 and need not refer to the same time or authority.
 
-DUMMY-20H7 closes the previously open end-to-end bridge for this tested
+DUMMY-20H7 closes the negative-forcing end-to-end bridge for this tested
 topology. The actual pinned RibaMod route produces the H6 t=24 allocation
 oracle after generating the accepted state through real day-1 coupled
 realization. In particular:
@@ -1142,6 +1147,29 @@ remain separate semantic objects in the actual product composition.
 Guarded H7 v2 (run 35745915889) is the primary product authority for this
 bridge; the earlier successful v1 run 35745769522 is retained as a duplicate
 confirmation only.
+
+DUMMY-20H8 and DUMMY-20H9 close the forcing-sign pair. On the same accepted
+memory state, equal-magnitude current groundwater forcing is not represented
+symmetrically in allocation:
+
+```text
+positive Basin drainage
+  -> explicit positive forcing
+  -> admitted directly to the allocation budget
+
+negative Basin infiltration
+  -> implicit negative forcing
+  -> multiplied by low_storage_factor
+  -> may be attenuated independently of accepted storage memory
+```
+
+DUMMY-20H9 closes the positive-forcing product counterpart using the real
+passive-Drainage route. At t=24, accepted storage excess is
+21.9748888743 m3 and current drainage is 7.9998720020 m3/day. The actual
+allocation record is 40/20 m3/day, whereas omitting the current positive
+forcing would have yielded only 40/13.9748888743 m3/day. Thus current positive
+groundwater forcing is management-visible alongside accepted memory in the
+actual product composition.
 
 DUMMY-20H8 adds a distinct sign-sensitive forecast contract on that same
 accepted state. Ribasim v2026.1.1 places Basin drainage in the explicit
