@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_wu05f1.source_census.v1",
+  "work_unit": "PPA-WU05-F1",
+  "snapshot": "B1.11",
+  "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "members": {
+    "SWAP/rootextraction.f90": {
+      "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "bytes": 22013,
+      "macro_branch": "alpfrs is initialized to 1. In RootExtraction_MACRO, when SWFROST=1 and tsoil(node)<0.0d0, alpfrs is set to 0; nonnegative temperatures retain identity."
+    },
+    "SWAP/temperature.f90": {
+      "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+      "bytes": 32708,
+      "owner": "MOD_SoilTemperature owns tsoil; RootExtraction reads the committed profile."
+    },
+    "SWAP/readswap.f90": {
+      "evidence": "SWFROST=1 with SWMACRO=1 is rejected, separating this root-extraction MACRO method from macropore-flow mode."
+    }
+  },
+  "route_limits": {
+    "micro": "RootExtraction_MICRO raises a source error when SWFROST=1 ('SWFROST not yet implemented'); its later frost code is unreachable in the supported execution route and is not included.",
+    "thermal_boundary": "The hydraulic FrozenCond/RFCP modifier is separate. This scalar root factor does not implement or admit that boundary process.",
+    "runtime_order": "SWAP calls FrozenCond then RootExtraction(2) before the Richards solve; the root-temperature profile is read-only here."
+  },
+  "scope_verdict": "Only the exact RootExtraction_MACRO scalar gate is oracle-eligible. No runtime integration, MICRO behavior, hydraulic frost boundary, stress composition or sink receipt is admitted.",
+  "production_admission": "NONE"
+}

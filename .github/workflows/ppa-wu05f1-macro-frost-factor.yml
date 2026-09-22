@@ -1,0 +1,21 @@
+name: PPA-WU05-F1 macro root frost factor
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05f1-macro-frost-factor.yml'
+      - 'src/process/mod_ppa_wu05f1_macro_frost_factor.f90'
+      - 'tests/fapp/test_ppa_wu05f1_macro_frost_factor.f90'
+      - 'tests/fapp/run_ppa_wu05f1_macro_frost_factor.sh'
+      - 'integration/audits/PPA_WU05F1_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05F1_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05F1_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  macro-frost-factor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 macro root-frost gate at O0/O2
+        run: bash tests/fapp/run_ppa_wu05f1_macro_frost_factor.sh
