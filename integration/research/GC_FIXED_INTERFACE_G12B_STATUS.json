@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12B",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "state": "IMPLEMENTED_SINGLE_AUTHORITY_AWAITING_LIVE_EXECUTION",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12B_PREREGISTRATION.json",
   "parent_groundwater_authority": "integration/research/GC_FIXED_INTERFACE_G12A_RESULT.json",
   "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G12_RESULT.json",
@@ -12,6 +12,6 @@
   "runner": "tests/research/run_gc_real_swap_map09.sh",
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
-  "recovery_point": "0593b055732f47567ac19275b3a37efd734e25d3",
-  "next_action": "Execute exact postimage; require all three G12A local groundwater authorities, independent roots, and P4 convergence from both frozen starts while preserving G12 as falsified."
+  "recovery_point": "057dbb2127fa5e8c75768a1b6511250415eafd40",
+  "next_action": "Execute only the normalized G12B local-oracle replay; require all three G12A groundwater authorities, independent reference roots, P4 convergence from both starts, head/root agreement, and immutable transaction authority."
 }
