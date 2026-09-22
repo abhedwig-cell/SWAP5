@@ -120,6 +120,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_g16_begin_session_c, fgc44_g16_observe_head_c, fgc44_g16_counts_c, fgc44_g16_end_session_c
   public :: fgc44_g21g_backend_observation_c
   public :: fgc44_g21h_isolated_attempt_c
+  public :: fgc44_g21i_solver_prefix_c
 
 contains
 
@@ -687,6 +688,76 @@ contains
     if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
     fgc44_g21h_isolated_attempt_c=0_c_int
   end function fgc44_g21h_isolated_attempt_c
+
+  integer(c_int) function fgc44_g21i_solver_prefix_c(head_m,duration_day,max_iterations,result_status,completed, &
+       candidate_ready,attempts,retries,solver_rejections,temporal_rejections,temporal_unavailable_rejections, &
+       mass_rejections,internal_retries,completed_t) bind(C,name="fgc44_g21i_solver_prefix_c")
+    real(c_double), value, intent(in) :: head_m,duration_day
+    integer(c_int), value, intent(in) :: max_iterations
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,attempts,retries,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: completed_t
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    type(canonical_numerical_config_t) :: probe_config
+    type(fmr_b110_physical_parameters_t) :: probe_parameters
+    integer :: forcing_status
+    logical :: ok
+    real(real64) :: probe_t1
+
+    fgc44_g21i_solver_prefix_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    attempts=0_c_int; retries=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    completed_t=0.0_c_double
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(head_m,real64)) .or. .not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double .or. duration_day>real(window%t1-window%t0,c_double))return
+    if(max_iterations<1_c_int .or. max_iterations>int(corrector_parameters%max_iterations,c_int))return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_g21i_solver_prefix_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_g21i_solver_prefix_c=3_c_int
+      return
+    end if
+
+    probe_config=corrector_config
+    probe_config%transaction%max_retries=0
+    probe_parameters=corrector_parameters
+    probe_parameters%max_iterations=int(max_iterations)
+    probe_t1=window%t0+real(duration_day,real64)
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,probe_parameters,committed,typed_forcing,probe_config, &
+           window%t0,probe_t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_g21i_solver_prefix_c=4_c_int
+      return
+    end select
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_g21i_solver_prefix_c=0_c_int
+  end function fgc44_g21i_solver_prefix_c
 
   integer(c_int) function fgc44_g15_last_trial_observation_c(available,participant_status,q_available, &
        result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
