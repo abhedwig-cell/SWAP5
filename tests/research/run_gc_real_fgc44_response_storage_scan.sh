@@ -201,3 +201,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G15_EXECUTION=PASS' "$BUILD/fgc44-g15-participant-o
   echo "GC_FGC44_G15_FAIL missing same-trial participant observation gate" >&2
   exit 1
 }
+
+
+# G16 production-facing building-block qualification: the service schedules
+# immutable-origin participant probes, caches exact-head observations, and
+# discards diagnostic candidates through the participant. E3 remains the
+# frozen research controller/oracle; no HCOF/RHS policy is exercised here.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g16_tangent_observation_service.py \
+  | tee "$BUILD/fgc44-globalization-g16.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G16_EXECUTION=PASS' "$BUILD/fgc44-globalization-g16.txt" || {
+  echo "GC_FGC44_G16_FAIL missing tangent-observation-service gate" >&2
+  exit 1
+}
