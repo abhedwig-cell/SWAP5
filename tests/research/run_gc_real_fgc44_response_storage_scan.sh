@@ -88,14 +88,18 @@ grep -Fq 'GC_FIXED_INTERFACE_G08_EXECUTION=PASS' "$BUILD/fgc44-globalization-g08
 }
 
 
-# G09 boundary-tangent qualification. The estimator direction is chosen only
-# from trial admissibility status; all probes and policy iterates are discarded.
-LIBMF6="$BUILD/modflow-bin/libmf6.so" \
-FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
-  python3 tests/research/test_gc_fixed_interface_fgc44_boundary_tangent_g09.py \
-  | tee "$BUILD/fgc44-globalization-g09.txt"
+# The preregistered G09 all-boundary estimator gate was falsified in
+# workflow 35699061533 at C3_LONG_HIGH positive edge. Preserve that result;
+# do not rerun it as a moving acceptance gate.
+echo 'GC_FIXED_INTERFACE_G09_FIRST_EXECUTION=FALSIFIED_PRESERVED'
 
-grep -Fq 'GC_FIXED_INTERFACE_G09_EXECUTION=PASS' "$BUILD/fgc44-globalization-g09.txt" || {
-  echo "GC_FGC44_G09_FAIL missing boundary-tangent execution gate" >&2
+# G09A fixed-scale diagnostic: characterize status topology and derivative
+# estimates at the failed C3-positive state and the C2-negative control.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_tangent_topology_g09a.py \
+  | tee "$BUILD/fgc44-globalization-g09a.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G09A_DIAGNOSTIC=PASS' "$BUILD/fgc44-globalization-g09a.txt" || {
+  echo "GC_FGC44_G09A_FAIL missing tangent-topology diagnostic gate" >&2
   exit 1
 }
