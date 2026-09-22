@@ -6,15 +6,15 @@
   "baseline": "cab227dadf7600bdaa2162cf9612cb0283662bbb",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20G actual-product active-river reciprocity qualification.",
+  "next_action": "Use active-river reciprocal stage feedback as physical product authority; define the next management-plus-active-exchange experiment separately.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "a258584729fd43012410928bbf1359de38f880a2",
-  "recovery_point": "Active-river real-product verifier and runner persisted; first qualification pending.",
+  "recovery_point": "DUMMY-20G qualified by frozen run 35730262593.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20G_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20G_CONCEPT.md",
@@ -36,5 +36,9 @@
       "two-cell K=1e6 / C=16 fixture has frozen effective exchange conductance 15.999744004095934 m2/day",
       "sample-and-hold stage, flux, cumulative infiltration, Basin level and reciprocal ledger are all asserted"
     ]
-  }
+  },
+  "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+  "workflow_run": 35730262593,
+  "workflow_job": 106753792084,
+  "qualification_head": "929c0db26d61d3da285d28d8f2dcf746d5d210d7"
 }
