@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Test-only 6-hour solve→apply UserDemand seam with daily saveat and no allocation output-record coupling.",
-  "next_action": "Execute frozen DUMMY-19K explicit UserDemand apply-seam qualification.",
+  "next_action": "Execute DUMMY-19K v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -42,5 +42,7 @@
       "no allocation output record or cumulative supplied-volume reset is performed by the helper",
       "physical endpoint is checked against the frozen 6-hour reference"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_explicit_userdemand_apply",
+  "qualification_base": "work/ribasim-dummy-01@9701e987fb98e6607c4af904788e175765a080e6"
 }
