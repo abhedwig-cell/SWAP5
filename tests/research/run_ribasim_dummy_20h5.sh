@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-BASE="3710fe0eee81ac46d25837552ec0a68cefdcf7e1"
+BASE="0a1051dcf3d333b101d6f0f1f2b92562e3f5cf5a"
 RIBASIM_RELEASE="e7fc8ade52a4bedeec10e508d2065577f33eb76a"
 RIBASIM_ROOT="${RIBASIM_DUMMY_20H5_RIBASIM_ROOT:-$ROOT/.ribasim-product-release}"
 
