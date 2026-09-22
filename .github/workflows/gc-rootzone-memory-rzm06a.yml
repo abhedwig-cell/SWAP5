@@ -15,10 +15,12 @@ on:
       - 'tests/research/test_gc_rootzone_memory_rzm06a3_h2.py'
       - 'tests/research/test_gc_rootzone_memory_rzm06a4_h2.py'
       - 'tests/research/test_gc_rootzone_memory_rzm06a5_h2.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06a6_profile.py'
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A2_PREREGISTRATION.json'
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A3_PREREGISTRATION.json'
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A4_PREREGISTRATION.json'
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A5_PREREGISTRATION.json'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A6_PREREGISTRATION.json'
       - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
       - '.github/workflows/gc-rootzone-memory-rzm06a.yml'
 permissions: {contents: read}
