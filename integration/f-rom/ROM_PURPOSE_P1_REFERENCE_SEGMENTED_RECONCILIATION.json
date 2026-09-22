@@ -54,12 +54,12 @@
     "tests/rom/materialize_rom_purpose_p1_surface_reference.py": "933cda92b62ca313e4720c866afe25c3e70ce72a",
     "tests/rom/materialize_rom_purpose_p1_gw_reference.py": "b7832852a2023a776ae2212ebe5713ec294ff1e0",
     "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
-    "tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py": "f9da87a752a49c4cd41bb91739e5432c2dbdaa0f",
+    "tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py": "47bdce6fe2cee0a9172b1ba8721308a6aaf81668",
     "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
     "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f"
   },
   "workflow_blob": "7976640b3dc7ebde3662150189387c9c63df951f",
-  "authority_rule": "Only a completed run of the bound segmented workflow triggered by this reconciliation may become P1 Reference authority. Prior monolithic and history-sharded runs remain non-authoritative.",
+  "authority_rule": "Only a completed segmented recovery run triggered after the repaired surface-segment materializer is rebound by this reconciliation may become P1 Reference authority. All prior monolithic, history-sharded, and pre-repair segmented runs remain non-authoritative.",
   "scientific_firewall": {
     "candidate_response_generated": false,
     "candidate_response_authorized": false,
@@ -68,5 +68,18 @@
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
-  }
+  },
+  "pre_response_technical_repairs": [
+    {
+      "workflow_run": 35751525444,
+      "job_id": 106827122040,
+      "stage": "checkpoint-topology-surface",
+      "failure": "Surface segment materializer searched for a literal double-backslash-n sequence instead of the generated Fortran newline in the segment-constant anchor.",
+      "materialization_failed_before_compile": true,
+      "hydrological_response_generated": false,
+      "scientific_effect": "NONE",
+      "repaired_commit": "45e06358d077b3a4756498160771d36011800dd4",
+      "repaired_blob": "47bdce6fe2cee0a9172b1ba8721308a6aaf81668"
+    }
+  ]
 }
