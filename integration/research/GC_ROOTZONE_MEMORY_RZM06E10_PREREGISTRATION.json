@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e10.exact_aggregate_interface_memory_probe_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E10",
+  "authority": "preregistered fixed-Hc response falsification for immutable E09 exact-aggregate pair",
+  "production_changes": false,
+  "parent_pair_authority": {
+    "E09_result_commit": "f01c6330cc1c1a3956889225b7bf59108c4e704a",
+    "decision": "SELECTED_EXACT_LOCAL_REDISTRIBUTION_PAIR",
+    "selected_mode": "EXACT",
+    "exactness_semantics": "numeric equality under the deterministic binary64 aggregate reconstruction used by the preregistered E09 selector",
+    "A": {
+      "direction": "LOCAL_UP",
+      "rate_index": 6,
+      "fraction": 0.5,
+      "steps": 2
+    },
+    "B": {
+      "direction": "LOCAL_DOWN",
+      "rate_index": 6,
+      "fraction": 0.5,
+      "steps": 2
+    }
+  },
+  "common_time_authority": {
+    "work_unit": "GC-RZM06D02R1",
+    "decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+    "evidence_commit": "24277b01740b4c0b7a1f4e68bb44d6bb148dcece"
+  },
+  "scientific_question": "At identical fixed H_c and canonical time, for an immutable pair with exactly equal E09-reconstructed W_profile and W_root30 but materially different H16, is the next forcing-free whole-window bottom exchange unique?",
+  "frozen_state_authority": {
+    "canonical_E09_reconstruction": {
+      "abs_delta_profile_water_cm": 0,
+      "abs_delta_root30_water_cm": 0,
+      "abs_delta_H16_cm": 0.22296695246544473
+    },
+    "probe_reconstruction_consistency": {
+      "max_abs_profile_water_difference_cm": 1e-12,
+      "max_abs_root30_water_difference_cm": 1e-12,
+      "min_abs_H16_difference_cm": 0.01,
+      "rationale": "The exact-rung authority is the E09 deterministic binary64 reconstruction. The Fortran probe independently re-sums the same vectors in a different operation order; its 1e-12 checks are consistency gates, not a redefinition of exactness."
+    }
+  },
+  "frozen_probe": {
+    "fixed_interface_head_m": -1.897937090169065,
+    "bottom_boundary_elevation_m": -1.6,
+    "expected_mapped_bottom_pressure_head_cm": -29.793709016906497,
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "top_flux_cm_per_day": 0,
+    "internal_source_sink_forcing": "none",
+    "primary_response": "bottom_outward_exchange_native",
+    "support_threshold_abs_delta_exchange_cm": 1e-18,
+    "terminal_bottom_outward_flux": "descriptive only"
+  },
+  "execution_contract": [
+    "extract origins only from persisted E09 result vectors",
+    "verify the parent E09 pair has exact numeric equality of canonical reconstructed W_profile and W_root30 before compiling or executing the response probe",
+    "reseed A and B independently at canonical t0=0",
+    "apply only the unchanged E04/E06/E08 forcing-free fixed-Hc response forcing; E09 qssdi/qdra terms are absent",
+    "run A then B and B then A with fresh committed origins and fresh backends",
+    "strict Reference sample only; one physical advance; no commit, retry, fallback or automatic temporal subdivision",
+    "discard every candidate and require committed-origin bit identity",
+    "require same-origin bit-identical response across order",
+    "require complete mass accounting and |residual|<=1e-12 cm",
+    "require byte-identical complete observable output under O0 and O2"
+  ],
+  "decisions": [
+    "SUPPORTED_INTERFACE_MEMORY_WITH_EXACT_AGGREGATE_MATCH",
+    "NO_SUPPORT_AT_EXACT_AGGREGATE_PAIR",
+    "PROBE_NOT_ADMITTED",
+    "RECONSTRUCTION_AUTHORITY_FAILED"
+  ],
+  "interpretation_boundary": [
+    "Support means that, within the represented binary64 C01 state and the frozen one-window experiment, H_c plus the two exact E09 aggregate storage coordinates are not sufficient to determine a unique next interface exchange.",
+    "This is stronger than the earlier tolerance-bounded E04/E06/E08 results but remains a result for the qualified carrier, discretization and finite response window.",
+    "Support does not establish H16 as the unique or minimal omitted state coordinate.",
+    "It is not a mathematical continuum proof and does not imply production reduced-state admission."
+  ],
+  "controls": [
+    "no origin reselection",
+    "no state or response threshold change",
+    "no qssdi/qdra in response forcing",
+    "no production source change",
+    "no H5/RZM06B work"
+  ]
+}
