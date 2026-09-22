@@ -34,6 +34,22 @@ def require(value:bool,message:str)->None:
         raise AssertionError(message)
 
 
+def source_api_audit()->None:
+    source_path=ROOT/"src"/"runtime"/"mod_fmr_groundwater_swap_participant.f90"
+    source=source_path.read_text()
+    start=source.index("  subroutine fmr_swap_observe_last_trial")
+    end=source.index("  end subroutine fmr_swap_observe_last_trial",start)
+    body=source[start:end].lower()
+    require("class(fmr_groundwater_swap_participant_t), intent(in) :: self" in body,
+            "G15 accessor self is not read-only intent(in)")
+    require("backend" not in body,"G15 accessor unexpectedly references backend")
+    require("executor" not in body,"G15 accessor unexpectedly references executor")
+    require("materializer" not in body,"G15 accessor unexpectedly references materializer")
+    require("call " not in body,"G15 accessor unexpectedly performs a procedure call")
+    require("observation = self%last_observation" in body,
+            "G15 accessor no longer performs direct participant-owned observation copy")
+
+
 def initialize(swap:Fgc44RealSwap,duration:float,qbot:float)->tuple[float,tuple[int,float,int,float]]:
     _,_,href=swap.initialize_configured(duration,qbot)
     origin=swap.state()
@@ -338,6 +354,7 @@ def main()->None:
         "repeated_read_lifecycle":"PASS",
         "discard_authority":"PASS",
         "commit_equivalence":"PASS",
+        "source_api_audit":"PASS",
         "source_contract":"PASS",
     }
     print("FGC44_G15_SUMMARY_JSON="+json.dumps(summary,sort_keys=True,separators=(",",":")))
