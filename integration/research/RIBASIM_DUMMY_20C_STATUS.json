@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Add required dx/dy coordinate metadata to the otherwise unchanged 1x1 fixed-head MF6 time-leader fixture and rerun frozen DUMMY-20C.",
+  "next_action": "Execute frozen DUMMY-20C v4 after STO, source-scope and one-cell grid-metadata technical repairs.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "v1 missing STO, v2 stale source-scope denominator and v3 missing 1x1 dx/dy are all pre-runtime technical harness failures; no scientific 20C observation exists yet.",
+  "recovery_point": "20C still has no scientific runtime observation; v1-v3 all failed before product initialization. Required MF6 fixture metadata is now complete.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
@@ -96,5 +96,11 @@
     "reason": "v1 failures were pre-driver MF6 package-completeness failures; STO repair is now part of the baseline.",
     "scientific_change": false,
     "source_scope_base": "b2640b267f722fc7405ecfde25c076466c9a5f48"
+  },
+  "grid_metadata_repair": {
+    "state": "APPLIED",
+    "change": "Add scalar dx=1.0 and dy=-1.0 coordinates required by iMOD-Python for a one-cell structured grid.",
+    "scientific_change": false,
+    "rationale": "Pure discretization metadata; cell topology, fixed-head state, four 6-hour product periods and all Ribasim semantics are unchanged."
   }
 }
