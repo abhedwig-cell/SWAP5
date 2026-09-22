@@ -35,6 +35,9 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t
   use mod_ppa_wu04c_production_forcing_adapter, only: ppa_wu04c_production_forcing_diagnostics_t, &
        materialize_ppa_wu04c_production_forcing, PPA_WU04C_PRODUCTION_FORCING_OK
+  use mod_gash_interception, only: gash_parameters_t
+  use mod_ppa_wu04d_production_forcing_adapter, only: ppa_wu04d_production_forcing_diagnostics_t, &
+       materialize_ppa_wu04d_production_forcing, PPA_WU04D_PRODUCTION_FORCING_OK
   use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
        materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
@@ -220,6 +223,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_PROGRESS=PASS'
   print '(a)', 'PPA_WU04C_DYNAMIC_TOP_FORCING_HANDOFF=PASS'
   print '(a)', 'PPA_WU04C_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
+  print '(a)', 'PPA_WU04D_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -417,6 +421,8 @@ contains
     type(fmr_production_application_bootstrap_t) :: production_app
     type(fmr_serialized_column_result_t), allocatable :: production_results(:)
     type(ppa_wu04c_production_forcing_diagnostics_t) :: diagnostics
+    type(ppa_wu04d_production_forcing_diagnostics_t) :: gash_diagnostics
+    type(gash_parameters_t) :: gash
     real(real64) :: interception
     integer :: tile, local_status
 
@@ -444,6 +450,13 @@ contains
          'WU04C full forcing composition')
     call require(abs(interception - 0.06_real64) <= 1.e-14_real64 .and. forcing%top_flux == diagnostics%top_result%actual_top_flux_cm_per_day, &
          'WU04C full forcing values')
+    gash%free_throughfall = 0.10_real64; gash%stemflow = 0.05_real64
+    gash%canopy_storage_cm = 0.10_real64; gash%average_evaporation = 0.05_real64
+    gash%average_precipitation = 0.40_real64
+    call materialize_ppa_wu04d_production_forcing(value%tiles(1)%base_forcing, request, geometry, hydraulics, gash, source, &
+         0.20_real64, 0.10_real64, forcing, interception, gash_diagnostics)
+    call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK .and. gash_diagnostics%result_produced, &
+         'WU04D full forcing composition')
     deallocate(geometry%z, geometry%dz, geometry%node_distance)
 
     allocate(forcing_vector(NTILE))

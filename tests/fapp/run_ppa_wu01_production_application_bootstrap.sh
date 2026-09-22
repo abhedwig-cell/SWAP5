@@ -152,6 +152,9 @@ MODULE_SRC=(
   src/adapter/mod_ppa_atm02_pmdirect_production_forcing_adapter.f90
   src/adapter/mod_ppa_wu04c_dynamic_top_forcing_adapter.f90
   src/adapter/mod_ppa_wu04c_production_forcing_adapter.f90
+  src/process/mod_gash_interception.f90
+  src/adapter/mod_ppa_wu04d_gash_forcing_adapter.f90
+  src/adapter/mod_ppa_wu04d_production_forcing_adapter.f90
   src/runtime/mod_fmr_vonhhbraden_source_window_progress.f90
   src/runtime/mod_ppa_wu04c_runtime_publication.f90
 )
