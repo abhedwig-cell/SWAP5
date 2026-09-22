@@ -1,0 +1,98 @@
+name: F-ROM-LARE BC2-C6R root-active failure diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py'
+      - '.github/workflows/f-rom-lare-bc2-c6r-diagnostic.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c6r-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  classify:
+    name: diag-${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify frozen scientific inputs
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6r_root_active_reference.py)" = "4f1d330a51cf0829816c64e140b0a5fd806b09d1"
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert p['scientific_firewall']['reduced_candidate_response_generated'] is False
+          assert p['numerical_authority']['root_active_failed_first_attempt_policy']=='FAIL_CLOSED_NO_DYN0A_FALLBACK'
+          PY
+
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize frozen root-active case
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --temporal-factor 32             --output /tmp/c6r_frozen.f90             --manifest /tmp/c6r_manifest.json
+          python3 tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py             --input /tmp/c6r_frozen.f90             --output canonical/tests/rom/test_lare_bc2_c6r_reference.f90
+
+      - name: Execute diagnostic replay
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          mkdir -p diag
+          stub="canonical/c6r_diag_${{ matrix.material }}_${{ matrix.history }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 512 --dz-cm 0.3125
+          build="/tmp/c6r_diag_${{ matrix.material }}_${{ matrix.history }}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_diag_${{ matrix.material }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_reference.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt 0
+          log="diag/${{ matrix.material }}_R512_T32_o0_${{ matrix.history }}.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          cat "$log"
+          cp /tmp/c6r_manifest.json diag/
+          printf '%s\n' "$rc" > diag/executable_exit_code.txt
+          sha256sum diag/* > diag/sha256.txt
+          test "$rc" -ne 0
+          grep -Fq 'C6R_DIAG_ROOT_FIRST_FAILURE|' "$log"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c6r-diagnostic-${{ matrix.material }}-${{ matrix.history }}
+          path: diag/
+          if-no-files-found: warn
