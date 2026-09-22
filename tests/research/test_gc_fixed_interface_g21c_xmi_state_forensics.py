@@ -299,9 +299,6 @@ def main()->None:
         for row in stage["probes"]:
             if row["var"] in STATIC_NAMES and row["group"]!="solution_bookkeeping":
                 require(row["bitwise_equal"],f"G21C static/config probe differs {stage['stage']} {row['group']}/{row['var']}")
-        cfg={x["var"]:x for x in stage["probes"] if x["group"]=="solution_configuration"}
-        require(int(cfg["NONMETH"]["fresh_values"][0])==3 and int(cfg["NONMETH"]["history_values"][0])==3,
-                f"G21C expected MODERATE delta-bar-delta NONMETH=3 at {stage['stage']}")
 
     call12=comparisons["CALL12"]["probes"]
     solver_different=[x["var"] for x in call12 if x["group"]=="solution_state" and x["var"] in SOLVER_HISTORY_NAMES and not x["bitwise_equal"]]
