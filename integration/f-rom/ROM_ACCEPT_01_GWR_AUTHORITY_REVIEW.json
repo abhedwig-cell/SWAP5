@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.rom-accept.gwr-authority-review.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01-GWR",
+  "date": "2026-09-22",
+  "purpose": "GW-R groundwater recharge / long-term exchange",
+  "decision": "NO_INDEPENDENT_QUANTITATIVE_APPLICATION_AUTHORITY_FOUND",
+  "direct_authority_search": {
+    "searched_classes": [
+      "SWAP verification and field validation",
+      "LHM 4.1 formal validation criteria",
+      "groundwater recharge and drainage application studies",
+      "annual and seasonal water-balance requirements"
+    ],
+    "direct_recharge_or_bottom_exchange_tolerance_found": false
+  },
+  "formal_downstream_system_authority": {
+    "source": "LHM 4.1 Deelrapport 3 Oppervlaktewater",
+    "source_locator": "https://nhi.nu/documents/231/Rapportage_Validatie_LHM_oppervlaktewater_def.pdf",
+    "criteria": [
+      {
+        "quantity": "cumulative annual discharge, locations with discharge >5 m3/s",
+        "relative_deviation_max_fraction": 0.25,
+        "population_fraction_min": 0.8
+      },
+      {
+        "quantity": "cumulative annual discharge, locations with discharge <5 m3/s",
+        "relative_deviation_max_fraction": 0.33,
+        "population_fraction_min": 0.8
+      },
+      {
+        "quantity": "cumulative summer-half-year supply, locations with supply >5 m3/s",
+        "relative_deviation_max_fraction": 0.25,
+        "population_fraction_min": 0.8
+      },
+      {
+        "quantity": "cumulative summer-half-year supply, locations with supply <5 m3/s",
+        "relative_deviation_max_fraction": 0.5,
+        "population_fraction_min": 0.8
+      },
+      {
+        "quantity": "cumulative annual discharge for larger regional water-balance areas",
+        "relative_deviation_max_fraction": 0.25,
+        "population_fraction_min": 0.8
+      }
+    ],
+    "source_basis": "The report states that criteria were adjusted in view of approximately 10-25% measurement-accuracy margins and adds a water-balance-area criterion for LHM 4.1.",
+    "classification": "ACCEPTED_DOWNSTREAM_TOTAL_SYSTEM_APPLICATION_CRITERIA__REJECTED_AS_DIRECT_GW_R_TOLERANCE",
+    "rejection_reason": "Surface-water discharge, supply and regional water-balance outputs integrate precipitation, evapotranspiration, storage change, groundwater exchange, drainage, routing and management. No independent mapping is supplied from an allowable downstream balance error to an allowable unsaturated-zone recharge or lower-boundary exchange error."
+  },
+  "swap_validation_evidence": {
+    "source": "SWAP theory and user guide, verification and validation chapter",
+    "source_locator": "https://www.swap.wur.nl/manual/13_verification_validation.html",
+    "finding": "SWAP validation examples include annual lysimeter drainage and evaporation and other hydrological state/flux comparisons, but no formal transferable recharge acceptance threshold is prescribed.",
+    "classification": "VALIDATION_EVIDENCE_NOT_APPLICATION_TOLERANCE_AUTHORITY"
+  },
+  "rejected_routes": [
+    {
+      "route": "Use LHM surface-water 25%, 33% or 50% cumulative criteria as recharge tolerance",
+      "reason": "Requires an independently governed attribution/response mapping that is absent."
+    },
+    {
+      "route": "Use observed agreement in SWAP lysimeter drainage as acceptance threshold",
+      "reason": "Achieved validation performance is not a predeclared application requirement."
+    },
+    {
+      "route": "Use numerical water-balance closure as recharge representation tolerance",
+      "reason": "Conservation/accounting accuracy and permissible hydrological model-form error are different error classes."
+    },
+    {
+      "route": "Choose seasonal or annual aggregation because a Layer-ROM performs better there",
+      "reason": "Temporal support must be externally defined before candidate response."
+    }
+  ],
+  "unresolved_requirement_vector": {
+    "cumulative_recharge_bias": null,
+    "seasonal_recharge_error": null,
+    "annual_recharge_error": null,
+    "long_term_drift": null,
+    "event_error": null,
+    "allowed_timing_error": null,
+    "population_domain": null
+  },
+  "frozen_envelope": {
+    "state": "NOT_FROZEN",
+    "candidate_execution_authorized": false,
+    "terminal_statement": "NO INDEPENDENT QUANTITATIVE APPLICATION AUTHORITY FOUND"
+  },
+  "candidate_response_used": false
+}
