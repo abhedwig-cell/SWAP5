@@ -313,33 +313,24 @@ jobs:
           for purpose,materials in r['results'].items():
               for material,v in materials.items():
                   rows.append(f"| {purpose} | {material} | {'PASS' if v['qualified'] else 'FAIL'} | {v['max_abs_transaction_mass_cm']:.3e} |")
-          md=f"""# ROM-PURPOSE P1 Reference qualification closeout
-
-## Decision
-
-**{r['status']}**
-
-Candidate response authorized: **{str(qualified).lower()}**.
-
-The first monolithic Reference execution route was technically invalidated by hosted-runner shutdowns (exit 143) after successful authority lock, materialization and compilation. The repaired route partitions only independent histories. It does not checkpoint within a history and does not change forcing, state evolution, solver, physics, metrics or decision rules.
-
-## Qualified scope
-
-| Purpose | Material | Reference gate | Max transaction mass residual (cm) |
-| --- | --- | --- | ---: |
-{chr(10).join(rows)}
-
-The target remains R2048_T32 with the preregistered three-level space/time qualification. Numerical uncertainty is a Reference uncertainty envelope, not an application-acceptance tolerance.
-
-## Firewall
-
-No S4, G4 or U4 response was generated before this gate. Reference Richards production code, RossFast, production groundwater coupling, production physics and admitted solver semantics were unchanged. No performance or production-ROM claim follows.
-
-## Next step
-
-{'Bind and execute the already-frozen equal-dimension S4/G4/U4 discriminator.' if qualified else 'Stop before candidate response. Any new Reference design requires a new prospective authority.'}
-"""
-          pathlib.Path('docs/science/F-ROM_PURPOSE_P1_REFERENCE_CLOSEOUT.md').write_text(md)
+          lines=[
+            '# ROM-PURPOSE P1 Reference qualification closeout','',
+            '## Decision','',
+            f"**{r['status']}**",'',
+            f"Candidate response authorized: **{str(qualified).lower()}**.",'',
+            'The first monolithic Reference execution route was technically invalidated by hosted-runner shutdowns (exit 143) after successful authority lock, materialization and compilation. The repaired route partitions only independent histories. It does not checkpoint within a history and does not change forcing, state evolution, solver, physics, metrics or decision rules.','',
+            '## Qualified scope','',
+            '| Purpose | Material | Reference gate | Max transaction mass residual (cm) |',
+            '| --- | --- | --- | ---: |',
+            *rows,'',
+            'The target remains R2048_T32 with the preregistered three-level space/time qualification. Numerical uncertainty is a Reference uncertainty envelope, not an application-acceptance tolerance.','',
+            '## Firewall','',
+            'No S4, G4 or U4 response was generated before this gate. Reference Richards production code, RossFast, production groundwater coupling, production physics and admitted solver semantics were unchanged. No performance or production-ROM claim follows.','',
+            '## Next step','',
+            ('Bind and execute the already-frozen equal-dimension S4/G4/U4 discriminator.' if qualified else
+             'Stop before candidate response. Any new Reference design requires a new prospective authority.')
+          ]
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P1_REFERENCE_CLOSEOUT.md').write_text('\\n'.join(lines)+'\\n')
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
