@@ -4,15 +4,37 @@
   "work_unit": "RIBASIM-DUMMY-20G",
   "branch": "work/ribasim-dummy-01",
   "baseline": "cab227dadf7600bdaa2162cf9612cb0283662bbb",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute the frozen active-river reciprocal stage-feedback product experiment.",
+  "next_action": "Execute frozen DUMMY-20G actual-product active-river reciprocity qualification.",
   "production_delta": [],
   "reference_delta": [],
-  "implementation_baseline": "302010871bec0efbfa205aed02467d00c3f0bd0e",
-  "recovery_point": "DUMMY-20F2 qualified; DUMMY-20G sequencing dependency satisfied."
+  "implementation_baseline": "a258584729fd43012410928bbf1359de38f880a2",
+  "recovery_point": "Active-river real-product verifier and runner persisted; first qualification pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20G_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20G_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20G_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20G_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20g_active_river.py",
+    "tests/research/run_ribasim_dummy_20g.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "standalone Ribasim Basin is a supported bucket topology",
+      "no UserDemand or management allocation is present",
+      "active River mapping is Basin index 0 / bound index 0 / subgrid index 0",
+      "RibaMod writes accepted subgrid level into MF6 River stage before each MF6 solve",
+      "MF6 positive river flux is mapped back to Ribasim infiltration",
+      "two-cell K=1e6 / C=16 fixture has frozen effective exchange conductance 15.999744004095934 m2/day",
+      "sample-and-hold stage, flux, cumulative infiltration, Basin level and reciprocal ledger are all asserted"
+    ]
+  }
 }
