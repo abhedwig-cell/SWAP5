@@ -5,9 +5,14 @@
   "title": "Next-day management admission of realized two-cell groundwater transfer",
   "baseline": "01a2ce8204525c7a2f5eda2466f84e3fdfbc255a",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20E3_ACTIVE",
-    "execute_after": "DUMMY-20E3 closeout",
-    "rationale": "Freeze the next-allocation-boundary handoff before observing the corrected two-cell day-1 product experiment."
+    "state": "SATISFIED_AFTER_DUMMY_20E3_CLOSEOUT",
+    "execute_after": "DUMMY-20E3 qualified",
+    "rationale": "Freeze the next-allocation-boundary handoff before observing the corrected two-cell day-1 product experiment.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
+      "workflow_run": 35728008237,
+      "qualification_head": "64813e01f3817794f457f467be2f0724797a72c5"
+    }
   },
   "relation_to_20f": {
     "original": "DUMMY-20F",
@@ -119,5 +124,11 @@
     "no production admission"
   ],
   "pass_decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
-  "fail_decision": "RIBASIM_DUMMY_20F2_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20F2_BLOCKED",
+  "implementation_baseline": "25921e9e9b3a9fd35a2593f9c8298f1cc33bab32",
+  "authority_rebind": {
+    "repository_head": "25921e9e9b3a9fd35a2593f9c8298f1cc33bab32",
+    "scientific_change": false,
+    "meaning": "Two-day memory-admission experiment rebound after qualified DUMMY-20E3; frozen t=24 h decision, day-2 references and tolerances unchanged."
+  }
 }
