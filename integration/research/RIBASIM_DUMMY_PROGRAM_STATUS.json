@@ -249,18 +249,16 @@
       "run": 35737697708,
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H5",
+      "decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+      "run": 35741211340,
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "pending": [
-    {
-      "work_unit": "RIBASIM-DUMMY-20H5",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
-      "dependency": "qualified DUMMY-20H4",
-      "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "implementation_baseline": "3710fe0eee81ac46d25837552ec0a68cefdcf7e1"
-    },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
       "state": "PREREGISTERED_BLOCKED_DEPENDENCY_NOT_QUALIFIED",
@@ -272,16 +270,16 @@
     },
     {
       "work_unit": "RIBASIM-DUMMY-20H6",
-      "state": "PREREGISTERED_BLOCKED_BY_20H5",
+      "state": "PREREGISTERED_READY_FOR_REBIND_AFTER_20H5",
       "intended_decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
-      "dependency": "DUMMY-20H5 qualification",
+      "dependency": "DUMMY-20H5 qualified by run 35741211340; rebind to post-H5 repository authority before execution.",
       "scientific_baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Close active DUMMY-20H5. If qualified, execute prospectively frozen DUMMY-20H6 next-boundary memory/forecast separation.",
+  "next_authority_action": "Rebind and execute prospectively frozen DUMMY-20H6 next-boundary accepted-storage memory versus current-forcing forecast separation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -412,5 +410,10 @@
     "latest": "RIBASIM-DUMMY-20H4",
     "decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
     "meaning": "On the same accepted Basin state and infiltration forcing, the physical low-storage factor is 1 while the allocation-LP factor is 0; physical realization and allocation forecast use distinct reduction-factor semantics."
+  },
+  "product_allocation_forecast_causality_authority": {
+    "latest": "RIBASIM-DUMMY-20H5",
+    "decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+    "meaning": "In the tested exact-release LP, low_storage_factor collapse does not require LevelDemand bookkeeping itself: a zero-storage-change requirement is sufficient for lexicographic allocation to attenuate current implicit negative forcing."
   }
 }
