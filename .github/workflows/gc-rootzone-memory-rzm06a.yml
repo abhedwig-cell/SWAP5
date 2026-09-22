@@ -1,4 +1,7 @@
 name: GC rootzone memory RZM06A real-SWAP observables
+concurrency:
+  group: gc-rootzone-memory-rzm06a-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches: [work/gc-dummy-swap-rootzone-memory]
