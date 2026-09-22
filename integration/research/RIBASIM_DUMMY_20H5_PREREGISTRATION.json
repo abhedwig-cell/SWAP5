@@ -5,9 +5,13 @@
   "title": "Zero-storage constraint causality for allocation low-storage-factor collapse",
   "baseline": "bfd32e350419ebe712c4761e667f034769db1246",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20H4_ACTIVE",
-    "execute_after": "DUMMY-20H4 closeout",
-    "rationale": "Freeze the minimal LP-causality control before observing the direct physical-versus-LP factor comparison."
+    "state": "SATISFIED_AFTER_DUMMY_20H4_CLOSEOUT",
+    "execute_after": "DUMMY-20H4 qualified",
+    "rationale": "Freeze the minimal LP-causality control before observing the direct physical-versus-LP factor comparison.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
+      "workflow_run": 35737697708
+    }
   },
   "authorities": {
     "mechanism": {
@@ -57,5 +61,11 @@
     "do not execute as authority if DUMMY-20H4 does not qualify"
   ],
   "pass_decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
-  "fail_decision": "RIBASIM_DUMMY_20H5_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20H5_BLOCKED",
+  "implementation_baseline": "04458b9197a2115b7479790d938ac5a965977114",
+  "authority_rebind": {
+    "repository_head": "04458b9197a2115b7479790d938ac5a965977114",
+    "scientific_change": false,
+    "meaning": "Executable zero-storage causality control rebound after 20H4 closeout; frozen cases, expectations and tolerances unchanged."
+  }
 }
