@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03c.gentle_bottom_first_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03C",
+  "preregistration_commit": "cc0c6629981602eeb440a66c0b7c9b6558e1ca46",
+  "production_changes": false,
+  "decision": "QUALIFIED_GENTLE_BOTTOM_FIRST_NO_MATCH__RATE_NONMONOTONIC",
+  "disposition": "NO_MATCH",
+  "qualification": {
+    "workflow_run": 35745342749,
+    "workflow_job": 106805395036,
+    "executed_head": "40e84c0c579ac3358d417b495010705e9b3ca334",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "artifact_id": 10701053833,
+    "artifact_digest": "sha256:823d41a2471f28a938826df19ec07097f4be08c372a2c9a96332258c4189f34f"
+  },
+  "generation": {
+    "candidate_count": 1,
+    "candidate_families": [
+      "BASE_EQ"
+    ],
+    "completed_nonbaseline_families": 0,
+    "rate_discriminator": {
+      "0.5": {
+        "bottom_phase_failures": 2,
+        "max_completed_bottom_transfer_before_failure_cm": 0.03139198620334726,
+        "max_failure_phase_step": 21,
+        "note": "H_N12 through H_N20 completed their bottom phase but later failed during TOP; H_N22/H_N24 failed during BOTTOM."
+      },
+      "0.25": {
+        "bottom_phase_failures": 7,
+        "max_completed_bottom_transfer_before_failure_cm": 0.007063196895753134,
+        "max_failure_phase_step": 10,
+        "note": "All quarter-rate families failed during BOTTOM at phase step 10."
+      }
+    },
+    "failures_transaction_safe": true
+  },
+  "census": {
+    "eligible_pairs": 0,
+    "profile_water_matched_pairs": 0,
+    "profile_and_root30_matched_pairs": 0,
+    "qualifying_pairs": 0
+  },
+  "interpretation": [
+    "The frozen gentle bottom-first grid produced no complete nonbaseline endpoint, so no state pair was eligible for a fixed-Hc response test.",
+    "Reducing lower-boundary flux from 0.5*K0 to 0.25*K0 did not increase the admissible cumulative bottom transfer; the observed maximum decreased from about 0.03139 cm to 0.00706 cm.",
+    "Therefore the E03B/E03C construction limit is not supported as a simple monotone instantaneous-rate limit.",
+    "Further blind rate reduction along the same bottom-first route is not justified by the qualified evidence.",
+    "The half-rate families also show that cumulative bottom transfer alone is not sufficient to predict completion, because several families completed BOTTOM and failed only after forcing switched to TOP."
+  ],
+  "response_probe_opened": false,
+  "nonclaims": [
+    "E03C does not establish H_c plus profile and root30 storage sufficiency.",
+    "E03C does not falsify deeper-profile memory.",
+    "The rate nonmonotonicity is specific to this strict research carrier and construction; it is not a production solver robustness claim.",
+    "No production coupling change is admitted."
+  ],
+  "next_step_basis": {
+    "decision": "CLOSE_RATE_TUNING_ROUTE",
+    "rationale": "E03B and E03C show direction- and history-dependent admissibility rather than a monotone rate ceiling; the next state-sufficiency experiment should change the state observable or construction axis rather than continue scalar rate tuning."
+  }
+}
