@@ -32,6 +32,9 @@ program test_ppa_wu01_production_application_bootstrap
        B110_DYN_TOP_REGIME_FLUX
   use mod_ppa_wu04c_dynamic_top_forcing_adapter, only: bind_ppa_wu04c_dynamic_top_to_effective_forcing, &
        PPA_WU04C_TOP_FORCING_OK, PPA_WU04C_TOP_FORCING_REJECTED
+  use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t
+  use mod_ppa_wu04c_production_forcing_adapter, only: ppa_wu04c_production_forcing_diagnostics_t, &
+       materialize_ppa_wu04c_production_forcing, PPA_WU04C_PRODUCTION_FORCING_OK
   use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
        materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
@@ -67,6 +70,7 @@ program test_ppa_wu01_production_application_bootstrap
   ! Standalone authority: use the already-qualified serialized Reference
   ! profile rather than inventing a new mode-5 standalone trajectory.
   call initialize_application_config(config)
+  call verify_wu04c_production_composition(config)
   wu04c_top%status = B110_DYN_TOP_AVAILABLE
   wu04c_top%regime = B110_DYN_TOP_REGIME_FLUX
   wu04c_top%actual_top_flux_cm_per_day = -0.0125_real64
@@ -215,6 +219,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_RECEIPTS=PASS'
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_PROGRESS=PASS'
   print '(a)', 'PPA_WU04C_DYNAMIC_TOP_FORCING_HANDOFF=PASS'
+  print '(a)', 'PPA_WU04C_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -400,6 +405,43 @@ contains
       head_m = 0.0_real64
     end if
   end subroutine compute_reference_head
+
+  subroutine verify_wu04c_production_composition(value)
+    type(fmr_production_application_config_t), intent(in) :: value
+    type(soil_water_parameter_set_t) :: geometry
+    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(b110_dynamic_top_boundary_request_t) :: request
+    type(vonhhbraden_source_window_t) :: source
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(ppa_wu04c_production_forcing_diagnostics_t) :: diagnostics
+    real(real64) :: interception
+
+    geometry%parameter_set_id = value%tiles(1)%parameters%parameter_set_id
+    geometry%active_nodes = value%tiles(1)%parameters%active_nodes
+    allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+    geometry%z = value%tiles(1)%parameters%z
+    geometry%dz = value%tiles(1)%parameters%dz
+    geometry%node_distance = value%tiles(1)%parameters%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics, value%tiles(1)%parameters%cofgen)
+    request%conductivity_mean_method = value%tiles(1)%parameters%swkmean
+    request%pressure_head_top_cm = value%tiles(1)%initial_state%pressure_head(1)
+    request%water_content_top = value%tiles(1)%initial_state%water_content(1)
+    request%step_duration_day = T1 - T0
+    request%ponding_max_cm = 2.0_real64
+    request%runoff_resistance_day = 1.0_real64
+    request%runoff_exponent = 1.0_real64
+    source%gross_rain_cm_per_day = 0.40_real64
+    source%sprinkling_irrigation_cm_per_day = 0.20_real64
+    source%leaf_area_index = 2.0_real64
+    source%vegetation_cover_fraction = 0.5_real64
+    call materialize_ppa_wu04c_production_forcing(value%tiles(1)%base_forcing, request, geometry, hydraulics, source, &
+         0.12_real64, 0.20_real64, 0.10_real64, forcing, interception, diagnostics)
+    call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK .and. diagnostics%result_produced, &
+         'WU04C full forcing composition')
+    call require(abs(interception - 0.06_real64) <= 1.e-14_real64 .and. forcing%top_flux == diagnostics%top_result%actual_top_flux_cm_per_day, &
+         'WU04C full forcing values')
+    deallocate(geometry%z, geometry%dz, geometry%node_distance)
+  end subroutine verify_wu04c_production_composition
 
   subroutine run_atm02_pmdirect_owner_profile(base_config)
     type(fmr_production_application_config_t), intent(in) :: base_config
