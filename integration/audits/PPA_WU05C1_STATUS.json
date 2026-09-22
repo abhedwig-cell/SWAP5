@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.ppa_wu05c1.status.v1",
+  "work_unit": "PPA-WU05-C1",
+  "parent_work_unit": "PPA-WU05-C",
+  "status": "PURE_FACTOR_IMPLEMENTED_FOCUSED_QUALIFICATION_PENDING",
+  "baseline": "bf55a0051884ab5baa42833e48c86f1521094688",
+  "implemented": true,
+  "persisted": "pending-checkpoint-commit",
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; root sink and runtime bindings unchanged",
+  "source": "B1.11 SWAP/oxygenstress.f90 OxygenReproFunction sha256 8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+  "implementation": "src/process/mod_ppa_wu05c1_oxygen_reproduction.f90",
+  "test": "tests/fapp/test_ppa_wu05c1_oxygen_reproduction.f90",
+  "gate": "tests/fapp/run_ppa_wu05c1_oxygen_reproduction.sh",
+  "dependency_surface": [
+    "integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json",
+    "src/process/mod_ppa_wu05c1_oxygen_reproduction.f90",
+    "tests/fapp/test_ppa_wu05c1_oxygen_reproduction.f90"
+  ],
+  "test_result": {
+    "direct_compiler": "gfortran 13.3.0 on Windows UCRT64; equivalent commands executed directly because Git Bash cannot create its signal pipe in this host",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05C1_EXACT_SOURCE_FACTOR_ORACLE_100000=PASS",
+      "PPA_WU05C1_STATELESS_A_B_A_REPLAY=PASS",
+      "PPA_WU05C1_SHAPE_NUMERIC_GEOMETRY_GUARDS=PASS",
+      "PPA_WU05C1_SATURATION_BRANCH=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Pure reproduction-factor equation only; no macro/micro call-path, root-mass, parallel or coupling claim.",
+  "next_action": "Checkpoint pure factor and focused evidence, then advance only to a separately permitted macro/micro call-path slice; preserve production root-sink fail-closed behavior until its mass and coupling gates are complete.",
+  "recovery_point": "this status record and PPA-WU05-C1 preregistration",
+  "blockers": []
+}
