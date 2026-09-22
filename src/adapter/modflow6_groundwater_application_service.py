@@ -381,7 +381,7 @@ def run_groundwater_application_window(
                 result,
                 GroundwaterApplicationServiceStatus.RUNTIME_EVALUATION_FAILED,
                 True,
-                "term-reanchor",
+                "term-relinearize",
             )
         current_terms = next_terms
 
