@@ -3,25 +3,25 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P1",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "f6c297a9e58439fec7b58d90cce365a9b41c46ea",
+  "checkpoint_commit": "d52fefab7902f6d82539634a38c5f7579ca8032a",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "phase": "REFERENCE_EXECUTION_QUEUED",
+  "phase": "REFERENCE_EXECUTION_RECOVERY_QUEUED",
   "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
-  "reference_workflow_run": 35748342021,
+  "reference_workflow_run": 35749982543,
   "stale_duplicate_workflow_run": 35748342142,
   "stale_duplicate_response_capable": false,
   "candidate_response_authorized": false,
   "candidate_response_generated": false,
   "candidate_implementation_staged": true,
-  "next_action": "AWAIT_REFERENCE_EXECUTION_CAPACITY_THEN_ADJUDICATE_GATE",
-  "recovery_point": "work/f-rom-purpose; start from this status, P1 authority binding, preregistration, metric contract and Reference execution binding.",
+  "next_action": "EXECUTE_HISTORY_SHARDED_REFERENCE_THEN_ADJUDICATE_FROZEN_GATE",
+  "recovery_point": "work/f-rom-purpose; use ROM_PURPOSE_P1_REFERENCE_EXECUTION_RECONCILIATION.json and workflow run 35749982543.",
   "blockers": [
     "EXTERNAL_GITHUB_ACTIONS_QUEUE"
   ],
-  "last_reconciled_head": "f6c297a9e58439fec7b58d90cce365a9b41c46ea",
+  "last_reconciled_head": "d52fefab7902f6d82539634a38c5f7579ca8032a",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/ROM_PURPOSE_P0_AUTHORITY_BINDING.json",
@@ -36,7 +36,11 @@
     ".github/workflows/f-rom-purpose-p1-reference.yml",
     "tests/rom/run_rom_purpose_p1_candidate.py",
     "tests/rom/analyze_rom_purpose_p1_candidates.py",
-    ".github/workflows/f-rom-purpose-p1-candidates.yml"
+    ".github/workflows/f-rom-purpose-p1-candidates.yml",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_RECONCILIATION.json",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py",
+    ".github/workflows/f-rom-purpose-p1-reference-sharded.yml",
+    "integration/f-rom/ROM_PURPOSE_P1_H4_DIAGNOSTIC_CONTRACT.json"
   ],
   "dependency_surface": [
     "src/",
@@ -52,5 +56,12 @@
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
-  }
+  },
+  "reference_execution_repair": "HISTORY_SHARDING_NO_SCIENTIFIC_CHANGE",
+  "superseded_technical_runs": [
+    35748342021,
+    35748342142,
+    35749728663,
+    35749780410
+  ]
 }
