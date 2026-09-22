@@ -149,3 +149,16 @@ grep -Fq 'GC_FIXED_INTERFACE_G10A_DIAGNOSTIC=PASS' "$BUILD/fgc44-globalization-g
   echo "GC_FGC44_G10A_FAIL missing direct-groundwater-oracle diagnostic gate" >&2
   exit 1
 }
+
+
+# G10B replays the frozen B4/GW_MIXED path with the prospectively frozen
+# local groundwater response selected from G10A. G10 itself remains failed.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_local_groundwater_g10b.py \
+  | tee "$BUILD/fgc44-globalization-g10b.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G10B_EXECUTION=PASS' "$BUILD/fgc44-globalization-g10b.txt" || {
+  echo "GC_FGC44_G10B_FAIL missing local-groundwater replay gate" >&2
+  exit 1
+}
