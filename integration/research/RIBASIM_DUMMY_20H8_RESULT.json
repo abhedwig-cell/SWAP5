@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.coupling.ribasim_release_forcing_sign_asymmetry.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H8",
+  "decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+  "authority": {
+    "qualification_head": "b860a5b13a09ef40bd33056f65617b8bb3491237",
+    "workflow_run": 35747089993,
+    "workflow_job": 106811387712,
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "conclusion": "success"
+  },
+  "frozen_state": {
+    "accepted_storage_excess_m3": 7.990372381083688,
+    "fixed_supply_m3_per_day": 32,
+    "forcing_magnitude_m3_per_day": 8.000042512171305
+  },
+  "observations": {
+    "control": {
+      "explicit_positive_forcing_m3": 0,
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "negative_infiltration": {
+      "explicit_positive_forcing_m3": 0,
+      "implicit_negative_forcing_m3": 8.000042512171305,
+      "low_storage_factor": 0,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "positive_drainage": {
+      "explicit_positive_forcing_m3": 8.000042512171305,
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 40.00000000000001,
+      "external_allocation_m3_per_day": 7.990414893227958
+    }
+  },
+  "qualified_claims": [
+    "Equal-magnitude current vertical groundwater forcing is allocation-sign-asymmetric in the tested Ribasim v2026.1.1 topology.",
+    "Current Basin infiltration enters the implicit negative-forcing term and can be completely attenuated by low_storage_factor=0 while accepted storage memory remains admitted.",
+    "Current Basin drainage enters the explicit positive-forcing term without the low_storage_factor multiplier and directly increases managed availability.",
+    "With the same accepted state and forcing magnitude, positive drainage fills the remaining 0.009627619 m3/day root deficit and allocates approximately 7.9904148932 m3/day to the lower-priority external demand, while equal-magnitude infiltration leaves external allocation at zero.",
+    "The accepted storage draw is unchanged across all three cases, isolating forcing representation rather than changing accepted memory."
+  ],
+  "mathematical_contract": {
+    "positive_forcing": "Basin drainage contributes to the volume-conservation right-hand side as explicit positive forcing.",
+    "negative_forcing": "Basin infiltration contributes through alpha * implicit_negative_forcing, with alpha = low_storage_factor.",
+    "tested_directional_effect": "For equal magnitude F, +F is admitted directly while -F can be forecast-attenuated through alpha."
+  },
+  "boundaries": [
+    "This is allocation forecast asymmetry, not physical non-conservation or one-way groundwater physics.",
+    "The result is specific to the tested Basin drainage/infiltration representation and topology.",
+    "No claim that all Ribasim positive/negative processes have identical treatment.",
+    "No production prescription or production admission."
+  ],
+  "downstream": "Release prospectively frozen DUMMY-20H9 to bridge positive groundwater forcing into the actual RibaMod t=24 allocation output."
+}
