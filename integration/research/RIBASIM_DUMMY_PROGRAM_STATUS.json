@@ -254,11 +254,12 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-20H5",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20H4",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
       "dependency": "qualified DUMMY-20H4",
       "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "implementation_baseline": "3710fe0eee81ac46d25837552ec0a68cefdcf7e1"
     },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
@@ -271,7 +272,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20H5 zero-storage factor causality control.",
+  "next_authority_action": "Execute frozen DUMMY-20H5 zero-storage factor causality control.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
