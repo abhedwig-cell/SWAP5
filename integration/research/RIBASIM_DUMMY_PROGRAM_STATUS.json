@@ -174,9 +174,18 @@
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
-  "pending": [],
+  "pending": [
+    {
+      "work_unit": "RIBASIM-DUMMY-20A",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
+      "dependency": "qualified DUMMY-19L",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "ribasim_context_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    }
+  ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Update the central coupling synthesis through DUMMY-19L, then define the next real-coupler substitution experiment from the qualified solve→apply→realize→accept→record contract.",
+  "next_authority_action": "Execute frozen DUMMY-20A actual RibaMod product-clock source contract, then define the runtime product-driver experiment.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
