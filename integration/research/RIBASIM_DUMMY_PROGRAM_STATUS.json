@@ -303,10 +303,22 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H10",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+      "dependency": "DUMMY-20H9 qualified by run 35749109620.",
+      "scientific_baseline": "4449e2a2edec312aeff316437d9fa40d953ee38c",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0",
+      "implementation_baseline": "198c9ac1c8b2866ceb818c48a699ff4bf0eee721"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "H5-H9 closes the tested single-Basin accepted-memory/current-forcing chain. Select a distinct next falsification axis: priority permutation, multi-Basin allocation coupling, or asynchronous management boundary timing.",
+  "next_authority_action": "Execute frozen DUMMY-20H10 noncommensurate allocation.dt versus 6-hour RibaMod clock qualification.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
