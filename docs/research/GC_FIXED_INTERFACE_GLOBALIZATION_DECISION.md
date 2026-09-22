@@ -587,3 +587,70 @@ P4 = RESEARCH POLICY CANDIDATE, NOT PRODUCTION AUTHORITY.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: EXPLICIT TANGENT-OBSERVATION / TANGENT-SERVICE OWNERSHIP CONTRACT.
 ```
+## G16 disposition: immutable-origin tangent observation service qualified
+
+G16 moves the next bounded piece of the G14/G15 research integration shape into
+the FMR runtime without admitting a coupling policy. The new
+`fmr_groundwater_swap_tangent_observation_service_t` owns only probe
+scheduling, exact-head cache lifetime and observation transport within one
+explicit immutable-origin session. Physical trial execution and diagnostic
+candidate ownership remain with the existing FMR participant/backend boundary.
+
+The frozen G13 research E3 caller was replayed unchanged across the same eight
+FGC44 states. The live qualification, workflow `35721804825`, produced:
+
+```text
+FGC44 frozen states                  8
+logical observation requests       103
+physical participant trials         62
+exact-head cache hits               41
+unique cached heads                 62
+returned live diagnostic candidates  0
+cross-session cache reuse             0
+additional backend runs from cache    0
+G13 E3 decision equivalence         PASS
+immutable-origin authority          PASS
+source ownership audit              PASS
+```
+
+For every cache miss the service returned exactly the participant-owned G15
+observation from that same physical trial. The participant runtime source is
+unchanged between the G15-tested commit and the G16-tested commit. G15 had
+already compared those participant observations independently with G14 over the
+same 62 frozen heads with zero q difference. G16 therefore reuses that frozen
+G15/G14 authority chain rather than adding another 62 research-oracle backend
+runs merely to repeat the same comparison.
+
+The cache key is the exact prescribed-head real64 bit pattern within one
+session. A repeated numeric head in a newly begun session caused a fresh
+participant trial, proving that cache authority does not cross session/origin
+boundaries. Across every service call the accepted revision/time and
+groundwater-interface ledger state remained unchanged. Successful diagnostic
+candidates were copied into the observation cache and then discarded through
+the participant before returning. Failed participant trials remained diagnostic
+only and did not leak a live candidate or accepted-state authority.
+
+The service source contains no direct backend run, backend commit/discard,
+groundwater-interface ledger, MODFLOW linear-boundary, HCOF or RHS dependency.
+It exposes no commit or publication method. This preserves the preregistered
+ownership boundary: the service can request participant trials and participant
+cleanup, but cannot acquire state-publication authority.
+
+This is deliberately a building-block qualification only. The frozen G09D/G13
+E3 estimator remains research-only, P4 remains a research coupling-policy
+candidate, and no production HCOF/RHS behavior changes.
+
+The next natural work unit is end-to-end safeguarded tangent coupling
+orchestration. It must consume the qualified G16 service while proving that all
+Newton/E3/P4 diagnostic trials remain non-authoritative and that only a final
+converged participant candidate may enter the existing preflight/publication
+path.
+
+```text
+G16 FMR TANGENT OBSERVATION SERVICE = QUALIFIED PRODUCTION-FACING BUILDING BLOCK.
+E3 = QUALIFIED RESEARCH ONLY.
+P4 = RESEARCH POLICY CANDIDATE, NOT PRODUCTION AUTHORITY.
+COUPLING ORCHESTRATION = NOT YET ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: END-TO-END SAFEGUARDED TANGENT COUPLING ORCHESTRATION.
+```
