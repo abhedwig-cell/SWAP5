@@ -352,15 +352,18 @@
     "RZM06E08 supports interface-memory at joint 1e-9 cm aggregate-storage resolution: |ΔW_profile|=7.105427357601002e-15 cm, |ΔW_root30|=5.560281124417088e-10 cm, |ΔH16|=0.01425320747482317 cm and |ΔE|=1.1378729993793968e-05 cm, with zero mass residual, order independence and O0/O2 identity."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E09",
-    "status": "DERIVATION_REQUIRED_BEFORE_PREREGISTRATION",
-    "scope": "Move from aggregate-resolution falsification to structural state identification: test whether a minimal local/depth-weighted interface-state coordinate can account for the residual response information without using response-guided state selection.",
+    "id": "GC-RZM06E09A",
+    "status": "PREREGISTERED_QUEUED_EXTERNAL_RUNNER",
+    "preregistration_commit": "e151ee9c19c58d27c7f446d60c1042743f507882",
+    "workflow_run": 35749924113,
+    "scope": "Response-blind census of the E07 committed-state library for pairs matched in W_profile, W_root30 and H16 but separated in H15/local interface gradient.",
     "constraints": [
-      "do not extend the E07 tolerance/rate/step grid post hoc",
-      "preserve E08 as resolution-bounded support, not exact-valued proof",
-      "derive candidate state coordinates from hydraulic structure before opening new response fields",
-      "keep production authority separate; no production reduced-state admission",
-      "no second MODFLOW hydraulic state admission"
+      "only E07 H/theta and provenance may enter selection",
+      "retain |ΔW_profile|<=1e-9 cm and |ΔW_root30|<=1e-9 cm",
+      "retain |ΔH15|>=1e-2 cm",
+      "use the frozen nested H16 matching ladder 1e-2 through 1e-9 cm",
+      "no response-guided pair selection",
+      "no threshold relaxation if NO_MATCH"
     ]
   },
   "blocked": [],
