@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
+  "parent_live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+  "parent_active_drainage": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
+  "test": "tests/research/test_gc_fixed_interface_map09_active_drainage_g12.py",
+  "runner": "tests/research/run_gc_real_swap_map09.sh",
+  "workflow": ".github/workflows/gc-real-swap-map09.yml",
+  "production_changes": false,
+  "recovery_point": "f5840e2127194055caf9173f805b27074c3ed6a9",
+  "next_action": "Execute exact G12 postimage; qualify E3_MAP at href and +/-1e-6, MAP09A J_R/dt crosscheck, three independently calibrated MODFLOW response classes, and P4 convergence from both frozen starts without accepted-state mutation."
+}
