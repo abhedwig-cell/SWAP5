@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.coupling.real_ribamod_runtime_clock_equivalence.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20C",
+  "title": "Actual RibaMod runtime versus direct Ribasim v2026.1.1 clock equivalence",
+  "baseline": "e6db55ecc43336961d242bbd3e53700959bec5aa",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20B_PENDING",
+    "execute_after": "DUMMY-20B closeout",
+    "rationale": "Freeze the dynamic product differential before observing DUMMY-20B qualification."
+  },
+  "authorities": {
+    "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release_tag": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "frozen_runtime": {
+    "platform": "windows-latest",
+    "product_route": "upstream BaseConfig/get_driver -> actual RibaMod.initialize/update/finalize",
+    "comparison_route": "fresh upstream RibasimWrapper v2026.1.1 with direct update_until calls",
+    "endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "modflow": {
+      "role": "real time-leading kernel only",
+      "active_river_packages": 0,
+      "passive_river_packages": 0,
+      "active_drainage_packages": 0,
+      "passive_drainage_packages": 0,
+      "timestep_seconds": 21600
+    },
+    "ribasim": {
+      "solver_saveat_seconds": 86400,
+      "allocation_dt_seconds": 86400,
+      "fixed_supply_m3_per_day": 32,
+      "root_demand_m3_per_day": 40,
+      "external_demand_m3_per_day": 20,
+      "priority": {
+        "level_hold": 1,
+        "root": 2,
+        "external": 3
+      },
+      "basin_area_m2": 1000000,
+      "initial_level_m": 1,
+      "common_user_demand_min_level_m": 0.99
+    }
+  },
+  "hypotheses": [
+    "The actual RibaMod driver advances the real MF6 and real Ribasim kernels to 6, 12, 18 and 24 hours in lockstep.",
+    "At every accepted 6-hour endpoint, Basin level and cumulative root/external UserDemand inflow from the product route match a fresh direct Ribasim v2026.1.1 BMI route within tolerance.",
+    "Because fixed allocation.dt is 24 hours in v2026.1.1, the intermediate 6-hour product updates do not create new within-day UserDemand allocation decisions.",
+    "For the root-first scarcity case, external cumulative UserDemand inflow remains effectively zero through the first day.",
+    "The actual RibaMod product driver adds no hidden management-clock semantics beyond the bundled Ribasim release."
+  ],
+  "tolerances": {
+    "route_level_m": 5e-8,
+    "route_cumulative_volume_m3": 0.05,
+    "external_zero_volume_m3": 0.001,
+    "clock_seconds": 0.000001
+  },
+  "forbidden": [
+    "no DUMMY-19 f965 numeric reference as v2026.1.1 truth",
+    "no fake RibaMod update loop",
+    "no kernel stubs",
+    "no active groundwater exchange in this isolation work unit",
+    "no production admission claim",
+    "no modification of upstream product or kernels"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
+  "fail_decision": "RIBASIM_DUMMY_20C_BLOCKED"
+}
