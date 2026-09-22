@@ -44,7 +44,12 @@
     "tau_slow_day": 1.492820323027551,
     "tau_fast_day": 0.1071796769724491,
     "E_c_m": 0.002230797861275541,
-    "dE_c_dH_c": -0.14936530755182922
+    "dE_c_dH_c": -0.14936530755182922,
+    "h_r1_m": 8.029873061510365,
+    "h_l1_m": 8.017945898366513,
+    "E_v_m": 0.0040253876979268275,
+    "root_storage_change_m": 0.005974612302073167,
+    "lower_storage_change_m": 0.0017945898366512909
   },
   "hypotheses": {
     "H1": "root and lower component ledgers and total SWAP ledger close to numerical precision",
@@ -73,5 +78,9 @@
     "no reinterpretation of condensed response tangent as physical storage",
     "no production coupling change",
     "do not relax a falsified gate after execution"
-  ]
+  ],
+  "preregistration_correction": {
+    "phase": "BEFORE_IMPLEMENTATION",
+    "reason": "Correct two rounded endpoint display values from direct closed-form recomputation; equations, E_c, tangent and gates unchanged."
+  }
 }
