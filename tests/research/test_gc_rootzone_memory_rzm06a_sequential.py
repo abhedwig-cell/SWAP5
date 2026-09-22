@@ -166,28 +166,47 @@ assert pd["materialized_top_flux_cm_per_day"]== amp
 assert nd["materialized_bottom_head_cm"]==pd["materialized_bottom_head_cm"]
 assert nd["requested_head_m"]==pd["requested_head_m"]
 
-# Sequential antecedent admissibility, still response-blind.  Select the
-# first symmetric non-zero pair in the already frozen characterization order
-# for which both single-window trials were accepted.
-symmetric=None
+# Sequential antecedent admissibility, still response-blind.  Enumerate the
+# already ordered symmetric single-window admissible candidates and retain every
+# rejected sequence.  Select the first candidate for which both forcing orders
+# complete and commit.  No post-antecedent interface probe is executed here.
+sequential_characterization=[]
+selected_sequential=None
+selected_wet_dry=None
+selected_dry_wet=None
 for duration in durations:
     for magnitude in [1.0e-1,1.0e-2,1.0e-4,1.0e-5,1.0e-6]:
         neg_case=next(c for c in characterization if c["duration_day"]==duration and c["top_flux_cm_per_day"]==-magnitude)
         pos_case=next(c for c in characterization if c["duration_day"]==duration and c["top_flux_cm_per_day"]== magnitude)
-        if neg_case["status"]==0 and pos_case["status"]==0:
-            symmetric={"duration_day":duration,"magnitude_cm_per_day":magnitude}
+        if neg_case["status"]!=0 or pos_case["status"]!=0:
+            continue
+        wet={"top_flux_cm_per_day":-magnitude,"duration_day":duration,"head_m":None,"commit":True}
+        dry={"top_flux_cm_per_day": magnitude,"duration_day":duration,"head_m":None,"commit":True}
+        wet_dry=run_fresh({"ops":[wet,dry]})
+        dry_wet=run_fresh({"ops":[dry,wet]})
+        accepted_wet_dry=all(r["status"]==0 and r["diag"]["committed"] and r["diag"]["mass_complete"] for r in wet_dry["records"])
+        accepted_dry_wet=all(r["status"]==0 and r["diag"]["committed"] and r["diag"]["mass_complete"] for r in dry_wet["records"])
+        sequential_characterization.append({
+            "duration_day":duration,
+            "magnitude_cm_per_day":magnitude,
+            "wet_then_dry":wet_dry,
+            "dry_then_wet":dry_wet,
+            "accepted_both_orders":bool(accepted_wet_dry and accepted_dry_wet),
+        })
+        if accepted_wet_dry and accepted_dry_wet:
+            selected_sequential={"duration_day":duration,"magnitude_cm_per_day":magnitude}
+            selected_wet_dry=wet_dry
+            selected_dry_wet=dry_wet
             break
-    if symmetric is not None:
+    if selected_sequential is not None:
         break
-assert symmetric is not None
-duration=symmetric["duration_day"]; magnitude=symmetric["magnitude_cm_per_day"]
+assert selected_sequential is not None,sequential_characterization
+
+duration=selected_sequential["duration_day"]; magnitude=selected_sequential["magnitude_cm_per_day"]
 wet={"top_flux_cm_per_day":-magnitude,"duration_day":duration,"head_m":None,"commit":True}
 dry={"top_flux_cm_per_day": magnitude,"duration_day":duration,"head_m":None,"commit":True}
-wet_dry=run_fresh({"ops":[wet,dry]})
-dry_wet=run_fresh({"ops":[dry,wet]})
-for trajectory in [wet_dry,dry_wet]:
+for trajectory in [selected_wet_dry,selected_dry_wet]:
     assert len(trajectory["records"])==2
-    assert all(r["status"]==0 and r["diag"]["committed"] and r["diag"]["mass_complete"] for r in trajectory["records"])
     assert all(abs(r["diag"]["mass_residual_native"])<=1.0e-12 for r in trajectory["records"])
     assert trajectory["records"][-1]["state"][0]==2
     assert math.isclose(trajectory["records"][-1]["state"][1],2.0*duration,rel_tol=0.0,abs_tol=1.0e-14)
@@ -195,8 +214,8 @@ for trajectory in [wet_dry,dry_wet]:
     assert trajectory["records"][-1]["state"][2:]==[0,0.0]
 wet_dry_replay=run_fresh({"ops":[wet,dry]})
 dry_wet_replay=run_fresh({"ops":[dry,wet]})
-assert wet_dry==wet_dry_replay
-assert dry_wet==dry_wet_replay
+assert selected_wet_dry==wet_dry_replay
+assert selected_dry_wet==dry_wet_replay
 
 evidence={
     "schema":"swap5.gc_rootzone_memory.rzm06a.infrastructure_characterization.v1",
@@ -206,10 +225,11 @@ evidence={
     "transaction_case":chosen,
     "transaction_commit":crec,
     "repeatability":"exact_json_equality",
-    "first_symmetric_admissible_pair":symmetric,
+    "sequential_characterization":sequential_characterization,
+    "first_sequential_admissible_pair":selected_sequential,
     "sequential_antecedents":{
-        "wet_then_dry_endpoint":wet_dry["records"][-1],
-        "dry_then_wet_endpoint":dry_wet["records"][-1],
+        "wet_then_dry_endpoint":selected_wet_dry["records"][-1],
+        "dry_then_wet_endpoint":selected_dry_wet["records"][-1],
         "replay":"exact_json_equality"
     },
     "top_bottom_independence":{
