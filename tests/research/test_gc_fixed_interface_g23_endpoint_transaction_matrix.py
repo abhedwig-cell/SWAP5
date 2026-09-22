@@ -274,7 +274,34 @@ def run_arm(case:dict[str,object],reg_auth:dict[str,object],reg_param:dict[str,o
 def bitsame(a:float,b:float)->bool:
     return float(a).hex()==float(b).hex()
 
+def run_case_fresh_process(case_id:str)->dict[str,object]:
+    child=subprocess.run(
+        [sys.executable,str(Path(__file__).resolve()),"--arm",case_id],
+        check=True,capture_output=True,text=True,env=os.environ.copy(),
+    )
+    marker="FGC44_G23_CHILD_ARM_JSON="
+    line=next((x for x in child.stdout.splitlines() if x.startswith(marker)),None)
+    require(line is not None,f"G23 child marker missing for {case_id}")
+    return json.loads(line[len(marker):])
+
+def run_child_arm(case_id:str)->None:
+    p=json.loads(PREREG.read_text())
+    reg_param=regime_parameters()
+    reg_auth,p4=g08_authority()
+    case=next(dict(x) for x in p["executed_matrix"] if str(x["id"])==case_id)
+    key=(str(case["swap_case"]),str(case["regime"]))
+    policy=p4[(key[0],key[1],str(case["start_side"]))]
+    require(str(policy["classification"])=="CONVERGED",f"G23 child ineligible arm {case_id}")
+    require(float(policy["start_dh_m"])==float(case["start_dh_m"]),f"G23 child start offset drift {case_id}")
+    libmf6=Path(os.environ["LIBMF6"]).resolve()
+    swaplib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
+    result=run_arm(case,reg_auth[key],reg_param[key[1]],libmf6,swaplib)
+    print("FGC44_G23_CHILD_ARM_JSON="+json.dumps(result,sort_keys=True,separators=(",",":")))
+
 def main()->None:
+    if len(sys.argv)==3 and sys.argv[1]=="--arm":
+        run_child_arm(sys.argv[2])
+        return
     p=json.loads(PREREG.read_text())
     require(p["status"]=="PREREGISTERED_BEFORE_IMPLEMENTATION_AMENDED","G23 preregistration not frozen/amended")
     g08=json.loads(G08.read_text())
@@ -304,11 +331,10 @@ def main()->None:
     results=[]
     for case in matrix:
         key=(str(case["swap_case"]),str(case["regime"]))
-        authority=reg_auth[key]
         policy=p4[(key[0],key[1],str(case["start_side"]))]
         require(str(policy["classification"])=="CONVERGED",f"G23 ineligible arm {case['id']}")
         require(float(policy["start_dh_m"])==float(case["start_dh_m"]),f"G23 start offset drift {case['id']}")
-        result=run_arm(case,authority,reg_param[key[1]],libmf6,swaplib)
+        result=run_case_fresh_process(str(case["id"]))
         results.append(result)
         print("FGC44_G23_ARM_JSON="+json.dumps(result,sort_keys=True,separators=(",",":")))
 
@@ -328,8 +354,7 @@ def main()->None:
     require(len(pairs)==9,f"G23 expected 9 paired scenarios, got {len(pairs)}")
     pair_gate=all(x["gate"] for x in pairs)
 
-    replay_case=next(x for x in matrix if str(x["id"])=="C0_MIXED_NEG")
-    replay=run_arm(replay_case,reg_auth[("C0_CONTROL","GW_MIXED")],reg_param["GW_MIXED"],libmf6,swaplib)
+    replay=run_case_fresh_process("C0_MIXED_NEG")
     original=next(x for x in results if x["id"]=="C0_MIXED_NEG")
     replay_gate=(
         bitsame(float(original["final_head_m"]),float(replay["final_head_m"]))
