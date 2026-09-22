@@ -10,7 +10,7 @@
   "c6r_reopened": false,
   "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "implementation_blobs": {
-    ".github/workflows/rom-root-rnp01.yml": "966d319de0ea0e96e7d3c858c39e0de7cfee1db0",
+    ".github/workflows/rom-root-rnp01.yml": "f73b7062391d6cedb747897b2f552e2511817195",
     "tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py": "269bbc7796a5d7e0535660954f1c0f075b97634b",
     "tests/rom/materialize_rom_root_rnp01_diagnostic.py": "7d747c285a7cd957ff411caa0186b3275aaee4b5",
     "tests/rom/analyze_rom_root_rnp01.py": "c4e5985e0e1f7c1dee13d50c070f01a3d68367e8",
@@ -50,5 +50,14 @@
     "tolerance_changed": false,
     "reduced_candidate_response_generated": false,
     "policy_decision_authorized": false
-  }
+  },
+  "technical_repairs": [
+    {
+      "class": "ANALYZER_FILE_SELECTION_ONLY",
+      "reason": "Merged artifacts also contain sha256.txt; aggregate job must select only B*.txt case logs.",
+      "scientific_semantics_changed": false,
+      "analyzer_changed": false,
+      "case_evidence_changed": false
+    }
+  ]
 }
