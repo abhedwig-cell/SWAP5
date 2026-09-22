@@ -6,16 +6,16 @@
   "baseline": "89415abb40bc4305154c32782b2e86a54ba13474",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Direct simultaneous observation of LP shadow allocations, applied UserDemand allocations, and physical cumulative delivery under 6-hour BMI calls with daily saveat.",
-  "next_action": "Execute frozen DUMMY-19I2 shadow-LP versus applied-UserDemand qualification.",
+  "next_action": "Use solve-versus-apply separation as authority; proceed to DUMMY-19J fine-saveat conflict.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "128e5c179686377e577c4626df936e3695d57b51",
-  "recovery_point": "DUMMY-19I2 executable diagnostic persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-19I2 qualified by frozen run 35700640906.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19I2_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19I2_CONCEPT.md",
@@ -26,5 +26,9 @@
     "tests/research/real_ribasim_bmi_shadow_applied_bridge.jl",
     "tests/research/run_ribasim_dummy_19i2.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_19I2_QUALIFIED_SHADOW_APPLIED_SEPARATION",
+  "workflow_run": 35700640906,
+  "workflow_job": 106657559402,
+  "qualification_head": "6b79e0f831e8a306c1330f432c6d7d372802aedc"
 }
