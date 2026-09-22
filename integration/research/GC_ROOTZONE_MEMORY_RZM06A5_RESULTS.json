@@ -1,0 +1,1233 @@
+{
+  "construction": [
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 200,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "requested_intervals": 200,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 200,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024435384638837,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043065966376716,
+          "root_water_cm": 0.10377406266078688
+        },
+        "endpoint_state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "requested_intervals": 200,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 0.0000014280940667799058,
+      "delta_profile_water_native": 0.0000028042548860796046,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 100,
+      "relax_count": 0,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 200,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "requested_intervals": 200,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 200,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024463947206648,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430603577846358,
+          "root_water_cm": 0.1037728769962934
+        },
+        "endpoint_state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "requested_intervals": 200,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 0.000001428162714312009,
+      "delta_profile_water_native": 0.0000028043371940178474,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 100,
+      "relax_count": 0,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 250,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          250,
+          2.4999999999999907,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 50,
+        "requested_intervals": 250,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 250,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579458,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218422,
+          "root_water_cm": 0.10377346984083875
+        },
+        "endpoint_state": [
+          250,
+          2.4999999999999907,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 50,
+        "requested_intervals": 250,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 4.6629367034256575e-15,
+      "delta_profile_water_native": 1.2434497875801753e-14,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 100,
+      "relax_count": 50,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 250,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          250,
+          2.4999999999999907,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 50,
+        "requested_intervals": 250,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 250,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579556,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218172,
+          "root_water_cm": 0.10377346984083455
+        },
+        "endpoint_state": [
+          250,
+          2.4999999999999907,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 100,
+        "relax_count": 50,
+        "requested_intervals": 250,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 5.10702591327572e-15,
+      "delta_profile_water_native": 1.2656542480726785e-14,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 100,
+      "relax_count": 50,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 100,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579458,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218422,
+          "root_water_cm": 0.10377346984083875
+        },
+        "endpoint_state": [
+          100,
+          1.0000000000000007,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 0,
+        "requested_intervals": 100,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 100,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024435384638886,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430659663767032,
+          "root_water_cm": 0.10377406266078477
+        },
+        "endpoint_state": [
+          100,
+          1.0000000000000007,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 0,
+        "requested_intervals": 100,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 0.0000014280940572319878,
+      "delta_profile_water_native": 0.0000028042548609885642,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 50,
+      "relax_count": 0,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 100,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579556,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218172,
+          "root_water_cm": 0.10377346984083455
+        },
+        "endpoint_state": [
+          100,
+          1.0000000000000007,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 0,
+        "requested_intervals": 100,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 100,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024463947206597,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430603577846482,
+          "root_water_cm": 0.10377287699629549
+        },
+        "endpoint_state": [
+          100,
+          1.0000000000000007,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 0,
+        "requested_intervals": 100,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 0.0000014281627040979572,
+      "delta_profile_water_native": 0.000002804337168926807,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 50,
+      "relax_count": 0,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 150,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          150,
+          1.500000000000001,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 50,
+        "requested_intervals": 150,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 150,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579458,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218422,
+          "root_water_cm": 0.10377346984083875
+        },
+        "endpoint_state": [
+          150,
+          1.500000000000001,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 50,
+        "requested_intervals": 150,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 4.6629367034256575e-15,
+      "delta_profile_water_native": 1.2434497875801753e-14,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 50,
+      "relax_count": 50,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 150,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          150,
+          1.500000000000001,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 50,
+        "requested_intervals": 150,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 150,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579556,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218172,
+          "root_water_cm": 0.10377346984083455
+        },
+        "endpoint_state": [
+          150,
+          1.500000000000001,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 50,
+        "relax_count": 50,
+        "requested_intervals": 150,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 5.10702591327572e-15,
+      "delta_profile_water_native": 1.2656542480726785e-14,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 50,
+      "relax_count": 50,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 40,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502444966150992,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631631706089,
+          "root_water_cm": 0.10377347001599874
+        },
+        "endpoint_state": [
+          40,
+          0.4000000000000002,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 0,
+        "requested_intervals": 40,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 40,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024435388708772,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043065965327807,
+          "root_water_cm": 0.10377406248560744
+        },
+        "endpoint_state": [
+          40,
+          0.4000000000000002,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 0,
+        "requested_intervals": 40,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 0.0000014272801147630076,
+      "delta_profile_water_native": 0.000002802157198056321,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 20,
+      "relax_count": 0,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 40,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449669649358,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063161072982,
+          "root_water_cm": 0.10377346966566307
+        },
+        "endpoint_state": [
+          40,
+          0.4000000000000002,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 0,
+        "requested_intervals": 40,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 40,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024463943134259,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430603588340972,
+          "root_water_cm": 0.10377287717157381
+        },
+        "endpoint_state": [
+          40,
+          0.4000000000000002,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 0,
+        "requested_intervals": 40,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 0.0000014273484900684252,
+      "delta_profile_water_native": 0.000002802238884713759,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 20,
+      "relax_count": 0,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 90,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          90,
+          0.9000000000000006,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 50,
+        "requested_intervals": 90,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 90,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579458,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218422,
+          "root_water_cm": 0.10377346984083875
+        },
+        "endpoint_state": [
+          90,
+          0.9000000000000006,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 50,
+        "requested_intervals": 90,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 4.6629367034256575e-15,
+      "delta_profile_water_native": 1.2434497875801753e-14,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 20,
+      "relax_count": 50,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 90,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "endpoint_state": [
+          90,
+          0.9000000000000006,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 50,
+        "requested_intervals": 90,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 120,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 120,
+          "total_trial_rollbacks": 120
+        },
+        "committed_intervals": 90,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579556,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218172,
+          "root_water_cm": 0.10377346984083455
+        },
+        "endpoint_state": [
+          90,
+          0.9000000000000006,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 20,
+        "relax_count": 50,
+        "requested_intervals": 90,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 5.10702591327572e-15,
+      "delta_profile_water_native": 1.2656542480726785e-14,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 20,
+      "relax_count": 50,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 119,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 119,
+          "total_trial_rollbacks": 119
+        },
+        "committed_intervals": 20,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449484117988,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430632088865444,
+          "root_water_cm": 0.10377347765125745
+        },
+        "endpoint_state": [
+          20,
+          0.20000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 0,
+        "requested_intervals": 20,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 20,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024435562524385,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043065920531897,
+          "root_water_cm": 0.10377405500418539
+        },
+        "endpoint_state": [
+          20,
+          0.20000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 0,
+        "requested_intervals": 20,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 0.0000013921593602361781,
+      "delta_profile_water_native": 0.000002711645352704295,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 10,
+      "relax_count": 0,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 119,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 119,
+          "total_trial_rollbacks": 119
+        },
+        "committed_intervals": 20,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502444984706516,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631153509213,
+          "root_water_cm": 0.103773462029379
+        },
+        "endpoint_state": [
+          20,
+          0.20000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 0,
+        "requested_intervals": 20,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 60,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 60,
+          "total_trial_rollbacks": 60
+        },
+        "committed_intervals": 20,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024463769279859,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430604036367213,
+          "root_water_cm": 0.10377288465447528
+        },
+        "endpoint_state": [
+          20,
+          0.20000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 0,
+        "requested_intervals": 20,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 0.000001392221469886934,
+      "delta_profile_water_native": 0.0000027117142000765426,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 10,
+      "relax_count": 0,
+      "top_flux": 0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 119,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 119,
+          "total_trial_rollbacks": 119
+        },
+        "committed_intervals": 70,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579507,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.04306316212183,
+          "root_water_cm": 0.10377346984083669
+        },
+        "endpoint_state": [
+          70,
+          0.7000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 50,
+        "requested_intervals": 70,
+        "timing": "EARLY",
+        "top_flux": -0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 119,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 119,
+          "total_trial_rollbacks": 119
+        },
+        "committed_intervals": 70,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579453,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218427,
+          "root_water_cm": 0.10377346984083878
+        },
+        "endpoint_state": [
+          70,
+          0.7000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 50,
+        "requested_intervals": 70,
+        "timing": "LATE",
+        "top_flux": -0.0001
+      },
+      "delta_M1_native": 5.329070518200751e-15,
+      "delta_profile_water_native": 1.2656542480726785e-14,
+      "direction": "NEG_INTO_PROFILE",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 10,
+      "relax_count": 50,
+      "top_flux": -0.0001
+    },
+    {
+      "EARLY": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 119,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 119,
+          "total_trial_rollbacks": 119
+        },
+        "committed_intervals": 70,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579507,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218294,
+          "root_water_cm": 0.10377346984083659
+        },
+        "endpoint_state": [
+          70,
+          0.7000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 50,
+        "requested_intervals": 70,
+        "timing": "EARLY",
+        "top_flux": 0.0001
+      },
+      "LATE": {
+        "accepted": true,
+        "aggregate": {
+          "max_abs_mass_residual_native": 2.117582368135751e-22,
+          "max_accepted_substeps": 12,
+          "max_attempts": 50,
+          "total_retries": 119,
+          "total_solver_rejections": 0,
+          "total_temporal_rejections": 119,
+          "total_trial_rollbacks": 119
+        },
+        "committed_intervals": 70,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449665579556,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063162121817,
+          "root_water_cm": 0.10377346984083452
+        },
+        "endpoint_state": [
+          70,
+          0.7000000000000004,
+          0,
+          0
+        ],
+        "failure": null,
+        "pulse_count": 10,
+        "relax_count": 50,
+        "requested_intervals": 70,
+        "timing": "LATE",
+        "top_flux": 0.0001
+      },
+      "delta_M1_native": 4.884981308350689e-15,
+      "delta_profile_water_native": 1.2434497875801753e-14,
+      "direction": "POS_OUTWARD",
+      "meets_h2_endpoint_criteria": false,
+      "pair_admitted": true,
+      "pulse_count": 10,
+      "relax_count": 50,
+      "top_flux": 0.0001
+    }
+  ],
+  "disposition": "NO_MATCH",
+  "frozen": {
+    "H_star_m": -0.7149999706136307,
+    "M1_separation_native": 0.0001,
+    "direction_order": [
+      "NEG_INTO_PROFILE",
+      "POS_OUTWARD"
+    ],
+    "duration_day": 0.01,
+    "mass_gate_native": 1e-12,
+    "profile_water_tolerance_native": 0.000001,
+    "pulse_abs_cm_per_day": 0.0001,
+    "pulse_counts": [
+      100,
+      50,
+      20,
+      10
+    ],
+    "relax_counts": [
+      0,
+      50
+    ],
+    "response_threshold_native": 1e-18
+  },
+  "nonclaims": [
+    "no production coupling admission",
+    "no second MODFLOW state-variable admission",
+    "no production top-boundary recommendation",
+    "no H5 management conclusion"
+  ],
+  "preregistration_commit": "503b943b72de6f5d3c5d447781cd4605b8334eb4",
+  "probe_evidence": null,
+  "production_changes": false,
+  "schema": "swap5.gc_rootzone_memory.rzm06a5.timing_redistribution_h2_experiment.v1",
+  "selected_pair": null,
+  "qualification": {
+    "branch": "work/gc-dummy-swap-rootzone-memory",
+    "preregistration_commit": "503b943b72de6f5d3c5d447781cd4605b8334eb4",
+    "implementation_commit": "237d33d804915352901428cf94b0ea8340048071",
+    "ci_binding_commit": "1d755fbf87f2814d574dba6faf98b4b6b650fa55",
+    "workflow_run": 35732461595,
+    "workflow_job": 106761199051,
+    "execution_gate": "PASS",
+    "production_changes": false
+  },
+  "interpretation": {
+    "classification": "QUALIFIED_TIMING_MEMORY_NO_MATCH__H2_NOT_PROBED",
+    "fully_admitted_pairs": 16,
+    "frozen_pairs": 16,
+    "maximum_abs_delta_M1_native": 0.000001428162714312009,
+    "maximum_abs_delta_profile_water_native": 0.0000028043371940178474,
+    "H2_M1_requirement_native": 0.0001,
+    "M1_requirement_to_observed_ratio": 70.02003273007527,
+    "no_relaxation_pattern": {
+      "min_delta_M1_native": 0.0000013921593602361781,
+      "max_delta_M1_native": 0.000001428162714312009,
+      "min_delta_profile_water_native": 0.000002711645352704295,
+      "max_delta_profile_water_native": 0.0000028043371940178474,
+      "meaning": "Timing memory is measurable but profile-water mismatch remains above the frozen 1e-6 gate and M1 separation remains far below 1e-4."
+    },
+    "relax_50_pattern": {
+      "max_delta_M1_native": 5.329070518200751e-15,
+      "max_delta_profile_water_native": 1.2656542480726785e-14,
+      "meaning": "Fifty common zero-forcing intervals erase the timing memory to approximately floating-point noise."
+    },
+    "saturation": "For N=20,50,100 the no-relaxation endpoint separations are nearly unchanged, so cumulative pulse count beyond about 20 does not amplify the retained timing-memory signal in this fixture.",
+    "h2_probe_opened": false,
+    "carrier_scope": "Real HeadCalc route with explicit B110 constitutive provider, but still a four-node FSI fixture geometry and inactive/stubbed peripheral legacy processes.",
+    "next_step": "Audit node-level committed profiles and observable units/geometry before designing another H2 construction. Do not lower the frozen H2 thresholds post hoc."
+  },
+  "limitations": [
+    "No pair met both unchanged H2 endpoint criteria, so E_c was never inspected.",
+    "The strongest retained M1 timing separation is about 70 times below the frozen H2 M1 threshold.",
+    "Common relaxation sufficient to satisfy the water-match gate also erases the aggregate timing-memory signal in this construction.",
+    "The current carrier uses real HeadCalc and the explicit B110 constitutive provider, but the four-node geometry comes from the focused FSI test fixture rather than a full real-SWAP case.",
+    "No production physics, coupling API, solver tolerance, retry policy or mass gate was changed."
+  ]
+}
