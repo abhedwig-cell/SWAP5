@@ -55,7 +55,15 @@ def require(x:bool,msg:str)->None:
 def build_model(workdir:Path, reference_head:float)->None:
     sim=flopy.mf6.MFSimulation(sim_name="FGC44_REAL_E2E",version="mf6",sim_ws=str(workdir))
     flopy.mf6.ModflowTdis(sim,time_units="DAYS",nper=1,perioddata=[(WINDOW_DAY,1,1.0)])
-    flopy.mf6.ModflowIms(sim,complexity="MODERATE",outer_dvclose=1e-11,inner_dvclose=1e-12,outer_maximum=100,inner_maximum=100)
+    flopy.mf6.ModflowIms(
+        sim,
+        complexity="MODERATE",
+        outer_dvclose=1e-11,
+        inner_dvclose=1e-12,
+        rcloserecord=[1e-12,"STRICT"],
+        outer_maximum=100,
+        inner_maximum=100,
+    )
     gwf=flopy.mf6.ModflowGwf(
         sim,
         modelname="GWF_1",
