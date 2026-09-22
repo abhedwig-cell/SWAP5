@@ -131,13 +131,13 @@ def main()->None:
             f"G10 live carrier reference-head mismatch: {href}")
     require(math.isclose(u,float(binding["u_A"]),rel_tol=0.0,abs_tol=tol),
             f"G10 live carrier u mismatch: {u}")
-    require(math.isclose(float(diag["q_bot"]),float(binding["predictor_qbot_cm_per_day"]),
+    require(math.isclose(float(diag["q_bot_predictor_cm_per_day"]),float(binding["predictor_qbot_cm_per_day"]),
                          rel_tol=0.0,abs_tol=tol),
-            f"G10 live carrier qbot mismatch: {diag['q_bot']}")
+            f"G10 live carrier qbot mismatch: {diag['q_bot_predictor_cm_per_day']}")
     print("FGC44_G10_CARRIER_BINDING="+json.dumps({
         "reference_head_m":href,
         "predictor_u":u,
-        "qbot_cm_per_day":float(diag["q_bot"]),
+        "qbot_cm_per_day":float(diag["q_bot_predictor_cm_per_day"]),
         "status":"PASS",
     },sort_keys=True,separators=(",",":")))
     href_e3=estimate_e3(swap,origin,href)
