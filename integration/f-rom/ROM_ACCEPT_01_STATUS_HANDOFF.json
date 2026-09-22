@@ -34,7 +34,8 @@
     "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json",
     "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json",
     "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
-    "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json"
+    "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json",
+    "integration/f-rom/ROM_ACCEPT_01_CLOSEOUT.json"
   ],
   "purpose_status": {
     "GW-R": {
@@ -152,5 +153,6 @@
       "resolved": "Archive retrieval/integrity and distributable metadata identity.",
       "non_resolution": "Do not reinterpret the public subset as the original acceptance population."
     }
-  ]
+  ],
+  "final_closeout": "integration/f-rom/ROM_ACCEPT_01_CLOSEOUT.json"
 }
