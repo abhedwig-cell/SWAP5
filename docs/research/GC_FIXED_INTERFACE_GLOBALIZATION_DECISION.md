@@ -279,3 +279,29 @@ The interpretation is intentionally asymmetric:
   open.
 
 No production HCOF/RHS or coupling policy change is authorized.
+
+
+## G10B disposition: local groundwater merit removes the G10 false rejection
+
+G10B replayed the frozen B4/GW_MIXED path with only the groundwater
+merit/reference oracle changed to the prospectively frozen 13-point local
+response selected from G10A. E3, both +/-1e-5 m starts, the P4 factor-1/2
+backtracking rule, outer budget and convergence tolerances were unchanged.
+
+The local MODFLOW response fit had a maximum error of
+`3.20875e-19 m/s`, well below the unchanged `1e-15 m/s` coupling scale.
+Its coupled reference root was `-0.7149997332272907 m`, only
+`4.23e-12 m` from the independent G10A direct root.
+
+Both P1-E3 and P4-E3 converged from both frozen starts in two outer updates.
+The final residual was about `9.38e-21 m/s`. P4 used zero contractions and
+encountered no inadmissible raw proposal.
+
+Therefore G10 remains formally falsified under its original broad-affine
+oracle, while G10B separately establishes that the B4/GW_MIXED physical Newton
+path is well behaved when the groundwater merit is resolved at the requested
+scale. The remaining unqualified question is narrower and more important:
+whether P4 can recover a genuinely bad live physical-Newton proposal rather
+than merely agree with P1.
+
+No production HCOF/RHS or coupling-source change follows from G10B.
