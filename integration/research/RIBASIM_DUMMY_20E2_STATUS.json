@@ -8,9 +8,9 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20D qualification.",
-  "next_action": "After DUMMY-20D closeout, rebind 20E2, add runner/workflow gate and execute the frozen delayed-drainage product experiment.",
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Implement and execute frozen post-allocation passive groundwater-transfer product qualification.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,12 +19,13 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "20E2 remains blocked by 20D; executable drain representation clarified prospectively with frozen physical flux/reference unchanged.",
+  "recovery_point": "DUMMY-20D qualified; DUMMY-20E2 corrected timing contract is implementation-ready.",
   "implementation_preparation": {
     "state": "PRODUCT_VERIFIER_PREPARED_EXECUTION_BLOCKED",
     "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater_transfer.py",
     "scientific_change": false,
     "technical_note": "MF6 Drainage uses exact zero conductance in the first stress period and 16 m2/day thereafter. iMOD-Python write validation is disabled only because its schema requires conductance > 0; MODFLOW input values and the preregistered physical schedule are unchanged.",
     "execution_effect": "none until DUMMY-20D qualification"
-  }
+  },
+  "implementation_baseline": "b8af4adb3e1e328cce7dc5ca79967f4fdb447df9"
 }
