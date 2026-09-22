@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute frozen actual RibaMod runtime versus direct Ribasim v2026.1.1 differential.",
+  "next_action": "Implement and execute the frozen actual RibaMod versus direct Ribasim v2026.1.1 runtime differential.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -19,6 +19,6 @@
     "scientific_change": false,
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
-  "implementation_baseline": "61db4cb3aad9c9753f4d51273bdf98cd3bdc21ce",
-  "recovery_point": "DUMMY-20B qualified; DUMMY-20C frozen runtime verifier is ready for runner/workflow materialization."
+  "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
+  "recovery_point": "DUMMY-20C runtime verifier was prepared prospectively; DUMMY-20B dependency is now satisfied."
 }
