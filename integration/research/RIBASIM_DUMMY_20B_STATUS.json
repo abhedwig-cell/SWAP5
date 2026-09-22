@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.coupling.ribasim_product_release_clock_contract.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20B",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "cd369dba07c106b4cdeee868bcee878045dbbde2",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20A closeout.",
+  "prepared_scope": "Pinned Ribasim v2026.1.1 source contract for fixed allocation.dt, BMI.update_until and saveat independence.",
+  "next_action": "After DUMMY-20A closes, execute the pinned release-source gate; then define DUMMY-20C product runtime cases from this authority.",
+  "production_delta": [],
+  "reference_delta": []
+}
