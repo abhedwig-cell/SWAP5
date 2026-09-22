@@ -222,10 +222,19 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20F2",
+      "state": "PREREGISTERED_BLOCKED_BY_20E3",
+      "intended_decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+      "dependency": "qualified DUMMY-20E3 nonzero intervention",
+      "scientific_baseline": "01a2ce8204525c7a2f5eda2466f84e3fdfbc255a",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "ribasim_release": "v2026.1.1"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-20E3; prove nonzero reciprocal groundwater intervention before interpreting management-memory response. DUMMY-20F remains blocked.",
+  "next_authority_action": "Execute DUMMY-20E3. If it qualifies the nonzero groundwater intervention, rebind and implement prospectively frozen DUMMY-20F2.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -293,6 +302,12 @@
       "state": "FALSIFIED_PREEXECUTION",
       "cause": "RIBASIM_DUMMY_20E_FALSIFIED_PREEXECUTION_BY_PRODUCT_CLOCK_ORDER",
       "meaning": "A t=0-active MF6 drainage flux is written to Ribasim before the t=0 fixed allocation solve and therefore cannot represent post-allocation physical arrival."
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20F",
+      "state": "SUPERSEDED_UNEXECUTED_DEPENDENCY_NOT_QUALIFIED",
+      "cause": "DUMMY-20E2 intervention was not realized",
+      "successor": "DUMMY-20F2"
     }
   ],
   "supporting_context": "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json",
