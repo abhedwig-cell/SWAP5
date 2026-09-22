@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.rom-purpose.p1.h4-diagnostic-contract.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1-H4",
+  "status": "FROZEN_BEFORE_ANY_P1_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "purpose": "Separate residual Layer-ROM propagation/closure insufficiency from four-state placement/information insufficiency after the equal-dimension placement discriminator.",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json@c618a433545426a0af8c333be0f8d09926069def",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "historical_corichards_context": "work/f-rom-lare-rs1@437d5edda08447abbfbdc41e54039f78d4d31560",
+    "historical_q1_conclusion": "Reduced same-partition CoRichards can be numerically unavailable; numerical unavailability is not evidence of Layer-ROM superiority."
+  },
+  "trigger": {
+    "execute_only_for": "purpose/material aligned partitions listed prospectively by ROM_PURPOSE_P1_PLACEMENT_RESULT.closure_followup",
+    "aligned_partitions": {
+      "SURF_P": "S4",
+      "GW_LB": "G4"
+    },
+    "do_not_execute_if_aligned_layer_rom_crosses_R512_T32_comparator": true
+  },
+  "representation": {
+    "same_partition_as_layer_rom": true,
+    "dimension": 4,
+    "S4_boundaries_cm": [0,20,40,80,160],
+    "G4_boundaries_cm": [0,80,120,140,160],
+    "U4_not_primary_for_H4": true,
+    "solver": "conventional Reference-Richards discretisation on the frozen four-cell partition",
+    "new_solver": false
+  },
+  "fresh_workload": "Reuse the exact preregistered P1 purpose/material history and boundary forcing without modification.",
+  "numerical_qualification": {
+    "temporal_factors": [8,16,32],
+    "internal_dt_day": [0.0001,0.00005,0.000025],
+    "optimization_modes": [0,2],
+    "O0_O2_scientific_trace_identity_required": true,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "qualification_rule": "T8, T16 and T32 must all remain in the qualified domain; the T8-T16 and T16-T32 differences on the complete frozen purpose metric vector must be finite and componentwise non-increasing toward T32. Exact fine-pair identity qualifies with zero numerical uncertainty.",
+    "no_tolerance_relaxation": true,
+    "no_grid_retuning": true,
+    "no_fallback_change": true
+  },
+  "comparison": {
+    "coarse_richards_target": "R2048_T32",
+    "frozen_numerical_comparator": "R512_T32 relative to R2048_T32",
+    "metrics": "exact ROM_PURPOSE_P1_METRIC_CONTRACT purpose vector",
+    "scalar_weighting": false
+  },
+  "decision_rules": {
+    "CLOSURE_DEFICIT_SUPPORTED": "Aligned Layer-ROM does not cross the frozen R512_T32 comparator; same-partition CoRichards is numerically qualified and does cross it.",
+    "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED": "Aligned Layer-ROM and numerically qualified same-partition CoRichards both fail to cross the comparator.",
+    "CORICHARDS_DIAGNOSTIC_UNAVAILABLE": "Same-partition CoRichards fails its frozen numerical qualification; do not infer closure sufficiency or insufficiency from that failure.",
+    "NO_H4_DIAGNOSTIC_REQUIRED": "Aligned Layer-ROM already crosses the frozen R512_T32 comparator."
+  },
+  "firewall": {
+    "reference_response_seen": false,
+    "candidate_response_seen": false,
+    "boundary_selected_from_response": false,
+    "numerical_policy_selected_from_response": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
