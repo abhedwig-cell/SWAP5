@@ -153,10 +153,11 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19I",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19H",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19I_QUALIFIED_BMI_MANAGEMENT_CLOCK",
       "dependency": "qualified DUMMY-19H",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "implementation_baseline": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f"
     },
     {
       "work_unit": "RIBASIM-DUMMY-19J",
@@ -168,7 +169,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-19I BMI-owned 6-hour management clock; DUMMY-19J remains prospectively frozen behind it.",
+  "next_authority_action": "Execute frozen DUMMY-19I BMI management clock; DUMMY-19J remains prospectively frozen.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
