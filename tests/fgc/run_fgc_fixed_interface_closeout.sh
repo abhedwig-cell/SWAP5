@@ -27,16 +27,17 @@ grep -Fq 'FGC49D_LIVE_PRODUCTION_FMR_ABI=PASS' "$BUILD/prodabi.out"
 grep -Fq 'FGC49D_LIVE_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS' "$BUILD/prodabi.out"
 grep -Fq 'FGC49D_LIVE_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS' "$BUILD/prodabi.out"
 
-run_and_capture e2e_a bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh
+run_and_capture e2e_a env FGC44_CLOSEOUT_ONECELL=1 bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh
 grep -Fq 'PUB_GC_E1_INTERFACE_IDENTITY=PASS' "$BUILD/e2e_a.out"
 grep -Fq 'PUB_GC_E2_REJECTED_TRIAL_ZERO_AUTHORITY=PASS' "$BUILD/e2e_a.out"
 grep -Fq 'PUB_GC_E2_PREPUBLICATION_ABORT_ZERO_AUTHORITY=PASS' "$BUILD/e2e_a.out"
 grep -Fq 'PUB_GC_E2_EXACTLY_ONCE_PUBLICATION=PASS' "$BUILD/e2e_a.out"
 grep -Fq 'FGC44_REAL_SWAP_PHYSICAL_RESPONSE_RELINEARIZATION=PASS' "$BUILD/e2e_a.out"
+grep -Fq 'FGC44_CLOSEOUT_ONE_SWAP_ONE_MODFLOW_CELL=PASS' "$BUILD/e2e_a.out"
 grep -Fq 'FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS' "$BUILD/e2e_a.out"
 grep -Fq 'FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS' "$BUILD/e2e_a.out"
 
-run_and_capture e2e_b bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh
+run_and_capture e2e_b env FGC44_CLOSEOUT_ONECELL=1 bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh
 for key in FGC44_FINAL_HEAD_M FGC44_FINAL_Q_SWAP_M_PER_S FGC44_FINAL_Q_GW_M_PER_S FGC44_LEDGER_EXCHANGE_M; do
   grep "^$key=" "$BUILD/e2e_a.out" > "$BUILD/$key.a"
   grep "^$key=" "$BUILD/e2e_b.out" > "$BUILD/$key.b"

@@ -22,6 +22,7 @@ DAY_TO_S=86400.0
 AREA_M2=1.0
 WINDOW_DAY=1.0e-4
 FLUX_TOL=1.0e-15
+CLOSEOUT_ONECELL=os.environ.get("FGC44_CLOSEOUT_ONECELL","0")=="1"
 
 @dataclass(frozen=True)
 class Binding:
@@ -71,11 +72,17 @@ def build_model(workdir:Path, reference_head:float)->None:
         save_flows=True,
         newtonoptions="NEWTON",
     )
-    flopy.mf6.ModflowGwfdis(gwf,nlay=1,nrow=1,ncol=3,delr=1.0,delc=1.0,top=0.0,botm=-2.0)
+    ncol=1 if CLOSEOUT_ONECELL else 3
+    flopy.mf6.ModflowGwfdis(gwf,nlay=1,nrow=1,ncol=ncol,delr=1.0,delc=1.0,top=0.0,botm=-2.0)
     flopy.mf6.ModflowGwfic(gwf,strt=reference_head)
     flopy.mf6.ModflowGwfnpf(gwf,icelltype=1,k=1.0,save_flows=True)
     flopy.mf6.ModflowGwfsto(gwf,iconvert=1,ss=0.02,sy=0.15,transient={0:True})
-    flopy.mf6.ModflowGwfchd(gwf,stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},pname="CHD_ENDS")
+    if not CLOSEOUT_ONECELL:
+        flopy.mf6.ModflowGwfchd(
+            gwf,
+            stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},
+            pname="CHD_ENDS",
+        )
     flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api",save_flows=True)
     flopy.mf6.ModflowGwfoc(
         gwf,
@@ -201,7 +208,7 @@ def main()->None:
             require(session.acquire_after_prepare_time_step()==PreparedSolveStatus.OK,session.last_error)
             require(session.open_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
             accepted_xold=session.accepted_xold.copy()
-            binding=[Binding(7001,1,2)]
+            binding=[Binding(7001,1,1 if CLOSEOUT_ONECELL else 2)]
             current_hcof=hcof; current_rhs=rhs
             final_head=None; final_q_swap=None; final_q_gw=None; converged=False
 
@@ -273,18 +280,19 @@ def main()->None:
             require(session.finalize_time_step_once()==PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,"second MODFLOW timestep finalization not blocked")
             raw.finalize(); initialized=False
 
-            expected_api_m3_per_day=final_q_gw*AREA_M2*DAY_TO_S
-            (mf_total_in,mf_total_out,mf_budget_residual,mf_percent_discrepancy,
-             mf_api_component,mf_listing_file)=read_modflow_component_balance(
-                workdir,expected_api_m3_per_day
-            )
-            print(f"FGC44_MODFLOW_TOTAL_IN_M3_PER_DAY={mf_total_in:.17g}")
-            print(f"FGC44_MODFLOW_TOTAL_OUT_M3_PER_DAY={mf_total_out:.17g}")
-            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
-            print(f"FGC44_MODFLOW_PERCENT_DISCREPANCY={mf_percent_discrepancy:.17g}")
-            print(f"FGC44_MODFLOW_API_COMPONENT_M3_PER_DAY={mf_api_component:.17g}")
-            print(f"FGC44_MODFLOW_API_EXPECTED_M3_PER_DAY={expected_api_m3_per_day:.17g}")
-            print(f"FGC44_MODFLOW_LISTING_FILE={mf_listing_file}")
+            if CLOSEOUT_ONECELL:
+                expected_api_m3_per_day=final_q_gw*AREA_M2*DAY_TO_S
+                (mf_total_in,mf_total_out,mf_budget_residual,mf_percent_discrepancy,
+                 mf_api_component,mf_listing_file)=read_modflow_component_balance(
+                    workdir,expected_api_m3_per_day
+                )
+                print(f"FGC44_MODFLOW_TOTAL_IN_M3_PER_DAY={mf_total_in:.17g}")
+                print(f"FGC44_MODFLOW_TOTAL_OUT_M3_PER_DAY={mf_total_out:.17g}")
+                print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
+                print(f"FGC44_MODFLOW_PERCENT_DISCREPANCY={mf_percent_discrepancy:.17g}")
+                print(f"FGC44_MODFLOW_API_COMPONENT_M3_PER_DAY={mf_api_component:.17g}")
+                print(f"FGC44_MODFLOW_API_EXPECTED_M3_PER_DAY={expected_api_m3_per_day:.17g}")
+                print(f"FGC44_MODFLOW_LISTING_FILE={mf_listing_file}")
 
             print(f"FGC44_FINAL_HEAD_M={final_head:.17g}")
             print(f"FGC44_FINAL_Q_SWAP_M_PER_S={final_q_swap:.17g}")
@@ -310,7 +318,9 @@ def main()->None:
             print("FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS")
             print("FGC44_REAL_SWAP_CORRECTORS_FROM_ACCEPTED_ORIGIN=PASS")
             print("FGC44_REAL_SWAP_PHYSICAL_RESPONSE_RELINEARIZATION=PASS")
-            print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
+            if CLOSEOUT_ONECELL:
+                print("FGC44_CLOSEOUT_ONE_SWAP_ONE_MODFLOW_CELL=PASS")
+                print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
             print("FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS")
             print("FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS")
             print("FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS")
