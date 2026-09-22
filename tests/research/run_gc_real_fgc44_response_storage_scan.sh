@@ -396,3 +396,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G21G_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21G_FAIL missing island repeatability/mechanism gate" >&2
   exit 1
 }
+
+
+# G21H isolated retry-level physical-solver forensics. Reconstruct the nine
+# frozen retry durations independently from one immutable origin using a
+# test-only max_retries=0 config copy. This diagnoses the deterministic G21G
+# island mechanism without changing production solver or transaction policy.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21h_retry_level_forensics.py \
+  | tee "$BUILD/fgc44-globalization-g21h.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21H_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21h.txt" || {
+  echo "GC_FGC44_G21H_FAIL missing isolated retry-level forensic gate" >&2
+  exit 1
+}
