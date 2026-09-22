@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.lare.bc2.c6r.failure-classification.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6R",
+  "date": "2026-09-22",
+  "status": "CLOSED_TECHNICAL_REFERENCE_ENTRYPOINT_NOT_ADMITTED",
+  "scientific_falsification": false,
+  "failed_qualification_run": {
+    "run_id": 35539390906,
+    "head": "437d5edda08447abbfbdc41e54039f78d4d31560",
+    "conclusion": "failure",
+    "candidate_response_generated": false
+  },
+  "diagnostic_replay": {
+    "run_id": 35747238558,
+    "head": "c2557148344de7806e16b8fe34d0001a301e028c",
+    "scope": "B01/B14 x V01/V02/V03/V04 at R512_T32, diagnostic only",
+    "jobs": [
+      106811885334,
+      106811885512,
+      106811885572,
+      106811885578,
+      106811885582,
+      106811885642,
+      106811885668,
+      106811885710
+    ],
+    "common_observation": {
+      "solver_status": 0,
+      "solver_route": "not-run",
+      "nonlinear_iterations": 0,
+      "internal_retries": 0,
+      "backtracking_attempts": 0,
+      "mass_value": "HUGE sentinel",
+      "solver_executed": false
+    },
+    "all_eight_cases_same_class": true
+  },
+  "root_cause": {
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+    "entrypoint": "fmr_serialized_backend_run_reference_floor_sample",
+    "finding": "The public reference-floor wrapper explicitly rejects parameters%root_extraction_active before kernel execution.",
+    "consequence": "C6R never reached Reference Richards; the observed run failure cannot falsify the root-active Reference or the later Layer-ROM feedback candidate."
+  },
+  "independent_prescribed_root_authority": {
+    "result": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+    "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+    "qualified_head": "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+    "qualification_run": 35429605183,
+    "relevance": "The canonical run_trial route admits the concrete b110_root_sink_provider_t carrying a finite prescribed sink. This confirms that prescribed root extraction itself is not globally unsupported."
+  },
+  "repair_class": "HARNESS_ADMISSION_WIRING_ONLY",
+  "repair_constraints": [
+    "Do not change Reference Richards.",
+    "Do not change the Feddes root-water-uptake process.",
+    "Do not change b110_root_sink_provider_t.",
+    "Do not change V01-V04, materials, root profiles, demand, space-time routes, mass gate, convergence metrics or candidate firewall.",
+    "Do not replace the preregistered single Reference solve per transaction with the external full-half transaction route.",
+    "Permit root-active execution only in a research-local reference-floor adapter surface and preserve all other reference-floor admission guards."
+  ],
+  "next": "Bind and qualify a research-only reference-floor admission repair before rerunning C6R.",
+  "model_changed": false
+}
