@@ -1,0 +1,45 @@
+name: GC rootzone memory RZM06E01 zero-divergence state expansion
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E01_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E01_PREREGISTRATION.md'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e01_expand.f90'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e01_select.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e01.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e01-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Generate and select response-blind E01 states
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E01-EVIDENCE
+          RZM06E01_EVIDENCE_DIR="$PWD/RZM06E01-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e01.sh
+      - name: Preserve E01 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e01-${{ github.run_id }}
+          path: RZM06E01-EVIDENCE
+          if-no-files-found: warn
