@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom-purpose.p1.metric-contract.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "status": "FROZEN_BEFORE_ANY_P1_REFERENCE_RESPONSE",
+  "scientific_authority": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json@c618a433545426a0af8c333be0f8d09926069def",
+  "reference_response_seen": false,
+  "candidate_response_seen": false,
+  "aggregation_policy": {
+    "continuous_errors": "Pool signed pointwise errors over all four histories and all 1024 observation times, then report RMSE unless explicitly stated otherwise.",
+    "history_bias": "Compute a signed mean error separately within each history, take its absolute value, then average those four absolute history biases. This prevents cancellation among histories.",
+    "timing": "Use observation-step indices. If event-sequence cardinality differs, sequence mismatch is reported separately and timing receives the preregistered worst-case penalty of 1024 steps.",
+    "no_scalar_weighting": true,
+    "materials_reported_separately": true
+  },
+  "GW_LB": {
+    "cumulative_bottom_exchange_error_cm": "pooled RMSE of cumulative bottom downward exchange relative to R2048_T32",
+    "interval_bottom_flux_error_cm_per_day": "pooled RMSE of observation-interval average bottom downward flux",
+    "bottom_flux_sign_mismatch_count": "total sign mismatches over all histories and observations",
+    "reversal_sequence_mismatch_count": "number of histories whose non-zero flux-sign reversal sequence has different cardinality",
+    "reversal_timing_error_steps": "maximum absolute paired reversal-step difference over histories with matching sequence cardinality; 1024 if any sequence cardinality mismatches",
+    "total_storage_error_cm": "pooled RMSE of total integrated profile storage",
+    "history_signed_bottom_flux_bias_cm_per_day": "mean absolute per-history signed mean interval-bottom-flux error",
+    "long_horizon_exchange_drift_cm": "maximum absolute final cumulative bottom-exchange error over histories"
+  },
+  "SURF_P": {
+    "surface_0_20_storage_error_cm": "pooled RMSE of integrated 0-20 cm storage",
+    "root_zone_0_40_storage_error_cm": "pooled RMSE of integrated 0-40 cm storage",
+    "upper_0_80_storage_error_cm": "pooled RMSE of integrated 0-80 cm storage",
+    "mapped_10cm_theta_error": "pooled RMSE of water content mapped to sixteen fixed 10-cm bins",
+    "total_storage_error_cm": "pooled RMSE of total integrated profile storage",
+    "storage_extremum_timing_error_steps": "maximum absolute observation-step difference for minima and maxima of 0-40 and 0-80 cm storage, across histories",
+    "history_signed_storage_bias_cm": "mean absolute per-history signed mean total-storage error"
+  },
+  "placement_decision": {
+    "componentwise_equality_tolerance": 1e-12,
+    "PLACEMENT_SUPPORTED": "Purpose-aligned partition is <= U4 on every frozen metric within equality tolerance and strictly lower on at least one metric, separately per material.",
+    "UNIFORM_NONINFERIOR": "U4 is <= purpose-aligned partition on every frozen metric and strictly lower on at least one metric, separately per material.",
+    "PLACEMENT_MIXED": "Neither comparator is componentwise noninferior."
+  },
+  "numerical_comparator": {
+    "id": "R512_T32",
+    "target": "R2048_T32",
+    "rule": "Candidate crosses the numerical comparator only if it is componentwise no worse than R512_T32 relative to R2048_T32 on the complete purpose vector.",
+    "numerical_uncertainty_is_application_tolerance": false
+  },
+  "firewall": {
+    "metric_selected_from_response": false,
+    "weighted_score_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
