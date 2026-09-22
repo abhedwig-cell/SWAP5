@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_shadow_applied_diagnostic.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19I2",
+  "decision": "RIBASIM_DUMMY_19I2_QUALIFIED_SHADOW_APPLIED_SEPARATION",
+  "authority": {
+    "qualification_head": "6b79e0f831e8a306c1330f432c6d7d372802aedc",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35700640906,
+    "workflow_job": 106657559402,
+    "conclusion": "success"
+  },
+  "observations": {
+    "root_first": {
+      "segments": [
+        {
+          "bmi_endpoint_s": 21600,
+          "represented_solve_time_s": 0,
+          "shadow_root": 32,
+          "shadow_external": 0,
+          "applied_root": 32,
+          "applied_external": 0
+        },
+        {
+          "bmi_endpoint_s": 43200,
+          "represented_solve_time_s": 21600,
+          "shadow_root": 40,
+          "shadow_external": 7.995180864818393,
+          "applied_root": 32,
+          "applied_external": 0
+        },
+        {
+          "bmi_endpoint_s": 64800,
+          "represented_solve_time_s": 43200,
+          "shadow_root": 40.00000000000001,
+          "shadow_external": 20.000000000000004,
+          "applied_root": 32,
+          "applied_external": 0
+        },
+        {
+          "bmi_endpoint_s": 86400,
+          "represented_solve_time_s": 64800,
+          "shadow_root": 40,
+          "shadow_external": 20,
+          "applied_root": 32,
+          "applied_external": 0
+        }
+      ],
+      "root_supplied_m3": 16.020029550780535,
+      "external_supplied_m3": 0,
+      "total_supplied_m3": 16.020029550780535,
+      "final_level_m": 1.0000159799704493,
+      "storage_gain_m3": 15.979970449331304
+    },
+    "external_first": {
+      "segments": [
+        {
+          "bmi_endpoint_s": 21600,
+          "represented_solve_time_s": 0,
+          "shadow_root": 11.999999999999998,
+          "shadow_external": 20.000000000000004,
+          "applied_root": 11.999999999999998,
+          "applied_external": 20.000000000000004
+        },
+        {
+          "bmi_endpoint_s": 43200,
+          "represented_solve_time_s": 21600,
+          "shadow_root": 27.995178569573902,
+          "shadow_external": 20.000000000000004,
+          "applied_root": 11.999999999999998,
+          "applied_external": 20.000000000000004
+        },
+        {
+          "bmi_endpoint_s": 64800,
+          "represented_solve_time_s": 43200,
+          "shadow_root": 40.00000000000001,
+          "shadow_external": 20.000000000000004,
+          "applied_root": 11.999999999999998,
+          "applied_external": 20.000000000000004
+        },
+        {
+          "bmi_endpoint_s": 86400,
+          "represented_solve_time_s": 64800,
+          "shadow_root": 40,
+          "shadow_external": 20,
+          "applied_root": 11.999999999999998,
+          "applied_external": 20.000000000000004
+        }
+      ],
+      "root_supplied_m3": 6.007423586174218,
+      "external_supplied_m3": 10.012372643623697,
+      "total_supplied_m3": 16.019796229797915,
+      "final_level_m": 1.0000159802037702,
+      "storage_gain_m3": 15.980203770249446
+    }
+  },
+  "qualified_claims": [
+    "Sub-saveat BMI boundaries do trigger new allocation LP solutions.",
+    "The LP solution diverges from the applied UserDemand allocation after the first 6-hour segment.",
+    "UserDemand.allocated and per-link inflow_link_allocated remain at their initial t=0 values throughout all sub-saveat BMI solves.",
+    "The shadow LP reaches full 40/20 allocation by the represented t=12 h solve in both priority cases while physical realization still uses the initial scarce split.",
+    "The one-day physical endpoint matches the daily clock-aligned 19E2 reference, not the 6-hour saveat 19G reference.",
+    "LP solve, allocation application/commit, physical realization and output recording are distinct states/clocks in the tested implementation."
+  ],
+  "source_mechanism": "update_allocation!(..., record=false) optimizes the LP but skips parse_allocations!, the function that writes UserDemand.allocated and inflow_link_allocated.",
+  "current_upstream_context": "The same record-gated parse_allocations! seam is present on observed Deltares/Ribasim main 2aa23364ba708cb3c48630d1067293d900bf3ee5.",
+  "boundaries": [
+    "No upstream defect classification.",
+    "No claim that Pump/Outlet have the same application semantics; their allocation controls are applied outside the record guard.",
+    "No production coupling prescription."
+  ],
+  "downstream": "Rebind and execute preregistered DUMMY-19J to test precedence when a finer hourly saveat grid coexists with 6-hour BMI calls."
+}
