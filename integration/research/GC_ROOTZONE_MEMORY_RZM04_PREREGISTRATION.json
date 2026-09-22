@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm04.preregistration.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "work_unit": "GC-RZM04",
+  "title": "Minimal nonlinear internal-conductance falsification",
+  "status": "PREREGISTERED_DESIGN",
+  "production_changes": false,
+  "model": {
+    "vertical_conductance": "C_v0 * exp(beta * ((h_r+h_l)/2 - h_ref))",
+    "vertical_flux": "q_v=C_v(h_r,h_l)*(h_r-h_l)",
+    "interface_flux": "q_c=C_c*(h_l-H_c)",
+    "changed_elements": [
+      "vertical conductance only"
+    ],
+    "unchanged": [
+      "linear root storage",
+      "linear lower storage",
+      "fixed H_c plane",
+      "interface conductance",
+      "component ledgers"
+    ]
+  },
+  "canonical": {
+    "S_r": 0.2,
+    "S_l": 0.1,
+    "C_v0_per_day": 0.5,
+    "C_c_per_day": 0.25,
+    "h_ref_m": 8,
+    "beta_per_m": 4,
+    "W_root0_m": 0.1,
+    "h_lower0_m": 8,
+    "dt_day": 1,
+    "root_input_rate_m_per_day": 0.01
+  },
+  "numerical_oracle": {
+    "method": "fixed-step RK4 on h_r,h_l,E_v,E_c",
+    "reference_substeps": 65536,
+    "qualification_substeps": [
+      1024,
+      2048,
+      4096
+    ],
+    "required_step_halving_convergence": true
+  },
+  "probes": {
+    "nonaffinity": {
+      "origin_H_c_m": 8,
+      "delta_H_m": 0.1
+    },
+    "origin_dependence": {
+      "states": [
+        {
+          "W_root_m": 0.09,
+          "h_lower_m": 7.98
+        },
+        {
+          "W_root_m": 0.11,
+          "h_lower_m": 8.02
+        }
+      ],
+      "tangent_delta_H_m": 0.0001
+    },
+    "linear_recovery": {
+      "beta_per_m": 0
+    }
+  },
+  "gates": {
+    "mass_abs_m": 2e-10,
+    "linear_recovery_abs_m": 2e-9,
+    "nonaffine_second_difference_abs_m_min": 0.000001,
+    "origin_tangent_difference_abs_m_per_m_min": 0.0001,
+    "repeatability_exact": true
+  },
+  "forbidden": [
+    "no new storage",
+    "no threshold or hysteresis",
+    "no separate upward law",
+    "no production constitutive claim",
+    "no reuse of nonlinear implementation as its own independent exact oracle"
+  ]
+}
