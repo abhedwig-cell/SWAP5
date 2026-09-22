@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu04d.retry_replay_status.v1",
+  "work_unit": "PPA-WU04D-R1",
+  "parent_work_unit": "PPA-WU04D",
+  "status": "GASH_AGGREGATE_SHARED_FKT_RETRY_RESTART_HARNESS_TESTED",
+  "baseline": "308544ed0",
+  "implemented": true,
+  "production_source_mutation": false,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "UNCHANGED; existing restricted WU04D dynamic-top composition only",
+  "test": "tests/fmr/test_fmr18_accepted_commit_receipt.f90",
+  "gate": "tests/fmr/run_ppa_wu04c_retry_restart_replay.sh",
+  "test_result": {
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU04D_GASH_FKT_RECEIPT_PROGRESS=PASS",
+      "PPA_WU04C_REJECTED_RETRY_NO_PROGRESS=PASS",
+      "PPA_WU04C_CHANGED_DT_ACCEPTED_REPLAY=PASS",
+      "PPA_WU04C_SOURCE_WINDOW_CLOSED_EXACTLY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false
+  },
+  "scope_claim": "The shared ledger contract was exercised with a B1.11 Gash aggregate and actual F-KT accepted commit receipts in a test physical-model harness. No production dynamic-top, hydraulic or Gash runtime changed.",
+  "nonclaims": [
+    "full SWAP hydraulic/dynamic-top Gash production replay",
+    "Gash source-window restart admitted in production",
+    "general weather-table ingestion or canopy-loss mass-ledger redesign"
+  ],
+  "next_action": "Retain the full SWAP combined production replay as open; no WU04D runtime admission is implied by the shared F-KT contract harness."
+}

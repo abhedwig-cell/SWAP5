@@ -20,6 +20,8 @@ on:
       - 'tests/fmr/run_ppa_wu04c_retry_restart_replay.sh'
       - 'integration/audits/PPA_WU04C_RETRY_REPLAY_STATUS.json'
       - 'integration/audits/PPA_WU04C_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU04D_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU04D_RETRY_REPLAY_STATUS.json'
   workflow_dispatch:
 
 jobs:
