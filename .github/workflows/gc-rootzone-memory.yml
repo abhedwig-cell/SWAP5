@@ -1,0 +1,30 @@
+name: GC root-zone memory analytical ladder
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'docs/research/GC_ROOTZONE_MEMORY_*.md'
+      - 'integration/research/GC_ROOTZONE_MEMORY_*.json'
+      - 'tests/research/support/gc_rootzone_memory.py'
+      - 'tests/research/test_gc_rootzone_memory_*.py'
+      - 'tests/research/run_gc_rootzone_memory_*.sh'
+      - '.github/workflows/gc-rootzone-memory.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: gc-rootzone-memory-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  rzm01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run RZM01 analytical qualification
+        run: bash tests/research/run_gc_rootzone_memory_rzm01.sh
