@@ -6,15 +6,15 @@
   "baseline": "cd369dba07c106b4cdeee868bcee878045dbbde2",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Pinned Ribasim v2026.1.1 source contract for fixed allocation.dt, BMI.update_until and saveat independence.",
-  "next_action": "Execute frozen DUMMY-20B v1 release-clock qualification from the post-20A source-scope base.",
+  "next_action": "Use v2026.1.1 release clock as product runtime authority; proceed to DUMMY-20C real RibaMod differential.",
   "production_delta": [],
   "reference_delta": [],
-  "recovery_point": "DUMMY-20A qualified; DUMMY-20B source gate is implementation-ready.",
+  "recovery_point": "DUMMY-20B qualified by frozen run 35720653416; duplicate confirming run 35720663734 also passed.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20B_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20B_CONCEPT.md",
@@ -26,5 +26,9 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "implementation_baseline": "c807372374682a4ab8d9d6dbd4cf7b2253cf129c",
-  "qualification_scope_base": "f5b28aed2c3c752c7310d54e108b2a00160c80f2"
+  "qualification_scope_base": "f5b28aed2c3c752c7310d54e108b2a00160c80f2",
+  "decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
+  "workflow_run": 35720653416,
+  "workflow_job": 106722521386,
+  "qualification_head": "e5e1418291107ca6fb1abc2c655115d8cd8ce922"
 }
