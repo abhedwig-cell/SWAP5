@@ -61,6 +61,7 @@ def solve_once(session:Modflow6PreparedSolveSession,binding:list[Binding],xold:n
     return {
         "cumulative_iteration":int(session.iteration_count),
         "head_m":float(it.head_m[1]),
+        "head_vector_m":[float(x) for x in it.head_m],
         "modflow_converged":bool(it.modflow_converged),
     }
 
@@ -81,10 +82,15 @@ def fixed_tail(session:Modflow6PreparedSolveSession,binding:list[Binding],xold:n
     hcof,rhs=response_term(anchor,qref,p)
     rows=[]
     first_convergence_call=None
+    require(session.head is not None,"G21B missing pre-tail head vector")
+    previous_vector=np.asarray(session.head,dtype=float).copy()
     for local_call in range(1,TAIL_CALLS+1):
         row=solve_once(session,binding,xold,hcof,rhs)
+        current_vector=np.asarray(row["head_vector_m"],dtype=float)
         row["tail_call"]=local_call
         row["error_to_fresh_reference_m"]=float(row["head_m"])-reference_head
+        row["max_abs_head_vector_increment_m"]=float(np.max(np.abs(current_vector-previous_vector)))
+        previous_vector=current_vector.copy()
         rows.append(row)
         if first_convergence_call is None and bool(row["modflow_converged"]):
             first_convergence_call=local_call
@@ -97,6 +103,9 @@ def fixed_tail(session:Modflow6PreparedSolveSession,binding:list[Binding],xold:n
         "first_convergence_error_m":float(rows[first_convergence_call-1]["error_to_fresh_reference_m"]),
         "final_head_m":float(rows[-1]["head_m"]),
         "final_error_m":float(rows[-1]["error_to_fresh_reference_m"]),
+        "max_post_response_head_vector_increment_m":max(float(x["max_abs_head_vector_increment_m"]) for x in rows),
+        "hcof_hex":float(hcof).hex(),
+        "rhs_hex":float(rhs).hex(),
         "rows":rows,
     }
 
@@ -228,6 +237,27 @@ def main()->None:
             marker={"arm":arm["label"],**row}
             print("FGC44_G21B_TAIL_JSON="+json.dumps(marker,sort_keys=True,separators=(",",":")))
 
+    require(fresh["tail"]["hcof_hex"]==history["tail"]["hcof_hex"] and
+            fresh["tail"]["rhs_hex"]==history["tail"]["rhs_hex"],
+            "G21B fresh/history outer-2 response terms are not bitwise identical")
+    matched=[]
+    for frow,hrow in zip(fresh["tail"]["rows"],history["tail"]["rows"],strict=True):
+        require(int(frow["tail_call"])==int(hrow["tail_call"]),"G21B matched tail index drift")
+        m={
+            "tail_call":int(frow["tail_call"]),
+            "fresh_head_m":float(frow["head_m"]),
+            "history_head_m":float(hrow["head_m"]),
+            "history_minus_fresh_head_m":float(hrow["head_m"])-float(frow["head_m"]),
+            "fresh_error_to_reference_m":float(frow["error_to_fresh_reference_m"]),
+            "history_error_to_reference_m":float(hrow["error_to_fresh_reference_m"]),
+            "fresh_converged":bool(frow["modflow_converged"]),
+            "history_converged":bool(hrow["modflow_converged"]),
+            "fresh_head_vector_increment_m":float(frow["max_abs_head_vector_increment_m"]),
+            "history_head_vector_increment_m":float(hrow["max_abs_head_vector_increment_m"]),
+        }
+        matched.append(m)
+        print("FGC44_G21B_MATCHED_JSON="+json.dumps(m,sort_keys=True,separators=(",",":")))
+
     fresh_final=float(fresh["tail"]["final_head_m"])
     history_final=float(history["tail"]["final_head_m"])
     reference=float(outer2["fresh_reference_head_m"])
@@ -260,6 +290,9 @@ def main()->None:
         "history_total_solve_calls":int(history["total_solve_calls"]),
         "xold_fixed_both":bool(fresh["xold_bitwise_fixed"]) and bool(history["xold_bitwise_fixed"]),
         "finalize_time_step_calls_total":int(fresh["finalize_time_step_calls"])+int(history["finalize_time_step_calls"]),
+        "fresh_max_head_vector_increment_m":float(fresh["tail"]["max_post_response_head_vector_increment_m"]),
+        "history_max_head_vector_increment_m":float(history["tail"]["max_post_response_head_vector_increment_m"]),
+        "matched_tail":matched,
         "coupling_policy_claim":"NONE_DIAGNOSTIC_ONLY",
     }
     print("FGC44_G21B_SUMMARY_JSON="+json.dumps(summary,sort_keys=True,separators=(",",":")))
