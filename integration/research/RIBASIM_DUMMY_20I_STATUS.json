@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.coupling.real_ribamod_active_river_two_day_memory.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20I",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "45eddecf8e62c4eaa4945b599627641c97d68a7d",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20H closeout. Two-day references are frozen prospectively.",
+  "next_action": "After DUMMY-20H closes, rebind and implement the frozen two-day active-River memory test.",
+  "production_delta": [],
+  "reference_delta": []
+}
