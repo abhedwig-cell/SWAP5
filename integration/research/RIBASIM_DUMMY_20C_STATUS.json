@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20C v2 after STO-only technical harness repair; frozen model clocks, Ribasim management case, hypotheses and tolerances unchanged.",
+  "next_action": "Execute DUMMY-20C v2 after STO-only technical harness repair.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -52,5 +52,7 @@
       "scientific_effect": "none",
       "authority_use": "forbidden"
     }
-  ]
+  ],
+  "qualification_attempt": "v2_frozen_real_ribamod_runtime_differential",
+  "qualification_base": "work/ribasim-dummy-01@1b3178c5475e7aee139548591ca5138a5fb3c4dc"
 }
