@@ -103,3 +103,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G09A_DIAGNOSTIC=PASS' "$BUILD/fgc44-globalization-g
   echo "GC_FGC44_G09A_FAIL missing tangent-topology diagnostic gate" >&2
   exit 1
 }
+
+
+# G09B topology-consistent tangent qualification. Probes may contribute to the
+# derivative only when participant status is 0 and raw execution topology
+# matches the current center trial.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_topology_tangent_g09b.py \
+  | tee "$BUILD/fgc44-globalization-g09b.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G09B_EXECUTION=PASS' "$BUILD/fgc44-globalization-g09b.txt" || {
+  echo "GC_FGC44_G09B_FAIL missing topology-consistent tangent gate" >&2
+  exit 1
+}
