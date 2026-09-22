@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm04.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM04",
+  "decision": "QUALIFIED_MINIMAL_NONLINEAR_RESPONSE_FALSIFICATION",
+  "production_changes": false,
+  "authority": {
+    "preregistration": "integration/research/GC_ROOTZONE_MEMORY_RZM04_PREREGISTRATION.json",
+    "implementation_head": "977ff8036d5a59910e0fc8ab92f9c80d4d4e3881",
+    "workflow_run": 35706139759,
+    "workflow_job": 106675423847,
+    "conclusion": "success"
+  },
+  "evidence": {
+    "tests": "7/7",
+    "gate": "PASS",
+    "nonaffine_second_difference_m": -0.0004118910689795245,
+    "tangent_origin_A_m_per_m": -0.14832612843183748,
+    "tangent_origin_B_m_per_m": -0.1500952263014648,
+    "tangent_difference_abs_m_per_m": 0.00176909786962732,
+    "regressions": "RZM01-RZM03 success"
+  },
+  "bounded_conclusions": [
+    "A single minimal smooth state dependence is sufficient to destroy exact affine E_c(H_c) over the tested finite head interval.",
+    "The local finite-window tangent becomes committed-origin dependent.",
+    "This falsifies exact state-independent scalar-response sufficiency, not the single physical interface-head contract.",
+    "Mass ownership, signed bidirectionality and transactional repeatability survive the introduced nonlinearity."
+  ],
+  "nonclaims": [
+    "no production constitutive law",
+    "no claim that a tangent is inadequate for iterative coupling when updated consistently",
+    "no real-SWAP state sufficiency conclusion"
+  ],
+  "next": "GC-RZM05 management binding."
+}

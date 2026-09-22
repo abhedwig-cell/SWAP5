@@ -29,6 +29,13 @@
       "workflow_run": 35703505239,
       "workflow_job": 106666830465,
       "implementation_head": "df7e2e5fd9ad4b4d185d352981e7f8b88da29a99"
+    },
+    {
+      "work_unit": "GC-RZM04",
+      "decision": "QUALIFIED_MINIMAL_NONLINEAR_RESPONSE_FALSIFICATION",
+      "workflow_run": 35706139759,
+      "workflow_job": 106675423847,
+      "implementation_head": "977ff8036d5a59910e0fc8ab92f9c80d4d4e3881"
     }
   ],
   "current_findings": [
@@ -46,12 +53,15 @@
     "Exact substep equivalence requires preservation of the actual H_c and forcing trajectories; equal time-mean H_c is not an exact substitute for an ordered head trajectory.",
     "Fast root-to-lower equilibration reduces the two internal storages to a one-state physical limit, but exact-continuous and implicit-Euler finite-window response formulas remain distinct.",
     "Upward and downward exchange are represented by the same signed root/lower and lower/interface laws in the qualified linear surrogate; no direction-specific state is required.",
-    "MODFLOW-to-SWAP capillary supply is negative E_c, reaches the root zone through lower-SWAP state, and closes the complete SWAP-plus-groundwater ledger."
+    "MODFLOW-to-SWAP capillary supply is negative E_c, reaches the root zone through lower-SWAP state, and closes the complete SWAP-plus-groundwater ledger.",
+    "With only state-dependent internal vertical conductance added, E_c(H_c) is measurably non-affine over the preregistered finite head interval.",
+    "The nonlinear local finite-window response tangent depends on committed internal state, so the exact state-independent scalar tangent result from the linear oracle does not survive.",
+    "H_c can remain the sole physical fixed-plane interface head even though exact affine response sufficiency fails."
   ],
   "next_work_unit": {
-    "id": "GC-RZM04",
-    "scope": "Phase F minimal nonlinearity: introduce one state-dependent internal conductance and falsify exact affine whole-window condensation while preserving fixed-interface ownership and mass ledgers",
-    "prerequisite": "GC-RZM03 qualified"
+    "id": "GC-RZM05",
+    "scope": "Phase G bind qualified Ribasim root-zone demand and irrigation-management semantics to committed W_r while keeping shortage diagnostic and groundwater coupling through the lower SWAP state",
+    "prerequisite": "GC-RZM04 qualified"
   },
   "blocked": [],
   "nonclaims": [
