@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21h.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21H",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_ISOLATED_FINAL_RETRY_SOLVER_BIFURCATION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21H_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21H_RESULT.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21G_RESULT.json",
+  "tested_commit": "7bb698693cdc51c8378697101fe19bade952fbe1",
+  "workflow_run": 35740488540,
+  "workflow_job": 106788659599,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "g21g_retry_solver_bifurcation": "MECHANISM_CONFIRMED_AT_ISOLATED_RETRY_LEVEL",
+    "levels_0_through_7": "PHYSICAL_SOLVER_CONVERGED_TEMPORAL_CERTIFICATE_REJECTED",
+    "level_8_status6_side": "PHYSICAL_SOLVER_NONCONVERGED",
+    "level_8_adjacent_status0_side": "PHYSICAL_SOLVER_CONVERGED",
+    "transaction_history_required_for_terminal_split": "NO_IN_FROZEN_BOUNDARIES",
+    "status_smoothing": "NOT_ADMITTED",
+    "retry_policy_change": "NOT_ADMITTED",
+    "solver_tolerance_change": "NOT_ADMITTED",
+    "solver_configuration_selection": "NOT_ADMITTED",
+    "response_space_globalization": "REMAINS_RESEARCH_ONLY"
+  },
+  "next_action": "Open G21I as read-only final-retry physical-solver trajectory forensics at duration 3.90625e-5 day for the same four frozen heads. Instrument per-Newton iteration residual/update/backtracking behavior only; do not alter production solver, retry or participant semantics."
+}
