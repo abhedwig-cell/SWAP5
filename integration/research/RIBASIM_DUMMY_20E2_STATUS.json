@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Persist runner/workflow and execute frozen DUMMY-20E2 actual-product delayed groundwater-transfer qualification.",
+  "next_action": "Execute observability-only v2 with unchanged model, references and tolerances; log endpoint state before assertions.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,7 +19,7 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "DUMMY-20D qualified; corrected DUMMY-20E2 product worker reconciled and ready for execution.",
+  "recovery_point": "DUMMY-20E2 v1 failed at 12 h after an exact 6 h match; sign/order source audit passed; observability v2 required.",
   "implementation_preparation": {
     "state": "PRODUCT_WORKER_PREPARED_IMPLEMENTATION_READY",
     "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater.py",
@@ -50,5 +50,27 @@
       "MF6 flux, Ribasim drainage rate/cumulative drainage, UserDemand delivery, Basin level and full ledger all observed",
       "frozen piecewise references and tolerances unchanged"
     ]
-  }
+  },
+  "qualification_attempts": [
+    {
+      "attempt": "v1",
+      "run": 35724680525,
+      "job": 106735411456,
+      "head_sha": "1bf4b7285420c7270b4cc68b55e69c121695d423",
+      "state": "SCIENTIFIC_REFERENCE_MISMATCH_DIAGNOSTIC_INCOMPLETE",
+      "observed": {
+        "endpoint_6h": {
+          "level_m": 1.0000039987293805,
+          "root_m3": 4.001270619481194,
+          "external_m3": 0,
+          "groundwater_cumulative_m3": 0,
+          "ribasim_drainage_m3_day": 0,
+          "mf6_drain_flux_m3_day": 0
+        },
+        "endpoint_12h": "Basin level outside frozen tolerance; actual state not logged before assertion."
+      },
+      "interpretation": "First segment matches. The second-segment reference mismatch is real enough to require diagnosis, but v1 logging asserted before emitting the second endpoint's transfer/state observables.",
+      "authority_use": "unresolved; not admitted"
+    }
+  ]
 }
