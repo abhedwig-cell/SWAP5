@@ -230,3 +230,16 @@ grep -Fq 'GC_FIXED_INTERFACE_G17_EXECUTION=PASS' "$BUILD/fgc44-globalization-g17
   echo "GC_FGC44_G17_FAIL missing safeguarded-orchestration gate" >&2
   exit 1
 }
+
+
+# G18 contract reconciliation. This is deliberately a compatibility/falsification
+# gate: exact G11/G17 head-space P4 is compared with the already-qualified
+# F-GC38/F-GC39 continuous prepared-solve ownership contract. No runtime policy
+# or MODFLOW state-control primitive is added by this test.
+python3 tests/research/test_gc_fixed_interface_g18_prepared_solve_p4_contract.py \
+  | tee "$BUILD/fgc44-globalization-g18.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G18_EXECUTION=PASS' "$BUILD/fgc44-globalization-g18.txt" || {
+  echo "GC_FGC44_G18_FAIL missing prepared-solve/P4 reconciliation gate" >&2
+  exit 1
+}
