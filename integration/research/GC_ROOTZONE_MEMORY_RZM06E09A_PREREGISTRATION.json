@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e09a.local_interface_state_census_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E09A",
+  "authority": "preregistered response-blind local-interface state census",
+  "production_changes": false,
+  "parent_evidence": {
+    "E07_result_commit": "4e103502f6d00df8adf27630e891050bbb791c28",
+    "E07_artifact_id": 10703718492,
+    "E07_artifact_digest": "sha256:3fe15feeffbdc318f97215fe78083b9861d5473c3d58647ea603994a560e4d5b",
+    "E08_result_commit": "8765f4dbb2824341cd269d8997ef086d22d68f69",
+    "E08_decision": "SUPPORTED_INTERFACE_MEMORY_AT_1E9_STORAGE_RESOLUTION"
+  },
+  "scientific_question": "Within the prospectively generated E07 state set, can two origins be matched in W_profile, W_root30 and H16 while retaining a materially different immediately overlying pressure state H15/local H15-H16 gradient?",
+  "rationale": [
+    "E08 shows aggregate-storage non-uniqueness at 1e-9 cm but the selected origins differ in H16.",
+    "For a fixed bottom boundary, H16 is the nearest internal hydraulic coordinate to the interface, while H15 controls the immediately adjacent interior gradient and can influence finite-window evolution.",
+    "H16 and H15 are therefore derived mechanically, not chosen from response correlation."
+  ],
+  "input_firewall": {
+    "source": "E07 qualification artifact only",
+    "allowed_lines": [
+      "RZM06E07_CANDIDATE",
+      "RZM06E07_NODE"
+    ],
+    "forbidden_fields": [
+      "bottom exchange",
+      "terminal bottom flux",
+      "response tangent",
+      "E08 response"
+    ],
+    "response_guided_selection": false
+  },
+  "observables": {
+    "profile_water_cm": "sum(theta_i*10), i=1..16",
+    "root30_water_cm": "sum(theta_i*10), i=1..3",
+    "H16_cm": "pressure_head_16",
+    "H15_cm": "pressure_head_15",
+    "local_pressure_gradient_15_16": "(H16-H15)/10 cm per cm"
+  },
+  "frozen_aggregate_gates": {
+    "max_abs_profile_water_difference_cm": 1e-9,
+    "max_abs_root30_water_difference_cm": 1e-9
+  },
+  "nested_H16_match_ladder_cm": [
+    0.01,
+    0.001,
+    0.0001,
+    0.00001,
+    0.000001,
+    1e-7,
+    1e-8,
+    1e-9
+  ],
+  "local_separation_gate": {
+    "min_abs_H15_difference_cm": 0.01,
+    "equivalent_note": "With identical geometry and H16 matching, H15 separation represents a distinct local interior-gradient state."
+  },
+  "pair_scope": "all distinct completed E07 endpoints, not restricted to original direction twins",
+  "selection": {
+    "selected_rung": "tightest H16-match rung with at least one pair passing both aggregate gates and H15 separation",
+    "ranking_within_rung": [
+      "largest abs(delta H15)",
+      "smallest abs(delta H16)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "lexicographic provenance"
+    ],
+    "exact_H16_rung": "numeric H16 equality is reported separately but not required",
+    "no_match": "close E09A without response probe and do not relax aggregate, H16 or H15 gates post hoc"
+  },
+  "qualification_gates": [
+    "verify E07 artifact identity and non-expiry",
+    "require O0/O2 E07 state output byte identity",
+    "deduplicate bit-identical H/theta states before pair census",
+    "selector parses no response quantities",
+    "persist all 16 H/theta values for any selected pair"
+  ],
+  "next_if_selected": "Preregister GC-RZM06E09B fixed-Hc response probe on the immutable E09A pair with W_profile/root30 gates fixed at 1e-9 cm and H16 gate fixed to the selected rung.",
+  "next_if_no_match": "Do not claim H16 sufficiency. Derive a prospective construction that independently controls H16 while perturbing H15/local gradient.",
+  "nonclaims": [
+    "E09A is state-only evidence.",
+    "A selected H15-separated pair does not by itself prove H15 is necessary.",
+    "No reduced-state or production coupling admission follows."
+  ]
+}
