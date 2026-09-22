@@ -3,25 +3,25 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P1",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "2650ab6458db630241386a465d3acb33c523fb81",
+  "checkpoint_commit": "cb3d491bc768f290cf387e458b679bcf0066d2a1",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "phase": "REFERENCE_SEGMENTED_AUTHORITY_QUEUED_EXTERNAL_CAPACITY",
+  "phase": "REFERENCE_SEGMENTED_REPAIRED_AUTHORITY_QUEUED",
   "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
-  "reference_workflow_run": 35751525444,
+  "reference_workflow_run": 35751978638,
   "stale_duplicate_workflow_run": 35748342142,
   "stale_duplicate_response_capable": false,
   "candidate_response_authorized": false,
   "candidate_response_generated": false,
   "candidate_implementation_staged": true,
-  "next_action": "EXECUTE_BOUND_SEGMENTED_REFERENCE_AUTHORITY_WHEN_GITHUB_ACTIONS_SCHEDULES_JOBS",
+  "next_action": "QUALIFY_SURFACE_AND_GW_CHECKPOINT_TOPOLOGY_THEN_EXECUTE_BOUND_REFERENCE_MATRIX",
   "recovery_point": "work/f-rom-purpose; use ROM_PURPOSE_P1_REFERENCE_EXECUTION_RECONCILIATION.json and workflow run 35749982543.",
   "blockers": [
     "EXTERNAL_GITHUB_ACTIONS_CAPACITY"
   ],
-  "last_reconciled_head": "2650ab6458db630241386a465d3acb33c523fb81",
+  "last_reconciled_head": "cb3d491bc768f290cf387e458b679bcf0066d2a1",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/ROM_PURPOSE_P0_AUTHORITY_BINDING.json",
@@ -77,8 +77,10 @@
   "history_sharded_reference_workflow_run": 35749982543,
   "history_sharded_disposition": "SUPERSEDED_AFTER_R2048_T32_EXIT_143; R512/R1024 POSITIVE TECHNICAL CONTROL ONLY",
   "external_scheduler_snapshot": {
-    "segmented_run": 35751525444,
-    "jobs_materialized": 0,
-    "observed_state": "QUEUED_BEFORE_JOB_MATERIALIZATION"
-  }
+    "segmented_run": 35751978638,
+    "checkpoint_jobs_materialized": 2,
+    "checkpoint_surface_status": "QUEUED",
+    "checkpoint_gw_status": "QUEUED"
+  },
+  "superseded_segmented_workflow_run": 35751525444
 }
