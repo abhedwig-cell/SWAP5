@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.rom-accept.blind-application-protocol-shell.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "protocol_id": "GW-D-LHM-END2END-BLIND-SHELL-V1",
+  "status": "DESIGN_SHELL_ONLY_NOT_EXECUTABLE",
+  "acceptance_envelope": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+  "purpose": "Prospective observation-bound validation of a coupled LHM-like groundwater application containing a reduced unsaturated-zone component.",
+  "execution_authorized": false,
+  "prerequisites_before_freeze": [
+    {
+      "id": "DATASET_BINDING",
+      "requirement": "Bind immutable identities/hashes and licenses for the exact groundwater observation datasets and spatial classifications used in the application panel.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "POPULATION_BINDING",
+      "requirement": "Freeze the exact measurement-point population, hydrotype/area-type mapping, depth-class membership and all inclusion/exclusion rules before any reduced-model output.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "TEMPORAL_BINDING",
+      "requirement": "Implement and freeze the source-defined GHG/GLG sampling, hydrological-year construction, dynamics amplitude and drought-recession construction exactly; timing diagnostics without source thresholds remain diagnostic only.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "APPLICATION_COMPOSITION_BINDING",
+      "requirement": "Freeze groundwater model, forcing, land-surface parameterization, calibration state, coupling interval policy and reduced-component insertion point. No candidate-specific recalibration or compensation is allowed unless separately authorized by the application contract.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "ROM_IDENTITY_BINDING",
+      "requirement": "Freeze reduced-model formulation, state placement, closure, initialization and state-transfer rules before any application response is viewed.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "REFERENCE_ROLE_BINDING",
+      "requirement": "If Full Richards is also run, bind it as an attribution/comparator route only. External LHM criteria remain the acceptance authority; candidate-reference error may not redefine thresholds.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "BLIND_PANEL_BINDING",
+      "requirement": "Freeze all application years/cases, difficult periods, spatial populations and missing-data handling before candidate execution.",
+      "state": "UNRESOLVED"
+    }
+  ],
+  "acceptance_logic": {
+    "authority": "External LHM groundwater criteria only",
+    "gate_form": "Vector gate with no weighted composite score",
+    "source_threshold_mutation_after_response": false,
+    "candidate_specific_thresholds": false,
+    "candidate_specific_population_changes": false,
+    "candidate_specific_parameter_recalibration": false,
+    "reference_based_thresholds": false,
+    "pass_semantics": "Each applicable externally governed criterion must be evaluated at exactly its stated population and temporal support. Any deliberately excluded criterion requires a preregistered domain statement before execution."
+  },
+  "comparison_design": {
+    "required_arm": "Reduced unsaturated-zone component embedded in the frozen coupled application",
+    "optional_diagnostic_arm": "Full Richards or existing production unsaturated-zone route under identical non-ROM application inputs",
+    "diagnostic_questions": [
+      "Does the reduced route pass the external application envelope?",
+      "If both routes pass, what hydrological response differences remain?",
+      "If the reduced route fails while the comparator passes, which external criterion is lost?",
+      "If both fail, do not attribute application failure uniquely to ROM."
+    ],
+    "prohibited_conclusion": "Passing the external application envelope alone does not prove vertical-state or process equivalence to Full Richards."
+  },
+  "evidence_to_persist_before_execution": [
+    "External source identity and exact criteria table transcription",
+    "Observation dataset identity and population manifest",
+    "Spatial classification manifest",
+    "Temporal aggregation implementation tests",
+    "Application configuration hash/identity",
+    "ROM identity and immutable preregistration",
+    "Blind case manifest",
+    "Acceptance evaluator with synthetic unit tests around every threshold"
+  ],
+  "stop_rules": [
+    "Stop if exact observation/population authority cannot be bound.",
+    "Stop if the LHM temporal/statistical constructions cannot be reproduced without interpretation choices.",
+    "Stop if candidate-specific recalibration is needed but has no independent application authority.",
+    "Stop if any external criterion is dropped after viewing candidate output.",
+    "Do not substitute synthetic ROM-PURPOSE metrics for the external application criteria."
+  ],
+  "handoff_target": "A future dedicated observation-bound application-validation work unit, not ROM-PURPOSE P1 and not ROM-ROOT.",
+  "candidate_responses_viewed": false
+}
