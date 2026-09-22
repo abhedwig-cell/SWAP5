@@ -206,6 +206,10 @@ def main()->None:
     for case in p["frozen_intervals"]:
         cid=str(case["id"])
         rows=sample_interval(swap,fn,case)
+        for ordinal,row in enumerate(rows):
+            print("FGC44_G21N_SAMPLE_JSON="+json.dumps({
+                "id":cid,"ordinal":ordinal,**row
+            },sort_keys=True,separators=(",",":")))
         endpoint_check(cid,rows,parent)
         analysis=analyze(cid,rows)
         all_rows[cid]=rows
