@@ -4,16 +4,22 @@ import json
 import math
 import os
 import sys
+import tempfile
 from pathlib import Path
 
+import flopy
 import numpy as np
+from xmipy import XmiWrapper
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/"tests"/"research"))
 sys.path.insert(0,str(ROOT/"tests"/"research"/"support"))
 
 from gc_map09_e6_ctypes import Map09ActiveDrainageSwap
-from test_gc_fixed_interface_fgc44_safeguarded_newton_g08 import AREA_M2,DAY_TO_S,solve_term
+from test_gc_fixed_interface_fgc44_safeguarded_newton_g08 import (
+    AREA_M2, DAY_TO_S, Binding, CountingKernel, Term,
+    Fgc34CtypesPublisher, Modflow6PreparedSolveSession, PreparedSolveStatus,
+)
 
 PREREG=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G12_PREREGISTRATION.json"
 
@@ -35,6 +41,8 @@ MAX_OUTER=12
 MAX_BACKTRACK=12
 MASS_TOL_CM=1.0e-10
 MAP09A_JR=-0.0005726906726621905
+GW_RELATIVE_HREF_DEPTH_BELOW_TOP_M=0.715
+GW_LAYER_THICKNESS_M=2.0
 FGC44_MF_REFERENCE_HREF=-0.7149999706136307
 MAP09_DATUM_SHIFT=HREF_EXPECTED-FGC44_MF_REFERENCE_HREF
 
@@ -47,7 +55,7 @@ def require(cond:bool,msg:str)->None:
 def load_prereg()->dict[str,object]:
     p=json.loads(PREREG.read_text())
     require(p["work_unit"]=="GC-FIXED-INTERFACE-G12","wrong G12 preregistration")
-    require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION","G12 preregistration not frozen")
+    require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION_TECHNICALLY_AMENDED","G12 preregistration not frozen/amended")
     c=p["carrier"]
     require(float(c["duration_day"])==DURATION_DAY,"G12 duration drift")
     require(float(c["reference_head_m"])==HREF_EXPECTED,"G12 href drift")
@@ -221,6 +229,127 @@ def residual_at(
     if status!=0:
         return status,None,None
     return 0,q,q-(a*head+b)
+
+
+def build_groundwater_model_g12(
+    workdir:Path,
+    href:float,
+    k_m_per_day:float,
+    ss_per_m:float,
+    sy:float,
+    initial_head_bias_m:float,
+)->None:
+    # Technical G12 datum repair: preserve the original G08 2 m geometry and
+    # the approximately 0.715 m reference-head depth below model top. MAP09
+    # uses a positive hydraulic datum, so top=0 would move the convertible
+    # storage cell into its confined branch when ss=0.
+    top=href+GW_RELATIVE_HREF_DEPTH_BELOW_TOP_M
+    botm=top-GW_LAYER_THICKNESS_M
+    center=href+initial_head_bias_m
+    sim=flopy.mf6.MFSimulation(sim_name="GC_G12",version="mf6",sim_ws=str(workdir))
+    flopy.mf6.ModflowTdis(
+        sim,time_units="DAYS",nper=1,perioddata=[(DURATION_DAY,1,1.0)]
+    )
+    flopy.mf6.ModflowIms(
+        sim,complexity="MODERATE",
+        outer_dvclose=1e-12,inner_dvclose=1e-13,
+        outer_maximum=100,inner_maximum=100,
+    )
+    gwf=flopy.mf6.ModflowGwf(
+        sim,modelname="GWF_1",save_flows=True,newtonoptions="NEWTON"
+    )
+    flopy.mf6.ModflowGwfdis(
+        gwf,nlay=1,nrow=1,ncol=3,delr=1.0,delc=1.0,top=top,botm=botm
+    )
+    flopy.mf6.ModflowGwfic(
+        gwf,strt=np.asarray([[[center,center,center]]],dtype=float)
+    )
+    flopy.mf6.ModflowGwfnpf(gwf,icelltype=1,k=k_m_per_day,save_flows=True)
+    flopy.mf6.ModflowGwfsto(
+        gwf,iconvert=1,ss=ss_per_m,sy=sy,transient={0:True}
+    )
+    flopy.mf6.ModflowGwfchd(
+        gwf,
+        stress_period_data={0:[
+            ((0,0,0),center+0.002),
+            ((0,0,2),center-0.002),
+        ]},
+        pname="CHD_ENDS",
+    )
+    flopy.mf6.ModflowGwfapi(
+        gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api"
+    )
+    sim.write_simulation(silent=True)
+
+
+def solve_term_g12(
+    libmf6:Path,
+    swaplib:Path,
+    duration_day:float,
+    href:float,
+    k_m_per_day:float,
+    ss_per_m:float,
+    sy:float,
+    initial_head_bias_m:float,
+    hcof_m2_per_day:float,
+    rhs_m3_per_day:float,
+)->tuple[float,float,int]:
+    require(duration_day==DURATION_DAY,"G12 groundwater duration drift")
+    with tempfile.TemporaryDirectory(prefix="gc-g12-mf-") as tmp:
+        workdir=Path(tmp)
+        build_groundwater_model_g12(
+            workdir,href,k_m_per_day,ss_per_m,sy,initial_head_bias_m
+        )
+        raw=XmiWrapper(lib_path=libmf6,working_directory=workdir)
+        kernel=CountingKernel(raw)
+        publisher=Fgc34CtypesPublisher(swaplib)
+        initialized=False
+        try:
+            raw.initialize()
+            initialized=True
+            require("6.8.0" in raw.get_version(),"G12 wrong MODFLOW version")
+            raw.prepare_time_step(0.0)
+            session=Modflow6PreparedSolveSession(
+                kernel,"GWF_1","API_SWAP",publisher,solution_id=1
+            )
+            require(
+                session.acquire_after_prepare_time_step()==PreparedSolveStatus.OK,
+                session.last_error,
+            )
+            require(
+                session.open_prepared_solve()==PreparedSolveStatus.OK,
+                session.last_error,
+            )
+            xold=session.accepted_xold.copy()
+            binding=[Binding(7001,1,2)]
+            term=[Term(7001,hcof_m2_per_day,rhs_m3_per_day)]
+            converged=None
+            for _ in range(session.max_solve_iterations):
+                status,iteration=session.publish_and_solve_iteration(binding,term)
+                require(status==PreparedSolveStatus.OK,session.last_error)
+                require(iteration is not None,"G12 missing MODFLOW iteration")
+                require(
+                    np.array_equal(iteration.accepted_head_old_m,xold),
+                    "G12 MODFLOW XOLD drifted",
+                )
+                if iteration.modflow_converged:
+                    converged=iteration
+                    break
+            require(converged is not None,"G12 MODFLOW solve did not converge")
+            head=float(converged.head_m[1])
+            qgw=(hcof_m2_per_day*head-rhs_m3_per_day)/(AREA_M2*DAY_TO_S)
+            iterations=int(converged.iteration)
+            require(
+                session.finalize_prepared_solve()==PreparedSolveStatus.OK,
+                session.last_error,
+            )
+            raw.finalize_time_step()
+            raw.finalize()
+            initialized=False
+            return head,qgw,iterations
+        finally:
+            if initialized:
+                raw.finalize()
 
 
 def calibrate_groundwater(
