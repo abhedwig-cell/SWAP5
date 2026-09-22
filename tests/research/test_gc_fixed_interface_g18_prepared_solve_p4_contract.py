@@ -67,9 +67,13 @@ def main()->None:
     require(math.isclose(current,float(frozen["current_head_m"]),rel_tol=0.0,abs_tol=1e-15),"G18 current head drift")
     require(math.isclose(raw,float(frozen["raw_head_m"]),rel_tol=0.0,abs_tol=1e-15),"G18 raw head drift")
     require(math.isclose(accepted,float(frozen["first_accepted_head_m"]),rel_tol=0.0,abs_tol=1e-15),"G18 accepted head drift")
-    require(int(first["cumulative_contractions"])==int(frozen["contraction_count"])==2,"G18 contraction count drift")
-    require(math.isclose(alpha,float(frozen["expected_head_fraction_from_current_to_raw"]),rel_tol=0.0,abs_tol=1e-12),
-            f"G18 first accepted head is not the frozen factor-1/2 twice contraction: alpha={alpha}")
+    contraction_count=int(first["cumulative_contractions"])
+    require(contraction_count==int(frozen["contraction_count"])==2,"G18 contraction count drift")
+    reconstructed=raw
+    for _ in range(contraction_count):
+        reconstructed=current+0.5*(reconstructed-current)
+    require(accepted==reconstructed,
+            f"G18 persisted accepted head does not reproduce exact sequential factor-1/2 P4 arithmetic: {accepted} != {reconstructed}")
 
     require(int(g17["safeguard_path"]["first_raw_status"])==6,"G18 G17 raw status drift")
     require(math.isclose(float(g17["safeguard_path"]["first_raw_dh_m"]),float(g11["summary"]["first_raw_dh_m"]),rel_tol=0.0,abs_tol=1e-15),
@@ -126,6 +130,8 @@ def main()->None:
         "raw_head_m":raw,
         "first_accepted_head_m":accepted,
         "head_fraction_alpha":alpha,
+        "sequential_halving_reconstructed_head_m":reconstructed,
+        "sequential_halving_exact_match":accepted==reconstructed,
         "raw_minus_contracted_head_m":raw-accepted,
         "contractions":int(first["cumulative_contractions"]),
         "raw_status":int(first["raw_status"]),
