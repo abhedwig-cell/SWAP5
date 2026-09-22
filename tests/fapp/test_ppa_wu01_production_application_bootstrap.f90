@@ -42,7 +42,8 @@ program test_ppa_wu01_production_application_bootstrap
        materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
   use mod_fmr_vonhhbraden_source_window_progress, only: fmr_vonhhbraden_source_window_progress_t, &
-       fmr_initialize_vonhhbraden_source_window_progress, FMR_VONHHBRADEN_PROGRESS_OK
+       fmr_vonhhbraden_source_window_restart_t, fmr_initialize_vonhhbraden_source_window_progress, &
+       fmr_restore_vonhhbraden_source_window_progress, FMR_VONHHBRADEN_PROGRESS_OK
   use mod_ppa_wu04c_runtime_publication, only: publish_ppa_wu04c_accepted_progress, PPA_WU04C_PUBLICATION_OK
   implicit none
 
@@ -221,6 +222,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_ATM02_OWNER_RESTART_CONTINUATION=PASS'
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_RECEIPTS=PASS'
   print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_PROGRESS=PASS'
+  print '(a)', 'PPA_WU04C_OWNER_PROGRESS_RESTART_CONTINUATION=PASS'
   print '(a)', 'PPA_WU04C_DYNAMIC_TOP_FORCING_HANDOFF=PASS'
   print '(a)', 'PPA_WU04C_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
   print '(a)', 'PPA_WU04D_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
@@ -535,12 +537,15 @@ contains
     type(fmr_committed_top_state_t), allocatable :: committed_top(:)
     type(fmr_serialized_commit_receipt_record_t), allocatable :: receipts(:)
     type(fmr_vonhhbraden_source_window_progress_t) :: progress(NTILE)
+    type(fmr_vonhhbraden_source_window_progress_t) :: restored_progress(NTILE)
+    type(fmr_vonhhbraden_source_window_restart_t) :: progress_restart(NTILE)
     type(fmr_committed_restart_bundle_t) :: restart_bundle
-    logical :: restart_exported, restart_restored
+    logical :: restart_exported, restart_restored, progress_exported, progress_restored
     integer :: tile, local_status, node
     real(real64) :: t2
 
     atm_config = base_config
+    t2 = T1 + (T1 - T0)
     do tile = 1, NTILE
       atm_config%tiles(tile)%parameters%root_extraction_active = .true.
     end do
@@ -586,12 +591,14 @@ contains
     call require(size(receipts) == NTILE .and. receipts(1)%receipt%ready() .and. receipts(2)%receipt%ready(), &
          'ATM02 owner accepted receipts')
     do tile = 1, NTILE
-      call fmr_initialize_vonhhbraden_source_window_progress(9700_int64 + int(tile, int64), T0, T1, 0.05_real64, &
+      call fmr_initialize_vonhhbraden_source_window_progress(9700_int64 + int(tile, int64), T0, t2, 0.05_real64, &
            progress(tile), local_status)
       call require(local_status == FMR_VONHHBRADEN_PROGRESS_OK, 'WU04C progress initialize')
       call publish_ppa_wu04c_accepted_progress(progress(tile), receipts(tile)%receipt, 0.01_real64, local_status)
       call require(local_status == PPA_WU04C_PUBLICATION_OK .and. &
            abs(progress(tile)%remaining_interception() - 0.04_real64) <= 1.e-14_real64, 'WU04C accepted progress')
+      call progress(tile)%export_restart(progress_restart(tile), progress_exported)
+      call require(progress_exported, 'WU04C progress restart export')
     end do
     call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 owner hard mass')
     call atm_app%copy_committed_top_states(committed_top, local_status)
@@ -603,7 +610,10 @@ contains
     call require(local_status == FMR_APP_BOOT_OK .and. restart_exported, 'ATM02 owner restart export')
     call atm_app%restore_committed_restart(restart_bundle, 9901_int64, restart_restored, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. restart_restored, 'ATM02 owner restart restore')
-    t2 = T1 + (T1 - T0)
+    do tile = 1, NTILE
+      call fmr_restore_vonhhbraden_source_window_progress(progress_restart(tile), restored_progress(tile), progress_restored, local_status)
+      call require(progress_restored .and. local_status == FMR_VONHHBRADEN_PROGRESS_OK, 'WU04C progress restart restore')
+    end do
     forcing_interval%t0 = T1; forcing_interval%t1 = t2
     decoded%source_record_index = 45
     decoded%t0 = T1 - 0.25_real64; decoded%t1 = t2 + 0.25_real64
@@ -631,10 +641,16 @@ contains
            'ATM02 continuation forcing composition')
       deallocate(geometry%z, geometry%dz, geometry%node_distance, root_input%cumulative_root_fraction)
     end do
-    call atm_app%run_standalone_with_forcing(T1, t2, atm02_forcing, results, local_status)
+    call atm_app%run_standalone_with_forcing_receipts(T1, t2, atm02_forcing, results, receipts, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), &
          'ATM02 continuation owner commit')
     call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 continuation hard mass')
+    do tile = 1, NTILE
+      call publish_ppa_wu04c_accepted_progress(restored_progress(tile), receipts(tile)%receipt, 0.01_real64, local_status)
+      call require(local_status == PPA_WU04C_PUBLICATION_OK .and. &
+           abs(restored_progress(tile)%remaining_interception() - 0.03_real64) <= 1.e-14_real64, &
+           'WU04C progress restart continuation')
+    end do
     call atm_app%copy_committed_revisions(revisions, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. all(revisions == 2_int64), 'ATM02 owner revisions')
     call atm_app%close(local_status)
