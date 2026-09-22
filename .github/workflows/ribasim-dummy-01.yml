@@ -194,6 +194,11 @@ on:
       - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
       - 'tests/research/real_ribasim_explicit_apply_trajectory_bridge.jl'
       - 'tests/research/run_ribasim_dummy_19l.sh'
+      - 'integration/research/RIBASIM_DUMMY_20A_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20A_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/test_ribasim_dummy_20a_ribamod_product_clock.py'
+      - 'tests/research/run_ribasim_dummy_20a.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -777,4 +782,22 @@ jobs:
           working-directory: .ribasim-pin
       - name: Run pinned real Ribasim accepted-state trajectory equivalence
         run: bash tests/research/run_ribasim_dummy_19l.sh
+
+  ribamod-product-clock-contract-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20a-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout pinned iMOD Coupler
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/imod_coupler
+          ref: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+          path: .imod-coupler-pin
+          fetch-depth: 1
+      - name: Run pinned RibaMod product-clock contract
+        run: bash tests/research/run_ribasim_dummy_20a.sh
 
