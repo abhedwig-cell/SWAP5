@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20F2 two-day next-boundary memory-admission qualification.",
+  "next_action": "Execute DUMMY-20F2 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "d8a0bb90c4053dee73c2c9b18c6148088b6bc871",
@@ -36,5 +36,7 @@
       "day-2 root/external increments are checked against the preregistered common-factor 2:1 realization",
       "groundwater cumulative transfer and full coupled ledger are checked at all eight boundaries"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_two_day_memory_admission",
+  "qualification_base": "work/ribasim-dummy-01@cab227dadf7600bdaa2162cf9612cb0283662bbb"
 }
