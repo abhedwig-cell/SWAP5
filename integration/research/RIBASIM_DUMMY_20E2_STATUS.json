@@ -6,11 +6,11 @@
   "baseline": "796a02ad97524cd94e3103221cb23ee684556ba6",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
-  "blocked": false,
-  "blocker": null,
-  "next_action": "Execute DUMMY-20E2 v6 from current full-trajectory logger head; log all four endpoints before unchanged frozen assertions.",
+  "blocked": true,
+  "blocker": "The one-cell CHD+DRN MF6 fixture produced zero drain flux at every accepted boundary; the intended 0 -> 8 m3/day groundwater intervention was never realized.",
+  "next_action": "Do not tune references. Execute new DUMMY-20E3 with an independently active DRN cell and separate CHD source cell.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,7 +19,7 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "20E2 v5 independently reconfirmed the 12 h mismatch; v6 full-trajectory diagnosis pending.",
+  "recovery_point": "Full-trajectory product run 35726815125 showed exact no-exchange behavior and zero MF6/Ribasim groundwater transfer at all four boundaries.",
   "implementation_preparation": {
     "state": "PRODUCT_WORKER_PREPARED_IMPLEMENTATION_READY",
     "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater.py",
@@ -97,6 +97,15 @@
       },
       "interpretation": "Independent clean source-scope execution confirms the 12 h reference mismatch. Full trajectory is still required before scientific disposition.",
       "authority_use": "diagnostic_only"
+    },
+    {
+      "attempt": "v6",
+      "run": 35726815125,
+      "job": 106742369967,
+      "head_sha": "539140f097f8f78c54af037130ec662db2bda989",
+      "state": "FULL_TRAJECTORY_INTERVENTION_NOT_REALIZED",
+      "authority_use": "diagnostic_disposition",
+      "scientific_effect": "Groundwater-memory hypothesis not tested because treatment flux remained zero."
     }
   ],
   "source_scope_reconciliation": {
@@ -113,5 +122,6 @@
       "v1 diagnostic mismatch only"
     ],
     "required_next": "clean v6 full-trajectory Windows product qualification"
-  }
+  },
+  "decision": "RIBASIM_DUMMY_20E2_BLOCKED_GROUNDWATER_INTERVENTION_NOT_REALIZED"
 }
