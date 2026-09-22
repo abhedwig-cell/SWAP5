@@ -1,0 +1,74 @@
+{
+  "baseline": {
+    "initialize_status": 104,
+    "initialized": false,
+    "predictor_diagnostics": {
+      "accepted_substeps": 0,
+      "attempts": 9,
+      "available": true,
+      "completed": false,
+      "direction_available": false,
+      "internal_retries": 9,
+      "mass_rejections": 0,
+      "max_accepted_substep_duration": 0,
+      "max_temporal_indicator": 1.7976931348623157e+308,
+      "min_accepted_substep_duration": 1.7976931348623157e+308,
+      "result_status": 2,
+      "retries": 8,
+      "solver_rejections": 9,
+      "temporal_rejections": 0,
+      "temporal_unavailable_rejections": 0,
+      "transaction_calls": 1,
+      "trial_rollbacks": 9
+    },
+    "requested_duration_day": 0.0001,
+    "requested_predictor_qbot_cm_per_day": 0.000001
+  },
+  "classification": "real HeadCalc/B110 research carrier; synthetic native-cm 17-node profile; not Hupsel",
+  "disposition": "CARRIER_INITIALIZATION_NOT_ADMITTED",
+  "forcing_map": [],
+  "nonclaims": [
+    "no H2 support or falsification",
+    "no Hupsel equivalence",
+    "no production coupling admission",
+    "no production vertical-grid recommendation"
+  ],
+  "preregistration_commit": "337d32821a25aaebf5eddc9d84f5724c94d249e9",
+  "production_changes": false,
+  "schema": "swap5.gc_rootzone_memory.rzm06c02.native_cm_resolution_bridge.v1",
+  "strongest_two_sided_point": null,
+  "two_sided_admitted_points": [],
+  "qualification": {
+    "preregistration_commit": "337d32821a25aaebf5eddc9d84f5724c94d249e9",
+    "implementation_head": "b245fe130894940cf15cb2814e9c4d3dd552a467",
+    "workflow_run": 35736355085,
+    "workflow_job": 106774650222,
+    "workflow_conclusion": "success",
+    "evidence_semantics": "The workflow succeeds because the frozen no-go is captured as scientific evidence rather than treated as a harness crash.",
+    "production_changes": false
+  },
+  "interpretation": {
+    "classification": "QUALIFIED_FROZEN_INITIALIZATION_NO_GO__H2_NOT_PROBED",
+    "failure_stage": "FGC44 inherited predictor initialization before C02 baseline/node/forcing qualification",
+    "frozen_predictor": {
+      "duration_day": 0.0001,
+      "qbot_cm_per_day": 0.000001
+    },
+    "attempts": 9,
+    "accepted_substeps": 0,
+    "transaction_retries": 8,
+    "solver_rejections": 9,
+    "temporal_rejections": 0,
+    "mass_rejections": 0,
+    "internal_retries": 9,
+    "conclusion": "The synthetic 17-node native-cm F-GC carrier is not admitted under the preregistered inherited predictor configuration. The failure is solver-level, not a temporal- or mass-gate rejection.",
+    "consequence": "Do not retune predictor qbot, duration, solver tolerances, retry budget or grid after observing this result. C02 does not activate its C03 H2-construction branch.",
+    "relation_to_C01": "C01 independently qualified the existing 16-node F-ROM Reference carrier, so the program has a richer valid carrier despite the C02 no-go."
+  },
+  "limitations": [
+    "C02 never reached the baseline zero-top interval or the response-blind forcing map.",
+    "The no-go applies to this frozen synthetic 17-node F-GC configuration, not to arbitrary native-cm grids or SWAP generally.",
+    "No H2 response was inspected.",
+    "The research-only geometry-unit heuristic in the FGC bridge is not a production contract."
+  ]
+}
