@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.coupling.real_ribamod_noncommensurate_allocation_clock.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H10",
+  "decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+  "authority": {
+    "qualification_head": "fd66d678f242941cbcffec251931418fa5c80ecd",
+    "workflow_run": 35750549610,
+    "workflow_job": 106823238949,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "observations": {
+    "A5_S24": {
+      "allocation_dt_seconds": 18000,
+      "product_step_seconds": 21600,
+      "allocation_record_seconds": [
+        0
+      ],
+      "allocation_root_m3_per_day": [
+        32
+      ],
+      "allocation_external_m3_per_day": [
+        0
+      ],
+      "final_level_m": 1.0000159807416105,
+      "final_root_m3": 16.019258389454414,
+      "final_external_m3": 0,
+      "final_total_m3": 16.019258389454414
+    },
+    "A6_S24": {
+      "allocation_dt_seconds": 21600,
+      "product_step_seconds": 21600,
+      "allocation_record_seconds": [
+        0,
+        21600,
+        43200,
+        64800
+      ],
+      "allocation_root_m3_per_day": [
+        32,
+        40.00000000000001,
+        40.00000000000001,
+        40.00000000000001
+      ],
+      "allocation_external_m3_per_day": [
+        0,
+        7.994917522184543,
+        15.978702316060655,
+        19.96173263480886
+      ],
+      "final_level_m": 1.0000074869932376,
+      "final_root_m3": 19.0156248969841,
+      "final_external_m3": 5.49738186538438,
+      "final_total_m3": 24.51300676236848
+    },
+    "day_end_total_separation_m3": 8.493748372914066
+  },
+  "qualified_claims": [
+    "In the tested actual RibaMod composition, fixed Ribasim allocation.dt boundaries that fall inside a BMI update_until interval are not executed merely because the interval crosses them.",
+    "With 6-hour product steps and allocation.dt=5 h, nominal fixed allocation boundaries at 5, 10, 15 and 20 h are absent from allocation output; only t=0 is solved during the first 24 h.",
+    "The misaligned A5 case therefore retains its initial 32/0 managed allocation throughout day 1 and exactly reproduces the previously qualified stale-allocation A24 product trajectory.",
+    "The aligned A6 control solves at every 6-hour call start and reproduces the qualified DUMMY-20D A6 trajectory.",
+    "Clock commensurability changes day-end UserDemand delivery by 8.4937483729 m3 under otherwise identical hydrology.",
+    "For this Ribasim v2026.1.1 BMI/RibaMod composition, effective fixed-allocation execution is constrained by coincidence between allocation boundaries and BMI call-start times; allocation.dt alone is not sufficient to guarantee execution of noncommensurate boundaries."
+  ],
+  "source_contract": {
+    "ribasim_bmi": "BMI.update_until calls step!(model, requested_dt).",
+    "ribasim_step": "step! calls update_allocation! only when the current step-start time is an exact allocation multiple, then advances the full requested interval.",
+    "allocation_callback": "The inspected callback set contains no independent fixed-allocation callback.",
+    "ribamod": "RibaMod calls Ribasim update_until after each MF6 product step."
+  },
+  "boundaries": [
+    "This is a qualified runtime semantic finding, not an upstream defect classification.",
+    "Only the tested fixed-allocation v2026.1.1 BMI route and 6-hour RibaMod product cadence are covered.",
+    "No claim for adaptive allocation mode or later Ribasim releases.",
+    "No production SWAP5 admission or timestep prescription."
+  ],
+  "downstream": "Generalize the observed call-start aliasing with a preregistered clock-lattice matrix before drawing a generic effective-cadence rule."
+}
