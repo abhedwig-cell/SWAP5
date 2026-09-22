@@ -67,5 +67,10 @@
     ]
   },
   "qualification_attempt": "v1_frozen_actual_product_clock_matrix",
-  "qualification_base": "work/ribasim-dummy-01@6d3b2427bcd90e9cfe69bc61467c5f096861b25a"
+  "qualification_base": "work/ribasim-dummy-01@6d3b2427bcd90e9cfe69bc61467c5f096861b25a",
+  "qualification_trigger": {
+    "state": "RETRIGGERED_AFTER_NO_INITIAL_ACTIONS_RUN",
+    "scientific_change": false,
+    "note": "Status-only synchronize trigger; frozen matrix, references, tolerances and executable files unchanged."
+  }
 }
