@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.coupling.real_ribamod_two_cell_postallocation_groundwater.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20E3",
+  "decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
+  "authority": {
+    "qualification_head": "64813e01f3817794f457f467be2f0724797a72c5",
+    "workflow_run": 35728008237,
+    "workflow_job": 106746318318,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "observations": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000039987293805,
+      "root_m3": 4.001270619481194,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "ribasim_drainage_m3_day": 0,
+      "mf6_drain_flux_m3_day": 0,
+      "storage_gain_m3": 3.9987293805054946,
+      "ledger_residual_m3": 1.3311129976045777e-11
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000099943718745,
+      "root_m3": 8.005596125858313,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 1.9999680005119933,
+      "ribasim_drainage_m3_day": 7.999872002047973,
+      "mf6_drain_flux_m3_day": -7.999872002047973,
+      "storage_gain_m3": 9.994371874544328,
+      "ledger_residual_m3": 1.0935430339031882e-10
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.0000159863657703,
+      "root_m3": 12.013570230756775,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 3.9999360010239866,
+      "ribasim_drainage_m3_day": 7.999872002047973,
+      "mf6_drain_flux_m3_day": -7.999872002047973,
+      "storage_gain_m3": 15.986365770270794,
+      "ledger_residual_m3": -3.582911745070305e-12
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.0000219748888743,
+      "root_m3": 16.02501512716806,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 5.99990400153598,
+      "ribasim_drainage_m3_day": 7.999872002047973,
+      "mf6_drain_flux_m3_day": -7.999872002047973,
+      "storage_gain_m3": 21.97488887434318,
+      "ledger_residual_m3": 2.474109805916669e-11
+    }
+  ],
+  "analytical_active_drain_m3_per_day": 7.999872002047967,
+  "qualified_claims": [
+    "The separate active DRN cell realizes the preregistered nonzero intervention after the first 6-hour boundary.",
+    "Observed MF6 DRN flow is -7.999872002047973 m3/day after activation and RibaMod publishes the reciprocal +7.999872002047973 m3/day Ribasim drainage input.",
+    "Cumulative groundwater transfer is approximately 0, 2, 4 and 6 m3 at 6, 12, 18 and 24 hours.",
+    "The t=0 daily root-first UserDemand allocation remains frozen during day 1: external cumulative delivery is zero at every accepted boundary.",
+    "Post-allocation groundwater arrival immediately changes Basin state and root physical realization without retroactive within-day management reallocation.",
+    "The coupled source + groundwater = UserDemand + Basin-storage ledger closes at every accepted boundary."
+  ],
+  "comparison_to_20e2": "DUMMY-20E2 failed because its one-cell intervention produced zero DRN flow. DUMMY-20E3 changes only the MF6 intervention representation needed to realize the same frozen post-6h physical treatment and management hypothesis.",
+  "boundaries": [
+    "No production SWAP5 admission.",
+    "No inference that every MF6 drainage topology has identical behavior.",
+    "The management conclusion is restricted to the qualified daily allocation.dt product case."
+  ],
+  "downstream": "Rebind and execute prospectively frozen DUMMY-20F2 next-boundary management-memory admission using this exact two-cell intervention as the day-1 physical prefix."
+}
