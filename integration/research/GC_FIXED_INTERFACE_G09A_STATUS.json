@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G09A",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "state": "DIAGNOSTIC_CLOSED",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G09A_PREREGISTRATION.json",
   "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G09_FIRST_EXECUTION_RESULT.json",
   "test": "tests/research/test_gc_fixed_interface_fgc44_tangent_topology_g09a.py",
@@ -12,5 +12,18 @@
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
   "production_changes": false,
   "recovery_point": "c2ca1b02c6f88a0b4cfafbb7c4656ff0e9ab10a7",
-  "next_action": "Execute fixed 9-scale diagnostic at C3 positive target and C2 negative control; classify status topology and raw-corrector mechanism before designing any replacement tangent estimator."
+  "next_action": "Preregister G09B topology-consistent tangent estimator: only status-0 probes with raw execution signature matching the center may contribute to the local derivative; validate on all eight frozen G09 boundary states and replay C2-negative/C3-positive coupling cases.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G09A_RESULT.json",
+  "execution": {
+    "tested_commit": "c2ca1b02c6f88a0b4cfafbb7c4656ff0e9ab10a7",
+    "workflow_run": 35699491271,
+    "workflow_job": 106653858884,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "c3_positive": "STATUS_ADMISSIBLE_BUT_TEMPORAL_TOPOLOGY_CROSSING_CONTAMINATES_LARGE_STENCIL",
+    "c2_negative": "FRAGMENTED_RAW_SOLVER_ADMISSIBILITY_WITH_STABLE_TOPOLOGY_MATCHED_ONE_SIDED_SLOPE",
+    "next_estimator": "TOPOLOGY_CONSISTENT_STATUS_AWARE_TANGENT",
+    "production_admission": "NO"
+  }
 }
