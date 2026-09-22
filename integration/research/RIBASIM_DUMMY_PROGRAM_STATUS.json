@@ -287,10 +287,20 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H8",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+      "dependency": "DUMMY-20H7 primary guarded authority run 35745915889.",
+      "scientific_baseline": "7fa8550ab4ffd5332370391f01bf4850117c9e2a",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "implementation_baseline": "42b562218f234afe3259bfb5a80cf1dc9d4169ea"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "H5-H7 causality/next-boundary product bridge closed. Extend only along a distinct falsification dimension such as priority structure, forcing sign/direction, multi-Basin topology or asynchronous boundary timing.",
+  "next_authority_action": "Execute frozen DUMMY-20H8 current-groundwater-forcing sign-asymmetry qualification.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
