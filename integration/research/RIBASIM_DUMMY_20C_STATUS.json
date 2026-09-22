@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20C actual RibaMod runtime versus direct Ribasim v2026.1.1 differential.",
+  "next_action": "Execute DUMMY-20C v2 after STO-only technical harness repair; frozen model clocks, Ribasim management case, hypotheses and tolerances unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "DUMMY-20C verifier, Windows runner and workflow gate are persisted; first qualification attempt pending.",
+  "recovery_point": "20C v1 failed before product runtime due missing MF6 STO package; STO-only harness repair persisted.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
@@ -42,5 +42,15 @@
       "Basin level and cumulative root/external UserDemand delivery are compared after every 6-hour accepted endpoint"
     ]
   },
-  "execution_baseline": "74b71366fc16e1105fc0038938c606f63f59d937"
+  "execution_baseline": "74b71366fc16e1105fc0038938c606f63f59d937",
+  "qualification_attempts": [
+    {
+      "attempt": "v1",
+      "run": 35721305067,
+      "state": "TECHNICAL_HARNESS_FAIL",
+      "reason": "Minimal MF6 model omitted the required STO package; imod-python failed while writing the model before product runtime began.",
+      "scientific_effect": "none",
+      "authority_use": "forbidden"
+    }
+  ]
 }
