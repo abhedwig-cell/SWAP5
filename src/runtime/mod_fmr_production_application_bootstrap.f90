@@ -521,10 +521,16 @@ contains
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. tile%parameters%elasticity_active .or. &
         tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
-        tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
+        tile%parameters%drainage_response_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
 
+    ! PPA-WU01-ROOT-PROFILE: the already-qualified concrete prescribed root
+    ! sink route is a standalone mode-7-only extension. It is never a
+    ! groundwater, prescribed-qbot, or evaporation-state composition route.
+    if (tile%parameters%root_extraction_active .and. tile%parameters%bottom_mode /= 7) return
+
     if (tile%parameters%black_evaporation_active) then
+      if (tile%parameters%root_extraction_active) return
       if (tile%parameters%boesten_evaporation_active) return
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
@@ -535,6 +541,7 @@ contains
       if (tile%initial_boesten_spev /= 0.0_real64 .or. tile%initial_boesten_saev /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else if (tile%parameters%boesten_evaporation_active) then
+      if (tile%parameters%root_extraction_active) return
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
       if (allocated(tile%parameters%black_evaporation) .or. .not. allocated(tile%parameters%boesten_evaporation)) return
