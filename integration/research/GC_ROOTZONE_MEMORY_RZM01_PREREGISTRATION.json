@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm01.preregistration.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "work_unit": "GC-RZM01",
+  "title": "Linear two-state root-zone + lower-SWAP analytical fixed-interface oracle",
+  "status": "PREREGISTERED_MATHEMATICS_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_changes": false,
+  "authority": {
+    "fixed_interface_snapshot": "dbf877e9815a57f1d5047d008dcc69b92d65dfa2",
+    "canonical_denominator": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim_dummy_snapshot": "89415abb40bc4305154c32782b2e86a54ba13474",
+    "rootzone_demand_qualification": "06f72519ecc037ce2517986e0a74296d9c63b7b8",
+    "three_store_ledger_qualification": "31dd1b061a5c0d2e6f09c3f1ff77a4f274013588",
+    "forcing_memory_qualification": "bd1e259330525f741aca750c18e9e7c63382fd4f"
+  },
+  "model": {
+    "root_state": "W_r = W_r_ref + S_r*(h_r-h_r_ref), bounded but bounds inactive in RZM01",
+    "lower_state": "Delta W_l = S_l*(h_l1-h_l0)",
+    "vertical_flux": "q_v = C_v*(h_r-h_l), positive downward",
+    "interface_flux": "q_c = C_c*(h_l-H_c), positive SWAP to MODFLOW",
+    "root_balance": "S_r*dh_r/dt = f_r-q_v",
+    "lower_balance": "S_l*dh_l/dt = f_l+q_v-q_c",
+    "interface_semantics": "one hydraulic head H_c at fixed geometric plane; C_c is inside SWAP surrogate",
+    "exact_solution": "y(T)=y_*+exp(A*T)*(y0-y_*), y=[h_r-H_c,h_l-H_c]",
+    "response_tangent": "dE_c/dH_c=-C_c*e_l^T*M(T)*[1,1]^T"
+  },
+  "canonical": {
+    "S_r": 0.2,
+    "S_l": 0.1,
+    "C_v_per_day": 0.5,
+    "C_c_per_day": 0.25,
+    "H_c_m": 8,
+    "h_r0_m": 8,
+    "h_l0_m": 8,
+    "f_r_m_per_day": 0.01,
+    "f_l_m_per_day": 0,
+    "dt_day": 1,
+    "W_r_ref_m": 0.1,
+    "h_r_ref_m": 8,
+    "W_capacity_m": 0.2,
+    "lambda_slow_per_day": -0.6698729810778064,
+    "lambda_fast_per_day": -9.330127018922193,
+    "tau_slow_day": 1.492820323027551,
+    "tau_fast_day": 0.1071796769724491,
+    "E_c_m": 0.002230797861275541,
+    "dE_c_dH_c": -0.14936530755182922
+  },
+  "hypotheses": {
+    "H1": "root and lower component ledgers and total SWAP ledger close to numerical precision",
+    "H2": "exact subpartitioning is invariant for identical piecewise-constant H_c and forcing",
+    "H3": "same H_c with different committed W_r can produce different E_c while preserving one interface state",
+    "H4": "same H_c and same total SWAP water with different vertical distribution can produce different E_c",
+    "H5": "for fixed parameters/window the exact E_c(H_c) mapping is affine; one tangent plus intercept is sufficient for this linear window although H_c alone is not full-state sufficient",
+    "H6": "fast/slow timescale limits control how much upper forcing is visible at the interface",
+    "H7": "negative controls for duplicated storage and reversed transfer signs must fail physical acceptance even if their algebraic solves converge"
+  },
+  "gates": {
+    "endpoint_abs_m": 1e-12,
+    "ledger_abs_m": 1e-12,
+    "affine_response_abs_m": 1e-12,
+    "subpartition_state_abs_m": 2e-12,
+    "eigenvalue_abs_per_day": 1e-12,
+    "no_committed_state_mutation": true,
+    "capacity_bounds_strict": true,
+    "negative_controls_must_be_detected": true
+  },
+  "forbidden": [
+    "no Richards equation",
+    "no van Genuchten-Mualem",
+    "no production SWAP root uptake or irrigation scheduling",
+    "no reinterpretation of H_c as phreatic elevation",
+    "no reinterpretation of condensed response tangent as physical storage",
+    "no production coupling change",
+    "do not relax a falsified gate after execution"
+  ]
+}
