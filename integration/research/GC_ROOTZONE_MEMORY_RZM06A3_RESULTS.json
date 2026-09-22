@@ -6744,12 +6744,16 @@
     "common_transition_failure": "Every frozen construction accepted all first-sign intervals and failed at the first opposite-sign interval.",
     "h2_probe_opened": false,
     "scientific_meaning": "Baseline two-sided microstep admissibility is not sufficient to establish transition admissibility from an evolved committed state. RZM06A3 therefore does not test H2.",
-    "next_step": "Preregister transition-aware H_c histories that insert BASE/ramp intervals and characterize complete trajectory admissibility before endpoint-pair selection."
+    "next_step": "Do not spend the next work unit only on repairing H_c sign reversal. Preregister stronger response-blind top-boundary forcing characterization and order trajectories at fixed H_c to target materially larger vertical redistribution while retaining unchanged H2 criteria.",
+    "maximum_pre_reversal_M1_separation_native": 2.266402858719374e-7,
+    "H2_required_M1_separation_native": 0.0001,
+    "required_to_observed_ratio": 441.22782326750496
   },
   "limitations": [
     "No complete opposite-order endpoint pair was constructed; H2 was not probed.",
     "The selected microstep was chosen exactly by the preregistered baseline score rule. A lower-amplitude point cannot be substituted post hoc within RZM06A3.",
     "Transition failures include temporal retry exhaustion and small solver-rejection counts; no accepted mass defect was observed.",
-    "No production coupling, retry policy, temporal budget, or solver tolerance was changed."
+    "No production coupling, retry policy, temporal budget, or solver tolerance was changed.",
+    "The largest pre-reversal M1 separation seen across the frozen N values is only about 2.27e-7, roughly 441 times below the unchanged H2 M1 requirement; transition repair alone is therefore not justified as the next primary experiment."
   ]
 }
