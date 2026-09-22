@@ -1,0 +1,21 @@
+name: PPA-WU05-B2 pure frost effect
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05b2-frost-effect.yml'
+      - 'src/process/mod_ppa_wu05b2_frost_effect.f90'
+      - 'tests/fapp/test_ppa_wu05b2_frost_effect.f90'
+      - 'tests/fapp/run_ppa_wu05b2_frost_effect.sh'
+      - 'integration/audits/PPA_WU05B1_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05B2_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05B2_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  exact-source-factor-and-algebra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 RFCP and hydraulic-effect algebra at O0/O2
+        run: bash tests/fapp/run_ppa_wu05b2_frost_effect.sh
