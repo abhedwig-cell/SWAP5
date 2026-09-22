@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute the frozen exact-release forcing-sign asymmetry qualification.",
+  "next_action": "Execute the frozen exact-release equal-magnitude positive/negative forcing comparison.",
   "production_delta": [],
   "reference_delta": [],
   "relevant_paths": [
@@ -23,6 +23,6 @@
     "tests/research/run_ribasim_dummy_20h8.sh",
     ".github/workflows/ribasim-dummy-01.yml"
   ],
-  "implementation_baseline": "328fcbd2e3e96232997db212dd728f4b811d294d",
-  "recovery_point": "DUMMY-20H8 preregistered after guarded H7 closeout; verifier and gate implemented without production/reference changes."
+  "implementation_baseline": "1ad663aa00aa52ed89c27cb42f0608cce7250983",
+  "recovery_point": "DUMMY-20H8 preregistered after H7; exact-release verifier, runner and qualification gate implemented without production/reference changes."
 }
