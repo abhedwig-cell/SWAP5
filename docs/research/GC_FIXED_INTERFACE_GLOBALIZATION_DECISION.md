@@ -1753,7 +1753,7 @@ NEXT: ADJACENT-HEAD TERM-DELTA ATTRIBUTION, THEN FORENSIC CLOSEOUT DECISION.
 
 ## G21N disposition: close solver forensics at the numerical-microstructure boundary
 
-G21N exhaustively enumerated every binary64 groundwater head between the two frozen G21L boundary pairs. Workflow `35747878101`, job `106814048796`, passed on commit `562e6206b8bacbdc87698d6e0974e2ff0cb2b4d2`.
+G21N exhaustively enumerated every binary64 groundwater head between the two frozen G21L boundary pairs. Workflow `35748285932`, job `106815430814`, passed on commit `f4d30a1ca5078fdfab5d2fff8f350f8486154d8d` and persisted all 113 enumerated lattice samples. The earlier scientific run `35747878101` produced the same interval classifications but did not yet persist every sample record, so it is supporting rather than final authority.
 
 B1 contains 56 representable heads and exactly one status transition, between `-0.7150100297648260` and `-0.7150100297648259 m`. The endpoint node-4 residual delta is carried almost completely by the lower-flux term: its signed contribution is about 102.47%, partly offset by about 2.47% from the upper-flux term. Storage, sink, source and root terms are unchanged at the captured binary64 level.
 

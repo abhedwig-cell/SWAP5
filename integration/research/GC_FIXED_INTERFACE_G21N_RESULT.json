@@ -5,9 +5,9 @@
   "title": "ULP-resolved residual-term attribution across the B1 and B2 status boundaries",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G21N_PREREGISTRATION.json",
   "parent_result": "integration/research/GC_FIXED_INTERFACE_G21M_RESULT.json",
-  "tested_commit": "562e6206b8bacbdc87698d6e0974e2ff0cb2b4d2",
-  "workflow_run": 35747878101,
-  "workflow_job": 106814048796,
+  "tested_commit": "f4d30a1ca5078fdfab5d2fff8f350f8486154d8d",
+  "workflow_run": 35748285932,
+  "workflow_job": 106815430814,
   "workflow_conclusion": "success",
   "decision": "QUALIFIED_MIXED_PATH_AND_WITHIN_PATH_NUMERICAL_MICROSTRUCTURE",
   "production_admission": "NO_DIAGNOSTIC_ONLY",
@@ -174,5 +174,16 @@
     "Further decomposition of constitutive arithmetic would characterize solver implementation microstructure rather than test the response-space coupling concept. The G21 forensic line should therefore close here unless solver robustness itself becomes a separate workstream.",
     "No production tolerance, retry policy, arithmetic, status smoothing, coupling policy or HCOF/RHS behavior is changed or admitted."
   ],
-  "next_natural_unit": "Close the G21 solver-forensics subline while preserving the original G21 dynamic-path falsification. Open a new endpoint-based coupling qualification that preregisters physical interface residual, endpoint agreement, mass/ledger closure, transaction non-authority during trials, replay/restart determinism and robustness across admissible initialization/globalization variants without requiring exact reproduction of the G17 internal Newton trajectory."
+  "next_natural_unit": "Close the G21 solver-forensics subline while preserving the original G21 dynamic-path falsification. Open a new endpoint-based coupling qualification that preregisters physical interface residual, endpoint agreement, mass/ledger closure, transaction non-authority during trials, replay/restart determinism and robustness across admissible initialization/globalization variants without requiring exact reproduction of the G17 internal Newton trajectory.",
+  "evidence_persistence": {
+    "sample_records": "PASS_113_OF_113",
+    "b1_samples": 56,
+    "b2_samples": 57,
+    "marker": "FGC44_G21N_SAMPLE_JSON",
+    "note": "The earlier scientific run 35747878101 established the same classifications but logged only interval summaries. Commit d86216643c85c72069bb4eeae5b1b89d96f102c0 added per-sample evidence output; workflow 35748285932 is the evidence-complete authority."
+  },
+  "gates": {
+    "all_sample_records_persisted": "PASS_113_OF_113",
+    "evidence_complete_authority_binding": "PASS"
+  }
 }
