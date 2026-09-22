@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06.preregistration.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "work_unit": "GC-RZM06",
+  "title": "Real-SWAP falsification bridge",
+  "status": "PREREGISTERED_OBSERVATION_PLAN",
+  "production_changes": false,
+  "existing_authority": [
+    "GC_FIXED_INTERFACE_REAL_SWAP_TANGENT_STABILITY",
+    "GC_REAL_SWAP_RESPONSE_SIGN_AUDIT",
+    "DSW24/25 interface-phreatic distinction"
+  ],
+  "hypotheses": {
+    "H1": "same fixed-plane H_c with different committed internal state can yield different next accepted E_c",
+    "H2": "same H_c and matched scalar total profile water can still yield different E_c when vertical distribution differs",
+    "H3": "local physical E_c response tangent is conditional on committed state/window",
+    "H4": "accepted E_c ledger remains distinct from predictor coefficient",
+    "H5": "management changes future response through accepted SWAP state without a second groundwater interface"
+  },
+  "experiments": [
+    "same-H_c antecedent-memory pair",
+    "same-H_c matched-total-water distribution pair",
+    "state-conditioned central-difference tangent pair",
+    "management-memory probe"
+  ],
+  "integrity": [
+    "pair selection before probe response inspection",
+    "immutable accepted checkpoint per trial",
+    "record failed trials",
+    "no production physics changes",
+    "do not equate lower interface head with phreatic elevation"
+  ],
+  "execution_state": "FIXTURE_AND_OBSERVABLE_BINDING_REQUIRED_BEFORE_LIVE_RUN"
+}
