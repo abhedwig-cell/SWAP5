@@ -33,6 +33,16 @@ def require(cond:bool,msg:str)->None:
         raise AssertionError(msg)
 
 
+class LifecycleCountingKernel(CountingKernel):
+    def __init__(self,kernel:XmiWrapper)->None:
+        super().__init__(kernel)
+        self.prepare_time_step_calls=0
+
+    def prepare_time_step(self,dt:float)->None:
+        self.prepare_time_step_calls+=1
+        self.kernel.prepare_time_step(dt)
+
+
 def no_direct_x_control_source_gate()->dict[str,object]:
     source=Path(__file__).read_text()
     tree=ast.parse(source)
@@ -114,7 +124,7 @@ def main()->None:
             float(model["initial_head_bias_m"]),
         )
         raw=XmiWrapper(lib_path=libmf6,working_directory=workdir)
-        kernel=CountingKernel(raw)
+        kernel=LifecycleCountingKernel(raw)
         publisher=Fgc34CtypesPublisher(swaplib)
         initialized=False
         solve_finalized=False
@@ -122,7 +132,8 @@ def main()->None:
             raw.initialize()
             initialized=True
             require("6.8.0" in raw.get_version(),"G20 wrong MODFLOW version")
-            raw.prepare_time_step(0.0)
+            kernel.prepare_time_step(0.0)
+            require(kernel.prepare_time_step_calls==1,"G20 prepare_time_step count mismatch")
             session=Modflow6PreparedSolveSession(kernel,"GWF_1","API_SWAP",publisher,solution_id=1)
             require(session.acquire_after_prepare_time_step()==PreparedSolveStatus.OK,session.last_error)
             require(session.open_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
@@ -150,6 +161,10 @@ def main()->None:
                         break
 
                 require(converged is not None,f"G20 lambda={lam} did not converge")
+                require(session.solve_open and not session.invalid and not session.finalized,
+                        f"G20 lambda={lam} prepared-solve lifecycle drift")
+                require(kernel.prepare_time_step_calls==1 and kernel.prepare_solve_calls==1,
+                        f"G20 lambda={lam} repeated prepare lifecycle")
                 head=float(converged.head_m[1])
                 fresh=float(frozen["fresh_reference_heads_m"][str(lam)])
                 scale=max(1.0,abs(head),abs(fresh))
@@ -190,6 +205,9 @@ def main()->None:
             require(kernel.prepare_solve_calls==1,"G20 repeated prepare_solve")
             require(kernel.finalize_solve_calls==1,"G20 finalize_solve count mismatch")
             require(kernel.finalize_time_step_calls==0,"G20 unexpectedly finalized MODFLOW timestep")
+            require(session.finalized and not session.solve_open and not session.invalid,
+                    "G20 finalize_solve lifecycle state invalid")
+            require(not session.timestep_finalized,"G20 timestep publication flag set unexpectedly")
             require(np.array_equal(session.xold,xold),"G20 XOLD changed before teardown")
             raw.finalize()
             initialized=False
@@ -212,6 +230,7 @@ def main()->None:
     summary={
         "lambda_sequence":[1.0,0.5,0.25],
         "one_prepared_solve":"PASS",
+        "prepare_time_step_calls":kernel.prepare_time_step_calls,
         "prepare_solve_calls":kernel.prepare_solve_calls,
         "total_modflow_solve_iterations":kernel.solve_calls,
         "finalize_solve_calls":kernel.finalize_solve_calls,
