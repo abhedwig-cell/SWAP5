@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21d.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21D",
+  "title": "Paired causal isolation of delta-bar-delta path memory on the real FGC44 carrier",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "1183868356de7043e5d6216562425ae06c48d669",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21C_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21B_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21A_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "docs/research/GC_PREPARED_SOLVE_REANCHOR_SEMANTICS.md",
+    "MODFLOW6 6.8.0 src/Solution/NumericalSolution.f90"
+  ],
+  "question": "On the exact real-FGC44 G21B FRESH/HISTORY experiment, does disabling MODFLOW nonlinear under-relaxation from solver initialization remove the persistent HISTORY-minus-FRESH outer-2 head offset that remains with standard MODERATE delta-bar-delta?",
+  "causal_design": {
+    "controlled_factor": "IMS nonlinear under-relaxation only",
+    "standard_arm": "MODERATE defaults, expected NONMETH=3 delta-bar-delta",
+    "intervention_arm": "MODERATE with UNDER_RELAXATION NONE, expected NONMETH=0",
+    "fixed_between_arm_pairs": [
+      "same official MODFLOW6 6.8.0 library",
+      "same 1x3 transient GWF geometry and accepted origin",
+      "same K, SS, SY, CHD forcing and timestep",
+      "same outer-1 lambda response history",
+      "same bitwise outer-2 HCOF/RHS",
+      "same 12-call outer-2 tail",
+      "same solver head/linear tolerances and iteration budgets except disabling nonlinear under-relaxation",
+      "same FGC44-derived physical response parameters"
+    ],
+    "no_mid_solve_mutation": true,
+    "no_state_reset": true
+  },
+  "frozen_case": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G21B_PREREGISTRATION.json",
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "initial_head_m": -0.7149999311459918,
+    "groundwater_k_m_per_day": 1e-10,
+    "groundwater_ss_per_m": 0,
+    "groundwater_initial_head_bias_m": -0.00003332218778007957,
+    "tail_calls": 12,
+    "strict_path_scale_m": 1e-12,
+    "standard_expected_history_minus_fresh_call12_m": 7.235112509107466e-11,
+    "outer2_hcof_m2_per_day": -0.13785986219261193,
+    "outer2_rhs_m3_per_day": 0.0985698022484409
+  },
+  "experiment_contract": [
+    "Run four independent live MODFLOW models: STANDARD-FRESH, STANDARD-HISTORY, NOUR-FRESH and NOUR-HISTORY.",
+    "STANDARD uses the current G21B MODERATE solver configuration unchanged and must report NONMETH=3.",
+    "NOUR uses the same MODERATE tolerances and budgets but sets UNDER_RELAXATION NONE at model construction and must report NONMETH=0.",
+    "Within each HISTORY arm replay the frozen outer-1 lambda 1, 1/2, 1/4 response sequence, settling each response to its first MODFLOW convergence report before outer 2.",
+    "Within each FRESH arm enter outer 2 immediately after prepare_solve.",
+    "Stage and hold the exact frozen outer-2 response for 12 successive solve calls in every arm.",
+    "Never write X, XOLD, WSAVE, HCHOLD, DEOLD or any other MODFLOW state through XMI pointers.",
+    "Require XOLD bitwise fixed in all four arms and outer-2 HCOF/RHS bitwise identical within and across each solver configuration pair.",
+    "Record NONMETH and the final HISTORY-minus-FRESH head offset for both configurations.",
+    "Finalize_solve once per arm only after the fixed diagnostic tail; do not finalize_time_step."
+  ],
+  "quantitative_gates": [
+    "STANDARD reproduces the persisted G21B call-12 HISTORY-minus-FRESH offset within 1e-12 m.",
+    "STANDARD reports NONMETH=3 in both arms.",
+    "NOUR reports NONMETH=0 in both arms.",
+    "All HISTORY outer-1 replay heads remain within 1e-12 m of their corresponding same-configuration FRESH response roots or, where the solver path differs, the measured replay is retained without changing the response sequence.",
+    "XOLD remains bitwise fixed in every arm.",
+    "Outer-2 HCOF/RHS are identical between FRESH and HISTORY within each configuration and numerically identical between STANDARD and NOUR.",
+    "Report the NOUR call-12 HISTORY-minus-FRESH offset and its magnitude relative to the 1e-12 m strict G21 scale.",
+    "No production/runtime/adapter source changes."
+  ],
+  "interpretation_rules": {
+    "delta_bar_delta_causal_support": "STANDARD offset remains >1e-12 m and reproduces G21B, while |NOUR HISTORY-FRESH call12| <=1e-12 m.",
+    "delta_bar_delta_contributes_but_not_sufficient": "NOUR reduces the absolute offset by at least 90% relative to STANDARD but remains >1e-12 m.",
+    "delta_bar_delta_not_dominant": "NOUR reduces the absolute offset by less than 90%, or leaves a comparable/opposite persistent offset >1e-12 m.",
+    "mixed_or_unresolved": "Lifecycle/convergence differences prevent a matched comparison without changing the frozen experiment."
+  },
+  "pass_interpretation": "PASS is a causal-isolation classification for this frozen real-FGC carrier only. Even DELTA_BAR_DELTA_CAUSAL_SUPPORT does not admit disabling under-relaxation in production or alter F-GC38/F-GC39; it only justifies a separately bounded solver-configuration/coupling-policy study.",
+  "fail_interpretation": "Preserve failure. Do not alter solver tolerances, response sequence, 12-call tail, physics, G21 strict scale, or existing evidence to manufacture a cleaner causal classification.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21d_under_relaxation_causal.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21D_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "MODFLOW state through XMI/BMI pointers",
+    "G16/E3/P4 semantics",
+    "G19/G20/G21/G21A/G21B/G21C evidence or gates",
+    "F-GC38/F-GC39 contracts",
+    "production HCOF/RHS",
+    "production IMS configuration"
+  ],
+  "production_admission": "NO"
+}
