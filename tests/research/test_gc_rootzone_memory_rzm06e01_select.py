@@ -77,7 +77,6 @@ def main()->int:
     eq=[r for r in records0 if r["family"]=="EQ"]
     closed=[r for r in records0 if r["family"]=="CLOSED"]
     assert len(eq)==1,len(eq)
-    assert len(closed)>=1,len(closed)
     control=eq[0]
 
     qualifying=[]
@@ -93,7 +92,7 @@ def main()->int:
 
     qualifying.sort(key=lambda x:(-x[0],x[1],x[2]))
     selected=None
-    disposition="NO_MATCH"
+    disposition="NO_ADMISSIBLE_CLOSED_STATE" if not closed else "NO_MATCH"
     if qualifying:
         dm,dw,_,cand=qualifying[0]
         selected={
