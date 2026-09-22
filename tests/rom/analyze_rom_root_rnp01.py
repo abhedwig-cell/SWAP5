@@ -102,11 +102,11 @@ def main() -> int:
     classifications = {
         "SUMMATION_SENSITIVITY": any(c["primary"]["summation_sensitivity"] for c in cases.values()),
         "ITERATION_CAP_LIMITED": any(
-            c["shadows"]["32"]["status"] == 0 or c["shadows"]["64"]["status"] == 0
+            c["shadows"]["32"]["status"] == 1 or c["shadows"]["64"]["status"] == 1
             for c in cases.values()
         ),
         "RESIDUAL_FLOOR_PERSISTS": all(
-            c["shadows"]["64"]["status"] != 0 and abs(c["shadows"]["64"]["naive_sum"]) > TOL
+            c["shadows"]["64"]["status"] != 1 and abs(c["shadows"]["64"]["naive_sum"]) > TOL
             for c in cases.values()
         ),
     }
