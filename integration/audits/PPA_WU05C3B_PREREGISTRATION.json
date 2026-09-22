@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-C3B",
+  "title": "Pure SWAP-007 Newton quotient representability oracle",
+  "protocol": "PIN_PATCH_AND_B1_11 -> IMPLEMENT_PURE_GUARD -> EXACT_BRANCH_ORACLE -> EXTREME_CASES -> O0_O2_REPLAY -> HOLD_SOLVER_BINDING",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05C_STATUS.json",
+    "integration/audits/PPA_WU05C3_SOURCE_CENSUS.json",
+    "reference/swap-4.3.1/patches/SWAP-007/README.md",
+    "reference/swap-4.3.1/patches/SWAP-007/qualification.md"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "path": "SWAP/oxygenstress.f90:MACRO inner Newton update",
+    "sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "guard": "abs(fi_a) > max(tiny(1.0d0), abs(fi)/huge(1.0d0)); else set lnew=huge(1.0d0)",
+    "restart": "existing lnew>1.d3 or counterMacroSub>100 branch resets lnew_initial and the sub-counter"
+  },
+  "scope": [
+    "pure representability decision and source-ordered lnew expression/sentinel",
+    "pure boolean for the existing restart condition"
+  ],
+  "non_goals": [
+    "MACRO/SOLVE/MICRO runtime integration, iteration mutation or solver policy change",
+    "changing Newton formula, thresholds, restart seed progression or iteration ceiling",
+    "Bartholomeus cache/c_top ownership or lifecycle qualification",
+    "root-sink mass/restart/parallel/coupling admission"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic finite inputs match the B1.11 guard and restart predicate bitwise/boolean",
+    "unrepresentable quotient and zero/tiny derivative select huge sentinel and existing restart",
+    "representable near-limit quotient preserves the source update",
+    "non-finite inputs fail closed without changing solver state",
+    "O0/O2 output transcripts are identical"
+  ]
+}
