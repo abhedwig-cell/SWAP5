@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.coupling.ribasim_release_physical_vs_lp_low_storage_factor.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H4",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20H3 closeout; factor-separation expectations are frozen prospectively.",
+  "next_action": "After DUMMY-20H3 closeout, rebind and execute only if its low-storage-factor mechanism qualifies.",
+  "production_delta": [],
+  "reference_delta": []
+}
