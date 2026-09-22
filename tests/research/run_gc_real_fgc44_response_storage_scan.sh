@@ -188,3 +188,16 @@ grep -Fq 'GC_FIXED_INTERFACE_G14_FGC44_FUSED_EQUIVALENCE=PASS' "$BUILD/fgc44-g14
   echo "GC_FGC44_G14_FAIL missing fused-observation equivalence gate" >&2
   exit 1
 }
+
+
+# G15 production-facing building-block qualification. The actual FMR participant
+# executes one normal trial per head; a read-only accessor exposes diagnostics
+# from that same trial. G14 fused research observations remain the reference oracle.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g15_participant_observation.py \
+  | tee "$BUILD/fgc44-g15-participant-observation.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G15_EXECUTION=PASS' "$BUILD/fgc44-g15-participant-observation.txt" || {
+  echo "GC_FGC44_G15_FAIL missing same-trial participant observation gate" >&2
+  exit 1
+}
