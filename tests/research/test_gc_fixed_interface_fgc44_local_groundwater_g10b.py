@@ -33,7 +33,7 @@ def require(condition:bool,message:str)->None:
 def load_prereg()->dict[str,object]:
     p=json.loads(PREREG.read_text())
     require(p["work_unit"]=="GC-FIXED-INTERFACE-G10B","wrong G10B preregistration")
-    require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION","G10B preregistration not frozen")
+    require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION_AMENDED","G10B preregistration not frozen/amended")
     require(float(p["frozen_carrier"]["duration_day"])==DURATION_DAY,"G10B duration drifted")
     require(float(p["frozen_carrier"]["predictor_qbot_cm_per_day"])==QBOT_CM_PER_DAY,"G10B qbot drifted")
     return p
