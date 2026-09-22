@@ -113,7 +113,6 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_predictor_run_diagnostics_c
   public :: fgc44_raw_corrector_diagnostics_c
   public :: fgc44_g14_fused_observation_c, fgc44_g14_fused_run_count_c
-  public :: fgc44_g15_last_observation_c
   public :: fgc44_g15_last_trial_observation_c, fgc44_g15_trial_call_count_c, fgc44_g15_has_live_candidate_c
 
 contains
@@ -281,46 +280,6 @@ contains
     q_swap_m_per_s=last_trial%q_swap_m_per_s
     fgc44_swap_trial_c=0_c_int
   end function fgc44_swap_trial_c
-
-  integer(c_int) function fgc44_g15_last_observation_c(available,participant_status,q_available,result_status, &
-       completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
-       solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries, &
-       q_swap_m_per_s,min_substep,max_substep) bind(C,name="fgc44_g15_last_observation_c")
-    integer(c_int), intent(out) :: available,participant_status,q_available,result_status,completed,candidate_ready
-    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections
-    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
-    real(c_double), intent(out) :: q_swap_m_per_s,min_substep,max_substep
-    type(fmr_groundwater_swap_trial_observation_t) :: observation
-
-    fgc44_g15_last_observation_c=1_c_int
-    available=0_c_int; participant_status=-1_c_int; q_available=0_c_int; result_status=-1_c_int
-    completed=0_c_int; candidate_ready=0_c_int; transaction_calls=0_c_int; accepted_substeps=0_c_int
-    attempts=0_c_int; retries=0_c_int; trial_rollbacks=0_c_int; solver_rejections=0_c_int
-    temporal_rejections=0_c_int; temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
-    q_swap_m_per_s=0.0_c_double; min_substep=0.0_c_double; max_substep=0.0_c_double
-    if(.not.initialized)return
-    call participant%observe_last_trial(observation)
-    available=merge(1_c_int,0_c_int,observation%available)
-    participant_status=int(observation%participant_status,c_int)
-    q_available=merge(1_c_int,0_c_int,observation%q_available)
-    result_status=int(observation%result_status,c_int)
-    completed=merge(1_c_int,0_c_int,observation%completed)
-    candidate_ready=merge(1_c_int,0_c_int,observation%candidate_ready)
-    transaction_calls=int(observation%transaction_calls,c_int)
-    accepted_substeps=int(observation%accepted_substeps,c_int)
-    attempts=int(observation%attempts,c_int)
-    retries=int(observation%retries,c_int)
-    trial_rollbacks=int(observation%trial_rollbacks,c_int)
-    solver_rejections=int(observation%solver_rejections,c_int)
-    temporal_rejections=int(observation%temporal_rejections,c_int)
-    temporal_unavailable_rejections=int(observation%temporal_unavailable_rejections,c_int)
-    mass_rejections=int(observation%mass_rejections,c_int)
-    internal_retries=int(observation%internal_retries,c_int)
-    q_swap_m_per_s=real(observation%q_swap_m_per_s,c_double)
-    min_substep=real(observation%min_accepted_substep_duration,c_double)
-    max_substep=real(observation%max_accepted_substep_duration,c_double)
-    fgc44_g15_last_observation_c=0_c_int
-  end function fgc44_g15_last_observation_c
 
   integer(c_int) function fgc44_swap_discard_c() bind(C,name="fgc44_swap_discard_c")
     fgc44_swap_discard_c=1_c_int
