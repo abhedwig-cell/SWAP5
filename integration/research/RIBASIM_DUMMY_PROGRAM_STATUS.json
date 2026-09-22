@@ -193,7 +193,6 @@
       "run": 35722691439,
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
       "modflow_release": "6.7.0"
     }
   ],
@@ -203,9 +202,8 @@
       "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20C",
       "intended_decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
       "dependency": "qualified DUMMY-20C",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "modflow_release": "6.7.0"
     },
     {
@@ -219,7 +217,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20D actual-product allocation.dt versus saveat clock ownership matrix.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-20D actual-product allocation.dt versus saveat ownership matrix.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -287,5 +285,10 @@
     "ribasim_release": "RIBASIM-DUMMY-20B",
     "runtime": "RIBASIM-DUMMY-20C",
     "meaning": "The actual RibaMod driver delegates UserDemand cadence to bundled Ribasim v2026.1.1; real 6-hour MF6 product steps are dynamically transparent for the isolated topology when allocation.dt remains 24 h."
+  },
+  "product_runtime_authority": {
+    "latest": "RIBASIM-DUMMY-20C",
+    "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
+    "meaning": "The actual RibaMod+MF6 product route is boundary-by-boundary identical to direct bundled Ribasim v2026.1.1 for the isolated no-exchange UserDemand case."
   }
 }
