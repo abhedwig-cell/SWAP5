@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.ppa_wu05g1.source_census.v1",
+  "work_unit": "PPA-WU05-G1",
+  "snapshot": "B1.11",
+  "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "members": {
+    "SWAP/RWU_micro.f90": {
+      "sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+      "bytes": 47293,
+      "evidence": [
+        "MOD_RWU_micro:T_reduction, lines 669-703: swTypeTred=1 returns xTpot when xp+DPL<0; otherwise returns xTpot/(1+((xp+DPL)*PLhalf)**CampA) for swO2EcT<3 and uses PLhalf/alptotal for swO2EcT=3.",
+        "read_rwu_micro_input defaults swTypeTred=1, reads allowed swTypeTred=1..2 and SWO2ECT=0..3, bounds CampA (PCAMP) to 1..500, and requires SWALPTOT=3 when SWO2ECT=3.",
+        "The routine also owns iterative arrays, M/K lookup tables, saved parameters and Newton/bisection work; none are represented by this scalar slice."
+      ]
+    },
+    "SWAP/rootextraction.f90": {
+      "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "bytes": 22013,
+      "evidence": [
+        "RootExtraction_MICRO chooses iMicro=2 for SWDROUGHT=2 and iMicro=1 for SWDROUGHT=3, initializes factors then calls do_RWU_micro for rates.",
+        "MICRO root extraction composes oxygen, salinity, frost and alptot policies before invoking the legacy micro solver; those policies remain outside this response equation."
+      ]
+    }
+  },
+  "scope_verdict": "The type-1 Campbell leaf-water-potential scalar response is exact-oracle eligible with all saved inputs explicit. It does not establish the stateful microscopic root-water-uptake solver, initialization cache, per-node water allocation, stress composition, or accepted root-sink ownership.",
+  "production_admission": "NONE"
+}
