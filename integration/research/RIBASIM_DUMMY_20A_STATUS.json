@@ -6,15 +6,15 @@
   "baseline": "9c60dd2213ddbc3f04b2826aee0378afbbcb68cc",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Pinned upstream iMOD Coupler RibaMod source contract for MF6-led time advancement and absence/presence of explicit UserDemand apply semantics.",
-  "next_action": "Execute frozen DUMMY-20A pinned iMOD Coupler RibaMod product-clock qualification.",
+  "next_action": "Use actual RibaMod product-clock source contract as authority; proceed to DUMMY-20B exact product Ribasim release-clock qualification.",
   "production_delta": [],
   "reference_delta": [],
-  "recovery_point": "Pinned-source verifier and runner persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-20A qualified by frozen run 35719937261.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20A_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20A_CONCEPT.md",
@@ -24,5 +24,9 @@
     "tests/research/test_ribasim_dummy_20a_ribamod_product_clock.py",
     "tests/research/run_ribasim_dummy_20a.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
+  "workflow_run": 35719937261,
+  "workflow_job": 106720220994,
+  "qualification_head": "e9991f6debb2bbda7d8bfaa5dc6c671e02c981d0"
 }
