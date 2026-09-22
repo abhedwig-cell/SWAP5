@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute clean DUMMY-20E2 v5 from current research authority with full four-boundary observability; frozen model, references and tolerances unchanged.",
+  "next_action": "Execute DUMMY-20E2 v6 from current full-trajectory logger head; log all four endpoints before unchanged frozen assertions.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,7 +19,7 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "20E2 v5 implementation and full-trajectory diagnostic persisted on research branch; clean qualification pending.",
+  "recovery_point": "20E2 v5 independently reconfirmed the 12 h mismatch; v6 full-trajectory diagnosis pending.",
   "implementation_preparation": {
     "state": "PRODUCT_WORKER_PREPARED_IMPLEMENTATION_READY",
     "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater.py",
@@ -77,6 +77,26 @@
       },
       "interpretation": "First segment matches. The second-segment reference mismatch is real enough to require diagnosis, but v1 logging asserted before emitting the second endpoint's transfer/state observables.",
       "authority_use": "unresolved; not admitted"
+    },
+    {
+      "attempt": "v5",
+      "run": 35726441472,
+      "job": 106741131610,
+      "head_sha": "3f4ba4219e00ebca408c773f0d868cd5e43dcd96",
+      "state": "SCIENTIFIC_REFERENCE_MISMATCH_CONFIRMED_DIAGNOSTIC_INCOMPLETE",
+      "observed": {
+        "endpoint_6h": {
+          "level_m": 1.0000039987293805,
+          "root_m3": 4.001270619481194,
+          "external_m3": 0,
+          "groundwater_cumulative_m3": 0,
+          "ribasim_drainage_m3_day": 0,
+          "mf6_drain_flux_m3_day": 0
+        },
+        "endpoint_12h": "Basin level outside frozen tolerance; stale v5 head still asserted before logging the full endpoint state."
+      },
+      "interpretation": "Independent clean source-scope execution confirms the 12 h reference mismatch. Full trajectory is still required before scientific disposition.",
+      "authority_use": "diagnostic_only"
     }
   ],
   "source_scope_reconciliation": {
@@ -92,6 +112,6 @@
     "admissible_attempts": [
       "v1 diagnostic mismatch only"
     ],
-    "required_next": "clean v5 Windows product qualification"
+    "required_next": "clean v6 full-trajectory Windows product qualification"
   }
 }
