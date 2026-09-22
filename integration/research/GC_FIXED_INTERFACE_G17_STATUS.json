@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_fixed_interface.g17.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G17",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_RESEARCH_ORCHESTRATION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G17_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+  "tested_commit": "5842622ce18348c53092357f39121e9caf986561",
+  "workflow_run": 35724160855,
+  "workflow_job": 106733698777,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "disposition": {
+    "g16_tangent_observation_service": "REMAINS_QUALIFIED_PRODUCTION_FACING_BUILDING_BLOCK",
+    "e3_tangent_estimator": "REMAINS_QUALIFIED_RESEARCH_ONLY",
+    "p4_safeguarded_newton": "QUALIFIED_RESEARCH_ORCHESTRATION_PATH_NOT_PRODUCTION_POLICY",
+    "fmr_final_candidate_handoff": "QUALIFIED_IN_FROZEN_G11_STRESS",
+    "groundwater_interface_ledger_nominal_publication": "QUALIFIED_IN_FROZEN_G11_STRESS",
+    "persistent_modflow_transaction_participant": "MISSING_NOT_ADMITTED",
+    "crash_atomic_multi_participant_publication": "MISSING_NOT_ADMITTED",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "accounting": {
+    "logical_requests": 67,
+    "diagnostic_participant_trials": 34,
+    "cache_hits": 33,
+    "final_reacquisition_trials": 1,
+    "total_fmr_physical_trials_in_orchestrated_path": 35
+  },
+  "next_action": "Preregister the next bounded publication/transaction architecture unit. It must add or identify persistent MODFLOW participant ownership and a crash-safe multi-participant publication protocol, without changing E3/P4 numerical policy or HCOF/RHS semantics."
+}
