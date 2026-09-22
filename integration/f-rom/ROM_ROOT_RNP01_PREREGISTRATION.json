@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.rom_root.rnp01.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP01",
+  "date": "2026-09-22",
+  "state": "PREREGISTERED_BEFORE_RNP01_DIAGNOSTIC_RESPONSE",
+  "purpose": "Independent numerical-policy characterization of the C6R root-active Reference total-residual-only rejection. This work unit does not reopen C6R and cannot authorize reduced candidate execution.",
+  "known_starting_evidence": {
+    "c6r_closeout": "integration/f-rom/LARE_BC2_C6R_CLOSEOUT.json",
+    "c6r_status": "CLOSED_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_REDUCED_RESPONSE",
+    "observed_failure_class": "RETRY_TOTAL_ONLY",
+    "known_solver_cap": 16,
+    "known_total_balance_tolerance_cm_per_day": 1e-12
+  },
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "root_materializer": "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py",
+    "root_materializer_blob": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "reference_floor_repair": "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py",
+    "reference_floor_repair_blob": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "reference_richards_changed": false,
+    "root_physics_changed": false
+  },
+  "frozen_cases": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories_by_material": {
+      "B01": "V02",
+      "B14": "V01"
+    },
+    "routes": [
+      {
+        "id": "R512_T32",
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "temporal_factor": 32
+      },
+      {
+        "id": "R1024_T32",
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "temporal_factor": 32
+      },
+      {
+        "id": "R2048_T32",
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 32
+      }
+    ],
+    "optimization": 0,
+    "root_depth_cm": 80,
+    "root_feedback": "Unchanged C6R committed-state Feddes evaluation with the prescribed sink held fixed inside each hydraulic trial."
+  },
+  "diagnostics": {
+    "primary_failed_trial": {
+      "solver_max_iterations": 16,
+      "preserve_total_balance_tolerance": true,
+      "emit_full_residual_vector": true,
+      "metrics": [
+        "solver status and route",
+        "nonlinear iterations and backtracking attempts",
+        "naive sum residual",
+        "math.fsum residual evaluated by analyzer",
+        "max absolute residual",
+        "L1 residual",
+        "L2 residual",
+        "count local balance flags",
+        "count head flags",
+        "cancellation ratio"
+      ]
+    },
+    "shadow_iteration_ceiling": {
+      "values": [
+        32,
+        64
+      ],
+      "same_failed_interval": true,
+      "same_initial_committed_state": true,
+      "same_prescribed_root_sink": true,
+      "same_dt": true,
+      "same_total_and_local_balance_tolerances": true,
+      "commit_shadow_result": false,
+      "purpose": "Distinguish an iteration-cap rejection from a residual floor without changing the C6R contract."
+    }
+  },
+  "interpretation_rules": {
+    "SUMMATION_SENSITIVITY": "Absolute naive sum and compensated sum lie on opposite sides of the frozen 1e-12 total criterion.",
+    "ITERATION_CAP_LIMITED": "A 32- or 64-iteration shadow solve converges at the exact failed interval with the original 1e-12 criteria.",
+    "RESIDUAL_FLOOR_PERSISTS": "The 64-iteration shadow solve still returns retry-advised and compensated total residual remains above 1e-12.",
+    "GRID_DEPENDENT_ACCUMULATION": "Across 512, 1024 and 2048 nodes, compensated total residual magnitude systematically increases while max local residual remains below 1e-12. This is descriptive only.",
+    "NO_POLICY_DECISION": "No RNP01 outcome changes C6R admission, solver defaults, or any tolerance."
+  },
+  "prohibited": [
+    "No reduced U4/U8/R8/R16 response.",
+    "No C6R gate relaxation.",
+    "No fallback enablement.",
+    "No change to Reference Richards, HeadCalc, Feddes, root-sink provider or production runtime.",
+    "No acceptance threshold selected from RNP01 output.",
+    "No performance claim."
+  ],
+  "next_if_completed": "Persist numerical characterization. Any change to Reference numerical policy requires a separate authority and admission work unit."
+}
