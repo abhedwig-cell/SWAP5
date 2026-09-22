@@ -124,6 +124,24 @@
       "workflow_job": 106776591287,
       "implementation_head": "1d74726b71bf84794c6f30b24900bd101d692af0",
       "evidence_commit": "087102f98c06d1f6bffd043be606daea67a7dffa"
+    },
+    {
+      "work_unit": "GC-RZM06D02R1",
+      "decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+      "preregistration_commit": "2926ffbeb8129656e8656a39e315b31fbbdcb5e8",
+      "workflow_run": 35739047845,
+      "workflow_job": 106783673618,
+      "implementation_head": "1435b1fa17b0ea1194ad3630663d7fc4c366dd3f",
+      "evidence_commit": "24277b01740b4c0b7a1f4e68bb44d6bb148dcece"
+    },
+    {
+      "work_unit": "GC-RZM06D03",
+      "decision": "QUALIFIED_CROSS_TIME_STRICT_DISCOVERY_NO_MATCH__H2_NOT_PROBED",
+      "preregistration_commit": "c1f96aa01d07564c2166f1346ef383ec2357406a",
+      "workflow_run": 35739393743,
+      "workflow_job": 106784863436,
+      "implementation_head": "455a0112591301c27ee8e40b00a37d70589873ae",
+      "evidence_commit": "87394744797ba76a5f81704369d09e89688fb14f"
     }
   ],
   "current_findings": [
@@ -178,20 +196,25 @@
     "The richer-carrier path remains open through qualified C01: the existing 16-node F-ROM Reference carrier and retained ROM1AR2 accepted-state library.",
     "D01 verified the exact ROM1AR2 artifact authority and O0/O2 byte identity, then found 0 qualifying pairs among 1549 same-time/different-history pairs from 475 strict DISCOVERY states.",
     "D01 never parsed held-out node observables or response/exchange fields and performed no HeadCalc response probe.",
-    "The same-library-time requirement is an additional control rather than an H2 threshold; removing it requires a separate carrier qualification that accepted physical profiles can be reseeded at common canonical time without changing the pure-hydraulics response."
+    "The same-library-time requirement is an additional control rather than an H2 threshold; removing it requires a separate carrier qualification that accepted physical profiles can be reseeded at common canonical time without changing the pure-hydraulics response.",
+    "D02R1 removes the D02 floating-time confound: with a binary-identical dyadic duration, the same accepted 16-node physical state reseeded 7 days apart gives bit-identical candidate state, bottom exchange, terminal flux and mass result for the C01 pure-hydraulics carrier.",
+    "D03 removed only the same-library-time control and still found 0 qualifying H2 origin pairs among 98,693 different-history pairs from 475 eligible DISCOVERY records.",
+    "The strongest D03 water-matched pair reaches |ΔM1|=0.007836912353482717 cm, 78.37% of the unchanged 0.01 cm requirement, with |ΔW_profile|=6.094551292790129e-05 cm.",
+    "D03 therefore motivates prospective state-space expansion rather than threshold relaxation, HELD_OUT access or response-guided selection."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06D02",
-    "scope": "Qualify absolute-time neutrality and common-time reseeding for one provenance-fixed strict ROM1AR2 discovery state on the 16-node C01 carrier. Same physical profile seeded at two different absolute times must yield the same one-window physical result under identical fixed-Hc forcing.",
-    "prerequisite": "D01 qualified same-time NO_MATCH",
+    "id": "GC-RZM06E01",
+    "scope": "Prospectively expand reachable state space on the qualified 16-node C01 Reference carrier using fixed-flux families that preserve integrated total storage while changing internal vertical redistribution; select H2 origins from node state only.",
+    "prerequisite": "D03 qualified cross-time NO_MATCH and D02R1 qualified common-time reseeding",
     "constraints": [
-      "choose the audit state by provenance only: lexicographically first strict DISCOVERY state, without storage/M1/response ranking",
-      "use exact ROM1AR2 artifact authority and full 16-node H/theta profile",
-      "pure-hydraulics base layout only; no snow, ET, drainage, root uptake, legacy time tables or temporal-history state",
-      "compare equal-duration mode-5 fixed-Hc read-only Reference samples from two absolute initial times",
-      "require physical candidate, bottom exchange and mass fields to be bitwise identical or explicitly justify any representational time-only difference",
-      "do not change H2 thresholds or select an H2 pair",
-      "do not inspect held-out states"
+      "preregister forcing families, duration and maximum steps before execution",
+      "use strict Reference sample/commit only; no research fallback in E01",
+      "mode 2 fixed flux with equal top and bottom native flux within each family so external flux divergence is zero by construction",
+      "include one equilibrium-throughflow accepted control and one zero-flux closed-column redistribution family",
+      "reconstruct W_profile and M1 from committed 16-node theta only",
+      "keep H2 gates |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm unchanged",
+      "no response/exchange field in state selection",
+      "no HELD_OUT access and no production source change"
     ]
   },
   "blocked": [],
