@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.coupling.ribasim_release_clock_lattice.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H11",
+  "title": "Fixed-allocation / BMI call-start clock-lattice generalization",
+  "baseline": "3fa962cc200fdcd6d7db197b36d5279df9f0c8e8",
+  "sequencing": {
+    "state": "PREREGISTERED_AFTER_DUMMY_20H10_CLOSEOUT",
+    "rationale": "Generalize H10 beyond one 5h/6h pair before adopting a generic effective-cadence rule."
+  },
+  "authorities": {
+    "product_anchor": {
+      "work_unit": "RIBASIM-DUMMY-20H10",
+      "decision": "RIBASIM_DUMMY_20H10_QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING",
+      "run": 35750549610
+    },
+    "ribasim_release": {
+      "tag": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "frozen_bmi_clock": {
+    "call_endpoints_hours": [
+      6,
+      12,
+      18,
+      24,
+      30,
+      36
+    ],
+    "call_start_hours": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "horizon_hours": 36
+  },
+  "cases": {
+    "A4": {
+      "allocation_dt_hours": 4,
+      "expected_allocation_hours": [
+        0,
+        12,
+        24
+      ],
+      "expected_effective_repeat_hours": 12
+    },
+    "A5": {
+      "allocation_dt_hours": 5,
+      "expected_allocation_hours": [
+        0,
+        30
+      ],
+      "expected_effective_repeat_hours": 30
+    },
+    "A8": {
+      "allocation_dt_hours": 8,
+      "expected_allocation_hours": [
+        0,
+        24
+      ],
+      "expected_effective_repeat_hours": 24
+    },
+    "A6": {
+      "allocation_dt_hours": 6,
+      "expected_allocation_hours": [
+        0,
+        6,
+        12,
+        18,
+        24,
+        30
+      ],
+      "expected_effective_repeat_hours": 6
+    }
+  },
+  "derivation": [
+    "For fixed allocation.dt in the inspected v2026.1.1 BMI path, update_allocation! is evaluated at BMI step start only.",
+    "With a regular 6 h BMI call-start grid, an allocation solve can therefore occur only at times belonging to both grids.",
+    "For integer-hour cadences, the repeating intersection interval is lcm(allocation_dt, 6 h).",
+    "The expected record grids are frozen from that intersection rule before H11 execution."
+  ],
+  "hypotheses": [
+    "Observed allocation record times equal the preregistered intersections for all four cases.",
+    "A4 aliases to a 12 h effective solve interval, A5 to 30 h, A8 to 24 h, and aligned A6 remains 6 h.",
+    "No allocation record is created merely because a BMI update interval crosses a nominal fixed-allocation boundary.",
+    "Together with actual-product H10, this supports a clock-lattice contract for the tested fixed-dt v2026.1.1 BMI route."
+  ],
+  "tolerances": {
+    "time_seconds": 0.000001
+  },
+  "forbidden": [
+    "no post-output changes to expected grids",
+    "no claim for adaptive allocation mode",
+    "no claim for later Ribasim versions",
+    "no production prescription or defect classification"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H11_QUALIFIED_FIXED_ALLOCATION_BMI_CLOCK_LATTICE",
+  "fail_decision": "RIBASIM_DUMMY_20H11_FALSIFIED_OR_BLOCKED"
+}
