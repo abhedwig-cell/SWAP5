@@ -21,10 +21,11 @@
   },
   "rules": [
     "The first accepted receipt starts at source_t0; each later receipt starts exactly at accepted_through_time.",
+    "A source-window progress record is bound to one positive F-KT lineage and the expected origin revision; each ready receipt must match both and advance the expected revision by exactly one.",
     "A receipt must end within the source window and must advance time.",
     "Accepted interception is monotonic, finite, nonnegative and cannot exceed frozen aintc except for representation-level tolerance.",
     "Rejected or stale trials have no ready receipt and cannot advance WU04C progress.",
-    "Restart restores only a validated accepted boundary; it does not reconstruct progress from hydraulic state or replay a rejected trial."
+    "Restart restores only a validated accepted boundary together with its receipt lineage and next expected origin revision; it does not reconstruct progress from hydraulic state or replay a rejected trial."
   ],
   "invariants_affected": [3, 7, 13, 29],
   "nonclaims": [

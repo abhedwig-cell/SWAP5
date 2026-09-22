@@ -592,7 +592,7 @@ contains
          'ATM02 owner accepted receipts')
     do tile = 1, NTILE
       call fmr_initialize_vonhhbraden_source_window_progress(9700_int64 + int(tile, int64), T0, t2, 0.05_real64, &
-           progress(tile), local_status)
+           progress(tile), local_status, atm_config%tiles(tile)%tile_id, 0_int64)
       call require(local_status == FMR_VONHHBRADEN_PROGRESS_OK, 'WU04C progress initialize')
       call publish_ppa_wu04c_accepted_progress(progress(tile), receipts(tile)%receipt, 0.01_real64, local_status)
       call require(local_status == PPA_WU04C_PUBLICATION_OK .and. &

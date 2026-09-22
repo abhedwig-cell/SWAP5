@@ -156,6 +156,7 @@ program test_fmr18_accepted_commit_receipt
   type(kernel_diagnostics_t) :: diagnostics, stale_diagnostics, winner_diagnostics, probe_diagnostics, other_diagnostics
   type(fmr_accepted_commit_receipt_t) :: receipt
   type(fmr_vonhhbraden_source_window_progress_t) :: interception_progress
+  type(fmr_vonhhbraden_source_window_progress_t) :: foreign_lineage_progress
   type(fmr_vonhhbraden_source_window_progress_t) :: restored_interception_progress
   type(fmr_vonhhbraden_source_window_restart_t) :: interception_restart
   type(gash_parameters_t) :: gash_parameters
@@ -193,8 +194,16 @@ program test_fmr18_accepted_commit_receipt
   call evaluate_gash_source_window(gash_parameters,gash_source,gash_aggregate,receipt_status)
   call require(receipt_status==VONHHBRADEN_AVAILABLE .and. gash_aggregate>0.0_real64, 'Gash aggregate available')
   call fmr_initialize_vonhhbraden_source_window_progress(1802_int64, 0.0_real64, 1.0_real64, &
-       gash_aggregate, interception_progress, receipt_status)
+       gash_aggregate, interception_progress, receipt_status, 1801_int64, 0_int64)
   call require(receipt_status == FMR_VONHHBRADEN_PROGRESS_OK, 'initialize interception progress')
+  call fmr_initialize_vonhhbraden_source_window_progress(1803_int64, 0.0_real64, 1.0_real64, &
+       gash_aggregate, foreign_lineage_progress, receipt_status, 9999_int64, 0_int64)
+  call require(receipt_status == FMR_VONHHBRADEN_PROGRESS_OK, 'initialize foreign-lineage probe')
+  call publish_ppa_wu04c_accepted_progress(foreign_lineage_progress, receipt, 0.5_real64*gash_aggregate, receipt_status)
+  call require(receipt_status == PPA_WU04C_PUBLICATION_REJECTED .and. &
+       abs(foreign_lineage_progress%remaining_interception()-gash_aggregate) < 1.e-14_real64, &
+       'foreign lineage receipt rejected without advancing progress')
+  print '(a)', 'PPA_WU04C_FOREIGN_LINEAGE_RECEIPT_REJECTED=PASS'
   call publish_ppa_wu04c_accepted_progress(interception_progress, receipt, 0.5_real64*gash_aggregate, receipt_status)
   call require(receipt_status == PPA_WU04C_PUBLICATION_OK .and. &
        abs(interception_progress%remaining_interception()-0.5_real64*gash_aggregate) < 1.e-14_real64, &
@@ -206,6 +215,8 @@ program test_fmr18_accepted_commit_receipt
   call require(restart_restored .and. receipt_status == FMR_VONHHBRADEN_PROGRESS_OK .and. &
        abs(restored_interception_progress%remaining_interception()-0.5_real64*gash_aggregate) < 1.e-14_real64, &
        'mid-window restart preserves remaining interception exactly')
+  call publish_ppa_wu04c_accepted_progress(restored_interception_progress, receipt, 0.1_real64*gash_aggregate, receipt_status)
+  call require(receipt_status == PPA_WU04C_PUBLICATION_REJECTED, 'replayed receipt revision rejected after restart')
   print '(a)', 'PPA_WU04C_REAL_FKT_RECEIPT_PROGRESS=PASS'
   print '(a)', 'PPA_WU04C_MID_WINDOW_RESTART_PROGRESS=PASS'
   print '(a)', 'PPA_WU04D_GASH_FKT_RECEIPT_PROGRESS=PASS'
