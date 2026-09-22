@@ -1,0 +1,45 @@
+name: GC rootzone memory RZM06E03C gentle bottom-first discriminator
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E03C_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E03C_PREREGISTRATION.md'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e03c_expand.f90'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e03c_select.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e03c.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e03c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e03c-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute gentle bottom-first state construction
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E03C-EVIDENCE
+          RZM06E03C_EVIDENCE_DIR="$PWD/RZM06E03C-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e03c.sh
+      - name: Preserve E03C evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e03c-${{ github.run_id }}
+          path: RZM06E03C-EVIDENCE
+          if-no-files-found: warn
