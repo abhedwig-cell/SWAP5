@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21i.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21I",
+  "title": "Final-retry Newton iteration-prefix tomography across G21H adjacent status boundaries",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "4d2c80c3e2e9a1fc4d440c34de3e0ba5b1fd6762",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21H_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21G_RESULT.json",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90"
+  ],
+  "question": "At the G21H smallest retry duration, at which nonlinear-iteration prefix do adjacent binary64 heads first diverge in backtracking/convergence behavior, and can that branch point be localized without modifying production HeadCalc or solver state?",
+  "frozen_case": {
+    "duration_day": 0.0000390625,
+    "production_max_iterations": 16,
+    "production_max_backtracking": 8,
+    "heads": [
+      {
+        "boundary": "B1_6_TO_0",
+        "side": "status6",
+        "head_m": -0.7150100297648301,
+        "parent_status": 6,
+        "full_solver_status": 2,
+        "full_nonlinear_iterations": 16,
+        "full_backtracking_attempts": 104
+      },
+      {
+        "boundary": "B1_6_TO_0",
+        "side": "status0",
+        "head_m": -0.715010029764824,
+        "parent_status": 0,
+        "full_solver_status": 1,
+        "full_nonlinear_iterations": 4,
+        "full_backtracking_attempts": 8
+      },
+      {
+        "boundary": "B2_0_TO_6",
+        "side": "status0",
+        "head_m": -0.715010029764793,
+        "parent_status": 0,
+        "full_solver_status": 1,
+        "full_nonlinear_iterations": 3,
+        "full_backtracking_attempts": 3
+      },
+      {
+        "boundary": "B2_0_TO_6",
+        "side": "status6",
+        "head_m": -0.7150100297647868,
+        "parent_status": 6,
+        "full_solver_status": 2,
+        "full_nonlinear_iterations": 16,
+        "full_backtracking_attempts": 39
+      }
+    ],
+    "max_iteration_prefixes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "experiment_contract": [
+    "Add test-bridge/wrapper infrastructure only. Copy corrector_parameters and corrector_config for every isolated probe.",
+    "Set probe_config.transaction.max_retries=0 and probe_parameters.max_iterations to the requested prefix. Do not mutate the saved corrector objects.",
+    "Run the existing serialized-reference backend at the frozen final retry duration from a fresh immutable-origin checkpoint for every head and every prefix 1..16.",
+    "Read the existing backend observation after each probe and report solver status, nonlinear iterations, Jacobian builds, linear solves, cumulative backtracking attempts and internal retries.",
+    "Discard every raw candidate before returning. No participant/G16 candidate or publication authority may be created.",
+    "Use the production HeadCalc source only as a static semantic oracle: MaxIt1=MaxIt in the ordinary non-fldtmin route, the nonlinear loop is bounded by MaxIt1, and backtracking attempts are counted in the factor-reduction loop.",
+    "For each head, derive cumulative-backtracking increments from adjacent prefixes. Do not infer residual values that are not exposed by the qualified observation surface.",
+    "Verify prefix stability: once a status-0 arm converges, larger max_iterations must reproduce the same converged solver diagnostics rather than extend the trajectory.",
+    "Verify the prefix-16 observation reproduces G21H exactly for all four heads."
+  ],
+  "classification_rules": {
+    "PREFIX_BACKTRACKING_BRANCH_LOCALIZED": "Both boundaries reproduce the G21H final split and each has a finite first prefix at which the adjacent heads' cumulative backtracking counts diverge before or at the status-0 arm's first convergence.",
+    "PREFIX_CONVERGENCE_BRANCH_WITHOUT_PRIOR_BACKTRACKING_SPLIT": "The final split and first convergence prefixes reproduce G21H, but adjacent cumulative backtracking counts remain identical through the status-0 convergence prefix.",
+    "PREFIX_FORENSICS_PARTIAL": "The final G21H split reproduces but one or more prefix invariants are not sufficient to localize the branch.",
+    "PREFIX_PROBE_INVALID": "Changing copied max_iterations changes earlier solver behavior inconsistently with prefix semantics or saved configuration/authority is mutated."
+  },
+  "gates": [
+    "All four heads and final-duration values match G21H exactly.",
+    "Sixteen isolated max-iteration prefixes are executed per head.",
+    "Prefix 16 reproduces G21H solver status, nonlinear-iteration count and cumulative backtracking count exactly.",
+    "B1 status-0 first convergence occurs at prefix 4; B2 status-0 first convergence occurs at prefix 3.",
+    "Both status-6 heads remain nonconverged through prefix 16.",
+    "Nonlinear iterations never exceed the requested prefix and equal the prefix for every nonconverged probe.",
+    "After status-0 first convergence, all larger prefixes are diagnostically stable.",
+    "Saved corrector parameters/configuration, accepted revision/time/ledger and participant/G16 liveness remain unchanged.",
+    "No production source is modified."
+  ],
+  "pass_interpretation": "PASS qualifies only localization of the final-retry nonlinear-solver branch using iteration-prefix evidence. It does not change solver tolerances, HeadCalc behavior, participant acceptance, retry policy, response-space globalization, or production HCOF/RHS.",
+  "fail_interpretation": "Preserve the failure. Do not add a production trace hook, alter solver limits, snap heads, or weaken G21H/G21G evidence to force a clean prefix interpretation.",
+  "allowed_mutation": [
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "tests/fgc/support/fgc44_real_swap_ctypes.py",
+    "tests/research/test_gc_fixed_interface_g21i_solver_prefix_forensics.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21I_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/solver/**",
+    "src/legacy/**",
+    "src/transaction/**",
+    "src/adapter/**",
+    "saved corrector_parameters/config semantics",
+    "participant acceptance/retry semantics",
+    "G16 service semantics",
+    "G09D/G13 E3 rules",
+    "MODFLOW IMS configuration",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
