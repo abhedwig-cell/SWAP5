@@ -47,6 +47,7 @@ on:
       - 'tests/research/test_gc_fixed_interface_g21n_term_delta_scan.py'
       - 'integration/research/GC_FIXED_INTERFACE_G21N_PREREGISTRATION.json'
       - 'tests/research/test_gc_fixed_interface_g23_endpoint_transaction_matrix.py'
+      - 'tests/research/run_gc_fixed_interface_g23_endpoint_transaction_matrix.sh'
       - 'integration/research/GC_FIXED_INTERFACE_G23_PREREGISTRATION.json'
       - 'tests/research/test_gc_fixed_interface_g21g_island_repeatability.py'
       - 'integration/research/GC_FIXED_INTERFACE_G21G_PREREGISTRATION.json'
@@ -120,6 +121,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash tests/research/run_gc_real_fgc44_response_storage_scan.sh
-      - name: Run bounded F-GC44 local head-response experiment
-        run: bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh
+      - name: Run G23 on clean standard F-GC44 build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash tests/research/run_gc_fixed_interface_g23_endpoint_transaction_matrix.sh
  
