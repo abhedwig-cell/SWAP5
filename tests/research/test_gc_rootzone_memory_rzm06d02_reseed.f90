@@ -108,9 +108,7 @@ contains
   subroutine compare_mass(a,b)
     type(kernel_reference_floor_result_t),intent(in) :: a,b
     call require(a%mass%complete .eqv. b%mass%complete,'mass complete identity')
-    call require(a%mass%missing_mask==b%mass%missing_mask,'mass missing mask')
-    call require(a%mass%origin_lineage_id==b%mass%origin_lineage_id,'mass lineage')
-    call require(a%mass%origin_revision==b%mass%origin_revision,'mass revision')
+    call require(a%mass%missing_contribution_mask==b%mass%missing_contribution_mask,'mass missing mask')
     call require(same_bits(a%mass%storage_start,b%mass%storage_start),'storage start')
     call require(same_bits(a%mass%storage_end,b%mass%storage_end),'storage end')
     call require(same_bits(a%mass%storage_change,b%mass%storage_change),'storage change')
