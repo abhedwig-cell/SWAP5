@@ -15,7 +15,8 @@ module mod_pub_gc_e6_active_drainage_bridge
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_TABULATED
-  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
+  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK, &
+       GW_SWAP_PARTICIPANT_TRIAL_FAILED, GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
        groundwater_interface_state_t, groundwater_interface_lineage_t, &
        swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, pair_groundwater_flux_from_swap, GW_INTERFACE_OK
@@ -76,6 +77,7 @@ module mod_pub_gc_e6_active_drainage_bridge
   logical, save :: drainage_tangent_covered=.false.
   real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), save :: active_predictor_qbot=DEFAULT_PREDICTOR_QBOT
+  integer(int64), save :: g14_fused_corrector_runs=0_int64
 
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by PUB-GC E6. They are test/qualification evidence,
@@ -108,6 +110,7 @@ module mod_pub_gc_e6_active_drainage_bridge
   public :: pub_gc_e6_state_c
   public :: pub_gc_e6_e1_diagnostics_c, pub_gc_e6_last_trial_diagnostics_c
   public :: pub_gc_e6_predictor_run_diagnostics_c, pub_gc_e6_corrector_diagnostics_c, pub_gc_e6_drainage_coverage_c
+  public :: pub_gc_e6_g14_fused_observation_c, pub_gc_e6_g14_fused_run_count_c
 
 contains
 
@@ -152,6 +155,7 @@ contains
 
     c_status=101_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
     initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.; drainage_tangent_covered=.false.
+    g14_fused_corrector_runs=0_int64
     e3d2_predictor_diagnostics_ready=.false.
     e3d2_predictor_result=kernel_result_t()
     e3d2_predictor_diagnostics=kernel_diagnostics_t()
@@ -333,6 +337,124 @@ contains
     pub_gc_e6_corrector_diagnostics_c=0_c_int
   end function pub_gc_e6_corrector_diagnostics_c
 
+
+  integer(c_int) function pub_gc_e6_g14_fused_observation_c(head_m,participant_status,q_swap_m_per_s, &
+       result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
+       solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries, &
+       min_substep,max_substep) bind(C,name="pub_gc_e6_g14_fused_observation_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: participant_status,result_status,completed,candidate_ready,transaction_calls
+    integer(c_int), intent(out) :: accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    real(c_double), intent(out) :: q_swap_m_per_s,min_substep,max_substep
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    real(real64) :: duration_day,qbot_mean_cm_per_day
+    integer :: forcing_status,interface_status
+    logical :: ok
+
+    pub_gc_e6_g14_fused_observation_c=1_c_int
+    participant_status=GW_SWAP_PARTICIPANT_TRIAL_FAILED
+    q_swap_m_per_s=0.0_c_double
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    min_substep=0.0_c_double; max_substep=0.0_c_double
+    if(.not.initialized)return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))then
+      pub_gc_e6_g14_fused_observation_c=2_c_int
+      return
+    end if
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      pub_gc_e6_g14_fused_observation_c=3_c_int
+      return
+    end if
+
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      g14_fused_corrector_runs=g14_fused_corrector_runs+1_int64
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      pub_gc_e6_g14_fused_observation_c=4_c_int
+      return
+    end select
+
+    result_status=int(result%status,c_int)
+    if(result%completed)completed=1_c_int
+    if(candidate%ready())candidate_ready=1_c_int
+    transaction_calls=int(diagnostics%transaction_calls,c_int)
+    accepted_substeps=int(diagnostics%accepted_substeps,c_int)
+    attempts=int(diagnostics%attempts,c_int)
+    retries=int(diagnostics%retries,c_int)
+    trial_rollbacks=int(diagnostics%trial_rollbacks,c_int)
+    solver_rejections=int(diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(diagnostics%mass_rejections,c_int)
+    internal_retries=int(diagnostics%internal_retries,c_int)
+    min_substep=diagnostics%min_accepted_substep_duration
+    max_substep=diagnostics%max_accepted_substep_duration
+
+    if(g14_whole_window_ok(result,candidate))then
+      duration_day=window%t1-window%t0
+      qbot_mean_cm_per_day=-result%bottom_outward_exchange_native/duration_day
+      call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean_cm_per_day,q_swap_m_per_s,interface_status)
+      if(interface_status==GW_INTERFACE_OK .and. ieee_is_finite(real(q_swap_m_per_s,real64)))then
+        participant_status=GW_SWAP_PARTICIPANT_OK
+      else
+        participant_status=GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
+        q_swap_m_per_s=0.0_c_double
+      end if
+    else
+      participant_status=GW_SWAP_PARTICIPANT_TRIAL_FAILED
+    end if
+
+    if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+    pub_gc_e6_g14_fused_observation_c=0_c_int
+  end function pub_gc_e6_g14_fused_observation_c
+
+  integer(c_int) function pub_gc_e6_g14_fused_run_count_c(value) bind(C,name="pub_gc_e6_g14_fused_run_count_c")
+    integer(c_int), intent(out) :: value
+    value=int(g14_fused_corrector_runs,c_int)
+    pub_gc_e6_g14_fused_run_count_c=0_c_int
+  end function pub_gc_e6_g14_fused_run_count_c
+
+  logical function g14_whole_window_ok(result,candidate) result(valid)
+    type(kernel_result_t), intent(in) :: result
+    type(kernel_candidate_state_t), intent(in) :: candidate
+    real(real64) :: ct0,ct1
+    logical :: available
+    valid=.false.
+    if(.not.result%completed)return
+    if(.not.candidate%ready())return
+    if(.not.result%bottom_interface_exchange_available)return
+    if(.not.ieee_is_finite(result%bottom_outward_exchange_native))return
+    if(.not.ieee_is_finite(result%terminal_bottom_outward_flux_native))return
+    if(.not.g14_same_time(result%requested_t0,window%t0))return
+    if(.not.g14_same_time(result%requested_t1,window%t1))return
+    if(.not.g14_same_time(result%completed_t,window%t1))return
+    call candidate%origin_interval(ct0,ct1,available)
+    if(.not.available)return
+    if(.not.g14_same_time(ct0,window%t0) .or. .not.g14_same_time(ct1,window%t1))return
+    valid=.true.
+  end function g14_whole_window_ok
+
+  pure logical function g14_same_time(a,b) result(matches)
+    real(real64), intent(in) :: a,b
+    real(real64) :: scale
+    matches=.false.
+    if(.not.ieee_is_finite(a) .or. .not.ieee_is_finite(b))return
+    scale=max(1.0_real64,abs(a),abs(b))
+    matches=abs(a-b)<=64.0_real64*epsilon(1.0_real64)*scale
+  end function g14_same_time
 
   integer(c_int) function pub_gc_e6_corrector_mass_diagnostics_c(head_m,result_status,completed,candidate_ready, &
        mass_complete,storage_change,total_in,total_out,bottom_outward_exchange,mass_residual) &
