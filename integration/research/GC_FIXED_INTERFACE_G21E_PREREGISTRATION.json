@@ -3,7 +3,7 @@
   "date": "2026-09-22",
   "work_unit": "GC-FIXED-INTERFACE-G21E",
   "title": "Full dynamic response-space coupling under standard DBD versus no-under-relaxation",
-  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "status": "PREREGISTERED_BEFORE_EXECUTION_AMENDED",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "baseline_head": "32486620f762c0ecc00821cb620437e0b65b1659",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -75,6 +75,7 @@
   ],
   "quantitative_gates": [
     "Both configurations report their preregistered NONMETH values (3 for STANDARD, 0 for NOUR).",
+    "STANDARD must reproduce the archived G21 outer-1 accepted head within 1e-12 m and the archived G21 outer-2 trajectory error 7.215394948190124e-11 m within 1e-12 m; otherwise the paired solver-configuration comparison is MIXED_OR_UNRESOLVED.",
     "Each arm uses exactly one prepare_time_step and one prepare_solve and keeps XOLD bitwise fixed.",
     "No direct X/XOLD setter, rollback, reconstruction or mid-solve state mutation is used.",
     "Each arm either converges within the unchanged MAX_OUTER/MAX_BACKTRACK/MXITER budgets or is preserved as a bounded failure; no tolerance or safeguard retuning follows observed results.",
@@ -91,7 +92,7 @@
     "NOUR_ONLY_PHYSICALLY_CONVERGED": "NOUR meets the physical gates while STANDARD does not under unchanged budgets. This supports a separately bounded production-configuration study but is not itself admission.",
     "STANDARD_ONLY_PHYSICALLY_CONVERGED": "STANDARD meets the physical gates while NOUR does not. The G21D path-memory removal is not sufficient justification for NOUR.",
     "NEITHER_PHYSICALLY_CONVERGED": "Neither configuration closes the physical coupling loop under the frozen algorithm; response-space policy remains unresolved.",
-    "MIXED_OR_UNRESOLVED": "Lifecycle, authority or comparability gates prevent a matched comparison."
+    "MIXED_OR_UNRESOLVED": "The STANDARD control does not reproduce the archived G21 path, or lifecycle/authority/comparability gates prevent a matched comparison."
   },
   "pass_interpretation": "PASS means the matched solver-configuration comparison was executed and classified without moving any physical/numerical gate. It may establish bounded evidence about path fidelity and cost, but does not production-admit NOUR, E3, response-space damping, P4, HCOF/RHS policy or solver defaults.",
   "fail_interpretation": "Preserve technical and scientific failures separately. Do not retune E3, response damping, IMS tolerances, coupling tolerances, budgets or physical forcing after seeing the comparison.",
@@ -111,5 +112,12 @@
     "F-GC38/F-GC39/F-GC41 contracts",
     "production HCOF/RHS"
   ],
-  "production_admission": "NO"
+  "production_admission": "NO",
+  "amendment": {
+    "timing": "BEFORE_G21E_IMPLEMENTATION_AND_LIVE_EXECUTION",
+    "reason": "A paired solver-configuration comparison needs the unchanged STANDARD arm to reproduce the archived G21 path effect before differences can be interpreted as an under-relaxation effect.",
+    "policy_change": false,
+    "threshold_change": false,
+    "physical_change": false
+  }
 }
