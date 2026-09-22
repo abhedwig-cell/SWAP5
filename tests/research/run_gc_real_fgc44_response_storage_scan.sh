@@ -510,3 +510,15 @@ grep -Fq 'GC_FIXED_INTERFACE_G21N_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21N_FAIL missing term-delta scan gate" >&2
   exit 1
 }
+
+# G23 endpoint-based physical and transactional qualification across the full
+# previously G08-qualified P4 envelope. Exact G17 internal trajectory equality
+# is deliberately not an acceptance criterion.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g23_endpoint_transaction_matrix.py \
+  | tee "$BUILD/fgc44-globalization-g23.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G23_EXECUTION=PASS' "$BUILD/fgc44-globalization-g23.txt" || {
+  echo "GC_FGC44_G23_FAIL missing endpoint transaction matrix gate" >&2
+  exit 1
+}
