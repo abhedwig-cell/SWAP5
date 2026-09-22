@@ -230,16 +230,6 @@
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20H",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H_QUALIFIED_CURRENT_BOUNDARY_ACTIVE_EXCHANGE_ADMISSION",
-      "dependency": "qualified DUMMY-20G",
-      "implementation_baseline": "c710308b473485a95b400f1389ca78b9c8effc56",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-20F",
       "state": "PREREGISTERED_BLOCKED_DEPENDENCY_NOT_QUALIFIED",
       "intended_decision": "RIBASIM_DUMMY_20F_QUALIFIED_NEXT_BOUNDARY_GROUNDWATER_MEMORY_ADMISSION",
@@ -247,20 +237,10 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20I",
-      "state": "PREREGISTERED_BLOCKED_BY_20H",
-      "intended_decision": "RIBASIM_DUMMY_20I_QUALIFIED_ACTIVE_RIVER_NEXT_BOUNDARY_MEMORY",
-      "dependency": "DUMMY-20H closeout",
-      "scientific_baseline": "45eddecf8e62c4eaa4945b599627641c97d68a7d",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Close DUMMY-20H v2. If qualified, rebind and execute prospectively frozen DUMMY-20I two-day active-River management memory.",
+  "next_authority_action": "Preregister and execute DUMMY-20H2 direct-BMI versus actual-RibaMod infiltration-pointer/allocation visibility diagnostic.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -313,6 +293,13 @@
       "run": 35726815125,
       "classification": "TECHNICAL_PHYSICAL_INTERVENTION_REPRESENTATION_FAILURE",
       "meaning": "No nonzero groundwater transfer reached Ribasim; management-memory hypothesis remains untested."
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H",
+      "decision": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+      "run": 35732895672,
+      "classification": "SCIENTIFIC_CURRENT_BOUNDARY_ALLOCATION_VISIBILITY_FALSIFICATION",
+      "meaning": "Active River exchange is physically realized in day 1, but t=0 allocation remains 32/0 rather than responding to that forcing."
     }
   ],
   "superseded": [
@@ -334,6 +321,12 @@
       "state": "SUPERSEDED_UNEXECUTED_DEPENDENCY_NOT_QUALIFIED",
       "cause": "DUMMY-20E2 intervention was not realized",
       "successor": "DUMMY-20F2"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20I",
+      "state": "INVALIDATED_UNEXECUTED",
+      "cause": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+      "meaning": "Frozen two-day reference assumed a 24.0000853 m3/day t=0 root allocation and is no longer executable authority."
     }
   ],
   "supporting_context": "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json",
