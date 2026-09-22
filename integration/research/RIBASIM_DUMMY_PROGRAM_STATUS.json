@@ -204,7 +204,8 @@
       "dependency": "qualified DUMMY-20C",
       "product_ribasim_release": "v2026.1.1",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "modflow_release": "6.7.0"
+      "modflow_release": "6.7.0",
+      "implementation_baseline": "f45470275a91719a199898c381f89e13b805f89e"
     },
     {
       "work_unit": "RIBASIM-DUMMY-20E",
@@ -217,7 +218,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20D actual-product allocation.dt versus saveat ownership matrix.",
+  "next_authority_action": "Implement and execute frozen DUMMY-20D actual-product allocation.dt × saveat clock ownership matrix.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
