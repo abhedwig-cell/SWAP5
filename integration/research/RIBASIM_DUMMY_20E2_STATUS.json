@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute clean DUMMY-20E2 v5 from current research authority with unchanged model, frozen references and tolerances.",
+  "next_action": "Execute DUMMY-20E2 v5 clean Windows product qualification.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -87,5 +87,7 @@
       "v1 diagnostic mismatch only"
     ],
     "required_next": "clean v5 Windows product qualification"
-  }
+  },
+  "qualification_attempt": "v5_clean_exact_head_full_trajectory",
+  "qualification_base": "work/ribasim-dummy-01@ff70dc16378bd60f526463b7c2f480346d3c1ad9"
 }
