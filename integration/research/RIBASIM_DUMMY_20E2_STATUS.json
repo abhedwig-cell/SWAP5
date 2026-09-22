@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": true,
   "blocker": "Execution sequenced after DUMMY-20D qualification.",
-  "next_action": "After DUMMY-20D closeout, rebind and implement the frozen delayed-drainage product experiment.",
+  "next_action": "After DUMMY-20D closeout, rebind 20E2, add runner/workflow gate and execute the frozen delayed-drainage product experiment.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -21,17 +21,10 @@
   },
   "recovery_point": "20E2 remains blocked by 20D; executable drain representation clarified prospectively with frozen physical flux/reference unchanged.",
   "implementation_preparation": {
-    "state": "PRODUCT_WORKER_PREPARED_EXECUTION_BLOCKED",
-    "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater.py",
+    "state": "PRODUCT_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater_transfer.py",
     "scientific_change": false,
-    "observables": [
-      "actual MF6 Drainage flux",
-      "Ribasim basin.drainage rate",
-      "Ribasim basin.cumulative_drainage",
-      "Basin level/storage",
-      "root and external cumulative UserDemand inflow",
-      "reciprocal coupled ledger"
-    ],
-    "note": "No runner/workflow/execution until DUMMY-20D closeout."
+    "technical_note": "MF6 Drainage uses exact zero conductance in the first stress period and 16 m2/day thereafter. iMOD-Python write validation is disabled only because its schema requires conductance > 0; MODFLOW input values and the preregistered physical schedule are unchanged.",
+    "execution_effect": "none until DUMMY-20D qualification"
   }
 }
