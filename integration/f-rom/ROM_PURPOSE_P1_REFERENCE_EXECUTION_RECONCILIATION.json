@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.rom-purpose.p1.reference-execution-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1-REFERENCE",
+  "status": "BOUND_HISTORY_SHARDED_REFERENCE_RECOVERY_NO_SCIENTIFIC_CHANGE",
+  "canonical_authority": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "original_execution": {
+    "binding": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json@e2c1930bce4df4324f8951b2e8fdb869275a2fc8",
+    "workflow_run": 35748342021,
+    "disposition": "TECHNICALLY_INVALID_INCOMPLETE",
+    "evidence": [
+      "Multiple independent matrix slices passed authority lock, fresh materialization and compilation.",
+      "Completed failing slices terminated only after executable start with hosted-runner shutdown signal and exit code 143.",
+      "No complete Reference route or Reference qualification result was produced from that run.",
+      "No candidate response was authorized or generated."
+    ]
+  },
+  "repair": {
+    "type": "HISTORY_SHARDING",
+    "scientific_effect": "NONE",
+    "rationale": "The four histories are independent simulations. Execute one complete history per job and concatenate histories only after successful completion.",
+    "surface_route": "Use the pre-existing LARE_DYN0A_CASE_FILTER in the frozen source harness; no state restart or checkpoint is introduced.",
+    "groundwater_route": "Materialize the same frozen P1 GW workload, then select exactly one history driver before execution. No within-history restart or state transfer is introduced.",
+    "forcing_changed": false,
+    "initial_state_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_route_changed": false,
+    "reference_grid_changed": false,
+    "metric_changed": false,
+    "decision_rule_changed": false,
+    "representation_changed": false
+  },
+  "implementation_blobs": {
+    "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json": "c618a433545426a0af8c333be0f8d09926069def",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json": "e2c1930bce4df4324f8951b2e8fdb869275a2fc8",
+    "tests/rom/materialize_rom_purpose_p1_surface_reference.py": "933cda92b62ca313e4720c866afe25c3e70ce72a",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference.py": "b7832852a2023a776ae2212ebe5713ec294ff1e0",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f"
+  },
+  "workflow_blob": "37698c019ad36e6e26a8be2cc9eb0d369dea7e50",
+  "qualification_contract": {
+    "histories_per_purpose": 4,
+    "each_history_contiguous": true,
+    "target": "R2048_T32",
+    "spatial_ladder": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_ladder": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "compiler_routes": [
+      0,
+      2
+    ],
+    "O0_O2_bit_identity_required": true,
+    "analyzer_unchanged": true
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "candidate_response_authorized": false,
+    "reference_metric_values_used_to_design_repair": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
