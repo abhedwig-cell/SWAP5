@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.coupling.real_ribamod_active_river_management_boundary.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H",
+  "title": "Active-river forcing admitted at the current management boundary",
+  "baseline": "257ea1672bcbb393c37a5a1d88ef5a6c452987de",
+  "authorities": {
+    "no_exchange_control": {
+      "work_unit": "RIBASIM-DUMMY-20C",
+      "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE"
+    },
+    "release_clock": {
+      "work_unit": "RIBASIM-DUMMY-20B",
+      "decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT"
+    },
+    "active_river": {
+      "work_unit": "RIBASIM-DUMMY-20G",
+      "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+      "first_interval_river_flux_m3_per_day": 7.999914667576883
+    },
+    "contrast_postallocation": {
+      "work_unit": "RIBASIM-DUMMY-20E3",
+      "meaning": "Passive groundwater drainage arriving after t=0 allocation did not retroactively alter that day's management decision."
+    }
+  },
+  "purpose": "Test the complementary time-direction case to DUMMY-20E3: an active River exchange is computed by MF6 and published to Ribasim before the t=0 fixed-grid allocation solve, so the negative infiltration forcing should reduce the current t=0 root allocation rather than waiting for the next daily boundary.",
+  "frozen_cases": {
+    "common": {
+      "horizon_seconds": 86400,
+      "product_timestep_seconds": 21600,
+      "allocation_dt_seconds": 86400,
+      "solver_saveat_seconds": 86400,
+      "basin_area_m2": 1000000,
+      "initial_level_m": 1,
+      "fixed_supply_m3_per_day": 32,
+      "root_demand_m3_per_day": 40,
+      "external_demand_m3_per_day": 20,
+      "root_priority": 2,
+      "external_priority": 3,
+      "level_hold_priority": 1,
+      "level_hold_m": 1,
+      "user_demand_min_level_m": 0.99
+    },
+    "control": {
+      "groundwater_exchange": "none",
+      "expected_t0_root_allocation_m3_per_day": 32,
+      "expected_t0_external_allocation_m3_per_day": 0,
+      "qualified_physical_reference": "DUMMY-20C"
+    },
+    "active_river": {
+      "groundwater_exchange": "DUMMY-20G two-cell active River",
+      "first_interval_infiltration_m3_per_day": 7.999914667576883,
+      "expected_t0_root_allocation_m3_per_day": 24.00008533242312,
+      "expected_t0_external_allocation_m3_per_day": 0,
+      "derivation": "LevelDemand priority 1 holds Basin at 1.0 m. The t=0 allocation sees the already-published active-river infiltration as implicit negative forcing, leaving 32 - 7.999914667576883 m3/day for root-first UserDemand."
+    }
+  },
+  "hypotheses": [
+    "The no-exchange control reproduces the t=0 32/0 m3/day root/external allocation.",
+    "In the active-River case, the first MF6 River exchange is published to Ribasim before the t=0 allocation solve.",
+    "The t=0 active-River root allocation is approximately 24.0000853324 m3/day and external allocation remains zero.",
+    "The allocation reduction relative to control equals the first-interval active-River infiltration rate within tolerance.",
+    "External physical delivery remains zero for the one-day root-first case.",
+    "Active-River root cumulative physical delivery is materially lower than the no-exchange control because the applied root target is smaller.",
+    "At every active-River boundary the MF6 River flux is reciprocal to Ribasim infiltration and the source = root + external + infiltration + Basin-storage ledger closes.",
+    "This is the causal complement of DUMMY-20E3: a forcing present before SOLVE affects the current allocation; a forcing arriving after SOLVE affects physical state but not the already admitted allocation."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "allocation_difference_m3_per_day": 0.05,
+    "reciprocal_rate_m3_per_day": 0.01,
+    "cumulative_volume_m3": 0.05,
+    "ledger_m3": 0.05,
+    "zero_external_m3": 0.001,
+    "material_root_difference_m3": 1
+  },
+  "observability": {
+    "allocation_authority": "Read Ribasim results/allocation.arrow after product finalization. Do not infer allocation solely from physical supply.",
+    "physical_authority": "XMI cumulative UserDemand inflow, Basin level, Basin cumulative infiltration and MF6 River flux."
+  },
+  "forbidden": [
+    "no transfer of later f965 allocation-clock semantics to product release v2026.1.1",
+    "no post-output adjustment of the expected 24.0000853324 m3/day active root allocation",
+    "no use of physical supplied volume as a substitute for allocation output",
+    "no production SWAP5 admission"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H_QUALIFIED_CURRENT_BOUNDARY_ACTIVE_EXCHANGE_ADMISSION",
+  "fail_decision": "RIBASIM_DUMMY_20H_BLOCKED"
+}
