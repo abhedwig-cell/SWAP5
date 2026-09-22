@@ -1,0 +1,140 @@
+name: ROM-ROOT RNP02 Newton recurrence trace
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_RNP02_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-rnp02-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  trace:
+    name: ${{ matrix.role }}-${{ matrix.route }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - role: TARGET
+            route: R1024_T32
+            nodes: 1024
+            dz: 0.15625
+          - role: CONTROL
+            route: R2048_T32
+            nodes: 2048
+            dz: 0.078125
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify bound RNP02 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_RNP02_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_RNP02_BINDING.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_RNP02_TRACE_RESPONSE'
+          assert b['state']=='BOUND_BEFORE_RNP02_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['reduced_candidate_response_generated'] is False
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+
+      - name: Materialize target
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source tests/rom/test_lare_dyn0a_reference.f90             --material B01             --temporal-factor 32             --output /tmp/rnp02_root.f90             --manifest /tmp/root_manifest.json
+          python3 tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py             --input /tmp/rnp02_root.f90             --output /tmp/rnp02_diag.f90
+          python3 tests/rom/materialize_rom_root_rnp02_diagnostic.py             --input /tmp/rnp02_diag.f90             --output canonical/tests/rom/test_rom_root_rnp02.f90
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py             --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90             --manifest /tmp/reference_floor_repair.json
+          python3 tests/rom/materialize_rom_root_rnp02_headcalc_trace.py             --path canonical/src/legacy/b1_10_port/headcalc.f90
+
+      - name: Execute trace
+        env:
+          LARE_DYN0A_CASE_FILTER: V02
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          stub="canonical/rnp02_${{ matrix.route }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "${{ matrix.nodes }}" --dz-cm "${{ matrix.dz }}"
+          build="/tmp/rnp02_${{ matrix.route }}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "rnp02_${{ matrix.route }}_stubs.f90"             --target tests/rom/test_rom_root_rnp02.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt 0
+          log="evidence/${{ matrix.role }}_${{ matrix.route }}_V02.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          cat "$log"
+          test "$rc" -ne 0
+          grep -Fq 'RNP02_SHADOW128|' "$log"
+          test "$(grep -c '^RNP02_TRACE|' "$log")" -gt 0
+          cp /tmp/root_manifest.json evidence/
+          cp /tmp/reference_floor_repair.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rnp02-${{ matrix.role }}-${{ matrix.route }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: trace
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rnp02-*
+          path: /tmp/rnp02
+          merge-multiple: true
+      - name: Analyze recurrence
+        run: |
+          set -euo pipefail
+          mkdir -p RNP02_EVIDENCE
+          python3 tests/rom/analyze_rom_root_rnp02.py             --target /tmp/rnp02/TARGET_R1024_T32_V02.txt             --control /tmp/rnp02/CONTROL_R2048_T32_V02.txt             --output RNP02_EVIDENCE/ROM_ROOT_RNP02_RESULT.json             | tee RNP02_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_RNP02_PREREGISTRATION.json RNP02_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_RNP02_BINDING.json RNP02_EVIDENCE/
+          sha256sum RNP02_EVIDENCE/* > RNP02_EVIDENCE/sha256.txt
+      - name: Enforce firewall
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('RNP02_EVIDENCE/ROM_ROOT_RNP02_RESULT.json'))
+          assert r['status']=='TRACE_COMPLETE_NO_POLICY_DECISION'
+          assert r['policy_decision_authorized'] is False
+          assert r['c6r_reopened'] is False
+          assert r['reduced_candidate_response_generated'] is False
+          assert r['production_source_changed'] is False
+          print('ROM_ROOT_RNP02_FIREWALL=PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-rnp02
+          path: RNP02_EVIDENCE/
+          if-no-files-found: error
