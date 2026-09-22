@@ -8,15 +8,17 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-19J closeout. Scientific references are frozen now.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "Test-only 6-hour solve→apply UserDemand seam with daily saveat and no allocation output-record coupling.",
-  "next_action": "After DUMMY-19J closeout, rebind, add runner/workflow gate and execute the frozen explicit-apply experiment.",
+  "next_action": "Implement and execute frozen test-only explicit UserDemand solve→apply seam.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
     "state": "VERIFIER_PREPARED_EXECUTION_BLOCKED",
     "prepared_path": "tests/research/real_ribasim_explicit_userdemand_apply_bridge.jl",
     "scientific_change": false
-  }
+  },
+  "implementation_baseline": "6c5999b086a58641b1c6a84ae96c6d63b83c5e45",
+  "recovery_point": "DUMMY-19K frozen before 19J output; sequencing dependency now satisfied."
 }
