@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.gc_fixed_interface.g13.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G13",
+  "title": "E3 tangent-acquisition logical cost and streaming-equivalence qualification",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "production_changes": false,
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G12B_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json"
+  ],
+  "question": "How much real-SWAP corrector work is inherent in the current E3 reference estimator, and how much can be removed by stopping at the first already-defined qualifying adjacent scale pair without changing E3 semantics?",
+  "frozen_state_matrix": {
+    "fgc44": "All eight G09D boundary-state estimator results.",
+    "map09": "The three G12B MAP09 estimator results at HREF and frozen +/-1e-6 m starts."
+  },
+  "logical_cost_model": {
+    "sample_contract": "Current E3 sample acquisition evaluates a participant trial for q/status and a separate raw/corrector diagnostic for execution class at every unique probe head.",
+    "current_full_ladder_corrector_runs_per_unique_head": 2,
+    "streaming_rule": "Evaluate fixed scales coarse-to-fine with the same cache. After each new scale, compare only the immediately preceding candidate with the new candidate. Stop at the first pair that satisfies the existing E3 <=5% relative slope rule.",
+    "fused_trial_result_lower_bound": "Diagnostic only: count one corrector run per unique head if a future trial API returned q, participant status and execution-class fields from the same physical trial. This is not an implemented or admitted API.",
+    "no_wall_clock_gate": true
+  },
+  "equivalence_gates": [
+    "For every frozen state, streaming finds AVAILABLE if and only if persisted full-ladder E3 is AVAILABLE.",
+    "Streaming selected scale, selected mode, selected slope, confirming scale, confirming mode and confirming slope equal the persisted E3 decision within floating-point tolerance.",
+    "Streaming never evaluates a finer scale after the first qualifying adjacent pair.",
+    "Logical current implementation cost equals 2 times the unique-head count implied by all persisted fixed scales.",
+    "Logical streaming cost equals 2 times the unique-head count needed through its confirming scale.",
+    "The fused-trial count is reported only as a lower-bound integration target and does not constitute implementation evidence."
+  ],
+  "contextual_cost": {
+    "g11": "Report the two live P4 safeguard contractions from G11 separately so tangent acquisition and globalization overhead are not conflated."
+  },
+  "interpretation": [
+    "PASS qualifies streaming early-stop as semantically equivalent to the current research E3 decision rule on the frozen live evidence matrix.",
+    "PASS does not qualify a fused production tangent API.",
+    "Any source-code optimization or production integration requires a separate work unit and regression against the full reference estimator.",
+    "No production HCOF/RHS or coupling source changes are authorized."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}
