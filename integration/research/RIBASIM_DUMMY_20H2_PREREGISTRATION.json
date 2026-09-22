@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.coupling.real_ribamod_infiltration_allocation_visibility.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H2",
+  "title": "RibaMod versus direct-BMI current-boundary infiltration-to-allocation visibility",
+  "baseline": "6562774e754cf0b5db48a95d4939dbf79c378222",
+  "authorities": {
+    "falsification": {
+      "work_unit": "RIBASIM-DUMMY-20H",
+      "decision": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+      "workflow_run": 35732895672,
+      "observed_active_allocation_m3_per_day": {
+        "root": 32,
+        "external": 0
+      },
+      "observed_first_river_flux_m3_per_day": 7.999914667576883
+    },
+    "active_exchange": {
+      "work_unit": "RIBASIM-DUMMY-20G",
+      "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK"
+    },
+    "product_release": {
+      "work_unit": "RIBASIM-DUMMY-20B",
+      "release": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "purpose": "Localize why a physically active ~8 m3/day River infiltration did not change the t=0 allocation in DUMMY-20H by separating actual-RibaMod pointer timing from direct Ribasim BMI pointer-to-allocation visibility.",
+  "frozen_model": {
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "horizon_observed_seconds": 21600,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1,
+    "user_demand_min_level_m": 0.99,
+    "injection_rate_m3_per_day": 7.999914667576883
+  },
+  "routes": {
+    "direct_control": "Fresh RibasimWrapper v2026.1.1, leave basin.infiltration at zero, call update_until(6h), finalize, read allocation.nc.",
+    "direct_injection": "Fresh identical RibasimWrapper, write 7.999914667576883 m3/day into get_value_ptr('basin.infiltration') before first update_until(6h), verify readback, advance, finalize, read allocation.nc.",
+    "actual_ribamod": "Actual active-River RibaMod case. Wrap only RibasimWrapper.update_until for read-only observation of basin.infiltration immediately before the real driver calls it; do not change product ordering or state."
+  },
+  "frozen_assertions": [
+    "Direct control t=0 allocation is 32/0 m3/day.",
+    "Actual RibaMod pre-update_until infiltration pointer equals the first active-River flux within 0.01 m3/day.",
+    "Actual RibaMod t=0 allocation reproduces the admitted DUMMY-20H value 32/0 m3/day.",
+    "Direct-injection pointer readback equals the injected rate before update_until.",
+    "Direct-injection physical cumulative infiltration after 6h is materially positive, proving the pointer is physically effective.",
+    "All three routes use the exact bundled Ribasim v2026.1.1 binary."
+  ],
+  "preregistered_decision_matrix": [
+    {
+      "condition": "direct_injection allocation root ~= 32 and external ~= 0",
+      "classification": "RIBASIM_RELEASE_CURRENT_BOUNDARY_BMI_INFILTRATION_NOT_VISIBLE_TO_FIXED_ALLOCATION",
+      "interpretation": "The same writable vertical-flux pointer affects physical realization but not the current fixed-grid UserDemand allocation decision in v2026.1.1. RibaMod is transparent to that release behavior."
+    },
+    {
+      "condition": "direct_injection allocation root ~= 24.0000853 and external ~= 0, while actual RibaMod remains 32/0 with pre-update pointer ~= 8",
+      "classification": "RIBAMOD_CURRENT_BOUNDARY_COMPOSITION_VISIBILITY_SEAM",
+      "interpretation": "Direct Ribasim can consume the BMI-set forcing for current allocation, but the actual RibaMod composition introduces an additional timing/state seam."
+    },
+    {
+      "condition": "actual RibaMod pre-update pointer is not ~= 8",
+      "classification": "RIBAMOD_EXCHANGE_POINTER_TIMING_SEAM",
+      "interpretation": "The physical exchange is visible after the step but was not present in the Ribasim infiltration pointer at the allocation call boundary."
+    },
+    {
+      "condition": "none of the above",
+      "classification": "UNRESOLVED_DIAGNOSTIC_MISMATCH",
+      "interpretation": "Do not infer ownership; preregister a narrower follow-up."
+    }
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "pointer_rate_m3_per_day": 0.01,
+    "positive_cumulative_infiltration_m3": 0.1,
+    "zero_external_m3": 0.001
+  },
+  "forbidden": [
+    "no modification of upstream iMOD Coupler or Ribasim source",
+    "no manual reconstruction of RibaMod.update as authority",
+    "the read-only update_until wrapper may observe pointer state but must delegate unchanged to the original method",
+    "no post-output retuning of classification thresholds",
+    "no production SWAP5 admission"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
+  "fail_decision": "RIBASIM_DUMMY_20H2_BLOCKED"
+}
