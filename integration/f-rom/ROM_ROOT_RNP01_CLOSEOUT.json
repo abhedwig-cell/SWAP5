@@ -23,5 +23,15 @@
     "question": "Does the persistent B01 R1024_T32 V02 total-residual-only rejection arise from an iterative cycle/stagnation in the unchanged Reference Newton/backtracking path?",
     "constraint": "Diagnose iteration dynamics only. Do not change tolerances, physics, production code, or C6R admission."
   },
-  "model_changed": false
+  "model_changed": false,
+  "raw_workflow_outcome": {
+    "run_id": 35749824809,
+    "conclusion": "failure",
+    "characterization_jobs": "6/6 success",
+    "failed_component": "original analyze job",
+    "failure_class": "TECHNICAL_POSTPROCESSING_ONLY",
+    "authoritative_repair": "integration/f-rom/ROM_ROOT_RNP01_ANALYZER_REPAIR.json",
+    "authoritative_result": "integration/f-rom/ROM_ROOT_RNP01_RESULT.json",
+    "raw_physical_evidence_invalidated": false
+  }
 }
