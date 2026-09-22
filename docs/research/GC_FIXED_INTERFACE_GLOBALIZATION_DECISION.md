@@ -1586,3 +1586,52 @@ RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: FINAL-RETRY NEWTON / BACKTRACKING TRAJECTORY FORENSICS.
 ```
+## G21I disposition: convergence split occurs before any backtracking-count divergence
+
+G21I used iteration-prefix tomography at the exact G21H final retry duration.
+For every frozen head, the real reference Richards solver was restarted from the
+same immutable origin with test-only copies of the numerical configuration and
+`max_iterations` set successively from 1 through 16. Production `HeadCalc`,
+solver tolerances, retry policy and participant semantics remained unchanged.
+
+The authority run, workflow `35741871585`, job `106793410206`, reproduced the
+full G21H outcomes at prefix 16 and localized the split:
+
+```text
+B1 6 -> 0 boundary:
+  status-6 cumulative backtracking through iter 4 = 1, 2, 5, 8
+  status-0 cumulative backtracking through iter 4 = 1, 2, 5, 8
+  status-0 first convergence                         = iteration 4
+
+B2 0 -> 6 boundary:
+  status-0 cumulative backtracking through iter 3 = 1, 2, 3
+  status-6 cumulative backtracking through iter 3 = 1, 2, 3
+  status-0 first convergence                       = iteration 3
+```
+
+Thus neither adjacent pair shows an earlier divergence in the observable
+backtracking-count trajectory before the successful side converges. At the
+split iteration, one head satisfies the HeadCalc convergence decision and the
+binary64-adjacent head does not, despite the same cumulative number of
+backtracking attempts up to that point.
+
+After the split, the failed side continues to iteration 16. B1 reaches 104
+cumulative backtracking attempts and B2 reaches 39, but those later differences
+are consequences of not having converged at the earlier split iteration, not
+evidence of an earlier count-level branch.
+
+The next diagnostic therefore moves one level deeper into the existing
+HeadCalc convergence decision: compartment residual, head-change, total
+balance and any active ponding criterion at B1 iteration 4 and B2 iteration 3.
+A deeper Newton-state trajectory hook is not yet justified unless those
+criteria fail to localize the branch.
+
+```text
+G21I ITERATION-PREFIX TOMOGRAPHY = QUALIFIED DIAGNOSTIC.
+BACKTRACKING-COUNT SPLIT BEFORE SUCCESSFUL CONVERGENCE = NOT OBSERVED.
+BRANCH LOCATION = HEADCALC CONVERGENCE DECISION / UNOBSERVED NUMERICAL STATE.
+SOLVER TOLERANCE / RETRY POLICY / STATUS SMOOTHING = UNCHANGED.
+RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: G21J CONVERGENCE-CRITERION FORENSICS.
+```
