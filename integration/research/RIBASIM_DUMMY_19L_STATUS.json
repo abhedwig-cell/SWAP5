@@ -13,5 +13,11 @@
   "prepared_scope": "Native 6h-saveat versus daily-saveat explicit-apply comparison at all 6h accepted-state boundaries.",
   "next_action": "After DUMMY-19K closeout, rebind and implement without changing frozen segment references.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/real_ribasim_explicit_apply_trajectory_bridge.jl",
+    "scientific_change": false,
+    "note": "Verifier prepared while DUMMY-19K runs; no runner, workflow gate or execution until DUMMY-19K closeout."
+  }
 }
