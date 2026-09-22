@@ -194,31 +194,30 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20D",
+      "decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+      "run": 35723571953,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "modflow_release": "6.7.0",
+      "day_end_allocation_dt_separation_m3": 8.493748372914066
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20D",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
-      "dependency": "qualified DUMMY-20C",
-      "product_ribasim_release": "v2026.1.1",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "modflow_release": "6.7.0",
-      "implementation_baseline": "888c879fb8b5590f4821e2dc2ffaba2419c2cf20"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-20E2",
-      "state": "PREREGISTERED_BLOCKED_BY_20D",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20D",
       "intended_decision": "RIBASIM_DUMMY_20E2_QUALIFIED_POSTALLOCATION_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
-      "dependency": "DUMMY-20D qualification",
+      "dependency": "qualified DUMMY-20D",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20D actual-product allocation.dt × saveat clock ownership matrix.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-20E2 real passive groundwater transfer activated after the accepted daily allocation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -288,10 +287,9 @@
     "meaning": "For tested UserDemand coupling, allocation solve, application/commit, physical realization, accepted state and output record are distinct semantic stages; explicit apply at the management boundary can be transactionally equivalent to native saveat-aligned application."
   },
   "product_clock_authority": {
-    "driver": "RIBASIM-DUMMY-20A",
-    "ribasim_release": "RIBASIM-DUMMY-20B",
-    "runtime": "RIBASIM-DUMMY-20C",
-    "meaning": "The actual RibaMod driver delegates UserDemand cadence to bundled Ribasim v2026.1.1; real 6-hour MF6 product steps are dynamically transparent for the isolated topology when allocation.dt remains 24 h."
+    "latest": "RIBASIM-DUMMY-20D",
+    "decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+    "meaning": "For bundled Ribasim v2026.1.1 under actual RibaMod runtime, fixed UserDemand management cadence is owned by allocation.dt; solver.saveat does not materially alter the fixed-dt allocation trajectory."
   },
   "product_runtime_authority": {
     "latest": "RIBASIM-DUMMY-20C",
