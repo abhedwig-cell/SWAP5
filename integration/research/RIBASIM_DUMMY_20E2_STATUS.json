@@ -4,13 +4,13 @@
   "work_unit": "RIBASIM-DUMMY-20E2",
   "branch": "work/ribasim-dummy-01",
   "baseline": "796a02ad97524cd94e3103221cb23ee684556ba6",
-  "implemented": true,
+  "implemented": false,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20E2 actual-product post-allocation groundwater-transfer qualification.",
+  "next_action": "Persist runner/workflow and execute frozen DUMMY-20E2 actual-product delayed groundwater-transfer qualification.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,13 +19,22 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "DUMMY-20E2 worker and source-scope runner persisted; Windows product qualification pending.",
+  "recovery_point": "DUMMY-20D qualified; corrected DUMMY-20E2 product worker reconciled and ready for execution.",
   "implementation_preparation": {
-    "state": "PRODUCT_VERIFIER_PREPARED_EXECUTION_BLOCKED",
-    "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater_transfer.py",
+    "state": "PRODUCT_WORKER_PREPARED_IMPLEMENTATION_READY",
+    "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater.py",
     "scientific_change": false,
-    "technical_note": "MF6 Drainage uses exact zero conductance in the first stress period and 16 m2/day thereafter. iMOD-Python write validation is disabled only because its schema requires conductance > 0; MODFLOW input values and the preregistered physical schedule are unchanged.",
-    "execution_effect": "none until DUMMY-20D qualification"
+    "technical_representation": "constant conductance 16 m2/day; drain elevation 0.5 m during 0-6 h then 0.0 m",
+    "physical_flux_schedule": "0 m3/day during first product step; approximately 8 m3/day into Ribasim during the remaining three steps",
+    "observables": [
+      "actual MF6 Drainage package flux",
+      "Ribasim basin.drainage rate",
+      "Ribasim basin.cumulative_drainage",
+      "Basin level and storage gain",
+      "root and external cumulative UserDemand inflow",
+      "reciprocal coupled mass ledger"
+    ],
+    "note": "Worker uses the prospectively approved positive-conductance/elevation-switch representation; no zero-conductance validation bypass is used."
   },
   "implementation_baseline": "b8af4adb3e1e328cce7dc5ca79967f4fdb447df9",
   "execution_baseline": "a1ffd10eb2c7fb9946a5f2d116b413a8610b7bf2",
