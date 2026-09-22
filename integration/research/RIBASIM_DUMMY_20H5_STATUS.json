@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20H5 v2 frozen qualification after diagnostic-intervention timing repair.",
+  "next_action": "Execute DUMMY-20H5 v2 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -35,8 +35,8 @@
     "tests/research/run_ribasim_dummy_20h5.sh",
     ".github/workflows/ribasim-dummy-01.yml"
   ],
-  "qualification_attempt": "v2_frozen_zero_storage_factor_causality",
-  "qualification_base": "work/ribasim-dummy-20h5-ci-v1@e4f6774f2e64d9a6e23a908c4d8375178c67f278",
+  "qualification_attempt": "v2_frozen_zero_storage_causality",
+  "qualification_base": "work/ribasim-dummy-01@7a9a64a7f29cba3a9dc93ff9fbb7da315a68e1d0",
   "qualification_attempts": [
     {
       "attempt": "v1",
