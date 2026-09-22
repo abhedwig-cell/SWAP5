@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.coupling.real_ribamod_runtime_clock_ownership_matrix.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20D",
+  "title": "Actual RibaMod runtime allocation.dt versus saveat clock ownership matrix",
+  "baseline": "2898e2ecf78ad342052cc7653fd8de8ef5b03233",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20C_ACTIVE",
+    "execute_after": "DUMMY-20C closeout",
+    "rationale": "Freeze the dynamic product clock-ownership matrix before observing the first actual RibaMod runtime differential."
+  },
+  "authorities": {
+    "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0",
+    "source_clock_contract": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT"
+  },
+  "frozen_product_topology": {
+    "platform": "windows-latest",
+    "driver_route": "actual upstream BaseConfig/get_driver -> RibaMod",
+    "mf6_role": "real 6-hour product time leader; one fixed-head cell; no active/passive river or drainage coupling packages",
+    "mf6_timestep_seconds": 21600,
+    "horizon_seconds": 86400,
+    "ribasim": {
+      "basin_area_m2": 1000000,
+      "initial_level_m": 1,
+      "fixed_supply_m3_per_day": 32,
+      "root_demand_m3_per_day": 40,
+      "external_demand_m3_per_day": 20,
+      "root_priority": 2,
+      "external_priority": 3,
+      "level_hold_priority": 1,
+      "level_hold_m": 1,
+      "common_user_demand_min_level_m": 0.99
+    }
+  },
+  "clock_matrix": [
+    {
+      "id": "A24_S24",
+      "allocation_dt_seconds": 86400,
+      "solver_saveat_seconds": 86400
+    },
+    {
+      "id": "A24_S1",
+      "allocation_dt_seconds": 86400,
+      "solver_saveat_seconds": 3600
+    },
+    {
+      "id": "A6_S24",
+      "allocation_dt_seconds": 21600,
+      "solver_saveat_seconds": 86400
+    },
+    {
+      "id": "A6_S1",
+      "allocation_dt_seconds": 21600,
+      "solver_saveat_seconds": 3600
+    }
+  ],
+  "independent_continuous_reference": {
+    "endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "allocation_dt_24h": {
+      "root_cumulative_m3": [
+        4.001199759954048,
+        8.00479808014741,
+        12.010793520398778,
+        16.019184640970934
+      ],
+      "external_cumulative_m3": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_cumulative_m3": [
+        4.001199759954048,
+        8.00479808014741,
+        12.010793520398778,
+        16.019184640970934
+      ],
+      "final_level_m": 1.000015980815359
+    },
+    "allocation_dt_6h": {
+      "root_cumulative_m3": [
+        4.001199760004028,
+        9.004947510764467,
+        14.009817152853525,
+        19.01524636786452
+      ],
+      "external_cumulative_m3": [
+        0,
+        1.0001492206460414,
+        2.9995462301238116,
+        5.497574062835911
+      ],
+      "total_cumulative_m3": [
+        4.001199760004028,
+        10.005096731410507,
+        17.009363382977337,
+        24.51282043070043
+      ],
+      "final_level_m": 1.0000074871795686
+    }
+  },
+  "hypotheses": [
+    "A24_S24 and A24_S1 are equivalent at all four 6-hour product endpoints within tolerance.",
+    "A6_S24 and A6_S1 are equivalent at all four 6-hour product endpoints within tolerance.",
+    "The A24 cases follow the frozen one-allocation-per-day continuous reference: the external lower-priority UserDemand remains unsupplied during day 1.",
+    "The A6 cases follow the frozen 6-hour allocation reference and progressively supply the external demand as retained Basin storage becomes available at allocation boundaries.",
+    "The A24 and A6 day-end total supplied volumes differ by more than 5 m3 despite identical MODFLOW/RibaMod product cadence.",
+    "Therefore fixed allocation.dt, not solver.saveat and not RibaMod/MF6 update cadence by itself, owns UserDemand management cadence in the actual v2026.1.1 product runtime."
+  ],
+  "tolerances": {
+    "cumulative_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "saveat_pair_cumulative_volume_m3": 0.05,
+    "saveat_pair_level_m": 5e-8,
+    "minimum_allocation_dt_day_end_separation_m3": 5
+  },
+  "forbidden": [
+    "no later f965 saveat-clock semantics as product-release truth",
+    "no fake or reconstructed RibaMod update loop",
+    "no kernel stubs",
+    "no active groundwater exchange inference",
+    "no SWAP5 product-integration admission",
+    "no changing matrix, references or tolerances after DUMMY-20C output"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+  "fail_decision": "RIBASIM_DUMMY_20D_BLOCKED"
+}
