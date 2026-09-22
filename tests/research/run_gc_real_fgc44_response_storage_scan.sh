@@ -498,6 +498,7 @@ grep -Fq 'GC_FIXED_INTERFACE_G21M_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   exit 1
 }
 
+# G21N evidence-complete rerun: persist every enumerated binary64 sample.
 # G21N exhaustive binary64 head scan across the two frozen G21L boundary
 # intervals. Reuses the G21M temporary read-only observer and changes no
 # production solver or coupling source.
