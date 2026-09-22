@@ -1050,3 +1050,61 @@ F-GC38/F-GC39 = UNCHANGED.
 NO PRODUCTION HCOF/RHS OR COUPLING-POLICY ADMISSION.
 NEXT: G21C READ-ONLY MODFLOW/XMI STATE FORENSICS.
 ```
+## G21C disposition: visible solver-history state located, causality still open
+
+G21C followed the G21B persistent-path result with read-only MODFLOW/XMI
+forensics. It compared FRESH and HISTORY at matched outer-2 stages while keeping
+the accepted origin and the published response fixed. No XMI/BMI state pointer
+was mutated.
+
+The first execution was technically invalid because the two tail-entry snapshots
+were taken before the same outer-2 API response had been staged in both arms.
+That run is preserved separately. The repaired authority run, workflow
+`35732842184`, job `106762486571`, passed all forensic gates and reproduced
+the exact G21B call-12 path offset:
+
+```text
+HISTORY minus FRESH X at call 12     7.235112509107466e-11 m
+XOLD difference                       0
+outer-2 HCOF difference               0
+outer-2 RHS difference                0
+NONMETH                               3 in both arms
+```
+
+MODFLOW6 6.8.0's MODERATE IMS configuration uses delta-bar-delta
+under-relaxation. The source-backed history arrays are visibly different at
+call 12:
+
+```text
+                         FRESH                  HISTORY
+WSAVE, middle            1.0                    0.9004
+HCHOLD, middle           2.322023516376781e-5  -7.264273627072271e-10
+DEOLD, middle            2.322023516376781e-5  -7.264273627072271e-10
+DXOLD, middle            2.322023516376781e-5  -7.264273627072271e-10
+```
+
+NPF `SAT` also differs at the middle cell by about
+`3.617584010129349e-11`, consistent with the different current head. NPF
+conductance/static fields and all probed STO fields remain equal. Solver
+configuration is identical. Bookkeeping counters differ as expected because
+the HISTORY arm has more solve calls and are therefore not treated as physical
+state evidence.
+
+Under the preregistered classification rules the formal result is
+`MIXED_OR_UNRESOLVED`: both explicit solver-history carriers and an NPF
+dynamic quantity differ. The stronger source interpretation is bounded:
+`WSAVE/HCHOLD/DEOLD` are genuine persistent delta-bar-delta history carriers,
+so G21C has located a concrete non-XOLD memory candidate. It has not proven
+that this state causes the head offset. No reset, state setter or new
+convergence rule follows from this result.
+
+```text
+G21C READ-ONLY STATE FORENSICS = QUALIFIED DIAGNOSTIC.
+FORMAL CLASSIFICATION = MIXED_OR_UNRESOLVED.
+DELTA-BAR-DELTA HISTORY STATE = VISIBLY PATH-DEPENDENT.
+CAUSAL ATTRIBUTION = NOT YET QUALIFIED.
+G21 = REMAINS FALSIFIED.
+F-GC38/F-GC39 = UNCHANGED.
+NO PRODUCTION HCOF/RHS OR COUPLING-POLICY ADMISSION.
+NEXT: G21D PAIRED DBD CAUSAL-ISOLATION DIAGNOSTIC.
+```
