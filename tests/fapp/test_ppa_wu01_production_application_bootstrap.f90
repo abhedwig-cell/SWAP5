@@ -8,8 +8,7 @@ program test_ppa_wu01_production_application_bootstrap
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
-       FMR_APP_BOOT_CONTEXT_FAILED
+       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -22,7 +21,7 @@ program test_ppa_wu01_production_application_bootstrap
        materialize_modflow6_prescribed_qbot_bottom_face, MODFLOW6_BOTTOM_FACE_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c
+  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c, fgc49d_capture_origins_c
   implicit none
 
   integer, parameter :: NTILE = 2
@@ -127,8 +126,13 @@ program test_ppa_wu01_production_application_bootstrap
     predictors(i)%response%lineage%swap_origin_revision = 1_int64
   end do
   call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
-  call require(status == FMR_APP_BOOT_CONTEXT_FAILED .and. context_handle == 0_int64, &
-       'stale predictor response rejected against committed SWAP origin')
+  call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, &
+       'stale response context materialized for pre-evaluation authority check')
+  c_status = fgc49d_capture_origins_c(int(context_handle, c_int64_t))
+  call require(c_status /= 0_c_int, &
+       'stale predictor response rejected against committed SWAP origin before evaluation')
+  call gw_app%release_groundwater_context(status)
+  call require(status == FMR_APP_BOOT_OK, 'release stale-origin context')
   do i = 1, NTILE
     predictors(i)%response%lineage%swap_origin_revision = 0_int64
   end do

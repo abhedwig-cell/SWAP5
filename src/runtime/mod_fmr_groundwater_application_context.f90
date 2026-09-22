@@ -152,9 +152,11 @@ contains
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
+      ! Before capture there is deliberately no participant origin identity yet.
+      ! Bind only the stable tile handle here; response-origin authority is
+      ! checked immediately after capture, before any corrector evaluation.
       if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. &
-          lineage_id /= tiles(i)%swap_lineage_id .or. revision /= expected_swap_origin_revisions(i) .or. &
-          has_candidate) then
+          has_origin .or. has_candidate) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
       end if
