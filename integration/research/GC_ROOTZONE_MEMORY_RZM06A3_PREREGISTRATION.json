@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a3.microstepped_h2_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A3",
+  "authority": "preregistered research experiment",
+  "production_changes": false,
+  "parent_result_commit": "1e350ac1d9eeeff727c474bdfd9ddb303ef712b3",
+  "scientific_response_seen": false,
+  "H_star_m": -0.7149999706136307,
+  "unchanged_h2": {
+    "profile_water_abs_tolerance_native": 0.000001,
+    "distribution_moment_abs_separation_native": 0.0001,
+    "response_difference_abs_threshold_native": 1e-18,
+    "mass_residual_abs_gate_native": 1e-12
+  },
+  "stage1_admissibility": {
+    "purpose": "Map short-window symmetric head-pulse admissibility without committed endpoint-state or E_c inspection.",
+    "top_flux_native_per_day": 0,
+    "delta_h_values_m": [
+      0.0001,
+      0.00005,
+      0.00002,
+      0.00001,
+      0.000005,
+      0.000002,
+      0.000001,
+      5e-7
+    ],
+    "durations_day": [
+      0.01,
+      0.005,
+      0.002,
+      0.001,
+      0.0005,
+      0.0002,
+      0.0001
+    ],
+    "signs": [
+      "plus",
+      "minus"
+    ],
+    "trial_mode": "read-only/discarded from fresh baseline",
+    "selection_rule": "Among grid points accepted for both signs with complete mass and exact no-mutation, select the point maximizing delta_h * duration. Ties: larger delta_h, then longer duration. No endpoint W_profile, M1 or E_c is available to this selector.",
+    "no_admissible_rule": "If no two-sided grid point is admitted, stop with NO_ADMISSIBLE_MICROSTEP."
+  },
+  "stage2_construction": {
+    "purpose": "Accumulate vertical-distribution memory only through the selected admitted micro-interval.",
+    "trajectory_pair": [
+      "PLUS repeated N -> MINUS repeated N -> BASE repeated R",
+      "MINUS repeated N -> PLUS repeated N -> BASE repeated R"
+    ],
+    "head_values": "PLUS=H_star+delta_h_selected; MINUS=H_star-delta_h_selected; BASE=H_star",
+    "top_flux_native_per_day": 0,
+    "repeat_count_order": [
+      200,
+      100,
+      50,
+      20,
+      10
+    ],
+    "base_relax_count_order": [
+      1,
+      5,
+      20
+    ],
+    "configuration_order": "outer N in listed order, inner R in listed order",
+    "transition_rule": "No direct state mutation or special transition handling; if the first interval after a head switch is rejected, the trajectory is rejected and retained as evidence.",
+    "pair_rule": "For each configuration compare only its two opposite-order endpoints, which have identical committed time. Select the first configuration satisfying unchanged H2 water and M1 criteria.",
+    "no_match_rule": "If no configuration meets both criteria, H2 disposition remains NO_MATCH and no E_c probe is opened."
+  },
+  "probe": {
+    "opened_only_after_pair_selection": true,
+    "head_m": -0.7149999706136307,
+    "top_flux_native_per_day": 0,
+    "duration_day": 0.0001,
+    "commit": false,
+    "response_quantity": "accepted whole-window bottom_outward_exchange_native",
+    "repeatability": "fresh-process exact replay of full microstepped trajectory and probe",
+    "support_rule": "valid selected pair plus valid exact-replay probes and abs(delta E_c)>1e-18 native exchange"
+  },
+  "controls": [
+    "stage1 pair selection cannot access endpoint state observables or E_c",
+    "stage2 endpoint selection cannot access E_c",
+    "all failed intervals must preserve the latest committed origin exactly",
+    "no retry-budget, temporal-budget, mass-gate or solver-tolerance modification",
+    "no post-hoc change of H2 thresholds",
+    "all candidates end with H_star through at least one BASE micro-interval",
+    "research state preparation does not publish production interface ledger mass"
+  ],
+  "nonclaims": [
+    "no production coupling admission",
+    "no second MODFLOW state variable admission",
+    "no production recommendation to microstep H_c",
+    "no H5 management conclusion"
+  ]
+}
