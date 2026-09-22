@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.coupling.real_ribamod_two_cell_next_boundary_memory.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20F2",
+  "title": "Next-day management admission of realized two-cell groundwater transfer",
+  "baseline": "01a2ce8204525c7a2f5eda2466f84e3fdfbc255a",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20E3_ACTIVE",
+    "execute_after": "DUMMY-20E3 closeout",
+    "rationale": "Freeze the next-allocation-boundary handoff before observing the corrected two-cell day-1 product experiment."
+  },
+  "relation_to_20f": {
+    "original": "DUMMY-20F",
+    "disposition": "SUPERSEDED_UNEXECUTED_IF_20E3_BECOMES_AUTHORITY",
+    "reason": "DUMMY-20F was explicitly bound to DUMMY-20E2, whose groundwater intervention was not realized. DUMMY-20F2 carries the same time-direction hypothesis onto the new two-cell intervention authority without rewriting DUMMY-20F."
+  },
+  "authorities": {
+    "product_driver": "DUMMY-20A",
+    "product_release": "DUMMY-20B",
+    "product_runtime_clock": "DUMMY-20C/DUMMY-20D",
+    "immediate_dependency": "DUMMY-20E3",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "frozen_topology": {
+    "horizon_seconds": 172800,
+    "product_timestep_seconds": 21600,
+    "allocation_dt_seconds": 86400,
+    "saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_source_m3_per_day": 32,
+    "two_cell_groundwater": {
+      "hydraulic_conductivity_m_per_day": 1000000,
+      "chd_head_m": 0.5,
+      "drain_conductance_m2_per_day": 16,
+      "drain_elevation_first_6h_m": 0.5,
+      "drain_elevation_after_6h_m": 0,
+      "analytical_active_transfer_m3_per_day": 7.999872002047967
+    },
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "user_demand_min_level_m": 0.99
+  },
+  "idealized_day1_reference": {
+    "meaning": "8 m3/day limiting reference retained prospectively; two-cell analytical transfer differs by less than 0.00013 m3/day.",
+    "level_at_24h_m": 1.0000219754186088,
+    "root_cumulative_m3": 16.024581391178316,
+    "external_cumulative_m3": 0,
+    "groundwater_cumulative_m3": 6,
+    "basin_storage_gain_m3": 21.9754186088
+  },
+  "idealized_day2_reference": {
+    "allocation_at_24h": {
+      "root_m3_per_day": 40,
+      "external_m3_per_day": 20,
+      "rationale": "Accepted day-1 storage, 32 m3/day fixed source and still-active approximately 8 m3/day groundwater forcing provide enough availability for full 60 m3/day demand."
+    },
+    "endpoints_seconds": [
+      108000,
+      129600,
+      151200,
+      172800
+    ],
+    "basin_level_m": [
+      1.000024449304489,
+      1.0000269204088297,
+      1.000029388734741,
+      1.0000318542853703
+    ],
+    "root_cumulative_from_t0_m3": [
+      21.04199080441175,
+      26.061254577273992,
+      31.08237063646056,
+      36.105336883501906
+    ],
+    "external_cumulative_from_t0_m3": [
+      2.5087047066167165,
+      5.018336593047839,
+      7.528894622641123,
+      10.040377746161795
+    ],
+    "groundwater_cumulative_from_t0_m3": [
+      8,
+      10,
+      12,
+      14
+    ],
+    "final_total_userdemand_cumulative_m3": 46.1457146296637,
+    "final_storage_gain_m3": 31.8542853703
+  },
+  "hypotheses": [
+    "If DUMMY-20E3 qualifies, its first-day trajectory is the required physical prefix: groundwater transfer changes physical state without within-day management reallocation.",
+    "At the fixed allocation boundary t=24 h, the accepted day-1 Basin storage becomes management-visible.",
+    "The approximately 8 m3/day active groundwater forcing is included in the next allocation horizon.",
+    "The t=24 h decision fully allocates root=40 and external=20 m3/day.",
+    "External physical supply becomes positive only after t=24 h.",
+    "Day-2 recipient supply follows the common physical min_level reduction from the full 40/20 allocation.",
+    "The two-day coupled ledger closes at every accepted 6-hour boundary."
+  ],
+  "tolerances": {
+    "endpoint_level_m": 5e-8,
+    "cumulative_volume_m3": 0.05,
+    "groundwater_transfer_m3": 0.05,
+    "drain_rate_m3_per_day": 0.01,
+    "pre_boundary_external_zero_m3": 0.001,
+    "ledger_m3": 0.05
+  },
+  "forbidden": [
+    "no execution if DUMMY-20E3 does not qualify the nonzero intervention",
+    "no reallocation before t=24 h",
+    "no change to allocation.dt, saveat or product timestep",
+    "no post-output tuning of day-2 references",
+    "no production admission"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+  "fail_decision": "RIBASIM_DUMMY_20F2_BLOCKED"
+}
