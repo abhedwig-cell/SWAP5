@@ -35,5 +35,22 @@
     "top forcing cannot be varied through research-only carrier extension without production edit",
     "no matched-total-water pair at frozen tolerance",
     "real-SWAP antecedent trial fails; retain failure as evidence"
+  ],
+  "amendments": [
+    {
+      "id": "RZM06A-A1",
+      "reason": "pre-probe geometry-unit correction",
+      "root_zone_definition": "upper 0.30 m by geometric cell overlap in metre-scale fixture geometry",
+      "qualification": {
+        "workflow_run": 35722719747,
+        "job": 106729101648,
+        "baseline": "PASS",
+        "observable_gate": "PASS",
+        "profile_water_native": 1.0430631535459627,
+        "root_water_native": 0.10377346899380081,
+        "distribution_moment": -1.5024449665297503
+      },
+      "scientific_probe_seen": false
+    }
   ]
 }

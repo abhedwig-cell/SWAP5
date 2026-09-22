@@ -84,3 +84,7 @@ RZM06A first qualifies H1-H4. H5 management-memory is deferred to RZM06B
 because the current F-GC44 carrier has no qualified management-forcing entry
 point. This prevents introducing a new forcing mechanism merely to make the
 real-SWAP experiment convenient.
+
+## Amendment RZM06A-A1: geometry-unit correction
+
+Before any H1-H4 response probe, the root-zone diagnostic was corrected from an invalid numeric 30.0 cutoff to the upper 0.30 m by geometric cell overlap in the metre-scale fixture geometry. Workflow 35722719747 / job 106729101648 passed the complete F-GC44 baseline and observable gate. The corrected baseline gives profile water 1.0430631535459627 native storage units and upper-0.30-m water 0.10377346899380081, so the root-zone observable is now a strict subset of the profile. This amendment changes diagnostics only and was made without observing a scientific probe response.
