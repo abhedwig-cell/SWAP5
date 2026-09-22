@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.coupling.real_ribasim_explicit_userdemand_apply_seam.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19K",
+  "decision": "RIBASIM_DUMMY_19K_QUALIFIED_EXPLICIT_USERDEMAND_APPLY_SEAM",
+  "authority": {
+    "qualification_head": "e99976baccd9b65fa7b52c536c5270756f799aa4",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35705332781,
+    "workflow_job": 106672764890,
+    "conclusion": "success"
+  },
+  "test_contract": {
+    "saveat_seconds": 86400,
+    "management_boundary_seconds": 21600,
+    "operation": "At accepted 6-hour boundaries solve allocation with record=false, then explicitly copy optimized UserDemand allocation and per-link inflow allocation into applied UserDemand state.",
+    "excluded": [
+      "no allocation output record",
+      "no cumulative supplied-volume reset",
+      "no pinned Ribasim source modification"
+    ]
+  },
+  "observations": {
+    "root_first": {
+      "applies": [
+        {
+          "boundary_s": 21600,
+          "root_m3_day": 40,
+          "external_m3_day": 7.995180864818393
+        },
+        {
+          "boundary_s": 43200,
+          "root_m3_day": 40,
+          "external_m3_day": 15.978985482361164
+        },
+        {
+          "boundary_s": 64800,
+          "root_m3_day": 40,
+          "external_m3_day": 20
+        }
+      ],
+      "root_supplied_m3": 19.015566901854644,
+      "external_supplied_m3": 5.5022859019900325,
+      "total_supplied_m3": 24.517852803844676,
+      "final_level_m": 1.0000074821471963,
+      "storage_gain_m3": 7.482147196258282
+    },
+    "external_first": {
+      "applies": [
+        {
+          "boundary_s": 21600,
+          "root_m3_day": 27.995178569573902,
+          "external_m3_day": 20.000000000000004
+        },
+        {
+          "boundary_s": 43200,
+          "root_m3_day": 35.97898602858186,
+          "external_m3_day": 20
+        },
+        {
+          "boundary_s": 64800,
+          "root_m3_day": 40,
+          "external_m3_day": 20
+        }
+      ],
+      "root_supplied_m3": 14.50992377167344,
+      "external_supplied_m3": 10.007936972049215,
+      "total_supplied_m3": 24.517860743722657,
+      "final_level_m": 1.0000074821392564,
+      "storage_gain_m3": 7.482139256387299
+    }
+  },
+  "comparison": {
+    "frozen_6h_reference_total_supplied_m3": 24.512820430148427,
+    "observed_native_6h_from_19g_root_first_m3": 24.517852803844676,
+    "observed_native_6h_from_19g_external_first_m3": 24.517860743722657,
+    "statement": "The explicit-apply route reproduces the observed native 6-hour saveat results exactly at reported precision for both priority cases and remains within all prospectively frozen independent-reference tolerances."
+  },
+  "qualified_claims": [
+    "An explicit UserDemand allocation-application seam is sufficient to recover the 6-hour management/physical behavior while solver.saveat remains daily.",
+    "Allocation application does not require creation of an allocation output record.",
+    "Allocation application does not require resetting cumulative supplied-volume accounting.",
+    "The DUMMY-19I failure was therefore caused by missing UserDemand application/commit at sub-saveat solves, not by inability of the allocation LP to solve at those boundaries.",
+    "Solve, apply/commit and record are separable coupling operations in the demonstrated test-only contract."
+  ],
+  "boundaries": [
+    "The helper is not a production Ribasim API.",
+    "No pinned Ribasim source was modified.",
+    "No Pump/Outlet inference.",
+    "No production admission."
+  ],
+  "downstream": "Execute preregistered DUMMY-19L segment-by-segment accepted-state trajectory equivalence."
+}
