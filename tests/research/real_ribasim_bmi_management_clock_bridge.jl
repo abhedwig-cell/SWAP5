@@ -62,15 +62,28 @@ function check_case(root::AbstractString, model_name::AbstractString; root_prior
     observed_alloc = Tuple{Float64,Float64}[]
 
     for (i, endpoint) in enumerate(ENDPOINTS)
+        current_before = BMI.get_current_time(model)
+        tstops_before = copy(model.integrator.p.p_independent.allocation.time.tstops)
         BMI.update_until(model, endpoint)
-        require(isapprox(BMI.get_current_time(model), endpoint; atol=1.0e-9, rtol=0.0), "$model_name BMI did not stop at requested endpoint")
+        current_after = BMI.get_current_time(model)
+        tstops_after = copy(model.integrator.p.p_independent.allocation.time.tstops)
         root_alloc = user_allocated(model, 3, root_priority) * DAY
         ext_alloc = user_allocated(model, 4, external_priority) * DAY
         push!(observed_alloc, (root_alloc, ext_alloc))
         exp_root, exp_ext = expected_alloc[i]
+
+        println(
+            "RIBASIM_REAL_19I_ALLOC model=$model_name bmi_call=$i " *
+            "before_s=$current_before endpoint_s=$endpoint after_s=$current_after " *
+            "represented_solve_time_s=$(endpoint-21600.0) " *
+            "root_m3_day=$root_alloc external_m3_day=$ext_alloc " *
+            "expected_root_m3_day=$exp_root expected_external_m3_day=$exp_ext " *
+            "tstops_before=$(tstops_before) tstops_after=$(tstops_after)",
+        )
+
+        require(isapprox(current_after, endpoint; atol=1.0e-9, rtol=0.0), "$model_name BMI did not stop at requested endpoint")
         require(isapprox(root_alloc, exp_root; atol=ALLOCATION_TOL, rtol=0.0), "$model_name root allocation after BMI call $i differs from frozen reference")
         require(isapprox(ext_alloc, exp_ext; atol=ALLOCATION_TOL, rtol=0.0), "$model_name external allocation after BMI call $i differs from frozen reference")
-        println("RIBASIM_REAL_19I_ALLOC model=$model_name bmi_endpoint_s=$endpoint represented_solve_time_s=$(endpoint-21600.0) root_m3_day=$root_alloc external_m3_day=$ext_alloc")
     end
 
     root_volume = user_cumulative_inflow(model, 3)
