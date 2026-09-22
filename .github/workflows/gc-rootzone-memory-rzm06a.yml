@@ -12,7 +12,9 @@ on:
       - 'tests/research/test_gc_rootzone_memory_rzm06a_sequential.py'
       - 'tests/research/test_gc_rootzone_memory_rzm06a_experiment.py'
       - 'tests/research/test_gc_rootzone_memory_rzm06a2_h2.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06a3_h2.py'
       - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A2_PREREGISTRATION.json'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06A3_PREREGISTRATION.json'
       - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
       - '.github/workflows/gc-rootzone-memory-rzm06a.yml'
 permissions: {contents: read}
