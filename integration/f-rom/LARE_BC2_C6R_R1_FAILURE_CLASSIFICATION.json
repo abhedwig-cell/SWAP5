@@ -61,7 +61,9 @@
     "frozen_total_residual_criterion_satisfied": false,
     "reference_qualification": "NOT_QUALIFIED",
     "root_feedback_hypothesis_falsified": false,
-    "scientific_interpretation": "C6R cannot establish a qualified root-active high-resolution Reference under the preregistered fail-closed numerical contract. This blocks the reduced dynamic-feedback comparison; it does not test or falsify the reduced-state hypothesis."
+    "scientific_interpretation": "C6R cannot establish a qualified root-active high-resolution Reference under the preregistered fail-closed numerical contract. This blocks the reduced dynamic-feedback comparison; it does not test or falsify the reduced-state hypothesis.",
+    "independent_material_confirmation": true,
+    "confirming_material": "B14"
   },
   "diagnostic": {
     "workflow": ".github/workflows/f-rom-lare-bc2-c6r-diagnostic.yml",
@@ -73,7 +75,11 @@
     "failure_class": "RETRY_TOTAL_ONLY",
     "class_evidence": "BAL_FLAGS=0; HEAD_FLAGS=0; RMAX=6.045164369083977e-13; RSUM=-6.194739166076602e-12; IMAX=7; DT=2.5000000000000282e-5",
     "diagnostic_provider_repair": "Direct replay uses the same separated b110_source_sink_provider_t plus b110_root_sink_provider_t composition as the serialized Reference runtime.",
-    "response_based_change": false
+    "response_based_change": false,
+    "confirming_job_id": 106817562535,
+    "confirming_case": "B14 R512_T32 o0 V01 diagnostic replay",
+    "confirming_failure_class": "RETRY_TOTAL_ONLY",
+    "confirming_class_evidence": "BAL_FLAGS=0; HEAD_FLAGS=0; RMAX=9.168053686017807e-13; RSUM=1.050893226606231e-11; IMAX=227; DT=2.5000000000000282e-5"
   },
   "constraints": [
     "Do not enable the legacy DYN0A fallback for root-active C6R.",
