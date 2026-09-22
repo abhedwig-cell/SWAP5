@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute head-checkout full-trajectory diagnostic with frozen references and tolerances unchanged.",
+  "next_action": "Execute full-trajectory product diagnostic after base workflow head-checkout fix; frozen science unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -51,7 +51,7 @@
       "frozen piecewise references and tolerances unchanged"
     ]
   },
-  "qualification_attempt": "v1b_head_checkout_full_trajectory",
+  "qualification_attempt": "v1c_post_base_checkout_fix_full_trajectory",
   "qualification_base": "work/ribasim-dummy-01@a1acdf8cfcfa98acf429ee0ab10097cf5412ce02",
   "qualification_history": [
     {
