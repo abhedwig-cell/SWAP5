@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06c01.reconciliation_amendment.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06C01",
+  "production_changes": false,
+  "amends_commit": "b9a74963d326a5d69282be9ba8d8f6504d4ddc20",
+  "amends_path": "integration/research/GC_ROOTZONE_MEMORY_RZM06C01_RESULT.json",
+  "status": "PENDING_CURRENT_BRANCH_REQUALIFICATION",
+  "issue": "The earlier carrier reconciliation omitted the already-qualified F-ROM1A-I0 16x10-cm Reference observation carrier and the retained ROM1AR2 accepted-state library artifact.",
+  "newly_reconciled_authority": {
+    "observation_seam": {
+      "result": "integration/f-rom/F-ROM1A_I0_RESULT.json",
+      "decision": "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_QUALIFIED",
+      "workflow_run": 35380688867,
+      "workflow_job": 105715867943,
+      "geometry": "16 x 10 cm",
+      "materials": [
+        "B01",
+        "B14"
+      ],
+      "bottom_modes": [
+        2,
+        5
+      ],
+      "hard_mass_gate_cm": 1e-12,
+      "transaction_semantics": "immutable origin, one strict Reference advance, opaque candidate, explicit commit/discard"
+    },
+    "accepted_state_library": {
+      "closeout": "integration/f-rom/F-ROM1A_SUCCESSOR_CLOSEOUT.json",
+      "workflow_run": 35379176697,
+      "artifact_id": 10561841507,
+      "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+      "artifact_expired": false,
+      "material": "B01",
+      "accepted_states": 768,
+      "discovery_states": 512,
+      "heldout_states": 256,
+      "payload": "full 16-node pressure-head and water-content profiles plus storage/state provenance"
+    }
+  },
+  "governance_effect": [
+    "The b9a74963 conclusion NO_EXISTING_REPOSITORY_NATIVE_RICH_FIXED_HC_CARRIER is no longer treated as current decision authority.",
+    "The b9a74963 observations about Hupsel, the four-node F-GC carrier and LOW01 remain valid evidence.",
+    "The new 16-node F-ROM carrier is not promoted to this workstream until the current-branch GC-RZM06C01 requalification passes.",
+    "The synthetic 17-node C02 bridge remains a separately preregistered candidate/cross-check and is not invalidated by this amendment."
+  ],
+  "unit_note": {
+    "old_A_series_geometry_unit": "metre-scale research fixture despite historical _cm diagnostic suffixes",
+    "C_series_native_cm_rule": "Any reuse of the frozen physical H2 state thresholds on centimetre geometry must convert 1e-6 m storage tolerance to 1e-4 cm and 1e-4 m M1 separation to 1e-2 cm before pair selection.",
+    "pair_selection_not_yet_authorized": true
+  }
+}
