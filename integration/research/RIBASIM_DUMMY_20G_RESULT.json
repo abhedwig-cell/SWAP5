@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.coupling.real_ribamod_active_river_reciprocity.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20G",
+  "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+  "authority": {
+    "qualification_head": "929c0db26d61d3da285d28d8f2dcf746d5d210d7",
+    "workflow_run": 35730262593,
+    "workflow_job": 106753792084,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "observations": [
+    {
+      "endpoint_s": 21600,
+      "stage_used_m": 1,
+      "mf6_river_flux_m3_day": 7.999914667576883,
+      "ribasim_infiltration_m3_day": 7.999914667576882,
+      "ribasim_drainage_m3_day": 0,
+      "cumulative_infiltration_m3": 1.9999786668942205,
+      "level_m": 0.9999980000213331,
+      "storage_loss_m3": 1.9999786669000486,
+      "ledger_residual_m3": -5.828004745467297e-12
+    },
+    {
+      "endpoint_s": 43200,
+      "stage_used_m": 0.9999980000213331,
+      "mf6_river_flux_m3_day": 7.999882668258749,
+      "ribasim_infiltration_m3_day": 7.999882668258749,
+      "ribasim_drainage_m3_day": 0,
+      "cumulative_infiltration_m3": 3.9999493339589076,
+      "level_m": 0.999996000050666,
+      "storage_loss_m3": 3.999949333977071,
+      "ledger_residual_m3": -1.816324868286756e-11
+    },
+    {
+      "endpoint_s": 64800,
+      "stage_used_m": 0.999996000050666,
+      "mf6_river_flux_m3_day": 7.999850669069401,
+      "ribasim_infiltration_m3_day": 7.999850669069401,
+      "ribasim_drainage_m3_day": 0,
+      "cumulative_infiltration_m3": 5.999912001226258,
+      "level_m": 0.9999940000879988,
+      "storage_loss_m3": 5.999912001231067,
+      "ledger_residual_m3": -4.808597964256478e-12
+    },
+    {
+      "endpoint_s": 86400,
+      "stage_used_m": 0.9999940000879988,
+      "mf6_river_flux_m3_day": 7.9998186700080485,
+      "ribasim_infiltration_m3_day": 7.9998186700080485,
+      "ribasim_drainage_m3_day": 0,
+      "cumulative_infiltration_m3": 7.99986666872827,
+      "level_m": 0.9999920001333313,
+      "storage_loss_m3": 7.999866668662037,
+      "ledger_residual_m3": 6.623324111387774e-11
+    }
+  ],
+  "frozen_reference_note": "Observed river fluxes differ from the simplified near-steady analytical conductance reference by less than 4.3e-5 m3/day and satisfy the preregistered 0.01 m3/day tolerance. The actual product observations are internally reciprocal at reported precision.",
+  "qualified_claims": [
+    "At every product-step start, RibaMod applies the accepted Ribasim subgrid level as the active MF6 River stage.",
+    "The positive MF6 River flux is transferred back to Ribasim as positive Basin infiltration at the same reported rate.",
+    "Ribasim drainage remains zero throughout the experiment.",
+    "The accepted Basin level decreases monotonically, and each next product step uses that newly accepted level as its MF6 River stage.",
+    "Cumulative Ribasim infiltration equals Basin storage loss within numerical precision at every accepted boundary.",
+    "The actual product driver therefore implements a reciprocal staggered active-river bridge: accepted Ribasim stage -> MF6 solve -> exchange flux -> next Ribasim physical state."
+  ],
+  "boundaries": [
+    "This qualifies sample-and-hold/staggered product reciprocity, not implicit same-window coupled convergence.",
+    "No management/UserDemand is present in this work unit.",
+    "No production SWAP5 admission."
+  ],
+  "downstream": "Combine the qualified active-river physical bridge with management only in a separately preregistered work unit."
+}
