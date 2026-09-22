@@ -84,6 +84,11 @@ def read_modflow_component_balance(path:Path)->tuple[float,float,tuple[tuple[str
     components=[]
     for raw_name in budget.get_unique_record_names():
         name=raw_name.decode("ascii","ignore").strip()
+        # FLOW-JA-FACE is the internal cell-to-cell connectivity flow carrier.
+        # It is not an external component of the accepted model water balance
+        # and would double-count internal transfers if summed with packages.
+        if name.upper()=="FLOW-JA-FACE":
+            continue
         total=0.0
         for data in budget.get_data(kstpkper=(0,0),text=name):
             total+=_budget_component_sum(data)
