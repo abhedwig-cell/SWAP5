@@ -410,3 +410,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G21H_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21H_FAIL missing isolated retry-level forensic gate" >&2
   exit 1
 }
+
+
+# G21I final-retry Newton iteration-prefix tomography. Repeat the exact G21H
+# smallest-duration attempt with copied solver parameters and max_iterations
+# prefixes 1..16 to localize adjacent-head backtracking/convergence branching.
+# Production HeadCalc remains byte-unchanged.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21i_solver_prefix_forensics.py \
+  | tee "$BUILD/fgc44-globalization-g21i.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21I_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21i.txt" || {
+  echo "GC_FGC44_G21I_FAIL missing solver-prefix tomography gate" >&2
+  exit 1
+}
