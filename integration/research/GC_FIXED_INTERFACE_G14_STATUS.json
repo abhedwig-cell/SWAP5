@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G14",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "state": "QUALIFIED_RESEARCH_INTEGRATION_SHAPE",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G14_PREREGISTRATION.json",
   "parent_cost_result": "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
   "implementation_boundary": "research/test bridges only; src/runtime unchanged",
@@ -13,5 +13,28 @@
   "fgc44_workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
   "map09_workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
-  "next_action": "Require both FGC44 and MAP09 live workflows to prove fused status/q/raw-diagnostic equivalence, one backend run per fused observation, streaming-E3 decision identity, and immutable accepted authority."
+  "next_action": "G15: specify the production-facing tangent-observation service contract and ownership boundary using G14 as the executable reference oracle; first prove that adding read-only diagnostics exposure to the participant can preserve existing trial/commit semantics before any HCOF/RHS policy change.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G14_RESULT.json",
+  "execution": {
+    "fgc44": {
+      "tested_commit": "510f2379f0e67a14c8e88aeb4f45ad9411983140",
+      "workflow_run": 35718711087,
+      "workflow_job": 106716249813,
+      "conclusion": "success"
+    },
+    "map09": {
+      "tested_commit": "612cb87d0895ad316ee58148a39e14944f670e1a",
+      "workflow_run": 35718721922,
+      "workflow_job": 106716284282,
+      "conclusion": "success"
+    }
+  },
+  "disposition": {
+    "fused_trial_observation": "QUALIFIED_RESEARCH_ONLY",
+    "streaming_heads": 83,
+    "fused_backend_runs": 83,
+    "previous_two_run_cost": 166,
+    "production_runtime_api": "NOT_ADMITTED",
+    "production_admission": "NO"
+  }
 }
