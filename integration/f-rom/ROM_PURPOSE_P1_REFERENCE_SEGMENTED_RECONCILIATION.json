@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.rom-purpose.p1.reference-segmented-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1-REFERENCE",
+  "status": "BOUND_SEGMENTED_R2048_RECOVERY_NO_SCIENTIFIC_CHANGE",
+  "canonical_authority": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "superseded_runs": [
+    {
+      "workflow_run": 35748342021,
+      "topology": "FOUR_HISTORIES_PER_ROUTE_OPT_JOB",
+      "disposition": "TECHNICALLY_INVALID_INCOMPLETE",
+      "observed_failure": "Hosted runner shutdown exit 143 after successful authority lock/materialization/compile."
+    },
+    {
+      "workflow_run": 35749982543,
+      "topology": "ONE_COMPLETE_HISTORY_PER_ROUTE_OPT_JOB",
+      "disposition": "SUPERSEDED_FOR_REFERENCE_AUTHORITY_REGARDLESS_OF_LATER_COMPLETION",
+      "observed_positive_control": "R512_T32 and R1024_T32 history shards can complete and upload artifacts.",
+      "observed_failure": {
+        "job_id": 106821294694,
+        "cell": "surface B01 R2048_T32 O0 history S03",
+        "exit_code": 143,
+        "external_runner_shutdown": true,
+        "scientific_gate_failure_observed": false,
+        "response_artifact_uploaded": false
+      }
+    }
+  ],
+  "repair": {
+    "scientific_effect": "NONE",
+    "R512_R1024_execution": "Complete independent histories, one purpose/material/route/optimization/history per job.",
+    "R2048_execution": "Exact fmr_b110_physical_state_t plus committed-time checkpoints, maximum 8192 transactions per segment.",
+    "segment_counts": {
+      "R2048_T32": 4,
+      "R2048_T16": 2,
+      "R2048_T8": 1
+    },
+    "checkpoint_topology_qualification": "For both surface and groundwater paths, compare a continuous 1..2048 short route against 1..1024 plus 1025..2048 restart: STATE records identical after removing local revision counters, PROFILE records identical, final checkpoint bytes identical.",
+    "O0_O2_rule": "Each R2048 segment executes O0 and O2 from the same input checkpoint and requires byte-identical scientific logs and output checkpoints.",
+    "forcing_changed": false,
+    "histories_changed": false,
+    "materials_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "reference_grid_changed": false,
+    "metrics_changed": false,
+    "uncertainty_formula_changed": false,
+    "qualification_changed": false,
+    "response_based_retuning": false
+  },
+  "implementation_blobs": {
+    "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json": "c618a433545426a0af8c333be0f8d09926069def",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json": "e2c1930bce4df4324f8951b2e8fdb869275a2fc8",
+    "tests/rom/materialize_rom_purpose_p1_surface_reference.py": "933cda92b62ca313e4720c866afe25c3e70ce72a",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference.py": "b7832852a2023a776ae2212ebe5713ec294ff1e0",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py": "f9da87a752a49c4cd41bb91739e5432c2dbdaa0f",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f"
+  },
+  "workflow_blob": "7976640b3dc7ebde3662150189387c9c63df951f",
+  "authority_rule": "Only a completed run of the bound segmented workflow triggered by this reconciliation may become P1 Reference authority. Prior monolithic and history-sharded runs remain non-authoritative.",
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "candidate_response_authorized": false,
+    "R2048_reference_metric_values_used_for_repair": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
