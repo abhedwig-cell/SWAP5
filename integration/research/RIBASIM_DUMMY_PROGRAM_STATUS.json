@@ -196,11 +196,12 @@
       "dependency": "qualified DUMMY-20B",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20C actual RibaMod runtime versus direct Ribasim v2026.1.1 differential.",
+  "next_authority_action": "Implement and execute frozen DUMMY-20C actual RibaMod runtime differential.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
