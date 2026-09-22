@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03.rootmatched_deep_memory_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03",
+  "preregistration_commit": "e6543e57bed84ec22615ea68f14f66ec400362cd",
+  "production_changes": false,
+  "decision": "QUALIFIED_ROOTMATCHED_DEEP_MEMORY_NO_MATCH__NO_RESPONSE_PROBE",
+  "disposition": "NO_MATCH",
+  "qualification": {
+    "workflow_run": 35743604739,
+    "workflow_job": 106799372329,
+    "executed_head": "63000df12a460ad0eecbbe21d42241fa1c1e3d62",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "artifact_id": 10701002354,
+    "artifact_digest": "sha256:462fa22d1baa03eda51e9a380a2249e581bbee09cf291669c14de456ba310db7"
+  },
+  "frozen_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01
+  },
+  "generation": {
+    "accepted_by_family": {
+      "BASE_EQ": 1,
+      "DRY_RECOVER": 27,
+      "WET_RECOVER": 1
+    },
+    "accepted_state_count": 29,
+    "recover_state_count": 17,
+    "stop_records": [
+      "RZM06E03_STOP|FAMILY=DRY_RECOVER|PHASE=RECOVER|STEP=28|PHASE_STEP=18|STATUS=204|SAMPLE_VALID=F|CANDIDATE_READY=F|MASS_COMPLETE=F|ATTEMPTS=0|RETRIES=0|SOLVER_REJECTIONS=1|MASS_REJECTIONS=0",
+      "RZM06E03_STOP|FAMILY=WET_RECOVER|PHASE=PERTURB|STEP=2|PHASE_STEP=2|STATUS=204|SAMPLE_VALID=F|CANDIDATE_READY=F|MASS_COMPLETE=F|ATTEMPTS=0|RETRIES=0|SOLVER_REJECTIONS=1|MASS_REJECTIONS=0"
+    ],
+    "fail_closed_transaction_safe": true
+  },
+  "census": {
+    "eligible_pairs": 17,
+    "water_root_matched_pairs": 1,
+    "qualifying_pairs": 0,
+    "best_M1_any_pair": {
+      "A": {
+        "family": "BASE_EQ",
+        "phase": "CONTROL",
+        "step": 1
+      },
+      "B": {
+        "family": "DRY_RECOVER",
+        "phase": "RECOVER",
+        "step": 11
+      },
+      "abs_delta_profile_water_cm": 0,
+      "abs_delta_root30_water_cm": 0.028245704446707265,
+      "abs_delta_distribution_moment_cm": 0.07154475561600293,
+      "fraction_of_M1_requirement": 7.154475561600293
+    },
+    "closest_root_pair_with_profile_water_gate": {
+      "A": {
+        "family": "BASE_EQ",
+        "phase": "CONTROL",
+        "step": 1
+      },
+      "B": {
+        "family": "DRY_RECOVER",
+        "phase": "RECOVER",
+        "step": 20
+      },
+      "abs_delta_profile_water_cm": 0,
+      "abs_delta_root30_water_cm": 0.000050470449348694046,
+      "abs_delta_distribution_moment_cm": 0.001103765210785923,
+      "fraction_of_M1_requirement": 0.1103765210785923
+    }
+  },
+  "selected_pair": null,
+  "response_probe_opened": false,
+  "interpretation": [
+    "The preregistered zero-divergence reversal construction produced strict accepted recovery states and one pair satisfying both the total-profile-water and upper-30-cm-water tolerances.",
+    "That root-matched pair retained only 0.001103765210785923 cm of M1 separation, about 11.0% of the unchanged 0.01 cm vertical-separation requirement.",
+    "The strongest M1 separation occurred before root-zone recovery and carried a 0.028245704446707265 cm upper-30-cm storage mismatch.",
+    "Within this frozen construction, root-zone recovery and loss of the large vertical-distribution signal are therefore strongly coupled.",
+    "No fixed-Hc response probe is scientifically authorized from E03 because no origin pair passed the full state gate."
+  ],
+  "nonclaims": [
+    "E03 does not show that H_c plus total water plus upper-30-cm water is a sufficient state description.",
+    "E03 does not falsify deeper-profile memory; it only falsifies this frozen state-construction route as a way to isolate it at the required separation.",
+    "No production coupling or second MODFLOW hydraulic state is admitted."
+  ],
+  "next_step_basis": {
+    "recommendation": "Use a separately preregistered state-space construction that accelerates upper-profile recovery relative to deeper-profile recovery while retaining the unchanged state gates.",
+    "constraint": "Do not reinterpret E03 by changing thresholds or retrospectively choosing forcing amplitudes."
+  }
+}
