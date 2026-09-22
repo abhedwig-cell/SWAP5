@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e04.rootmatched_interface_memory_probe_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E04",
+  "preregistration_commit": "dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e",
+  "interpretation_amendment_commit": "964e35b40f5988fbd917ca9bb050bdebaa9d1401",
+  "production_changes": false,
+  "decision": "SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_AT_FROZEN_AGGREGATE_RESOLUTION",
+  "qualification": {
+    "workflow_run": 35747169833,
+    "workflow_job": 106811670658,
+    "executed_head": "71695af62d0fd73dd2b1d2fd88b1a6a086027ffc",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "order_independence": true,
+    "artifact_id": 10704100659,
+    "artifact_digest": "sha256:8b7f6245ab01ad16de7f126cb476af491c97438b5f5d48b9c8707fc6954d5b9f"
+  },
+  "reconstruction": {
+    "A": [
+      "E01",
+      "CLOSED",
+      "1"
+    ],
+    "B": [
+      "E03",
+      "DRY_RECOVER",
+      "RECOVER",
+      "19"
+    ],
+    "profile_water_a_cm": 58.619184,
+    "profile_water_b_cm": 58.619184,
+    "abs_delta_profile_water_cm": 0,
+    "root30_water_a_cm": 10.987957805878485,
+    "root30_water_b_cm": 10.988001234755412,
+    "abs_delta_root30_water_cm": 0.000043428876926654425,
+    "H16_a_cm": -29.679694379611533,
+    "H16_b_cm": -29.753561488946925,
+    "abs_delta_H16_cm": 0.0738671093353922,
+    "state_gate_pass": true
+  },
+  "forcing": {
+    "fixed_interface_head_m": -1.897937090169065,
+    "bottom_boundary_elevation_m": -1.6,
+    "mapped_bottom_pressure_head_cm": -29.7937090169065,
+    "top_flux_cm_per_day": 0,
+    "dt_day": 0.000800000037997961
+  },
+  "probe": {
+    "admitted_a": true,
+    "admitted_b": true,
+    "exchange_a_cm": 0.003230778045001159,
+    "exchange_b_cm": 0.0031719395246483373,
+    "delta_exchange_cm": -0.00005883852035282189,
+    "abs_delta_exchange_cm": 0.00005883852035282189,
+    "response_threshold_cm": 1e-18,
+    "terminal_flux_a_cm_per_day": 4.038472364434305,
+    "terminal_flux_b_cm_per_day": 3.964924217486627,
+    "mass_residual_a_cm": 0,
+    "mass_residual_b_cm": 0,
+    "support": true
+  },
+  "interpretation": [
+    "At the frozen aggregate resolution |ΔW_profile|<=1e-4 cm and |ΔW_root30|<=1e-4 cm, identical H_c plus those aggregate storages do not determine a unique next whole-window interface exchange for this selected C01 pair/window.",
+    "The response difference is deterministic under execution-order reversal and compiler optimization O0/O2.",
+    "Because W_root30 is tolerance-matched rather than mathematically identical, this does not prove exact-valued H_c + W_profile + W_root30 are globally insufficient.",
+    "The result does not establish H16 as the unique or minimal omitted state coordinate."
+  ],
+  "nonclaims": [
+    "No production reduced-state admission.",
+    "No second MODFLOW hydraulic state admission.",
+    "No production coupling change."
+  ],
+  "next_step_basis": {
+    "recommendation": "Run a response-blind nested-resolution state census over the same immutable library, tightening the W_root30 match while retaining the H16 separation gate, before any stronger exact-sufficiency interpretation.",
+    "reason": "The E04 response difference is of the same order as the residual root30 mismatch, so residual aggregate mismatch remains a plausible confound for an exact-valued claim."
+  }
+}
