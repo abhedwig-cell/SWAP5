@@ -211,5 +211,34 @@
   "next_resolution_options": [
     "Obtain the missing non-public LHM 4.1 measurement population or a complete immutable population manifest from Rijkswaterstaat/NHI/data owners.",
     "Or obtain independent purpose-owner authority that explicitly defines the public distributable NHI subset as the validation population for a new reproducible application test."
-  ]
+  ],
+  "official_nhi_web_statement": {
+    "page": "https://nhi.nu/modellen/lhm/",
+    "statement_summary": [
+      "NHI lists the groundwater levels used for LHM 4.1 validation as downloadable.",
+      "The same page states that the full set of regional and DINO data is not available."
+    ],
+    "interpretation": "Together with the archive metadata disclaimer, this means the public package is an official distributable validation package but not a complete public reproduction of every source measurement behind the published population statistics."
+  },
+  "selection_count_comparison": {
+    "freatisch": {
+      "report_selected": 8443,
+      "public_archive_all": 5901,
+      "public_shortfall": 2542,
+      "public_fraction_of_report_selection": 0.6989
+    },
+    "wvp1": {
+      "report_selected": 3802,
+      "public_archive_all": 2777,
+      "public_shortfall": 1025,
+      "public_fraction_of_report_selection": 0.7304
+    },
+    "diep": {
+      "report_selected": 1795,
+      "public_archive_all": 1291,
+      "public_shortfall": 504,
+      "public_fraction_of_report_selection": 0.7192
+    }
+  },
+  "final_population_authority_decision": "EXACT_PUBLISHED_LHM41_ACCEPTANCE_POPULATION_NOT_PUBLICLY_RECONSTRUCTIBLE_FROM_AVAILABLE_AUTHORITY; PUBLIC_DISTRIBUTABLE_SUBSET_REQUIRES_NEW_PURPOSE_OWNER_AUTHORITY_BEFORE ACCEPTANCE USE"
 }
