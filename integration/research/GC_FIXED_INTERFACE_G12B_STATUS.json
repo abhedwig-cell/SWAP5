@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12B",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_CANONICAL_LIVE_EXECUTION",
+  "state": "QUALIFIED_RESEARCH_PROCESS_COVERAGE",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12B_PREREGISTRATION.json",
   "parent_groundwater_authority": "integration/research/GC_FIXED_INTERFACE_G12A_RESULT.json",
   "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G12_RESULT.json",
@@ -13,5 +13,23 @@
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
   "recovery_point": "3b367e48315130fe779ea72ded38cb06f7c928ee",
-  "next_action": "Execute exactly one canonical G12B replay using local_groundwater_g12b.py; require G12A authority reproduction, three independent roots, six P4 convergences and immutable transaction authority."
+  "next_action": "Preregister G13 tangent-acquisition cost diagnostic. Quantify current E3 full-ladder corrector work, a semantically identical streaming first-pair implementation, and the lower-bound effect of returning q plus execution signature from one trial result.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G12B_RESULT.json",
+  "execution": {
+    "tested_commit": "46208a18a8dded8c481b69ac1086b87759a9ef90",
+    "workflow_run": 35707619805,
+    "workflow_job": 106680232182,
+    "conclusion": "success",
+    "inherited_to_normalized_postimage": "1fc4f4349ef114c0e24dfb4eebdc5fd094341b1b"
+  },
+  "disposition": {
+    "g12_original_gate": "FALSIFIED_PRESERVED",
+    "g12a_groundwater_diagnosis": "QUALIFIED",
+    "active_drainage_e3_p4": "QUALIFIED_3_REGIMES_2_STARTS",
+    "p1": "6_OF_6_CONVERGED",
+    "p4": "6_OF_6_CONVERGED",
+    "p4_contractions": 0,
+    "live_safeguard_recovery_source": "G11",
+    "production_admission": "NO"
+  }
 }
