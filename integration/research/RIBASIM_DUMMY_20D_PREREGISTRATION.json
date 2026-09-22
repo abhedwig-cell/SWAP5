@@ -5,9 +5,14 @@
   "title": "Actual RibaMod runtime allocation.dt versus saveat clock ownership matrix",
   "baseline": "2898e2ecf78ad342052cc7653fd8de8ef5b03233",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20C_ACTIVE",
-    "execute_after": "DUMMY-20C closeout",
-    "rationale": "Freeze the dynamic product clock-ownership matrix before observing the first actual RibaMod runtime differential."
+    "state": "SATISFIED_AFTER_DUMMY_20C_CLOSEOUT",
+    "execute_after": "DUMMY-20C qualified",
+    "rationale": "Freeze the dynamic product clock-ownership matrix before observing the first actual RibaMod runtime differential.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
+      "workflow_run": 35722691439,
+      "qualification_head": "6c0c656b8c521995df744ae32deb78573b6483a3"
+    }
   },
   "authorities": {
     "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
@@ -131,5 +136,11 @@
     "no changing matrix, references or tolerances after DUMMY-20C output"
   ],
   "pass_decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
-  "fail_decision": "RIBASIM_DUMMY_20D_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20D_BLOCKED",
+  "implementation_baseline": "f45470275a91719a199898c381f89e13b805f89e",
+  "authority_rebind": {
+    "repository_head": "f45470275a91719a199898c381f89e13b805f89e",
+    "scientific_change": false,
+    "meaning": "Four-case product clock matrix rebound after DUMMY-20C qualification; matrix, continuous references and tolerances remain prospectively frozen."
+  }
 }
