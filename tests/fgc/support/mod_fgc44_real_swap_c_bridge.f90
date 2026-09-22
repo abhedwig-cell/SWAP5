@@ -11,7 +11,8 @@ module mod_fgc44_real_swap_c_bridge
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
+       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t, &
        fmr_groundwater_swap_trial_observation_t
@@ -117,6 +118,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_g14_fused_observation_c, fgc44_g14_fused_run_count_c
   public :: fgc44_g15_last_trial_observation_c, fgc44_g15_trial_call_count_c, fgc44_g15_has_live_candidate_c
   public :: fgc44_g16_begin_session_c, fgc44_g16_observe_head_c, fgc44_g16_counts_c, fgc44_g16_end_session_c
+  public :: fgc44_g21g_backend_observation_c
 
 contains
 
@@ -571,6 +573,54 @@ contains
     call tangent_observation_service%end_session()
     fgc44_g16_end_session_c=0_c_int
   end function fgc44_g16_end_session_c
+
+
+  integer(c_int) function fgc44_g21g_backend_observation_c(solver_executed,solver_status,nonlinear_iterations, &
+       jacobian_builds,linear_solves,backtracking_attempts,alternative_solver_calls,internal_retries, &
+       temporal_indicator_enabled,temporal_previous_available,temporal_current_available,temporal_indicator_status, &
+       temporal_indicator_available,temporal_head_budget_supplied,temporal_head_budget_valid, &
+       temporal_certificate_available,temporal_head_inf_bound,temporal_head_budget,temporal_normalized_indicator) &
+       bind(C,name="fgc44_g21g_backend_observation_c")
+    integer(c_int), intent(out) :: solver_executed,solver_status,nonlinear_iterations,jacobian_builds,linear_solves
+    integer(c_int), intent(out) :: backtracking_attempts,alternative_solver_calls,internal_retries
+    integer(c_int), intent(out) :: temporal_indicator_enabled,temporal_previous_available,temporal_current_available
+    integer(c_int), intent(out) :: temporal_indicator_status,temporal_indicator_available
+    integer(c_int), intent(out) :: temporal_head_budget_supplied,temporal_head_budget_valid,temporal_certificate_available
+    real(c_double), intent(out) :: temporal_head_inf_bound,temporal_head_budget,temporal_normalized_indicator
+    type(fmr_serialized_physical_observation_t) :: observation
+
+    fgc44_g21g_backend_observation_c=1_c_int
+    solver_executed=0_c_int; solver_status=0_c_int; nonlinear_iterations=0_c_int
+    jacobian_builds=0_c_int; linear_solves=0_c_int; backtracking_attempts=0_c_int
+    alternative_solver_calls=0_c_int; internal_retries=0_c_int
+    temporal_indicator_enabled=0_c_int; temporal_previous_available=0_c_int; temporal_current_available=0_c_int
+    temporal_indicator_status=0_c_int; temporal_indicator_available=0_c_int
+    temporal_head_budget_supplied=0_c_int; temporal_head_budget_valid=0_c_int; temporal_certificate_available=0_c_int
+    temporal_head_inf_bound=0.0_c_double; temporal_head_budget=0.0_c_double; temporal_normalized_indicator=0.0_c_double
+    if(.not.initialized)return
+
+    observation=corrector_backend%observation()
+    if(observation%solver_executed)solver_executed=1_c_int
+    solver_status=int(observation%solver_status,c_int)
+    nonlinear_iterations=int(observation%solver_diagnostics%nonlinear_iterations,c_int)
+    jacobian_builds=int(observation%solver_diagnostics%jacobian_builds,c_int)
+    linear_solves=int(observation%solver_diagnostics%linear_solves,c_int)
+    backtracking_attempts=int(observation%solver_diagnostics%backtracking_attempts,c_int)
+    alternative_solver_calls=int(observation%solver_diagnostics%alternative_solver_calls,c_int)
+    internal_retries=int(observation%solver_diagnostics%internal_retries,c_int)
+    if(observation%temporal_indicator_enabled)temporal_indicator_enabled=1_c_int
+    if(observation%temporal_previous_derivative_available)temporal_previous_available=1_c_int
+    if(observation%temporal_current_derivative_available)temporal_current_available=1_c_int
+    temporal_indicator_status=int(observation%temporal_indicator_status,c_int)
+    if(observation%temporal_indicator_available)temporal_indicator_available=1_c_int
+    if(observation%temporal_head_budget_supplied)temporal_head_budget_supplied=1_c_int
+    if(observation%temporal_head_budget_valid)temporal_head_budget_valid=1_c_int
+    if(observation%temporal_certificate_available)temporal_certificate_available=1_c_int
+    temporal_head_inf_bound=observation%temporal_head_inf_bound
+    temporal_head_budget=observation%temporal_head_budget
+    temporal_normalized_indicator=observation%temporal_normalized_indicator
+    fgc44_g21g_backend_observation_c=0_c_int
+  end function fgc44_g21g_backend_observation_c
 
   integer(c_int) function fgc44_g15_last_trial_observation_c(available,participant_status,q_available, &
        result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
