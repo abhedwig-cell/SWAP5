@@ -192,9 +192,9 @@
       "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
       "run": 35722691439,
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "modflow_version": "6.7.0",
       "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
@@ -219,7 +219,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20D actual-product allocation.dt × saveat clock-ownership matrix.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-20D actual-product allocation.dt versus saveat clock ownership matrix.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
