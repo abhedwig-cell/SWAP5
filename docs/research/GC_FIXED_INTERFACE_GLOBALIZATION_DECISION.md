@@ -796,3 +796,60 @@ E3/P4 PRODUCTION POLICY = NOT ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: RESPONSE-SPACE DAMPING BRIDGE.
 ```
+## G18 disposition: exact head-space P4 is incompatible with continuous prepared-solve X
+
+G18 reconciles the frozen G11/G17 safeguard semantics with the independently
+qualified F-GC38/F-GC39 MODFLOW prepared-solve ownership contract. The result is
+a bounded compatibility falsification, not a failure of either subsystem.
+
+The live contract gate on workflow `35725715857` confirms that the first G11
+safeguard action is exactly two sequential factor-1/2 head contractions:
+
+```text
+current head                       -0.7149999311459918 m
+raw Newton head                    -0.7150110934482893 m
+raw participant status              6
+two sequential halvings ->         -0.7150027217215662 m
+persisted accepted safeguard head  -0.7150027217215662 m
+exact match                         yes
+```
+
+The prepared-solve surface simultaneously remains exactly the admitted F-GC38
+surface: acquire, open, publish-and-solve, finalize solve, readiness/finalize
+timestep, and invalidate. It exposes no admitted operation to prescribe a new
+`X`, restore a previous nonlinear iterate, rollback one external nonlinear
+iteration, clone an open solve, or rewind an open solve to `XOLD`.
+
+The deeper source audit also confirms that `invalidate_without_finalize` only
+invalidates the session, and that the ordinary solve-iteration path does not
+directly rewrite `X`, `XOLD`, or the saved accepted origin. F-GC39 explicitly
+requires the opposite of head-space rollback: nonconverged coupling keeps the
+evolving MODFLOW `X` and continues the same prepared solve.
+
+Therefore, after MODFLOW has advanced to the raw G11 Newton iterate, the exact
+P4 contracted head cannot become the groundwater iterate using only the
+currently admitted prepared-solve operations. Directly writing the internal X
+pointer would cross the qualified ownership boundary and is not an admissible
+shortcut.
+
+The first G18 execution failure is preserved separately. It came from deriving
+the contraction fraction by division of near-equal head differences; that
+ill-conditioned ratio was `0.25000000000248657`. Replaying the actual
+sequential factor-1/2 arithmetic reproduces the persisted head bit-for-bit, so
+the harness was repaired without changing any physical or ownership criterion.
+
+The consequence is architectural:
+
+```text
+HEAD-SPACE P4 + CURRENT F-GC38/F-GC39 DIRECT COMPOSITION = FALSIFIED.
+P4 RESEARCH EVIDENCE = STILL VALID.
+F-GC38/F-GC39 PREPARED-SOLVE CONTRACT = STILL VALID.
+DIRECT X POINTER MUTATION = NOT ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: DERIVE A PREPARED-SOLVE-NATIVE RESPONSE-SPACE GLOBALIZATION RULE.
+```
+
+A response-space safeguard must be treated as a new policy candidate. It may
+reuse factor-1/2 as a continuation parameter, but it cannot inherit P4 identity
+or production authority merely because it is motivated by the same failed raw
+Newton step.
