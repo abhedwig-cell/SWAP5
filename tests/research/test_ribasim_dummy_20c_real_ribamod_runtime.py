@@ -134,6 +134,12 @@ def build_modflow() -> imod.mf6.Modflow6Simulation:
         save_flows=True,
     )
     gwf["ic"] = mf6.InitialConditions(start=0.5)
+    gwf["sto"] = mf6.SpecificStorage(
+        specific_storage=1.0e-3,
+        specific_yield=0.1,
+        transient=True,
+        convertible=0,
+    )
     head = xr.full_like(idomain, 0.5, dtype=np.float64)
     gwf["chd"] = mf6.ConstantHead(
         head=head,
