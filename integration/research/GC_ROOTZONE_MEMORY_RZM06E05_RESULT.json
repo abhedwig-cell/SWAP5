@@ -1,0 +1,144 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e05.nested_storage_resolution_census_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E05",
+  "preregistration_commit": "21bbfdf16edbe842647b345223454bd3507a1a03",
+  "production_changes": false,
+  "decision": "SELECTED_TIGHTER_STORAGE_MATCHED_INTERFACE_STATE_PAIR",
+  "qualification": {
+    "workflow_run": 35747716569,
+    "workflow_job": 106813500493,
+    "executed_head": "d13438104f8018ee5bcd041de5bc4bcd2e86453d",
+    "conclusion": "success",
+    "artifact_id": 10703316951,
+    "artifact_digest": "sha256:f77fd2bbd9c617cf2eddaace2c9f5cb2a4eb21b44fcef19bf67d00683fcfa5bc"
+  },
+  "library": {
+    "raw_state_count": 78,
+    "unique_state_count": 65
+  },
+  "resolution_ladder": {
+    "1e-4_cm": 14,
+    "1e-5_cm": 3,
+    "1e-6_cm": 1,
+    "1e-7_cm": 0,
+    "1e-8_cm": 0,
+    "1e-9_cm": 0,
+    "1e-10_cm": 0,
+    "1e-12_cm": 0,
+    "exact": 0
+  },
+  "selected_mode_cm": 0.000001,
+  "selected_pair": {
+    "A": {
+      "provenance": [
+        "D04",
+        "B",
+        "HOLD",
+        "1",
+        "5"
+      ],
+      "profile_water_cm": 58.621132141508646,
+      "root30_water_cm": 10.990597181761261,
+      "H16_cm": -29.41563054051559,
+      "theta16": 0.36739935576375554,
+      "pressure_head_cm": [
+        -29.807350714970962,
+        -29.797752172302097,
+        -29.794386340126614,
+        -29.793790636797336,
+        -29.793716852074947,
+        -29.79370965005456,
+        -29.793709061821925,
+        -29.793709026969175,
+        -29.793709153611417,
+        -29.793711357139617,
+        -29.79374495164655,
+        -29.794190530914253,
+        -29.799101888386407,
+        -29.840046078505537,
+        -30.029685110274386,
+        -29.41563054051559
+      ],
+      "water_content": [
+        0.3663327673981103,
+        0.36635889446784575,
+        0.36636805631017005,
+        0.36636967782861013,
+        0.3663698786724736,
+        0.366369898276555,
+        0.366369899877739,
+        0.3663698999726091,
+        0.36636989962788574,
+        0.36636989362982625,
+        0.3663698021847324,
+        0.3663685893072538,
+        0.3663552205369704,
+        0.3662437745131952,
+        0.3657277057831322,
+        0.36739935576375554
+      ]
+    },
+    "B": {
+      "provenance": [
+        "D04",
+        "B",
+        "IDENTITY",
+        "0",
+        "0"
+      ],
+      "profile_water_cm": 58.621132141508646,
+      "root30_water_cm": 10.990596681549636,
+      "H16_cm": -29.402457596627613,
+      "theta16": 0.367435234378865,
+      "pressure_head_cm": [
+        -29.807698424268576,
+        -29.797513302389405,
+        -29.794295883899334,
+        -29.793774468935876,
+        -29.79371485421507,
+        -29.79370945622044,
+        -29.793709045984116,
+        -29.793709023760623,
+        -29.793709118625245,
+        -29.793710841039633,
+        -29.79373837184736,
+        -29.794122000217428,
+        -29.798586396369124,
+        -29.838391627913886,
+        -30.04511847167369,
+        -29.402457596627613
+      ],
+      "water_content": [
+        0.36633182094762007,
+        0.3663595446733093,
+        0.3663683025340342,
+        0.3663697218379319,
+        0.36636988411069854,
+        0.36636989880417636,
+        0.36636989992085,
+        0.3663698999813429,
+        0.36636989972311895,
+        0.36636989503466344,
+        0.3663698200951111,
+        0.36636877584939637,
+        0.3663566237066237,
+        0.36624827760572987,
+        0.36568571494739277,
+        0.367435234378865
+      ]
+    },
+    "abs_delta_profile_water_cm": 0,
+    "abs_delta_root30_water_cm": 5.002116250096833e-7,
+    "abs_delta_H16_cm": 0.01317294388797663,
+    "abs_delta_theta16": 0.00003587861510945256
+  },
+  "interpretation": [
+    "The immutable current library contains one interface-separated pair at a joint 1e-6 cm storage-matching resolution.",
+    "No qualifying pair exists at 1e-7 cm or tighter, and no exact storage-matched pair exists.",
+    "This provides a prospectively selected tighter pair for one further fixed-Hc response test.",
+    "The current library therefore has a state-space resolution ceiling between 1e-6 and 1e-7 cm for the frozen H16 gate."
+  ],
+  "response_probe_opened": false,
+  "next_step": "Preregister the unchanged fixed-Hc probe for this immutable 1e-6 pair, with both storage gates set to 1e-6 cm and all E04 response semantics retained."
+}
