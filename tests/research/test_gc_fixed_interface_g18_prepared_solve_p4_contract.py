@@ -84,8 +84,11 @@ def main()->None:
         "finalize_prepared_solve","timestep_ready_for_finalize","finalize_time_step_once",
         "invalidate_without_finalize",
     }
-    missing=sorted(expected_public-set(methods))
+    actual_public={name for name in methods if not name.startswith("_")}
+    missing=sorted(expected_public-actual_public)
+    unexpected=sorted(actual_public-expected_public)
     require(not missing,f"G18 F-GC38 prepared-solve surface missing expected methods {missing}")
+    require(not unexpected,f"G18 F-GC38 prepared-solve surface gained unpreregistered public methods {unexpected}")
 
     forbidden_public={
         "restore_previous_x","restore_iterate","rollback_solve","rollback_iteration",
@@ -127,6 +130,8 @@ def main()->None:
         "contractions":int(first["cumulative_contractions"]),
         "raw_status":int(first["raw_status"]),
         "prepared_solve_expected_public_methods":sorted(expected_public),
+        "prepared_solve_actual_public_methods":sorted(actual_public),
+        "prepared_solve_unexpected_public_methods":unexpected,
         "prepared_solve_forbidden_state_control_methods_present":actual_forbidden,
         "invalidate_calls":sorted(calls),
         "invalidate_state_assignments":sorted(assigns),
