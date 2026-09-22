@@ -127,6 +127,7 @@ def run_arm(case:dict[str,object],reg_auth:dict[str,object],reg_param:dict[str,o
     response_statuses=[]
     accepted_trace=[]
     total_contractions=0
+    max_prepared_vs_oracle_qgw_abs_m_per_s=0.0
     final_residual=None
     final_obs=None
     classification="OUTER_BUDGET_EXHAUSTED"
@@ -186,6 +187,11 @@ def run_arm(case:dict[str,object],reg_auth:dict[str,object],reg_param:dict[str,o
                             classification="MODFLOW_RESPONSE_BOUNDED_FAILURE"
                             break
                         raise
+                    qgw_oracle=a*candidate_head+b
+                    qgw_oracle_difference=qgw-qgw_oracle
+                    max_prepared_vs_oracle_qgw_abs_m_per_s=max(
+                        max_prepared_vs_oracle_qgw_abs_m_per_s,abs(qgw_oracle_difference)
+                    )
                     obs=diagnostic.observe(candidate_head)
                     status=int(obs["participant_status"])
                     response_statuses.append(status)
@@ -204,6 +210,8 @@ def run_arm(case:dict[str,object],reg_auth:dict[str,object],reg_param:dict[str,o
                     attempts.append({
                         "lambda":lam,"head_m":candidate_head,"participant_status":status,
                         "residual_m_per_s":cres,"merit_accept":bool(merit),"modflow_solve_calls":mf_calls,
+                        "prepared_qgw_m_per_s":qgw,"oracle_qgw_m_per_s":qgw_oracle,
+                        "prepared_minus_oracle_qgw_m_per_s":qgw_oracle_difference,
                     })
                     if status==0 and merit:
                         accepted_trace.append({
@@ -269,6 +277,8 @@ def run_arm(case:dict[str,object],reg_auth:dict[str,object],reg_param:dict[str,o
         "g16_logical_requests":counts[0],"g16_participant_trials":counts[1],
         "g16_cache_hits":counts[2],"g16_unique_heads":counts[3],
         "diagnostic_non_authority":"PASS",
+        "max_prepared_vs_oracle_qgw_abs_m_per_s":max_prepared_vs_oracle_qgw_abs_m_per_s,
+        "prepared_vs_oracle_qgw_gate":"DIAGNOSTIC_ONLY_NOT_PREREGISTERED",
         "cached_final_q_m_per_s":cached_q,
         "publication":publication,
         "transaction_gate":publication is not None,
