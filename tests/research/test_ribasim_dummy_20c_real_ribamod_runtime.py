@@ -117,7 +117,7 @@ def build_modflow() -> imod.mf6.Modflow6Simulation:
     idomain = xr.DataArray(
         np.ones((1, 1, 1), dtype=np.int32),
         dims=("layer", "y", "x"),
-        coords={"layer": layer, "y": y, "x": x},
+        coords={"layer": layer, "y": y, "x": x, "dx": 1.0, "dy": -1.0},
     )
     bottom = xr.DataArray([0.0], dims=("layer",), coords={"layer": layer})
 
