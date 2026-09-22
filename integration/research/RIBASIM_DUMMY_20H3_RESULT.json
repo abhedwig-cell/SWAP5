@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.coupling.ribasim_release_allocation_low_storage_mechanism.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H3",
+  "decision": "RIBASIM_DUMMY_20H3_FALSIFIED_PREEXECUTION_BY_ALLOCATION_AREA_SCALING",
+  "authority": {
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "evidence_type": "exact pinned source algebra plus qualified DUMMY-20H2 pointer value"
+  },
+  "frozen_claim_falsified": {
+    "expected_implicit_negative_forcing_volume_m3": 7.999914667576883,
+    "actual_source_formula": "A * vertical_flux.infiltration * allocation_dt",
+    "basin_area_m2": 1000000,
+    "pointer_value_per_second": 0.00009259160494880651,
+    "allocation_dt_seconds": 86400,
+    "resulting_numeric_value": 7999914.667576882
+  },
+  "source_reconciliation": [
+    "Physical update_vertical_flux! sets du.infiltration = current_low_storage_factor * vertical_flux.infiltration with no Basin-area multiplication.",
+    "Physical formulate_dstorage_wrt_time subtracts du.infiltration directly from Basin storage rate.",
+    "Allocation set_simulation_data!(Basin) sets implicit_negative_forcing_volume = (A * potential_evaporation + vertical_flux.infiltration multiplied by A in the same parenthesized expression) * allocation_dt; for infiltration specifically the source expression is A * vertical_flux.infiltration * allocation_dt.",
+    "Therefore the same BMI/RibaMod infiltration pointer is treated as a volumetric rate by the physical layer but area-scaled in the allocation layer in this release.",
+    "At A=1e6 the preregistered 8 m3 allocation-forcing expectation is contradicted by exact source algebra before runtime."
+  ],
+  "scientific_effect": "The low_storage_factor mechanism remains plausible but DUMMY-20H3's frozen numeric counterfactual is invalid for the 1e6 m2 product Basin. It must not be retuned in place.",
+  "downstream": "DUMMY-20H4 must explicitly sweep Basin area and observe allocation implicit forcing, low_storage_factor and feasibility while holding the same volumetric BMI infiltration pointer fixed.",
+  "boundaries": [
+    "No runtime qualification claim for DUMMY-20H3.",
+    "No defect classification yet; first qualify the area-scaling consequence dynamically.",
+    "Do not reinterpret the invalid 20H3 fixed-alpha counterfactual as evidence."
+  ]
+}
