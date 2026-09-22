@@ -4,18 +4,18 @@
   "work_unit": "RIBASIM-DUMMY-20H3",
   "branch": "work/ribasim-dummy-01",
   "baseline": "026f2f0bd4df82fd139f02ce31cde47ae4bd4684",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Exact v2026.1.1 source-runtime LP observation and fixed-alpha counterfactual.",
-  "next_action": "Implement and execute the original frozen exact-release LP mechanism diagnostic.",
+  "next_action": "Use qualified LP mechanism as authority; rebind and execute DUMMY-20H4 physical-versus-LP factor separation.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "929bfd0c45022b2e01772a53fd38dc3e283bc3c6",
-  "recovery_point": "Erroneous preexecution source-parse disposition explicitly retracted; original preregistration remains scientific authority.",
+  "recovery_point": "DUMMY-20H3 qualified by frozen run 35735546703.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H3_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H3_CONCEPT.md",
@@ -27,12 +27,15 @@
     "tests/research/run_ribasim_dummy_20h3.sh",
     ".github/workflows/ribasim-dummy-01.yml"
   ],
-  "decision": null,
+  "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
   "retractions": [
     {
       "date": "2026-09-22",
       "retracted": "RIBASIM_DUMMY_20H3_FALSIFIED_PREEXECUTION_BY_ALLOCATION_AREA_SCALING",
       "reason": "Misread parentheses in allocation forcing expression; infiltration is not area-scaled."
     }
-  ]
+  ],
+  "workflow_run": 35735546703,
+  "workflow_job": 106771732682,
+  "qualification_head": "e6e085c49b6507cda7d563128409f645d7f7c68d"
 }
