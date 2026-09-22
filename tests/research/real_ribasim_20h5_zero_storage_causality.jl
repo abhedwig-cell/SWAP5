@@ -28,11 +28,31 @@ function inspect(path::AbstractString, label::AbstractString; fix_storage_zero::
     infiltration[1] = INJECTION / DAY
 
     storage_var = am.problem[:basin_storage_change][basin_id]
-    if fix_storage_zero
-        JuMP.fix(storage_var, 0.0; force=true)
-    end
 
-    Ribasim.update_allocation!(model)
+    if fix_storage_zero
+        # Reproduce the exact single-network update_allocation! preparation
+        # sequence, then impose the diagnostic ΔS = 0 constraint only after
+        # Ribasim has established the physical-state-derived variable bounds.
+        # This avoids changing model semantics while preventing JuMP's fixed
+        # variable from blocking Ribasim's bound refresh in set_simulation_data!.
+        (; integrator) = model
+        (; u, p, t) = integrator
+        du = Ribasim.get_du(integrator)
+        Ribasim.water_balance!(du, u, p, t)
+        Ribasim.update_control_states!(am, p_independent)
+        Ribasim.set_simulation_data!(am, integrator)
+        Ribasim.reset_demand_coefficients(am)
+        Ribasim.set_demands!(am, integrator)
+        Ribasim.warm_start!(am, integrator)
+
+        JuMP.set_lower_bound(storage_var, 0.0)
+        JuMP.set_upper_bound(storage_var, 0.0)
+
+        Ribasim.delete_temporary_constraints!(am)
+        Ribasim.optimize!(am, model)
+    else
+        Ribasim.update_allocation!(model)
+    end
 
     alpha = JuMP.value(am.problem[:low_storage_factor][basin_id])
     storage_change = JuMP.value(storage_var) * am.scaling.storage
