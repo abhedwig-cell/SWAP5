@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.coupling.ribasim_release_next_boundary_memory_forecast_separation.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H6",
+  "title": "Next-boundary accepted-storage memory versus current River-forcing forecast separation",
+  "baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_DUMMY_20H5_ACTIVE",
+    "execute_after": "DUMMY-20H5 closeout",
+    "rationale": "Freeze the corrected t=24 allocation oracle before observing the zero-storage causality control."
+  },
+  "authorities": {
+    "active_river_state": {
+      "work_unit": "RIBASIM-DUMMY-20H",
+      "decision": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+      "accepted_t24_level_m": 1.000007990372381,
+      "accepted_t24_storage_excess_m3": 7.990372381083688
+    },
+    "river_transfer": {
+      "work_unit": "RIBASIM-DUMMY-20G",
+      "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+      "effective_exchange_conductance_m2_per_day": 15.999829335153766
+    },
+    "factor_mechanism": {
+      "work_unit": "RIBASIM-DUMMY-20H3",
+      "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM"
+    },
+    "physical_lp_separation": {
+      "work_unit": "RIBASIM-DUMMY-20H4",
+      "decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION"
+    },
+    "pending_causality": {
+      "work_unit": "RIBASIM-DUMMY-20H5",
+      "use": "execution dependency only; no H5 observed output used in frozen references"
+    },
+    "release": {
+      "tag": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "frozen_state": {
+    "initial_basin_level_m": 1.000007990372381,
+    "target_level_m": 1,
+    "basin_area_m2": 1000000,
+    "accepted_storage_excess_m3": 7.990372381083688,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "allocation_dt_seconds": 86400,
+    "current_river_forcing_m3_per_day": 8.000042512171305
+  },
+  "cases": {
+    "elevated_control_no_river": {
+      "infiltration_m3_per_day": 0,
+      "expected_low_storage_factor": 1,
+      "expected_storage_change_m3": -7.990372381083688,
+      "expected_root_allocation_m3_per_day": 39.99037238108369,
+      "expected_external_allocation_m3_per_day": 0
+    },
+    "elevated_with_river_free_alpha": {
+      "infiltration_m3_per_day": 8.000042512171305,
+      "expected_low_storage_factor": 0,
+      "expected_storage_change_m3": -7.990372381083688,
+      "expected_root_allocation_m3_per_day": 39.99037238108369,
+      "expected_external_allocation_m3_per_day": 0
+    },
+    "elevated_with_river_alpha_fixed_one": {
+      "infiltration_m3_per_day": 8.000042512171305,
+      "expected_low_storage_factor": 1,
+      "expected_storage_change_m3": -7.990372381083688,
+      "expected_root_allocation_m3_per_day": 31.990329868912383,
+      "expected_external_allocation_m3_per_day": 0
+    }
+  },
+  "derivation": [
+    "The accepted t=24 Basin level from DUMMY-20H contains 7.9903723811 m3 storage above the priority-1 level target of 1.0 m.",
+    "At the next allocation boundary the LevelDemand target can release that accepted storage memory, so the no-River root allocation is 32 + 7.9903723811 = 39.9903723811 m3/day.",
+    "The next active-River forcing derived from DUMMY-20G is q = 15.999829335153766 * (1.000007990372381 - 0.5) = 8.0000425122 m3/day.",
+    "If alpha remains free, the H3/H4 mechanism predicts alpha=0, preserving the 39.9903723811 m3/day root allocation while the accepted storage draw remains visible.",
+    "If alpha is diagnostically fixed to one, the same current forcing reduces the root allocation to 39.9903723811 - 8.0000425122 = 31.9903298689 m3/day."
+  ],
+  "hypotheses": [
+    "Accepted physical Basin storage memory from day 1 is visible to the next fixed allocation solve through the LevelDemand target.",
+    "Current active-River forcing and accepted storage memory have asymmetric allocation semantics: memory remains admitted while the current forcing can be attenuated by the LP low_storage_factor.",
+    "Adding current River forcing with alpha free does not change the corrected next-boundary root allocation from the no-River elevated-state control.",
+    "Fixing alpha to one reduces that allocation by approximately the full current River forcing.",
+    "The invalidated DUMMY-20I premise is corrected: t=0 active forcing is not subtracted directly from source availability, but accepted physical storage memory can still raise the next-boundary allocation prospectively."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "low_storage_factor": 0.000001,
+    "storage_change_m3": 0.05,
+    "forcing_m3_per_day": 0.01
+  },
+  "forbidden": [
+    "no execution as authority unless DUMMY-20H5 qualifies",
+    "no use of future H5 observed values to retune these references",
+    "no direct execution of invalidated DUMMY-20I",
+    "no production prescription",
+    "no source modification"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+  "fail_decision": "RIBASIM_DUMMY_20H6_BLOCKED"
+}
