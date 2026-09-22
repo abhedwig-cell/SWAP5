@@ -17,7 +17,7 @@ sys.path.insert(0,str(ROOT/"tests"/"research"/"support"))
 
 from gc_map09_e6_ctypes import Map09ActiveDrainageSwap
 from test_gc_fixed_interface_fgc44_safeguarded_newton_g08 import (
-    AREA_M2, DAY_TO_S, Binding, CountingKernel, Term,
+    AREA_M2, DAY_TO_S, Binding, CountingKernel, Term, solve_term,
     Fgc34CtypesPublisher, Modflow6PreparedSolveSession, PreparedSolveStatus,
 )
 
