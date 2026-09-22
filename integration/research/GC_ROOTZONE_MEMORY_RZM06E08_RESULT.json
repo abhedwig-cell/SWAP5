@@ -1,5 +1,5 @@
 {
-  "schema": "swap5.gc_rootzone_memory.rzm06e08.deep_redistribution_memory_probe_result.v1",
+  "schema": "swap5.gc_rootzone_memory.rzm06e08.ultratight_interface_memory_probe_result.v1",
   "date": "2026-09-22",
   "work_unit": "GC-RZM06E08",
   "preregistration_commit": "91d00f62a1150a8310296ba0ee877b9c1842cfa4",
@@ -44,8 +44,7 @@
     "bottom_boundary_elevation_m": -1.6,
     "mapped_bottom_pressure_head_cm": -29.7937090169065,
     "top_flux_cm_per_day": 0,
-    "dt_day": 0.000800000037997961,
-    "internal_state_construction_forcing_present_in_response": false
+    "dt_day": 0.000800000037997961
   },
   "probe": {
     "admitted_a": true,
@@ -63,21 +62,21 @@
   },
   "interpretation": [
     "At the preregistered joint 1e-9 cm aggregate-storage resolution, identical fixed H_c plus W_profile and W_root30 do not determine a unique next whole-window interface exchange for this selected C01 pair/window.",
-    "The origins were constructed prospectively with equal and opposite net-zero deep internal redistribution, while the response probe itself contains no qssdi or qdra forcing.",
-    "The response difference is deterministic under execution-order reversal and compiler optimization O0/O2 and both admitted samples close mass exactly at reported precision.",
-    "Because W_root30 remains tolerance-matched rather than mathematically identical, the result is not yet an exact-valued sufficiency proof.",
-    "H16 remains a mechanistic discriminator and is not established as the unique or minimal omitted state coordinate."
+    "The result is deterministic under reversed A/B execution order and compiler optimization O0/O2.",
+    "The response experiment contains no qssdi or qdra forcing; those terms only generated the immutable E07 origins.",
+    "Because W_root30 remains tolerance-matched rather than mathematically identical, this is not an exact-valued global state-sufficiency proof.",
+    "H16 remains a mechanistic discriminator, not a demonstrated unique or minimal missing state coordinate."
   ],
   "nonclaims": [
-    "No exact-valued H_c + W_profile + W_root30 insufficiency proof.",
+    "No exact-valued H_c + W_profile + W_root30 sufficiency conclusion.",
+    "No production qssdi/qdra coupling design.",
     "No production reduced-state admission.",
     "No second MODFLOW hydraulic state admission.",
-    "No production coupling change.",
-    "The E07 qssdi/qdra state-construction route is not admitted as a production operating mode."
+    "No production coupling change."
   ],
   "next_step_basis": {
-    "decision": "STRONG_RESOLUTION_BOUNDED_MEMORY_SUPPORT__EXACT_ROOTMATCH_REMAINS_OPEN",
-    "boundary": "The frozen E07 grid yields support at 1e-9 cm but no H16-qualified twin at 1e-10 cm or exact root30 equality.",
-    "recommendation": "Do not extend the scalar E07 rate/step grid retrospectively. Any further exact-sufficiency test must introduce a prospectively derived additional deep redistribution basis that can enforce the root30 constraint response-blindly."
+    "decision": "RESOLUTION_BOUNDARY_NOW_1E9__EXACT_EQUALITY_STILL_OPEN",
+    "rationale": "E07 supplied no H16-separated pair at 1e-10 cm or exact root30 equality. E08 therefore closes the current prospective construction at 1e-9 cm but cannot settle exact-valued sufficiency.",
+    "recommendation": "Do not chase smaller tolerances by extending the frozen E07 grid. Move from scalar aggregate matching toward structural state identification: determine which local/depth-weighted hydraulic coordinate explains the residual response, then test whether adding that coordinate collapses response non-uniqueness."
   }
 }
