@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G11",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "state": "QUALIFIED_RESEARCH_GATE_CLOSED",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G11_PREREGISTRATION.json",
   "parent_tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
   "parent_local_oracle": "integration/research/GC_FIXED_INTERFACE_G10B_RESULT.json",
@@ -13,5 +13,20 @@
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
   "production_changes": false,
   "recovery_point": "0f1b1f40acf0fb86f84d917346116f3c4755c19f",
-  "next_action": "Execute exact G11 postimage; require a first raw E3 Newton proposal beyond dh=-1e-5 that is inadmissible or merit-worsening, at least one P4 contraction, P4 convergence, and immutable SWAP/ledger authority."
+  "next_action": "Preregister a broader admission-preparation work unit: exercise E3+P4 across multiple real-SWAP process carriers (including an active-drainage/non-bottom-response carrier) with adequate groundwater merit, then assess tangent-evaluation cost and integration contract before any production HCOF/RHS change.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+  "execution": {
+    "tested_commit": "0f1b1f40acf0fb86f84d917346116f3c4755c19f",
+    "workflow_run": 35704878501,
+    "workflow_job": 106671289436,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "live_bad_newton_proposal": "QUALIFIED_PARTICIPANT_INADMISSIBLE_OVERSHOOT",
+    "p1_e3": "RAW_PROPOSAL_INADMISSIBLE",
+    "p4_e3": "CONVERGED_AFTER_TWO_CONTRACTIONS",
+    "transaction_authority": "PASS",
+    "safeguard_recovery": "QUALIFIED_BOUNDED_LIVE_REAL_SWAP_EVIDENCE",
+    "production_admission": "NO"
+  }
 }
