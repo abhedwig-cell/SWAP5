@@ -144,7 +144,7 @@ def build_modflow() -> mf6.Modflow6Simulation:
     idomain = xr.DataArray(
         np.ones((1, 1, 1), dtype=np.int32),
         dims=("layer", "y", "x"),
-        coords={"layer": [1], "y": [0.0], "x": [0.0]},
+        coords={"layer": [1], "y": [0.0], "x": [0.0], "dx": 1.0, "dy": -1.0},
     )
     bottom = xr.DataArray([0.0], dims=("layer",), coords={"layer": [1]})
     gwf = mf6.GroundwaterFlowModel()
