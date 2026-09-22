@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_management_clock.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19I",
+  "decision": "RIBASIM_DUMMY_19I_FALSIFIED_BMI_SUBSAVEAT_USERDEMAND_NOT_APPLIED",
+  "authority": {
+    "qualification_head": "9725b146697024086c37258764bc1201ad272224",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35698326881,
+    "workflow_job": 106650130151,
+    "conclusion": "failure",
+    "source_scope": "PASS"
+  },
+  "preregistered_hypothesis": "With solver.saveat=86400 s, successive BMI.update_until calls at 6-hour endpoints would make those endpoints effective UserDemand management boundaries and reproduce the 6-hour DUMMY-19G trajectory.",
+  "observations": {
+    "first_bmi_endpoint_s": 21600,
+    "applied_root_allocation_m3_per_day": 32,
+    "applied_external_allocation_m3_per_day": 0,
+    "second_bmi_endpoint_s": 43200,
+    "failure": "applied root allocation after BMI call 2 differs from frozen 6-hour reference"
+  },
+  "pinned_source_reconciliation": {
+    "bmi_tstop_insertion": "core/src/bmi.jl::BMI.update_until adds the requested endpoint to allocation.time.tstops.",
+    "allocation_solve": "core/src/model.jl::loopheader! calls update_allocation! at allocation tstops.",
+    "record_flag": "The call uses record=is_saveat_time(t, allocation.time). For a 6-hour BMI boundary with daily saveat this is false.",
+    "application_seam": "core/src/allocation_optim.jl::update_allocation! calls parse_allocations! only when record=true.",
+    "user_demand_state_write": "parse_allocations! is where UserDemand.allocated and UserDemand.inflow_link_allocated are populated from the optimized LP flows.",
+    "physical_use": "The physical UserDemand flow formulation consumes these stored applied allocation values.",
+    "consequence": "A sub-saveat BMI tstop can solve the LP without committing the new UserDemand allocation to the physical UserDemand state."
+  },
+  "classification": "SCIENTIFIC_ALLOCATION_APPLICATION_SEMANTICS_FALSIFICATION",
+  "scientific_effect": "BMI.update_until can add allocation solve boundaries, but in the pinned implementation a non-saveat allocation solve is not sufficient to update the UserDemand allocation state used by physical realization. Therefore a coupler cannot obtain a finer effective UserDemand management clock merely by calling BMI.update_until more frequently than saveat.",
+  "forbidden_inference": [
+    "do not repair DUMMY-19I by changing the frozen expected 6-hour allocations",
+    "do not claim that no allocation optimization occurs at BMI tstops",
+    "do not conflate LP re-solve with applied UserDemand allocation",
+    "do not classify this as an upstream defect without upstream disposition"
+  ],
+  "downstream": [
+    "qualify a dedicated shadow-versus-applied diagnostic that reads both the LP solution and UserDemand applied allocation after each BMI segment",
+    "retain DUMMY-19J as the fine-saveat conflict experiment; its hourly saveat boundaries remain record=true and therefore are expected to apply UserDemand allocation",
+    "make solve -> admit/apply -> physical realization an explicit clock-contract distinction for coupled SWAP-Ribasim design"
+  ]
+}
