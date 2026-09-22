@@ -958,6 +958,17 @@ DUMMY-20H4
   qualified physical-versus-LP factor separation:
   the physical state-derived factor remains 1 while the allocation LP factor is
   0 on the same accepted state and forcing
+
+DUMMY-20H5
+  qualified zero-storage-factor causality:
+  after removing LevelDemand, free storage gives alpha=1 and full 40/20 demand;
+  imposing only diagnostic storage_change=0 restores alpha=0 and 32/0
+
+DUMMY-20H6
+  qualified next-boundary memory/forecast separation:
+  accepted day-1 storage excess contributes 7.9903723811 m3 to the next
+  management budget, while current 8.0000425122 m3/day River forcing can be
+  suppressed in the LP forecast by alpha=0
 ```
 
 Together these work units establish both one-way passive groundwater arrival and
@@ -966,10 +977,32 @@ They also expose a separate allocation-forecast seam: physically realized
 groundwater forcing can be fully active while the management LP attenuates the
 same negative forcing through its own `low_storage_factor`.
 
-DUMMY-20H5 is the active causality control for whether storage-preservation
-alone is sufficient to cause that LP factor collapse when LevelDemand machinery
-is removed. DUMMY-20H6 is prospectively frozen behind H5 and is not yet
-authority.
+DUMMY-20H5 and DUMMY-20H6 close the causality chain for the tested
+v2026.1.1 allocation topology. The LP factor collapse does not require
+LevelDemand bookkeeping itself: a storage-preservation requirement is
+sufficient. At the next boundary, accepted physical storage memory and current
+physical forcing are then demonstrably asymmetric management inputs.
+
+For the H6 topology the qualified reduced contract is:
+
+```text
+M_k = S_k - S_target
+
+Q_root =
+  min(D_root,
+      Q_source + M_k - alpha_k * F_k)
+```
+
+where `M_k` is accepted physical memory from the previous window and `F_k`
+is current implicit negative forcing. In the qualified cases, `M_k` remains
+available in all three solves. The free LP sets `alpha_k = 0` under current
+River forcing, while diagnostic `alpha_k = 1` exposes nearly the full forcing
+as a reduction in root allocation.
+
+This is not a claim that the expression is Ribasim's general network-allocation
+equation. It is the reduced balance for the qualified single-Basin topology and
+makes the coupling distinction explicit: accepted physical memory and current
+forecast forcing are not the same state or the same authority.
 
 ## 17. Current real-model authority boundaries
 
@@ -1050,17 +1083,37 @@ accepted Ribasim stage
 -> next accepted state
 ```
 
-DUMMY-20H through DUMMY-20H4 further show that physical transfer authority and
-allocation-forecast authority are not identical. In the exact product Ribasim
-release, current active-River infiltration can be present in the physical
-Basin state and in the allocation input ledger while the allocation LP chooses
-a separate `low_storage_factor` that attenuates that negative forcing. The
-physical reduction factor and the LP factor must therefore not be treated as
-one shared state variable.
+DUMMY-20H through DUMMY-20H6 further show that physical transfer authority,
+accepted-state memory and allocation-forecast authority are not identical. In
+the exact product Ribasim release, current active-River infiltration can be
+present in the physical Basin state and in the allocation input ledger while
+the allocation LP chooses a separate `low_storage_factor` that attenuates that
+negative forcing. Conversely, accepted Basin storage created by the previous
+physical window remains available at the next fixed management boundary.
+
+The resulting state distinction is:
+
+```text
+physical truth in window k
+  -> accepted state S_k
+  -> management memory M_k at boundary k+1
+
+current forcing F_(k+1)
+  -> forecast representation alpha_(k+1) * F_(k+1)
+  -> LP candidate allocation
+  -> applied allocation
+  -> physical realization
+  -> accepted transfer/state
+  -> committed ledger
+  -> recorded output
+```
+
+These quantities may be numerically related, but they are not interchangeable
+and need not refer to the same time or authority.
 
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
 general STO aggregation contract, arbitrary package/topology equivalence, or
-the final disposition of the H5/H6 allocation-factor causality chain.
+an end-to-end two-day RibaMod observation of the H6 t=24 allocation oracle.
 
 ### SWAP
 
