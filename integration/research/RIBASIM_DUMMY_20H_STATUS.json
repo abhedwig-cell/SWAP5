@@ -4,14 +4,38 @@
   "work_unit": "RIBASIM-DUMMY-20H",
   "branch": "work/ribasim-dummy-01",
   "baseline": "257ea1672bcbb393c37a5a1d88ef5a6c452987de",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Actual product A/B comparison of no-exchange versus active-River forcing at t=0 allocation, with allocation.arrow and physical ledgers observed separately.",
-  "next_action": "Implement and execute the frozen current-boundary active-exchange admission test.",
+  "next_action": "Execute frozen DUMMY-20H current-boundary active-exchange admission qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "c710308b473485a95b400f1389ca78b9c8effc56",
+  "recovery_point": "A/B allocation-output and physical-ledger verifier persisted; first qualification pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20h_active_river_management.py",
+    "tests/research/run_ribasim_dummy_20h.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "control and active cases share identical Ribasim management topology and 32/40/20 m3/day source-demand values",
+      "only active case maps the two-cell River package through RibaMod",
+      "allocation decision is read from real allocation.arrow after finalization",
+      "control t=0 allocation is frozen at 32/0 m3/day",
+      "active t=0 root allocation is frozen at 24.000085332423117 m3/day from 32 minus qualified first River forcing",
+      "physical supply is observed separately from allocation",
+      "active River MF6 flux must equal Ribasim infiltration and full source ledger must close at all four boundaries"
+    ]
+  }
 }
