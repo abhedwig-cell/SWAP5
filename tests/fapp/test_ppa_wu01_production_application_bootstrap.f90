@@ -8,7 +8,8 @@ program test_ppa_wu01_production_application_bootstrap
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
+       FMR_APP_BOOT_CONTEXT_FAILED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -122,6 +123,16 @@ program test_ppa_wu01_production_application_bootstrap
   call materialize_groundwater_topology(topology_tiles, topology_cells, topology, topology_status)
   call require(topology_status == GW_TOPOLOGY_OK .and. topology%ready(), 'typed authoritative topology')
 
+  do i = 1, NTILE
+    predictors(i)%response%lineage%swap_origin_revision = 1_int64
+  end do
+  call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
+  call require(status == FMR_APP_BOOT_CONTEXT_FAILED .and. context_handle == 0_int64, &
+       'stale predictor response rejected against committed SWAP origin')
+  do i = 1, NTILE
+    predictors(i)%response%lineage%swap_origin_revision = 0_int64
+  end do
+
   call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
   call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, 'owned F-GC49D context materialization')
 
@@ -176,6 +187,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'F_GC_STORAGE_HEAD_STATE_CAPACITANCE_AUTHORITY=PASS'
   print '(a)', 'F_GC_DRAINAGE_NONE_AUTHORITY=PASS'
   print '(a)', 'F_GC_UNRESOLVED_APPLICATION_AUTHORITY_FAIL_CLOSED=PASS'
+  print '(a)', 'F_GC_STALE_SWAP_RESPONSE_ORIGIN_FAIL_CLOSED=PASS'
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
 contains
