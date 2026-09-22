@@ -1,6 +1,6 @@
 # SWAP5-MODFLOW6 fixed-interface drainage ownership contract
 
-Status: **admission candidate**
+Status: **canonical authority for the bounded fixed-interface profile**
 
 This contract applies to the bounded fixed-interface groundwater profile closed by
 `F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json`.

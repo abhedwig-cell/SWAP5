@@ -1,9 +1,11 @@
 {
   "schema": "swap5.fgc.fixed_interface.closeout.status.v1",
   "date": "2026-09-22",
-  "state": "QUALIFIED_ADMISSION_CANDIDATE_READY_FOR_CANONICAL_INTEGRATION",
+  "state": "CANONICAL_AUTHORITY_CLOSED",
   "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-fixed-interface-closeout",
+  "canonical_merge": "148bca0dbe65d75a64694e5d481b2073419df009",
+  "canonical_pr": 582,
   "authority": {
     "interface_head": "FIXED_LOWER_COUPLING_PLANE_HYDRAULIC_HEAD",
     "swap_flux": "Q_SWAP_POSITIVE_OUTWARD_FROM_SWAP",
@@ -49,11 +51,11 @@
   ],
   "authoritative_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
   "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
-  "next_bounded_unit": "CANONICAL_INTEGRATION_REVIEW_ONLY_NO_NEW_GROUNDWATER_RESEARCH_DIMENSION",
+  "next_bounded_unit": "CLOSED_NO_NEW_GROUNDWATER_RESEARCH_DIMENSION_IN_THIS_LINE",
   "qualification": {
-    "tested_head": "9b135ec63c142449e88c0d0b2a745b726f3a69ed",
-    "workflow_run": 35785238145,
-    "workflow_job": 106940329460,
+    "tested_head": "0244570849e799d35a88abed36dc655e029d7c36",
+    "workflow_run": 35785634895,
+    "workflow_job": 106941629937,
     "conclusion": "SUCCESS",
     "independent_endpoint_head_error_m": 3.297362383136715e-14,
     "independent_physical_residual_m_per_s": -7.075006056961875e-16,

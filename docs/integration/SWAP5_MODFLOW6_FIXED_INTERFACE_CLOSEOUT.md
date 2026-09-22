@@ -1,6 +1,6 @@
 # SWAP5–MODFLOW6 fixed-interface groundwater coupling closeout
 
-Status: **qualified admission candidate**. The composed closeout gate passed on commit `9b135ec63c142449e88c0d0b2a745b726f3a69ed` (workflow run 35785238145). Canonical production authority still requires integration into `integration/f-ci-canonical`.
+Status: **canonical production authority for the bounded profile described here**. PR #582 was merged into `integration/f-ci-canonical` as `148bca0dbe65d75a64694e5d481b2073419df009`. The composed closeout gate also passed on the final pre-merge head `0244570849e799d35a88abed36dc655e029d7c36` (workflow run 35785634895).
 
 ## Scope
 
@@ -94,7 +94,7 @@ G23 tested the previously qualified analytical envelope by external physical end
 
 The production repair does not attempt to recreate the old internal trajectory. It removes the proven response-semantics mixing by carrying the real-SWAP physical tangent into response relinearization.
 
-Current real evidence on the closeout branch includes:
+Canonical closeout evidence includes:
 
 The composed closeout qualification on 2026-09-22 reported an independent endpoint head error of `3.30e-14 m`, an independent physical residual of `-7.08e-16 m/s`, a production external residual of `-6.09e-23 m/s`, and a native MODFLOW component-balance residual of `-3.65e-14 m3/day`. The accepted interface transfer was `-1.0206812345e-12 m`. The full real end-to-end fixture replayed identically in a fresh process, and the F-GC24 split-process restart signature remained identical at `-O0` and `-O2`.
 
