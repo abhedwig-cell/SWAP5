@@ -1,0 +1,69 @@
+name: GC rootzone memory RZM06E10 exact-aggregate interface-memory probe
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E10_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E10_PREREGISTRATION.md'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E09_RESULT.json'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e10_extract.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e10_probe.f90'
+      - 'tests/research/analyze_gc_rootzone_memory_rzm06e10.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e10.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e10.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e10-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify E09 exact pair authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, math
+          d=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06E09_RESULT.json",encoding="utf-8"))
+          assert d["decision"]=="SELECTED_EXACT_LOCAL_REDISTRIBUTION_PAIR"
+          assert d["selected_mode"]=="EXACT"
+          p=d["selected_pair"]
+          assert p["A"]["direction"]=="LOCAL_UP" and p["A"]["rate_index"]==6 and p["A"]["steps"]==2
+          assert p["B"]["direction"]=="LOCAL_DOWN" and p["B"]["rate_index"]==6 and p["B"]["steps"]==2
+          assert p["abs_delta_profile_water_cm"]==0.0
+          assert p["abs_delta_root30_water_cm"]==0.0
+          assert p["abs_delta_H16_cm"]>=1e-2
+          def agg(o):
+              t=o["water_content"]
+              return math.fsum(x*10.0 for x in t), math.fsum(t[i]*10.0 for i in range(3))
+          wa,ra=agg(p["A"]); wb,rb=agg(p["B"])
+          assert wa==wb and ra==rb
+          print("GC_RZM06E10_PARENT_EXACT_PAIR_AUTHORITY=PASS")
+          PY
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run exact-aggregate fixed-Hc response probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E10-EVIDENCE
+          RZM06E10_EVIDENCE_DIR="$PWD/RZM06E10-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e10.sh
+      - name: Preserve E10 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e10-${{ github.run_id }}
+          path: RZM06E10-EVIDENCE
+          if-no-files-found: warn
