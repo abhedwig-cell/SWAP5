@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.coupling.ribasim_allocation_reduction_design_context.v1",
+  "date": "2026-09-22",
+  "scope": "Supporting upstream design context for DUMMY-20H3 through DUMMY-20H6; not qualification authority by itself.",
+  "product_release": {
+    "tag": "v2026.1.1",
+    "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "upstream": [
+    {
+      "issue": "Deltares/Ribasim#2323",
+      "title": "Reduce fixed abstractions in allocation during drought",
+      "created_at": "2025-06-02T11:44:41Z",
+      "closed_at": "2025-09-01T12:20:52Z",
+      "summary": [
+        "The issue identifies infeasibility when fixed abstractions would drive Basin storage negative.",
+        "It proposes reducing such fixed abstractions with a storage-dependent reduction factor.",
+        "The discussion explicitly notes concern that making reduction-factor behavior an optimization goal can produce unintuitive source releases."
+      ]
+    },
+    {
+      "pull_request": "Deltares/Ribasim#2522",
+      "title": "Native multi objective optimization",
+      "merged_at": "2025-09-01T12:20:50Z",
+      "merge_commit": "6c81d6e2c1b8dbeaeee8f20d46ce2f6249d9c13e",
+      "relation_to_product_release": {
+        "status": "ANCESTOR_OF_V2026_1_1",
+        "commits_after_merge_to_release": 371
+      },
+      "summary": [
+        "The PR states that issue #2323 is resolved by making the reduction factors goals after all.",
+        "The implementation uses lexicographic multi-objective optimization.",
+        "This supports interpreting low_storage_factor as an allocation decision variable/objective, not as a direct copy of the physical reduction factor."
+      ]
+    }
+  ],
+  "research_relation": [
+    "DUMMY-20H3 empirically showed current Basin infiltration enters the allocation problem as implicit negative forcing while the LP can choose low_storage_factor=0.",
+    "DUMMY-20H4 empirically separated physical low-storage factor=1 from LP low_storage_factor=0 on the same accepted state.",
+    "DUMMY-20H5 tests whether storage-preservation itself is sufficient to cause the LP factor collapse when LevelDemand machinery is removed.",
+    "DUMMY-20H6, if admitted after H5, tests the next-boundary asymmetry between accepted storage memory and current negative forcing."
+  ],
+  "interpretation_boundaries": [
+    "Upstream history explains design intent but does not prove that any particular research observation is intended behavior.",
+    "Do not classify the observed coupling behavior as a defect from this context alone.",
+    "Product and research coupling conclusions remain evidence-driven by the preregistered DUMMY work units."
+  ]
+}
