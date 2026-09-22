@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.rom-purpose.p1.metric-authority-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "status": "RESOLVED_BEFORE_ANY_CANDIDATE_RESPONSE_WITHOUT_READING_REFERENCE_METRICS",
+  "scientific_authority": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json@c618a433545426a0af8c333be0f8d09926069def",
+  "conflicting_documents": {
+    "earlier_semantics": {
+      "path": "integration/f-rom/ROM_PURPOSE_P1_METRIC_SEMANTICS.json",
+      "blob": "069a819a27595059c3a5ade3b1750b1cdeb5217b",
+      "commit": "a148d876886dbb6f8975be9f2aebb8cc8177d762",
+      "commit_message": "ROM-PURPOSE P1: freeze componentwise metric semantics",
+      "role_after_reconciliation": "PROVENANCE_AND_NONCONFLICTING_SEMANTICS"
+    },
+    "later_operationalization": {
+      "path": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json",
+      "blob": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+      "commit": "f002a1ee9d78febc85ac215ca6182323e62b39e6",
+      "commit_message": "ROM-PURPOSE P1: freeze componentwise metric operationalization",
+      "role_after_reconciliation": "CONTROLLING_EXECUTION_AUTHORITY"
+    }
+  },
+  "conflict_resolution_rule": [
+    "The preregistration freezes metric names and componentwise decision logic but does not fully define every aggregation operator.",
+    "Where the two later pre-candidate documents disagree, the later and explicitly operationalizing METRIC_CONTRACT controls execution.",
+    "Where they do not disagree, both are compatible provenance.",
+    "No Reference metric values, candidate values, placement outcomes or comparator crossings were inspected to make this resolution."
+  ],
+  "controlling_semantics": {
+    "GW_LB_history_signed_bottom_flux_bias_cm_per_day": "mean absolute per-history signed mean interval-bottom-flux error across the four histories",
+    "SURF_P_storage_extremum_timing_error_steps": "maximum absolute observation-step difference for minima and maxima of 0-40 and 0-80 cm storage across histories",
+    "SURF_P_history_signed_storage_bias_cm": "mean absolute per-history signed mean total-storage error across the four histories"
+  },
+  "rejected_conflicting_interpretations": {
+    "GW_LB_history_signed_bottom_flux_bias_cm_per_day": "maximum absolute per-history mean",
+    "SURF_P_storage_extremum_timing_error_steps": "include 0-20 cm extrema in addition to 0-40 and 0-80",
+    "SURF_P_history_signed_storage_bias_cm": "maximum across histories and across multiple storage support series"
+  },
+  "execution_firewall": {
+    "candidate_response_generated": false,
+    "response_used_to_choose_semantics": false,
+    "scalar_weighting_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
