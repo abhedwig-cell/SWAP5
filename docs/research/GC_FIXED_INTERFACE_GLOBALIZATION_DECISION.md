@@ -868,3 +868,75 @@ E3/P4 PRODUCTION POLICY = NOT ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: ONE CONTINUOUS PREPARED-SOLVE LAMBDA SEQUENCE.
 ```
+
+## G20 disposition: response-space damping traverses one continuous prepared solve
+
+G20 moved the G19 response-space bridge into the actual F-GC38 ownership
+model. The three frozen response levels were no longer solved from separate
+groundwater origins. They were published successively inside one open MODFLOW
+prepared solve with fixed accepted `XOLD` and continuously evolving `X`.
+
+The final fail-closed qualification, workflow `35727618026`, job
+`106745027381`, passed:
+
+```text
+prepare_time_step calls             1
+prepare_solve calls                 1
+MODFLOW solve calls                 6
+finalize_solve calls                1
+finalize_time_step calls            0
+XOLD drift                           none
+direct X/XOLD control                none
+
+lambda 1
+  solve calls in phase               2
+  continuous head                  -0.7150110934482893 m
+  difference from G19 fresh solve    0
+  SWAP status                        6
+
+lambda 1/2
+  solve calls in phase               2
+  continuous head                  -0.7150055122971403 m
+  difference from G19 fresh solve    1.1102230246251565e-16 m
+  SWAP status                        6
+
+lambda 1/4
+  solve calls in phase               2
+  continuous head                  -0.7150027217215658 m
+  difference from G19 fresh solve    0
+  SWAP status                        0
+```
+
+The maximum continuous-path versus fresh-origin head difference is
+`1.1102230246251565e-16 m`, far inside the preregistered F-GC38 nonlinear
+path-equivalence guard of `1.4901161193847656e-8 m`. The guard was inherited
+prospectively; it was not tightened after seeing the result.
+
+The test also binds explicitly to the G18 direct-composition falsification.
+No head prescription, previous-iterate restore, rollback, solve reopen or direct
+write through the X/XOLD pointers occurs. The prepared solve remains open and
+valid through all three response phases. Thus the G18 gap is bridged in this
+bounded affine case by changing the **published response**, not by rewinding
+groundwater state.
+
+Each settled groundwater head was checked against real SWAP through G16.
+Those diagnostic observations preserve the exact frozen status topology
+`[6, 6, 0]`, leave no live SWAP candidate and do not change accepted FMR
+revision/time or the committed interface ledger.
+
+G20 still does not establish a complete response-space coupling algorithm. It
+qualifies only the first safeguarded G11 update transported through one
+continuous prepared solve. `finalize_solve` is used once for solve lifecycle
+closure, but `finalize_time_step` is deliberately not called, so no accepted
+groundwater timestep is published.
+
+```text
+G20 CONTINUOUS F-GC38 RESPONSE-SPACE BRIDGE = QUALIFIED BOUNDED RESEARCH.
+G18 DIRECT HEAD-SPACE COMPOSITION = REMAINS FALSIFIED.
+G19 FRESH-ORIGIN AFFINE BRIDGE = REMAINS QUALIFIED.
+FULL RESPONSE-SPACE OUTER COUPLING = NOT YET QUALIFIED.
+MODFLOW TIMESTEP PUBLICATION = NOT PERFORMED.
+E3 / RESPONSE-DAMPING PRODUCTION POLICY = NOT ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: FULL MULTI-OUTER-UPDATE CONTINUOUS PREPARED-SOLVE COUPLING.
+```
