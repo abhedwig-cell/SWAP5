@@ -19,13 +19,13 @@ confirmed B0 defects are not migration targets.
 | PMdirect normal-input derivation | B1 `MOD_meteo`; PPA-ET-00 | PARTIAL | Restricted typed Hupsel composition admitted | Bind ordinary input derivation without changing ET physics |
 | Dynamic top: head/flux/ponding/linear runoff | B1 `boundtop`; PPA-TOP-01 | IMPLEMENTED_NOT_FULLY_QUALIFIED | Restricted profile only | Broaden only with option-specific authority |
 | SWINTER=0 / Rutter SWINTER=3 | PPA-INT-00 / PPA-INT-03 | CANONICALLY_ADMITTED | Bounded typed applications | Preserve profile bounds |
-| SWINTER=1 daily aggregate | PPA-INT-12; PPA-WU04-C | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 oracle, typed receipt/restart progress and O0/O2 replay; no production ingress/hard-mass closure | Define bounded typed application ingress |
-| SWINTER=2 daily aggregate | PPA-INT-12; PPA-WU04-D | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 Gash oracle, shared receipt/restart progress and O0/O2 replay; no production ingress/hard-mass closure | Define bounded typed application ingress |
+| SWINTER=1 daily aggregate | PPA-INT-12; PPA-WU04-C | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 oracle, typed receipt/restart progress, accepted-only F-KT publication, exhausted-retry rejection and changed-dt replay; no full-SWAP ingress/hard-mass closure | Qualify combined production hydraulic/source-window replay |
+| SWINTER=2 daily aggregate | PPA-INT-12; PPA-WU04-D | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 Gash oracle and shared F-KT receipt/retry/restart contract; no full-SWAP ingress/hard-mass closure | Qualify combined production hydraulic/source-window replay |
 | SWREDU=1 Black | PPA-WU04-A | CANONICALLY_ADMITTED | Transaction, restart, mass and preservation evidence | Preserve restricted envelope |
 | SWREDU=2 Boesten, `0 < COFRED <= 1` | PPA-WU04-B | IMPLEMENTED_NOT_FULLY_QUALIFIED | Qualified owner gate; admission evidence is required before canonical claim | Reconcile current canonical and route for admission |
 | Boesten `COFRED=0` | B1 / PPA-WU04-B | CONFIRMED_LEGACY_DEFECT | Exact branch can form `0/0` | Classify and qualify a B1 correction before SWAP5 work |
 | Root uptake / basic Feddes route | Status-A; PPA root-hydraulic authorities | CANONICALLY_ADMITTED | Admitted bounded chain | Preserve |
-| Oxygen, salinity, frost, compensated and advanced root stress | PPA-WU05-C and PPA-WU05 | BLOCKED | Source/state and thermal/coupling dependencies | Materialize exact authority before implementation |
+| Oxygen, salinity, frost, compensated and advanced root stress | PPA-WU05-C and PPA-WU05 | PARTIAL_ORACLES_PRODUCTION_HELD | Pure oxygen factors/cache guard, compensation, salinity and macro-frost factors plus micro Campbell response have exact-source tests; source/state, thermal/coupling and single root-sink composition dependencies remain | Continue independent source-bound oracles; do not claim runtime admission |
 | Macropore flow | PPA-WU05-A | BLOCKED | Requires B1.11 mutable-state/mass census | Complete PPA-WU05-A1 |
 | Lower boundary mode 2, constant typed qbot | PPA-WU02-A | CANONICALLY_ADMITTED | Owner, independent, hard-mass and preservation gates | Preserve |
 | Lower boundary mode 2 sine/table and dry continuation | PPA-LOW02-TIME | CANONICALLY_ADMITTED | Typed B1.11 time law and state-derived dry continuation qualified | Preserve restricted profile |
@@ -44,12 +44,16 @@ confirmed B0 defects are not migration targets.
 1. **PPA-WU04-C/D** have source, receipt and restart layers implemented, but
    their typed production ingress and hard-mass closure remain open.
 2. **PPA-LOW05-APP** is blocked pending an ownership/mass-publication contract.
+3. **PPA-WU05 remaining root family** has small exact-equation oracles but no qualified multi-stressor or MICRO stateful runtime owner.
 
 No production-admission candidate is currently `READY`: PPA-ATM-02 reached the pure typed-ingress and PMdirect/SWINTER=0 composition boundary, but accepted production publication requires an explicit transaction/mass/restart contract. PPA-WU04-C/D required the exact B1.11
 `MOD_meteo.f90` equation oracle has been reconstructed and verified from the
-byte-exact B0 distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
-`24ce2768…`. GNU Fortran 16.2.0 is available through an explicit MSYS2 path,
-so PPA-WU04-C is the current ready capability.
+byte-exact distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
+`24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`. Local
+campaign checkpoints cover additional pure WU05 equations and the shared F-KT
+retry/restart contract. No new production-admission candidate is `READY`; keep
+working independent source-bound slices while the full-SWAP owner/coupling
+contracts remain open.
 
 No item above authorizes a change to Reference Richards, mass accounting,
 transaction ownership, restart ownership, or shared groundwater interfaces.
