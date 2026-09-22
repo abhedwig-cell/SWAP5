@@ -15,6 +15,8 @@ module mod_fmr_production_application_bootstrap
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
@@ -105,6 +107,8 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
     procedure, public :: copy_committed_top_states => production_application_copy_committed_top_states
+    procedure, public :: export_committed_restart => production_application_export_committed_restart
+    procedure, public :: restore_committed_restart => production_application_restore_committed_restart
     procedure, public :: close => production_application_close
   end type fmr_production_application_bootstrap_t
 
@@ -479,6 +483,37 @@ contains
     end do
     status = FMR_APP_BOOT_OK
   end subroutine production_application_copy_committed_top_states
+
+  subroutine production_application_export_committed_restart(self, parameter_set_identity, bundle, exported, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    integer(int64), intent(in) :: parameter_set_identity
+    type(fmr_committed_restart_bundle_t), intent(out) :: bundle
+    logical, intent(out) :: exported
+    integer, intent(out) :: status
+    integer :: restart_status
+
+    bundle = fmr_committed_restart_bundle_t()
+    exported = .false.
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready() .or. associated(self%active_context)) return
+    call fmr_export_committed_restart(self%columns, self%templates, self%committed, parameter_set_identity, bundle, exported, restart_status)
+    if (restart_status == FMR_RESTART_OK .and. exported) status = FMR_APP_BOOT_OK
+  end subroutine production_application_export_committed_restart
+
+  subroutine production_application_restore_committed_restart(self, bundle, parameter_set_identity, restored, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(fmr_committed_restart_bundle_t), intent(in) :: bundle
+    integer(int64), intent(in) :: parameter_set_identity
+    logical, intent(out) :: restored
+    integer, intent(out) :: status
+    integer :: restart_status
+
+    restored = .false.
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready() .or. associated(self%active_context)) return
+    call fmr_restore_committed_restart(bundle, parameter_set_identity, self%columns, self%templates, self%committed, restored, restart_status)
+    if (restart_status == FMR_RESTART_OK .and. restored) status = FMR_APP_BOOT_OK
+  end subroutine production_application_restore_committed_restart
 
   subroutine production_application_close(self, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self

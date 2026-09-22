@@ -29,6 +29,7 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
        materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
   implicit none
 
   integer, parameter :: NTILE = 2
@@ -191,6 +192,7 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_ATM02_OWNER_COMMITTED_TOP_SNAPSHOT=PASS'
   print '(a)', 'PPA_ATM02_TWO_INTERVAL_OWNER_CONTINUATION=PASS'
   print '(a)', 'PPA_ATM02_TWO_INTERVAL_HARD_MASS=PASS'
+  print '(a)', 'PPA_ATM02_OWNER_RESTART_CONTINUATION=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -392,6 +394,8 @@ contains
     type(ppa_atm02_meteo_provenance_t) :: provenance
     type(ppa_atm02_production_forcing_diagnostics_t) :: atm_diagnostics
     type(fmr_committed_top_state_t), allocatable :: committed_top(:)
+    type(fmr_committed_restart_bundle_t) :: restart_bundle
+    logical :: restart_exported, restart_restored
     integer :: tile, local_status, node
     real(real64) :: t2
 
@@ -444,6 +448,10 @@ contains
          'ATM02 committed top snapshot')
     call require(all(committed_top%revision == 1_int64) .and. all(committed_top%committed_time == T1), &
          'ATM02 committed top provenance')
+    call atm_app%export_committed_restart(9901_int64, restart_bundle, restart_exported, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. restart_exported, 'ATM02 owner restart export')
+    call atm_app%restore_committed_restart(restart_bundle, 9901_int64, restart_restored, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. restart_restored, 'ATM02 owner restart restore')
     t2 = T1 + (T1 - T0)
     forcing_interval%t0 = T1; forcing_interval%t1 = t2
     decoded%source_record_index = 45
