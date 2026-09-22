@@ -25,6 +25,7 @@ from test_gc_fixed_interface_fgc44_safeguarded_newton_g08 import build_model, in
 
 PREREG=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G20_PREREGISTRATION.json"
 G19=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G19_RESULT.json"
+G18=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G18_RESULT.json"
 SESSION_SOURCE=ROOT/"src"/"adapter"/"modflow6_prepared_solve_session.py"
 
 
@@ -67,10 +68,15 @@ def no_direct_x_control_source_gate()->dict[str,object]:
 def main()->None:
     prereg=json.loads(PREREG.read_text())
     g19=json.loads(G19.read_text())
+    g18=json.loads(G18.read_text())
     require(prereg["work_unit"]=="GC-FIXED-INTERFACE-G20","wrong G20 preregistration")
     require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION","G20 preregistration not frozen")
     require(g19["decision"]=="QUALIFIED_BOUNDED_AFFINE_RESPONSE_SPACE_TO_HEAD_SPACE_P4_BRIDGE",
             "G20 parent G19 authority drift")
+    require(g18["decision"]=="FALSIFIED_EXACT_HEAD_SPACE_P4_COMPATIBILITY_WITH_CURRENT_FGC38_FGC39_PREPARED_SOLVE_CONTRACT",
+            "G20 parent G18 composition authority drift")
+    require(bool(g18["frozen_g11_transition"]["sequential_halving_exact_match"]),
+            "G20 G18 exact head-space contraction authority drift")
 
     audit=no_direct_x_control_source_gate()
     print("FGC44_G20_SOURCE_AUDIT_JSON="+json.dumps(audit,sort_keys=True,separators=(",",":")))
@@ -154,6 +160,7 @@ def main()->None:
                     status,iteration=session.publish_and_solve_iteration(binding,term)
                     require(status==PreparedSolveStatus.OK,session.last_error)
                     require(iteration is not None,f"G20 lambda={lam} missing iteration")
+                    require(not session.invalid,f"G20 lambda={lam} prepared solve invalidated")
                     require(np.array_equal(iteration.accepted_head_old_m,xold),
                             f"G20 lambda={lam} XOLD drifted")
                     if iteration.modflow_converged:
