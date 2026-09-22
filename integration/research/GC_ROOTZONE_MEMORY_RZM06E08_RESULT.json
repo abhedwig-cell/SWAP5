@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e08.deep_redistribution_memory_probe_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E08",
+  "preregistration_commit": "91d00f62a1150a8310296ba0ee877b9c1842cfa4",
+  "production_changes": false,
+  "decision": "SUPPORTED_INTERFACE_MEMORY_AT_1E9_STORAGE_RESOLUTION",
+  "qualification": {
+    "workflow_run": 35749131548,
+    "workflow_job": 106818345605,
+    "executed_head": "1055d4c42064ba6614e321d35aa855f37d036ed8",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "order_independence": true,
+    "artifact_id": 10703149396,
+    "artifact_digest": "sha256:39a4a17056594a778d0259a4cdf0d770d2c7b51090cd92df15839561b56b3920"
+  },
+  "reconstruction": {
+    "A": {
+      "direction": "UPSHIFT",
+      "rate_index": 3,
+      "fraction": 0.0625,
+      "steps": 1
+    },
+    "B": {
+      "direction": "DOWNSHIFT",
+      "rate_index": 3,
+      "fraction": 0.0625,
+      "steps": 1
+    },
+    "profile_water_a_cm": 58.619184,
+    "profile_water_b_cm": 58.61918399999999,
+    "abs_delta_profile_water_cm": 7.105427357601002e-15,
+    "root30_water_a_cm": 10.99109700027801,
+    "root30_water_b_cm": 10.991096999721982,
+    "abs_delta_root30_water_cm": 5.560281124417088e-10,
+    "H16_a_cm": -29.80083566464829,
+    "H16_b_cm": -29.786582457173466,
+    "abs_delta_H16_cm": 0.01425320747482317,
+    "state_gate_pass": true
+  },
+  "forcing": {
+    "fixed_interface_head_m": -1.897937090169065,
+    "bottom_boundary_elevation_m": -1.6,
+    "mapped_bottom_pressure_head_cm": -29.7937090169065,
+    "top_flux_cm_per_day": 0,
+    "dt_day": 0.000800000037997961,
+    "internal_state_construction_forcing_present_in_response": false
+  },
+  "probe": {
+    "admitted_a": true,
+    "admitted_b": true,
+    "exchange_a_cm": 0.00313351139418927,
+    "exchange_b_cm": 0.003144890124183064,
+    "delta_exchange_cm": 0.000011378729993793968,
+    "abs_delta_exchange_cm": 0.000011378729993793968,
+    "response_threshold_cm": 1e-18,
+    "terminal_flux_a_cm_per_day": 3.91688905669434,
+    "terminal_flux_b_cm_per_day": 3.931112468511007,
+    "mass_residual_a_cm": 0,
+    "mass_residual_b_cm": 0,
+    "support": true
+  },
+  "interpretation": [
+    "At the preregistered joint 1e-9 cm aggregate-storage resolution, identical fixed H_c plus W_profile and W_root30 do not determine a unique next whole-window interface exchange for this selected C01 pair/window.",
+    "The origins were constructed prospectively with equal and opposite net-zero deep internal redistribution, while the response probe itself contains no qssdi or qdra forcing.",
+    "The response difference is deterministic under execution-order reversal and compiler optimization O0/O2 and both admitted samples close mass exactly at reported precision.",
+    "Because W_root30 remains tolerance-matched rather than mathematically identical, the result is not yet an exact-valued sufficiency proof.",
+    "H16 remains a mechanistic discriminator and is not established as the unique or minimal omitted state coordinate."
+  ],
+  "nonclaims": [
+    "No exact-valued H_c + W_profile + W_root30 insufficiency proof.",
+    "No production reduced-state admission.",
+    "No second MODFLOW hydraulic state admission.",
+    "No production coupling change.",
+    "The E07 qssdi/qdra state-construction route is not admitted as a production operating mode."
+  ],
+  "next_step_basis": {
+    "decision": "STRONG_RESOLUTION_BOUNDED_MEMORY_SUPPORT__EXACT_ROOTMATCH_REMAINS_OPEN",
+    "boundary": "The frozen E07 grid yields support at 1e-9 cm but no H16-qualified twin at 1e-10 cm or exact root30 equality.",
+    "recommendation": "Do not extend the scalar E07 rate/step grid retrospectively. Any further exact-sufficiency test must introduce a prospectively derived additional deep redistribution basis that can enforce the root30 constraint response-blindly."
+  }
+}
