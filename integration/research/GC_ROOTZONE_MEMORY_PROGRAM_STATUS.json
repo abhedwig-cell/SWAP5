@@ -160,6 +160,15 @@
       "workflow_job": 106789366648,
       "implementation_head": "3652d89debb2f57cba88da31834f7b7fbfb1ec62",
       "evidence_commit": "e53816189389121cc0b3ff5130e7229d6eddd815"
+    },
+    {
+      "work_unit": "GC-RZM06E02",
+      "decision": "SUPPORTED_H2_VERTICAL_DISTRIBUTION_MEMORY_FOR_SELECTED_REAL_SWAP_PAIR",
+      "preregistration_commit": "c0291cc0669b0e9022695d495bcf62b4bad40a57",
+      "workflow_run": 35741739776,
+      "workflow_job": 106792958715,
+      "implementation_head": "610d77cdd21ea595d786eba94b128ca244af7b63",
+      "evidence_commit": "3da8bddee069bf91de98e37054d6f69dbccdf49f"
     }
   ],
   "current_findings": [
@@ -223,23 +232,25 @@
     "D04's best water-matched pair reaches |ΔM1|=0.007872748347196534 cm, 78.73% of the unchanged 0.01 cm requirement, with |ΔW_profile|=9.233749912596068e-05 cm.",
     "E01 constructed a response-blind H2 origin pair on the 16-node C01 carrier with exactly reconstructed equal total profile water and |ΔM1|=0.11123947403315526 cm, 11.12 times the unchanged 0.01 cm requirement.",
     "The selected E01 pair is EQ step 1 versus CLOSED step 14; CLOSED has 14 strict accepted zero-boundary-flux commits and then fails closed at step 15 with a solver rejection.",
-    "E01 did not expose any interface response quantity to the selector; all 16 H/theta values for both selected origins are persisted before E02."
+    "E01 did not expose any interface response quantity to the selector; all 16 H/theta values for both selected origins are persisted before E02.",
+    "E02 directly supports H2 on the qualified 16-node real-HeadCalc carrier: at identical fixed H_c and effectively identical total profile water, the E01 vertical-distribution pair produces different next whole-window bottom exchange.",
+    "E02 reconstructs |ΔW_profile|=1.4210854715202004e-14 cm and |ΔM1|=0.11123947403318368 cm; both fixed-Hc probes have zero mass residual and are order-independent and O0/O2 identical.",
+    "Whole-window bottom exchange differs by 0.0013176066140374587 cm: A=0.0031391986203388456 cm and B=0.004456805234376304 cm.",
+    "E02 therefore falsifies H_c plus total-profile-water as a complete state description for this carrier/window, but does not yet falsify H_c plus total-profile-water plus upper-30-cm/root-zone water because the selected pair differs in upper-30-cm storage by about 0.043932 cm."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E02",
-    "scope": "Reconstruct the immutable E01 pair at one common canonical time, verify exact origin identity and frozen H2 state gates, then apply identical forcing-free mode-5 fixed-Hc strict Reference probes to both origins.",
-    "prerequisite": "E01 selected and persisted immutable response-blind H2 pair; D02R1 qualified common-time reseeding",
+    "id": "GC-RZM06E03",
+    "scope": "Test the next state-sufficiency rung: prospectively construct or select strict accepted 16-node origins with the same total profile water and the same upper-30-cm/root-zone water, but different deeper vertical distribution, before any identical fixed-Hc response probe.",
+    "prerequisite": "E02 supported H2 and showed W_root differs in the selected pair",
     "constraints": [
-      "use exactly the persisted E01 A_EQ and B_CLOSED profiles; no reselection",
-      "reconstruct both committed origins at t0=0 with BASE optional layout and no numerical continuation",
-      "recompute W_profile and M1 from node theta before any response probe and require the frozen H2 state gates",
-      "fixed interface head H_c=-1.8979370901690651 m mapped through the existing groundwater-head materializer with bottom datum -1.6 m",
-      "top flux exactly zero for both probes",
-      "use dyadic dt=3435974/2^32 day and hard mass gate 1e-12 cm",
-      "strict Reference sample only; no fallback, no temporal subdivision, no commit",
-      "repeat A/B in reversed execution order with fresh origins to exclude hidden cross-probe state",
-      "primary H2 response is whole-window bottom outward exchange; support threshold remains |ΔE|>1e-18 native cm",
-      "no production source change and no H5/RZM06B work"
+      "retain the C01 16x10 cm B01 pure-hydraulics Reference carrier",
+      "keep H_c external and single-valued; additional memory remains SWAP-internal",
+      "pair selection must be response-blind",
+      "require |ΔW_profile|<=1e-4 cm and add |ΔW_root30|<=1e-4 cm before response",
+      "retain |ΔM1|>=1e-2 cm as a vertical-separation gate unless a more targeted deeper-profile moment is preregistered first",
+      "use strict Reference samples only; no fallback and no tolerance relaxation",
+      "persist any selected pair before a response experiment",
+      "no production source changes and no H5/RZM06B work"
     ]
   },
   "blocked": [],
