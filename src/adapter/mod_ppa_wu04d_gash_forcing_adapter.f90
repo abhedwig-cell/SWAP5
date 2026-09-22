@@ -1,5 +1,6 @@
 module mod_ppa_wu04d_gash_forcing_adapter
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t, apportion_vonhhbraden_interception, &
        VONHHBRADEN_AVAILABLE
@@ -18,9 +19,16 @@ contains
     real(real64)::net_rain,net_irrigation
     integer::partition_status
     bound=b110_dynamic_top_boundary_request_t(); interception=0._real64; status=PPA_WU04D_BIND_REJECTED
+    if(.not.ieee_is_finite(aggregate)) return
+    if(aggregate<0._real64) return
+    if(.not.ieee_is_finite(rain)) return
+    if(.not.ieee_is_finite(irrigation)) return
     call apportion_vonhhbraden_interception(source,aggregate,rain,irrigation,interception,net_rain,net_irrigation,partition_status)
     if(partition_status/=VONHHBRADEN_AVAILABLE) return
-    if(net_rain<0._real64 .or. net_irrigation<0._real64) return
+    if(.not.ieee_is_finite(interception)) return
+    if(.not.ieee_is_finite(net_rain)) return
+    if(.not.ieee_is_finite(net_irrigation)) return
+    if(interception<0._real64 .or. net_rain<0._real64 .or. net_irrigation<0._real64) return
     bound=base; bound%precipitation_rate_cm_per_day=net_rain; bound%irrigation_rate_cm_per_day=net_irrigation
     status=PPA_WU04D_BIND_OK
   end subroutine
