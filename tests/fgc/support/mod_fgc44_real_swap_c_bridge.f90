@@ -204,7 +204,15 @@ contains
     call initialize_committed_state(committed,predictor_parameters,ok)
     if(.not.ok)return
 
-    datum%available=.true.; datum%datum_id=540044_int64; datum%bottom_boundary_elevation_m=0.0_real64
+    datum%available=.true.; datum%datum_id=540044_int64
+    ! Existing F-GC44 uses an abstract small-grid datum at 0 m.  The C02
+    ! research carrier is explicitly legacy-native centimetre geometry and
+    ! therefore places its coupling datum at the physical column bottom.
+    if(maxval(abs(predictor_parameters%z))>10.0_real64)then
+      datum%bottom_boundary_elevation_m=-0.01_real64*sum(predictor_parameters%dz)
+    else
+      datum%bottom_boundary_elevation_m=0.0_real64
+    end if
     window%t0=0.0_real64; window%t1=active_duration_day
     call predictor_backend%initialize(top)
     call corrector_backend%initialize(top)
@@ -393,7 +401,7 @@ contains
     class(transaction_state_t),allocatable :: snapshot
     logical :: available
     integer :: i
-    real(real64) :: wi, depth_top, depth_bottom, overlap, weighted_z
+    real(real64) :: wi, depth_top, depth_bottom, overlap, weighted_z, root_depth_native
 
     fgc44_committed_profile_observables_c=1_c_int
     profile_water_cm=0.0_c_double; root_water_cm=0.0_c_double
@@ -404,16 +412,18 @@ contains
     select type(typed=>snapshot)
     class is(fmr_b110_physical_state_t)
       weighted_z=0.0_real64
+      root_depth_native=0.30_real64
+      if(maxval(abs(predictor_parameters%z))>10.0_real64)root_depth_native=30.0_real64
       do i=1,typed%active_nodes
         wi=typed%water_content(i)*predictor_parameters%dz(i)
         profile_water_cm=profile_water_cm+wi
         weighted_z=weighted_z+wi*predictor_parameters%z(i)
-        ! The fixture geometry is metre-scale depth relative to the surface (z<0).
-        ! Integrate the upper 0.30 m by geometric overlap; hydraulic heads and
-        ! native exchange diagnostics retain their separate centimetre convention.
+        ! Research fixtures may use either the historical small abstract geometry
+        ! or explicit legacy-native centimetres.  Integrate the same physical
+        ! upper 0.30 m using the matching native geometry unit.
         depth_top=max(0.0_real64, -(predictor_parameters%z(i)+0.5_real64*predictor_parameters%dz(i)))
         depth_bottom=max(0.0_real64, -(predictor_parameters%z(i)-0.5_real64*predictor_parameters%dz(i)))
-        overlap=max(0.0_real64,min(depth_bottom,0.30_real64)-min(depth_top,0.30_real64))
+        overlap=max(0.0_real64,min(depth_bottom,root_depth_native)-min(depth_top,root_depth_native))
         if(overlap>0.0_real64)root_water_cm=root_water_cm+typed%water_content(i)*overlap
       end do
       if(profile_water_cm>0.0_real64)distribution_moment_cm=weighted_z/profile_water_cm
