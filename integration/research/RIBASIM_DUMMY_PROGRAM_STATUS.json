@@ -165,14 +165,15 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19K",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19J",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19K_QUALIFIED_EXPLICIT_USERDEMAND_APPLY_SEAM",
       "dependency": "qualified DUMMY-19J",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "implementation_baseline": "010d3436258fe66e6b3b3de6808047fc26f4a006"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-19K explicit UserDemand solve→apply seam.",
+  "next_authority_action": "Execute frozen DUMMY-19K explicit UserDemand solve→apply seam.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
