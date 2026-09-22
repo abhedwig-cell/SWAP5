@@ -654,3 +654,78 @@ COUPLING ORCHESTRATION = NOT YET ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: END-TO-END SAFEGUARDED TANGENT COUPLING ORCHESTRATION.
 ```
+## G17 disposition: G16-backed safeguarded orchestration qualified as research integration
+
+G17 exercised the first complete safeguarded coupling path that consumes the
+qualified G16 tangent-observation service rather than the earlier ad-hoc
+diagnostic trial helpers. The physical/numerical stress was not broadened or
+retuned: it is exactly the frozen G11 live-overshoot case, where the first raw
+physical-Newton proposal is genuinely participant-inadmissible and P4 must
+recover by factor-1/2 contraction.
+
+The final preregistration-bound live qualification, workflow `35724160855`,
+passed. The observed path is:
+
+```text
+first raw Newton dh                 -1.1162302297473836e-5 m
+first raw participant status         6
+P4 factor-1/2 contractions           2
+outer updates to convergence         3
+final dh                            -9.999346805233955e-6 m
+final residual                      -1.0640987109201395e-20 m/s
+
+G16 logical diagnostic requests     67
+physical diagnostic participant runs 34
+exact-head cache hits               33
+ordinary publication-path trials
+  during diagnostics                 0
+final candidate reacquisition trials 1
+cached vs reacquired q difference    0
+```
+
+This closes an important ownership question. Every SWAP-side evaluation used
+for current-head residuals, E3 stencil construction, the failed raw Newton
+proposal and the P4 safeguard is routed through G16. After every diagnostic
+observation the participant has no live candidate, FMR publication preflight is
+false, ledger preflight is false, and accepted revision/time plus committed
+ledger state remain identical to the immutable origin.
+
+The converged head is therefore still only diagnostic information. G17 closes
+the G16 service session and then reacquires that exact head once through the
+ordinary participant trial path. Only this new trial becomes live and
+publication-ready. Its q is exactly equal to the cached final diagnostic q in
+the live qualification.
+
+The existing publication seam then passes both preflights and produces:
+
+```text
+before publication                 [revision 0, time 0, ledger count 0]
+after SWAP commit                  [revision 1, time 0.01 d, ledger count 0]
+after ledger commit                [revision 1, time 0.01 d, ledger count 1]
+committed ledger exchange           1.3878293167404843e-8 m
+```
+
+A fresh-process direct publication at the identical final head reproduces the
+same final revision, time, ledger count and ledger exchange.
+
+That positive result has two deliberate limits. First, the intermediate state
+after the SWAP commit and before the ledger commit proves that this nominal
+two-preflight sequence is not by itself evidence of crash-atomic
+multi-participant publication. Second, the live MODFLOW6 calculations used by
+G17 are still the research proposal/merit solves; MODFLOW is not yet represented
+as a persistent transactional participant whose accepted state is committed in
+the same publication protocol.
+
+Therefore G17 qualifies research orchestration and the FMR/ledger final-candidate
+handoff, not a production coupling policy.
+
+```text
+G17 G16-BACKED SAFEGUARDED ORCHESTRATION = QUALIFIED RESEARCH INTEGRATION.
+FMR FINAL-CANDIDATE HANDOFF = QUALIFIED IN THE FROZEN G11 STRESS.
+E3 = QUALIFIED RESEARCH ONLY.
+P4 = QUALIFIED RESEARCH PATH, NOT PRODUCTION AUTHORITY.
+PERSISTENT MODFLOW TRANSACTION PARTICIPANT = MISSING.
+CRASH-ATOMIC MULTI-PARTICIPANT PUBLICATION = MISSING.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: PUBLICATION / TRANSACTION ARCHITECTURE.
+```
