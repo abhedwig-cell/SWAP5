@@ -1,0 +1,2491 @@
+{
+  "H1": {
+    "E_A_native": 6.433698018781797e-11,
+    "E_B_native": -9.179923488034092e-11,
+    "abs_delta_E_native": 1.561362150681589e-10,
+    "delta_E_native": -1.561362150681589e-10,
+    "disposition": "SUPPORTED",
+    "endpoint_states_different": true,
+    "origins": {
+      "DRY_THEN_WET": {
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449323768638,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063184727175,
+          "root_water_cm": 0.10377348348932945
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "exact_replay": true,
+        "probe_diag": {
+          "accepted_substeps": 1,
+          "attempts": 1,
+          "available": true,
+          "bottom_outward_exchange_native": -9.179923488034092e-11,
+          "call_status": 0,
+          "candidate_ready": true,
+          "committed": false,
+          "completed": true,
+          "duration_day": 0.0001,
+          "forcing_status": 0,
+          "internal_retries": 0,
+          "mass_complete": true,
+          "mass_rejections": 0,
+          "mass_residual_native": 0,
+          "materialized_bottom_head_cm": -71.49999706136308,
+          "materialized_top_flux_cm_per_day": 0,
+          "q_swap_m_per_s": -1.0624911444483903e-13,
+          "requested_head_m": -0.7149999706136307,
+          "requested_top_flux_cm_per_day": 0,
+          "result_status": 0,
+          "retries": 0,
+          "solver_rejections": 0,
+          "t0_day": 0.02,
+          "t1_day": 0.0201,
+          "temporal_rejections": 0,
+          "temporal_unavailable_rejections": 0,
+          "terminal_bottom_outward_flux_native": -9.179923488034147e-7,
+          "transaction_calls": 1,
+          "trial_rollbacks": 0
+        },
+        "valid": true
+      },
+      "WET_THEN_DRY": {
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024450029396634,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631336699183,
+          "root_water_cm": 0.1037734552350075
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "exact_replay": true,
+        "probe_diag": {
+          "accepted_substeps": 1,
+          "attempts": 1,
+          "available": true,
+          "bottom_outward_exchange_native": 6.433698018781797e-11,
+          "call_status": 0,
+          "candidate_ready": true,
+          "committed": false,
+          "completed": true,
+          "duration_day": 0.0001,
+          "forcing_status": 0,
+          "internal_retries": 0,
+          "mass_complete": true,
+          "mass_rejections": 0,
+          "mass_residual_native": 0,
+          "materialized_bottom_head_cm": -71.49999706136308,
+          "materialized_top_flux_cm_per_day": 0,
+          "q_swap_m_per_s": 7.446409743960413e-14,
+          "requested_head_m": -0.7149999706136307,
+          "requested_top_flux_cm_per_day": 0,
+          "result_status": 0,
+          "retries": 0,
+          "solver_rejections": 0,
+          "t0_day": 0.02,
+          "t1_day": 0.0201,
+          "temporal_rejections": 0,
+          "temporal_unavailable_rejections": 0,
+          "terminal_bottom_outward_flux_native": 6.433698018781836e-7,
+          "transaction_calls": 1,
+          "trial_rollbacks": 0
+        },
+        "valid": true
+      }
+    }
+  },
+  "H2": {
+    "candidate_order": [
+      "W10->W10",
+      "W10->D10",
+      "W10->W",
+      "W10->D",
+      "W10->Z",
+      "D10->W10",
+      "D10->D10",
+      "D10->W",
+      "D10->D",
+      "D10->Z",
+      "W->W10",
+      "W->D10",
+      "W->W",
+      "W->D",
+      "W->Z",
+      "D->W10",
+      "D->D10",
+      "D->W",
+      "D->D",
+      "D->Z",
+      "Z->W10",
+      "Z->D10",
+      "Z->W",
+      "Z->D",
+      "Z->Z"
+    ],
+    "candidates": [
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024440161633386,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430647450444008,
+          "root_water_cm": 0.10377385758124247
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W10->W10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W10",
+          "W10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024453499026824,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430628953072407,
+          "root_water_cm": 0.1037733184458962
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W10->D10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W10",
+          "D10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024446097618593,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430639212977582,
+          "root_water_cm": 0.10377361739747969
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W10->W",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W10",
+          "W"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024447449334166,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430637350104552,
+          "root_water_cm": 0.10377356286864771
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W10->D",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W10",
+          "D"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502444675601707,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430638289403706,
+          "root_water_cm": 0.10377359070644807
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W10->Z",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W10",
+          "Z"
+        ]
+      },
+      {
+        "accepted": false,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502445635074545,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430622287744868,
+          "root_water_cm": 0.10377319935941269
+        },
+        "endpoint_state": [
+          1,
+          0.01,
+          0,
+          0
+        ],
+        "name": "D10->W10",
+        "statuses": [
+          0,
+          7
+        ],
+        "symbols": [
+          "D10",
+          "W10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024459191388642,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043061573493588,
+          "root_water_cm": 0.10377308115486078
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D10->D10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D10",
+          "D10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502445190341346,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430625835948533,
+          "root_water_cm": 0.1037733758797539
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D10->W",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D10",
+          "W"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024453255175454,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430623972943651,
+          "root_water_cm": 0.10377332134879255
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D10->D",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D10",
+          "D"
+        ]
+      },
+      {
+        "accepted": false,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502445635074545,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430622287744868,
+          "root_water_cm": 0.10377319935941269
+        },
+        "endpoint_state": [
+          1,
+          0.01,
+          0,
+          0
+        ],
+        "name": "D10->Z",
+        "statuses": [
+          0,
+          7
+        ],
+        "symbols": [
+          "D10",
+          "Z"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024442726981595,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430641527881863,
+          "root_water_cm": 0.10377375080334295
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W->W10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W",
+          "W10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502445607471344,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430622942557486,
+          "root_water_cm": 0.10377321093899858
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W->D10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W",
+          "D10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024448750441057,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430633125249904,
+          "root_water_cm": 0.1037735071593433
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W->W",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W",
+          "W"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024450029396634,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631336699183,
+          "root_water_cm": 0.1037734552350075
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W->D",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W",
+          "D"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449380329488,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063224458589,
+          "root_water_cm": 0.10377348156185451
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "W->Z",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "W",
+          "Z"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502444327832227,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430640242388998,
+          "root_water_cm": 0.10377372779442244
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D->W10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D",
+          "W10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502445662607355,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043062165702609,
+          "root_water_cm": 0.10377318792925373
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D->D10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D",
+          "D10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449323768638,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063184727175,
+          "root_water_cm": 0.10377348348932945
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D->W",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D",
+          "W"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502445060293414,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430630057377188,
+          "root_water_cm": 0.10377343155070588
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D->D",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D",
+          "D"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.502444997287726,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063093913102,
+          "root_water_cm": 0.1037734571597575
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "D->Z",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "D",
+          "Z"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024443007318802,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430640879363158,
+          "root_water_cm": 0.10377373912722328
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "Z->W10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "Z",
+          "W10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024456346510149,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043062230225971,
+          "root_water_cm": 0.10377319956428895
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "Z->D10",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "Z",
+          "D10"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449037076342,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430632491084568,
+          "root_water_cm": 0.10377349533949849
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "Z->W",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "Z",
+          "W"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024450316688356,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430630689140765,
+          "root_water_cm": 0.10377344334426437
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "Z->D",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "Z",
+          "D"
+        ]
+      },
+      {
+        "accepted": true,
+        "endpoint_obs": {
+          "distribution_moment_cm": -1.5024449676776965,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063158802862,
+          "root_water_cm": 0.10377346932743776
+        },
+        "endpoint_state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "name": "Z->Z",
+        "statuses": [
+          0,
+          0
+        ],
+        "symbols": [
+          "Z",
+          "Z"
+        ]
+      }
+    ],
+    "disposition": "NO_MATCH",
+    "probe": null,
+    "selected_match": null,
+    "no_match_characterization": {
+      "accepted_candidate_count": 23,
+      "failed_candidate_count": 2,
+      "pairs_within_profile_water_tolerance": 171,
+      "maximum_M1_separation_among_water_matched_pairs": {
+        "a": "D->W10",
+        "b": "Z->D",
+        "delta_profile_water_native": 9.5532482324856e-7,
+        "delta_M1_native": 7.038366085510006e-7
+      },
+      "frozen_required_M1_separation": 0.0001
+    }
+  },
+  "H3": {
+    "disposition": "SUPPORTED_STATE_AND_WINDOW_DEPENDENCE",
+    "origins": {
+      "DRY_THEN_WET": {
+        "0.0001": {
+          "derivative_native_per_m": -0.0034029359330389752,
+          "minus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.3845961208025427e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 1.3234889800848443e-23,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": -1.6025418064844243e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -0.000002030493937515227,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450320289584,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063067391924,
+                    "root_water_cm": 0.10377344314665225
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.7335251070826976e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": -2.0063947998642332e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -9.46356344856496e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449323768638,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063184727175,
+                    "root_water_cm": 0.10377348348932945
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024449323768638,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.043063184727175,
+                "root_water_cm": 0.10377348348932945
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 1,
+                  "attempts": 1,
+                  "available": true,
+                  "bottom_outward_exchange_native": 3.3111366981586347e-9,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.0001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 4.1359030627651384e-25,
+                  "materialized_bottom_head_cm": -71.50009706136308,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": 3.832334141387308e-12,
+                  "requested_head_m": -0.7150009706136308,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 0,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.0201,
+                  "temporal_rejections": 0,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": 0.000033111366981586546,
+                  "transaction_calls": 1,
+                  "trial_rollbacks": 0
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "plus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.3845961208025427e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 1.3234889800848443e-23,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": -1.6025418064844243e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -0.000002030493937515227,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450320289584,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063067391924,
+                    "root_water_cm": 0.10377344314665225
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.7335251070826976e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": -2.0063947998642332e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -9.46356344856496e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449323768638,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063184727175,
+                    "root_water_cm": 0.10377348348932945
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024449323768638,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.043063184727175,
+                "root_water_cm": 0.10377348348932945
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 1,
+                  "attempts": 1,
+                  "available": true,
+                  "bottom_outward_exchange_native": -3.494735167919316e-9,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.0001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.49989706136307,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": -4.044832370276986e-12,
+                  "requested_head_m": -0.7149989706136307,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 0,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.0201,
+                  "temporal_rejections": 0,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": -0.00003494735167919337,
+                  "transaction_calls": 1,
+                  "trial_rollbacks": 0
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "derived_interface_rate_derivative_s_inv": -0.000003938583255832147
+        },
+        "0.001": {
+          "derivative_native_per_m": -0.027885247666503687,
+          "minus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.3845961208025427e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 1.3234889800848443e-23,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": -1.6025418064844243e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -0.000002030493937515227,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450320289584,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063067391924,
+                    "root_water_cm": 0.10377344314665225
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.7335251070826976e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": -2.0063947998642332e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -9.46356344856496e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449323768638,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063184727175,
+                    "root_water_cm": 0.10377348348932945
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024449323768638,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.043063184727175,
+                "root_water_cm": 0.10377348348932945
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 2,
+                  "attempts": 4,
+                  "available": true,
+                  "bottom_outward_exchange_native": 2.7176260797290297e-8,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.50009706136308,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": 3.1454005552419326e-12,
+                  "requested_head_m": -0.7150009706136308,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 2,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.021,
+                  "temporal_rejections": 2,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": 0.000025714463743516544,
+                  "transaction_calls": 2,
+                  "trial_rollbacks": 2
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "plus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.3845961208025427e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 1.3234889800848443e-23,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": -1.6025418064844243e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -0.000002030493937515227,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450320289584,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063067391924,
+                    "root_water_cm": 0.10377344314665225
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": -1.7335251070826976e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": -2.0063947998642332e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": -9.46356344856496e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449323768638,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063184727175,
+                    "root_water_cm": 0.10377348348932945
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024449323768638,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.043063184727175,
+                "root_water_cm": 0.10377348348932945
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 2,
+                  "attempts": 4,
+                  "available": true,
+                  "bottom_outward_exchange_native": -2.8594234535717078e-8,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.49989706136307,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": -3.3095178860783655e-12,
+                  "requested_head_m": -0.7149989706136307,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 2,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.021,
+                  "temporal_rejections": 2,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": -0.000027022161693442564,
+                  "transaction_calls": 2,
+                  "trial_rollbacks": 2
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024449323768638,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.043063184727175,
+                  "root_water_cm": 0.10377348348932945
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "derived_interface_rate_derivative_s_inv": -0.000003227459220660149
+        }
+      },
+      "WET_THEN_DRY": {
+        "0.0001": {
+          "derivative_native_per_m": -0.0034029364881504875,
+          "minus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": 5.9596575978759e-9,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": 6.897751849393403e-14,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 0.000001522470408098242,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449040677559,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063247586305,
+                    "root_water_cm": 0.10377349514188673
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": 1.39163867680537e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": 1.6106929129691783e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 6.70246885887016e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450029396634,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.0430631336699183,
+                    "root_water_cm": 0.1037734552350075
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024450029396634,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631336699183,
+                "root_water_cm": 0.1037734552350075
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 1,
+                  "attempts": 1,
+                  "available": true,
+                  "bottom_outward_exchange_native": 3.467273579360608e-9,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.0001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.50009706136308,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": 4.013048124259963e-12,
+                  "requested_head_m": -0.7150009706136308,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 0,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.0201,
+                  "temporal_rejections": 0,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": 0.00003467273579360629,
+                  "transaction_calls": 1,
+                  "trial_rollbacks": 0
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "plus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": 5.9596575978759e-9,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": 6.897751849393403e-14,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 0.000001522470408098242,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449040677559,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063247586305,
+                    "root_water_cm": 0.10377349514188673
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": 1.39163867680537e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": 1.6106929129691783e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 6.70246885887016e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450029396634,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.0430631336699183,
+                    "root_water_cm": 0.1037734552350075
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024450029396634,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631336699183,
+                "root_water_cm": 0.1037734552350075
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 1,
+                  "attempts": 1,
+                  "available": true,
+                  "bottom_outward_exchange_native": -3.338599396940367e-9,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.0001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.49989706136307,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": -3.8641196723846844e-12,
+                  "requested_head_m": -0.7149989706136307,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 0,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.0201,
+                  "temporal_rejections": 0,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": -0.000033385993969403874,
+                  "transaction_calls": 1,
+                  "trial_rollbacks": 0
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "derived_interface_rate_derivative_s_inv": -0.000003938583898322324
+        },
+        "0.001": {
+          "derivative_native_per_m": -0.02788525010899434,
+          "minus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": 5.9596575978759e-9,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": 6.897751849393403e-14,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 0.000001522470408098242,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449040677559,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063247586305,
+                    "root_water_cm": 0.10377349514188673
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": 1.39163867680537e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": 1.6106929129691783e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 6.70246885887016e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450029396634,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.0430631336699183,
+                    "root_water_cm": 0.1037734552350075
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024450029396634,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631336699183,
+                "root_water_cm": 0.1037734552350075
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 2,
+                  "attempts": 4,
+                  "available": true,
+                  "bottom_outward_exchange_native": 2.8329539158988837e-8,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.50009706136308,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": 3.2788818471051895e-12,
+                  "requested_head_m": -0.7150009706136308,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 2,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.021,
+                  "temporal_rejections": 2,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": 0.000026760047215172237,
+                  "transaction_calls": 2,
+                  "trial_rollbacks": 2
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "plus": {
+            "exact_replay": true,
+            "run": {
+              "antecedent_ok": true,
+              "antecedent_records": [
+                {
+                  "diag": {
+                    "accepted_substeps": 4,
+                    "attempts": 11,
+                    "available": true,
+                    "bottom_outward_exchange_native": 5.9596575978759e-9,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": -0.00001,
+                    "q_swap_m_per_s": 6.897751849393403e-14,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": -0.00001,
+                    "result_status": 0,
+                    "retries": 7,
+                    "solver_rejections": 0,
+                    "t0_day": 0,
+                    "t1_day": 0.01,
+                    "temporal_rejections": 7,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 0.000001522470408098242,
+                    "transaction_calls": 4,
+                    "trial_rollbacks": 7
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024449040677559,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.043063247586305,
+                    "root_water_cm": 0.10377349514188673
+                  },
+                  "state": [
+                    1,
+                    0.01,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                },
+                {
+                  "diag": {
+                    "accepted_substeps": 5,
+                    "attempts": 16,
+                    "available": true,
+                    "bottom_outward_exchange_native": 1.39163867680537e-8,
+                    "call_status": 0,
+                    "candidate_ready": true,
+                    "committed": true,
+                    "completed": true,
+                    "duration_day": 0.01,
+                    "forcing_status": 0,
+                    "internal_retries": 0,
+                    "mass_complete": true,
+                    "mass_rejections": 0,
+                    "mass_residual_native": 0,
+                    "materialized_bottom_head_cm": -71.49999706136308,
+                    "materialized_top_flux_cm_per_day": 0.00001,
+                    "q_swap_m_per_s": 1.6106929129691783e-13,
+                    "requested_head_m": -0.7149999706136307,
+                    "requested_top_flux_cm_per_day": 0.00001,
+                    "result_status": 0,
+                    "retries": 11,
+                    "solver_rejections": 0,
+                    "t0_day": 0.01,
+                    "t1_day": 0.02,
+                    "temporal_rejections": 11,
+                    "temporal_unavailable_rejections": 0,
+                    "terminal_bottom_outward_flux_native": 6.70246885887016e-7,
+                    "transaction_calls": 5,
+                    "trial_rollbacks": 11
+                  },
+                  "obs": {
+                    "distribution_moment_cm": -1.5024450029396634,
+                    "groundwater_level_cm": -2,
+                    "profile_water_cm": 1.0430631336699183,
+                    "root_water_cm": 0.1037734552350075
+                  },
+                  "state": [
+                    2,
+                    0.02,
+                    0,
+                    0
+                  ],
+                  "status": 0
+                }
+              ],
+              "endpoint_obs": {
+                "distribution_moment_cm": -1.5024450029396634,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631336699183,
+                "root_water_cm": 0.1037734552350075
+              },
+              "endpoint_state": [
+                2,
+                0.02,
+                0,
+                0
+              ],
+              "initial_obs": {
+                "distribution_moment_cm": -1.5024449665297503,
+                "groundwater_level_cm": -2,
+                "profile_water_cm": 1.0430631535459627,
+                "root_water_cm": 0.10377346899380081
+              },
+              "initial_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "initialize": {
+                "e1": {
+                  "bottom_outward_exchange_native": -1e-10,
+                  "h_end_m": -0.7149999706136307,
+                  "h_start_m": -0.7149999716161412,
+                  "mass_complete": true,
+                  "mass_residual_native": 0,
+                  "q_bot_predictor_cm_per_day": 0.000001,
+                  "q_u_cm_per_day": -9.658852120479678e-7,
+                  "storage_change_native": 0,
+                  "storage_end_native": 1.0430631535459627,
+                  "storage_start_native": 1.0430631535459627,
+                  "terminal_bottom_outward_flux_native": -0.000001,
+                  "total_in_native": 1e-10,
+                  "total_out_native": 1e-10,
+                  "u": 0.00003402936037279093
+                },
+                "hcof_m2_per_day": 0.3402936037279093,
+                "reference_head_m": -0.7149999706136307,
+                "rhs_m3_per_day": -0.24330990700660954
+              },
+              "probe": {
+                "diag": {
+                  "accepted_substeps": 2,
+                  "attempts": 4,
+                  "available": true,
+                  "bottom_outward_exchange_native": -2.7440961058999847e-8,
+                  "call_status": 0,
+                  "candidate_ready": true,
+                  "committed": false,
+                  "completed": true,
+                  "duration_day": 0.001,
+                  "forcing_status": 0,
+                  "internal_retries": 0,
+                  "mass_complete": true,
+                  "mass_rejections": 0,
+                  "mass_residual_native": 0,
+                  "materialized_bottom_head_cm": -71.49989706136307,
+                  "materialized_top_flux_cm_per_day": 0,
+                  "q_swap_m_per_s": -3.176037159606464e-12,
+                  "requested_head_m": -0.7149989706136307,
+                  "requested_top_flux_cm_per_day": 0,
+                  "result_status": 0,
+                  "retries": 2,
+                  "solver_rejections": 0,
+                  "t0_day": 0.02,
+                  "t1_day": 0.021,
+                  "temporal_rejections": 2,
+                  "temporal_unavailable_rejections": 0,
+                  "terminal_bottom_outward_flux_native": -0.000025976582366619497,
+                  "transaction_calls": 2,
+                  "trial_rollbacks": 2
+                },
+                "post_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "post_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "pre_obs": {
+                  "distribution_moment_cm": -1.5024450029396634,
+                  "groundwater_level_cm": -2,
+                  "profile_water_cm": 1.0430631336699183,
+                  "root_water_cm": 0.1037734552350075
+                },
+                "pre_state": [
+                  2,
+                  0.02,
+                  0,
+                  0
+                ],
+                "status": 0
+              }
+            },
+            "valid": true
+          },
+          "derived_interface_rate_derivative_s_inv": -0.0000032274595033558264
+        }
+      }
+    },
+    "state_comparisons": {
+      "0.0001": {
+        "above_threshold": true,
+        "difference_native_per_m": 5.551115123125783e-10
+      },
+      "0.001": {
+        "above_threshold": true,
+        "difference_native_per_m": 2.4424906541753444e-9
+      }
+    },
+    "window_comparisons": {
+      "DRY_THEN_WET": {
+        "above_threshold": true,
+        "difference_native_per_m": -0.024482311733464712
+      },
+      "WET_THEN_DRY": {
+        "above_threshold": true,
+        "difference_native_per_m": -0.024482313620843854
+      }
+    }
+  },
+  "H4": {
+    "disposition": "SUPPORTED_SEMANTIC_SEPARATION",
+    "evidence": {
+      "accepted_whole_window_bottom_outward_exchange_native": 6.433698018781797e-11,
+      "antecedent_origin": "WET_THEN_DRY",
+      "baseline_hcof_m2_per_day": 0.3402936037279093,
+      "baseline_predictor_provenance": "fresh initialization before antecedent state construction",
+      "baseline_predictor_qbot_native_per_day": 0.000001,
+      "baseline_predictor_u": 0.00003402936037279093,
+      "baseline_rhs_m3_per_day": -0.24330990700660954,
+      "physical_local_derivative_native_per_m": -0.0034029364881504875,
+      "production_defect_claim": false,
+      "q_swap_conversion_abs_error": 0,
+      "q_swap_m_per_s_from_whole_window_exchange": 7.446409743960413e-14,
+      "q_swap_reconstructed_m_per_s": 7.446409743960413e-14,
+      "terminal_bottom_outward_flux_native": 6.433698018781836e-7
+    }
+  },
+  "frozen_parameters": {
+    "H2_M1_separation_native": 0.0001,
+    "H2_profile_water_tolerance_native": 0.000001,
+    "H_star_m": -0.7149999706136307,
+    "antecedent_duration_day": 0.01,
+    "delta_H_m": 0.000001,
+    "dry_top_flux_native_per_day": 0.00001,
+    "mass_gate_native": 1e-12,
+    "primary_probe_duration_day": 0.0001,
+    "response_threshold_native": 1e-18,
+    "tangent_probe_durations_day": [
+      0.0001,
+      0.001
+    ],
+    "tangent_threshold_native_per_m": 1e-12,
+    "wet_top_flux_native_per_day": -0.00001
+  },
+  "nonclaims": [
+    "no production coupling admission",
+    "no production sign-flip admission",
+    "no second MODFLOW hydraulic state variable",
+    "no H5 management conclusion",
+    "baseline predictor coefficients are not antecedent-origin physical tangents"
+  ],
+  "preregistration_commit": "562853f7dd1a53c8301b0d4648f474084cfd2734",
+  "production_changes": false,
+  "schema": "swap5.gc_rootzone_memory.rzm06a.h1_h4_experiment.v1",
+  "qualification": {
+    "branch": "work/gc-dummy-swap-rootzone-memory",
+    "preregistration_commit": "562853f7dd1a53c8301b0d4648f474084cfd2734",
+    "experiment_implementation_commit": "9a5322b27643c43a15c64c39094102112a758ed7",
+    "ci_binding_commit": "199868ff91ebf5faeb0169484f7dadf99585d7f3",
+    "workflow_run": 35725440992,
+    "workflow_job": 106737853660,
+    "execution_gate": "PASS",
+    "production_changes": false
+  },
+  "limitations": [
+    "H1 establishes insufficiency of H_c alone for the frozen real-SWAP carrier, but does not identify which internal state component is causally sufficient.",
+    "H2 is NO_MATCH, not falsified: the frozen endpoint enumeration produced no pair meeting both total-water and M1 criteria, so vertical-distribution causality was not probed.",
+    "The H3 state effect is deterministic and above the preregistered threshold but very small relative to the tangent magnitude; window dependence is much larger.",
+    "Historical _CM and cm/day suffixes are retained as native carrier labels; geometry-based storage observables are metre-scale and no global unit reconciliation is claimed.",
+    "Research antecedent commits prepare SWAP state without publishing the production groundwater interface ledger."
+  ]
+}
