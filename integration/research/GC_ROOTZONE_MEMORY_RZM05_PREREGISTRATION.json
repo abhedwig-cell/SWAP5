@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm05.preregistration.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "work_unit": "GC-RZM05",
+  "title": "Root-zone demand and irrigation management binding",
+  "status": "PREREGISTERED_DESIGN",
+  "production_changes": false,
+  "imported_authority": {
+    "dummy12": "06f72519ecc037ce2517986e0a74296d9c63b7b8",
+    "dummy14": "bd1e259330525f741aca750c18e9e7c63382fd4f",
+    "dummy15": "f2473fd31edcc226adc52451e385d4e13a11d247"
+  },
+  "contract": {
+    "request": "max(0,W_target-W_r_committed)",
+    "delivered": "min(request,available_supply)",
+    "shortage": "request-delivered; diagnostic only",
+    "next_request": "max(0,W_target-W_r_accepted)",
+    "hydraulic_interface": "H_c only; irrigation is external root input"
+  },
+  "gates": {
+    "mass_abs_m": 2e-10,
+    "request_frozen": true,
+    "no_shortage_persistence": true,
+    "no_direct_root_modflow_transfer": true,
+    "transactional_repeatability": true
+  },
+  "nonclaims": [
+    "no production SWAP irrigation equivalence",
+    "no crop-stress model",
+    "no Ribasim optimizer equivalence",
+    "no production allocation policy"
+  ]
+}
