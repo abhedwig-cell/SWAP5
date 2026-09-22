@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20H5 v2 after the diagnostic injection-order repair; frozen cases, references and tolerances unchanged.",
+  "next_action": "Execute DUMMY-20H5 v3 clean qualification using the persisted diagnostic-bound repair.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -53,5 +53,7 @@
     "scientific_change": false,
     "change": "For storage_fixed_zero, run the release's normal allocation data-transfer/demand/warm-start preparation first; then constrain basin_storage_change with equal lower/upper bounds at zero immediately before Ribasim.optimize!.",
     "rationale": "Preserves the preregistered zero-storage diagnostic while respecting allocator-owned variable-bound refresh."
-  }
+  },
+  "qualification_attempt": "v3_clean_zero_storage_factor_causality",
+  "qualification_base": "work/ribasim-dummy-01@7a9a64a7f29cba3a9dc93ff9fbb7da315a68e1d0"
 }
