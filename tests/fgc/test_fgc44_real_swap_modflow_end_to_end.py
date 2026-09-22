@@ -253,14 +253,14 @@ def closeout_independent_endpoint(
         root=hi; rroot=rhi
     else:
         root=0.5*(lo+hi)
-        rroot=residual(root)
+        rroot=math.inf
         for _ in range(80):
-            previous=root
             root=0.5*(lo+hi)
+            if root==lo or root==hi:
+                rroot=residual(root)
+                break
             rroot=residual(root)
             if abs(rroot)<=FLUX_TOL:
-                break
-            if root==lo or root==hi or root==previous:
                 break
             if rlo*rroot<=0.0:
                 hi=root
