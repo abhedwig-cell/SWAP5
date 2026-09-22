@@ -269,10 +269,19 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H6",
+      "state": "PREREGISTERED_BLOCKED_BY_20H5",
+      "intended_decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+      "dependency": "DUMMY-20H5 qualification",
+      "scientific_baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H5 zero-storage factor causality control.",
+  "next_authority_action": "Close active DUMMY-20H5. If qualified, execute prospectively frozen DUMMY-20H6 next-boundary memory/forecast separation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
