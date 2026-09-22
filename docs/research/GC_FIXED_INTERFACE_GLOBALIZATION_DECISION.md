@@ -1230,3 +1230,56 @@ F-GC38/F-GC39 = UNCHANGED.
 NO PRODUCTION IMS, HCOF/RHS OR COUPLING-POLICY CHANGE.
 NEXT: FULL DYNAMIC STANDARD-DBD VERSUS NOUR COUPLING COMPARISON.
 ```
+## G21E disposition: both solver configurations converge physically, neither is selected
+
+G21E executed the complete dynamic G16/E3 response-space coupling loop as a
+matched solver-configuration comparison. STANDARD used the admitted MODERATE
+delta-bar-delta setting (`NONMETH=3`); NOUR disabled nonlinear
+under-relaxation from initialization (`NONMETH=0`). Production configuration
+and coupling policy were not changed.
+
+The final authority run, workflow `35735804287`, job `106772601959`,
+first reproduced the archived G21 STANDARD control exactly at the outer-2
+trajectory scale. It then completed both arms:
+
+```text
+                              STANDARD DBD              NOUR
+physical classification       CONVERGED                 CONVERGED
+final head error vs G17       -1.2789381e-10 m          -1.6653345e-15 m
+final coupling residual        2.9505124e-16 m/s        -6.9063539e-21 m/s
+MODFLOW solve calls            17                        24
+accepted outer updates          3                         5
+response contractions           2                         7
+physical SWAP diagnostic runs  34                        63
+```
+
+Both endpoints pass the preregistered `5e-10 m` reference-head comparison and
+the unchanged `1e-15 m/s` external coupling residual gate. Both keep XOLD
+fixed, use one prepared solve, retain diagnostic-only SWAP authority and stop
+before MODFLOW timestep publication.
+
+The strict trajectory story is different. STANDARD reproduces the known G21
+outer-2 offset of `7.215394948190124e-11 m` and remains outside the
+`1e-12 m` trajectory-equivalence gate, yet still converges physically.
+NOUR removes the DBD path-memory mechanism but does not recover the G17 accepted
+trajectory. Its outer-2 lambda=1 response settles only about `2e-13 m` from
+the G17 outer-2 reference head, but that tiny shift changes the real-SWAP
+participant result from status 0 to status 6. The safeguard therefore contracts
+twice at outer 2, three times at outer 3, and reaches the same endpoint through
+a longer five-update path.
+
+This separates three concepts that must not be conflated: prepared-solve path
+memory, physical coupled endpoint convergence, and SWAP participant
+admissibility topology. Removing the first does not automatically improve the
+other two, and G21E provides no basis for selecting NOUR as a production solver
+configuration.
+
+```text
+G21E MATCHED STANDARD-vs-NOUR COMPARISON = QUALIFIED BOUNDED RESEARCH.
+STANDARD DBD = PHYSICALLY CONVERGED; STRICT G21 PATH EQUIVALENCE STILL FALSIFIED.
+NOUR = PHYSICALLY CONVERGED; G17 TRAJECTORY NOT RECOVERED; HIGHER COST IN THIS CASE.
+PRODUCTION IMS CONFIGURATION = UNCHANGED.
+E3 / RESPONSE-SPACE GLOBALIZATION = RESEARCH ONLY.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: RESOLVE THE OUTER-2 STATUS-0 / STATUS-6 ADMISSIBILITY BOUNDARY.
+```
