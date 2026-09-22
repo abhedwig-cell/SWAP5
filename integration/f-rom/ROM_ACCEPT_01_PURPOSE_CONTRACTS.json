@@ -177,14 +177,16 @@
           "blocker": "ROM_STRUCTURAL_ERROR_ALLOCATION_REQUIRED_FOR_COMPONENT_LEVEL_OR_SYNTHETIC_REFERENCE_COMPARISON"
         },
         "direct_application_route": {
-          "state": "FROZEN_LHM_LIKE_END_TO_END_OUTPUT_ENVELOPE",
+          "state": "FROZEN_LHM_LIKE_END_TO_END_OUTPUT_ENVELOPE__POPULATION_BINDING_BLOCKED",
           "envelope_ref": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
           "structural_error_allocation_required": false,
           "rationale": "The external criteria judge the final groundwater application outputs directly rather than allocating an internal reduced-component error.",
           "current_candidate_execution_authorized": false,
-          "blocker": "MATCHING_OBSERVATION_BOUND_LHM_LIKE_HARNESS_POPULATION_AND_BLIND_PROTOCOL_NOT_PREREGISTERED",
+          "blocker": "COMPLETE_ORIGINAL_LHM41_VALIDATION_POPULATION_AUTHORITY_OR_NEW_PUBLIC_SUBSET_PURPOSE_CONTRACT_REQUIRED",
           "protocol_shell": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
-          "next_gate": "Resolve and freeze the protocol shell bindings before any reduced-model application response."
+          "next_gate": "Recover complete original population/manifest, or independently govern a new public-subset application population before any candidate response.",
+          "archive_authority": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json",
+          "population_binding": "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json"
         }
       }
     },
@@ -256,7 +258,8 @@
       "purpose": "GW-D-LHM-END2END",
       "state": true,
       "envelope_ref": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
-      "current_candidate_execution_authorized": false
+      "current_candidate_execution_authorized": false,
+      "data_state": "OFFICIAL_ARCHIVE_QUALIFIED__ORIGINAL_REPORT_POPULATION_INCOMPLETE"
     }
   }
 }
