@@ -393,3 +393,75 @@ This closes a specific research gap:
 The result is still **not production admission**. Broader real-SWAP process
 coverage and the computational/integration contract for obtaining E3 remain
 open before any production HCOF/RHS change.
+
+
+## G12/G12A disposition: active-drainage tangent evidence survives, groundwater anchoring gate does not
+
+G12 extended the E3/P4 research line to the frozen MAP09 active-drainage
+prescribed-head corrector. The SWAP-side evidence is positive but the complete
+G12 gate is **falsified**.
+
+Before the failing groundwater gate, G12 qualified:
+
+- E3_MAP at MAP09 href and both frozen `dh=±1e-6 m` starts;
+- href slope `p≈-6.62836464e-7 s^-1`, with the first two fixed scales
+  `1e-6` and `5e-7 m` agreeing to about `5.8e-9` relative;
+- the independent MAP09A whole-window tangent cross-check;
+- symmetric mass decomposition at the selected scale,
+  `J_S≈+5.72690705e-4`, `J_R≈-5.72690705e-4`, and
+  `J_nonbottom=0` to reported precision;
+- the complete `GW_R05_STORAGE` replay: P1 and P4 both converge from both
+  frozen starts in one outer update, with zero P4 contractions.
+
+G12 nevertheless remains failed. In `GW_R2_STORAGE` the frozen one-shot
+groundwater head-translation calibration misses the preregistered
+`|q_swap(href)-q_gw(href)|<=1e-15 m/s` gate by approximately
+`7.56e-15 m/s`. The remaining G12 policy matrix therefore has no G12
+qualification.
+
+G12A diagnosed that calibration failure without replaying policy or changing
+the failed G12 gate. Seven-point centered local groundwater fits and independent
+fixed 20-step q->Href inversions agree within at most about
+`1.50e-16 m/s` across all three groundwater regimes, while the local fit
+errors themselves are at most about `1.74e-22 m/s`.
+
+The one-shot anchor misses are regime dependent:
+
+```text
+GW_R05_STORAGE : qref - q_gw(href) ≈ -5.4e-16 m/s
+GW_R2_STORAGE  : qref - q_gw(href) ≈ -7.56e-15 m/s
+GW_MIXED       : qref - q_gw(href) ≈ -1.748e-12 m/s
+```
+
+The independent direct inversions reproduce essentially the same offsets.
+Therefore the G12 failure mechanism is not inadequate local affine fitting.
+It is the one-shot head-bias anchoring rule: a head translation inferred from
+one constant-flux solve does not force the translated model to satisfy
+`q_gw(href)=qref` at the requested coupling tolerance in every groundwater
+response regime.
+
+Consequently:
+
+```text
+G12 = FALSIFIED UNDER ITS ORIGINAL GROUNDWATER-ANCHOR CONTRACT.
+G12A = QUALIFIED DIAGNOSTIC OF THE FAILURE MECHANISM.
+DO NOT RELAX OR RETUNE G12.
+NO PRODUCTION HCOF/RHS CHANGE.
+```
+
+## G12B candidate: active-drainage replay with local groundwater authority
+
+G12B is preregistered as separate evidence. It keeps the MAP09 carrier,
+E3_MAP, the two `±1e-6 m` starts, P1/P4 policies, factor-1/2 safeguard and
+coupling tolerances unchanged. For each groundwater regime it instead reuses
+and independently remeasures the G12A-qualified local response
+`q_gw=a(H-href)+q_at_href`.
+
+An independent 50-bisection SWAP-groundwater reference root is required inside
+the same fixed `±1e-6 m` interval. G12B can pass only if P4 converges from
+both starts in all three regimes and the final head agrees with that
+independent root within `5e-10 m`.
+
+A G12B PASS would extend E3/P4 research evidence to the active-drainage MAP09
+carrier, but it still would not be production admission. Tangent-acquisition
+cost and the explicit production ownership/integration contract remain open.
