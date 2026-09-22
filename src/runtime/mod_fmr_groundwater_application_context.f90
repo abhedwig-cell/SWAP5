@@ -40,7 +40,6 @@ module mod_fmr_groundwater_application_context
     integer(int64), allocatable :: participant_handles(:)
     integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
-    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: current_terms(:)
@@ -85,6 +84,7 @@ contains
     integer, intent(out) :: status
 
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: terms(:)
