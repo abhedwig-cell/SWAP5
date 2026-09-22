@@ -8,9 +8,9 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20H4 closeout; causal expectations are frozen prospectively.",
-  "next_action": "After DUMMY-20H4 qualification, rebind and implement without changing frozen LP outcomes.",
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Complete runner/workflow and execute frozen DUMMY-20H5 zero-storage factor causality control.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -21,5 +21,7 @@
     ],
     "scientific_change": false,
     "note": "Prepared while DUMMY-20H4 is active. No runner, workflow gate or execution before DUMMY-20H4 closeout and qualification."
-  }
+  },
+  "implementation_baseline": "04458b9197a2115b7479790d938ac5a965977114",
+  "recovery_point": "DUMMY-20H4 qualified; prospectively frozen DUMMY-20H5 generator/verifier are now implementation-ready."
 }
