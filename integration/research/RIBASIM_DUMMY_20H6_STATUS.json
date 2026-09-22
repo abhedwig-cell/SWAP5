@@ -13,5 +13,14 @@
   "prepared_scope": "Exact-release t=24 accepted-state LP oracle separating accepted storage memory from current active-River forcing.",
   "next_action": "After DUMMY-20H5 closes, rebind and implement without changing frozen references.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "GENERATOR_AND_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_paths": [
+      "tests/research/generate_ribasim_dummy_20h6_next_boundary.py",
+      "tests/research/real_ribasim_20h6_next_boundary_memory.jl"
+    ],
+    "scientific_change": false,
+    "note": "Prepared while DUMMY-20H5 is active. No runner/workflow/qualification branch before DUMMY-20H5 closeout."
+  }
 }
