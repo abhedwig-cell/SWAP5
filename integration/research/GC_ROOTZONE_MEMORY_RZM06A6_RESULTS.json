@@ -1,0 +1,658 @@
+{
+  "carrier": {
+    "active_nodes": 4,
+    "dz_native": [
+      0.5,
+      0.5,
+      1,
+      1
+    ],
+    "geometry_semantics": "metre-scale per research bridge comment",
+    "pressure_head_semantics": "native HeadCalc centimetre coordinate",
+    "solver_scope": "real HeadCalc with explicit B110 constitutive provider on focused FSI fixture",
+    "z_native": [
+      -0.25,
+      -0.75,
+      -1.5,
+      -2.5
+    ]
+  },
+  "disposition": "QUALIFIED_NODE_PROFILE_AUDIT",
+  "nonclaims": [
+    "no H2 support or falsification from A6 alone",
+    "no production diagnostic ABI",
+    "no production coupling admission",
+    "no claim that the four-node fixture represents a full real-SWAP discretization"
+  ],
+  "pair_evidence": [
+    {
+      "A": "NEG_N100_R0_EARLY",
+      "B": "NEG_N100_R0_LATE",
+      "aggregate_delta_M1_native": 0.0000014280940667799058,
+      "aggregate_delta_profile_water_native": 0.0000028042548860796046,
+      "delta_pressure_head_native_by_node": [
+        0.0020566667008807826,
+        0.0014499573308768277,
+        0.0008591142718330502,
+        0.0002838363975001812
+      ],
+      "delta_storage_native_by_node": [
+        9.880332503819922e-7,
+        7.012935803185627e-7,
+        8.366563156725348e-7,
+        2.78271739762026e-7
+      ],
+      "delta_water_content_by_node": [
+        0.0000019760665007639844,
+        0.0000014025871606371254,
+        8.366563156725348e-7,
+        2.78271739762026e-7
+      ],
+      "l1_redistributed_storage_native": 0.0000028042548861351158,
+      "max_abs_delta_pressure_head_native": 0.0020566667008807826,
+      "max_abs_delta_water_content": 0.0000019760665007639844,
+      "node_storage_minus_aggregate_delta_native": 5.551115123125783e-17,
+      "signed_node_storage_difference_native": 0.0000028042548861351158
+    },
+    {
+      "A": "POS_N100_R0_EARLY",
+      "B": "POS_N100_R0_LATE",
+      "aggregate_delta_M1_native": -0.000001428162714312009,
+      "aggregate_delta_profile_water_native": -0.0000028043371940178474,
+      "delta_pressure_head_native_by_node": [
+        -0.00205678070936699,
+        -0.0014500152971805846,
+        -0.000859136085892942,
+        -0.00028384073365828044
+      ],
+      "delta_storage_native_by_node": [
+        -9.880742387613495e-7,
+        -7.013147552137333e-7,
+        -8.366727360931137e-7,
+        -2.782754638941398e-7
+      ],
+      "delta_water_content_by_node": [
+        -0.000001976148477522699,
+        -0.0000014026295104274666,
+        -8.366727360931137e-7,
+        -2.782754638941398e-7
+      ],
+      "l1_redistributed_storage_native": 0.0000028043371939623363,
+      "max_abs_delta_pressure_head_native": 0.00205678070936699,
+      "max_abs_delta_water_content": 0.000001976148477522699,
+      "node_storage_minus_aggregate_delta_native": 5.551115123125783e-17,
+      "signed_node_storage_difference_native": -0.0000028043371939623363
+    },
+    {
+      "A": "NEG_N100_R50_EARLY",
+      "B": "NEG_N100_R50_LATE",
+      "aggregate_delta_M1_native": 4.6629367034256575e-15,
+      "aggregate_delta_profile_water_native": 1.2434497875801753e-14,
+      "delta_pressure_head_native_by_node": [
+        7.275957614183426e-12,
+        6.295408638834488e-12,
+        4.519051799434237e-12,
+        1.6342482922482304e-12
+      ],
+      "delta_storage_native_by_node": [
+        3.497202527569243e-15,
+        3.0531133177191805e-15,
+        4.440892098500626e-15,
+        1.5543122344752192e-15
+      ],
+      "delta_water_content_by_node": [
+        6.994405055138486e-15,
+        6.106226635438361e-15,
+        4.440892098500626e-15,
+        1.5543122344752192e-15
+      ],
+      "l1_redistributed_storage_native": 1.2545520178264269e-14,
+      "max_abs_delta_pressure_head_native": 7.275957614183426e-12,
+      "max_abs_delta_water_content": 6.994405055138486e-15,
+      "node_storage_minus_aggregate_delta_native": 1.1102230246251565e-16,
+      "signed_node_storage_difference_native": 1.2545520178264269e-14
+    }
+  ],
+  "preregistration_commit": "bf201af7c604a94b3fe36bc5ef1eb7674156c8f6",
+  "production_changes": false,
+  "reconstruction_tolerance_native": 1e-13,
+  "runs": {
+    "BASELINE": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 0,
+        "max_abs_mass_residual_native": 0,
+        "total_retries": 0,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 0
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024449665297503,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631535459627,
+          "root_water_cm": 0.10377346899380081
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -75,
+            -74,
+            -73,
+            -72
+          ],
+          "water_content": [
+            0.34591156331266937,
+            0.3468756267783366,
+            0.34784621688932904,
+            0.3488233416111305
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024449665297506,
+          "profile_water": 1.0430631535459625,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.10377346899380081
+        },
+        "reconstruction_error": {
+          "distribution_moment": -2.220446049250313e-16,
+          "profile_water": -2.220446049250313e-16,
+          "root_water": 0
+        },
+        "state": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "name": "BASELINE"
+    },
+    "NEG_N100_R0_EARLY": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 200,
+        "max_abs_mass_residual_native": 2.117582368135751e-22,
+        "total_retries": 120,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 120
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -74.99999706136306,
+            -73.99999706136306,
+            -72.99999706136306,
+            -71.99999706136308
+          ],
+          "water_content": [
+            0.3459115661361222,
+            0.3468756296209542,
+            0.3478462197511393,
+            0.34882334449215224
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024449665579505,
+          "profile_water": 1.0430631621218298,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.10377346984083664
+        },
+        "reconstruction_error": {
+          "distribution_moment": 0,
+          "profile_water": 0,
+          "root_water": 0
+        },
+        "state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ]
+      },
+      "name": "NEG_N100_R0_EARLY"
+    },
+    "NEG_N100_R0_LATE": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 200,
+        "max_abs_mass_residual_native": 2.117582368135751e-22,
+        "total_retries": 60,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 60
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024435384638837,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043065966376716,
+          "root_water_cm": 0.10377406266078688
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -74.99794039466218,
+            -73.99854710403218,
+            -72.99913794709123,
+            -71.99971322496557
+          ],
+          "water_content": [
+            0.34591354220262294,
+            0.34687703220811483,
+            0.34784705640745495,
+            0.348823622763892
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024435384638837,
+          "profile_water": 1.043065966376716,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.10377406266078688
+        },
+        "reconstruction_error": {
+          "distribution_moment": 0,
+          "profile_water": 0,
+          "root_water": 0
+        },
+        "state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ]
+      },
+      "name": "NEG_N100_R0_LATE"
+    },
+    "NEG_N100_R50_EARLY": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 250,
+        "max_abs_mass_residual_native": 2.117582368135751e-22,
+        "total_retries": 120,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 120
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -74.99999706136306,
+            -73.99999706136306,
+            -72.99999706136306,
+            -71.99999706136308
+          ],
+          "water_content": [
+            0.3459115661361222,
+            0.3468756296209542,
+            0.3478462197511393,
+            0.34882334449215224
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024449665579505,
+          "profile_water": 1.0430631621218298,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.10377346984083664
+        },
+        "reconstruction_error": {
+          "distribution_moment": 0,
+          "profile_water": 0,
+          "root_water": 0
+        },
+        "state": [
+          250,
+          2.4999999999999907,
+          0,
+          0
+        ]
+      },
+      "name": "NEG_N100_R50_EARLY"
+    },
+    "NEG_N100_R50_LATE": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 250,
+        "max_abs_mass_residual_native": 2.117582368135751e-22,
+        "total_retries": 120,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 120
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024449665579458,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218422,
+          "root_water_cm": 0.10377346984083875
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -74.99999706135578,
+            -73.99999706135677,
+            -72.99999706135854,
+            -71.99999706136144
+          ],
+          "water_content": [
+            0.34591156613612917,
+            0.3468756296209603,
+            0.3478462197511437,
+            0.3488233444921538
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024449665579458,
+          "profile_water": 1.0430631621218422,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.10377346984083875
+        },
+        "reconstruction_error": {
+          "distribution_moment": 0,
+          "profile_water": 0,
+          "root_water": 0
+        },
+        "state": [
+          250,
+          2.4999999999999907,
+          0,
+          0
+        ]
+      },
+      "name": "NEG_N100_R50_LATE"
+    },
+    "POS_N100_R0_EARLY": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 200,
+        "max_abs_mass_residual_native": 2.117582368135751e-22,
+        "total_retries": 120,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 120
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024449665579505,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631621218298,
+          "root_water_cm": 0.10377346984083664
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -74.99999706136309,
+            -73.99999706136309,
+            -72.99999706136309,
+            -71.99999706136308
+          ],
+          "water_content": [
+            0.3459115661361222,
+            0.3468756296209542,
+            0.3478462197511393,
+            0.34882334449215224
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024449665579505,
+          "profile_water": 1.0430631621218298,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.10377346984083664
+        },
+        "reconstruction_error": {
+          "distribution_moment": 0,
+          "profile_water": 0,
+          "root_water": 0
+        },
+        "state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ]
+      },
+      "name": "POS_N100_R0_EARLY"
+    },
+    "POS_N100_R0_LATE": {
+      "accepted": true,
+      "aggregate": {
+        "intervals": 200,
+        "max_abs_mass_residual_native": 2.117582368135751e-22,
+        "total_retries": 60,
+        "total_solver_rejections": 0,
+        "total_temporal_rejections": 60
+      },
+      "endpoint": {
+        "aggregate_obs": {
+          "distribution_moment_cm": -1.5024463947206648,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430603577846358,
+          "root_water_cm": 0.1037728769962934
+        },
+        "diagnostic_read_only": true,
+        "nodes": {
+          "active_nodes": 4,
+          "dz_native": [
+            0.5,
+            0.5,
+            1,
+            1
+          ],
+          "pressure_head_native": [
+            -75.00205384207246,
+            -74.00144707666027,
+            -73.00085619744898,
+            -72.00028090209673
+          ],
+          "water_content": [
+            0.34590958998764465,
+            0.34687422699144377,
+            0.3478453830784032,
+            0.34882306621668835
+          ],
+          "z_native": [
+            -0.25,
+            -0.75,
+            -1.5,
+            -2.5
+          ]
+        },
+        "reconstructed": {
+          "distribution_moment": -1.5024463947206648,
+          "profile_water": 1.0430603577846358,
+          "root_overlap_by_node": [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          "root_water": 0.1037728769962934
+        },
+        "reconstruction_error": {
+          "distribution_moment": 0,
+          "profile_water": 0,
+          "root_water": 0
+        },
+        "state": [
+          200,
+          2.0000000000000013,
+          0,
+          0
+        ]
+      },
+      "name": "POS_N100_R0_LATE"
+    }
+  },
+  "schema": "swap5.gc_rootzone_memory.rzm06a6.node_profile_audit.v1",
+  "qualification": {
+    "branch": "work/gc-dummy-swap-rootzone-memory",
+    "preregistration_commit": "bf201af7c604a94b3fe36bc5ef1eb7674156c8f6",
+    "implementation_commits": [
+      "38e5f42203a916ae1219adc31e55034d4fbf78cc",
+      "9be99879d44d731be44cd4ec1aff9681f599c5b3",
+      "dcd861d02f4d26eeaaa677ee048622ff44ffafd5"
+    ],
+    "ci_binding_commit": "79414aac4aecde52f6979fff59b00eaa18de0fb5",
+    "workflow_run": 35733571697,
+    "workflow_job": 106765051719,
+    "execution_gate": "PASS",
+    "production_changes": false
+  },
+  "interpretation": {
+    "classification": "QUALIFIED_NO_AGGREGATE_MASKING__FOUR_NODE_H2_CEILING",
+    "reconstruction": "All W_profile, root-water and M1 reconstructions match the existing aggregate diagnostic at or below floating-point roundoff, well inside the frozen 1e-13 gate.",
+    "node_sign_structure": "For both R0 early/late pairs every node storage difference has the same sign. There is no cancellation between upper and lower nodes.",
+    "l1_vs_total": [
+      {
+        "pair": [
+          "NEG_N100_R0_EARLY",
+          "NEG_N100_R0_LATE"
+        ],
+        "l1_redistributed_storage_native": 0.0000028042548861351158,
+        "abs_total_storage_difference_native": 0.0000028042548860796046,
+        "difference": 5.551115123125783e-17
+      },
+      {
+        "pair": [
+          "POS_N100_R0_EARLY",
+          "POS_N100_R0_LATE"
+        ],
+        "l1_redistributed_storage_native": 0.0000028043371939623363,
+        "abs_total_storage_difference_native": 0.0000028043371940178474,
+        "difference": -5.551115123125783e-17
+      }
+    ],
+    "maximum_node_pressure_head_difference_native": 0.00205678070936699,
+    "maximum_node_water_content_difference": 0.000001976148477522699,
+    "maximum_R0_M1_difference_native": 0.000001428162714312009,
+    "maximum_R0_profile_water_difference_native": 0.0000028043371940178474,
+    "R50_l1_storage_native": 1.2545520178264269e-14,
+    "root_zone_geometry": "The upper 0.30 m diagnostic overlaps only node 1 in this four-node layout, so root-water is not an independently resolved multi-node root-zone distribution observable.",
+    "scientific_decision": "Do not continue H2 forcing searches on the current four-node carrier. The qualified evidence shows genuinely tiny node-level state separation and rapid relaxation, not aggregate masking. Preserve H2 thresholds and move to a richer real-SWAP profile/discretization carrier."
+  },
+  "limitations": [
+    "This ceiling decision applies to the focused four-node FSI carrier, not to SWAP generally.",
+    "A6 itself does not support or falsify H2; it diagnoses why A2-A5 cannot construct the preregistered H2 pair on this carrier.",
+    "Pressure heads retain native HeadCalc centimetre semantics while z/dz and storage diagnostics use the metre-scale fixture geometry.",
+    "The existing aggregate ABI field suffixes ending in _cm are semantically misleading for geometry-derived storage and moment quantities.",
+    "No production code or coupling API was changed."
+  ]
+}
