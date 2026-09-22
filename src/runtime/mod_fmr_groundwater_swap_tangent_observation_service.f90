@@ -100,7 +100,7 @@ contains
     if (participant%has_live_candidate()) return
 
     self%logical_requests = self%logical_requests + 1
-    key = transfer(prescribed_head_m, key)
+    key = transfer(prescribed_head_m, 0_int64)
 
     do i = 1, cache_size(self)
       if (self%cache(i)%head_key == key) then
