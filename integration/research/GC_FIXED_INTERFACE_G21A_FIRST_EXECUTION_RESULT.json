@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21a.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21A",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21A_PREREGISTRATION.json",
+  "tested_commit": "824e3728e3067d69bc5302c7ac1665f41146ea10",
+  "workflow_run": 35729908788,
+  "workflow_job": 106752612768,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_RUNNER_BLOCKED_BY_ALREADY_ADMITTED_G21_NEGATIVE_TEST",
+  "failure": {
+    "g21a_started": false,
+    "blocking_test": "tests/research/test_gc_fixed_interface_g21_dynamic_response_globalization.py",
+    "blocking_assertion": "G21 accepted head drift outer=2: 7.215394948190124e-11",
+    "interpretation": "The runner still treated the already-persisted G21 scientific falsification as an unexpected positive-regression failure, so set -e/pipefail exited before the G21A diagnostic could execute."
+  },
+  "repair_contract": [
+    "Do not alter G21 code, gates, result, tolerances or the observed outer-2 divergence.",
+    "Wrap the G21 invocation as an expected-negative regression: require a nonzero G21 exit and the exact persisted outer-2 assertion before continuing.",
+    "Any G21 success or any different failure remains fail-closed.",
+    "Run G21A only after the known G21 falsification has been reproduced."
+  ],
+  "disposition": "PRESERVED_NOT_RELABELLED_NO_G21A_SCIENTIFIC_VERDICT"
+}
