@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.coupling.ribasim_release_zero_storage_factor_causality.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H5",
+  "decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+  "authority": {
+    "qualification_head": "5ebb329990877c591254f045ee46921b589a62c4",
+    "workflow_run": 35741211340,
+    "workflow_job": 106791147772,
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "conclusion": "success"
+  },
+  "observations": {
+    "storage_free": {
+      "low_storage_factor": 1,
+      "implicit_negative_forcing_m3": 7.999914667576882,
+      "storage_change_m3": -35.99991466757689,
+      "root_allocation_m3_per_day": 40.00000000000001,
+      "external_allocation_m3_per_day": 20.000000000000004
+    },
+    "storage_fixed_zero": {
+      "low_storage_factor": 0,
+      "implicit_negative_forcing_m3": 7.999914667576882,
+      "storage_change_m3": 0,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0
+    }
+  },
+  "qualified_claims": [
+    "Removing LevelDemand while leaving Basin storage change free eliminates the low_storage_factor collapse: alpha is 1 and both managed demands are fully allocated by drawing accepted Basin storage.",
+    "Imposing only the preregistered diagnostic storage_change=0 constraint, still without LevelDemand, restores alpha=0 and the 32/0 allocation pattern.",
+    "The DUMMY-20H3/20H4 alpha collapse is therefore not specific to LevelDemand bookkeeping in the tested v2026.1.1 topology; a storage-preservation requirement is sufficient for lexicographic allocation to use low_storage_factor as a forecast degree of freedom.",
+    "The technical v1 failure was an injection-order failure only. The v3 repair preserved the frozen model, references and tolerances and applied the zero-storage bounds only after Ribasim refreshed allocator-owned bounds."
+  ],
+  "mathematical_contract": {
+    "tested_balance": "source + accepted_storage_draw = managed_allocation + alpha * implicit_negative_forcing",
+    "free_storage_case": "alpha=1 permits storage draw and full 40+20 m3/day UserDemand allocation.",
+    "zero_storage_case": "With storage_change=0 and priority-2 root demand ahead of priority-3 external demand, alpha=0 permits the 32 m3/day source to remain available to root demand."
+  },
+  "boundaries": [
+    "The hard storage_change=0 intervention is diagnostic only.",
+    "No claim that every LevelDemand configuration is equivalent to a hard zero-storage constraint.",
+    "No upstream defect classification.",
+    "No production prescription or production-source admission.",
+    "The result is qualified only for the tested Ribasim v2026.1.1 topology, priorities and forcing."
+  ],
+  "downstream": "Release prospectively frozen DUMMY-20H6 to test accepted-storage memory versus current River-forcing forecast separation at the next allocation boundary."
+}
