@@ -256,6 +256,12 @@ on:
       - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
       - 'tests/research/real_ribasim_20h4_physical_lp_factor.jl'
       - 'tests/research/run_ribasim_dummy_20h4.sh'
+      - 'integration/research/RIBASIM_DUMMY_20H5_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H5_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/generate_ribasim_dummy_20h5_zero_storage.py'
+      - 'tests/research/real_ribasim_20h5_zero_storage_causality.jl'
+      - 'tests/research/run_ribasim_dummy_20h5.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -1127,4 +1133,27 @@ jobs:
           working-directory: .ribasim-product-release
       - name: Run physical-versus-LP low-storage-factor diagnostic
         run: bash tests/research/run_ribasim_dummy_20h4.sh
+
+  ribasim-release-zero-storage-causality-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20h5-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact product Ribasim release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Run zero-storage factor causality control
+        run: bash tests/research/run_ribasim_dummy_20h5.sh
 
