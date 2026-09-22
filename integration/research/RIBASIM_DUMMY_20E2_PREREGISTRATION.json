@@ -61,7 +61,23 @@
           "value": -8
         }
       ],
-      "mapping": "single passive Drainage bound index 0 -> Ribasim Basin index 0"
+      "mapping": "single passive Drainage bound index 0 -> Ribasim Basin index 0",
+      "executable_drainage_representation": {
+        "conductance_m2_per_day": 16,
+        "elevation_schedule_m": [
+          {
+            "from_s": 0,
+            "to_s": 21600,
+            "value": 0.5
+          },
+          {
+            "from_s": 21600,
+            "to_s": 86400,
+            "value": 0
+          }
+        ],
+        "fixed_head_m": 0.5
+      }
     }
   },
   "independent_continuous_reference": {
@@ -127,5 +143,32 @@
     "no changing activation time, transfer magnitude, references or tolerances after runtime output"
   ],
   "pass_decision": "RIBASIM_DUMMY_20E2_QUALIFIED_POSTALLOCATION_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
-  "fail_decision": "RIBASIM_DUMMY_20E2_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20E2_BLOCKED",
+  "technical_representation_amendment": {
+    "state": "PROSPECTIVE_BEFORE_RUNTIME",
+    "scientific_change": false,
+    "reason": "Pinned iMOD-Python validates active Drainage conductance as strictly positive. Representing the frozen zero-first-step flux with conductance=0 would therefore be a package-validity artifact.",
+    "original_representation": "conductance 0 during 0-6 h, then 16 m2/day",
+    "executable_representation": "conductance fixed at 16 m2/day; drain elevation equals fixed head 0.5 m during 0-6 h and switches to 0.0 m from 6 h onward",
+    "invariant_physical_flux_schedule_m3_per_day": [
+      {
+        "from_s": 0,
+        "to_s": 21600,
+        "value": 0
+      },
+      {
+        "from_s": 21600,
+        "to_s": 86400,
+        "value": -8
+      }
+    ],
+    "unchanged": [
+      "activation boundary 6 h",
+      "groundwater transfer magnitude",
+      "Ribasim allocation.dt and saveat",
+      "continuous references",
+      "hypotheses",
+      "tolerances"
+    ]
+  }
 }
