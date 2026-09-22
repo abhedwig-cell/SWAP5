@@ -76,6 +76,11 @@ class Fgc44RealSwap:
         self.lib.fgc44_g16_counts_c.argtypes=[*([ctypes.POINTER(ctypes.c_int)]*4)]
         self.lib.fgc44_g16_end_session_c.restype=ctypes.c_int
         self.lib.fgc44_g16_end_session_c.argtypes=[]
+        self.lib.fgc44_g21g_backend_observation_c.restype=ctypes.c_int
+        self.lib.fgc44_g21g_backend_observation_c.argtypes=[
+            *([ctypes.POINTER(ctypes.c_int)]*16),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -266,6 +271,36 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_g16_end_session_c()
         if status:
             raise RuntimeError(f"G16 end session failed: {status}")
+
+
+    def g21g_backend_observation(self) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(16)]
+        reals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.fgc44_g21g_backend_observation_c(
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"G21G backend observation failed: {status}")
+        names=[
+            "solver_executed","solver_status","nonlinear_iterations","jacobian_builds",
+            "linear_solves","backtracking_attempts","alternative_solver_calls","internal_retries",
+            "temporal_indicator_enabled","temporal_previous_derivative_available",
+            "temporal_current_derivative_available","temporal_indicator_status",
+            "temporal_indicator_available","temporal_head_budget_supplied",
+            "temporal_head_budget_valid","temporal_certificate_available",
+        ]
+        result={k:int(v.value) for k,v in zip(names,ints)}
+        for key in [
+            "solver_executed","temporal_indicator_enabled","temporal_previous_derivative_available",
+            "temporal_current_derivative_available","temporal_indicator_available",
+            "temporal_head_budget_supplied","temporal_head_budget_valid","temporal_certificate_available",
+        ]:
+            result[key]=bool(result[key])
+        result["temporal_head_inf_bound"]=reals[0].value
+        result["temporal_head_budget"]=reals[1].value
+        result["temporal_normalized_indicator"]=reals[2].value
+        return result
 
     def g14_fused_run_count(self) -> int:
         value=ctypes.c_int()
