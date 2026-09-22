@@ -1,0 +1,294 @@
+name: F-ROM-PURPOSE P1 Reference qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-purpose-p1-reference-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reference:
+    name: ref-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        purpose: [surface, gw]
+        material: [B01, B14]
+        route: [R512_T32, R1024_T32, R2048_T32, R2048_T16, R2048_T8]
+        opt: [0, 2]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen P1 Reference authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json'))
+          def blob(path):
+              return subprocess.check_output(['git','hash-object',path],text=True).strip()
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P1_REFERENCE_OR_CANDIDATE_RESPONSE'
+          assert p['scientific_firewall']['reference_response_generated'] is False
+          assert p['scientific_firewall']['candidate_response_generated'] is False
+          assert b['status']=='BOUND_BEFORE_FIRST_P1_REFERENCE_RESPONSE'
+          for path, expected in b['implementation_blobs'].items():
+              assert blob(path)==expected, (path,blob(path),expected)
+          print('ROM_PURPOSE_P1_REFERENCE_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p1_surface_reference.py             tests/rom/materialize_rom_purpose_p1_gw_reference.py             tests/rom/analyze_rom_purpose_p1_reference.py
+
+      - name: Resolve numerical route
+        id: cfg
+        run: |
+          set -euo pipefail
+          case "${{ matrix.route }}" in
+            R512_T32)  echo "nodes=512" >> "$GITHUB_OUTPUT"; echo "dz=0.3125" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R1024_T32) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R2048_T32) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R2048_T16) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T8)  echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=8" >> "$GITHUB_OUTPUT" ;;
+            *) exit 2 ;;
+          esac
+
+      - name: Materialize fresh blind Reference
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"
+          material="${{ matrix.material }}"
+          factor="${{ steps.cfg.outputs.factor }}"
+          generated="tests/rom/rom_purpose_p1_generated_${purpose}_${material}.f90"
+          manifest="/tmp/manifest.json"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then
+              source="tests/rom/rom_purpose_p1_surface_b01_source.f90"
+            else
+              source="tests/rom/rom_purpose_p1_surface_b14_source.f90"
+            fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor "$factor"               --output "$generated" --manifest "$manifest"
+          else
+            python3 tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90               --material "$material" --temporal-factor "$factor"               --output "$generated" --manifest "$manifest"
+          fi
+          python3 - "$manifest" "$purpose" "$material" "$factor" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1]))
+          assert m['response_based'] is False
+          assert m['solver_or_physics_changed'] is False
+          assert m['material']==sys.argv[3]
+          assert m['temporal_factor']==int(sys.argv[4])
+          print('ROM_PURPOSE_P1_MATERIALIZATION_FIREWALL=PASS')
+          PY
+
+      - name: Compile and execute Reference
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"
+          route="${{ matrix.route }}"; opt="${{ matrix.opt }}"
+          n="${{ steps.cfg.outputs.nodes }}"; dz="${{ steps.cfg.outputs.dz }}"; factor="${{ steps.cfg.outputs.factor }}"
+          generated="tests/rom/rom_purpose_p1_generated_${purpose}_${material}.f90"
+          stub="p1_${purpose}_${material}_${route}_o${opt}_stubs.f90"
+          python3 tests/rom/materialize_f_rom0_headcalc_stubs.py             --source tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/p1_${purpose}_${material}_${route}_o${opt}"
+          python3 tests/rom/compile_f_rom0_fortran_closure.py             --root . --stub "$stub" --target "$generated"             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
+          mkdir -p slice
+          log="slice/${purpose}_${material}_${route}_o${opt}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          if [[ "$purpose" == "surface" ]]; then
+            grep -Fq 'LAREDYN0R_ROMPURP_P1_SURFACE_REFERENCE_GENERATED=TRUE' "$log"
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+            test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq $((4*1024*factor))
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq $((4*1024*16))
+          else
+            grep -Fq 'LAREGW1_ROMPURP_P1_GW_REFERENCE_GENERATED=TRUE' "$log"
+            grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+            test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq $((4*1024*factor))
+            test "$(grep -c '^LAREGW1_PROFILE|' "$log")" -eq $((4*1024*16))
+          fi
+          cp /tmp/manifest.json slice/
+          sha256sum slice/* > slice/sha256.txt
+          git diff --quiet -- src reference
+          echo "ROM_PURPOSE_P1_REFERENCE_SLICE=PASS|${purpose}|${material}|${route}|O${opt}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1ref-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}
+          path: slice/
+          if-no-files-found: error
+
+  analyze:
+    needs: reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      candidate_authorized: ${{ steps.result.outputs.candidate_authorized }}
+      status: ${{ steps.result.outputs.status }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1ref-*
+          path: /tmp/p1ref
+          merge-multiple: false
+
+      - name: Reconstruct O0/O2-identical routes
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/routes P1_REFERENCE_EVIDENCE
+          for purpose in surface gw; do
+            for material in B01 B14; do
+              for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+                for opt in 0 2; do
+                  name="${purpose}_${material}_${route}_o${opt}.txt"
+                  src="$(find /tmp/p1ref -type f -name "$name" -print -quit)"
+                  test -n "$src"
+                  cp "$src" "/tmp/routes/$name"
+                done
+                cmp "/tmp/routes/${purpose}_${material}_${route}_o0.txt"                     "/tmp/routes/${purpose}_${material}_${route}_o2.txt"
+              done
+            done
+          done
+          echo ROM_PURPOSE_P1_O0_O2_IDENTITY=PASS
+
+      - name: Execute frozen Reference qualification
+        id: result
+        run: |
+          set -euo pipefail
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p1_reference.py             --prereg integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json             --root /tmp/routes             --output P1_REFERENCE_EVIDENCE/ROM_PURPOSE_P1_REFERENCE_RESULT.json             | tee P1_REFERENCE_EVIDENCE/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 0 -o "$rc" -eq 3
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          r=json.load(open('P1_REFERENCE_EVIDENCE/ROM_PURPOSE_P1_REFERENCE_RESULT.json'))
+          print('candidate_authorized='+str(r['candidate_response_authorized']).lower())
+          print('status='+r['status'])
+          PY
+          cp integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json P1_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json P1_REFERENCE_EVIDENCE/
+          sha256sum P1_REFERENCE_EVIDENCE/* > P1_REFERENCE_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p1-reference
+          path: P1_REFERENCE_EVIDENCE/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-purpose
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p1-reference
+          path: /tmp/evidence
+
+      - name: Persist Reference result and closeout
+        env:
+          RESULT_STATUS: ${{ needs.analyze.outputs.status }}
+          CANDIDATE_AUTHORIZED: ${{ needs.analyze.outputs.candidate_authorized }}
+          SOURCE_RUN: ${{ github.run_id }}
+          EXECUTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/evidence/ROM_PURPOSE_P1_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json
+          python3 - <<'PY'
+          import json, os, pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json'))
+          qualified=bool(r['candidate_response_authorized'])
+          status={
+            "schema":"swap5.rom-purpose.p1.status.v1",
+            "workstream":"ROM-PURPOSE",
+            "work_unit":"ROM-PURPOSE-P1",
+            "baseline":"integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+            "checkpoint_commit":os.environ["EXECUTED_SHA"],
+            "implemented":True,
+            "persisted":True,
+            "tested":True,
+            "qualified":qualified,
+            "reference_status":r["status"],
+            "candidate_response_generated":False,
+            "next_action":"STAGE_AND_EXECUTE_FROZEN_P1_CANDIDATES" if qualified else "STOP_BEFORE_CANDIDATES_REFERENCE_QUALITY_BLOCKER",
+            "recovery_point":"integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
+            "blockers":[] if qualified else ["P1_REFERENCE_QUALIFICATION_FAILED"],
+            "last_reconciled_head":os.environ["EXECUTED_SHA"],
+            "last_reconciled_upstream":"bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+            "relevant_paths":[
+              "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json",
+              "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_EXECUTION_BINDING.json",
+              "tests/rom/materialize_rom_purpose_p1_surface_reference.py",
+              "tests/rom/materialize_rom_purpose_p1_gw_reference.py",
+              "tests/rom/analyze_rom_purpose_p1_reference.py"
+            ],
+            "evidence_paths":["integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json"],
+            "dependency_surface":["src/","tests/rom/compile_f_rom0_fortran_closure.py","tests/rom/materialize_f_rom0_headcalc_stubs.py"],
+            "source_workflow_run":int(os.environ["SOURCE_RUN"])
+          }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P1_STATUS.json').write_text(json.dumps(status,indent=2,sort_keys=True)+'\n')
+          rows=[]
+          for purpose,materials in r["results"].items():
+              for material,v in materials.items():
+                  rows.append(f"| {purpose} | {material} | {'PASS' if v['qualified'] else 'FAIL'} | {v['max_abs_transaction_mass_cm']:.3e} |")
+          md=f"""# ROM-PURPOSE P1 Reference qualification closeout
+
+          ## Decision
+
+          **{r['status']}**
+
+          Candidate response authorized: **{str(qualified).lower()}**.
+
+          This closeout is Reference-only. No S4, G4 or U4 response was generated, no representation was selected, and no application tolerance was introduced.
+
+          ## Qualified scope
+
+          | Purpose | Material | Reference gate | Max transaction mass residual (cm) |
+          | --- | --- | --- | ---: |
+          {chr(10).join(rows)}
+
+          The target is R2048_T32 with preregistered three-level space and time qualification. The resulting numerical uncertainty is a Reference uncertainty envelope, not an application-acceptance tolerance.
+
+          ## Firewall
+
+          Reference Richards production code was not changed. RossFast, production groundwater coupling, production physics and admitted solver semantics were not changed. No performance or production-ROM claim follows.
+
+          ## Next step
+
+          {'Execute the already-frozen equal-dimension S4/G4/U4 discriminator and same-partition coarse-Richards diagnostic.' if qualified else 'Stop before candidate response. A new Reference design would require a new prospective authority; the failed gate may not be repaired from candidate results.'}
+          """
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P1_REFERENCE_CLOSEOUT.md').write_text(md)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json                   integration/f-rom/ROM_PURPOSE_P1_STATUS.json                   docs/science/F-ROM_PURPOSE_P1_REFERENCE_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P1: persist Reference qualification" || exit 0
+          git push origin HEAD:work/f-rom-purpose
