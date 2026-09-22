@@ -10,7 +10,7 @@
   "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Use H7 as qualified actual-product authority; select a new falsification dimension before extending this line.",
+  "next_action": "Use guarded H7 v2 as qualified actual-product authority; select a distinct falsification dimension before extending this line.",
   "production_delta": [],
   "reference_delta": [],
   "relevant_paths": [
@@ -24,16 +24,16 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "implementation_baseline": "1f5279656c9078951581cfa3bda8c284da4fb3a3",
-  "recovery_point": "DUMMY-20H7 qualified by frozen run 35745769522.",
+  "recovery_point": "DUMMY-20H7 primary authority is guarded v2 run 35745915889; earlier successful v1 run 35745769522 is retained as supporting duplicate only.",
   "technical_observability_repair": {
     "commit": "8aefb6a5dbc1478f3ee75edacb49f930e6e567d9",
     "scientific_change": false,
     "change": "Verifier now requires allocation.nc record 1 to be t=0 and record 2 to be exactly t=24 h, as already required by the preregistered observability contract."
   },
   "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
-  "workflow_run": 35745769522,
-  "workflow_job": 106806882790,
-  "qualification_head": "b97b7520a6b0d3ec075b3af501d3de9497a04e76",
+  "workflow_run": 35745915889,
+  "workflow_job": 106807390064,
+  "qualification_head": "84f05671bafcd0cd8fe22d115980889bc5491a00",
   "observed_allocation": {
     "times": [
       "2020-01-01T00:00:00",
@@ -47,5 +47,11 @@
       "root_m3_per_day": 39.99037238105666,
       "external_m3_per_day": 0
     }
+  },
+  "confirming_run": {
+    "workflow_run": 35745769522,
+    "workflow_job": 106806882790,
+    "qualification_head": "b97b7520a6b0d3ec075b3af501d3de9497a04e76",
+    "authority_use": "supporting duplicate"
   }
 }
