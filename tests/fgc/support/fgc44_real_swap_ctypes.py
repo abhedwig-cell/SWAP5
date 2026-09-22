@@ -99,6 +99,13 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*10),
             ctypes.POINTER(ctypes.c_double),
         ]
+        self.lib.fgc44_g21k_tolerance_probe_c.restype=ctypes.c_int
+        self.lib.fgc44_g21k_tolerance_probe_c.argtypes=[
+            ctypes.c_double,ctypes.c_double,ctypes.c_int,
+            *([ctypes.c_double]*5),
+            *([ctypes.POINTER(ctypes.c_int)]*10),
+            ctypes.POINTER(ctypes.c_double),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -370,6 +377,31 @@ class Fgc44RealSwap:
         )
         if status:
             raise RuntimeError(f"G21J criterion probe failed: {status}")
+        names=[
+            "result_status","completed","candidate_ready","attempts","retries",
+            "solver_rejections","temporal_rejections","temporal_unavailable_rejections",
+            "mass_rejections","internal_retries",
+        ]
+        out={k:int(v.value) for k,v in zip(names,ints)}
+        out["completed"]=bool(out["completed"])
+        out["candidate_ready"]=bool(out["candidate_ready"])
+        out["completed_t"]=completed_t.value
+        return out
+
+    def g21k_tolerance_probe(
+        self,head_m:float,duration_day:float,max_iterations:int,
+        comp_tol:float,total_tol:float,head_abs_tol:float,head_rel_tol:float,pond_tol:float
+    ) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(10)]
+        completed_t=ctypes.c_double()
+        status=self.lib.fgc44_g21k_tolerance_probe_c(
+            ctypes.c_double(head_m),ctypes.c_double(duration_day),ctypes.c_int(max_iterations),
+            ctypes.c_double(comp_tol),ctypes.c_double(total_tol),ctypes.c_double(head_abs_tol),
+            ctypes.c_double(head_rel_tol),ctypes.c_double(pond_tol),
+            *[ctypes.byref(v) for v in ints],ctypes.byref(completed_t),
+        )
+        if status:
+            raise RuntimeError(f"G21K tolerance probe failed: {status}")
         names=[
             "result_status","completed","candidate_ready","attempts","retries",
             "solver_rejections","temporal_rejections","temporal_unavailable_rejections",
