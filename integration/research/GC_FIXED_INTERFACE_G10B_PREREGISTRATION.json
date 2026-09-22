@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10b.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10B",
+  "title": "Localized groundwater-response replay of the frozen G10 B4 mixed-regime path",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_diagnostic": "integration/research/GC_FIXED_INTERFACE_G10A_RESULT.json",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G10_RESULT.json",
+  "production_changes": false,
+  "question": "Does the frozen B4/GW_MIXED P1/P4 path converge when the globalization merit/reference uses a prospectively frozen local MODFLOW response that resolves the 1e-15 coupling scale, while all SWAP, E3, starts and line-search rules remain unchanged?",
+  "frozen_carrier": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "reference_head_m": -0.7149999311459918,
+    "predictor_u": 0.00119027208545508,
+    "starts_m": [
+      -0.00001,
+      0.00001
+    ]
+  },
+  "groundwater_regime": {
+    "id": "GW_MIXED",
+    "k_m_per_day": 1,
+    "ss_per_m": 0.02,
+    "sy": 0.15,
+    "initial_head_bias_m": 0
+  },
+  "local_response_contract": {
+    "source": "G10A frozen local flux ladder",
+    "q_probes_m_per_s": [
+      -2e-9,
+      -1e-9,
+      -5e-10,
+      -2e-10,
+      -1e-10,
+      -5e-11,
+      0,
+      5e-11,
+      1e-10,
+      2e-10,
+      5e-10,
+      1e-9,
+      2e-9
+    ],
+    "selection_rationale": "Use the largest nested G10A neighborhood. It is fixed before G10B and its observed fit error 3.21e-19 m/s is far below the unchanged G10 1e-15 residual scale.",
+    "fit": "ordinary affine least-squares q_gw(H)=aH+b over all 13 fixed points",
+    "max_allowed_fit_error_m_per_s": 1e-16,
+    "require_positive_slope": true
+  },
+  "reference_root": {
+    "method": "Use the unchanged G10 fixed SWAP head scan and the G10B local q_gw(H) fit; select the first adjacent status-0 sign-changing interval and bisect with the unchanged real-SWAP trial residual.",
+    "independent_check": "Compare the resulting local-affine root head with the G10A direct coupled root -0.7149997332230622 m.",
+    "max_root_head_difference_m": 5e-10
+  },
+  "policies": {
+    "P1_E3": "Unchanged G09D E3 physical Newton using the local GW response only for merit/reference evaluation.",
+    "P4_E3": "Same E3 proposal and unchanged factor-1/2 line search with residual non-increase and max 12 contractions; local GW response replaces only the broad G10 merit/reference oracle."
+  },
+  "convergence": {
+    "max_outer": 12,
+    "flux_tolerance_m_per_s": 1e-15,
+    "head_error_tolerance_m": 5e-10,
+    "merit_abs_tolerance_m_per_s": 1e-18
+  },
+  "gates": [
+    "Carrier href/u/qbot exactly reproduces B4 authority within 1e-14.",
+    "All 13 local constant-flux MODFLOW probes execute from fresh accepted groundwater origin.",
+    "Local affine response fit error <=1e-16 m/s and slope >0.",
+    "A local-affine coupled reference root exists inside the unchanged G10 fixed scan and lies within 5e-10 m of the G10A direct coupled root.",
+    "P4-E3 converges from both frozen G10 starts within 12 outer iterations.",
+    "Every SWAP diagnostic candidate is discarded and accepted revision/time/ledger remain unchanged."
+  ],
+  "interpretation_rules": [
+    "G10 remains falsified; G10B is a new local-merit qualification.",
+    "P4 zero contractions is allowed and means only that the corrected merit accepts the physical Newton proposal; it does not qualify safeguard recovery.",
+    "If P4 still fails under the local response, the failure is no longer attributable to the broad G10 affine oracle alone.",
+    "This work unit qualifies only the B4/GW_MIXED research path; no universal groundwater-response contract is claimed.",
+    "No production HCOF/RHS or coupling source change."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}
