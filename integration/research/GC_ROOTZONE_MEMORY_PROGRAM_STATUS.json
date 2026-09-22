@@ -178,6 +178,15 @@
       "workflow_job": 106799372329,
       "implementation_head": "63000df12a460ad0eecbbe21d42241fa1c1e3d62",
       "evidence_commit": "a85be111f0d7679c25ed1903928fef4e66d691d9"
+    },
+    {
+      "work_unit": "GC-RZM06E03B",
+      "decision": "QUALIFIED_SPLIT_BOUNDARY_STATE_CONSTRUCTION_NO_MATCH",
+      "preregistration_commit": "511b6f9fcf40702786ecb84bc5b253998db214aa",
+      "workflow_run": 35744543880,
+      "workflow_job": 106802617511,
+      "implementation_head": "2b02a5aebeb9e2b8aa96266f7bca77abdbfc7ea9",
+      "evidence_commit": "b6fa91663af9ff1b6cfc5b69294dabae36887747"
     }
   ],
   "current_findings": [
@@ -247,22 +256,23 @@
     "Whole-window bottom exchange differs by 0.0013176066140374587 cm: A=0.0031391986203388456 cm and B=0.004456805234376304 cm.",
     "E02 therefore falsifies H_c plus total-profile-water as a complete state description for this carrier/window, but does not yet falsify H_c plus total-profile-water plus upper-30-cm/root-zone water because the selected pair differs in upper-30-cm storage by about 0.043932 cm.",
     "RZM06E03 qualified the frozen simultaneous zero-divergence recovery construction as NO_MATCH: one pair satisfied both |ΔW_profile|<=1e-4 cm and |ΔW_root30|<=1e-4 cm, but retained only |ΔM1|=0.001103765210785923 cm, about 11.0% of the unchanged 0.01 cm separation gate.",
-    "Within E03, the large vertical-distribution signal co-varies strongly with upper-30-cm recovery: the strongest M1 pair had |ΔM1|=0.07154475561600293 cm but still differed by 0.028245704446707265 cm in W_root30. This closes the frozen simultaneous-throughflow construction without establishing state sufficiency."
+    "Within E03, the large vertical-distribution signal co-varies strongly with upper-30-cm recovery: the strongest M1 pair had |ΔM1|=0.07154475561600293 cm but still differed by 0.028245704446707265 cm in W_root30. This closes the frozen simultaneous-throughflow construction without establishing state sufficiency.",
+    "RZM06E03B split top/bottom timing created two strict equal-total-water endpoints with much larger vertical shifts, but no pair met the unchanged upper-30-cm water gate; the closest accepted pair had |ΔW_root30|=0.0031061682371760213 cm and |ΔM1|=0.007663909788050205 cm.",
+    "RZM06E03B identified a directional admissibility bottleneck: all full-rate BOTTOM_THEN_TOP histories failed during bottom-only phase step 7, while TB_N08 and TB_N09 completed. The next discriminator should reduce flux rate rather than relax state thresholds."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E03B",
+    "id": "GC-RZM06E03C",
     "status": "PREREGISTERED_EXECUTION_PENDING_QUALIFICATION",
-    "preregistration_commit": "511b6f9fcf40702786ecb84bc5b253998db214aa",
-    "scope": "Use temporally split but equal integrated top and bottom boundary transfers to seek strict accepted 16-node origins with the same total profile water and upper-30-cm water but materially different deeper vertical distribution.",
-    "prerequisite": "E03 qualified NO_MATCH for simultaneous equal top/bottom recovery and showed root30 and M1 recovery are strongly co-aligned on that frozen route.",
+    "preregistration_commit": "cc0c6629981602eeb440a66c0b7c9b6558e1ca46",
+    "scope": "Test gentler bottom-first split-boundary histories at 0.5*K0 and 0.25*K0 with proportionally longer phases, retaining equal integrated top/bottom transfer and unchanged root-matched state gates.",
+    "prerequisite": "E03B qualified NO_MATCH and localized the construction bottleneck to full-rate bottom-first extraction.",
     "constraints": [
-      "retain the C01 16x10 cm B01 strict Reference carrier",
+      "retain C01 16x10 cm B01 strict Reference carrier",
       "retain |ΔW_profile|<=1e-4 cm, |ΔW_root30|<=1e-4 cm and |ΔM1|>=1e-2 cm",
-      "use only the preregistered n={8,9,10,11,12} TOP_THEN_BOTTOM and BOTTOM_THEN_TOP families",
-      "pair selection remains response-blind",
-      "only fully completed strict families contribute candidate endpoints",
-      "no fallback, tolerance relaxation, direct physical-state mutation or post-hoc grid extension",
-      "persist any selected pair before E04 response work",
+      "use only preregistered rate and phase-length grids",
+      "selection remains response-blind",
+      "no fallback, retry, tolerance relaxation or direct physical-state mutation",
+      "persist a selected pair before any E04 response work",
       "no production source changes and no H5/RZM06B work"
     ]
   },
@@ -274,6 +284,6 @@
     "no RZM06B/H5 management conclusion",
     "no global real-SWAP state sufficiency claim outside the qualified carrier and frozen experiment windows",
     "no root-matched deeper-profile response-memory causality result yet",
-    "no E03B qualification claim before its named workflow completes"
+    "no E03C qualification claim before its named workflow completes"
   ]
 }
