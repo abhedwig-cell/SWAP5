@@ -176,3 +176,15 @@ grep -Fq 'GC_FIXED_INTERFACE_G11_EXECUTION=PASS' "$BUILD/fgc44-globalization-g11
   echo "GC_FGC44_G11_FAIL missing live safeguard-recovery gate" >&2
   exit 1
 }
+
+
+# G14 research-only fused trial observation. One backend corrector run returns
+# participant-style q/status plus the E3 execution-class diagnostics.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g14_fused_fgc44.py \
+  | tee "$BUILD/fgc44-g14-fused.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G14_FGC44_FUSED_EQUIVALENCE=PASS' "$BUILD/fgc44-g14-fused.txt" || {
+  echo "GC_FGC44_G14_FAIL missing fused-observation equivalence gate" >&2
+  exit 1
+}
