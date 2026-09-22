@@ -1,0 +1,157 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21",
+  "title": "Full dynamic E3 response-space safeguarded outer coupling in one prepared solve",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "ce7f1192dab11e26f15de411861cc076a7e1a31f",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G20_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G19_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G18_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json"
+  ],
+  "question": "Can a complete dynamic outer coupling loop reproduce the frozen G17 safeguarded solution inside one continuously evolving F-GC38 prepared solve by recomputing the qualified research E3 tangent at each accepted coupling head and applying the unchanged P4 factor-1/2 acceptance logic in affine-response space rather than by controlling MODFLOW X directly?",
+  "separation": {
+    "research_subject": "Dynamic multi-outer response-space globalization using G16/E3 observations and one live prepared MODFLOW solve.",
+    "not_claimed": [
+      "Production admission of E3, response-space damping or P4.",
+      "Equivalence outside the frozen affine G11 groundwater stress.",
+      "Compatibility with the fixed-slope first F-GC39 production coupling contract.",
+      "MODFLOW timestep publication.",
+      "Crash-atomic SWAP/MODFLOW/ledger publication.",
+      "Production HCOF/RHS policy."
+    ]
+  },
+  "frozen_case": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "initial_head_m": -0.7149999311459918,
+    "groundwater_a_per_s": 6.888155563779977e-7,
+    "groundwater_intercept": 4.925260259275142e-7,
+    "groundwater_k_m_per_day": 1e-10,
+    "groundwater_ss_per_m": 0,
+    "groundwater_sy_formula": "0.5*u_predictor",
+    "groundwater_initial_head_bias_m": -0.00003332218778007957
+  },
+  "frozen_e3_p4": {
+    "scale_ladder_m": [
+      2.5e-7,
+      1.25e-7,
+      6.25e-8,
+      3.125e-8,
+      1.5625e-8,
+      7.8125e-9,
+      3.90625e-9
+    ],
+    "relative_slope_tolerance": 0.05,
+    "flux_tolerance_m_per_s": 1e-15,
+    "merit_absolute_tolerance_m_per_s": 1e-18,
+    "safeguard": "factor-1/2 response-residual damping",
+    "max_outer": 12,
+    "max_backtrack": 12,
+    "execution_class_fields": [
+      "accepted_substeps",
+      "attempts",
+      "retries",
+      "solver_rejections",
+      "temporal_rejections",
+      "internal_retries",
+      "min_substep",
+      "max_substep"
+    ]
+  },
+  "frozen_g17_reference": {
+    "classification": "CONVERGED",
+    "total_contractions": 2,
+    "final_head_m": -0.715009930492797,
+    "final_residual_m_per_s": -1.0640987109201395e-20,
+    "first_raw_head_m": -0.7150110934482893,
+    "first_raw_status": 6,
+    "accepted_outer_trace": [
+      {
+        "outer": 1,
+        "accepted_head_m": -0.7150027217215662,
+        "contractions": 2,
+        "tangent_mode": "CENTRAL_PAIR_CLASS",
+        "tangent_d_m": 1.25e-7,
+        "tangent_per_s": -0.000001377629615322778
+      },
+      {
+        "outer": 2,
+        "accepted_head_m": -0.7150100297646383,
+        "contractions": 0,
+        "tangent_mode": "BACKWARD_CENTER_CLASS",
+        "tangent_d_m": 6.25e-8,
+        "tangent_per_s": -0.0000015956003185379992
+      },
+      {
+        "outer": 3,
+        "accepted_head_m": -0.715009930492797,
+        "contractions": 0,
+        "tangent_mode": "FORWARD_CENTER_CLASS",
+        "tangent_d_m": 6.25e-8,
+        "tangent_per_s": -0.0000016182837991462862
+      }
+    ],
+    "response_attempt_status_topology": [
+      6,
+      6,
+      0,
+      0,
+      0
+    ]
+  },
+  "algorithm_contract": [
+    "Open exactly one live MODFLOW6 prepared timestep and one prepared solve; capture fixed accepted XOLD.",
+    "Maintain a coupling-head authority h_k. At the initial outer state this is the frozen G11 reference head; after every accepted response phase it is the settled live MODFLOW X head.",
+    "At h_k obtain the current real-SWAP observation through G16 and compute the interface residual against the frozen G19 affine groundwater authority G(h)=a*h+b.",
+    "Convergence requires both an already-settled MODFLOW response state and |q_swap-G(h)| <= 1e-15 m/s. The initial h0 is an initialization reference, not a claim that MODFLOW X has already converged there.",
+    "If not converged, compute E3 dynamically from G16 at h_k using the unchanged G09D/G13 scale ladder, execution-class rules and adjacent-scale 5% gate.",
+    "For the current outer state define q_lambda(h_k)=G(h_k)+lambda*r_k with the newly computed physical tangent p_k held fixed within that outer safeguard sequence.",
+    "Start each outer safeguard sequence at lambda=1. Publish the corresponding affine response and continue the same prepared solve until MODFLOW reports convergence.",
+    "Observe SWAP diagnostically at the settled head. Accept only when participant status is 0 and the absolute interface residual does not exceed |r_k|+1e-18 m/s.",
+    "On rejection, halve lambda and republish/re-solve inside the same prepared solve. Do not restore, prescribe or directly mutate X; do not reset XOLD; do not reopen the prepared solve.",
+    "After an accepted response, advance h_k to that settled head, recompute current SWAP response and E3 on the next outer update, and allow the tangent slope/mode/scale to change.",
+    "At final conjunctive convergence finalize_solve exactly once and stop before finalize_time_step."
+  ],
+  "quantitative_gates": [
+    "Exactly one prepare_time_step and one prepare_solve are used for the whole G21 loop.",
+    "Accepted XOLD is bitwise unchanged after every MODFLOW solve call; the session remains open and non-invalid until final finalize_solve.",
+    "No direct X/XOLD assignment, setter, restore, rollback, reopen or prepared-solve reconstruction is used.",
+    "The first lambda=1 settled response reproduces the G17 raw head within 1e-12 m and has participant status 6.",
+    "The first outer safeguard performs exactly two lambda halvings; its accepted head agrees with G17 outer-1 accepted head within 1e-12 m.",
+    "Outer 2 and outer 3 accept lambda=1 without contraction and their accepted heads each agree with the corresponding G17 accepted head within 1e-12 m.",
+    "The response-attempt participant-status sequence is exactly [6,6,0,0,0].",
+    "Total safeguard contractions equal 2 and accepted outer updates equal 3.",
+    "At each outer update E3 returns AVAILABLE; selected mode and selected scale equal the corresponding frozen G17 trace values. Relative tangent-slope difference from the frozen G17 value must be <= 1e-4.",
+    "Final head agrees with G17 within 1e-12 m and final absolute interface residual is <= 1e-15 m/s.",
+    "All G16 observations remain diagnostic: no live participant candidate, FMR preflight or ledger preflight survives any observation; accepted revision/time/committed ledger remain unchanged.",
+    "All MODFLOW response attempts occur inside the same MXITER-bounded prepared solve. No exact total solve-call count is preregistered.",
+    "Exactly one finalize_solve and zero finalize_time_step calls occur.",
+    "No production runtime or adapter source is changed."
+  ],
+  "pass_interpretation": "PASS qualifies a bounded full research outer-coupling algorithm for the frozen G11 affine-groundwater stress: dynamic E3 plus P4-equivalent response-space damping can reproduce the G17 accepted path inside one continuous prepared MODFLOW solve without direct groundwater state control. It does not admit this policy to production or modify F-GC39.",
+  "fail_interpretation": "Preserve failure. Do not weaken E3 class/scale rules, tangent comparison, P4 merit/status acceptance, lambda-halving sequence, G17 reference heads, MODFLOW continuous-X ownership, convergence tolerance or path-equivalence requirements.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21_dynamic_response_globalization.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "G16 tangent service semantics",
+    "G09D/G13 E3 rules",
+    "G11/G17 P4 acceptance semantics",
+    "F-GC38/F-GC39 production contracts",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
