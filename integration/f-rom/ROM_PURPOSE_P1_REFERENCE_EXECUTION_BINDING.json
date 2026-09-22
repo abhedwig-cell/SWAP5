@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.rom-purpose.p1.reference-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1-REFERENCE",
+  "status": "BOUND_BEFORE_FIRST_P1_REFERENCE_RESPONSE",
+  "canonical_authority": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "pre_binding_branch_head": "1f816a3e6ff319ca5f85106e9866dc779f016284",
+  "scientific_authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json",
+    "preregistration_blob": "c618a433545426a0af8c333be0f8d09926069def",
+    "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P1_PRE_RESPONSE_REPAIR.json",
+    "pre_response_repair_blob": "be836248f4698a7ed909fa66fe3e91078ed10567",
+    "response_based_design": false,
+    "reference_response_generated": false,
+    "candidate_response_generated": false
+  },
+  "implementation_blobs": {
+    "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json": "c618a433545426a0af8c333be0f8d09926069def",
+    "integration/f-rom/ROM_PURPOSE_P1_PRE_RESPONSE_REPAIR.json": "be836248f4698a7ed909fa66fe3e91078ed10567",
+    "tests/rom/materialize_rom_purpose_p1_surface_reference.py": "933cda92b62ca313e4720c866afe25c3e70ce72a",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference.py": "b7832852a2023a776ae2212ebe5713ec294ff1e0",
+    "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    ".github/workflows/f-rom-purpose-p1-reference.yml": "a0656d5ad530cfafffeafea7ed31f6e068d6b916"
+  },
+  "historical_provenance": {
+    "source_branch": "work/f-rom-lare-rs1@437d5edda08447abbfbdc41e54039f78d4d31560",
+    "historical_harnesses_are_copied_provenance_not_merged_branch_state": true
+  },
+  "execution_policy": {
+    "reference_only": true,
+    "candidate_execution_requires_reference_status": "P1_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+    "technical_failure_repair_allowed_without_scientific_change": true,
+    "scientific_reference_failure_stops_before_candidates": true
+  },
+  "firewall": {
+    "reference_richards_changed": false,
+    "rossfast_changed": false,
+    "production_groundwater_coupling_changed": false,
+    "production_physics_changed": false,
+    "admitted_solver_semantics_changed": false,
+    "application_tolerance_selected": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
