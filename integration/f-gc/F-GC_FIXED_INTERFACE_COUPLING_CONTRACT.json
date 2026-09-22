@@ -22,7 +22,8 @@
     "corrector_value": "accepted-origin real-SWAP outward interface flux evaluated at prescribed interface head",
     "corrector_tangent": "accepted-trajectory d(q_swap)/d(H_interface) in outward convention",
     "relinearization": "HCOF = area*86400*dq_swap_dh; RHS = HCOF*H - area*86400*q_swap",
-    "pb01_disposition": "physical outward tangent orientation is negative in the qualified real-SWAP fixture"
+    "pb01_disposition": "physical outward tangent orientation is negative in the qualified real-SWAP fixture",
+    "endpoint_qualification": "one-column/one-cell closeout compares the production coupled endpoint against an independent constant-flux MODFLOW6 q(H) oracle combined with real-SWAP accepted-origin trials"
   },
   "storage": {
     "swap": "physical column water-storage authority",

@@ -99,6 +99,7 @@ Current real evidence on the closeout branch includes:
 - real FMR correctors with an explicit negative outward response tangent;
 - live MODFLOW6 6.8.0 prepared-solve coupling;
 - the closeout variant of F-GC44 uses exactly one real SWAP column and one MODFLOW cell, and demonstrates accepted endpoint residual closure, physical corrector-tangent relinearization, native MODFLOW model-budget closure, rejected-trial zero authority, interface identity and exactly-once publication;
+- that same one-column/one-cell fixture derives an independent groundwater q(H) relation from fresh constant-flux MODFLOW6 solves and combines it with real-SWAP accepted-origin trials to locate a physical endpoint without using the production HCOF/relinearization path;
 - F-GC49D production ABI convergence over mixed N:1 and 1:1 topology;
 - explicit HEAD_STATE_CAPACITANCE and no-drainage application authority;
 - stale SWAP response-origin rejection;
