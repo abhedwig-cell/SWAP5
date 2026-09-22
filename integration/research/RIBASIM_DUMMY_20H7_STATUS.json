@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.coupling.real_ribamod_next_boundary_memory_forecast_bridge.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H7",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "6deb5c3b08d58f292bc5cf8f369e72cd72daf279",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Implement and execute the frozen actual-product t=24 bridge without changing scientific references or tolerances.",
+  "production_delta": [],
+  "reference_delta": [],
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H7_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H7_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H7_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H7_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20h7_active_river_next_boundary.py",
+    "tests/research/run_ribasim_dummy_20h7.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
+}
