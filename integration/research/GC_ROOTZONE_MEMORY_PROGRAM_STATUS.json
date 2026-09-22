@@ -70,6 +70,15 @@
       "workflow_job": 106745456506,
       "implementation_head": "5b3a69d84c344d8805ad22f6734c3af4ddbd06a3",
       "evidence_commit": "2ae1837d706e87310b70c54cf86966141807fc97"
+    },
+    {
+      "work_unit": "GC-RZM06A4",
+      "decision": "QUALIFIED_FORCING_SCALE_FALSIFICATION__H2_NOT_PROBED",
+      "preregistration_commit": "67e6cf09aa870c77cbb5059a834c2c6e14632a93",
+      "workflow_run": 35729367528,
+      "workflow_job": 106750827132,
+      "implementation_head": "fa092bac58cf90c83b3d94db66b6afd888530d5e",
+      "evidence_commit": "07d148575fc37b2802603a7ae6375a61d276c136"
     }
   ],
   "current_findings": [
@@ -104,17 +113,21 @@
     "RZM06A2 does not test H2 itself; no endpoint pair was constructed and no E_c probe was opened.",
     "RZM06A3 maps 29/56 short-window H_c perturbation points as two-sided admissible from the fresh baseline, but the preregistered selected point (deltaH=1e-5 m, dt=0.005 d) fails at the first sign reversal after 10 to 200 accepted same-sign commits.",
     "RZM06A3 establishes that baseline local perturbation admissibility does not imply transition admissibility from an evolved committed real-SWAP state.",
-    "RZM06A3 sign-reversal failures are transaction-safe and leave the latest accepted committed origin unchanged; H2 remains unprobed."
+    "RZM06A3 sign-reversal failures are transaction-safe and leave the latest accepted committed origin unchanged; H2 remains unprobed.",
+    "RZM06A4 found zero two-sided admissible points in the frozen 1e-3 to 1e-1 cm/day top-forcing grid at 0.002 to 0.01 d; this is a qualified forcing-scale result and H2 was not probed.",
+    "Qualified RZM06A infrastructure already bounds the useful transition region below A4: +/-1e-4 cm/day at 0.01 d is individually baseline-admissible and +/-1e-5 cm/day is sequentially admissible in both orders.",
+    "The next H2 construction should vary forcing timing rather than forcing sign, so equal-input histories can create different redistribution ages without a reversal transition."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06A4",
-    "scope": "Response-blind stronger top-boundary forcing characterization at fixed H_c, followed by opposite-order zero-net-top-forcing real-SWAP histories for H2 endpoint construction.",
-    "prerequisite": "GC-RZM06A3 qualified; pre-reversal M1 separation remains about 441x below unchanged H2 requirement",
+    "id": "GC-RZM06A5",
+    "scope": "Fixed-H_c early-versus-late infiltration timing construction using the previously qualified -1e-4 cm/day, 0.01 d pulse. Equal endpoint time and equal prescribed top input; H2 endpoint selection remains response-blind.",
+    "prerequisite": "RZM06A4 qualified and prior RZM06A baseline admission of -1e-4 cm/day at 0.01 d",
     "constraints": [
-      "determine top-forcing sign convention from provider/backend evidence and use neutral POS/NEG labels until resolved",
-      "characterize symmetric top-forcing admissibility before endpoint-pair construction",
-      "keep H_c fixed at H_star throughout antecedent construction",
-      "do not alter retry budgets, temporal budgets, solver tolerances or mass gates",
+      "negative top_flux is into-profile; use -1e-4 cm/day only plus zero forcing",
+      "same H_c=H_star throughout",
+      "same endpoint time and same integrated prescribed top forcing within each pair",
+      "no sign reversal and no direct state mutation",
+      "do not alter retry/temporal/solver/mass settings",
       "do not relax |ΔW_profile| <= 1e-6 or |ΔM1| >= 1e-4",
       "do not inspect E_c before endpoint pair selection",
       "keep RZM06B/H5 separate"
