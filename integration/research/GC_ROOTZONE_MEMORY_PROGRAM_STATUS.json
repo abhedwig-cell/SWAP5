@@ -36,6 +36,13 @@
       "workflow_run": 35706139759,
       "workflow_job": 106675423847,
       "implementation_head": "977ff8036d5a59910e0fc8ab92f9c80d4d4e3881"
+    },
+    {
+      "work_unit": "GC-RZM05",
+      "decision": "QUALIFIED_ROOTZONE_MANAGEMENT_BINDING",
+      "workflow_run": 35706500324,
+      "workflow_job": 106676593944,
+      "implementation_head": "6693032ef6fdfa95eba82ee78bfa97cb8724d4a7"
     }
   ],
   "current_findings": [
@@ -56,12 +63,15 @@
     "MODFLOW-to-SWAP capillary supply is negative E_c, reaches the root zone through lower-SWAP state, and closes the complete SWAP-plus-groundwater ledger.",
     "With only state-dependent internal vertical conductance added, E_c(H_c) is measurably non-affine over the preregistered finite head interval.",
     "The nonlinear local finite-window response tangent depends on committed internal state, so the exact state-independent scalar tangent result from the linear oracle does not survive.",
-    "H_c can remain the sole physical fixed-plane interface head even though exact affine response sufficiency fails."
+    "H_c can remain the sole physical fixed-plane interface head even though exact affine response sufficiency fails.",
+    "Irrigation demand can be bound to committed root storage without introducing shortage as persistent physical state.",
+    "Managed irrigation is an external root-zone input booked once; E_c remains the sole hydraulic SWAP-MODFLOW transfer.",
+    "Future irrigation demand follows accepted W_r after hydraulic redistribution and external forcing, not current-window shortage."
   ],
   "next_work_unit": {
-    "id": "GC-RZM05",
-    "scope": "Phase G bind qualified Ribasim root-zone demand and irrigation-management semantics to committed W_r while keeping shortage diagnostic and groundwater coupling through the lower SWAP state",
-    "prerequisite": "GC-RZM04 qualified"
+    "id": "GC-RZM06",
+    "scope": "Phase H real-SWAP falsification bridge: map analytical state/interface claims to observable real SWAP quantities and preregister paired-state experiments before changing production coupling",
+    "prerequisite": "GC-RZM05 qualified"
   },
   "blocked": [],
   "nonclaims": [

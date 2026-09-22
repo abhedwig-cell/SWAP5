@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm05.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM05",
+  "decision": "QUALIFIED_ROOTZONE_MANAGEMENT_BINDING",
+  "production_changes": false,
+  "authority": {
+    "implementation_head": "6693032ef6fdfa95eba82ee78bfa97cb8724d4a7",
+    "workflow_run": 35706500324,
+    "workflow_job": 106676593944,
+    "conclusion": "success",
+    "ribasim_dummy_12": "06f72519ecc037ce2517986e0a74296d9c63b7b8",
+    "ribasim_dummy_14": "bd1e259330525f741aca750c18e9e7c63382fd4f",
+    "ribasim_dummy_15": "f2473fd31edcc226adc52451e385d4e13a11d247"
+  },
+  "evidence": [
+    "9/9 RZM05 tests PASS",
+    "RZM01-RZM04 regressions PASS",
+    "full and partial management supply",
+    "shortage remains diagnostic",
+    "identical accepted W_r gives identical next request despite different shortage history",
+    "rain can erase next demand",
+    "root loss can create next demand",
+    "request frozen from committed W_r",
+    "managed input booked once",
+    "E_c remains sole groundwater transfer",
+    "transactional repeatability"
+  ],
+  "bounded_conclusions": [
+    "Qualified Ribasim demand-memory semantics compose with the nonlinear analytical SWAP root-zone state.",
+    "Management does not require an additional persistent physical shortage/debt state.",
+    "Irrigation changes future hydraulic response through accepted W_r, not through a direct root-to-MODFLOW coupling."
+  ],
+  "nonclaims": [
+    "no production SWAP irrigation equivalence",
+    "no crop stress physics",
+    "no Ribasim optimizer equivalence",
+    "no production coupling admission"
+  ],
+  "next": "GC-RZM06 real-SWAP falsification bridge"
+}
