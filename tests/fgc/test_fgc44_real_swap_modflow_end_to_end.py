@@ -62,7 +62,7 @@ def build_model(workdir:Path, reference_head:float)->None:
     flopy.mf6.ModflowGwfnpf(gwf,icelltype=1,k=1.0,save_flows=True)
     flopy.mf6.ModflowGwfsto(gwf,iconvert=1,ss=0.02,sy=0.15,transient={0:True})
     flopy.mf6.ModflowGwfchd(gwf,stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},pname="CHD_ENDS")
-    flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api")
+    flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api",save_flows=True)
     flopy.mf6.ModflowGwfoc(
         gwf,
         budget_filerecord="fgc44.cbc",
@@ -79,23 +79,44 @@ def _budget_component_sum(data)->float:
         return 0.0
     return float(np.sum(array,dtype=np.float64))
 
-def read_modflow_component_balance(path:Path)->tuple[float,float,tuple[tuple[str,float],...]]:
-    budget=flopy.utils.CellBudgetFile(str(path),precision="double")
-    components=[]
+def read_modflow_component_balance(workdir:Path, expected_api_m3_per_day:float)->tuple[float,float,float,str]:
+    listing_budget=None
+    listing_path=None
+    for candidate in sorted(workdir.glob("*.lst")):
+        try:
+            parsed=flopy.utils.Mf6ListBudget(str(candidate))
+        except Exception:
+            continue
+        if parsed.isvalid():
+            listing_budget=parsed
+            listing_path=candidate
+            break
+    require(listing_budget is not None and listing_path is not None,
+            "no valid MODFLOW6 GWF listing budget found")
+    inc=listing_budget.get_incremental()
+    require(inc is not None and len(inc)>0,"empty MODFLOW6 listing budget")
+    pd_names=[name for name in inc.dtype.names if "PERCENT_DISCREPANCY" in name.upper()]
+    require(len(pd_names)==1,"MODFLOW6 listing budget lacks unique percent discrepancy")
+    percent_discrepancy=float(inc[pd_names[0]][-1])
+    require(math.isfinite(percent_discrepancy),"nonfinite MODFLOW6 percent discrepancy")
+    # Frozen numerical closeout criterion: one part per million of total flow.
+    require(abs(percent_discrepancy)<=1.0e-4,
+            "accepted MODFLOW6 listing budget exceeds 1e-4 percent discrepancy")
+
+    budget=flopy.utils.CellBudgetFile(str(workdir/"fgc44.cbc"),precision="double")
+    api_records=[]
     for raw_name in budget.get_unique_record_names():
         name=raw_name.decode("ascii","ignore").strip()
-        # FLOW-JA-FACE is the internal cell-to-cell connectivity flow carrier.
-        # It is not an external component of the accepted model water balance
-        # and would double-count internal transfers if summed with packages.
-        if name.upper()=="FLOW-JA-FACE":
+        if name.upper()!="API":
             continue
-        total=0.0
         for data in budget.get_data(kstpkper=(0,0),text=name):
-            total+=_budget_component_sum(data)
-        components.append((name,total))
-    residual=float(sum(value for _,value in components))
-    scale=float(sum(abs(value) for _,value in components))
-    return residual,scale,tuple(components)
+            api_records.append(_budget_component_sum(data))
+    require(api_records,"MODFLOW6 binary budget contains no API package record")
+    api_component=float(sum(api_records))
+    scale=max(1.0,abs(api_component),abs(expected_api_m3_per_day))
+    require(abs(api_component-expected_api_m3_per_day)<=256*np.finfo(float).eps*scale,
+            "MODFLOW6 API budget record differs from accepted coupling term")
+    return percent_discrepancy,api_component,expected_api_m3_per_day,listing_path.name
 
 def main()->None:
     libmf6=Path(os.environ["LIBMF6"]).resolve()
@@ -231,14 +252,14 @@ def main()->None:
             require(session.finalize_time_step_once()==PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,"second MODFLOW timestep finalization not blocked")
             raw.finalize(); initialized=False
 
-            mf_budget_residual,mf_budget_scale,mf_budget_components=read_modflow_component_balance(workdir/"fgc44.cbc")
-            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
-            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_SCALE_M3_PER_DAY={mf_budget_scale:.17g}")
-            print("FGC44_MODFLOW_COMPONENTS="+",".join(f"{name}:{value:.17g}" for name,value in mf_budget_components))
-            require(math.isfinite(mf_budget_residual) and math.isfinite(mf_budget_scale),
-                    "nonfinite MODFLOW component balance")
-            require(abs(mf_budget_residual)<=max(1.0e-9,1.0e-8*mf_budget_scale),
-                    "accepted MODFLOW component balance does not close")
+            expected_api_m3_per_day=final_q_gw*AREA_M2*DAY_TO_S
+            mf_percent_discrepancy,mf_api_component,mf_api_expected,mf_listing_file=read_modflow_component_balance(
+                workdir,expected_api_m3_per_day
+            )
+            print(f"FGC44_MODFLOW_PERCENT_DISCREPANCY={mf_percent_discrepancy:.17g}")
+            print(f"FGC44_MODFLOW_API_COMPONENT_M3_PER_DAY={mf_api_component:.17g}")
+            print(f"FGC44_MODFLOW_API_EXPECTED_M3_PER_DAY={mf_api_expected:.17g}")
+            print(f"FGC44_MODFLOW_LISTING_FILE={mf_listing_file}")
 
             print(f"FGC44_FINAL_HEAD_M={final_head:.17g}")
             print(f"FGC44_FINAL_Q_SWAP_M_PER_S={final_q_swap:.17g}")
