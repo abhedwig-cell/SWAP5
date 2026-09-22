@@ -123,4 +123,6 @@ FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test
 grep -Fq 'GC_RZM06A2_H2_STATE_PAIR_EXPERIMENT=PASS' "$BUILD/rzm06a2-h2.txt" || fail "RZM06A2 H2 state-pair experiment"
 FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test_gc_rootzone_memory_rzm06a3_h2.py | tee "$BUILD/rzm06a3-h2.txt"
 grep -Fq 'GC_RZM06A3_MICROSTEPPED_H2_EXPERIMENT=PASS' "$BUILD/rzm06a3-h2.txt" || fail "RZM06A3 microstepped H2 experiment"
+FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test_gc_rootzone_memory_rzm06a4_h2.py | tee "$BUILD/rzm06a4-h2.txt"
+grep -Fq 'GC_RZM06A4_STRONG_TOP_FORCING_H2_EXPERIMENT=PASS' "$BUILD/rzm06a4-h2.txt" || fail "RZM06A4 stronger top-forcing H2 experiment"
 echo 'F-GC44 REAL SWAP + MODFLOW6 END-TO-END GATE PASS'
