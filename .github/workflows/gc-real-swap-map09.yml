@@ -7,6 +7,8 @@ on:
       - 'tests/research/support/mod_gc_map09_active_drainage_bridge.f90'
       - 'tests/research/support/gc_map09_e6_ctypes.py'
       - 'tests/research/test_gc_real_swap_map09_active_drainage.py'
+      - 'tests/research/test_gc_fixed_interface_map09_active_drainage_g12.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json'
       - 'tests/research/run_gc_real_swap_map09.sh'
       - '.github/workflows/gc-real-swap-map09.yml'
   workflow_dispatch:
