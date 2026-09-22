@@ -1,0 +1,157 @@
+{
+  "schema": "swap5.coupling.real_ribamod_active_river_two_day_memory.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20I",
+  "title": "Active-River current-boundary admission and next-boundary management memory",
+  "baseline": "45eddecf8e62c4eaa4945b599627641c97d68a7d",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_DUMMY_20H_V2_ACTIVE",
+    "execute_after": "DUMMY-20H closeout",
+    "rationale": "Freeze the two-day active-exchange memory prediction before observing DUMMY-20H active-case runtime output."
+  },
+  "authorities": {
+    "release_clock": {
+      "work_unit": "RIBASIM-DUMMY-20B",
+      "decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT"
+    },
+    "active_river": {
+      "work_unit": "RIBASIM-DUMMY-20G",
+      "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+      "effective_exchange_conductance_m2_per_day": 15.999829335153766
+    },
+    "current_boundary_pending": {
+      "work_unit": "RIBASIM-DUMMY-20H",
+      "use": "execution dependency only; no DUMMY-20H runtime values were used to derive the frozen reference"
+    }
+  },
+  "frozen_model": {
+    "horizon_seconds": 172800,
+    "product_timestep_seconds": 21600,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1,
+    "user_demand_min_level_m": 0.99,
+    "active_river_groundwater_head_m": 0.5,
+    "active_river_sample_and_hold": "At each 6-hour product-step start use accepted Basin/subgrid level as River stage; hold resulting MF6 River flux through the following Ribasim segment."
+  },
+  "independent_hybrid_reference": {
+    "derivation": [
+      "Use the qualified DUMMY-20G effective River relation q_riv = 15.999829335153766 * (h_stage - 0.5) m3/day.",
+      "Use Ribasim v2026.1.1 UserDemand reduction phi(x)=(-2*x_s+3)*x_s^2 for 0<x<0.02, x_s=x/0.02.",
+      "At t=0 priority-1 level hold and active River forcing leave 32-q_riv(1.0)=24.000085332423117 m3/day for root-first allocation.",
+      "Integrate each 6-hour physical segment with River flux held at the segment-start accepted stage.",
+      "At t=24h fixed allocation.dt re-solves from accepted excess storage, fixed supply and current River forcing over the next one-day management interval."
+    ],
+    "day1_initial_allocation": {
+      "root_m3_per_day": 24.00008533242312,
+      "external_m3_per_day": 0
+    },
+    "accepted_states": [
+      {
+        "endpoint_s": 21600,
+        "level_m": 1.0000029993357635,
+        "root_cumulative_m3": 3.000685569574161,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 1.9999786668942208,
+        "storage_gain_m3": 2.9993357635316187
+      },
+      {
+        "endpoint_s": 43200,
+        "level_m": 1.0000059973101296,
+        "root_cumulative_m3": 6.002720539372463,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 3.999969331003525,
+        "storage_gain_m3": 5.997310129624012
+      },
+      {
+        "endpoint_s": 64800,
+        "level_m": 1.0000089939237178,
+        "root_cumulative_m3": 9.00610429533599,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 5.999971986882382,
+        "storage_gain_m3": 8.993923717781627
+      },
+      {
+        "endpoint_s": 86400,
+        "level_m": 1.0000119891771457,
+        "root_cumulative_m3": 12.010836225179707,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 7.999986629087738,
+        "storage_gain_m3": 11.989177145732555
+      },
+      {
+        "endpoint_s": 108000,
+        "level_m": 1.0000134819227537,
+        "root_cumulative_m3": 16.518063994076833,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 10.00001325217901,
+        "storage_gain_m3": 13.481922753744158
+      },
+      {
+        "endpoint_s": 129600,
+        "level_m": 1.0000149736554362,
+        "root_cumulative_m3": 21.026298717576452,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 12.000045846189023,
+        "storage_gain_m3": 14.973655436234523
+      },
+      {
+        "endpoint_s": 151200,
+        "level_m": 1.0000164643758798,
+        "root_cumulative_m3": 25.53553971316831,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 14.000084407066119,
+        "storage_gain_m3": 16.46437587976557
+      },
+      {
+        "endpoint_s": 172800,
+        "level_m": 1.0000179540847753,
+        "root_cumulative_m3": 30.0457862938985,
+        "external_cumulative_m3": 0,
+        "river_cumulative_m3": 16.000128930761385,
+        "storage_gain_m3": 17.954084775340107
+      }
+    ],
+    "t24_boundary": {
+      "river_forcing_m3_per_day": 8.000106492365084,
+      "accepted_excess_storage_m3": 11.989177145732555,
+      "expected_root_allocation_m3_per_day": 35.98907065336747,
+      "expected_external_allocation_m3_per_day": 0,
+      "derivation": "32 - q_river(t24) + accepted excess storage / 1 day"
+    }
+  },
+  "hypotheses": [
+    "DUMMY-20I reproduces the DUMMY-20H one-day active-River prefix within tolerance.",
+    "The t=0 allocation is approximately 24.0000853/0 m3/day root/external.",
+    "External physical delivery remains zero throughout day 1.",
+    "Accepted physical state accumulates approximately 11.9892 m3 excess Basin storage by t=24 h despite continuous active-River loss.",
+    "At the t=24 h fixed allocation boundary, the new root allocation rises prospectively to approximately 35.9891 m3/day while external allocation remains zero.",
+    "The new day-2 allocation affects only physical realization after t=24 h.",
+    "Active-River flux remains reciprocal to Ribasim infiltration and changes with accepted Basin stage at each 6-hour boundary.",
+    "The source = root + external + active-River transfer + Basin-storage ledger closes at every accepted boundary."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "cumulative_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "reciprocal_rate_m3_per_day": 0.01,
+    "ledger_m3": 0.05,
+    "zero_external_m3": 0.001
+  },
+  "forbidden": [
+    "no use of DUMMY-20H observed values to retune the frozen hybrid reference",
+    "no later f965 clock semantics",
+    "no production SWAP5 admission",
+    "no inference beyond the qualified two-cell active-River topology"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20I_QUALIFIED_ACTIVE_RIVER_NEXT_BOUNDARY_MEMORY",
+  "fail_decision": "RIBASIM_DUMMY_20I_BLOCKED"
+}
