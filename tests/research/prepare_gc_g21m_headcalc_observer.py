@@ -18,7 +18,7 @@ def main()->None:
     require(blob_sha(SOURCE)==PIN,"G21M pinned HeadCalc blob drift")
     text=SOURCE.read_text()
     require("g21m_record_residual_snapshot" not in text,"G21M observer already present in production HeadCalc")
-    use_anchor="   use MOD_frost,           only: rfcp\n"
+    use_anchor="   use MOD_frost,          only: rfcp\n"
     require(text.count(use_anchor)==1,"G21M HeadCalc use anchor drift")
     text=text.replace(use_anchor,use_anchor+
         "   use mod_gc_g21m_residual_observer, only: g21m_record_residual_snapshot\n",1)
