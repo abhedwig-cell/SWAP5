@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.rom-purpose.p1.metric-semantics.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "status": "FROZEN_BEFORE_CANDIDATE_RESPONSE",
+  "authority": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json@c618a433545426a0af8c333be0f8d09926069def",
+  "common": {
+    "target_reference": "R2048_T32",
+    "comparator": "R512_T32",
+    "observation_count": 1024,
+    "observation_dt_day": 0.0008,
+    "scalar_ranking_forbidden": true,
+    "equality_tolerance": 1e-12
+  },
+  "GW_LB": {
+    "cumulative_bottom_exchange_error_cm": "pooled RMSE of cumulative bottom exchange over all four histories and all observation windows",
+    "interval_bottom_flux_error_cm_per_day": "pooled RMSE of observation-window mean bottom flux",
+    "bottom_flux_sign_mismatch_count": "total exact sign mismatches over all histories and observations; zero remains a sign, no post-response deadband",
+    "reversal_sequence_mismatch_count": "number of histories whose ordered nonzero-sign reversal sequence has different length",
+    "reversal_timing_error_steps": "maximum paired reversal-step displacement when sequence lengths match; 1024-step penalty for a history with unequal sequence length",
+    "total_storage_error_cm": "pooled RMSE of total column storage",
+    "history_signed_bottom_flux_bias_cm_per_day": "maximum absolute per-history mean signed interval-bottom-flux error",
+    "long_horizon_exchange_drift_cm": "maximum absolute final cumulative-bottom-exchange error across histories"
+  },
+  "SURF_P": {
+    "surface_0_20_storage_error_cm": "pooled RMSE of integrated 0-20 cm storage",
+    "root_zone_0_40_storage_error_cm": "pooled RMSE of integrated 0-40 cm storage",
+    "upper_0_80_storage_error_cm": "pooled RMSE of integrated 0-80 cm storage",
+    "mapped_10cm_theta_error": "pooled RMSE across all 16 fixed 10-cm bins, histories and observations",
+    "total_storage_error_cm": "pooled RMSE of total column storage",
+    "storage_extremum_timing_error_steps": "maximum absolute argmin/argmax step displacement across 0-20, 0-40 and 0-80 cm storage, all histories",
+    "history_signed_storage_bias_cm": "maximum absolute per-history mean signed storage error across the 0-20, 0-40, 0-80 and total-storage series"
+  },
+  "relations": {
+    "componentwise_no_worse": "candidate component <= comparator component + equality_tolerance on every frozen primary metric",
+    "strict_improvement": "at least one primary component < comparator component - equality_tolerance",
+    "comparator_crossing": "candidate error vector is componentwise no worse than R512_T32 relative to R2048_T32",
+    "closure_deficit": "same-partition coarse Richards crosses R512_T32 while same-partition CURRENT_LAYER_FACE Layer-ROM does not"
+  },
+  "firewalls": {
+    "response_used_to_define_semantics": false,
+    "numerical_reference_uncertainty_used_as_application_tolerance": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
