@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -285,6 +286,39 @@ def commit_path(swap:Fgc44RealSwap,with_observation:bool)->tuple[tuple[int,float
     return final,obs
 
 
+def commit_child_payload(with_observation:bool)->dict[str,object]:
+    lib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
+    swap=Fgc44RealSwap(lib)
+    final,obs=commit_path(swap,with_observation)
+    return {
+        "with_observation":with_observation,
+        "final_state":list(final),
+        "observation_participant_status":int(obs["participant_status"]) if obs else None,
+    }
+
+
+def run_commit_child(lib:Path,with_observation:bool)->dict[str,object]:
+    env=os.environ.copy()
+    env["FGC44_SWAP_LIB"]=str(lib)
+    env["G15_COMMIT_CHILD"]="observed" if with_observation else "baseline"
+    proc=subprocess.run(
+        [sys.executable,str(Path(__file__).resolve())],
+        check=False,
+        text=True,
+        capture_output=True,
+        env=env,
+    )
+    if proc.stdout:
+        print(proc.stdout,end="")
+    if proc.stderr:
+        print(proc.stderr,end="",file=sys.stderr)
+    require(proc.returncode==0,f"G15 isolated commit child failed: {proc.returncode}")
+    marker="FGC44_G15_COMMIT_CHILD_JSON="
+    payloads=[line[len(marker):] for line in proc.stdout.splitlines() if line.startswith(marker)]
+    require(len(payloads)==1,"G15 isolated commit child marker missing/duplicated")
+    return json.loads(payloads[0])
+
+
 def source_contract()->dict[str,object]:
     source=(ROOT/"src"/"runtime"/"mod_fmr_groundwater_swap_participant.f90").read_text()
     start=source.index("  subroutine fmr_swap_observe_last_trial(")
@@ -340,14 +374,18 @@ def main()->None:
     recovery=explicit_failure_recovery(swap)
     print("FGC44_G15_FAILURE_RECOVERY_JSON="+json.dumps(recovery,sort_keys=True,separators=(",",":")))
 
-    baseline_state,_=commit_path(swap,False)
-    observed_state,commit_obs=commit_path(swap,True)
-    require(baseline_state==observed_state,f"G15 observation changed commit result: {baseline_state} != {observed_state}")
+    baseline_result=run_commit_child(lib,False)
+    observed_result=run_commit_child(lib,True)
+    baseline_state=tuple(baseline_result["final_state"])
+    observed_state=tuple(observed_result["final_state"])
+    require(baseline_state==observed_state,
+            f"G15 observation changed commit result: {baseline_state} != {observed_state}")
     commit_result={
         "baseline_state":list(baseline_state),
         "observed_state":list(observed_state),
-        "observation_participant_status":int(commit_obs["participant_status"]) if commit_obs else None,
+        "observation_participant_status":observed_result["observation_participant_status"],
         "equivalent":True,
+        "process_isolation":"PASS",
     }
     print("FGC44_G15_COMMIT_EQUIVALENCE_JSON="+json.dumps(commit_result,sort_keys=True,separators=(",",":")))
 
@@ -373,4 +411,10 @@ def main()->None:
 
 
 if __name__=="__main__":
-    main()
+    child_mode=os.environ.get("G15_COMMIT_CHILD")
+    if child_mode is None:
+        main()
+    else:
+        require(child_mode in ("baseline","observed"),f"invalid G15 commit child mode {child_mode}")
+        payload=commit_child_payload(child_mode=="observed")
+        print("FGC44_G15_COMMIT_CHILD_JSON="+json.dumps(payload,sort_keys=True,separators=(",",":")))
