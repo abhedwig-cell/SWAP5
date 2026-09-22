@@ -60,7 +60,6 @@ def build_model(workdir:Path, reference_head:float)->None:
         complexity="MODERATE",
         outer_dvclose=1e-11,
         inner_dvclose=1e-12,
-        rcloserecord=[1e-12,"STRICT"],
         outer_maximum=100,
         inner_maximum=100,
     )
