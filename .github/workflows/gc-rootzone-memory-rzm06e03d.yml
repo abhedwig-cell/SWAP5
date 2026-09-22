@@ -1,0 +1,125 @@
+name: GC rootzone memory RZM06E03D immutable deep-profile census
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E03D_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E03D_PREREGISTRATION.md'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e03d_census.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e03d.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e03d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e03d-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify immutable source authorities
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          expected={
+            "integration/research/GC_ROOTZONE_MEMORY_RZM06D04_RESULT.json":"QUALIFIED_LOCAL_STRICT_CONTINUATION_NO_MATCH__H2_NOT_PROBED",
+            "integration/research/GC_ROOTZONE_MEMORY_RZM06E01_RESULT.json":"QUALIFIED_RESPONSE_BLIND_ZERO_DIVERGENCE_H2_ORIGIN_PAIR_SELECTED",
+            "integration/research/GC_ROOTZONE_MEMORY_RZM06E03_RESULT.json":"QUALIFIED_ROOTMATCHED_DEEP_MEMORY_NO_MATCH__NO_RESPONSE_PROBE",
+            "integration/research/GC_ROOTZONE_MEMORY_RZM06E03B_RESULT.json":"QUALIFIED_SPLIT_BOUNDARY_STATE_CONSTRUCTION_NO_MATCH",
+            "integration/research/GC_ROOTZONE_MEMORY_RZM06E03C_RESULT.json":"QUALIFIED_GENTLE_BOTTOM_FIRST_NO_MATCH__RATE_NONMONOTONIC",
+          }
+          for path,decision in expected.items():
+            d=json.load(open(path,encoding="utf-8"))
+            assert d["decision"]==decision,(path,d.get("decision"),decision)
+          print("GC_RZM06E03D_RESULT_AUTHORITIES=PASS")
+          PY
+          check_artifact() {
+            local run="$1" id="$2" name="$3" digest="$4"
+            local got
+            got="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run}/artifacts"               --jq ".artifacts[] | select(.id == ${id}) | [.id,.name,.digest,.expired] | @tsv")"
+            local expected
+            expected="$(printf '%s\t%s\t%s\tfalse' "$id" "$name" "$digest")"
+            test "$got" = "$expected"
+          }
+          check_artifact 35740262904 10699533032 gc-rzm06d04-35740262904 sha256:cf53384687ae021befe15497b1a8e1159c0272ce40ff66bb4c0e77ed37f682a1
+          check_artifact 35740688388 10698623937 gc-rzm06e01-35740688388 sha256:18d91fbba94dff5fcc377f607470d8f90b32b2ccca02e4767021340771047875
+          check_artifact 35743604739 10701002354 gc-rzm06e03-35743604739 sha256:462fa22d1baa03eda51e9a380a2249e581bbee09cf291669c14de456ba310db7
+          check_artifact 35744543880 10702396393 gc-rzm06e03b-35744543880 sha256:837326106380f7ffca67e764d5e48058b850afd8f486c538a35d4d08b5d417f5
+          check_artifact 35745342749 10701053833 gc-rzm06e03c-35745342749 sha256:823d41a2471f28a938826df19ec07097f4be08c372a2c9a96332258c4189f34f
+          echo 'GC_RZM06E03D_ARTIFACT_AUTHORITIES=PASS'
+
+      - name: Download D04 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gc-rzm06d04-35740262904
+          path: STATE-LIB/D04
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35740262904
+
+      - name: Download E01 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gc-rzm06e01-35740688388
+          path: STATE-LIB/E01
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35740688388
+
+      - name: Download E03 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gc-rzm06e03-35743604739
+          path: STATE-LIB/E03
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35743604739
+
+      - name: Download E03B artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gc-rzm06e03b-35744543880
+          path: STATE-LIB/E03B
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35744543880
+
+      - name: Download E03C artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gc-rzm06e03c-35745342749
+          path: STATE-LIB/E03C
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35745342749
+
+      - name: Run response-blind deep-profile census
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E03D-EVIDENCE
+          RZM06E03D_EVIDENCE_DIR="$PWD/RZM06E03D-EVIDENCE"             bash tests/research/run_gc_rootzone_memory_rzm06e03d.sh               STATE-LIB/D04 STATE-LIB/E01 STATE-LIB/E03 STATE-LIB/E03B STATE-LIB/E03C
+
+      - name: Preserve E03D evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e03d-${{ github.run_id }}
+          path: RZM06E03D-EVIDENCE
+          if-no-files-found: warn
