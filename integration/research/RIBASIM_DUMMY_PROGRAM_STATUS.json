@@ -235,17 +235,23 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H3",
+      "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
+      "run": 35735546703,
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20H3",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
-      "dependency": "qualified DUMMY-20H2",
-      "implementation_baseline": "929bfd0c45022b2e01772a53fd38dc3e283bc3c6",
-      "ribasim_release": "v2026.1.1",
-      "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+      "work_unit": "RIBASIM-DUMMY-20H4",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20H3",
+      "intended_decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
+      "dependency": "qualified DUMMY-20H3",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
@@ -255,19 +261,10 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20H4",
-      "state": "PREREGISTERED_BLOCKED_BY_20H3",
-      "intended_decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
-      "dependency": "DUMMY-20H3 closeout and qualification",
-      "scientific_baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
-      "ribasim_release": "v2026.1.1",
-      "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H3 low-storage-factor LP mechanism diagnostic; DUMMY-20H4 physical-versus-LP factor comparison is prospectively frozen behind it.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-20H4 physical-versus-LP low-storage-factor separation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -393,5 +390,10 @@
     "decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
     "classification": "RIBASIM_RELEASE_CURRENT_BOUNDARY_BMI_INFILTRATION_NOT_VISIBLE_TO_FIXED_ALLOCATION",
     "meaning": "Current-boundary basin.infiltration is physically effective and visible through the same pointer in direct Ribasim and actual RibaMod, but does not reduce the fixed-grid t=0 UserDemand allocation in bundled Ribasim v2026.1.1."
+  },
+  "product_allocation_forecast_authority": {
+    "latest": "RIBASIM-DUMMY-20H3",
+    "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
+    "meaning": "Current-boundary BMI infiltration reaches the v2026.1.1 allocation LP, but the forecast can attenuate that implicit negative forcing through an optimizable low_storage_factor; fixing the LP factor to one exposes the corresponding allocation reduction."
   }
 }
