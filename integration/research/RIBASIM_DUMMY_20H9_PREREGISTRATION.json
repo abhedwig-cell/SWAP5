@@ -5,8 +5,8 @@
   "title": "Actual RibaMod positive-groundwater forcing next-boundary allocation bridge",
   "baseline": "9220b8bf49138a0cf2b723aa7d6d460583338029",
   "sequencing": {
-    "state": "PREREGISTERED_BLOCKED_ON_DUMMY_20H8",
-    "execute_after": "DUMMY-20H8 qualifies the exact-release forcing-sign asymmetry",
+    "state": "SATISFIED_AFTER_DUMMY_20H8_CLOSEOUT",
+    "execute_after": "DUMMY-20H8 qualified",
     "rationale": "Freeze the actual-product positive-forcing bridge before observing H8 output."
   },
   "authorities": {
@@ -22,7 +22,8 @@
     },
     "pending_sign_oracle": {
       "work_unit": "RIBASIM-DUMMY-20H8",
-      "intended_decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY"
+      "decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+      "workflow_run": 35747089993
     },
     "product": {
       "imod_coupler_commit": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
@@ -101,5 +102,14 @@
     "no generalization from Drainage to all positive forcing processes"
   ],
   "pass_decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
-  "fail_decision": "RIBASIM_DUMMY_20H9_FALSIFIED_OR_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20H9_FALSIFIED_OR_BLOCKED",
+  "authority_rebind": {
+    "repository_head": "f9973c9a3732c0063854233d701e5c0ac8d1972f",
+    "upstream_decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+    "upstream_run": 35747089993,
+    "scientific_change": false,
+    "frozen_references_changed": false,
+    "frozen_tolerances_changed": false,
+    "meaning": "Actual positive-groundwater product bridge rebound to post-H8 authority; preregistered t=24 allocation and memory-only discriminator unchanged."
+  }
 }
