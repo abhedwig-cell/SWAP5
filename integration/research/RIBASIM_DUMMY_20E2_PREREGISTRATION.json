@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.coupling.real_ribamod_postallocation_groundwater_transfer.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20E2",
+  "title": "Actual RibaMod groundwater transfer activated after the accepted daily allocation",
+  "baseline": "796a02ad97524cd94e3103221cb23ee684556ba6",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20D_ACTIVE",
+    "execute_after": "DUMMY-20D qualified",
+    "rationale": "Correct the 20E timing assumption prospectively, before any active-transfer runtime output."
+  },
+  "authorities": {
+    "supersedes": "RIBASIM-DUMMY-20E pre-execution falsification",
+    "product_driver": "DUMMY-20A",
+    "product_release": "DUMMY-20B",
+    "product_runtime_control": "DUMMY-20C",
+    "clock_matrix_dependency": "DUMMY-20D",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "frozen_topology": {
+    "horizon_seconds": 86400,
+    "product_timestep_seconds": 21600,
+    "ribasim_allocation_dt_seconds": 86400,
+    "ribasim_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_basin_level_m": 1,
+    "source_flow_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "user_demand_min_level_m": 0.99,
+    "modflow": {
+      "fixed_head_m": 0.5,
+      "passive_drain_elevation_m": 0,
+      "passive_drain_conductance_schedule_m2_per_day": [
+        {
+          "from_s": 0,
+          "to_s": 21600,
+          "value": 0
+        },
+        {
+          "from_s": 21600,
+          "to_s": 86400,
+          "value": 16
+        }
+      ],
+      "expected_drain_flux_schedule_m3_per_day": [
+        {
+          "from_s": 0,
+          "to_s": 21600,
+          "value": 0
+        },
+        {
+          "from_s": 21600,
+          "to_s": 86400,
+          "value": -8
+        }
+      ],
+      "mapping": "single passive Drainage bound index 0 -> Ribasim Basin index 0"
+    }
+  },
+  "independent_continuous_reference": {
+    "equation_segment_1": "A dh/dt = 32 - 32*phi(h-0.99), 0-6 h",
+    "equation_segments_2_4": "A dh/dt = 32 + 8 - 32*phi(h-0.99), 6-24 h; allocation remains the t=0 root=32, external=0 decision",
+    "endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "basin_level_m": [
+      1.00000399880024,
+      1.0000099946020402,
+      1.0000159868074423,
+      1.0000219754186088
+    ],
+    "root_cumulative_supplied_m3": [
+      4.001199759954048,
+      8.005397959791367,
+      12.013192557696925,
+      16.024581391178316
+    ],
+    "external_cumulative_supplied_m3": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "groundwater_cumulative_transfer_m3": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "final_storage_gain_m3": 21.9754186088,
+    "final_total_external_input_m3": 38,
+    "final_ledger": "32 m3 fixed source + 6 m3 post-allocation groundwater drainage = root supplied + Basin storage gain"
+  },
+  "hypotheses": [
+    "The first 0-6 h product step has zero MF6 drainage, so the t=0 Ribasim allocation remains root=32 m3/day and external=0.",
+    "The passive MF6 drainage activates only after the first accepted 6-hour boundary and then transfers approximately 8 m3/day to the Ribasim Basin.",
+    "Because t=6, 12 and 18 h are not fixed allocation.dt=24 h boundaries, the newly arriving physical groundwater water does not trigger a new UserDemand allocation during day 1.",
+    "External-demand cumulative supply remains zero through 24 h.",
+    "Groundwater cumulative transfer is 0, 2, 4 and 6 m3 at the accepted 6-hour endpoints.",
+    "Basin level and root cumulative physical supply follow the frozen piecewise continuous reference within tolerance.",
+    "The one-day ledger closes: 32 m3 source + 6 m3 groundwater transfer = root supplied + Basin storage gain.",
+    "This demonstrates that physical transfer arriving after an accepted management decision changes physical state immediately without retroactive management reallocation inside the current allocation window."
+  ],
+  "tolerances": {
+    "endpoint_level_m": 5e-8,
+    "cumulative_volume_m3": 0.05,
+    "groundwater_transfer_m3": 0.05,
+    "external_zero_m3": 0.001,
+    "ledger_m3": 0.05
+  },
+  "forbidden": [
+    "no groundwater drainage during the first 0-6 h MF6 product step",
+    "no manual UserDemand reallocation at t=6,12,18 h",
+    "no change to daily allocation.dt",
+    "no active river-stage feedback in this work unit",
+    "no production SWAP5 admission",
+    "no changing activation time, transfer magnitude, references or tolerances after runtime output"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20E2_QUALIFIED_POSTALLOCATION_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
+  "fail_decision": "RIBASIM_DUMMY_20E2_BLOCKED"
+}
