@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03b.split_boundary_state_construction_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03B",
+  "preregistration_commit": "511b6f9fcf40702786ecb84bc5b253998db214aa",
+  "production_changes": false,
+  "decision": "QUALIFIED_SPLIT_BOUNDARY_STATE_CONSTRUCTION_NO_MATCH",
+  "disposition": "NO_MATCH",
+  "qualification": {
+    "workflow_run": 35744543880,
+    "workflow_job": 106802617511,
+    "executed_head": "2b02a5aebeb9e2b8aa96266f7bca77abdbfc7ea9",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "artifact_id": 10702396393,
+    "artifact_digest": "sha256:837326106380f7ffca67e764d5e48058b850afd8f486c538a35d4d08b5d417f5"
+  },
+  "frozen_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01
+  },
+  "completed_candidates": [
+    {
+      "family": "BASE_EQ",
+      "profile_water_cm": 58.619184,
+      "root30_water_cm": 10.991097,
+      "distribution_moment_cm": -80
+    },
+    {
+      "family": "TB_N08",
+      "profile_water_cm": 58.61918399999999,
+      "root30_water_cm": 10.934720399028837,
+      "distribution_moment_cm": -80.14153935840007
+    },
+    {
+      "family": "TB_N09",
+      "profile_water_cm": 58.619184,
+      "root30_water_cm": 10.931614230791661,
+      "distribution_moment_cm": -80.14920326818812
+    }
+  ],
+  "generation": {
+    "complete_split_candidates": 2,
+    "failed_split_families": 8,
+    "failure_pattern": {
+      "bottom_then_top": "all BT families failed during the initial BOTTOM phase at phase step 7",
+      "top_then_bottom_n10": "TOP phase completed, then BOTTOM failed at phase step 3",
+      "top_then_bottom_n11_n12": "TOP phase itself failed at step 11 before the BOTTOM phase"
+    },
+    "failures_transaction_safe": true
+  },
+  "census": {
+    "eligible_pairs": 3,
+    "profile_water_matched_pairs": 3,
+    "profile_and_root30_matched_pairs": 0,
+    "qualifying_pairs": 0,
+    "closest_root_pair_after_profile_gate": {
+      "A": "TB_N08",
+      "B": "TB_N09",
+      "abs_delta_profile_water_cm": 7.105427357601002e-15,
+      "abs_delta_root30_water_cm": 0.0031061682371760213,
+      "abs_delta_distribution_moment_cm": 0.007663909788050205
+    }
+  },
+  "interpretation": [
+    "Temporal top/bottom separation can create substantially larger vertical-distribution shifts than the E03 simultaneous-throughflow route while preserving total profile water to roundoff.",
+    "The accepted TB_N08 and TB_N09 endpoints remain far below the BASE_EQ upper-30-cm storage, by about 0.0564 and 0.0595 cm respectively, so they do not isolate deeper-profile memory at fixed root30 storage.",
+    "The bottom-only -K0 phase is the numerical admissibility bottleneck: all BOTTOM_THEN_TOP families fail at its seventh interval, and TB_N10 fails at the third bottom interval after a completed ten-step TOP phase.",
+    "This failure pattern supports a new prospective rate discriminator using the same integrated bottom transfer spread over smaller bottom flux and more intervals; it does not justify threshold relaxation."
+  ],
+  "response_probe_opened": false,
+  "nonclaims": [
+    "E03B does not establish H_c plus W_profile plus W_root30 sufficiency.",
+    "E03B does not falsify deeper-profile memory.",
+    "No production coupling change is admitted."
+  ]
+}
