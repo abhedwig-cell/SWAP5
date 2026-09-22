@@ -314,10 +314,20 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H11",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_20H11_QUALIFIED_FIXED_ALLOCATION_BMI_CLOCK_LATTICE",
+      "dependency": "DUMMY-20H10 qualified by run 35750549610.",
+      "scientific_baseline": "3fa962cc200fdcd6d7db197b36d5279df9f0c8e8",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "implementation_baseline": "8c4f2736e434edca956729c510161d9589d9432e"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Generalize H10 with a preregistered clock-lattice matrix testing whether effective fixed-allocation execution follows intersections of allocation and BMI call-start grids.",
+  "next_authority_action": "Execute frozen DUMMY-20H11 exact-release clock-lattice generalization anchored by actual-product H10.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
