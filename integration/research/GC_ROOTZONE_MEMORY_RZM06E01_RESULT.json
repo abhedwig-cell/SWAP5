@@ -1,0 +1,155 @@
+{
+  "census": {
+    "best_pair": {
+      "abs_delta_distribution_moment_cm": 0.11123947403315526,
+      "abs_delta_profile_water_cm": 0,
+      "closed_step": 14,
+      "closed_time_day": 0.011200000531971455,
+      "fraction_of_required_M1_separation": 11.123947403315526
+    },
+    "candidate_pairs": 14,
+    "qualifying_pairs": 13
+  },
+  "disposition": "SELECTED_RESPONSE_BLIND_ZERO_DIVERGENCE_H2_ORIGIN_PAIR",
+  "firewall": {
+    "external_library_used": false,
+    "node_fields": [
+      "FAMILY",
+      "STEP",
+      "NODE",
+      "H",
+      "THETA"
+    ],
+    "response_fields_parsed": false,
+    "state_fields": [
+      "FAMILY",
+      "STEP",
+      "T"
+    ]
+  },
+  "frozen_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01
+  },
+  "generation": {
+    "closed_accepted_states": 14,
+    "closed_stop_record": "RZM06E01_STOP|FAMILY=CLOSED|STEP=15|STATUS=204|SAMPLE_VALID=F|CANDIDATE_READY=F|MASS_COMPLETE=F|ATTEMPTS=0|RETRIES=0|SOLVER_REJECTIONS=1|MASS_REJECTIONS=0",
+    "eq_states": 1
+  },
+  "nonclaims": [
+    "E01 performs no mode-5 fixed-Hc response probe",
+    "selection uses only committed H/theta state",
+    "selection alone does not support or falsify H2"
+  ],
+  "preregistration_commit": "c11c08282a3abc9b1beee3002f5a9a01df58d95f",
+  "production_changes": false,
+  "schema": "swap5.gc_rootzone_memory.rzm06e01.zero_divergence_state_expansion.v1",
+  "selected_pair": {
+    "A_EQ": {
+      "distribution_moment_cm": -80,
+      "family": "EQ",
+      "pressure_head_cm": [
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497,
+        -29.793709016906497
+      ],
+      "profile_water_cm": 58.619184,
+      "step": 1,
+      "time_day": 0.000800000037997961,
+      "upper_30cm_water_cm": 10.991097,
+      "water_content": [
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997,
+        0.36636989999999997
+      ]
+    },
+    "B_CLOSED": {
+      "distribution_moment_cm": -80.11123947403316,
+      "family": "CLOSED",
+      "pressure_head_cm": [
+        -31.256959250024085,
+        -29.93648838709465,
+        -29.804017881995193,
+        -29.794296787827456,
+        -29.793736992307995,
+        -29.793710171487387,
+        -29.793709059339204,
+        -29.79370901832031,
+        -29.79370901685904,
+        -29.793709013291362,
+        -29.793708882435663,
+        -29.79370440319493,
+        -29.793565796255848,
+        -29.78980155296405,
+        -29.704384074092015,
+        -28.273962496992823
+      ],
+      "profile_water_cm": 58.619184,
+      "step": 14,
+      "time_day": 0.011200000531971455,
+      "upper_30cm_water_cm": 10.947165012700355,
+      "water_content": [
+        0.3623933611368537,
+        0.36598130087052366,
+        0.3663418392626581,
+        0.3663683000735215,
+        0.3663698238502519,
+        0.3663698968572016,
+        0.3663698998844971,
+        0.36636989999615155,
+        0.36636990000012915,
+        0.3663699000098405,
+        0.36636990036603295,
+        0.36636991255863954,
+        0.3663702898502798,
+        0.3663805362520047,
+        0.3666130634649278,
+        0.3705105755664859
+      ]
+    },
+    "abs_delta_distribution_moment_cm": 0.11123947403315526,
+    "abs_delta_profile_water_cm": 0,
+    "abs_delta_upper_30cm_water_cm": 0.043931987299645314
+  },
+  "qualification": {
+    "workflow_run": 35740688388,
+    "workflow_job": 106789366648,
+    "executed_head": "3652d89debb2f57cba88da31834f7b7fbfb1ec62",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "production_changes": false
+  },
+  "decision": "QUALIFIED_RESPONSE_BLIND_ZERO_DIVERGENCE_H2_ORIGIN_PAIR_SELECTED",
+  "interpretation": [
+    "The selected pair satisfies the unchanged H2 state gate by a wide margin while reconstructing identical total profile water.",
+    "The CLOSED family provides 14 strict accepted zero-boundary-flux commits before a solver-level fail-closed stop at step 15.",
+    "No interface-response, bottom-exchange, terminal-flux or tangent quantity is available to the selector.",
+    "E01 selection alone does not test H2; the pair is frozen for a later identical fixed-Hc probe."
+  ]
+}
