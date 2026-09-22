@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20C v1 frozen qualification.",
+  "next_action": "Execute the repaired frozen DUMMY-20C runtime differential; only a post-initialization product/direct comparison may carry scientific meaning.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -43,5 +43,28 @@
     ]
   },
   "qualification_attempt": "v1_frozen_real_ribamod_runtime_differential",
-  "qualification_base": "work/ribasim-dummy-01@2898e2ecf78ad342052cc7653fd8de8ef5b03233"
+  "qualification_base": "work/ribasim-dummy-01@2898e2ecf78ad342052cc7653fd8de8ef5b03233",
+  "qualification_attempts": [
+    {
+      "run": 35721305067,
+      "head_sha": "a81454f5b3e3d629200507985ce00bb8b7ea4ad3",
+      "state": "TECHNICAL_MODEL_PACKAGE_FAIL",
+      "reason": "Transient iMOD-Python GWF writer requires an STO package; failure occurred before product-driver initialization.",
+      "scientific_effect": "none"
+    },
+    {
+      "run": 35721327528,
+      "head_sha": "a3884d6a824042154c7a1708337f5b0627522641",
+      "state": "DUPLICATE_PRE_REPAIR_TECHNICAL_MODEL_PACKAGE_FAIL",
+      "reason": "This run was already queued before the STO repair and executed the same pre-repair model.",
+      "scientific_effect": "none"
+    }
+  ],
+  "technical_repair": {
+    "state": "APPLIED",
+    "head_sha": "9d6c5bcf861620e732c821ae1fe6c89fc00c072a",
+    "change": "Add required MF6 SpecificStorage package to the single fully fixed-head time-leader cell.",
+    "scientific_change": false,
+    "rationale": "Package completeness for transient MF6 input only; fixed-head cell has no coupled river/drain exchange and cannot alter the frozen Ribasim management/physics comparison."
+  }
 }
