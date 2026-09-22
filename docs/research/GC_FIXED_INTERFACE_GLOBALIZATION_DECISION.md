@@ -195,3 +195,36 @@ half-scale consistency gate is retained.
 No production change follows from G09, G09A or G09B. Even if G09B qualifies,
 cost, broader process coverage and genuinely nonlinear real-SWAP behavior
 remain separate production gates.
+
+
+## G09B disposition: exact execution-signature matching is too strict
+
+G09B prospectively required every finite-difference probe to be participant
+status 0 and to match the current center trial exactly in accepted substeps,
+attempts, retries, solver rejections, temporal rejections and internal retries.
+
+The all-boundary gate was falsified in workflow `35700067828` at the
+`C1_LOW_FORCING` negative boundary state (`dh=-5e-6 m`). The test stopped
+before the preregistered C2/C3 P1-E2/P4-E2 policy replays, so no policy
+qualification follows from G09B.
+
+This failure does not undo the G09A diagnosis. It sharpens it:
+
+- participant status alone is too weak because admitted probes can cross a
+  temporal-substep route change;
+- exact equality of the complete retry/attempt signature is too strong because
+  it can eliminate every bounded derivative stencil at an otherwise admitted
+  state.
+
+G09C therefore freezes the C1-negative failure and a G09B-qualified C0-positive
+control over the same nine-scale ladder. It decomposes the execution signature
+field by field and records status-only slope plateaus without changing G09B.
+
+The production disposition remains unchanged:
+
+```text
+G09B = FALSIFIED AS A UNIVERSAL TANGENT ESTIMATOR.
+DO NOT WEAKEN ITS SIGNATURE RULE RETROSPECTIVELY.
+NO PRODUCTION HCOF/RHS OR COUPLING CHANGE.
+NEXT: IDENTIFY THE MINIMUM EXECUTION-CLASS CONTRACT FROM G09C EVIDENCE.
+```
