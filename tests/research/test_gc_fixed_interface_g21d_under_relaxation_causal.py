@@ -217,7 +217,7 @@ def main()->None:
     parent_prereg=json.loads(G21B_PREREG.read_text())
     parent_result=json.loads(G21B_RESULT.read_text())
     require(prereg["work_unit"]=="GC-FIXED-INTERFACE-G21D","wrong G21D preregistration")
-    require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION","G21D preregistration not frozen")
+    require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION_AMENDED","G21D amended preregistration not frozen")
     require(parent_result["decision"]=="QUALIFIED_DIAGNOSTIC_PERSISTENT_PREPARED_SOLVE_PATH_MEMORY",
             "G21D G21B authority drift")
     require(TAIL_CALLS==int(prereg["frozen_case"]["tail_calls"])==int(parent_prereg["frozen_case"]["tail_calls"]),
@@ -273,9 +273,18 @@ def main()->None:
     require(abs(std_offset-expected)<=HEAD_GATE,
             f"G21D standard arm no longer reproduces G21B offset: {std_offset-expected}")
 
+    nour_fresh_root_error=abs(float(nour_fresh["call12_head_m"])-float(outer2n["fresh_reference_head_m"]))
+    nour_outer1_root_errors=[
+        abs(float(row["difference_from_standard_reference_m"])) for row in nour_hist["history"]
+    ]
+    nour_max_outer1_root_error=max(nour_outer1_root_errors) if nour_outer1_root_errors else 0.0
+    root_comparable=(nour_fresh_root_error<=HEAD_GATE and nour_max_outer1_root_error<=HEAD_GATE)
+
     reduction=abs(std_offset)-abs(nour_offset)
     reduction_fraction=reduction/abs(std_offset) if std_offset!=0.0 else 0.0
-    if abs(nour_offset)<=HEAD_GATE:
+    if not root_comparable:
+        classification="MIXED_OR_UNRESOLVED"
+    elif abs(nour_offset)<=HEAD_GATE:
         classification="DELTA_BAR_DELTA_CAUSAL_SUPPORT"
     elif reduction_fraction>=0.90:
         classification="DELTA_BAR_DELTA_CONTRIBUTES_BUT_NOT_SUFFICIENT"
@@ -288,6 +297,10 @@ def main()->None:
         "no_under_relaxation":nour,
         "absolute_offset_reduction_m":reduction,
         "absolute_offset_reduction_fraction":reduction_fraction,
+        "nour_fresh_root_error_m":nour_fresh_root_error,
+        "nour_outer1_root_errors_m":nour_outer1_root_errors,
+        "nour_max_outer1_root_error_m":nour_max_outer1_root_error,
+        "root_comparability_at_strict_scale":root_comparable,
         "strict_path_scale_m":HEAD_GATE,
         "standard_g21b_reproduction":"PASS",
         "xold_fixed_all_arms":"PASS",
