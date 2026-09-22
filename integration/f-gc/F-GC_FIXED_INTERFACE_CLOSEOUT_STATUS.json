@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fgc.fixed_interface.closeout.status.v1",
+  "date": "2026-09-22",
+  "state": "ADMISSION_CANDIDATE_GATE_PENDING",
+  "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-fixed-interface-closeout",
+  "authority": {
+    "interface_head": "FIXED_LOWER_COUPLING_PLANE_HYDRAULIC_HEAD",
+    "swap_flux": "Q_SWAP_POSITIVE_OUTWARD_FROM_SWAP",
+    "modflow_api_source": "POSITIVE_INTO_GROUNDWATER_EQUALS_Q_SWAP",
+    "external_residual": "Q_SWAP_MINUS_MODFLOW_API_SOURCE",
+    "corrector_tangent": "REAL_SWAP_ACCEPTED_TRAJECTORY_BOTTOM_HEAD_TANGENT_IN_OUTWARD_CONVENTION",
+    "storage_role": "HEAD_STATE_CAPACITANCE",
+    "drainage_owner": "NONE",
+    "response_origin": "EXACT_COMMITTED_SWAP_LINEAGE_AND_REVISION",
+    "restart": "COMMITTED_ONLY_FGC24_CONTRACT"
+  },
+  "production_repairs": [
+    "real SWAP corrector publishes physical bottom-head response tangent",
+    "MODFLOW term can be relinearized with corrector value and physical tangent",
+    "production service uses relinearization after nonconverged correctors",
+    "storage role and drainage owner are explicit production topology authority",
+    "application plan preserves per-tile SWAP origin revision",
+    "application context rejects stale response origin"
+  ],
+  "preserved_evidence": {
+    "g21_exact_path": "FALSIFIED",
+    "g23": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
+    "g24": "TOLERANCE_CAUSAL_DIAGNOSTIC_PRESERVED",
+    "pb01": "PHYSICAL_OUTWARD_TANGENT_NEGATIVE",
+    "csr04": "USED_WITHOUT_MATRIX_REPEAT",
+    "fgc24": "COMMITTED_ONLY_RESTART_AUTHORITY",
+    "fgc44": "REAL_SWAP_LIVE_MODFLOW_TRANSACTION_EVIDENCE",
+    "fgc49d": "PRODUCTION_APPLICATION_ABI_EVIDENCE"
+  },
+  "closeout_gate": "tests/fgc/run_fgc_fixed_interface_closeout.sh",
+  "architecture_note": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+  "analytical_freeze": "integration/f-gc/F-GC_FIXED_INTERFACE_ANALYTICAL_TESTBANK_FREEZE.json",
+  "nonclaims": [
+    "exact internal solver path equivalence",
+    "active coupled drainage",
+    "root extraction in coupled production profile",
+    "physical independent or mixed MODFLOW storage",
+    "native MODFLOW checkpoint format or mid-iteration restart",
+    "field-scale heterogeneous transferability",
+    "finite-resistance q-link semantics",
+    "fixed-interface head equals phreatic elevation"
+  ]
+}
