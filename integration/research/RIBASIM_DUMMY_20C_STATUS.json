@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20C v2 after STO-only technical harness repair; frozen model clocks, Ribasim management case, hypotheses and tolerances unchanged.",
+  "next_action": "Execute the repaired frozen DUMMY-20C runtime differential; only a post-initialization product/direct comparison may carry scientific meaning.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -45,12 +45,25 @@
   "execution_baseline": "74b71366fc16e1105fc0038938c606f63f59d937",
   "qualification_attempts": [
     {
-      "attempt": "v1",
       "run": 35721305067,
-      "state": "TECHNICAL_HARNESS_FAIL",
-      "reason": "Minimal MF6 model omitted the required STO package; imod-python failed while writing the model before product runtime began.",
-      "scientific_effect": "none",
-      "authority_use": "forbidden"
+      "head_sha": "a81454f5b3e3d629200507985ce00bb8b7ea4ad3",
+      "state": "TECHNICAL_MODEL_PACKAGE_FAIL",
+      "reason": "Transient iMOD-Python GWF writer requires an STO package; failure occurred before product-driver initialization.",
+      "scientific_effect": "none"
+    },
+    {
+      "run": 35721327528,
+      "head_sha": "a3884d6a824042154c7a1708337f5b0627522641",
+      "state": "DUPLICATE_PRE_REPAIR_TECHNICAL_MODEL_PACKAGE_FAIL",
+      "reason": "This run was already queued before the STO repair and executed the same pre-repair model.",
+      "scientific_effect": "none"
     }
-  ]
+  ],
+  "technical_repair": {
+    "state": "APPLIED",
+    "head_sha": "9d6c5bcf861620e732c821ae1fe6c89fc00c072a",
+    "change": "Add required MF6 SpecificStorage package to the single fully fixed-head time-leader cell.",
+    "scientific_change": false,
+    "rationale": "Package completeness for transient MF6 input only; fixed-head cell has no coupled river/drain exchange and cannot alter the frozen Ribasim management/physics comparison."
+  }
 }
