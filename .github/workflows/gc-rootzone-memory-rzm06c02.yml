@@ -1,0 +1,34 @@
+name: GC rootzone memory RZM06C02 native-cm carrier
+
+concurrency:
+  group: gc-rootzone-memory-rzm06c02-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [work/gc-dummy-swap-rootzone-memory]
+    paths:
+      - 'tests/research/support/rzm06c02_native_cm_headcalc_stubs.f90'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06c02_carrier.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06c02.sh'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06C02_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06C02_PREREGISTRATION.md'
+      - '.github/workflows/gc-rootzone-memory-rzm06c02.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  rzm06c02:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Qualify native-cm research carrier
+        run: bash tests/research/run_gc_rootzone_memory_rzm06c02.sh
