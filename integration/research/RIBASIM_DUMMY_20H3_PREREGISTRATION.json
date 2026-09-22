@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.coupling.ribasim_release_allocation_low_storage_mechanism.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H3",
+  "title": "Ribasim v2026.1.1 allocation low-storage-factor mechanism under BMI infiltration",
+  "baseline": "026f2f0bd4df82fd139f02ce31cde47ae4bd4684",
+  "authorities": {
+    "visibility": {
+      "work_unit": "RIBASIM-DUMMY-20H2",
+      "decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
+      "classification": "RIBASIM_RELEASE_CURRENT_BOUNDARY_BMI_INFILTRATION_NOT_VISIBLE_TO_FIXED_ALLOCATION",
+      "workflow_run": 35734439031
+    },
+    "release": {
+      "tag": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "purpose": "Explain why current-boundary BMI infiltration is physically effective but does not reduce the fixed-grid t=0 UserDemand allocation by observing and intervening on the exact release allocation LP.",
+  "frozen_model": {
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1,
+    "user_demand_min_level_m": 0.99,
+    "injected_basin_infiltration_m3_per_day": 7.999914667576883
+  },
+  "cases": {
+    "control": {
+      "infiltration_m3_per_day": 0,
+      "low_storage_factor": "free",
+      "expected_root_allocation_m3_per_day": 32,
+      "expected_external_allocation_m3_per_day": 0,
+      "expected_low_storage_factor": 1
+    },
+    "injected_free": {
+      "infiltration_m3_per_day": 7.999914667576883,
+      "low_storage_factor": "free",
+      "expected_root_allocation_m3_per_day": 32,
+      "expected_external_allocation_m3_per_day": 0,
+      "expected_implicit_negative_forcing_volume_m3": 7.999914667576883,
+      "expected_low_storage_factor": 0,
+      "expected_storage_change_m3": 0
+    },
+    "injected_fixed_one": {
+      "infiltration_m3_per_day": 7.999914667576883,
+      "low_storage_factor": "fixed to 1 before allocation optimization",
+      "expected_root_allocation_m3_per_day": 24.00008533242312,
+      "expected_external_allocation_m3_per_day": 0,
+      "expected_implicit_negative_forcing_volume_m3": 7.999914667576883,
+      "expected_storage_change_m3": 0
+    }
+  },
+  "hypotheses": [
+    "The allocation layer does receive the injected vertical-flux value: implicit_negative_forcing_volume is approximately 7.9999147 m3 over the one-day allocation horizon.",
+    "With low_storage_factor free, lexicographic demand objectives retain the 32 m3/day root allocation and the LP drives the Basin low_storage_factor to approximately zero, neutralizing the negative forcing in the allocation water balance.",
+    "The priority-1 LevelDemand can therefore remain satisfied in the allocation forecast even though the physical layer later realizes the full infiltration.",
+    "When the same low_storage_factor variable is fixed to 1, the root allocation falls to approximately 24.0000853 m3/day while external remains zero.",
+    "The DUMMY-20H/H2 behavior is therefore not missing BMI data but a mismatch between allocation-layer adjustable low-storage forcing and the physical realization factor for this state."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "forcing_volume_m3": 0.01,
+    "low_storage_factor": 0.000001,
+    "storage_change_m3": 0.05
+  },
+  "forbidden": [
+    "no source modification in Ribasim",
+    "the low_storage_factor=1 case is a diagnostic LP intervention, not a production prescription",
+    "no production defect classification before this mechanism is qualified",
+    "no reuse of later f965 allocation semantics"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
+  "fail_decision": "RIBASIM_DUMMY_20H3_BLOCKED"
+}
