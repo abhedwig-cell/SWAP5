@@ -1007,3 +1007,46 @@ F-GC38/F-GC39 = UNCHANGED.
 NO PRODUCTION HCOF/RHS OR COUPLING-POLICY ADMISSION.
 NEXT: G21B PREPARED-SOLVE CONVERGENCE/PATH DIAGNOSIS.
 ```
+## G21B disposition: outer-2 path effect persists after convergence
+
+G21B tested whether the G21A outer-2 divergence was merely a first-convergence
+report artifact. It held the exact same outer-2 HCOF/RHS response fixed for 12
+successive MODFLOW solve calls in two independent prepared solves: a fresh arm
+and a history arm that first replayed the frozen outer-1 lambda sequence.
+
+The authority run, workflow `35731373754`, job `106757502990`, passed its
+diagnostic gates. The fresh arm reached the frozen fresh response head immediately
+and reported MODFLOW convergence on call 2. Its middle-cell head then remained
+unchanged through call 12.
+
+The history arm approached a different fixed head:
+
+```text
+first outer-2 convergence call                    6
+path offset at first convergence       7.235179122488944e-11 m
+path offset after call 12              7.235112509107466e-11 m
+offset reduction after convergence     6.661338147750939e-16 m
+per-call post-convergence head change  1.1102230246251565e-16 m
+```
+
+The identical-response continuation therefore does not drive the history arm
+toward the fresh arm at the strict G21 `1e-12 m` trajectory scale. XOLD remains
+bitwise fixed, the outer-2 HCOF/RHS values are bitwise identical between arms,
+and neither arm finalizes the MODFLOW timestep.
+
+This rejects the bounded explanation that G21 failed only because MODFLOW
+reported convergence too early. Instead, the difference behaves as persistent
+prepared-solve path memory for this fixture. G21B does not identify which
+internal state carries that memory and does not alter the meaning of MODFLOW
+convergence.
+
+```text
+G21B FIXED-RESPONSE CONTINUATION = QUALIFIED DIAGNOSTIC.
+FIRST-CONVERGENCE-TOLERANCE EXPLANATION = REJECTED IN THIS FIXTURE.
+PERSISTENT PREPARED-SOLVE PATH MEMORY = SUPPORTED AT STRICT G21 SCALE.
+G21 = REMAINS FALSIFIED.
+G19/G20 = REMAIN QUALIFIED BOUNDED RESEARCH.
+F-GC38/F-GC39 = UNCHANGED.
+NO PRODUCTION HCOF/RHS OR COUPLING-POLICY ADMISSION.
+NEXT: G21C READ-ONLY MODFLOW/XMI STATE FORENSICS.
+```
