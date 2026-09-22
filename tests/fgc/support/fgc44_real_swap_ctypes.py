@@ -55,6 +55,11 @@ class Fgc44RealSwap:
         ]
         self.lib.fgc44_g14_fused_run_count_c.restype=ctypes.c_int
         self.lib.fgc44_g14_fused_run_count_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
+        self.lib.fgc44_g15_last_observation_c.restype=ctypes.c_int
+        self.lib.fgc44_g15_last_observation_c.argtypes=[
+            *([ctypes.POINTER(ctypes.c_int)]*16),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
         self.lib.fgc44_g15_last_trial_observation_c.restype=ctypes.c_int
         self.lib.fgc44_g15_last_trial_observation_c.argtypes=[
             *([ctypes.POINTER(ctypes.c_int)]*16),
@@ -239,6 +244,30 @@ class Fgc44RealSwap:
         result={k:v.value for k,v in zip(names,ints)}
         result["completed"]=bool(result["completed"])
         result["candidate_ready"]=bool(result["candidate_ready"])
+        result["q_swap_m_per_s"]=reals[0].value
+        result["min_substep"]=reals[1].value
+        result["max_substep"]=reals[2].value
+        return result
+
+    def g15_last_observation(self) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(16)]
+        reals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.fgc44_g15_last_observation_c(
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"G15 participant observation query failed: {status}")
+        names=[
+            "available","participant_status","q_available","result_status",
+            "completed","candidate_ready","transaction_calls","accepted_substeps",
+            "attempts","retries","trial_rollbacks","solver_rejections",
+            "temporal_rejections","temporal_unavailable_rejections",
+            "mass_rejections","internal_retries",
+        ]
+        result={k:v.value for k,v in zip(names,ints)}
+        for key in ["available","q_available","completed","candidate_ready"]:
+            result[key]=bool(result[key])
         result["q_swap_m_per_s"]=reals[0].value
         result["min_substep"]=reals[1].value
         result["max_substep"]=reals[2].value
