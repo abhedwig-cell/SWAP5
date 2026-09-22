@@ -13,5 +13,12 @@
   "prepared_scope": "Four actual-product RibaMod runtime cases at fixed 6-hour MF6 cadence: allocation.dt 24h/6h crossed with saveat 24h/1h.",
   "next_action": "After DUMMY-20C closes, rebind and implement the frozen product clock-ownership matrix.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "INDEPENDENT_CASE_AND_MATRIX_VERIFIERS_PREPARED_EXECUTION_BLOCKED",
+    "case_runner": "tests/research/test_ribasim_dummy_20d_real_ribamod_case.py",
+    "matrix_verifier": "tests/research/verify_ribasim_dummy_20d_clock_matrix.py",
+    "scientific_change": false,
+    "note": "Each product case is designed for a separate Python process to avoid DLL lifecycle contamination. No runner/workflow gate or execution before DUMMY-20C closeout."
+  }
 }
