@@ -1,0 +1,141 @@
+{
+  "schema": "swap5.gc_fixed_interface.g22.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G22",
+  "title": "Full dynamic response-space coupling comparison under STANDARD DBD and NOUR",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "32486620f762c0ecc00821cb620437e0b65b1659",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21D_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21_PREREGISTRATION.json"
+  ],
+  "question": "On the frozen real-FGC44 G11/G17 stress, does disabling MODFLOW nonlinear under-relaxation from solver initialization remove the G21 full-path trajectory falsification when the complete dynamic G16/E3 response-space P4 loop is rerun, and what are the resulting live MODFLOW and SWAP diagnostic costs relative to the standard DBD configuration?",
+  "scope": {
+    "research_solver_configuration_comparison": true,
+    "one_frozen_real_fgc44_carrier": true,
+    "no_production_solver_change": true,
+    "no_new_e3_or_p4_rule": true,
+    "no_new_hcof_rhs_formula": true,
+    "no_timestep_publication": true,
+    "production_admission": "NO"
+  },
+  "configurations": {
+    "STANDARD_DBD": {
+      "ims_complexity": "MODERATE",
+      "under_relaxation": "INHERITED",
+      "expected_nonmeth": 3,
+      "role": "positive-control dynamic path; expected to retain the already-falsified G21 outer-2 trajectory deviation"
+    },
+    "NOUR": {
+      "ims_complexity": "MODERATE",
+      "under_relaxation": "NONE",
+      "expected_nonmeth": 0,
+      "role": "research treatment identified by G21D"
+    }
+  },
+  "frozen_numerics": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G21_PREREGISTRATION.json",
+    "e3_scale_ladder_m": [
+      2.5e-7,
+      1.25e-7,
+      6.25e-8,
+      3.125e-8,
+      1.5625e-8,
+      7.8125e-9,
+      3.90625e-9
+    ],
+    "e3_relative_slope_tolerance": 0.05,
+    "flux_tolerance_m_per_s": 1e-15,
+    "merit_absolute_tolerance_m_per_s": 1e-18,
+    "max_outer": 12,
+    "max_backtrack": 12,
+    "safeguard_lambda_sequence": "1, 1/2, 1/4, ... until unchanged status+merit acceptance"
+  },
+  "frozen_g17_reference": {
+    "accepted_heads_m": [
+      -0.7150027217215662,
+      -0.7150100297646383,
+      -0.715009930492797
+    ],
+    "local_contractions": [
+      2,
+      0,
+      0
+    ],
+    "response_attempt_status_topology": [
+      6,
+      6,
+      0,
+      0,
+      0
+    ],
+    "final_head_m": -0.715009930492797,
+    "final_residual_m_per_s": -1.0640987109201395e-20,
+    "accepted_outer_updates": 3,
+    "total_contractions": 2
+  },
+  "standard_positive_control": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "outer1_head_error_m": 4.440892098500626e-16,
+    "outer2_head_error_m": 7.215394948190124e-11,
+    "outer2_status": 0,
+    "outer2_merit_acceptance": true,
+    "required_interpretation": "STANDARD must continue to exhibit an outer-2 deviation >1e-12 m; G22 must not relabel the original G21 falsification."
+  },
+  "execution_contract": [
+    "Run STANDARD and NOUR in separate processes so SWAP/FMR and MODFLOW mutable state cannot leak between solver configurations.",
+    "For each configuration initialize the same real FGC44 carrier and one G16 immutable-origin diagnostic session.",
+    "Open exactly one live MODFLOW6 prepared timestep/solve and keep XOLD bitwise fixed throughout the entire dynamic coupling loop.",
+    "At every accepted outer head reevaluate the unchanged G09D/G13 E3 physical tangent through G16.",
+    "For each P4 response attempt use lambda=2^-k and qref=G(h_current)+lambda*r_current with the current physical E3 slope, exactly as G21.",
+    "Settle each affine response only through repeated admitted publish_and_solve_iteration calls in the same prepared solve; do not write or reset X, XOLD or solver-history arrays.",
+    "Accept a response attempt only with participant status 0 and the unchanged G17 merit test.",
+    "Do not use G17 head equality as an acceptance rule. Record the actual accepted trajectory for both configurations.",
+    "Stop only when the unchanged coupling flux tolerance is met after an accepted response update, or when the frozen outer/backtrack budget is exhausted.",
+    "After convergence finalize_solve exactly once and do not finalize_time_step.",
+    "Close G16 without acquiring publication authority; no ordinary FMR publication-path trial is allowed."
+  ],
+  "gates": [
+    "STANDARD reports NONMETH=3 and NOUR reports NONMETH=0.",
+    "Both configurations use one prepare_time_step and one prepare_solve, keep XOLD fixed, finalize_solve at most once after convergence, and never finalize_time_step.",
+    "No direct MODFLOW state mutation or restart/reopen occurs.",
+    "STANDARD outer 1 remains within 1e-12 m of G17 and STANDARD outer 2 remains more than 1e-12 m from G17 while remaining status-0/merit-accepted, reproducing the qualitative G21 positive control.",
+    "NOUR converges under the unchanged E3/P4 status+merit and flux-residual criteria.",
+    "For NOUR, each of the three accepted heads is within 1e-12 m of the corresponding frozen G17 head.",
+    "NOUR local contractions equal [2,0,0], response status topology equals [6,6,0,0,0], and total contractions equal 2.",
+    "NOUR final head is within 1e-12 m of G17 and |final residual| <=1e-15 m/s.",
+    "Report total MODFLOW solve calls, accepted outer updates, G16 logical requests, physical participant trials and cache hits for both configurations.",
+    "Diagnostic SWAP/FMR accepted revision/time and committed ledger authority remain unchanged.",
+    "No production runtime, adapter, IMS default or HCOF/RHS code changes."
+  ],
+  "interpretation_rules": {
+    "nour_recovers_full_g17_path": "All NOUR trajectory/topology/final gates pass while the STANDARD positive-control outer-2 deviation remains >1e-12 m.",
+    "nour_converges_but_not_g17_equivalent": "NOUR reaches the physical coupling residual gate but one or more frozen G17 trajectory/topology gates fail.",
+    "nour_not_robust_in_frozen_case": "NOUR fails E3 availability, safeguard acceptance, MODFLOW convergence or outer/backtrack budget before satisfying the coupling residual.",
+    "standard_control_not_reproduced": "The STANDARD arm no longer reproduces the known G21 qualitative outer-2 path deviation; causal comparison is not authoritative."
+  },
+  "pass_interpretation": "PASS yields one of the preregistered research classifications. NOUR_RECOVERS_FULL_G17_PATH would qualify a solver-configuration explanation/bridge only for this frozen carrier. It would not production-admit NOUR, E3/P4, response-space globalization or any HCOF/RHS policy.",
+  "fail_interpretation": "Preserve failure. Do not change the 1e-12 trajectory gate, 1e-15 residual gate, E3 scales, P4 merit rule, lambda sequence, solver tolerances or G17 reference after seeing results.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g22_full_dynamic_solver_compare.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G22_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "production MODFLOW IMS configuration",
+    "MODFLOW X/XOLD/solver-history state via XMI/BMI pointers",
+    "G16/E3/P4 semantics",
+    "G19/G20/G21/G21A/G21B/G21C/G21D evidence or gates",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
