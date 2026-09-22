@@ -4,7 +4,7 @@ $PSNativeCommandUseErrorActionPreference = $true
 $Root = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
 Set-Location $Root
 
-$Base = "c710308b473485a95b400f1389ca78b9c8effc56"
+$Base = "6035fe0a0230d0b3affb91718902f0b900755894"
 $ImodPin = "8907fb13f8301ba1e0f32dd90a64ea475d4896d6"
 $ImodRoot = if ($env:RIBASIM_DUMMY_20H_IMOD_COUPLER_ROOT) {
     (Resolve-Path $env:RIBASIM_DUMMY_20H_IMOD_COUPLER_ROOT).Path
