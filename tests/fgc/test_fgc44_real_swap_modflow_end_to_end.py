@@ -303,6 +303,11 @@ def main()->None:
          independent_gw_intercept,independent_gw_fit_error)=closeout_independent_endpoint(
             libmf6,swaplib,swap,href,origin_state
         )
+        print(f"FGC44_INDEPENDENT_ENDPOINT_HEAD_M={independent_root:.17g}")
+        print(f"FGC44_INDEPENDENT_ENDPOINT_RESIDUAL_M_PER_S={independent_root_residual:.17g}")
+        print(f"FGC44_INDEPENDENT_GW_SLOPE_PER_S={independent_gw_slope:.17g}")
+        print(f"FGC44_INDEPENDENT_GW_INTERCEPT_M_PER_S={independent_gw_intercept:.17g}")
+        print(f"FGC44_INDEPENDENT_GW_FIT_ERROR_M_PER_S={independent_gw_fit_error:.17g}")
 
     # E2 real-participant isolation probe: a rejected corrector is a calculation,
     # not accepted hydrological history and not authoritative interface mass.
@@ -376,10 +381,10 @@ def main()->None:
                 independent_final_residual=final_q_swap-(
                     independent_gw_slope*final_head+independent_gw_intercept
                 )
-                require(abs(final_head-independent_root)<=CLOSEOUT_ENDPOINT_HEAD_TOL_M,
+                independent_head_error=final_head-independent_root
+                independent_residual_gate=abs(independent_final_residual)<=FLUX_TOL
+                require(abs(independent_head_error)<=CLOSEOUT_ENDPOINT_HEAD_TOL_M,
                         "coupled endpoint differs from independent physical endpoint")
-                require(abs(independent_final_residual)<=FLUX_TOL,
-                        "coupled endpoint does not close independent physical residual")
             require(session.finalize_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
             require(kernel.prepare_solve_calls==1 and kernel.finalize_solve_calls==1,"prepared solve lifecycle mismatch")
             require(swap.swap_preflight(),"real SWAP publication preflight failed")
@@ -422,13 +427,10 @@ def main()->None:
             raw.finalize(); initialized=False
 
             if CLOSEOUT_ONECELL:
-                print(f"FGC44_INDEPENDENT_ENDPOINT_HEAD_M={independent_root:.17g}")
-                print(f"FGC44_INDEPENDENT_ENDPOINT_RESIDUAL_M_PER_S={independent_root_residual:.17g}")
-                print(f"FGC44_INDEPENDENT_GW_SLOPE_PER_S={independent_gw_slope:.17g}")
-                print(f"FGC44_INDEPENDENT_GW_INTERCEPT_M_PER_S={independent_gw_intercept:.17g}")
-                print(f"FGC44_INDEPENDENT_GW_FIT_ERROR_M_PER_S={independent_gw_fit_error:.17g}")
+                print(f"FGC44_INDEPENDENT_FINAL_HEAD_ERROR_M={independent_head_error:.17g}")
                 print(f"FGC44_INDEPENDENT_FINAL_RESIDUAL_M_PER_S={independent_final_residual:.17g}")
-                print("FGC44_INDEPENDENT_PHYSICAL_ENDPOINT=PASS")
+                print("FGC44_INDEPENDENT_HEAD_ENDPOINT=PASS")
+                print("FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE="+("PASS" if independent_residual_gate else "FAIL"))
                 expected_api_m3_per_day=final_q_gw*AREA_M2*DAY_TO_S
                 (mf_total_in,mf_total_out,mf_budget_residual,mf_percent_discrepancy,
                  mf_api_component,mf_listing_file)=read_modflow_component_balance(
@@ -469,6 +471,9 @@ def main()->None:
             if CLOSEOUT_ONECELL:
                 print("FGC44_CLOSEOUT_ONE_SWAP_ONE_MODFLOW_CELL=PASS")
                 print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
+                require(independent_residual_gate,
+                        "coupled endpoint does not close independent physical residual")
+                print("FGC44_INDEPENDENT_PHYSICAL_ENDPOINT=PASS")
             print("FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS")
             print("FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS")
             print("FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS")
