@@ -60,6 +60,10 @@ def build_model(workdir:Path, reference_head:float)->None:
         complexity="MODERATE",
         outer_dvclose=1e-11,
         inner_dvclose=1e-12,
+        # Bind the linear residual solve to the already-frozen absolute
+        # MODFLOW model-balance gate below. The acceptance tolerance itself
+        # is unchanged; this prevents an internally looser residual solve.
+        rcloserecord=[1e-9,"STRICT"],
         outer_maximum=100,
         inner_maximum=100,
     )
