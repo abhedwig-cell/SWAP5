@@ -288,22 +288,26 @@
     "RZM06E03B identified a directional admissibility bottleneck: all full-rate BOTTOM_THEN_TOP histories failed during bottom-only phase step 7, while TB_N08 and TB_N09 completed. The next discriminator should reduce flux rate rather than relax state thresholds.",
     "RZM06E03C closed the scalar rate-tuning route: no gentle bottom-first family completed, and strict admissibility was nonmonotone with forcing rate; 0.5*K0 survived more cumulative bottom transfer than 0.25*K0.",
     "RZM06E03D exhaustively censused 78 qualified records (65 unique states) and found 59 pairs matching both total profile water and upper-30-cm water, but zero pairs with |Δdeep centroid|>=0.01 cm; best was 0.0004048112988499497 cm.",
-    "RZM06E03E found 14 storage-matched pairs with |ΔH16|>=0.01 cm. The selected pair E01/CLOSED/1 versus E03/DRY_RECOVER/RECOVER/19 has ΔW_profile=0, |ΔW_root30|=4.3428876926654425e-05 cm and |ΔH16|=0.0738671093353922 cm."
+    "RZM06E03E found 14 storage-matched pairs with |ΔH16|>=0.01 cm. The selected pair E01/CLOSED/1 versus E03/DRY_RECOVER/RECOVER/19 has ΔW_profile=0, |ΔW_root30|=4.3428876926654425e-05 cm and |ΔH16|=0.0738671093353922 cm.",
+    "RZM06E03C closed the gentle bottom-first rate-tuning route as nonmonotone: 0.5*K0 survived materially more cumulative bottom-only transfer than 0.25*K0, and no nonbaseline family completed both phases.",
+    "RZM06E03D censused 78 qualified state records, 65 unique states and 59 pairs matching both W_profile and W_root30; zero pairs reached the frozen 0.01 cm deep-centroid gate, with a best storage-matched separation of 0.0004048112988499497 cm.",
+    "RZM06E03E found 14 of the 59 storage-matched pairs with |ΔH16|>=0.01 cm. The selected E01 CLOSED step 1 versus E03 DRY_RECOVER RECOVER step 19 pair has ΔW_profile=0, |ΔW_root30|=4.3428876926654425e-05 cm and |ΔH16|=0.0738671093353922 cm.",
+    "E03E therefore authorizes an immutable fixed-Hc response probe, but because W_root30 is tolerance-matched rather than mathematically identical, any positive E04 conclusion must be stated at the frozen aggregate-storage resolution rather than as exact global state-sufficiency falsification."
   ],
   "next_work_unit": {
     "id": "GC-RZM06E04",
     "status": "PREREGISTERED_EXECUTION_QUEUED",
     "preregistration_commit": "dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e",
-    "workflow_run": 35747090068,
-    "scope": "Reconstruct the immutable E03E pair at common canonical time and apply the unchanged forcing-free fixed-Hc probe while rechecking W_profile, W_root30 and H16 state gates before response.",
+    "interpretation_amendment_commit": "964e35b40f5988fbd917ca9bb050bdebaa9d1401",
+    "scope": "Common-time reconstruct the immutable E03E pair and run identical forcing-free fixed-Hc strict Reference probes with total-water, root30-water and H16 gates rechecked before response.",
     "constraints": [
       "no origin reselection",
-      "retain |ΔW_profile|<=1e-4 cm and |ΔW_root30|<=1e-4 cm",
-      "retain |ΔH16|>=0.01 cm state gate",
-      "retain fixed Hc=-1.8979370901690651 m and dyadic dt=3435974/2^32 day",
-      "retain response support threshold |Δexchange|>1e-18 cm",
-      "fresh committed origin/backend for every probe and no commit",
-      "no production source changes and no H5/RZM06B work"
+      "retain |ΔW_profile|<=1e-4 cm, |ΔW_root30|<=1e-4 cm and |ΔH16|>=1e-2 cm",
+      "retain H_c=-1.8979370901690651 m and dt=3435974/2^32 day",
+      "retain response threshold 1e-18 cm",
+      "same-origin order independence and O0/O2 identity required",
+      "no commit, fallback, automatic temporal subdivision or production source change",
+      "interpret support only at the frozen aggregate-storage resolution"
     ]
   },
   "blocked": [],
@@ -314,6 +318,8 @@
     "no RZM06B/H5 management conclusion",
     "no global real-SWAP state sufficiency claim outside the qualified carrier and frozen experiment windows",
     "no root-matched deeper-profile response-memory causality result yet",
-    "no E04 response conclusion before workflow 35747090068 completes"
+    "no E04 response conclusion before workflow 35747090068 completes",
+    "no exact global sufficiency falsification from tolerance-matched W_root30 alone",
+    "no E04 qualification claim before its named workflow completes"
   ]
 }
