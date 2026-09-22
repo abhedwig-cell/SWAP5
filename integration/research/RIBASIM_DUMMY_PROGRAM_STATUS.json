@@ -276,6 +276,13 @@
       "qualification_head": "84f05671bafcd0cd8fe22d115980889bc5491a00",
       "confirming_run": 35745769522,
       "confirming_run_disposition": "supporting duplicate; v2 carries explicit allocation-time observability guard"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H8",
+      "decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+      "run": 35747089993,
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "pending": [
@@ -289,20 +296,10 @@
       "modflow_release": "6.7.0"
     },
     {
-      "work_unit": "RIBASIM-DUMMY-20H8",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
-      "dependency": "DUMMY-20H7 qualified by run 35745915889.",
-      "scientific_baseline": "7fa8550ab4ffd5332370391f01bf4850117c9e2a",
-      "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "implementation_baseline": "f45aeeef4e8a23c45d791e2f367063dc1fc0055f"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-20H9",
-      "state": "PREREGISTERED_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+      "state": "PREREGISTERED_VERIFIER_PREPARED_READY_FOR_RELEASE",
       "intended_decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
-      "dependency": "Execute only if DUMMY-20H8 qualifies.",
+      "dependency": "DUMMY-20H8 qualified by run 35747089993; runner/workflow may now be added without changing frozen H9 references.",
       "scientific_baseline": "9220b8bf49138a0cf2b723aa7d6d460583338029",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
@@ -312,7 +309,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H8 equal-magnitude forcing-sign asymmetry qualification.",
+  "next_authority_action": "Release and execute prospectively frozen DUMMY-20H9 actual positive-groundwater t=24 allocation bridge.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -460,5 +457,10 @@
     "latest": "RIBASIM-DUMMY-20H7",
     "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
     "meaning": "Actual pinned RibaMod reproduces the H6 t=24 oracle end-to-end: day-1 accepted storage becomes next-boundary management memory while the simultaneously active River forcing remains a separate forecast quantity."
+  },
+  "product_current_forcing_sign_authority": {
+    "latest": "RIBASIM-DUMMY-20H8",
+    "decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+    "meaning": "In the tested exact Ribasim v2026.1.1 allocation topology, current drainage is explicit positive forecast supply while current infiltration is implicit negative forcing multiplied by low_storage_factor; equal-magnitude opposite signs therefore have asymmetric allocation effect."
   }
 }
