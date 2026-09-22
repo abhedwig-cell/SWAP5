@@ -4,14 +4,26 @@
   "work_unit": "RIBASIM-DUMMY-20H2",
   "branch": "work/ribasim-dummy-01",
   "baseline": "6562774e754cf0b5db48a95d4939dbf79c378222",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Actual RibaMod pre-update pointer observation plus direct bundled-Ribasim control/injection differential.",
-  "next_action": "Implement and execute the frozen three-route visibility diagnostic.",
+  "next_action": "Execute frozen DUMMY-20H2 three-route pointer-to-allocation visibility qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "b5c355179442368863b17d41afe9cfa6065eeb58",
+  "recovery_point": "DUMMY-20H2 executable diagnostic and runner persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H2_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H2_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H2_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H2_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20h2_infiltration_allocation_visibility.py",
+    "tests/research/run_ribasim_dummy_20h2.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
