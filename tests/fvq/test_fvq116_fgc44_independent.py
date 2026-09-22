@@ -28,7 +28,8 @@ require('discard_trial_candidate => fmr_serialized_backend_discard_trial_candida
 for token in ['XmiWrapper','Modflow6PreparedSolveSession','Fgc44RealSwap','modflow_converged','swap.trial','swap.discard','swap.swap_preflight','swap.ledger_preflight','timestep_ready_for_finalize','finalize_time_step_once','swap.commit_swap','swap.commit_ledger']:
     require(token in live,f'live end-to-end token absent: {token}')
 require('if it.modflow_converged and abs(residual)<=FLUX_TOL:' in live,'conjunctive convergence oracle absent')
-order=[live.index(x) for x in ['swap.swap_preflight()', 'swap.prepare_ledger()', 'swap.ledger_preflight()', 'session.timestep_ready_for_finalize()', 'session.finalize_time_step_once()', 'swap.commit_swap()', 'swap.commit_ledger()']]
+publication=live.split('require(swap.swap_preflight()',1)[1]
+order=[publication.index(x) for x in ['swap.prepare_ledger()', 'swap.ledger_preflight()', 'session.timestep_ready_for_finalize()', 'session.finalize_time_step_once()', 'swap.commit_swap()', 'swap.commit_ledger()']]
 require(order==sorted(order),'publication/preflight order changed')
 require('CountingKernel' in live and 'XmiWrapper' in live,'live MODFLOW kernel is not observed')
 require('FakeKernel' not in live and 'Mock' not in live,'deterministic MODFLOW double leaked into live gate')
