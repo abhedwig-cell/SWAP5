@@ -1,13 +1,59 @@
 {
-  "schema": "swap5.coupling.ribasim_release_allocation_low_storage_mechanism.result_retraction.v1",
+  "schema": "swap5.coupling.ribasim_release_allocation_low_storage_mechanism.result.v1",
   "date": "2026-09-22",
   "work_unit": "RIBASIM-DUMMY-20H3",
-  "state": "RETRACTED_NON_AUTHORITY",
-  "retracted_decision": "RIBASIM_DUMMY_20H3_FALSIFIED_PREEXECUTION_BY_ALLOCATION_AREA_SCALING",
-  "reason": "Technical source-reading error before execution. The exact v2026.1.1 expression is (A * potential_evaporation + vertical_flux.infiltration) * allocation_dt; Basin area does not multiply infiltration.",
-  "corrected_source_formula": "implicit_negative_forcing_volume = (A * potential_evaporation + vertical_flux.infiltration) * Δt_allocation",
-  "corrected_numeric_for_current_case_m3": 7.999914667576883,
-  "scientific_effect": "none; the original prospectively frozen DUMMY-20H3 mechanism hypothesis remains valid and executable.",
-  "authority_use": "forbidden",
-  "next_action": "Restore preregistered DUMMY-20H3 state and execute the exact-release LP diagnostic."
+  "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
+  "authority": {
+    "qualification_head": "e6e085c49b6507cda7d563128409f645d7f7c68d",
+    "workflow_run": 35735546703,
+    "workflow_job": 106771732682,
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "conclusion": "success"
+  },
+  "prior_retraction": {
+    "state": "RETAINED_AS_HISTORY_ONLY",
+    "retracted_decision": "RIBASIM_DUMMY_20H3_FALSIFIED_PREEXECUTION_BY_ALLOCATION_AREA_SCALING",
+    "reason": "Earlier source-reading error misread parentheses. Infiltration is not multiplied by Basin area in implicit_negative_forcing_volume."
+  },
+  "observations": {
+    "control": {
+      "infiltration_m3_per_day": 0,
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": 0,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0
+    },
+    "injected_free_alpha": {
+      "infiltration_m3_per_day": 7.999914667576883,
+      "implicit_negative_forcing_m3": 7.999914667576882,
+      "low_storage_factor": 0,
+      "storage_change_m3": 0,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0
+    },
+    "injected_alpha_fixed_one": {
+      "infiltration_m3_per_day": 7.999914667576883,
+      "implicit_negative_forcing_m3": 7.999914667576882,
+      "low_storage_factor": 1,
+      "storage_change_m3": 0,
+      "root_allocation_m3_per_day": 24.000085332423115,
+      "external_allocation_m3_per_day": 0
+    }
+  },
+  "qualified_claims": [
+    "Injected Basin infiltration is visible to the allocation layer as approximately 7.9999147 m3 implicit negative forcing over the one-day allocation horizon.",
+    "With low_storage_factor free, the LP solution drives the factor to zero while retaining the 32 m3/day root allocation and zero forecast storage change.",
+    "Fixing the same LP factor to one, with all forcing and demands unchanged, reduces root allocation to approximately 24.0000853 m3/day.",
+    "The DUMMY-20H/H2 current-boundary result is therefore not caused by missing BMI infiltration data in the allocation layer.",
+    "The qualified mechanism is an allocation-forecast degree of freedom that can attenuate the implicit negative forcing under the tested lexicographic-priority topology."
+  ],
+  "boundaries": [
+    "The alpha=1 intervention is diagnostic only.",
+    "No claim that LP alpha should universally equal the physical low-storage factor.",
+    "No upstream defect classification.",
+    "No production coupling admission."
+  ],
+  "downstream": "Execute prospectively frozen DUMMY-20H4 on the identical accepted state."
 }
