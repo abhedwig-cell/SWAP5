@@ -94,7 +94,7 @@ Current real evidence on the closeout branch includes:
 
 - real FMR correctors with an explicit negative outward response tangent;
 - live MODFLOW6 6.8.0 prepared-solve coupling;
-- F-GC44 accepted endpoint residual closure, rejected-trial zero authority, interface identity and exactly-once publication;
+- F-GC44 accepted endpoint residual closure, physical corrector-tangent relinearization, accepted MODFLOW component-balance closure, rejected-trial zero authority, interface identity and exactly-once publication;
 - F-GC49D production ABI convergence over mixed N:1 and 1:1 topology;
 - explicit HEAD_STATE_CAPACITANCE and no-drainage application authority;
 - stale SWAP response-origin rejection;

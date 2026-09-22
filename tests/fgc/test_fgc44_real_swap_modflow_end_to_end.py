@@ -63,7 +63,34 @@ def build_model(workdir:Path, reference_head:float)->None:
     flopy.mf6.ModflowGwfsto(gwf,iconvert=1,ss=0.02,sy=0.15,transient={0:True})
     flopy.mf6.ModflowGwfchd(gwf,stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},pname="CHD_ENDS")
     flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api")
+    flopy.mf6.ModflowGwfoc(
+        gwf,
+        budget_filerecord="fgc44.cbc",
+        saverecord=[("BUDGET","ALL")],
+    )
     sim.write_simulation(silent=True)
+
+def _budget_component_sum(data)->float:
+    array=np.asarray(data)
+    if array.dtype.names:
+        names={name.lower():name for name in array.dtype.names}
+        if "q" in names:
+            return float(np.sum(array[names["q"]],dtype=np.float64))
+        return 0.0
+    return float(np.sum(array,dtype=np.float64))
+
+def read_modflow_component_balance(path:Path)->tuple[float,float,tuple[tuple[str,float],...]]:
+    budget=flopy.utils.CellBudgetFile(str(path),precision="double")
+    components=[]
+    for raw_name in budget.get_unique_record_names():
+        name=raw_name.decode("ascii","ignore").strip()
+        total=0.0
+        for data in budget.get_data(kstpkper=(0,0),text=name):
+            total+=_budget_component_sum(data)
+        components.append((name,total))
+    residual=float(sum(value for _,value in components))
+    scale=float(sum(abs(value) for _,value in components))
+    return residual,scale,tuple(components)
 
 def main()->None:
     libmf6=Path(os.environ["LIBMF6"]).resolve()
@@ -140,8 +167,13 @@ def main()->None:
                 head=float(it.head_m[1])
                 q_gw=(current_hcof*head-current_rhs)/(AREA_M2*DAY_TO_S)
                 q_swap=swap.trial(head)
+                q_diag,_,dq_swap_dh,tangent_available=swap.last_trial_response()
+                require(abs(q_diag-q_swap)<=64*np.finfo(float).eps*max(1.0,abs(q_swap)),
+                        "trial response q mismatch")
+                require(tangent_available and math.isfinite(dq_swap_dh) and dq_swap_dh<0.0,
+                        "real SWAP physical outward tangent unavailable or wrongly oriented")
                 residual=q_swap-q_gw
-                require(all(math.isfinite(x) for x in (head,q_gw,q_swap,residual)),"nonfinite coupled iterate")
+                require(all(math.isfinite(x) for x in (head,q_gw,q_swap,dq_swap_dh,residual)),"nonfinite coupled iterate")
                 print(f"FGC44_ITER={outer} H={head:.17g} QSWAP={q_swap:.17g} QGW={q_gw:.17g} RES={residual:.17g} MF={int(it.modflow_converged)}")
                 if it.modflow_converged and abs(residual)<=FLUX_TOL:
                     converged=True; final_head=head; final_q_swap=q_swap; final_q_gw=q_gw
@@ -149,6 +181,7 @@ def main()->None:
                 require(swap.state()==origin_state,"rejected coupled corrector changed authoritative state before discard")
                 swap.discard()
                 require(swap.state()==origin_state,"discarded coupled corrector changed authoritative state or mass")
+                current_hcof=dq_swap_dh*AREA_M2*DAY_TO_S
                 current_rhs=current_hcof*head-q_swap*AREA_M2*DAY_TO_S
 
             require(converged,"real SWAP + MODFLOW coupling did not converge")
@@ -193,11 +226,20 @@ def main()->None:
             require(session.finalize_time_step_once()==PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,"second MODFLOW timestep finalization not blocked")
             raw.finalize(); initialized=False
 
+            mf_budget_residual,mf_budget_scale,mf_budget_components=read_modflow_component_balance(workdir/"fgc44.cbc")
+            require(math.isfinite(mf_budget_residual) and math.isfinite(mf_budget_scale),
+                    "nonfinite MODFLOW component balance")
+            require(abs(mf_budget_residual)<=max(1.0e-9,1.0e-8*mf_budget_scale),
+                    "accepted MODFLOW component balance does not close")
+
             print(f"FGC44_FINAL_HEAD_M={final_head:.17g}")
             print(f"FGC44_FINAL_Q_SWAP_M_PER_S={final_q_swap:.17g}")
             print(f"FGC44_FINAL_Q_GW_M_PER_S={final_q_gw:.17g}")
             print(f"FGC44_FINAL_FLUX_RESIDUAL={final_q_swap-final_q_gw:.17g}")
             print(f"FGC44_LEDGER_EXCHANGE_M={ledger_exchange:.17g}")
+            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
+            print(f"FGC44_MODFLOW_COMPONENT_BALANCE_SCALE_M3_PER_DAY={mf_budget_scale:.17g}")
+            print("FGC44_MODFLOW_COMPONENTS="+",".join(f"{name}:{value:.17g}" for name,value in mf_budget_components))
             print(f"PUB_GC_E1_QBOT_PREDICTOR_CM_PER_DAY={float(e1['q_bot_predictor_cm_per_day']):.17g}")
             print(f"PUB_GC_E1_QU_CM_PER_DAY={float(e1['q_u_cm_per_day']):.17g}")
             print(f"PUB_GC_E1_U={float(e1['u']):.17g}")
@@ -216,6 +258,8 @@ def main()->None:
             print("PUB_GC_E2_PUBLICATION_ORDER=PASS")
             print("FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS")
             print("FGC44_REAL_SWAP_CORRECTORS_FROM_ACCEPTED_ORIGIN=PASS")
+            print("FGC44_REAL_SWAP_PHYSICAL_RESPONSE_RELINEARIZATION=PASS")
+            print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
             print("FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS")
             print("FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS")
             print("FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS")

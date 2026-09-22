@@ -36,6 +36,11 @@ class Fgc44RealSwap:
         self.lib.fgc44_last_trial_diagnostics_c.argtypes=[
             ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_last_trial_response_c.restype=ctypes.c_int
+        self.lib.fgc44_last_trial_response_c.argtypes=[
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_int)
+        ]
         self.lib.fgc44_predictor_run_diagnostics_c.restype=ctypes.c_int
         self.lib.fgc44_predictor_run_diagnostics_c.argtypes=[
             *([ctypes.POINTER(ctypes.c_int)]*14),
@@ -141,6 +146,14 @@ class Fgc44RealSwap:
         result={k:v.value for k,v in zip(keys,values)}
         result["mass_complete"]=bool(mass_complete.value)
         return result
+
+    def last_trial_response(self) -> tuple[float,float,float,bool]:
+        q=ctypes.c_double(); exchange=ctypes.c_double(); tangent=ctypes.c_double(); available=ctypes.c_int()
+        status=self.lib.fgc44_last_trial_response_c(
+            ctypes.byref(q),ctypes.byref(exchange),ctypes.byref(tangent),ctypes.byref(available)
+        )
+        if status: raise RuntimeError(f"last-trial response query failed: {status}")
+        return q.value,exchange.value,tangent.value,bool(available.value)
 
     def last_trial_diagnostics(self) -> tuple[float,float]:
         q=ctypes.c_double(); exchange=ctypes.c_double()
