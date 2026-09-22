@@ -169,6 +169,15 @@
       "workflow_job": 106792958715,
       "implementation_head": "610d77cdd21ea595d786eba94b128ca244af7b63",
       "evidence_commit": "3da8bddee069bf91de98e37054d6f69dbccdf49f"
+    },
+    {
+      "work_unit": "GC-RZM06E03",
+      "decision": "QUALIFIED_ROOTMATCHED_DEEP_MEMORY_NO_MATCH__NO_RESPONSE_PROBE",
+      "preregistration_commit": "e6543e57bed84ec22615ea68f14f66ec400362cd",
+      "workflow_run": 35743604739,
+      "workflow_job": 106799372329,
+      "implementation_head": "63000df12a460ad0eecbbe21d42241fa1c1e3d62",
+      "evidence_commit": "a85be111f0d7679c25ed1903928fef4e66d691d9"
     }
   ],
   "current_findings": [
@@ -236,20 +245,24 @@
     "E02 directly supports H2 on the qualified 16-node real-HeadCalc carrier: at identical fixed H_c and effectively identical total profile water, the E01 vertical-distribution pair produces different next whole-window bottom exchange.",
     "E02 reconstructs |ΔW_profile|=1.4210854715202004e-14 cm and |ΔM1|=0.11123947403318368 cm; both fixed-Hc probes have zero mass residual and are order-independent and O0/O2 identical.",
     "Whole-window bottom exchange differs by 0.0013176066140374587 cm: A=0.0031391986203388456 cm and B=0.004456805234376304 cm.",
-    "E02 therefore falsifies H_c plus total-profile-water as a complete state description for this carrier/window, but does not yet falsify H_c plus total-profile-water plus upper-30-cm/root-zone water because the selected pair differs in upper-30-cm storage by about 0.043932 cm."
+    "E02 therefore falsifies H_c plus total-profile-water as a complete state description for this carrier/window, but does not yet falsify H_c plus total-profile-water plus upper-30-cm/root-zone water because the selected pair differs in upper-30-cm storage by about 0.043932 cm.",
+    "RZM06E03 qualified the frozen simultaneous zero-divergence recovery construction as NO_MATCH: one pair satisfied both |ΔW_profile|<=1e-4 cm and |ΔW_root30|<=1e-4 cm, but retained only |ΔM1|=0.001103765210785923 cm, about 11.0% of the unchanged 0.01 cm separation gate.",
+    "Within E03, the large vertical-distribution signal co-varies strongly with upper-30-cm recovery: the strongest M1 pair had |ΔM1|=0.07154475561600293 cm but still differed by 0.028245704446707265 cm in W_root30. This closes the frozen simultaneous-throughflow construction without establishing state sufficiency."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E03",
-    "scope": "Test the next state-sufficiency rung: prospectively construct or select strict accepted 16-node origins with the same total profile water and the same upper-30-cm/root-zone water, but different deeper vertical distribution, before any identical fixed-Hc response probe.",
-    "prerequisite": "E02 supported H2 and showed W_root differs in the selected pair",
+    "id": "GC-RZM06E03B",
+    "status": "PREREGISTERED_EXECUTION_PENDING_QUALIFICATION",
+    "preregistration_commit": "511b6f9fcf40702786ecb84bc5b253998db214aa",
+    "scope": "Use temporally split but equal integrated top and bottom boundary transfers to seek strict accepted 16-node origins with the same total profile water and upper-30-cm water but materially different deeper vertical distribution.",
+    "prerequisite": "E03 qualified NO_MATCH for simultaneous equal top/bottom recovery and showed root30 and M1 recovery are strongly co-aligned on that frozen route.",
     "constraints": [
-      "retain the C01 16x10 cm B01 pure-hydraulics Reference carrier",
-      "keep H_c external and single-valued; additional memory remains SWAP-internal",
-      "pair selection must be response-blind",
-      "require |ΔW_profile|<=1e-4 cm and add |ΔW_root30|<=1e-4 cm before response",
-      "retain |ΔM1|>=1e-2 cm as a vertical-separation gate unless a more targeted deeper-profile moment is preregistered first",
-      "use strict Reference samples only; no fallback and no tolerance relaxation",
-      "persist any selected pair before a response experiment",
+      "retain the C01 16x10 cm B01 strict Reference carrier",
+      "retain |ΔW_profile|<=1e-4 cm, |ΔW_root30|<=1e-4 cm and |ΔM1|>=1e-2 cm",
+      "use only the preregistered n={8,9,10,11,12} TOP_THEN_BOTTOM and BOTTOM_THEN_TOP families",
+      "pair selection remains response-blind",
+      "only fully completed strict families contribute candidate endpoints",
+      "no fallback, tolerance relaxation, direct physical-state mutation or post-hoc grid extension",
+      "persist any selected pair before E04 response work",
       "no production source changes and no H5/RZM06B work"
     ]
   },
@@ -258,8 +271,9 @@
     "no production coupling admission",
     "no second MODFLOW hydraulic state variable admission",
     "no production sign-flip admission",
-    "no H2 vertical-distribution causality result yet",
     "no RZM06B/H5 management conclusion",
-    "no global real-SWAP state sufficiency claim outside the qualified carrier and frozen experiment windows"
+    "no global real-SWAP state sufficiency claim outside the qualified carrier and frozen experiment windows",
+    "no root-matched deeper-profile response-memory causality result yet",
+    "no E03B qualification claim before its named workflow completes"
   ]
 }
