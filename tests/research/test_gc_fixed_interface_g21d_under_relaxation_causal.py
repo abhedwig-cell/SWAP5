@@ -220,8 +220,11 @@ def main()->None:
     require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION_AMENDED","G21D amended preregistration not frozen")
     require(parent_result["decision"]=="QUALIFIED_DIAGNOSTIC_PERSISTENT_PREPARED_SOLVE_PATH_MEMORY",
             "G21D G21B authority drift")
-    require(TAIL_CALLS==int(prereg["frozen_case"]["tail_calls"])==int(parent_prereg["frozen_case"]["tail_calls"]),
-            "G21D tail-length authority drift")
+    require(TAIL_CALLS==int(prereg["frozen_case"]["tail_calls"]),
+            "G21D tail-length preregistration drift")
+    require(bool(parent_result["response_identity"]["fixed_for_all_12_tail_calls"]),
+            "G21D parent G21B 12-call authority missing")
+    require(TAIL_CALLS==12,"G21D parent G21B qualified tail length drift")
 
     frozen=parent_prereg["frozen_case"]
     outer1=parent_prereg["frozen_outer1_response_history"]
