@@ -29,7 +29,8 @@
     "integration/f-rom/ROM_ACCEPT_01_SOURCE_PROVENANCE.json",
     "integration/f-rom/ROM_ACCEPT_01_PURPOSE_CONTRACTS.json",
     "integration/f-rom/ROM_ACCEPT_01_STATUS_HANDOFF.json",
-    "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json"
+    "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+    "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json"
   ],
   "purpose_status": {
     "GW-R": {
@@ -56,7 +57,9 @@
         },
         "matching_lhm_like_end_to_end": {
           "state": "ENVELOPE_FROZEN_EXECUTION_NOT_YET_PREREGISTERED",
-          "blocker": "Exact observation dataset/population, model composition, insertion point and blind application panel still require preregistration before candidate execution."
+          "blocker": "Exact observation dataset/population, model composition, insertion point and blind application panel still require preregistration before candidate execution.",
+          "protocol_shell": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
+          "next_gate": "Bind exact observation dataset/population, temporal implementation, frozen application composition, ROM identity and blind case manifest."
         }
       }
     },
