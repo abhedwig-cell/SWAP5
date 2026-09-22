@@ -3,6 +3,7 @@ module mod_fmr_production_application_bootstrap
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
@@ -67,6 +68,15 @@ module mod_fmr_production_application_bootstrap
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
   end type fmr_production_application_config_t
 
+  type, public :: fmr_committed_top_state_t
+    logical :: available = .false.
+    integer(int64) :: revision = 0_int64
+    real(real64) :: committed_time = 0.0_real64
+    real(real64) :: pressure_head_top_cm = 0.0_real64
+    real(real64) :: water_content_top = 0.0_real64
+    real(real64) :: ponding_depth_cm = 0.0_real64
+  end type fmr_committed_top_state_t
+
   type, public :: fmr_production_application_bootstrap_t
     private
     logical :: initialized = .false.
@@ -94,6 +104,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
+    procedure, public :: copy_committed_top_states => production_application_copy_committed_top_states
     procedure, public :: close => production_application_close
   end type fmr_production_application_bootstrap_t
 
@@ -418,6 +429,56 @@ contains
     end do
     status = FMR_APP_BOOT_OK
   end subroutine production_application_copy_committed_revisions
+
+  subroutine production_application_copy_committed_top_states(self, states, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    type(fmr_committed_top_state_t), allocatable, intent(out) :: states(:)
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: available, time_available
+    integer :: i
+
+    if (allocated(states)) deallocate(states)
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready()) return
+    allocate(states(size(self%committed)))
+    do i = 1, size(self%committed)
+      call self%committed(i)%snapshot(snapshot, available)
+      if (.not. available) then
+        deallocate(states)
+        return
+      end if
+      select type (physical => snapshot)
+      class is (fmr_b110_physical_state_t)
+        if (physical%active_nodes <= 0 .or. .not. allocated(physical%pressure_head) .or. &
+            .not. allocated(physical%water_content)) then
+          deallocate(states)
+          return
+        end if
+        if (size(physical%pressure_head) < physical%active_nodes .or. size(physical%water_content) < physical%active_nodes) then
+          deallocate(states)
+          return
+        end if
+        states(i)%pressure_head_top_cm = physical%pressure_head(1)
+        states(i)%water_content_top = physical%water_content(1)
+        states(i)%ponding_depth_cm = physical%ponding_depth
+      class default
+        deallocate(states)
+        return
+      end select
+      call self%committed(i)%current_time(states(i)%committed_time, time_available)
+      if (.not. time_available .or. .not. ieee_is_finite(states(i)%committed_time) .or. &
+          .not. ieee_is_finite(states(i)%pressure_head_top_cm) .or. &
+          .not. ieee_is_finite(states(i)%water_content_top) .or. &
+          .not. ieee_is_finite(states(i)%ponding_depth_cm)) then
+        deallocate(states)
+        return
+      end if
+      states(i)%revision = self%committed(i)%current_revision()
+      states(i)%available = .true.
+    end do
+    status = FMR_APP_BOOT_OK
+  end subroutine production_application_copy_committed_top_states
 
   subroutine production_application_close(self, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
