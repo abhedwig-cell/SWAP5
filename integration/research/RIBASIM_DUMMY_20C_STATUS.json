@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20C v4 after STO, source-scope and one-cell grid-metadata technical repairs.",
+  "next_action": "Execute DUMMY-20C v4 frozen qualification; v1-v3 are technical non-authority.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -102,5 +102,7 @@
     "change": "Add scalar dx=1.0 and dy=-1.0 coordinates required by iMOD-Python for a one-cell structured grid.",
     "scientific_change": false,
     "rationale": "Pure discretization metadata; cell topology, fixed-head state, four 6-hour product periods and all Ribasim semantics are unchanged."
-  }
+  },
+  "qualification_attempt": "v4_frozen_runtime_after_fixture_completeness_repairs",
+  "qualification_base": "work/ribasim-dummy-01@dabfc511bcd913d24aeb69d6f71ada2308a69774"
 }
