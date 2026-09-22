@@ -1,0 +1,127 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21c.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21C",
+  "title": "Read-only MODFLOW/XMI prepared-solve state forensics for persistent path memory",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "f8b58f897852ccb1fd5cd770729edbc2039912cb",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21B_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21A_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G20_RESULT.json",
+    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md",
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "MODFLOW6 6.8.0 src/Solution/NumericalSolution.f90",
+    "MODFLOW6 6.8.0 src/Model/GroundWaterFlow/gwf.f90",
+    "MODFLOW6 6.8.0 src/Model/GroundWaterFlow/gwf-npf.f90",
+    "MODFLOW6 6.8.0 src/Model/GroundWaterFlow/gwf-sto.f90"
+  ],
+  "question": "Which state exposed through the existing MODFLOW6 6.8.0 XMI/memory-manager surface differs between the G21B FRESH and HISTORY prepared solves when the outer-2 affine response is bitwise identical and XOLD is fixed, and does any nontrivial solver/package state remain path-dependent after the 12-call fixed-response tail?",
+  "scope": {
+    "diagnostic_only": true,
+    "read_only": true,
+    "causal_claim_not_preregistered": true,
+    "no_new_acceptance_rule": true,
+    "no_state_reset_or_setter": true,
+    "production_admission": "NO"
+  },
+  "frozen_case": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G21B_PREREGISTRATION.json",
+    "tail_calls": 12,
+    "strict_head_scale_m": 1e-12,
+    "expected_persistent_history_minus_fresh_m": 7.235112509107466e-11,
+    "response_hcof_m2_per_day": -0.13785986219261193,
+    "response_rhs_m3_per_day": 0.0985698022484409
+  },
+  "source_backed_probe_inventory": {
+    "model_GWF_1_required": [
+      "X",
+      "XOLD"
+    ],
+    "api_package_API_SWAP_required": [
+      "HCOF",
+      "RHS",
+      "NODELIST",
+      "NBOUND",
+      "MAXBOUND"
+    ],
+    "solution_SLN_1_required": [
+      "ICNVG",
+      "MXITER",
+      "DVCLOSE",
+      "BIGCH",
+      "BIGCHOLD",
+      "RELAXOLD",
+      "RES_PREV",
+      "RES_NEW",
+      "XTEMP",
+      "DXOLD"
+    ],
+    "solution_SLN_1_bookkeeping": [
+      "ITERTOT_TIMESTEP",
+      "IOUTTOT_TIMESTEP",
+      "INNERTOT_SIM"
+    ],
+    "npf_package_NPF_required": [
+      "SAT",
+      "CONDSAT",
+      "K11",
+      "ICELLTYPE"
+    ],
+    "sto_package_STO_required": [
+      "SS",
+      "SY",
+      "STRGSS",
+      "STRGSY",
+      "ICONVERT"
+    ]
+  },
+  "snapshot_contract": [
+    "Use the exact G21B FRESH and HISTORY construction and frozen outer-2 HCOF/RHS.",
+    "Open one prepared solve per arm; never write through any returned pointer.",
+    "Take read-only copies of all preregistered memory-manager probes at outer-2 tail entry, at the first MODFLOW convergence report for that tail, and after tail call 12.",
+    "Require every required probe to resolve through get_var_address/get_value_ptr. A missing required probe falsifies the planned forensic surface and must be preserved rather than silently dropped.",
+    "Record dtype, shape, bitwise digest/equality and maximum absolute numerical difference for each FRESH/HISTORY probe pair at matched forensic stages.",
+    "Treat bookkeeping counters separately from physical/solver/package state because FRESH and HISTORY intentionally execute different numbers of solve calls.",
+    "Require XOLD bitwise equal between arms and unchanged within each arm.",
+    "Require API HCOF/RHS bitwise equal between arms throughout the outer-2 fixed-response tail.",
+    "Do not infer causality solely from a differing derived array; classify only the location of observable path dependence."
+  ],
+  "classification_rules": {
+    "solver_history_visible": "At call 12, one or more non-bookkeeping SLN_1 state probes other than values trivially identical to current X differ between FRESH and HISTORY.",
+    "package_state_visible": "At call 12, one or more NPF/STO dynamic state probes differ between FRESH and HISTORY.",
+    "current_iterate_only_or_derived": "At call 12, X differs as in G21B, while solver history probes are equal or explainable as direct current-iterate copies and package differences are only state-dependent quantities recomputed from X; no distinct exposed accumulator is identified.",
+    "mixed_or_unresolved": "Observed probe pattern does not support one bounded classification."
+  },
+  "gates": [
+    "Reproduce the G21B fresh/history call-12 head offset within 1e-12 m of the persisted G21B value.",
+    "All required probes resolve and can be copied read-only.",
+    "XOLD is bitwise fixed within each arm and bitwise equal between arms.",
+    "Outer-2 API HCOF/RHS remain bitwise identical.",
+    "No pointer returned by XMI is mutated by the diagnostic.",
+    "Emit complete per-probe comparisons at tail entry, first convergence and call 12.",
+    "Classify observable state location using the preregistered rules without proposing a reset or changing convergence semantics."
+  ],
+  "pass_interpretation": "PASS is a forensic classification only. It may identify exposed solver/package state associated with path dependence or may show that no distinct exposed memory beyond current-iterate/derived state is visible. It does not prove causality and does not authorize modification of any MODFLOW state.",
+  "fail_interpretation": "Preserve failure. Do not drop unresolved probes, alter MODFLOW tolerances, change the 12-call tail, or add state mutation to obtain a cleaner classification.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21c_xmi_state_forensics.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21C_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "MODFLOW state through XMI/BMI pointers",
+    "G16/E3/P4 semantics",
+    "G19/G20/G21/G21A/G21B evidence or gates",
+    "F-GC38/F-GC39 contracts",
+    "MODFLOW solver tolerances",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
