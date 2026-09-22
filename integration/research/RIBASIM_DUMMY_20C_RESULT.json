@@ -1,0 +1,130 @@
+{
+  "schema": "swap5.coupling.real_ribamod_runtime_clock_equivalence.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20C",
+  "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
+  "authority": {
+    "qualification_head": "6c0c656b8c521995df744ae32deb78573b6483a3",
+    "workflow_run": 35722691439,
+    "workflow_job": 106729010778,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "modflow_version": "6.7.0",
+    "ribasim_version": "2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "technical_history": [
+    {
+      "attempt": "v1",
+      "classification": "TECHNICAL_MODEL_PACKAGE_FAIL",
+      "scientific_effect": "none"
+    },
+    {
+      "attempt": "v2",
+      "classification": "TECHNICAL_SOURCE_SCOPE_FAIL",
+      "scientific_effect": "none"
+    },
+    {
+      "attempt": "v3",
+      "classification": "TECHNICAL_GRID_METADATA_FAIL",
+      "scientific_effect": "none"
+    },
+    {
+      "attempt": "v4",
+      "classification": "QUALIFICATION_PASS"
+    }
+  ],
+  "product_route_observations": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000039987293805,
+      "root_cumulative_m3": 4.001270619481194,
+      "external_cumulative_m3": 0
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000079951211123,
+      "root_cumulative_m3": 8.004878887695051,
+      "external_cumulative_m3": 0
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.000011989133,
+      "root_cumulative_m3": 12.0108669999443,
+      "external_cumulative_m3": 0
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.0000159807416105,
+      "root_cumulative_m3": 16.019258389454414,
+      "external_cumulative_m3": 0
+    }
+  ],
+  "direct_ribasim_route_observations": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000039987293805,
+      "root_cumulative_m3": 4.001270619481194,
+      "external_cumulative_m3": 0
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000079951211123,
+      "root_cumulative_m3": 8.004878887695051,
+      "external_cumulative_m3": 0
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.000011989133,
+      "root_cumulative_m3": 12.0108669999443,
+      "external_cumulative_m3": 0
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.0000159807416105,
+      "root_cumulative_m3": 16.019258389454414,
+      "external_cumulative_m3": 0
+    }
+  ],
+  "route_differences": [
+    {
+      "endpoint_s": 21600,
+      "level_diff_m": 0,
+      "root_diff_m3": 0,
+      "external_diff_m3": 0
+    },
+    {
+      "endpoint_s": 43200,
+      "level_diff_m": 0,
+      "root_diff_m3": 0,
+      "external_diff_m3": 0
+    },
+    {
+      "endpoint_s": 64800,
+      "level_diff_m": 0,
+      "root_diff_m3": 0,
+      "external_diff_m3": 0
+    },
+    {
+      "endpoint_s": 86400,
+      "level_diff_m": 0,
+      "root_diff_m3": 0,
+      "external_diff_m3": 0
+    }
+  ],
+  "qualified_claims": [
+    "The actual pinned iMOD Coupler RibaMod driver ran with real MODFLOW 6.7.0 and Ribasim 2026.1.1 through four 6-hour product steps.",
+    "MODFLOW and Ribasim product times were exactly 21600, 43200, 64800 and 86400 seconds at the observed boundaries.",
+    "For the isolated no-groundwater-exchange topology, the actual product route and a fresh direct RibasimWrapper route produced identical logged Basin levels and cumulative UserDemand deliveries at every 6-hour boundary.",
+    "With allocation.dt=24 h, the lower-priority external UserDemand remained unsupplied throughout day 1 despite 6-hour product updates.",
+    "The actual RibaMod driver therefore adds no hidden within-day UserDemand management-clock behavior beyond the bundled Ribasim v2026.1.1 release for this isolated topology."
+  ],
+  "interpretation": "DUMMY-20A source authority and DUMMY-20B release-clock authority are dynamically confirmed in the actual product route. RibaMod's 6-hour MF6 cadence advances Ribasim physical time but does not itself create additional fixed-allocation.dt UserDemand decisions.",
+  "boundaries": [
+    "Groundwater exchange is deliberately inactive in this clock-isolation experiment.",
+    "This does not establish production SWAP5 product integration or an upstream SWAP5 driver.",
+    "This does not transfer v2026.1.1 clock semantics to later Ribasim versions.",
+    "No general claim for all Ribasim managed component types."
+  ],
+  "downstream": "Execute prospectively frozen DUMMY-20D actual-product allocation.dt × saveat clock-ownership matrix."
+}
