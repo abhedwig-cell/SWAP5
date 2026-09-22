@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d01.rom_library_h2_origin_selection_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D01",
+  "authority": "preregistered response-blind accepted-state selection",
+  "production_changes": false,
+  "parent_program_commit": "0e7efa049b39cff75b3ea6f7e1425b174aa10f49",
+  "carrier": {
+    "work_unit": "GC-RZM06C01",
+    "decision": "QUALIFIED_EXISTING_16NODE_FIXED_HEAD_REFERENCE_CARRIER",
+    "geometry": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "z_cm": [
+        -5,
+        -15,
+        -25,
+        -35,
+        -45,
+        -55,
+        -65,
+        -75,
+        -85,
+        -95,
+        -105,
+        -115,
+        -125,
+        -135,
+        -145,
+        -155
+      ]
+    },
+    "material": "B01",
+    "future_probe_fixed_head_m": -1.897937090169065,
+    "note": "D01 selects origins only; the fixed-head response probe is not opened in this work unit."
+  },
+  "library_authority": {
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_name": "rom1ar2-35379176697",
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "closeout": "integration/f-rom/F-ROM1A_SUCCESSOR_CLOSEOUT.json",
+    "expected_states": 768,
+    "expected_nodes_per_state": 16,
+    "required_o0_o2_byte_identity": true
+  },
+  "eligibility": {
+    "split": "DISCOVERY",
+    "fallback": "F",
+    "expected_strict_discovery_states": 475,
+    "held_out_policy": "HELD_OUT state observables are excluded from parsing/selection to preserve the ROM firewall.",
+    "same_time": "candidate pair T fields must be text-identical and parse to the same IEEE binary64 value",
+    "different_histories": true,
+    "exact_node_count": 16
+  },
+  "observable_reconstruction": {
+    "source": "ROM1AR2_NODE lines only",
+    "permitted_node_fields": [
+      "SPLIT",
+      "HISTORY",
+      "STEP",
+      "NODE",
+      "H",
+      "THETA"
+    ],
+    "permitted_state_metadata": [
+      "SPLIT",
+      "HISTORY",
+      "STEP",
+      "T",
+      "FALLBACK"
+    ],
+    "forbidden_selection_fields": [
+      "TOTAL_STORAGE",
+      "UPPER_STORAGE",
+      "LOWER_STORAGE",
+      "TOP_EXCHANGE",
+      "BOTTOM_OUTWARD_EXCHANGE",
+      "BOTTOM_FLUX",
+      "MASS",
+      "NL",
+      "BACKTRACK",
+      "SYMBOL",
+      "BOTTOM_MODE"
+    ],
+    "profile_water_cm": "sum(theta_i * 10 cm), i=1..16",
+    "distribution_moment_cm": "sum(theta_i * 10 cm * z_i) / profile_water_cm",
+    "upper_30cm_water_cm": "sum(theta_i * 10 cm), i=1..3; descriptive only, not a pair gate"
+  },
+  "frozen_h2_state_gate": {
+    "provenance": "physical conversion of RZM06A thresholds after RZM06A6 unit audit",
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "prior_values_m": {
+      "max_abs_profile_water_difference_m": 0.000001,
+      "min_abs_distribution_moment_difference_m": 0.0001
+    },
+    "no_relaxation": true
+  },
+  "selection_rule": {
+    "candidate_generation": "all unordered eligible state pairs with same T and different HISTORY",
+    "qualifying_pair": "both H2 state gates pass",
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_profile)",
+      "lexicographically smallest ordered provenance tuple (history_A,step_A,history_B,step_B)"
+    ],
+    "state_response_blind": true,
+    "no_match": "Close D01 as NO_MATCH. Do not loosen thresholds, expose held-out states, admit fallback states or inspect E_c."
+  },
+  "persistence_if_selected": [
+    "persist selected A/B provenance, time, reconstructed W_profile, M1 and upper-30cm water",
+    "persist all 16 pressure_head and theta values for both origins",
+    "persist artifact authority/digest and selector version",
+    "persist eligible and qualifying-pair counts",
+    "do not persist or inspect state-line response/exchange fields"
+  ],
+  "next_if_selected": "GC-RZM06D02 preregisters exact reconstruction of the selected two committed origins and identical forcing-free fixed-Hc Reference probes.",
+  "controls": [
+    "D01 performs no HeadCalc solve and no E_c probe",
+    "D01 does not change ROM library or H2 thresholds",
+    "D01 never uses HELD_OUT states",
+    "D01 excludes all FALLBACK=T states from the primary selection",
+    "selected pair is immutable for D02; D02 cannot reselect after seeing probe behavior"
+  ],
+  "nonclaims": [
+    "D01 does not support or falsify H2 by itself",
+    "ROM discovery-state selection does not admit a reduced model or production coupling",
+    "B01 homogeneous pure hydraulics is a research falsification carrier, not a deployment profile"
+  ]
+}
