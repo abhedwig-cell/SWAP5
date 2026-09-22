@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.coupling.real_ribamod_infiltration_allocation_visibility.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H2",
+  "decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
+  "classification": "RIBASIM_RELEASE_CURRENT_BOUNDARY_BMI_INFILTRATION_NOT_VISIBLE_TO_FIXED_ALLOCATION",
+  "authority": {
+    "qualification_head": "8e25378f25b7ea409e39db1b39c36702f9032c56",
+    "workflow_run": 35734439031,
+    "workflow_job": 106767940571,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "observations": {
+    "direct_control": {
+      "pointer_m3_per_day": 0,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0,
+      "root_supplied_6h_m3": 4.001270619481194,
+      "external_supplied_6h_m3": 0,
+      "cumulative_infiltration_6h_m3": 0,
+      "level_6h_m": 1.0000039987293805
+    },
+    "direct_injection": {
+      "pointer_m3_per_day": 7.999914667576882,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0,
+      "root_supplied_6h_m3": 4.000659167808606,
+      "external_supplied_6h_m3": 0,
+      "cumulative_infiltration_6h_m3": 1.9999786668942208,
+      "level_6h_m": 1.0000019993621654
+    },
+    "actual_ribamod": {
+      "pre_update_pointer_m3_per_day": 7.999914667576882,
+      "root_allocation_m3_per_day": 32,
+      "external_allocation_m3_per_day": 0,
+      "root_supplied_6h_m3": 4.000659167808606,
+      "external_supplied_6h_m3": 0,
+      "cumulative_infiltration_6h_m3": 1.9999786668942208,
+      "level_6h_m": 1.0000019993621654
+    }
+  },
+  "qualified_claims": [
+    "The actual RibaMod route populates the Ribasim basin.infiltration pointer before the real update_until call.",
+    "The direct BMI injection and actual RibaMod route are identical at reported precision for the 6-hour physical response and the recorded t=0 UserDemand allocation.",
+    "Positive basin.infiltration is physically effective in v2026.1.1: it produces material cumulative infiltration and changes the accepted Basin state.",
+    "The same current-boundary infiltration does not reduce the recorded fixed-grid t=0 UserDemand allocation from 32/0 m3/day.",
+    "Therefore DUMMY-20H is not caused by an additional RibaMod pointer-timing/composition seam; it is release-native behavior of the bundled Ribasim allocation/physical composition for this topology."
+  ],
+  "physical_cross_check": {
+    "meaning": "The injected direct route and actual RibaMod route have the same ~4.00066 m3 root delivery and ~1.99998 m3 cumulative infiltration after 6 h, confirming that the same applied management target and physical forcing are active; the classification is not merely an allocation.nc observation artifact."
+  },
+  "source_context": [
+    "BMI.get_value_ptr('basin.infiltration') maps directly to basin.vertical_flux.infiltration.",
+    "Fixed-grid step! calls update_allocation! before the physical step.",
+    "Allocation set_simulation_data! includes vertical_flux.infiltration as implicit negative Basin forcing.",
+    "The remaining question is therefore inside allocation formulation/objective behavior, not pointer visibility or RibaMod timing."
+  ],
+  "boundaries": [
+    "This does not yet explain why the allocation optimum remains 32/0 despite negative forcing.",
+    "Do not classify the behavior as a defect before the allocation objective/constraint disposition is isolated.",
+    "No production SWAP5 admission."
+  ],
+  "downstream": "Preregister a release-native allocation-ledger diagnostic that observes vertical forcing, predicted storage change, LevelDemand error and UserDemand/link allocation in the LP."
+}
