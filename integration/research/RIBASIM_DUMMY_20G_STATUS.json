@@ -8,9 +8,11 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20F2 closeout. Physical reciprocity references are frozen now.",
-  "next_action": "After DUMMY-20F2 closes, rebind and implement the frozen active-river product experiment.",
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Implement and execute the frozen active-river reciprocal stage-feedback product experiment.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "302010871bec0efbfa205aed02467d00c3f0bd0e",
+  "recovery_point": "DUMMY-20F2 qualified; DUMMY-20G sequencing dependency satisfied."
 }
