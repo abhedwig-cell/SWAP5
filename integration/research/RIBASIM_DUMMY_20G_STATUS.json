@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20G actual-product active-river reciprocity qualification.",
+  "next_action": "Execute DUMMY-20G v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "a258584729fd43012410928bbf1359de38f880a2",
@@ -36,5 +36,7 @@
       "two-cell K=1e6 / C=16 fixture has frozen effective exchange conductance 15.999744004095934 m2/day",
       "sample-and-hold stage, flux, cumulative infiltration, Basin level and reciprocal ledger are all asserted"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_active_river_reciprocity",
+  "qualification_base": "work/ribasim-dummy-01@a7b81d2670e736f92a270b0f349a39fd8dceb1ea"
 }
