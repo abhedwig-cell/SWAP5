@@ -3,7 +3,7 @@
   "date": "2026-09-22",
   "work_unit": "GC-FIXED-INTERFACE-G22",
   "title": "Full dynamic response-space coupling comparison under STANDARD DBD and NOUR",
-  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "status": "SUPERSEDED_BEFORE_EXECUTION_DUPLICATE_OF_G21E",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "baseline_head": "32486620f762c0ecc00821cb620437e0b65b1659",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -137,5 +137,15 @@
     "G19/G20/G21/G21A/G21B/G21C/G21D evidence or gates",
     "production HCOF/RHS"
   ],
-  "production_admission": "NO"
+  "production_admission": "NO_SUPERSEDED_WITHOUT_EXECUTION",
+  "supersession": {
+    "authoritative_unit": "GC-FIXED-INTERFACE-G21E",
+    "authoritative_preregistration": "integration/research/GC_FIXED_INTERFACE_G21E_PREREGISTRATION.json",
+    "g21e_preregistered_commit": "54f9168b307d78110f7c44c6bcf519d6fbea788c",
+    "g22_preregistered_commit": "8c33fe05832f852b21df238520e06fb3b9e86be0",
+    "reason": "G21E was preregistered first and covers the same full dynamic STANDARD-DBD versus NOUR comparison, with a more explicit separation of physical endpoint correctness, strict trajectory fidelity and cost.",
+    "execution": "NONE",
+    "scientific_result": "NONE",
+    "gate_transfer": "NONE; G21E retains its own prospectively frozen gates."
+  }
 }
