@@ -715,15 +715,18 @@ contains
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     integer, intent(out) :: status
 
-    integer :: participant_status, ledger_status
+    integer :: participant_status, ledger_status, origin_status
 
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
     if (.not. self%ready()) return
     participant_status = FMR_GW_APP_CONTEXT_OK
     ledger_status = FMR_GW_APP_CONTEXT_OK
+    origin_status = FMR_GW_APP_CONTEXT_OK
     call discard_live_candidates_internal(self, participant_status)
     call abort_ledgers_internal(self, ledger_status)
-    if (participant_status /= FMR_GW_APP_CONTEXT_OK .or. ledger_status /= FMR_GW_APP_CONTEXT_OK) then
+    call abandon_origins_internal(self, origin_status)
+    if (participant_status /= FMR_GW_APP_CONTEXT_OK .or. ledger_status /= FMR_GW_APP_CONTEXT_OK .or. &
+        origin_status /= FMR_GW_APP_CONTEXT_OK) then
       status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
       return
     end if
@@ -805,6 +808,27 @@ contains
       end if
     end if
   end subroutine discard_live_candidates_internal
+
+  subroutine abandon_origins_internal(self, aggregate_status)
+    class(fmr_groundwater_application_context_t), intent(inout) :: self
+    integer, intent(out), optional :: aggregate_status
+
+    integer :: i, local_status
+    logical :: failed
+
+    failed = .false.
+    do i = 1, size(self%participant_handles)
+      call self%registry%abandon_origin(self%participant_handles(i), local_status)
+      if (local_status /= FMR_GW_REGISTRY_OK) failed = .true.
+    end do
+    if (present(aggregate_status)) then
+      if (failed) then
+        aggregate_status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+      else
+        aggregate_status = FMR_GW_APP_CONTEXT_OK
+      end if
+    end if
+  end subroutine abandon_origins_internal
 
   subroutine abort_ledgers_internal(self, aggregate_status)
     class(fmr_groundwater_application_context_t), intent(inout) :: self

@@ -40,6 +40,7 @@ module mod_fmr_groundwater_swap_participant
     procedure, public :: capture_origin => fmr_swap_capture_origin
     procedure, public :: trial_from_origin => fmr_swap_trial_from_origin
     procedure, public :: discard_candidate => fmr_swap_discard_candidate
+    procedure, public :: abandon_origin => fmr_swap_abandon_origin
     procedure, public :: publication_ready => fmr_swap_publication_ready
     procedure, public :: commit_candidate => fmr_swap_commit_candidate
     procedure, public :: has_origin => fmr_swap_has_origin
@@ -177,6 +178,19 @@ contains
     if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
     self%live_candidate = .false.
   end subroutine fmr_swap_discard_candidate
+
+  subroutine fmr_swap_abandon_origin(self, status)
+    class(fmr_groundwater_swap_participant_t), intent(inout) :: self
+    integer, intent(out) :: status
+
+    status = GW_SWAP_PARTICIPANT_CANDIDATE_BUSY
+    if (self%live_candidate .or. self%candidate%ready()) return
+    self%origin_captured = .false.
+    self%origin_lineage_id = 0_int64
+    self%origin_revision = -1_int64
+    self%origin_time = 0.0_real64
+    status = GW_SWAP_PARTICIPANT_OK
+  end subroutine fmr_swap_abandon_origin
 
   logical function fmr_swap_publication_ready(self, committed, window) result(ready)
     class(fmr_groundwater_swap_participant_t), intent(in) :: self

@@ -21,7 +21,8 @@ program test_ppa_wu01_production_application_bootstrap
        materialize_modflow6_prescribed_qbot_bottom_face, MODFLOW6_BOTTOM_FACE_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c, fgc49d_capture_origins_c
+  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c, fgc49d_capture_origins_c, &
+       fgc49d_abort_prepublication_c
   implicit none
 
   integer, parameter :: NTILE = 2
@@ -131,6 +132,8 @@ program test_ppa_wu01_production_application_bootstrap
   c_status = fgc49d_capture_origins_c(int(context_handle, c_int64_t))
   call require(c_status /= 0_c_int, &
        'stale predictor response rejected against committed SWAP origin before evaluation')
+  c_status = fgc49d_abort_prepublication_c(int(context_handle, c_int64_t))
+  call require(c_status == 0_c_int, 'stale-origin abort clears captured origin')
   call gw_app%release_groundwater_context(status)
   call require(status == FMR_APP_BOOT_OK, 'release stale-origin context')
   do i = 1, NTILE
