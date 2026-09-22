@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute the repaired frozen DUMMY-20C runtime differential; only a post-initialization product/direct comparison may carry scientific meaning.",
+  "next_action": "Execute clean DUMMY-20C v2 actual-product runtime differential from the repaired baseline.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -65,5 +65,11 @@
     "change": "Add required MF6 SpecificStorage package to the single fully fixed-head time-leader cell.",
     "scientific_change": false,
     "rationale": "Package completeness for transient MF6 input only; fixed-head cell has no coupled river/drain exchange and cannot alter the frozen Ribasim management/physics comparison."
+  },
+  "qualification_attempt_v2": {
+    "state": "READY",
+    "reason": "v1 failures were pre-driver MF6 package-completeness failures; STO repair is now part of the baseline.",
+    "scientific_change": false,
+    "source_scope_base": "b2640b267f722fc7405ecfde25c076466c9a5f48"
   }
 }
