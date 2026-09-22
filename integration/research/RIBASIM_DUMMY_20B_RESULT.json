@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.coupling.ribasim_product_release_clock_contract.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20B",
+  "decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
+  "authority": {
+    "qualification_head": "e5e1418291107ca6fb1abc2c655115d8cd8ce922",
+    "workflow_run": 35720653416,
+    "workflow_job": 106722521386,
+    "conclusion": "success",
+    "product_ribasim_release": "v2026.1.1",
+    "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "duplicate_confirming_run": 35720663734
+  },
+  "qualified_claims": [
+    "Ribasim v2026.1.1 BMI.update_until delegates the requested interval to step!(model, dt).",
+    "With fixed allocation.dt, step! solves allocation only when the current model time lies on the allocation.dt grid before the physical step.",
+    "The fixed allocation.dt path is independent of solver.saveat.",
+    "A fixed-grid allocation solve uses update_allocation! with record=true and therefore applies UserDemand and per-link allocation state through parse_allocations!.",
+    "The later allocation-tstop architecture used by the DUMMY-19 research pin is absent from this product release."
+  ],
+  "version_relation": {
+    "product_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "research_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "research_pin_ahead_by_commits": 103,
+    "consequence": "DUMMY-19 saveat/BMI clock results are not direct runtime authority for the Ribasim release bundled by the pinned iMOD Coupler product."
+  },
+  "product_clock_implication": [
+    "For fixed allocation.dt=24h and 6h RibaMod/MF6 product steps, v2026.1.1 does not create additional within-day UserDemand allocation decisions solely because update_until endpoints occur every 6h.",
+    "For fixed allocation.dt=6h, each 6h product-step start is an allocation boundary and the new UserDemand allocation is applied before that physical segment.",
+    "Changing solver.saveat alone does not change fixed allocation.dt management cadence in this release."
+  ],
+  "boundaries": [
+    "This is pinned source-contract authority, not yet a dynamic kernel/product run.",
+    "No upstream defect classification.",
+    "No claim that the later DUMMY-19 implementation semantics apply to v2026.1.1."
+  ],
+  "downstream": "Execute DUMMY-20C with the actual pinned iMOD Coupler RibaMod product route and real MF6/Ribasim kernels."
+}
