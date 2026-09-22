@@ -1,0 +1,62 @@
+{
+  "decision": "SUPPORTED_H2_VERTICAL_DISTRIBUTION_MEMORY_FOR_SELECTED_REAL_SWAP_PAIR",
+  "forcing": {
+    "bottom_boundary_elevation_m": -1.6,
+    "dt_day": 0.000800000037997961,
+    "fixed_interface_head_m": -1.897937090169065,
+    "mapped_bottom_pressure_head_cm": -29.7937090169065,
+    "top_flux_cm_per_day": 0
+  },
+  "interpretation_boundary": [
+    "The immutable E01 pair was selected without response access.",
+    "A support decision applies to the selected pair and frozen fixed-Hc probe.",
+    "A no-support decision would apply only to this selected pair and probe, not globally.",
+    "No production coupling admission or second MODFLOW hydraulic state follows."
+  ],
+  "order_independence": true,
+  "preregistration_commit": "c0291cc0669b0e9022695d495bcf62b4bad40a57",
+  "probe": {
+    "abs_delta_exchange_cm": 0.0013176066140374587,
+    "admitted_a": true,
+    "admitted_b": true,
+    "bottom_outward_exchange_a_cm": 0.0031391986203388456,
+    "bottom_outward_exchange_b_cm": 0.004456805234376304,
+    "delta_exchange_cm": 0.0013176066140374587,
+    "mass_residual_a_cm": 0,
+    "mass_residual_b_cm": 0,
+    "status_a": 0,
+    "status_b": 0,
+    "support_threshold_cm": 1e-18,
+    "terminal_bottom_flux_a_cm_per_day": 3.923998089043649,
+    "terminal_bottom_flux_b_cm_per_day": 5.571006278361781
+  },
+  "production_changes": false,
+  "reconstruction": {
+    "abs_delta_distribution_moment_cm": 0.11123947403318368,
+    "abs_delta_profile_water_cm": 1.4210854715202004e-14,
+    "distribution_moment_a_cm": -79.99999999999997,
+    "distribution_moment_b_cm": -80.11123947403316,
+    "profile_water_a_cm": 58.61918400000001,
+    "profile_water_b_cm": 58.619184,
+    "state_gate_pass": true,
+    "upper30_a_cm": 10.991097,
+    "upper30_b_cm": 10.947165012700356
+  },
+  "schema": "swap5.gc_rootzone_memory.rzm06e02.fixed_hc_h2_probe.v1",
+  "qualification": {
+    "workflow_run": 35741739776,
+    "workflow_job": 106792958715,
+    "executed_head": "610d77cdd21ea595d786eba94b128ca244af7b63",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "immutable_pair_result_commit": "e53816189389121cc0b3ff5130e7229d6eddd815",
+    "production_changes": false
+  },
+  "scientific_interpretation": [
+    "H2 is supported for the prospectively selected 16-node real-HeadCalc pair: at the same fixed H_c and effectively identical total profile water, a different vertical water distribution produces a different next whole-window bottom exchange.",
+    "The exchange difference is about 0.001317606614 cm over the frozen 0.000800000038 d probe, with zero mass residual for both origins.",
+    "The result falsifies H_c plus total-profile-water as a complete state description for this qualified pure-hydraulics carrier and probe.",
+    "The result does not identify a unique minimal reduced SWAP state; upper-30-cm water also differs between the two origins.",
+    "The result does not require a second MODFLOW hydraulic state: the fixed-plane H_c is identical and the additional memory remains internal to SWAP."
+  ]
+}
