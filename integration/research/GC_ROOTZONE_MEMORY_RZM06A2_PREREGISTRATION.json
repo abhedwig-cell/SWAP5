@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a2.h2_state_pair_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A2",
+  "authority": "preregistered research experiment",
+  "production_changes": false,
+  "parent_result_commit": "e857cc4d9ee830dfb73524d665d463797ef1649c",
+  "scientific_response_seen": false,
+  "purpose": "Construct a real-SWAP H2 endpoint pair with unchanged total-water and M1 thresholds using only transactional boundary histories, without direct state mutation and without inspecting any later E_c response during pair construction.",
+  "unchanged_h2_criteria": {
+    "same_probe_head_m": -0.7149999706136307,
+    "endpoint_profile_water_abs_tolerance_native": 0.000001,
+    "endpoint_distribution_moment_abs_separation_native": 0.0001,
+    "response_difference_abs_threshold_native": 1e-18,
+    "mass_residual_abs_gate_native": 1e-12
+  },
+  "construction": {
+    "top_flux_native_per_day": 0,
+    "final_head_m": -0.7149999706136307,
+    "trajectory_family": [
+      "UP(deltaH) -> DOWN(deltaH) -> BASE",
+      "DOWN(deltaH) -> UP(deltaH) -> BASE"
+    ],
+    "definition": {
+      "UP": "H_star + deltaH",
+      "DOWN": "H_star - deltaH",
+      "BASE": "H_star"
+    },
+    "rationale": "Symmetric bottom-head pulses have zero net head anomaly over the two pulse intervals and return to the same final H_star. They target vertical redistribution through the real lower boundary while keeping top forcing identically zero.",
+    "amplitude_order_m": [
+      0.001,
+      0.0005,
+      0.0002,
+      0.0001,
+      0.00005,
+      0.00002,
+      0.00001
+    ],
+    "time_group_order": [
+      {
+        "pulse_duration_day": 0.05,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.15
+      },
+      {
+        "pulse_duration_day": 0.1,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.25
+      },
+      {
+        "pulse_duration_day": 0.05,
+        "relax_duration_day": 0.1,
+        "total_duration_day": 0.2
+      },
+      {
+        "pulse_duration_day": 0.02,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.09
+      }
+    ],
+    "enumeration_rule": "For each time group in listed order, enumerate amplitudes in listed order and both trajectory orders. Retain failed trajectories. Within that time group compare all accepted endpoints lexicographically in trajectory enumeration order. Select the first pair satisfying both frozen H2 endpoint criteria. Stop after the first time group that yields a qualifying pair. If no group yields a pair, disposition NO_MATCH.",
+    "endpoint_time_rule": "Only compare trajectories within the same time group, so selected endpoints have identical committed time.",
+    "admissibility_rule": "Every interval must commit with valid provenance and complete mass accounting. Any interval failure rejects that trajectory but must leave the previously committed state exact."
+  },
+  "probe": {
+    "opened_only_after_pair_selection": true,
+    "top_flux_native_per_day": 0,
+    "head_m": -0.7149999706136307,
+    "duration_day": 0.0001,
+    "commit": false,
+    "response_quantity": "accepted whole-window bottom_outward_exchange_native",
+    "support_rule": "If a pair is selected, both fresh-process replayed origins and read-only probes must be valid, mass-complete and exactly repeatable, and abs(E_a-E_b) > 1e-18 native exchange.",
+    "no_match_rule": "If no pair satisfies the unchanged endpoint criteria, do not run an E_c probe and record NO_MATCH."
+  },
+  "controls": [
+    "fresh-process initialization for every trajectory",
+    "no direct pressure-head, water-content, groundwater-level or continuation-state mutation",
+    "top forcing remains exactly zero in every construction interval",
+    "each trajectory ends with an explicit BASE interval at H_star",
+    "no response E_c is inspected before endpoint-pair selection",
+    "no threshold relaxation after endpoint observables are seen",
+    "failed trajectories remain evidence",
+    "selected trajectory pair must replay exactly before any positive H2 disposition"
+  ],
+  "nonclaims": [
+    "no production coupling admission",
+    "no claim that antecedent H_c must vary in production",
+    "no second MODFLOW state variable admission",
+    "no H2 conclusion unless a pair meets the unchanged endpoint criteria",
+    "no RZM06B/H5 management conclusion"
+  ]
+}
