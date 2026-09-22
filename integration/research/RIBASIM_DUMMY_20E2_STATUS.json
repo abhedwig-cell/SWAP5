@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute unchanged 20E2 product model from the clean execution base; log all four raw states before applying frozen assertions.",
+  "next_action": "Execute DUMMY-20E2 v6 full-trajectory diagnostic/qualification with unchanged frozen references and tolerances.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -102,6 +102,6 @@
     ],
     "required_next": "clean v5 Windows product qualification"
   },
-  "qualification_attempt": "v6_clean_execution_base_full_trajectory",
-  "qualification_base": "a1ffd10eb2c7fb9946a5f2d116b413a8610b7bf2"
+  "qualification_attempt": "v6_full_trajectory_frozen_reference",
+  "qualification_base": "work/ribasim-dummy-01@1b7fde41fde804a98c1ce267981cd80427de02bb"
 }
