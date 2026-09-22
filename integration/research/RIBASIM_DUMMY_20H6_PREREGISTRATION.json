@@ -5,8 +5,8 @@
   "title": "Next-boundary accepted-storage memory versus current River-forcing forecast separation",
   "baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_DUMMY_20H5_ACTIVE",
-    "execute_after": "DUMMY-20H5 closeout",
+    "state": "SATISFIED_AFTER_DUMMY_20H5_CLOSEOUT",
+    "execute_after": "DUMMY-20H5 qualified",
     "rationale": "Freeze the corrected t=24 allocation oracle before observing the zero-storage causality control."
   },
   "authorities": {
@@ -31,7 +31,9 @@
     },
     "pending_causality": {
       "work_unit": "RIBASIM-DUMMY-20H5",
-      "use": "execution dependency only; no H5 observed output used in frozen references"
+      "decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+      "workflow_run": 35741211340,
+      "use": "execution dependency only; no H5 observed output used to retune frozen H6 references"
     },
     "release": {
       "tag": "v2026.1.1",
@@ -103,5 +105,14 @@
     "no source modification"
   ],
   "pass_decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
-  "fail_decision": "RIBASIM_DUMMY_20H6_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20H6_BLOCKED",
+  "authority_rebind": {
+    "repository_head": "e5b2a00556655a632411b262dc9653af65a2c1a0",
+    "upstream_decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+    "upstream_run": 35741211340,
+    "scientific_change": false,
+    "frozen_references_changed": false,
+    "frozen_tolerances_changed": false,
+    "meaning": "Executable next-boundary memory/forecast control rebound to post-H5 research authority; preregistered cases and numerical references unchanged."
+  }
 }
