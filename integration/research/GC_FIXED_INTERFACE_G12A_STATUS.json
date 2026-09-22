@@ -4,12 +4,28 @@
   "work_unit": "GC-FIXED-INTERFACE-G12A",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "state": "DIAGNOSTIC_CLOSED",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12A_PREREGISTRATION.json",
   "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G12_RESULT.json",
   "test": "tests/research/test_gc_fixed_interface_map09_groundwater_calibration_g12a.py",
   "runner": "tests/research/run_gc_real_swap_map09.sh",
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
-  "next_action": "Execute all three frozen one-shot biases, local q(H) fits, and fixed 20-step direct href inversions. Persist whether the G12 miss is bias anchoring error or fit error before proposing any G12B oracle."
+  "next_action": "Preregister G12B as a separate active-drainage policy replay using the G12A-measured local groundwater responses and unchanged E3_MAP/P4. Keep G12 falsified.",
+  "result": "integration/research/GC_FIXED_INTERFACE_G12A_RESULT.json",
+  "execution": {
+    "tested_commit": "78d099d4c23839fc462c7e166179a121ec4617bf",
+    "workflow_run": 35707015338,
+    "workflow_job": 106678278463,
+    "conclusion": "success"
+  },
+  "disposition": {
+    "local_affine_fit": "QUALIFIED",
+    "direct_href_inversion": "QUALIFIED",
+    "g12_failure_mechanism": "ONE_SHOT_GROUNDWATER_BIAS_ANCHORING_ERROR",
+    "gw_r05_original_href_gate": "PASS",
+    "gw_r2_original_href_gate": "FAIL",
+    "gw_mixed_original_href_gate": "FAIL",
+    "production_admission": "NO"
+  }
 }
