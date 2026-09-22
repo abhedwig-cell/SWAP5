@@ -212,7 +212,7 @@
       "reason": "The flux-to-head/recession mapping is system-, state-, and timescale-dependent; no portable authorized inversion is established here."
     }
   ],
-  "source_review_decision": "NEW_BOUNDED_DIRECT_APPLICATION_ROUTE_FOUND_AFTER_APP0: a formal LHM-like GW-D end-to-end groundwater-output envelope can be frozen directly from Rijkswaterstaat LHM 4.1 validation criteria. Component-level Layer-ROM structural-error allocation remains unresolved; GW-R remains without quantitative authority; requested SCI-P profile fidelity remains unresolved.",
+  "source_review_decision": "GW-D has a frozen direct LHM-like application envelope and a qualified official public archive. Exact replication of the published LHM 4.1 acceptance population remains blocked because the distributable archive explicitly omits non-public data and is smaller than the report population. Component-level Layer-ROM structural-error allocation remains unresolved; GW-R and requested SCI-P profile fidelity remain unresolved.",
   "blindness_preserved": true,
   "external_source_verification": {
     "date": "2026-09-22",
@@ -254,12 +254,26 @@
   },
   "external_dataset_binding_attempt": {
     "date": "2026-09-22",
-    "source_page": "https://nhi.nu/modellen/lhm/",
-    "formal_page_claim": "Groundwater levels used for LHM 4.1 validation are listed as downloadable.",
-    "linked_groundwater_archive": "https://www.dropbox.com/scl/fi/zi1up41kyvnl5t2x6e3qm/validatiedata.zip?dl=0&rlkey=pgtfh1ndf5ueisc3ou0umqyr8",
-    "observed_archive_state": "FILE_DELETED",
-    "page_availability_caveat": "NHI also states that the full set of regional and DINO data is not available.",
-    "decision": "DO_NOT_RECONSTRUCT_OR_SUBSTITUTE_POPULATION_WITHOUT_NEW_AUTHORITY",
-    "effect": "The GW-D LHM end-to-end acceptance envelope remains frozen as a valid requirement set, but execution remains blocked because the exact validation population cannot presently be bound."
+    "prior_public_link_state": "The NHI model page's Dropbox link was observed deleted.",
+    "recovery": {
+      "state": "OFFICIAL_NHI_THREDDS_ARCHIVE_RECOVERED_AND_QUALIFIED",
+      "catalog": "https://thredds.data.nhi.nu/thredds/catalog/opendap/Modellen/lhm411/validatiedata/catalog.html",
+      "http_server": "https://thredds.data.nhi.nu/thredds/fileServer/opendap/Modellen/lhm411/validatiedata/validatiedata.zip",
+      "archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+      "byte_size": 155954643,
+      "zip_crc_test": "PASS",
+      "member_count": 13732,
+      "qualification_run": 35749932742,
+      "qualification_job": 106821117194,
+      "result_record": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json"
+    },
+    "population_binding": {
+      "state": "PUBLIC_ARCHIVE_AUTHENTIC_BUT_ORIGINAL_VALIDATION_POPULATION_INCOMPLETE",
+      "reason": "The archive metadata explicitly states that some data were withheld from publication at data-owner request. Published IPF populations are smaller than the N values used in the report's final national statistics.",
+      "result_record": "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json",
+      "public_archive_can_define_new_reproducible_subset": true,
+      "public_subset_is_original_acceptance_population": false
+    },
+    "decision": "DO_NOT_TREAT_PUBLIC_DISTRIBUTABLE_SUBSET_AS_ORIGINAL_LHM_ACCEPTANCE_POPULATION_WITHOUT_NEW_AUTHORITY"
   }
 }
