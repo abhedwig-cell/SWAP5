@@ -424,3 +424,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G21I_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21I_FAIL missing solver-prefix tomography gate" >&2
   exit 1
 }
+
+
+# G21J convergence-criterion causal isolation. At the exact G21I split
+# iterations, relax only copied HEAD/TOTAL/POND convergence criteria in all
+# preregistered subsets while keeping compartment balance untouched in the
+# primary arms. Secondary compartment interventions are diagnostic only.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21j_convergence_criteria.py \
+  | tee "$BUILD/fgc44-globalization-g21j.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21J_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21j.txt" || {
+  echo "GC_FGC44_G21J_FAIL missing convergence-criterion isolation gate" >&2
+  exit 1
+}
