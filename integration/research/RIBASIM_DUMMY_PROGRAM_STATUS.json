@@ -226,19 +226,18 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    }
-  ],
-  "pending": [
+    },
     {
       "work_unit": "RIBASIM-DUMMY-20H2",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
-      "dependency": "falsified DUMMY-20H",
-      "implementation_baseline": "b5c355179442368863b17d41afe9cfa6065eeb58",
+      "decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
+      "classification": "RIBASIM_RELEASE_CURRENT_BOUNDARY_BMI_INFILTRATION_NOT_VISIBLE_TO_FIXED_ALLOCATION",
+      "run": 35734439031,
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
+    }
+  ],
+  "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-20F",
       "state": "PREREGISTERED_BLOCKED_DEPENDENCY_NOT_QUALIFIED",
@@ -250,7 +249,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H2 pointer-to-allocation visibility diagnostic; do not revive DUMMY-20I.",
+  "next_authority_action": "Preregister and execute DUMMY-20H3 release-native allocation-ledger/objective diagnostic; do not revive invalidated DUMMY-20I.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -370,5 +369,11 @@
     "latest": "RIBASIM-DUMMY-20G",
     "decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
     "meaning": "Actual RibaMod actively applies accepted Ribasim stage to MF6 River and returns the resulting exchange as reciprocal Ribasim infiltration, with accepted-state sample-and-hold feedback."
+  },
+  "product_current_boundary_visibility_authority": {
+    "latest": "RIBASIM-DUMMY-20H2",
+    "decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION",
+    "classification": "RIBASIM_RELEASE_CURRENT_BOUNDARY_BMI_INFILTRATION_NOT_VISIBLE_TO_FIXED_ALLOCATION",
+    "meaning": "Current-boundary basin.infiltration is physically effective and visible through the same pointer in direct Ribasim and actual RibaMod, but does not reduce the fixed-grid t=0 UserDemand allocation in bundled Ribasim v2026.1.1."
   }
 }
