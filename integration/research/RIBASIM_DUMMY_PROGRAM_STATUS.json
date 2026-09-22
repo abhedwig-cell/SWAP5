@@ -262,6 +262,14 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H5",
+      "state": "PREREGISTERED_BLOCKED_BY_20H4",
+      "intended_decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+      "dependency": "DUMMY-20H4 qualification",
+      "scientific_baseline": "bfd32e350419ebe712c4761e667f034769db1246",
+      "product_ribasim_release": "v2026.1.1"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
