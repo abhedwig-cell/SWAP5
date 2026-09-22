@@ -19,7 +19,6 @@ from test_gc_fixed_interface_fgc44_safeguarded_newton_g08 import (
 )
 from test_gc_fixed_interface_fgc44_stencil_class_tangent_g09d import (
     estimate_e3,
-    resolve_sy,
     run_policy,
 )
 
@@ -87,6 +86,17 @@ def fixed_scan(
         rows.append(row)
         print("FGC44_G10_SCAN_JSON="+json.dumps(row,sort_keys=True,separators=(",",":")))
     return rows
+
+
+def resolve_g10_sy(regime:dict[str,object],u:float)->float:
+    formula=str(regime["sy_formula"])
+    if formula=="0.5*u_predictor":
+        return 0.5*u
+    if formula=="2.0*u_predictor":
+        return 2.0*u
+    if formula=="0.15":
+        return 0.15
+    raise AssertionError(f"unknown G10 sy formula {formula}")
 
 
 def select_starts(rows:list[dict[str,object]])->list[tuple[str,float]]:
@@ -169,7 +179,7 @@ def main()->None:
     policy_rows=[]
     root_rows=[]
     for regime in regimes:
-        sy=resolve_sy(regime,u)
+        sy=resolve_g10_sy(regime,u)
         a,intercept,fit_error=groundwater_response(
             libmf6,swaplib,DURATION_DAY,href,regime,sy
         )
