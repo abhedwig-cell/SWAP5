@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e06.tighter_rootmatched_interface_memory_probe_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E06",
+  "authority": "preregistered fixed-Hc response falsification for immutable E05 1e-6 pair",
+  "production_changes": false,
+  "parent_pair_authority": {
+    "E05_result_commit": "a92af540a106bcefae9c3eaa99532762bf518e52",
+    "decision": "SELECTED_TIGHTER_STORAGE_MATCHED_INTERFACE_STATE_PAIR",
+    "selected_mode_cm": 0.000001,
+    "A": [
+      "D04",
+      "B",
+      "HOLD",
+      "1",
+      "5"
+    ],
+    "B": [
+      "D04",
+      "B",
+      "IDENTITY",
+      "0",
+      "0"
+    ]
+  },
+  "common_time_authority": {
+    "work_unit": "GC-RZM06D02R1",
+    "decision": "QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS",
+    "evidence_commit": "24277b01740b4c0b7a1f4e68bb44d6bb148dcece"
+  },
+  "scientific_question": "At identical fixed H_c and canonical time, with both total profile water and upper-30-cm water matched within 1e-6 cm, does the immutable E05 pair with |ΔH16|>=0.01 cm produce a different next forcing-free whole-window bottom exchange?",
+  "frozen_state_gates": {
+    "max_abs_profile_water_difference_cm": 0.000001,
+    "max_abs_root30_water_difference_cm": 0.000001,
+    "min_abs_H16_difference_cm": 0.01,
+    "expected_pair": {
+      "abs_delta_profile_water_cm": 0,
+      "abs_delta_root30_water_cm": 5.002116250096833e-7,
+      "abs_delta_H16_cm": 0.01317294388797663
+    }
+  },
+  "frozen_probe": {
+    "fixed_interface_head_m": -1.897937090169065,
+    "bottom_boundary_elevation_m": -1.6,
+    "expected_mapped_bottom_pressure_head_cm": -29.793709016906497,
+    "dt_expression": "3435974 / 2^32 day",
+    "top_flux_cm_per_day": 0,
+    "primary_response": "bottom_outward_exchange_native",
+    "support_threshold_abs_delta_exchange_cm": 1e-18
+  },
+  "execution_contract": [
+    "extract origins only from persisted E05 result vectors",
+    "reseed both origins at canonical t0=0",
+    "recheck both 1e-6 storage gates and 0.01 cm H16 gate before response",
+    "use the identical fixed-Hc forcing adapter and strict Reference sample semantics as E04",
+    "run A/B in both orders with fresh committed origin and backend",
+    "no commit, no fallback, no automatic temporal subdivision",
+    "discard candidates and require committed-origin bit identity",
+    "require complete mass accounting with |residual|<=1e-12 cm"
+  ],
+  "interpretation_boundary": [
+    "Support means H_c plus W_profile and W_root30 fail to determine a unique next interface exchange at the frozen 1e-6 cm aggregate resolution for this selected carrier/window.",
+    "Because the match is still tolerance-based rather than exact, support remains resolution-bounded.",
+    "No claim that H16 is unique or minimal.",
+    "No production admission."
+  ],
+  "decisions": [
+    "SUPPORTED_INTERFACE_MEMORY_AT_1E6_STORAGE_RESOLUTION",
+    "NO_SUPPORT_AT_1E6_SELECTED_PAIR",
+    "PROBE_NOT_ADMITTED",
+    "RECONSTRUCTION_FAILED"
+  ],
+  "controls": [
+    "no origin reselection",
+    "no threshold changes after preregistration",
+    "no response-threshold change",
+    "no production source change",
+    "no H5/RZM06B work"
+  ]
+}
