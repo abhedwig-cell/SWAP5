@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21e.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21E",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "state": "QUALIFIED_MATCHED_COMPARISON_BOTH_PHYSICALLY_CONVERGED",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21E_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21E_FIRST_EXECUTION_RESULT.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21E_RESULT.json",
+  "tested_commit": "80b562fd4ec1fdbc5de82a98c291dc33f683e688",
+  "workflow_run": 35735804287,
+  "workflow_job": 106772601959,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_solver_configuration_change": false,
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "disposition": {
+    "standard_dbd": "PHYSICALLY_CONVERGED_BOUNDED_RESEARCH",
+    "no_under_relaxation": "PHYSICALLY_CONVERGED_BOUNDED_RESEARCH_INTERVENTION",
+    "solver_configuration_selection": "NOT_MADE",
+    "g21_strict_standard_path_equivalence": "REMAINS_FALSIFIED",
+    "g21d_dbd_causal_support": "REMAINS_QUALIFIED_DIAGNOSTIC",
+    "response_space_globalization": "REMAINS_RESEARCH_ONLY",
+    "e3_p4": "REMAIN_RESEARCH_ONLY",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "key_numbers": {
+    "standard_final_head_error_to_g17_m": -1.2789380665623185e-10,
+    "standard_final_residual_m_per_s": 2.950512426424542e-16,
+    "standard_modflow_solve_calls": 17,
+    "standard_contractions": 2,
+    "standard_g16_physical_trials": 34,
+    "nour_final_head_error_to_g17_m": -1.6653345369377348e-15,
+    "nour_final_residual_m_per_s": -6.906353885229705e-21,
+    "nour_modflow_solve_calls": 24,
+    "nour_contractions": 7,
+    "nour_g16_physical_trials": 63
+  },
+  "next_action": "Preregister a local outer-2 admissibility-boundary diagnostic around the G17/NOUR response root. Resolve the status-0/status-6 transition at sub-nanometre scale, separate physical/process discontinuity from numerical execution-class sensitivity, and determine whether status topology is robust enough to support solver-configuration comparisons. Do not change production solver defaults or participant acceptance semantics."
+}
