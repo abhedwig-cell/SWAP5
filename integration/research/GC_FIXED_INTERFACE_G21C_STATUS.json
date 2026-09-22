@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21c.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21C",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_DIAGNOSTIC_MIXED_VISIBLE_PATH_STATE",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21C_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21C_FIRST_EXECUTION_RESULT.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21C_RESULT.json",
+  "tested_commit": "07536552634f9e24da8960dd78b5c8232a6240b8",
+  "workflow_run": 35732842184,
+  "workflow_job": 106762486571,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "coupling_policy_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "disposition": {
+    "g21_dynamic_path_equivalence": "REMAINS_FALSIFIED",
+    "g21b_persistent_path_memory": "REMAINS_QUALIFIED_DIAGNOSTIC",
+    "g21c_formal_classification": "MIXED_OR_UNRESOLVED",
+    "delta_bar_delta_history_state": "OBSERVED_DIFFERENT_NOT_CAUSALLY_ADMITTED",
+    "npf_sat_state": "OBSERVED_DIFFERENT_CURRENT_HEAD_DEPENDENT_CANDIDATE",
+    "accepted_xold": "BITWISE_EQUAL",
+    "api_hcof_rhs": "BITWISE_EQUAL",
+    "sto_state": "EQUAL_IN_FROZEN_FIXTURE",
+    "state_reset_or_setter": "NOT_ADMITTED",
+    "e3_p4_response_space_globalization": "NOT_PRODUCTION_ADMITTED",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "key_numbers": {
+    "call12_history_minus_fresh_m": 7.235112509107466e-11,
+    "wsave_middle_fresh": 1,
+    "wsave_middle_history": 0.9004,
+    "hchold_middle_fresh": 0.00002322023516376781,
+    "hchold_middle_history": -7.264273627072271e-10,
+    "deold_middle_fresh": 0.00002322023516376781,
+    "deold_middle_history": -7.264273627072271e-10,
+    "npf_sat_middle_difference": 3.617584010129349e-11
+  },
+  "next_action": "Open G21D as a paired causal-isolation diagnostic: rerun the same frozen FRESH/HISTORY response experiment with standard MODERATE delta-bar-delta and with under-relaxation disabled from solver initialization. Test whether the strict path offset collapses without DBD. No mid-solve state mutation and no production-policy implication."
+}
