@@ -68,12 +68,23 @@ def source_audit()->dict[str,object]:
     require("corrector_backend%observation()" in block,"G21G accessor does not read backend observation")
     forbidden=[x for x in ("run_trial","commit_trial_candidate","discard_trial_candidate","participant%","tangent_observation_service%") if x in block]
     require(not forbidden,f"G21G accessor contains mutable/executing calls {forbidden}")
+    require("pred%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE" in bridge,
+            "G21G FGC44 temporal-mode binding drift")
+    require("pred%transaction%retry_scale=0.5_real64" in bridge,
+            "G21G FGC44 retry-scale binding drift")
+    require("pred%transaction%max_retries=8" in bridge,
+            "G21G FGC44 retry-budget binding drift")
+    require("corr=pred" in bridge,
+            "G21G FGC44 corrector no longer inherits frozen transaction policy")
     return {
         "canonical_transaction_failed_status":2,
         "max_retries":8,
         "retry_scale":0.5,
         "bridge_accessor_observation_copy":True,
         "bridge_forbidden_calls":forbidden,
+        "fgc44_temporal_mode":"TX_TEMPORAL_MODEL_CERTIFICATE",
+        "fgc44_retry_scale":0.5,
+        "fgc44_max_retries":8,
     }
 
 
@@ -196,14 +207,14 @@ def main()->None:
         for r in status0_rows
     )
 
-    if not topology_repeatable or not physical_repeatable:
-        classification="NONDETERMINISTIC_PHYSICAL_OBSERVATION"
+    if not topology_repeatable:
+        classification="NONDETERMINISTIC_ISLAND_TOPOLOGY"
     elif status6_signature_exact and status6_final_nonconverged and status0_completed:
         classification="DETERMINISTIC_RETRY_SOLVER_BIFURCATION"
-    elif status6_final_nonconverged and status0_completed:
+    elif topology_repeatable:
         classification="DETERMINISTIC_ISLANDS_MIXED_EXECUTION_CAUSE"
     else:
-        classification="FINAL_SOLVER_STATUS_DOES_NOT_SEPARATE_ISLANDS"
+        classification="SOURCE_OR_INSTRUMENTATION_UNRESOLVED"
 
     unique_status6_signatures=[]
     for sig in status6_signatures:
@@ -228,7 +239,8 @@ def main()->None:
     summary={
         "classification":classification,
         "topology_repeatable":topology_repeatable,
-        "physical_observation_repeatable":physical_repeatable,
+        "full_observation_repeatable_exactly":physical_repeatable,
+        "full_observation_repeatability_is_diagnostic_not_classification_gate":True,
         "expected_statuses":expected,
         "islands":expected_islands,
         "status6_signature_exact":status6_signature_exact,
