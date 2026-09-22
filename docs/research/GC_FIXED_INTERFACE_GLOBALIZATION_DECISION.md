@@ -1108,3 +1108,69 @@ F-GC38/F-GC39 = UNCHANGED.
 NO PRODUCTION HCOF/RHS OR COUPLING-POLICY ADMISSION.
 NEXT: G21D PAIRED DBD CAUSAL-ISOLATION DIAGNOSTIC.
 ```
+## G21D disposition: delta-bar-delta causally supports the strict prepared-solve path memory
+
+G21D converted the G21C state-forensics candidate into a matched causal-isolation
+experiment. Four independent live MODFLOW6 prepared solves were run on the same
+real-FGC44 carrier: STANDARD-FRESH, STANDARD-HISTORY, NOUR-FRESH and
+NOUR-HISTORY. The only controlled intervention was nonlinear under-relaxation at
+solver construction. STANDARD retained MODERATE delta-bar-delta
+(`NONMETH=3`); NOUR used `UNDER_RELAXATION NONE` (`NONMETH=0`).
+
+The first G21D execution stopped technically before any intervention arm because
+the harness referenced a nonexistent `tail_calls` member in the G21B
+`frozen_case`. That failure is preserved. The repair bound the fixed 12-call
+tail to the closed G21B result authority and changed no physical, numerical or
+causal gate.
+
+The repaired authority run, workflow `35734305678`, job `106767481903`,
+passed the strengthened root-comparability gate. The standard pair exactly
+reproduced G21B:
+
+```text
+STANDARD FRESH call-12 head          -0.7150100297648362 m
+STANDARD HISTORY call-12 head        -0.7150100296924851 m
+HISTORY - FRESH                       7.235112509107466e-11 m
+NONMETH                               3 / 3
+```
+
+With nonlinear under-relaxation disabled from initialization:
+
+```text
+NOUR FRESH call-12 head              -0.7150100297648362 m
+NOUR HISTORY call-12 head            -0.7150100297648363 m
+HISTORY - FRESH                      -1.1102230246251565e-16 m
+NONMETH                               0 / 0
+absolute offset reduction             99.99984655068967 %
+```
+
+The intervention did not move the matched response roots at the strict G21
+scale. The NOUR fresh outer-2 root error is zero and all three NOUR outer-1
+lambda roots reproduce their frozen STANDARD references exactly. XOLD remains
+fixed in every arm, the outer-2 HCOF/RHS response is identical across
+configurations, no MODFLOW state is mutated through XMI pointers and
+`finalize_time_step` is never called.
+
+Under the preregistered rules this is
+`DELTA_BAR_DELTA_CAUSAL_SUPPORT`: delta-bar-delta nonlinear under-relaxation
+history is a causal carrier of the strict prepared-solve path memory in this
+frozen real-FGC44 case. This does not mean that delta-bar-delta is wrong in
+MODFLOW or that production SWAP-MODFLOW coupling should disable it. It shows a
+specific composition interaction when the external coupler replaces the affine
+response between nonlinear solve calls.
+
+G21 remains falsified under the standard configuration. G21D explains the
+dominant mechanism but does not retroactively alter that result, F-GC38/F-GC39,
+or production solver configuration.
+
+```text
+G21D MATCHED DBD CAUSAL ISOLATION = QUALIFIED DIAGNOSTIC.
+STANDARD HISTORY OFFSET = 7.235112509107466e-11 m.
+NOUR HISTORY OFFSET = -1.1102230246251565e-16 m.
+ROOT COMPARABILITY = PASS AT 1E-12 m.
+DELTA-BAR-DELTA CAUSAL SUPPORT = YES, FROZEN CASE ONLY.
+PRODUCTION IMS CONFIGURATION = UNCHANGED.
+E3 / RESPONSE-SPACE GLOBALIZATION = NOT PRODUCTION-ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: FULL DYNAMIC SOLVER-CONFIGURATION / COUPLING-POLICY COMPARISON.
+```
