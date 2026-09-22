@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.fgc.fixed_interface.coupling_contract.v1",
+  "date": "2026-09-22",
+  "state": "QUALIFIED_ADMISSION_CANDIDATE",
+  "scope": "fixed-interface SWAP5-MODFLOW6 production profile",
+  "hydraulic_state": {
+    "exchange_state": "hydraulic head at the fixed lower coupling plane",
+    "current_transfer_law": "datum-aligned identity mapping from MODFLOW cell head to SWAP lower-face hydraulic head",
+    "not_equivalent_by_definition": "SWAP diagnostic phreatic groundwater elevation"
+  },
+  "flux_and_transfer": {
+    "swap_qbot": "positive into SWAP",
+    "public_q_swap": "positive outward from SWAP",
+    "mapping": "q_swap = -q_bot after unit conversion",
+    "modflow_api_source": "positive into groundwater",
+    "accepted_action_reaction": "q_api_source = q_swap and q_groundwater_out = -q_swap",
+    "production_external_residual": "q_swap - q_api_source"
+  },
+  "response": {
+    "predictor_u": "finite-window condensed SWAP response metadata",
+    "predictor_u_over_dt": "historical predictor slope; not water storage and not authoritative physical corrector tangent",
+    "corrector_value": "accepted-origin real-SWAP outward interface flux evaluated at prescribed interface head",
+    "corrector_tangent": "accepted-trajectory d(q_swap)/d(H_interface) in outward convention",
+    "relinearization": "HCOF = area*86400*dq_swap_dh; RHS = HCOF*H - area*86400*q_swap",
+    "pb01_disposition": "physical outward tangent orientation is negative in the qualified real-SWAP fixture",
+    "endpoint_qualification": "one-column/one-cell closeout compares the production coupled endpoint against an independent constant-flux MODFLOW6 q(H) oracle combined with real-SWAP accepted-origin trials"
+  },
+  "storage": {
+    "swap": "physical column water-storage authority",
+    "modflow_sto_role": "HEAD_STATE_CAPACITANCE",
+    "physical_independent_modflow_storage": false,
+    "combined_swap_plus_sto_physical_balance_authorized": false,
+    "u_or_u_over_dt_as_storage_authorized": false,
+    "evidence_boundary": "independent regional physical storage requires separate application-domain authority",
+    "parameter_authority": "HEAD_STATE_CAPACITANCE classifies the role of native STO; the magnitude of Sy/Ss remains application-specific and is not calibrated by this closeout"
+  },
+  "memory_and_provenance": {
+    "swap_memory": "committed SWAP physical and numerical continuation state",
+    "modflow_memory": "accepted MODFLOW head state represented by XOLD and declared head-state capacitance",
+    "response_origin": "exact committed SWAP lineage and revision",
+    "stale_response_reuse": "fail closed before corrector/MODFLOW evaluation",
+    "rejected_trials": "no accepted state or mass authority"
+  },
+  "transaction": {
+    "prepublication": "all SWAP, ledger and MODFLOW preflights before any irreversible publication",
+    "publication_order": [
+      "finalize MODFLOW timestep exactly once",
+      "commit SWAP exactly once",
+      "commit interface ledger exactly once"
+    ],
+    "restart": "F-GC24 committed-only restart; no candidate, prepared handle, Newton state, Jacobian or scratch persistence"
+  },
+  "drainage": {
+    "contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+    "admitted_owner": "NONE"
+  },
+  "explicit_nonclaims": [
+    "exact internal Newton or MODFLOW path equivalence",
+    "active coupled drainage",
+    "root extraction in the admitted groundwater profile",
+    "physical independent or mixed-effective MODFLOW storage",
+    "universal or field-calibrated Sy/Ss magnitude for HEAD_STATE_CAPACITANCE",
+    "native MODFLOW checkpoint or mid-iteration restart",
+    "field-scale heterogeneous transferability",
+    "finite-resistance q-link semantics",
+    "fixed-interface hydraulic head equals phreatic elevation"
+  ],
+  "qualification_authority": {
+    "tested_head": "9b135ec63c142449e88c0d0b2a745b726f3a69ed",
+    "workflow_run": 35785238145,
+    "result": "PASS",
+    "canonical_authority": false
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.fgc.fixed_interface.closeout.status.v1",
+  "date": "2026-09-22",
+  "state": "QUALIFIED_ADMISSION_CANDIDATE_READY_FOR_CANONICAL_INTEGRATION",
+  "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-fixed-interface-closeout",
+  "authority": {
+    "interface_head": "FIXED_LOWER_COUPLING_PLANE_HYDRAULIC_HEAD",
+    "swap_flux": "Q_SWAP_POSITIVE_OUTWARD_FROM_SWAP",
+    "modflow_api_source": "POSITIVE_INTO_GROUNDWATER_EQUALS_Q_SWAP",
+    "external_residual": "Q_SWAP_MINUS_MODFLOW_API_SOURCE",
+    "corrector_tangent": "REAL_SWAP_ACCEPTED_TRAJECTORY_BOTTOM_HEAD_TANGENT_IN_OUTWARD_CONVENTION",
+    "storage_role": "HEAD_STATE_CAPACITANCE",
+    "drainage_owner": "NONE",
+    "response_origin": "EXACT_COMMITTED_SWAP_LINEAGE_AND_REVISION",
+    "restart": "COMMITTED_ONLY_FGC24_CONTRACT"
+  },
+  "production_repairs": [
+    "real SWAP corrector publishes physical bottom-head response tangent",
+    "MODFLOW term can be relinearized with corrector value and physical tangent",
+    "production service uses relinearization after nonconverged correctors",
+    "storage role and drainage owner are explicit production topology authority",
+    "application plan preserves per-tile SWAP origin revision",
+    "application context rejects stale response origin"
+  ],
+  "preserved_evidence": {
+    "g21_exact_path": "FALSIFIED",
+    "g23": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
+    "g24": "TOLERANCE_CAUSAL_DIAGNOSTIC_PRESERVED",
+    "pb01": "PHYSICAL_OUTWARD_TANGENT_NEGATIVE",
+    "csr04": "PHASE_B_36_ACCEPTED_WINDOWS_HEAD_MEMORY_SEPARATION_USED_WITHOUT_REPEAT",
+    "fgc24": "COMMITTED_ONLY_RESTART_AUTHORITY",
+    "fgc44": "REAL_SWAP_LIVE_MODFLOW_TRANSACTION_EVIDENCE_WITH_INDEPENDENT_ONE_CELL_ENDPOINT_ORACLE",
+    "fgc49d": "PRODUCTION_APPLICATION_ABI_EVIDENCE"
+  },
+  "closeout_gate": "tests/fgc/run_fgc_fixed_interface_closeout.sh",
+  "architecture_note": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+  "analytical_freeze": "integration/f-gc/F-GC_FIXED_INTERFACE_ANALYTICAL_TESTBANK_FREEZE.json",
+  "nonclaims": [
+    "exact internal solver path equivalence",
+    "active coupled drainage",
+    "root extraction in coupled production profile",
+    "physical independent or mixed MODFLOW storage",
+    "universal or field-calibrated Sy/Ss magnitude for HEAD_STATE_CAPACITANCE",
+    "native MODFLOW checkpoint format or mid-iteration restart",
+    "field-scale heterogeneous transferability",
+    "finite-resistance q-link semantics",
+    "fixed-interface head equals phreatic elevation"
+  ],
+  "authoritative_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+  "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+  "next_bounded_unit": "CANONICAL_INTEGRATION_REVIEW_ONLY_NO_NEW_GROUNDWATER_RESEARCH_DIMENSION",
+  "qualification": {
+    "tested_head": "9b135ec63c142449e88c0d0b2a745b726f3a69ed",
+    "workflow_run": 35785238145,
+    "workflow_job": 106940329460,
+    "conclusion": "SUCCESS",
+    "independent_endpoint_head_error_m": 3.297362383136715e-14,
+    "independent_physical_residual_m_per_s": -7.075006056961875e-16,
+    "production_external_residual_m_per_s": -6.092081208031304e-23,
+    "modflow_component_balance_residual_m3_per_day": -3.647099915365763e-14,
+    "accepted_interface_exchange_m": -1.0206812345027175e-12,
+    "fresh_process_e2e_replay": "PASS",
+    "fgc24_split_process_restart_replay_o0": "PASS",
+    "fgc24_split_process_restart_replay_o2": "PASS"
+  },
+  "resolved_scientific_blocker": {
+    "parent_run": 35775725953,
+    "original_finding": "ONE_CELL_PRODUCTION_AFFINE_RESIDUAL_CLOSES_BUT_INDEPENDENT_PHYSICAL_RESIDUAL_AND_NATIVE_MODFLOW_BALANCE_DO_NOT",
+    "resolution": "PREREGISTERED_STOPPING_COMPATIBILITY_CONFIGURATION_QUALIFIED_WITHOUT_RELAXING_FROZEN_1E_15_PHYSICAL_RESIDUAL_GATE",
+    "preregistration": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
+  }
+}

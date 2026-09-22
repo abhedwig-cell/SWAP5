@@ -27,6 +27,11 @@ module mod_groundwater_swap_transaction_participant
     real(real64) :: prescribed_head_m = 0.0_real64
     real(real64) :: q_swap_m_per_s = 0.0_real64
     real(real64) :: bottom_outward_exchange_cm = 0.0_real64
+    ! Optional physical whole-window derivative of SWAP-outward interface flux
+    ! with respect to the prescribed fixed-interface hydraulic head [1/s].
+    ! This is accepted-trajectory authority only; predictor u/dt is not stored here.
+    logical :: response_tangent_available = .false.
+    real(real64) :: dq_swap_dh_per_s = 0.0_real64
   end type groundwater_swap_trial_t
 
   type, public :: groundwater_swap_transaction_participant_t

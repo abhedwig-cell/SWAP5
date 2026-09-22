@@ -32,8 +32,10 @@ module mod_fmr_groundwater_application_c_api
   public :: fgc49d_capture_origins_c
   public :: fgc49d_evaluate_groundwater_fluxes_c
   public :: fgc49d_trial_cell_heads_c
+  public :: fgc49d_trial_response_tangents_c
   public :: fgc49d_discard_candidates_c
   public :: fgc49d_reanchor_terms_c
+  public :: fgc49d_relinearize_terms_c
   public :: fgc49d_swap_preflight_c
   public :: fgc49d_prepare_ledgers_c
   public :: fgc49d_ledgers_preflight_c
@@ -294,6 +296,36 @@ contains
     c_status = int(status, c_int)
   end function fgc49d_trial_cell_heads_c
 
+  integer(c_int) function fgc49d_trial_response_tangents_c(handle, n, tangents) &
+       bind(C, name="fgc49d_trial_response_tangents_c") result(c_status)
+    integer(c_int64_t), value, intent(in) :: handle
+    integer(c_int), value, intent(in) :: n
+    real(c_double), intent(out) :: tangents(*)
+
+    type(fmr_groundwater_application_context_t), pointer :: context
+    real(real64), allocatable :: local_tangents(:)
+    integer :: i, slot, status, n_local
+
+    n_local = int(n)
+    call resolve_context(int(handle, int64), context, slot, status)
+    if (status /= FMR_GW_APP_C_API_OK) then
+      c_status = int(status, c_int)
+      return
+    end if
+    if (n_local /= context%cell_count() .or. n_local <= 0) then
+      c_status = int(FMR_GW_APP_CONTEXT_INVALID_REQUEST, c_int)
+      return
+    end if
+    allocate(local_tangents(n_local))
+    call context%trial_response_tangents(local_tangents, status)
+    if (status == FMR_GW_APP_CONTEXT_OK) then
+      do i = 1, n_local
+        tangents(i) = real(local_tangents(i), c_double)
+      end do
+    end if
+    c_status = int(status, c_int)
+  end function fgc49d_trial_response_tangents_c
+
   integer(c_int) function fgc49d_discard_candidates_c(handle) &
        bind(C, name="fgc49d_discard_candidates_c") result(c_status)
     integer(c_int64_t), value, intent(in) :: handle
@@ -333,6 +365,36 @@ contains
     call context%reanchor_terms(local_heads, local_fluxes, status)
     c_status = int(status, c_int)
   end function fgc49d_reanchor_terms_c
+
+  integer(c_int) function fgc49d_relinearize_terms_c(handle, n, heads, fluxes, tangents) &
+       bind(C, name="fgc49d_relinearize_terms_c") result(c_status)
+    integer(c_int64_t), value, intent(in) :: handle
+    integer(c_int), value, intent(in) :: n
+    real(c_double), intent(in) :: heads(*), fluxes(*), tangents(*)
+
+    type(fmr_groundwater_application_context_t), pointer :: context
+    real(real64), allocatable :: local_heads(:), local_fluxes(:), local_tangents(:)
+    integer :: i, slot, status, n_local
+
+    n_local = int(n)
+    call resolve_context(int(handle, int64), context, slot, status)
+    if (status /= FMR_GW_APP_C_API_OK) then
+      c_status = int(status, c_int)
+      return
+    end if
+    if (n_local /= context%cell_count() .or. n_local <= 0) then
+      c_status = int(FMR_GW_APP_CONTEXT_INVALID_REQUEST, c_int)
+      return
+    end if
+    allocate(local_heads(n_local), local_fluxes(n_local), local_tangents(n_local))
+    do i = 1, n_local
+      local_heads(i) = real(heads(i), real64)
+      local_fluxes(i) = real(fluxes(i), real64)
+      local_tangents(i) = real(tangents(i), real64)
+    end do
+    call context%relinearize_terms(local_heads, local_fluxes, local_tangents, status)
+    c_status = int(status, c_int)
+  end function fgc49d_relinearize_terms_c
 
   integer(c_int) function fgc49d_swap_preflight_c(handle, ready) &
        bind(C, name="fgc49d_swap_preflight_c") result(c_status)

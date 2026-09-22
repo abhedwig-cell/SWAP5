@@ -1,0 +1,38 @@
+name: F-GC fixed-interface groundwater closeout
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_swap_transaction_participant.f90'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'src/runtime/mod_groundwater_topology_composition.f90'
+      - 'src/runtime/mod_groundwater_application_plan.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/adapter/mod_fmr_groundwater_application_c_api.f90'
+      - 'src/adapter/fmr_groundwater_application_runtime.py'
+      - 'src/adapter/modflow6_groundwater_application_service.py'
+      - 'tests/fgc/**'
+      - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
+      - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
+      - 'docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md'
+      - 'integration/f-gc/F-GC_FIXED_INTERFACE_CLOSEOUT_STATUS.json'
+      - 'integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json'
+      - 'integration/f-gc/F-GC_FIXED_INTERFACE_ANALYTICAL_TESTBANK_FREEZE.json'
+      - 'docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md'
+      - '.github/workflows/f-gc-fixed-interface-closeout.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fgc/run_fgc_fixed_interface_closeout.sh

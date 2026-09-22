@@ -7,7 +7,7 @@ module mod_fmr_groundwater_application_context
   use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
   use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t, &
        evaluate_modflow6_linear_boundary_flux_density, reanchor_modflow6_linear_boundary_term, &
-       MODFLOW6_LINEAR_BACKEND_OK
+       relinearize_modflow6_linear_boundary_term, MODFLOW6_LINEAR_BACKEND_OK
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
        FMR_GW_REGISTRY_OK
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t
@@ -38,6 +38,7 @@ module mod_fmr_groundwater_application_context
     type(fmr_groundwater_participant_registry_t), pointer :: registry => null()
     type(groundwater_interface_mass_ledger_t), pointer :: ledgers(:) => null()
     integer(int64), allocatable :: participant_handles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
@@ -60,8 +61,10 @@ module mod_fmr_groundwater_application_context
     procedure, public :: capture_origins => application_context_capture_origins
     procedure, public :: evaluate_groundwater_fluxes => application_context_evaluate_groundwater_fluxes
     procedure, public :: trial_cell_heads => application_context_trial_cell_heads
+    procedure, public :: trial_response_tangents => application_context_trial_response_tangents
     procedure, public :: discard_candidates => application_context_discard_candidates
     procedure, public :: reanchor_terms => application_context_reanchor_terms
+    procedure, public :: relinearize_terms => application_context_relinearize_terms
     procedure, public :: swap_preflight => application_context_swap_preflight
     procedure, public :: prepare_ledgers => application_context_prepare_ledgers
     procedure, public :: ledgers_preflight => application_context_ledgers_preflight
@@ -81,6 +84,7 @@ contains
     integer, intent(out) :: status
 
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: terms(:)
@@ -98,6 +102,11 @@ contains
 
     call plan%copy_tiles(tiles, local_status)
     if (local_status /= GW_APP_PLAN_OK .or. .not. allocated(tiles)) then
+      status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+      return
+    end if
+    call plan%copy_tile_swap_origin_revisions(expected_swap_origin_revisions, local_status)
+    if (local_status /= GW_APP_PLAN_OK .or. .not. allocated(expected_swap_origin_revisions)) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
     end if
@@ -122,7 +131,8 @@ contains
       return
     end if
 
-    if (size(participant_handles) /= size(tiles) .or. size(ledgers) /= size(tiles)) return
+    if (size(participant_handles) /= size(tiles) .or. size(ledgers) /= size(tiles) .or. &
+        size(expected_swap_origin_revisions) /= size(tiles)) return
     if (size(cells) /= size(bindings) .or. size(cells) /= size(terms)) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
@@ -142,9 +152,19 @@ contains
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
+      ! A participant may already hold a captured accepted origin after an
+      ! aborted/pre-evaluation context. That is reusable only when it is exactly
+      ! the origin carried by the new predictor response. Live candidates are
+      ! never reusable across application contexts.
       if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. has_candidate) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
+      end if
+      if (has_origin) then
+        if (lineage_id /= tiles(i)%swap_lineage_id .or. revision /= expected_swap_origin_revisions(i)) then
+          status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
+          return
+        end if
       end if
 
       call ledgers(i)%snapshot(snapshot)
@@ -171,6 +191,7 @@ contains
     end do
 
     allocate(self%participant_handles(size(participant_handles)))
+    allocate(self%expected_swap_origin_revisions(size(expected_swap_origin_revisions)))
     allocate(self%tiles(size(tiles)))
     allocate(self%cells(size(cells)))
     allocate(self%bindings(size(bindings)))
@@ -181,6 +202,7 @@ contains
     allocate(self%ledger_prepared(size(tiles)))
 
     self%participant_handles = participant_handles
+    self%expected_swap_origin_revisions = expected_swap_origin_revisions
     self%tiles = tiles
     self%cells = cells
     self%bindings = bindings
@@ -200,14 +222,17 @@ contains
 
     ready = self%bound .and. associated(self%plan) .and. associated(self%registry) .and. associated(self%ledgers)
     if (.not. ready) return
-    ready = allocated(self%participant_handles) .and. allocated(self%tiles) .and. allocated(self%cells) .and. &
+    ready = allocated(self%participant_handles) .and. allocated(self%expected_swap_origin_revisions) .and. &
+         allocated(self%tiles) .and. allocated(self%cells) .and. &
          allocated(self%bindings) .and. allocated(self%current_terms) .and. allocated(self%trials) .and. &
          allocated(self%trial_valid) .and. allocated(self%prepared_ledgers) .and. allocated(self%ledger_prepared)
     if (.not. ready) return
     ready = self%plan%ready() .and. self%window%valid()
     if (.not. ready) return
-    ready = size(self%participant_handles) == size(self%tiles) .and. size(self%ledgers) == size(self%tiles) .and. &
-         size(self%trials) == size(self%tiles) .and. size(self%trial_valid) == size(self%tiles) .and. &
+    ready = size(self%participant_handles) == size(self%tiles) .and. &
+         size(self%expected_swap_origin_revisions) == size(self%tiles) .and. &
+         size(self%ledgers) == size(self%tiles) .and. size(self%trials) == size(self%tiles) .and. &
+         size(self%trial_valid) == size(self%tiles) .and. &
          size(self%prepared_ledgers) == size(self%tiles) .and. size(self%ledger_prepared) == size(self%tiles) .and. &
          size(self%bindings) == size(self%cells) .and. size(self%current_terms) == size(self%cells)
   end function application_context_ready
@@ -305,7 +330,8 @@ contains
       call self%registry%identity(self%participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
       if (local_status /= FMR_GW_REGISTRY_OK .or. .not. has_origin .or. has_candidate .or. &
-          tile_id /= self%tiles(i)%tile_id .or. lineage_id /= self%tiles(i)%swap_lineage_id .or. revision < 0_int64) then
+          tile_id /= self%tiles(i)%tile_id .or. lineage_id /= self%tiles(i)%swap_lineage_id .or. &
+          revision /= self%expected_swap_origin_revisions(i)) then
         status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
         return
       end if
@@ -409,6 +435,56 @@ contains
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_trial_cell_heads
 
+  subroutine application_context_trial_response_tangents(self, cell_dq_swap_dh_per_s, status)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    real(real64), intent(out) :: cell_dq_swap_dh_per_s(:)
+    integer, intent(out) :: status
+
+    integer :: i, k, idx, first, last
+    real(real64) :: tangent
+
+    cell_dq_swap_dh_per_s = 0.0_real64
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    if (size(cell_dq_swap_dh_per_s) /= size(self%cells)) return
+    if (self%published) then
+      status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
+      return
+    end if
+    if (.not. all(self%trial_valid) .or. any(self%ledger_prepared)) then
+      status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
+      return
+    end if
+
+    do i = 1, size(self%cells)
+      first = self%cells(i)%tile_begin
+      last = first + self%cells(i)%tile_count - 1
+      if (first < 1 .or. last > size(self%tiles) .or. last < first) then
+        status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+        return
+      end if
+      tangent = 0.0_real64
+      do k = 1, self%cells(i)%tile_count
+        idx = first + k - 1
+        if (.not. self%trials(idx)%response_tangent_available) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        if (.not. ieee_is_finite(self%trials(idx)%dq_swap_dh_per_s)) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        tangent = tangent + self%tiles(idx)%area_fraction * self%trials(idx)%dq_swap_dh_per_s
+      end do
+      if (.not. ieee_is_finite(tangent)) then
+        status = FMR_GW_APP_CONTEXT_AGGREGATION_FAILED
+        return
+      end if
+      cell_dq_swap_dh_per_s(i) = tangent
+    end do
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_trial_response_tangents
+
   subroutine application_context_discard_candidates(self, status)
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     integer, intent(out) :: status
@@ -458,6 +534,43 @@ contains
     self%current_terms = next_terms
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_reanchor_terms
+
+  subroutine application_context_relinearize_terms(self, cell_heads_m, cell_q_swap_m_per_s, &
+       cell_dq_swap_dh_per_s, status)
+    class(fmr_groundwater_application_context_t), intent(inout) :: self
+    real(real64), intent(in) :: cell_heads_m(:)
+    real(real64), intent(in) :: cell_q_swap_m_per_s(:)
+    real(real64), intent(in) :: cell_dq_swap_dh_per_s(:)
+    integer, intent(out) :: status
+
+    type(modflow6_linear_boundary_term_t), allocatable :: next_terms(:)
+    integer :: i, local_status
+
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    if (size(cell_heads_m) /= size(self%cells) .or. size(cell_q_swap_m_per_s) /= size(self%cells) .or. &
+        size(cell_dq_swap_dh_per_s) /= size(self%cells)) return
+    if (self%published) then
+      status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
+      return
+    end if
+    if (any(self%trial_valid) .or. any(self%ledger_prepared)) then
+      status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
+      return
+    end if
+
+    allocate(next_terms(size(self%current_terms)))
+    do i = 1, size(next_terms)
+      call relinearize_modflow6_linear_boundary_term(self%current_terms(i), cell_heads_m(i), &
+           cell_q_swap_m_per_s(i), cell_dq_swap_dh_per_s(i), next_terms(i), local_status)
+      if (local_status /= MODFLOW6_LINEAR_BACKEND_OK) then
+        status = FMR_GW_APP_CONTEXT_LINEAR_RESPONSE_FAILED
+        return
+      end if
+    end do
+    self%current_terms = next_terms
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_relinearize_terms
 
   subroutine application_context_swap_preflight(self, ready, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
@@ -602,15 +715,18 @@ contains
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     integer, intent(out) :: status
 
-    integer :: participant_status, ledger_status
+    integer :: participant_status, ledger_status, origin_status
 
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
     if (.not. self%ready()) return
     participant_status = FMR_GW_APP_CONTEXT_OK
     ledger_status = FMR_GW_APP_CONTEXT_OK
+    origin_status = FMR_GW_APP_CONTEXT_OK
     call discard_live_candidates_internal(self, participant_status)
     call abort_ledgers_internal(self, ledger_status)
-    if (participant_status /= FMR_GW_APP_CONTEXT_OK .or. ledger_status /= FMR_GW_APP_CONTEXT_OK) then
+    call abandon_origins_internal(self, origin_status)
+    if (participant_status /= FMR_GW_APP_CONTEXT_OK .or. ledger_status /= FMR_GW_APP_CONTEXT_OK .or. &
+        origin_status /= FMR_GW_APP_CONTEXT_OK) then
       status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
       return
     end if
@@ -692,6 +808,27 @@ contains
       end if
     end if
   end subroutine discard_live_candidates_internal
+
+  subroutine abandon_origins_internal(self, aggregate_status)
+    class(fmr_groundwater_application_context_t), intent(inout) :: self
+    integer, intent(out), optional :: aggregate_status
+
+    integer :: i, local_status
+    logical :: failed
+
+    failed = .false.
+    do i = 1, size(self%participant_handles)
+      call self%registry%abandon_origin(self%participant_handles(i), local_status)
+      if (local_status /= FMR_GW_REGISTRY_OK) failed = .true.
+    end do
+    if (present(aggregate_status)) then
+      if (failed) then
+        aggregate_status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+      else
+        aggregate_status = FMR_GW_APP_CONTEXT_OK
+      end if
+    end if
+  end subroutine abandon_origins_internal
 
   subroutine abort_ledgers_internal(self, aggregate_status)
     class(fmr_groundwater_application_context_t), intent(inout) :: self

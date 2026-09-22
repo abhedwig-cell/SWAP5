@@ -23,6 +23,21 @@ module mod_groundwater_topology_composition
   integer, parameter, public :: GW_TOPOLOGY_FRACTION_SUM = 14
   integer, parameter, public :: GW_TOPOLOGY_INVALID_OUTPUT = 15
 
+  ! Application-level state/storage authority. These labels do not create
+  ! physical storage; they state how a MODFLOW state equation is interpreted.
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_UNRESOLVED = 0
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE = 1
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_PHYSICAL_INDEPENDENT_STORAGE = 2
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_MIXED_EFFECTIVE_STORAGE = 3
+
+  ! Exactly one application owner may represent any admitted physical drainage
+  ! route. The coupler/ledger is deliberately not a physical drainage owner.
+  integer, parameter, public :: GW_DRAINAGE_OWNER_UNRESOLVED = 0
+  integer, parameter, public :: GW_DRAINAGE_OWNER_NONE = 1
+  integer, parameter, public :: GW_DRAINAGE_OWNER_SWAP = 2
+  integer, parameter, public :: GW_DRAINAGE_OWNER_MODFLOW = 3
+  integer, parameter, public :: GW_DRAINAGE_OWNER_SURFACE_WATER = 4
+
   type, public :: groundwater_topology_tile_t
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: swap_lineage_id = 0_int64
@@ -40,6 +55,8 @@ module mod_groundwater_topology_composition
     integer(int64) :: groundwater_lineage_id = 0_int64
     integer :: package_slot = 0
     integer(int32) :: modflow_node_id = 0_int32
+    integer :: storage_state_role = GW_STORAGE_STATE_ROLE_UNRESOLVED
+    integer :: drainage_owner = GW_DRAINAGE_OWNER_UNRESOLVED
   contains
     procedure, public :: valid => groundwater_topology_cell_valid
   end type groundwater_topology_cell_t
@@ -86,6 +103,10 @@ contains
     if (self%groundwater_lineage_id <= 0_int64) return
     if (self%package_slot <= 0) return
     if (self%modflow_node_id <= 0_int32) return
+    if (self%storage_state_role < GW_STORAGE_STATE_ROLE_UNRESOLVED .or. &
+        self%storage_state_role > GW_STORAGE_STATE_ROLE_MIXED_EFFECTIVE_STORAGE) return
+    if (self%drainage_owner < GW_DRAINAGE_OWNER_UNRESOLVED .or. &
+        self%drainage_owner > GW_DRAINAGE_OWNER_SURFACE_WATER) return
     valid = .true.
   end function groundwater_topology_cell_valid
 

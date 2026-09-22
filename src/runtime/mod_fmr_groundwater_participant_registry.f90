@@ -51,6 +51,7 @@ module mod_fmr_groundwater_participant_registry
     procedure, public :: capture_origin => registry_capture_origin
     procedure, public :: trial_from_origin => registry_trial_from_origin
     procedure, public :: discard_candidate => registry_discard_candidate
+    procedure, public :: abandon_origin => registry_abandon_origin
     procedure, public :: publication_ready => registry_publication_ready
     procedure, public :: commit_candidate => registry_commit_candidate
     procedure, public :: identity => registry_identity
@@ -249,6 +250,23 @@ contains
     call self%slots(idx)%participant%discard_candidate(self%slots(idx)%backend)
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_discard_candidate
+
+  subroutine registry_abandon_origin(self, handle, status)
+    class(fmr_groundwater_participant_registry_t), intent(inout) :: self
+    integer(int64), intent(in) :: handle
+    integer, intent(out) :: status
+
+    integer :: idx, participant_status
+
+    call resolve_handle(self, handle, idx, status)
+    if (status /= FMR_GW_REGISTRY_OK) return
+    call self%slots(idx)%participant%abandon_origin(participant_status)
+    if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
+      status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+      return
+    end if
+    status = FMR_GW_REGISTRY_OK
+  end subroutine registry_abandon_origin
 
   subroutine registry_publication_ready(self, handle, window, ready, status)
     class(fmr_groundwater_participant_registry_t), intent(in) :: self

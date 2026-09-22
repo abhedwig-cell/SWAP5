@@ -11,7 +11,8 @@ program test_ppa_wu01_production_application_bootstrap
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
-       groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK
+       groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
+       GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE, GW_DRAINAGE_OWNER_NONE
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t
   use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, &
        modflow6_derivative_coverage_t, compose_modflow6_swap_predictor_response, MODFLOW6_PREDICTOR_OK, &
@@ -20,7 +21,8 @@ program test_ppa_wu01_production_application_bootstrap
        materialize_modflow6_prescribed_qbot_bottom_face, MODFLOW6_BOTTOM_FACE_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c
+  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c, fgc49d_capture_origins_c, &
+       fgc49d_abort_prepublication_c
   implicit none
 
   integer, parameter :: NTILE = 2
@@ -35,7 +37,7 @@ program test_ppa_wu01_production_application_bootstrap
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
-  type(groundwater_topology_t) :: topology
+  type(groundwater_topology_t) :: topology, unresolved_topology
   type(groundwater_tile_predictor_input_t) :: predictors(NTILE)
   type(groundwater_cell_area_input_t) :: areas(NTILE)
   integer(int64), allocatable :: revisions(:)
@@ -107,8 +109,36 @@ program test_ppa_wu01_production_application_bootstrap
     areas(i)%cell_area_m2 = 1.0_real64
   end do
 
+  call materialize_groundwater_topology(topology_tiles, topology_cells, unresolved_topology, topology_status)
+  call require(topology_status == GW_TOPOLOGY_OK .and. unresolved_topology%ready(), &
+       'structurally valid unresolved topology')
+  call gw_app%materialize_groundwater_context(unresolved_topology, predictors, areas, context_handle, status)
+  call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED .and. context_handle == 0_int64, &
+       'unresolved storage and drainage authority fails closed in production')
+
+  do i = 1, NTILE
+    topology_cells(i)%storage_state_role = GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE
+    topology_cells(i)%drainage_owner = GW_DRAINAGE_OWNER_NONE
+  end do
   call materialize_groundwater_topology(topology_tiles, topology_cells, topology, topology_status)
-  call require(topology_status == GW_TOPOLOGY_OK .and. topology%ready(), 'typed topology')
+  call require(topology_status == GW_TOPOLOGY_OK .and. topology%ready(), 'typed authoritative topology')
+
+  do i = 1, NTILE
+    predictors(i)%response%lineage%swap_origin_revision = 1_int64
+  end do
+  call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
+  call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, &
+       'stale response context materialized for pre-evaluation authority check')
+  c_status = fgc49d_capture_origins_c(int(context_handle, c_int64_t))
+  call require(c_status /= 0_c_int, &
+       'stale predictor response rejected against committed SWAP origin before evaluation')
+  c_status = fgc49d_abort_prepublication_c(int(context_handle, c_int64_t))
+  call require(c_status == 0_c_int, 'stale-origin abort clears captured origin')
+  call gw_app%release_groundwater_context(status)
+  call require(status == FMR_APP_BOOT_OK, 'release stale-origin context')
+  do i = 1, NTILE
+    predictors(i)%response%lineage%swap_origin_revision = 0_int64
+  end do
 
   call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
   call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, 'owned F-GC49D context materialization')
@@ -161,6 +191,10 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS'
+  print '(a)', 'F_GC_STORAGE_HEAD_STATE_CAPACITANCE_AUTHORITY=PASS'
+  print '(a)', 'F_GC_DRAINAGE_NONE_AUTHORITY=PASS'
+  print '(a)', 'F_GC_UNRESOLVED_APPLICATION_AUTHORITY_FAIL_CLOSED=PASS'
+  print '(a)', 'F_GC_STALE_SWAP_RESPONSE_ORIGIN_FAIL_CLOSED=PASS'
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
 contains

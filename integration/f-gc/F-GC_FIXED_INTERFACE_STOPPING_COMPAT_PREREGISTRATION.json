@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.fgc.fixed_interface.stopping_compat.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "F-GC-FIXED-INTERFACE-STOPPING-COMPAT",
+  "status": "PREREGISTERED_BEFORE_COMPATIBLE_CONFIGURATION_EXECUTION",
+  "branch": "work/f-gc-fixed-interface-closeout",
+  "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "causal_parent": {
+    "workflow_run": 35775725953,
+    "workflow_job": 106908312530,
+    "tested_head": "d884a0c659989a98a31822e07c783675bc68a8d9",
+    "disposition": "ONE_CELL_CLOSEOUT_PHYSICAL_RESIDUAL_AND_NATIVE_MODEL_BALANCE_FAILED",
+    "production_affine_residual_m_per_s": 3.151530063000584e-21,
+    "independent_physical_residual_m_per_s": -2.6143686684926482e-14,
+    "independent_head_error_m": 1.1396439347777232e-12,
+    "independent_groundwater_slope_per_s": 0.020335665580226068,
+    "real_swap_outward_tangent_per_s": -0.000003938583355950604
+  },
+  "frozen_acceptance": {
+    "coupling_flux_tolerance_m_per_s": 1e-15,
+    "independent_head_guard_m": 5e-10,
+    "no_change_to_physics": true,
+    "no_change_to_storage_role": "HEAD_STATE_CAPACITANCE",
+    "no_change_to_drainage_owner": "NONE",
+    "no_change_to_transaction_or_publication_order": true
+  },
+  "derivation": {
+    "physical_residual": "R(H)=q_swap(H)-q_groundwater_required(H)",
+    "local_residual_slope_abs_per_s": 0.02033960416358202,
+    "stopping_error_bound": "|delta R| <= L_R*epsilon_H + epsilon_MF",
+    "error_budget_split": "50_PERCENT_HEAD_50_PERCENT_MODFLOW_EQUATION_RESIDUAL",
+    "max_head_stop_m": 2.4582582629373293e-14,
+    "max_modflow_equation_residual_m_per_s": 5e-16,
+    "max_modflow_equation_residual_m3_per_day_for_1m2": 4.32e-11
+  },
+  "single_compatible_configuration": {
+    "rationale": "Use an already preregistered G24 head-tolerance level only because it satisfies the independently derived stopping bound; do not infer production authority from G24 itself.",
+    "outer_dvclose_m": 1e-14,
+    "inner_dvclose_m": 1e-15,
+    "rclose_m3_per_day": 4.32e-11,
+    "rclose_mode": "STRICT",
+    "provenance": "G24 TIGHT_2 head values plus newly derived residual-flow bound"
+  },
+  "execution_contract": [
+    "Run the same one-real-SWAP-column/one-MODFLOW-cell closeout fixture.",
+    "Change only IMS stopping controls to the preregistered compatible configuration.",
+    "Keep the 1e-15 m/s physical coupling residual criterion unchanged.",
+    "Keep the independent constant-flux MODFLOW q(H) endpoint oracle unchanged.",
+    "Require the oracle root itself to satisfy the 1e-15 m/s residual criterion, not a head-width surrogate.",
+    "Require native MODFLOW IN-OUT residual <= 4.32e-11 m3/day in addition to the already frozen model-budget gate.",
+    "Require binary API component agreement, SWAP mass closure, equal/opposite accepted transfer, rejected-trial zero authority, exactly-once publication, and stale-origin protection.",
+    "Repeat the compatible run in a fresh process and require identical accepted endpoint/transfer signatures.",
+    "Do not change tolerances or hypotheses after observing this execution."
+  ],
+  "decision_rules": {
+    "QUALIFIED_STOPPING_COMPATIBILITY": "All frozen physical, component, transaction, replay and newly derived stopping gates pass.",
+    "BLOCKED_STOPPING_COMPATIBILITY": "Any frozen or derived gate fails under the preregistered compatible configuration."
+  },
+  "production_disposition": "NO_DEFAULT_CONFIGURATION_CHANGE_BEFORE_EXECUTION"
+}
