@@ -796,108 +796,75 @@ E3/P4 PRODUCTION POLICY = NOT ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: RESPONSE-SPACE DAMPING BRIDGE.
 ```
-## G18 disposition: exact head-space P4 is incompatible with continuous prepared-solve X
 
-G18 reconciles the frozen G11/G17 safeguard semantics with the independently
-qualified F-GC38/F-GC39 MODFLOW prepared-solve ownership contract. The result is
-a bounded compatibility falsification, not a failure of either subsystem.
-
-The live contract gate on workflow `35725715857` confirms that the first G11
-safeguard action is exactly two sequential factor-1/2 head contractions:
-
-```text
-current head                       -0.7149999311459918 m
-raw Newton head                    -0.7150110934482893 m
-raw participant status              6
-two sequential halvings ->         -0.7150027217215662 m
-persisted accepted safeguard head  -0.7150027217215662 m
-exact match                         yes
-```
-
-The prepared-solve surface simultaneously remains exactly the admitted F-GC38
-surface: acquire, open, publish-and-solve, finalize solve, readiness/finalize
-timestep, and invalidate. It exposes no admitted operation to prescribe a new
-`X`, restore a previous nonlinear iterate, rollback one external nonlinear
-iteration, clone an open solve, or rewind an open solve to `XOLD`.
-
-The deeper source audit also confirms that `invalidate_without_finalize` only
-invalidates the session, and that the ordinary solve-iteration path does not
-directly rewrite `X`, `XOLD`, or the saved accepted origin. F-GC39 explicitly
-requires the opposite of head-space rollback: nonconverged coupling keeps the
-evolving MODFLOW `X` and continues the same prepared solve.
-
-Therefore, after MODFLOW has advanced to the raw G11 Newton iterate, the exact
-P4 contracted head cannot become the groundwater iterate using only the
-currently admitted prepared-solve operations. Directly writing the internal X
-pointer would cross the qualified ownership boundary and is not an admissible
-shortcut.
-
-The first G18 execution failure is preserved separately. It came from deriving
-the contraction fraction by division of near-equal head differences; that
-ill-conditioned ratio was `0.25000000000248657`. Replaying the actual
-sequential factor-1/2 arithmetic reproduces the persisted head bit-for-bit, so
-the harness was repaired without changing any physical or ownership criterion.
-
-The consequence is architectural:
-
-```text
-HEAD-SPACE P4 + CURRENT F-GC38/F-GC39 DIRECT COMPOSITION = FALSIFIED.
-P4 RESEARCH EVIDENCE = STILL VALID.
-F-GC38/F-GC39 PREPARED-SOLVE CONTRACT = STILL VALID.
-DIRECT X POINTER MUTATION = NOT ADMITTED.
-NO PRODUCTION HCOF/RHS CHANGE.
-NEXT: DERIVE A PREPARED-SOLVE-NATIVE RESPONSE-SPACE GLOBALIZATION RULE.
-```
-
-A response-space safeguard must be treated as a new policy candidate. It may
-reuse factor-1/2 as a continuation parameter, but it cannot inherit P4 identity
-or production authority merely because it is motivated by the same failed raw
-Newton step.
 ## G19 disposition: affine response-space damping reproduces the frozen P4 contraction geometry
 
-G19 tests a new policy bridge motivated by the G18 composition gap. It does
-not change P4 or the prepared-solve contract. Instead it holds the physical SWAP
-tangent fixed and damps only the affine-response intercept.
+G19 followed the G18 composition falsification with a distinct, preregistered
+bridge. It did not attempt to prescribe or restore MODFLOW `X`. Instead it
+kept the frozen G11 physical SWAP tangent fixed and damped only the affine
+response anchor.
 
-For the frozen G11 groundwater stress, the live five-point response remains
-affine to a maximum fit error of `3.705769144237564e-21 m/s`. With current
-head `h0`, groundwater response `G(h)`, current residual `r0` and physical
-SWAP tangent `p`, G19 defines:
+For current head `h0`, affine groundwater response `G(h)=a h+b`, current
+real-SWAP flux `qS0`, residual `r0=qS0-G(h0)` and physical tangent `p`,
+G19 used
 
 ```text
-q_lambda(h0) = G(h0) + lambda * r0
-slope        = p
+q_ref(lambda) = G(h0) + lambda * r0
+L_lambda(h)   = q_ref(lambda) + p * (h-h0)
 ```
 
-For affine groundwater this gives exactly:
+For affine `G`, solving `L_lambda(h)=G(h)` gives exactly
 
 ```text
-h_lambda = h0 + lambda * (h_raw - h0)
+h_lambda = h0 + lambda * (h_raw-h0).
 ```
 
-The definitive live run, workflow `35726466434`, reproduced the frozen G11
-safeguard topology using fresh MODFLOW solves from the same accepted origin:
+The final deduplicated live qualification, workflow `35726466434`, job
+`106741215877`, passed. The independently remeasured groundwater fit had a
+maximum error of `3.705769144237564e-21 m/s`. The three frozen response
+levels produced:
 
 ```text
-lambda = 1.00  -> raw head, status 6, rejected
-lambda = 0.50  -> first half-step, status 6, rejected
-lambda = 0.25  -> second half-step, status 0, accepted
+lambda = 1
+  live head             -0.7150110934482893 m
+  error vs raw P4 head   0
+  SWAP status             6
+  accepted                no
+
+lambda = 1/2
+  live head             -0.7150055122971404 m
+  geometry error          2.220446049250313e-16 m
+  SWAP status             6
+  accepted                no
+
+lambda = 1/4
+  live head             -0.7150027217215658 m
+  error vs first accepted P4 head
+                          4.440892098500626e-16 m
+  SWAP status             0
+  accepted                yes
 ```
 
-The lambda=0.25 live head differs from the persisted first accepted P4 head by
-only `4.44e-16 m`. All four SWAP observations, including the center, were
-executed through G16 and left accepted state, ledger authority and candidate
-liveness unchanged.
+The unchanged G11 merit/admissibility rule therefore sees exactly the same
+first safeguard topology under the fresh-origin affine response bridge:
+the full response and first half response remain inadmissible, while the
+quarter response reaches the first accepted P4 head.
 
-This qualifies a bounded mathematical and live fresh-origin bridge only. It
-does not yet prove that the same response sequence behaves equivalently inside
-one continuously evolving F-GC38 prepared solve.
+All four SWAP observations, including the current head, ran through G16 and
+remained diagnostic-only. Accepted FMR revision/time and committed interface
+ledger state did not change, and no live candidate escaped the observations.
+
+This result is deliberately narrower than a prepared-solve-native
+globalization policy. Every lambda response in G19 was solved from the same
+accepted groundwater origin in a fresh MODFLOW prepared solve. G19 therefore
+qualifies the algebraic/live **bridge**, not yet its behavior while `X`
+continues through one open F-GC38 prepared solve.
 
 ```text
-G19 AFFINE RESPONSE-SPACE / HEAD-SPACE BRIDGE = QUALIFIED FOR FROZEN G11 FRESH SOLVES.
+G19 AFFINE RESPONSE-SPACE BRIDGE = QUALIFIED IN FROZEN G11 FRESH-ORIGIN SOLVES.
 G18 DIRECT HEAD-SPACE COMPOSITION FALSIFICATION = UNCHANGED.
-CONTINUOUS PREPARED-SOLVE RESPONSE DAMPING = NOT YET QUALIFIED.
-E3/P4 = NOT PRODUCTION-ADMITTED.
+CONTINUOUS F-GC38 RESPONSE-SPACE GLOBALIZATION = NOT YET QUALIFIED.
+E3/P4 PRODUCTION POLICY = NOT ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
-NEXT: ONE-PREPARED-SOLVE LAMBDA-SEQUENCE QUALIFICATION.
+NEXT: ONE CONTINUOUS PREPARED-SOLVE LAMBDA SEQUENCE.
 ```
