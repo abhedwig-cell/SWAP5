@@ -5,9 +5,13 @@
   "title": "Product-pinned Ribasim v2026.1.1 allocation-clock contract",
   "baseline": "cd369dba07c106b4cdeee868bcee878045dbbde2",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20A_ACTIVE",
-    "execute_after": "DUMMY-20A closeout",
-    "rationale": "Establish the clock semantics of the exact Ribasim release consumed by the pinned iMOD Coupler product before any dynamic product test."
+    "state": "SATISFIED_AFTER_DUMMY_20A_CLOSEOUT",
+    "execute_after": "DUMMY-20A qualified",
+    "rationale": "Establish the clock semantics of the exact Ribasim release consumed by the pinned iMOD Coupler product before any dynamic product test.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
+      "workflow_run": 35719937261
+    }
   },
   "pins": {
     "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
@@ -41,5 +45,11 @@
     "no SWAP5 product-driver mutation"
   ],
   "pass_decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
-  "fail_decision": "RIBASIM_DUMMY_20B_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20B_BLOCKED",
+  "implementation_baseline": "a508500674285e88ffa0b597491830e6798eeaac",
+  "authority_rebind": {
+    "repository_head": "a508500674285e88ffa0b597491830e6798eeaac",
+    "scientific_change": false,
+    "meaning": "Release-clock implementation rebound after 20A closeout; exact release source, hypotheses and forbidden inferences remain unchanged."
+  }
 }
