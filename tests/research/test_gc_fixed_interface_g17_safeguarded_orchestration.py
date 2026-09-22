@@ -43,9 +43,28 @@ def load_authority()->dict[str,object]:
     p=json.loads(PREREG.read_text())
     require(p["work_unit"]=="GC-FIXED-INTERFACE-G17","wrong G17 preregistration")
     require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION","G17 preregistration not frozen")
-    require(tuple(float(x) for x in p["frozen_controller"]["scale_ladder_m"])==SCALES_M,"G17 scale ladder drift")
-    require(float(p["frozen_controller"]["multiscale_gate"].split("<=")[1].split(";")[0].strip())==REL_TOL
-            if ";" in p["frozen_controller"]["multiscale_gate"] else True,"G17 relative tolerance drift")
+    carrier=p["frozen_carrier"]
+    require(float(carrier["duration_day"])==DURATION_DAY,"G17 duration drift")
+    require(float(carrier["predictor_qbot_cm_per_day"])==QBOT_CM_PER_DAY,"G17 qbot drift")
+    require(float(carrier["reference_head_m"])==HREF_EXPECTED,"G17 href prereg drift")
+    require(float(carrier["predictor_u"])==U_EXPECTED,"G17 predictor-u prereg drift")
+    gw=p["frozen_groundwater_stress"]
+    require(float(gw["k_m_per_day"])==K,"G17 K drift")
+    require(float(gw["ss_per_m"])==SS,"G17 Ss drift")
+    require(float(gw["initial_head_bias_m"])==HEAD_BIAS,"G17 head-bias drift")
+    require(tuple(float(x) for x in gw["q_probes_m_per_s"])==QPROBES,"G17 groundwater probes drift")
+    require(float(gw["max_affine_fit_error_m_per_s"])==1.0e-16,"G17 groundwater fit gate drift")
+    controller=p["frozen_controller"]
+    require(str(controller["policy"])=="P4_E3","G17 policy drift")
+    require(tuple(float(x) for x in controller["scale_ladder_m"])==SCALES_M,"G17 scale ladder drift")
+    require(float(controller["convergence_flux_tolerance_m_per_s"])==FLUX_TOL,"G17 flux tolerance drift")
+    require(float(controller["merit_absolute_tolerance_m_per_s"])==MERIT_ABS_TOL,"G17 merit tolerance drift")
+    require(str(controller["safeguard"])=="factor-1/2 contraction","G17 safeguard drift")
+    require(int(controller["max_outer"])==MAX_OUTER,"G17 outer budget drift")
+    require(int(controller["max_backtrack"])==MAX_BACKTRACK,"G17 backtrack budget drift")
+    require(bool(controller["no_policy_retuning"]),"G17 prereg permits policy retuning")
+    frozen_classes=tuple(str(x) for x in controller["execution_class_fields"])
+    require(frozen_classes==CLASS_FIELDS,"G17 execution-class contract drift")
     return p
 
 
@@ -284,6 +303,12 @@ def main()->None:
 
     p=load_authority()
     g11=json.loads(G11.read_text())
+    frozen_ref=p["frozen_reference_behavior"]
+    g11_ref=g11["summary"]
+    require(int(g11_ref["first_raw_status"])==int(frozen_ref["first_raw_participant_status"]),"G17/G11 first-raw status authority drift")
+    require(float(g11_ref["first_raw_dh_m"])==float(frozen_ref["first_raw_dh_m"]),"G17/G11 first-raw head authority drift")
+    require(int(g11_ref["p4_contractions"])==int(frozen_ref["expected_total_contractions"]),"G17/G11 contraction authority drift")
+    require(float(g11_ref["p4_final_dh_m"])==float(frozen_ref["reference_final_dh_m"]),"G17/G11 final-head authority drift")
     libmf6=Path(os.environ["LIBMF6"]).resolve()
     swaplib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
     require(libmf6.is_file(),"missing live MODFLOW library")
@@ -304,11 +329,11 @@ def main()->None:
     result=solve_p4(libmf6,swaplib,swap,session,href,a,b,sy)
     require(result["classification"]=="CONVERGED",f"G17 P4 orchestration failed: {result}")
     require(result["first_raw"] is not None,"G17 missing first raw proposal")
-    ref=g11["summary"]
-    require(int(result["first_raw"]["status"])==int(ref["first_raw_status"])==6,"G17 first raw status drift")
+    ref=frozen_ref
+    require(int(result["first_raw"]["status"])==int(ref["first_raw_participant_status"])==6,"G17 first raw status drift")
     require(abs(float(result["first_raw"]["dh_m"])-float(ref["first_raw_dh_m"]))<=1e-12,"G17 first raw head drift")
-    require(int(result["contractions"])==int(ref["p4_contractions"])==2,"G17 safeguard contraction count drift")
-    require(abs(float(result["final_head_m"])-(HREF_EXPECTED+float(ref["p4_final_dh_m"])))<=1e-12,"G17 final head drift from G11")
+    require(int(result["contractions"])==int(ref["expected_total_contractions"])==2,"G17 safeguard contraction count drift")
+    require(abs(float(result["final_head_m"])-(HREF_EXPECTED+float(ref["reference_final_dh_m"])))<=1e-12,"G17 final head drift from preregistered G11 reference")
     require(abs(float(result["final_residual_m_per_s"]))<=FLUX_TOL,"G17 final residual above tolerance")
 
     counts=swap.g16_counts()
