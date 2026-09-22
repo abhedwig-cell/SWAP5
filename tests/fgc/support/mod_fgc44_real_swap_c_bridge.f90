@@ -139,7 +139,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
   public :: fgc44_raw_corrector_diagnostics_c
-  public :: fgc44_committed_profile_observables_c
+  public :: fgc44_committed_profile_observables_c, fgc44_committed_profile_nodes_c
   public :: fgc44_research_interval_c, fgc44_research_last_interval_diagnostics_c
 
 contains
@@ -423,6 +423,34 @@ contains
       return
     end select
   end function fgc44_committed_profile_observables_c
+
+  integer(c_int) function fgc44_committed_profile_nodes_c(active_nodes,pressure_head_native,water_content, &
+       z_native,dz_native) bind(C,name="fgc44_committed_profile_nodes_c")
+    integer(c_int), intent(out) :: active_nodes
+    real(c_double), intent(out) :: pressure_head_native(numnod),water_content(numnod),z_native(numnod),dz_native(numnod)
+    class(transaction_state_t),allocatable :: snapshot
+    logical :: available
+
+    fgc44_committed_profile_nodes_c=1_c_int
+    active_nodes=0_c_int
+    pressure_head_native=0.0_c_double; water_content=0.0_c_double
+    z_native=0.0_c_double; dz_native=0.0_c_double
+    if(.not.initialized)return
+    call committed%snapshot(snapshot,available)
+    if(.not.available .or. .not.allocated(snapshot))return
+    select type(typed=>snapshot)
+    class is(fmr_b110_physical_state_t)
+      if(typed%active_nodes/=numnod)return
+      active_nodes=int(typed%active_nodes,c_int)
+      pressure_head_native=typed%pressure_head
+      water_content=typed%water_content
+      z_native=predictor_parameters%z
+      dz_native=predictor_parameters%dz
+      fgc44_committed_profile_nodes_c=0_c_int
+    class default
+      return
+    end select
+  end function fgc44_committed_profile_nodes_c
 
   integer(c_int) function fgc44_predictor_run_diagnostics_c(available,result_status,completed,direction_available, &
        transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections,temporal_rejections, &
