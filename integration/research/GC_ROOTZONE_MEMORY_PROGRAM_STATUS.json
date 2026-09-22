@@ -151,6 +151,15 @@
       "workflow_job": 106787866351,
       "implementation_head": "64b9f95804e2f815d591daf51841c31968e6deaf",
       "evidence_commit": "6f1bbc067ce29ab81f604eb67cef79f7a2d44f22"
+    },
+    {
+      "work_unit": "GC-RZM06E01",
+      "decision": "QUALIFIED_RESPONSE_BLIND_ZERO_DIVERGENCE_H2_ORIGIN_PAIR_SELECTED",
+      "preregistration_commit": "c11c08282a3abc9b1beee3002f5a9a01df58d95f",
+      "workflow_run": 35740688388,
+      "workflow_job": 106789366648,
+      "implementation_head": "3652d89debb2f57cba88da31834f7b7fbfb1ec62",
+      "evidence_commit": "e53816189389121cc0b3ff5130e7229d6eddd815"
     }
   ],
   "current_findings": [
@@ -211,21 +220,26 @@
     "The strongest D03 water-matched pair reaches |ΔM1|=0.007836912353482717 cm, 78.37% of the unchanged 0.01 cm requirement, with |ΔW_profile|=6.094551292790129e-05 cm.",
     "D03 therefore motivates prospective state-space expansion rather than threshold relaxation, HELD_OUT access or response-guided selection.",
     "D04 mapped strict local continuations from the immutable D03 pair: 15 admitted endpoints per origin, 225 cross-origin endpoint pairs and 39 water-matched pairs, but zero H2-qualified pairs.",
-    "D04's best water-matched pair reaches |ΔM1|=0.007872748347196534 cm, 78.73% of the unchanged 0.01 cm requirement, with |ΔW_profile|=9.233749912596068e-05 cm."
+    "D04's best water-matched pair reaches |ΔM1|=0.007872748347196534 cm, 78.73% of the unchanged 0.01 cm requirement, with |ΔW_profile|=9.233749912596068e-05 cm.",
+    "E01 constructed a response-blind H2 origin pair on the 16-node C01 carrier with exactly reconstructed equal total profile water and |ΔM1|=0.11123947403315526 cm, 11.12 times the unchanged 0.01 cm requirement.",
+    "The selected E01 pair is EQ step 1 versus CLOSED step 14; CLOSED has 14 strict accepted zero-boundary-flux commits and then fails closed at step 15 with a solver rejection.",
+    "E01 did not expose any interface response quantity to the selector; all 16 H/theta values for both selected origins are persisted before E02."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E01",
-    "scope": "Prospectively expand reachable state space on the qualified 16-node C01 Reference carrier using fixed-flux families that preserve integrated total storage while changing internal vertical redistribution; select H2 origins from node state only.",
-    "prerequisite": "D03 qualified cross-time NO_MATCH and D02R1 qualified common-time reseeding",
+    "id": "GC-RZM06E02",
+    "scope": "Reconstruct the immutable E01 pair at one common canonical time, verify exact origin identity and frozen H2 state gates, then apply identical forcing-free mode-5 fixed-Hc strict Reference probes to both origins.",
+    "prerequisite": "E01 selected and persisted immutable response-blind H2 pair; D02R1 qualified common-time reseeding",
     "constraints": [
-      "preregister forcing families, duration and maximum steps before execution",
-      "use strict Reference sample/commit only; no research fallback in E01",
-      "mode 2 fixed flux with equal top and bottom native flux within each family so external flux divergence is zero by construction",
-      "include one equilibrium-throughflow accepted control and one zero-flux closed-column redistribution family",
-      "reconstruct W_profile and M1 from committed 16-node theta only",
-      "keep H2 gates |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm unchanged",
-      "no response/exchange field in state selection",
-      "no HELD_OUT access and no production source change"
+      "use exactly the persisted E01 A_EQ and B_CLOSED profiles; no reselection",
+      "reconstruct both committed origins at t0=0 with BASE optional layout and no numerical continuation",
+      "recompute W_profile and M1 from node theta before any response probe and require the frozen H2 state gates",
+      "fixed interface head H_c=-1.8979370901690651 m mapped through the existing groundwater-head materializer with bottom datum -1.6 m",
+      "top flux exactly zero for both probes",
+      "use dyadic dt=3435974/2^32 day and hard mass gate 1e-12 cm",
+      "strict Reference sample only; no fallback, no temporal subdivision, no commit",
+      "repeat A/B in reversed execution order with fresh origins to exclude hidden cross-probe state",
+      "primary H2 response is whole-window bottom outward exchange; support threshold remains |ΔE|>1e-18 native cm",
+      "no production source change and no H5/RZM06B work"
     ]
   },
   "blocked": [],
