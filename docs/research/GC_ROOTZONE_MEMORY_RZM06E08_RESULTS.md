@@ -5,26 +5,26 @@
 **Production changes:** none  
 **Workflow:** run 35749131548, job 106818345605
 
-The immutable E07 direction-twin was reconstructed at canonical time and passed all preregistered state gates before response evaluation:
+The immutable E07 direction-twin origins were reconstructed at canonical time and passed all preregistered gates before any response value was inspected:
 
 - `|ΔW_profile| = 7.105427357601002e-15 cm`;
 - `|ΔW_root30| = 5.560281124417088e-10 cm`;
 - `|ΔH16| = 0.01425320747482317 cm`.
 
-The E07 qssdi/qdra terms are origin-construction provenance only. The E08 response experiment contains no internal source or sink. Both origins receive the same forcing-free fixed-`H_c` probe.
+Both forcing-free fixed-`H_c` samples were admitted with complete mass accounting and zero reported mass residual. Reversing A/B execution order changed no same-origin result and the complete O0/O2 observable output was byte-identical.
 
-Both strict probes were admitted, each with zero reported mass residual. Same-origin output was bit-identical under A/B execution-order reversal and the complete O0/O2 output was byte-identical.
+The whole-window interface exchanges were:
 
-The whole-window bottom exchange was:
+- UPSHIFT origin: `0.00313351139418927 cm`;
+- DOWNSHIFT origin: `0.003144890124183064 cm`;
+- `|ΔE| = 1.1378729993793968e-05 cm`.
 
-- A: `0.00313351139418927 cm`;
-- B: `0.003144890124183064 cm`;
-- `|ΔE| = 1.1378729993793968e-5 cm`.
+The unchanged support threshold was `1e-18 cm`.
 
-This is above the unchanged `1e-18 cm` response threshold.
+The admitted conclusion is resolution-bounded: for this selected C01 carrier/window, fixed `H_c` together with total profile storage and upper-30-cm storage matched to `1e-9 cm` does not determine a unique next whole-window interface exchange.
 
-The admitted conclusion is strong but still bounded: at joint aggregate-storage resolution `1e-9 cm`, identical fixed `H_c` plus `W_profile` and `W_root30` do not determine a unique next whole-window interface exchange for this selected C01 pair and window.
+The E07 internal qssdi/qdra terms are not present in the E08 response forcing. They only created the immutable origins prospectively.
 
-This is materially stronger than E04 and E06 because the root30 mismatch has been reduced from about `4.34e-5 cm` to `5.56e-10 cm` while the response difference remains deterministic.
+This does not prove exact-valued global insufficiency because the root30 values remain tolerance-matched rather than mathematically identical. It also does not establish H16 as the unique or minimal missing state coordinate.
 
-It is still not an exact-valued proof. The E07 frozen grid produced no qualifying twin at `1e-10 cm` or with exact root30 equality. Any further exact-sufficiency test must therefore use a new prospectively justified state-construction direction rather than extending or retuning the E07 grid after seeing this result.
+The next state-construction question is therefore constrained rather than broader: can a second independent net-zero deep redistribution basis reduce the root30 mismatch to the hard `1e-12 cm` scale while retaining material H16 separation, using state information only?
