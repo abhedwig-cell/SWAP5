@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.coupling.real_ribamod_active_river_management_boundary.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H",
+  "decision": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+  "authority": {
+    "qualification_head": "75e7f886b8ef40b820939e9bbad5f702a0dfc454",
+    "workflow_run": 35732895672,
+    "workflow_job": 106762674502,
+    "conclusion": "failure",
+    "classification": "SCIENTIFIC_CURRENT_BOUNDARY_ALLOCATION_VISIBILITY_FALSIFICATION",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "technical_history": [
+    {
+      "attempt": "v1",
+      "run": 35731486671,
+      "state": "TECHNICAL_OBSERVABILITY_FAIL",
+      "scientific_effect": "none"
+    },
+    {
+      "attempt": "v2",
+      "run": 35732247785,
+      "state": "TECHNICAL_SOURCE_SCOPE_FAIL",
+      "scientific_effect": "none"
+    },
+    {
+      "attempt": "v3",
+      "run": 35732895672,
+      "state": "SCIENTIFIC_FALSIFICATION",
+      "authority_use": "admitted"
+    }
+  ],
+  "frozen_hypothesis": {
+    "control_t0_allocation_m3_per_day": {
+      "root": 32,
+      "external": 0
+    },
+    "active_expected_t0_allocation_m3_per_day": {
+      "root": 24.00008533242312,
+      "external": 0
+    },
+    "rationale": "First active-River infiltration was expected to be visible as negative Basin forcing to the t=0 fixed-grid allocation solve."
+  },
+  "observations": {
+    "control": {
+      "allocation_m3_per_day": {
+        "root": 32,
+        "external": 0
+      },
+      "accepted_states": [
+        {
+          "endpoint_s": 21600,
+          "level_m": 1.0000039987293805,
+          "root_m3": 4.001270619481194,
+          "external_m3": 0,
+          "storage_gain_m3": 3.9987293805054946
+        },
+        {
+          "endpoint_s": 43200,
+          "level_m": 1.0000079951211123,
+          "root_m3": 8.004878887695051,
+          "external_m3": 0,
+          "storage_gain_m3": 7.995121112269743
+        },
+        {
+          "endpoint_s": 64800,
+          "level_m": 1.000011989133,
+          "root_m3": 12.0108669999443,
+          "external_m3": 0,
+          "storage_gain_m3": 11.989132999934426
+        },
+        {
+          "endpoint_s": 86400,
+          "level_m": 1.0000159807416105,
+          "root_m3": 16.019258389454414,
+          "external_m3": 0,
+          "storage_gain_m3": 15.980741610466254
+        }
+      ]
+    },
+    "active_river": {
+      "allocation_m3_per_day": {
+        "root": 32,
+        "external": 0
+      },
+      "accepted_states": [
+        {
+          "endpoint_s": 21600,
+          "level_m": 1.0000019993621654,
+          "root_m3": 4.000659167808606,
+          "external_m3": 0,
+          "river_flux_m3_per_day": 7.999914667576883,
+          "cumulative_infiltration_m3": 1.9999786668942208,
+          "storage_gain_m3": 1.9993621653835447
+        },
+        {
+          "endpoint_s": 43200,
+          "level_m": 1.0000039975623536,
+          "root_m3": 8.002472315355364,
+          "external_m3": 0,
+          "river_flux_m3_per_day": 7.999946657031089,
+          "cumulative_infiltration_m3": 3.999965331151993,
+          "storage_gain_m3": 3.9975623535859484
+        },
+        {
+          "endpoint_s": 64800,
+          "level_m": 1.0000059945693962,
+          "root_m3": 12.005470615620853,
+          "external_m3": 0,
+          "river_flux_m3_per_day": 7.999978627893077,
+          "cumulative_infiltration_m3": 5.999959988125262,
+          "storage_gain_m3": 5.994569396206018
+        },
+        {
+          "endpoint_s": 86400,
+          "level_m": 1.000007990372381,
+          "root_m3": 16.009664985910206,
+          "external_m3": 0,
+          "river_flux_m3_per_day": 8.000010579664941,
+          "cumulative_infiltration_m3": 7.9999626330414975,
+          "storage_gain_m3": 7.990372381083688
+        }
+      ]
+    }
+  },
+  "admitted_findings": [
+    "The actual product route realizes the active-River exchange physically and reciprocally from the first 6-hour segment.",
+    "Despite that physical forcing, the release-native t=0 UserDemand allocation remains exactly 32/0 m3/day, identical to the no-exchange control.",
+    "Therefore the preregistered claim that the first RibaMod active-River forcing is visible to the current t=0 allocation decision is false.",
+    "The active exchange reduces physical root delivery and accepted Basin storage during day 1 without reducing the already admitted t=0 management target.",
+    "The phrase 'forcing before SOLVE' cannot be inferred merely from RibaMod.exchange_mod2rib occurring before Ribasim.update_until; the product composition contains an additional visibility/commit seam that must be located."
+  ],
+  "source_runtime_tension": {
+    "source_observation": "Ribasim v2026.1.1 step! can call update_allocation! before physical stepping, and allocation Basin setup includes vertical_flux.infiltration as implicit_negative_forcing_volume.",
+    "runtime_observation": "The real RibaMod route still records 32/0 at t=0 while physically using about 8 m3/day infiltration.",
+    "required_next_step": "Differentiate XMI pointer visibility from allocation-layer forcing visibility using a preregistered direct-BMI versus RibaMod diagnostic."
+  },
+  "boundaries": [
+    "Do not reinterpret the 32/0 output as a passed current-boundary-admission case.",
+    "Do not retune the frozen 24.0000853 m3/day expectation post hoc.",
+    "No defect classification until the visibility seam is localized.",
+    "No production SWAP5 admission."
+  ],
+  "downstream": "Invalidate unexecuted DUMMY-20I and execute a new DUMMY-20H2 pointer-to-allocation visibility differential."
+}
