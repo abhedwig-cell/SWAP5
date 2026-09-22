@@ -271,6 +271,14 @@ def read_allocations(case_root: Path) -> dict:
             dtype=float,
         ) * DAY
         times = np.asarray(ds["time"].values)
+    require(
+        pd.Timestamp(times[0]) == pd.Timestamp("2020-01-01T00:00:00"),
+        f"first allocation record is not t=0: {times[0]}",
+    )
+    require(
+        pd.Timestamp(times[1]) == pd.Timestamp("2020-01-02T00:00:00"),
+        f"second allocation record is not t=24 h: {times[1]}",
+    )
     print(
         "RIBASIM_REAL_20H7_ALLOC_TIMES "
         f"count={len(times)} first={times[0]} second={times[1]}"
