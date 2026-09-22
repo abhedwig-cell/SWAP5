@@ -11,11 +11,11 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Actual product A/B comparison of no-exchange versus active-River forcing at t=0 allocation, with allocation.arrow and physical ledgers observed separately.",
-  "next_action": "Execute DUMMY-20H v2 frozen qualification from clean rebound baseline.",
+  "next_action": "Execute DUMMY-20H v3 from rebound research-only source scope; frozen science unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "6035fe0a0230d0b3affb91718902f0b900755894",
-  "recovery_point": "NetCDF observability repaired; source-scope rebound after unrelated synthesis commit; v2 pending.",
+  "recovery_point": "20H v1 observability fail and v2 source-scope fail are both technical; v3 is first repaired product-runtime attempt.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H_CONCEPT.md",
@@ -31,7 +31,7 @@
     "checked": [
       "control and active cases share identical Ribasim management topology and 32/40/20 m3/day source-demand values",
       "only active case maps the two-cell River package through RibaMod",
-      "allocation decision is read from real allocation.arrow after finalization",
+      "allocation decision is read from real release-native allocation.nc after finalization",
       "control t=0 allocation is frozen at 32/0 m3/day",
       "active t=0 root allocation is frozen at 24.000085332423117 m3/day from 32 minus qualified first River forcing",
       "physical supply is observed separately from allocation",
@@ -47,6 +47,21 @@
       "reason": "Harness searched for allocation.arrow, but product Ribasim v2026.1.1 writes allocation.nc NetCDF. Control physical product run completed and matched qualified no-exchange behavior before the reader failed.",
       "scientific_effect": "none",
       "authority_use": "forbidden"
+    },
+    {
+      "attempt": "v2",
+      "run": 35732247785,
+      "job": 106760474771,
+      "state": "TECHNICAL_SOURCE_SCOPE_FAIL",
+      "reason": "Qualification branch inherited the updated central coupling synthesis after the older 20H source-scope base; gate stopped before product runtime.",
+      "scientific_effect": "none",
+      "authority_use": "forbidden"
     }
-  ]
+  ],
+  "source_scope_rebind": {
+    "state": "APPLIED",
+    "base": "571d9c33988c7feb63486342894ca693589540e3",
+    "reason": "Absorb already-persisted research-only synthesis and prospectively frozen 20I files into the qualification denominator; production/reference delta checks remain active.",
+    "scientific_change": false
+  }
 }
