@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a6.node_profile_audit_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A6",
+  "authority": "preregistered diagnostic research experiment",
+  "production_changes": false,
+  "parent_program_commit": "3c1a1bdadc54d3efc2827a3eb068568a84417471",
+  "purpose": [
+    "verify that aggregate committed-profile observables reconstruct from the committed node state",
+    "quantify node-level pressure-head and water-content differences hidden by aggregate observables",
+    "resolve the geometry/unit semantics of W_profile, root-water and M1 for the four-node carrier",
+    "determine whether another forcing search on this carrier is scientifically justified"
+  ],
+  "carrier_scope": {
+    "solver": "real HeadCalc serialized-reference route with explicit B110 constitutive provider",
+    "geometry": "focused four-node FSI fixture",
+    "nodes": 4,
+    "z_native": [
+      -0.25,
+      -0.75,
+      -1.5,
+      -2.5
+    ],
+    "dz_native": [
+      0.5,
+      0.5,
+      1,
+      1
+    ],
+    "geometry_semantics": "metre-scale as documented by the research bridge",
+    "hydraulic_head_semantics": "native HeadCalc pressure-head coordinate retains centimetre convention"
+  },
+  "read_only_node_diagnostic": {
+    "fields": [
+      "active_nodes",
+      "pressure_head_native",
+      "water_content",
+      "z_native",
+      "dz_native"
+    ],
+    "implementation_scope": "tests/fgc/support research/test bridge only",
+    "state_source": "snapshot of current committed kernel state",
+    "mutation_allowed": false
+  },
+  "representative_histories": {
+    "H_star_m": -0.7149999706136307,
+    "interval_duration_day": 0.01,
+    "families": [
+      {
+        "name": "BASELINE",
+        "top_flux_cm_per_day": 0,
+        "pulse_count": 0,
+        "relax_count": 0,
+        "timing": "NONE"
+      },
+      {
+        "name": "NEG_N100_R0_EARLY",
+        "top_flux_cm_per_day": -0.0001,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "timing": "EARLY"
+      },
+      {
+        "name": "NEG_N100_R0_LATE",
+        "top_flux_cm_per_day": -0.0001,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "timing": "LATE"
+      },
+      {
+        "name": "POS_N100_R0_EARLY",
+        "top_flux_cm_per_day": 0.0001,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "timing": "EARLY"
+      },
+      {
+        "name": "POS_N100_R0_LATE",
+        "top_flux_cm_per_day": 0.0001,
+        "pulse_count": 100,
+        "relax_count": 0,
+        "timing": "LATE"
+      },
+      {
+        "name": "NEG_N100_R50_EARLY",
+        "top_flux_cm_per_day": -0.0001,
+        "pulse_count": 100,
+        "relax_count": 50,
+        "timing": "EARLY"
+      },
+      {
+        "name": "NEG_N100_R50_LATE",
+        "top_flux_cm_per_day": -0.0001,
+        "pulse_count": 100,
+        "relax_count": 50,
+        "timing": "LATE"
+      }
+    ],
+    "sequence_definition": {
+      "EARLY": "PULSE repeated N -> ZERO repeated N -> ZERO repeated R",
+      "LATE": "ZERO repeated N -> PULSE repeated N -> ZERO repeated R"
+    },
+    "rationale": "fixed representatives from qualified RZM06A5: R0 carries the plateau timing-memory signal; R50 is the erased-memory control"
+  },
+  "reconstruction": {
+    "profile_water": "sum(theta_i * dz_i)",
+    "distribution_moment": "sum(theta_i * dz_i * z_i) / profile_water",
+    "root_water": "sum(theta_i * geometric_overlap_i) over upper 0.30 m",
+    "root_overlap": "max(0, min(depth_bottom,0.30)-min(depth_top,0.30)) with depth_top=max(0,-(z+0.5*dz)), depth_bottom=max(0,-(z-0.5*dz))",
+    "absolute_tolerance_native": 1e-13,
+    "failure_disposition": "OBSERVABLE_RECONSTRUCTION_FAILURE"
+  },
+  "pair_diagnostics": {
+    "pairs": [
+      [
+        "NEG_N100_R0_EARLY",
+        "NEG_N100_R0_LATE"
+      ],
+      [
+        "POS_N100_R0_EARLY",
+        "POS_N100_R0_LATE"
+      ],
+      [
+        "NEG_N100_R50_EARLY",
+        "NEG_N100_R50_LATE"
+      ]
+    ],
+    "quantities": [
+      "per-node delta pressure_head_native",
+      "per-node delta water_content",
+      "per-node delta storage theta*dz",
+      "max abs delta pressure_head_native",
+      "max abs delta water_content",
+      "L1 redistributed storage sum(abs(delta theta_i*dz_i))",
+      "signed total-storage difference sum(delta theta_i*dz_i)",
+      "aggregate delta W_profile",
+      "aggregate delta M1"
+    ],
+    "no_binary_masking_threshold": "No post-hoc masking threshold is defined. A6 reports the node vectors and scale ratios; the scientific decision is made from qualified evidence."
+  },
+  "controls": [
+    "all non-baseline histories must replay transactionally with complete mass accounting",
+    "failed intervals preserve the latest committed origin",
+    "node diagnostic calls before and after repeated reads must leave revision, time, ledger and aggregate observables unchanged",
+    "E_c is neither read nor used as a selection variable",
+    "H2 thresholds remain unchanged and are not reinterpreted in A6"
+  ],
+  "nonclaims": [
+    "no H2 support or falsification from A6 alone",
+    "no production coupling admission",
+    "no production diagnostic ABI",
+    "no claim that the four-node FSI fixture is representative of a full real-SWAP discretization"
+  ]
+}
