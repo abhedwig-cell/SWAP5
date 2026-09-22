@@ -257,3 +257,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G19_EXECUTION=PASS' "$BUILD/fgc44-globalization-g19
   echo "GC_FGC44_G19_FAIL missing response-space damping bridge gate" >&2
   exit 1
 }
+
+
+# G20 continuous prepared-solve transport qualification. The already-qualified
+# G19 lambda response family is traversed inside one live F-GC38 prepared solve:
+# fixed XOLD, evolving X, no rollback/set-head, and no timestep publication.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g20_continuous_response_damping.py \
+  | tee "$BUILD/fgc44-globalization-g20.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G20_EXECUTION=PASS' "$BUILD/fgc44-globalization-g20.txt" || {
+  echo "GC_FGC44_G20_FAIL missing continuous prepared-solve response gate" >&2
+  exit 1
+}
