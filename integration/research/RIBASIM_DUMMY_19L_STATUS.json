@@ -6,12 +6,12 @@
   "baseline": "9701e987fb98e6607c4af904788e175765a080e6",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Native 6h-saveat versus daily-saveat explicit-apply comparison at all 6h accepted-state boundaries.",
-  "next_action": "Execute frozen DUMMY-19L accepted-state trajectory-equivalence qualification.",
+  "next_action": "Use segment-by-segment solve→apply→realize→accept equivalence as clock-contract authority and update the central coupling synthesis.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -21,7 +21,7 @@
     "note": "Verifier prepared while DUMMY-19K runs; no runner, workflow gate or execution until DUMMY-19K closeout."
   },
   "implementation_baseline": "703f4d8ec605e42124970a9fe7cecc355959f633",
-  "recovery_point": "DUMMY-19L executable gate persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-19L qualified by frozen run 35707251106.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19L_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19L_CONCEPT.md",
@@ -43,5 +43,9 @@
       "Basin level and cumulative recipient delivery are checked at all four accepted 6-hour boundaries",
       "route equivalence is asserted independently of final-only reference checks"
     ]
-  }
+  },
+  "decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+  "workflow_run": 35707251106,
+  "workflow_job": 106679048188,
+  "qualification_head": "ab3b6ebdc03e6db1ae3613c1ab7e5cf4b27ae485"
 }
