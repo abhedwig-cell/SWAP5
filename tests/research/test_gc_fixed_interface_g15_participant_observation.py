@@ -166,7 +166,10 @@ def run_state(
             require(not swap.g15_has_live_candidate(),f"{state_id} failed trial leaked live candidate")
 
         require(swap.state()==origin,f"{state_id} trial/discard changed committed authority")
+        reference_before=swap.g14_fused_run_count()
         fused=swap.g14_fused_observation(head)
+        require(swap.g14_fused_run_count()==reference_before+1,
+                f"{state_id} qualification oracle did not perform exactly one reference run")
         qdiff=compare_to_g14(obs1,fused,f"{state_id}@{head:.17g}")
         max_q_diff=max(max_q_diff,qdiff)
         require(swap.state()==origin,f"{state_id} G14 comparison changed committed authority")
@@ -202,6 +205,7 @@ def run_state(
     require(scale_count==int(expected["streaming_scale_count"]),f"{state_id} scale-count mismatch")
     require(len(cache)==int(expected["streaming_unique_heads"]),f"{state_id} unique-head mismatch")
     require(swap.g15_trial_call_count()==len(cache),f"{state_id} not exactly one participant trial per unique head")
+    require(swap.g14_fused_run_count()==len(cache),f"{state_id} qualification oracle run count mismatch")
     require(selected["scale_m"]==float(expected["selected_scale_m"]),f"{state_id} selected scale mismatch")
     require(selected["mode"]==str(expected["selected_mode"]),f"{state_id} selected mode mismatch")
     require(math.isclose(float(selected["slope_per_s"]),float(expected["selected_slope_per_s"]),rel_tol=0.0,abs_tol=1e-18),
@@ -214,6 +218,7 @@ def run_state(
     return {
         "state_id":state_id,
         "participant_trial_calls":swap.g15_trial_call_count(),
+        "qualification_reference_oracle_runs":swap.g14_fused_run_count(),
         "unique_heads":len(cache),
         "status_counts":status_counts,
         "max_q_diff_m_per_s":max_q_diff,
@@ -326,8 +331,10 @@ def main()->None:
 
     total_heads=sum(int(x["unique_heads"]) for x in rows)
     total_calls=sum(int(x["participant_trial_calls"]) for x in rows)
+    total_reference_runs=sum(int(x["qualification_reference_oracle_runs"]) for x in rows)
     require(total_heads==62,f"G15 expected 62 FGC44 streaming heads, got {total_heads}")
     require(total_calls==62,f"G15 expected one participant trial per head, got {total_calls}")
+    require(total_reference_runs==62,f"G15 expected one separate G14 qualification oracle run per head, got {total_reference_runs}")
     require(max(float(x["max_q_diff_m_per_s"]) for x in rows)<=Q_TOL,"G15 q equivalence failed")
 
     recovery=explicit_failure_recovery(swap)
@@ -348,6 +355,8 @@ def main()->None:
         "state_count":len(rows),
         "streaming_unique_heads":total_heads,
         "participant_trial_calls":total_calls,
+        "qualification_reference_oracle_runs":total_reference_runs,
+        "accessor_additional_backend_runs":0,
         "max_q_diff_m_per_s":max(float(x["max_q_diff_m_per_s"]) for x in rows),
         "status6_state_count":sum("6" in x["status_counts"] for x in rows),
         "explicit_failure_recovery":"PASS",
