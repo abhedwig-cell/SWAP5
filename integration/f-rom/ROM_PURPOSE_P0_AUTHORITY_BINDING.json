@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom-purpose.p0.authority-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P0",
+  "status": "AUTHORITY_BOUND_READ_ONLY_SYNTHESIS",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "agents_blob": "3da9ffe679b8fcde0ccab1fa1311dd6c81e5336b",
+    "status_a_current_status_blob": "93bdfb78d6ba1c1986f5e2b9489bdeda75361cfa"
+  },
+  "historical_evidence": {
+    "layer_rom": {
+      "branch": "work/f-rom-layer-a",
+      "head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+      "merge_base_with_current_canonical": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+      "role": "EVIDENCE_AND_PROVENANCE_ONLY",
+      "authorities": [
+        "integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json",
+        "integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json"
+      ]
+    },
+    "lare_rs1": {
+      "branch": "work/f-rom-lare-rs1",
+      "head": "437d5edda08447abbfbdc41e54039f78d4d31560",
+      "merge_base_with_current_canonical": "9bb73821bb78a04c759b763746b50a3f777cd416",
+      "role": "EVIDENCE_AND_PROVENANCE_ONLY",
+      "authorities": [
+        "docs/science/F-ROM_LARE_BC2_C6D_CLOSEOUT.md",
+        "docs/science/F-ROM_LARE_BC2_C6E_CLOSEOUT.md",
+        "docs/science/F-ROM_LARE_BC2_C6J_CLOSEOUT.md",
+        "docs/science/F-ROM_LARE_BC2_C6K_PURPOSE_SUFFICIENCY.md",
+        "docs/science/F-ROM_LARE_BC2_C6N2_CLOSEOUT.md",
+        "docs/science/F-ROM_LARE_BC2_C6P_CLOSEOUT.md",
+        "docs/science/F-ROM_LARE_PURPOSE_DEPENDENT_ACCEPTANCE.md"
+      ]
+    }
+  },
+  "binding_decisions": [
+    "Historical branches are not merged into ROM-PURPOSE.",
+    "Reference Richards, RossFast, production groundwater coupling and production physics are read-only.",
+    "CURRENT_LAYER_FACE is the frozen first-discriminator Layer-ROM closure.",
+    "Application acceptance is not adjudicated without independent application authority.",
+    "Performance is out of scope until a hydrological purpose gate closes."
+  ],
+  "scientific_basis": {
+    "state_information": "L3 is only a bounded historical lower bound for predictive state information, not a generally adequate propagated model.",
+    "placement": "Historical evidence rejects uniform placement as a universal default and shows purpose-dependent upper- versus lower-zone sensitivity.",
+    "closure": "C6D supports missing subgrid shape as a mechanism on prescribed-head states, while C6E and C6J block promotion of the tested moment closures to a general free-running closure.",
+    "surface": "C6N2 shows that upper-zone placement materially changes surface/profile response and that numerical Reference uncertainty is not an application tolerance.",
+    "root_feedback": "C6P shows storage plus one centered geometric first moment is not generally sufficient for exact Feddes feedback; dynamic root uptake remains outside ROM-PURPOSE P1."
+  },
+  "production_rom_authorized": false
+}
