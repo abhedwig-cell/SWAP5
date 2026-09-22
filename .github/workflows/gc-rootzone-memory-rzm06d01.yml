@@ -1,0 +1,53 @@
+name: GC rootzone memory RZM06D01 ROM origin selection
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'tests/research/test_gc_rootzone_memory_rzm06d01_select.py'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06D01_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06D01_PREREGISTRATION.md'
+      - '.github/workflows/gc-rootzone-memory-rzm06d01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06d01-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify ROM1AR2 artifact authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          meta="$(gh api repos/${GITHUB_REPOSITORY}/actions/runs/35379176697/artifacts --jq '.artifacts[] | select(.id == 10561841507) | [.id,.name,.digest,.expired] | @tsv')"
+          test -n "$meta"
+          expected=$'10561841507\trom1ar2-35379176697\tsha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f\tfalse'
+          test "$meta" = "$expected" || { printf 'unexpected artifact metadata: %s\n' "$meta" >&2; exit 1; }
+          echo 'GC_RZM06D01_ARTIFACT_AUTHORITY=PASS'
+
+      - name: Download exact ROM1AR2 authority artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rom1ar2-35379176697
+          path: ROM1AR2-AUTHORITY
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35379176697
+
+      - name: Select H2 origins without response access
+        run: |
+          set -euo pipefail
+          python3 tests/research/test_gc_rootzone_memory_rzm06d01_select.py --artifact-dir ROM1AR2-AUTHORITY | tee rzm06d01.txt
+          grep -Fq 'GC_RZM06D01_RESPONSE_BLIND_SELECTION=PASS' rzm06d01.txt
