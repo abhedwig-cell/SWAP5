@@ -32,6 +32,7 @@ from test_gc_fixed_interface_g21d_under_relaxation_causal import build_model_var
 
 PREREG=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G21E_PREREGISTRATION.json"
 G21D=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G21D_RESULT.json"
+G21=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G21_RESULT.json"
 G17=ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G17_RESULT.json"
 HEAD_ENDPOINT_GATE=5.0e-10
 TRAJECTORY_GATE=1.0e-12
@@ -268,9 +269,10 @@ def run_arm(
 def main()->None:
     prereg=json.loads(PREREG.read_text())
     g21d=json.loads(G21D.read_text())
+    g21=json.loads(G21.read_text())
     g17=json.loads(G17.read_text())
     require(prereg["work_unit"]=="GC-FIXED-INTERFACE-G21E","wrong G21E preregistration")
-    require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION","G21E preregistration not frozen")
+    require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION_AMENDED","G21E amended preregistration not frozen")
     require(g21d["decision"]=="QUALIFIED_DIAGNOSTIC_DELTA_BAR_DELTA_CAUSAL_SUPPORT_IN_FROZEN_REAL_FGC44_CASE",
             "G21E G21D authority drift")
     require(float(prereg["independent_reference"]["physical_head_comparison_guard_m"])==HEAD_ENDPOINT_GATE,
@@ -291,9 +293,29 @@ def main()->None:
     standard=run_arm("STANDARD_DBD",None,3,libmf6,swaplib,frozen,g17_trace,g17_final)
     nour=run_arm("NOUR","NONE",0,libmf6,swaplib,frozen,g17_trace,g17_final)
 
+    require(g21["decision"]=="FALSIFIED_FULL_G17_PATH_EQUIVALENCE_IN_CONTINUOUS_DYNAMIC_RESPONSE_SPACE_LOOP",
+            "G21E archived G21 control authority drift")
+    standard_trace=standard["accepted_trace"]
+    archived_outer2_error=float(g21["observed_path"]["outer2"]["head_error_m"])
+    standard_control_reproduced=False
+    standard_outer1_error=None
+    standard_outer2_error=None
+    if len(standard_trace)>=2:
+        standard_outer1_error=float(standard_trace[0]["g17_head_error_m"])
+        standard_outer2_error=float(standard_trace[1]["g17_head_error_m"])
+        standard_control_reproduced=(
+            abs(standard_outer1_error)<=TRAJECTORY_GATE
+            and abs(standard_outer2_error)>TRAJECTORY_GATE
+            and abs(standard_outer2_error-archived_outer2_error)<=TRAJECTORY_GATE
+            and int(standard_trace[1]["attempts"][-1]["participant_status"])==0
+            and bool(standard_trace[1]["attempts"][-1]["merit_accept"])
+        )
+
     sp=bool(standard["physical_reference_qualified"])
     np_=bool(nour["physical_reference_qualified"])
-    if sp and np_:
+    if not standard_control_reproduced:
+        comparison="MIXED_OR_UNRESOLVED"
+    elif sp and np_:
         comparison="BOTH_PHYSICALLY_CONVERGED"
     elif np_ and not sp:
         comparison="NOUR_ONLY_PHYSICALLY_CONVERGED"
@@ -308,6 +330,10 @@ def main()->None:
         "comparison_classification":comparison,
         "standard":standard,
         "no_under_relaxation":nour,
+        "standard_control_reproduced":standard_control_reproduced,
+        "standard_outer1_g17_head_error_m":standard_outer1_error,
+        "standard_outer2_g17_head_error_m":standard_outer2_error,
+        "archived_g21_outer2_head_error_m":archived_outer2_error,
         "modflow_solve_call_difference_nour_minus_standard":int(nour["modflow_solve_calls"])-int(standard["modflow_solve_calls"]),
         "production_configuration_selection":"NOT_MADE",
         "production_policy_claim":"NOT_MADE",
