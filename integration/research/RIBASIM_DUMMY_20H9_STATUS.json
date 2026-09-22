@@ -22,5 +22,12 @@
     "tests/research/test_ribasim_dummy_20h9_positive_groundwater_next_boundary.py",
     "tests/research/run_ribasim_dummy_20h9.ps1",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "implementation_preparation": {
+    "state": "VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/test_ribasim_dummy_20h9_positive_groundwater_next_boundary.py",
+    "scientific_change": false,
+    "note": "No runner, workflow gate or qualification branch before DUMMY-20H8 closeout."
+  },
+  "recovery_point": "DUMMY-20H9 frozen prospectively while H8 qualification is active; product verifier prepared but execution remains blocked."
 }
