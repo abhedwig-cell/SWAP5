@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_wu04c.retry_replay_status.v1",
+  "work_unit": "PPA-WU04C-R1",
+  "parent_work_unit": "PPA-WU04C",
+  "status": "FKT_REJECTED_RETRY_AND_SOURCE_WINDOW_RESTART_REPLAY_TESTED",
+  "baseline": "77654abee",
+  "implemented": true,
+  "production_source_mutation": false,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "UNCHANGED; existing restricted WU04C dynamic-top composition only",
+  "test": "tests/fmr/test_fmr18_accepted_commit_receipt.f90",
+  "gate": "tests/fmr/run_ppa_wu04c_retry_restart_replay.sh",
+  "test_result": {
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "optimization_levels": ["-O0", "-O2"],
+    "flags": "-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+    "markers": [
+      "PPA_WU04C_REJECTED_RETRY_NO_PROGRESS=PASS",
+      "PPA_WU04C_CHANGED_DT_ACCEPTED_REPLAY=PASS",
+      "PPA_WU04C_SOURCE_WINDOW_CLOSED_EXACTLY=PASS",
+      "FMR18_PREVALIDATION_REJECTION_IS_NONMUTATING_AND_REPLAYABLE=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "scope_claim": "The actual F-KT transaction/commit receipt and WU04C progress/restart modules were exercised with a test physical model. Exhausted retries produced no candidate, receipt, or progress; a changed-dt retry committed and published only the accepted interval; restart restored lineage/revision and remaining source-window aggregate; the aggregate was then closed exactly once.",
+  "nonclaims": [
+    "full SWAP Richards/hydraulic rejected-trial replay in production",
+    "end-to-end dynamic-top boundary and source-window restart in one production SWAP run",
+    "WU04D Gash production admission or widened WU03 semantics"
+  ],
+  "next_action": "Run the new qualification workflow on GitHub; keep full-SWAP combined replay unqualified until that actual runtime route is exercised."
+}

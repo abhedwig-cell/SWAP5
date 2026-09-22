@@ -42,6 +42,14 @@
     "two-tile production owner run commits the WU04-C forcing vector with hard mass closure"
   ],
   "qualified_continuation_evidence": ["owner-managed hydraulic restart and the separate source-window progress record restore between two real accepted receipts without aggregate drift"],
-  "remaining_qualification": ["rejected-trial and changed-dt retry replay for a nontrivial source window"],
-  "decision": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED; CONTINUATION_REPLAY_OPEN"
+  "contract_harness_evidence": [
+    "A real F-KT interval exhausting its retry budget produces no candidate or commit receipt and cannot advance WU04C source-window progress.",
+    "A changed-dt interval is rejected and retried from the same committed checkpoint; only its accepted F-KT receipt advances source-window progress.",
+    "The progress record is exported and restored mid-window with lineage/revision binding, then a later accepted receipt closes the aggregate exactly once.",
+    "O0/O2 observable transcripts are identical in tests/fmr/run_ppa_wu04c_retry_restart_replay.sh."
+  ],
+  "remaining_qualification": [
+    "full SWAP Richards/dynamic-top production replay combining rejected trials, changed-dt retry and source-window restart"
+  ],
+  "decision": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED; GENERIC_FKT_RETRY_RESTART_CONTRACT_TESTED; FULL_SWAP_CONTINUATION_REPLAY_OPEN"
 }
