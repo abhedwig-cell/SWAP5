@@ -687,6 +687,45 @@ For the tested topology the routes were identical at logged precision in Basin
 level, storage change, cumulative root delivery and cumulative external-demand
 delivery.
 
+### Clock mechanics are version-specific
+
+DUMMY-20A and DUMMY-20B add a necessary product-version boundary.
+
+The actual pinned iMOD Coupler RibaMod product driver:
+
+```text
+Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+```
+
+advances Ribasim to the accepted MODFLOW current time but does not itself
+override `allocation.dt` or `solver.saveat`, and does not provide a separate
+UserDemand apply seam.
+
+That product pin bundles Ribasim `v2026.1.1` at:
+
+```text
+e7fc8ade52a4bedeec10e508d2065577f33eb76a
+```
+
+which is 103 commits behind the later DUMMY-19 research pin. Its fixed
+`allocation.dt` implementation differs materially from the later saveat/tstop
+architecture:
+
+```text
+Ribasim v2026.1.1, fixed allocation.dt
+  allocation cadence is owned by allocation.dt
+  BMI update_until advances the requested physical interval
+  solver.saveat does not create extra fixed-dt allocation decisions
+
+Ribasim f965 research pin
+  saveat-derived allocation tstops can participate in allocation cadence
+  solve/application/record separation must be audited explicitly
+```
+
+Therefore clock semantics must always be cited together with the exact Ribasim
+authority. DUMMY-19 saveat results are not direct runtime authority for the
+older Ribasim release bundled by the pinned RibaMod product.
+
 The qualified research contract is therefore:
 
 ```text
@@ -846,6 +885,24 @@ The falsified and superseded work units remain part of the evidence record. They
 must not be silently rewritten into passes because their failures exposed the
 clock and application semantics that the later work units then isolated.
 
+### Product-version clock authority
+
+```text
+DUMMY-20A
+  actual pinned iMOD Coupler RibaMod source contract:
+  MF6 leads product time and Ribasim is advanced with update_until(MF6 time);
+  no driver-owned UserDemand apply or saveat/allocation override
+
+DUMMY-20B
+  exact bundled Ribasim v2026.1.1 source contract:
+  fixed allocation.dt owns UserDemand allocation cadence;
+  saveat does not schedule fixed-dt allocation decisions;
+  later DUMMY-19 allocation-tstop architecture is absent
+```
+
+DUMMY-20C is the first dynamic real-product differential: actual RibaMod plus
+real MODFLOW/Ribasim kernels versus a fresh direct Ribasim v2026.1.1 route.
+
 ## 17. Current real-model authority boundaries
 
 The analytical sequence must remain distinguishable from production-model
@@ -882,6 +939,19 @@ These results do **not** establish that the research helper is a supported
 production Ribasim API, nor that every Ribasim managed component has identical
 application semantics. In particular, Pump/Outlet allocation controls are
 applied through different code paths and are outside the DUMMY-19K/19L claim.
+
+The actual pinned iMOD Coupler product currently carries a separate Ribasim
+authority:
+
+```text
+Ribasim v2026.1.1
+commit e7fc8ade52a4bedeec10e508d2065577f33eb76a
+```
+
+DUMMY-20B qualifies that release as fixed-`allocation.dt` driven for
+UserDemand allocation when `allocation.dt` is configured. It must be treated
+as a separate clock authority from `f965...`; cross-version transfer of
+saveat/BMI conclusions is forbidden without direct evidence.
 
 ### MODFLOW
 
