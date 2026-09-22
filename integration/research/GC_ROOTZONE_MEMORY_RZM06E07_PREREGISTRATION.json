@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e07.deep_internal_redistribution_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E07",
+  "authority": "preregistered response-blind net-zero deep internal redistribution state construction",
+  "production_changes": false,
+  "parent_result_commit": "8f1f2fdcb2a089b017de876c4ecb4e714bb85b60",
+  "scientific_question": "Can a prospective net-zero internal redistribution confined below 30 cm construct opposite deep states with near-identical total and root-zone storage but materially different interface-adjacent H16, beyond the 1e-7 cm resolution ceiling of the immutable library?",
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "constitutive": "B110 default MvG",
+    "backend": "serialized strict Reference HeadCalc",
+    "bottom_mode": 2,
+    "initial_effective_saturation": 0.85,
+    "hard_mass_gate_cm": 1e-12,
+    "dt_expression": "3435974 / 2^32 day"
+  },
+  "forcing_semantics": {
+    "headcalc_balance": "qdra contributes to matrix sink; qssdi contributes to matrix source",
+    "boundary_flux": "q_top=q_bottom=q_eq=-K0 for every interval",
+    "root_extraction": "inactive and zero",
+    "direct_rootzone_forcing": "none",
+    "internal_nodes": {
+      "upper_deep_node": 6,
+      "upper_deep_center_depth_cm": 55,
+      "lower_deep_node": 16,
+      "lower_deep_center_depth_cm": 155
+    },
+    "directions": [
+      {
+        "id": "UPSHIFT",
+        "source_node": 6,
+        "sink_node": 16
+      },
+      {
+        "id": "DOWNSHIFT",
+        "source_node": 16,
+        "sink_node": 6
+      }
+    ],
+    "transfer_rate_fractions_of_K0": [
+      0.015625,
+      0.03125,
+      0.0625,
+      0.125,
+      0.25,
+      0.5
+    ],
+    "accepted_step_counts": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "net_forcing_mass": "within each interval the only nonzero internal source and sink have exactly equal positive magnitudes; top and bottom boundary fluxes are also equal"
+  },
+  "execution_contract": [
+    "each direction/fraction/step-count family starts from the same fresh B01 Se=0.85 origin",
+    "derive K0 from the fresh B01 seed before constructing q_eq and transfer magnitudes",
+    "qssdi is nonzero only at the preregistered source node and qdra level 1 only at the preregistered sink node",
+    "only fully completed strict families contribute endpoints",
+    "one physical advance per interval; no fallback, retry, temporal subdivision, tolerance relaxation or direct state mutation",
+    "failed intervals terminate that family and preserve the latest committed origin bit-identically",
+    "emit only family provenance plus committed H/theta state for selection"
+  ],
+  "response_blind_selection": {
+    "pair_scope": "only UPSHIFT versus DOWNSHIFT twins with the same transfer fraction and accepted step count",
+    "nested_joint_storage_ladder_cm": [
+      0.000001,
+      1e-7,
+      1e-8,
+      1e-9,
+      1e-10,
+      1e-12
+    ],
+    "exact_rung": true,
+    "min_abs_H16_difference_cm": 0.01,
+    "selected_rung": "tightest storage rung with at least one qualifying direction-twin pair; EXACT only for numeric equality of both W_profile and W_root30",
+    "ranking_within_rung": [
+      "largest abs(delta H16)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "smallest cumulative internal transfer",
+      "lexicographic family identity"
+    ],
+    "response_fields_forbidden": true,
+    "no_match": "Close E07 NO_MATCH without adding rates, steps, nodes or relaxing state thresholds."
+  },
+  "qualification_gates": [
+    "16x10 cm geometry exact",
+    "fresh equilibrium control is strict accepted",
+    "all candidate intervals have complete mass accounting with |residual|<=1e-12 cm",
+    "failed families are transaction-safe",
+    "O0/O2 complete observable output byte-identical",
+    "selected pair, if any, is persisted with all 16 H/theta values before response work"
+  ],
+  "next_if_selected": "Preregister GC-RZM06E08 using the immutable E07 pair and the unchanged fixed-Hc probe; response interpretation is bounded to the selected storage rung unless the EXACT rung is selected.",
+  "next_if_no_match": "Stop the internal-source/sink construction family under this frozen grid and derive a different prospective state coordinate; do not retune retrospectively.",
+  "nonclaims": [
+    "qssdi/qdra are used here as controlled research state-construction channels, not as an admitted production coupling design.",
+    "A selected state pair alone is not response-memory evidence.",
+    "No second MODFLOW hydraulic state or production coupling change is introduced."
+  ]
+}
