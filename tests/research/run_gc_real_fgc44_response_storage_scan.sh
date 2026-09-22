@@ -383,3 +383,16 @@ grep -Fq 'GC_FIXED_INTERFACE_G21F_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21F_FAIL missing admissibility-boundary diagnostic gate" >&2
   exit 1
 }
+
+
+# G21G repeatability/mechanism diagnostic. Replay all 33 G21F heads in three
+# fresh G16 sessions and pair the participant result with the read-only final
+# corrector-backend physical observation. No runtime execution or policy change.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21g_island_repeatability.py \
+  | tee "$BUILD/fgc44-globalization-g21g.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21G_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21g.txt" || {
+  echo "GC_FGC44_G21G_FAIL missing island repeatability/mechanism gate" >&2
+  exit 1
+}
