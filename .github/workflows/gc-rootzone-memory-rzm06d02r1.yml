@@ -1,0 +1,61 @@
+name: GC rootzone memory RZM06D02R1 representation-safe reseed
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06D02R1_PREREGISTRATION.json'
+      - 'tests/research/test_gc_rootzone_memory_rzm06d02_extract.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06d02r1_reseed.f90'
+      - 'tests/research/run_gc_rootzone_memory_rzm06d02r1.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06d02r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06d02r1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify ROM1AR2 artifact authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          meta="$(gh api repos/${GITHUB_REPOSITORY}/actions/runs/35379176697/artifacts --jq '.artifacts[] | select(.id == 10561841507) | [.id,.name,.digest,.expired] | @tsv')"
+          expected=$'10561841507\trom1ar2-35379176697\tsha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f\tfalse'
+          test "$meta" = "$expected"
+          echo 'GC_RZM06D02R1_ARTIFACT_AUTHORITY=PASS'
+
+      - name: Download exact ROM1AR2 authority artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rom1ar2-35379176697
+          path: ROM1AR2-AUTHORITY
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35379176697
+
+      - name: Extract unchanged response-blind audit origin
+        run: |
+          set -euo pipefail
+          cmp ROM1AR2-AUTHORITY/o0.txt ROM1AR2-AUTHORITY/o2.txt
+          python3 tests/research/test_gc_rootzone_memory_rzm06d02_extract.py             --artifact-dir ROM1AR2-AUTHORITY             --output rzm06d02r1-origin.txt | tee rzm06d02r1-extract.txt
+          grep -Fq 'GC_RZM06D02_AUDIT_ORIGIN=PASS' rzm06d02r1-extract.txt
+
+      - name: Qualify representation-safe common-time reseed
+        run: |
+          set -euo pipefail
+          bash tests/research/run_gc_rootzone_memory_rzm06d02r1.sh rzm06d02r1-origin.txt
