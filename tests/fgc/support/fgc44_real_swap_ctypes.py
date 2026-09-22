@@ -55,6 +55,15 @@ class Fgc44RealSwap:
         ]
         self.lib.fgc44_g14_fused_run_count_c.restype=ctypes.c_int
         self.lib.fgc44_g14_fused_run_count_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
+        self.lib.fgc44_g15_last_trial_observation_c.restype=ctypes.c_int
+        self.lib.fgc44_g15_last_trial_observation_c.argtypes=[
+            *([ctypes.POINTER(ctypes.c_int)]*16),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
+        self.lib.fgc44_g15_trial_call_count_c.restype=ctypes.c_int
+        self.lib.fgc44_g15_trial_call_count_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
+        self.lib.fgc44_g15_has_live_candidate_c.restype=ctypes.c_int
+        self.lib.fgc44_g15_has_live_candidate_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -165,6 +174,44 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_last_trial_diagnostics_c(ctypes.byref(q),ctypes.byref(exchange))
         if status: raise RuntimeError(f"last-trial diagnostics query failed: {status}")
         return q.value,exchange.value
+
+    def g15_trial_call_count(self) -> int:
+        value=ctypes.c_int()
+        status=self.lib.fgc44_g15_trial_call_count_c(ctypes.byref(value))
+        if status:
+            raise RuntimeError(f"G15 trial-call count query failed: {status}")
+        return int(value.value)
+
+    def g15_has_live_candidate(self) -> bool:
+        value=ctypes.c_int()
+        status=self.lib.fgc44_g15_has_live_candidate_c(ctypes.byref(value))
+        if status:
+            raise RuntimeError(f"G15 live-candidate query failed: {status}")
+        return bool(value.value)
+
+    def g15_last_trial_observation(self) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(16)]
+        reals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.fgc44_g15_last_trial_observation_c(
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"G15 observation query failed: {status}")
+        names=[
+            "available","participant_status","q_available","result_status",
+            "completed","candidate_ready","transaction_calls","accepted_substeps",
+            "attempts","retries","trial_rollbacks","solver_rejections",
+            "temporal_rejections","temporal_unavailable_rejections",
+            "mass_rejections","internal_retries",
+        ]
+        result={k:v.value for k,v in zip(names,ints)}
+        for key in ["available","q_available","completed","candidate_ready"]:
+            result[key]=bool(result[key])
+        result["q_swap_m_per_s"]=reals[0].value
+        result["min_substep"]=reals[1].value
+        result["max_substep"]=reals[2].value
+        return result
 
     def g14_fused_run_count(self) -> int:
         value=ctypes.c_int()
