@@ -8,9 +8,11 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20E3 qualification. Two-day references are frozen now.",
-  "next_action": "If and only if DUMMY-20E3 qualifies the nonzero intervention, rebind and implement without changing the frozen t=24 h decision or day-2 trajectory.",
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Implement and execute the frozen two-day next-boundary memory-admission experiment.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "25921e9e9b3a9fd35a2593f9c8298f1cc33bab32",
+  "recovery_point": "DUMMY-20E3 nonzero intervention qualified; DUMMY-20F2 sequencing dependency satisfied."
 }
