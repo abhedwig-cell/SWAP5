@@ -3,7 +3,7 @@
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6R-R1",
   "date": "2026-09-22",
-  "status": "OPEN_REPAIRED_REFERENCE_REACHES_SOLVER_THEN_FAILS_CLOSED",
+  "status": "CLOSED_REPAIRED_REFERENCE_FAILS_FROZEN_TOTAL_RESIDUAL_GATE",
   "authority": {
     "scientific_preregistration": "integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json",
     "initial_failure_classification": "integration/f-rom/LARE_BC2_C6R_FAILURE_CLASSIFICATION.json",
@@ -46,16 +46,34 @@
   "current_interpretation": {
     "initial_pre_solver_entrypoint_blocker_closed": true,
     "new_failure_is_after_real_reference_execution": true,
-    "mass_gate_failure_not_demonstrated_by_accepted-step evidence": true,
-    "scientific_falsification": "NOT_YET_ADJUDICATED",
-    "reason": "The failing trial status and residual class must be diagnosed before deciding whether this is a solver-convergence qualification failure or another technical issue."
+    "failing_trial_solver_route": "legacy-reference-retry",
+    "failing_trial_status": 2,
+    "nonlinear_iterations": 16,
+    "internal_retries": 1,
+    "backtracking_attempts": 16,
+    "failure_class": "RETRY_TOTAL_ONLY",
+    "balance_flags": 0,
+    "head_flags": 0,
+    "max_abs_local_residual": 6.045164369083977e-13,
+    "summed_residual": -6.194739166076602e-12,
+    "interval_dt_day": 0.000025000000000000282,
+    "local_compartment_criterion_satisfied": true,
+    "frozen_total_residual_criterion_satisfied": false,
+    "reference_qualification": "NOT_QUALIFIED",
+    "root_feedback_hypothesis_falsified": false,
+    "scientific_interpretation": "C6R cannot establish a qualified root-active high-resolution Reference under the preregistered fail-closed numerical contract. This blocks the reduced dynamic-feedback comparison; it does not test or falsify the reduced-state hypothesis."
   },
   "diagnostic": {
     "workflow": ".github/workflows/f-rom-lare-bc2-c6r-diagnostic.yml",
-    "run_id": 35748410474,
-    "head": "bf8b6b562d33c6326be7b9b1395650236446e502",
-    "purpose": "Replay repaired C6R cases with fail-closed instrumentation and the exact prescribed root sink in direct failure diagnostics.",
-    "state_when_recorded": "queued"
+    "run_id": 35748905656,
+    "head": "dfa008075dbb79129e1bbd1846206fab78f8ae71",
+    "decisive_job_id": 106817562647,
+    "decisive_case": "B01 R512_T32 o0 V02 diagnostic replay",
+    "first_failure": "STATUS=2; ROUTE=legacy-reference-retry; NL=16; IR=1; BACKTRACK=16",
+    "failure_class": "RETRY_TOTAL_ONLY",
+    "class_evidence": "BAL_FLAGS=0; HEAD_FLAGS=0; RMAX=6.045164369083977e-13; RSUM=-6.194739166076602e-12; IMAX=7; DT=2.5000000000000282e-5",
+    "diagnostic_provider_repair": "Direct replay uses the same separated b110_source_sink_provider_t plus b110_root_sink_provider_t composition as the serialized Reference runtime.",
+    "response_based_change": false
   },
   "constraints": [
     "Do not enable the legacy DYN0A fallback for root-active C6R.",
@@ -63,6 +81,6 @@
     "Do not generate reduced candidate response until C6R Reference qualification is closed.",
     "Do not interpret accepted pre-failure trajectory segments as Reference qualification."
   ],
-  "next": "Classify the first repaired failing trial from diagnostic run 35748410474. If it is a genuine retry/convergence class under the frozen contract, close C6R Reference as not qualified and stop before reduced candidates; only a technical harness defect may be repaired without reopening scientific thresholds.",
+  "next": "Close C6R Stage 1 as Reference not qualified. Do not execute prescribed-sink reduced-harness equivalence or any dynamic reduced root-feedback candidate. A future restart requires an independently governed Reference/numerical-policy work unit; C6R itself may not relax the frozen total residual or fallback rules.",
   "model_changed": false
 }
