@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20H5 zero-storage factor causality qualification.",
+  "next_action": "Execute DUMMY-20H5 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -34,5 +34,7 @@
     "tests/research/real_ribasim_20h5_zero_storage_causality.jl",
     "tests/research/run_ribasim_dummy_20h5.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_zero_storage_factor_causality",
+  "qualification_base": "work/ribasim-dummy-01@b507fd90dcaeab91cf79217a800c2d6a720611ae"
 }
