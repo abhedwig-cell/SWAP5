@@ -43,7 +43,7 @@ def require(condition: bool, message: str) -> None:
 def load_prereg() -> list[dict[str, object]]:
     p=json.loads(PREREG.read_text())
     require(p["work_unit"]=="GC-FIXED-INTERFACE-G10","wrong G10 preregistration")
-    require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION","G10 preregistration not frozen")
+    require(p["status"]=="PREREGISTERED_BEFORE_EXECUTION_AMENDED","G10 preregistration not frozen/amended")
     require(float(p["configured_swap"]["duration_day"])==DURATION_DAY,"G10 duration drifted")
     require(float(p["configured_swap"]["predictor_qbot_cm_per_day"])==QBOT_CM_PER_DAY,"G10 qbot drifted")
     require(tuple(float(x) for x in p["fixed_head_scan_offsets_m"])==OFFSETS_M,"G10 head scan drifted")
@@ -115,6 +115,21 @@ def main()->None:
     _,_,href,origin,diag=initialize_case(swap,DURATION_DAY,QBOT_CM_PER_DAY)
     require(origin==(0,0.0,0,0.0),"G10 B4 did not initialize at immutable origin")
     u=float(diag["u"])
+    binding=json.loads(PREREG.read_text())["pre_execution_amendment"]["carrier_binding_gate"]
+    tol=float(binding["abs_tolerance"])
+    require(math.isclose(href,float(binding["reference_head_m"]),rel_tol=0.0,abs_tol=tol),
+            f"G10 live carrier reference-head mismatch: {href}")
+    require(math.isclose(u,float(binding["u_A"]),rel_tol=0.0,abs_tol=tol),
+            f"G10 live carrier u mismatch: {u}")
+    require(math.isclose(float(diag["q_bot"]),float(binding["predictor_qbot_cm_per_day"]),
+                         rel_tol=0.0,abs_tol=tol),
+            f"G10 live carrier qbot mismatch: {diag['q_bot']}")
+    print("FGC44_G10_CARRIER_BINDING="+json.dumps({
+        "reference_head_m":href,
+        "predictor_u":u,
+        "qbot_cm_per_day":float(diag["q_bot"]),
+        "status":"PASS",
+    },sort_keys=True,separators=(",",":")))
     href_e3=estimate_e3(swap,origin,href)
     require(href_e3["classification"]=="AVAILABLE","G10 B4 href E3 unavailable")
     p0=float(href_e3["slope_per_s"])
