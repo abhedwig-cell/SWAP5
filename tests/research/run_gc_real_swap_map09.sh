@@ -145,14 +145,19 @@ git diff --check -- tests/research/test_gc_real_swap_map09_active_drainage.py \
 echo 'GC REAL SWAP MAP09 MAP09A ACTIVE DRAINAGE DECOMPOSITION PASS'
 
 
-# G12 process-diverse E3/P4 qualification on the frozen active-drainage MAP09
-# carrier. This remains research-only; all participant candidates are discarded.
+# G12's preregistered all-regime groundwater href-calibration gate was
+# falsified. Preserve that result; do not rerun G12 as a moving acceptance gate.
+echo 'GC_FIXED_INTERFACE_G12_EXECUTION=FALSIFIED_PRESERVED'
+
+# G12A diagnostic: reproduce the frozen one-shot groundwater bias for all three
+# regimes, characterize the local affine q(H) response, and directly invert
+# q->H for href with exactly 20 bisections. No bias retuning or policy replay.
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
-  python3 tests/research/test_gc_fixed_interface_map09_active_drainage_g12.py \
-  | tee "$BUILD/g12-active-drainage.txt"
+  python3 tests/research/test_gc_fixed_interface_map09_groundwater_calibration_g12a.py \
+  | tee "$BUILD/g12a-groundwater-calibration.txt"
 
-grep -Fq 'GC_FIXED_INTERFACE_G12_EXECUTION=PASS' "$BUILD/g12-active-drainage.txt" || {
-  echo "GC_G12_FAIL missing active-drainage process qualification gate" >&2
+grep -Fq 'GC_FIXED_INTERFACE_G12A_DIAGNOSTIC=PASS' "$BUILD/g12a-groundwater-calibration.txt" || {
+  echo "GC_G12A_FAIL missing groundwater-calibration diagnostic gate" >&2
   exit 1
 }
