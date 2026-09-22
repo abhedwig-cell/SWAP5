@@ -29,10 +29,26 @@ function inspect(path::AbstractString, label::AbstractString; fix_storage_zero::
 
     storage_var = am.problem[:basin_storage_change][basin_id]
     if fix_storage_zero
-        JuMP.fix(storage_var, 0.0; force=true)
-    end
+        # Let Ribasim refresh the physical-to-allocation data and variable
+        # bounds first. Only then impose the diagnostic zero-storage bound.
+        (; integrator) = model
+        (; u, p, t) = integrator
+        (; p_independent) = p
+        du = Ribasim.get_du(integrator)
+        Ribasim.water_balance!(du, u, p, t)
+        Ribasim.update_control_states!(am, p_independent)
+        Ribasim.set_simulation_data!(am, integrator)
+        Ribasim.reset_demand_coefficients(am)
+        Ribasim.set_demands!(am, integrator)
+        Ribasim.warm_start!(am, integrator)
+        Ribasim.delete_temporary_constraints!(am)
 
-    Ribasim.update_allocation!(model)
+        JuMP.set_lower_bound(storage_var, 0.0)
+        JuMP.set_upper_bound(storage_var, 0.0)
+        Ribasim.optimize!(am, model)
+    else
+        Ribasim.update_allocation!(model)
+    end
 
     alpha = JuMP.value(am.problem[:low_storage_factor][basin_id])
     storage_change = JuMP.value(storage_var) * am.scaling.storage
