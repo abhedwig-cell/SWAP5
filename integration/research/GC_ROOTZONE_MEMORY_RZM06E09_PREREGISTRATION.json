@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e09.near_interface_local_redistribution_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E09",
+  "authority": "preregistered response-blind net-zero near-interface redistribution state construction",
+  "production_changes": false,
+  "parent_result_commit": "7c49932807eab8eb425666a2fbff5de1bc57e089",
+  "scientific_question": "Can a net-zero redistribution confined to the two bottom compartments construct an H16-separated direction twin while driving total-profile and upper-30-cm storage matching below the E07 1e-9 cm ceiling, ideally to numerical equality?",
+  "rationale": [
+    "E08 supports interface memory at 1e-9 cm aggregate-storage resolution.",
+    "E07 showed that the node-6/node-16 basis leaks a small but nonzero signal into root30 and has no qualifying twin at 1e-10 cm.",
+    "Moving both source and sink to nodes 15 and 16 introduces a genuinely new local near-interface basis that is farther from the root zone while retaining direct leverage on H16."
+  ],
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "constitutive": "B110 default MvG",
+    "backend": "serialized strict Reference HeadCalc",
+    "bottom_mode": 2,
+    "initial_effective_saturation": 0.85,
+    "hard_mass_gate_cm": 1e-12,
+    "dt_expression": "3435974 / 2^32 day"
+  },
+  "forcing_semantics": {
+    "boundary_flux": "q_top=q_bottom=q_eq=-K0 in every interval",
+    "root_extraction": "inactive and zero",
+    "direct_rootzone_forcing": "none",
+    "local_nodes": {
+      "upper_bottom_node": 15,
+      "upper_bottom_center_depth_cm": 145,
+      "interface_adjacent_node": 16,
+      "interface_adjacent_center_depth_cm": 155
+    },
+    "directions": [
+      {
+        "id": "LOCAL_UP",
+        "source_node": 15,
+        "sink_node": 16
+      },
+      {
+        "id": "LOCAL_DOWN",
+        "source_node": 16,
+        "sink_node": 15
+      }
+    ],
+    "transfer_rate_fractions_of_K0": [
+      0.015625,
+      0.03125,
+      0.0625,
+      0.125,
+      0.25,
+      0.5
+    ],
+    "accepted_step_counts": [
+      1,
+      2
+    ],
+    "net_internal_forcing": "exact equal positive qssdi source and qdra sink magnitudes per interval"
+  },
+  "execution_contract": [
+    "each direction/fraction/step family starts from the same fresh B01 Se=0.85 origin",
+    "derive K0 from the fresh seed",
+    "qssdi is nonzero only at the preregistered source node and qdra level 1 only at the preregistered sink node",
+    "only fully completed strict families contribute endpoints",
+    "one physical advance per interval; no fallback, retry, temporal subdivision, tolerance relaxation or direct state mutation",
+    "failed intervals terminate the family and preserve the latest committed origin",
+    "emit only family provenance and committed H/theta for selection"
+  ],
+  "response_blind_selection": {
+    "pair_scope": "only LOCAL_UP versus LOCAL_DOWN twins with the same transfer fraction and accepted step count",
+    "nested_joint_storage_ladder_cm": [
+      1e-9,
+      1e-10,
+      1e-11,
+      1e-12,
+      1e-13,
+      1e-14
+    ],
+    "exact_rung": true,
+    "min_abs_H16_difference_cm": 0.01,
+    "selected_rung": "EXACT if numeric equality of W_profile and W_root30 has a qualifying pair; otherwise tightest qualifying numeric rung",
+    "ranking_within_rung": [
+      "largest abs(delta H16)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "smallest cumulative internal transfer",
+      "lexicographic rate/step identity"
+    ],
+    "response_fields_forbidden": true,
+    "no_match": "Close E09 NO_MATCH without adding nodes, amplitudes, durations or relaxing H16/storage gates."
+  },
+  "qualification_gates": [
+    "16x10 cm geometry exact",
+    "fresh equilibrium control strict accepted",
+    "complete mass accounting with |residual|<=1e-12 cm for candidate intervals",
+    "failed families transaction-safe",
+    "O0/O2 complete observable output byte-identical",
+    "selected pair persisted with all 16 H/theta values before response work"
+  ],
+  "next_if_selected": "Preregister GC-RZM06E10 using the immutable E09 pair and the unchanged forcing-free fixed-Hc response probe, with interpretation bounded to the selected storage rung unless EXACT is selected.",
+  "next_if_no_match": "Close this local basis; derive a different prospective multi-basis construction rather than retuning E09.",
+  "nonclaims": [
+    "qssdi/qdra remain research state-construction channels only.",
+    "A selected pair alone is not response-memory evidence.",
+    "No production reduced-state, second MODFLOW state or coupling change is admitted."
+  ]
+}
