@@ -1,4 +1,4 @@
-name: F-ROM-LARE BC2-C6R root-active failure diagnostic
+name: F-ROM-LARE BC2-C6R repaired root-active failure diagnostic
 
 on:
   push:
@@ -77,6 +77,8 @@ jobs:
           stub="canonical/c6r_diag_${{ matrix.material }}_${{ matrix.history }}_stubs.f90"
           python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 512 --dz-cm 0.3125
           build="/tmp/c6r_diag_${{ matrix.material }}_${{ matrix.history }}"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py)" = "b20f451c597aa0d24ad4be44e561f58ddb1e7f34"
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py             --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90             --manifest diag/reference_floor_repair.json
           python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_diag_${{ matrix.material }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_reference.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt 0
           log="diag/${{ matrix.material }}_R512_T32_o0_${{ matrix.history }}.txt"
           set +e
