@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.gc_fixed_interface.g16.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G16",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G16_PREREGISTRATION.json",
+  "baseline_reconciliation": "integration/research/GC_FIXED_INTERFACE_G16_BASELINE_RECONCILIATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G15_RESULT.json",
+  "runtime_change": "new FMR-specific immutable-origin tangent observation service only",
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "source": "src/runtime/mod_fmr_groundwater_swap_tangent_observation_service.f90",
+  "test": "tests/research/test_gc_fixed_interface_g16_tangent_observation_service.py",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "next_action": "Execute frozen 8-state FGC44 matrix; require 103 logical observation requests served by 62 participant trials and 41 exact-head cache hits, exact G13 E3 decisions, zero returned live candidates, cross-session cache isolation, and no production coupling-policy authority."
+}
