@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20H5 zero-storage factor causality qualification.",
+  "next_action": "Execute DUMMY-20H5 v2 after the diagnostic injection-order repair; frozen cases, references and tolerances unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -23,7 +23,7 @@
     "note": "Prepared while DUMMY-20H4 is active. No runner, workflow gate or execution before DUMMY-20H4 closeout and qualification."
   },
   "implementation_baseline": "04458b9197a2115b7479790d938ac5a965977114",
-  "recovery_point": "Generator, verifier, runner and workflow gate persisted after qualified DUMMY-20H4; first qualification attempt pending.",
+  "recovery_point": "20H5 v1 classified as pre-optimization diagnostic-injection failure; v2 technical repair persisted.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H5_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H5_CONCEPT.md",
@@ -34,5 +34,24 @@
     "tests/research/real_ribasim_20h5_zero_storage_causality.jl",
     "tests/research/run_ribasim_dummy_20h5.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempts": [
+    {
+      "attempt": "v1",
+      "run": 35739618557,
+      "job": 106785651881,
+      "state": "TECHNICAL_DIAGNOSTIC_INJECTION_FAIL",
+      "reason": "The diagnostic fixed basin_storage_change before Ribasim.set_simulation_data! refreshed its bounds; the exact release asserts that the variable is not fixed during physical-to-allocation transfer.",
+      "scientific_effect": "none",
+      "authority_use": "forbidden",
+      "partial_scientific_observation": "The unconstrained storage_free case matched the frozen reference exactly: alpha=1, root=40, external=20, storage_change=-35.99991466757689 m3."
+    }
+  ],
+  "execution_baseline": "0a1051dcf3d333b101d6f0f1f2b92562e3f5cf5a",
+  "technical_repair": {
+    "state": "APPLIED",
+    "scientific_change": false,
+    "change": "For storage_fixed_zero, run the release's normal allocation data-transfer/demand/warm-start preparation first; then constrain basin_storage_change with equal lower/upper bounds at zero immediately before Ribasim.optimize!.",
+    "rationale": "Preserves the preregistered zero-storage diagnostic while respecting allocator-owned variable-bound refresh."
+  }
 }
