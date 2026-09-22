@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G10",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "PREREGISTERED_ROBUSTNESS_GATE_FALSIFIED",
+  "state": "FIRST_BOUND_EXECUTION_FALSIFIED",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G10_PREREGISTRATION.json",
   "parent_tangent_estimator": "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json",
   "test": "tests/research/test_gc_fixed_interface_fgc44_nonlinear_b4_g10.py",
@@ -12,7 +12,7 @@
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
   "production_changes": false,
   "recovery_point": "5ee69dca4500a25982b7c0567e156a6a19fbc038",
-  "next_action": "Preregister G10A groundwater merit-oracle adequacy diagnostic at exact GW_MIXED negative-start failure; do not relax G10 residual tolerance or line-search rule.",
+  "next_action": "Preregister G10A diagnostic of the GW_MIXED groundwater-response/merit oracle around the actual near-zero-flux coupled neighborhood. Do not change G10 tolerances, starts, E3 or P4.",
   "pre_binding_run_disposition": {
     "earlier_recovery_point": "81e19a8214720c4d72787c7dea1bdd07c8bac40d",
     "rule": "Any workflow from the earlier postimage is pre-binding diagnostic only and cannot satisfy G10 evidence authority."
@@ -41,10 +41,18 @@
     "conclusion": "failure"
   },
   "disposition": {
-    "carrier_nonlinearity": "PASS_17_47_PERCENT",
-    "e3_tangent": "AVAILABLE_ACROSS_FIXED_SCAN",
-    "p4_robustness": "FALSIFIED_GW_MIXED_NEGATIVE_START",
-    "safeguard_activation": "EXERCISED_BUT_EXHAUSTED_12_CONTRACTIONS",
+    "carrier_binding": "PASS",
+    "material_real_swap_nonlinearity": "PASS",
+    "e3_tangent_estimator": "RETAIN_QUALIFIED_RESEARCH_ONLY",
+    "p4_safeguard_activation": "EXERCISED_AND_EXHAUSTED_IN_GW_MIXED_NEG",
+    "p4_research_robustness": "FALSIFIED_FOR_G10_MATRIX",
     "production_admission": "NO"
+  },
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G10_FIRST_EXECUTION_RESULT.json",
+  "execution": {
+    "tested_commit": "e59ce03f06137f2cc961526a0dc1dd9491508d34",
+    "workflow_run": 35702164449,
+    "workflow_job": 106662496499,
+    "conclusion": "failure"
   }
 }
