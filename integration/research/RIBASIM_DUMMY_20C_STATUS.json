@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20C actual RibaMod versus direct Ribasim v2026.1.1 runtime differential on Windows with real kernels.",
+  "next_action": "Execute DUMMY-20C v1 frozen actual-product qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -41,5 +41,7 @@
       "product route and fresh direct RibasimWrapper route use the same frozen Ribasim model",
       "Basin level and cumulative root/external UserDemand delivery are compared after every 6-hour accepted endpoint"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_real_ribamod_runtime_differential",
+  "qualification_base": "work/ribasim-dummy-01@9d4af557e9798ffb4526245f9c0056d0be82f921"
 }
