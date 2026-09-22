@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.coupling.real_ribamod_product_clock_contract.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20A",
+  "decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
+  "authority": {
+    "qualification_head": "e9991f6debb2bbda7d8bfaa5dc6c671e02c981d0",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "workflow_run": 35719937261,
+    "workflow_job": 106720220994,
+    "conclusion": "success"
+  },
+  "qualified_claims": [
+    "The actual pinned iMOD Coupler Driver.execute owns the outer initialize/update/finalize product loop.",
+    "RibaMod.update advances and finalizes the MODFLOW timestep before advancing Ribasim.",
+    "RibaMod advances Ribasim with update_until(MF6 current time * 86400), so MODFLOW timestep endpoints are Ribasim BMI advance targets.",
+    "The pinned RibaMod product driver contains no explicit UserDemand allocation-application seam.",
+    "The pinned RibaMod product driver does not override Ribasim allocation.dt or solver.saveat.",
+    "Ribasim update_until behavior is delegated through the generic XMI wrapper rather than redefined by RibaMod."
+  ],
+  "interpretation": "The actual product driver owns outer time coordination but delegates the internal management-clock/application semantics to the configured Ribasim version. MF6 timestep cadence alone is therefore not sufficient evidence of UserDemand application cadence.",
+  "boundaries": [
+    "This is pinned-source product-driver authority, not a full dynamic kernel run.",
+    "No SWAP5 driver or upstream source was modified.",
+    "No claim that the later DUMMY-19 Ribasim source semantics equal the older Ribasim release downloaded by this iMOD Coupler pin."
+  ],
+  "downstream": "Qualify DUMMY-20B against the exact Ribasim v2026.1.1 source consumed by this product pin before runtime product testing."
+}
