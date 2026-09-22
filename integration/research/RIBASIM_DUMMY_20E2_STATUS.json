@@ -12,5 +12,12 @@
   "blocker": "Execution sequenced after DUMMY-20D qualification.",
   "next_action": "After DUMMY-20D closeout, rebind and implement the frozen delayed-drainage product experiment.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "technical_representation_amendment": {
+    "state": "PERSISTED_BEFORE_RUNTIME",
+    "scientific_change": false,
+    "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
+    "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
+  },
+  "recovery_point": "20E2 remains blocked by 20D; executable drain representation clarified prospectively with frozen physical flux/reference unchanged."
 }
