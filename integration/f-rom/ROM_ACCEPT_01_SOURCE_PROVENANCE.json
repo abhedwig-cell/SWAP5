@@ -177,6 +177,23 @@
       "locator": "https://open.rijkswaterstaat.nl/@47860/validatie-toetsing-lhm-4-1-samenvattend/",
       "class": "SOURCE_CONTEXT",
       "extracted_authority": "Confirms LHM use for the National Water Model and drought insight and that the validation was performed for Rijkswaterstaat with user involvement."
+    },
+    {
+      "id": "RWS_LHM41_SURFACE_WATER",
+      "title": "Validatie en toetsing LHM 4.1, Deelrapport 3: Oppervlaktewater",
+      "locator": "https://nhi.nu/documents/231/Rapportage_Validatie_LHM_oppervlaktewater_def.pdf",
+      "class": "FORMAL_DOWNSTREAM_TOTAL_SYSTEM_APPLICATION_CRITERIA",
+      "purpose_relevance": "GW-R contextual/downstream only",
+      "extracted_authority": [
+        "Cumulative annual discharge deviation <25% at 80% of locations for discharge >5 m3/s.",
+        "Cumulative annual discharge deviation <33% at 80% of locations for discharge <5 m3/s.",
+        "Cumulative summer-half-year supply deviation <25% at 80% of locations for supply >5 m3/s.",
+        "Cumulative summer-half-year supply deviation <50% at 80% of locations for supply <5 m3/s.",
+        "For larger regional water-balance areas, cumulative annual discharge deviation <25% at 80% under the report criterion."
+      ],
+      "source_basis": "The report states that some criteria were adjusted in light of roughly 10-25% measurement-accuracy margins.",
+      "boundary": "Formal downstream total-system criteria. Not a direct groundwater-recharge or lower-boundary exchange tolerance and not invertible to one without an independent response mapping.",
+      "review_record": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json"
     }
   ],
   "rejected_or_nontransferable_authorities": [
@@ -210,9 +227,19 @@
       "id": "LHM_GW_CRITERIA_AS_INTERFACE_FLUX_TOLERANCE",
       "rejected_candidate": "Back-convert LHM groundwater recession/dynamics criteria to one portable exchange-flux tolerance without an independently governed response mapping",
       "reason": "The flux-to-head/recession mapping is system-, state-, and timescale-dependent; no portable authorized inversion is established here."
+    },
+    {
+      "id": "LHM_SURFACE_WATER_BALANCE_AS_GW_R_RECHARGE_TOLERANCE",
+      "rejected_candidate": "Use LHM cumulative discharge/supply/water-balance criteria as direct recharge or lower-boundary exchange tolerance.",
+      "reason": "The downstream quantities combine recharge with precipitation, evapotranspiration, storage, drainage, routing and management; no independent attribution mapping is authorized."
+    },
+    {
+      "id": "SOIL_MOISTURE_MEASUREMENT_ERROR_AS_SCI_P_PROFILE_TOLERANCE",
+      "rejected_candidate": "Use sensor measurement uncertainty or a calibration-relative soil-moisture RMSE cutoff as a general SCI-P profile-fidelity requirement.",
+      "reason": "Observation uncertainty and study-specific calibration acceptance do not establish an application tolerance for vertical model-structural error."
     }
   ],
-  "source_review_decision": "GW-D has a frozen direct LHM-like application envelope and a qualified official public archive. Exact replication of the published LHM 4.1 acceptance population remains blocked because the distributable archive explicitly omits non-public data and is smaller than the report population. Component-level Layer-ROM structural-error allocation remains unresolved; GW-R and requested SCI-P profile fidelity remain unresolved.",
+  "source_review_decision": "ROM-ACCEPT authority search is closed for the declared scope. GW-R has no direct independent quantitative recharge/lower-boundary tolerance; formal downstream LHM surface-water criteria are not transferable without response mapping. GW-D has a frozen direct LHM-like application envelope but its exact original report population is not publicly reproducible; component structural error remains unallocated. SCI-P has a formal monthly soil-moisture correlation endpoint but no absolute or depth-resolved profile/storage/front-timing authority.",
   "blindness_preserved": true,
   "external_source_verification": {
     "date": "2026-09-22",
@@ -275,5 +302,9 @@
       "public_subset_is_original_acceptance_population": false
     },
     "decision": "DO_NOT_TREAT_PUBLIC_DISTRIBUTABLE_SUBSET_AS_ORIGINAL_LHM_ACCEPTANCE_POPULATION_WITHOUT_NEW_AUTHORITY"
+  },
+  "focused_authority_closeouts": {
+    "GW_R": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
+    "SCI_P": "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json"
   }
 }
