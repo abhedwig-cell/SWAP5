@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm02.preregistration.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "work_unit": "GC-RZM02",
+  "title": "Forcing-order memory and coupling-window timescale condensation",
+  "status": "PREREGISTERED_MATHEMATICS_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_changes": false,
+  "prerequisite": {
+    "work_unit": "GC-RZM01",
+    "result": "integration/research/GC_ROOTZONE_MEMORY_RZM01_RESULT.json",
+    "workflow_run": 35700927693
+  },
+  "canonical": {
+    "root_storage_coefficient": 0.2,
+    "lower_storage_coefficient": 0.1,
+    "vertical_conductance_per_day": 0.5,
+    "interface_conductance_per_day": 0.25,
+    "interface_head_m": 8,
+    "start_root_storage_m": 0.1,
+    "start_lower_head_m": 8
+  },
+  "experiments": {
+    "forcing_order": {
+      "total_root_input_m": 0.01,
+      "block_duration_day": 0.5,
+      "wet_rate_m_per_day": 0.02,
+      "early": {
+        "root_head_offset_m": 0.023993153821211696,
+        "lower_head_offset_m": 0.017491004024908014,
+        "root_storage_end_m": 0.10479863076424234,
+        "interface_exchange_m": 0.003452268833266857
+      },
+      "late": {
+        "root_head_offset_m": 0.03575296919951998,
+        "lower_head_offset_m": 0.018400792708117814,
+        "root_storage_end_m": 0.107150593839904,
+        "interface_exchange_m": 0.0010093268892842205
+      }
+    },
+    "conductance_scale_order_signature": [
+      {
+        "scale": 0.01,
+        "early_minus_late_Ec_m": 0.0000015178280914223874
+      },
+      {
+        "scale": 1,
+        "early_minus_late_Ec_m": 0.0024429419439826365
+      },
+      {
+        "scale": 100,
+        "early_minus_late_Ec_m": 0.00031999999999999737
+      }
+    ],
+    "response_window_sweep": [
+      {
+        "dt_day": 0.01,
+        "u_m_per_m": 0.0024695136748933825
+      },
+      {
+        "dt_day": 0.1,
+        "u_m_per_m": 0.022506009924084573
+      },
+      {
+        "dt_day": 0.25,
+        "u_m_per_m": 0.050498725157227996
+      },
+      {
+        "dt_day": 0.5,
+        "u_m_per_m": 0.0893824229988
+      },
+      {
+        "dt_day": 1,
+        "u_m_per_m": 0.14936530755182925
+      },
+      {
+        "dt_day": 2,
+        "u_m_per_m": 0.2229094014159862
+      },
+      {
+        "dt_day": 5,
+        "u_m_per_m": 0.289666796085119
+      },
+      {
+        "dt_day": 10,
+        "u_m_per_m": 0.29963723589847224
+      }
+    ],
+    "boundary_order": {
+      "block_duration_day": 0.5,
+      "low_head_m": 7.95,
+      "high_head_m": 8.05,
+      "whole_window_mean_head_m": 8,
+      "low_then_high": {
+        "root_head_end_m": 8.000568617927007,
+        "lower_head_end_m": 8.013562533368873,
+        "interface_exchange_m": -0.0014699769222886244
+      },
+      "high_then_low": {
+        "root_head_end_m": 7.999431382072994,
+        "lower_head_end_m": 7.986437466631127,
+        "interface_exchange_m": 0.0014699769222885038
+      }
+    }
+  },
+  "hypotheses": {
+    "H1": "Equal integrated upper forcing can produce different endpoint state and E_c when its order differs.",
+    "H2": "Both forcing orders close component and total ledgers with identical external input.",
+    "H3": "Order sensitivity tends toward zero in both very slow and very fast internal-response limits, for different physical reasons.",
+    "H4": "The finite-window response magnitude u(T) depends on T, tends to zero for T->0 and to S_r+S_l for T->infinity.",
+    "H5": "Exact subpartition invariance holds only when the physical H_c and forcing trajectories are preserved; equal mean H_c is not generally sufficient.",
+    "H6": "The fast root-to-lower limit has the same one-state physical structure as a combined storage, while exact-continuous and implicit-Euler finite-window condensations remain different numerical objects."
+  },
+  "gates": {
+    "frozen_target_abs_m": 2e-12,
+    "mass_abs_m": 2e-12,
+    "response_sweep_abs": 2e-12,
+    "conductance_signature_abs_m": 2e-12,
+    "long_window_u_within_m_per_m_of_total_storage": 0.001,
+    "short_window_u_less_than_m_per_m": 0.003,
+    "order_gap_intermediate_greater_than_both_extreme_points": true,
+    "mean_head_control_must_differ_from_piecewise_paths": true
+  },
+  "forbidden": [
+    "do not change target values after execution",
+    "do not infer that forcing order always matters equally",
+    "do not call u(T) physical storage",
+    "do not equate a constant mean H_c with an exact head trajectory",
+    "do not claim NH01 implicit-Euler and RZM exact-continuous finite-window formulas are identical",
+    "no production code change"
+  ]
+}
