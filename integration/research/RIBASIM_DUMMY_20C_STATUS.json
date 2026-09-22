@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20C v4 after dx/dy-only one-cell grid metadata repair; scientific contract unchanged.",
+  "next_action": "Add required dx/dy coordinate metadata to the otherwise unchanged 1x1 fixed-head MF6 time-leader fixture and rerun frozen DUMMY-20C.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "v1 missing STO; v2 stale source-scope denominator; v3 missing one-cell dx/dy metadata. No attempt has yet reached product initialization.",
+  "recovery_point": "v1 missing STO, v2 stale source-scope denominator and v3 missing 1x1 dx/dy are all pre-runtime technical harness failures; no scientific 20C observation exists yet.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
