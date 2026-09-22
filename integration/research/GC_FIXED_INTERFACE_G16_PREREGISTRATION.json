@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.gc_fixed_interface.g16.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G16",
+  "title": "FMR immutable-origin tangent observation service ownership and cache contract",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "9c7d510a7b53170d507d10ad5b65a39c8c50bc81",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G15_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G14_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G13_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G09D_RESULT.json"
+  ],
+  "question": "Can a minimal FMR-specific tangent-observation service provide cached immutable-origin trial observations to the existing research E3 controller with exactly one participant physical trial per unique requested head, while preserving G15 participant ownership and all transaction/publication boundaries?",
+  "separation_of_concerns": {
+    "admitted_subject": "probe scheduling/cache/observation transport building block only",
+    "explicitly_not_admitted": [
+      "E3 as production tangent policy",
+      "P4 as production coupling policy",
+      "generic groundwater participant API widening",
+      "MODFLOW HCOF/RHS changes",
+      "coupling orchestration that publishes a Newton/P4 candidate"
+    ],
+    "research_controller": "The frozen G13 streaming E3 controller remains the qualification caller/oracle. G16 must not move E3 selection rules into production authority."
+  },
+  "proposed_runtime_surface": {
+    "module": "src/runtime/mod_fmr_groundwater_swap_tangent_observation_service.f90",
+    "type": "fmr_groundwater_swap_tangent_observation_service_t",
+    "session_semantics": [
+      "begin_session binds the service cache to the participant's already-captured immutable origin and clears all prior cached probes.",
+      "observe_head returns a copied fmr_groundwater_swap_trial_observation_t for one prescribed head.",
+      "A cache miss may invoke participant%trial_from_origin exactly once, then participant%observe_last_trial exactly once.",
+      "If the participant trial returns status 0, the service copies the observation and then discards the diagnostic candidate before returning.",
+      "If the participant trial returns status 6, the service copies the failure observation and must return with no live candidate.",
+      "A cache hit performs no participant trial and no backend execution.",
+      "end_session clears cache metadata; it has no commit, publication or ledger effect."
+    ],
+    "cache_key": "exact prescribed-head real64 value within one explicitly begun immutable-origin session; no cross-session or cross-origin reuse",
+    "ownership": "The service may call participant methods but may not call backend run/commit/discard methods directly. Physical trial and candidate ownership remain inside the participant/backend adapter boundary."
+  },
+  "immutable_e3_reference": {
+    "central": "h-d and h+d must both be ready/admissible and share one execution class.",
+    "backward": "h, h-d and h-2d must share one execution class.",
+    "forward": "h, h+d and h+2d must share one execution class.",
+    "ladder": "Use the fixed G09D/G13 scale ladder supplied by the frozen research controller; G16 invents no scales.",
+    "multiscale_gate": "First two adjacent valid candidate scales with relative slope difference <= 5%; select the coarser.",
+    "interpretation": "These rules are used only to verify that the G16 service supplies observations without changing the already-qualified research result."
+  },
+  "frozen_regression_matrix": {
+    "carrier": "FGC44",
+    "states": "The same eight frozen FGC44 G13 states used by G15.",
+    "expected_streaming_unique_heads": 62,
+    "expected_logical_observe_requests": 103,
+    "expected_participant_trials": 62,
+    "expected_cache_hits": 41,
+    "reference_decisions": "Exact G13 selected/confirming scale, mode and slope for all eight states.",
+    "reference_observations": "G15/G14 participant status, q and execution-class diagnostics."
+  },
+  "lifecycle_and_authority_gates": [
+    "At session start the participant origin is already captured and no candidate is live.",
+    "Every cache miss executes at most one participant trial and returns the observation from that exact trial.",
+    "Every status-0 diagnostic candidate is discarded before observe_head returns; no G16 call returns with a live candidate.",
+    "Status-6 observations remain available to the service with q unavailable and do not cause candidate-busy leakage.",
+    "Cache hits cause zero additional participant/backend trial executions.",
+    "Committed revision/time and groundwater interface ledger are unchanged by the complete service session.",
+    "Beginning a new session clears prior cache authority even when the numeric head repeats.",
+    "The service has no commit_candidate, publication_ready, ledger staging/commit, HCOF/RHS or MODFLOW boundary-term authority."
+  ],
+  "quantitative_gates": [
+    "All 62 frozen unique heads reproduce G15/G14 participant status exactly.",
+    "All status-0 q values agree with the G15/G14 reference within 1e-18 m/s.",
+    "All execution-class diagnostics used by E3 agree with the G15/G14 reference.",
+    "The frozen research E3 controller reproduces all eight G13 streaming decisions exactly.",
+    "Exactly 103 logical observe requests are served by 62 participant trials plus 41 cache hits.",
+    "Accessor/service bookkeeping adds zero backend runs beyond the 62 participant trials on the G16 service path."
+  ],
+  "source_audit_gates": [
+    "The service source contains no direct backend%run_trial, backend%commit_trial_candidate or backend%discard_trial_candidate call.",
+    "The service source contains no groundwater interface ledger dependency and no MODFLOW linear boundary/HCOF/RHS dependency.",
+    "The only candidate cleanup authority used by the service is participant%discard_candidate after a copied status-0 observation.",
+    "The service exposes no commit or publication method."
+  ],
+  "allowed_mutation": [
+    "src/runtime/mod_fmr_groundwater_swap_tangent_observation_service.f90",
+    "tests/fgc/support/* required bridge exposure",
+    "tests/research/* G16 regression only",
+    "integration/research/GC_FIXED_INTERFACE_G16_*",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml only as needed to execute G16"
+  ],
+  "forbidden_mutation": [
+    "production HCOF/RHS sign or formula",
+    "MODFLOW boundary-term policy",
+    "P4 safeguard policy",
+    "G09D/G13 E3 estimator thresholds, ladder or stencil rules",
+    "groundwater interface ledger semantics",
+    "generic participant contract widening unless G16 falsifies the FMR-specific route"
+  ],
+  "pass_interpretation": "PASS may qualify only the FMR-specific immutable-origin tangent-observation service mechanics/cache as a production-facing building block. It does not admit E3, P4, or coupling orchestration.",
+  "fail_interpretation": "FAIL is preserved as G16 falsification or technical failure according to evidence. Do not weaken the frozen E3 rules, cache/accounting gates or transaction boundaries retrospectively.",
+  "production_admission": "NO_COUPLING_POLICY_ADMISSION"
+}
