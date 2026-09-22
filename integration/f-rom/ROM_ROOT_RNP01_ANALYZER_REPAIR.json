@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.rom_root.rnp01.analyzer-repair.v1",
+  "work_unit": "ROM-ROOT-RNP01",
+  "date": "2026-09-22",
+  "state": "TECHNICAL_POSTPROCESSING_REPAIR_REQUIRED",
+  "detected_after_first_characterization_job": true,
+  "affected_component": "tests/rom/analyze_rom_root_rnp01.py",
+  "raw_experiment_evidence_affected": false,
+  "scientific_thresholds_affected": false,
+  "issue": {
+    "incorrect_assumption": "Analyzer treated solver status 0 as convergence.",
+    "authoritative_contract": {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "SW_SOLVE_NOT_RUN": 0,
+      "SW_SOLVE_CONVERGED": 1,
+      "SW_SOLVE_RETRY_ADVISED": 2,
+      "SW_SOLVE_FAILED": 3
+    }
+  },
+  "repair": {
+    "change": "Use status == 1 for convergence in ITERATION_CAP_LIMITED and status != 1 for persistent-retry classification.",
+    "no_other_classification_change": true,
+    "no_execution_rerun_required_for_raw_evidence": true
+  },
+  "firewall": {
+    "tolerance_changed": false,
+    "case_selection_changed": false,
+    "max_iteration_values_changed": false,
+    "candidate_response_generated": false,
+    "c6r_reopened": false
+  }
+}
