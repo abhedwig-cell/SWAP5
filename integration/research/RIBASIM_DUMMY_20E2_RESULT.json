@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.coupling.real_ribamod_postallocation_groundwater_transfer.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20E2",
+  "decision": "RIBASIM_DUMMY_20E2_BLOCKED_GROUNDWATER_INTERVENTION_NOT_REALIZED",
+  "classification": "TECHNICAL_PHYSICAL_INTERVENTION_REPRESENTATION_FAILURE",
+  "executed": true,
+  "qualified": false,
+  "primary_evidence": {
+    "run": 35726815125,
+    "job": 106742369967,
+    "head_sha": "539140f097f8f78c54af037130ec662db2bda989",
+    "conclusion": "failure_after_full_trajectory_logging"
+  },
+  "frozen_intended_intervention": {
+    "groundwater_transfer_m3_per_day": [
+      0,
+      8,
+      8,
+      8
+    ],
+    "cumulative_groundwater_m3": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "allocation_dt_seconds": 86400
+  },
+  "observed_trajectory": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000039987293805,
+      "root_m3": 4.001270619481194,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "ribasim_drainage_m3_day": 0,
+      "mf6_drain_flux_m3_day": 0,
+      "storage_gain_m3": 3.9987293805054946,
+      "ledger_residual_m3": 1.3311129976045777e-11
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000079951211123,
+      "root_m3": 8.004878887695051,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "ribasim_drainage_m3_day": 0,
+      "mf6_drain_flux_m3_day": 0,
+      "storage_gain_m3": 7.995121112269743,
+      "ledger_residual_m3": 3.5205616200073564e-11
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.000011989133,
+      "root_m3": 12.0108669999443,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "ribasim_drainage_m3_day": 0,
+      "mf6_drain_flux_m3_day": 0,
+      "storage_gain_m3": 11.989132999934426,
+      "ledger_residual_m3": 1.212736577826945e-10
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.0000159807416105,
+      "root_m3": 16.019258389454414,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "ribasim_drainage_m3_day": 0,
+      "mf6_drain_flux_m3_day": 0,
+      "storage_gain_m3": 15.980741610466254,
+      "ledger_residual_m3": 7.933209644761519e-11
+    }
+  ],
+  "comparison_to_20c": {
+    "statement": "All four logged Basin levels and UserDemand cumulative deliveries are identical to the qualified DUMMY-20C no-groundwater-exchange product route at reported precision.",
+    "implication": "The intended treatment was absent; the frozen groundwater-response reference was never actually exercised."
+  },
+  "interpretation": [
+    "The one-cell MF6 representation combining the fixed-head time leader and DRN boundary did not produce a nonzero DRN flux after the intended 6 h activation.",
+    "RibaMod correctly propagated the observed zero MF6 drain flux as zero Ribasim basin.drainage.",
+    "Therefore the 12 h and later reference mismatches do not falsify the post-allocation groundwater-memory hypothesis; they show that the intervention fixture failed to realize its treatment.",
+    "A new work unit must first demonstrate the physical 0 -> 8 m3/day MF6-to-Ribasim transfer before management-memory claims are admissible."
+  ],
+  "boundaries": [
+    "Do not tune the DUMMY-20E2 frozen references to the no-exchange trajectory.",
+    "Do not qualify DUMMY-20F from this result.",
+    "Do not classify the groundwater-memory hypothesis itself as falsified.",
+    "No production admission."
+  ],
+  "downstream": "DUMMY-20E3: use a separate active DRN cell hydraulically supported by a CHD source cell, preserving the frozen physical transfer schedule and management hypothesis."
+}
