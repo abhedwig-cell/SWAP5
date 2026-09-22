@@ -4,13 +4,13 @@
   "work_unit": "RIBASIM-DUMMY-20E2",
   "branch": "work/ribasim-dummy-01",
   "baseline": "796a02ad97524cd94e3103221cb23ee684556ba6",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute frozen post-allocation passive groundwater-transfer product qualification.",
+  "next_action": "Execute frozen DUMMY-20E2 actual-product post-allocation groundwater-transfer qualification.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,7 +19,7 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "DUMMY-20D qualified; DUMMY-20E2 corrected timing contract is implementation-ready.",
+  "recovery_point": "DUMMY-20E2 worker and source-scope runner persisted; Windows product qualification pending.",
   "implementation_preparation": {
     "state": "PRODUCT_VERIFIER_PREPARED_EXECUTION_BLOCKED",
     "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater_transfer.py",
@@ -27,5 +27,19 @@
     "technical_note": "MF6 Drainage uses exact zero conductance in the first stress period and 16 m2/day thereafter. iMOD-Python write validation is disabled only because its schema requires conductance > 0; MODFLOW input values and the preregistered physical schedule are unchanged.",
     "execution_effect": "none until DUMMY-20D qualification"
   },
-  "implementation_baseline": "b8af4adb3e1e328cce7dc5ca79967f4fdb447df9"
+  "implementation_baseline": "b8af4adb3e1e328cce7dc5ca79967f4fdb447df9",
+  "execution_baseline": "a1ffd10eb2c7fb9946a5f2d116b413a8610b7bf2",
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "actual upstream get_driver/RibaMod route",
+      "real MF6 6.7.0 and Ribasim v2026.1.1 binaries",
+      "single passive Drainage mapping basin_index 0 / bound_index 0",
+      "drain flux exactly zero for first 6 h through elevation=head representation",
+      "drain target -8 m3/day from 6 h onward at constant conductance 16",
+      "daily allocation.dt unchanged",
+      "MF6 flux, Ribasim drainage rate/cumulative drainage, UserDemand delivery, Basin level and full ledger all observed",
+      "frozen piecewise references and tolerances unchanged"
+    ]
+  }
 }
