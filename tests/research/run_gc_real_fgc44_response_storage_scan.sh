@@ -243,3 +243,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G18_EXECUTION=PASS' "$BUILD/fgc44-globalization-g18
   echo "GC_FGC44_G18_FAIL missing prepared-solve/P4 reconciliation gate" >&2
   exit 1
 }
+
+
+# G19 bounded response-space damping bridge. Each lambda response is solved
+# from the same accepted groundwater origin; this does not yet claim continuous
+# prepared-solve equivalence.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g19_response_space_bridge.py \
+  | tee "$BUILD/fgc44-globalization-g19.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G19_EXECUTION=PASS' "$BUILD/fgc44-globalization-g19.txt" || {
+  echo "GC_FGC44_G19_FAIL missing response-space damping bridge gate" >&2
+  exit 1
+}
