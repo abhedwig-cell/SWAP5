@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a.observable_qualification.v1",
+  "date": "2026-09-22",
+  "workflow_run": 35720901013,
+  "workflow_job": 106723301728,
+  "head": "0e079fe2deed47bbf33aed535763a78a12dd2a36",
+  "decision": "OBSERVABLE_EXTRACTION_QUALIFIED_ROOTZONE_BINDING_REQUIRES_CORRECTION",
+  "observed": {
+    "profile_water_native": 1.0430631535459627,
+    "reported_root_water_native": 1.0430631535459627,
+    "distribution_moment_native": -1.5024449665297503,
+    "internal_groundwater_level_native": -2
+  },
+  "finding": "The 30.0 numeric root-depth threshold used the wrong geometry scale for the four-node fixture; root==profile exposed the error before response probing.",
+  "scientific_claims_admitted": [],
+  "next": "repair root-zone geometry binding before antecedent-state experiments"
+}
