@@ -47,6 +47,14 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*20),
             *([ctypes.POINTER(ctypes.c_double)]*5),
         ]
+        self.lib.fgc44_g14_fused_observation_c.restype=ctypes.c_int
+        self.lib.fgc44_g14_fused_observation_c.argtypes=[
+            ctypes.c_double,
+            *([ctypes.POINTER(ctypes.c_int)]*14),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
+        self.lib.fgc44_g14_fused_run_count_c.restype=ctypes.c_int
+        self.lib.fgc44_g14_fused_run_count_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -157,6 +165,37 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_last_trial_diagnostics_c(ctypes.byref(q),ctypes.byref(exchange))
         if status: raise RuntimeError(f"last-trial diagnostics query failed: {status}")
         return q.value,exchange.value
+
+    def g14_fused_run_count(self) -> int:
+        value=ctypes.c_int()
+        status=self.lib.fgc44_g14_fused_run_count_c(ctypes.byref(value))
+        if status:
+            raise RuntimeError(f"G14 fused run-count query failed: {status}")
+        return int(value.value)
+
+    def g14_fused_observation(self, head_m: float) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(14)]
+        reals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.fgc44_g14_fused_observation_c(
+            float(head_m),
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"G14 fused observation failed: {status}")
+        names=[
+            "participant_status","result_status","completed","candidate_ready",
+            "transaction_calls","accepted_substeps","attempts","retries",
+            "trial_rollbacks","solver_rejections","temporal_rejections",
+            "temporal_unavailable_rejections","mass_rejections","internal_retries",
+        ]
+        result={k:v.value for k,v in zip(names,ints)}
+        result["completed"]=bool(result["completed"])
+        result["candidate_ready"]=bool(result["candidate_ready"])
+        result["q_swap_m_per_s"]=reals[0].value
+        result["min_substep"]=reals[1].value
+        result["max_substep"]=reals[2].value
+        return result
 
     def raw_corrector_diagnostics(self, head_m: float) -> dict[str,int|float|bool]:
         ints=[ctypes.c_int() for _ in range(20)]
