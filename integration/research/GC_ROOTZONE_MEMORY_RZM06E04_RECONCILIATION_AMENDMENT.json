@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e04.interpretation_reconciliation_amendment.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E04",
+  "authority": "pre-execution interpretation amendment",
+  "production_changes": false,
+  "preregistration_commit": "dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e",
+  "frozen_experiment_changed": false,
+  "reason": "The selected E03E pair has exactly equal reconstructed total profile water but upper-30-cm water is tolerance-matched rather than mathematically identical. Therefore a response difference cannot by itself identify H16 as the unique cause or strictly falsify exact sufficiency of an exact-valued W_root30 coordinate.",
+  "preserved": [
+    "immutable E03E pair",
+    "common-time reseed",
+    "all three state gates",
+    "fixed H_c and probe duration",
+    "zero top forcing",
+    "strict Reference sample semantics",
+    "response threshold",
+    "order-independence and transaction-safety controls"
+  ],
+  "corrected_interpretation": {
+    "support_decision_label": "SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_AT_FROZEN_AGGREGATE_RESOLUTION",
+    "meaning": "At the preregistered aggregate resolution |ΔW_profile|<=1e-4 cm and |ΔW_root30|<=1e-4 cm, H_c plus those aggregate storages do not determine a unique next whole-window interface exchange for the selected carrier/window.",
+    "not_meaning": [
+      "not a proof that exact-valued H_c + W_profile + W_root30 are mathematically insufficient",
+      "not proof that H16 is the unique or minimal omitted state",
+      "not a production reduced-state admission"
+    ],
+    "no_support_meaning": "No response discrimination is observed for this immutable pair and frozen probe above the unchanged response threshold."
+  }
+}
