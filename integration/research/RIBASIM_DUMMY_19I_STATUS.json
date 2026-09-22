@@ -8,14 +8,14 @@
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "blocked": false,
-  "blocker": null,
+  "blocked": true,
+  "blocker": "Pinned Ribasim solves allocation at a sub-saveat BMI tstop with record=false; UserDemand applied allocation is written only by parse_allocations!, which is skipped when record=false.",
   "prepared_scope": "Daily output plus 6-hour BMI.update_until coupling boundaries for both priority orders.",
-  "next_action": "Repeat with observability-only verifier repair. Frozen model, references and tolerances remain unchanged.",
+  "next_action": "Do not repair 19I. Execute a new shadow-LP-versus-applied-UserDemand diagnostic, then continue to the preregistered fine-saveat clock conflict.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f",
-  "recovery_point": "19I v1 failed at root-first BMI call 2; v2 required only to expose the actual internal allocation/tstop state before the same assertion.",
+  "recovery_point": "DUMMY-19I scientifically falsified in run 35698326881 at the second BMI segment.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19I_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19I_CONCEPT.md",
@@ -37,5 +37,9 @@
       "classification": "SCIENTIFIC_OR_CLOCK_SEMANTICS_MISMATCH_PENDING_OBSERVABILITY",
       "scientific_inputs_changed": false
     }
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_19I_FALSIFIED_BMI_SUBSAVEAT_USERDEMAND_NOT_APPLIED",
+  "workflow_run": 35698326881,
+  "workflow_job": 106650130151,
+  "qualification_head": "9725b146697024086c37258764bc1201ad272224"
 }
