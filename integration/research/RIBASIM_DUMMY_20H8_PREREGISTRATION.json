@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.coupling.ribasim_release_forcing_sign_asymmetry.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H8",
+  "title": "Current groundwater forcing sign asymmetry in the allocation forecast",
+  "baseline": "7fa8550ab4ffd5332370391f01bf4850117c9e2a",
+  "sequencing": {
+    "state": "PREREGISTERED_AFTER_DUMMY_20H7_CLOSEOUT",
+    "rationale": "Open a distinct falsification dimension after the H5-H7 memory/forecast bridge closed: equal-magnitude positive and negative current vertical forcing."
+  },
+  "authorities": {
+    "product_bridge": {
+      "work_unit": "RIBASIM-DUMMY-20H7",
+      "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+      "primary_run": 35745915889
+    },
+    "negative_forcing_oracle": {
+      "work_unit": "RIBASIM-DUMMY-20H6",
+      "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION"
+    },
+    "release": {
+      "tag": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "frozen_state": {
+    "initial_basin_level_m": 1.000007990372381,
+    "target_level_m": 1,
+    "basin_area_m2": 1000000,
+    "accepted_storage_excess_m3": 7.990372381083688,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "allocation_dt_seconds": 86400,
+    "forcing_magnitude_m3_per_day": 8.000042512171305
+  },
+  "cases": {
+    "elevated_control_no_vertical_forcing": {
+      "infiltration_m3_per_day": 0,
+      "drainage_m3_per_day": 0,
+      "expected_low_storage_factor": 1,
+      "expected_storage_change_m3": -7.990372381083688,
+      "expected_root_allocation_m3_per_day": 39.99037238108369,
+      "expected_external_allocation_m3_per_day": 0
+    },
+    "elevated_negative_infiltration": {
+      "infiltration_m3_per_day": 8.000042512171305,
+      "drainage_m3_per_day": 0,
+      "expected_low_storage_factor": 0,
+      "expected_storage_change_m3": -7.990372381083688,
+      "expected_root_allocation_m3_per_day": 39.99037238108369,
+      "expected_external_allocation_m3_per_day": 0,
+      "authority": "DUMMY-20H6 free-alpha case"
+    },
+    "elevated_positive_drainage": {
+      "infiltration_m3_per_day": 0,
+      "drainage_m3_per_day": 8.000042512171305,
+      "expected_low_storage_factor": 1,
+      "expected_storage_change_m3": -7.990372381083688,
+      "expected_root_allocation_m3_per_day": 40,
+      "expected_external_allocation_m3_per_day": 7.990414893254993
+    }
+  },
+  "derivation": [
+    "In Ribasim v2026.1.1 allocation setup, Basin drainage is explicit positive forcing on the volume-conservation RHS, whereas Basin infiltration is implicit negative forcing multiplied by low_storage_factor.",
+    "The accepted storage excess M=7.9903723811 m3 is the same in all cases and can be released to the LevelDemand target at the next allocation boundary.",
+    "With no vertical forcing, source plus accepted memory gives root allocation 32 + M = 39.9903723811 m3/day.",
+    "With negative infiltration and free alpha, H6 already qualified alpha=0, so the same accepted-memory root allocation is preserved.",
+    "With equal-magnitude positive drainage, the explicit +8.0000425122 m3 enters availability directly. Source + memory + drainage = 47.9904148933 m3/day, so root is full 40 and the priority-3 external demand receives the remaining 7.9904148933 m3/day."
+  ],
+  "hypotheses": [
+    "Equal-magnitude positive and negative current groundwater forcing are not allocation-symmetric in the tested v2026.1.1 topology.",
+    "Negative infiltration remains attenuable through low_storage_factor and therefore does not reduce the H6 accepted-memory root allocation when alpha is free.",
+    "Positive drainage enters as explicit availability and raises managed allocation directly: root becomes 40 m3/day and external becomes approximately 7.9904148933 m3/day.",
+    "The accepted storage draw remains approximately 7.9903723811 m3 in all three cases, isolating forcing-sign representation rather than changing memory."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "low_storage_factor": 0.000001,
+    "storage_change_m3": 0.05,
+    "forcing_m3": 0.01
+  },
+  "forbidden": [
+    "no production prescription",
+    "no claim that all positive and negative Ribasim processes share these semantics",
+    "no retuning after observed H8 output",
+    "no source modification",
+    "do not reinterpret sign asymmetry as a conservation violation"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY",
+  "fail_decision": "RIBASIM_DUMMY_20H8_FALSIFIED_OR_BLOCKED"
+}
