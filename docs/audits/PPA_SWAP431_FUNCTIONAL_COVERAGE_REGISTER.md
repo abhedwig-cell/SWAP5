@@ -15,7 +15,7 @@ confirmed B0 defects are not migration targets.
 | Core Richards, dynamic top and mass accounting | B1; Status-A traceability; PPA-TOP-01 | CANONICALLY_ADMITTED | Status-A scientific/numerical preservation; transaction and mass invariants | Preserve; do not reopen without dependency overlap |
 | Typed production bootstrap, mode 7 standalone / all-mode-5 groundwater | PPA-WU01 | CANONICALLY_ADMITTED | PPA-WU01 owner, O0/O2 and preservation gates | Hold fixed; mixed 5/7 remains fail-closed |
 | Resolved forcing, SWETR=1, SWINTER=0 and resolved irrigation | PPA-WU03 / PPA-ATM-03 | CANONICALLY_ADMITTED | PPA-WU03 owner/independent/preservation gates | Extend only through a separate ingestion slice |
-| Legacy weather files, calendars and complete meteorological preprocessing | B1 `MOD_meteo`, `readswap`, `timecontrol`; PPA-ATM-02 | ABSENT | Kernel-I/O separation and typed forcing boundary | Define source-bound preprocessing adapter |
+| Legacy weather files, calendars and complete meteorological preprocessing | B1 `MOD_meteo`, `readswap`, `timecontrol`; PPA-ATM-02 | PARTIAL | Decoded daily records, generic-time coverage and PMdirect/SWINTER=0 pure composition are qualified; file/date decoding and accepted production publication remain open | Define transaction/mass/restart composition before production binding |
 | PMdirect normal-input derivation | B1 `MOD_meteo`; PPA-ET-00 | PARTIAL | Restricted typed Hupsel composition admitted | Bind ordinary input derivation without changing ET physics |
 | Dynamic top: head/flux/ponding/linear runoff | B1 `boundtop`; PPA-TOP-01 | IMPLEMENTED_NOT_FULLY_QUALIFIED | Restricted profile only | Broaden only with option-specific authority |
 | SWINTER=0 / Rutter SWINTER=3 | PPA-INT-00 / PPA-INT-03 | CANONICALLY_ADMITTED | Bounded typed applications | Preserve profile bounds |
@@ -45,7 +45,7 @@ confirmed B0 defects are not migration targets.
    their typed production ingress and hard-mass closure remain open.
 2. **PPA-LOW05-APP** is blocked pending an ownership/mass-publication contract.
 
-No production-admission candidate is currently `READY`. PPA-WU04-C/D required the exact B1.11
+No production-admission candidate is currently `READY`: PPA-ATM-02 reached the pure typed-ingress and PMdirect/SWINTER=0 composition boundary, but accepted production publication requires an explicit transaction/mass/restart contract. PPA-WU04-C/D required the exact B1.11
 `MOD_meteo.f90` equation oracle has been reconstructed and verified from the
 byte-exact B0 distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
 `24ce2768…`. GNU Fortran 16.2.0 is available through an explicit MSYS2 path,
