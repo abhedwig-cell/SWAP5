@@ -4,13 +4,13 @@
   "work_unit": "RIBASIM-DUMMY-20H4",
   "branch": "work/ribasim-dummy-01",
   "baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Complete runner/workflow and execute frozen DUMMY-20H4 physical-versus-LP factor qualification.",
+  "next_action": "Execute frozen DUMMY-20H4 physical-versus-LP low-storage-factor qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,5 +20,16 @@
     "note": "Prepared while DUMMY-20H3 is active. No runner, workflow gate or execution before DUMMY-20H3 closeout and qualification."
   },
   "implementation_baseline": "f51de02dd50b2d385eca9833f1b141ccdd672ef4",
-  "recovery_point": "DUMMY-20H3 qualified; frozen DUMMY-20H4 verifier is now implementation-ready."
+  "recovery_point": "DUMMY-20H4 executable gate persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H4_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H4_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H4_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H4_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_ribasim_dummy_20h3_release_lp.py",
+    "tests/research/real_ribasim_20h4_physical_lp_factor.jl",
+    "tests/research/run_ribasim_dummy_20h4.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
