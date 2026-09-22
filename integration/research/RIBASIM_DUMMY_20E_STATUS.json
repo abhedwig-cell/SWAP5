@@ -9,9 +9,11 @@
   "tested": false,
   "qualified": false,
   "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20D qualification.",
+  "blocker": "Original timing assumption falsified by pinned product source contract before execution.",
   "prepared_scope": "Real RibaMod passive MF6 Drainage transfer at exactly 8 m3/day into a root-first scarce UserDemand Basin with daily allocation.",
-  "next_action": "After DUMMY-20D closeout, rebind and implement without changing transfer magnitude, continuous references or tolerances.",
+  "next_action": "Do not execute original 20E. Use prospectively corrected DUMMY-20E2 with groundwater transfer activated only after the first accepted allocation boundary.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "decision": "RIBASIM_DUMMY_20E_FALSIFIED_PREEXECUTION_BY_PRODUCT_CLOCK_ORDER",
+  "recovery_point": "20E preregistration retained as falsified evidence; no runtime output was observed."
 }
