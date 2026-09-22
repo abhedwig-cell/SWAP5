@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e01.zero_divergence_state_expansion_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E01",
+  "authority": "preregistered response-blind strict-Reference state-space expansion",
+  "production_changes": false,
+  "parent_program_commit": "93d2da2a074574368e8fdfcc8a38d14f8d9a1a6a",
+  "scientific_question": "Can a strictly accepted 16-node real-HeadCalc state pair be constructed with essentially identical total profile water but sufficiently different vertical distribution by changing internal throughflow/redistribution while imposing zero integrated external flux divergence?",
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "constitutive": "B110 default MvG",
+    "backend": "serialized Reference HeadCalc",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "bottom_mode": 2,
+    "initial_effective_saturation": 0.85,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "time_design": {
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "max_closed_steps": 64,
+    "t0_rule": "t0=(step-1)*dt, t1=step*dt from fresh family origin",
+    "rationale": "reuse the D02R1 representation-safe dyadic interval and avoid binary-duration aliasing"
+  },
+  "forcing_families": [
+    {
+      "id": "EQ",
+      "purpose": "accepted equilibrium-throughflow control",
+      "steps": 1,
+      "top_flux_rule": "q_top = -K0",
+      "bottom_flux_rule": "q_bottom = -K0",
+      "expected_integrated_boundary_divergence": "zero because q_top == q_bottom",
+      "selection_role": "control origin"
+    },
+    {
+      "id": "CLOSED",
+      "purpose": "closed-column gravity redistribution at fixed total water",
+      "steps": 64,
+      "top_flux_rule": "q_top = 0",
+      "bottom_flux_rule": "q_bottom = 0",
+      "expected_integrated_boundary_divergence": "zero because q_top == q_bottom == 0",
+      "selection_role": "candidate redistributed origins at each accepted commit"
+    }
+  ],
+  "execution_contract": [
+    "each family starts from the same freshly constructed B01 Se=0.85 physical origin",
+    "every interval uses kernel Reference-floor sample semantics with exactly one physical advance and no automatic temporal subdivision",
+    "only strict samples satisfying the 1e-12 cm hard mass gate may commit",
+    "a failed sample is retained as fail-closed evidence and terminates that family; no retry/fallback/tolerance relaxation is introduced",
+    "after each accepted commit only provenance plus committed H/theta node state are emitted for selection",
+    "bottom exchange, terminal flux and future-response quantities are neither emitted to nor parsed by the selector"
+  ],
+  "response_blind_selection": {
+    "candidate_pairs": "EQ accepted control versus every accepted CLOSED state",
+    "reconstruct_profile_water_cm": "sum(theta_i * 10 cm), i=1..16",
+    "reconstruct_distribution_moment_cm": "sum(theta_i * 10 cm * z_i)/W_profile, z=[-5,-15,...,-155] cm",
+    "reconstruct_upper_30cm_water_cm": "sum(theta_i * 10 cm), i=1..3; descriptive only",
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_profile)",
+      "smallest CLOSED step"
+    ],
+    "no_match": "Close E01 NO_MATCH without changing fluxes, dt, step limit or H2 thresholds."
+  },
+  "qualification_gates": [
+    "16x10 cm geometry exact",
+    "EQ strict sample accepted, mass complete and committed exactly once",
+    "CLOSED accepted prefix, if any, consists only of strict mass-complete samples",
+    "failed CLOSED interval, if any, leaves latest committed origin unchanged",
+    "O0/O2 complete observable output byte-identical",
+    "selector parses only E01 provenance and node H/theta lines",
+    "selected pair, if any, is persisted with all 16 H/theta values before any response experiment"
+  ],
+  "next_if_selected": "GC-RZM06E02 preregisters exact common-time reconstruction of the immutable E01 selected pair on the C01 carrier, followed only after reconstruction passes by an identical forcing-free fixed-Hc H2 response probe.",
+  "controls": [
+    "no H2 threshold change",
+    "no ROM HELD_OUT or FALLBACK state access",
+    "no direct physical-state mutation",
+    "no response-guided pair selection",
+    "no production source or coupling API change",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "E01 selection alone does not support or falsify H2",
+    "zero boundary-flux divergence constrains total mass but does not assert a particular internal redistribution trajectory",
+    "the construction is a research falsification carrier, not a production operating mode"
+  ]
+}
