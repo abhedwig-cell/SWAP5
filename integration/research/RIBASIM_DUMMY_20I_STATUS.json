@@ -12,5 +12,11 @@
   "blocker": "Execution sequenced after DUMMY-20H closeout. Two-day references are frozen prospectively.",
   "next_action": "After DUMMY-20H closes, rebind and implement the frozen two-day active-River memory test.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/test_ribasim_dummy_20i_active_river_two_day_memory.py",
+    "scientific_change": false,
+    "note": "Prepared while DUMMY-20H v2 is active. No runner/workflow/qualification branch until DUMMY-20H closeout."
+  }
 }
