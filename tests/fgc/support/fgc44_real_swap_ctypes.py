@@ -43,6 +43,12 @@ class Fgc44RealSwap:
         ]
         self.lib.fgc44_committed_profile_observables_c.restype=ctypes.c_int
         self.lib.fgc44_committed_profile_observables_c.argtypes=[ctypes.POINTER(ctypes.c_double)]*4
+        self.lib.fgc44_committed_profile_nodes_c.restype=ctypes.c_int
+        self.lib.fgc44_committed_profile_nodes_c.argtypes=[
+            ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+        ]
         self.lib.fgc44_raw_corrector_diagnostics_c.restype=ctypes.c_int
         self.lib.fgc44_raw_corrector_diagnostics_c.argtypes=[
             ctypes.c_double,
@@ -126,6 +132,21 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_committed_profile_observables_c(*[ctypes.byref(x) for x in v])
         if status: raise RuntimeError(f"committed profile diagnostics failed: {status}")
         return dict(zip(["profile_water_cm","root_water_cm","distribution_moment_cm","groundwater_level_cm"],[x.value for x in v]))
+
+    def committed_profile_nodes(self) -> dict[str,int|list[float]]:
+        nmax=4
+        n=ctypes.c_int()
+        arrays=[(ctypes.c_double*nmax)() for _ in range(4)]
+        status=self.lib.fgc44_committed_profile_nodes_c(
+            ctypes.byref(n),arrays[0],arrays[1],arrays[2],arrays[3]
+        )
+        if status: raise RuntimeError(f"committed node-profile diagnostics failed: {status}")
+        if n.value < 0 or n.value > nmax:
+            raise RuntimeError(f"invalid committed node count: {n.value}")
+        keys=["pressure_head_native","water_content","z_native","dz_native"]
+        result={"active_nodes":n.value}
+        result.update({k:[float(a[i]) for i in range(n.value)] for k,a in zip(keys,arrays)})
+        return result
 
     def predictor_run_diagnostics(self) -> dict[str,int|float|bool]:
         ints=[ctypes.c_int() for _ in range(14)]
