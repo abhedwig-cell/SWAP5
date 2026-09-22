@@ -22,6 +22,13 @@
       "workflow_run": 35701697622,
       "workflow_job": 106660994056,
       "implementation_head": "8aff476a7e7924502d0d3646ec15af0b9b86bed8"
+    },
+    {
+      "work_unit": "GC-RZM03",
+      "decision": "QUALIFIED_BIDIRECTIONAL_SIGNED_TRANSFER",
+      "workflow_run": 35703505239,
+      "workflow_job": 106666830465,
+      "implementation_head": "df7e2e5fd9ad4b4d185d352981e7f8b88da29a99"
     }
   ],
   "current_findings": [
@@ -37,12 +44,14 @@
     "Forcing-order sensitivity tends toward zero in both the very slow and very fast internal-response limits; selected evidence places stronger sensitivity in the intermediate regime without claiming a global maximum.",
     "The linear finite-window response magnitude depends on coupling-window duration and approaches total root-plus-lower storage sensitivity only in the long-window limit.",
     "Exact substep equivalence requires preservation of the actual H_c and forcing trajectories; equal time-mean H_c is not an exact substitute for an ordered head trajectory.",
-    "Fast root-to-lower equilibration reduces the two internal storages to a one-state physical limit, but exact-continuous and implicit-Euler finite-window response formulas remain distinct."
+    "Fast root-to-lower equilibration reduces the two internal storages to a one-state physical limit, but exact-continuous and implicit-Euler finite-window response formulas remain distinct.",
+    "Upward and downward exchange are represented by the same signed root/lower and lower/interface laws in the qualified linear surrogate; no direction-specific state is required.",
+    "MODFLOW-to-SWAP capillary supply is negative E_c, reaches the root zone through lower-SWAP state, and closes the complete SWAP-plus-groundwater ledger."
   ],
   "next_work_unit": {
-    "id": "GC-RZM03",
-    "scope": "Phase E explicit bidirectional root/lower and lower/interface exchange qualification using the existing single signed transfer laws, including positive, negative and zero-flux limits",
-    "prerequisite": "GC-RZM02 qualified"
+    "id": "GC-RZM04",
+    "scope": "Phase F minimal nonlinearity: introduce one state-dependent internal conductance and falsify exact affine whole-window condensation while preserving fixed-interface ownership and mass ledgers",
+    "prerequisite": "GC-RZM03 qualified"
   },
   "blocked": [],
   "nonclaims": [

@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm03.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM03",
+  "decision": "QUALIFIED_BIDIRECTIONAL_SIGNED_TRANSFER",
+  "production_changes": false,
+  "authority": {
+    "preregistration": "integration/research/GC_ROOTZONE_MEMORY_RZM03_PREREGISTRATION.json",
+    "implementation_head": "df7e2e5fd9ad4b4d185d352981e7f8b88da29a99",
+    "workflow_run": 35703505239,
+    "workflow_job": 106666830465,
+    "conclusion": "success",
+    "rzm01_regression_job": 106666830810,
+    "rzm02_regression_job": 106666830765
+  },
+  "evidence": [
+    "GC_RZM03_TESTS=7/7",
+    "GC_RZM03_GATE=PASS",
+    "GC_ROOTZONE_MEMORY_RZM03_EXECUTION=PASS",
+    "downward drainage uses positive E_v and E_c",
+    "lower-to-root capillary supply uses negative E_v and increases root storage",
+    "MODFLOW-to-SWAP supply uses negative E_c and increases total SWAP storage",
+    "zero gradients are stationary without direction logic",
+    "same signed transfer law approaches equilibrium continuously from both sides",
+    "coupled capillary case closes SWAP plus groundwater mass",
+    "symmetric perturbations about equilibrium produce opposite-signed integrated exchanges",
+    "RZM01 and RZM02 regression jobs successful"
+  ],
+  "bounded_conclusions": [
+    "The linear surrogate needs no direction-specific transfer law for upward versus downward exchange.",
+    "Negative fixed-plane exchange is sufficient to represent MODFLOW-to-SWAP capillary supply in the interface ledger.",
+    "Bidirectionality adds no persistent physical state to the qualified linear surrogate.",
+    "The root zone remains internal to SWAP; capillary supply reaches it through the lower SWAP state rather than by direct root-to-MODFLOW coupling.",
+    "Internal E_v cancels from total SWAP mass in either direction; E_c cancels only in the complete SWAP plus MODFLOW ledger."
+  ],
+  "nonclaims": [
+    "no claim that real unsaturated conductivity is linear or symmetric",
+    "no production coupling admission",
+    "no nonlinear state sufficiency claim",
+    "no real-SWAP capillary-fringe closure"
+  ],
+  "next": "GC-RZM04 should introduce one minimal state-dependent internal conductance to test where exact affine whole-window condensation first fails and what response information is then required."
+}
