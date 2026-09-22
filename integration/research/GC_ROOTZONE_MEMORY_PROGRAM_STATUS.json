@@ -106,6 +106,15 @@
       "workflow_job": 106771442057,
       "implementation_head": "0e90165c07dc159f7e7e836effc5ecdfa88d3254",
       "evidence_commit": "3b670e6be7ce405917f61b51bb233f4be2e4b4b1"
+    },
+    {
+      "work_unit": "GC-RZM06C02",
+      "decision": "QUALIFIED_FROZEN_INITIALIZATION_NO_GO__H2_NOT_PROBED",
+      "preregistration_commit": "337d32821a25aaebf5eddc9d84f5724c94d249e9",
+      "workflow_run": 35736355085,
+      "workflow_job": 106774650222,
+      "implementation_head": "b245fe130894940cf15cb2814e9c4d3dd552a467",
+      "evidence_commit": "fd5157c01062e10421c1117d954e621b3d9b95f6"
     }
   ],
   "current_findings": [
@@ -154,18 +163,25 @@
     "A2-A6 jointly establish a four-node-carrier H2 ceiling. Further forcing tuning on this carrier is not justified; preserve thresholds and move to a richer real-SWAP vertical profile.",
     "C01 supersedes the earlier incomplete carrier reconciliation: F-ROM1A-I0 provides a current-branch-qualified 16x10 cm B01 real-HeadCalc Reference carrier with three nodes in the upper 30 cm, strict mode-5 fixed-head sampling, hard mass gate and immutable sample/discard semantics.",
     "The retained ROM1AR2 artifact provides 768 accepted 16-node B01 states, including 711 strict no-fallback states, with full pressure-head/water-content profiles and O0/O2 byte identity.",
-    "For future native-centimetre H2 selection the frozen physical A-series thresholds convert to |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm; the old numeric values must not be copied across units."
+    "For future native-centimetre H2 selection the frozen physical A-series thresholds convert to |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm; the old numeric values must not be copied across units.",
+    "C02's synthetic 17-node native-cm F-GC carrier is not admitted at its frozen inherited predictor initialization: 9/9 attempts are solver-rejected, with zero accepted substeps and no temporal or mass rejection.",
+    "C02 therefore does not activate its native-cm H2 construction branch and must not be rescued by post-hoc qbot, duration, tolerance, retry-budget or grid retuning.",
+    "The richer-carrier path remains open through qualified C01: the existing 16-node F-ROM Reference carrier and retained ROM1AR2 accepted-state library."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06C02",
-    "scope": "Complete the already-preregistered 17-node native-cm F-GC-compatible carrier qualification as an independent research cross-check, then adjudicate primary versus secondary carrier roles before H2 pair selection.",
-    "prerequisite": "C01 qualified existing 16-node carrier",
+    "id": "GC-RZM06D01",
+    "scope": "Prospectively select same-time, equal-total-storage but vertically distinct origins from the strict DISCOVERY subset of the qualified ROM1AR2 16-node B01 library, using node profiles only and no response information.",
+    "prerequisite": "C01 qualified existing 16-node carrier; C02 closed no-go",
     "constraints": [
-      "do not inspect H2 responses during carrier qualification",
-      "keep C02 synthetic geometry explicitly non-Hupsel",
-      "preserve the successful A-series regression gate after shared bridge changes",
-      "do not alter H2 physical thresholds",
-      "do not use research unit heuristics as production contracts"
+      "artifact authority must match ROM1AR2 workflow 35379176697, artifact 10561841507, digest sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+      "use DISCOVERY states only and FALLBACK=F only; keep ROM held-out states sealed",
+      "require bit-identical committed time within each candidate pair",
+      "reconstruct W_profile and M1 solely from the 16 node theta values and known 10 cm geometry",
+      "use physically converted frozen H2 gates: |ΔW_profile| <= 1e-4 cm and |ΔM1| >= 1e-2 cm",
+      "do not parse or use bottom exchange, terminal flux or any future-response field for selection",
+      "persist selected origin node profiles and provenance immediately so later replay is independent of artifact expiry",
+      "do not probe E_c in D01",
+      "keep H5/RZM06B separate"
     ]
   },
   "blocked": [],
