@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.coupling.real_ribamod_product_clock_contract.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20A",
+  "title": "Actual iMOD Coupler RibaMod product clock and UserDemand-application contract",
+  "baseline": "9c60dd2213ddbc3f04b2826aee0378afbbcb68cc",
+  "relation_to_19l": {
+    "authority": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
+    "question": "Does the actual upstream RibaMod product driver expose a semantic application boundary equivalent to the explicit apply seam, or does it only advance Ribasim to MODFLOW time?"
+  },
+  "pins": {
+    "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_context": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "source_scope": [
+    "imod_coupler/drivers/driver.py",
+    "imod_coupler/drivers/ribamod/ribamod.py",
+    "imod_coupler/kernelwrappers/ribasim_wrapper.py"
+  ],
+  "hypotheses": [
+    "Driver.execute uses the product driver's get_current_time/get_end_time loop and delegates each product step to RibaMod.update.",
+    "RibaMod.update advances and finalizes one MODFLOW timestep before advancing Ribasim to the resulting MODFLOW current time.",
+    "RibaMod calls Ribasim through update_until(MF6_current_time * 86400), making MODFLOW timestep endpoints BMI advance targets.",
+    "RibaMod does not explicitly apply or commit optimized UserDemand allocation state after a sub-saveat allocation solve.",
+    "RibaMod does not rewrite Ribasim allocation.dt or solver.saveat.",
+    "Therefore MODFLOW timestep cadence is not, by itself, sufficient evidence of UserDemand management-application cadence under the DUMMY-19I2 semantics.",
+    "A finer Ribasim saveat can still create intermediate allocation solve-and-apply events, as qualified by DUMMY-19J."
+  ],
+  "forbidden": [
+    "no claim that static source qualification is a full runtime product qualification",
+    "no local imitation of get_driver as product-integration evidence",
+    "no SWAP5 driver mutation",
+    "no upstream source modification",
+    "no defect classification"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20A_QUALIFIED_RIBAMOD_PRODUCT_CLOCK_CONTRACT",
+  "fail_decision": "RIBASIM_DUMMY_20A_BLOCKED"
+}
