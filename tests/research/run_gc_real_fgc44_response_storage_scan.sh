@@ -309,3 +309,18 @@ grep -Fq 'GC_FIXED_INTERFACE_G21A_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21A_FAIL missing outer-2 divergence diagnostic gate" >&2
   exit 1
 }
+
+
+# G21B diagnostic-only prepared-solve continuation test. Hold the exact G21A
+# outer-2 affine response fixed for a preregistered 12-call tail after both a
+# fresh origin and the continuous outer-1 history. This classifies solver-path
+# persistence; it does not introduce a new coupling acceptance rule.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21b_prepared_solve_convergence.py \
+  | tee "$BUILD/fgc44-globalization-g21b.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21B_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21b.txt" || {
+  echo "GC_FGC44_G21B_FAIL missing fixed-response continuation diagnostic gate" >&2
+  exit 1
+}
