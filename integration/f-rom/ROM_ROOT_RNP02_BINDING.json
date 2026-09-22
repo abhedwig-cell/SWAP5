@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.rom_root.rnp02.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP02",
+  "date": "2026-09-22",
+  "state": "BOUND_BEFORE_RNP02_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_RNP02_PREREGISTRATION.json",
+  "scientific_semantics_changed": false,
+  "reduced_candidate_response_generated": false,
+  "c6r_reopened": false,
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "implementation_blobs": {
+    ".github/workflows/rom-root-rnp02.yml": "5288c4a76a714d1734cd7e7a63541f30ac39e23e",
+    "tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py": "269bbc7796a5d7e0535660954f1c0f075b97634b",
+    "tests/rom/materialize_rom_root_rnp02_headcalc_trace.py": "13e30e052aa47c4ad5f496041ad7a17f630e4b57",
+    "tests/rom/materialize_rom_root_rnp02_diagnostic.py": "29d318c7b46459203e2e70afb6a56d71b9761f51",
+    "tests/rom/analyze_rom_root_rnp02.py": "fc589285571845af1c6b68cc9b7ad83c24302982",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1"
+  },
+  "instrumentation": {
+    "workflow_local_headcalc_logging_only": true,
+    "max_iterations_trace_guard": 128,
+    "headcalc_equations_changed": false,
+    "solver_acceptance_changed": false,
+    "tolerance_changed": false
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "candidate_response_generated": false,
+    "policy_decision_authorized": false
+  }
+}
