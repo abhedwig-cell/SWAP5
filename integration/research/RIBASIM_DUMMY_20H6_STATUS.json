@@ -3,15 +3,15 @@
   "date": "2026-09-22",
   "work_unit": "RIBASIM-DUMMY-20H6",
   "branch": "work/ribasim-dummy-01",
-  "baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
-  "implemented": false,
+  "baseline": "e5b2a00556655a632411b262dc9653af65a2c1a0",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20H5 qualification. Scientific references are frozen prospectively.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "Exact-release t=24 accepted-state LP oracle separating accepted storage memory from current active-River forcing.",
-  "next_action": "After DUMMY-20H5 closes, rebind and implement without changing frozen references.",
+  "next_action": "Execute frozen DUMMY-20H6 qualification against Ribasim v2026.1.1; do not retune references or tolerances.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -22,5 +22,18 @@
     ],
     "scientific_change": false,
     "note": "Prepared while DUMMY-20H5 is active. No runner/workflow/qualification branch before DUMMY-20H5 closeout."
-  }
+  },
+  "recovery_point": "DUMMY-20H5 qualified by run 35741211340; H6 released exactly as preregistered.",
+  "execution_baseline": "e5b2a00556655a632411b262dc9653af65a2c1a0",
+  "implementation_baseline": "220ee3194270f600125c1c0599dcc738b13eabc1",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H6_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H6_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H6_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_ribasim_dummy_20h6_next_boundary.py",
+    "tests/research/real_ribasim_20h6_next_boundary_memory.jl",
+    "tests/research/run_ribasim_dummy_20h6.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
