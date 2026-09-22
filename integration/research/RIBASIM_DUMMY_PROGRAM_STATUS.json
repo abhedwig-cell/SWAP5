@@ -263,6 +263,15 @@
       "run": 35743163688,
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H7",
+      "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+      "run": 35745769522,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
@@ -274,23 +283,10 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20H7",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
-      "dependency": "DUMMY-20H6 qualified by run 35743163688.",
-      "scientific_baseline": "6deb5c3b08d58f292bc5cf8f369e72cd72daf279",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "modflow_release": "6.7.0",
-      "implementation_baseline": "1f5279656c9078951581cfa3bda8c284da4fb3a3",
-      "observability_guard_commit": "8aefb6a5dbc1478f3ee75edacb49f930e6e567d9"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H7 actual RibaMod t=24 memory/forecast bridge.",
+  "next_authority_action": "H5-H7 causality/next-boundary product bridge closed. Preregister a new work unit only for a distinct falsification dimension such as priority structure, forcing sign/direction, multi-Basin topology or asynchronous boundary timing.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -431,5 +427,10 @@
     "latest": "RIBASIM-DUMMY-20H6",
     "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
     "meaning": "At the tested next fixed allocation boundary, accepted Basin-storage memory remains available to management while current active-River forcing can be independently attenuated by the allocation-LP low_storage_factor."
+  },
+  "product_memory_forecast_bridge_authority": {
+    "latest": "RIBASIM-DUMMY-20H7",
+    "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+    "meaning": "Actual pinned RibaMod reproduces the H6 t=24 oracle end-to-end: day-1 accepted storage becomes next-boundary management memory while the simultaneously active River forcing remains a separate forecast quantity."
   }
 }
