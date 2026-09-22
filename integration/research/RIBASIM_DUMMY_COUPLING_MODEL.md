@@ -6,17 +6,27 @@ The RIBASIM-DUMMY sequence is not intended to mimic Ribasim, MODFLOW or SWAP
 in miniature. Its purpose is to make the coupling semantics analytically
 visible before real model complexity is introduced.
 
-The core lesson is that five different objects must remain separate:
+The core lesson is now that several different objects and stages must remain
+separate:
 
-1. **state**: water stored by each physical subsystem;
-2. **physical exchange**: water transferred between subsystems;
-3. **managed withdrawal**: water removed because of a management decision;
-4. **numerical coupling state**: provisional values used to find a mutually
+1. **physical state**: water stored by each physical subsystem;
+2. **uncontrolled physical exchange**: water transferred because of hydrology;
+3. **management demand**: what a managed recipient requests;
+4. **allocation solution**: the optimizer candidate management decision;
+5. **applied allocation**: the management target actually published to the
+   physical realization layer;
+6. **supplied transfer**: the water physically realized for that recipient;
+7. **numerical coupling state**: provisional values used to find a mutually
    consistent solution within one coupling window;
-5. **committed state**: the accepted endpoint from which the next window starts.
+8. **accepted/committed state**: the authoritative endpoint from which the next
+   window starts;
+9. **recorded output**: diagnostics written for observation, which need not be
+   the semantic commit mechanism.
 
-Many apparent "coupling problems" are created by collapsing two or more of
-these objects into one.
+Many apparent coupling problems are created by collapsing two or more of these
+objects into one. DUMMY-19I through DUMMY-19L show that this is not merely an
+analytical distinction: in pinned real Ribasim, allocation solve, UserDemand
+application and output recording can be different operations.
 
 ## 1. Physical state
 
@@ -145,18 +155,60 @@ at the end of the horizon.
 Treating `hmin` as a physical lower boundary would therefore silently change
 the hydrology.
 
-## 5. Forecast, realization and commit are different stages
+## 5. Solve, apply, realize, accept and record are different stages
 
-The early DUMMY-02 contract separated:
+The early DUMMY-02 contract separated prediction/allocation, physical
+realization and explicit commit. The real-Ribasim sequence sharpens that into a
+five-stage contract:
 
-1. prediction/allocation from committed state;
-2. physical realization using the actual exchange information;
-3. explicit commit of the accepted endpoint.
+```text
+SOLVE
+  compute a candidate allocation from the accepted current state
 
-That distinction remains useful after the analytical model becomes more
-coupled.
+APPLY / ADMIT
+  publish the selected allocation to the physical UserDemand state
 
-A candidate state is not yet authoritative.
+REALIZE
+  advance physical dynamics using that applied allocation
+
+ACCEPT / COMMIT
+  accept the resulting physical state and transfer ledger
+
+RECORD
+  emit diagnostics or output independently of semantic commit
+```
+
+DUMMY-19I falsified the assumption that an allocation solve is automatically an
+applied UserDemand decision. At a sub-`saveat` BMI boundary, pinned Ribasim can
+solve the allocation LP with `record=false` while leaving the previously
+applied `UserDemand.allocated` and per-link allocation state unchanged.
+
+DUMMY-19I2 observed both states directly:
+
+```text
+new LP optimum
+!=
+currently applied UserDemand allocation
+```
+
+DUMMY-19K then applied only the optimized UserDemand and per-link allocation
+state, without creating an allocation output record and without resetting
+cumulative supplied volume. That was sufficient to recover the native 6-hour
+management/physical behavior.
+
+DUMMY-19L strengthened the result from endpoint agreement to transactional
+equivalence. Native 6-hour `saveat` application and daily `saveat` plus an
+explicit 6-hour UserDemand apply seam produced identical logged Basin state and
+cumulative recipient-transfer trajectories at 6, 12, 18 and 24 hours.
+
+Therefore:
+
+```text
+record time != allocation solve time != allocation apply time
+```
+
+and a candidate management decision is not authoritative until its application
+state and the resulting physical interval have been accepted.
 
 Before commit, every participant revision must still match the source revision
 from which the candidate was constructed. Otherwise a stale candidate can
