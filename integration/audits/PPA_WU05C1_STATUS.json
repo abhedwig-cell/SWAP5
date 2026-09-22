@@ -2,10 +2,11 @@
   "schema": "swap5.ppa_wu05c1.status.v1",
   "work_unit": "PPA-WU05-C1",
   "parent_work_unit": "PPA-WU05-C",
-  "status": "PURE_FACTOR_IMPLEMENTED_FOCUSED_QUALIFICATION_PENDING",
+  "status": "PURE_FACTOR_IMPLEMENTED_TESTED_RUNTIME_BINDING_HELD",
   "baseline": "bf55a0051884ab5baa42833e48c86f1521094688",
   "implemented": true,
-  "persisted": "pending-checkpoint-commit",
+  "persisted": true,
+  "checkpoint_commit": "f2672b6e2",
   "tested": true,
   "qualified": false,
   "production_admission": "NONE; root sink and runtime bindings unchanged",
@@ -26,14 +27,21 @@
       "PPA_WU05C1_EXACT_SOURCE_FACTOR_ORACLE_100000=PASS",
       "PPA_WU05C1_STATELESS_A_B_A_REPLAY=PASS",
       "PPA_WU05C1_SHAPE_NUMERIC_GEOMETRY_GUARDS=PASS",
-      "PPA_WU05C1_SATURATION_BRANCH=PASS"
+      "PPA_WU05C1_SATURATION_BRANCH=PASS",
+      "PPA_WU05C1_INTERIOR_AND_CLAMP_BRANCHES=PASS"
     ],
     "o0_o2_transcript_identity": true,
     "declared_bash_gate_executed": false,
     "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
   },
-  "evidence_claim": "Pure reproduction-factor equation only; no macro/micro call-path, root-mass, parallel or coupling claim.",
-  "next_action": "Checkpoint pure factor and focused evidence, then advance only to a separately permitted macro/micro call-path slice; preserve production root-sink fail-closed behavior until its mass and coupling gates are complete.",
+  "reference_call_paths": {
+    "source": "B1.11 SWAP/rootextraction.f90 sha256 8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5; unchanged B0/B1.11 identity matches reference/swap-4.3.1/b0/file-manifest.sha256",
+    "macro": "RootExtraction_MACRO SWOXYGEN=2/SWOXYGENTYPE=2 invokes OxygenReproFunction at source line 410 with current theta, thetas, tsoil and geometry",
+    "micro": "RootExtraction_MICRO SWOXYGEN=2/SWOXYGENTYPE=2 invokes OxygenReproFunction at source line 179 with current theta, thetas, tsoil and geometry",
+    "qualification": "source inspection only; production caller/call-path test not run"
+  },
+  "evidence_claim": "Pure reproduction-factor equation only. Macro/micro legacy call locations are source-inspected, not migrated or runtime-qualified; no root-mass, parallel or coupling claim.",
+  "next_action": "Define a separately scoped process-owner composition slice that consumes this pure factor while retaining exactly one root sink owner; first bind macro/micro source-order semantics and exactly-once mass tests, then leave production integration gated until coupling/parallel fail-closed preservation is demonstrated.",
   "recovery_point": "this status record and PPA-WU05-C1 preregistration",
   "blockers": []
 }

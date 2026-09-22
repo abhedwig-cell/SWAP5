@@ -62,6 +62,27 @@ program test_ppa_wu05c1_oxygen_reproduction
 
   theta(1) = 0.2_real64
   theta_s(1) = 0.4_real64
+  dz(1) = 10.0_real64
+  z(1) = -5.0_real64
+  zbot(1) = -10.0_real64
+  tsoil(1) = 20.0_real64
+  slope = 0.0_real64
+  intercept = 0.0_real64
+  intercept(6) = 0.4_real64
+  slope(6) = 1.2_real64
+  call evaluate_ppa_wu05c1_oxygen_reproduction(slope, intercept, theta(1:1), theta_s(1:1), &
+      tsoil(1:1), z(1:1), dz(1:1), zbot(1:1), 1, actual, status)
+  call require(status == PPA_WU05C1_OK .and. same_bits(actual, 0.64_real64), 'interior regression-function value')
+  slope(6) = 20.0_real64
+  call evaluate_ppa_wu05c1_oxygen_reproduction(slope, intercept, theta(1:1), theta_s(1:1), &
+      tsoil(1:1), z(1:1), dz(1:1), zbot(1:1), 1, actual, status)
+  call require(status == PPA_WU05C1_OK .and. same_bits(actual, 1.0_real64), 'upper factor clamp')
+  slope(6) = 0.0_real64
+  intercept(6) = -1.0_real64
+  call evaluate_ppa_wu05c1_oxygen_reproduction(slope, intercept, theta(1:1), theta_s(1:1), &
+      tsoil(1:1), z(1:1), dz(1:1), zbot(1:1), 1, actual, status)
+  call require(status == PPA_WU05C1_OK .and. same_bits(actual, 0.0_real64), 'lower factor clamp')
+
   call evaluate_ppa_wu05c1_oxygen_reproduction(slope, intercept, theta(1:1), theta_s(1:1), &
       tsoil(1:1), z(1:1), dz(1:1), zbot(1:1), 0, actual, status)
   call require(status == PPA_WU05C1_INVALID_INPUT, 'invalid node did not fail closed')
@@ -82,6 +103,7 @@ program test_ppa_wu05c1_oxygen_reproduction
   print '(a)', 'PPA_WU05C1_STATELESS_A_B_A_REPLAY=PASS'
   print '(a)', 'PPA_WU05C1_SHAPE_NUMERIC_GEOMETRY_GUARDS=PASS'
   print '(a)', 'PPA_WU05C1_SATURATION_BRANCH=PASS'
+  print '(a)', 'PPA_WU05C1_INTERIOR_AND_CLAMP_BRANCHES=PASS'
 
 contains
 
