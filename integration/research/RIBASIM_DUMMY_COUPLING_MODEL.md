@@ -975,6 +975,12 @@ DUMMY-20H7
   the real pinned RibaMod run reproduces the day-1 accepted state, publishes
   8.0000425122 m3/day River forcing for the next segment, and records the t=24
   UserDemand allocation as 39.9903723811/0 m3/day, exactly matching H6
+
+DUMMY-20H8
+  qualified current-forcing sign asymmetry on the same accepted state:
+  +8.0000425122 m3/day drainage is explicit positive forecast supply and yields
+  40/7.9904148932 m3/day, while equal-magnitude infiltration is implicit
+  negative forcing with alpha=0 and leaves 39.9903723811/0 m3/day
 ```
 
 Together these work units establish both one-way passive groundwater arrival and
@@ -1136,6 +1142,23 @@ remain separate semantic objects in the actual product composition.
 Guarded H7 v2 (run 35745915889) is the primary product authority for this
 bridge; the earlier successful v1 run 35745769522 is retained as a duplicate
 confirmation only.
+
+DUMMY-20H8 adds a distinct sign-sensitive forecast contract on that same
+accepted state. Ribasim v2026.1.1 places Basin drainage in the explicit
+positive-forcing right-hand side, whereas Basin infiltration is an implicit
+negative-forcing term multiplied by the allocation LP low_storage_factor.
+Consequently, equal-magnitude opposite groundwater directions need not have
+equal-and-opposite effects on the management allocation:
+
+```text
+accepted memory M
++ explicit positive drainage G+
+- alpha * implicit negative infiltration G-
+```
+
+This asymmetry belongs to forecast representation. It must not be described as
+asymmetric physical conservation or as a property of groundwater exchange
+itself.
 
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
 general STO aggregation contract, or arbitrary package/topology equivalence.
