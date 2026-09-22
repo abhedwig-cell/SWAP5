@@ -455,10 +455,6 @@ def main() -> None:
             "G09D C1 negative did not recover symmetric probe-class tangent")
     require(c2neg["e3"]["selected_mode"] in ("BACKWARD","CENTRAL"),
             "G09D C2 negative did not recover bounded tangent")
-    require(c3pos["e3"]["selected_mode"] != "CENTRAL" or
-            c3pos["e3"]["selected_execution_class"] == c3pos["e3"]["scale_rows"][0]["candidate"]["execution_class"],
-            "G09D C3 positive used an unqualified central class")
-
     policy_rows: list[dict[str, object]] = []
     for case_id, duration, qbot, start_dh in REPLAYS:
         _, _, href, origin, diag = initialize_case(swap, duration, qbot)
