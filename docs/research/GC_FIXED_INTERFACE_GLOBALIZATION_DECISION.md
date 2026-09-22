@@ -465,3 +465,50 @@ independent root within `5e-10 m`.
 A G12B PASS would extend E3/P4 research evidence to the active-drainage MAP09
 carrier, but it still would not be production admission. Tangent-acquisition
 cost and the explicit production ownership/integration contract remain open.
+
+
+## G12B disposition: active-drainage process coverage qualified
+
+G12B is separate from the falsified G12 calibration gate. It remeasured the
+qualified G12A local groundwater response in each frozen regime and used that
+response only as the merit/reference oracle. MAP09 physics, E3_MAP, starts,
+P1/P4, the factor-1/2 safeguard and convergence tolerances remained unchanged.
+
+The normalized G12B test is unchanged between the live tested postimage and the
+final single-authority runner. The live result is:
+
+```text
+groundwater regimes       3
+starts per regime          2
+P1 converged               6 / 6
+P4 converged               6 / 6
+P4 raw inadmissible        0
+P4 contractions            0
+max P4 root-head error     2.615e-11 m
+max groundwater fit error  1.736e-22 m/s
+```
+
+Each regime has an independent coupled reference root obtained inside the same
+frozen `±1e-6 m` bracket. All P4 final heads satisfy the preregistered
+`5e-10 m` root agreement gate.
+
+This extends E3/P4 research qualification to the active-drainage MAP09 carrier
+across storage-dominated and mixed groundwater response classes. It does not
+replace G11: G12B exercises process coverage, while G11 remains the live
+evidence that P4 actually recovers an inadmissible Newton proposal by
+backtracking.
+
+The remaining pre-production questions are now narrower:
+
+1. the computational cost and API shape of tangent acquisition;
+2. whether the research E3 estimator can be reduced to a practical production
+   tangent service without changing its semantics;
+3. explicit production ownership, transaction and publication integration.
+
+```text
+G12 REMAINS FALSIFIED.
+G12A DIAGNOSIS = QUALIFIED.
+G12B ACTIVE-DRAINAGE E3/P4 COVERAGE = QUALIFIED RESEARCH EVIDENCE.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: TANGENT-ACQUISITION COST AND INTEGRATION.
+```
