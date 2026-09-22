@@ -1,0 +1,64 @@
+name: GC rootzone memory RZM06E08 deep-redistribution memory probe
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E08_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E08_PREREGISTRATION.md'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E07_RESULT.json'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e08_extract.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e08_probe.f90'
+      - 'tests/research/analyze_gc_rootzone_memory_rzm06e08.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e08.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e08.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e08-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify E07 pair authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          d=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06E07_RESULT.json",encoding="utf-8"))
+          assert d["decision"]=="SELECTED_TIGHT_DEEP_REDISTRIBUTION_PAIR"
+          assert d["generation"]["selected_resolution_cm"]==1e-9
+          p=d["selected_pair"]
+          assert p["A"]["direction"]=="UPSHIFT" and p["A"]["rate_index"]==3 and p["A"]["steps"]==1
+          assert p["B"]["direction"]=="DOWNSHIFT" and p["B"]["rate_index"]==3 and p["B"]["steps"]==1
+          assert p["abs_delta_profile_water_cm"]<=1e-9
+          assert p["abs_delta_root30_water_cm"]<=1e-9
+          assert p["abs_delta_H16_cm"]>=1e-2
+          print("GC_RZM06E08_PARENT_PAIR_AUTHORITY=PASS")
+          PY
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run fixed-Hc 1e-9 response probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E08-EVIDENCE
+          RZM06E08_EVIDENCE_DIR="$PWD/RZM06E08-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e08.sh
+      - name: Preserve E08 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e08-${{ github.run_id }}
+          path: RZM06E08-EVIDENCE
+          if-no-files-found: warn
