@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06d02.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06D02",
+  "production_changes": false,
+  "preregistration_commit": "bde3f52447c8c2c27f81f2fc4f74a923169ca2ae",
+  "executions": [
+    {
+      "workflow_run": 35737923619,
+      "workflow_job": 106779843531,
+      "head": "18cd1d9e4368b0a10afe004d44a07abf10dbd5e6",
+      "conclusion": "failure",
+      "role": "initial frozen execution"
+    },
+    {
+      "workflow_run": 35738213955,
+      "workflow_job": 106780825084,
+      "head": "155bbbaad9073abe8d62950a123916363e4dbdd2",
+      "conclusion": "failure",
+      "role": "diagnostic-only rerun; experiment gate unchanged"
+    }
+  ],
+  "audit_origin": {
+    "split": "DISCOVERY",
+    "history": "D01",
+    "step": 1,
+    "response_blind_selection": true,
+    "heldout_access": false
+  },
+  "frozen_request": {
+    "t_a_day": 0,
+    "t_b_day": 7,
+    "requested_dt_day": 0.0008,
+    "fixed_interface_head_m": -1.897937090169065,
+    "top_flux_cm_per_day": 0
+  },
+  "diagnostic": {
+    "accepted_dt_a_day": 0.0008,
+    "accepted_dt_b_day": 0.0007999999999999119,
+    "accepted_dt_bits_a": 4560517920901055500,
+    "accepted_dt_bits_b": 4560517920901054500,
+    "delta_dt_day": -8.814563662307151e-17,
+    "max_abs_candidate_pressure_head_difference_cm": 2.1316282072803006e-14,
+    "max_abs_candidate_water_content_difference": 5.551115123125783e-17,
+    "ponding_depth_difference_cm": 0,
+    "groundwater_level_difference_cm": 0,
+    "bottom_outward_exchange_difference_native": 0,
+    "terminal_bottom_flux_difference_native": 4.3209880118411093e-13
+  },
+  "source_audit": {
+    "base_layout_absolute_time_processes_disabled": true,
+    "serialized_hydraulic_advance_primary_time_input": "step_duration = t1 - t0",
+    "legacy_swbotb2_control_allocated": false,
+    "snow_active": false,
+    "soil_temperature_active": false,
+    "drainage_response_active": false,
+    "root_extraction_active": false,
+    "black_evaporation_active": false,
+    "boesten_evaporation_active": false
+  },
+  "decision": "QUALIFICATION_CONFOUNDED_BY_BINARY_DURATION_ALIAS__TIME_NEUTRALITY_NOT_DECIDED",
+  "interpretation": [
+    "The preregistered experiment intended identical duration with only absolute time shifted, but IEEE-754 addition/subtraction at t0=7 d changed the binary step duration.",
+    "The failed bitwise candidate gate therefore cannot be attributed uniquely to absolute time.",
+    "Observed physical-state differences are at floating-point roundoff scale and bottom whole-window exchange is bit-identical, but this is diagnostic evidence only.",
+    "A representation-safe repair must hold binary step duration identical before re-testing the same 7-day absolute-time shift."
+  ],
+  "prohibited": [
+    "do not reinterpret the failed gate as physical absolute-time dependence",
+    "do not broaden H2 origin selection yet",
+    "do not relax the bitwise equality gate",
+    "do not change the audit origin based on this result"
+  ],
+  "next": "GC-RZM06D02R1 representation-safe common-time reseed audit using a dyadic duration close to 0.0008 d that is bit-identical after subtraction at both t0=0 and t0=7 d."
+}
