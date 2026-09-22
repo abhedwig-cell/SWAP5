@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Actual product A/B comparison of no-exchange versus active-River forcing at t=0 allocation, with allocation.arrow and physical ledgers observed separately.",
-  "next_action": "Execute frozen DUMMY-20H current-boundary active-exchange admission qualification.",
+  "next_action": "Execute DUMMY-20H v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "c710308b473485a95b400f1389ca78b9c8effc56",
@@ -37,5 +37,7 @@
       "physical supply is observed separately from allocation",
       "active River MF6 flux must equal Ribasim infiltration and full source ledger must close at all four boundaries"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_current_boundary_active_exchange",
+  "qualification_base": "work/ribasim-dummy-01@2b2cae22bfeec4a1ff257b65e404653c4548c6aa"
 }
