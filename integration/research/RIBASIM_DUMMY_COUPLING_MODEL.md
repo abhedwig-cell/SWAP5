@@ -938,10 +938,38 @@ DUMMY-20G
   qualified active-River reciprocal stage feedback:
   accepted Ribasim stage -> MF6 River solve -> reciprocal Ribasim infiltration
   -> next accepted Basin state
+
+DUMMY-20H
+  FALSIFIED current-boundary management hypothesis:
+  active River exchange is physically realized from the first segment,
+  but t=0 UserDemand allocation remains 32/0 rather than 24/0
+
+DUMMY-20H2
+  qualified direct-BMI versus actual-RibaMod visibility differential:
+  the same Basin infiltration pointer and physical forcing are active in both
+  routes; the 32/0 allocation is release-native rather than a driver timing gap
+
+DUMMY-20H3
+  qualified allocation LP mechanism:
+  current infiltration enters as implicit negative forcing, but the LP can set
+  low_storage_factor=0 and preserve the 32/0 UserDemand allocation
+
+DUMMY-20H4
+  qualified physical-versus-LP factor separation:
+  the physical state-derived factor remains 1 while the allocation LP factor is
+  0 on the same accepted state and forcing
 ```
 
 Together these work units establish both one-way passive groundwater arrival and
 active stage-driven reciprocal exchange in the actual pinned product route.
+They also expose a separate allocation-forecast seam: physically realized
+groundwater forcing can be fully active while the management LP attenuates the
+same negative forcing through its own `low_storage_factor`.
+
+DUMMY-20H5 is the active causality control for whether storage-preservation
+alone is sufficient to cause that LP factor collapse when LevelDemand machinery
+is removed. DUMMY-20H6 is prospectively frozen behind H5 and is not yet
+authority.
 
 ## 17. Current real-model authority boundaries
 
@@ -1022,8 +1050,17 @@ accepted Ribasim stage
 -> next accepted state
 ```
 
+DUMMY-20H through DUMMY-20H4 further show that physical transfer authority and
+allocation-forecast authority are not identical. In the exact product Ribasim
+release, current active-River infiltration can be present in the physical
+Basin state and in the allocation input ledger while the allocation LP chooses
+a separate `low_storage_factor` that attenuates that negative forcing. The
+physical reduction factor and the LP factor must therefore not be treated as
+one shared state variable.
+
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
-general STO aggregation contract, or arbitrary package/topology equivalence.
+general STO aggregation contract, arbitrary package/topology equivalence, or
+the final disposition of the H5/H6 allocation-factor causality chain.
 
 ### SWAP
 
