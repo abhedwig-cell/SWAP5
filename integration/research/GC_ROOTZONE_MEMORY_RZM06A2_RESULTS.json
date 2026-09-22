@@ -1,0 +1,4670 @@
+{
+  "construction_groups": [
+    {
+      "accepted_count": 0,
+      "candidate_count": 14,
+      "candidates": [
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:1.0e-03:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.39999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7139999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:1.0e-03:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.59999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7159999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:5.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.44999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7144999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:5.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.54999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7154999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:2.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.47999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7147999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:2.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.51999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7151999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:1.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.48999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7148999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:1.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:5.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49499706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:5.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50499706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:2.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49799706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149799706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:2.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50199706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150199706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:1.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49899706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149899706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 0,
+          "name": "G1:1.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50099706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150099706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        }
+      ],
+      "group_index": 0,
+      "selected_match": null,
+      "time_group": {
+        "pulse_duration_day": 0.05,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.15
+      }
+    },
+    {
+      "accepted_count": 0,
+      "candidate_count": 14,
+      "candidates": [
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:1.0e-03:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.39999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7139999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:1.0e-03:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.59999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7159999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:5.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.44999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7144999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:5.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.54999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7154999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:2.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.47999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7147999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:2.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.51999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7151999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:1.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.48999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7148999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:1.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:5.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49499706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:5.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50499706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:2.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49799706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149799706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:2.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50199706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150199706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:1.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49899706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149899706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 1,
+          "name": "G2:1.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.1,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50099706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150099706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.1,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        }
+      ],
+      "group_index": 1,
+      "selected_match": null,
+      "time_group": {
+        "pulse_duration_day": 0.1,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.25
+      }
+    },
+    {
+      "accepted_count": 0,
+      "candidate_count": 14,
+      "candidates": [
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:1.0e-03:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.39999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7139999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:1.0e-03:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.59999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7159999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:5.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.44999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7144999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:5.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.54999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7154999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:2.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.47999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7147999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:2.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.51999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7151999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:1.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.48999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7148999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:1.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:5.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49499706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:5.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50499706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:2.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49799706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149799706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:2.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50199706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150199706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:1.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49899706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149899706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 2,
+          "name": "G3:1.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.05,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50099706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150099706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.05,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.1,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        }
+      ],
+      "group_index": 2,
+      "selected_match": null,
+      "time_group": {
+        "pulse_duration_day": 0.05,
+        "relax_duration_day": 0.1,
+        "total_duration_day": 0.2
+      }
+    },
+    {
+      "accepted_count": 0,
+      "candidate_count": 14,
+      "candidates": [
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:1.0e-03:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.39999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7139999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:1.0e-03:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.59999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7159999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7159999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7139999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:5.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.44999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7144999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:5.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 1,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.54999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7154999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 1,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 8,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7154999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7144999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:2.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 1,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.47999706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7147999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 1,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 8,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:2.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.51999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7151999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7151999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7147999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:1.0e-04:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.48999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7148999706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.0001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:1.0e-04:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50999706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150999706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150999706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7148999706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:5.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49499706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00005,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:5.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50499706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150499706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7149499706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:2.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49799706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149799706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00002,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:2.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50199706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150199706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150199706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7149799706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:1.0e-05:UP_DOWN_BASE",
+          "order": "UP_DOWN_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.49899706136308,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7149899706136308,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "delta_h_m": 0.00001,
+          "endpoint_obs": {
+            "distribution_moment_cm": -1.5024449665297503,
+            "groundwater_level_cm": -2,
+            "profile_water_cm": 1.0430631535459627,
+            "root_water_cm": 0.10377346899380081
+          },
+          "endpoint_state": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_index": 3,
+          "name": "G4:1.0e-05:DOWN_UP_BASE",
+          "order": "DOWN_UP_BASE",
+          "records": [
+            {
+              "diag": {
+                "accepted_substeps": 0,
+                "attempts": 9,
+                "available": true,
+                "call_status": 7,
+                "candidate_ready": false,
+                "committed": false,
+                "completed": false,
+                "duration_day": 0.02,
+                "forcing_status": 0,
+                "internal_retries": 0,
+                "mass_complete": false,
+                "mass_rejections": 0,
+                "mass_residual_native": 0,
+                "materialized_bottom_head_cm": -71.50099706136307,
+                "materialized_top_flux_cm_per_day": 0,
+                "requested_head_m": -0.7150099706136307,
+                "requested_top_flux_cm_per_day": 0,
+                "result_status": 2,
+                "retries": 8,
+                "solver_rejections": 0,
+                "t0_day": 0,
+                "t1_day": 0.02,
+                "temporal_rejections": 9,
+                "temporal_unavailable_rejections": 0,
+                "transaction_calls": 1,
+                "trial_rollbacks": 9
+              },
+              "post_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "pre_state": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "status": 7
+            }
+          ],
+          "trajectory": [
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7150099706136307,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.02,
+              "head_m": -0.7149899706136308,
+              "top_flux_native_per_day": 0
+            },
+            {
+              "duration_day": 0.05,
+              "head_m": -0.7149999706136307,
+              "top_flux_native_per_day": 0
+            }
+          ]
+        }
+      ],
+      "group_index": 3,
+      "selected_match": null,
+      "time_group": {
+        "pulse_duration_day": 0.02,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.09
+      }
+    }
+  ],
+  "disposition": "NO_MATCH",
+  "frozen": {
+    "H_star_m": -0.7149999706136307,
+    "M1_separation_native": 0.0001,
+    "amplitudes_m": [
+      0.001,
+      0.0005,
+      0.0002,
+      0.0001,
+      0.00005,
+      0.00002,
+      0.00001
+    ],
+    "mass_gate_native": 1e-12,
+    "probe_duration_day": 0.0001,
+    "profile_water_tolerance_native": 0.000001,
+    "response_threshold_native": 1e-18,
+    "time_groups": [
+      {
+        "pulse_duration_day": 0.05,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.15
+      },
+      {
+        "pulse_duration_day": 0.1,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.25
+      },
+      {
+        "pulse_duration_day": 0.05,
+        "relax_duration_day": 0.1,
+        "total_duration_day": 0.2
+      },
+      {
+        "pulse_duration_day": 0.02,
+        "relax_duration_day": 0.05,
+        "total_duration_day": 0.09
+      }
+    ],
+    "top_flux_native_per_day": 0
+  },
+  "nonclaims": [
+    "no production coupling admission",
+    "no second MODFLOW hydraulic state variable admission",
+    "no claim that antecedent head pulses are a production strategy",
+    "no H5 management conclusion"
+  ],
+  "preregistration_commit": "ae06b69b7b861b30934a0591958666d95726ff49",
+  "probe_evidence": null,
+  "production_changes": false,
+  "schema": "swap5.gc_rootzone_memory.rzm06a2.h2_state_pair_experiment.v1",
+  "selected_group": null,
+  "selected_pair": null,
+  "qualification": {
+    "branch": "work/gc-dummy-swap-rootzone-memory",
+    "preregistration_commit": "ae06b69b7b861b30934a0591958666d95726ff49",
+    "implementation_commit": "0e5ad1f711be44e7346384823ce62519782dc258",
+    "ci_binding_commit": "9c6388366d39c3773c026853d219315184c7d4cd",
+    "ci_concurrency_commit": "dac3b3c1cb399c1ca5f379e4f1b3396a27b47957",
+    "workflow_run": 35727006391,
+    "workflow_job": 106742998316,
+    "execution_gate": "PASS"
+  },
+  "interpretation": {
+    "classification": "CONSTRUCTION_INADMISSIBLE__H2_NOT_PROBED",
+    "accepted_trajectories": 0,
+    "attempted_trajectories": 56,
+    "common_failure_signature": "first interval status 7; result_status 2; 9 temporal rejections; 8 retries; zero accepted substeps; no solver rejection in inspected representatives",
+    "transactional_negative_control": "all first-interval failures preserved revision=0,time=0,ledger_count=0,ledger_exchange=0",
+    "scientific_meaning": "The frozen long-window head-pulse construction is outside the current carrier temporal-admissibility envelope. It does not test or falsify H2.",
+    "next_step": "Preregister a head-pulse admissibility characterization at short windows, then construct longer histories through repeated accepted micro-intervals without changing H2 thresholds."
+  },
+  "limitations": [
+    "No endpoint pair existed because no construction trajectory completed its first pulse interval.",
+    "No H2 response probe was opened.",
+    "The failure is temporal-certificate/retry exhaustion for the frozen pulse windows, not a mass or solver-convergence defect in accepted state.",
+    "No production coupling or numerical-policy change is admitted."
+  ]
+}
