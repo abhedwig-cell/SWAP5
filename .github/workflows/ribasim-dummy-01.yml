@@ -891,6 +891,7 @@ jobs:
         run: .\tests\research\run_ribasim_dummy_20d.ps1
 
   real-ribamod-postallocation-groundwater-gate:
+    # DUMMY-20E2 qualification: execute the exact PR head, never the synthetic merge.
     if: contains(github.head_ref, 'ribasim-dummy-20e2-ci')
     runs-on: windows-2022
     timeout-minutes: 75
