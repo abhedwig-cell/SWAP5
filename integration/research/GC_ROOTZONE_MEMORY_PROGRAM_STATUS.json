@@ -115,6 +115,15 @@
       "workflow_job": 106774650222,
       "implementation_head": "b245fe130894940cf15cb2814e9c4d3dd552a467",
       "evidence_commit": "fd5157c01062e10421c1117d954e621b3d9b95f6"
+    },
+    {
+      "work_unit": "GC-RZM06D01",
+      "decision": "QUALIFIED_SAME_TIME_STRICT_DISCOVERY_NO_MATCH__H2_NOT_PROBED",
+      "preregistration_commit": "2af534f0455ceb121f9a7965d1fe9f92895b3e4d",
+      "workflow_run": 35736968701,
+      "workflow_job": 106776591287,
+      "implementation_head": "1d74726b71bf84794c6f30b24900bd101d692af0",
+      "evidence_commit": "087102f98c06d1f6bffd043be606daea67a7dffa"
     }
   ],
   "current_findings": [
@@ -166,22 +175,23 @@
     "For future native-centimetre H2 selection the frozen physical A-series thresholds convert to |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm; the old numeric values must not be copied across units.",
     "C02's synthetic 17-node native-cm F-GC carrier is not admitted at its frozen inherited predictor initialization: 9/9 attempts are solver-rejected, with zero accepted substeps and no temporal or mass rejection.",
     "C02 therefore does not activate its native-cm H2 construction branch and must not be rescued by post-hoc qbot, duration, tolerance, retry-budget or grid retuning.",
-    "The richer-carrier path remains open through qualified C01: the existing 16-node F-ROM Reference carrier and retained ROM1AR2 accepted-state library."
+    "The richer-carrier path remains open through qualified C01: the existing 16-node F-ROM Reference carrier and retained ROM1AR2 accepted-state library.",
+    "D01 verified the exact ROM1AR2 artifact authority and O0/O2 byte identity, then found 0 qualifying pairs among 1549 same-time/different-history pairs from 475 strict DISCOVERY states.",
+    "D01 never parsed held-out node observables or response/exchange fields and performed no HeadCalc response probe.",
+    "The same-library-time requirement is an additional control rather than an H2 threshold; removing it requires a separate carrier qualification that accepted physical profiles can be reseeded at common canonical time without changing the pure-hydraulics response."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06D01",
-    "scope": "Prospectively select same-time, equal-total-storage but vertically distinct origins from the strict DISCOVERY subset of the qualified ROM1AR2 16-node B01 library, using node profiles only and no response information.",
-    "prerequisite": "C01 qualified existing 16-node carrier; C02 closed no-go",
+    "id": "GC-RZM06D02",
+    "scope": "Qualify absolute-time neutrality and common-time reseeding for one provenance-fixed strict ROM1AR2 discovery state on the 16-node C01 carrier. Same physical profile seeded at two different absolute times must yield the same one-window physical result under identical fixed-Hc forcing.",
+    "prerequisite": "D01 qualified same-time NO_MATCH",
     "constraints": [
-      "artifact authority must match ROM1AR2 workflow 35379176697, artifact 10561841507, digest sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
-      "use DISCOVERY states only and FALLBACK=F only; keep ROM held-out states sealed",
-      "require bit-identical committed time within each candidate pair",
-      "reconstruct W_profile and M1 solely from the 16 node theta values and known 10 cm geometry",
-      "use physically converted frozen H2 gates: |ΔW_profile| <= 1e-4 cm and |ΔM1| >= 1e-2 cm",
-      "do not parse or use bottom exchange, terminal flux or any future-response field for selection",
-      "persist selected origin node profiles and provenance immediately so later replay is independent of artifact expiry",
-      "do not probe E_c in D01",
-      "keep H5/RZM06B separate"
+      "choose the audit state by provenance only: lexicographically first strict DISCOVERY state, without storage/M1/response ranking",
+      "use exact ROM1AR2 artifact authority and full 16-node H/theta profile",
+      "pure-hydraulics base layout only; no snow, ET, drainage, root uptake, legacy time tables or temporal-history state",
+      "compare equal-duration mode-5 fixed-Hc read-only Reference samples from two absolute initial times",
+      "require physical candidate, bottom exchange and mass fields to be bitwise identical or explicitly justify any representational time-only difference",
+      "do not change H2 thresholds or select an H2 pair",
+      "do not inspect held-out states"
     ]
   },
   "blocked": [],
