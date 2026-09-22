@@ -134,7 +134,7 @@ class Fgc44RealSwap:
         return dict(zip(["profile_water_cm","root_water_cm","distribution_moment_cm","groundwater_level_cm"],[x.value for x in v]))
 
     def committed_profile_nodes(self) -> dict[str,int|list[float]]:
-        nmax=4
+        nmax=64
         n=ctypes.c_int()
         arrays=[(ctypes.c_double*nmax)() for _ in range(4)]
         status=self.lib.fgc44_committed_profile_nodes_c(
