@@ -1,0 +1,21 @@
+name: PPA-WU05-D2 pure Jarvis compensation
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05d2-jarvis-compensation.yml'
+      - 'src/process/mod_ppa_wu05d2_jarvis_compensation.f90'
+      - 'tests/fapp/test_ppa_wu05d2_jarvis_compensation.f90'
+      - 'tests/fapp/run_ppa_wu05d2_jarvis_compensation.sh'
+      - 'integration/audits/PPA_WU05D1_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05D2_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05D2_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  jarvis-source-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 Jarvis compositor at O0/O2
+        run: bash tests/fapp/run_ppa_wu05d2_jarvis_compensation.sh
