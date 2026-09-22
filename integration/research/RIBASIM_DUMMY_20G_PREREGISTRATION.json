@@ -5,9 +5,13 @@
   "title": "Actual RibaMod active-river reciprocal stage-feedback bridge",
   "baseline": "cab227dadf7600bdaa2162cf9612cb0283662bbb",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20F2_ACTIVE",
-    "execute_after": "DUMMY-20F2 closeout",
-    "rationale": "Freeze the first bidirectional physical RibaMod experiment before observing the two-day management-memory result."
+    "state": "SATISFIED_AFTER_DUMMY_20F2_CLOSEOUT",
+    "execute_after": "DUMMY-20F2 qualified",
+    "rationale": "Freeze the first bidirectional physical RibaMod experiment before observing the two-day management-memory result.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+      "workflow_run": 35729300651
+    }
   },
   "authorities": {
     "product_driver": "DUMMY-20A",
@@ -111,5 +115,11 @@
     "no production SWAP5 admission"
   ],
   "pass_decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
-  "fail_decision": "RIBASIM_DUMMY_20G_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20G_BLOCKED",
+  "implementation_baseline": "302010871bec0efbfa205aed02467d00c3f0bd0e",
+  "authority_rebind": {
+    "repository_head": "302010871bec0efbfa205aed02467d00c3f0bd0e",
+    "scientific_change": false,
+    "meaning": "Active-river reciprocity experiment rebound after qualified DUMMY-20F2; frozen physical topology, discrete references and tolerances unchanged."
+  }
 }
