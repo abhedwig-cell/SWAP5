@@ -1750,3 +1750,23 @@ UPSTREAM TERM FORMATION / NONLINEAR PATH = STILL OPEN.
 PRODUCTION ARITHMETIC / TOLERANCES / POLICY = UNCHANGED.
 NEXT: ADJACENT-HEAD TERM-DELTA ATTRIBUTION, THEN FORENSIC CLOSEOUT DECISION.
 ```
+
+## G21N disposition: close solver forensics at the numerical-microstructure boundary
+
+G21N exhaustively enumerated every binary64 groundwater head between the two frozen G21L boundary pairs. Workflow `35747878101`, job `106814048796`, passed on commit `562e6206b8bacbdc87698d6e0974e2ff0cb2b4d2`.
+
+B1 contains 56 representable heads and exactly one status transition, between `-0.7150100297648260` and `-0.7150100297648259 m`. The endpoint node-4 residual delta is carried almost completely by the lower-flux term: its signed contribution is about 102.47%, partly offset by about 2.47% from the upper-flux term. Storage, sink, source and root terms are unchanged at the captured binary64 level.
+
+B2 contains 57 representable heads and also exactly one status transition, between `-0.7150100297647922` and `-0.7150100297647921 m`. Residual component 4 accounts for about 97.65% of the endpoint total-residual delta and component 3 for about 2.35%; components 1 and 2 are unchanged.
+
+Both intervals classify `MIXED` under the preregistered rule. The high-level solver tuple changes at the status boundary, but there is also small nonmonotone residual structure within a fixed tuple. Together with G21M, this excludes final residual summation/grouping as the causal mechanism and localizes the remaining sensitivity upstream in term formation and the nonlinear numerical trajectory.
+
+At this point further decomposition would primarily investigate Richards-solver floating-point robustness rather than the coupling concept. The original G21 claim of exact dynamic-path equivalence remains falsified; no attempt is made to erase that result. The solver-forensics subline closes as bounded diagnostic evidence.
+
+```text
+G21 EXACT DYNAMIC-PATH EQUIVALENCE = FALSIFIED, PRESERVED.
+G21J-K-L-M-N MECHANISM FORENSICS   = QUALIFIED DIAGNOSTIC.
+BOUNDARY MICROSTRUCTURE             = MIXED PATH + WITHIN-PATH NUMERICAL EFFECTS.
+PRODUCTION SOLVER / COUPLING POLICY = UNCHANGED.
+NEXT = ENDPOINT-BASED PHYSICAL + TRANSACTIONAL COUPLING QUALIFICATION.
+```

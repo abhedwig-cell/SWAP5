@@ -1,0 +1,178 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21n.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21N",
+  "title": "ULP-resolved residual-term attribution across the B1 and B2 status boundaries",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21N_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21M_RESULT.json",
+  "tested_commit": "562e6206b8bacbdc87698d6e0974e2ff0cb2b4d2",
+  "workflow_run": 35747878101,
+  "workflow_job": 106814048796,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_MIXED_PATH_AND_WITHIN_PATH_NUMERICAL_MICROSTRUCTURE",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "runtime_change": "NONE",
+  "production_source_change": "NONE",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "b1": {
+    "sample_count": 56,
+    "classification": "MIXED",
+    "path_transition_count": 1,
+    "status_transition_count": 1,
+    "criterion_crossing_count": 1,
+    "transition": {
+      "left_head_m": -0.715010029764826,
+      "left_tuple": [
+        2,
+        4,
+        8
+      ],
+      "right_head_m": -0.7150100297648259,
+      "right_tuple": [
+        1,
+        4,
+        8
+      ]
+    },
+    "endpoint_attribution": {
+      "node4_residual_delta": -2.0033296853003146e-13,
+      "term_deltas": [
+        0,
+        0,
+        0,
+        0,
+        4.940442908154532e-15,
+        -2.0527340677950479e-13
+      ],
+      "term_delta_fractions_of_term_sum": [
+        0,
+        0,
+        0,
+        0,
+        -0.024661158167295843,
+        1.0246611581672957
+      ],
+      "dominant_term": "lower_flux",
+      "reconstruction_error": 4.658681209898652e-21
+    },
+    "same_path_groups": [
+      {
+        "path_tuple": [
+          1,
+          4,
+          8
+        ],
+        "count": 18,
+        "active_metric_min": 9.470667023035143e-13,
+        "active_metric_max": 9.950843859844738e-13,
+        "active_metric_monotone": false,
+        "dominant_lower_flux_monotone": true
+      },
+      {
+        "path_tuple": [
+          2,
+          4,
+          8
+        ],
+        "count": 38,
+        "active_metric_min": 1.000091068986686e-12,
+        "active_metric_max": 1.1378075673480759e-12,
+        "active_metric_monotone": false,
+        "dominant_lower_flux_monotone": true
+      }
+    ]
+  },
+  "b2": {
+    "sample_count": 57,
+    "classification": "MIXED",
+    "path_transition_count": 1,
+    "status_transition_count": 1,
+    "criterion_crossing_count": 1,
+    "transition": {
+      "left_head_m": -0.7150100297647922,
+      "left_tuple": [
+        1,
+        3,
+        3
+      ],
+      "right_head_m": -0.7150100297647921,
+      "right_tuple": [
+        2,
+        3,
+        3
+      ]
+    },
+    "endpoint_attribution": {
+      "total_residual_delta": -2.1028004023028956e-13,
+      "component_deltas": [
+        0,
+        0,
+        -4.940442908154532e-15,
+        -2.0533959732213503e-13
+      ],
+      "component_delta_fractions_of_total": [
+        0,
+        0,
+        0.023494587992012813,
+        0.9765054120079872
+      ],
+      "dominant_term": "residual_4",
+      "reconstruction_error": 0
+    },
+    "same_path_groups": [
+      {
+        "path_tuple": [
+          1,
+          3,
+          3
+        ],
+        "count": 8,
+        "active_metric_min": 9.755467635457958e-13,
+        "active_metric_max": 9.955734413445359e-13,
+        "active_metric_monotone": false,
+        "dominant_residual4_monotone": false
+      },
+      {
+        "path_tuple": [
+          2,
+          3,
+          3
+        ],
+        "count": 49,
+        "active_metric_min": 1.0005800997827926e-12,
+        "active_metric_max": 1.1858268037760853e-12,
+        "active_metric_monotone": true,
+        "dominant_residual4_monotone": false
+      }
+    ]
+  },
+  "postconditions": {
+    "saved_config_status_vector": [
+      6,
+      0,
+      0,
+      6
+    ],
+    "g16_counts": [
+      4,
+      4,
+      0,
+      4
+    ],
+    "accepted_state_ledger_mutation": 0,
+    "participant_candidate_leakage": 0
+  },
+  "bounded_conclusions": [
+    "Each frozen boundary interval contains one and only one status transition at binary64 head resolution: B1 between -0.7150100297648260 and -0.7150100297648259 m, B2 between -0.7150100297647922 and -0.7150100297647921 m.",
+    "The B1 endpoint change in node-4 residual is almost entirely a lower-boundary flux-term change: the lower-flux delta contributes 102.466% of the signed reconstructed term delta, while the upper-flux term offsets 2.466%; storage, sink, source and root terms are bit-identical at the captured level.",
+    "The B2 endpoint total-residual change is similarly concentrated in residual component 4, which contributes 97.651% of the total delta; component 3 contributes the remaining 2.349%, while components 1 and 2 are unchanged.",
+    "The high-level solver path tuple changes exactly at each status transition, but path switching is not the complete explanation. Under the preregistered monotonicity rule both intervals classify MIXED because at least one active or dominant residual sequence is nonmonotone within a fixed path tuple.",
+    "B1 lower-flux itself remains monotone within both fixed path tuples; its active max-compartment metric is nonmonotone because the maximum across compartments contains additional local residual structure.",
+    "B2 residual component 4 is nonmonotone within both fixed path tuples, although the failing-side absolute total residual is monotone. This establishes sub-ULP-scale residual microstructure beyond the coarse solver path signature.",
+    "Combined with G21M, final sum/grouping order is not causal. The remaining mechanism is upstream term formation and nonlinear numerical trajectory at scales far below hydrologically meaningful head differences.",
+    "Further decomposition of constitutive arithmetic would characterize solver implementation microstructure rather than test the response-space coupling concept. The G21 forensic line should therefore close here unless solver robustness itself becomes a separate workstream.",
+    "No production tolerance, retry policy, arithmetic, status smoothing, coupling policy or HCOF/RHS behavior is changed or admitted."
+  ],
+  "next_natural_unit": "Close the G21 solver-forensics subline while preserving the original G21 dynamic-path falsification. Open a new endpoint-based coupling qualification that preregisters physical interface residual, endpoint agreement, mass/ledger closure, transaction non-authority during trials, replay/restart determinism and robustness across admissible initialization/globalization variants without requiring exact reproduction of the G17 internal Newton trajectory."
+}
