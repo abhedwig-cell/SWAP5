@@ -8,9 +8,9 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-20H3 closeout; factor-separation expectations are frozen prospectively.",
-  "next_action": "After DUMMY-20H3 qualification, rebind and complete runner/workflow without changing frozen factor expectations.",
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Complete runner/workflow and execute frozen DUMMY-20H4 physical-versus-LP factor qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -18,5 +18,7 @@
     "prepared_path": "tests/research/real_ribasim_20h4_physical_lp_factor.jl",
     "scientific_change": false,
     "note": "Prepared while DUMMY-20H3 is active. No runner, workflow gate or execution before DUMMY-20H3 closeout and qualification."
-  }
+  },
+  "implementation_baseline": "f51de02dd50b2d385eca9833f1b141ccdd672ef4",
+  "recovery_point": "DUMMY-20H3 qualified; frozen DUMMY-20H4 verifier is now implementation-ready."
 }
