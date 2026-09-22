@@ -1,0 +1,310 @@
+{
+  "schema": "swap5.rom-accept.source-provenance.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "purpose": "Independent purpose-dependent acceptance authority for reduced hydrological models",
+  "reconciliation": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "application_validation_parent": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
+    "frozen_layer_rom_evidence": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+    "parent_app0_state": "CLOSED_SCIENTIFIC_BLOCKER_APPLICATION_TOLERANCE_AUTHORITY",
+    "candidate_set": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "candidate_simulations_executed_in_rom_accept": false,
+    "new_candidate_responses_viewed_in_rom_accept": false,
+    "threshold_tuning_from_candidate_response": false
+  },
+  "authority_eligibility_rule": {
+    "required": [
+      "Independent of reduced-model candidate performance",
+      "Bound to a named hydrological purpose and quantity of interest",
+      "Quantitative or otherwise operationally falsifiable",
+      "Spatial and temporal support stated or defensibly bounded",
+      "Error type identified: application consequence, numerical allocation, observational uncertainty, or structural/model-form error",
+      "No substitution of solver convergence, bookkeeping closure, achieved RMSE, or generic goodness-of-fit for application tolerance"
+    ],
+    "direction": "external_or_purpose_requirement -> frozen acceptance semantics -> future blind candidate validation",
+    "prohibited_direction": "candidate error -> convenient threshold"
+  },
+  "accepted_repository_authorities": [
+    {
+      "id": "APP0_PARENT",
+      "path": "integration/f-rom/LAYER_ROM_APP0_AUTHORITY_CLOSEOUT.json",
+      "ref": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
+      "class": "HISTORICAL_BLOCKER_AND_METHOD_AUTHORITY",
+      "use": "Preserves the no-candidate-exposure rule and the distinction between application tolerance, numerical closure, observation error, and achieved model error."
+    },
+    {
+      "id": "HM_STAGE0_HEAD",
+      "path": "docs/publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md",
+      "ref": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "class": "ACCEPTED_BOUNDED_PROJECT_GOVERNANCE",
+      "purpose": "GW-D / HYDRO-MEMORY Stage 0 only",
+      "extracted_authority": {
+        "quantity": "groundwater head at the SWAP-groundwater coupling interface",
+        "temporal_support": "complete 90-day Stage 0 drought-recovery experiment",
+        "application_numerical_head_error_max_m": 0.004,
+        "temporal_discretisation_budget_m": 0.001,
+        "basis": "1% of the smallest 0.4 m prescribed groundwater-depth treatment separation; 25% of that allowance allocated prospectively to temporal discretisation"
+      },
+      "boundary": "Explicitly numerical prediction-error governance. It does not qualify model structural uncertainty, parameter uncertainty, forcing uncertainty, or a universal hydrological impact threshold."
+    },
+    {
+      "id": "HM_STAGE0_INTERFACE",
+      "path": "docs/publication/HYDRO_MEMORY_STAGE0_INTERFACE_ACCURACY_GOVERNANCE_V1.md",
+      "ref": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "class": "ACCEPTED_BOUNDED_PROJECT_GOVERNANCE",
+      "purpose": "GW-D / HYDRO-MEMORY Stage 0 only",
+      "extracted_authority": {
+        "coupling_interface_head_residual_budget_m": 0.001,
+        "allocation_fraction_of_application_head_budget": 0.25,
+        "unallocated_fraction_after_temporal_and_interface_allocations": 0.5
+      },
+      "boundary": "The interface allocation is a numerical coupling budget, not a structural reduced-model error allowance and not a physical-impact threshold."
+    },
+    {
+      "id": "FGC39",
+      "path": "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md",
+      "ref": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "class": "ACCEPTED_COUPLING_CONTRACT",
+      "purpose": "GW-D",
+      "extracted_authority": [
+        "One immutable accepted SWAP origin per coupling window",
+        "All correctors replay from that accepted origin",
+        "Coupled convergence is conjunctive: MODFLOW nonlinear convergence and interface-flux consistency are both required",
+        "Rejected SWAP candidates are discarded and cannot mutate accepted state",
+        "Failure is bounded and fail-closed"
+      ],
+      "boundary": "The contract requires a q_tolerance but does not itself establish a hydrological application tolerance for reduced-model structural error."
+    },
+    {
+      "id": "FGC41",
+      "path": "docs/integration/F-GC41_WHOLE_WINDOW_ACCEPTANCE_RETRY.md",
+      "ref": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "class": "ACCEPTED_TRANSACTION_AND_MASS_AUTHORITY",
+      "purpose": "GW-D",
+      "extracted_authority": [
+        "Zero publication on pre-publication failure",
+        "Accepted transfer is published exactly once after all participant preflights",
+        "Retry reconstructs from the last accepted timestep",
+        "Post-publication failure is durability/restart, not rollback-safe scientific retry"
+      ]
+    },
+    {
+      "id": "FGC44",
+      "path": "docs/integration/F-GC44_REAL_SWAP_MODFLOW6_END_TO_END.md",
+      "ref": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "class": "ACCEPTED_RESTRICTED_REAL_COUPLING_QUALIFICATION",
+      "purpose": "GW-D",
+      "extracted_authority": [
+        "One prepared MODFLOW solve per window",
+        "All SWAP correctors originate from one accepted checkpoint",
+        "No participant publication before all preflights pass",
+        "One SWAP revision/time advance and one interface-ledger exchange commit"
+      ],
+      "boundary": "Near-equilibrium restricted envelope; arbitrary prescribed-head jumps are not admitted."
+    },
+    {
+      "id": "HM_ACC02_F1_F2",
+      "paths": [
+        "docs/publication/HYDRO_MEMORY_ACC02_F1_RESULT.md",
+        "docs/publication/HYDRO_MEMORY_ACC02_F2_RESULT.md"
+      ],
+      "ref": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "class": "QUALIFIED_EXECUTION_EVIDENCE_UNDER_PREDECLARED_GOVERNANCE",
+      "purpose": "GW-D / HYDRO-MEMORY restricted root-active coupling",
+      "numerical_execution_controls": {
+        "coupling_head_residual_tolerance_m": 0.001,
+        "flux_iteration_criterion_m_per_s": 1e-15,
+        "hard_swap_mass_tolerance_cm": 1e-12,
+        "maximum_fixed_point_iterations": 6
+      },
+      "interpretation": "The head budget is inherited from project governance. The flux criterion, hard mass tolerance, and iteration ceiling are execution/qualification controls and are not promoted to general hydrological application tolerances.",
+      "state_memory_authority": "F2 rebuilds each next-window predictor from the current committed SWAP state and the actual previously accepted interface state; rejected/intermediate correctors remain nonmutating and cumulative ledger exchange follows accepted windows."
+    }
+  ],
+  "accepted_external_or_product_authorities": [
+    {
+      "id": "RWS_LHM41_UNSAT",
+      "title": "Validatie en toetsing LHM 4.1, Deelrapport 2: Onverzadigde zone",
+      "publisher_context": "HKV/Acacia Water/Berendrecht Consultancy in opdracht van Rijkswaterstaat",
+      "locator": "https://open.rijkswaterstaat.nl/publish/pages/33254/rapportage_validatie_lhm_deelrapport_2_onverzadigde_zone.pdf",
+      "class": "FORMAL_APPLICATION_PRODUCT_CRITERION_PARTIAL",
+      "purpose_relevance": "SCI-P",
+      "extracted_authority": [
+        "National mean correlation between observed and calculated monthly soil moisture during the growing season must be at least 0.6.",
+        "Correlation must be at least 0.6 in each distinguished regional area type.",
+        "For field-sensor locations, monthly observed-calculated soil-moisture correlation during the growing season must be at least 0.6 for 80% of locations."
+      ],
+      "boundary": "This is a monthly temporal-pattern criterion for LHM validation. It does not prescribe absolute volumetric-water-content error, depth-interval storage error, wetting/drying-front timing error, or profile-extreme fidelity.",
+      "source_page_binding": {
+        "criteria_table_pdf_page_index": 11,
+        "printed_page": 8
+      }
+    },
+    {
+      "id": "RWS_LHM41_GW",
+      "title": "Validatie en toetsing LHM 4.1, Deelrapport 1: Grondwater",
+      "publisher_context": "HKV/Acacia Water/Berendrecht Consultancy in opdracht van Rijkswaterstaat",
+      "locator": "https://nhi.nu/documents/230/Rapportage_Validatie_LHM_grondwater_def_met_bijlage.pdf",
+      "class": "FORMAL_DOWNSTREAM_GROUNDWATER_APPLICATION_CRITERION",
+      "purpose_relevance": "GW-D downstream consequence",
+      "extracted_authority": [
+        "Freatic GHG: in 80% of measurement points, absolute deviation <20 cm in Holoceen, <35 cm in Pleistoceen and <50 cm in Sterk hellend; median deviation <15 cm.",
+        "Freatic GLG: in 80% of measurement points, absolute deviation <30 cm in Holoceen, <50 cm in Pleistoceen and <100 cm in Sterk hellend; median deviation <15 cm.",
+        "Freatic dynamics (GHG-GLG): in 80% of measurement points, deviation <25% of measured dynamics; median deviation <15 cm.",
+        "Drought recession gradient: in 80% of measurement points, deviation <25% of measured recession.",
+        "First aquifer: mean head in 80% of measurement points within 50 cm with median deviation <15 cm; dynamics deviation <35% in 80% of points.",
+        "Deep aquifers: mean head in 80% of measurement points within 100 cm with median deviation <15 cm; dynamics deviation <50% in 80% of points.",
+        "The report defines GHG/GLG sampling and drought-recession temporal construction; lowest-head timing is investigated but not assigned a formal criterion."
+      ],
+      "boundary": "These criteria can directly govern a matching LHM-like end-to-end groundwater application. They do not define a portable interface-flux tolerance and do not establish component-level Layer-ROM equivalence.",
+      "source_page_binding": {
+        "criteria_explanation_pdf_page_index": 17,
+        "criteria_table_pdf_page_index": 18,
+        "temporal_definition_pdf_page_index": 21,
+        "additional_dynamics_definition_pdf_page_index": 22
+      },
+      "direct_end_to_end_envelope": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json"
+    },
+    {
+      "id": "RWS_LHM41_PROGRAM",
+      "title": "Rijkswaterstaat Publicatie Platform: Validatie en toetsing LHM 4.1",
+      "locator": "https://open.rijkswaterstaat.nl/@47860/validatie-toetsing-lhm-4-1-samenvattend/",
+      "class": "SOURCE_CONTEXT",
+      "extracted_authority": "Confirms LHM use for the National Water Model and drought insight and that the validation was performed for Rijkswaterstaat with user involvement."
+    },
+    {
+      "id": "RWS_LHM41_SURFACE_WATER",
+      "title": "Validatie en toetsing LHM 4.1, Deelrapport 3: Oppervlaktewater",
+      "locator": "https://nhi.nu/documents/231/Rapportage_Validatie_LHM_oppervlaktewater_def.pdf",
+      "class": "FORMAL_DOWNSTREAM_TOTAL_SYSTEM_APPLICATION_CRITERIA",
+      "purpose_relevance": "GW-R contextual/downstream only",
+      "extracted_authority": [
+        "Cumulative annual discharge deviation <25% at 80% of locations for discharge >5 m3/s.",
+        "Cumulative annual discharge deviation <33% at 80% of locations for discharge <5 m3/s.",
+        "Cumulative summer-half-year supply deviation <25% at 80% of locations for supply >5 m3/s.",
+        "Cumulative summer-half-year supply deviation <50% at 80% of locations for supply <5 m3/s.",
+        "For larger regional water-balance areas, cumulative annual discharge deviation <25% at 80% under the report criterion."
+      ],
+      "source_basis": "The report states that some criteria were adjusted in light of roughly 10-25% measurement-accuracy margins.",
+      "boundary": "Formal downstream total-system criteria. Not a direct groundwater-recharge or lower-boundary exchange tolerance and not invertible to one without an independent response mapping.",
+      "review_record": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json"
+    }
+  ],
+  "rejected_or_nontransferable_authorities": [
+    {
+      "id": "APP0_GENERIC_OR_CASE_SPECIFIC_THRESHOLDS",
+      "source": "integration/f-rom/LAYER_ROM_APP0_SOURCE_PROVENANCE.json",
+      "examples": [
+        "<1% groundwater-model water-balance discrepancy",
+        "<10% recharge error from a case-specific estimability study",
+        "SMAP unbiased RMSE <0.04 m3/m3",
+        "generic hydrological goodness-of-fit classes"
+      ],
+      "reason": "Numerical/accounting closure, case-specific achieved performance, remote-sensing product accuracy, or context-free model-fit guidance are not direct reduced-model application tolerances."
+    },
+    {
+      "id": "HM_FLUX_AND_MASS_EXECUTION_CONTROLS_AS_ROM_TOLERANCE",
+      "rejected_candidate": "Use 1e-15 m/s flux convergence or 1e-12 cm hard SWAP mass tolerance as Layer-ROM application error limits",
+      "reason": "These values are numerical execution and conservation controls. They do not state the permissible hydrological consequence of reduced-model structural approximation."
+    },
+    {
+      "id": "HM_HEAD_BUDGET_AS_UNALLOCATED_ROM_STRUCTURE_TOLERANCE",
+      "rejected_candidate": "Use 0.004 m total Stage 0 head budget or 0.001 m interface budget directly as Layer-ROM structural tolerance",
+      "reason": "The governing documents explicitly exclude model structural uncertainty. No independent allocation from the Stage 0 numerical budget to reduced-model structural error exists."
+    },
+    {
+      "id": "LHM_SOIL_MOISTURE_CORRELATION_AS_PROFILE_ERROR_LIMIT",
+      "rejected_candidate": "Use correlation >=0.6 as an absolute profile/storage/front-timing tolerance",
+      "reason": "Correlation constrains temporal association at the report's support. It does not bound absolute state error, vertical redistribution, front timing, extrema, or per-layer storage bias."
+    },
+    {
+      "id": "LHM_GW_CRITERIA_AS_INTERFACE_FLUX_TOLERANCE",
+      "rejected_candidate": "Back-convert LHM groundwater recession/dynamics criteria to one portable exchange-flux tolerance without an independently governed response mapping",
+      "reason": "The flux-to-head/recession mapping is system-, state-, and timescale-dependent; no portable authorized inversion is established here."
+    },
+    {
+      "id": "LHM_SURFACE_WATER_BALANCE_AS_GW_R_RECHARGE_TOLERANCE",
+      "rejected_candidate": "Use LHM cumulative discharge/supply/water-balance criteria as direct recharge or lower-boundary exchange tolerance.",
+      "reason": "The downstream quantities combine recharge with precipitation, evapotranspiration, storage, drainage, routing and management; no independent attribution mapping is authorized."
+    },
+    {
+      "id": "SOIL_MOISTURE_MEASUREMENT_ERROR_AS_SCI_P_PROFILE_TOLERANCE",
+      "rejected_candidate": "Use sensor measurement uncertainty or a calibration-relative soil-moisture RMSE cutoff as a general SCI-P profile-fidelity requirement.",
+      "reason": "Observation uncertainty and study-specific calibration acceptance do not establish an application tolerance for vertical model-structural error."
+    }
+  ],
+  "source_review_decision": "ROM-ACCEPT authority search is closed for the declared scope. GW-R has no direct independent quantitative recharge/lower-boundary tolerance; formal downstream LHM surface-water criteria are not transferable without response mapping. GW-D has a frozen direct LHM-like application envelope but its exact original report population is not publicly reproducible; component structural error remains unallocated. SCI-P has a formal monthly soil-moisture correlation endpoint but no absolute or depth-resolved profile/storage/front-timing authority.",
+  "blindness_preserved": true,
+  "external_source_verification": {
+    "date": "2026-09-22",
+    "method": "Direct verification against the formal Rijkswaterstaat/NHI LHM 4.1 PDF sources before any reduced-model candidate response.",
+    "groundwater_report": {
+      "source_locator": "https://nhi.nu/documents/230/Rapportage_Validatie_LHM_grondwater_def_met_bijlage.pdf",
+      "verified_pdf_page_indices": [
+        17,
+        18,
+        21,
+        22
+      ],
+      "verified_printed_pages": [
+        13,
+        14,
+        17,
+        18
+      ],
+      "findings": [
+        "The groundwater criteria are explicitly presented as toetsingscriteria.",
+        "Freatic GHG/GLG absolute-error limits are area-type specific and require compliance at 80% of measurement points, with a separate median-error criterion.",
+        "Freatic dynamics and drought recession use 25% relative-deviation criteria at 80% of measurement points.",
+        "First-aquifer dynamics use 35% and deep-aquifer dynamics 50% relative deviation at 80% of measurement points.",
+        "Timing of the lowest groundwater level is defined diagnostically but is not a formal acceptance criterion.",
+        "GHG/GLG temporal construction and drought-recession construction are explicitly defined in the report."
+      ]
+    },
+    "unsaturated_report": {
+      "source_locator": "https://open.rijkswaterstaat.nl/publish/pages/33254/rapportage_validatie_lhm_deelrapport_2_onverzadigde_zone.pdf",
+      "verified_pdf_page_index": 11,
+      "verified_printed_page": 8,
+      "findings": [
+        "Monthly growing-season soil-moisture correlation must be at least 0.6 nationally.",
+        "Correlation must be at least 0.6 in each stated area type.",
+        "For field-sensor locations, the monthly growing-season correlation must be at least 0.6 for 80% of measurement points.",
+        "The source criterion is a temporal soil-moisture validation statistic, not an absolute vertical-profile fidelity requirement."
+      ]
+    }
+  },
+  "external_dataset_binding_attempt": {
+    "date": "2026-09-22",
+    "prior_public_link_state": "The NHI model page's Dropbox link was observed deleted.",
+    "recovery": {
+      "state": "OFFICIAL_NHI_THREDDS_ARCHIVE_RECOVERED_AND_QUALIFIED",
+      "catalog": "https://thredds.data.nhi.nu/thredds/catalog/opendap/Modellen/lhm411/validatiedata/catalog.html",
+      "http_server": "https://thredds.data.nhi.nu/thredds/fileServer/opendap/Modellen/lhm411/validatiedata/validatiedata.zip",
+      "archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+      "byte_size": 155954643,
+      "zip_crc_test": "PASS",
+      "member_count": 13732,
+      "qualification_run": 35749932742,
+      "qualification_job": 106821117194,
+      "result_record": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json"
+    },
+    "population_binding": {
+      "state": "PUBLIC_ARCHIVE_AUTHENTIC_BUT_ORIGINAL_VALIDATION_POPULATION_INCOMPLETE",
+      "reason": "The archive metadata explicitly states that some data were withheld from publication at data-owner request. Published IPF populations are smaller than the N values used in the report's final national statistics.",
+      "result_record": "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json",
+      "public_archive_can_define_new_reproducible_subset": true,
+      "public_subset_is_original_acceptance_population": false
+    },
+    "decision": "DO_NOT_TREAT_PUBLIC_DISTRIBUTABLE_SUBSET_AS_ORIGINAL_LHM_ACCEPTANCE_POPULATION_WITHOUT_NEW_AUTHORITY"
+  },
+  "focused_authority_closeouts": {
+    "GW_R": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
+    "SCI_P": "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json"
+  }
+}

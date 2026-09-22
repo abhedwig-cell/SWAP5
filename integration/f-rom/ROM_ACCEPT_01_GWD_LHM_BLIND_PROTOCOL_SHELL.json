@@ -1,0 +1,126 @@
+{
+  "schema": "swap5.rom-accept.blind-application-protocol-shell.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "protocol_id": "GW-D-LHM-END2END-BLIND-SHELL-V1",
+  "status": "DESIGN_SHELL_ONLY_NOT_EXECUTABLE",
+  "acceptance_envelope": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+  "purpose": "Prospective observation-bound validation of a coupled LHM-like groundwater application containing a reduced unsaturated-zone component.",
+  "execution_authorized": false,
+  "prerequisites_before_freeze": [
+    {
+      "id": "DATASET_BINDING",
+      "requirement": "Bind immutable identities/hashes and licenses for the exact groundwater observation datasets and spatial classifications used in the application panel.",
+      "state": "PARTIAL_RESOLVED_PUBLIC_ARCHIVE_IDENTITY",
+      "evidence": {
+        "official_archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+        "byte_size": 155954643,
+        "crc_test": "PASS",
+        "archive_result": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json"
+      },
+      "resolution_requires": "Recover the exact processed LHM 4.1 validation groundwater dataset/population from NHI/Rijkswaterstaat/data owner, or an authoritative replacement manifest that reproduces the same validation population and classifications. Do not substitute a newly assembled DINO/regional sample without new purpose authority.",
+      "remaining": "The public archive is not the complete report population because publication-withheld measurements are absent."
+    },
+    {
+      "id": "POPULATION_BINDING",
+      "requirement": "Freeze the exact measurement-point population, hydrotype/area-type mapping, depth-class membership and all inclusion/exclusion rules before any reduced-model output.",
+      "state": "BLOCKED_COMPLETE_ORIGINAL_POPULATION_AUTHORITY",
+      "evidence": {
+        "public_population_result": "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json",
+        "public_metadata_contains": [
+          "BUIS",
+          "MEETREEKS",
+          "HYDROTYPE",
+          "GEBIEDSTYPE",
+          "WEIGHT",
+          "CLUSTER",
+          "calibration-excluded variants"
+        ],
+        "completeness": "INCOMPLETE_RELATIVE_TO_PUBLISHED_LHM41_STATISTIC_POPULATIONS"
+      },
+      "resolution_requires": "Either obtain the complete original validation population/manifest from Rijkswaterstaat/NHI/data owners, or establish an independent purpose-owner contract that declares the distributable public subset to be the governed population of a new reproducible application test."
+    },
+    {
+      "id": "TEMPORAL_BINDING",
+      "requirement": "Implement and freeze the source-defined GHG/GLG sampling, hydrological-year construction, dynamics amplitude and drought-recession construction exactly; timing diagnostics without source thresholds remain diagnostic only.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "APPLICATION_COMPOSITION_BINDING",
+      "requirement": "Freeze groundwater model, forcing, land-surface parameterization, calibration state, coupling interval policy and reduced-component insertion point. No candidate-specific recalibration or compensation is allowed unless separately authorized by the application contract.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "ROM_IDENTITY_BINDING",
+      "requirement": "Freeze reduced-model formulation, state placement, closure, initialization and state-transfer rules before any application response is viewed.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "REFERENCE_ROLE_BINDING",
+      "requirement": "If Full Richards is also run, bind it as an attribution/comparator route only. External LHM criteria remain the acceptance authority; candidate-reference error may not redefine thresholds.",
+      "state": "UNRESOLVED"
+    },
+    {
+      "id": "BLIND_PANEL_BINDING",
+      "requirement": "Freeze all application years/cases, difficult periods, spatial populations and missing-data handling before candidate execution.",
+      "state": "UNRESOLVED"
+    }
+  ],
+  "acceptance_logic": {
+    "authority": "External LHM groundwater criteria only",
+    "gate_form": "Vector gate with no weighted composite score",
+    "source_threshold_mutation_after_response": false,
+    "candidate_specific_thresholds": false,
+    "candidate_specific_population_changes": false,
+    "candidate_specific_parameter_recalibration": false,
+    "reference_based_thresholds": false,
+    "pass_semantics": "Each applicable externally governed criterion must be evaluated at exactly its stated population and temporal support. Any deliberately excluded criterion requires a preregistered domain statement before execution."
+  },
+  "comparison_design": {
+    "required_arm": "Reduced unsaturated-zone component embedded in the frozen coupled application",
+    "optional_diagnostic_arm": "Full Richards or existing production unsaturated-zone route under identical non-ROM application inputs",
+    "diagnostic_questions": [
+      "Does the reduced route pass the external application envelope?",
+      "If both routes pass, what hydrological response differences remain?",
+      "If the reduced route fails while the comparator passes, which external criterion is lost?",
+      "If both fail, do not attribute application failure uniquely to ROM."
+    ],
+    "prohibited_conclusion": "Passing the external application envelope alone does not prove vertical-state or process equivalence to Full Richards."
+  },
+  "evidence_to_persist_before_execution": [
+    "External source identity and exact criteria table transcription",
+    "Observation dataset identity and population manifest",
+    "Spatial classification manifest",
+    "Temporal aggregation implementation tests",
+    "Application configuration hash/identity",
+    "ROM identity and immutable preregistration",
+    "Blind case manifest",
+    "Acceptance evaluator with synthetic unit tests around every threshold"
+  ],
+  "stop_rules": [
+    "Stop if exact observation/population authority cannot be bound.",
+    "Stop if the LHM temporal/statistical constructions cannot be reproduced without interpretation choices.",
+    "Stop if candidate-specific recalibration is needed but has no independent application authority.",
+    "Stop if any external criterion is dropped after viewing candidate output.",
+    "Do not substitute synthetic ROM-PURPOSE metrics for the external application criteria."
+  ],
+  "handoff_target": "A future dedicated observation-bound application-validation work unit, not ROM-PURPOSE P1 and not ROM-ROOT.",
+  "candidate_responses_viewed": false,
+  "external_blockers": [
+    {
+      "id": "LHM41_COMPLETE_VALIDATION_POPULATION_AUTHORITY",
+      "class": "EXTERNAL_POPULATION_AUTHORITY_BLOCKER",
+      "state": "BLOCKED",
+      "description": "The official public archive is qualified, but its metadata explicitly states that data withheld by owners were removed. Therefore the exact original population behind the published LHM 4.1 national acceptance statistics is not fully available from public sources.",
+      "consequence": "Do not execute an exact LHM 4.1 acceptance replication and do not relabel the public subset as equivalent.",
+      "resolved_part": "Archive retrieval, byte identity, ZIP integrity and public metadata identity are resolved."
+    }
+  ],
+  "next_safe_step": "Obtain authority for the complete report population or a new purpose-owner rule governing the public distributable subset. Until then, keep the direct GW-D envelope frozen but non-executable.",
+  "public_subset_route": {
+    "state": "NOT_AUTHORIZED_AS_ACCEPTANCE_ROUTE",
+    "reason": "A distributable subset is reproducible, but the source does not establish that the 80% acceptance rules retain identical application meaning after owner-dependent omissions.",
+    "allowed_now": "Provenance and design diagnostics only; no Layer-ROM candidate response."
+  }
+}

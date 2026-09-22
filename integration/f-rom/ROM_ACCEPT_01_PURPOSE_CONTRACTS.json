@@ -1,0 +1,279 @@
+{
+  "schema": "swap5.rom-accept.purpose-contracts.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "authority_basis": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "parent": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
+    "source_provenance": "integration/f-rom/ROM_ACCEPT_01_SOURCE_PROVENANCE.json"
+  },
+  "global_rules": {
+    "criterion_form": "Vector criteria; no weighted composite score",
+    "candidate_error_used_to_set_threshold": false,
+    "reduced_model_simulation_authorized_by_this_record": false,
+    "comparison_types_kept_distinct": [
+      "hydrological application endpoint",
+      "numerical discretisation or coupling allocation",
+      "solver convergence control",
+      "hard conservation/accounting invariant",
+      "observational uncertainty",
+      "model structural/reduction error"
+    ]
+  },
+  "purpose_contracts": {
+    "GW-R": {
+      "name": "Groundwater recharge / long-term exchange",
+      "decision_state": "NO_INDEPENDENT_QUANTITATIVE_APPLICATION_AUTHORITY_FOUND",
+      "intended_quantity_vector": [
+        "cumulative recharge or bottom exchange",
+        "seasonal recharge",
+        "annual water-balance contribution",
+        "long-term bias/drift"
+      ],
+      "spatial_support": "Unsaturated-zone lower boundary aggregated to the groundwater application support; exact application population not independently fixed.",
+      "temporal_support": {
+        "cumulative_or_long_term_relevance": "SUPPORTED_QUALITATIVELY",
+        "annual_tolerance": null,
+        "seasonal_tolerance": null,
+        "event_tolerance": null,
+        "allowable_timing_error": null,
+        "aggregation_rule": null
+      },
+      "error_budget": {
+        "absolute_tolerance": null,
+        "relative_tolerance": null,
+        "allowed_bias": null,
+        "long_term_drift": null
+      },
+      "event_vs_cumulative_semantics": "UNRESOLVED",
+      "sign_or_reversal_requirement": "UNRESOLVED_NOT_PRIMARY_FOR_LONG_TERM_GW_R",
+      "treatment_of_extremes": "UNRESOLVED",
+      "population_domain": null,
+      "rejected_substitutions": [
+        "Groundwater-model numerical water-balance closure as recharge-representation tolerance",
+        "Case-specific achieved recharge estimation error as a universal criterion",
+        "A temporal aggregation interval chosen because a candidate happens to pass it"
+      ],
+      "frozen_acceptance_envelope": {
+        "state": "NOT_FROZEN",
+        "reason": "No independent quantitative recharge bias, cumulative-exchange, seasonal, annual, or drift tolerance with matched temporal semantics was identified."
+      },
+      "unresolved_requirements": [
+        "Purpose-owner quantitative consequence of recharge error",
+        "Allowed cumulative bias or drift",
+        "Seasonal versus annual allocation rule",
+        "Domain/population to which the requirement applies"
+      ],
+      "authority_review": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
+      "formal_downstream_nontransferable_endpoint": {
+        "source": "LHM 4.1 surface-water validation",
+        "status": "FORMAL_APPLICATION_SYSTEM_CRITERIA__NOT_DIRECT_RECHARGE_AUTHORITY",
+        "examples": [
+          "cumulative annual discharge deviation <25% at 80% of locations for >5 m3/s",
+          "cumulative annual discharge deviation <33% at 80% of locations for <5 m3/s",
+          "cumulative summer-half-year supply deviation <25% or <50% at 80% of locations depending on flow class",
+          "larger regional water-balance areas: cumulative annual discharge deviation <25% at 80%"
+        ],
+        "nontransferability": "No independently governed mapping from downstream discharge/water-balance error to allowable unsaturated-zone recharge error."
+      }
+    },
+    "GW-D": {
+      "name": "Dynamic groundwater coupling",
+      "decision_state": "PARTIAL_COMPONENT_AUTHORITY_PLUS_FROZEN_LHM_END2END_APPLICATION_ROUTE",
+      "primary_bounded_application": "HYDRO-MEMORY Stage 0",
+      "quantity_vector": [
+        "groundwater head at the SWAP-groundwater coupling interface",
+        "coupling-interface head residual",
+        "interface exchange flux consistency",
+        "accepted whole-window interface mass",
+        "accepted-state memory across windows"
+      ],
+      "spatial_support": {
+        "governed_stage0": "One synthetic one-dimensional SWAP column coupled at its groundwater interface; Stage 0 treatment set",
+        "broader_portability": "NOT_AUTHORIZED"
+      },
+      "temporal_support": {
+        "governed_stage0_experiment": "Complete 90-day drought-recovery experiment",
+        "coupling_window_semantics": "Each corrector replays from one immutable accepted origin; each accepted next window starts from current committed SWAP state and the actual previously accepted interface state.",
+        "allowable_event_timing_error": null,
+        "reversal_timing_tolerance": null
+      },
+      "frozen_independent_components": {
+        "downstream_numerical_consequence_budget": {
+          "quantity": "groundwater head",
+          "total_numerical_head_error_max_m": 0.004,
+          "source_claim": "HM-ACC-APP-001",
+          "scope": "HYDRO-MEMORY Stage 0 only",
+          "error_class": "COUPLED_NUMERICAL_PREDICTION_ERROR",
+          "transferable_to_rom_structural_error": false
+        },
+        "temporal_numerical_allocation": {
+          "quantity": "groundwater head error attributable to time discretisation",
+          "max_m": 0.001,
+          "source_claim": "HM-ACC-TEMP-001",
+          "fraction_of_total_numerical_head_budget": 0.25,
+          "scope": "HYDRO-MEMORY Stage 0 only",
+          "transferable_to_rom_structural_error": false
+        },
+        "coupling_interface_numerical_allocation": {
+          "quantity": "coupling-interface head residual",
+          "max_m": 0.001,
+          "source_claim": "HM-ACC-INT-001",
+          "fraction_of_total_numerical_head_budget": 0.25,
+          "scope": "HYDRO-MEMORY Stage 0 only",
+          "transferable_to_rom_structural_error": false
+        },
+        "transaction_and_mass_semantics": {
+          "rejected_trial_authoritative_mass": 0,
+          "publication_rule": "Accepted interface transfer is published exactly once after all participant preflights.",
+          "accepted_state_rule": "Rejected/intermediate correctors do not mutate accepted state; retry reconstructs from the last accepted state.",
+          "cumulative_rule": "Authoritative cumulative interface mass is the sum of accepted-window transfers only.",
+          "tolerance_type": "HARD_SEMANTIC_INVARIANT_NOT_SOFT_APPLICATION_PERCENTAGE"
+        },
+        "coupled_iteration_semantics": {
+          "convergence_rule": "MODFLOW nonlinear convergence AND SWAP-groundwater exchange consistency",
+          "solver_only_convergence_sufficient": false,
+          "flux_only_convergence_sufficient": false
+        }
+      },
+      "explicitly_not_promoted_to_application_tolerance": {
+        "flux_iteration_criterion_m_per_s": 1e-15,
+        "hard_swap_mass_tolerance_cm": 1e-12,
+        "maximum_fixed_point_iterations": 6,
+        "reason": "These are execution/qualification controls in the restricted HYDRO-MEMORY evidence, not independently justified hydrological consequences of reduced-model structural error."
+      },
+      "external_downstream_application_endpoints": {
+        "source": "RWS LHM 4.1 groundwater validation",
+        "envelope_ref": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+        "route_state": "FROZEN_FOR_MATCHING_LHM_LIKE_END_TO_END_APPLICATION",
+        "criteria_summary": [
+          "Freatic GHG and GLG absolute-error gates with area-type-specific thresholds at 80% of measurement points plus median-error gates.",
+          "Freatic GHG-GLG dynamics deviation <25% at 80% of measurement points plus median-error gate.",
+          "Drought recession-gradient deviation <25% at 80% of measurement points.",
+          "First-aquifer mean-head and dynamics gates: 50 cm absolute / 35% dynamics at the stated population support.",
+          "Deep-aquifer mean-head and dynamics gates: 100 cm absolute / 50% dynamics at the stated population support."
+        ],
+        "use": "Direct end-to-end application acceptance for a matching LHM-like coupled system containing the reduced unsaturated-zone component.",
+        "not_authorized_use": "Not applicable to synthetic Reference-Richards error panels and not invertible to a portable interface-flux or component structural-error tolerance."
+      },
+      "unresolved_error_budget": {
+        "rom_structural_error_head_allocation_m": null,
+        "rom_structural_error_flux_allocation": null,
+        "sign_reversal_tolerance": null,
+        "reversal_timing_tolerance": null,
+        "allowed_cumulative_interface_mass_bias": "HARD_ACCEPTED_MASS_SEMANTICS_EXIST_BUT_NO_SOFT_ROM_APPROXIMATION_BIAS_BOUND",
+        "response_mapping_from_rom_error_to_head_consequence": null
+      },
+      "treatment_of_extremes": {
+        "current_real_coupling_boundary": "Arbitrary prescribed-head jumps are not admitted by F-GC44; larger jumps require separate qualification rather than tolerance relaxation.",
+        "stage0_treatment_range": "Bounded by the frozen Stage 0 groundwater-depth treatments; no extrapolated ROM acceptance is implied."
+      },
+      "frozen_acceptance_envelope": {
+        "component_fidelity_route": {
+          "state": "PARTIAL_FROZEN_UPSTREAM_REQUIREMENTS_ONLY",
+          "frozen": [
+            "Stage 0 numerical groundwater-head consequence budget",
+            "Stage 0 temporal numerical allocation",
+            "Stage 0 interface numerical allocation",
+            "transaction-safe accepted-state and exact-once authoritative interface-mass semantics"
+          ],
+          "not_frozen": [
+            "Layer-ROM structural/model-form error allocation",
+            "portable exchange-flux tolerance",
+            "sign/reversal tolerance",
+            "reversal timing tolerance",
+            "broader population/domain portability"
+          ],
+          "direct_layer_rom_candidate_validation_authorized": false,
+          "blocker": "ROM_STRUCTURAL_ERROR_ALLOCATION_REQUIRED_FOR_COMPONENT_LEVEL_OR_SYNTHETIC_REFERENCE_COMPARISON"
+        },
+        "direct_application_route": {
+          "state": "FROZEN_LHM_LIKE_END_TO_END_OUTPUT_ENVELOPE__POPULATION_BINDING_BLOCKED",
+          "envelope_ref": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+          "structural_error_allocation_required": false,
+          "rationale": "The external criteria judge the final groundwater application outputs directly rather than allocating an internal reduced-component error.",
+          "current_candidate_execution_authorized": false,
+          "blocker": "COMPLETE_ORIGINAL_LHM41_VALIDATION_POPULATION_AUTHORITY_OR_NEW_PUBLIC_SUBSET_PURPOSE_CONTRACT_REQUIRED",
+          "protocol_shell": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
+          "next_gate": "Recover complete original population/manifest, or independently govern a new public-subset application population before any candidate response.",
+          "archive_authority": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json",
+          "population_binding": "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json"
+        }
+      }
+    },
+    "SCI-P": {
+      "name": "Scientific soil-moisture/profile representation",
+      "decision_state": "PARTIAL_EXTERNAL_APPLICATION_ENDPOINT_FOUND__PROFILE_FIDELITY_AUTHORITY_UNRESOLVED",
+      "intended_quantity_vector": [
+        "soil-moisture profile",
+        "storage per depth interval",
+        "timing of drying and wetting fronts",
+        "local redistribution/flux where scientifically interpreted",
+        "extrema and dry/wet-state behavior"
+      ],
+      "required_uncertainty_separation": {
+        "numerical_resolution_requirement": "UNRESOLVED_FOR_LAYER_ROM_PROFILE_VECTOR",
+        "observational_uncertainty": "MUST_BE_REPORTED_SEPARATELY_AND_NOT_USED_AS_MODEL_TOLERANCE_WITHOUT_MAPPING",
+        "application_tolerance": "PARTIAL_ONLY",
+        "model_structural_uncertainty": "UNRESOLVED"
+      },
+      "accepted_partial_application_endpoint": {
+        "source": "RWS LHM 4.1 unsaturated-zone validation",
+        "quantity": "soil moisture",
+        "temporal_aggregation": "monthly during the growing season",
+        "statistic": "correlation between observed and calculated soil moisture",
+        "national_minimum_correlation": 0.6,
+        "regional_minimum_correlation": 0.6,
+        "point_population_rule": "correlation >= 0.6 for 80% of field-sensor measurement points",
+        "population_context": "LHM validation population and distinguished Dutch area types",
+        "interpretation": "Formal application/product validation criterion for temporal soil-moisture pattern at its stated support."
+      },
+      "non_covered_profile_requirements": {
+        "absolute_volumetric_water_content_error": null,
+        "per_depth_interval_storage_error": null,
+        "profile_shape_error": null,
+        "drying_front_timing_error": null,
+        "wetting_front_timing_error": null,
+        "extrema_bias": null,
+        "local_flux_or_gradient_error": null
+      },
+      "aggregation_rule": "Only the LHM monthly growing-season correlation endpoint is independently specified; no defensible conversion to layerwise absolute errors is made.",
+      "event_vs_cumulative_semantics": "UNRESOLVED_FOR_PROFILE_VECTOR",
+      "allowed_bias": null,
+      "treatment_of_extremes": "No independent quantitative SCI-P extreme-state acceptance rule found.",
+      "frozen_acceptance_envelope": {
+        "state": "NOT_FROZEN_FOR_REQUESTED_SCI_P_PROFILE_PURPOSE",
+        "reusable_frozen_endpoint": "The LHM monthly soil-moisture correlation criterion may be reused only for a separately declared LHM-like application endpoint, not as a surrogate for profile fidelity.",
+        "direct_layer_rom_candidate_validation_authorized": false,
+        "reason": "The requested scientific profile interpretation requires absolute/depth-resolved/timing semantics that the external criterion does not supply."
+      },
+      "unresolved_requirements": [
+        "Absolute soil-moisture or storage tolerance by depth support",
+        "Allowed timing error for wetting/drying fronts",
+        "Treatment of dry/wet extremes",
+        "Population/domain for scientific-profile sufficiency",
+        "Rule separating observation uncertainty from acceptable structural model error"
+      ],
+      "authority_review": "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json",
+      "source_limit": "The LHM validation explicitly states that vertical scale mismatch prevents inference of absolute observed-model soil-moisture differences for the satellite comparison."
+    }
+  },
+  "cross_purpose_decision": {
+    "full_layer_rom_acceptance_envelope_frozen_for_any_requested_purpose": false,
+    "candidate_validation_authorized": false,
+    "why": "GW-D now has a frozen direct LHM-like end-to-end application route plus bounded numerical/transaction authority, but synthetic/component-level Layer-ROM fidelity still lacks structural-error allocation. GW-R still lacks quantitative recharge-error authority. SCI-P has a formal monthly soil-moisture endpoint but not the requested profile/storage/front fidelity requirements.",
+    "scientifically_valid_terminal_results": {
+      "GW-R": "NO INDEPENDENT QUANTITATIVE APPLICATION AUTHORITY FOUND; FORMAL DOWNSTREAM SURFACE-WATER CRITERIA ARE NONTRANSFERABLE WITHOUT RESPONSE MAPPING",
+      "GW-D": "FROZEN DIRECT LHM-LIKE END-TO-END APPLICATION ENVELOPE; COMPONENT/SYNTHETIC STRUCTURAL ERROR BUDGET UNRESOLVED",
+      "SCI-P": "FORMAL MONTHLY SOIL-MOISTURE CORRELATION ENDPOINT ONLY; NO ABSOLUTE/DEPTH-RESOLVED PROFILE FIDELITY AUTHORITY"
+    },
+    "narrow_direct_application_envelope_frozen": {
+      "purpose": "GW-D-LHM-END2END",
+      "state": true,
+      "envelope_ref": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+      "current_candidate_execution_authorized": false,
+      "data_state": "OFFICIAL_ARCHIVE_QUALIFIED__ORIGINAL_REPORT_POPULATION_INCOMPLETE"
+    }
+  }
+}

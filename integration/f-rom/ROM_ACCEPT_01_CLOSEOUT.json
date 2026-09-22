@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.rom-accept.closeout.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "title": "Independent purpose-dependent acceptance authority closeout",
+  "canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "parent": "work/f-rom-layer-appval@76daff05127700f03a24625e7489e60a049c111c",
+  "scientific_firewall": {
+    "layer_rom_candidate_simulations_executed": false,
+    "new_candidate_responses_viewed": false,
+    "thresholds_tuned_from_candidate_response": false,
+    "current_acceptance_execution_authorized": false
+  },
+  "decisions": {
+    "GW-R": {
+      "terminal_state": "NO_INDEPENDENT_QUANTITATIVE_APPLICATION_AUTHORITY_FOUND",
+      "authority_available": "Formal downstream LHM surface-water discharge/supply/water-balance criteria only.",
+      "missing": "Direct recharge/lower-boundary cumulative bias, seasonal/annual allocation, drift and domain/population requirements.",
+      "why_downstream_not_substituted": "No independent mapping isolates permissible recharge error from total-system surface-water response.",
+      "record": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json"
+    },
+    "GW-D": {
+      "terminal_state": "DIRECT_APPLICATION_ENVELOPE_FROZEN__EXECUTION_BLOCKED_ON_POPULATION_AUTHORITY__COMPONENT_ROUTE_BLOCKED_ON_STRUCTURAL_ERROR_ALLOCATION",
+      "frozen": [
+        "HYDRO-MEMORY Stage 0 numerical groundwater-head budget 0.004 m",
+        "temporal numerical allocation 0.001 m",
+        "coupling-interface head residual allocation 0.001 m",
+        "transaction-safe accepted-state and exact-once interface-mass semantics",
+        "formal LHM 4.1 groundwater end-to-end application-output criteria"
+      ],
+      "official_public_archive": {
+        "state": "QUALIFIED",
+        "sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+        "byte_size": 155954643,
+        "member_count": 13732
+      },
+      "blocker": "The qualified public package omits source measurements withheld by data owners and is materially smaller than the report populations. Exact published-population replication is therefore not publicly reconstructible.",
+      "valid_resolution_paths": [
+        "Obtain complete original population/manifest authority.",
+        "Obtain independent purpose-owner authority declaring the qualified public subset to be a new governed validation population.",
+        "For synthetic/component comparison, obtain an independent Layer-ROM structural-error allocation or direct component criterion."
+      ],
+      "records": [
+        "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json",
+        "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_BLIND_PROTOCOL_SHELL.json",
+        "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json",
+        "integration/f-rom/ROM_ACCEPT_01_LHM41_POPULATION_BINDING_RESULT.json"
+      ]
+    },
+    "SCI-P": {
+      "terminal_state": "PARTIAL_FORMAL_ENDPOINT_ONLY__NO_PROFILE_FIDELITY_AUTHORITY",
+      "frozen": "Monthly growing-season soil-moisture correlation >=0.6 at the formal LHM national/regional/field-point supports.",
+      "missing": "Absolute volumetric-water-content error, per-depth storage, profile shape, wetting/drying-front timing, extrema and local vertical flux/gradient requirements.",
+      "source_boundary": "LHM explicitly warns that vertical support mismatch prevents conclusions on absolute observed-model soil-moisture differences for the satellite comparison.",
+      "record": "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json"
+    }
+  },
+  "handoff_rules": {
+    "ROM_PURPOSE": [
+      "Continue representation/state-support research if scientifically useful.",
+      "Do not attach application sufficiency verdicts to current synthetic panels.",
+      "Do not import LHM groundwater criteria into synthetic GW-LB metrics.",
+      "Do not choose a threshold from S4/G4/U4/L4/L6/R8 response."
+    ],
+    "ROM_ROOT": [
+      "May inherit transaction and accepted-state semantics where coupling relevant.",
+      "Must keep quantitative reduced-model application tolerance unresolved unless an independently matching authority is bound.",
+      "Root-feedback candidate response must not be used to create the acceptance envelope."
+    ]
+  },
+  "reopen_conditions": [
+    "New formal project/product requirement with matching purpose, quantity, spatial and temporal support.",
+    "Complete authoritative LHM 4.1 groundwater population/manifest or an explicit public-subset purpose-owner contract.",
+    "Independent GW-R recharge error budget with aggregation and bias/drift semantics.",
+    "Independent SCI-P depth-resolved/profile timing fidelity contract.",
+    "Prospectively governed GW-D component structural-error allocation."
+  ],
+  "non_reopen_triggers": [
+    "A candidate happens to achieve a convenient error level.",
+    "A generic goodness-of-fit classification is found.",
+    "A solver or mass-balance tolerance is available.",
+    "A study reports a typical RMSE without an application acceptance contract."
+  ],
+  "overall_decision": "ROM_ACCEPT_01_CLOSED__NO_CURRENT_LAYER_ROM_ACCEPTANCE_RUN_AUTHORIZED"
+}

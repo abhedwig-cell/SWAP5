@@ -1,0 +1,66 @@
+name: ROM ACCEPT LHM data authority
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/rom-accept-lhm-data-authority.yml"
+      - "tools/rom/inspect_lhm41_validation_archive.py"
+      - "tools/rom/extract_lhm41_validation_metadata.py"
+      - "integration/f-rom/ROM_ACCEPT_01_*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lhm-data-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LHM41_URL: https://thredds.data.nhi.nu/thredds/fileServer/opendap/Modellen/lhm411/validatiedata/validatiedata.zip
+      LHM41_EXPECTED_BYTES: "155954643"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download exact NHI LHM 4.1 validation archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          curl --fail --location --retry 4 --retry-delay 2 \
+            --output evidence/validatiedata.zip "$LHM41_URL"
+          actual_bytes="$(stat -c '%s' evidence/validatiedata.zip)"
+          echo "THREDDS published bytes: $LHM41_EXPECTED_BYTES"
+          echo "Downloaded bytes:       $actual_bytes"
+          test "$actual_bytes" = "$LHM41_EXPECTED_BYTES"
+          sha256sum evidence/validatiedata.zip | tee evidence/validatiedata.sha256
+
+      - name: Inventory archive and verify member CRCs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/rom/inspect_lhm41_validation_archive.py \
+            evidence/validatiedata.zip \
+            --out evidence/lhm41_validation_archive_inventory.json
+
+      - name: Extract allowlisted population metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/rom/extract_lhm41_validation_metadata.py \
+            evidence/validatiedata.zip \
+            --out-dir evidence/lhm41_population_metadata \
+            --manifest evidence/lhm41_validation_metadata_manifest.json
+
+      - name: Persist provenance artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom-accept-lhm41-data-authority
+          path: |
+            evidence/validatiedata.sha256
+            evidence/lhm41_validation_archive_inventory.json
+            evidence/lhm41_validation_metadata_manifest.json
+            evidence/lhm41_population_metadata/
+          if-no-files-found: error
+          retention-days: 30

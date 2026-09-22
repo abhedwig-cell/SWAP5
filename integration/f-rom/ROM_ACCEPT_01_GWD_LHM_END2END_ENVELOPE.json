@@ -1,0 +1,124 @@
+{
+  "schema": "swap5.rom-accept.application-envelope.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-01",
+  "date": "2026-09-22",
+  "envelope_id": "GW-D-LHM-END2END-V1",
+  "status": "FROZEN_DIRECT_END_TO_END_APPLICATION_ENVELOPE",
+  "purpose": {
+    "class": "GW-D",
+    "name": "LHM-like dynamic groundwater application",
+    "acceptance_object": "Coupled application-system groundwater output with a reduced unsaturated-zone component",
+    "nonclaim": "This is not a component-fidelity or Layer-ROM-versus-Full-Richards equivalence envelope."
+  },
+  "authority": {
+    "source_title": "Validatie en toetsing LHM 4.1, Deelrapport 1: Grondwater",
+    "commissioner": "Rijkswaterstaat Water, Verkeer en Leefomgeving",
+    "report_context": "HKV / Acacia Water / Berendrecht Consultancy validation of LHM 4.1",
+    "source_locator": "https://nhi.nu/documents/230/Rapportage_Validatie_LHM_grondwater_def_met_bijlage.pdf",
+    "source_page_binding": {
+      "criteria_explanation_pdf_page_index": 17,
+      "criteria_table_pdf_page_index": 18,
+      "temporal_definition_pdf_page_index": 21,
+      "additional_dynamics_definition_pdf_page_index": 22,
+      "printed_pages": [
+        13,
+        14,
+        17,
+        18
+      ]
+    },
+    "independent_of_layer_rom_candidate_response": true
+  },
+  "domain_population": {
+    "model_context": "LHM-like coupled Dutch groundwater application",
+    "spatial_classification": "Measurement locations are evaluated within report-defined hydrotypes/area types; freatic absolute criteria differ for Holoceen, Pleistoceen and Sterk hellend.",
+    "population_rule": "Each listed 80% criterion applies to measurement points in the governed area/population as stated by the report.",
+    "portability": "NOT_PORTABLE_OUTSIDE_MATCHING_LHM_LIKE_APPLICATION_WITHOUT_NEW_AUTHORITY"
+  },
+  "temporal_semantics": {
+    "ghg_glg_sampling": "Model output must be sampled conformably with the measurement series. GHG/GLG use groundwater levels on the 14th and 28th of each month; if unavailable, nearest observation within +/-4 days. With at least 20 observations in a hydrological year (April-March), the three highest and three lowest are averaged to HG3/LG3; yearly HG3/LG3 are then averaged to GHG/GLG.",
+    "amplitude": "Groundwater dynamics amplitude is GHG minus GLG.",
+    "drought_recession": "For prolonged drought, the report evaluates 2018 and 2019. Recession is the gradient from the highest head in 1 April-1 June to the lowest head after 1 July; the acceptance quantity is relative prediction error in that gradient.",
+    "lowest_head_timing": "The timing difference of the lowest groundwater level is defined diagnostically but has no formal acceptance criterion in the source.",
+    "weekly_monthly_rise_fall": "Weekly and monthly rise/fall relative errors are diagnostic analyses in the source; they are not promoted here to formal acceptance gates."
+  },
+  "criteria_vector": {
+    "freatic_GHG": {
+      "population_fraction_min": 0.8,
+      "absolute_error_max_cm_by_area_type": {
+        "Holoceen": 20,
+        "Pleistoceen": 35,
+        "Sterk_hellend": 50
+      },
+      "median_error_max_cm": 15
+    },
+    "freatic_GLG": {
+      "population_fraction_min": 0.8,
+      "absolute_error_max_cm_by_area_type": {
+        "Holoceen": 30,
+        "Pleistoceen": 50,
+        "Sterk_hellend": 100
+      },
+      "median_error_max_cm": 15
+    },
+    "freatic_dynamics_GHG_minus_GLG": {
+      "population_fraction_min": 0.8,
+      "relative_deviation_max_fraction_of_measured_dynamics": 0.25,
+      "median_error_max_cm": 15
+    },
+    "freatic_drought_recession_gradient": {
+      "population_fraction_min": 0.8,
+      "relative_deviation_max_fraction_of_measured_recession_gradient": 0.25
+    },
+    "first_aquifer_mean_head": {
+      "population_fraction_min": 0.8,
+      "absolute_error_max_cm": 50,
+      "median_error_max_cm": 15
+    },
+    "first_aquifer_dynamics": {
+      "population_fraction_min": 0.8,
+      "relative_deviation_max_fraction_of_measured_dynamics": 0.35
+    },
+    "deep_aquifer_mean_head": {
+      "population_fraction_min": 0.8,
+      "absolute_error_max_cm": 100,
+      "median_error_max_cm": 15
+    },
+    "deep_aquifer_dynamics": {
+      "population_fraction_min": 0.8,
+      "relative_deviation_max_fraction_of_measured_dynamics": 0.5
+    }
+  },
+  "aggregation_rule": "Vector gate. Do not collapse criteria to one weighted score. Apply each criterion only to its stated quantity, depth class, area type, population and temporal construction.",
+  "event_vs_cumulative_semantics": {
+    "event_specific": "Drought recession gradient for the report-defined prolonged drought periods.",
+    "long_term_statistics": "GHG, GLG and GHG-GLG amplitude constructed over hydrological years as defined above.",
+    "cumulative_interface_exchange": "NOT_GOVERNED_BY_THIS_EXTERNAL_ENVELOPE"
+  },
+  "sign_reversal_requirements": null,
+  "allowed_timing_error": null,
+  "extremes": {
+    "governed": "Drought recession criterion for the report-defined 2018 and 2019 prolonged drought periods.",
+    "not_governed": "No generic flood/wet extreme or lowest-head timing threshold is established."
+  },
+  "use_rules": {
+    "authorized_use": [
+      "Prospectively preregister a matching LHM-like end-to-end validation in which the coupled system containing the reduced unsaturated-zone component is compared with observations using exactly these external criteria.",
+      "Use this route without inventing a Layer-ROM structural-error allocation, because acceptance is judged directly on the application outputs."
+    ],
+    "prohibited_use": [
+      "Do not apply these thresholds to synthetic ROM-PURPOSE Reference-Richards error panels.",
+      "Do not invert these groundwater criteria into one portable SWAP-MODFLOW exchange-flux tolerance.",
+      "Do not claim that passing this envelope proves Layer-ROM structural equivalence to Full Richards.",
+      "Do not change the population, temporal construction or thresholds after viewing reduced-model output."
+    ]
+  },
+  "candidate_execution": {
+    "current_layer_rom_synthetic_panel_authorized": false,
+    "matching_lhm_like_end_to_end_candidate_execution_authorized": false,
+    "reason": "The quantitative envelope is now frozen, but no matching observation-bound LHM-like Layer-ROM validation harness, population binding or blind panel has been preregistered in ROM-ACCEPT. Envelope freeze is a prerequisite, not execution by itself.",
+    "next_gate": "Freeze exact application dataset/population, model composition, reduced-component insertion point, blind comparison protocol and immutable metrics before any candidate response."
+  },
+  "scientific_interpretation": "A pass would establish fit-for-purpose of the complete matching application system under the external LHM criteria. It would not isolate reduced-component error or prove internal profile/process fidelity."
+}

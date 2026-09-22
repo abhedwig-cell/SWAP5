@@ -1,0 +1,244 @@
+{
+  "schema": "swap5.rom-accept.lhm41-population-binding-result.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-LHM41-POPULATION-BINDING",
+  "date": "2026-09-22",
+  "decision": "PUBLIC_ARCHIVE_AUTHENTIC_BUT_ORIGINAL_VALIDATION_POPULATION_INCOMPLETE",
+  "archive_authority": "integration/f-rom/ROM_ACCEPT_01_LHM41_DATA_AUTHORITY_RESULT.json",
+  "exact_archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+  "metadata_source_statement": {
+    "common_disclaimer": [
+      "The downloadable selection was built from DINO data available in March 2020 plus data supplied by regional water managers, provinces and drinking-water companies.",
+      "Not all water managers supplied data.",
+      "Some parties requested that their data not be made available; those data were filtered from the downloadable dataset.",
+      "The selection is intended for LHM 4.1 validation and must be interpreted together with the groundwater validation report."
+    ],
+    "validation_period": "2011-01-01 through 2019-12-31"
+  },
+  "public_population_metadata": {
+    "freatisch": {
+      "all": {
+        "file": "validatiedata/freatisch/validatie_buizen.ipf",
+        "rows": 5901,
+        "sha256": "1bd7e0c82b6f10e1d41efa494458c9674492a9c523dbe946f6ef8ecc9a902359"
+      },
+      "no_calibration": {
+        "file": "validatiedata/freatisch/validatie_buizen_nocalib.ipf",
+        "rows": 4513,
+        "sha256": "1c58a3c7ada62643d04e0fad98abd8f8afd50fe58618ee01419329571449fb57"
+      },
+      "special_areas_all": {
+        "file": "validatiedata/freatisch/validatie_buizen_deelgebieden.ipf",
+        "rows": 3745,
+        "sha256": "35632273873b3075f361138914bce2496491f59261261a5602cacb299eb9d5e0"
+      },
+      "special_areas_no_calibration": {
+        "file": "validatiedata/freatisch/validatie_buizen_deelgebieden_nocalib.ipf",
+        "rows": 2898,
+        "sha256": "1d5858be46b609b9d3af6ab31c31f32f94cf23c16e13a430e196c61795214f4d"
+      },
+      "metadata_sha256": "111168d2d6b706c90eca4bffcc752a0c3f813ec329def6591e5bd0400cc896be",
+      "fields": [
+        "X_RD_CRD",
+        "Y_RD_CRD",
+        "BUIS",
+        "MEETREEKS",
+        "FILTER_TOP_NAP",
+        "FILTER_ONDER_NAP",
+        "BRON",
+        "EIGENAAR",
+        "HYDROTYPE",
+        "GEBIEDSTYPE",
+        "WEIGHT",
+        "CLUSTER or DEELGEBIED",
+        "GHG_ERROR",
+        "GLG_ERROR",
+        "DYN_ERROR"
+      ]
+    },
+    "wvp1": {
+      "all": {
+        "file": "validatiedata/wvp1/validatie_buizen.ipf",
+        "rows": 2777,
+        "sha256": "c331b60e85c35d8b9360b57b715f7374b83557e25de2431ce8c777da2f6c6312"
+      },
+      "no_calibration": {
+        "file": "validatiedata/wvp1/validatie_buizen_nocalib.ipf",
+        "rows": 1737,
+        "sha256": "7ed1b31c8accfa75a5e0bb894c5a4bc823bd1643652dc6ee0eebce1c8488cbc3"
+      },
+      "metadata_sha256": "6a1c6fc7ee8c0304d3a736ef0a9d189e258944562550c4fedf9f9091e5f4805b",
+      "fields": [
+        "X_RD_CRD",
+        "Y_RD_CRD",
+        "BUIS",
+        "MEETREEKS",
+        "FILTER_TOP_NAP",
+        "FILTER_ONDER_NAP",
+        "BRON",
+        "EIGENAAR",
+        "GEBIEDSTYPE",
+        "HYDROTYPE",
+        "WEIGHT",
+        "CLUSTER",
+        "MEAN_ERROR",
+        "DYN_ERROR"
+      ]
+    },
+    "diep": {
+      "all": {
+        "file": "validatiedata/diep/validatie_buizen.ipf",
+        "rows": 1291,
+        "sha256": "d6c4db34a7446b6c2b8ac6d184648e8a0987aa62746372c6743a57f0a825e9b9"
+      },
+      "no_calibration": {
+        "file": "validatiedata/diep/validatie_buizen_nocalib.ipf",
+        "rows": 861,
+        "sha256": "7cb896fb510c92238a82fbeb2b6850bf8302c048b7e2fd01d04d12f50cd22b2d"
+      },
+      "metadata_sha256": "76dd054a0d4c9b5c793a340d4e44d3f479ecf9ea03fc057783511938ee6f69b5",
+      "fields": [
+        "X_RD_CRD",
+        "Y_RD_CRD",
+        "BUIS",
+        "MEETREEKS",
+        "FILTER_TOP_NAP",
+        "FILTER_ONDER_NAP",
+        "BRON",
+        "EIGENAAR",
+        "GEBIEDSTYPE",
+        "HYDROTYPE",
+        "WEIGHT",
+        "CLUSTER",
+        "MEAN_ERROR",
+        "DYN_ERROR"
+      ]
+    }
+  },
+  "report_population_authority": {
+    "source": "https://nhi.nu/documents/230/Rapportage_Validatie_LHM_grondwater_def_met_bijlage.pdf",
+    "selection_counts_before_indicator_specific_availability": {
+      "freatisch": 8443,
+      "freatisch_special_areas_additional": 5190,
+      "wvp1": 3802,
+      "diep": 1795
+    },
+    "indicator_specific_report_statistics": {
+      "freatisch": {
+        "GHG_N": 6207,
+        "GLG_N": 6094,
+        "dynamics_N": 7440
+      },
+      "wvp1": {
+        "mean_head_N": 2614,
+        "dynamics_N": 3512
+      },
+      "diep": {
+        "mean_head_N": 1357,
+        "dynamics_N": 1736
+      }
+    },
+    "indicator_population_semantics": [
+      "For freatic GHG and GLG, wells used in LHM calibration are additionally excluded.",
+      "Calibration wells remain eligible for freatic dynamics.",
+      "Wells detected as drying out are retained for GHG but excluded for GLG and dynamics.",
+      "The report samples model output conformably with each measurement time series before deriving groundwater statistics."
+    ]
+  },
+  "public_vs_report_comparison": {
+    "interpretation_guard": "The public IPF files and report statistic N values are not asserted to be one-to-one representations of every processing step. The comparison is used only to demonstrate that the downloadable public subset is smaller than the population used for the published validation results, consistent with the explicit data-availability disclaimer.",
+    "examples": [
+      {
+        "indicator": "freatisch GHG",
+        "report_N": 6207,
+        "closest_public_population_file": "freatisch/validatie_buizen_nocalib.ipf",
+        "public_rows": 4513,
+        "shortfall": 1694
+      },
+      {
+        "indicator": "freatisch dynamics",
+        "report_N": 7440,
+        "closest_public_population_file": "freatisch/validatie_buizen.ipf",
+        "public_rows": 5901,
+        "shortfall": 1539
+      },
+      {
+        "indicator": "wvp1 mean head",
+        "report_N": 2614,
+        "closest_public_population_file": "wvp1/validatie_buizen_nocalib.ipf",
+        "public_rows": 1737,
+        "shortfall": 877
+      },
+      {
+        "indicator": "wvp1 dynamics",
+        "report_N": 3512,
+        "closest_public_population_file": "wvp1/validatie_buizen.ipf",
+        "public_rows": 2777,
+        "shortfall": 735
+      },
+      {
+        "indicator": "deep mean head",
+        "report_N": 1357,
+        "closest_public_population_file": "diep/validatie_buizen_nocalib.ipf",
+        "public_rows": 861,
+        "shortfall": 496
+      },
+      {
+        "indicator": "deep dynamics",
+        "report_N": 1736,
+        "closest_public_population_file": "diep/validatie_buizen.ipf",
+        "public_rows": 1291,
+        "shortfall": 445
+      }
+    ]
+  },
+  "what_is_resolved": [
+    "The official public validation archive is recoverable from NHI THREDDS and has a frozen byte identity.",
+    "The public metadata contain measurement IDs, coordinates, time-series links, hydrotype, area type, weights, clusters and calibration-excluded variants.",
+    "The public files are sufficient to define an exact reproducible PUBLIC-SUBSET panel if such a panel is separately authorized."
+  ],
+  "what_is_not_resolved": [
+    "The exact complete measurement population used to compute the published LHM 4.1 validation statistics is not recoverable from the public archive alone.",
+    "The omitted non-public measurements cannot be reconstructed from the public archive without data-owner access or an authoritative complete manifest.",
+    "Applying the published 80-percent criteria to the smaller public subset is not automatically equivalent to reproducing the original LHM acceptance population."
+  ],
+  "execution_consequence": {
+    "exact_lhm41_application_replication_authorized": false,
+    "public_subset_diagnostic_execution_authorized": false,
+    "reason": "ROM-ACCEPT does not invent a new population authority. A public-subset experiment would require a separately frozen purpose contract stating that the distributable subset itself is the governed population.",
+    "layer_rom_candidate_execution_authorized": false
+  },
+  "next_resolution_options": [
+    "Obtain the missing non-public LHM 4.1 measurement population or a complete immutable population manifest from Rijkswaterstaat/NHI/data owners.",
+    "Or obtain independent purpose-owner authority that explicitly defines the public distributable NHI subset as the validation population for a new reproducible application test."
+  ],
+  "official_nhi_web_statement": {
+    "page": "https://nhi.nu/modellen/lhm/",
+    "statement_summary": [
+      "NHI lists the groundwater levels used for LHM 4.1 validation as downloadable.",
+      "The same page states that the full set of regional and DINO data is not available."
+    ],
+    "interpretation": "Together with the archive metadata disclaimer, this means the public package is an official distributable validation package but not a complete public reproduction of every source measurement behind the published population statistics."
+  },
+  "selection_count_comparison": {
+    "freatisch": {
+      "report_selected": 8443,
+      "public_archive_all": 5901,
+      "public_shortfall": 2542,
+      "public_fraction_of_report_selection": 0.6989
+    },
+    "wvp1": {
+      "report_selected": 3802,
+      "public_archive_all": 2777,
+      "public_shortfall": 1025,
+      "public_fraction_of_report_selection": 0.7304
+    },
+    "diep": {
+      "report_selected": 1795,
+      "public_archive_all": 1291,
+      "public_shortfall": 504,
+      "public_fraction_of_report_selection": 0.7192
+    }
+  },
+  "final_population_authority_decision": "EXACT_PUBLISHED_LHM41_ACCEPTANCE_POPULATION_NOT_PUBLICLY_RECONSTRUCTIBLE_FROM_AVAILABLE_AUTHORITY; PUBLIC_DISTRIBUTABLE_SUBSET_REQUIRES_NEW_PURPOSE_OWNER_AUTHORITY_BEFORE ACCEPTANCE USE"
+}

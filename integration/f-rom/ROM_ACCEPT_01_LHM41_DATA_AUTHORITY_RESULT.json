@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.rom-accept.lhm41-data-authority-result.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-LHM41-DATA-AUTHORITY",
+  "date": "2026-09-22",
+  "decision": "OFFICIAL_NHI_THREDDS_ARCHIVE_RECOVERED_AND_QUALIFIED",
+  "source": {
+    "catalog": "https://thredds.data.nhi.nu/thredds/catalog/opendap/Modellen/lhm411/validatiedata/catalog.html",
+    "http_server": "https://thredds.data.nhi.nu/thredds/fileServer/opendap/Modellen/lhm411/validatiedata/validatiedata.zip",
+    "dataset": "validatiedata.zip",
+    "published_byte_size": 155954643,
+    "published_modified_utc": "2021-05-17T12:50:45Z"
+  },
+  "qualification": {
+    "first_archive_gate": {
+      "branch": "qualification/rom-accept-lhm41-data-authority",
+      "head": "0fa3fae7e3ed0e695bd9426b1d19d872a8510ec3",
+      "pull_request": 578,
+      "workflow_run": 35749932742,
+      "workflow_job": 106821117194,
+      "conclusion": "success",
+      "downloaded_byte_size": 155954643,
+      "archive_sha256": "a3e6d2097b522e86b3d363b0ec351be24373820e33a3d8ccd6dd23905741894b",
+      "zip_crc_test": "PASS",
+      "member_count": 13732,
+      "suffix_counts": {
+        ".ipf": 8,
+        ".txt": 13717,
+        "<none>": 7
+      },
+      "artifact_id": 10705370280,
+      "artifact_digest": "sha256:659f490834c657b7b71af0c625d83c2839a2f159669449e27bf90972dce02ec8"
+    },
+    "metadata_gate": {
+      "branch": "qualification/rom-accept-lhm41-population-metadata",
+      "head": "557726ddf897307b522944cb640b15fe5b156bcb",
+      "pull_request": 579,
+      "workflow_run": 35750460949,
+      "workflow_job": 106822912207,
+      "conclusion": "success",
+      "artifact_id": 10705511334,
+      "artifact_digest": "sha256:9298e90fc82beccedc611b927846aab2cc52b6ea1d38e3e4154ecf2ad8b7202"
+    }
+  },
+  "archive_structure": {
+    "root": "validatiedata/",
+    "classes": [
+      "freatisch",
+      "wvp1",
+      "diep"
+    ],
+    "per_class_contents": [
+      "measurement time-series under reeksen/",
+      "validation population metadata in IPF",
+      "calibration-excluded population metadata in *_nocalib.ipf",
+      "TOELICHTING EN METADATA.TXT"
+    ],
+    "freatisch_extra": [
+      "validatie_buizen_deelgebieden.ipf",
+      "validatie_buizen_deelgebieden_nocalib.ipf"
+    ]
+  },
+  "provenance_guards": {
+    "hydrological_model_executed": false,
+    "layer_rom_candidate_executed": false,
+    "candidate_response_viewed": false,
+    "archive_member_executed": false,
+    "threshold_changed": false
+  },
+  "supersedes": {
+    "prior_observation": "The public Dropbox link is deleted.",
+    "corrected_interpretation": "The dead Dropbox link is not an archive-availability blocker because the same official NHI infrastructure still serves the validation archive through THREDDS."
+  },
+  "result_boundary": "This result establishes byte-identical retrievability and integrity of the official public archive. It does not establish that the public archive contains the complete measurement population used in the published LHM 4.1 statistics."
+}
