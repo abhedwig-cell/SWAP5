@@ -88,6 +88,15 @@
       "workflow_job": 106761199051,
       "implementation_head": "1d755fbf87f2814d574dba6faf98b4b6b650fa55",
       "evidence_commit": "7f7cd76b3be26c766f8ea1aa62b9c4d7aa922c71"
+    },
+    {
+      "work_unit": "GC-RZM06A6",
+      "decision": "QUALIFIED_NO_AGGREGATE_MASKING__FOUR_NODE_H2_CEILING",
+      "preregistration_commit": "bf201af7c604a94b3fe36bc5ef1eb7674156c8f6",
+      "workflow_run": 35733571697,
+      "workflow_job": 106765051719,
+      "implementation_head": "79414aac4aecde52f6979fff59b00eaa18de0fb5",
+      "evidence_commit": "0c7222ebd766ef56f8cf230487e320019a334b2e"
     }
   ],
   "current_findings": [
@@ -129,19 +138,24 @@
     "RZM06A5 qualified all 16 early/late equal-input trajectory pairs; no pair met the unchanged H2 water-plus-M1 gate, so H2 remained unprobed.",
     "Without final relaxation, timing memory plateaus near |ΔW_profile|=2.8e-6 and |ΔM1|=1.43e-6 by N≈20; increasing N to 50 or 100 adds no material separation.",
     "Fifty common zero-forcing intervals erase the A5 aggregate timing-memory signal to about 1e-14.",
-    "The current carrier executes real HeadCalc with the explicit B110 constitutive provider, but still uses the focused four-node FSI fixture geometry; node-level profile diagnostics are required before further H2 forcing experiments."
+    "The current carrier executes real HeadCalc with the explicit B110 constitutive provider, but still uses the focused four-node FSI fixture geometry; node-level profile diagnostics are required before further H2 forcing experiments.",
+    "RZM06A6 reconstructs W_profile, root-water and M1 exactly from committed node state and shows no aggregate masking: all four R0 node-storage differences have the same sign and L1 storage difference equals |ΔW_profile| to roundoff.",
+    "The focused four-node carrier therefore produces genuinely tiny H2 state separation; its upper-0.30 m root-zone observable overlaps only node 1 and is not a resolved multi-node root-zone distribution diagnostic.",
+    "The historical _cm suffixes on geometry-derived profile observables are semantically misleading because z/dz are explicitly metre-scale in the research bridge.",
+    "A2-A6 jointly establish a four-node-carrier H2 ceiling. Further forcing tuning on this carrier is not justified; preserve thresholds and move to a richer real-SWAP vertical profile."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06A6",
-    "scope": "Research-only node-level committed-profile and unit/observable audit using fixed representative RZM06A5 histories. Diagnose whether aggregate M1 masks vertical differences and whether the four-node carrier has reached its H2 scientific ceiling.",
-    "prerequisite": "RZM06A5 qualified NO_MATCH",
+    "id": "GC-RZM06C01",
+    "scope": "Reconcile and select an existing richer real-SWAP profile/discretization carrier that can reuse the transactional fixed-H_c research protocol without production changes. Establish exact geometry, hydraulic provider, process scope, state capture and qualification authority before any H2 experiment.",
+    "prerequisite": "RZM06A6 qualified four-node H2 ceiling",
     "constraints": [
-      "read-only diagnostic ABI only; no production state/API semantics",
-      "replay fixed representative A5 histories; no response-driven trajectory search",
-      "reconstruct W_profile, root-water and M1 from node diagnostics and verify exact/numerically tight consistency",
-      "do not inspect or use E_c as an A6 selection variable",
-      "do not lower or reinterpret the frozen H2 thresholds inside RZM06A6",
-      "keep RZM06B/H5 separate"
+      "reuse existing admitted or qualified real-SWAP infrastructure where possible",
+      "no post-hoc relaxation of H2 thresholds",
+      "no production physics or coupling API change",
+      "separate carrier qualification from H2 scientific probing",
+      "preserve transaction-safe checkpoint/commit/discard semantics and failed-trial evidence",
+      "require a root-zone representation spanning more than one node before H2 re-probing",
+      "keep H5/RZM06B separate"
     ]
   },
   "blocked": [],
