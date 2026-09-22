@@ -64,7 +64,19 @@
         "Allowed cumulative bias or drift",
         "Seasonal versus annual allocation rule",
         "Domain/population to which the requirement applies"
-      ]
+      ],
+      "authority_review": "integration/f-rom/ROM_ACCEPT_01_GWR_AUTHORITY_REVIEW.json",
+      "formal_downstream_nontransferable_endpoint": {
+        "source": "LHM 4.1 surface-water validation",
+        "status": "FORMAL_APPLICATION_SYSTEM_CRITERIA__NOT_DIRECT_RECHARGE_AUTHORITY",
+        "examples": [
+          "cumulative annual discharge deviation <25% at 80% of locations for >5 m3/s",
+          "cumulative annual discharge deviation <33% at 80% of locations for <5 m3/s",
+          "cumulative summer-half-year supply deviation <25% or <50% at 80% of locations depending on flow class",
+          "larger regional water-balance areas: cumulative annual discharge deviation <25% at 80%"
+        ],
+        "nontransferability": "No independently governed mapping from downstream discharge/water-balance error to allowable unsaturated-zone recharge error."
+      }
     },
     "GW-D": {
       "name": "Dynamic groundwater coupling",
@@ -242,7 +254,9 @@
         "Treatment of dry/wet extremes",
         "Population/domain for scientific-profile sufficiency",
         "Rule separating observation uncertainty from acceptable structural model error"
-      ]
+      ],
+      "authority_review": "integration/f-rom/ROM_ACCEPT_01_SCIP_AUTHORITY_REVIEW.json",
+      "source_limit": "The LHM validation explicitly states that vertical scale mismatch prevents inference of absolute observed-model soil-moisture differences for the satellite comparison."
     }
   },
   "cross_purpose_decision": {
@@ -250,9 +264,9 @@
     "candidate_validation_authorized": false,
     "why": "GW-D now has a frozen direct LHM-like end-to-end application route plus bounded numerical/transaction authority, but synthetic/component-level Layer-ROM fidelity still lacks structural-error allocation. GW-R still lacks quantitative recharge-error authority. SCI-P has a formal monthly soil-moisture endpoint but not the requested profile/storage/front fidelity requirements.",
     "scientifically_valid_terminal_results": {
-      "GW-R": "NO INDEPENDENT QUANTITATIVE APPLICATION AUTHORITY FOUND",
+      "GW-R": "NO INDEPENDENT QUANTITATIVE APPLICATION AUTHORITY FOUND; FORMAL DOWNSTREAM SURFACE-WATER CRITERIA ARE NONTRANSFERABLE WITHOUT RESPONSE MAPPING",
       "GW-D": "FROZEN DIRECT LHM-LIKE END-TO-END APPLICATION ENVELOPE; COMPONENT/SYNTHETIC STRUCTURAL ERROR BUDGET UNRESOLVED",
-      "SCI-P": "PARTIAL APPLICATION ENDPOINT ONLY; NO PROFILE FIDELITY AUTHORITY"
+      "SCI-P": "FORMAL MONTHLY SOIL-MOISTURE CORRELATION ENDPOINT ONLY; NO ABSOLUTE/DEPTH-RESOLVED PROFILE FIDELITY AUTHORITY"
     },
     "narrow_direct_application_envelope_frozen": {
       "purpose": "GW-D-LHM-END2END",
