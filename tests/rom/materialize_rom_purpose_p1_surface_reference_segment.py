@@ -189,11 +189,11 @@ def main()->int:
         text=base.read_text()
 
     nsteps=a.segment_end-a.segment_start+1
-    base_constants=f"integer, parameter :: NHIST=4, NSTEPS={total_steps}\\n  integer, parameter :: OUTPUT_FACTOR={a.temporal_factor}"
+    base_constants=f"integer, parameter :: NHIST=4, NSTEPS={total_steps}\n  integer, parameter :: OUTPUT_FACTOR={a.temporal_factor}"
     text=one(
       text,
       base_constants,
-      base_constants+f"\\n  integer, parameter :: SEGMENT_START={a.segment_start}, SEGMENT_END={a.segment_end}, SEGMENT_STEPS={nsteps}",
+      base_constants+f"\n  integer, parameter :: SEGMENT_START={a.segment_start}, SEGMENT_END={a.segment_end}, SEGMENT_STEPS={nsteps}",
       "segment constants"
     )
     text=one(
