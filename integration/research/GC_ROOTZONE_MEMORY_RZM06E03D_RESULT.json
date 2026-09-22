@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03d.deep_profile_library_census_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03D",
+  "preregistration_commit": "011d73f42d01dda40efe898483269fdb34deb2aa",
+  "production_changes": false,
+  "decision": "QUALIFIED_DEEP_PROFILE_LIBRARY_NO_MATCH__NO_RESPONSE_PROBE",
+  "disposition": "NO_MATCH",
+  "qualification": {
+    "workflow_run": 35746054039,
+    "workflow_job": 106807853092,
+    "executed_head": "b218e4fcd93ccc1ed0810279ecb6dca5aba506eb",
+    "conclusion": "success",
+    "artifact_id": 10702983211,
+    "artifact_digest": "sha256:891db6369dc210caf34f31fb808ba68a5d41bb2e32d58d490a3dffd72df48642",
+    "source_artifact_authorities_verified": true,
+    "source_o0_o2_identity_verified": true
+  },
+  "library": {
+    "raw_state_count": 78,
+    "unique_state_count": 65,
+    "duplicate_state_count": 13,
+    "storage_matched_pairs": 59,
+    "qualifying_pairs": 0
+  },
+  "frozen_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_deep_distribution_centroid_difference_cm": 0.01
+  },
+  "best_storage_matched_pair": {
+    "A": {
+      "provenance": [
+        "E01",
+        "CLOSED",
+        "1"
+      ],
+      "profile_water_cm": 58.619184,
+      "root30_water_cm": 10.987957805878485,
+      "deep_water_cm": 47.63122619412151,
+      "deep_distribution_centroid_cm": -95.00394687030055
+    },
+    "B": {
+      "provenance": [
+        "E03",
+        "DRY_RECOVER",
+        "RECOVER",
+        "19"
+      ],
+      "profile_water_cm": 58.619184,
+      "root30_water_cm": 10.988001234755412,
+      "deep_water_cm": 47.63118276524458,
+      "deep_distribution_centroid_cm": -95.0035420590017
+    },
+    "abs_delta_profile_water_cm": 0,
+    "abs_delta_root30_water_cm": 0.000043428876926654425,
+    "abs_delta_deep_water_cm": 0.00004342887692843078,
+    "abs_delta_deep_distribution_centroid_cm": 0.0004048112988499497,
+    "fraction_of_required_deep_separation": 0.04048112988499497
+  },
+  "interpretation": [
+    "The response-blind census spans 78 qualified state records from five immutable artifact sources and 65 unique H/theta states after bit-level deduplication.",
+    "Fifty-nine pairs satisfy both the total-profile-water and upper-30-cm-water controls, so the NO_MATCH is not caused by absence of storage-matched comparisons.",
+    "None of those 59 pairs reaches the preregistered 0.01 cm deep-centroid separation.",
+    "The strongest storage-matched deep-centroid separation is 0.0004048112988499497 cm, only about 4.05% of the frozen gate.",
+    "Within the currently qualified C01 state library, matching total water and upper-30-cm water also constrains the remaining 30-160 cm distribution much more tightly than required for an E04 response falsification.",
+    "This is a state-space availability result, not proof that total water plus root30 water is globally sufficient."
+  ],
+  "response_probe_opened": false,
+  "nonclaims": [
+    "No global state-sufficiency conclusion is admitted.",
+    "No production coupling or second MODFLOW state change follows.",
+    "No response quantity influenced pair construction or ranking."
+  ],
+  "next_step_basis": {
+    "decision": "CURRENT_QUALIFIED_STATE_LIBRARY_EXHAUSTED_FOR_ROOTMATCHED_DEEP_CENTROID_GATE",
+    "rationale": "Further reuse of the same immutable state library cannot produce a qualifying pair under unchanged gates. A new experiment must add an independently controlled deep-state construction axis rather than retune selection thresholds."
+  }
+}
