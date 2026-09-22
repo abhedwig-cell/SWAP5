@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21g.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21G",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "QUALIFIED_DETERMINISTIC_RETRY_SOLVER_BIFURCATION",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21G_PREREGISTRATION.json",
+  "result": "integration/research/GC_FIXED_INTERFACE_G21G_RESULT.json",
+  "tested_commit": "7fad7603f15968b9abca430f2655e42ed860bc15",
+  "workflow_run": 35739259365,
+  "workflow_job": 106784404665,
+  "workflow_conclusion": "success",
+  "runtime_change": "NONE",
+  "production_solver_configuration_change": false,
+  "production_hcof_rhs_change": false,
+  "coupling_policy_admission": "NO",
+  "disposition": {
+    "g21f_status_islands": "DETERMINISTIC_IN_FROZEN_33_HEAD_SCAN",
+    "session_nondeterminism": "REJECTED_AS_EXPLANATION_IN_FROZEN_SCAN",
+    "status6_terminal_mechanism": "RETRY_LADDER_PLUS_FINAL_PHYSICAL_SOLVER_NONCONVERGENCE",
+    "status0_terminal_mechanism": "CONVERGED_PHYSICAL_SOLVER_WITH_COMPLETED_TRANSACTION",
+    "participant_status_smoothing": "NOT_JUSTIFIED",
+    "retry_or_temporal_tolerance_change": "NOT_JUSTIFIED",
+    "standard_vs_nour_selection": "NOT_MADE",
+    "response_space_globalization": "REMAINS_RESEARCH_ONLY",
+    "production_hcof_rhs": "UNCHANGED"
+  },
+  "next_action": "Open G21H as a representative adjacent-head physical-solver forensic unit across selected 6->0 and 0->6 island boundaries. Instrument only read-only research diagnostics needed to compare final-attempt Newton/backtracking/residual trajectories. Do not alter solver, retry, participant acceptance or production policy."
+}
