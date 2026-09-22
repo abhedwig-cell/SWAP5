@@ -36,6 +36,14 @@ class Map09ActiveDrainageSwap:
             *([ctypes.POINTER(ctypes.c_int)]*4),
             *([ctypes.POINTER(ctypes.c_double)]*5),
         ]
+        self.lib.pub_gc_e6_g14_fused_observation_c.restype=ctypes.c_int
+        self.lib.pub_gc_e6_g14_fused_observation_c.argtypes=[
+            ctypes.c_double,
+            *([ctypes.POINTER(ctypes.c_int)]*14),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
+        self.lib.pub_gc_e6_g14_fused_run_count_c.restype=ctypes.c_int
+        self.lib.pub_gc_e6_g14_fused_run_count_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
 
     def initialize(self)->tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -82,6 +90,33 @@ class Map09ActiveDrainageSwap:
         ]
         d={k:v.value for k,v in zip(keys,vals)}
         d["mass_complete"]=bool(complete.value)
+        return d
+
+    def g14_fused_run_count(self)->int:
+        value=ctypes.c_int()
+        status=self.lib.pub_gc_e6_g14_fused_run_count_c(ctypes.byref(value))
+        if status: raise RuntimeError(f"G14 MAP09 fused run-count query failed: {status}")
+        return int(value.value)
+
+    def g14_fused_observation(self,head_m:float)->dict[str,float|int|bool]:
+        ints=[ctypes.c_int() for _ in range(14)]
+        vals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.pub_gc_e6_g14_fused_observation_c(
+            float(head_m),*[ctypes.byref(x) for x in ints],*[ctypes.byref(x) for x in vals]
+        )
+        if status: raise RuntimeError(f"G14 MAP09 fused observation failed: {status}")
+        keys=[
+            "participant_status","result_status","completed","candidate_ready",
+            "transaction_calls","accepted_substeps","attempts","retries",
+            "trial_rollbacks","solver_rejections","temporal_rejections",
+            "temporal_unavailable_rejections","mass_rejections","internal_retries",
+        ]
+        d={k:int(v.value) for k,v in zip(keys,ints)}
+        d["completed"]=bool(d["completed"])
+        d["candidate_ready"]=bool(d["candidate_ready"])
+        d["q_swap_m_per_s"]=vals[0].value
+        d["min_substep"]=vals[1].value
+        d["max_substep"]=vals[2].value
         return d
 
     def corrector_mass_diagnostics(self,head_m:float)->dict[str,float|int|bool]:
