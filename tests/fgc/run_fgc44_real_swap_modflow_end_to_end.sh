@@ -83,6 +83,7 @@ MODULE_SRC=(
   src/runtime/mod_groundwater_swap_transaction_participant.f90
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
   src/runtime/mod_fmr_groundwater_swap_participant.f90
+  src/runtime/mod_fmr_groundwater_swap_tangent_observation_service.f90
   src/runtime/mod_groundwater_interface_mass_ledger.f90
   src/runtime/mod_groundwater_tile_aggregation.f90
   src/runtime/mod_groundwater_multiswap_types.f90
