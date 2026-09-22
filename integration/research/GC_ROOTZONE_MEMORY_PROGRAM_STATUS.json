@@ -171,7 +171,7 @@
     "The historical _cm suffixes on geometry-derived profile observables are semantically misleading because z/dz are explicitly metre-scale in the research bridge.",
     "A2-A6 jointly establish a four-node-carrier H2 ceiling. Further forcing tuning on this carrier is not justified; preserve thresholds and move to a richer real-SWAP vertical profile.",
     "C01 supersedes the earlier incomplete carrier reconciliation: F-ROM1A-I0 provides a current-branch-qualified 16x10 cm B01 real-HeadCalc Reference carrier with three nodes in the upper 30 cm, strict mode-5 fixed-head sampling, hard mass gate and immutable sample/discard semantics.",
-    "The retained ROM1AR2 artifact provides 768 accepted 16-node B01 states, including 711 strict no-fallback states, with full pressure-head/water-content profiles and O0/O2 byte identity.",
+    "The retained ROM1AR2 artifact provides 768 accepted 16-node B01 states, including 711 state records whose producing interval has FALLBACK=F, with full pressure-head/water-content profiles and O0/O2 byte identity; FALLBACK=F does not imply the entire antecedent trajectory was fallback-free.",
     "For future native-centimetre H2 selection the frozen physical A-series thresholds convert to |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm; the old numeric values must not be copied across units.",
     "C02's synthetic 17-node native-cm F-GC carrier is not admitted at its frozen inherited predictor initialization: 9/9 attempts are solver-rejected, with zero accepted substeps and no temporal or mass rejection.",
     "C02 therefore does not activate its native-cm H2 construction branch and must not be rescued by post-hoc qbot, duration, tolerance, retry-budget or grid retuning.",
