@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute observability-only v2 with unchanged model, references and tolerances; log endpoint state before assertions.",
+  "next_action": "Execute clean DUMMY-20E2 v5 from current research authority with unchanged model, frozen references and tolerances.",
   "production_delta": [],
   "reference_delta": [],
   "technical_representation_amendment": {
@@ -19,7 +19,7 @@
     "representation": "constant conductance 16 m2/day; drain elevation 0.5 m for first 6 h then 0.0 m",
     "physical_flux_schedule": "unchanged: 0 m3/day first product step, -8 m3/day thereafter"
   },
-  "recovery_point": "DUMMY-20E2 v1 failed at 12 h after an exact 6 h match; sign/order source audit passed; observability v2 required.",
+  "recovery_point": "20E2 v5 source-scope denominator reconciled; scientific qualification still pending.",
   "implementation_preparation": {
     "state": "PRODUCT_WORKER_PREPARED_IMPLEMENTATION_READY",
     "prepared_path": "tests/research/test_ribasim_dummy_20e2_postallocation_groundwater.py",
@@ -72,5 +72,20 @@
       "interpretation": "First segment matches. The second-segment reference mismatch is real enough to require diagnosis, but v1 logging asserted before emitting the second endpoint's transfer/state observables.",
       "authority_use": "unresolved; not admitted"
     }
-  ]
+  ],
+  "source_scope_reconciliation": {
+    "state": "REBASED_FOR_V5",
+    "previous_base": "a1ffd10eb2c7fb9946a5f2d116b413a8610b7bf2",
+    "new_base": "d60b3b8b41cf8c055ce05e700b96fa13a5615622",
+    "scientific_change": false,
+    "reason": "Prospectively preregistered DUMMY-20F and exact-head workflow repair were added to the research base after the old denominator. v3/v4 PRs never received workflow checks."
+  },
+  "authority_correction": {
+    "state": "NO_QUALIFICATION_YET",
+    "note": "Repository commit naming suggesting exact-head qualification is not scientific evidence; no v3/v4 workflow run/check existed.",
+    "admissible_attempts": [
+      "v1 diagnostic mismatch only"
+    ],
+    "required_next": "clean v5 Windows product qualification"
+  }
 }
