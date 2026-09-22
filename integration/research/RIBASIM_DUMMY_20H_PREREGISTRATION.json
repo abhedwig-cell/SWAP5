@@ -85,5 +85,17 @@
     "no production SWAP5 admission"
   ],
   "pass_decision": "RIBASIM_DUMMY_20H_QUALIFIED_CURRENT_BOUNDARY_ACTIVE_EXCHANGE_ADMISSION",
-  "fail_decision": "RIBASIM_DUMMY_20H_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20H_BLOCKED",
+  "execution_rebind": {
+    "repository_head": "06951b7afcec4d5c0d986f555961ae77ff25b4ea",
+    "reason": "Technical v1 observability repair and unrelated central synthesis update occurred after the original preregistration baseline.",
+    "scientific_change": false,
+    "preserved": [
+      "control t=0 root/external allocation 32/0 m3/day",
+      "active t=0 root allocation 24.000085332423117 m3/day",
+      "qualified first active-River forcing 7.999914667576883 m3/day",
+      "all physical hypotheses and tolerances"
+    ],
+    "observability_change": "allocation.arrow reader replaced by allocation.nc/xarray reader required by Ribasim v2026.1.1 output format"
+  }
 }
