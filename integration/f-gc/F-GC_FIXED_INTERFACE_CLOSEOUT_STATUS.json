@@ -1,7 +1,7 @@
 {
   "schema": "swap5.fgc.fixed_interface.closeout.status.v1",
   "date": "2026-09-22",
-  "state": "ADMISSION_CANDIDATE_STOPPING_COMPATIBILITY_PREREGISTERED",
+  "state": "QUALIFIED_ADMISSION_CANDIDATE_READY_FOR_CANONICAL_INTEGRATION",
   "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-fixed-interface-closeout",
   "authority": {
@@ -49,13 +49,25 @@
   ],
   "authoritative_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
   "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
-  "latest_scientific_blocker": {
-    "run": 35775725953,
-    "tested_head": "d884a0c659989a98a31822e07c783675bc68a8d9",
-    "finding": "ONE_CELL_PRODUCTION_AFFINE_RESIDUAL_CLOSES_BUT_INDEPENDENT_PHYSICAL_RESIDUAL_AND_NATIVE_MODFLOW_BALANCE_DO_NOT",
-    "independent_physical_residual_m_per_s": -2.6143686684926482e-14,
-    "frozen_gate_m_per_s": 1e-15,
-    "disposition": "PRESERVED_NOT_RETUNED"
+  "next_bounded_unit": "CANONICAL_INTEGRATION_REVIEW_ONLY_NO_NEW_GROUNDWATER_RESEARCH_DIMENSION",
+  "qualification": {
+    "tested_head": "9b135ec63c142449e88c0d0b2a745b726f3a69ed",
+    "workflow_run": 35785238145,
+    "workflow_job": 106940329460,
+    "conclusion": "SUCCESS",
+    "independent_endpoint_head_error_m": 3.297362383136715e-14,
+    "independent_physical_residual_m_per_s": -7.075006056961875e-16,
+    "production_external_residual_m_per_s": -6.092081208031304e-23,
+    "modflow_component_balance_residual_m3_per_day": -3.647099915365763e-14,
+    "accepted_interface_exchange_m": -1.0206812345027175e-12,
+    "fresh_process_e2e_replay": "PASS",
+    "fgc24_split_process_restart_replay_o0": "PASS",
+    "fgc24_split_process_restart_replay_o2": "PASS"
   },
-  "next_bounded_unit": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
+  "resolved_scientific_blocker": {
+    "parent_run": 35775725953,
+    "original_finding": "ONE_CELL_PRODUCTION_AFFINE_RESIDUAL_CLOSES_BUT_INDEPENDENT_PHYSICAL_RESIDUAL_AND_NATIVE_MODFLOW_BALANCE_DO_NOT",
+    "resolution": "PREREGISTERED_STOPPING_COMPATIBILITY_CONFIGURATION_QUALIFIED_WITHOUT_RELAXING_FROZEN_1E_15_PHYSICAL_RESIDUAL_GATE",
+    "preregistration": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
+  }
 }
