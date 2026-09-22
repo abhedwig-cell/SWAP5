@@ -52,6 +52,7 @@ def source_ownership_audit()->dict[str,object]:
     tree=ast.parse(source)
     direct=[]
     forbidden_calls=[]
+    open_prepared_solve_calls=0
     forbidden_names={
         "set_value","set_value_ptr","set_head","set_current_head","set_x",
         "restore_iterate","restore_previous_x","rollback_iteration","rollback_solve",
@@ -72,9 +73,17 @@ def source_ownership_audit()->dict[str,object]:
         if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute):
             if node.func.attr in forbidden_names:
                 forbidden_calls.append(node.func.attr)
+            if node.func.attr=="open_prepared_solve":
+                open_prepared_solve_calls+=1
     require(not direct,f"G21 direct MODFLOW state assignment found: {direct}")
     require(not forbidden_calls,f"G21 forbidden state-control call found: {forbidden_calls}")
-    return {"direct_session_state_assignments":direct,"forbidden_state_control_calls":forbidden_calls}
+    require(open_prepared_solve_calls==1,
+            f"G21 prepared-solve open call-site count drifted: {open_prepared_solve_calls}")
+    return {
+        "direct_session_state_assignments":direct,
+        "forbidden_state_control_calls":forbidden_calls,
+        "open_prepared_solve_call_sites":open_prepared_solve_calls,
+    }
 
 
 def settle_response(
@@ -158,6 +167,7 @@ def main()->None:
     a=float(frozen["groundwater_a_per_s"])
     b=float(frozen["groundwater_intercept"])
 
+    require(swap.g15_trial_call_count()==0,"G21 ordinary participant path dirty before diagnostics")
     swap.g16_begin_session()
     require(swap.g16_counts()==(0,0,0,0),"G21 dirty G16 session")
     diag_session=DiagnosticSession(swap,origin,a,b)
@@ -313,6 +323,8 @@ def main()->None:
     counts=swap.g16_counts()
     require(counts[0]==counts[1]+counts[2],"G21 G16 accounting identity failed")
     require(counts[1]==counts[3],"G21 G16 physical-trial/cache identity failed")
+    require(swap.g15_trial_call_count()==0,
+            "G21 diagnostic coupling loop used ordinary publication-path participant trials")
     swap.g16_end_session()
     require(swap.state()==origin and not swap.g15_has_live_candidate(),"G21 session close changed authority")
     require(not swap.swap_preflight() and not swap.ledger_preflight(),"G21 left publication authority")
@@ -336,6 +348,7 @@ def main()->None:
         "g16_participant_trials":counts[1],
         "g16_cache_hits":counts[2],
         "g16_unique_heads":counts[3],
+        "ordinary_publication_trials_during_diagnostics":swap.g15_trial_call_count(),
         "diagnostic_non_authority":"PASS",
         "production_policy_claim":"NOT_MADE",
         "timestep_publication_claim":"NOT_MADE",
