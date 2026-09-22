@@ -273,18 +273,28 @@ grep -Fq 'GC_FIXED_INTERFACE_G20_EXECUTION=PASS' "$BUILD/fgc44-globalization-g20
 }
 
 
-# G21 full dynamic response-space globalization. E3 is recomputed at each
-# accepted coupling head and P4's unchanged factor-1/2 status/merit logic is
-# applied to affine-response residual damping inside one continuous prepared solve.
+# G21 is a persisted scientific falsification, not a positive regression gate.
+# Reproduce that exact negative result before allowing downstream G21A diagnosis.
+# Any success or any different failure is fail-closed and requires a new bounded
+# reconciliation rather than silently changing the archived G21 verdict.
+set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
   python3 tests/research/test_gc_fixed_interface_g21_dynamic_response_globalization.py \
-  | tee "$BUILD/fgc44-globalization-g21.txt"
+  2>&1 | tee "$BUILD/fgc44-globalization-g21.txt"
+G21_RC=${PIPESTATUS[0]}
+set -e
 
-grep -Fq 'GC_FIXED_INTERFACE_G21_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21.txt" || {
-  echo "GC_FGC44_G21_FAIL missing dynamic response-globalization gate" >&2
+if [[ "$G21_RC" -eq 0 ]]; then
+  echo "GC_FGC44_G21_FAIL persisted G21 falsification unexpectedly disappeared" >&2
+  exit 1
+fi
+grep -Fq 'AssertionError: G21 accepted head drift outer=2: 7.215394948190124e-11' \
+  "$BUILD/fgc44-globalization-g21.txt" || {
+  echo "GC_FGC44_G21_FAIL known outer-2 falsification was not reproduced exactly" >&2
   exit 1
 }
+echo "GC_FIXED_INTERFACE_G21_PERSISTED_FALSIFICATION_REPRODUCED=PASS"
 
 
 # G21A diagnostic decomposition of the falsified G21 outer-2 head divergence.
