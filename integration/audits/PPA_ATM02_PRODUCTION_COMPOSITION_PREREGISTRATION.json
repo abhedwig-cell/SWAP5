@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "work_unit": "PPA-ATM-02-PRODUCTION-COMPOSITION",
-  "state": "BUILDER_QUALIFIED_OWNER_INTEGRATION_PENDING",
+  "state": "ONE_INTERVAL_OWNER_QUALIFIED_MULTI_INTERVAL_RESTART_BOUNDARY",
   "baseline": "9e84afcb3",
   "purpose": "Deliver one validated typed effective-forcing vector to the existing PPA-WU01 production owner from decoded PMdirect/SWINTER=0 records without creating a second state, transaction, mass or restart owner.",
   "owner_boundary": {
@@ -20,20 +20,19 @@
     "excluded": ["SWINTER=1/2/3", "snow/runon", "irrigation scheduler", "groundwater profile", "mixed lower-boundary profile", "file/calendar decoder"]
   },
   "invariants": [2, 3, 7, 13, 29],
-  "remaining_owner_qualification": [
-    "all-tile composition failure leaves committed revisions unchanged",
-    "successful composition uses the existing production owner once and advances each committed revision once",
-    "hard mass closure is reported by the existing owner result",
-    "two covered generic subdaily intervals preserve owner/restart semantics",
-    "O0/O2 stable output identity",
-    "no parser/cursor/date or second persistent-state surface"
+  "qualified_owner_evidence": [
+    "all-tile PMdirect forcing composition completes before one run_standalone_with_forcing call",
+    "the existing owner commits every tile once and reports hard mass closure",
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 exercises the root-enabled standalone owner route",
+    "the extended WU01 gate completed locally with GNU Fortran 16.2.0"
   ],
   "qualified_builder_evidence": [
     "src/adapter/mod_ppa_atm02_pmdirect_production_forcing_adapter.f90: all tile-local meteorology, PMdirect/SWINTER=0, surface demand, dynamic-top and prescribed-root routes fail closed before forcing is returned",
     "tests/fapp/test_ppa_atm02_pmdirect_production_forcing_adapter.f90: O0 and O2 composition, root materialization and invalid-root rejection pass",
     "src/runtime/mod_fmr_production_application_bootstrap.f90: restricted standalone bottom_mode=7 root-enabled profile is admitted"
   ],
-  "next_safe_step": "Use the qualified builder to form every tile forcing before one run_standalone_with_forcing owner call, and qualify commit, mass and restart behavior over two covered intervals.",
+  "restart_boundary": "The public production bootstrap does not expose committed top state or its internal committed-state registry. A second PMdirect interval cannot safely materialize a new dynamic-top request, and restart export/restore cannot be qualified externally, without a narrowly designed owner-owned ingress/read-only snapshot contract.",
+  "next_safe_step": "Do not reconstruct the second interval from initial state. Continue with an independent coverage item while a separate owner-owned committed-state ingress contract is preregistered.",
   "required_postimage": [
     "PPA-WU01 production-owner integration test",
     "no mutation of Reference Richards, transaction, restart or mass-ledger implementations"
