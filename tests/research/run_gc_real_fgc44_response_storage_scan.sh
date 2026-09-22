@@ -215,3 +215,18 @@ grep -Fq 'GC_FIXED_INTERFACE_G16_EXECUTION=PASS' "$BUILD/fgc44-globalization-g16
   echo "GC_FGC44_G16_FAIL missing tangent-observation-service gate" >&2
   exit 1
 }
+
+
+# G17 research orchestration qualification: consume G16 for every diagnostic
+# SWAP evaluation in the frozen G11 safeguard-recovery stress. Diagnostic
+# probes must remain non-authoritative; only one final reacquired participant
+# candidate may enter the existing FMR/ledger preflight and publication seam.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g17_safeguarded_orchestration.py \
+  | tee "$BUILD/fgc44-globalization-g17.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G17_EXECUTION=PASS' "$BUILD/fgc44-globalization-g17.txt" || {
+  echo "GC_FGC44_G17_FAIL missing safeguarded-orchestration gate" >&2
+  exit 1
+}
