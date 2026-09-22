@@ -223,12 +223,13 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-20G",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20F2",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
       "dependency": "qualified DUMMY-20F2",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0"
+      "modflow_release": "6.7.0",
+      "implementation_baseline": "a258584729fd43012410928bbf1359de38f880a2"
     },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
@@ -241,7 +242,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and implement prospectively frozen DUMMY-20G active-river reciprocal stage-feedback bridge.",
+  "next_authority_action": "Execute frozen DUMMY-20G active-river reciprocal stage-feedback product gate.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
