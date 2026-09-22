@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21b.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21B",
+  "title": "Prepared-solve first-convergence versus fixed-response continuation diagnosis",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "8b1fba97728f356ba28b6c4731a5e672d2cd8ca8",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21A_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G20_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G19_RESULT.json",
+    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md",
+    "src/adapter/modflow6_prepared_solve_session.py"
+  ],
+  "question": "Does the 7.235179122488944e-11 m G21A prepared-solve path effect persist when the exact same outer-2 affine response is supplied for additional MODFLOW solve calls after the first convergence report, or is it primarily a first-convergence-report/tolerance effect inside the continuous prepared solve?",
+  "scope": {
+    "diagnostic_only": true,
+    "no_new_coupling_acceptance_rule": true,
+    "no_policy_selection": true,
+    "production_admission": "NO"
+  },
+  "frozen_case": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "initial_head_m": -0.7149999311459918,
+    "groundwater_k_m_per_day": 1e-10,
+    "groundwater_ss_per_m": 0,
+    "groundwater_initial_head_bias_m": -0.00003332218778007957,
+    "groundwater_a_per_s": 6.888155563779977e-7,
+    "groundwater_intercept": 4.925260259275142e-7
+  },
+  "frozen_outer1_response_history": {
+    "source": "GC_FIXED_INTERFACE_G19_RESULT.json",
+    "anchor_head_m": -0.7149999311459918,
+    "tangent_per_s": -0.000001377629615322778,
+    "current_residual_m_per_s": -2.306628568830163e-11,
+    "lambda_sequence": [
+      1,
+      0.5,
+      0.25
+    ],
+    "expected_settled_heads_m": [
+      -0.7150110934482893,
+      -0.7150055122971403,
+      -0.7150027217215658
+    ]
+  },
+  "frozen_outer2_response": {
+    "source": "GC_FIXED_INTERFACE_G21A_RESULT.json",
+    "anchor_head_m": -0.7150027217215658,
+    "qref_m_per_s": 4.333743479115849e-12,
+    "tangent_per_s": -0.0000015956002568589343,
+    "fresh_reference_head_m": -0.7150100297648362,
+    "first_continuous_convergence_head_m": -0.7150100296924844,
+    "first_convergence_path_effect_m": 7.235179122488944e-11,
+    "first_convergence_solve_calls": 6
+  },
+  "experiment_contract": [
+    "Build two independent live MODFLOW6 models from the identical accepted groundwater origin and identical timestep.",
+    "FRESH arm: open one prepared solve and apply only the frozen outer-2 response for exactly 12 successive solve calls, recording head and MODFLOW convergence flag after every call.",
+    "HISTORY arm: open one prepared solve; replay the frozen outer-1 lambda sequence, settling each lambda only to its first MODFLOW convergence report; then apply the exact same frozen outer-2 response for exactly 12 successive solve calls, recording head and convergence after every call.",
+    "Do not mutate X or XOLD directly, do not reopen or reconstruct either prepared solve, and keep the published outer-2 HCOF/RHS bitwise constant within each 12-call tail.",
+    "Require accepted XOLD bitwise fixed after every solve call.",
+    "Record the first convergence call in each outer-2 tail but deliberately continue the same response after that report for diagnostic purposes; F-GC39 already permits further external solve calls when coupled convergence is not yet satisfied.",
+    "At the end of the fixed 12-call tail, finalize_solve exactly once and do not finalize_time_step.",
+    "No SWAP trial, E3, P4 merit decision or coupling acceptance decision is performed in G21B; the experiment isolates the groundwater prepared-solve path."
+  ],
+  "quantitative_gates": [
+    "The HISTORY outer-1 replay reproduces all three G20 settled lambda heads within 1e-12 m.",
+    "The FRESH outer-2 first convergence occurs by call 12 and its first-converged head is within 1e-12 m of the frozen fresh reference.",
+    "The HISTORY outer-2 first convergence occurs by call 12 and reproduces the G21A first continuous convergence head within 1e-12 m.",
+    "Both arms keep XOLD bitwise fixed and use one prepare_time_step plus one prepare_solve only.",
+    "The outer-2 response HCOF/RHS is unchanged for all 12 tail calls in both arms.",
+    "Report head error to the frozen fresh reference after every tail call, including calls after the first convergence report.",
+    "Report whether additional same-response solve calls reduce the HISTORY path effect below 1e-12 m by call 12.",
+    "Report final HISTORY-minus-FRESH head difference after 12 outer-2 calls.",
+    "Exactly one finalize_solve and zero finalize_time_step calls per arm.",
+    "No production runtime or adapter source is changed."
+  ],
+  "interpretation_rules": {
+    "first_convergence_tolerance_dominated": "HISTORY first-convergence error exceeds 1e-12 m but additional identical-response solve calls reduce |HISTORY-fresh_reference| to <=1e-12 m by call 12 and final HISTORY-minus-FRESH is <=1e-12 m.",
+    "persistent_prepared_path": "HISTORY remains more than 1e-12 m from the fresh reference after 12 identical-response calls and final HISTORY-minus-FRESH remains more than 1e-12 m.",
+    "mixed_or_other": "The two arms or convergence sequence do not support either bounded classification; preserve measured trace without policy inference."
+  },
+  "pass_interpretation": "PASS is diagnostic only: it classifies whether the G21 path effect is removed by continued identical-response solve calls or persists across the fixed tail. It does not alter the admitted meaning of MODFLOW convergence, and it does not create a new coupling convergence rule.",
+  "fail_interpretation": "Preserve failure. Do not change the 12-call tail, response parameters, solver tolerances, G21/G21A evidence or F-GC38/F-GC39 semantics after seeing results.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21b_prepared_solve_convergence.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21B_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "G16/E3/P4 semantics",
+    "G19/G20/G21/G21A gates or results",
+    "F-GC38/F-GC39 contracts",
+    "MODFLOW solver tolerances",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
