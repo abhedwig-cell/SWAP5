@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.rom_root.rnp02.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP02",
+  "date": "2026-09-22",
+  "state": "PREREGISTERED_BEFORE_RNP02_TRACE_RESPONSE",
+  "inherits": "integration/f-rom/ROM_ROOT_RNP01_CLOSEOUT.json",
+  "question": "Does the persistent B01 R1024_T32 V02 total-residual-only rejection arise from an iterative recurrence/stagnation in the unchanged Reference Newton/backtracking path?",
+  "known_evidence": {
+    "target": "B01 R1024_T32 V02",
+    "status_at_16": "RETRY_ADVISED",
+    "status_at_32": "RETRY_ADVISED",
+    "status_at_64": "RETRY_ADVISED",
+    "residual_at_16": 1.9584889265900074e-12,
+    "residual_at_32": 1.2645995361992846e-12,
+    "residual_at_64": 1.9584889265900074e-12,
+    "control": "B01 R2048_T32 V02",
+    "control_converges_at_iteration": 17
+  },
+  "frozen_execution": {
+    "material": "B01",
+    "history": "V02",
+    "temporal_factor": 32,
+    "optimization": 0,
+    "cases": [
+      {
+        "route": "R1024_T32",
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "role": "TARGET"
+      },
+      {
+        "route": "R2048_T32",
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "role": "CONTROL"
+      }
+    ],
+    "shadow_max_iterations": 128,
+    "total_balance_tolerance": 1e-12,
+    "compartment_balance_tolerance": 1e-12,
+    "head_tolerances_unchanged": true,
+    "dt_unchanged": true,
+    "root_sink_unchanged": true,
+    "shadow_commit": false
+  },
+  "trace": {
+    "scope": "Only the direct diagnostic shadow solve with max_iterations=128.",
+    "fields": [
+      "solver_numbit",
+      "backtracking_index",
+      "factor",
+      "sum_residual",
+      "max_abs_residual",
+      "half_squared_l2",
+      "previous_half_squared_l2"
+    ],
+    "source_location": "workflow-local copy of src/legacy/b1_10_port/headcalc.f90 immediately after residual recomputation",
+    "semantic_change": false
+  },
+  "preregistered_interpretation": {
+    "TARGET_CONVERGES_BY_128": "Target shadow status is SW_SOLVE_CONVERGED before or at 128 iterations.",
+    "TARGET_PERSISTS_TO_128": "Target shadow remains SW_SOLVE_RETRY_ADVISED at 128 iterations.",
+    "EXACT_TERMINAL_RECURRENCE": "For the target, the last recorded residual tuple of at least two distinct Newton iteration numbers is textually identical for sum_residual, max_abs_residual and half_squared_l2.",
+    "CONTROL_PRESERVATION": "R2048 control remains converged under the same 128-cap diagnostic and unchanged tolerances."
+  },
+  "prohibited": [
+    "No tolerance modification.",
+    "No production HeadCalc or Reference Richards change.",
+    "No fallback enablement.",
+    "No reduced ROM response.",
+    "No C6R reopening.",
+    "No policy/admission conclusion from RNP02 alone."
+  ],
+  "next_if_cycle_found": "A later numerical-method authority may investigate why the Newton/backtracking sequence recurs; RNP02 itself cannot change solver policy."
+}
