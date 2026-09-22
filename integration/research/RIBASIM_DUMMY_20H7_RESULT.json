@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.coupling.real_ribamod_next_boundary_memory_forecast_bridge.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H7",
+  "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+  "authority": {
+    "qualification_head": "b97b7520a6b0d3ec075b3af501d3de9497a04e76",
+    "workflow_run": 35745769522,
+    "workflow_job": 106806882790,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "accepted_states": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000019993621654,
+      "root_m3": 4.000659167808606,
+      "external_m3": 0,
+      "river_flux_m3_per_day": 7.999914667576883,
+      "cumulative_infiltration_m3": 1.9999786668942208,
+      "storage_gain_m3": 1.9993621653835447
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000039975623536,
+      "root_m3": 8.002472315355364,
+      "external_m3": 0,
+      "river_flux_m3_per_day": 7.999946657031089,
+      "cumulative_infiltration_m3": 3.999965331151993,
+      "storage_gain_m3": 3.9975623535859484
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.0000059945693962,
+      "root_m3": 12.005470615620853,
+      "external_m3": 0,
+      "river_flux_m3_per_day": 7.999978627893077,
+      "cumulative_infiltration_m3": 5.999959988125262,
+      "storage_gain_m3": 5.994569396206018
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.000007990372381,
+      "root_m3": 16.009664985910206,
+      "external_m3": 0,
+      "river_flux_m3_per_day": 8.000010579664941,
+      "cumulative_infiltration_m3": 7.9999626330414975,
+      "storage_gain_m3": 7.990372381083688
+    },
+    {
+      "endpoint_s": 108000,
+      "level_m": 1.0000089852164016,
+      "root_m3": 21.01481033745437,
+      "external_m3": 0,
+      "river_flux_m3_per_day": 8.000042512172085,
+      "cumulative_infiltration_m3": 9.999973261084516,
+      "storage_gain_m3": 8.985216401580232
+    }
+  ],
+  "allocation_records": {
+    "times": [
+      "2020-01-01T00:00:00",
+      "2020-01-02T00:00:00"
+    ],
+    "t0": {
+      "root_m3_per_day": 32,
+      "external_m3_per_day": 0
+    },
+    "t24": {
+      "root_m3_per_day": 39.99037238105666,
+      "external_m3_per_day": 0
+    }
+  },
+  "qualified_claims": [
+    "The actual RibaMod run reproduces the complete qualified DUMMY-20H active-River day-1 accepted-state prefix, including t=24 level 1.000007990372381 m and storage excess 7.990372381083688 m3.",
+    "The first post-boundary MF6 River solve publishes 8.000042512172085 m3/day back to Ribasim, matching the prospectively frozen DUMMY-20H6 current-forcing reference within numerical precision.",
+    "Actual Ribasim allocation output contains distinct t=0 and t=24 records.",
+    "The actual t=24 UserDemand allocation is 39.99037238105666 m3/day root and 0 external, matching the DUMMY-20H6 free-alpha oracle.",
+    "The t=24 root-allocation increase above the t=0 32 m3/day allocation is 7.99037238105666 m3/day, equal within numerical precision to the accepted day-1 Basin storage excess.",
+    "The actual pinned product therefore carries accepted physical storage memory into the next management boundary while current active-River forcing remains separately forecast-attenuable under the tested allocation topology.",
+    "External physical supply remains zero through the first post-boundary segment and the coupled physical ledger closes at reported numerical precision."
+  ],
+  "coupling_contract": {
+    "physical_window": "Active River forcing is realized reciprocally and changes accepted Basin state during day 1.",
+    "accepted_memory": "The resulting accepted storage excess is retained as management-visible memory at t=24.",
+    "current_forcing": "The next active-River forcing is physically present at the same management boundary but is not equivalent to accepted memory.",
+    "allocation_forecast": "For the tested topology, the actual t=24 allocation equals Q_source + accepted_memory, consistent with the H6 free-alpha solution that attenuates the current implicit negative forcing.",
+    "realization": "The new allocation governs only subsequent physical realization; it does not retroactively alter day-1."
+  },
+  "boundaries": [
+    "The low_storage_factor itself is not exposed as an actual RibaMod XMI variable in this test; the product bridge is qualified by the preregistered allocation-output equivalence to the H6 oracle, not by inventing direct alpha observability.",
+    "The result applies to the tested single-Basin active-River/UserDemand/LevelDemand topology and exact pinned product versions.",
+    "No claim of arbitrary Ribasim network allocation equivalence.",
+    "No implicit same-window coupled fixed point is established.",
+    "No production SWAP5 admission, storage-partition decision or drainage-ownership decision."
+  ],
+  "downstream": "Use H7 as the end-to-end authority for the accepted-memory/current-forcing separation. Any further work should vary topology, priority, forcing direction or temporal regime rather than re-prove this same single-Basin case."
+}
