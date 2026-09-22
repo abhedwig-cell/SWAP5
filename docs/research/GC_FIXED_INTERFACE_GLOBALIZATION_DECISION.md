@@ -853,3 +853,51 @@ A response-space safeguard must be treated as a new policy candidate. It may
 reuse factor-1/2 as a continuation parameter, but it cannot inherit P4 identity
 or production authority merely because it is motivated by the same failed raw
 Newton step.
+## G19 disposition: affine response-space damping reproduces the frozen P4 contraction geometry
+
+G19 tests a new policy bridge motivated by the G18 composition gap. It does
+not change P4 or the prepared-solve contract. Instead it holds the physical SWAP
+tangent fixed and damps only the affine-response intercept.
+
+For the frozen G11 groundwater stress, the live five-point response remains
+affine to a maximum fit error of `3.705769144237564e-21 m/s`. With current
+head `h0`, groundwater response `G(h)`, current residual `r0` and physical
+SWAP tangent `p`, G19 defines:
+
+```text
+q_lambda(h0) = G(h0) + lambda * r0
+slope        = p
+```
+
+For affine groundwater this gives exactly:
+
+```text
+h_lambda = h0 + lambda * (h_raw - h0)
+```
+
+The definitive live run, workflow `35726466434`, reproduced the frozen G11
+safeguard topology using fresh MODFLOW solves from the same accepted origin:
+
+```text
+lambda = 1.00  -> raw head, status 6, rejected
+lambda = 0.50  -> first half-step, status 6, rejected
+lambda = 0.25  -> second half-step, status 0, accepted
+```
+
+The lambda=0.25 live head differs from the persisted first accepted P4 head by
+only `4.44e-16 m`. All four SWAP observations, including the center, were
+executed through G16 and left accepted state, ledger authority and candidate
+liveness unchanged.
+
+This qualifies a bounded mathematical and live fresh-origin bridge only. It
+does not yet prove that the same response sequence behaves equivalently inside
+one continuously evolving F-GC38 prepared solve.
+
+```text
+G19 AFFINE RESPONSE-SPACE / HEAD-SPACE BRIDGE = QUALIFIED FOR FROZEN G11 FRESH SOLVES.
+G18 DIRECT HEAD-SPACE COMPOSITION FALSIFICATION = UNCHANGED.
+CONTINUOUS PREPARED-SOLVE RESPONSE DAMPING = NOT YET QUALIFIED.
+E3/P4 = NOT PRODUCTION-ADMITTED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: ONE-PREPARED-SOLVE LAMBDA-SEQUENCE QUALIFICATION.
+```
