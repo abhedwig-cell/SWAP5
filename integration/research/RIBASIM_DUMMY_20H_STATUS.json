@@ -6,16 +6,16 @@
   "baseline": "257ea1672bcbb393c37a5a1d88ef5a6c452987de",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
-  "blocked": false,
-  "blocker": null,
+  "blocked": true,
+  "blocker": "Actual active-River forcing is physically realized from the first product segment, but release-native t=0 UserDemand allocation remains 32/0 rather than the frozen 24.0000853/0 prediction.",
   "prepared_scope": "Actual product A/B comparison of no-exchange versus active-River forcing at t=0 allocation, with allocation.arrow and physical ledgers observed separately.",
-  "next_action": "Execute DUMMY-20H v3 from rebound research-only source scope; frozen science unchanged.",
+  "next_action": "Do not repair 20H. Execute a new pointer-to-allocation visibility differential to locate the missing current-boundary management seam.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "6035fe0a0230d0b3affb91718902f0b900755894",
-  "recovery_point": "20H v1 observability fail and v2 source-scope fail are both technical; v3 is first repaired product-runtime attempt.",
+  "recovery_point": "DUMMY-20H scientifically falsified by first fully repaired product attempt v3, run 35732895672.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H_CONCEPT.md",
@@ -56,6 +56,13 @@
       "reason": "Qualification branch inherited the updated central coupling synthesis after the older 20H source-scope base; gate stopped before product runtime.",
       "scientific_effect": "none",
       "authority_use": "forbidden"
+    },
+    {
+      "attempt": "v3",
+      "run": 35732895672,
+      "job": 106762674502,
+      "state": "SCIENTIFIC_FALSIFICATION",
+      "authority_use": "admitted"
     }
   ],
   "source_scope_rebind": {
@@ -63,5 +70,9 @@
     "base": "571d9c33988c7feb63486342894ca693589540e3",
     "reason": "Absorb already-persisted research-only synthesis and prospectively frozen 20I files into the qualification denominator; production/reference delta checks remain active.",
     "scientific_change": false
-  }
+  },
+  "decision": "RIBASIM_DUMMY_20H_FALSIFIED_ACTIVE_RIVER_NOT_VISIBLE_TO_T0_ALLOCATION",
+  "workflow_run": 35732895672,
+  "workflow_job": 106762674502,
+  "qualification_head": "75e7f886b8ef40b820939e9bbad5f702a0dfc454"
 }
