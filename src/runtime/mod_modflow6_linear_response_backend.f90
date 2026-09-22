@@ -37,6 +37,7 @@ module mod_modflow6_linear_response_backend
   public :: evaluate_modflow6_linear_boundary_flux
   public :: evaluate_modflow6_linear_boundary_flux_density
   public :: reanchor_modflow6_linear_boundary_term
+  public :: relinearize_modflow6_linear_boundary_term
 
 contains
 
@@ -189,6 +190,46 @@ contains
     reanchored%valid = .true.
     status = MODFLOW6_LINEAR_BACKEND_OK
   end subroutine reanchor_modflow6_linear_boundary_term
+
+  subroutine relinearize_modflow6_linear_boundary_term(term, hydraulic_head_m, q_u_m_per_s, &
+       dq_u_dh_per_s, relinearized, status)
+    type(modflow6_linear_boundary_term_t), intent(in) :: term
+    real(real64), intent(in) :: hydraulic_head_m
+    real(real64), intent(in) :: q_u_m_per_s
+    real(real64), intent(in) :: dq_u_dh_per_s
+    type(modflow6_linear_boundary_term_t), intent(out) :: relinearized
+    integer, intent(out) :: status
+
+    real(real64) :: area_day_factor
+    real(real64) :: reference_volume_flux
+    real(real64) :: hcof
+    real(real64) :: rhs
+
+    relinearized = modflow6_linear_boundary_term_t()
+    status = MODFLOW6_LINEAR_BACKEND_INVALID_EVALUATION
+    if (.not. term%valid .or. term%status /= MODFLOW6_LINEAR_BACKEND_OK) return
+    if (.not. ieee_is_finite(term%cell_area_m2) .or. term%cell_area_m2 <= 0.0_real64) return
+    if (.not. ieee_is_finite(hydraulic_head_m) .or. .not. ieee_is_finite(q_u_m_per_s) .or. &
+        .not. ieee_is_finite(dq_u_dh_per_s)) return
+
+    area_day_factor = term%cell_area_m2 * DAY_TO_S
+    reference_volume_flux = area_day_factor * q_u_m_per_s
+    hcof = area_day_factor * dq_u_dh_per_s
+    rhs = hcof * hydraulic_head_m - reference_volume_flux
+    if (.not. ieee_is_finite(area_day_factor) .or. .not. ieee_is_finite(reference_volume_flux) .or. &
+        .not. ieee_is_finite(hcof) .or. .not. ieee_is_finite(rhs)) return
+
+    relinearized = term
+    relinearized%reference_head_m = hydraulic_head_m
+    relinearized%q_u_at_reference_m_per_s = q_u_m_per_s
+    relinearized%dq_u_dh_per_s = dq_u_dh_per_s
+    relinearized%reference_volume_flux_m3_per_day = reference_volume_flux
+    relinearized%hcof_m2_per_day = hcof
+    relinearized%rhs_m3_per_day = rhs
+    relinearized%status = MODFLOW6_LINEAR_BACKEND_OK
+    relinearized%valid = .true.
+    status = MODFLOW6_LINEAR_BACKEND_OK
+  end subroutine relinearize_modflow6_linear_boundary_term
 
   pure logical function valid_cell_response(cell) result(valid)
     type(modflow6_multiswap_cell_response_t), intent(in) :: cell

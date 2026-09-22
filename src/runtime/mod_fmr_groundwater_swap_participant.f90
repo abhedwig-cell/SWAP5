@@ -2,6 +2,7 @@ module mod_fmr_groundwater_swap_participant
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t
+  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, KERNEL_COMMIT_STATUS_COMMITTED
   use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t, groundwater_head_datum_t, &
@@ -17,6 +18,8 @@ module mod_fmr_groundwater_swap_participant
        fmr_serialized_reference_backend_t
   implicit none
   private
+
+  real(real64), parameter :: DAY_TO_S = 86400.0_real64
 
   ! F-GC44 concrete binding of the admitted F-GC43 participant contract to the
   ! encapsulated FMR backend. The FMR backend keeps its kernel executor private;
@@ -89,7 +92,8 @@ contains
     integer, intent(out) :: status
 
     class(canonical_forcing_t), allocatable :: forcing
-    real(real64) :: duration_day, qbot_mean_cm_per_day
+    type(canonical_numerical_config_t) :: trial_numerical
+    real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s
     integer :: forcing_status, interface_status
 
     trial = groundwater_swap_trial_t()
@@ -122,9 +126,13 @@ contains
       return
     end if
 
+    trial_numerical = numerical
+    trial_numerical%accepted_trajectory_direction%requested = .true.
+    trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
+
     select type (typed_forcing => forcing)
     type is (fmr_b110_physical_forcing_t)
-      call backend%run_trial(column, template, parameters, committed, typed_forcing, numerical, &
+      call backend%run_trial(column, template, parameters, committed, typed_forcing, trial_numerical, &
            window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics)
     class default
       status = GW_SWAP_PARTICIPANT_FORCING_FAILED
@@ -145,6 +153,15 @@ contains
       call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       status = GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
       return
+    end if
+
+    if (accepted_head_response_tangent(self%trial_result, window)) then
+      dq_swap_dh_per_s = -self%trial_result%accepted_trajectory_direction%accepted_bottom_exchange_derivative / &
+           (duration_day * DAY_TO_S)
+      if (ieee_is_finite(dq_swap_dh_per_s)) then
+        trial%response_tangent_available = .true.
+        trial%dq_swap_dh_per_s = dq_swap_dh_per_s
+      end if
     end if
 
     self%live_candidate = .true.
@@ -250,6 +267,22 @@ contains
     if (.not. same_time(candidate_t0, window%t0) .or. .not. same_time(candidate_t1, window%t1)) return
     valid = .true.
   end function accepted_whole_window
+
+  logical function accepted_head_response_tangent(result, window) result(valid)
+    type(kernel_result_t), intent(in) :: result
+    type(groundwater_coupling_window_t), intent(in) :: window
+
+    valid = .false.
+    if (.not. result%accepted_trajectory_direction%requested) return
+    if (.not. result%accepted_trajectory_direction%available) return
+    if (result%accepted_trajectory_direction%control_coordinate /= SW_STEP_CONTROL_BOTTOM_HEAD) return
+    if (result%accepted_trajectory_direction%accepted_steps <= 0) return
+    if (result%accepted_trajectory_direction%additional_full_nonlinear_solves /= 0) return
+    if (.not. ieee_is_finite(result%accepted_trajectory_direction%accepted_bottom_exchange_derivative)) return
+    if (.not. same_time(result%accepted_trajectory_direction%origin_t0, window%t0)) return
+    if (.not. same_time(result%accepted_trajectory_direction%accepted_t1, window%t1)) return
+    valid = .true.
+  end function accepted_head_response_tangent
 
   logical function fmr_swap_has_origin(self) result(value)
     class(fmr_groundwater_swap_participant_t), intent(in) :: self

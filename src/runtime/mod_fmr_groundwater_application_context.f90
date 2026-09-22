@@ -7,7 +7,7 @@ module mod_fmr_groundwater_application_context
   use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
   use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t, &
        evaluate_modflow6_linear_boundary_flux_density, reanchor_modflow6_linear_boundary_term, &
-       MODFLOW6_LINEAR_BACKEND_OK
+       relinearize_modflow6_linear_boundary_term, MODFLOW6_LINEAR_BACKEND_OK
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
        FMR_GW_REGISTRY_OK
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t
@@ -60,8 +60,10 @@ module mod_fmr_groundwater_application_context
     procedure, public :: capture_origins => application_context_capture_origins
     procedure, public :: evaluate_groundwater_fluxes => application_context_evaluate_groundwater_fluxes
     procedure, public :: trial_cell_heads => application_context_trial_cell_heads
+    procedure, public :: trial_response_tangents => application_context_trial_response_tangents
     procedure, public :: discard_candidates => application_context_discard_candidates
     procedure, public :: reanchor_terms => application_context_reanchor_terms
+    procedure, public :: relinearize_terms => application_context_relinearize_terms
     procedure, public :: swap_preflight => application_context_swap_preflight
     procedure, public :: prepare_ledgers => application_context_prepare_ledgers
     procedure, public :: ledgers_preflight => application_context_ledgers_preflight
@@ -409,6 +411,56 @@ contains
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_trial_cell_heads
 
+  subroutine application_context_trial_response_tangents(self, cell_dq_swap_dh_per_s, status)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    real(real64), intent(out) :: cell_dq_swap_dh_per_s(:)
+    integer, intent(out) :: status
+
+    integer :: i, k, idx, first, last
+    real(real64) :: tangent
+
+    cell_dq_swap_dh_per_s = 0.0_real64
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    if (size(cell_dq_swap_dh_per_s) /= size(self%cells)) return
+    if (self%published) then
+      status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
+      return
+    end if
+    if (.not. all(self%trial_valid) .or. any(self%ledger_prepared)) then
+      status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
+      return
+    end if
+
+    do i = 1, size(self%cells)
+      first = self%cells(i)%tile_begin
+      last = first + self%cells(i)%tile_count - 1
+      if (first < 1 .or. last > size(self%tiles) .or. last < first) then
+        status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+        return
+      end if
+      tangent = 0.0_real64
+      do k = 1, self%cells(i)%tile_count
+        idx = first + k - 1
+        if (.not. self%trials(idx)%response_tangent_available) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        if (.not. ieee_is_finite(self%trials(idx)%dq_swap_dh_per_s)) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        tangent = tangent + self%tiles(idx)%area_fraction * self%trials(idx)%dq_swap_dh_per_s
+      end do
+      if (.not. ieee_is_finite(tangent)) then
+        status = FMR_GW_APP_CONTEXT_AGGREGATION_FAILED
+        return
+      end if
+      cell_dq_swap_dh_per_s(i) = tangent
+    end do
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_trial_response_tangents
+
   subroutine application_context_discard_candidates(self, status)
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     integer, intent(out) :: status
@@ -458,6 +510,43 @@ contains
     self%current_terms = next_terms
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_reanchor_terms
+
+  subroutine application_context_relinearize_terms(self, cell_heads_m, cell_q_swap_m_per_s, &
+       cell_dq_swap_dh_per_s, status)
+    class(fmr_groundwater_application_context_t), intent(inout) :: self
+    real(real64), intent(in) :: cell_heads_m(:)
+    real(real64), intent(in) :: cell_q_swap_m_per_s(:)
+    real(real64), intent(in) :: cell_dq_swap_dh_per_s(:)
+    integer, intent(out) :: status
+
+    type(modflow6_linear_boundary_term_t), allocatable :: next_terms(:)
+    integer :: i, local_status
+
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    if (size(cell_heads_m) /= size(self%cells) .or. size(cell_q_swap_m_per_s) /= size(self%cells) .or. &
+        size(cell_dq_swap_dh_per_s) /= size(self%cells)) return
+    if (self%published) then
+      status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
+      return
+    end if
+    if (any(self%trial_valid) .or. any(self%ledger_prepared)) then
+      status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
+      return
+    end if
+
+    allocate(next_terms(size(self%current_terms)))
+    do i = 1, size(next_terms)
+      call relinearize_modflow6_linear_boundary_term(self%current_terms(i), cell_heads_m(i), &
+           cell_q_swap_m_per_s(i), cell_dq_swap_dh_per_s(i), next_terms(i), local_status)
+      if (local_status /= MODFLOW6_LINEAR_BACKEND_OK) then
+        status = FMR_GW_APP_CONTEXT_LINEAR_RESPONSE_FAILED
+        return
+      end if
+    end do
+    self%current_terms = next_terms
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_relinearize_terms
 
   subroutine application_context_swap_preflight(self, ready, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
