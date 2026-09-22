@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.coupling.real_ribasim_explicit_userdemand_apply_seam.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19K",
+  "title": "Test-only explicit UserDemand apply seam for a coupler-owned 6-hour management clock",
+  "baseline": "a670a31f87bfe27c7840f6e8080d247e7d01726f",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_19J_ACTIVE",
+    "execute_after": "DUMMY-19J closeout",
+    "rationale": "Freeze the proposed solve/apply separation before observing the fine-saveat conflict result."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "purpose": "Test whether the DUMMY-19I failure is resolved by an explicit allocation-application seam, without coupling application to output recording. This is a test-only counterfactual contract experiment, not a production Ribasim modification.",
+  "frozen_model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "bmi_update_until_endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "test_only_apply_contract": {
+    "at_each_6h_boundary": "Solve allocation from the accepted current physical state with record=false, then copy only the optimized UserDemand allocations and per-link optimized inflows into the corresponding applied UserDemand state arrays before advancing the next physical segment.",
+    "explicitly_not_done": [
+      "no allocation output record is created by the apply helper",
+      "no cumulative supplied-volume reset",
+      "no Ribasim source modification",
+      "no change to Pump/Outlet semantics"
+    ]
+  },
+  "independent_reference": {
+    "root_first_allocations_at_segment_start": [
+      {
+        "t_s": 0,
+        "root": 32,
+        "external": 0
+      },
+      {
+        "t_s": 21600,
+        "root": 40,
+        "external": 7.995200961071983
+      },
+      {
+        "t_s": 43200,
+        "root": 40,
+        "external": 15.979613076541273
+      },
+      {
+        "t_s": 64800,
+        "root": 40,
+        "external": 19.962546470305938
+      }
+    ],
+    "external_first_allocations_at_segment_start": [
+      {
+        "t_s": 0,
+        "root": 12,
+        "external": 20
+      },
+      {
+        "t_s": 21600,
+        "root": 27.995200960183805,
+        "external": 20
+      },
+      {
+        "t_s": 43200,
+        "root": 35.979613075653106,
+        "external": 20
+      },
+      {
+        "t_s": 64800,
+        "root": 39.96254646941776,
+        "external": 20
+      }
+    ],
+    "root_first": {
+      "root_supplied_m3": 19.015246367867107,
+      "external_supplied_m3": 5.49757406228132
+    },
+    "external_first": {
+      "root_supplied_m3": 14.50504727621437,
+      "external_supplied_m3": 10.007773153934059
+    },
+    "total_supplied_m3": 24.512820430148427,
+    "final_level_m": 1.0000074871795697,
+    "storage_gain_m3": 7.487179569665159
+  },
+  "hypotheses": [
+    "An explicit solve→apply seam at each accepted 6-hour boundary is sufficient to make the physical UserDemand target follow the 6-hour allocation trajectory while solver.saveat remains daily.",
+    "No allocation output recording is required for the physical apply operation itself.",
+    "Physical recipient volumes and Basin endpoint match the frozen 6-hour reference within tolerance.",
+    "This demonstrates the coupling-contract capability that DUMMY-19I lacked: allocation application/commit can be conceptually separated from allocation output recording."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "integrated_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8
+  },
+  "forbidden": [
+    "no source modification to pinned Ribasim",
+    "no claim that the test helper is a production API",
+    "no changing frozen 6-hour references after execution",
+    "no applying Pump/Outlet conclusions to UserDemand or vice versa",
+    "no production admission"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19K_QUALIFIED_EXPLICIT_USERDEMAND_APPLY_SEAM",
+  "fail_decision": "RIBASIM_DUMMY_19K_BLOCKED"
+}
