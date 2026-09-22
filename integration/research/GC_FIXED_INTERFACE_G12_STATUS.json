@@ -4,7 +4,7 @@
   "work_unit": "GC-FIXED-INTERFACE-G12",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "FIRST_EXECUTION_TECHNICAL_FAILURE_REPAIRING",
+  "state": "TECHNICAL_REPAIR_IMPLEMENTED_AWAITING_REEXECUTION",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
   "parent_live_safeguard": "integration/research/GC_FIXED_INTERFACE_G11_RESULT.json",
   "parent_active_drainage": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
@@ -12,8 +12,8 @@
   "runner": "tests/research/run_gc_real_swap_map09.sh",
   "workflow": ".github/workflows/gc-real-swap-map09.yml",
   "production_changes": false,
-  "recovery_point": "f5840e2127194055caf9173f805b27074c3ed6a9",
-  "next_action": "Apply only the preregistered G12 groundwater vertical-datum translation, rerun the exact scientific matrix, and interpret no earlier policy outcome because none was reached.",
+  "recovery_point": "ed2bf3b438bd031b4e51cc8e571d0dd50ed4c135",
+  "next_action": "Execute repaired G12 postimage and require all original scientific gates; do not use the failed pre-repair groundwater run as policy evidence.",
   "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G12_FIRST_EXECUTION_RESULT.json",
   "first_execution": {
     "tested_commit": "f5840e2127194055caf9173f805b27074c3ed6a9",
@@ -21,5 +21,7 @@
     "workflow_job": 106674107253,
     "conclusion": "failure",
     "classification": "TECHNICAL_HARNESS_DATUM_MISMATCH_BEFORE_POLICY"
-  }
+  },
+  "technical_repair_commit": "ed2bf3b438bd031b4e51cc8e571d0dd50ed4c135",
+  "technical_repair_scope": "G12-only MODFLOW vertical-datum translation; scientific matrix and gates unchanged."
 }
