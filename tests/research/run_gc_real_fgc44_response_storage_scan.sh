@@ -162,3 +162,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G10B_EXECUTION=PASS' "$BUILD/fgc44-globalization-g1
   echo "GC_FGC44_G10B_FAIL missing local-groundwater replay gate" >&2
   exit 1
 }
+
+
+# G11 live safeguard-recovery stress. Uses the qualified E3 tangent and a
+# prospectively frozen storage-dominated groundwater stress; no tangent or
+# SWAP numerical tolerance is degraded to manufacture the bad Newton step.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_live_safeguard_g11.py \
+  | tee "$BUILD/fgc44-globalization-g11.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G11_EXECUTION=PASS' "$BUILD/fgc44-globalization-g11.txt" || {
+  echo "GC_FGC44_G11_FAIL missing live safeguard-recovery gate" >&2
+  exit 1
+}
