@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21f.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21F",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21F_PREREGISTRATION.json",
+  "tested_commit": "fbdcb61c1fd7c715fc6526591b8a710bd132cc78",
+  "workflow_run": 35736973141,
+  "workflow_job": 106776607560,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_PREREG_DERIVED_SEPARATION_ROUNDING_MISMATCH_BEFORE_BOUNDARY_SCAN",
+  "failure": {
+    "assertion": "G21F frozen NOUR/G17 separation drift",
+    "frozen_nour_head_m": -0.7150100297648363,
+    "frozen_g17_head_m": -0.7150100297646383,
+    "binary64_subtraction_m": -1.979527652906654e-13,
+    "preregistered_derived_separation_m": -1.978417429882029e-13,
+    "difference_m": -1.1102230246251565e-16,
+    "interpretation": "The two primary frozen head anchors are unchanged. The failure is in a redundant derived-distance consistency assertion and occurs before any G21F boundary scan or status-topology inference."
+  },
+  "repair_contract": [
+    "Retain the exact preregistered NOUR, G17 and STANDARD anchor head values as the authority inputs.",
+    "Treat nour_minus_g17_head_m as descriptive provenance, not an independent scientific gate, because binary64 subtraction of the frozen anchors differs by one ulp.",
+    "Report the observed binary64 anchor separation explicitly.",
+    "Do not alter the 33-head scan, monotonicity rule, bisection, cross-session determinism, status semantics or any production/runtime source."
+  ],
+  "scientific_verdict": "NOT_REACHED",
+  "disposition": "PRESERVED_NOT_RELABELLED"
+}
