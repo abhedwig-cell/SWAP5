@@ -4,15 +4,37 @@
   "work_unit": "RIBASIM-DUMMY-20F2",
   "branch": "work/ribasim-dummy-01",
   "baseline": "01a2ce8204525c7a2f5eda2466f84e3fdfbc255a",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Implement and execute the frozen two-day next-boundary memory-admission experiment.",
+  "next_action": "Execute frozen DUMMY-20F2 two-day next-boundary memory-admission qualification.",
   "production_delta": [],
   "reference_delta": [],
-  "implementation_baseline": "25921e9e9b3a9fd35a2593f9c8298f1cc33bab32",
-  "recovery_point": "DUMMY-20E3 nonzero intervention qualified; DUMMY-20F2 sequencing dependency satisfied."
+  "implementation_baseline": "d8a0bb90c4053dee73c2c9b18c6148088b6bc871",
+  "recovery_point": "Two-day real-product verifier and runner persisted; first qualification pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20F2_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20F2_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20F2_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20F2_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/test_ribasim_dummy_20f2_two_day_memory.py",
+    "tests/research/run_ribasim_dummy_20f2.ps1",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "day-1 MF6/Ribasim topology is the qualified DUMMY-20E3 two-cell fixture",
+      "only horizon extends from 1 to 2 days",
+      "allocation.dt and saveat remain 86400 s; product timestep remains 21600 s",
+      "drain activation remains after the first 6 h boundary and remains active through day 2",
+      "external delivery is asserted zero through t=24 h and positive at t=30 h",
+      "day-2 root/external increments are checked against the preregistered common-factor 2:1 realization",
+      "groundwater cumulative transfer and full coupled ledger are checked at all eight boundaries"
+    ]
+  }
 }
