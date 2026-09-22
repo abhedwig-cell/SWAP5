@@ -36,3 +36,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run RZM02 forcing-order and timescale qualification
         run: bash tests/research/run_gc_rootzone_memory_rzm02.sh
+
+  rzm03:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run RZM03 bidirectional signed-transfer qualification
+        run: bash tests/research/run_gc_rootzone_memory_rzm03.sh
