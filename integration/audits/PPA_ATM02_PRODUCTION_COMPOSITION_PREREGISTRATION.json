@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "work_unit": "PPA-ATM-02-PRODUCTION-COMPOSITION",
-  "state": "ONE_INTERVAL_OWNER_QUALIFIED_MULTI_INTERVAL_RESTART_BOUNDARY",
+  "state": "RESTRICTED_TWO_INTERVAL_RESTART_OWNER_QUALIFIED",
   "baseline": "9e84afcb3",
   "purpose": "Deliver one validated typed effective-forcing vector to the existing PPA-WU01 production owner from decoded PMdirect/SWINTER=0 records without creating a second state, transaction, mass or restart owner.",
   "owner_boundary": {
@@ -31,8 +31,8 @@
     "tests/fapp/test_ppa_atm02_pmdirect_production_forcing_adapter.f90: O0 and O2 composition, root materialization and invalid-root rejection pass",
     "src/runtime/mod_fmr_production_application_bootstrap.f90: restricted standalone bottom_mode=7 root-enabled profile is admitted"
   ],
-  "restart_boundary": "The public production bootstrap does not expose committed top state or its internal committed-state registry. A second PMdirect interval cannot safely materialize a new dynamic-top request, and restart export/restore cannot be qualified externally, without a narrowly designed owner-owned ingress/read-only snapshot contract.",
-  "next_safe_step": "Do not reconstruct the second interval from initial state. Continue with an independent coverage item while a separate owner-owned committed-state ingress contract is preregistered.",
+  "qualified_continuation": "The production bootstrap exposes a read-only owner-generated committed-top snapshot and owner-managed restart export/restore. Two covered PMdirect intervals are composed from the initial then committed top state, with export/restore between them and no second committed-state owner.",
+  "next_safe_step": "Preserve the restricted PMdirect/SWINTER=0 mode-7 prescribed-root envelope and continue with independently preregistered WU04-C/D interception ingress.",
   "required_postimage": [
     "PPA-WU01 production-owner integration test",
     "no mutation of Reference Richards, transaction, restart or mass-ledger implementations"
