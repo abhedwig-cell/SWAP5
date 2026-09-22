@@ -21,7 +21,7 @@ SHADOW_RE = re.compile(
     r"\|NAIVE_SUM=(?P<naive>[^|]+)\|MAXABS=(?P<maxabs>[^|]+)"
     r"\|L1=(?P<l1>[^|]+)\|BAL_FLAGS=(?P<bal>\d+)\|HEAD_FLAGS=(?P<head>\d+)"
 )
-RESID_RE = re.compile(r"RNP01_RESIDUAL\|I=(?P<i>\d+)\|R=(?P<r>.+)$")
+RESID_RE = re.compile(r"^RNP01_RESIDUAL\\|I=(?P<i>\\d+)\\|R=(?P<r>.+)$", re.MULTILINE)
 
 
 def parse_float(value: str) -> float:
