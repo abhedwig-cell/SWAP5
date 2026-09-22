@@ -57,11 +57,15 @@ def main()->None:
     g11=json.loads(G11.read_text())
     frozen=prereg["frozen_g11"]
 
-    require(float(frozen["current_head_m"])==float(g11["policy_results"][1]["trace"][0]["current_head_m"]),"G19 current-head authority drift")
-    require(float(frozen["raw_head_m"])==float(g11["policy_results"][1]["trace"][0]["raw_head_m"]),"G19 raw-head authority drift")
-    require(float(frozen["first_accepted_head_m"])==float(g11["policy_results"][1]["trace"][0]["accepted_head_m"]),"G19 accepted-head authority drift")
-    require(float(frozen["e3_tangent_per_s"])==float(g11["policy_results"][1]["trace"][0]["tangent_per_s"]),"G19 tangent authority drift")
-    require(int(frozen["contraction_count"])==2,"G19 contraction authority drift")
+    p4=next(x for x in g11["policy_results"] if x["policy"]=="P4_E3")
+    first=p4["trace"][0]
+    require(float(frozen["current_head_m"])==float(first["current_head_m"]),"G19 current-head authority drift")
+    require(float(frozen["raw_head_m"])==float(first["raw_head_m"]),"G19 raw-head authority drift")
+    require(float(frozen["first_accepted_head_m"])==float(first["accepted_head_m"]),"G19 accepted-head authority drift")
+    require(float(frozen["e3_tangent_per_s"])==float(first["tangent_per_s"]),"G19 tangent authority drift")
+    require(int(frozen["raw_status"])==int(first["raw_status"])==6,"G19 raw-status authority drift")
+    require(int(frozen["contraction_count"])==int(first["cumulative_contractions"])==2,"G19 contraction authority drift")
+    require(float(frozen["current_residual_m_per_s"])==float(first["current_residual_m_per_s"]),"G19 current-residual authority drift")
 
     libmf6=Path(os.environ["LIBMF6"]).resolve()
     swaplib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
