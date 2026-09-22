@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute the frozen exact-release four-case BMI clock-lattice qualification.",
+  "next_action": "Reconcile queued run 35751934131. If it executes, classify technical versus scientific outcome without changing the frozen clock grids.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "729b3daf00e5fd21de70876996e1b45c3127d30a",
@@ -25,5 +25,14 @@
     "tests/research/real_ribasim_20h11_clock_lattice.jl",
     "tests/research/run_ribasim_dummy_20h11.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "active_qualification": {
+    "pr": 581,
+    "branch": "work/ribasim-dummy-20h11-ci-v1",
+    "qualification_head": "10ff41ed84b87ed6fe691b6b944ced3c84d15099",
+    "workflow_run": 35751934131,
+    "workflow_job": 106828017679,
+    "observed_state": "QUEUED",
+    "authority_use": "none until completed"
+  }
 }
