@@ -186,29 +186,26 @@
       "duplicate_confirming_run": 35720653416,
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20C",
+      "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
+      "run": 35722691439,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "modflow_version": "6.7.0",
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20C",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
-      "dependency": "qualified DUMMY-20B",
+      "work_unit": "RIBASIM-DUMMY-20D",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20C",
+      "intended_decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+      "dependency": "qualified DUMMY-20C",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "modflow_release": "6.7.0",
-      "implementation_scope_base": "9cd3e409125529889a36937b51f884211d109ac7",
-      "execution_baseline": "74b71366fc16e1105fc0038938c606f63f59d937"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20D",
-      "state": "PREREGISTERED_BLOCKED_BY_20C",
-      "intended_decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
-      "dependency": "DUMMY-20C closeout",
-      "scientific_baseline": "2898e2ecf78ad342052cc7653fd8de8ef5b03233",
-      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
-      "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
     },
     {
@@ -222,7 +219,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Close DUMMY-20C actual product runtime differential, then execute frozen DUMMY-20D product clock-ownership matrix.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-20D actual-product allocation.dt × saveat clock-ownership matrix.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -288,6 +285,7 @@
   "product_clock_authority": {
     "driver": "RIBASIM-DUMMY-20A",
     "ribasim_release": "RIBASIM-DUMMY-20B",
-    "meaning": "The actual product driver delegates management timing to the bundled Ribasim release; v2026.1.1 fixed allocation.dt owns UserDemand allocation cadence and differs materially from the later DUMMY-19 research pin."
+    "runtime": "RIBASIM-DUMMY-20C",
+    "meaning": "The actual RibaMod driver delegates UserDemand cadence to bundled Ribasim v2026.1.1; real 6-hour MF6 product steps are dynamically transparent for the isolated topology when allocation.dt remains 24 h."
   }
 }
