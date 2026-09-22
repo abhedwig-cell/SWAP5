@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Exact v2026.1.1 source-runtime LP observation and fixed-alpha counterfactual.",
-  "next_action": "Execute frozen DUMMY-20H3 exact-release LP mechanism qualification.",
+  "next_action": "Execute DUMMY-20H3 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "929bfd0c45022b2e01772a53fd38dc3e283bc3c6",
@@ -26,5 +26,7 @@
     "tests/research/real_ribasim_20h3_low_storage_mechanism.jl",
     "tests/research/run_ribasim_dummy_20h3.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_low_storage_factor_mechanism",
+  "qualification_base": "work/ribasim-dummy-01@4b04e2a24f4a2ac95407cb6340efb3915a2bfd43"
 }
