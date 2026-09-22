@@ -209,6 +209,12 @@ on:
       - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
       - 'tests/research/test_ribasim_dummy_20c_real_ribamod_runtime.py'
       - 'tests/research/run_ribasim_dummy_20c.ps1'
+      - 'integration/research/RIBASIM_DUMMY_20D_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20D_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/test_ribasim_dummy_20d_real_ribamod_case.py'
+      - 'tests/research/verify_ribasim_dummy_20d_clock_matrix.py'
+      - 'tests/research/run_ribasim_dummy_20d.ps1'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -853,4 +859,29 @@ jobs:
       - name: Run actual RibaMod runtime differential
         shell: pwsh
         run: .\tests\research\run_ribasim_dummy_20c.ps1
+
+  real-ribamod-runtime-clock-ownership-matrix-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20d-ci')
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout pinned iMOD Coupler
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/imod_coupler
+          ref: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+          path: .imod-coupler-pin
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .imod-coupler-pin
+          environments: dev
+      - name: Run actual RibaMod clock ownership matrix
+        shell: pwsh
+        run: .\tests\research\run_ribasim_dummy_20d.ps1
 
