@@ -1354,3 +1354,64 @@ E3 / RESPONSE-SPACE GLOBALIZATION = NOT PRODUCTION-ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: LOCAL OUTER-2 PARTICIPANT ADMISSIBILITY-BOUNDARY DIAGNOSTIC.
 ```
+## G21F disposition: outer-2 participant admissibility is nonmonotone at sub-picometre head scale
+
+G21F resolved the local real-FGC44 participant status topology around the
+G21E NOUR/G17 outer-2 split without changing any participant, solver or
+coupling-policy setting. The first execution failed technically before the
+scan because a redundant preregistered head-difference field differed by one
+binary64 ulp from the subtraction of the two frozen head anchors. The primary
+anchor heads were unchanged; the repaired harness derives and reports their
+binary64 separation directly.
+
+The authority run, workflow `35737526010`, job `106778498746`, reproduced
+all three frozen anchors:
+
+```text
+NOUR outer-2 lambda=1   h = -0.7150100297648363 m   participant status 6
+G17 outer-2 accepted    h = -0.7150100297646383 m   participant status 0
+STANDARD outer-2        h = -0.7150100296924844 m   participant status 0
+```
+
+The NOUR-to-G17 interval is only `1.979527652906654e-13 m`, corresponding to
+1783 binary64 representable head steps in this range. A preregistered 33-head
+scan across that interval produced:
+
+```text
+[6,6,0,0,0,0,0,0,6,6,6,6,6,6,6,0,0,0,0,0,0,6,6,6,6,6,6,6,6,0,0,0,0]
+```
+
+This contains five status transitions and two status-0 to status-6 reversals.
+The topology is therefore not a single monotone admissibility threshold.
+According to the preregistration, binary64 bisection to one adjacent
+status-6/status-0 pair is not meaningful and was not performed.
+
+The anchor diagnostics expose a discrete execution difference but do not yet
+explain the alternating islands. The NOUR status-6 trial terminates with
+`result_status=2`, one solver rejection, eight temporal rejections, nine
+attempts, one transaction call and zero accepted substeps. The G17 and
+STANDARD status-0 trials complete 20 accepted substeps over 100 attempts, with
+80 temporal rejections but zero solver rejection. Mass rejection and
+temporal-unavailable rejection remain zero at these anchors.
+
+All G21F observations stayed behind the qualified G16 diagnostic boundary.
+No live candidate, accepted SWAP revision/time, committed ledger or publication
+preflight authority was acquired.
+
+The consequence is negative but useful: the G21E solver-configuration split
+must not be interpreted through a smooth head-distance robustness metric. A
+head snap, epsilon tolerance, or acceptance smoothing around the G17 root is
+not supported by the evidence. The next unit must diagnose the internal
+trial/retry/solver branch that generates the alternating status islands.
+
+```text
+G21F LOCAL ADMISSIBILITY TOPOLOGY = NONMONOTONE_OR_UNRESOLVED.
+33-HEAD INTERVAL = 1.979527652906654e-13 m / 1783 ULP.
+STATUS TRANSITIONS = 5.
+STATUS REVERSALS = 2.
+SINGLE HEAD THRESHOLD = REJECTED BY EVIDENCE.
+STATUS 6 SEMANTICS = UNCHANGED.
+SOLVER-CONFIGURATION SELECTION = NOT MADE.
+NO PRODUCTION IMS, E3/P4, HCOF/RHS OR PARTICIPANT CHANGE.
+NEXT: SOURCE-LEVEL TRIAL/RETRY/SOLVER ISLAND DIAGNOSIS.
+```
