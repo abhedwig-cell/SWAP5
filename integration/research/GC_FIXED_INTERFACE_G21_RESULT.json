@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21",
+  "title": "Full dynamic E3 response-space safeguarded outer coupling in one prepared solve",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21_PREREGISTRATION.json",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G21_FIRST_EXECUTION_RESULT.json",
+  "tested_commit": "b140b5c27a396f4486c5b24c695b40206f2b712a",
+  "workflow_run": 35729235133,
+  "workflow_job": 106750375892,
+  "workflow_conclusion": "failure",
+  "decision": "FALSIFIED_FULL_G17_PATH_EQUIVALENCE_IN_CONTINUOUS_DYNAMIC_RESPONSE_SPACE_LOOP",
+  "production_admission": "NO",
+  "production_hcof_rhs_change": false,
+  "technical_history": {
+    "first_execution": "TECHNICAL_HARNESS_SCHEMA_MISMATCH_BEFORE_G21_LIVE_EXECUTION",
+    "repair": "derive local contraction counts from persisted cumulative_contractions; no scientific gate changed"
+  },
+  "observed_path": {
+    "outer1": {
+      "tangent_mode": "CENTRAL_PAIR_CLASS",
+      "tangent_scale_m": 1.25e-7,
+      "tangent_per_s": -0.000001377629615322778,
+      "attempts": [
+        {
+          "lambda": 1,
+          "head_m": -0.7150110934482893,
+          "status": 6,
+          "accepted": false
+        },
+        {
+          "lambda": 0.5,
+          "head_m": -0.7150055122971403,
+          "status": 6,
+          "accepted": false
+        },
+        {
+          "lambda": 0.25,
+          "head_m": -0.7150027217215658,
+          "status": 0,
+          "accepted": true
+        }
+      ],
+      "accepted_head_reference_m": -0.7150027217215662,
+      "accepted_head_error_m": 4.440892098500626e-16,
+      "contractions": 2,
+      "gate": "PASS"
+    },
+    "outer2": {
+      "lambda": 1,
+      "settled_head_m": -0.7150100296924844,
+      "reference_head_m": -0.7150100297646383,
+      "head_error_m": 7.215394948190124e-11,
+      "participant_status": 0,
+      "residual_m_per_s": 2.2886353054339723e-13,
+      "modflow_solve_calls_for_response": 6,
+      "accepted_by_status_and_merit": true,
+      "preregistered_head_tolerance_m": 1e-12,
+      "gate": "FAIL_HEAD_EQUIVALENCE"
+    }
+  },
+  "gates": {
+    "parent_authority_binding": "PASS_AFTER_TECHNICAL_REPAIR",
+    "one_prepared_solve": "PASS_THROUGH_FAILURE_POINT",
+    "fixed_xold": "PASS_THROUGH_FAILURE_POINT",
+    "no_direct_x_control": "PASS",
+    "outer1_g17_equivalence": "PASS",
+    "outer1_status_topology": "PASS_6_6_0",
+    "outer1_contractions": "PASS_EXACTLY_2",
+    "outer2_status_merit_acceptance": "PASS",
+    "outer2_g17_head_equivalence": "FAIL_7.215394948190124E-11_GT_1E-12",
+    "full_response_status_topology": "NOT_REACHED",
+    "final_g17_head": "NOT_REACHED",
+    "finalize_solve": "NOT_REACHED",
+    "finalize_time_step": "NOT_REACHED"
+  },
+  "bounded_conclusions": [
+    "The response-space bridge survives the complete first safeguarded update in one continuous prepared solve and reproduces the G17 outer-1 accepted head to floating-point precision.",
+    "The full dynamic path does not reproduce the preregistered G17 trajectory at outer 2: the accepted lambda=1 response differs by 7.215394948190124e-11 m, above the fixed 1e-12 m gate.",
+    "The outer-2 candidate remains participant status 0 and improves the coupling residual, so this is a path-equivalence failure rather than a basic admissibility or merit failure.",
+    "The G21 hypothesis is therefore falsified as preregistered. No tolerance, E3 rule, P4 rule, response damping rule or MODFLOW ownership rule is weakened.",
+    "G19 and G20 remain valid bounded bridge evidence; G21 shows that composing the bridge dynamically introduces a small but material trajectory divergence by the second outer update."
+  ],
+  "next_natural_unit": "Open a diagnostic G21A to decompose the outer-2 divergence into tangent re-evaluation sensitivity, response-space algebra/reference-head sensitivity, and continuous prepared-solve path dependence. Do not change G21 gates."
+}
