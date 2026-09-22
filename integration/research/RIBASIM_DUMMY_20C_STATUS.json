@@ -6,11 +6,11 @@
   "baseline": "e6db55ecc43336961d242bbd3e53700959bec5aa",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20C v4 after STO, source-scope and one-cell grid-metadata technical repairs.",
+  "next_action": "Use actual-product runtime transparency as authority; proceed to frozen DUMMY-20D clock-ownership matrix.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "20C still has no scientific runtime observation; v1-v3 all failed before product initialization. Required MF6 fixture metadata is now complete.",
+  "recovery_point": "DUMMY-20C qualified by v4 run 35722691439 after three explicitly classified pre-runtime technical harness failures.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
@@ -102,5 +102,9 @@
     "change": "Add scalar dx=1.0 and dy=-1.0 coordinates required by iMOD-Python for a one-cell structured grid.",
     "scientific_change": false,
     "rationale": "Pure discretization metadata; cell topology, fixed-head state, four 6-hour product periods and all Ribasim semantics are unchanged."
-  }
+  },
+  "decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
+  "workflow_run": 35722691439,
+  "workflow_job": 106729010778,
+  "qualification_head": "6c0c656b8c521995df744ae32deb78573b6483a3"
 }
