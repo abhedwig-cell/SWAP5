@@ -1,0 +1,153 @@
+{
+  "schema": "swap5.coupling.real_ribamod_runtime_clock_ownership_matrix.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20D",
+  "decision": "RIBASIM_DUMMY_20D_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_OWNERSHIP_MATRIX",
+  "authority": {
+    "qualification_head": "c27207d7fa60148bc2a396f5f05c2c4bec1fc7b4",
+    "workflow_run": 35723571953,
+    "workflow_job": 106731805493,
+    "conclusion": "success",
+    "duplicate_run_pending_or_confirming": 35723525489,
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "observations": {
+    "A24_S24": [
+      {
+        "endpoint_s": 21600,
+        "level_m": 1.0000039987293805,
+        "root_m3": 4.001270619481194,
+        "external_m3": 0,
+        "total_m3": 4.001270619481194
+      },
+      {
+        "endpoint_s": 43200,
+        "level_m": 1.0000079951211123,
+        "root_m3": 8.004878887695051,
+        "external_m3": 0,
+        "total_m3": 8.004878887695051
+      },
+      {
+        "endpoint_s": 64800,
+        "level_m": 1.000011989133,
+        "root_m3": 12.0108669999443,
+        "external_m3": 0,
+        "total_m3": 12.0108669999443
+      },
+      {
+        "endpoint_s": 86400,
+        "level_m": 1.0000159807416105,
+        "root_m3": 16.019258389454414,
+        "external_m3": 0,
+        "total_m3": 16.019258389454414
+      }
+    ],
+    "A24_S1": [
+      {
+        "endpoint_s": 21600,
+        "level_m": 1.0000039987338423,
+        "root_m3": 4.00126615786845,
+        "external_m3": 0,
+        "total_m3": 4.00126615786845
+      },
+      {
+        "endpoint_s": 43200,
+        "level_m": 1.0000079951357808,
+        "root_m3": 8.00486421922285,
+        "external_m3": 0,
+        "total_m3": 8.00486421922285
+      },
+      {
+        "endpoint_s": 64800,
+        "level_m": 1.0000119891403865,
+        "root_m3": 12.010859613493533,
+        "external_m3": 0,
+        "total_m3": 12.010859613493533
+      },
+      {
+        "endpoint_s": 86400,
+        "level_m": 1.000015980749312,
+        "root_m3": 16.019250687903877,
+        "external_m3": 0,
+        "total_m3": 16.019250687903877
+      }
+    ],
+    "A6_S24": [
+      {
+        "endpoint_s": 21600,
+        "level_m": 1.0000039987293805,
+        "root_m3": 4.001270619481194,
+        "external_m3": 0,
+        "total_m3": 4.001270619481194
+      },
+      {
+        "endpoint_s": 43200,
+        "level_m": 1.000005994675579,
+        "root_m3": 9.005178625966796,
+        "external_m3": 1.000145795011281,
+        "total_m3": 10.005324420978077
+      },
+      {
+        "endpoint_s": 64800,
+        "level_m": 1.0000069904331588,
+        "root_m3": 14.010112381509137,
+        "external_m3": 2.99945445979664,
+        "total_m3": 17.009566841305777
+      },
+      {
+        "endpoint_s": 86400,
+        "level_m": 1.0000074869932376,
+        "root_m3": 19.0156248969841,
+        "external_m3": 5.49738186538438,
+        "total_m3": 24.51300676236848
+      }
+    ],
+    "A6_S1": [
+      {
+        "endpoint_s": 21600,
+        "level_m": 1.0000039987338423,
+        "root_m3": 4.00126615786845,
+        "external_m3": 0,
+        "total_m3": 4.00126615786845
+      },
+      {
+        "endpoint_s": 43200,
+        "level_m": 1.0000059948581597,
+        "root_m3": 9.005023855535688,
+        "external_m3": 1.0001179848312831,
+        "total_m3": 10.00514184036697
+      },
+      {
+        "endpoint_s": 64800,
+        "level_m": 1.0000069906456879,
+        "root_m3": 14.00987091572735,
+        "external_m3": 2.999483396468826,
+        "total_m3": 17.009354312196177
+      },
+      {
+        "endpoint_s": 86400,
+        "level_m": 1.0000074872790612,
+        "root_m3": 19.015236783752133,
+        "external_m3": 5.497484154977898,
+        "total_m3": 24.51272093873003
+      }
+    ]
+  },
+  "day_end_separation_m3": 8.493748372914066,
+  "qualified_claims": [
+    "At fixed allocation.dt=24 h, changing solver.saveat from 24 h to 1 h does not materially change accepted product-state or UserDemand delivery.",
+    "At fixed allocation.dt=6 h, changing solver.saveat from 24 h to 1 h likewise does not materially change accepted product-state or UserDemand delivery.",
+    "Changing allocation.dt from 24 h to 6 h while holding the real RibaMod/MF6 cadence fixed at 6 h materially changes management realization: final total UserDemand supply increases by about 8.494 m3.",
+    "The actual bundled Ribasim v2026.1.1 product runtime therefore assigns fixed UserDemand management cadence to allocation.dt, not solver.saveat.",
+    "RibaMod/MF6 6-hour product cadence supplies BMI advance boundaries but does not itself define UserDemand allocation cadence."
+  ],
+  "boundaries": [
+    "No active groundwater exchange package in this matrix.",
+    "This claim is release-specific to bundled Ribasim v2026.1.1.",
+    "No production SWAP5 admission."
+  ],
+  "downstream": "Proceed to DUMMY-20E2, the corrected post-allocation real groundwater-transfer experiment."
+}
