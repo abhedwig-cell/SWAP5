@@ -147,7 +147,15 @@ def run_arm(
                 for contraction in range(0,MAX_BACKTRACK+1):
                     lam=0.5**contraction
                     qref=g_current+lam*float(current_res)
-                    candidate_head,mf_calls,qgw_term=settle_response(session,binding,xold,h,qref,p)
+                    try:
+                        candidate_head,mf_calls,qgw_term=settle_response(session,binding,xold,h,qref,p)
+                    except AssertionError as exc:
+                        message=str(exc)
+                        if "MXITER" in message or "response failed to reach MODFLOW convergence" in message:
+                            classification="MODFLOW_RESPONSE_BOUNDED_FAILURE"
+                            bounded_failure_reason=message
+                            break
+                        raise
                     obs=diagnostics.observe(candidate_head)
                     status=int(obs["participant_status"])
                     response_statuses.append(status)
@@ -200,6 +208,8 @@ def run_arm(
                             {"configuration":label,**row},sort_keys=True,separators=(",",":")
                         ))
                         break
+                if classification=="MODFLOW_RESPONSE_BOUNDED_FAILURE":
+                    break
                 if not accepted:
                     classification="SAFEGUARD_EXHAUSTED"
                     break
