@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_temporal_acceptance_contract.evidence_update.v1",
+  "work_unit": "RM25-EU01",
+  "date": "2026-09-23",
+  "parent": "integration/ribasim-management/RM25_ACTIVE_IRRIGATION_TEMPORAL_ACCEPTANCE_CONTRACT.json",
+  "status": "REQUIREMENTS_AUTHORITY_STILL_BLOCKED_EFFECT_SCALE_NOW_CHARACTERIZED",
+  "new_evidence": {
+    "RM26": {
+      "decision": "QUALIFIED_SURFACE_LOCALIZED_TEMPORAL_DISCREPANCY_WITH_ZERO_COLUMN_STORAGE_DIFFERENCE",
+      "global_max_head_difference_cm": 0.0463838022838558572,
+      "bottom_node_head_difference_cm": 0.0000435876321063233263,
+      "column_storage_difference_cm": 0.0,
+      "ponding_difference_cm": 0.0,
+      "top_flux_difference_cm_per_day": 0.0,
+      "bottom_flux_difference_cm_per_day": 0.0,
+      "implication": "global max pressure-head difference is not representative of conservation or lower-interface state for the current single-window coupling purpose"
+    },
+    "RM27": {
+      "decision": "FALSIFIED_FUNCTIONAL_IDENTITY_AT_FGC44_NUMERICAL_RESOLUTION",
+      "max_qswap_difference_m_per_s": 3.46816556953720273e-12,
+      "FGC44_nonlinear_closure_resolution_m_per_s": 1e-15,
+      "implication": "the temporal endpoint difference is detectable in the next-window fixed-interface response, so exact functional identity cannot be claimed"
+    },
+    "RM28": {
+      "decision": "COUPLED_EFFECT_SIZE_CHARACTERIZED_NO_APPLICATION_THRESHOLD_CLAIMED",
+      "coupled_head_shift_m": 1.7051093870179557e-10,
+      "coupled_q_shift_m_per_s": 3.4674535280984034e-12,
+      "integrated_groundwater_transfer_shift_m3": 2.9958798482770209e-11,
+      "shift_over_surface_irrigation_volume": 8.3218884674361693e-7,
+      "shift_over_mean_groundwater_transfer": 2.5157361371284574e-5,
+      "implication": "the detected coupling-response difference has been quantified, but effect size is not an acceptance threshold"
+    }
+  },
+  "contract_conclusions": [
+    "The inherited F-GC44 1e-5 cm global head budget remains unauthorized for active irrigation.",
+    "A global maximum profile-head requirement is not an appropriate sole temporal metric for the current coupling purpose because RM26 localizes the discrepancy at the surface while conserving total storage and external transfers.",
+    "Exact q_swap(H) identity at the F-GC44 nonlinear residual resolution is also too strong to use automatically as an application temporal requirement; RM27 detects a real but small response offset.",
+    "RM28 quantifies the resulting coupled effect but does not provide independent authority to call it acceptable.",
+    "No additional numerical characterization can by itself close the production-admission gap without an independent intended-application temporal-fidelity requirement."
+  ],
+  "current_authority": {
+    "surface_transfer_and_conservation": "QUALIFIED_IN_BOUNDED_PROFILE",
+    "groundwater_fixed_interface_contract": "CANONICAL_ADMITTED_CLOSED",
+    "active_irrigation_temporal_effect_scale": "CHARACTERIZED",
+    "active_irrigation_application_acceptance_threshold": "NOT_AVAILABLE",
+    "three_model_active_irrigation_production_admission": "BLOCKED"
+  },
+  "next_valid_inputs": [
+    "an independently specified application requirement for allowable error in hydrological memory, lower-interface response, management outcome, or another named target quantity",
+    "an independent validation authority that supplies such a requirement prospectively",
+    "a separately preregistered numerical-accuracy requirement justified without reference to making RM23/RM28 pass"
+  ],
+  "prohibition": "Do not convert RM26, RM27 or RM28 observed magnitudes into production thresholds post hoc."
+}
