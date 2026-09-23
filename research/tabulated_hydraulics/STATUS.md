@@ -455,3 +455,48 @@ Recommended next branch:
 `work/f-tab02-generated-k0-provider`
 
 That work unit must start from the live canonical at creation time. The research branch is evidence authority only and must not be merged wholesale into production.
+
+
+### 2026-09-23 — generated K0 provider research closeout
+
+Current canonical reconciled at:
+
+`integration/f-ci-canonical@b7d9c976e9b474545d54fa79b71ae134c25da156`.
+
+The generated raw-head400 typed K0 provider research is now closed for
+representation/architecture characterization.
+
+Controlling results:
+
+- generated typed provider: ~19% lower constitutive evaluation cost;
+- Reference Richards: material runtime reduction with unchanged solve counts;
+- serialized Reference runtime: material reduction with equal retries/iterations
+  and preserved mass accounting;
+- FMR44R current-canonical dynamic prescribed-qbot transaction/certificate:
+  PASS, run `35818703618`;
+- generic timestep-context capability CTX01:
+  PASS, run `35819421154`;
+- qualified contract recommendation:
+  fail-closed `context_compatible(step_duration)` capability, with hot
+  `evaluate(...)` ABI unchanged;
+- preprocessing break-even:
+  approximately 8,860 30-node vector evaluations.
+
+K1 remains separate and reference-runtime blocked outside the bounded coarse
+cases; it is not table-falsified and is not current production scope.
+
+Final exact whole-Hupsel generated-provider qualification is externally blocked
+because the authorized SWAP 4.3.1 distribution bytes with SHA-256
+`2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`
+remain unavailable through a materializable raw-byte path.
+
+See:
+
+- `TYPED_PROVIDER_RESEARCH_RESULT.md`;
+- `TIMESTEP_CONTEXT_CAPABILITY_RESULT.md`;
+- `GENERATED_K0_PROVIDER_PRODUCTION_HANDOFF.md`;
+- `RESEARCH_CLOSEOUT_20260923.md`.
+
+Disposition:
+
+**K0_RESEARCH_CLOSED / PRODUCTION_HANDOFF_READY / FINAL_WHOLE_HUPSEL_ADMISSION_GATE_EXTERNAL_ASSET_BLOCKED**.
