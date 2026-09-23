@@ -1,0 +1,30 @@
+name: RM22 temporal diagnostic aggregation repair
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'tests/transaction/test_transaction_reference.f90'
+      - 'tests/ribasim-management/test_rm21_temporal_attempt_provenance.f90'
+      - 'tests/ribasim-management/run_rm21_temporal_attempt_provenance.sh'
+      - 'tests/ribasim-management/run_rm22_temporal_diagnostic_repair.sh'
+      - 'integration/ribasim-management/RM22_*'
+      - '.github/workflows/rm22-temporal-diagnostic-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM22 diagnostic repair qualification
+        run: bash tests/ribasim-management/run_rm22_temporal_diagnostic_repair.sh
