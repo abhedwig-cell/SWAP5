@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.rom-purpose.p4.gw-segmented-reference-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-GW-REFERENCE",
+  "date": "2026-09-23",
+  "status": "BOUND_TECHNICAL_TOPOLOGY_SUPERSESSION_BEFORE_REFERENCE_ADJUDICATION",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "supersession_record": "integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_TOPOLOGY_SUPERSESSION.json",
+  "superseded_run": 35900612668,
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "route_set": [
+    "R512_T32",
+    "R1024_T32",
+    "R2048_T16",
+    "R2048_T8"
+  ],
+  "topology": {
+    "segment_steps": 8192,
+    "segments_per_history": {
+      "R512_T32": 4,
+      "R1024_T32": 4,
+      "R2048_T16": 2,
+      "R2048_T8": 1
+    }
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p4-gw-segmented-reference.yml": "d34b7f10b6e09d85950ecba818a84b7842a09873",
+    "tests/rom/run_rom_purpose_p4_gw_segment.py": "d2db89359de9d910b0a2c3736def18d1a1bc2a99",
+    "tests/rom/assemble_rom_purpose_p4_gw_segmented_routes.py": "f456aa7c7c4fbfce2ce4b98ec6c4fc9cc2c48b6a",
+    "tests/rom/materialize_rom_purpose_p4_gw_reference.py": "cb38351335713372938405a189f4385d07a64b90",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab"
+  },
+  "scientific_firewall": {
+    "response_based_topology_change": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false
+  }
+}
