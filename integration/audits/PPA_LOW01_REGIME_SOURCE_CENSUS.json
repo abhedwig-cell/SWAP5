@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.ppa_low01.regime.source-census.v1",
+  "work_unit": "PPA-LOW01-REGIME",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "regimes": {
+    "fixed_top": "gwlinp >= z(1) - 1e-4; prescribed top-head route returns",
+    "profile_search": "NN starts 0; while z(NN+1)>gwlinp and NN<numnod, increment NN",
+    "in_profile": "z(NN+1) < gwlinp + nihil",
+    "near_node_snap": "when z(NN)-gwlinp < 1e-4 and NN>0, set gwlinp=z(NN), NN=NN-1",
+    "below_profile": "set fllowgwl true; hbot=gwlinp-z(numnod)+0.5*dz(numnod)"
+  },
+  "interpretation": "Pure source-regime classification only; no flux profile, conductivity, head state or transition owner is admitted."
+}

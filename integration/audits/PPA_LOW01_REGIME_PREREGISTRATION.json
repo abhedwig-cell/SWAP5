@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW01-REGIME",
+  "title": "Pure B1.11 HeadCalc SWBOTB=1 groundwater-regime selector",
+  "protocol": "PIN_SOURCE_ORDER_AND_THRESHOLDS -> IMPLEMENT_PURE_CLASSIFIER -> 100000_SOURCE_REPLAYS -> O0_O2_REPLAY -> HOLD_HEAD_AND_FLUX_OWNERS",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW01_REGIME_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW01_GWL_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+  ],
+  "scope": [
+    "fixed-top, in-profile and below-profile decision boundaries",
+    "NN node selection and 1e-4 near-node snap",
+    "below-profile hbot mapping"
+  ],
+  "non_goals": [
+    "Surface runoff/pond closure, saturated flux reconstruction or soil hydraulics",
+    "fllowgwl, NN, hbot, head and groundwater state mutation/ownership",
+    "HeadCalc/CalcGWL production route, retry, restart or accepted mass"
+  ],
+  "pass_conditions": [
+    "100000 deterministic GWL positions exactly match source classifier outputs",
+    "fixed-top, each profile/below regime, near-node threshold and invalid grid cases pass",
+    "O0/O2 transcripts match",
+    "no solver or owner state is written"
+  ]
+}
