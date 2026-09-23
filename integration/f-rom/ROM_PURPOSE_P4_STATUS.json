@@ -18,6 +18,9 @@
   "current_gate": "BLIND_FRONTIER_EXECUTION",
   "date": "2026-09-23",
   "gw_reference_topology_supersession": "integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_TOPOLOGY_SUPERSESSION.json",
+  "layer_frontier_execution_sha": "396ff259ab5d84604d7f4e28943fc287cba7adf6",
+  "layer_frontier_result": "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json",
+  "layer_frontier_source_workflow_run": 35918240728,
   "next_actions": [
     "Bind the already-frozen Layer-ROM and matched same-partition Richards frontier executions."
   ],
@@ -37,7 +40,7 @@
   },
   "schema": "swap5.rom-purpose.p4.status.v1",
   "scientific_firewall": {
-    "any_p4_layer_rom_response_seen": false,
+    "any_p4_layer_rom_response_seen": true,
     "any_p4_reference_response_seen": true,
     "any_p4_same_partition_richards_response_seen": false,
     "application_acceptance_adjudicated": false,
