@@ -16,9 +16,8 @@
   "canonical_admitted": false,
   "next_action": "Do not promote PA01 as the full coupled profile. First close F-APP09 transaction-participant qualification, then reconcile PA01 into either (a) the F-APP09 transaction-safe Ribasim-native profile or (b) a separately named pre-resolved-head/legacy-geometry emulation profile.",
   "blockers": [
-    "Current PA01 wrapper calls the ordinary serialized executor and commits without a realized-external-transfer comparison, so it does not implement the Q3A mismatch -> discard -> same-origin recomposition rule required for a general coupled profile.",
-    "PA01 freezes Q1H epsilon=1e-5 legacy STTAB emulation, while F-APP09 freezes Ribasim-native surface-water geometry for the first production profile; these are distinct application contracts and may not share one V1 authority label.",
-    "F-APP09 transaction participant owner gate is not yet qualified."
+    "Independent qualification is still in progress.",
+    "No full SWAP5+Ribasim end-to-end production claim is permitted until the full_application_holds are separately closed or explicitly excluded by a narrower application contract."
   ],
   "candidate_source_postimage": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
   "candidate_qualified": true,
@@ -26,5 +25,14 @@
   "candidate_workflow_job": 107252984139,
   "candidate_output_sha256": "a6c4eebbd53b7b15d4cab4540cca94bbbd420ed5df12dccd1932d3f5bdd99df1",
   "independent_qualification_branch": "qualification/sw-rib-pa01-coupled-profile-independent",
-  "independent_qualified": false
+  "independent_qualified": false,
+  "pa01_blockers": [
+    "Independent qualification is still in progress."
+  ],
+  "full_application_holds": [
+    "Accepted external-head lineage/revision must be origin-bound to the exact accepted Ribasim state and coupling window.",
+    "Availability-limited Ribasim-to-SWAP infiltration must use Q3A recomposition from common accepted origins; one-sided post-acceptance clipping is not admitted.",
+    "The actual Ribasim Basin profile must implement the Q1H epsilon-controlled storage geometry or another explicitly accepted geometry contract.",
+    "Soil-state-driven automatic management policy and WLSTAR semantics remain outside PA01 unless the application requires and separately admits Q2."
+  ]
 }
