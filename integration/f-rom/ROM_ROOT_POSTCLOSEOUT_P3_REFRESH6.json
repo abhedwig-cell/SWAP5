@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.rom_root.postcloseout_p3_refresh6.v1",
+  "workstream": "ROM-ROOT",
+  "date": "2026-09-23",
+  "state": "CLOSED_HELD_AT_EXTERNAL_PURPOSE_AUTHORITY_BOUNDARY",
+  "rom_root": {
+    "branch": "work/f-rom-lare-rs1",
+    "observed_head_before_refresh": "deb73ed8f76ef5c4ae766cd682c00826e54646e4",
+    "closeout": "integration/f-rom/ROM_ROOT_CLOSEOUT.json",
+    "closeout_status": "CLOSED_MINIMAL_DYNAMIC_FEEDBACK_FALSIFIED_EXACT_INFORMATION_BOUNDARY_IDENTIFIED",
+    "exactness_track": "CLOSED",
+    "minimal_dynamic_feedback": "FALSIFIED",
+    "forcing_portable_exact_low_dimensional_root_state_identified": false,
+    "new_root_specific_state_selected": false
+  },
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "observed_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "changed_since_refresh5": false
+  },
+  "external_authority_refresh": {
+    "rom_accept": {
+      "branch": "work/f-rom-accept",
+      "observed_head": "41799780d068fd2952aab82d799af28198a64526",
+      "closeout": "integration/f-rom/ROM_ACCEPT_01_CLOSEOUT.json",
+      "changed_since_refresh5": false,
+      "matching_root_feedback_structural_error_budget_available": false,
+      "current_decision": "ROM_ACCEPT_01_CLOSED__NO_CURRENT_LAYER_ROM_ACCEPTANCE_RUN_AUTHORIZED"
+    },
+    "rom_purpose": {
+      "branch": "work/f-rom-purpose",
+      "observed_head": "cf511047817d1653cbac59dc272796064168f2e2",
+      "status_record": "integration/f-rom/ROM_PURPOSE_P3_STATUS.json",
+      "status": "P3_REFERENCE_TECHNICAL_REPAIR_EXECUTING",
+      "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
+      "candidate_response_authorized": false,
+      "current_purpose_scope": [
+        "SURF_P",
+        "GW_LB"
+      ],
+      "root_feedback_purpose_contract_present": false,
+      "matching_root_feedback_purpose_acceptance_authority_available": false,
+      "relevant_state": [
+        "P3 remains scoped to SURF_P and GW_LB.",
+        "Both purposes remain inside response-blind Reference qualification/repair.",
+        "No root-water-uptake, Feddes, root-stress or root-feedback purpose contract is present.",
+        "No quantitative root-feedback structural-error budget is frozen.",
+        "No P3 candidate response is authorized."
+      ]
+    }
+  },
+  "decision": {
+    "reopen_rom_root_exactness_track": false,
+    "start_dynamic_augmented_root_candidate": false,
+    "select_finite_root_distribution_descriptor_dimension": false,
+    "derive_root_acceptance_threshold_from_existing_stage3_errors": false,
+    "start_candidate_independent_root_approximation_frontier_automatically": false,
+    "production_or_performance_claim": false,
+    "hold_rom_root_closed": true
+  },
+  "rationale": [
+    "ROM-ROOT already closed the exactness question at a forcing-portable distributional information boundary.",
+    "The current ROM-PURPOSE-P3 state still provides no root-feedback purpose authority and remains in Reference qualification for SURF_P and GW_LB only.",
+    "ROM-ACCEPT remains unchanged and provides no quantitative root-feedback structural-error tolerance.",
+    "Selecting a finite approximate root descriptor from existing ROM-ROOT errors would therefore remain response-based and scientifically underdetermined."
+  ],
+  "reopen_conditions": [
+    "An independent purpose owner freezes a root-feedback/root-stress structural-error budget with temporal, spatial and event semantics.",
+    "ROM-PURPOSE closes an explicit root-feedback purpose contract requiring an approximation frontier independent of application acceptance.",
+    "A separately scoped approximation-theory study is explicitly authorized with no sufficiency or application-admission claim."
+  ],
+  "scientific_firewall": {
+    "new_response_generated": false,
+    "new_propagated_root_state_selected": false,
+    "fitted_surrogate_used": false,
+    "acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
