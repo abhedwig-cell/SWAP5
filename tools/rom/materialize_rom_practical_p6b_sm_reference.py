@@ -12,7 +12,7 @@ def main():
     vals=[float(x["net_atmospheric_proxy_cm_per_day"]) for x in w["records"]]
     if len(vals)!=60: raise SystemExit("expected 60 values")
     t=a.source.read_text()
-    arr=", &\n       ".join(f"{v:.17g}_real64" for v in vals)
+    arr=", &\n       ".join(f"{v:.17e}_real64" for v in vals)
     decl=f"  real(real64), parameter :: P6B_DELTA(60)=[ &\n       {arr} ]\n"
     anchor="  integer, parameter :: NHIST=2, NSTEPS=1920\n  integer, parameter :: OUTPUT_FACTOR=32\n"
     if anchor not in t: raise SystemExit("reference declaration anchor missing")
