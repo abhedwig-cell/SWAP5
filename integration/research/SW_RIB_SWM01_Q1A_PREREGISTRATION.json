@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A",
+  "date": "2026-09-23",
+  "title": "Real-Ribasim external-owner equivalence against canonical SWAP5 restricted fixed-weir oracle",
+  "purpose": "Test the narrow physical ownership substitution before supply, automatic management or signed infiltration are introduced: Ribasim owns the surface-water storage/level and fixed-weir discharge while SWAP contributes only a positive drainage forcing.",
+  "authorities": {
+    "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "swap5_oracle": "F-CI52/F-VQ59 restricted fixed-weir process",
+    "oracle_path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "management_research_context": "work/ribasim-management-coupling-closeout RM01/RM02/RM12, read-only authority context"
+  },
+  "nonclaims": [
+    "Not a full SWAP 4.3.1 surfacewater.f90 equivalence test.",
+    "No level-triggered external supply in Q1A.",
+    "No SWMAN=2 automatic soil-state management.",
+    "No negative drainage/infiltration.",
+    "No MODFLOW composition.",
+    "No production admission or retirement authority."
+  ],
+  "frozen_mapping": {
+    "represented_area_m2": 1,
+    "level_domain_m": [
+      -1,
+      1
+    ],
+    "storage_mapping": "V_m3 = level_m + 1.0 for 1 m2 constant Basin area; SWAP oracle storage_cm converts as V_m3 = storage_cm * 0.01",
+    "weir_crest_m": 0,
+    "oracle_rating_exponent": 1,
+    "oracle_rating_coefficient_cm_per_day_per_cm_head": 0.5,
+    "ribasim_rating_points": {
+      "level_m": [
+        -1,
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0,
+        0.5
+      ]
+    },
+    "oracle_supply_capacity_cm_per_day": 0,
+    "oracle_supply_dip_cm": 10,
+    "duration_day": 0.0001,
+    "duration_seconds": 8.64
+  },
+  "cases": [
+    {
+      "id": "C0_NO_DISCHARGE",
+      "initial_storage_cm": 80,
+      "initial_level_cm": -20,
+      "secondary_drainage_cm_per_day": 8
+    },
+    {
+      "id": "C1_MODERATE_DISCHARGE",
+      "initial_storage_cm": 130,
+      "initial_level_cm": 30,
+      "secondary_drainage_cm_per_day": 20
+    },
+    {
+      "id": "C2_HIGH_DISCHARGE",
+      "initial_storage_cm": 170,
+      "initial_level_cm": 70,
+      "secondary_drainage_cm_per_day": 5
+    }
+  ],
+  "comparators": [
+    "final surface-water level",
+    "final surface-water storage",
+    "integrated drainage input volume",
+    "integrated weir discharge inferred from the independent Ribasim mass ledger",
+    "oracle mass residual",
+    "Ribasim mass residual"
+  ],
+  "tolerances": {
+    "final_level_m_abs": 1e-8,
+    "final_storage_m3_abs": 1e-8,
+    "integrated_discharge_m3_abs": 1e-8,
+    "oracle_mass_residual_storage_cm_abs": 1e-12,
+    "ribasim_mass_residual_m3_abs": 1e-8
+  },
+  "rationale_for_tolerance": "The mapping and rating are deliberately linear. The only intended trajectory difference is the canonical fixed-weir candidate's implicit end-step rating evaluation versus Ribasim's continuous integration. With dt=1e-4 day and the frozen cases, the expected method difference is orders of magnitude below 1e-8 m or m3; tolerances are frozen before product execution and may not be widened after observing results.",
+  "hypotheses": [
+    "C0 remains below the crest and has zero integrated discharge in both routes.",
+    "C1 and C2 discharge in both routes.",
+    "Ribasim final level and storage match the canonical F-CI52 oracle within frozen tolerances.",
+    "The independently inferred Ribasim discharge volume matches the oracle accepted discharge volume within the frozen tolerance.",
+    "Both route ledgers close without assigning surface-water storage to SWAP in the Ribasim route."
+  ],
+  "failure_rule": "Do not tune geometry, duration, rating law, cases or tolerances after observing Ribasim results. Repair only technical harness failures. A physical mismatch outside the frozen envelope is a Q1A falsification and must remain visible.",
+  "pass_meaning": "Bounded evidence that fixed-weir surface-water state/discharge can be externally owned by real Ribasim for this linear no-supply profile while SWAP remains only the drainage-forcing owner.",
+  "fail_meaning": "The proposed ownership substitution is not yet qualified even for the narrow fixed-weir no-supply profile."
+}
