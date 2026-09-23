@@ -82,6 +82,7 @@ module mod_soil_water_solver_contract
   type, abstract, public :: constitutive_hydraulics_provider_t
    contains
      procedure(constitutive_evaluate_ifc), deferred :: evaluate
+     procedure :: context_compatible => constitutive_context_incompatible
   end type constitutive_hydraulics_provider_t
 
   type, abstract, public :: source_sink_provider_t
@@ -271,6 +272,12 @@ module mod_soil_water_solver_contract
   end interface
 
 contains
+
+  logical function constitutive_context_incompatible(self, step_duration) result(compatible)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    real(real64), intent(in) :: step_duration
+    compatible = .false.
+  end function constitutive_context_incompatible
 
   subroutine validate_soil_water_request(request, ok)
     type(soil_water_solve_request_t), intent(in) :: request
