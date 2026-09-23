@@ -31,7 +31,7 @@
   "gates": [
     "A: replay Q4A source-bound stateless process candidate on current canonical.",
     "B: replay Q4B transactional signed runtime binding on current canonical.",
-    "C: implement and qualify fail-closed external-Ribasim owner profile validation.",
+    "C: implement and qualify fail-closed external-Ribasim owner profile validation in src/adapter/mod_ribasim_surface_water_profile.f90.",
     "D: qualify Q1H epsilon=1e-6 geometry contract and provenance binding.",
     "E: end-to-end accepted-head, signed-transfer, retry/restart and mass composition without internal SWAP surface-water state."
   ],
@@ -40,5 +40,17 @@
     "No standalone F-CI52 retirement.",
     "No exact nonlinear SWQHR1 parity.",
     "No production admission until all gates pass on current canonical-derived branch."
-  ]
+  ],
+  "profile_validator": {
+    "path": "src/adapter/mod_ribasim_surface_water_profile.f90",
+    "accepted_head_view_requires": [
+      "accepted=true",
+      "accepted_revision>=0",
+      "finite accepted_time",
+      "one finite external head per configured drainage-response level"
+    ],
+    "owner_xor": "internal_swap_fixed_weir_state_active must be false when external_ribasim_active is true",
+    "frozen_geometry_epsilon_m": 0.000001,
+    "excluded": "exact nonlinear SWQHR1 parity and accept-with-clip"
+  }
 }
