@@ -71,5 +71,10 @@
     "mix a realization receipt from one Ribasim revision with a SWAP candidate from another coupled origin",
     "book both requested and realized transfer"
   ],
-  "production_admission": false
+  "production_admission": false,
+  "units": {
+    "physical_transfer": "m3 per represented coupling window",
+    "surface_water_head": "cm"
+  },
+  "unit_clarification": "Frozen E1/E2/E3 quantities 0.01, 0.005 and 0.0051 are physical transfer volumes in m3 for the 1 m2 one-day research profile, not centimetres."
 }
