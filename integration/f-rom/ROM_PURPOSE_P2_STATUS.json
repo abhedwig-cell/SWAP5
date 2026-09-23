@@ -4,7 +4,7 @@
   "work_unit": "ROM-PURPOSE-P2",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "phase": "P2_REFERENCE_R1024_SEGMENTED_WITNESS_ACTIVE",
+  "phase": "P2_REFERENCE_R1024_SEGMENT_EQUIVALENCE_ACTIVE",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -49,10 +49,10 @@
     "production_rom_authorized": false
   },
   "blockers": [
-    "R1024_SEGMENTED_EQUIVALENCE_WITNESS_PENDING"
+    "R1024_SEGMENT_EQUIVALENCE_WITNESS_PENDING"
   ],
-  "next_action": "RESUME_FROM_SEGMENTED_RECOVERY_RUN_35853331143",
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json",
+  "next_action": "RESUME_FROM_R1024_SEGMENT_REPAIR_RUN_35853590210",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_BINDING.json",
   "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
   "reference_workflow_runs": [
     {
@@ -84,15 +84,26 @@
   "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
   "reference_timeout_repair_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json",
   "active_reference_repair_run": {
-    "run": 35853331143,
-    "trigger_head": "4f6c29be554ca254575e8e8a67270f6741acc1b4",
+    "run": 35853590210,
+    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
     "preflight": "PASS",
-    "scope": "QUALIFY_B01_R1024_T32_S06_SEGMENT_EQUIVALENCE_THEN_RECOVER_S05",
+    "scope": [
+      "R1024 S06 exact segment-equivalence witness",
+      "R1024 S05 segmented execution only after witness PASS"
+    ],
     "scientific_change": false
   },
   "candidate_infrastructure": {
     "record": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json",
     "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED"
   },
-  "reference_segmented_recovery_binding": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json"
+  "reference_segmented_recovery_binding": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json",
+  "r1024_segment_repair": {
+    "run": 35853590210,
+    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
+    "witness_case": "B01/R1024_T32/S06",
+    "target_case": "B01/R1024_T32/S05",
+    "status": "WITNESS_EXECUTION_ACTIVE",
+    "scientific_change": false
+  }
 }
