@@ -1,43 +1,61 @@
 {
   "schema": "swap5.workunit_qualification.v1",
   "workunit": "F-TAB02-D",
-  "title": "Provider-generic constitutive timestep context capability",
+  "title": "Transaction, timestep-context and temporal-certificate qualification",
   "result": "PASS",
   "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "qualified_head": "690689cbdf184ae7789f2e9aa3bc7f1f329ba2fe",
-  "workflow_run": 35822360338,
-  "workflow_job": 107057524991,
+  "qualified_head": "a3fc107b2a2fd21fa2a8b88621749b91154f3b87",
+  "workflow_run": 35823035547,
+  "workflow_job": 107059775667,
   "scope": {
     "generated_default_mvg": true,
     "swkimpl": 0,
     "hot_evaluate_abi_changed": false,
     "temporal_indicator_provider_generic": true,
+    "prescribed_qbot_dynamic_transaction": true,
     "generic_user_tables": false
   },
-  "evidence": {
-    "hot_evaluate_abi_unchanged": "PASS",
-    "temporal_provider_generic": "PASS",
-    "analytical_context_match": "PASS",
-    "generated_context_match": "PASS",
-    "mismatched_timestep_fail_closed": "PASS",
-    "default_unknown_provider_fail_closed": "PASS",
-    "o0_o2_output_identity": "PASS",
-    "full_a_b_c_d_chain_same_postimage": "PASS"
-  },
-  "contract": {
-    "capability": "context_compatible(step_duration) -> logical",
+  "context_capability": {
+    "contract": "context_compatible(step_duration) -> logical",
     "default": "false",
     "analytical_override": true,
     "generated_override": true,
     "mismatch_route": "constitutive-dt-mismatch",
-    "hot_constitutive_evaluate_interface": "unchanged"
+    "analytical_context_match": "PASS",
+    "generated_context_match": "PASS",
+    "mismatched_timestep_fail_closed": "PASS",
+    "default_unknown_provider_fail_closed": "PASS",
+    "o0_o2_output_identity": "PASS"
+  },
+  "dynamic_certificate": {
+    "generated_temporal_certificate": "PASS",
+    "transaction_semantics": "PASS",
+    "hard_mass": "PASS",
+    "certificate_available": "PASS",
+    "reference_consistency": "PASS",
+    "boundary_mass_identity": "PASS",
+    "nearby_bottom_mode_fail_closed": "PASS",
+    "analytic_mass_residual": -2.220446049250313e-16,
+    "generated_mass_residual": 0,
+    "analytic_Binf_cm": 1.2362884647834298e-11,
+    "generated_Binf_cm": 1.2362881480142714e-11,
+    "Binf_abs_difference_cm": 3.1676915840477176e-18,
+    "analytic_normalized_Ch": 0.4945153859133719,
+    "generated_normalized_Ch": 0.49451525920570855,
+    "analytic_total_in": 1.0000000000000002e-14,
+    "generated_total_in": 1.0000000000000002e-14,
+    "analytic_total_out": 1.0000000000000002e-14,
+    "generated_total_out": 1.0000000000000002e-14
   },
   "preservation": {
-    "analytical_evaluate_semantics": "preserved outside the authorized context capability",
-    "slice_a": "PASS on workflow run 35822360338",
-    "slice_b": "PASS on workflow run 35822360338",
-    "slice_c": "PASS on workflow run 35822360338",
-    "slice_d": "PASS on workflow run 35822360338"
+    "slice_a": "PASS on workflow run 35823035547",
+    "slice_b": "PASS on workflow run 35823035547",
+    "slice_c": "PASS on workflow run 35823035547",
+    "slice_d": "PASS on workflow run 35823035547",
+    "analytical_evaluate_semantics": "preserved outside authorized context capability",
+    "temporal_head_budget_cm": 2.5e-11,
+    "accepted_positive_qbot": "PASS",
+    "fmr44r_serialized_prescribed_qbot_runtime_gate": "PASS"
   },
   "nonclaims": [
     "generic SWSOPHY=1 production",
