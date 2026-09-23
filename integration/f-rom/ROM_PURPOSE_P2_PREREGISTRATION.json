@@ -1,0 +1,221 @@
+{
+  "schema": "swap5.rom-purpose.p2.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2",
+  "phase": "PREREGISTERED_BEFORE_ANY_P2_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "date": "2026-09-23",
+  "title": "Prospective surface-reference observability repair for purpose-specific placement discrimination",
+  "authority": {
+    "frozen_scientific_backend": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "current_canonical_observed": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "p1_preregistration": "integration/f-rom/ROM_PURPOSE_P1_PREREGISTRATION.json",
+    "p1_reference_result": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json@041c8be484f47363c0f545ac28f5490559969072",
+    "p1_failure_diagnosis": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json@517eae5c765679d2c96a82f2cb4d16d3d05a2446",
+    "p1_live_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_LIVE_RECONCILIATION.json",
+    "p1_disposition": "P1 remains failed and is not retroactively reclassified."
+  },
+  "scientific_question": "Can a prospectively defined numerical-observability contract distinguish genuine surface/profile Reference non-convergence from floating-point indistinguishability, while requiring storage-event timing to be demonstrably observable on fresh, non-plateau surface workloads before any Layer-ROM candidate response?",
+  "inherited_frozen_candidate_design": {
+    "representations": {
+      "dimension": 4,
+      "closure": "CURRENT_LAYER_FACE",
+      "S4": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "G4": [
+        0,
+        80,
+        120,
+        140,
+        160
+      ],
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ]
+    },
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "hypotheses": "P1 H1-H4 are carried forward unchanged in meaning and remain unadjudicated.",
+    "no_candidate_response_seen": true,
+    "no_repartitioning": true,
+    "no_closure_tuning": true
+  },
+  "inherited_groundwater_reference": {
+    "source": "P1 Reference result on exact frozen backend",
+    "GW_LB": {
+      "B01": "QUALIFIED",
+      "B14": "QUALIFIED"
+    },
+    "reuse_condition": "Exact P1 GW evidence may be inherited only while its scientific backend, histories, metrics and relevant dependency surface remain unchanged.",
+    "candidate_authority_from_inheritance_alone": false
+  },
+  "fresh_surface_reference": {
+    "purpose": "SURF_P",
+    "exposed_P1_histories_forbidden": [
+      "S01",
+      "S02",
+      "S03",
+      "S04"
+    ],
+    "histories": {
+      "S05": {
+        "initial_effective_saturation": 0.64,
+        "phases": [
+          "WET",
+          "DRY",
+          "WET",
+          "DRY"
+        ],
+        "phase_observations": [
+          256,
+          256,
+          256,
+          256
+        ]
+      },
+      "S06": {
+        "initial_effective_saturation": 0.76,
+        "phases": [
+          "DRY",
+          "WET",
+          "DRY",
+          "WET"
+        ],
+        "phase_observations": [
+          256,
+          256,
+          256,
+          256
+        ]
+      },
+      "S07": {
+        "initial_effective_saturation": 0.86,
+        "phases": [
+          "WET",
+          "DRY",
+          "WET",
+          "DRY"
+        ],
+        "phase_observations": [
+          256,
+          256,
+          256,
+          256
+        ]
+      },
+      "S08": {
+        "initial_effective_saturation": 0.93,
+        "phases": [
+          "DRY",
+          "WET",
+          "DRY",
+          "WET"
+        ],
+        "phase_observations": [
+          256,
+          256,
+          256,
+          256
+        ]
+      }
+    },
+    "top_flux_multipliers": {
+      "WET": 1.2,
+      "DRY": 0.8
+    },
+    "rationale": "Alternating non-equilibrium forcing contains no hold plateau and creates three prospectively located forcing reversals per history. Amplitude and phase topology are fixed before P2 response and are not selected from any Layer-ROM response.",
+    "bottom_boundary": "fixed gravity-equilibrium flux",
+    "root_sink": false,
+    "observations": 1024,
+    "observation_dt_day": 0.0008
+  },
+  "reference_ladder": {
+    "target": "R2048_T32",
+    "spatial": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "O0_O2_bit_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "segmented_R2048_allowed_only_under_P1_qualified_checkpoint_topology": true,
+    "R512_R1024_complete_independent_histories": true
+  },
+  "numerical_observability_contract": {
+    "floating_point_model": "IEEE-754 binary64 round-to-nearest with unit roundoff u=2^-53.",
+    "forward_error_bound": "For a positive weighted storage sum with n contributing cells, use gamma_k=k*u/(1-k*u), with k conservatively equal to twice the number of contributing cells plus fixed output arithmetic. The per-sample bound is gamma_k*abs(value) plus one half ulp of the emitted value.",
+    "comparison_floor": "For a difference between two routes, add their per-sample forward-error bounds. For an RMSE metric, the numerical-indistinguishability floor is the RMS of those pointwise comparison bounds.",
+    "continuous_axis_rule": [
+      "QUALIFIED_MONOTONE_THREE_LEVEL if coarse_error>fine_error>0 and the observed order is finite and positive.",
+      "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE if both coarse and fine errors are at or below their independently computed comparison floors.",
+      "Otherwise NONMONOTONE_OR_RESOLVED_FAILURE."
+    ],
+    "no_empirical_epsilon": true,
+    "no_P1_value_used_as_threshold": true,
+    "numerical_floor_is_not_application_tolerance": true
+  },
+  "extremum_observability_contract": {
+    "forcing_reversals_observation": [
+      256,
+      512,
+      768
+    ],
+    "event_window_rule": "For each reversal, use the interval bounded by midpoints to adjacent reversals: 128..384, 384..640 and 640..896 observations.",
+    "expected_event_type": "WET->DRY requires a local maximum; DRY->WET requires a local minimum.",
+    "admissible_extremum_set": "Under per-sample storage bounds, an index remains admissible if bounded perturbation cannot prove another index strictly more extreme.",
+    "observable_event_rule": "The admissible extremum set width must be <=2 observation steps on every compared route.",
+    "timing_difference_rule": "Minimum distance between the two admissible extremum sets must be <=1 observation step.",
+    "applies_to": [
+      "0-40 cm storage",
+      "0-80 cm storage"
+    ],
+    "fail_closed_if_unobservable": true,
+    "no_plateau_is_automatically_a_pass": true
+  },
+  "surface_continuous_metrics": [
+    "surface_0_20_storage_rmse_cm",
+    "root_0_40_storage_rmse_cm",
+    "upper_0_80_storage_rmse_cm",
+    "mapped_10cm_theta_rmse",
+    "total_storage_rmse_cm"
+  ],
+  "gate": {
+    "surface_B01_and_B14_must_both_qualify": true,
+    "candidate_response_before_gate": false,
+    "combined_authority_after_gate": "Only after both fresh SURF_P materials qualify may P2 bind the full frozen S4/G4/U4 candidate matrix, using inherited P1 GW Reference evidence plus the fresh P2 SURF_P Reference.",
+    "P1_reference_status_unchanged": true
+  },
+  "stop_rules": [
+    "No candidate response before the P2 surface Reference gate qualifies for both materials.",
+    "No reuse of S01-S04 as P2 validation histories.",
+    "No change to S4, G4, U4, CURRENT_LAYER_FACE, materials or P1 H1-H4 from P2 Reference response.",
+    "No empirical tolerance chosen from P1 or P2 response magnitudes.",
+    "No application acceptance, performance claim or production-ROM admission.",
+    "If fresh timing events are not observable under the frozen bound rule, stop and classify the workload/observable as inadequate rather than relaxing the rule."
+  ],
+  "scientific_firewall": {
+    "P1_failure_overridden": false,
+    "any_P2_reference_response_seen": false,
+    "any_layer_rom_candidate_response_seen": false,
+    "representation_tuned_from_response": false,
+    "observability_threshold_fitted_to_response": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
