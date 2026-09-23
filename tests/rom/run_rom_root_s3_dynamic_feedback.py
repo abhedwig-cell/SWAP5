@@ -225,7 +225,7 @@ def main()->int:
     pre=json.loads(a.prereg.read_text())
     c0=json.loads(a.s3c0_result.read_text())
     assert pre["state"]=="PREREGISTERED_BEFORE_ANY_STAGE3_REDUCED_DYNAMIC_FEEDBACK_RESPONSE"
-    assert c0["status"]=="S3C0_FULL_POTENTIAL_REFERENCE_QUALIFIED"
+    assert c0["status"]=="S3C0R_FULL_POTENTIAL_REFERENCE_QUALIFIED"
     assert pre["minimal_feedback"]["fitted_coefficients"] is False
     assert pre["minimal_feedback"]["new_memory_state"] is False
 
