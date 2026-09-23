@@ -40,3 +40,5 @@ jobs:
         run: bash tests/fapp09/run_extended_exchange_candidate.sh
       - name: Replay transactional runtime binding
         run: bash tests/fapp09/run_extended_runtime_binding.sh
+      - name: Qualify external Ribasim owner profile
+        run: bash tests/fapp09/run_profile_contract.sh
