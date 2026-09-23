@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.workunit_preregistration.v1",
+  "workunit": "F-TAB02-F",
+  "title": "Exact whole-Hupsel generated-provider application gate",
+  "date": "2026-09-23",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "prerequisites": {
+    "F_TAB02_A_E": "PASS",
+    "F_TAB02_G": "PASS",
+    "F_TAB02_F0": "PASS",
+    "same_postimage_a_through_g_run": 35882579159,
+    "f0_owner_qualification_run": 35884404981
+  },
+  "exact_authority": {
+    "archive_name": "SWAP_4.3.1.zip",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "archive_size_bytes": 8959314,
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "b111_member_count": 63,
+    "b111_source_bytes": 1886519,
+    "b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "reference_gate": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json"
+  },
+  "frozen_routes": {
+    "analytical": "existing M1-C3 exact whole-Hupsel typed Task2 route with generated acceleration disabled",
+    "generated": "same route and exact input bytes with standalone generated acceleration explicitly enabled",
+    "swsophy": 0,
+    "swkimpl": 0,
+    "bounded_fsi39_ksatexm": true
+  },
+  "gates": {
+    "F1_exact_authority": "Verify exact archive and nested Hupsel/B1.11 hashes before execution.",
+    "F2_normal_completion": "Both analytical and generated routes complete normally with no compatibility fallback inside the bounded profile.",
+    "F3_trajectory": "Generated route preserves 32518 accepted physical intervals; retries are accounted separately and route census remains 3505/14062/14951.",
+    "F4_mass_and_state": "No hard-mass regression or accepted-state ownership drift.",
+    "F5_outputs": "Normalize only the nondeterministic 'Generated at:' line; result.bal and result.blc must otherwise be identical or the difference is an explicit blocker.",
+    "F6_default_preservation": "Analytical default remains unchanged; generated selection remains explicit standalone opt-in.",
+    "F7_scope": "No generic table, generic KSATEXM, worker/MultiSWAP generated selection, or K1 widening."
+  },
+  "mutation_policy": {
+    "physics": "NONE",
+    "tolerances": "NONE",
+    "timestep_policy": "NONE",
+    "retry_policy": "NONE",
+    "parser_grammar": "NONE",
+    "permitted_representation_change": "NONE; this is qualification of the already qualified F0/G postimage"
+  },
+  "verdict_rule": "PASS only if F1 through F7 pass on the same production postimage and exact authority bytes. Otherwise persist the first concrete blocker and do not admit.",
+  "status": "PREREGISTERED_READY_TO_EXECUTE"
+}
