@@ -3,7 +3,7 @@ program test_ftab02b_generated_mvg_provider
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_generated_mvg_table_state, only: b110_generated_mvg_table_state_t, &
-       initialize_b110_generated_mvg_table_state, F_TAB02_STATE_OK
+       initialize_b110_generated_mvg_table_state, evaluate_b110_generated_mvg_table_state, F_TAB02_STATE_OK
   use mod_b110_generated_mvg_provider, only: b110_generated_mvg_provider_t, &
        bind_b110_generated_mvg_provider, F_TAB02_PROVIDER_OK, &
        F_TAB02_PROVIDER_STATE_NOT_READY, F_TAB02_PROVIDER_INVALID_STEP
@@ -65,6 +65,10 @@ program test_ftab02b_generated_mvg_provider
     exponent=7.0_real64-15.0_real64*frac
     h=-10.0_real64**exponent
     call analytic%evaluate(h,ta,ka,ca,da)
+    call evaluate_b110_generated_mvg_table_state(table_state,h,tt,kt,ct,status)
+    if (status /= F_TAB02_STATE_OK) write(error_unit,'(a,i0,1x,a,es24.16,1x,a,i0)') &
+         'F_TAB02_B_STATE_FAIL_SAMPLE=', j, 'h=', h(1), 'status=', status
+    call require(status == F_TAB02_STATE_OK, 'table state broad sweep')
     call table%evaluate(h,tt,kt,ct,dt)
     theta_err=max(theta_err,maxval(abs(tt-ta)))
     capacity_err=max(capacity_err,maxval(abs(ct-ca)))
