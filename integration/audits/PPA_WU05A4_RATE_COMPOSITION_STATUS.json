@@ -13,7 +13,8 @@
     "scope": "Single saturated cell, fixed pore head 1 cm and reciprocal resistance 0.25/day, matrix heads 0.5 and 1.5 cm. SATFLOW generates integrated potentials; standard-domain limiters produce actual rates; SATFLOW derivative uses those rates; trial residual/diagonal capture consumes both.",
     "analytic_expectation": "Matrix input rates +0.125 and -0.125 cm/day, derivative -0.25/day, diagonal increment +0.25/day and opposite macro storage transfer; tested at four dt values.",
     "limits": "No active storage limiting, partial saturation, seepage, absorption or nonlinear Richards solve in this extension. Fixed geometry/pore head remain fixture data. The prior two-domain redistribution fixture still supplies its own potentials.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "7b504014a",
+    "test_result": "Persisted 7b504014a O0/O2 PASS with identical transcripts; derivative 100000-case gate and trial-exchange gate also PASS O0/O2"
   },
   "next_action": "Extend standard-domain composition to generated source potentials, domain exchange aggregation and corresponding SATFLOW/ABSORPTION derivatives before production-owner wiring."
 }
