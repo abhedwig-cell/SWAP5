@@ -18,7 +18,7 @@ ALIGNED={
 UNIFORM={4:"U4",6:"U6",8:"U8"}
 
 
-def load_module(name:str,path:path.Path if False else pathlib.Path):
+def load_module(name:str,path:pathlib.Path):
     spec=importlib.util.spec_from_file_location(name,str(path))
     if spec is None or spec.loader is None:
         raise RuntimeError(path)
