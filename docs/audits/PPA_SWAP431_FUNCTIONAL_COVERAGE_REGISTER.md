@@ -198,7 +198,9 @@ does not qualify concentration inversion, nonlinear adsorption, reaction
 parameterization, solver iteration, accepted state or mass closure. The
 linear-Freundlich `cmsy`→`cml` inversion and strict sub-`vsmall` roundoff branch
 are independently checked over 100,000 vectors; the nonlinear fixed-point
-adsorption inversion remains explicitly unsupported.
+adsorption inversion remains explicitly unsupported. Root solute uptake rate
+per layer and its cumulative amount are separately bitwise checked over
+100,000 vectors using the source's `tscf*qrot*cml` operation order.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
