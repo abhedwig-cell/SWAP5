@@ -121,18 +121,20 @@
     "PPA-SOLUTE-TIMESTEP: 100000 O0/O2 bitwise eight-layer stability minima, dispersion floors, remaining interval caps and dtmin floors.",
     "PPA-SOLUTE-TRANSPORT-SUBSTEP: 100000 O0/O2 bitwise composed six-layer dispersion-to-stability-to-substep comparisons.",
     "PPA-SOLUTE-SUBSTEP-ADVANCE: 100000 O0/O2 bitwise B1.11 substep-loop schedule comparisons, including strict remaining-time gate, minimum-step overshoot, and invalid/no-progress/overflow rejection.",
-    "PPA-SOLUTE-LATERAL-DRAINAGE: 100000 O0/O2 bitwise B1.11 signed-level concentration selection, ordered per-depth sink rate and substep mass; invalid domains rejected."
+    "PPA-SOLUTE-LATERAL-DRAINAGE: 100000 O0/O2 bitwise B1.11 signed-level concentration selection, ordered per-depth sink rate and substep mass; invalid domains rejected.",
+    "PPA-SOLUTE-AQUIFER-UPDATE: 100000 O0/O2 bitwise B1.11 swbr-gated aquifer concentration, seep concentration and surface-mass update across positive/zero/negative drainage branches."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-SOLUTE-LATERAL-DRAINAGE",
-    "source": "B1.11 solute.f90 task 2 signed per-level qdra concentration selection and ordered cdrtot sum",
-    "test": "100000 bitwise level-ordered sink-rate and interval-amount comparisons at O0/O2",
+    "work_unit": "PPA-SOLUTE-AQUIFER-UPDATE",
+    "source": "B1.11 solute.f90 task 2 swbr==1 aquifer concentration update and subsequent sqsur mass booking",
+    "test": "100000 bitwise positive/zero/negative drainage aquifer update and surface-mass comparisons at O0/O2",
     "test_markers": [
-      "PPA_SOLUTE_LATERAL_DRAINAGE_SOURCE_ORACLE_100000=PASS",
-      "PPA_SOLUTE_LATERAL_DRAINAGE_SIGN_PARTITION_AND_LEVEL_ORDER=PASS",
-      "PPA_SOLUTE_LATERAL_DRAINAGE_RATE_AND_INTERVAL_AMOUNT=PASS",
-      "PPA_SOLUTE_LATERAL_DRAINAGE_INVALID_DOMAIN_FAIL_CLOSED=PASS",
-      "PPA_SOLUTE_LATERAL_DRAINAGE_O0_O2_IDENTITY=PASS"
+      "PPA_SOLUTE_AQUIFER_UPDATE_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_POSITIVE_ZERO_NEGATIVE_DRAIN=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_SWBR_GATE_AND_UPDATED_SEEP_CONCENTRATION=PASS",
+      "PPA_SOLUTE_AQUIFER_SURFACE_MASS_USES_UPDATED_CONCENTRATION=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_INVALID_DOMAIN_FAIL_CLOSED=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

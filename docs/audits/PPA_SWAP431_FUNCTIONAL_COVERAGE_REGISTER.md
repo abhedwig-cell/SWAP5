@@ -225,6 +225,13 @@ strictly positive drainage and aquifer concentration otherwise, then adds in
 level order. Both the per-thickness sink rate and interval amount match the
 source bitwise at O0/O2. Invalid inputs fail closed; aquifer ownership and
 accepted mass publication remain unqualified.
+The B1.11 `swbr==1` aquifer concentration update is now source-checked for
+positive, zero and negative aggregate drainage, including the strict positive
+outflow term, decay, updated seep concentration and subsequent surface-mass
+booking with the updated concentration. A 100,000-vector O0/O2 oracle preserves
+the source expression order. It is deliberately an isolated equation test:
+the legacy post-loop storage-array index, aquifer state ownership, restart and
+accepted aquifer mass closure have not been qualified.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
