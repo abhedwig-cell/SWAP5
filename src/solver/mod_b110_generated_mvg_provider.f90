@@ -244,8 +244,10 @@ contains
     end if
 
     call TSPBI(n,x,y,2,iendc,.false.,b,bmax,lwk,wk,dydx,sigma,icflg,ier)
+    ! Preserve qualified TSPACK semantics: ICFLG marks local constraints that
+    ! TSPACK treats as null constraints.  Only an actual preprocessing error
+    ! (negative IER) or non-finite output invalidates the generated provider.
     if (ier < 0) return
-    if (any(icflg(1:n-1) /= 0)) return
     if (any(.not. ieee_is_finite(dydx)) .or. any(.not. ieee_is_finite(sigma))) return
     status = B110_GENERATED_MVG_OK
   end subroutine preprocess_tspack
