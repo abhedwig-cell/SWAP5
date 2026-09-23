@@ -45,7 +45,7 @@
   "fresh_surface_reference_status": "P2_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
   "implemented": true,
   "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
-  "last_execution_sha": "4f6c29be554ca254575e8e8a67270f6741acc1b4",
+  "last_execution_sha": "707838d6251262f6e74320fa399847a8bdf8462b",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "next_action": "BIND_P2_FROZEN_CANDIDATE_MATRIX",
   "persisted": true,
@@ -63,6 +63,7 @@
   },
   "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
   "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d",
+  "reference_execution_repair": "R1024_SEGMENT_EQUIVALENCE_WITNESS_THEN_S05_SEGMENT_REPAIR",
   "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
   "reference_segmented_recovery_binding": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json",
   "reference_timeout_repair_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json",
@@ -103,7 +104,7 @@
     "production_rom_authorized": false,
     "representation_retuned": false
   },
-  "source_workflow_run": 35853331143,
+  "source_workflow_run": 35853590210,
   "tested": true,
   "work_unit": "ROM-PURPOSE-P2",
   "workstream": "ROM-PURPOSE"
