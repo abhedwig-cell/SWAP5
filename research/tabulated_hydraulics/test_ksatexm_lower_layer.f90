@@ -14,6 +14,7 @@ program test_tabhyd_ksatexm_lower_layer
   real(real64) :: h(1), ta(1),ka(1),ca(1),da(1), tt(1),kt(1),ct(1),dt(1)
   real(real64) :: tt2(1),kt2(1),ct2(1),dt2(1)
   real(real64) :: frac, exponent, theta_err, cap_err, logk_err
+  real(real64) :: logk_here, logk_head, logk_analytic, logk_table
   type(b110_default_mvg_parameters_t), target :: p_ext, p_default, p_bad
   type(b110_default_mvg_provider_t) :: analytic_ext, analytic_default
   type(b110_generated_mvg_table_state_t), target :: state, state2, state_default, bad_state
@@ -60,6 +61,9 @@ program test_tabhyd_ksatexm_lower_layer
   theta_err=0.0_real64
   cap_err=0.0_real64
   logk_err=0.0_real64
+  logk_head=0.0_real64
+  logk_analytic=0.0_real64
+  logk_table=0.0_real64
   do j=1,NS
     frac=real(j-1,real64)/real(NS-1,real64)
     exponent=7.0_real64-15.0_real64*frac
@@ -70,7 +74,13 @@ program test_tabhyd_ksatexm_lower_layer
     call require(tt(1)==tt2(1).and.kt(1)==kt2(1).and.ct(1)==ct2(1),'deterministic duplicate evaluation')
     theta_err=max(theta_err,abs(tt(1)-ta(1)))
     cap_err=max(cap_err,abs(ct(1)-ca(1)))
-    logk_err=max(logk_err,abs(log10(kt(1))-log10(ka(1))))
+    logk_here=abs(log10(kt(1))-log10(ka(1)))
+    if (logk_here > logk_err) then
+      logk_err=logk_here
+      logk_head=h(1)
+      logk_analytic=ka(1)
+      logk_table=kt(1)
+    end if
     call require(dt(1)==0.0_real64,'K0 derivative slot')
   end do
 
@@ -106,7 +116,13 @@ program test_tabhyd_ksatexm_lower_layer
 
   write(*,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_THETA_MAX_ABS=',theta_err
   write(*,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_CAPACITY_MAX_ABS=',cap_err
-  write(*,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_LOG10K_MAX_ABS=',logk_err
+  write(error_unit,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_THETA_MAX_ABS=',theta_err
+  write(error_unit,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_CAPACITY_MAX_ABS=',cap_err
+  write(error_unit,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_LOG10K_MAX_ABS=',logk_err
+  write(error_unit,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_LOG10K_MAX_HEAD_CM=',logk_head
+  write(error_unit,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_LOG10K_MAX_ANALYTIC_K=',logk_analytic
+  write(error_unit,'(a,es24.16)') 'TABHYD_KSATEXM_LOWER_LOG10K_MAX_TABLE_K=',logk_table
+  flush(error_unit)
   call require(theta_err<=1.0e-4_real64,'theta preregistered limit')
   call require(cap_err<=1.0e-4_real64,'capacity preregistered limit')
   call require(logk_err<=5.0e-4_real64,'conductivity preregistered limit')
