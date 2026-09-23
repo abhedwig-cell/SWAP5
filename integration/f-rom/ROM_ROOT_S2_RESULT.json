@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.rom_root.s2.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2",
+  "date": "2026-09-23",
+  "status": "STAGE2_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S2_BINDING.json",
+    "technical_repairs": [
+      "integration/f-rom/ROM_ROOT_S2_TECHNICAL_REPAIR.json",
+      "integration/f-rom/ROM_ROOT_S2_TECHNICAL_REPAIR2.json"
+    ],
+    "workflow_run": 35853333783,
+    "workflow_head": "24019e17e0e5ba8f71825196b36a774657838f88",
+    "aggregate_artifact_id": 10746695893,
+    "aggregate_artifact_digest": "sha256:78467bfd0de5464a23e0dbc6ed6d66e2e05eb6235a964b860d047bbabc9587b3"
+  },
+  "execution": {
+    "case_count": 32,
+    "all_32_cases_pass": true,
+    "check_failures": [],
+    "maximum_abs_water_ledger_cm": 6.577793865147896e-13,
+    "representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ]
+  },
+  "qualified_properties": [
+    "Exact retained-layer root fractions are nonnegative and sum to one within the preregistered arithmetic guard.",
+    "The prescribed retained-layer sink rate equals potential transpiration within the preregistered arithmetic guard.",
+    "The cumulative prescribed root-withdrawal ledger equals the analytic full-potential withdrawal within the preregistered arithmetic guard.",
+    "PRESCRIBED_ROOT and GENERIC_SINK observation trajectories are bit-identical for layer storage and cumulative top, bottom and root ledgers.",
+    "ZERO_PRESCRIBED_ROOT and LEGACY_NO_SINK observation trajectories are bit-identical.",
+    "All inherited reduced water-ledger checks pass."
+  ],
+  "interpretation": {
+    "stage2_harness_equivalence_qualified": true,
+    "dynamic_feedback_tested": false,
+    "feddes_feedback_tested": false,
+    "hydrological_reference_accuracy_stage2_gate": false,
+    "decision": "STAGE3_DYNAMIC_FEEDBACK_MAY_BE_PREREGISTERED"
+  },
+  "scientific_firewall": {
+    "reference_changed": false,
+    "feddes_evaluated": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
