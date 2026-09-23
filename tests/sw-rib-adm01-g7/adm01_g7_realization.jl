@@ -2,10 +2,16 @@ using Ribasim
 import BasicModelInterface as BMI
 
 const DURATION = 21600.0
+const DURATION_DAY = 0.25
+const AREA_M2 = 100.0
 const FULL_TOL = 1.0e-6
 const MASS_TOL = 1.0e-8
 const STORAGE_TOL = 1.0e-10
+const FIXED_POINT_TOL = 1.0e-8
 const LIMITED_GAP = 1.0e-6
+const MAX_ITER = 64
+const GWL_CM = -2.25
+const RESISTANCE_DAY = 1000.0
 
 const CASES = [
     (id="E1_POSITIVE_DRAINAGE", requested=0.0025, kind=:drainage),
@@ -21,37 +27,48 @@ function one(model, name)
     return Float64(v[1])
 end
 
-function physical_run(path, case_id; override_infiltration=nothing)
+function physical_run(path, case_id; requested_signed_m3)
     model = BMI.initialize(Ribasim.Model, path)
     try
-        if override_infiltration !== nothing
+        # Override the configured vertical forcing for every iteration so the
+        # request is explicit and every replay begins from the same model state.
+        if requested_signed_m3 > 0.0
+            v = BMI.get_value_ptr(model, "basin.drainage")
+            require(length(v) == 1, "$case_id requires one drainage forcing")
+            v[1] = requested_signed_m3 / DURATION
+            inf = BMI.get_value_ptr(model, "basin.infiltration")
+            inf[1] = 0.0
+        else
             v = BMI.get_value_ptr(model, "basin.infiltration")
-            require(length(v) == 1, "G7 recomposition requires one infiltration forcing")
-            v[1] = override_infiltration / DURATION
+            require(length(v) == 1, "$case_id requires one infiltration forcing")
+            v[1] = abs(requested_signed_m3) / DURATION
+            drn = BMI.get_value_ptr(model, "basin.drainage")
+            drn[1] = 0.0
         end
+
         initial_level = one(model, "basin.level")
         initial_storage = one(model, "basin.storage")
         initial_drain = one(model, "basin.cumulative_drainage")
         initial_inf = one(model, "basin.cumulative_infiltration")
 
         BMI.update_until(model, DURATION)
-        require(isapprox(BMI.get_current_time(model), DURATION; atol=1e-8, rtol=0.0), "$(case_id) endpoint")
+        require(isapprox(BMI.get_current_time(model), DURATION; atol=1e-8, rtol=0.0), "$case_id endpoint")
 
         final_storage = one(model, "basin.storage")
-        drain = one(model, "basin.cumulative_drainage") - initial_drain
-        inf = one(model, "basin.cumulative_infiltration") - initial_inf
-        signed_realized = drain - inf
-        residual = final_storage - initial_storage - drain + inf
+        drainage = one(model, "basin.cumulative_drainage") - initial_drain
+        infiltration = one(model, "basin.cumulative_infiltration") - initial_inf
+        signed_realized = drainage - infiltration
+        residual = final_storage - initial_storage - drainage + infiltration
 
-        require(abs(residual) <= MASS_TOL, "$(case_id) mass residual $residual")
-        require(final_storage >= -STORAGE_TOL, "$(case_id) negative storage $final_storage")
+        require(abs(residual) <= MASS_TOL, "$case_id mass residual $residual")
+        require(final_storage >= -STORAGE_TOL, "$case_id negative storage $final_storage")
 
         return (
             initial_level=initial_level,
             initial_storage=initial_storage,
             final_storage=final_storage,
-            drain=drain,
-            inf=inf,
+            drainage=drainage,
+            infiltration=infiltration,
             signed_realized=signed_realized,
             residual=residual,
         )
@@ -60,35 +77,63 @@ function physical_run(path, case_id; override_infiltration=nothing)
     end
 end
 
+function swap_head_for_request(requested_signed_m3)
+    requested_cm = requested_signed_m3 / AREA_M2 * 100.0
+    requested_rate_cm_day = requested_cm / DURATION_DAY
+    return GWL_CM - requested_rate_cm_day * RESISTANCE_DAY
+end
+
+function emit_iteration(case_id, iteration, request, result, disposition)
+    head_cm = swap_head_for_request(request)
+    println(
+        "G7_ITER,$case_id,$iteration,$head_cm,$request,$(result.signed_realized),$(result.residual),$disposition"
+    )
+end
+
 function run_case(root, case)
-    case_id = case.id
-    path = joinpath(root, case_id, "ribasim.toml")
-    first = physical_run(path, case.id)
-    require(abs(first.residual) <= MASS_TOL, "$(case_id) first mass residual")
-    require(first.final_storage >= -STORAGE_TOL, "$(case_id) first negative storage")
+    path = joinpath(root, case.id, "ribasim.toml")
 
-    second_realized = first.signed_realized
-    second_residual = first.residual
-
-    if case.kind == :drainage
-        require(abs(first.signed_realized - case.requested) <= FULL_TOL, "$(case_id) full drainage realization")
-    elseif case.kind == :infiltration
-        require(abs(first.signed_realized - case.requested) <= FULL_TOL, "$(case_id) full infiltration realization")
-    else
-        require(first.signed_realized < 0.0, "$(case_id) expected outward transfer")
-        require(abs(first.signed_realized) < abs(case.requested) - LIMITED_GAP, "$(case_id) not availability limited")
-        second = physical_run(path, case.id; override_infiltration=abs(first.signed_realized))
-        second_realized = second.signed_realized
-        second_residual = second.residual
-        require(abs(second_residual) <= MASS_TOL, "$(case_id) recomposed mass residual")
-        require(second.final_storage >= -STORAGE_TOL, "$(case_id) recomposed negative storage")
-        require(abs(second_realized - first.signed_realized) <= FULL_TOL,
-            "$(case_id) same-origin Ribasim recomposition did not realize adjusted request")
-        println("SW_RIB_ADM01_G7_RIBASIM_SAME_ORIGIN_RECOMPOSITION=PASS")
+    if case.kind != :limited
+        result = physical_run(path, case.id; requested_signed_m3=case.requested)
+        require(abs(result.signed_realized - case.requested) <= FULL_TOL,
+            "$(case.id) full realization mismatch")
+        emit_iteration(case.id, 1, case.requested, result, "COMMIT")
+        println("SW_RIB_ADM01_G7_PHYSICAL_CASE_PASS=$(case.id)")
+        return
     end
 
-    println("G7_RECEIPT,$(case_id),$(100.0*first.initial_level),$(case.requested),$(first.signed_realized),$second_realized,$second_residual")
-    println("SW_RIB_ADM01_G7_PHYSICAL_CASE_PASS=$(case_id)")
+    request = case.requested
+    first_recompose = false
+    converged = false
+    final_iteration = 0
+
+    for iteration in 1:MAX_ITER
+        result = physical_run(path, case.id; requested_signed_m3=request)
+        difference = abs(result.signed_realized - request)
+
+        if iteration == 1
+            require(result.signed_realized < 0.0, "$(case.id) expected outward transfer")
+            require(abs(result.signed_realized) < abs(request) - LIMITED_GAP,
+                "$(case.id) first realization not availability limited")
+        end
+
+        if difference <= FIXED_POINT_TOL
+            emit_iteration(case.id, iteration, request, result, "COMMIT")
+            converged = true
+            final_iteration = iteration
+            break
+        else
+            emit_iteration(case.id, iteration, request, result, "RECOMPOSE")
+            first_recompose |= iteration == 1
+            request = result.signed_realized
+        end
+    end
+
+    require(first_recompose, "$(case.id) first iteration did not require recomposition")
+    require(converged, "$(case.id) failed to converge within $MAX_ITER same-origin iterations")
+    require(final_iteration > 1, "$(case.id) unexpectedly converged without recomposition")
+    println("SW_RIB_ADM01_G7_RIBASIM_SAME_ORIGIN_RECOMPOSITION=PASS iterations=$final_iteration")
+    println("SW_RIB_ADM01_G7_PHYSICAL_CASE_PASS=$(case.id)")
 end
 
 function main()
