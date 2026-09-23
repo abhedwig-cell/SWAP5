@@ -34,10 +34,12 @@ jobs:
           p=json.load(open('integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json'))
           assert b['status']=='BOUND_AFTER_COMPLETE_P4_REFERENCE_ROUTE_SETS'
           assert p['phase']=='PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE'
+          assert 'tests/rom/test_rom_purpose_p4_reference_wiring.py' in b['blobs']
           for path,expected in b['blobs'].items():
               got=subprocess.check_output(['git','hash-object',path],text=True).strip()
               assert got==expected,(path,got,expected)
           PY
+          python3 tests/rom/test_rom_purpose_p4_reference_wiring.py
       - name: Download exact P4 route sets
         run: |
           set -euo pipefail
