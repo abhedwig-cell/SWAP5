@@ -1,0 +1,189 @@
+{
+  "schema": "swap5.rom-practical.first-benchmark-closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "date": "2026-09-23",
+  "status": "FIRST_PRACTICAL_BENCHMARK_CLOSED_SMALL_PURPOSE_FAMILY_RETAINED",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "authority_chain": [
+    "integration/f-rom/ROM_PRACTICAL_P1_CLOSEOUT.json",
+    "integration/f-rom/ROM_PRACTICAL_P2A_CLOSEOUT.json",
+    "integration/f-rom/ROM_PRACTICAL_P2B_GW1_CLOSEOUT.json",
+    "integration/f-rom/ROM_PRACTICAL_P2C_B05_CLOSEOUT.json",
+    "integration/f-rom/ROM_PRACTICAL_P2D_B05_CLOSEOUT.json"
+  ],
+  "family": {
+    "P-ROM-SM": {
+      "practical_purpose": [
+        "0-20 cm storage",
+        "0-40 cm root-zone storage",
+        "0-80 cm storage",
+        "mapped profile",
+        "water balance",
+        "wetting/drying response"
+      ],
+      "preferred_tested_representation": {
+        "id": "S4",
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          80,
+          160
+        ],
+        "state_count": 4,
+        "closure": "CURRENT_LAYER_FACE"
+      },
+      "approximation_class": "purpose-aligned four-state Layer-ROM",
+      "evidence": [
+        "S4 is componentwise better than U4 on the frozen P2 profile vector for B01 and B14.",
+        "In the six-material P2A transfer pilot, continuous profile/storage fidelity remains approximate and no S4 case reaches the R128-vs-R256 numerical comparator.",
+        "B06 has no discrete extrema-timing defect in P2A.",
+        "B05 shows a candidate-specific 512-observation-step extrema-timing defect.",
+        "B02, B11, B12 and B16 extrema timing is reference-observability-confounded because R128 and R256 themselves differ by 512 observation steps."
+      ],
+      "error_regimes": [
+        "APPROXIMATE_TRANSFER",
+        "TIMING_SENSITIVE_B05",
+        "REFERENCE_TIMING_OBSERVABILITY_LIMIT"
+      ],
+      "failure_regimes": [
+        "B05 extrema timing under the tested alternating wet/dry workload"
+      ],
+      "cost": {
+        "direct_same_runner_S4_over_R256_wall_ratio_P2A": {
+          "min": 0.05779202965034964,
+          "median": 0.2026043795156997,
+          "max": 0.2105214861767917
+        },
+        "semantics": "Same-job GitHub Actions implementation ratios for tested P2A S4 cases only; not portable speedups."
+      },
+      "formal_acceptance_status": "NOT_ADJUDICATED"
+    },
+    "P-ROM-GW": {
+      "practical_purpose": [
+        "recharge/capillary-rise proxy",
+        "net lower-boundary exchange",
+        "instantaneous exchange sign/reversal",
+        "deep storage",
+        "groundwater-sensitive response"
+      ],
+      "preferred_tested_representation": {
+        "id": "G8",
+        "boundaries_cm": [
+          0,
+          80,
+          100,
+          120,
+          130,
+          140,
+          150,
+          155,
+          160
+        ],
+        "state_count": 8,
+        "closure": "CURRENT_LAYER_FACE"
+      },
+      "approximation_class": "lower-zone-focused eight-state Layer-ROM",
+      "evidence": [
+        "G4 is event-sensitive in all six prospectively transferred P2A materials.",
+        "G6 improves the full event vector in five of six materials and continuous metrics in five of six; B05 remains event-identical to G4.",
+        "Same-partition Richards at B05 G4/G6 has exactly the same event failures as Layer-ROM, excluding reduced closure as the primary cause there.",
+        "At B05, G8 improves sign mismatches 9→5 and reversal-sequence mismatches 4→2 relative to G6; U8 gives no event improvement.",
+        "The same lower-focused placement advantage appears under conventional Richards.",
+        "At G8, conventional Richards has 4 rather than 5 sign mismatches but retains 2 sequence mismatches and 1024-step timing error, so closure is secondary and the tested representation frontier remains below Reference-like event fidelity."
+      ],
+      "error_regimes": [
+        "EVENT_SENSITIVE",
+        "GROUNDWATER_REVERSAL_SENSITIVE",
+        "MATERIAL_DEPENDENT_STATE_COUNT_VALUE",
+        "SECONDARY_CLOSURE_EFFECT_AT_G8"
+      ],
+      "failure_regimes": [
+        "B05 reversal sequence and timing remain structurally unresolved at the terminal tested eight-state frontier.",
+        "G4 is not suitable as a general reversal-sensitive practical groundwater representation."
+      ],
+      "cost": {
+        "direct_same_runner_G4_over_R256_wall_ratio_P2A": {
+          "min": 0.0849044322163541,
+          "median": 0.2805909511028125,
+          "max": 0.30185546852737927
+        },
+        "direct_same_runner_G6_over_R256_wall_ratio_P2B": {
+          "min": 0.10654188738962042,
+          "median": 0.30019345680530063,
+          "max": 0.33831719216395395
+        },
+        "G8_direct_ratio_status": "NOT_PERSISTED_AS_CLOSEOUT_AUTHORITY",
+        "eight_state_prior": "LAYER_ROM_COST1 shows all six screened eight-state implementations resolved cheaper than R16 under shared-host timing, but this is not direct G8 timing authority.",
+        "semantics": "No portable speedup claim."
+      },
+      "formal_acceptance_status": "NOT_ADJUDICATED"
+    },
+    "P-ROM-ET": {
+      "status": "NOT_OPENED",
+      "reason": "GW and SM practical characterization is not yet mature enough, and existing ROM-ROOT evidence excludes exact layer-mean-head Feddes feedback."
+    }
+  },
+  "practical_error_map": {
+    "ROBUST": "Used only as a relative development label in P1; not an application guarantee.",
+    "APPROXIMATE_TRANSFER": "Candidate remains numerically qualified with useful continuous behaviour but does not reach the fine-reference numerical comparator.",
+    "TIMING_SENSITIVE": "Candidate timing differs materially where the Reference ladder itself is sufficiently observable.",
+    "GROUNDWATER_REVERSAL_SENSITIVE": "Discrete lower-boundary sign/reversal response is materially less faithful than continuous storage/exchange metrics.",
+    "REFERENCE_OBSERVABILITY_LIMIT": "Fine-reference ladder itself does not support clean attribution of a discrete timing metric.",
+    "STRUCTURALLY_UNRELIABLE": "Reserved for numerical/water-ledger failure; not the dominant outcome of the retained candidates."
+  },
+  "performance_conclusion": [
+    "A substantial computational reduction signal is robust across prior Layer-ROM cost screens and the direct P2A/P2B same-runner comparisons.",
+    "Hydrological fidelity and runtime are intentionally not collapsed into one score.",
+    "The retained practical candidates occupy different cost-fidelity positions: S4 is cheaper and profile-focused; G8 carries more lower-zone information but still has reversal limitations."
+  ],
+  "meta_swap_status": {
+    "direct_execution": "NOT_PERFORMED",
+    "reason": "No reproducibly bound executable/data comparison was available in this work unit.",
+    "no_fabricated_benchmark": true
+  },
+  "practical_decision_map": [
+    {
+      "purpose": "PROFILE_SOIL_MOISTURE",
+      "model": "S4",
+      "state_count_placement": "4 states; [0,20,40,80,160] cm",
+      "approximation_class": "purpose-aligned Layer-ROM",
+      "dominant_error_regime": "approximate profile transfer; B05 timing-sensitive",
+      "computational_cost": "direct P2A wall ratio median 0.203 vs R256 under same-runner conditions",
+      "pareto_position": "low cost / moderate purpose-specific fidelity",
+      "formal_acceptance_status": "NOT_ADJUDICATED"
+    },
+    {
+      "purpose": "GROUNDWATER_LOWER_BOUNDARY",
+      "model": "G8",
+      "state_count_placement": "8 states; [0,80,100,120,130,140,150,155,160] cm",
+      "approximation_class": "lower-focused Layer-ROM",
+      "dominant_error_regime": "reversal/event sensitive, especially B05",
+      "computational_cost": "direct G8 ratio not yet frozen; prior 8-state and G6 evidence retain a strong reduction signal",
+      "pareto_position": "higher reduced-model cost / improved groundwater event fidelity / still below Reference-like event behaviour",
+      "formal_acceptance_status": "NOT_ADJUDICATED"
+    }
+  ],
+  "explicitly_not_concluded": [
+    "production approved",
+    "scientifically equivalent to SWAP",
+    "suitable for national policy or NHI",
+    "accepted for MODFLOW or Ribasim operation",
+    "one universal reduced SWAP representation",
+    "formal application tolerance compliance"
+  ],
+  "next_phase": {
+    "id": "ROM-PRACTICAL-P3",
+    "title": "fresh longer-horizon practical validation",
+    "objective": "Evaluate S4 and G8 as deliberately approximate practical candidates on a fresh longer-horizon forcing panel, without further state escalation.",
+    "prerequisites": [
+      "Freeze forcing and material split before candidate response.",
+      "Use direct purpose-specific timing for G8.",
+      "Treat groundwater reversal sensitivity as an explicit error regime rather than tuning it away.",
+      "Do not open P-ROM-ET until P3 characterizes S4/G8 stability on longer workloads.",
+      "Do not call the workload daily/seasonal unless its physical time semantics are genuinely daily/seasonal."
+    ]
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
