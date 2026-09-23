@@ -3,7 +3,7 @@
   "work_unit": "F-GC-FIXED-INTERFACE-CLOSEOUT",
   "title": "SWAP5-MODFLOW6 Fixed-Interface Groundwater Coupling — Final Canonical Admission",
   "protocol": "RECONCILE -> RECOMPOSE -> QUALIFY -> REVIEW -> ADMIT -> POSTIMAGE VERIFY -> CLOSE",
-  "phase": "ADMIT",
+  "phase": "CLOSE",
   "verdict": "CANONICAL_ADMITTED_CLOSED",
   "date": "2026-09-23",
   "source_candidate": {
@@ -129,5 +129,19 @@
     "fgc24_split_process_restart_replay_o0": "PASS",
     "fgc24_split_process_restart_replay_o2": "PASS"
   },
-  "closure_witness_semantics": "This record names its exact canonical parent. The closure-witness merge itself is metadata-only and must pass the same push closeout gate on its resulting canonical postimage."
+  "closure_witness_semantics": "This record names its exact canonical parent. The closure-witness merge itself is metadata-only and must pass the same push closeout gate on its resulting canonical postimage.",
+  "canonical_admission_lineage": {
+    "canonical_parent": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "integration_commit": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "integration_commit_parents": [
+      "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+      "e7fdd24147b3a336b285b7a1fa5adec37e9cb085"
+    ],
+    "integration_pr": 585,
+    "qualification_workflow": "F-GC fixed-interface groundwater closeout",
+    "qualification_run": 35819763656,
+    "qualification_job": 107048912789,
+    "qualification_conclusion": "success",
+    "production_delta_after_verified_parent": "METADATA_AND_DOCUMENTATION_ONLY"
+  }
 }
