@@ -1,0 +1,26 @@
+name: RM27 groundwater functional equivalence
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/ribasim-management/test_rm27_groundwater_functional_equivalence.f90'
+      - 'tests/ribasim-management/run_rm27_groundwater_functional_equivalence.sh'
+      - 'integration/ribasim-management/RM27_*'
+      - '.github/workflows/rm27-groundwater-functional-equivalence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM27 groundwater-response qualification
+        run: bash tests/ribasim-management/run_rm27_groundwater_functional_equivalence.sh
