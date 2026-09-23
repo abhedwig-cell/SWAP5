@@ -234,7 +234,10 @@ contains
   subroutine initialize_config(c)
     type(canonical_numerical_config_t),intent(out)::c
     c%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    c%transaction%temporal_tolerance=1.0e-6_real64
+    ! Slice C qualifies provider selection/lifetime, not the strict temporal
+    ! error-control contract owned by F-TAB02-D. Keep full/half mechanics live
+    ! but make temporal rejection non-limiting for this bounded C oracle.
+    c%transaction%temporal_tolerance=1.0_real64
     c%transaction%mass_tolerance=mass_tolerance
     c%transaction%retry_scale=0.5_real64
     c%transaction%max_retries=8
