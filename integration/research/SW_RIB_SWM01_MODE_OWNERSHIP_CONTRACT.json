@@ -33,7 +33,8 @@
     "A rejected SWAP trial or rejected coupled window may not change accepted Ribasim surface-water state or accepted management memory.",
     "Ribasim-owned availability/supply state may not be duplicated as a private SWAP availability limiter in external-owner mode.",
     "SWAP may retain constitutive drainage/infiltration response while the cross-model feasibility limiter is resolved at the coupling boundary.",
-    "Automatic management target memory is policy state, not physical surface-water storage."
+    "Automatic management target memory is policy state, not physical surface-water storage.",
+    "Primary WLP and prescribed secondary WLS enter SWAP only as resolved external hydraulic forcings in Ribasim mode; they are not SWAP-owned surface-water state."
   ],
   "required_fail_closed_cases": [
     "external_ribasim_owner AND internal_fci52_surface_water_state_active",
@@ -43,5 +44,18 @@
   ],
   "current_gap": "No current production application-profile contract is yet shown to enforce these mode exclusions. Q1A tests external state ownership physically; Q3 must test signed exchange and mass reclassification.",
   "relation_to_rm13": "The current RM13 minimal real three-model research profile has drainage disabled, so it does not qualify the surface-water owner-mode mass reclassification.",
-  "production_admission": false
+  "production_admission": false,
+  "legacy_topology_binding": {
+    "primary": {
+      "WLP": "external forcing/control in legacy source",
+      "ribasim_coupled_role": "Ribasim-resolved primary-system level provided to SWAP drainage exchange",
+      "duplicate_storage_risk": false
+    },
+    "secondary": {
+      "SWSEC_1": "WLS prescribed forcing; no SWST state",
+      "SWSEC_2": "SWST conserved storage; WLS derived level",
+      "ribasim_coupled_role": "Ribasim owns accepted storage and level; SWAP must not retain SWST for the same store",
+      "duplicate_storage_risk": true
+    }
+  }
 }
