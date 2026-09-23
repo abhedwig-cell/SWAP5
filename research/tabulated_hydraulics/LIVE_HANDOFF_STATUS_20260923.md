@@ -9,7 +9,7 @@ This note records live delta after the research closeout. It does not modify pro
 - current canonical: `integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d`;
 - research branch: `research/tabulated-hydraulics-characterization`;
 - production implementation branch: `work/f-tab02-generated-k0-provider`;
-- production branch observed head: `a93eea45b4943c8188eac2f9d7e6ce7da936884e`.
+- production branch observed head: `9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf`.
 
 ## Research disposition remains unchanged
 
@@ -35,8 +35,8 @@ Live status at the observed production head:
 - E: PASS;
 - G dedicated qualification: PASS;
 - G same-postimage sequential A→E→G preservation replay: PASS (run `35882579159`);
-- F-TAB02-G is therefore ready to be formally bound by the production owner;
-- preregistered F0 provider-selection/lifetime qualification is the next permitted production step.
+- F-TAB02-G is formally closed by same-postimage preservation;
+- F0 provider-selection/lifetime implementation has started on the production branch; its qualification remains production-owned.
 
 Research must not duplicate or bypass those production gates.
 
@@ -130,11 +130,11 @@ The broader K1 route is reference-runtime blocked on difficult analytical cases 
 
 ## Next safe research action
 
-1. Read scale40 rerun `35882147418`.
-2. If scientifically green, record scaling characterization only.
-3. If scientifically red, diagnose scaling limits without reopening the qualified K0 representation automatically.
-4. Do not implement production changes from this branch.
-5. Track F-TAB02 only as an external consumer of the closed research authority.
+No active K0 research action remains.
+
+The scale40 supplement is closed as `SCALE_PASS`. Research should stay closed and track F-TAB02 only as an external consumer of the qualified research authority.
+
+Reopen TAB-HYD research only if F0 or the exact M1-C3 whole-Hupsel production gate exposes a concrete scientific discrepancy attributable to the generated constitutive representation. Do not implement production changes from this branch.
 
 
 ## Live delta — same-postimage A→E→G closed
