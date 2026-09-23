@@ -1,5 +1,6 @@
 program test_fvq128_fapp09_independent
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
@@ -7,14 +8,18 @@ program test_fvq128_fapp09_independent
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
        FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
+       fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
+       fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
+       fmr_new_b110_fixed_weir_surface_water_committed_state
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
-       FMR_SW_HEAD_FORCING_OK, FMR_SW_HEAD_FORCING_PROFILE_NOT_ADMITTED
+       FMR_SW_HEAD_FORCING_OK, FMR_SW_HEAD_FORCING_INVALID_REQUEST, FMR_SW_HEAD_FORCING_PROFILE_NOT_ADMITTED, &
+       FMR_SW_HEAD_FORCING_COMPETING_DRAINAGE_INPUT, FMR_SW_HEAD_FORCING_NONFINITE_HEAD
   use mod_fmr_surface_water_swap_participant, only: fmr_surface_water_swap_participant_t, fmr_surface_water_trial_t, &
-       fmr_surface_water_external_profile_admitted, FMR_SW_PARTICIPANT_OK, FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
+       fmr_surface_water_external_profile_admitted, FMR_SW_PARTICIPANT_OK, FMR_SW_PARTICIPANT_ORIGIN_DRIFT, &
+       FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -32,24 +37,39 @@ program test_fvq128_fapp09_independent
   call verify_scope_and_owner()
   call verify_positive_transaction()
   call verify_negative_transaction()
+  call verify_stale_origin()
   write(*,'(A)') 'F_VQ128_FAPP09_INDEPENDENT=PASS'
 
 contains
 
   subroutine verify_scope_and_owner()
-    type(kernel_committed_state_t) :: committed
+    type(kernel_committed_state_t) :: committed, fixed_committed
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template, fixed_template
     type(fmr_b110_physical_parameters_t) :: parameters, multi
-    type(fmr_b110_physical_forcing_t) :: base
+    type(fmr_b110_physical_forcing_t) :: base, materialized, competing
     type(canonical_numerical_config_t) :: config
     type(fmr_surface_water_head_forcing_materializer_t) :: materializer, rejected
+    type(fmr_b110_fixed_weir_surface_water_state_t) :: fixed_state
+    real(real64) :: heads1(1), heads2(2)
     integer :: status
+    logical :: ok
 
     call initialize_case(committed,column,template,parameters,base,config,qmag)
     call materializer%initialize(base,parameters,status)
     call require(status==FMR_SW_HEAD_FORCING_OK .and. materializer%ready(),101)
     call require(fmr_surface_water_external_profile_admitted(template,parameters,committed,materializer),102)
+
+    heads2=[-22.25_real64,-21.0_real64]
+    call materializer%materialize(heads2,materialized,status)
+    call require(status==FMR_SW_HEAD_FORCING_INVALID_REQUEST,105)
+    heads1(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+    call materializer%materialize(heads1,materialized,status)
+    call require(status==FMR_SW_HEAD_FORCING_NONFINITE_HEAD,106)
+    competing=base
+    allocate(competing%drainage_response_controls(1))
+    call rejected%initialize(competing,parameters,status)
+    call require(status==FMR_SW_HEAD_FORCING_COMPETING_DRAINAGE_INPUT,107)
 
     multi=parameters
     deallocate(multi%drainage_response_levels)
@@ -62,8 +82,16 @@ contains
     fixed_template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
     call require(.not.fmr_surface_water_external_profile_admitted(fixed_template,parameters,committed,materializer),104)
 
+    call initialize_fixed_state(parameters,fixed_state)
+    fixed_state%surface_water%storage=1.0_real64
+    call fmr_new_b110_fixed_weir_surface_water_committed_state(fixed_committed,column_id+1_int64,fixed_state,t0,ok)
+    call require(ok,108)
+    call require(.not.fmr_surface_water_external_profile_admitted(template,parameters,fixed_committed,materializer),109)
+
     write(*,'(A)') 'F_VQ128_SINGLE_LEVEL_SCOPE=PASS'
+    write(*,'(A)') 'F_VQ128_MATERIALIZER_FAIL_CLOSED=PASS'
     write(*,'(A)') 'F_VQ128_OWNER_XOR=PASS'
+    write(*,'(A)') 'F_VQ128_FIXED_CARRIER_XOR=PASS'
   end subroutine verify_scope_and_owner
 
   subroutine verify_positive_transaction()
@@ -77,6 +105,7 @@ contains
     type(fmr_surface_water_swap_participant_t) :: participant
     type(fmr_surface_water_trial_t) :: first, replay
     type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr_serialized_physical_observation_t) :: obs
     type(fmr04_fixed_flux_top_provider_t), target :: top
     class(transaction_state_t), allocatable :: snapshot
     real(real64) :: heads(1), expected
@@ -97,6 +126,12 @@ contains
     call require(first%accepted_substeps==1,204)
     call require(abs(first%signed_soil_to_surface_exchange_cm-expected)<=tol,205)
     call require(abs(first%signed_soil_to_surface_exchange_cm-0.5_real64*expected)>100.0_real64*tol,206)
+    obs=backend%observation()
+    call require(obs%drainage_response_window_exchange_available,219)
+    call require(abs(obs%drainage_response_window_signed_exchange_native-expected)<=tol,220)
+    call require(abs(obs%drainage_response_signed_exchange_native-0.5_real64*expected)<=tol,221)
+    call require(abs(obs%drainage_response_window_signed_exchange_native- &
+         2.0_real64*obs%drainage_response_signed_exchange_native)<=tol,222)
     call require(committed%current_revision()==0_int64,207)
 
     call participant%commit_candidate(backend,committed,t0,t1,0.0_real64,tol,did_commit,status)
@@ -123,6 +158,8 @@ contains
     end select
 
     write(*,'(A)') 'F_VQ128_ACCEPTED_WINDOW_POSITIVE_EXCHANGE=PASS'
+    write(*,'(A)') 'F_VQ128_WINDOW_VS_TERMINAL_ADVANCE=PASS'
+    write(*,'(A)') 'F_VQ128_DISCARDED_FULL_TRIAL_EXCLUDED=PASS'
     write(*,'(A)') 'F_VQ128_MISMATCH_DISCARD_REPLAY=PASS'
     write(*,'(A)') 'F_VQ128_BASE_STATE_PRESERVED=PASS'
   end subroutine verify_positive_transaction
@@ -138,6 +175,7 @@ contains
     type(fmr_surface_water_swap_participant_t) :: participant
     type(fmr_surface_water_trial_t) :: trial
     type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr_serialized_physical_observation_t) :: obs
     type(fmr04_fixed_flux_top_provider_t), target :: top
     real(real64) :: heads(1), expected
     logical :: did_commit
@@ -157,6 +195,10 @@ contains
     call require(trial%accepted_substeps==1,304)
     call require(abs(trial%signed_soil_to_surface_exchange_cm-expected)<=tol,305)
     call require(abs(trial%signed_soil_to_surface_exchange_cm-0.5_real64*expected)>100.0_real64*tol,306)
+    obs=backend%observation()
+    call require(obs%drainage_response_window_exchange_available,309)
+    call require(abs(obs%drainage_response_window_signed_exchange_native-expected)<=tol,310)
+    call require(abs(obs%drainage_response_signed_exchange_native-0.5_real64*expected)<=tol,311)
 
     call participant%commit_candidate(backend,committed,t0,t1,trial%signed_soil_to_surface_exchange_cm,tol,did_commit,status)
     call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,307)
@@ -165,6 +207,41 @@ contains
     write(*,'(A)') 'F_VQ128_ACCEPTED_WINDOW_NEGATIVE_EXCHANGE=PASS'
     write(*,'(A)') 'F_VQ128_SIGNED_TRANSACTION_COMMIT=PASS'
   end subroutine verify_negative_transaction
+
+  subroutine verify_stale_origin()
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: base
+    type(canonical_numerical_config_t) :: config
+    type(fmr_surface_water_head_forcing_materializer_t) :: materializer
+    type(fmr_surface_water_swap_participant_t) :: stale, winner
+    type(fmr_surface_water_trial_t) :: trial
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr04_fixed_flux_top_provider_t), target :: top
+    real(real64) :: heads(1)
+    logical :: did_commit
+    integer :: status
+
+    call initialize_case(committed,column,template,parameters,base,config,qmag)
+    call materializer%initialize(base,parameters,status)
+    call require(status==FMR_SW_HEAD_FORCING_OK,351)
+    call backend%initialize(top)
+    call stale%capture_origin(committed,status)
+    call require(status==FMR_SW_PARTICIPANT_OK,352)
+    call winner%capture_origin(committed,status)
+    call require(status==FMR_SW_PARTICIPANT_OK,353)
+    heads(1)=-22.25_real64
+    call winner%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call require(status==FMR_SW_PARTICIPANT_OK .and. trial%valid,354)
+    call winner%commit_candidate(backend,committed,t0,t1,trial%signed_soil_to_surface_exchange_cm,tol,did_commit,status)
+    call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,355)
+    call stale%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call require(status==FMR_SW_PARTICIPANT_ORIGIN_DRIFT .and. .not.trial%valid,356)
+    call require(committed%current_revision()==1_int64,357)
+    write(*,'(A)') 'F_VQ128_STALE_ORIGIN_FAIL_CLOSED=PASS'
+  end subroutine verify_stale_origin
 
   subroutine initialize_case(committed,column,template,parameters,base,config,balancing_qssdi)
     type(kernel_committed_state_t), intent(out) :: committed
@@ -249,6 +326,25 @@ contains
     config%max_committed_substeps=8
     config%progress_tolerance=0.0_real64
   end subroutine initialize_case
+
+  subroutine initialize_fixed_state(parameters,state)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_fixed_weir_surface_water_state_t), intent(out) :: state
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t) :: provider
+    real(real64) :: heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
+
+    heads=initial_head
+    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+    call bind_b110_default_mvg_provider(provider,hp,dt)
+    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
+    state%active_nodes=numnod
+    allocate(state%pressure_head(numnod),state%water_content(numnod))
+    state%pressure_head=heads
+    state%water_content=water
+    state%ponding_depth=0.0_real64
+    state%groundwater_level=initial_gwl
+  end subroutine initialize_fixed_state
 
   subroutine require(condition,code)
     logical,intent(in)::condition

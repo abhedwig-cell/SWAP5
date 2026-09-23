@@ -4,7 +4,7 @@
   "subject": "F-APP09 Ribasim external secondary surface-water owner profile V1",
   "qualification_branch": "qualification/f-vq128-fapp09-ribasim-external-surface-water-independent",
   "subject_candidate": "work/f-app09-ribasim-external-surface-water-profile@ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
-  "status": "BLOCKED_ON_FAPP09_OWNER_GATE",
+  "status": "READY_FOR_INDEPENDENT_EXECUTION_AFTER_FAPP09_OWNER_GATE_PASS",
   "source_postimages": {
     "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
     "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
@@ -42,5 +42,12 @@
     "excluded_transfer": "discarded full trial",
     "per_advance_observation": "must retain pre-F-APP09 semantics as the most recent physical advance amount",
     "window_observation": "must be transaction-attempt-context state and rollback/replay consistently"
+  },
+  "owner_gate_evidence": {
+    "exact_candidate": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+    "workflow_run": 35884620992,
+    "workflow_job": 107261490688,
+    "conclusion": "SUCCESS",
+    "owner_gate_marker": "F-APP09 OWNER GATE PASS"
   }
 }

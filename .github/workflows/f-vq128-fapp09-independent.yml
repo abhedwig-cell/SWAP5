@@ -1,0 +1,36 @@
+name: F-VQ128 F-APP09 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq128-fapp09-ribasim-external-surface-water-independent
+    paths:
+      - 'integration/f-vq/F-VQ128_*'
+      - 'tests/fvq/*fvq128*fapp09*'
+      - '.github/workflows/f-vq128-fapp09-independent.yml'
+  pull_request:
+    paths:
+      - 'integration/f-vq/F-VQ128_*'
+      - 'tests/fvq/*fvq128*fapp09*'
+      - '.github/workflows/f-vq128-fapp09-independent.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent F-APP09 qualification
+        run: bash tests/fvq/run_fvq128_fapp09_independent.sh
