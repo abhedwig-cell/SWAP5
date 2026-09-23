@@ -1,0 +1,130 @@
+name: F-TAB02 generated K0 provider G1-G3
+
+on:
+  push:
+    branches:
+      - work/tab-hyd-k0-prod01-generated-provider
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'src/solver/mod_tabulated_hydraulics_tspack.f90'
+      - 'src/solver/mod_b110_generated_mvg_provider.f90'
+      - 'tests/fsi/test_ftab02_g1_g3_generated_provider.f90'
+      - 'integration/f-tab/F-TAB02_PREREGISTRATION.md'
+      - '.github/workflows/f-tab02-generated-k0-provider-g1-g3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: a2d99ddd149ffaa422d9c422f96bd66e92c8555d
+          path: canonical-base
+
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Generate frozen 30-Staring input
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/ftab02
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+          src=Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv")
+          rows=list(csv.DictReader(src.open()))
+          if len(rows) != 30:
+              raise SystemExit(f"expected 30 Staring rows, got {len(rows)}")
+          out=Path("build/ftab02/staring30.dat")
+          with out.open("w") as fh:
+              fh.write(f"{len(rows)}\n")
+              for r in rows:
+                  fh.write(
+                      f"{r['SPU']} {float(r['ORES']):.17e} {float(r[' OSAT']):.17e} "
+                      f"{float(r['ALFAD']):.17e} {float(r['NPAR']):.17e} "
+                      f"{float(r['KSAT']):.17e} {float(r['LEXP']):.17e} {float(r[' H_ENPR']):.17e}\n"
+                  )
+          print(f"FTAB02_INPUT_ROWS={len(rows)}")
+          PY
+
+      - name: Check hot ABI preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          def block(path):
+              s=Path(path).read_text()
+              m=re.search(r"subroutine constitutive_evaluate_ifc\b.*?end subroutine constitutive_evaluate_ifc",s,re.S|re.I)
+              if not m:
+                  raise SystemExit(f"constitutive ABI block missing in {path}")
+              return m.group(0)
+          before=block("canonical-base/src/solver/mod_soil_water_solver_contract.f90")
+          after=block("src/solver/mod_soil_water_solver_contract.f90")
+          if before != after:
+              raise SystemExit("hot constitutive evaluate ABI changed")
+          print("FTAB02_G1_HOT_EVALUATE_ABI_UNCHANGED=PASS")
+          PY
+
+      - name: Compile and run generated-provider gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          COMMON=(-ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          for opt in 0 2; do
+            OUT="build/ftab02/o$opt"
+            mkdir -p "$OUT"
+            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/contract.o"
+            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/mvg.o"
+            gfortran -ffree-line-length-none -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_tabulated_hydraulics_tspack.f90 -o "$OUT/tspack.o"
+            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_b110_generated_mvg_provider.f90 -o "$OUT/generated.o"
+            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"               tests/fsi/test_ftab02_g1_g3_generated_provider.f90               "$OUT/contract.o" "$OUT/mvg.o" "$OUT/tspack.o" "$OUT/generated.o"               -o "$OUT/ftab02"
+            "$OUT/ftab02" build/ftab02/staring30.dat | tee "$OUT/result.txt"
+            grep -Fq 'F-TAB02 G1-G3 GENERATED K0 PROVIDER GATE PASS' "$OUT/result.txt"
+          done
+
+      - name: Preserve current temporal certificate owner gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh | tee build/ftab02/fsi38.log
+          grep -Fq 'FSI38_QUALIFICATION_GATE=PASS' build/ftab02/fsi38.log
+
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02"
+            echo "head=$(git rev-parse HEAD)"
+            echo "canonical_start=a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+            grep -h -E '^(FTAB02_|F-TAB02|FSI38_)' build/ftab02/o*/result.txt build/ftab02/fsi38.log 2>/dev/null || true
+          } > build/ftab02/evidence.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-g1-g3-evidence
+          path: |
+            build/ftab02/evidence.txt
+            build/ftab02/o0/result.txt
+            build/ftab02/o2/result.txt
+            build/ftab02/fsi38.log
