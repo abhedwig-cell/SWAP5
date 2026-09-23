@@ -12,7 +12,7 @@
   "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "implementation_blobs": {
     ".github/workflows/rom-root-ra02-d2.yml": "a4633cfa60b831eb5ed8eb5efd73d225e6ae5ec7",
-    "tests/rom/materialize_rom_root_ra02_d2_node_regime.py": "0343e8a48ad4def49d160785049bf4483962e9f9",
+    "tests/rom/materialize_rom_root_ra02_d2_node_regime.py": "3107334f73e3ea4eabe1068f7a3c86547bfa9133",
     "tests/rom/analyze_rom_root_ra02_d2.py": "95ddc059bb7e68722ede34f951d134903280c5c1"
   },
   "inherited_execution_blobs": {
@@ -60,5 +60,9 @@
     "reduced_candidate_response_generated": false,
     "stage2_executed": false,
     "stage3_executed": false
-  }
+  },
+  "technical_repairs": [
+    "integration/f-rom/ROM_ROOT_RA02_D2_TECHNICAL_REPAIR.json"
+  ],
+  "rebound_after_technical_repair": true
 }
