@@ -32,7 +32,7 @@
       "For every material, history, and route, every observation must satisfy abs(actual_rate-PTRA) <= activation_guard*max(1,abs(PTRA))."
     ],
     "interval_root_U": "activation_guard * max(1, max_history_PTRA) = activation_guard; this is an arithmetic envelope, not a fitted tolerance.",
-    "cumulative_root_U": "horizon_day * interval_root_U + gamma(1024)*1024*epsilon*max(1,max_history_PTRA*horizon_day), with gamma(k)=k*epsilon/(1-k*epsilon).",
+    "cumulative_root_U": "horizon_day * interval_root_U + gamma(1024)*max(1,max_history_PTRA*horizon_day), with gamma(k)=k*epsilon/(1-k*epsilon).",
     "hydraulic_metrics": "retain the three C0 qualified U_combined values unchanged.",
     "full_potential_identity": "retain C0 target identity and O0/O2 identity requirements unchanged."
   },
