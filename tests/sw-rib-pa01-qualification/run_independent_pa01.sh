@@ -69,6 +69,11 @@ from pathlib import Path
 import sys
 p=Path(sys.argv[1])
 s=p.read_text()
+old_base="CANONICAL='e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557'"
+new_base="CANONICAL='a2d99ddd149ffaa422d9c422f96bd66e92c8555d'"
+if s.count(old_base) != 1:
+    raise SystemExit(f"expected one historical canonical baseline, got {s.count(old_base)}")
+s=s.replace(old_base,new_base)
 needle="  src/runtime/mod_fmr_drainage_response_binding.f90\n"
 replacement="  src/process/mod_drainage_extended_exchange.f90\n"+needle
 if s.count(needle) != 1:
