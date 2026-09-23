@@ -167,7 +167,8 @@
     ],
     "no_empirical_epsilon": true,
     "no_P1_value_used_as_threshold": true,
-    "numerical_floor_is_not_application_tolerance": true
+    "numerical_floor_is_not_application_tolerance": true,
+    "classification_precedence": "If both monotone-convergence and numerical-indistinguishability conditions hold, classify the axis as QUALIFIED_NUMERICALLY_INDISTINGUISHABLE; the independently computed floor is then the fine-axis uncertainty contribution."
   },
   "extremum_observability_contract": {
     "forcing_reversals_observation": [
