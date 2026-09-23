@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.ribasim_management.real_ribasim_full_realization.preregistration.v1",
+  "work_unit": "RM09",
+  "date": "2026-09-23",
+  "title": "Bounded real Ribasim full-realization management bridge",
+  "depends_on": {
+    "RM06": "QUALIFIED_BOUNDED_TRANSACTIONAL_MANAGEMENT_STATE",
+    "RM07": "QUALIFIED_READ_ONLY_ORIGIN_BOUND_MANAGEMENT_DEMAND_RECEIPT",
+    "RM08": "FALSIFIED_FULL_PHYSICAL_REALIZATION_ASSUMPTION"
+  },
+  "purpose": "Repeat the real Ribasim allocation-to-SWAP transaction bridge only inside a prospectively bounded profile where both the physical UserDemand source-level reduction and the conservative UserDemand limiter reduction are inactive by construction.",
+  "ribasim_pin": {
+    "repository": "Deltares/Ribasim",
+    "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "release_context": "v2026.1.1 exact-release authority"
+  },
+  "fixed_case": {
+    "management_window_days": 1.0,
+    "allocation_dt_seconds": 86400.0,
+    "solver_saveat_seconds": 86400.0,
+    "represented_area_m2": 1000.0,
+    "swap_expected_request_depth_cm": 2.0,
+    "surface_supply_m3_per_day": 25.0,
+    "user_demand_priority": 2,
+    "initial_basin_level_m": 1.0,
+    "user_demand_min_level_m": 0.90,
+    "level_difference_threshold_m": 0.02,
+    "required_level_margin_multiple": 3.0,
+    "drainage": "off",
+    "competing_user_demands": 0
+  },
+  "admission_precondition": {
+    "physical_source_level_condition": "source_level - min_level >= level_difference_threshold",
+    "limiter_condition": "min(level_now, level_prev) - min_level >= 3 * level_difference_threshold",
+    "low_storage_condition": "physical low_storage_factor remains 1",
+    "fixture_margin_m": 0.10,
+    "required_limiter_margin_m": 0.06,
+    "meaning": "The first bounded profile explicitly excludes physical UserDemand attenuation by level or low storage."
+  },
+  "frozen_sequence": [
+    "derive the 2 cm RM07 request from one accepted SWAP management checkpoint",
+    "convert the request to one real Ribasim UserDemand over 1000 m2",
+    "verify the real Ribasim accepted origin satisfies the full-realization precondition before advance",
+    "keep one initialized Ribasim instance untouched as accepted-origin witness",
+    "run candidate A and discard it",
+    "verify accepted Ribasim origin remains unchanged",
+    "run independent candidate B from the same serialized input origin",
+    "require allocation, physical supply and Basin endpoint replay",
+    "require allocation and physical supply both equal the original 2 cm request within frozen tolerances",
+    "feed candidate-B allocated and supplied depths separately into RM06",
+    "reject the first SWAP candidate, replay from the same checkpoint and commit the second candidate exactly once"
+  ],
+  "hypotheses": [
+    "The RM07 request remains exactly 2 cm.",
+    "The real Ribasim accepted origin satisfies the preregistered full-realization level and low-storage preconditions.",
+    "Real Ribasim allocates the full 2 cm request.",
+    "With the reduction mechanisms inactive by construction, real Ribasim physically supplies the full request over the one-day window.",
+    "Independent Ribasim candidates replay allocation, physical supply and Basin endpoint.",
+    "Allocation and physical supply remain distinct observed quantities even when numerically equal.",
+    "The real Ribasim allocation and supply can be consumed by RM06 from the same SWAP origin with reject/replay identity and exactly one accepted management commit."
+  ],
+  "tolerances": {
+    "allocated_equivalent_depth_cm": 1e-6,
+    "supplied_equivalent_depth_cm": 1e-4,
+    "candidate_replay_equivalent_depth_cm": 1e-8,
+    "candidate_replay_basin_level_m": 1e-10
+  },
+  "failure_rule": "Do not relax the full-realization precondition, scientific expectations or tolerances after execution. Repair only technical setup failures.",
+  "nonclaims": [
+    "No partial-supply policy is admitted.",
+    "No claim that arbitrary UserDemand min_level configurations fully realize allocations.",
+    "No noncommensurate clock qualification.",
+    "No full Richards hydrological application.",
+    "No MODFLOW composition.",
+    "Separate Ribasim instances remain a qualification transaction pattern, not a claimed production checkpoint API."
+  ]
+}
