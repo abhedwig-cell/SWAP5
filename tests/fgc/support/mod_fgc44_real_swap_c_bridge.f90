@@ -46,7 +46,7 @@ module mod_fgc44_real_swap_c_bridge
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
-  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER, FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t, &
        soil_water_solve_request_t, soil_water_solve_result_t
@@ -119,7 +119,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c, fgc44_last_trial_response_c
   public :: fgc44_predictor_run_diagnostics_c
-  public :: fgc44_rm16_provider_raw_solve_c
+  public :: fgc44_rm16_provider_raw_solve_c, fgc44_rm17_flux_equivalence_c
 
 contains
 
@@ -620,6 +620,146 @@ contains
     if(allocated(solve_result%candidate_state%pressure_head)) raw_ponding=solve_result%candidate_state%ponding_depth
     fgc44_rm16_provider_raw_solve_c=0_c_int
   end function fgc44_rm16_provider_raw_solve_c
+
+  integer(c_int) function fgc44_rm17_flux_equivalence_c(duration_day,irrigation_rate, &
+       dynamic_status,fixed_status,max_head_diff,max_water_diff,ponding_diff,top_flux_diff,bottom_flux_diff, &
+       endpoint_provider_status,endpoint_provider_regime,endpoint_provider_top_flux,endpoint_provider_runoff, &
+       endpoint_provider_ponding) bind(C,name="fgc44_rm17_flux_equivalence_c")
+    real(c_double), value, intent(in) :: duration_day,irrigation_rate
+    integer(c_int), intent(out) :: dynamic_status,fixed_status,endpoint_provider_status,endpoint_provider_regime
+    real(c_double), intent(out) :: max_head_diff,max_water_diff,ponding_diff,top_flux_diff,bottom_flux_diff
+    real(c_double), intent(out) :: endpoint_provider_top_flux,endpoint_provider_runoff,endpoint_provider_ponding
+    type(fmr_b110_physical_parameters_t) :: p
+    type(soil_water_parameter_set_t), target :: geometry
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t), target :: constitutive
+    type(b110_source_sink_provider_t), target :: source_sink
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: dynamic_provider
+    type(fixed_flux_top_boundary_provider_t), target :: fixed_provider
+    type(reference_richards_legacy_solver_t) :: dynamic_solver,fixed_solver
+    type(reference_richards_legacy_workspace_t) :: dynamic_workspace,fixed_workspace
+    type(soil_water_solve_request_t) :: dynamic_request,fixed_request
+    type(soil_water_solve_result_t) :: dynamic_result,fixed_result
+    type(b110_dynamic_top_boundary_request_t) :: endpoint_request
+    type(b110_dynamic_top_boundary_result_t) :: endpoint_result
+    real(real64), target, allocatable :: qdra(:,:),qssdi(:),qrot_zero(:)
+    real(real64), allocatable :: heads(:),water(:),conductivity(:),capacity(:),dkdh(:)
+    real(real64) :: fixed_top_k
+    logical :: ok
+    integer :: i
+
+    fgc44_rm17_flux_equivalence_c=1_c_int
+    dynamic_status=0_c_int; fixed_status=0_c_int; endpoint_provider_status=0_c_int; endpoint_provider_regime=0_c_int
+    max_head_diff=huge(1.0_c_double); max_water_diff=huge(1.0_c_double); ponding_diff=huge(1.0_c_double)
+    top_flux_diff=huge(1.0_c_double); bottom_flux_diff=huge(1.0_c_double)
+    endpoint_provider_top_flux=0.0_c_double; endpoint_provider_runoff=0.0_c_double; endpoint_provider_ponding=0.0_c_double
+    if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(irrigation_rate,real64)) .or. irrigation_rate<0.0_c_double)return
+
+    call initialize_parameters(p,SW_STEP_CONTROL_BOTTOM_FLUX)
+    geometry%parameter_set_id=p%parameter_set_id; geometry%active_nodes=p%active_nodes
+    allocate(geometry%z(numnod),geometry%dz(numnod),geometry%node_distance(numnod))
+    geometry%z=p%z; geometry%dz=p%dz; geometry%node_distance=p%node_distance
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+    call bind_b110_default_mvg_provider(constitutive,hp,real(duration_day,real64))
+
+    allocate(heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
+    heads(1)=H0_CM
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
+    call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
+    call evaluate_b110_default_mvg_conductivity(hp,1,heads(1),fixed_top_k,ok)
+    if(.not.ok)return
+    allocate(qdra(1,numnod),qssdi(numnod),qrot_zero(numnod))
+    qdra=0.0_real64; qssdi=0.0_real64; qrot_zero=0.0_real64
+    call bind_b110_source_sink_provider(source_sink,qdra,qssdi,qrot_zero)
+    call bind_b110_dynamic_top_boundary_solver_provider(dynamic_provider,geometry,hp,p%swkmean,0.0_real64, &
+         real(duration_day,real64),0.0_real64,real(irrigation_rate,real64),0.0_real64,0.0_real64, &
+         0.0_real64,0.0_real64,1.0_real64,1.0_real64,1.0_real64,fixed_top_k)
+
+    dynamic_request=soil_water_solve_request_t()
+    dynamic_request%parameters=>geometry
+    dynamic_request%step_duration=real(duration_day,real64)
+    dynamic_request%base_state%active_nodes=numnod
+    allocate(dynamic_request%base_state%pressure_head(numnod),dynamic_request%base_state%water_content(numnod))
+    dynamic_request%base_state%pressure_head=heads; dynamic_request%base_state%water_content=water
+    dynamic_request%base_state%ponding_depth=0.0_real64; dynamic_request%base_state%groundwater_level=-2.0_real64
+    dynamic_request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
+    dynamic_request%boundary%bottom_mode=SW_STEP_CONTROL_BOTTOM_FLUX
+    dynamic_request%boundary%top_head=H0_CM; dynamic_request%boundary%bottom_flux=DEFAULT_PREDICTOR_QBOT
+    dynamic_request%boundary%bottom_head=H0_CM
+    dynamic_request%numerical%max_iterations=p%max_iterations
+    dynamic_request%numerical%max_backtracking=p%max_backtracking
+    dynamic_request%numerical%conductivity_implicit_mode=p%swkimpl
+    dynamic_request%numerical%conductivity_mean_method=p%swkmean
+    dynamic_request%numerical%min_step_duration=p%min_step_duration
+    dynamic_request%numerical%compartment_balance_tolerance=p%compartment_balance_tolerance
+    dynamic_request%numerical%total_balance_tolerance=p%total_balance_tolerance
+    dynamic_request%numerical%head_abs_tolerance=p%head_abs_tolerance
+    dynamic_request%numerical%head_rel_tolerance=p%head_rel_tolerance
+    dynamic_request%numerical%ponding_tolerance=p%ponding_tolerance
+    dynamic_request%evaluation%constitutive=>constitutive
+    dynamic_request%evaluation%source_sink=>source_sink
+    dynamic_request%evaluation%dynamic_top_boundary=>dynamic_provider
+
+    call bind_b110_serialized_legacy_context(dynamic_request,ok)
+    if(.not.ok)then
+      fgc44_rm17_flux_equivalence_c=2_c_int
+      return
+    end if
+    call dynamic_solver%solve(dynamic_request,dynamic_workspace,dynamic_result)
+    dynamic_status=int(dynamic_result%status,c_int)
+
+    fixed_request=dynamic_request
+    fixed_request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
+    fixed_request%boundary%top_flux=-real(irrigation_rate,real64)
+    nullify(fixed_request%evaluation%dynamic_top_boundary)
+    fixed_request%evaluation%top_boundary=>fixed_provider
+    call bind_b110_serialized_legacy_context(fixed_request,ok)
+    if(.not.ok)then
+      fgc44_rm17_flux_equivalence_c=3_c_int
+      return
+    end if
+    call fixed_solver%solve(fixed_request,fixed_workspace,fixed_result)
+    fixed_status=int(fixed_result%status,c_int)
+
+    if(allocated(dynamic_result%candidate_state%pressure_head) .and. allocated(fixed_result%candidate_state%pressure_head))then
+      if(size(dynamic_result%candidate_state%pressure_head)==size(fixed_result%candidate_state%pressure_head))then
+        max_head_diff=maxval(abs(dynamic_result%candidate_state%pressure_head-fixed_result%candidate_state%pressure_head))
+      end if
+    end if
+    if(allocated(dynamic_result%candidate_state%water_content) .and. allocated(fixed_result%candidate_state%water_content))then
+      if(size(dynamic_result%candidate_state%water_content)==size(fixed_result%candidate_state%water_content))then
+        max_water_diff=maxval(abs(dynamic_result%candidate_state%water_content-fixed_result%candidate_state%water_content))
+      end if
+    end if
+    ponding_diff=abs(dynamic_result%candidate_state%ponding_depth-fixed_result%candidate_state%ponding_depth)
+    top_flux_diff=abs(dynamic_result%top_flux-fixed_result%top_flux)
+    bottom_flux_diff=abs(dynamic_result%bottom_flux-fixed_result%bottom_flux)
+
+    if(allocated(dynamic_result%candidate_state%pressure_head) .and. allocated(dynamic_result%candidate_state%water_content))then
+      endpoint_request=b110_dynamic_top_boundary_request_t()
+      endpoint_request%conductivity_mean_method=p%swkmean
+      endpoint_request%pressure_head_top_cm=dynamic_result%candidate_state%pressure_head(1)
+      endpoint_request%water_content_top=dynamic_result%candidate_state%water_content(1)
+      endpoint_request%candidate_ponding_depth_cm=dynamic_result%candidate_state%ponding_depth
+      endpoint_request%previous_ponding_depth_cm=0.0_real64
+      endpoint_request%step_duration_day=real(duration_day,real64)
+      endpoint_request%irrigation_rate_cm_per_day=real(irrigation_rate,real64)
+      endpoint_request%ponding_max_cm=1.0_real64
+      endpoint_request%runoff_resistance_day=1.0_real64
+      endpoint_request%runoff_exponent=1.0_real64
+      endpoint_request%fixed_top_node_conductivity_cm_per_day=fixed_top_k
+      call evaluate_b110_dynamic_top_boundary(geometry,hp,endpoint_request,endpoint_result)
+      endpoint_provider_status=int(endpoint_result%status,c_int)
+      endpoint_provider_regime=int(endpoint_result%regime,c_int)
+      endpoint_provider_top_flux=endpoint_result%actual_top_flux_cm_per_day
+      endpoint_provider_runoff=endpoint_result%runoff_depth_cm
+      endpoint_provider_ponding=endpoint_result%candidate_ponding_depth_cm
+    end if
+    fgc44_rm17_flux_equivalence_c=0_c_int
+  end function fgc44_rm17_flux_equivalence_c
 
   subroutine initialize_parameters(p,bottom_mode)
     type(fmr_b110_physical_parameters_t),intent(out)::p
