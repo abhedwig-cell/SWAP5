@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.rom-purpose.p3.live-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "phase": "RECONCILED_BEFORE_P3_RESPONSE",
+  "repository": {
+    "live_canonical": {
+      "ref": "integration/f-ci-canonical",
+      "sha": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+    },
+    "purpose_branch": {
+      "ref": "work/f-rom-purpose",
+      "sha_before_p3": "044b9fe0aacc96799a59ec898071fbe308a8fce2"
+    },
+    "merge_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_rom_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "relation": "DIVERGED",
+    "canonical_ahead_of_merge_base": 60,
+    "purpose_ahead_of_merge_base": 124,
+    "silent_rebase_performed": false
+  },
+  "p2_authority": {
+    "status": "P2_CLOSED_PURPOSE_PLACEMENT_SUPPORTED_H4_PARTIALLY_UNRESOLVED",
+    "closeout": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_CLOSEOUT.json",
+      "blob": "c1cac2a0b6a89a932d7729dd21d8412a677eb3ec"
+    },
+    "purpose_map": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json",
+      "blob": "5d074f5eff2c4410b7a35f42ae76f6e7c053c625"
+    },
+    "placement_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
+      "blob": "e49f2414423538e4ecae4d4af35d599e46bc5273"
+    },
+    "h4_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json",
+      "blob": "dcb9918f53cf595673dd0f470f8e71a9cfb4eff8"
+    }
+  },
+  "inherited_scientific_authority": {
+    "metric_contract": {
+      "path": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json",
+      "blob": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5"
+    },
+    "p1_reference_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
+      "blob": "041c8be484f47363c0f545ac28f5490559969072"
+    },
+    "p2_reference_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
+      "blob": "f701aee1d612e6af509a639bc8505b1d90be716c"
+    },
+    "layer_base": {
+      "path": "tests/rom/rom_purpose_p1_layer_base.py",
+      "blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+    },
+    "p2_candidate_runner": {
+      "path": "tests/rom/run_rom_purpose_p2_candidate.py",
+      "blob": "1ac1d181f9ad411f36092e9740f2990669068999"
+    },
+    "p2_candidate_analyzer": {
+      "path": "tests/rom/analyze_rom_purpose_p2_candidates.py",
+      "blob": "e7990ad210e31be50c97824d327ffc292635b78c"
+    }
+  },
+  "dependency_surface_reconciliation": {
+    "canonical_changes_since_frozen_backend": "The 60 canonical commits after the merge base change fixed-interface groundwater coupling/runtime, F-GC tests, documentation and its workflow.",
+    "rom_scientific_surface_changed": false,
+    "unchanged_required_surfaces": [
+      "tests/rom scientific backend used by ROM-PURPOSE",
+      "integration/f-rom metric semantics and P2 authority records",
+      "CURRENT_LAYER_FACE reduced closure implementation used by P2",
+      "P2 material parameters B01 and B14"
+    ],
+    "consequence": "Immutable P2 conclusions and metric semantics remain reusable as inherited authority. P3 requires fresh validation responses because state count and admission histories change."
+  },
+  "retained_p2_conclusions": [
+    "Purpose-aligned state placement has information value at fixed dimension four.",
+    "S4=[0,20,40,80,160] is placement-supported for SURF_P against U4 for B01 and B14.",
+    "G4=[0,80,120,140,160] is placement-supported for GW_LB against U4 for B01 and B14.",
+    "Neither aligned four-state representation reaches the frozen R512_T32 numerical comparator.",
+    "P2 does not support a pure closure-deficit claim."
+  ],
+  "p3_firewall": {
+    "p2_reopened": false,
+    "any_new_p3_candidate_response_seen": false,
+    "any_new_p3_reference_response_seen": false,
+    "representation_boundaries_frozen": false,
+    "closure_tuned": false,
+    "production_rom_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false
+  }
+}
