@@ -4,6 +4,7 @@ program test_ppa_wu05a3_interval_candidate
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
   use mod_ppa_wu05a3_conservative_flux
+  use mod_ppa_wu05a3_candidate_mass
   implicit none
   type(ppa_wu05a2_macropore_committed_t) :: state,restored
   type(ppa_wu05a2_macropore_checkpoint_t) :: cp,cp2
@@ -61,12 +62,53 @@ program test_ppa_wu05a3_interval_candidate
   call require(status==FLUX_INVALID .and. .not.trial%valid,20)
   call require(.not.allocated(faces) .and. .not.allocated(residual),21)
   call check_sorptivity_transaction()
+  call check_accounted_interval()
   print '(A)','PPA_WU05A3_INTERVAL_REJECT_CANNOT_COMMIT=PASS'
   print '(A)','PPA_WU05A3_INTERVAL_RETRY_COMMIT=PASS'
   print '(A)','PPA_WU05A3_INTERVAL_HISTORY_RESTART=PASS'
   print '(A)','PPA_WU05A3_INTERVAL_STALE_AND_INVALID_GUARDS=PASS'
   print '(A)','PPA_WU05A3_INTERVAL_SORPTIVITY_ATOMIC_RESTART=PASS'
+  print '(A)','PPA_WU05A3_INTERVAL_ACCOUNTED_COMMIT=PASS'
 contains
+  subroutine check_accounted_interval()
+    type(ppa_wu05a2_macropore_committed_t) :: local_state
+    type(ppa_wu05a2_macropore_checkpoint_t) :: checkpoint
+    type(ppa_wu05a2_macropore_candidate_t) :: candidate
+    type(candidate_mass_account) :: account
+    real(real64) :: local_volume(1,3),local_exchange(1,3),local_drain(3),matrix(3)
+    real(real64),allocatable :: local_faces(:,:),local_residual(:)
+    integer :: attempt,local_status
+    logical :: accepted
+    call ppa_wu05a2_initialize_payload(1,3,local_state%payload,accepted)
+    call require(accepted,40)
+    local_state%lineage_id=91_int64; local_state%revision=0_int64
+    local_state%payload%bottom_domain=3; local_state%payload%pore_volume=0.5_real64
+    local_state%payload%pore_water(1,:)=[0.0_real64,0.25_real64,0.5_real64]
+    local_state%payload%domain_water_storage=0.75_real64
+    local_volume=0.5_real64; local_exchange=0.0_real64; local_exchange(1,2)=0.0625_real64
+    local_drain=[0.0_real64,0.0_real64,0.0625_real64]
+    call ppa_wu05a2_capture_checkpoint(local_state,checkpoint,accepted)
+    call require(accepted,41)
+    do attempt=1,2
+      call prepare_macropore_interval_candidate(checkpoint,1.0_real64,local_volume, &
+          [0.25_real64],[0.0_real64],local_exchange,local_drain,[1.0_real64,1.0_real64,1.0_real64], &
+          [-3.0_real64],0.0_real64,candidate,local_faces,local_residual,local_status)
+      call require(local_status==FLUX_OK .and. candidate%valid,42)
+      matrix=local_exchange(1,:)
+      if(attempt==1) matrix=[0.0625_real64,0.0_real64,0.0_real64]
+      call commit_accounted_candidate(local_state,candidate,1.0_real64,[0.25_real64],local_exchange, &
+          local_drain,matrix,0.0_real64,account,accepted,local_status)
+      if(attempt==1) then
+        call require(.not.accepted .and. .not.account%valid .and. .not.candidate%valid,43)
+        call require(local_state%revision==0_int64 .and. &
+            abs(local_state%payload%domain_water_storage(1)-0.75_real64)<tiny(1.0_real64),44)
+      else
+        call require(accepted .and. account%valid .and. local_state%revision==1_int64,45)
+        call require(abs(local_state%payload%domain_water_storage(1)-0.875_real64)<tiny(1.0_real64),46)
+      end if
+    end do
+  end subroutine
+
   subroutine check_sorptivity_transaction()
     type(interval_sorptivity_drivers) :: drivers
     real(real64),allocatable :: wall_after(:)

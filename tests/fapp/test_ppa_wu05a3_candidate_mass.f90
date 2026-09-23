@@ -42,11 +42,49 @@ program test_ppa_wu05a3_candidate_mass
   call require(status==1 .and. .not.account%valid,10)
   call require(abs(state%payload%domain_water_storage(1)-1.0_real64)<tiny(1.0_real64),11)
   call check_domain_cancellation()
+  call check_guarded_commit()
   print '(A)','PPA_WU05A3_MASS_INTERNAL_CANCELLATION=PASS'
   print '(A)','PPA_WU05A3_MASS_CELL_TRANSFER_GUARD=PASS'
   print '(A)','PPA_WU05A3_MASS_INVALID_CANDIDATE_GUARD=PASS'
   print '(A)','PPA_WU05A3_MASS_DOMAIN_TRANSFER_GUARD=PASS'
+  print '(A)','PPA_WU05A3_MASS_GUARDED_COMMIT=PASS'
 contains
+  subroutine check_guarded_commit()
+    type(ppa_wu05a2_macropore_committed_t) :: current
+    type(ppa_wu05a2_macropore_checkpoint_t) :: checkpoint
+    type(ppa_wu05a2_macropore_candidate_t) :: candidate,stale
+    logical :: accepted
+    current=state
+    call ppa_wu05a2_capture_checkpoint(current,checkpoint,ok)
+    call require(ok,18)
+    call ppa_wu05a2_begin_candidate(checkpoint,candidate,ok)
+    call require(ok,19)
+    candidate%payload%domain_water_storage=1.125_real64
+    candidate%payload%pore_water(1,1)=0.625_real64
+    candidate%payload%absorption_time=9.0_real64
+    stale=candidate
+    matrix=exchange(1,:)+[0.125_real64,-0.125_real64]
+    call commit_accounted_candidate(current,candidate,1.0_real64,[0.25_real64],exchange,drain,matrix, &
+        0.0_real64,account,accepted,status)
+    call require(.not.accepted .and. status==2 .and. .not.candidate%valid .and. .not.account%valid,20)
+    call require(current%revision==0_int64 .and. &
+        maxval(abs(current%payload%pore_water-0.5_real64))+ &
+        maxval(abs(current%payload%absorption_time))<tiny(1.0_real64),21)
+    candidate=stale; matrix=exchange(1,:)
+    call commit_accounted_candidate(current,candidate,1.0_real64,[0.25_real64],exchange,drain,matrix, &
+        0.0_real64,account,accepted,status)
+    call require(accepted .and. status==0 .and. account%valid .and. current%revision==1_int64,22)
+    call require(.not.candidate%valid,23)
+    call commit_accounted_candidate(current,stale,1.0_real64,[0.25_real64],exchange,drain,matrix, &
+        0.0_real64,account,accepted,status)
+    call require(.not.accepted .and. status==1 .and. .not.account%valid .and. .not.stale%valid,24)
+    call require(current%revision==1_int64 .and. &
+        abs(current%payload%domain_water_storage(1)-1.125_real64)<tiny(1.0_real64),25)
+    call commit_accounted_candidate(current,candidate,1.0_real64,[0.25_real64],exchange,drain,matrix, &
+        0.0_real64,account,accepted,status)
+    call require(.not.accepted .and. .not.account%valid .and. current%revision==1_int64,26)
+  end subroutine
+
   subroutine check_domain_cancellation()
     type(ppa_wu05a2_macropore_committed_t) :: s
     type(ppa_wu05a2_macropore_checkpoint_t) :: checkpoint

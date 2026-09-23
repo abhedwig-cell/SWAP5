@@ -10,8 +10,34 @@ module mod_ppa_wu05a3_candidate_mass
     real(real64) :: macropore_internal=0.0_real64,matrix_internal=0.0_real64,budget_residual=0.0_real64
     real(real64),allocatable :: transfer_residual(:),domain_residual(:)
   end type
-  public :: account_candidate_mass
+  public :: account_candidate_mass, commit_accounted_candidate
 contains
+  ! Isolated DTO coordinator only: this does not commit a Richards/matrix owner.
+  subroutine commit_accounted_candidate(committed,candidate,dt,top,exchange,drain,matrix_amount, &
+      tolerance,account,accepted,status)
+    type(ppa_wu05a2_macropore_committed_t),intent(inout) :: committed
+    type(ppa_wu05a2_macropore_candidate_t),intent(inout) :: candidate
+    real(real64),intent(in) :: dt,top(:),exchange(:,:),drain(:),matrix_amount(:),tolerance
+    type(candidate_mass_account),intent(out) :: account
+    logical,intent(out) :: accepted
+    integer,intent(out) :: status
+    type(ppa_wu05a2_macropore_checkpoint_t) :: current
+    logical :: captured
+    accepted=.false.; status=1
+    ! Capture current authority here; do not accept a caller's stale checkpoint.
+    call ppa_wu05a2_capture_checkpoint(committed,current,captured)
+    if(captured) then
+      call account_candidate_mass(current,candidate,dt,top,exchange,drain,matrix_amount,tolerance,account,status)
+      if(status==0) then
+        call ppa_wu05a2_commit_candidate(candidate,committed,accepted)
+        if(accepted) return
+        status=4
+      end if
+    end if
+    account%valid=.false.
+    call ppa_wu05a2_discard_candidate(candidate)
+  end subroutine
+
   subroutine account_candidate_mass(checkpoint,candidate,dt,top,exchange,drain,matrix_amount,tolerance,account,status)
     type(ppa_wu05a2_macropore_checkpoint_t),intent(in) :: checkpoint
     type(ppa_wu05a2_macropore_candidate_t),intent(in) :: candidate

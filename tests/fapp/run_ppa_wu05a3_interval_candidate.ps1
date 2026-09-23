@@ -2,6 +2,7 @@ $ErrorActionPreference = 'Stop'
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap5-interval-candidate-' + [guid]::NewGuid().ToString('N'))
 $sources = @('src/adapter/mod_ppa_wu05a2_macropore_state.f90',
+    'src/adapter/mod_ppa_wu05a3_candidate_mass.f90',
     'src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90',
     'src/process/mod_ppa_wu05a3_macrostate_wetting_candidate.f90',
     'src/process/mod_ppa_wu05a3_conservative_flux.f90',
