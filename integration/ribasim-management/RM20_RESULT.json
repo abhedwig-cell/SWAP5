@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.ribasim_management.temporal_indicator_decomposition.result.v1",
+  "work_unit": "RM20",
+  "date": "2026-09-23",
+  "decision": "FORCING_DISCONTINUITY_DOMINANT_BUT_NOT_SUFFICIENT_TO_CLOSE_TEMPORAL_BUDGET",
+  "workflow": "RM20 temporal indicator decomposition",
+  "workflow_run": 35902021550,
+  "workflow_job": 107320327775,
+  "authority_head": "7b622e7a67c4432fb4cb7b2e0dcd3bcaa6de5116",
+  "conclusion": "success",
+  "frozen_case": {
+    "window_day": 0.0001,
+    "irrigation_top_flux_cm_per_day": -36.0,
+    "no_irrigation_top_flux_cm_per_day": 1e-6,
+    "bottom_flux_cm_per_day": 1e-6,
+    "head_budget_cm": 1e-5
+  },
+  "derivative_norms": {
+    "old_right_inf": 0.0020146565304912656,
+    "post_switch_right_inf": 74937.27472359556,
+    "current_secant_right_inf": 70875.53873369558,
+    "old_right_mass_weighted": 0.00005419792382277915,
+    "post_switch_right_mass_weighted": 1642.4804085465007,
+    "current_secant_right_mass_weighted": 1554.2495115624636
+  },
+  "no_irrigation": {
+    "head_inf_bound_cm": 0.0,
+    "raw_m_norm": 0.0,
+    "defect_m_norm": 0.0,
+    "route": "reference-richards-raw-bound"
+  },
+  "irrigation_with_historical_predecessor": {
+    "raw_m_norm": 0.07956131070312175,
+    "defect_m_norm": 0.07730075399064258,
+    "bounded_m_norm": 0.07956131070312175,
+    "min_mass_weight": 0.0004843998660465959,
+    "head_inf_bound_cm": 3.6149302494845195,
+    "normalized_against_inherited_budget": 361493.0249484519,
+    "route": "reference-dynamic-flux-raw-bound"
+  },
+  "irrigation_with_post_switch_origin_derivative": {
+    "raw_m_norm": 0.00519142952955278,
+    "defect_m_norm": 0.004865298056017254,
+    "bounded_m_norm": 0.00519142952955278,
+    "min_mass_weight": 0.0004843998660465959,
+    "head_inf_bound_cm": 0.23587665259153634,
+    "normalized_against_inherited_budget": 23587.665259153633,
+    "ratio_to_historical_bound": 0.06525067879945175,
+    "route": "reference-dynamic-flux-raw-bound"
+  },
+  "zero_defect_control": {
+    "predecessor": "full-step current secant derivative",
+    "head_inf_bound_cm": 0.0,
+    "status": "PASS"
+  },
+  "interpretation": [
+    "The no-irrigation trajectory is equilibrium-like under the frozen origin and has zero temporal defect in this diagnostic.",
+    "Comparing the irrigation trajectory against the historical pre-irrigation derivative dominates the onset defect.",
+    "Replacing only that historical derivative by the exact forcing-switch origin derivative reduces the bound by 93.47493212005482 percent.",
+    "The remaining within-regime bound is still about 0.236 cm, more than four orders of magnitude above the inherited 1e-5 cm budget.",
+    "Therefore a forcing-discontinuity history reset alone is not sufficient to admit the frozen transaction.",
+    "Dynamic-FLUX and explicit fixed-flux indicator results remain identical for common predecessor derivatives."
+  ],
+  "unresolved": [
+    "RM19 reports max_temporal_indicator=92569.71928978531, whereas the direct full-window historical-predecessor normalization is 361493.0249484519. The transaction attempt-level provenance of max_temporal_indicator must be resolved.",
+    "The scientific provenance and applicability of the inherited HEAD_BUDGET=1e-5 cm to active irrigation remain unestablished.",
+    "The remaining 0.23587665 cm post-switch temporal bound must be separated into within-regime truncation versus secant/origin-derivative approximation effects before any new temporal policy is proposed."
+  ],
+  "prohibitions": [
+    "Do not implement temporal-history reset/reseed as an admission fix from RM20 alone.",
+    "Do not relax or recalibrate HEAD_BUDGET post hoc.",
+    "Do not infer that the existing temporal budget is physically meaningful for irrigation merely because a certificate is available.",
+    "Do not rerun the full three-model triangle yet."
+  ],
+  "next_required_boundary": "Resolve transaction-vs-direct indicator provenance attempt by attempt and independently characterize the scientific temporal error scale for the frozen active-irrigation trajectory without changing the production acceptance budget."
+}
