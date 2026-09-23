@@ -79,6 +79,7 @@ jobs:
           done
       - name: Execute Reference routes
         run: |
+          set +e
           set -uo pipefail
           /tmp/p3_r64/rom0_test > evidence/r64.txt 2>&1
           s64=$?
