@@ -1,0 +1,36 @@
+name: SW-RIB-PA01 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/sw-rib-pa01-coupled-profile-independent
+    paths:
+      - 'integration/sw-rib/qualification/**'
+      - 'tests/sw-rib-pa01-qualification/**'
+      - '.github/workflows/sw-rib-pa01-independent.yml'
+  pull_request:
+    paths:
+      - 'integration/sw-rib/qualification/**'
+      - 'tests/sw-rib-pa01-qualification/**'
+      - '.github/workflows/sw-rib-pa01-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent PA01 qualification
+        run: bash tests/sw-rib-pa01-qualification/run_independent_pa01.sh
