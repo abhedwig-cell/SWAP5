@@ -1,28 +1,11 @@
 name: RM08 real SWAP Ribasim aligned fixture
 
 on:
-  push:
-    branches:
-      - work/ribasim-management-coupling-closeout
-    paths:
-      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'tests/ribasim-management/generate_rm08_real_ribasim.py'
-      - 'tests/ribasim-management/rm08_real_ribasim_bridge.jl'
-      - 'tests/ribasim-management/test_rm08_swap_ribasim_bridge.f90'
-      - 'tests/ribasim-management/run_rm08_real_ribasim_aligned.sh'
-      - 'integration/ribasim-management/RM08_*'
-      - '.github/workflows/rm08-real-ribasim-aligned.yml'
-  pull_request:
-    paths:
-      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'tests/ribasim-management/generate_rm08_real_ribasim.py'
-      - 'tests/ribasim-management/rm08_real_ribasim_bridge.jl'
-      - 'tests/ribasim-management/test_rm08_swap_ribasim_bridge.f90'
-      - 'tests/ribasim-management/run_rm08_real_ribasim_aligned.sh'
-      - 'integration/ribasim-management/RM08_*'
-      - '.github/workflows/rm08-real-ribasim-aligned.yml'
   workflow_dispatch:
 
+# RM08 is a closed scientific falsification. Its original failing runs are the
+# authority for the falsified full-realization assumption. Keep this workflow
+# only for explicit reproduction; active admission is RM09/RM10.
 permissions:
   contents: read
 
