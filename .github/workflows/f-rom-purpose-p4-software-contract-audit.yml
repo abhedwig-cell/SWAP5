@@ -1,0 +1,58 @@
+name: F-ROM-PURPOSE P4 software-only contract audit
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_PRE_RESPONSE_CONTRACT_AUDIT.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom-purpose-p4-software-contract-audit
+  cancel-in-progress: false
+
+jobs:
+  software_contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify audit binding and unchanged numerical functions
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import ast,json,pathlib,subprocess
+          record=json.load(open('integration/f-rom/ROM_PURPOSE_P4_PRE_RESPONSE_CONTRACT_AUDIT.json'))
+          assert record['scientific_firewall']['model_response_used_for_repair'] is False
+          for path,expected in record['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          path='tests/rom/analyze_rom_purpose_p4_matched_richards.py'
+          before=subprocess.check_output(['git','show',record['before_commit']+':'+path],text=True)
+          after=pathlib.Path(path).read_text()
+          def funcs(source):
+              return {n.name:ast.dump(n) for n in ast.parse(source).body if isinstance(n,ast.FunctionDef)}
+          left,right=funcs(before),funcs(after)
+          for name in record['unchanged_numerical_functions']:
+              assert left[name]==right[name],name
+          changed=subprocess.check_output(['git','diff','--name-only',record['before_commit'],'HEAD'],text=True).splitlines()
+          assert not any(p.startswith(('src/','reference/')) for p in changed)
+          print('P4_SOFTWARE_AUDIT_SCOPE_AND_NUMERICAL_IDENTITY=PASS')
+          PY
+      - name: Run response-free regression checks
+        run: |
+          set -euo pipefail
+          mkdir -p software-evidence
+          python3 tests/rom/test_rom_purpose_p4_reference_wiring.py | tee software-evidence/reference-wiring.json
+          python3 tests/rom/test_rom_purpose_p4_decision_policy.py | tee software-evidence/decision-policy.json
+          python3 tests/rom/test_rom_purpose_p4_claim_integration.py | tee software-evidence/claim-integration.json
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p4_reference.py tests/rom/analyze_rom_purpose_p4_candidates.py tests/rom/analyze_rom_purpose_p4_matched_richards.py tests/rom/build_rom_purpose_p4_closeout.py
+          sha256sum software-evidence/*.json > software-evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p4-software-contract-audit
+          path: software-evidence/
+          if-no-files-found: error
