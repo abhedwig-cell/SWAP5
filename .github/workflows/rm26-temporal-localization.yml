@@ -1,0 +1,26 @@
+name: RM26 temporal discrepancy localization
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/ribasim-management/test_rm26_temporal_localization.f90'
+      - 'tests/ribasim-management/run_rm26_temporal_localization.sh'
+      - 'integration/ribasim-management/RM26_*'
+      - '.github/workflows/rm26-temporal-localization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM26 localization qualification
+        run: bash tests/ribasim-management/run_rm26_temporal_localization.sh
