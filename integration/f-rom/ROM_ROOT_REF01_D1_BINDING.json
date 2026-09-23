@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.rom_root.ref01.d1.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-REF01-D1",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_REF01_D1_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_REF01_D1_PREREGISTRATION.json",
+  "policy_changed": false,
+  "candidate_response_generated": false,
+  "implementation_blobs": {
+    ".github/workflows/rom-root-ref01-d1.yml": "118828c1e840806b896be648387020bed8c3945f",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py": "269bbc7796a5d7e0535660954f1c0f075b97634b",
+    "tests/rom/materialize_rom_root_ref01_policy.py": "1dd567250276ec74244fb3f19abe51cff32f9ba9",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34"
+  },
+  "frozen_cases": [
+    "B01 R1024_T32 V02",
+    "B14 R512_T32 V01"
+  ],
+  "firewall": {
+    "tolerance_changed": false,
+    "max_iterations_changed": false,
+    "fallback_enabled": false,
+    "production_source_changed": false,
+    "candidate_response_generated": false
+  }
+}
