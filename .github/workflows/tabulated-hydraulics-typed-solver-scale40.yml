@@ -1,0 +1,236 @@
+name: TAB-HYD typed Reference Richards scale40
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-typed-solver-scale40.yml'
+      - 'research/tabulated_hydraulics/tabhyd_typed_solver_scale40.f90'
+      - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
+
+jobs:
+  scale40:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: a2d99ddd149ffaa422d9c422f96bd66e92c8555d
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Verify current canonical solver seam
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical-src rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = 90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
+          test "$(git -C canonical-src rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
+          test "$(git -C canonical-src rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = 4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
+          test "$(git -C canonical-src rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55
+          echo SCALE40_CURRENT_CANONICAL_RECONCILE=PASS
+
+      - name: Prepare 40-node stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/scale40
+          cp canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90 build/scale40/stubs.f90
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path("build/scale40/stubs.f90")
+          s=p.read_text()
+          s=re.sub(
+            r"module MOD_arrays.*?end module MOD_arrays",
+            """module MOD_arrays
+  implicit none
+  integer, parameter :: macp = 64
+  integer, parameter :: mabbc = 8
+end module MOD_arrays""",s,count=1,flags=re.S)
+          s=re.sub(
+            r"module MOD_grid.*?end module MOD_grid",
+            """module MOD_grid
+  implicit none
+  integer, parameter :: numnod = 40
+  real(8), target :: z(numnod) = 0.0d0
+  real(8), target :: dz(numnod) = 5.0d0
+  real(8), target :: disnod(numnod+1) = 5.0d0
+end module MOD_grid""",s,count=1,flags=re.S)
+          s=s.replace("real(8) :: qbotab(2*4) = 0.0d0","real(8) :: qbotab(2*64) = 0.0d0")
+          p.write_text(s)
+          print("SCALE40_STUB_PATCH=PASS")
+          PY
+
+      - name: Generate five 40-node bounded cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/scale40/inputs
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("lp",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          cases={
+            "coarse_dry_free":("b4","o5",-180.0,0.10,2,-999999.0),
+            "loam_mid_free":("b9","o9",-75.0,0.10,2,-999999.0),
+            "clay_wet_free":("b12","o13",-40.0,0.10,2,-999999.0),
+            "coarse_dry_pulse":("b4","o5",-180.0,0.80,2,-999999.0),
+            "loam_capillary":("b9","o9",-120.0,0.10,5,-120.0),
+          }
+          root=Path("build/scale40/inputs")
+          nodes=40
+          for name,(top,sub,hbase,factor,bmode,bhead) in cases.items():
+              k0=prep.k_policy(hbase,series[top])
+              qtop=factor*k0
+              with (root/f"{name}.dat").open("w") as fh:
+                  fh.write(f"{name} {nodes} 400 4.0e-2 {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
+                  for i in range(nodes):
+                      soil=top if i<nodes//2 else sub
+                      par=series[soil]
+                      h0=hbase + 0.15*(i-(nodes-1)/2)
+                      fh.write(
+                        f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} "
+                        f"{par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} "
+                        f"{par['h_enpr']:.17e} {h0:.17e}\n")
+                      for h,t,k in mod.loghead_rows(par,400):
+                          fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+              print(name,"qtop",qtop,"bottom_mode",bmode)
+          PY
+
+      - name: Compile current Reference Richards scale40 benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/scale40/mod build/scale40/obj
+          F="-O3 -std=f2008 -ffree-line-length-none -fopenmp"
+          compile () {
+            src="$1"
+            base="$(basename "$src")"
+            obj="build/scale40/obj/$base.o"
+            gfortran $F -J build/scale40/mod -I build/scale40/mod -c "$src" -o "$obj"
+          }
+
+          compile research/tabulated_hydraulics/array_dimensions_stub.f90
+          compile legacy-src/src/soil/sptabulated.f90
+          compile build/scale40/stubs.f90
+          compile canonical-src/src/transaction/mod_transaction_reference.f90
+          compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+          compile canonical-src/src/runtime/mod_a23bu_worker_execution_context.f90
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_publication.f90
+          compile canonical-src/src/transaction/mod_fkt_temporal_indicator_history.f90
+          compile canonical-src/src/runtime/mod_canonical_contracts.f90
+          compile canonical-src/src/runtime/mod_canonical_interval_runtime.f90
+          compile canonical-src/src/kernel/mod_kernel_transactions.f90
+          compile canonical-src/src/runtime/mod_fmr_runtime_core.f90
+          compile canonical-src/src/runtime/mod_fmr_checkpoint_orchestrator.f90
+          compile canonical-src/src/solver/mod_soil_water_solver_contract.f90
+          compile canonical-src/src/solver/mod_process_hydraulic_view.f90
+          compile canonical-src/src/process/mod_drainage_process.f90
+          compile canonical-src/src/process/mod_drainage_tabulated_response.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_ipos1_response.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_ipos23_response.f90
+          compile canonical-src/src/process/mod_drainage_ernst_ipos45_preparation.f90
+          compile canonical-src/src/process/mod_drainage_ernst_ipos45_response.f90
+          compile canonical-src/src/process/mod_drainage_empirical_interflow_response.f90
+          compile canonical-src/src/process/mod_drainage_multilevel_aggregation.f90
+          compile canonical-src/src/runtime/mod_fmr_drainage_response_binding.f90
+          compile canonical-src/src/solver/mod_b110_smooth_freatic_projection.f90
+          compile canonical-src/src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
+          compile canonical-src/src/process/mod_soil_temperature_contract.f90
+          compile canonical-src/src/process/mod_restricted_soil_temperature.f90
+          compile canonical-src/src/solver/mod_reference_richards_workspace.f90
+          compile canonical-src/src/solver/mod_reference_richards_state_binding.f90
+          compile canonical-src/src/solver/mod_reference_linear_solver.f90
+          compile canonical-src/src/solver/mod_b110_default_mvg_provider.f90
+          compile research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90
+          compile canonical-src/src/solver/mod_b110_source_sink_provider.f90
+          compile canonical-src/src/solver/mod_fixed_flux_top_boundary_provider.f90
+          compile canonical-src/src/process/mod_restricted_surface_evaporation.f90
+          compile canonical-src/src/solver/mod_b110_dynamic_top_boundary_provider.f90
+          compile canonical-src/src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+          compile canonical-src/src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+          compile canonical-src/src/solver/mod_b110_root_sink_provider.f90
+          compile canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90
+          compile canonical-src/src/legacy/b1_10_port/headcalc.f90
+          compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90
+          compile research/tabulated_hydraulics/tabhyd_typed_solver_scale40.f90
+          gfortran -O3 -fopenmp build/scale40/obj/*.o -o build/scale40/benchmark
+
+      - name: Run scale40 matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/scale40/all-results.txt
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            echo "### $scenario" | tee -a build/scale40/all-results.txt
+            OMP_NUM_THREADS=1 OMP_DYNAMIC=false timeout 120               build/scale40/benchmark "build/scale40/inputs/$scenario.dat"               | tee "build/scale40/$scenario.txt" | tee -a build/scale40/all-results.txt
+          done
+
+      - name: Parse scale40 evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          failures=[]; rows=[]
+          for p in sorted(Path("build/scale40").glob("*.txt")):
+              if p.name=="all-results.txt": continue
+              vals={}
+              for line in p.read_text().splitlines():
+                  if "=" in line and not line.startswith("SCALE40_BLOCK"):
+                      k,v=line.split("=",1); vals[k.strip()]=v.strip()
+              scenario=vals.get("SCALE40_SCENARIO",p.stem)
+              need=["SCALE40_ANALYTIC_STATUS","SCALE40_TABLE_STATUS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
+                    "SCALE40_HEAD_MAX_ABS","SCALE40_THETA_MAX_ABS","SCALE40_ANALYTIC_MEDIAN_S",
+                    "SCALE40_TABLE_MEDIAN_S","SCALE40_TABLE_DELTA_PCT"]
+              miss=[k for k in need if k not in vals]
+              if miss:
+                  failures.append((scenario,"missing",miss)); continue
+              row=[scenario,int(vals[need[0]]),int(vals[need[1]]),int(vals[need[2]]),int(vals[need[3]]),
+                   float(vals[need[4]]),float(vals[need[5]]),float(vals[need[6]]),float(vals[need[7]]),float(vals[need[8]])]
+              if row[1]!=1 or row[2]!=1: failures.append((scenario,"status",row[1],row[2]))
+              if row[5]>0.05: failures.append((scenario,"head",row[5]))
+              if row[6]>0.02: failures.append((scenario,"theta",row[6]))
+              rows.append(row)
+          lines=["scenario\tanalytic_status\ttable_status\tanalytic_iters\ttable_iters\thead_max_abs\ttheta_max_abs\tanalytic_median_s\ttable_median_s\ttable_delta_pct"]
+          for r in rows:
+              lines.append("\t".join(str(x) for x in r))
+          Path("build/scale40/summary.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/scale40/summary.tsv").read_text(),end="")
+          print(f"SCALE40_FAILURES={len(failures)}")
+          if failures:
+              print(failures)
+              raise SystemExit(1)
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-typed-solver-scale40
+          path: |
+            build/scale40/summary.tsv
+            build/scale40/all-results.txt
+            build/scale40/*.txt
