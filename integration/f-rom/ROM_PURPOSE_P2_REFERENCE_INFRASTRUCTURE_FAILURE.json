@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.rom-purpose.p2.reference-infrastructure-failure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE",
+  "date": "2026-09-23",
+  "authoritative_source_run": 35821534912,
+  "attempt": 1,
+  "execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+  "failed_jobs": [
+    {
+      "job_id": 107055027935,
+      "name": "full-B01-R1024_T32-o0-h1",
+      "started_at": "2026-09-23T05:19:54Z",
+      "completed_at": "2026-09-23T05:27:14Z",
+      "conclusion": "failure",
+      "terminal_evidence": "The runner has received a shutdown signal; process completed with exit code 143."
+    },
+    {
+      "job_id": 107055027972,
+      "name": "full-B01-R1024_T32-o2-h1",
+      "started_at": "2026-09-23T05:24:18Z",
+      "completed_at": "2026-09-23T05:28:28Z",
+      "conclusion": "failure",
+      "terminal_evidence": "The runner has received a shutdown signal; process completed with exit code 143."
+    }
+  ],
+  "all_other_attempt1_execution_failures": 0,
+  "downstream": {
+    "assemble": "SKIPPED_DUE_TO_UPSTREAM_FAILURE",
+    "analyze": "SKIPPED_DUE_TO_UPSTREAM_FAILURE",
+    "persist": "SKIPPED_DUE_TO_UPSTREAM_FAILURE"
+  },
+  "classification": "HOSTED_RUNNER_SHUTDOWN_EXIT_143",
+  "job_timeout_exceeded": false,
+  "scientific_failure": false,
+  "hydrological_metric_response_generated": false,
+  "candidate_response_generated": false,
+  "correction_to_prior_working_label": "The earlier TIMEOUT_OR_CAPACITY wording was provisional. The logs establish runner shutdown exit 143 before the configured 20-minute timeout. The 60-minute repair workflow therefore functions as a fresh-run execution retry with a non-restrictive timeout, not as a scientific or numerical repair.",
+  "current_repair": {
+    "workflow": "F-ROM-PURPOSE P2 Reference timeout repair",
+    "active_run": 35852014797,
+    "exact_cases": [
+      "B01/R1024_T32/S05/O0",
+      "B01/R1024_T32/S05/O2"
+    ],
+    "scientific_inputs_changed": false
+  },
+  "scientific_firewall": {
+    "reference_threshold_changed": false,
+    "reference_workload_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false
+  }
+}
