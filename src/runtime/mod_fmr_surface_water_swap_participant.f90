@@ -193,14 +193,15 @@ contains
     if (.not. observation%drainage_response_active .or. &
         .not. observation%drainage_response_mass_accounted_in_trial .or. &
         observation%drainage_response%status /= FMR_DRAIN_BIND_OK .or. &
-        .not. ieee_is_finite(observation%drainage_response_signed_exchange_native)) then
+        .not. observation%drainage_response_window_exchange_available .or. &
+        .not. ieee_is_finite(observation%drainage_response_window_signed_exchange_native)) then
       call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       status = FMR_SW_PARTICIPANT_EXCHANGE_UNAVAILABLE
       return
     end if
 
     duration = t1-t0
-    self%candidate_exchange_cm = observation%drainage_response_signed_exchange_native
+    self%candidate_exchange_cm = observation%drainage_response_window_signed_exchange_native
     self%live_candidate = .true.
     trial%valid = .true.
     trial%signed_soil_to_surface_exchange_cm = self%candidate_exchange_cm
