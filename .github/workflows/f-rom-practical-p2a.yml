@@ -1,0 +1,107 @@
+name: F-ROM Practical P2A cross-material pilot
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P2A_PREREGISTRATION.json
+      - integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json
+      - tools/rom/run_rom_practical_p2a_candidate.py
+      - tools/rom/materialize_rom_practical_p2a_reference.py
+      - tools/rom/analyze_rom_practical_p2a.py
+      - tools/rom/aggregate_rom_practical_p2a.py
+      - .github/workflows/f-rom-practical-p2a.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: f-rom-practical-p2a-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  case:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B02, B05, B06, B11, B12, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Recover frozen research harness support
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_surface_b01_source.f90 > ext/rom_purpose_p1_surface_b01_source.f90
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_gw_source.f90 > ext/rom_purpose_p1_gw_source.f90
+          git show FETCH_HEAD:tests/rom/materialize_rom_purpose_p3_surface_reference.py > ext/materialize_rom_purpose_p3_surface_reference.py
+          git show FETCH_HEAD:tests/rom/materialize_rom_purpose_p3_gw_reference.py > ext/materialize_rom_purpose_p3_gw_reference.py
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_base_b14_materializer.py > ext/rom_purpose_p1_base_b14_materializer.py
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_base_c4z_materializer.py > ext/rom_purpose_p1_base_c4z_materializer.py
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_layer_base.py > ext/rom_purpose_p1_layer_base.py
+          test "$(git hash-object ext/rom_purpose_p1_surface_b01_source.f90)" = "b2df7793d3f56f5d8d1d121636d2eb1a0952e271"
+          test "$(git hash-object ext/rom_purpose_p1_gw_source.f90)" = "98b05fcf13fc470689295d511766f2393a712e46"
+          test "$(git hash-object ext/materialize_rom_purpose_p3_surface_reference.py)" = "31060946d233ba80e88ca42e43c90f512dc890de"
+          test "$(git hash-object ext/materialize_rom_purpose_p3_gw_reference.py)" = "83dbec28cd92b76bc1e2a4ac704103622a5cab28"
+          test "$(git hash-object ext/rom_purpose_p1_base_b14_materializer.py)" = "f4f666d3504568d084d1d5ca3f90008ab6af2df9"
+          test "$(git hash-object ext/rom_purpose_p1_base_c4z_materializer.py)" = "105e75b93425780f565c714de1be1cb7ae0ee767"
+          test "$(git hash-object ext/rom_purpose_p1_layer_base.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          python3 -m pip install --disable-pip-version-check numpy
+      - name: Run reduced candidate
+        run: |
+          mkdir -p evidence
+          python3 tools/rom/run_rom_practical_p2a_candidate.py --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}" --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json --base ext/rom_purpose_p1_layer_base.py --output evidence/candidate.json
+      - name: Materialize Reference
+        run: |
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}" --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json --surface-source ext/rom_purpose_p1_surface_b01_source.f90 --gw-source ext/rom_purpose_p1_gw_source.f90 --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py --gw-materializer ext/materialize_rom_purpose_p3_gw_reference.py --c5a-materializer ext/rom_purpose_p1_base_b14_materializer.py --c4z-materializer ext/rom_purpose_p1_base_c4z_materializer.py --output canonical/tests/rom/test_p2a_ref.f90 --manifest evidence/reference_materialization.json
+      - name: Build and run Reference
+        run: |
+          set -euo pipefail
+          for nodes in 128 256; do
+            dz="$(python3 -c "print(160.0/$nodes)")"
+            stub="p2a_r${nodes}_o2_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "canonical/$stub" --nodes "$nodes" --dz-cm "$dz"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py --root canonical --stub "$stub" --target tests/rom/test_p2a_ref.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build "/tmp/p2a_r${nodes}_o2" --opt 2
+          done
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output canonical/p2a_r256_o0_stubs.f90 --nodes 256 --dz-cm 0.625
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py --root canonical --stub p2a_r256_o0_stubs.f90 --target tests/rom/test_p2a_ref.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build /tmp/p2a_r256_o0 --opt 0
+          /tmp/p2a_r128_o2/rom0_test > evidence/r128.txt 2>&1
+          /tmp/p2a_r256_o0/rom0_test > evidence/r256_o0.txt 2>&1
+          /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o evidence/r256_timing.json /tmp/p2a_r256_o2/rom0_test > evidence/r256.txt 2>&1
+          cmp evidence/r256_o0.txt evidence/r256.txt
+      - name: Analyze
+        run: |
+          python3 tools/rom/analyze_rom_practical_p2a.py --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}" --candidate evidence/candidate.json --r128 evidence/r128.txt --r256 evidence/r256.txt --r256-timing evidence/r256_timing.json --output evidence/result.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-practical-p2a-${{ matrix.purpose }}-${{ matrix.material }}
+          path: evidence/result.json
+          if-no-files-found: error
+  aggregate:
+    needs: case
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p2a-*
+          path: /tmp/p2a
+          merge-multiple: false
+      - run: python3 tools/rom/aggregate_rom_practical_p2a.py --input-dir /tmp/p2a --output integration/f-rom/ROM_PRACTICAL_P2A_RESULT.json
+      - name: Persist aggregate
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PRACTICAL_P2A_RESULT.json
+          git commit -m "ROM-PRACTICAL P2A: persist cross-material pilot" || exit 0
+          git push origin HEAD:work/f-rom-practical
