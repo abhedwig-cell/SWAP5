@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low01.gwl-surface.status.v1",
+  "work_unit": "PPA-LOW01-GWL-SURFACE",
+  "parent_work_unit": "PPA-LOW01",
+  "status": "SURFACE_GWL_PROFILE_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "585541f92",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no q0/pond closure, conductivity, HeadCalc, groundwater state, accepted flux mass, retry/restart or runtime route changed",
+  "source_census": "integration/audits/PPA_LOW01_GWL_SURFACE_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW01_GWL_SURFACE_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low01_gwl_surface_profile.f90",
+  "test": "tests/fapp/test_ppa_low01_gwl_surface_profile.f90",
+  "gate": "tests/fapp/run_ppa_low01_gwl_surface_profile.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW01_GWL_SURFACE_PROFILE_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW01_GWL_SURFACE_HEAD_AND_QBOT=PASS",
+      "PPA_LOW01_GWL_SURFACE_STATELESS_A_B_A=PASS",
+      "PPA_LOW01_GWL_SURFACE_INVALID_PROFILE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "ee1d839fcc640dcd690259e449452588ab59b41be14e2f754f38ed81f25799e4",
+    "o2_executable_sha256": "7e0e51a1977d9e6c229f5f583ee733411c0849af27ff25602510090d7d363554",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue with independent source capability; the remaining surface-GWL integration is q0/pond closure plus the actual owner-bound solver route.",
+  "recovery_point": "this status and PPA_LOW01_GWL_SURFACE_SOURCE_CENSUS.json"
+}
