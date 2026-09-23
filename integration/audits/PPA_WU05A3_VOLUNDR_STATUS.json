@@ -2,20 +2,36 @@
   "schema": "swap5.ppa_wu05a3.volundr.status.v1",
   "work_unit": "PPA-WU05-A3-VOLUNDR",
   "parent_work_unit": "PPA-WU05-A3",
-  "status": "IMPLEMENTED_SOURCE_ORACLE_PENDING",
+  "status": "VOLUNDR_SOURCE_ORACLE_PASS_A3_PARTIAL_RUNTIME_HELD",
   "baseline": "codex/ppa-swap431-functional-gap-register@37bf959b4",
   "preregistration": "integration/audits/PPA_WU05A3_VOLUNDR_PREREGISTRATION.json",
   "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
   "implemented": true,
-  "persisted": false,
-  "tested": false,
+  "persisted": true,
+  "tested": true,
   "qualified": false,
   "production_admission": "NONE; isolated volume equation only; MACRORATE and Richards routes unchanged",
   "implementation": "src/process/mod_ppa_wu05a3_volundr.f90",
   "test": "tests/fapp/test_ppa_wu05a3_volundr_source_oracle.f90",
   "gate": "tests/fapp/run_ppa_wu05a3_volundr_source_oracle.sh",
-  "test_result": null,
-  "next_action": "Run direct GNU Fortran O0/O2 oracle, persist evidence and record this bounded partial A3 slice without inferring process/runtime admission.",
-  "recovery_point": "this preregistration, source module, and test",
-  "blockers": []
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors": 100000,
+    "comparison": "bitwise identity against an independent transcription of B1.11 VOLUNDR loop/arithmetic",
+    "markers": [
+      "PPA_WU05A3_VOLUNDR_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_SOURCE_LOOP_AND_FRACTIONAL_COMPARTMENT=PASS",
+      "PPA_WU05A3_INVALID_SHAPE_AND_GEOMETRY_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "2d8777a6b372075be6ff2026ed1e41503ea6ce18d9ef2d1306f1d620f95ced71",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "Git Bash cannot create its signal pipe on this host; the declared compiler/test sources and flags passed directly in PowerShell."
+  },
+  "next_action": "Continue another exact-source A3 rate equation in isolation, then compose source functions only behind explicitly typed views; runtime admission remains gated on the sole Richards owner, whole-column mass and restart/retry qualification.",
+  "recovery_point": "this status record and its containing local checkpoint commit",
+  "blockers": ["Full B1.11 reconstruction currently fails closed on the repository's SWAP-009 patch hash mismatch; the exact B1.11 macropore.f90 and macrorate.f90 files were separately verified against their pinned hashes from the partial source reconstruction. This does not block these exact-file source slices.", "Production MACRORATE/Richards integration remains unqualified and held for single-owner rollback/restart and internal/external mass-transfer qualification."]
 }
