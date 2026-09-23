@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.rom_root.s3d1.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D1",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_S3D1_FINE_NODE_DIAGNOSTIC_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_ROOT_S3D1_PREREGISTRATION.json",
+  "authority": {
+    "stage3_result": "integration/f-rom/ROM_ROOT_S3_RESULT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "target": "R2048_T32",
+    "optimization": 0
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s3d1.yml": "81393a68ee3a2739e48d09864577523dd6408592",
+    "tests/rom/materialize_rom_root_s3d1_fine_node_feddes.py": "54bf342f5ee3659397b9a2f71f4ecabdb9c0b020",
+    "tests/rom/analyze_rom_root_s3d1_fine_node_feddes.py": "157c2dc6e6b309a43130a6831e788533c4cd4f0d",
+    "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/materialize_rom_root_ra02r_stress_panel.py": "640e23373e2df7c8073f8102e863e802d2711c74",
+    "tests/rom/materialize_rom_root_ra02r_reference_policy.py": "954d459102c4e5427c9912b43fbacd5f15ab777c",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "integration/f-rom/ROM_ROOT_S3D1_PREREGISTRATION.json": "21e14fbb54276afbd5acccc51d777baa36b6df70",
+    "integration/f-rom/ROM_ROOT_S3_RESULT.json": "5e23cf0e9109e2af1ed578a520c3e1968a6e711e",
+    "integration/f-rom/ROM_ROOT_RA02R_RESULT.json": "bbff44cd15b98cdbf535096a87d4f5041637bda2"
+  },
+  "execution": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "target_nodes": 2048,
+    "target_temporal_factor": 32,
+    "four_checkpoint_segments": true,
+    "segment_steps": 8192,
+    "output": {
+      "transaction_decomposition_every_step": true,
+      "per_layer_detail_every_observation": true
+    }
+  },
+  "scientific_semantics_changed": false,
+  "reduced_candidate_response_generated": false,
+  "response_based_design": false,
+  "scientific_firewall": {
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "new_root_specific_state_selected": false,
+    "fitted_coefficient_used": false,
+    "error_correction_used": false,
+    "relaxation_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
