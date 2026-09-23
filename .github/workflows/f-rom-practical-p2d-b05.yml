@@ -1,0 +1,83 @@
+name: F-ROM Practical P2D B05 eight-state attribution
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P2D_B05_PREREGISTRATION.json
+      - tools/rom/run_rom_practical_p2d_b05_candidate.py
+      - tools/rom/prepare_rom_practical_p2c_reference.py
+      - tools/rom/analyze_rom_practical_p2d_b05.py
+      - .github/workflows/f-rom-practical-p2d-b05.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  attribute:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Recover frozen harness support
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose work/f-rom-layer-a
+          mkdir -p ext evidence
+          git show origin/work/f-rom-purpose:tests/rom/rom_purpose_p1_gw_source.f90 > ext/rom_purpose_p1_gw_source.f90
+          git show origin/work/f-rom-purpose:tests/rom/materialize_rom_purpose_p3_gw_reference.py > ext/materialize_rom_purpose_p3_gw_reference.py
+          git show origin/work/f-rom-purpose:tests/rom/rom_purpose_p1_base_b14_materializer.py > ext/rom_purpose_p1_base_b14_materializer.py
+          git show origin/work/f-rom-purpose:tests/rom/rom_purpose_p1_base_c4z_materializer.py > ext/rom_purpose_p1_base_c4z_materializer.py
+          git show origin/work/f-rom-purpose:tests/rom/rom_purpose_p1_layer_base.py > ext/rom_purpose_p1_layer_base.py
+          git show origin/work/f-rom-layer-a:tests/rom/materialize_layer_rom_variable_grid_stubs.py > ext/materialize_layer_rom_variable_grid_stubs.py
+          python3 -m pip install --disable-pip-version-check numpy
+      - name: Run G8 and U8 Layer-ROM candidates
+        run: |
+          set -euo pipefail
+          python3 tools/rom/run_rom_practical_p2d_b05_candidate.py             --purpose GW_LB --material B05 --member G8             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --base ext/rom_purpose_p1_layer_base.py --output evidence/lr_g8.json
+          python3 tools/rom/run_rom_practical_p2d_b05_candidate.py             --purpose GW_LB --material B05 --member U8             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --base ext/rom_purpose_p1_layer_base.py --output evidence/lr_u8.json
+      - name: Materialize B05 Richards source
+        run: |
+          set -euo pipefail
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py             --purpose GW_LB --material B05             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --gw-source ext/rom_purpose_p1_gw_source.f90             --gw-materializer ext/materialize_rom_purpose_p3_gw_reference.py             --c5a-materializer ext/rom_purpose_p1_base_b14_materializer.py             --c4z-materializer ext/rom_purpose_p1_base_c4z_materializer.py             --output /tmp/p2d_base.f90 --manifest evidence/materialization.json
+          python3 tools/rom/prepare_rom_practical_p2c_reference.py             --source /tmp/p2d_base.f90 --output canonical/tests/rom/test_p2d_b05.f90
+      - name: Build fine and same-partition Richards routes
+        run: |
+          set -euo pipefail
+          for nodes in 128 256; do
+            dz="$(python3 -c "print(160.0/$nodes)")"
+            stub="p2d_r${nodes}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/$stub" --nodes "$nodes" --dz-cm "$dz"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "$stub" --target tests/rom/test_p2d_b05.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/p2d_r${nodes}" --opt 2
+          done
+          for spec in "G8|80,20,20,10,10,10,5,5" "U8|20,20,20,20,20,20,20,20"; do
+            IFS='|' read -r id dzs <<< "$spec"
+            stub="p2d_${id}_stubs.f90"
+            python3 ext/materialize_layer_rom_variable_grid_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/$stub" --layer-thickness-cm "$dzs"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "$stub" --target tests/rom/test_p2d_b05.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/p2d_${id}" --opt 2
+          done
+      - name: Execute frozen routes
+        run: |
+          set -euo pipefail
+          /tmp/p2d_r128/rom0_test > evidence/r128.txt 2>&1
+          /tmp/p2d_r256/rom0_test > evidence/r256.txt 2>&1
+          /tmp/p2d_G8/rom0_test > evidence/cor_g8.txt 2>&1
+          /tmp/p2d_U8/rom0_test > evidence/cor_u8.txt 2>&1
+          test "$(grep -c '^LAREGW1_STATE|' evidence/r256.txt)" -eq 32768
+          test "$(grep -c '^LAREGW1_STATE|' evidence/cor_g8.txt)" -eq 32768
+          test "$(grep -c '^LAREGW1_STATE|' evidence/cor_u8.txt)" -eq 32768
+      - name: Analyze eight-state attribution
+        run: |
+          python3 tools/rom/analyze_rom_practical_p2d_b05.py             --p2a-analyzer tools/rom/analyze_rom_practical_p2a.py             --lr-g8 evidence/lr_g8.json --lr-u8 evidence/lr_u8.json             --cor-g8 evidence/cor_g8.txt --cor-u8 evidence/cor_u8.txt             --fine-reference evidence/r256.txt --r128 evidence/r128.txt             --p2b-result integration/f-rom/ROM_PRACTICAL_P2B_GW1_RESULT.json             --output integration/f-rom/ROM_PRACTICAL_P2D_B05_RESULT.json
+      - name: Persist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PRACTICAL_P2D_B05_RESULT.json
+          git commit -m "ROM-PRACTICAL P2D-B05: persist eight-state attribution" || exit 0
+          git push origin HEAD:work/f-rom-practical
