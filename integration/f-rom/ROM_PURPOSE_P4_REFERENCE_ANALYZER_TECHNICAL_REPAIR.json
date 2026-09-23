@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.rom-purpose.p4.reference-analyzer-technical-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-REFERENCE-ADJUDICATION",
+  "date": "2026-09-23",
+  "status": "REPAIRED_BEFORE_REFERENCE_ADJUDICATION",
+  "file": "tests/rom/analyze_rom_purpose_p4_reference.py",
+  "repaired_blob": "9c7c7a8a504e47470a4aa4c1c06217bfda7c8e54",
+  "failure": "Fresh history tuple was S17-S20 but inherited PHASES dictionary still used S09-S12 keys.",
+  "repair": "Replace only the four surface phase-map keys and explanatory fresh-history labels with the preregistered P4 labels S17-S20 and G17-G20.",
+  "authority": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "scientific_firewall": {
+    "reference_adjudication_had_started": false,
+    "reference_metrics_used_for_repair": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "phase_sequences_changed": false,
+    "metric_changed": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "candidate_response_generated": false,
+    "matched_richards_response_generated": false
+  }
+}
