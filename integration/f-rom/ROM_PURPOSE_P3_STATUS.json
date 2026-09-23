@@ -2,10 +2,13 @@
   "authority_drift_record": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json",
   "candidate_execution_sha": "ae21f96b00dc940a3c3132c61608ac76e65a8575",
   "candidate_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json",
-  "candidate_response_authorized": true,
+  "candidate_response_authorized": false,
   "candidate_response_generated": true,
   "candidate_source_workflow_run": 35890841221,
+  "closeout": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT.json",
+  "closeout_execution_sha": "3068772bece1e8b95b7b25eb2ad85418f632708c",
   "closeout_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT_INFRASTRUCTURE.json",
+  "closeout_source_workflow_run": 35892357222,
   "completed": [
     "RECONCILE",
     "P3_AUTHORITY_BINDING",
@@ -22,7 +25,7 @@
     "GW_R2048_T32_ROUTE_RECOVERY_BOUND",
     "GW_REFERENCE_CONSOLIDATION_V2_PREPARED_NOT_EXECUTED"
   ],
-  "current_gate": "P3_CLOSEOUT",
+  "current_gate": "P3_CLOSED",
   "date": "2026-09-23",
   "gw_missing_slice_repair_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json",
   "gw_r2048_t32_recovery": {
@@ -49,9 +52,8 @@
   },
   "gw_reference_consolidation_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json",
   "gw_reference_consolidation_v2_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_INFRASTRUCTURE.json",
-  "next_actions": [
-    "Bind deterministic P3 closeout generation."
-  ],
+  "next_actions": [],
+  "purpose_map": "integration/f-rom/ROM_PURPOSE_P3_PURPOSE_MAP.json",
   "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
   "reference_adjudication_sha": "4e6b0dc26f18379b3be5e9b26e93f5b9a0a34b1a",
   "reference_adjudication_source_workflow_run": 35887508008,
@@ -153,7 +155,7 @@
     "same_partition_response_generated": true
   },
   "state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json",
-  "status": "P3_SAME_PARTITION_DIAGNOSTIC_COMPLETE",
+  "status": "P3_CLOSED_REPRESENTATION_FRONTIER_NOT_REACHED_DIAGNOSTIC_PARTLY_UNAVAILABLE",
   "work_unit": "ROM-PURPOSE-P3",
   "workstream": "ROM-PURPOSE"
 }

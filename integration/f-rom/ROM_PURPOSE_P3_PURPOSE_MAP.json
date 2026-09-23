@@ -1,0 +1,100 @@
+{
+  "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P3",
+  "purposes": {
+    "GW_LB": {
+      "materials": {
+        "B01": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P3",
+          "closure_diagnostic_disposition": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_REQUIRED",
+          "frontier_stability": null,
+          "minimum_tested_state_count": null,
+          "minimum_tested_state_placement_cm": null,
+          "remaining_fidelity_limit": "The terminal aligned Layer-ROM and same-partition Richards both miss the frozen comparator. Representation versus coarse spatial resolution remains unresolved.",
+          "representation_sufficiency_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+          "required_closure_class": "UNRESOLVED",
+          "scientific_outcome": "REPRESENTATION_DIMENSION_REMAINS_LIMITING",
+          "terminal_candidate_status": "QUALIFIED",
+          "terminal_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+          "terminal_tested_member": "G8"
+        },
+        "B14": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P3",
+          "closure_diagnostic_disposition": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_REQUIRED",
+          "frontier_stability": null,
+          "minimum_tested_state_count": null,
+          "minimum_tested_state_placement_cm": null,
+          "remaining_fidelity_limit": "The terminal aligned Layer-ROM and same-partition Richards both miss the frozen comparator. Representation versus coarse spatial resolution remains unresolved.",
+          "representation_sufficiency_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+          "required_closure_class": "UNRESOLVED",
+          "scientific_outcome": "REPRESENTATION_DIMENSION_REMAINS_LIMITING",
+          "terminal_candidate_status": "QUALIFIED",
+          "terminal_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+          "terminal_tested_member": "G8"
+        }
+      },
+      "purpose_summary": {
+        "both_materials_reach_comparator": false,
+        "material_minima": {
+          "B01": null,
+          "B14": null
+        },
+        "status": "REPRESENTATION_DIMENSION_REMAINS_LIMITING"
+      },
+      "required_vertical_information": "Lower-column information with progressively finer support toward the 160-cm lower boundary."
+    },
+    "SURF_P": {
+      "materials": {
+        "B01": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P3",
+          "closure_diagnostic_disposition": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_REQUIRED",
+          "frontier_stability": null,
+          "minimum_tested_state_count": null,
+          "minimum_tested_state_placement_cm": null,
+          "remaining_fidelity_limit": "Numerical qualification prevents a clean same-partition attribution. No closure claim is authorized.",
+          "representation_sufficiency_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+          "required_closure_class": "UNRESOLVED_DIAGNOSTIC_UNAVAILABLE",
+          "scientific_outcome": "DIAGNOSTIC_REMAINS_UNAVAILABLE",
+          "terminal_candidate_status": "QUALIFIED",
+          "terminal_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+          "terminal_tested_member": "S8"
+        },
+        "B14": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P3",
+          "closure_diagnostic_disposition": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_REQUIRED",
+          "frontier_stability": null,
+          "minimum_tested_state_count": null,
+          "minimum_tested_state_placement_cm": null,
+          "remaining_fidelity_limit": "Numerical qualification prevents a clean same-partition attribution. No closure claim is authorized.",
+          "representation_sufficiency_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+          "required_closure_class": "UNRESOLVED_DIAGNOSTIC_UNAVAILABLE",
+          "scientific_outcome": "DIAGNOSTIC_REMAINS_UNAVAILABLE",
+          "terminal_candidate_status": "QUALIFIED",
+          "terminal_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+          "terminal_tested_member": "S8"
+        }
+      },
+      "purpose_summary": {
+        "both_materials_reach_comparator": false,
+        "material_minima": {
+          "B01": null,
+          "B14": null
+        },
+        "status": "REPRESENTATION_DIMENSION_REMAINS_LIMITING"
+      },
+      "required_vertical_information": "Upper-column information resolving near-surface storage and the surface-to-80-cm propagation path."
+    }
+  },
+  "schema": "swap5.rom-purpose.p3.purpose-map.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "new_closure_family_admitted": false,
+    "performance_claim_authorized": false,
+    "production_groundwater_coupling_changed": false,
+    "production_rom_authorized": false,
+    "reference_richards_replaced": false,
+    "rossfast_changed": false
+  },
+  "scope": "Minimum tested purpose-aligned representation within the prospectively frozen S4/S6/S8 and G4/G6/G8 ladders; not a mathematical, universal, all-soil or application minimum.",
+  "status": "P3_RESEARCH_MAP_PERSISTED",
+  "workstream": "ROM-PURPOSE"
+}

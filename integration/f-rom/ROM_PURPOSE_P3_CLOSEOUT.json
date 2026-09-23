@@ -1,0 +1,36 @@
+{
+  "case_outcomes": {
+    "GW_LB/B01": "REPRESENTATION_DIMENSION_REMAINS_LIMITING",
+    "GW_LB/B14": "REPRESENTATION_DIMENSION_REMAINS_LIMITING",
+    "SURF_P/B01": "DIAGNOSTIC_REMAINS_UNAVAILABLE",
+    "SURF_P/B14": "DIAGNOSTIC_REMAINS_UNAVAILABLE"
+  },
+  "central_question": "How much purpose-aligned vertical state information is required before remaining error can be attributed to propagation or closure rather than insufficient vertical representation?",
+  "claims_not_made": [
+    "mathematical minimum",
+    "universal minimum",
+    "minimum for all soils or forcing",
+    "application acceptance",
+    "production-ROM admission",
+    "performance or speedup",
+    "replacement of Reference Richards"
+  ],
+  "closure_workstream_recommendation": "No new closure workstream is supported by P3 evidence.",
+  "purpose_map": "integration/f-rom/ROM_PURPOSE_P3_PURPOSE_MAP.json",
+  "same_partition_result": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_RESULT.json",
+  "schema": "swap5.rom-purpose.p3.closeout.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "closure_tuned": false,
+    "materials_aggregated_for_primary_admission": false,
+    "p2_reopened": false,
+    "production_rom_authorized": false,
+    "state_boundaries_retuned_after_response": false,
+    "weighted_general_score_used": false
+  },
+  "state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json",
+  "status": "P3_CLOSED_REPRESENTATION_FRONTIER_NOT_REACHED_DIAGNOSTIC_PARTLY_UNAVAILABLE",
+  "terminal_dimension": 8,
+  "work_unit": "ROM-PURPOSE-P3",
+  "workstream": "ROM-PURPOSE"
+}
