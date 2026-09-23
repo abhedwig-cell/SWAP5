@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_sol_age_output_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-OUTPUT",
+  "parent_work_units": ["PPA-SOL-AGE-SUBSTEP", "PPA-SOL-AGE-SURFACE"],
+  "title": "B1.11 AgeTracer one-substep effluent age output increments",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "867897a081963e75f8c455426c1104bc887c54fc",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "AgeTracer task-2 icAgetopupw, icAgerot, per-level icAgedra and icAgebot increments after updated Ageml is available"
+  },
+  "scope": {
+    "inputs": "Already-derived qtop/qrot/qdra/qbottom; updated candidate Ageml, previous committed cml, substep days; all are explicit",
+    "equations": "topup=max(0,qtop)*0.5*(Ageml(1)+cml(1))*dt; root(i)=qrot(i)*0.5*(Ageml(i)+cml(i))*dt; drain(level,i)=qdra(level,i)*0.5*(Ageml(i)+cml(i))*dt accumulated over levels then cells in B1.11 loop order; bottom=-min(qbottom,0)*0.5*(Ageml(n)+cml(n))*dt.",
+    "state_owner": "None; candidate increments only",
+    "accumulator_state_restart_output_interval_daily_loop_production": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "100000 deterministic profiles compared to direct B1.11 formula and loop order at O0/O2",
+    "Exercise qtop both signs, root signs, multiple drainage levels, bottom both signs",
+    "Reject dimensions and nonfinite/nonpositive interval inputs",
+    "No full accumulator state or production age-output admission"
+  ],
+  "decision_rule": "Return each interval increment; do not substitute accumulator current values or alter B1.11 summation order."
+}
