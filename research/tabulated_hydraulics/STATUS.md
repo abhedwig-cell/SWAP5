@@ -416,3 +416,42 @@ This establishes the current post-failure representation candidate as:
 6. unchanged TSPACK interpolation within the continuous branches.
 
 The result is a **research transfer qualification**, not a production admission. The stock lookup path remains slower than analytical MvG in these runs, so acceleration still depends on replacing the legacy interval lookup without changing the now-qualified representation.
+
+
+## 2026-09-23 research closure and production handoff
+
+The tabulated-hydraulics research line has reached its natural state boundary.
+
+Current canonical reconciliation:
+
+- `integration/f-ci-canonical@b7d9c976e9b474545d54fa79b71ae134c25da156`.
+
+Controlling K0 result:
+
+- bounds-safe generated raw-head400 representation remains within the qualified constitutive/trajectory envelope;
+- typed provider evaluation is reproducibly about 19% cheaper than the analytical provider;
+- canonical Reference-Richards K0 integration shows about 27-31% lower bounded solve cost;
+- serialized Reference K0 runtime shows about 28-31% lower bounded trial cost with equal retries/iterations and mass accounting;
+- current-canonical dynamic prescribed-qbot transaction/certificate characterization passed in run `35818703618`;
+- deterministic preprocessing break-even is approximately 8,860 30-node constitutive vector evaluations.
+
+K1 remains bounded research only. The expanded loam/clay experiment is blocked by the corrected analytical K1 reference itself exceeding the bounded runtime horizon; no broad K1 production claim is made.
+
+The exact whole-Hupsel final application gate remains externally blocked because the authorized SWAP 4.3.1 distribution archive with SHA-256
+`2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`
+is not available through an authorized raw-byte materialization path.
+
+The research decision is therefore:
+
+**RESEARCH_CLOSED_READY_FOR_SEPARATE_PRODUCTION_PREREGISTRATION**
+
+Formal handoff:
+
+- `research/tabulated_hydraulics/F-TAB01_GENERATED_K0_PROVIDER_HANDOFF.md`;
+- `research/tabulated_hydraulics/F-TAB01_GENERATED_K0_PROVIDER_HANDOFF.json`.
+
+Recommended next branch:
+
+`work/f-tab01-generated-k0-provider`
+
+That work unit must start from the live canonical at creation time. The research branch is evidence authority only and must not be merged wholesale into production.
