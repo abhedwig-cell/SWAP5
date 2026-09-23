@@ -168,3 +168,36 @@ Any remaining legacy symbol or branch whose physical meaning cannot be bound fro
 - **Q4:** retirement decision for remaining legacy container/parser responsibilities.
 
 No Q-stage may silently broaden the production admission of F-CI52 or the current Ribasim management coupling.
+
+
+## Exact-source reconciliation with F-PM08D
+
+After the first SW-RIB-SWM01 inventory was frozen, the earlier F-PM08D readiness line was recovered and bound as read-only prior authority. That line had already reconstructed the byte-exact SWAP 4.3.1 `surfacewater.f90` at source-location level. The inventory can therefore be sharpened beyond parameter-name inference.
+
+The relevant exact-source conclusions are:
+
+- `SWST` is the authoritative conserved secondary surface-water storage in simulated mode; `WLS` is derived from that storage, not a second independent state.
+- `WLSTAR` is genuine continuation-critical control memory for automatic management.
+- `WLSBAK` and `OSSWLM` belong to numerical continuation/policy, not physical surface-water state.
+- the extended drainage/infiltration law is stateless SWAP process physics;
+- the legacy availability limiter is a **separate state-dependent coupling constraint** based on surface-water storage plus maximum supply;
+- the fixed-weir balance has explicit drainage, rapid drainage, supply, discharge and top-surface exchange terms;
+- the automatic-weir target policy observes groundwater level, total soil air volume and a selected pressure head;
+- the legacy automatic capacity branch contains a documented SWQHR1/SWQHR2 head-selection asymmetry and must not be silently copied into a new coupling.
+
+This changes one ownership class materially. In Ribasim-coupled mode the constitutive drainage/infiltration response stays in SWAP, but the legacy availability limiter cannot remain hidden inside SWAP because the quantities that make the transfer feasible, surface-water storage and available supply, are owned by Ribasim. The coupled route therefore needs:
+
+```text
+SWAP unconstrained signed exchange request
+    -> coupling feasibility / Ribasim availability
+    -> one authoritative realized signed exchange
+    -> one mass booking on each side with opposite sign
+```
+
+That distinction prevents both double storage and double limiting.
+
+### Refined automatic-management split
+
+The automatic target-selection policy can move to the coupler while preserving its accepted-state inputs and target memory. The **hydraulic realization and capacity** of that target belongs to Ribasim. This is intentionally not defined as byte-for-byte reproduction of the legacy capacity branch, because F-PM08D5 already identified a source discrepancy there. Any behavioural change must be qualified explicitly rather than hidden as an implementation detail.
+
+The bound prior authority is recorded in `integration/research/SW_RIB_SWM01_FPM08D_RECONCILIATION.json`.
