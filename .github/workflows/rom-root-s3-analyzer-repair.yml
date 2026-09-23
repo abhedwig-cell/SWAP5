@@ -1,0 +1,165 @@
+name: ROM-ROOT Stage 3 analyzer-only repaired replay
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-s3-analyzer-repair-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify analyzer-repair authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR.json'))
+          p=json.load(open('integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json'))
+          assert b['state']=='BOUND_BEFORE_REPAIRED_ANALYSIS'
+          assert r['state']=='BOUND_BEFORE_REPAIRED_ANALYSIS'
+          assert r['source_stage3_run']['run_id']==35856657989
+          assert r['source_stage3_run']['head']=='b59006feb99350edee45cdf7b458bdf377ff969f'
+          assert len(r['source_stage3_run']['candidate_artifacts'])==32
+          assert r['scientific_semantics_changed'] is False
+          assert r['candidate_response_regenerated'] is False
+          assert p['state']=='PREREGISTERED_BEFORE_ANY_STAGE3_REDUCED_DYNAMIC_FEEDBACK_RESPONSE'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+      - name: Download immutable Stage 3 candidate response
+        uses: actions/download-artifact@v4
+        with:
+          pattern: rom-root-s3-*
+          path: /tmp/candidates
+          merge-multiple: true
+          run-id: 35856657989
+          github-token: ${{ github.token }}
+
+      - name: Download qualified dynamic Reference
+        uses: actions/download-artifact@v4
+        with:
+          name: rom-root-ra02r
+          path: /tmp/ra02r
+          run-id: 35822918094
+          github-token: ${{ github.token }}
+
+      - name: Download immutable full-potential C0 physics
+        uses: actions/download-artifact@v4
+        with:
+          name: rom-root-s3c0
+          path: /tmp/s3c0
+          run-id: 35854345998
+          github-token: ${{ github.token }}
+
+      - name: Verify immutable candidate surface
+        run: |
+          set -euo pipefail
+          test "$(find /tmp/candidates -maxdepth 1 -type f -name 'B??_V??_*.json' | wc -l)" -eq 32
+          python3 - <<'PY'
+          import glob,json
+          files=sorted(glob.glob('/tmp/candidates/B??_V??_*.json'))
+          assert len(files)==32
+          seen=set()
+          for path in files:
+              d=json.load(open(path))
+              key=(d['material'],d['history'],d['member'])
+              assert key not in seen
+              seen.add(key)
+              assert d['work_unit']=='ROM-ROOT-S3'
+              f=d['scientific_firewall']
+              assert f['representation_changed'] is False
+              assert f['closure_changed'] is False
+              assert f['fitted_coefficient_used'] is False
+              assert f['error_correction_used'] is False
+              assert f['relaxation_used'] is False
+              assert f['new_memory_state_used'] is False
+              assert f['production_rom_authorized'] is False
+          assert len(seen)==32
+          print('ROM_ROOT_S3_IMMUTABLE_CANDIDATES=PASS')
+          PY
+
+      - name: Execute repaired frozen componentwise analysis
+        run: |
+          set -euo pipefail
+          mkdir -p S3A_EVIDENCE
+          python3 tests/rom/analyze_rom_root_s3_dynamic_feedback.py \
+            --prereg integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json \
+            --ra02r-result integration/f-rom/ROM_ROOT_RA02R_RESULT.json \
+            --s3c0-result integration/f-rom/ROM_ROOT_S3C0R_RESULT.json \
+            --candidate-dir /tmp/candidates \
+            --ra02r-b01-r512-t32 /tmp/ra02r/B01_R512_T32_o0.txt \
+            --ra02r-b01-r1024-t32 /tmp/ra02r/B01_R1024_T32_o0.txt \
+            --ra02r-b01-r2048-t32 /tmp/ra02r/B01_R2048_T32_o0.txt \
+            --ra02r-b01-r2048-t16 /tmp/ra02r/B01_R2048_T16_o0.txt \
+            --ra02r-b01-r2048-t8 /tmp/ra02r/B01_R2048_T8_o0.txt \
+            --ra02r-b14-r512-t32 /tmp/ra02r/B14_R512_T32_o0.txt \
+            --ra02r-b14-r1024-t32 /tmp/ra02r/B14_R1024_T32_o0.txt \
+            --ra02r-b14-r2048-t32 /tmp/ra02r/B14_R2048_T32_o0.txt \
+            --ra02r-b14-r2048-t16 /tmp/ra02r/B14_R2048_T16_o0.txt \
+            --ra02r-b14-r2048-t8 /tmp/ra02r/B14_R2048_T8_o0.txt \
+            --s3c0-b01-r512-t32 /tmp/s3c0/B01_R512_T32_o0.txt \
+            --s3c0-b01-r1024-t32 /tmp/s3c0/B01_R1024_T32_o0.txt \
+            --s3c0-b01-r2048-t32 /tmp/s3c0/B01_R2048_T32_o0.txt \
+            --s3c0-b01-r2048-t16 /tmp/s3c0/B01_R2048_T16_o0.txt \
+            --s3c0-b01-r2048-t8 /tmp/s3c0/B01_R2048_T8_o0.txt \
+            --s3c0-b14-r512-t32 /tmp/s3c0/B14_R512_T32_o0.txt \
+            --s3c0-b14-r1024-t32 /tmp/s3c0/B14_R1024_T32_o0.txt \
+            --s3c0-b14-r2048-t32 /tmp/s3c0/B14_R2048_T32_o0.txt \
+            --s3c0-b14-r2048-t16 /tmp/s3c0/B14_R2048_T16_o0.txt \
+            --s3c0-b14-r2048-t8 /tmp/s3c0/B14_R2048_T8_o0.txt \
+            --output S3A_EVIDENCE/ROM_ROOT_S3_RESULT.json \
+            | tee S3A_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json S3A_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3_BINDING.json S3A_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR.json S3A_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR_BINDING.json S3A_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_RA02R_RESULT.json S3A_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3C0R_RESULT.json S3A_EVIDENCE/
+          sha256sum S3A_EVIDENCE/* > S3A_EVIDENCE/sha256.txt
+
+      - name: Enforce repaired Stage 3 firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('S3A_EVIDENCE/ROM_ROOT_S3_RESULT.json'))
+          assert r['status']=='STAGE3_DYNAMIC_FEEDBACK_BLIND_COMPARISON_COMPLETE'
+          f=r['scientific_firewall']
+          assert f['new_partition_selected'] is False
+          assert f['new_hydraulic_closure_selected'] is False
+          assert f['new_root_specific_state_selected'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_S3_REPAIRED_FIREWALL=PASS')
+          print('ROM_ROOT_S3_DECISION='+r['decision'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s3-repaired-analysis
+          path: S3A_EVIDENCE/
+          if-no-files-found: error
