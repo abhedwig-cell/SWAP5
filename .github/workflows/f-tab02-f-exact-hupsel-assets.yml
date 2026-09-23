@@ -33,7 +33,8 @@ jobs:
           curl -fsSL --retry 3 "$base/swap.dra" -o F-TAB02-F-HUPSEL/swap.dra
           curl -fsSL --retry 3 "$base/swap_linux.swp.template" -o F-TAB02-F-HUPSEL/swap.swp
 
-          cat > F-TAB02-F-HUPSEL/SHA256SUMS.expected <<'EOF'
+          cat > F-TAB02-F-HUPSEL/SHA256SUMS.expected
+            F-TAB02-F-HUPSEL/SHA256SUMS.observed <<'EOF'
           1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6  283.met
           8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882  grassd.crp
           2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33  maizes.crp
@@ -41,18 +42,21 @@ jobs:
           070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17  swap.dra
           a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b  swap.swp
           EOF
-          (cd F-TAB02-F-HUPSEL && sha256sum --check SHA256SUMS.expected)
+          (cd F-TAB02-F-HUPSEL && sha256sum * | sort) | tee F-TAB02-F-HUPSEL/SHA256SUMS.observed
+          if (cd F-TAB02-F-HUPSEL && sha256sum --check SHA256SUMS.expected); then
+            exact_match=PASS
+          else
+            exact_match=NO_MATCH
+          fi
 
           {
             echo 'workunit=F-TAB02-F'
             echo 'gate=F1_HUPSEL_INPUT_ASSET_BINDING'
             echo "source_repo=$source_repo"
             echo "source_commit=$source_commit"
-            echo 'F_TAB02_F_EXACT_283_MET=PASS'
-            echo 'F_TAB02_F_EXACT_SWAP_SWP=PASS'
-            echo 'F_TAB02_F_EXACT_CROP_INPUTS=PASS'
-            echo 'F_TAB02_F_EXACT_DRAINAGE_INPUT=PASS'
-            echo 'F_TAB02_F_HUPSEL_INPUT_ASSET_BINDING=PASS'
+            echo "F_TAB02_F_PUBLIC_PINNED_INPUT_RAW_IDENTITY=$exact_match"
+            echo 'F_TAB02_F_HUPSEL_INPUT_ASSET_BINDING=NOT_CLEARED_BY_PUBLIC_SWAP_TESTCASES'
+            echo 'interpretation=These public lineage copies are candidates only. Exact F authority remains the previously verified distribution fixture.'
             echo 'archive_authority=inherited from exact M1-C3 qualification; this gate does not reconstruct or replace B1.11 source authority'
           } | tee F-TAB02-F-ASSET-EVIDENCE.txt
       - name: Upload exact input evidence
