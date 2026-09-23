@@ -136,13 +136,59 @@ def generated_sources(temp: Path) -> tuple[list[Path], Path]:
     test, count = re.subn(r"integer, parameter :: NCOLUMN = 3\b", f"integer, parameter :: NCOLUMN = {NCOLUMN}", test, count=1)
     if count != 1:
         raise RuntimeError("could not scale the generated worker count")
+    test, count = test.replace(
+        "fmr_serialized_batch_diagnostics_t, fmr_execute_serialized_physical_column",
+        "fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, &\n       FMR_SERIAL_DISPATCH_OK",
+        1,
+    ), 1
+    if count != 1:
+        raise RuntimeError("could not route generated workload through the public batch dispatcher")
+    test, count = test.replace(
+        "fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &",
+        "fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, fmr_aggregate_diagnostics_t, &",
+        1,
+    ), 1
+    if count != 1:
+        raise RuntimeError("could not import the batch aggregate diagnostics type from its owner module")
+    replacements = (
+        ("type(fmr_serialized_column_result_t) :: results(NCOLUMN)",
+         "type(fmr_serialized_column_result_t), allocatable :: results(:)"),
+        ("type(fmr_column_diagnostics_t) :: diagnostics(NCOLUMN)",
+         "type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)"),
+        ("type(fmr_serialized_batch_diagnostics_t) :: runtime",
+         "type(fmr_serialized_batch_diagnostics_t) :: runtime\n"
+         "  type(fmr_aggregate_diagnostics_t) :: aggregate\n"
+         "  integer :: dispatch_status"),
+    )
+    for old, new in replacements:
+        test, count = test.replace(old, new, 1), 1
+        if count != 1:
+            raise RuntimeError(f"could not prepare batch dispatch declaration: {old}")
     test, count = re.subn(
-        r"call require\(results\(i\)%completed \.and\. results\(i\)%committed, 'A-B-A column accepted and committed'\)",
-        "call require(results(i)%completed .and. results(i)%committed, 'large-batch column accepted and committed')",
-        test, count=1,
+        r"  call backend%initialize\(top\).*?^  end do\n(?=\n  call snapshot_physical_state)",
+        "  call fmr_run_serialized_physical_multiswap(columns, templates, parameters, forcings, states, numerical, top, &\n"
+        "       T0, T1, 64, results, diagnostics, aggregate, dispatch_status, runtime)\n"
+        "  call require(dispatch_status == FMR_SERIAL_DISPATCH_OK, 'large-batch public dispatch status')\n"
+        "  call require(runtime%max_common_work_payload_bytes > 0_int64, 'large-batch worker workspace measured')\n"
+        "  call require(runtime%max_soil_temperature_optional_payload_bytes == 0_int64, 'BASE optional workspace absent')\n"
+        "  call require(runtime%snow_event_evaluation_calls == 0 .and. runtime%black_evaporation_evaluation_calls == 0 .and. &\n"
+        "       runtime%boesten_evaporation_evaluation_calls == 0 .and. &\n"
+        "       runtime%soil_temperature_evaluation_calls == 0 .and. runtime%drainage_response_evaluation_calls == 0, &\n"
+        "       'BASE optional process calls absent')\n"
+        "  call require(all([(results(i)%completed .and. results(i)%committed .and. results(i)%mass%complete .and. &\n"
+        "       abs(results(i)%mass%residual) <= HARD_MASS_GATE .and. states(i)%current_revision() == 1_int64, &\n"
+        "       i=1,NCOLUMN)]), 'all large-batch columns committed under hard mass gate')\n"
+        "  print '(a,1x,i0)', 'M7_LARGE_BATCH_COLUMNS', NCOLUMN\n"
+        "  print '(a,1x,i0)', 'M7_LARGE_BATCH_ACTIVE_NODES', numnod\n"
+        "  print '(a,1x,i0)', 'M7_LARGE_BATCH_COMMON_INPUT_ARRAY_BYTES', NCOLUMN * &\n"
+        "       (common_parameter_payload_bytes(parameters(1)) + common_forcing_payload_bytes(forcings(1)) + &\n"
+        "       common_state_payload_bytes(initial_state))\n"
+        "  print '(a,1x,i0)', 'M7_LARGE_BATCH_SHARED_WORKSPACE_BYTES', runtime%max_common_work_payload_bytes\n"
+        "  print '(a)', 'M7_LARGE_BATCH_ALL_COLUMNS_COMMITTED_HARD_MASS=PASS'\n",
+        test, count=1, flags=re.S | re.M,
     )
     if count != 1:
-        raise RuntimeError("could not label generated large-batch acceptance")
+        raise RuntimeError("could not replace generated worker loop with public batch dispatcher")
     final = "  print '(a)', 'M7_SERIALIZED_WORKER_SCRATCH_REUSE_CROSS_COLUMN=PASS'"
     replacement = (
         "  call require(all([(results(i)%completed .and. results(i)%committed .and. results(i)%mass%complete .and. &\n"
