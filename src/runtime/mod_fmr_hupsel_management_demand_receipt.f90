@@ -61,8 +61,11 @@ contains
            self%event_duration_day > 0.0_real64 .and. self%application_t1 > self%management_t0 .and. &
            self%application_t1 <= self%management_t1
     else
-      ready = self%requested_depth_cm == 0.0_real64 .and. self%gross_application_rate_cm_per_day == 0.0_real64 .and. &
-           self%event_duration_day == 0.0_real64 .and. self%application_t1 == self%management_t0
+      ready = abs(self%requested_depth_cm) <= epsilon(1.0_real64) .and. &
+           abs(self%gross_application_rate_cm_per_day) <= epsilon(1.0_real64) .and. &
+           abs(self%event_duration_day) <= epsilon(1.0_real64) .and. &
+           abs(self%application_t1-self%management_t0) <= &
+             64.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(self%management_t0))
     end if
   end function fmr_hupsel_management_demand_receipt_ready
 
