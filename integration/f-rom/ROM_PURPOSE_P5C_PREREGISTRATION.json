@@ -126,7 +126,9 @@
     "native_gradient": "g_face = (h_bottom_state - hbot) / delta_face + 1",
     "native_flux": "qbot_hat = -K_bottom * g_face",
     "depth_coordinate": "positive downward",
-    "sign": "native SWAP bottom flux; free drainage equilibrium is negative"
+    "sign": "native SWAP bottom flux; free drainage equilibrium is negative",
+    "primary_metric_domain": "Only observations with active prescribed-head lower boundary (bottom_mode=5; RISE/FALL phases). HOLD observations use bottom_mode=2 and are excluded from boundary-interface estimator metrics.",
+    "hold_role": "Execution/state integrity only; not scored by the P5C carrier comparison."
   },
   "estimators": {
     "BASE16": {
@@ -166,7 +168,7 @@
       "maximum absolute error cm/day",
       "sign mismatch count"
     ],
-    "requirement": "Fine oracle must agree with Reference BOTTOM_FLUX to numerical roundoff/serialization scale and have zero sign mismatches before reduced-carrier results are interpretable.",
+    "requirement": "On bottom_mode=5 observations only, the fine oracle must agree with Reference BOTTOM_FLUX to numerical roundoff/serialization scale and have zero sign mismatches before reduced-carrier results are interpretable.",
     "rmse_gate_cm_per_day": 1e-10,
     "max_abs_gate_cm_per_day": 1e-8
   },
