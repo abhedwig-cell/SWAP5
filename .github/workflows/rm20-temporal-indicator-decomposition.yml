@@ -1,0 +1,29 @@
+name: RM20 temporal indicator decomposition
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/ribasim-management/test_rm20_temporal_indicator_decomposition.f90'
+      - 'tests/ribasim-management/run_rm20_temporal_indicator_decomposition.sh'
+      - 'integration/ribasim-management/RM20_*'
+      - '.github/workflows/rm20-temporal-indicator-decomposition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM20 temporal decomposition
+        run: bash tests/ribasim-management/run_rm20_temporal_indicator_decomposition.sh
