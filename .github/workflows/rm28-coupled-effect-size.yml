@@ -1,0 +1,24 @@
+name: RM28 coupled temporal effect size
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/ribasim-management/test_rm28_coupled_effect_size.py'
+      - 'tests/ribasim-management/run_rm28_coupled_effect_size.sh'
+      - 'integration/ribasim-management/RM28_*'
+      - '.github/workflows/rm28-coupled-effect-size.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: RM28 deterministic effect-size composition
+        run: bash tests/ribasim-management/run_rm28_coupled_effect_size.sh
