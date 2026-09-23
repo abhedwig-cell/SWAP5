@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-r2048-t32-execution-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-R2048-T32-RECOVERY",
+  "date": "2026-09-23",
+  "status": "TECHNICAL_STRATUM_REPAIR_BOUND_RESPONSE_BLIND",
+  "trigger_evidence": {
+    "source_run": 35876286853,
+    "verified_exit143_jobs": [
+      {
+        "job_id": 107234972634,
+        "case": "B01/R2048_T32/O0/h1"
+      },
+      {
+        "job_id": 107234972632,
+        "case": "B01/R2048_T32/O0/h2"
+      },
+      {
+        "job_id": 107234972943,
+        "case": "B01/R2048_T32/O0/h3"
+      },
+      {
+        "job_id": 107234972643,
+        "case": "B01/R2048_T32/O0/h4"
+      },
+      {
+        "job_id": 107234972952,
+        "case": "B01/R2048_T32/O2/h1"
+      }
+    ],
+    "common_failure": "GitHub runner shutdown signal, exit code 143, after successful materialization and compilation",
+    "hydrological_response_values_used_for_repair_design": false
+  },
+  "repaired_stratum": {
+    "route": "R2048_T32",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "histories": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "case_count": 16,
+    "execution": "two exact-state checkpoint halves per independent history",
+    "segment_1_observations": [
+      1,
+      512
+    ],
+    "segment_2_observations": [
+      513,
+      1024
+    ],
+    "candidate_or_rom_execution": false
+  },
+  "rationale": "Repeated runner preemption is route-level infrastructure evidence. Re-executing the entire R2048_T32 stratum through one uniform exact-state segmented topology avoids selectively mixing execution topologies within the scientific target route.",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "reference_target": "R2048_T32"
+  },
+  "scientific_effect": "NONE",
+  "scientific_firewall": {
+    "forcing_changed": false,
+    "histories_changed": false,
+    "initial_states_changed": false,
+    "temporal_factor_changed": false,
+    "spatial_resolution_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "response_based": false,
+    "candidate_response_generated": false
+  }
+}
