@@ -27,7 +27,7 @@ program tabhyd_typed_solver_scale40
   real(real64), allocatable, target :: drainage(:,:), irrigation(:), roots(:)
   real(real64), allocatable :: cofgen(:,:), headtab(:,:), thetatab(:,:), ktab(:,:)
   real(real64), allocatable :: h0(:), theta0(:), ka(:), ca(:), da(:), tt(:), kt(:), ct(:), dtbl(:)
-  real(real64) :: step_duration, top_flux, bottom_flux, bottom_head, max_h, max_theta, checksum_a, checksum_t
+  real(real64) :: step_duration, initial_head, top_flux, bottom_flux, bottom_head, max_h, max_theta, checksum_a, checksum_t
   real(real64) :: t0,t1, atime(NROUNDS), ttime(NROUNDS), med_a, med_t
   integer :: nodes, nt, bottom_mode, i,j,r,rep,iu,ios
   character(len=512) :: path
@@ -37,13 +37,13 @@ program tabhyd_typed_solver_scale40
   call get_command_argument(1,path)
   open(newunit=iu,file=trim(path),status='old',action='read',iostat=ios)
   if(ios/=0) error stop 'cannot open input'
-  read(iu,*,iostat=ios) scenario, nodes, nt, step_duration, top_flux, bottom_flux, bottom_mode, bottom_head
+  read(iu,*,iostat=ios) scenario, nodes, nt, step_duration, initial_head, top_flux, bottom_flux, bottom_mode, bottom_head
   if(ios/=0 .or. nodes/=numnod .or. nt/=TABHYD_RAW_TABLE_N) error stop 'invalid header'
 
   allocate(cofgen(24,nodes),headtab(nt,nodes),thetatab(nt,nodes),ktab(nt,nodes),h0(nodes))
   cofgen=0.0_real64
   do i=1,nodes
-    read(iu,*,iostat=ios) soil, cofgen(1,i),cofgen(2,i),cofgen(4,i),cofgen(6,i),cofgen(3,i),cofgen(5,i),cofgen(9,i),h0(i)
+    read(iu,*,iostat=ios) soil, cofgen(1,i),cofgen(2,i),cofgen(4,i),cofgen(6,i),cofgen(3,i),cofgen(5,i),cofgen(9,i)
     if(ios/=0) error stop 'invalid node header'
     cofgen(7,i)=1.0_real64-1.0_real64/cofgen(6,i)
     cofgen(8,i)=cofgen(4,i)
@@ -57,6 +57,7 @@ program tabhyd_typed_solver_scale40
   end do
   close(iu)
 
+  h0=initial_head
   fldtmin=.false.
   do i=1,nodes
     dz(i)=5.0_real64
