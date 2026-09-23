@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.ppa_wu05a3.drainable_storage.status.v1",
+  "work_unit": "PPA-WU05-A3-DRAINABLE-STORAGE",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "IMPLEMENTED_SOURCE_ORACLE_PENDING",
+  "baseline": "codex/ppa-swap431-functional-gap-register@8a2c3bc05",
+  "preregistration": "integration/audits/PPA_WU05A3_DRAINABLE_STORAGE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_admission": "NONE; isolated geometry/storage calculation only; RAPIDDRAIN and Richards routes unchanged",
+  "implementation": "src/process/mod_ppa_wu05a3_drainable_storage.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_drainable_storage_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_drainable_storage_source_oracle.sh",
+  "test_result": null,
+  "next_action": "Run direct GNU Fortran O0/O2 bitwise source oracle and persist the bounded result.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}
