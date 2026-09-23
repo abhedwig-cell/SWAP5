@@ -1,0 +1,134 @@
+name: F-ROM-PURPOSE P5C groundwater boundary-interface carrier screen
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P5C_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p5c-gw-boundary-interface
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Verify P5C authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p5c_gw_reference.py             tests/rom/materialize_rom_purpose_p5c_gw_interface.py             tests/rom/run_rom_purpose_p5c_gw_interface.py             tests/rom/analyze_rom_purpose_p5c_gw_interface.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P5C_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_BEFORE_ANY_P5C_RESPONSE'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P5C_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  routes:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute fresh P5C boundary-interface route
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p5c_gw_interface.py             --material "${{ matrix.material }}"             --canonical-root canonical             --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p5c-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: routes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'p5c-*', path: /tmp/p5c, merge-multiple: true}
+      - name: Analyze oracle-gated carrier screen
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p5c_gw_interface.py             --prereg integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json             --root /tmp/p5c             --output result/ROM_PURPOSE_P5C_RESULT.json | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P5C_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p5c-result
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p5c-result, path: /tmp/result}
+      - name: Persist P5C result
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P5C_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P5C_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P5_STATUS.json')
+          s=json.load(open(p))
+          d=r['decision']
+          if r['oracle_gate_pass'] and d in ('HYDRAULIC_SHAPE_SIGNAL','STORAGE_SPLIT_SIGNAL','BOTH_SIGNAL'):
+              gate='P5C_FRESH_DYNAMIC_VALIDATION_DESIGN'
+              nxt=['Preregister a fresh dynamic blind validation for only the P5C-screened carrier(s).']
+          else:
+              gate='P5_CLOSED'
+              nxt=[]
+          s.update({
+            'status':'P5C_SCREEN_COMPLETE_'+d,
+            'current_gate':gate,
+            'p5c_result':'integration/f-rom/ROM_PURPOSE_P5C_RESULT.json',
+            'p5c_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p5c_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':nxt
+          })
+          s['scientific_firewall']['any_p5c_response_seen']=True
+          s['scientific_firewall']['new_closure_family_authorized']=False
+          s['scientific_firewall']['application_acceptance_adjudicated']=False
+          s['scientific_firewall']['production_rom_authorized']=False
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P5C_RESULT.json integration/f-rom/ROM_PURPOSE_P5_STATUS.json
+          git commit -m "ROM-PURPOSE P5C: persist boundary-interface carrier screen" || exit 0
+          git push origin HEAD:work/f-rom-purpose
