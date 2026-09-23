@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.ribasim_management.real_ribasim_aligned_fixture.result.v1",
+  "work_unit": "RM08",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_FULL_PHYSICAL_REALIZATION_ASSUMPTION",
+  "qualification_head": "101b3b94e30429c1e3b3cda9adc2065480643f32",
+  "workflow": "RM08 real SWAP Ribasim aligned fixture",
+  "diagnostic_workflow_run": 35825037457,
+  "diagnostic_workflow_job": 107064815695,
+  "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "classification": "SCIENTIFIC_CONTRACT_FALSIFICATION",
+  "frozen_inputs": {
+    "swap_request_depth_cm": 2.0,
+    "represented_area_m2": 1000.0,
+    "surface_supply_m3_per_day": 25.0,
+    "user_demand_min_level_m": 0.99,
+    "initial_basin_level_m": 1.0,
+    "level_difference_threshold_m": 0.02,
+    "allocation_dt_seconds": 86400.0,
+    "solver_saveat_seconds": 86400.0
+  },
+  "observations": {
+    "candidate_a": {
+      "allocated_depth_cm": 2.0,
+      "physically_supplied_depth_cm": 1.6488994020651218,
+      "final_basin_level_m": 1.0085110059793487
+    },
+    "candidate_b": {
+      "allocated_depth_cm": 2.0,
+      "physically_supplied_depth_cm": 1.6488994020651218,
+      "final_basin_level_m": 1.0085110059793487
+    },
+    "replay": "IDENTICAL_AT_REPORTED_PRECISION",
+    "accepted_origin_after_candidate_a_discard": "UNCHANGED_BEFORE_FAILURE_ASSERT",
+    "water_ledger": {
+      "physical_user_demand_volume_m3": 16.488994020651218,
+      "basin_storage_gain_m3": 8.5110059793487,
+      "sum_m3": 24.999999999999918,
+      "source_supply_m3": 25.0
+    }
+  },
+  "falsified_hypothesis": "Sufficient source supply plus a full Ribasim allocation is sufficient to guarantee full physical UserDemand realization over the one-day window.",
+  "mechanism": {
+    "exact_release_source": [
+      "core/src/solve.jl: physical UserDemand inflow is q_target multiplied by low-storage and source-level reduction factors",
+      "core/src/util.jl: reduction_factor is a smooth 0-to-1 transition over level_difference_threshold"
+    ],
+    "initial_source_level_margin_m": 0.01,
+    "threshold_m": 0.02,
+    "meaning": "The configured 0.99 m UserDemand minimum level places the 1.00 m accepted Basin level inside Ribasim's physical reduction band. Allocation can therefore be 2.0 cm while physical realization is smaller."
+  },
+  "passed_before_falsification": [
+    "RM07 SWAP request is exactly 2.0 cm and O0/O2 identical",
+    "real Ribasim allocates exactly 2.0 cm",
+    "independent Ribasim candidates replay allocation, physical supply and Basin endpoint identically",
+    "Ribasim physical water ledger closes to the 25 m3 source supply"
+  ],
+  "not_executed_after_falsification": [
+    "RM06 consumption of the real Ribasim values",
+    "SWAP candidate reject/replay/commit with the real Ribasim values"
+  ],
+  "nonclaims": [
+    "No Ribasim defect is claimed.",
+    "No mass-balance defect is present in the observed fixture.",
+    "No partial-irrigation policy is admitted.",
+    "RM08 is not production-admitted.",
+    "The preregistered 0.99 m fixture is not silently modified or reinterpreted as a pass."
+  ],
+  "downstream": "Preregister a new bounded full-realization profile in which Ribasim physical and limiter reduction factors are inactive by construction, then repeat the real allocation-to-SWAP transaction bridge."
+}
