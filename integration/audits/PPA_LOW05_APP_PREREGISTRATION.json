@@ -46,6 +46,6 @@
     "integration/audits/PPA_LOW05_APP_SOURCE_CENSUS.json"
   ],
   "held_work": [
-    "Non-flat HBOT5 source interpolation passes its pure exact-source oracle, but the attempted standalone transaction completed without commit (kernel_status=2); the cause is not yet isolated. Keep full PPA-LOW05-APP OPEN until variable-head transaction behavior, accepted mass, retry and restart are qualified."
+    "Non-flat HBOT5 source interpolation passes its pure exact-source oracle, but the attempted standalone transaction completed without commit (kernel_status=2). The preserved WU01/WU04C reproduction reaches HeadCalc, exhausts its configured nonlinear/backtracking attempt, and requests timestep reduction on each allowed retry; the exact convergence cause is not isolated. Keep full PPA-LOW05-APP OPEN until variable-head transaction behavior, accepted mass, retry and restart are qualified."
   ]
 }
