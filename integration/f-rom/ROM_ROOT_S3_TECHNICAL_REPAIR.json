@@ -3,7 +3,7 @@
   "workstream": "ROM-ROOT",
   "work_unit": "ROM-ROOT-S3",
   "date": "2026-09-23",
-  "state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION",
+  "state": "BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE",
   "failed_run": 35856502212,
   "failure_class": "TECHNICAL_MISSING_PYTHON_DEPENDENCY",
   "observation": "Candidate jobs failed at import time with ModuleNotFoundError for numpy before the Stage 3 runner executed.",
@@ -27,5 +27,6 @@
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
   },
-  "model_changed": false
+  "model_changed": false,
+  "repair_state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION"
 }
