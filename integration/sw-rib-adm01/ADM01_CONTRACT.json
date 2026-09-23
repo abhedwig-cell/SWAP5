@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.sw_rib_adm01.contract.v1",
+  "work_unit": "SW-RIB-ADM01",
+  "date": "2026-09-23",
+  "title": "Production admission of external Ribasim surface-water ownership profile",
+  "base": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "research_authority": {
+    "branch": "research/sw-rib-swm01-surfacewater-ownership",
+    "closeout_commit": "7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
+    "reconciled_head": "48df989b098d73208eed2496005b656f588ebffd",
+    "closeout_record": "integration/research/SW_RIB_SWM01_CLOSEOUT.json",
+    "bounded_profile": "integration/research/SW_RIB_SWM01_BOUNDED_COUPLED_PROFILE.json",
+    "q4b_result": "integration/research/SW_RIB_SWM01_Q4B_RESULT.json"
+  },
+  "target_profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+  "production_claim": "NONE_YET",
+  "required_gates": [
+    "ADM01-G1 owner XOR fail-closed",
+    "ADM01-G2 canonical replay of Q4B signed exchange binding",
+    "ADM01-G3 accepted external surface-water head binding",
+    "ADM01-G4 storage geometry representation freeze",
+    "ADM01-G5 restart/retry/recomposition/exactly-once mass end-to-end",
+    "ADM01-G6 Ribasim provenance/version closure",
+    "ADM01-G7 independent current-tree qualification and admission"
+  ],
+  "frozen_invariants": [
+    "For one physical surface-water store, SWAP fixed-weir state ownership XOR external Ribasim ownership.",
+    "External Ribasim mode allocates no SWAP-owned surface-water storage for the same store.",
+    "Resolved external surface-water head is read-only process control input to SWAP exchange physics.",
+    "Availability-limited negative exchange requires recomposition from accepted origins, never accept-with-clip.",
+    "Exactly one accepted transfer identity crosses the interface and is booked once per model with opposite signs.",
+    "Standalone F-CI52 remains available outside the external-owner profile."
+  ],
+  "explicitly_excluded": [
+    "exact nonlinear SWQHR1 parity unless separately qualified",
+    "SWQHR2 full legacy interpolation/crest parity",
+    "SWSRF=1 undefined-WL route",
+    "negative fractional power-interflow route",
+    "legacy WLSBAK/OSSWLM timestep policy"
+  ],
+  "production_admission": false
+}
