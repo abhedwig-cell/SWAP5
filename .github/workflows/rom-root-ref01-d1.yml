@@ -67,6 +67,7 @@ jobs:
           python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ matrix.source }}"             --material "${{ matrix.material }}"             --temporal-factor 32             --output /tmp/ref01_root.f90             --manifest /tmp/root_manifest.json
           python3 tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py             --input /tmp/ref01_root.f90             --output canonical/tests/rom/test_rom_root_ref01_d1.f90
           python3 tests/rom/materialize_rom_root_ref01_policy.py             --path canonical/tests/rom/test_rom_root_ref01_d1.f90
+          python3 tests/rom/materialize_rom_root_ref01_d1_policy_replay.py             --path canonical/tests/rom/test_rom_root_ref01_d1.f90
           python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py             --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90             --manifest /tmp/reference_floor_repair.json
 
       - name: Execute diagnostic replay
@@ -88,6 +89,7 @@ jobs:
           test "$rc" -ne 0
           grep -Fq 'ROM_ROOT_REF01_POLICY|' "$log"
           grep -Fq 'C6R_DIAG_ROOT_FIRST_FAILURE|' "$log"
+          grep -Fq 'ROM_ROOT_REF01_D1_TOL|' "$log"
           grep -Fq 'C6R_DIAG_ROOT_FAILURE_CLASS|' "$log"
           cp /tmp/root_manifest.json evidence/
           cp /tmp/reference_floor_repair.json evidence/
