@@ -1,0 +1,25 @@
+name: RM13 management init smoke
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/ribasim-management/test_rm13_management_init_smoke.f90'
+      - 'tests/ribasim-management/run_rm13_management_init_smoke.sh'
+      - '.github/workflows/rm13-management-init-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM13 management init smoke
+        run: bash tests/ribasim-management/run_rm13_management_init_smoke.sh
