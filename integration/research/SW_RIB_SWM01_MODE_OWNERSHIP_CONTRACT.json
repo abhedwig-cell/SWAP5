@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.sw_rib_swm01.surface_water_owner_mode_contract.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "status": "PROPOSED_RESEARCH_CONTRACT_NOT_PRODUCTION_ADMISSION",
+  "modes": {
+    "SWAP_FIXED_WEIR_STANDALONE": {
+      "surface_water_state_owner": "SWAP5_FCI52",
+      "surface_water_storage_in_swap_committed_state": true,
+      "secondary_drainage_mass_classification": "INTERNAL_TRANSFER_WITHIN_SWAP_COMBINED_SOIL_PLUS_SURFACE_SYSTEM",
+      "supply_mass_classification": "EXTERNAL_INFLOW_TO_SWAP_COMBINED_SYSTEM",
+      "weir_discharge_mass_classification": "EXTERNAL_OUTFLOW_FROM_SWAP_COMBINED_SYSTEM",
+      "allowed_capability": "current F-CI52 restricted envelope only"
+    },
+    "EXTERNAL_RIBASIM_COUPLED": {
+      "surface_water_state_owner": "RIBASIM",
+      "surface_water_storage_in_swap_committed_state": false,
+      "secondary_drainage_mass_classification": "SWAP_TO_RIBASIM_INTERFACE_TRANSFER",
+      "negative_drainage_infiltration_mass_classification": "RIBASIM_TO_SWAP_INTERFACE_TRANSFER",
+      "runoff_or_rapid_surface_delivery_mass_classification": "SWAP_TO_RIBASIM_INTERFACE_TRANSFER_WHEN_MAPPED",
+      "surface_water_supply_mass_classification": "RIBASIM_NETWORK_INTERNAL_OR_EXTERNAL_BY_RIBASIM_BOUNDARY; NOT SWAP_SURFACE_STORE_SUPPLY",
+      "weir_discharge_mass_classification": "RIBASIM_NETWORK_OUTFLOW; NOT SWAP MASS OWNER",
+      "swap_exchange_role": "compute soil/drainage physical response and publish candidate signed exchange",
+      "coupler_role": "resolve transaction ordering, feasibility and exactly-once cross-model transfer",
+      "ribasim_role": "own accepted surface-water storage/level/network and hydraulic realization"
+    }
+  },
+  "hard_invariants": [
+    "For one physical surface-water store, SWAP_FIXED_WEIR and EXTERNAL_RIBASIM ownership are mutually exclusive.",
+    "No physical surface-water storage volume may appear in both SWAP committed state and Ribasim accepted state.",
+    "The same drainage transfer may not be both internal to SWAP combined storage and external to Ribasim in one application profile.",
+    "Exactly one realized signed exchange crosses the SWAP-Ribasim boundary and is booked once per model with opposite signs.",
+    "A rejected SWAP trial or rejected coupled window may not change accepted Ribasim surface-water state or accepted management memory.",
+    "Ribasim-owned availability/supply state may not be duplicated as a private SWAP availability limiter in external-owner mode.",
+    "SWAP may retain constitutive drainage/infiltration response while the cross-model feasibility limiter is resolved at the coupling boundary.",
+    "Automatic management target memory is policy state, not physical surface-water storage."
+  ],
+  "required_fail_closed_cases": [
+    "external_ribasim_owner AND internal_fci52_surface_water_state_active",
+    "same drainage scalar classified as both SWAP internal and SWAP external mass",
+    "negative/infiltration request accepted without external availability resolution",
+    "management policy driven by uncommitted SWAP trial state"
+  ],
+  "current_gap": "No current production application-profile contract is yet shown to enforce these mode exclusions. Q1A tests external state ownership physically; Q3 must test signed exchange and mass reclassification.",
+  "relation_to_rm13": "The current RM13 minimal real three-model research profile has drainage disabled, so it does not qualify the surface-water owner-mode mass reclassification.",
+  "production_admission": false
+}
