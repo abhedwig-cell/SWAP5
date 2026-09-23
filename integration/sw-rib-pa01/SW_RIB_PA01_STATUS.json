@@ -1,0 +1,12 @@
+{
+  "workstream": "SWAP5-Ribasim production admission",
+  "work_unit": "SW-RIB-PA01",
+  "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "research_authority": "SW-RIB-SWM01@48df989b098d73208eed2496005b656f588ebffd",
+  "status": "OPEN",
+  "implemented_candidate": true,
+  "qualified": false,
+  "production_admission": false,
+  "retirement_authority": false,
+  "next_action": "Run owner-XOR and signed-exchange canonical-derived gates. On pass, bind the external Ribasim accepted-head service into an application context and add end-to-end recomposition/restart qualification."
+}

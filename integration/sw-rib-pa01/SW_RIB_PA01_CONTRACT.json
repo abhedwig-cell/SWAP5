@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.sw_rib_pa01.production_admission_contract.v1",
+  "work_unit": "SW-RIB-PA01",
+  "date": "2026-09-23",
+  "status": "PRODUCTION_CANDIDATE__ADMISSION_OPEN",
+  "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "research_authority": "research/sw-rib-swm01-surfacewater-ownership@48df989b098d73208eed2496005b656f588ebffd",
+  "purpose": "Admit the bounded external-Ribasim secondary surface-water application profile without importing the research branch wholesale.",
+  "candidate_scope": {
+    "imported_production_source": [
+      "src/process/mod_drainage_extended_exchange.f90",
+      "src/runtime/mod_fmr_drainage_response_binding.f90"
+    ],
+    "new_fail_closed_contract": "src/runtime/mod_fmr_surface_water_owner_contract.f90",
+    "surface_water_owner_mode": "EXTERNAL_RIBASIM",
+    "retained_swap_role": "signed soil/drainage constitutive exchange only",
+    "excluded_from_this_first_gate": [
+      "Ribasim runtime/service binding",
+      "storage-geometry conversion implementation",
+      "automatic management scheduler/policy service",
+      "whole surfacewater.f90 retirement"
+    ]
+  },
+  "hard_invariants": [
+    "EXTERNAL_RIBASIM cannot coexist with FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER for the same application column.",
+    "The extended signed drainage provider owns no surface-water storage, management state or availability state.",
+    "Resolved external surface-water head is read-only forcing/control for SWAP exchange physics.",
+    "Positive and negative signed exchange use the existing transaction ledger exactly once.",
+    "A rejected process trial cannot change committed state or revision."
+  ],
+  "evidence_replay": [
+    "Re-run the Q4B transactional signed-exchange binding on the canonical-derived production branch under O0 and O2.",
+    "Qualify the owner-mode XOR contract independently."
+  ],
+  "remaining_before_admission": [
+    "Bind external accepted Ribasim level/service data into the production application context.",
+    "Freeze and implement the chosen Q1H storage-geometry epsilon/error envelope or explicit Ribasim-native geometry contract.",
+    "Qualify end-to-end retry/recomposition with actual Ribasim availability.",
+    "Qualify restart and current-canonical preservation.",
+    "Resolve Ribasim model/core version provenance."
+  ],
+  "production_admission": false,
+  "retirement_authority": false
+}
