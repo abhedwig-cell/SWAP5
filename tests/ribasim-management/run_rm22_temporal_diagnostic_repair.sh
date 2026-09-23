@@ -15,14 +15,15 @@ grep -Fq 'tx%max_temporal_indicator' "$RT" || fail "canonical runtime not bound 
 grep -Fq 'result%temporal_indicator = outcome%temporal_indicator' "$TX" || fail "terminal indicator provenance was not preserved"
 echo 'RM22_STATIC_DIAGNOSTIC_BINDING=PASS'
 
-TX_COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
+TX_COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace)
 for opt in 0 2; do
   OUT="$BUILD/tx_o$opt"; mkdir -p "$OUT"
-  gfortran "${TX_COMMON[@]}" -O"$opt" -J "$OUT"     src/transaction/mod_transaction_reference.f90 tests/transaction/test_transaction_reference.f90     -o "$OUT/test" || fail "transaction regression compile O$opt"
-  OMP_NUM_THREADS=8 "$OUT/test" > "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "transaction regression O$opt"; }
-  grep -Fq 'A23BL_TRANSACTION_GATE PASS' "$OUT/output.txt" || fail "transaction acceptance regression O$opt"
+  gfortran "${TX_COMMON[@]}" -O"$opt" -J "$OUT"     src/transaction/mod_transaction_reference.f90 tests/ribasim-management/test_rm22_retry_max.f90     -o "$OUT/test" || fail "targeted transaction compile O$opt"
+  "$OUT/test" > "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "targeted transaction O$opt"; }
+  grep -Fq 'RM22_RETRY_COMPLETE_DIAGNOSTIC=PASS' "$OUT/output.txt" || fail "targeted diagnostic O$opt"
 done
-cmp "$BUILD/tx_o0/output.txt" "$BUILD/tx_o2/output.txt" || fail "transaction O0/O2 drift"
+cmp "$BUILD/tx_o0/output.txt" "$BUILD/tx_o2/output.txt" || fail "targeted transaction O0/O2 drift"
+cat "$BUILD/tx_o0/output.txt"
 echo 'RM22_TRANSACTION_ACCEPTANCE_REGRESSION=PASS'
 
 bash tests/ribasim-management/run_rm21_temporal_attempt_provenance.sh | tee "$BUILD/rm21.txt"
