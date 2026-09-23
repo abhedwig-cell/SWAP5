@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.rom-purpose.p3.reference-adjudication-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE-ADJUDICATION",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_BOTH_REPAIRED_REFERENCE_ROUTE_SETS",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "reference_runs": {
+    "SURF_P": 35876282704,
+    "GW_LB": 35887290359
+  },
+  "artifacts": {
+    "SURF_P": {
+      "name": "p3ref-surface-routes",
+      "artifact_id": 10763026250,
+      "size_in_bytes": 98635109
+    },
+    "GW_LB": {
+      "name": "p3ref-gw-routes",
+      "artifact_id": 10763935612,
+      "size_in_bytes": 131116989
+    }
+  },
+  "route_authority": {
+    "SURF_P": "integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_TERMINAL_RESULT.json@742238bc4e1924a6da625ea6f41955a0911d4554",
+    "GW_LB": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json@b061d33780851910bd4ebf366dd886f4cda75e69"
+  },
+  "gate": {
+    "required_cases": [
+      "SURF_P/B01",
+      "SURF_P/B14",
+      "GW_LB/B01",
+      "GW_LB/B14"
+    ],
+    "all_four_must_qualify": true,
+    "partial_candidate_authorization": false,
+    "authorized_status": "P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+    "failed_status": "P3_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES"
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_TERMINAL_RESULT.json": "742238bc4e1924a6da625ea6f41955a0911d4554",
+    "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json": "b061d33780851910bd4ebf366dd886f4cda75e69",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json": "769dc39df6f68302f80cb5f1efc02d0da0c224e4",
+    "tests/rom/analyze_rom_purpose_p3_reference.py": "e29e481104d5bb1e25026d5dffcfc790b38d22ce",
+    ".github/workflows/f-rom-purpose-p3-reference-adjudicate.yml": "74512cb8dde954e7dc4c99e35e961a343a173a2b",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json": "b78190c5766cd53b0b4b45a853ddf40be26f5249"
+  },
+  "scientific_firewall": {
+    "reference_metrics_seen_before_binding": false,
+    "candidate_response_generated": false,
+    "representation_changed": false,
+    "state_boundaries_changed": false,
+    "closure_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
