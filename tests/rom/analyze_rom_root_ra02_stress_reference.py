@@ -96,6 +96,8 @@ def main()->int:
       "materials":raw.get("materials",{}),
       "frozen_raw_uncertainty_result":raw,
       "scientific_firewall":{
+        "c6r_reopened":False,
+        "c6r_reclassified":False,
         "ra01_reclassified":False,
         "reduced_candidate_response_generated":False,
         "stage2_executed":False,
