@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.preregistration.v2",
+  "work_unit": "RM13B",
+  "date": "2026-09-23",
+  "title": "Minimal real SWAP5 + MODFLOW6 + Ribasim transactional composition with valid non-owning output cadence",
+  "supersedes_fixture_only": "RM13 invalid solver.saveat=8.64 configuration",
+  "preserves": [
+    "all RM13 physical quantities",
+    "all RM13 transaction ordering",
+    "all RM13 ledgers",
+    "all RM13 tolerances",
+    "all RM13 model pins",
+    "all RM13 nonclaims"
+  ],
+  "physical_window": {
+    "duration_day": 0.0001,
+    "duration_seconds": 8.64,
+    "management_time_origin_day": 237.0,
+    "requested_irrigation_depth_cm": 0.0036,
+    "irrigation_rate_cm_per_day": 36.0,
+    "represented_area_m2": 1.0,
+    "expected_surface_water_volume_m3": 0.000036
+  },
+  "ribasim": {
+    "release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "allocation_dt_seconds": 8.64,
+    "solver_saveat": "Inf",
+    "solver_saveat_semantics": "start and end only; not a management cadence",
+    "initial_basin_level_m": 1.0,
+    "user_demand_min_level_m": 0.9,
+    "level_difference_threshold_m": 0.02,
+    "surface_supply_m3_per_day": 0.36,
+    "user_demand_m3_per_day": 0.36,
+    "priority": 2
+  },
+  "hypotheses": [
+    "The real SWAP management decision requests exactly 0.0036 cm over the 1e-4-day event.",
+    "Real Ribasim initializes and advances the 8.64-second window with saveat=Inf while allocation.dt remains 8.64 seconds.",
+    "Real Ribasim allocates and physically supplies the full request within the RM09 full-realization envelope.",
+    "Discarded Ribasim candidate A leaves the accepted witness unchanged and candidate B replays identically.",
+    "The RM10 typed realization receipt binds the Ribasim return to the exact SWAP management origin.",
+    "Zero-cover Rutter processing returns net irrigation equal to gross physical supply.",
+    "Real Richards SWAP with top irrigation active and live MODFLOW6 fixed-interface coupling converges inside the inherited F-GC44 transaction envelope.",
+    "Rejected Richards/MODFLOW correctors do not mutate accepted SWAP state or groundwater ledger.",
+    "Surface-water and groundwater ledgers remain separate and each close exactly once.",
+    "Richards SWAP and management SWAP revisions each advance exactly once after all preflights.",
+    "Complete prepublication replay from the same accepted origins reproduces surface supply, management net irrigation, groundwater endpoint and transfer ledgers."
+  ],
+  "tolerances": {
+    "surface_depth_cm": 1e-8,
+    "surface_volume_m3": 1e-10,
+    "groundwater_flux_m_per_s": 1e-15,
+    "groundwater_component_balance_m3_per_day": 1e-9,
+    "replay_head_m": 1e-10
+  },
+  "failure_rule": "Do not modify the physical 8.64-second window, irrigation quantity, groundwater envelope, model pins or tolerances after execution. Only technical harness failures may be repaired automatically.",
+  "nonclaims": [
+    "No active root uptake.",
+    "No groundwater influence on a later management demand.",
+    "No drainage or groundwater-to-surface-water route.",
+    "No arbitrary Ribasim topology or competing demand.",
+    "No production iMOD Coupler driver integration.",
+    "No native Ribasim checkpoint API is claimed."
+  ]
+}
