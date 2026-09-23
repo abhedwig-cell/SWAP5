@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_CANDIDATE_READY_FOR_INDEPENDENT_VQ",
+  "tested_candidate_head": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
+  "workflow_run": 35882130175,
+  "workflow_job": 107252984139,
+  "conclusion": "success",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "production_blobs": {
+    "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+    "src/runtime/mod_ribasim_surface_water_profile_contract.f90": "2c6ce53cf0d039c56724aab43af1bfaafe6f21b3"
+  },
+  "stable_output_sha256": "a6c4eebbd53b7b15d4cab4540cca94bbbd420ed5df12dccd1932d3f5bdd99df1",
+  "passed": [
+    "exact three production-source files",
+    "wrapper never configures internal fixed-weir context",
+    "68-file compile closure",
+    "O0 runtime pass",
+    "O2 runtime pass",
+    "O0/O2 exact output identity",
+    "Q1H epsilon=1e-5 storage geometry replay",
+    "standalone fixed-weir preservation",
+    "Ribasim provenance seam frozen",
+    "profile contract matrix",
+    "BASE-only optional-state scope",
+    "wrapper owner XOR",
+    "positive drainage exactly-once booking",
+    "negative infiltration exactly-once booking",
+    "signed hard mass closure",
+    "invalid-process rollback",
+    "transactional runtime"
+  ],
+  "compiler_warnings": {
+    "candidate_source_new_warnings": false,
+    "observations": [
+      "existing canonical REAL inequality warning in serialized backend",
+      "unused control_head dummy in test fixture only"
+    ],
+    "disposition": "NON_BLOCKING_TEST_OR_PREEXISTING_WARNINGS"
+  },
+  "explicit_hold": "The profile consumes already accepted external heads but does not itself establish external Ribasim accepted-state lineage/revision provenance. That remains a later end-to-end coupler admission gate.",
+  "candidate_production_admission": false,
+  "independent_qualification": false,
+  "canonical_admission": false
+}
