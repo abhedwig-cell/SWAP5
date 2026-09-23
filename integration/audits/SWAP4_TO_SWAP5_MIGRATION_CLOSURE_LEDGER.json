@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "386008e5d65e264fd049a169945f23d52b6fc97f",
-    "local_relation_to_previous_canonical_base": "175 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "9366f4ac7dd0671b07307df67822cbae1faca96f",
+    "local_relation_to_previous_canonical_base": "180 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "386008e5d65e264fd049a169945f23d52b6fc97f",
+    "last_reconciled_head": "9366f4ac7dd0671b07307df67822cbae1faca96f",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -1210,7 +1210,7 @@
           "text": "worker scratch reuse shows no cross-column contamination",
           "status": "PARTIAL",
           "gap": "The admitted serialized execution and aggregate-mass evidence do not by themselves demonstrate reusable worker scratch across a representative cross-column order/reuse matrix.",
-          "next_bounded_action": "Add a bounded worker-reuse/cross-column contamination test if this criterion is needed for the M7 exit; preserve serial order and committed-state equivalence."
+          "next_bounded_action": "Run tests/fmr/run_m7_serialized_worker_scratch_reuse.py on O0/O2; close only if a single reused serialized backend completes A-B-A with bitwise-identical A physical/mass outcomes and hard-mass-valid commits."
         },
         {
           "id": "M7-03",
