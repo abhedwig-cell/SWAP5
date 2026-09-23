@@ -4,15 +4,15 @@
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "status": "OPEN_QUALIFICATION",
-  "checkpoint_commit": "a562a745b8fb0b0894743fe373dfae1f70023f3b",
-  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_EXECUTION_PENDING",
+  "checkpoint_commit": "d2aa3180797fd31f6d3fb2def0158db6157e889b",
+  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_PASS__Q2B2_SEMANTIC_DECISION__Q3A_TECHNICAL_RETRY_PENDING__Q1G_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
   "production_admission": false,
   "retirement_authority": false,
-  "last_reconciled_head": "b8245b65d3782416c10be0f7c2d1ce34b2e6f4be",
+  "last_reconciled_head": "d2aa3180797fd31f6d3fb2def0158db6157e889b",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "owned_surface": [
     "legacy surfacewater.f90 responsibility decomposition",
@@ -62,7 +62,12 @@
     "integration/research/SW_RIB_SWM01_Q3_DESIGN.json",
     "integration/research/SW_RIB_SWM01_Q2A_PREREGISTRATION.json",
     "integration/research/SW_RIB_SWM01_Q2A_RESULT.json",
-    "integration/research/SW_RIB_SWM01_Q2B1_PREREGISTRATION.json"
+    "integration/research/SW_RIB_SWM01_Q2B1_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q2B1_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q2B2_CAPABILITY_DECISION.json",
+    "integration/research/SW_RIB_SWM01_Q3A_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q3A_TECHNICAL_AMENDMENT_01.json",
+    "integration/research/SW_RIB_SWM01_Q1G_PREREGISTRATION.json"
   ],
   "dependency_surface": [
     "surface-water state/storage ownership",
@@ -103,20 +108,32 @@
       "job": 107189471823
     },
     "q2b1": {
-      "state": "QUEUED",
+      "decision": "PASS",
       "run": 35863877490,
-      "job": 107190477656,
-      "head": "a562a745b8fb0b0894743fe373dfae1f70023f3b"
+      "job": 107190477656
+    },
+    "q2b2": {
+      "decision": "NO_EXACT_SINGLE_NATIVE_MAPPING; APPLICATION_PROFILE_DECISION_PERSISTED"
+    },
+    "q3a": {
+      "first_run": 35864871815,
+      "first_job": 107193802387,
+      "first_classification": "TECHNICAL_SOURCE_RATE_GUARD_EXCEEDED_BY_1.16e-12_CM_PER_DAY_BEFORE_PHYSICAL_EXECUTION",
+      "technical_amendment": "SW_RIB_SWM01_Q3A_TECHNICAL_AMENDMENT_01.json",
+      "retry_state": "QUEUED"
+    },
+    "q1g": {
+      "state": "QUEUED_CHARACTERIZATION"
     }
   },
-  "next_action": "Complete Q2B1 real-Ribasim managed-band qualification. On pass, persist direct supply/discharge ledger evidence and proceed to Q3A signed lower exchange before deciding whether Q2B2 dynamic Q(h) composition is required for the intended coupled application envelope.",
-  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@a562a745b8fb0b0894743fe373dfae1f70023f3b",
+  "next_action": "Complete Q3A signed lower-exchange qualification and Q1G STTAB-to-Ribasim storage-geometry characterization. If Q3A passes, persist Q3A result and preregister Q3B transfer-identity cases. Use Q2B2 capability decision to avoid claiming exact legacy automatic-discharge parity where the pinned Ribasim product has different allocation/control semantics.",
+  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@d2aa3180797fd31f6d3fb2def0158db6157e889b",
   "blockers": [
-    "Q2B1 real-Ribasim managed-band run is pending.",
-    "Q3 signed drainage/infiltration exchange and external availability remain unqualified.",
-    "Q2B2 dynamic Q(h)-allocation composition remains open unless excluded by a narrower application contract.",
-    "Q1C nonlinear SWQHR1 mapping remains open unless excluded by a narrower application contract.",
-    "No production admission or retirement authority exists.",
+    "Q3A signed drainage/infiltration exchange and external availability are not yet qualified; first failure was technical before physical execution and a bounded amendment is queued.",
+    "Q1G storage-geometry representation is preregistered but not yet persisted as CI evidence.",
+    "Q3B top/rapid transfer identities remain design-only.",
+    "Exact nonlinear SWQHR1 parity remains open unless explicitly excluded by the coupled application contract.",
+    "No production admission or whole-subsystem retirement authority exists.",
     "Pinned Ribasim checkout emits a model-metadata/core-version warning; resolve before production admission."
   ]
 }
