@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.ppa_low03.aquifer.source-census.v1",
+  "work_unit": "PPA-LOW03-AQUIFER",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "boundbottom.f90": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2"
+  },
+  "source_law": "When SW3=1: deepgw = aqave + aqamp * dcos((8*datan(1d0))/aqper * (t - aqtmax)).",
+  "source_input_ranges": {
+    "aqave": [-10000.0, 1000.0],
+    "aqamp": [0.0, 1000.0],
+    "aqtmax": [0.0, 366.0],
+    "aqper": [0.0, 366.0]
+  },
+  "safety_note": "The legacy parser permits aqper=0 even though the law divides by it; the typed oracle rejects zero period rather than divide by zero.",
+  "interpretation": "Pure SW3=1 aquifer head forcing only; no aquifer state owner or Cauchy runtime route is admitted."
+}
