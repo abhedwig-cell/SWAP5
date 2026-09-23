@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.rom_root.ra01.pre_scientific_repair.v2",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "state": "CLOSED_TECHNICAL_MATERIALIZER_ESCAPE_REPAIR",
+  "failed_run": {
+    "run_id": 35819769779,
+    "head": "5922fbc10f4bb51d2456f2a384a763819e857edb",
+    "authority_binding_passed": true,
+    "failure_stage": "Materialize RA01 root-active Reference / Materialize R2048 T32 segment 1",
+    "scientific_solver_execution_started": false,
+    "candidate_response_generated": false
+  },
+  "failure": {
+    "class": "PYTHON_MARKER_NEWLINE_ESCAPE",
+    "detail": "RA01 completion-marker strings contained a literal backslash-backslash-n sequence at runtime and therefore did not match generated Fortran completion lines.",
+    "policy_formula_affected": false,
+    "generated_reference_response_observed": false
+  },
+  "repair": {
+    "file": "tests/rom/materialize_rom_root_ra01_reference_policy.py",
+    "old_blob": "6745a40bfda00f81bfd6d0eba25e929794cbc253",
+    "new_blob": "35406bf5e9fd4e86525338dc14969cf91d4f1fa7",
+    "change": "Correct completion-marker string escaping only.",
+    "external_policy_changed": false,
+    "scientific_semantics_changed": false,
+    "cases_changed": false,
+    "routes_changed": false,
+    "thresholds_changed": false,
+    "numerical_controls_changed": false,
+    "physics_changed": false
+  },
+  "rerun_rule": "Rebind only the materializer blob and retrigger the frozen RA01 matrix."
+}
