@@ -12,6 +12,11 @@ module mod_b110_generated_mvg_table_state
   real(real64), parameter :: GENERATION_H_DRY = -1.0e7_real64
   real(real64), parameter :: GENERATION_H_WET = -1.0e-12_real64
   real(real64), parameter :: K_BRANCH_TARGET_FRACTION = 1.0_real64 - 1.0e-8_real64
+  real(real64), parameter :: FSI39_SOURCE_HEAD = -2.0_real64
+  real(real64), parameter :: HUPSEL_UPPER(7) = [0.02_real64,0.433878_real64,83.24164_real64, &
+       0.021645_real64,7.202077_real64,1.34877_real64,832.4163_real64]
+  real(real64), parameter :: HUPSEL_LOWER(7) = [0.02_real64,0.3870640000000001_real64,22.76176_real64, &
+       0.016083_real64,2.4396619999999993_real64,1.524418_real64,227.61759999999998_real64]
 
   integer, parameter, public :: F_TAB02_STATE_OK = 0
   integer, parameter, public :: F_TAB02_STATE_INVALID_PARAMETERS = 1
@@ -39,6 +44,14 @@ module mod_b110_generated_mvg_table_state
     real(real64), allocatable :: wet_capacity(:)
     real(real64), allocatable :: ksat(:)
     real(real64), allocatable :: kbranch_head(:)
+    logical :: ksatexm_extension_enabled = .false.
+    real(real64), allocatable :: theta_r(:)
+    real(real64), allocatable :: delta_theta(:)
+    real(real64), allocatable :: ksatexm(:)
+    real(real64), allocatable :: relsat_threshold(:)
+    real(real64), allocatable :: k_threshold(:)
+    real(real64), allocatable :: first_active_head(:)
+    logical :: source_ksatexm_extension_enabled = .false.
     real(real64), allocatable :: source_cofgen(:,:)
   contains
     procedure :: ready => generated_state_ready
@@ -49,6 +62,7 @@ module mod_b110_generated_mvg_table_state
 
   public :: initialize_b110_generated_mvg_table_state
   public :: evaluate_b110_generated_mvg_table_state
+  public :: b110_generated_mvg_ksatexm_profile_supported
 
 contains
 
@@ -57,8 +71,10 @@ contains
     type(b110_default_mvg_parameters_t), target, intent(in) :: parameters
     integer, intent(out) :: status
     type(b110_default_mvg_provider_t) :: analytic
+    type(b110_default_mvg_parameters_t), target :: base_parameters
     real(real64), allocatable :: lo(:), hi(:), mid(:), target(:)
     real(real64), allocatable :: hvec(:), theta(:), conductivity(:), capacity(:), dkdh(:)
+    real(real64), allocatable :: ext_lo(:), ext_hi(:), ext_mid(:), relsat(:)
     real(real64) :: frac, u0
     integer :: i, j, n
     logical :: ok
@@ -76,8 +92,10 @@ contains
     if (any(parameters%cofgen(6,1:n) <= 1.0_real64)) return
 
     if (parameters%ksatexm_extension_enabled) then
-      status = F_TAB02_STATE_UNSUPPORTED_KSATEXM
-      return
+      if (.not. b110_generated_mvg_ksatexm_profile_supported(parameters%cofgen(:,1:n))) then
+        status = F_TAB02_STATE_UNSUPPORTED_KSATEXM
+        return
+      end if
     end if
     if (any(parameters%cofgen(9,1:n) /= 0.0_real64)) then
       status = F_TAB02_STATE_UNSUPPORTED_HENPR
@@ -87,7 +105,9 @@ contains
     allocate(lo(n), hi(n), mid(n), target(n), hvec(n))
     allocate(theta(n), conductivity(n), capacity(n), dkdh(n))
 
-    call bind_b110_default_mvg_provider(analytic, parameters, 1.0_real64)
+    base_parameters = parameters
+    base_parameters%ksatexm_extension_enabled = .false.
+    call bind_b110_default_mvg_provider(analytic, base_parameters, 1.0_real64)
 
     lo = GENERATION_H_DRY
     hi = GENERATION_H_WET
@@ -120,6 +140,17 @@ contains
              state%logk_slope(B110_GENERATED_MVG_TABLE_N,n), state%logk_sigma(B110_GENERATED_MVG_TABLE_N,n))
     allocate(state%theta_saturated(n), state%theta_crit(n), state%wet_capacity(n), &
              state%ksat(n), state%kbranch_head(n))
+    state%ksatexm_extension_enabled = parameters%ksatexm_extension_enabled
+    if (state%ksatexm_extension_enabled) then
+      allocate(state%theta_r(n), state%delta_theta(n), state%ksatexm(n), state%relsat_threshold(n), &
+               state%k_threshold(n), state%first_active_head(n))
+      state%theta_r = parameters%cofgen(1,1:n)
+      state%delta_theta = parameters%cofgen(2,1:n) - parameters%cofgen(1,1:n)
+      state%ksatexm = parameters%cofgen(10,1:n)
+      state%relsat_threshold = parameters%cofgen(11,1:n)
+      state%k_threshold = parameters%cofgen(12,1:n)
+    end if
+    state%source_ksatexm_extension_enabled = parameters%ksatexm_extension_enabled
     allocate(state%source_cofgen(size(parameters%cofgen,1),n))
     state%source_cofgen = parameters%cofgen
 
@@ -167,6 +198,55 @@ contains
         any(state%wet_capacity < 0.0_real64)) then
       status = F_TAB02_STATE_GENERATION_FAILED
       return
+    end if
+
+    if (state%ksatexm_extension_enabled) then
+      allocate(ext_lo(n), ext_hi(n), ext_mid(n), relsat(n))
+      ext_lo = FSI39_SOURCE_HEAD
+      ext_hi = 0.0_real64
+
+      hvec = ext_lo
+      call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+      relsat = (theta-state%theta_r)/state%delta_theta
+      if (any(relsat > state%relsat_threshold)) then
+        status = F_TAB02_STATE_GENERATION_FAILED
+        return
+      end if
+
+      hvec = ext_hi
+      call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+      relsat = (theta-state%theta_r)/state%delta_theta
+      if (any(relsat <= state%relsat_threshold)) then
+        status = F_TAB02_STATE_GENERATION_FAILED
+        return
+      end if
+
+      do j = 1, 128
+        do i = 1, n
+          if (nearest(ext_lo(i),1.0_real64) >= ext_hi(i)) then
+            ext_mid(i) = ext_hi(i)
+          else
+            ext_mid(i) = ext_lo(i) + 0.5_real64*(ext_hi(i)-ext_lo(i))
+          end if
+        end do
+        hvec = ext_mid
+        call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+        relsat = (theta-state%theta_r)/state%delta_theta
+        do i = 1, n
+          if (nearest(ext_lo(i),1.0_real64) >= ext_hi(i)) cycle
+          if (relsat(i) > state%relsat_threshold(i)) then
+            ext_hi(i) = ext_mid(i)
+          else
+            ext_lo(i) = ext_mid(i)
+          end if
+        end do
+        if (all(nearest(ext_lo,1.0_real64) >= ext_hi)) exit
+      end do
+      if (.not. all(nearest(ext_lo,1.0_real64) >= ext_hi)) then
+        status = F_TAB02_STATE_GENERATION_FAILED
+        return
+      end if
+      state%first_active_head = ext_hi
     end if
 
     do i = 1, n
@@ -265,7 +345,7 @@ contains
     real(real64), intent(in) :: pressure_head(:)
     real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:)
     integer, intent(out) :: status
-    real(real64) :: h, x(2), y(2), yp(2), sig(2), logk_value
+    real(real64) :: h, x(2), y(2), yp(2), sig(2), logk_value, frac
     integer :: i, klo, khi, ier, n
 
     status = F_TAB02_STATE_NOT_READY
@@ -283,7 +363,11 @@ contains
       h = pressure_head(i)
       if (h >= 0.0_real64) then
         water_content(i) = state%theta_saturated(i)
-        conductivity(i) = state%ksat(i)
+        if (state%ksatexm_extension_enabled) then
+          conductivity(i) = state%ksatexm(i)
+        else
+          conductivity(i) = state%ksat(i)
+        end if
         capacity(i) = 0.0_real64
         cycle
       end if
@@ -333,6 +417,16 @@ contains
         conductivity(i) = exp(logk_value)
       end if
 
+      if (state%ksatexm_extension_enabled .and. h >= state%first_active_head(i)) then
+        frac = ((water_content(i)-state%theta_r(i))/state%delta_theta(i)-state%relsat_threshold(i)) / &
+             (1.0_real64-state%relsat_threshold(i))
+        if (.not. ieee_is_finite(frac) .or. frac < 0.0_real64 .or. frac > 1.0_real64) then
+          status = F_TAB02_STATE_EVALUATION_FAILED
+          return
+        end if
+        conductivity(i) = frac*state%ksatexm(i) + (1.0_real64-frac)*state%k_threshold(i)
+      end if
+
       if (.not. ieee_is_finite(water_content(i)) .or. .not. ieee_is_finite(conductivity(i)) .or. &
           .not. ieee_is_finite(capacity(i)) .or. conductivity(i) <= 0.0_real64) then
         status = F_TAB02_STATE_EVALUATION_FAILED
@@ -370,6 +464,10 @@ contains
          allocated(self%theta_saturated) .and. allocated(self%theta_crit) .and. &
          allocated(self%wet_capacity) .and. allocated(self%ksat) .and. allocated(self%kbranch_head) .and. &
          allocated(self%source_cofgen)
+    if (ready .and. self%ksatexm_extension_enabled) then
+      ready = allocated(self%theta_r) .and. allocated(self%delta_theta) .and. allocated(self%ksatexm) .and. &
+           allocated(self%relsat_threshold) .and. allocated(self%k_threshold) .and. allocated(self%first_active_head)
+    end if
   end function generated_state_ready
 
   logical function generated_state_matches(self, parameters) result(matches)
@@ -378,7 +476,7 @@ contains
 
     matches = .false.
     if (.not. self%ready()) return
-    if (parameters%ksatexm_extension_enabled) return
+    if (parameters%ksatexm_extension_enabled .neqv. self%source_ksatexm_extension_enabled) return
     if (parameters%active_nodes /= self%active_nodes .or. .not. allocated(parameters%cofgen)) return
     if (size(parameters%cofgen,1) /= size(self%source_cofgen,1) .or. &
         size(parameters%cofgen,2) /= size(self%source_cofgen,2)) return
@@ -397,6 +495,55 @@ contains
     if (.not. self%ready()) return
     bytes = int(7 * B110_GENERATED_MVG_TABLE_N * self%active_nodes, int64) * 8_int64 + &
          int((5 + size(self%source_cofgen,1)) * self%active_nodes, int64) * 8_int64
+    if (self%ksatexm_extension_enabled) bytes = bytes + int(6*self%active_nodes,int64)*8_int64
   end function generated_state_estimated_bytes
+
+
+  pure logical function b110_generated_mvg_ksatexm_profile_supported(cofgen) result(supported)
+    real(real64), intent(in) :: cofgen(:,:)
+    real(real64) :: se_threshold, k_threshold, m, term1
+    integer :: i
+
+    supported = .false.
+    if (size(cofgen,1) < 12 .or. size(cofgen,2) <= 0) return
+    if (.not. all(ieee_is_finite(cofgen(1:12,:)))) return
+
+    do i = 1, size(cofgen,2)
+      if (.not. (matches_hupsel_material(cofgen(:,i),HUPSEL_UPPER) .or. &
+                 matches_hupsel_material(cofgen(:,i),HUPSEL_LOWER))) return
+      if (cofgen(9,i) /= 0.0_real64 .or. cofgen(10,i) <= cofgen(3,i)) return
+
+      m = 1.0_real64 - 1.0_real64/cofgen(6,i)
+      se_threshold = (1.0_real64 + abs(cofgen(4,i)*FSI39_SOURCE_HEAD)**cofgen(6,i))**(-m)
+      term1 = (1.0_real64-se_threshold**(1.0_real64/m))**m
+      k_threshold = cofgen(3,i)*se_threshold**cofgen(5,i)*(1.0_real64-term1)*(1.0_real64-term1)
+
+      if (.not. nearly_equal(cofgen(11,i),se_threshold)) return
+      if (.not. nearly_equal(cofgen(12,i),k_threshold)) return
+    end do
+    supported = .true.
+  end function b110_generated_mvg_ksatexm_profile_supported
+
+  pure logical function matches_hupsel_material(c, expected) result(matches)
+    real(real64), intent(in) :: c(:), expected(7)
+    real(real64) :: actual(7)
+    integer :: j
+
+    actual = [c(1),c(2),c(3),c(4),c(5),c(6),c(10)]
+    matches = .true.
+    do j = 1, size(actual)
+      if (.not. nearly_equal(actual(j),expected(j))) then
+        matches = .false.
+        return
+      end if
+    end do
+  end function matches_hupsel_material
+
+  pure logical function nearly_equal(a,b) result(equal)
+    real(real64), intent(in) :: a,b
+    real(real64) :: scale
+    scale = max(1.0_real64,abs(a),abs(b))
+    equal = abs(a-b) <= 128.0_real64*epsilon(1.0_real64)*scale
+  end function nearly_equal
 
 end module mod_b110_generated_mvg_table_state
