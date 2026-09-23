@@ -4,48 +4,118 @@ on:
     branches: [work/f-rom-practical]
     paths:
       - integration/f-rom/ROM_PRACTICAL_P4_PREREGISTRATION.json
+      - integration/f-rom/ROM_PRACTICAL_P4_EXECUTION_CONTRACT.json
       - tools/rom/rom_practical_p4_rk4.f90
+      - tools/rom/qualify_rom_practical_p4.py
       - .github/workflows/f-rom-practical-p4.yml
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
+  actions: read
+concurrency:
+  group: rom-practical-p4-qualified-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
 jobs:
-  compiled:
+  case:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     strategy:
       fail-fast: false
+      max-parallel: 8
       matrix:
         purpose: [SURF_P, GW_LB]
         material: [B02, B05, B11, B16]
     steps:
       - uses: actions/checkout@v4
-      - name: Compile frozen RK4
-        run: |
-          gfortran -O3 -std=f2008 -Wall -Wextra tools/rom/rom_practical_p4_rk4.f90 -o /tmp/p4_rk4
-      - name: Execute and time
-        run: |
-          set +e
-          /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o timing.json             /tmp/p4_rk4 "${{ matrix.purpose }}" "${{ matrix.material }}" > output.txt 2>&1
-          status=$?
-          export STATUS="$status"
-          python3 - <<'PY'
-          import json,os
-          status=int(os.environ["STATUS"])
-          timing={}
-          try: timing=json.load(open("timing.json"))
-          except Exception: pass
-          out=open("output.txt",errors="replace").read()
-          obj={"schema":"swap5.rom-practical.p4.compiled-case.v1",
-               "purpose":os.environ["PURPOSE"],"material":os.environ["MATERIAL"],
-               "status":"QUALIFIED" if status==0 else "NUMERICAL_BLOCKED",
-               "exit_status":status,"timing":timing,"output":out}
-          open("result.json","w").write(json.dumps(obj,indent=2)+"\n")
-          PY
-        env:
-          PURPOSE: "${{ matrix.purpose }}"
-          MATERIAL: "${{ matrix.material }}"
-      - uses: actions/upload-artifact@v4
         with:
-          name: p4-${{ matrix.purpose }}-${{ matrix.material }}
-          path: result.json
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 1
+      - name: Bind exact source blobs, not research-branch merges
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext evidence
+          while read -r blob name; do
+            git cat-file blob "$blob" > "ext/$name"
+            test "$(git hash-object "ext/$name")" = "$blob"
+          done <<'BLOBS'
+          b2df7793d3f56f5d8d1d121636d2eb1a0952e271 rom_purpose_p1_surface_b01_source.f90
+          98b05fcf13fc470689295d511766f2393a712e46 rom_purpose_p1_gw_source.f90
+          31060946d233ba80e88ca42e43c90f512dc890de materialize_rom_purpose_p3_surface_reference.py
+          83dbec28cd92b76bc1e2a4ac704103622a5cab28 materialize_rom_purpose_p3_gw_reference.py
+          f4f666d3504568d084d1d5ca3f90008ab6af2df9 rom_purpose_p1_base_b14_materializer.py
+          105e75b93425780f565c714de1be1cb7ae0ee767 rom_purpose_p1_base_c4z_materializer.py
+          33a68fc51d5c1905b9f377e2d14626aeebe27f98 rom_purpose_p1_layer_base.py
+          BLOBS
+          test "$(git hash-object integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json)" = b2d8885a9bb01b078a3510086c70945207ab0882
+          test "$(git hash-object tools/rom/run_rom_practical_p3_candidate.py)" = 0021329e9aae426720adf87a1461311d764efab8
+          test "$(git hash-object tools/rom/prepare_rom_practical_p3_reference.py)" = 4fc808e1512c99057c54e85e5da48bd651bbb52a
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+          python3 -m py_compile tools/rom/qualify_rom_practical_p4.py
+      - name: Build frozen reduced implementation
+        run: |
+          set -euo pipefail
+          gfortran -O2 -std=f2008 -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow tools/rom/rom_practical_p4_rk4.f90 -o /tmp/p4_rk4
+      - name: Materialize unchanged P3 Richards reference
+        run: |
+          set -euo pipefail
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py --purpose '${{ matrix.purpose }}' --material '${{ matrix.material }}' --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json --surface-source ext/rom_purpose_p1_surface_b01_source.f90 --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py --gw-source ext/rom_purpose_p1_gw_source.f90 --gw-materializer ext/materialize_rom_purpose_p3_gw_reference.py --c5a-materializer ext/rom_purpose_p1_base_b14_materializer.py --c4z-materializer ext/rom_purpose_p1_base_c4z_materializer.py --output /tmp/p4_base.f90 --manifest evidence/reference_materialization.json
+          python3 tools/rom/prepare_rom_practical_p3_reference.py --purpose '${{ matrix.purpose }}' --source /tmp/p4_base.f90 --output canonical/tests/rom/test_p4_reference.f90
+          for nodes in 64 128; do
+            dz="$(python3 -c "print(160.0/$nodes)")"
+            stub="p4_r${nodes}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "canonical/$stub" --nodes "$nodes" --dz-cm "$dz"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py --root canonical --stub "$stub" --target tests/rom/test_p4_reference.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build "/tmp/p4_r${nodes}" --opt 2
+          done
+      - name: Qualify equations, steps, hydrographs and cost
+        run: |
+          set -euo pipefail
+          python3 tools/rom/qualify_rom_practical_p4.py case --exe /tmp/p4_rk4 --reference64 /tmp/p4_r64/rom0_test --reference128 /tmp/p4_r128/rom0_test --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json --base ext/rom_purpose_p1_layer_base.py --p3-runner tools/rom/run_rom_practical_p3_candidate.py --p3-analyzer tools/rom/analyze_rom_practical_p3.py --purpose '${{ matrix.purpose }}' --material '${{ matrix.material }}' --outdir evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rom-practical-p4-qualified-${{ matrix.purpose }}-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+  aggregate:
+    needs: case
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p4-qualified-*
+          path: /tmp/p4-cases
+      - name: Aggregate all eight identities without replacing the primary target
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+          python3 tools/rom/qualify_rom_practical_p4.py aggregate --input-dir /tmp/p4-cases --output /tmp/ROM_PRACTICAL_P4_RESULT.json
+      - name: Persist on current workstream tip with a tested-source guard
+        run: |
+          set -euo pipefail
+          git fetch origin work/f-rom-practical
+          git diff --exit-code "$GITHUB_SHA" origin/work/f-rom-practical -- tools/rom/rom_practical_p4_rk4.f90 tools/rom/qualify_rom_practical_p4.py integration/f-rom/ROM_PRACTICAL_P4_PREREGISTRATION.json integration/f-rom/ROM_PRACTICAL_P4_EXECUTION_CONTRACT.json
+          git reset --hard origin/work/f-rom-practical
+          cp /tmp/ROM_PRACTICAL_P4_RESULT.json integration/f-rom/ROM_PRACTICAL_P4_RESULT.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-rom/ROM_PRACTICAL_P4_RESULT.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'ROM-PRACTICAL P4: persist complete numerical characterization'
+            git push origin HEAD:work/f-rom-practical
+          fi
