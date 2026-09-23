@@ -45,6 +45,10 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_generated_mvg_table_state, only: b110_generated_mvg_table_state_t, &
+       initialize_b110_generated_mvg_table_state, F_TAB02_STATE_OK
+  use mod_b110_generated_mvg_provider, only: b110_generated_mvg_provider_t, &
+       bind_b110_generated_mvg_provider, F_TAB02_PROVIDER_OK
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -183,6 +187,9 @@ module mod_fmr_serialized_reference_backend
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
+    ! F-TAB02: generated default-MvG numerical acceleration. This is distinct
+    ! from generic/legacy tabulated-hydraulics input and remains opt-in.
+    logical :: generated_mvg_acceleration_active = .false.
     ! F-SI39: explicit opt-in to the exact B1.11 near-saturated KSATEXM
     ! conductivity extension. Default false preserves all pre-F-SI39 routes.
     logical :: ksatexm_extension_active = .false.
@@ -332,6 +339,10 @@ module mod_fmr_serialized_reference_backend
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b110_generated_mvg_table_state_t), pointer :: generated_mvg_state => null()
+    type(b110_generated_mvg_provider_t), pointer :: generated_constitutive => null()
+    logical :: generated_mvg_acceleration_active = .false.
+    logical :: generated_mvg_provider_ready = .false.
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
@@ -935,7 +946,7 @@ contains
         size(parameters%cofgen,2) /= ROSSFAST_D3R_N_CELLS) return
     if (parameters%root_extraction_active .or. parameters%macropore_active .or. parameters%snow_active .or. &
         parameters%hysteresis_active .or. parameters%tabulated_hydraulics_active .or. &
-        parameters%elasticity_active .or. parameters%frost_active .or. parameters%soil_temperature_active .or. &
+        parameters%generated_mvg_acceleration_active .or. parameters%elasticity_active .or. parameters%frost_active .or. parameters%soil_temperature_active .or. &
         parameters%drainage_response_active) return
     if (parameters%swkimpl /= 0 .or. parameters%swsophy /= 0) return
     if (.not. allocated(forcing%drainage_flux_by_level) .or. &
@@ -1355,6 +1366,17 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
+      if (parameters%generated_mvg_acceleration_active) then
+        ok = ok .and. self%generated_mvg_acceleration_active .and. self%generated_mvg_provider_ready .and. &
+             associated(self%generated_mvg_state) .and. associated(self%generated_constitutive) .and. &
+             .not. parameters%ksatexm_extension_active .and. &
+             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
+             .not. self%fixed_weir_surface_water_active .and. self%soil_water_selection%uses_reference()
+        if (ok) ok = all(parameters%cofgen(9,1:parameters%active_nodes) == 0.0_real64)
+      end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
              .not. self%fixed_weir_surface_water_active
@@ -1412,7 +1434,7 @@ contains
   subroutine fmr_serialized_configure_parameters(self, parameters)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
-    integer :: n
+    integer :: n, generated_status
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
@@ -1430,6 +1452,33 @@ contains
       self%soil_parameters%node_distance = parameters%node_distance
       call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active)
+
+      self%generated_mvg_acceleration_active = parameters%generated_mvg_acceleration_active
+      self%generated_mvg_provider_ready = .false.
+      if (self%generated_mvg_acceleration_active) then
+        if (associated(self%generated_mvg_state)) then
+          if (.not. self%generated_mvg_state%matches(self%hydraulic_parameters)) then
+            if (associated(self%generated_constitutive)) deallocate(self%generated_constitutive)
+            deallocate(self%generated_mvg_state)
+          end if
+        end if
+        if (.not. associated(self%generated_mvg_state)) then
+          allocate(self%generated_mvg_state)
+          call initialize_b110_generated_mvg_table_state(self%generated_mvg_state, self%hydraulic_parameters, &
+               generated_status)
+          if (generated_status /= F_TAB02_STATE_OK) then
+            deallocate(self%generated_mvg_state)
+          end if
+        end if
+        if (associated(self%generated_mvg_state)) then
+          if (.not. associated(self%generated_constitutive)) allocate(self%generated_constitutive)
+          self%generated_mvg_provider_ready = self%generated_mvg_state%ready()
+        end if
+      else
+        if (associated(self%generated_constitutive)) deallocate(self%generated_constitutive)
+        if (associated(self%generated_mvg_state)) deallocate(self%generated_mvg_state)
+      end if
+
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
@@ -1810,7 +1859,7 @@ contains
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
-    integer :: effective_bottom_mode, swbotb2_status
+    integer :: effective_bottom_mode, swbotb2_status, generated_provider_status
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
@@ -1853,6 +1902,10 @@ contains
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
+    if (self%generated_mvg_acceleration_active) then
+      if (.not. self%generated_mvg_provider_ready .or. .not. associated(self%generated_mvg_state) .or. &
+          .not. associated(self%generated_constitutive)) return
+    end if
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
                                                            self%fixed_weir_surface_water_active, &
@@ -1876,6 +1929,11 @@ contains
       end select
     end if
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    if (self%generated_mvg_acceleration_active) then
+      call bind_b110_generated_mvg_provider(self%generated_constitutive, self%generated_mvg_state, step_duration, &
+           generated_provider_status)
+      if (generated_provider_status /= F_TAB02_PROVIDER_OK) return
+    end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
     if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
@@ -2045,7 +2103,11 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    request%evaluation%constitutive => self%constitutive
+    if (self%generated_mvg_acceleration_active) then
+      request%evaluation%constitutive => self%generated_constitutive
+    else
+      request%evaluation%constitutive => self%constitutive
+    end if
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
