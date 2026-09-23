@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.rom_root.s2.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2",
+  "date": "2026-09-23",
+  "status": "CLOSED_STAGE2_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED",
+  "authority": {
+    "predecessor": "integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json",
+    "preregistration": "integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S2_BINDING.json",
+    "result": "integration/f-rom/ROM_ROOT_S2_RESULT.json",
+    "workflow_run": 35853333783
+  },
+  "conclusions": [
+    "The reduced hydraulic harness can carry the externally prescribed retained-layer root sink without a sink-aggregation, sign, transaction or mass-accounting defect across U4, U8, R8 and R16.",
+    "Prescribed-root and generic-sink routes are bit-identical at the observation trajectory level.",
+    "The zero-sink capable route is bit-identical to the unmodified no-sink reduced balance.",
+    "Stage 2 therefore removes the basic harness/accounting confounder before dynamic root-feedback falsification.",
+    "No dynamic Feddes feedback has yet been evaluated and no root-specific state conclusion follows from Stage 2."
+  ],
+  "decision": {
+    "stage2_qualified": true,
+    "stage3_dynamic_feedback_may_be_preregistered": true,
+    "stage3_executed": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-S3",
+    "question": "Does the preregistered minimal layer-mean-head Feddes feedback preserve the hydrologically relevant stress and storage response of the qualified RA02R Reference for U4, U8, R8 and R16?",
+    "constraint": "Preregister componentwise comparison and missing-information diagnostics before generating any dynamic reduced-feedback response. No new partition, closure, fitted coefficient, correction term or application tolerance."
+  },
+  "model_changed": false
+}
