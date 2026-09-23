@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.ribasim_management.explicit_boundary_scheduler.preregistration.v1",
+  "work_unit": "RM11",
+  "date": "2026-09-23",
+  "title": "Coupler-owned fixed-allocation management boundary scheduler",
+  "authorities": {
+    "clock_contract": "RM03",
+    "runtime_falsification": "RIBASIM-DUMMY-20H10",
+    "typed_management_return": "RM10"
+  },
+  "problem": "Ribasim v2026.1.1 fixed allocation boundaries crossed inside one BMI update_until are not guaranteed to execute. The outer coupler must therefore split requested advances at explicit allocation boundaries and preserve that scheduling state over restart.",
+  "scope": "Implement deterministic boundary scheduling only. Do not execute Ribasim, change allocation policy, recommend a universal timestep or characterize new clock lattices.",
+  "state_machine": [
+    "At an unsolved allocation boundary the clock is BOUNDARY_PENDING and physical advance is forbidden.",
+    "mark_boundary_solved publishes that management solve as completed and advances the next boundary index.",
+    "plan_advance returns min(requested_target, next_allocation_boundary).",
+    "accept_advance moves only to the planned target; reaching the allocation boundary makes BOUNDARY_PENDING again.",
+    "A request crossing multiple boundaries must iterate plan/accept/solve until its requested target is reached."
+  ],
+  "frozen_cases": {
+    "noncommensurate_A5_S24": {
+      "epoch_s": 0,
+      "allocation_dt_s": 18000,
+      "product_requested_targets_s": [21600,43200,64800,86400],
+      "required_solved_boundaries_s": [0,18000,36000,54000,72000],
+      "required_emitted_accepted_targets_s": [18000,21600,36000,43200,54000,64800,72000,86400],
+      "H10_naive_allocation_records_s": [0]
+    },
+    "aligned_A6_S24": {
+      "epoch_s": 0,
+      "allocation_dt_s": 21600,
+      "product_requested_targets_s": [21600,43200,64800,86400],
+      "required_solved_boundaries_s": [0,21600,43200,64800],
+      "required_emitted_accepted_targets_s": [21600,43200,64800,86400]
+    }
+  },
+  "requirements": [
+    "The scheduler never advances across a pending allocation boundary.",
+    "The A5 case emits exact 5 h allocation boundaries even though product targets are 6 h apart.",
+    "The aligned A6 case introduces no extra non-product physical target.",
+    "Same clock state plus same requested target produces identical plans.",
+    "Accepting a target different from the current plan fails closed.",
+    "Restart persistence reconstructs current time, next boundary index and pending/solved state exactly.",
+    "A restart on a pending boundary cannot skip that allocation solve.",
+    "A restart after a solved boundary cannot repeat the previous allocation solve."
+  ],
+  "nonclaims": [
+    "No adaptive allocation mode.",
+    "No later Ribasim release semantics.",
+    "No real Ribasim trajectory equivalence yet; that is the next qualification boundary.",
+    "No production admission by RM11 alone."
+  ]
+}
