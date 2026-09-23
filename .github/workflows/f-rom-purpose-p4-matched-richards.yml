@@ -1,0 +1,150 @@
+name: F-ROM-PURPOSE P4 matched Richards frontier
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p4-matched-richards
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Verify P4 matched-Richards authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p4_matched_richards.py             tests/rom/run_rom_purpose_p4_matched_richards.py             tests/rom/analyze_rom_purpose_p4_matched_richards.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_EXECUTION_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_AFTER_P4_REFERENCE_QUALIFICATION'
+          assert r['status']=='P4_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED'
+          assert r['candidate_response_authorized'] is True
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  routes:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 18
+      matrix:
+        material: [B01, B14]
+        case:
+          - 'SURF_P:S8'
+          - 'SURF_P:S12'
+          - 'SURF_P:S16'
+          - 'GW_LB:G8'
+          - 'GW_LB:G12'
+          - 'GW_LB:G16'
+        factor: [8,16,32]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute frozen matched-Richards route
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.case }}"; purpose="${purpose%%:*}"
+          member="${{ matrix.case }}"; member="${member##*:}"
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p4_matched_richards.py             --purpose "$purpose" --material "${{ matrix.material }}" --member "$member"             --factor "${{ matrix.factor }}"             --representation-ladder integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json             --canonical-root canonical --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p4matched-${{ matrix.material }}-${{ strategy.job-index }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'p4matched-*', path: /tmp/matched, merge-multiple: true}
+      - name: Download exact P4 Reference route sets
+        run: |
+          set -euo pipefail
+          sr="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_EXECUTION_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gb="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_EXECUTION_BINDING.json'))['reference_runs']['GW_BASE'])")"
+          gt="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_EXECUTION_BINDING.json'))['reference_runs']['GW_R2048_T32'])")"
+          mkdir -p /tmp/s /tmp/gb /tmp/gt /tmp/reference
+          gh run download "$sr" --repo abhedwig-cell/SWAP5 -n p4ref-surface-routes -D /tmp/s
+          gh run download "$gb" --repo abhedwig-cell/SWAP5 -n p4ref-gw-non-r2048-t32-routes -D /tmp/gb
+          gh run download "$gt" --repo abhedwig-cell/SWAP5 -n p4gw-r2048-t32-routes -D /tmp/gt
+          cp /tmp/s/surface_* /tmp/reference/
+          cp /tmp/gb/gw_* /tmp/reference/
+          cp /tmp/gt/gw_* /tmp/reference/
+      - name: Analyze frozen matched-Richards frontier
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p4_matched_richards.py             --prereg integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json             --reference-result integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json             --representation-ladder integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json             --route-root /tmp/matched --reference-root /tmp/reference             --output result/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p4-matched-richards
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p4-matched-richards, path: /tmp/result}
+      - name: Persist P4 matched-Richards frontier
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_STATUS.json')
+          s=json.load(open(p))
+          s.update({
+            'matched_richards_result':'integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json',
+            'matched_richards_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'matched_richards_execution_sha':os.environ['SOURCE_SHA']
+          })
+          s['scientific_firewall']['any_p4_same_partition_richards_response_seen']=True
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json integration/f-rom/ROM_PURPOSE_P4_STATUS.json
+          git commit -m "ROM-PURPOSE P4: persist matched-Richards frontier" || exit 0
+          git push origin HEAD:work/f-rom-purpose
