@@ -18,6 +18,10 @@ module mod_b110_production_soil_water_task2
        reference_richards_legacy_workspace_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_b110_generated_mvg_table_state, only: b110_generated_mvg_table_state_t, &
+       initialize_b110_generated_mvg_table_state, F_TAB02_STATE_OK
+  use mod_b110_generated_mvg_provider, only: b110_generated_mvg_provider_t, &
+       bind_b110_generated_mvg_provider, F_TAB02_PROVIDER_OK
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -57,9 +61,21 @@ module mod_b110_production_soil_water_task2
 
   type(a23bu_worker_context_t), target, save :: standalone_worker
 
+  ! F-TAB02-F0: exact-Hupsel standalone-only numerical representation cache.
+  ! It is never consulted by explicit-worker/MultiSWAP calls and owns no
+  ! committed physical or transaction state.
+  logical, save :: standalone_generated_mvg_opt_in = .false.
+  type(b110_generated_mvg_table_state_t), pointer, save :: standalone_generated_mvg_state => null()
+  integer, save :: standalone_generated_mvg_generation_count = 0
+
   public :: try_b110_production_task2
   public :: run_b110_production_task2
   public :: m1_b111_legacy_application_profile_active
+  public :: configure_b110_standalone_generated_mvg_acceleration
+  public :: reset_b110_standalone_generated_mvg_acceleration
+  public :: b110_standalone_generated_mvg_acceleration_enabled
+  public :: b110_standalone_generated_mvg_cache_ready
+  public :: b110_standalone_generated_mvg_generation_count_value
 
   interface
     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
@@ -88,30 +104,42 @@ contains
     type(a23bu_worker_context_t), target, intent(inout), optional :: worker
 
     if (present(worker)) then
-      call execute_b110_production_task2(worker)
+      call execute_b110_production_task2(worker, .false.)
     else
-      call execute_b110_production_task2(standalone_worker)
+      call execute_b110_production_task2(standalone_worker, standalone_generated_mvg_opt_in)
     end if
   end subroutine run_b110_production_task2
 
-  subroutine execute_b110_production_task2(worker)
+  subroutine execute_b110_production_task2(worker, use_standalone_generated)
     type(a23bu_worker_context_t), target, intent(inout) :: worker
+    logical, intent(in) :: use_standalone_generated
     logical :: handled
 
     ! A second task-2 invocation without an intervening SoilWater(3) can only
     ! be a retry of the previous physical substep. Drop that unaccepted
     ! directional candidate before solving the replacement step.
     call a23bu_discard_unaccepted_trajectory_step(worker)
-    call try_b110_production_task2(worker, handled)
+    call try_b110_production_task2_core(worker, handled, use_standalone_generated)
     if (.not. handled) call run_b110_legacy_compatibility_task2(worker)
   end subroutine execute_b110_production_task2
 
   subroutine try_b110_production_task2(worker, handled)
     type(a23bu_worker_context_t), intent(inout) :: worker
     logical, intent(out) :: handled
+
+    ! Public/worker entry remains exactly analytical. F0 acceleration is
+    ! intentionally restricted to the no-worker standalone application seam.
+    call try_b110_production_task2_core(worker, handled, .false.)
+  end subroutine try_b110_production_task2
+
+  subroutine try_b110_production_task2_core(worker, handled, use_standalone_generated)
+    type(a23bu_worker_context_t), intent(inout) :: worker
+    logical, intent(out) :: handled
+    logical, intent(in) :: use_standalone_generated
     type(soil_water_parameter_set_t), target :: parameters
     type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
     type(b110_default_mvg_provider_t), target :: constitutive
+    type(b110_generated_mvg_provider_t), target :: generated_constitutive
     type(b110_source_sink_provider_t), target :: source_sink
     type(b110_root_sink_provider_t), target :: root_sink
     type(b110_dynamic_top_boundary_solver_provider_t), target :: dynamic_top
@@ -129,6 +157,7 @@ contains
     logical :: sensitivity_route_admitted, trajectory_requested, trajectory_step_built, trajectory_stage_ok
     logical :: m1_profile, root_provider_active
     integer :: n, stat_index, typed_bottom_mode, bottom_status
+    integer :: generated_state_status, generated_provider_status
 
     handled = .false.
     call a23bu_reset_soil_water_trial_result(worker)
@@ -153,6 +182,18 @@ contains
     call initialize_b110_default_mvg_parameters(hydraulic_parameters, cofgen(:,1:n), &
          enable_ksatexm_extension=m1_profile)
     call bind_b110_default_mvg_provider(constitutive, hydraulic_parameters, dt)
+
+    if (use_standalone_generated) then
+      if (.not. m1_profile) &
+           error stop 'F-TAB02-F0: standalone generated acceleration outside exact M1 profile'
+      call ensure_b110_standalone_generated_mvg_state(hydraulic_parameters, generated_state_status)
+      if (generated_state_status /= F_TAB02_STATE_OK) &
+           error stop 'F-TAB02-F0: standalone generated state unavailable'
+      call bind_b110_generated_mvg_provider(generated_constitutive, standalone_generated_mvg_state, dt, &
+           generated_provider_status)
+      if (generated_provider_status /= F_TAB02_PROVIDER_OK) &
+           error stop 'F-TAB02-F0: standalone generated provider unavailable'
+    end if
 
     allocate(drainage_copy(nrlevs,n), subsurface_copy(n), root_copy(n), source_sink_root_zero(n))
     drainage_copy = qdra(1:nrlevs,1:n)
@@ -216,7 +257,11 @@ contains
     request%numerical%head_abs_tolerance = critdevh2cp
     request%numerical%head_rel_tolerance = critdevh1cp
     request%numerical%ponding_tolerance = critdevponddt
-    request%evaluation%constitutive => constitutive
+    if (use_standalone_generated) then
+      request%evaluation%constitutive => generated_constitutive
+    else
+      request%evaluation%constitutive => constitutive
+    end if
     request%evaluation%source_sink => source_sink
     if (root_provider_active) request%evaluation%root_sink => root_sink
     request%evaluation%dynamic_top_boundary => dynamic_top
@@ -325,7 +370,53 @@ contains
       worker%soil_water_trial%sensitivity_available = .false.
       error stop 'F-KT15: invalid typed soil-water solve status'
     end select
-  end subroutine try_b110_production_task2
+  end subroutine try_b110_production_task2_core
+
+  subroutine configure_b110_standalone_generated_mvg_acceleration(enabled)
+    logical, intent(in) :: enabled
+    standalone_generated_mvg_opt_in = enabled
+  end subroutine configure_b110_standalone_generated_mvg_acceleration
+
+  subroutine reset_b110_standalone_generated_mvg_acceleration()
+    standalone_generated_mvg_opt_in = .false.
+    if (associated(standalone_generated_mvg_state)) deallocate(standalone_generated_mvg_state)
+    nullify(standalone_generated_mvg_state)
+    standalone_generated_mvg_generation_count = 0
+  end subroutine reset_b110_standalone_generated_mvg_acceleration
+
+  logical function b110_standalone_generated_mvg_acceleration_enabled() result(enabled)
+    enabled = standalone_generated_mvg_opt_in
+  end function b110_standalone_generated_mvg_acceleration_enabled
+
+  logical function b110_standalone_generated_mvg_cache_ready() result(ready)
+    ready = associated(standalone_generated_mvg_state)
+    if (ready) ready = standalone_generated_mvg_state%ready()
+  end function b110_standalone_generated_mvg_cache_ready
+
+  integer function b110_standalone_generated_mvg_generation_count_value() result(count)
+    count = standalone_generated_mvg_generation_count
+  end function b110_standalone_generated_mvg_generation_count_value
+
+  subroutine ensure_b110_standalone_generated_mvg_state(parameters, status)
+    type(b110_default_mvg_parameters_t), intent(in) :: parameters
+    integer, intent(out) :: status
+
+    status = F_TAB02_STATE_OK
+    if (associated(standalone_generated_mvg_state)) then
+      if (standalone_generated_mvg_state%matches(parameters)) return
+      deallocate(standalone_generated_mvg_state)
+      nullify(standalone_generated_mvg_state)
+    end if
+
+    allocate(standalone_generated_mvg_state)
+    call initialize_b110_generated_mvg_table_state(standalone_generated_mvg_state, parameters, status)
+    if (status /= F_TAB02_STATE_OK) then
+      deallocate(standalone_generated_mvg_state)
+      nullify(standalone_generated_mvg_state)
+      return
+    end if
+    standalone_generated_mvg_generation_count = standalone_generated_mvg_generation_count + 1
+  end subroutine ensure_b110_standalone_generated_mvg_state
 
   logical function production_route_admitted() result(admitted)
     real(real64) :: potential_bare_evaporation
