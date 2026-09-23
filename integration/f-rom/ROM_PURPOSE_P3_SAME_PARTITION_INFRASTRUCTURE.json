@@ -99,7 +99,7 @@
     "At least one exact terminal trigger must exist.",
     "Binding must freeze exact state-count-result blob and exact Reference run IDs for SURF_P and GW_LB.",
     "Binding must freeze the implementation blobs above plus the exact P3 Reference materializer blobs used for execution.",
-    "Binding must validate the preregistration authority inherited by the persisted state-count result; this infrastructure record does not silently choose between observed preregistration revisions.",
+    "Binding must use the exact original preregistration blob c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e; no later textual variant is admitted.",
     "No closure family is introduced or tuned."
   ],
   "response_firewall": {
@@ -112,5 +112,9 @@
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
     "production_rom_authorized": false
+  },
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "authority_drift_disposition": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json; original c1e0 preregistration remains binding"
   }
 }
