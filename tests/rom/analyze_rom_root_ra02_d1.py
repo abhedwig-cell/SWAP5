@@ -8,6 +8,7 @@ import struct
 from pathlib import Path
 
 EPS = 2.220446049250313e-16
+OBS_DT = 0.0008
 
 ROUTES = {
     "R512_T32": {"nodes": 512, "rooted_nodes": 256, "output_factor": 32},
@@ -100,7 +101,7 @@ def parse_route(path: Path) -> dict:
             roots[(case, obs)] = {
                 "ACTUAL_RATE": float(m["ACTUAL_RATE"]),
                 "ACTUAL_FRACTION": float(m["ACTUAL_FRACTION"]),
-                "CUMULATIVE_ROOT": float(m["CUMULATIVE_ROOT"]),
+                "RAW_CUMULATIVE_ROOT": float(m["CUMULATIVE_ROOT"]),
                 "PTRA": float(m["PTRA"]),
             }
             continue
@@ -114,9 +115,15 @@ def parse_route(path: Path) -> dict:
     if len(profiles) != expected_profile:
         raise SystemExit(f"{path}: profile records {len(profiles)} != {expected_profile}")
     for case in CASES:
+        running = 0.0
         for obs in range(1, 1025):
             if (case, obs) not in roots:
                 raise SystemExit(f"{path}: missing root {case} {obs}")
+            running += roots[(case, obs)]["ACTUAL_RATE"] * OBS_DT
+            # Match the frozen RA01 uncertainty authority. The raw marker is
+            # segment-local on reconstructed R2048_T32 logs and is retained
+            # above only as provenance, not as route-global cumulative state.
+            roots[(case, obs)]["CUMULATIVE_ROOT"] = running
             for b in range(1, 17):
                 if (case, obs, b) not in profiles:
                     raise SystemExit(f"{path}: missing profile {case} {obs} {b}")
