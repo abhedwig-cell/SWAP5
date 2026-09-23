@@ -19,13 +19,16 @@
     "synthetic_fixture_authorized": false
   },
   "internal_prerequisite": {
-    "slice_e": "PENDING_CONTROLLING_PERFORMANCE_QUALIFICATION",
-    "note": "This blocker exists independently of slice E. F cannot execute even after E passes until the exact authorized archive bytes are materializable."
+    "slice_e": "PASS",
+    "qualification_record": "integration/f-tab/F-TAB02_E_QUALIFICATION.json",
+    "qualified_head": "6bcf2b5852d59b4bf628f34eb1ac7bca8bfa12ac",
+    "workflow_run": 35824004715,
+    "note": "A-E internal production qualification is complete. F remains blocked exclusively on exact authorized whole-Hupsel archive bytes."
   },
   "nonclaims": [
     "F-TAB02 production admission",
     "whole-Hupsel generated-provider equivalence",
     "portable whole-SWAP speedup"
   ],
-  "resume_condition": "Exact archive bytes with the frozen SHA-256 become available through an authorized materializable source."
+  "resume_condition": "Exact archive bytes with the frozen SHA-256 become available through an authorized materializable source; then execute the canonical M1-C3 whole-Hupsel generated-provider gate without substituting a reconstructed/public/synthetic authority."
 }
