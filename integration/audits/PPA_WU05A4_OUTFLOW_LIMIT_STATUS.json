@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-OUTFLOW-LIMIT",
   "baseline": "9bca67315",
+  "recovery_point": "09fcfaf08",
+  "persisted_test_result": "PASS O0/O2 at 09fcfaf08, identical transcripts, 100000 bitwise formula comparisons and threshold/invalid tests. Inflow-limit regression also PASS O0/O2.",
   "scope": "Isolated final standard-domain outgoing potential-to-rate conversion after interdomain redistribution, not a complete MACRORATE implementation",
   "source": "B1.11 macrorate.f90 lines 1377-1391; SHA256 537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
   "implementation": "src/process/mod_ppa_wu05a4_outflow_limit.f90",
