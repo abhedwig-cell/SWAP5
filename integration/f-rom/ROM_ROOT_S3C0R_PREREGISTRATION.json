@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom_root.s3c0r.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-C0R",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_C0R_REQUALIFICATION",
+  "role": "REFERENCE_CONTROL_QUALIFICATION_REPAIR_FOR_PRESCRIBED_INVARIANT_ROOT_METRICS",
+  "predecessor": {
+    "result": "integration/f-rom/ROM_ROOT_S3C0_RESULT.json",
+    "failure": "integration/f-rom/ROM_ROOT_S3C0_FAILURE_CLASSIFICATION.json",
+    "immutable_artifact": {
+      "run_id": 35854345998,
+      "artifact_id": 10747053751,
+      "digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920"
+    }
+  },
+  "scientific_contract": {
+    "physical_response_changed": false,
+    "reference_richards_changed": false,
+    "root_sink_changed": false,
+    "materials_changed": false,
+    "histories_changed": false,
+    "spatial_ladder_changed": false,
+    "temporal_ladder_changed": false,
+    "hydraulic_metric_qualification_changed": false
+  },
+  "prescribed_invariant_semantics": {
+    "reason": "For S3-C0, actual root uptake is externally prescribed as full potential uptake at every Reference transaction. Spatial and temporal resolution do not define an independent root-uptake discretization problem; only arithmetic evaluation noise remains.",
+    "activation_guard": 2.9103830456733704e-11,
+    "route_identity_requirement": [
+      "For every material, history, and all five o0 numerical routes, every observation must satisfy abs(actual_fraction-1) <= activation_guard.",
+      "For every material, history, and route, every observation must satisfy abs(actual_rate-PTRA) <= activation_guard*max(1,abs(PTRA))."
+    ],
+    "interval_root_U": "activation_guard * max(1, max_history_PTRA) = activation_guard; this is an arithmetic envelope, not a fitted tolerance.",
+    "cumulative_root_U": "horizon_day * interval_root_U + gamma(1024)*1024*epsilon*max(1,max_history_PTRA*horizon_day), with gamma(k)=k*epsilon/(1-k*epsilon).",
+    "hydraulic_metrics": "retain the three C0 qualified U_combined values unchanged.",
+    "full_potential_identity": "retain C0 target identity and O0/O2 identity requirements unchanged."
+  },
+  "pass_rule": {
+    "required": [
+      "C0 physics artifact digest matches the frozen authority.",
+      "C0 full_potential_identity_pass is true.",
+      "C0 integrity_pass is true.",
+      "The three hydraulic metrics remain qualified for both materials.",
+      "All route/history root observations pass the prescribed-invariant identity requirement.",
+      "The two prescribed root metrics receive only the preregistered arithmetic U envelopes."
+    ],
+    "pass": "S3C0R_FULL_POTENTIAL_REFERENCE_QUALIFIED and Stage 3 dynamic reduced response may be bound.",
+    "fail": "STOP_BEFORE_STAGE3_DYNAMIC_REDUCED_RESPONSE."
+  },
+  "scientific_firewall": {
+    "c0_reclassified": false,
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
