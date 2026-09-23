@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.sw_rib_swm01.q2.design.v1",
+  "work_unit": "SW-RIB-SWM01-Q2",
+  "date": "2026-09-23",
+  "status": "DESIGN_FROZEN_NOT_YET_PREREGISTERED_FOR_EXECUTION",
+  "purpose": "Preserve the hydrologically meaningful SWMAN=2 soil-state-driven surface-water management policy while moving surface-water state and hydraulic realization to Ribasim.",
+  "authorities": {
+    "legacy_policy": "F-PM08D5 exact-source automatic-control inventory",
+    "management_transaction": "RM02/RM06/RM10",
+    "explicit_scheduler": "RM11/RM12",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "decomposition": {
+    "Q2A_POLICY": {
+      "owner": "COUPLER",
+      "accepted_inputs": [
+        "groundwater_level",
+        "total_soil_air_volume",
+        "selected_pressure_head"
+      ],
+      "source_order": [
+        "start at highest management phase",
+        "decrement by groundwater criterion while legacy condition applies",
+        "decrement by air-volume criterion while legacy condition applies",
+        "decrement by selected-pressure-head criterion while legacy condition applies",
+        "requested target = WLSMAN(active phase)"
+      ],
+      "persistent_state": [
+        "WLSTAR accepted target memory"
+      ],
+      "events": [
+        "explicit initial evaluation",
+        "translated management-period boundaries",
+        "translated INTWL adjustment instants"
+      ],
+      "between_events": "retain accepted WLSTAR exactly",
+      "rate_policy": "preserve explicit DROPR downward-target rule in a transaction-safe accepted interval; rejected trials may not alter accepted WLSTAR",
+      "tests": [
+        "phase-selection edge cases for each hydraulic criterion",
+        "between-event memory",
+        "downward DROPR active/inactive seam",
+        "upward target change",
+        "rejected candidate rollback",
+        "same-origin deterministic replay",
+        "noncommensurate event scheduling through RM11/RM12 scheduler"
+      ]
+    },
+    "Q2B_RIBASIM_REALIZATION": {
+      "owner": "RIBASIM",
+      "level_band": {
+        "min": "WLSTAR-WLDIP",
+        "max": "WLSTAR"
+      },
+      "supply": "allocation-controlled finite-capacity route representing available WSCAP-like supply",
+      "discharge": "allocation-controlled TabulatedRatingCurve with physical Q(h) as hard capacity",
+      "route_policy": "positive discharge route priority so surplus is removed only as needed after higher-priority level objectives",
+      "cases": [
+        "below lower band with adequate supply",
+        "below lower band with insufficient supply",
+        "inside band with no management transfer",
+        "above upper band with sufficient discharge capacity",
+        "above upper band with insufficient physical Q(h) capacity"
+      ]
+    }
+  },
+  "discrepancy_policy": [
+    "Do not reproduce the documented legacy SWQHR1-current-WLS versus SWQHR2-target-WLSTAR automatic-capacity asymmetry as a hidden compatibility rule.",
+    "Use one explicit Ribasim physical-capacity definition and report the behavior change against the legacy discrepancy.",
+    "Do not allow uncommitted SWAP trial hydraulic state to select a management phase."
+  ],
+  "nonclaims": [
+    "No production implementation yet.",
+    "No claim that every legacy numerical timestep response is scientifically desirable.",
+    "No scarcity competition qualification beyond the later explicit Q2B cases."
+  ]
+}
