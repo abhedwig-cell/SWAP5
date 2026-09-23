@@ -2113,6 +2113,13 @@
       "effect": "Water-wall fractions, route-specific cell-water candidates, wet-top selection and water-level recurrence pass isolated cases. No MACROSTATE mutation, accepted flux, mass, retry or restart is admitted."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROSTATE-FLUX-CANDIDATE",
+      "state": "ISOLATED_SECTION_D_INTERNAL_FLUX_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROSTATE_FLUX_STATUS.json; preregistered against B1.11 macropore.f90 MACROSTATE section D",
+      "production_delta": "NONE",
+      "effect": "Unsaturated/saturated internal flux recurrences, shallower-bottom correction and SWMBF gate pass isolated cases. Boundary flux authority, owner mutation and A4 accepted mass/retry/restart remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
