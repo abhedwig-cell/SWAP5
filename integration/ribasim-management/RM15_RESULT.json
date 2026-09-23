@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_numerical_census.result.v1",
+  "work_unit": "RM15",
+  "date": "2026-09-23",
+  "decision": "STRUCTURAL_FAILURE_ACROSS_CENSUS",
+  "workflow": "RM15 dynamic-top duration census",
+  "workflow_run": 35891324911,
+  "workflow_job": 107284224945,
+  "authority_head": "ff984fc3e2e3f96b25cb51ac2eaeb8686b126614",
+  "prospective_windows_seconds": [
+    8.64,4.32,2.16,1.08,0.54,0.27,0.135,0.0675,0.03375,0.016875,0.0084375
+  ],
+  "success_count": 0,
+  "observed_pattern": [
+    {"window_seconds":8.64,"solver_rejections":6,"temporal_unavailable_rejections":3,"accepted_substeps":0},
+    {"window_seconds":4.32,"solver_rejections":7,"temporal_unavailable_rejections":2,"accepted_substeps":0},
+    {"window_seconds":2.16,"solver_rejections":8,"temporal_unavailable_rejections":1,"accepted_substeps":0},
+    {"window_seconds":1.08,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.54,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.27,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.135,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.0675,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.03375,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.016875,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0},
+    {"window_seconds":0.0084375,"solver_rejections":9,"temporal_unavailable_rejections":0,"accepted_substeps":0}
+  ],
+  "mass_rejections_at_all_points": 0,
+  "interpretation": [
+    "RM14 is not failing merely because the 8.64-second outer window is too large for the inherited policy.",
+    "Shortening the independently restarted diagnostic window over more than three orders of magnitude does not produce one accepted substep.",
+    "At and below 1.08 s every transaction attempt is rejected by the Richards solve before temporal certification.",
+    "The next investigation must therefore isolate the dynamic-top provider/raw Richards interaction rather than search for a smaller coupling timestep."
+  ],
+  "prohibitions": [
+    "Do not admit a smaller production coupling timestep from RM15.",
+    "Do not increase retry count or relax tolerances based on this census.",
+    "Do not rerun the three-model triangle until a lower-level Richards/dynamic-top authority exists."
+  ],
+  "next_required_boundary": "Separate the dynamic-top boundary provider result from the raw Richards nonlinear solve. Verify the provider output at the frozen accepted origin and determine whether the raw solver failure is caused by boundary construction, ponding-state semantics, sign convention, or the solver path itself."
+}
