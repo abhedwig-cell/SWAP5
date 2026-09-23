@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.sw_rib_pa01.preregistration.v1",
+  "work_unit": "SW-RIB-PA01",
+  "date": "2026-09-23",
+  "title": "Production admission candidate for external Ribasim-owned surface-water head and signed SWAP exchange",
+  "canonical_base": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "research_authority": "research/sw-rib-swm01-surfacewater-ownership@48df989b098d73208eed2496005b656f588ebffd",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "purpose": "Move only the bounded SW-RIB-SWM01 research outcome needed for a production-facing external-surface-water profile into a fresh canonical-based work unit.",
+  "production_candidate": {
+    "process": "FMR_DRAIN_VARIANT_EXTENDED_SIGNED",
+    "control": "finite resolved external surface-water head per active drainage level",
+    "surface_water_storage_owner": "EXTERNAL_RIBASIM",
+    "swap_persistent_surface_water_state": false,
+    "mass_booking": "existing serialized transaction ledger exactly once"
+  },
+  "hard_owner_invariant": "For the same physical store, external-surface-water signed exchange and FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER are mutually exclusive.",
+  "implementation_scope": [
+    "port the Q4A stateless signed extended drainage/infiltration process",
+    "port the Q4B FMR drainage-response binding variant",
+    "add a fail-closed owner-mode guard at the generic serialized resolved-column execution boundary",
+    "qualify positive drainage, negative infiltration, missing external head, fixed-weir owner conflict, rollback and exactly-once mass booking",
+    "preserve every pre-existing drainage response variant unchanged"
+  ],
+  "excluded": [
+    "Ribasim process launch or network construction",
+    "automatic management policy implementation",
+    "storage-geometry conversion",
+    "nonlinear SWQHR1 parity",
+    "whole surfacewater.f90 retirement",
+    "canonical production admission until independent qualification passes"
+  ],
+  "frozen_cases": [
+    {
+      "id": "P1_EXTERNAL_POSITIVE_DRAINAGE",
+      "external_head_cm": -12.25,
+      "groundwater_level_cm": -2.25,
+      "expected_signed_rate_cm_day": 0.01,
+      "expected": "commit once with hard mass closure"
+    },
+    {
+      "id": "P2_EXTERNAL_NEGATIVE_INFILTRATION",
+      "external_head_cm": 7.75,
+      "groundwater_level_cm": -2.25,
+      "expected_signed_rate_cm_day": -0.01,
+      "expected": "commit once with hard mass closure"
+    },
+    {
+      "id": "P3_MISSING_EXTERNAL_HEAD",
+      "expected": "fail before physical solve and preserve committed state"
+    },
+    {
+      "id": "P4_INTERNAL_FIXED_WEIR_OWNER_CONFLICT",
+      "expected": "fail before physical solve and preserve committed state"
+    },
+    {
+      "id": "P5_INVALID_EXTENDED_PARAMETERS",
+      "expected": "transaction rejects and committed state remains unchanged"
+    }
+  ],
+  "preservation": [
+    "existing variants 1..8 remain source- and behavior-preserved",
+    "F-CI52 standalone fixed-weir route remains available and unchanged",
+    "no new persistent state layout is introduced",
+    "no scientific tolerance relaxation"
+  ],
+  "pass_meaning": "The canonical runtime has a bounded fail-closed seam for externally owned surface-water heads and signed SWAP exchange. This does not yet admit the full SWAP5+Ribasim application profile.",
+  "production_admission": false
+}
