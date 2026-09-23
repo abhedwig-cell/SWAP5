@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom-purpose.p2.h4-finalization-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-H4-FINALIZE",
+  "date": "2026-09-23",
+  "status": "BOUND_TO_FROZEN_SURFACE_FAILURE_AND_SUCCESSFUL_GW_ROUTES",
+  "trigger_head_before_binding": "74637e0e1e7a2e74eafc81a0aa2dc8da84f5267a",
+  "surface_authority": {
+    "evidence": "integration/f-rom/ROM_PURPOSE_P2_H4_SURFACE_FAILURE_EVIDENCE.json",
+    "blob": "23a171cb01d15cf16616fdbff1c9eb8b9be789be",
+    "decisions": {
+      "SURF_P/B01": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+      "SURF_P/B14": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE"
+    }
+  },
+  "groundwater_execution_authority": {
+    "source_run": 35857841206,
+    "successful_jobs": [
+      "GW_LB/B01/T8",
+      "GW_LB/B01/T16",
+      "GW_LB/B01/T32",
+      "GW_LB/B14/T8",
+      "GW_LB/B14/T16",
+      "GW_LB/B14/T32"
+    ],
+    "O0_O2_identity_enforced_in_source_jobs": true
+  },
+  "frozen_sources": {
+    "H4_contract": "integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json@7a93e58e7cc1191a38568be80d8dc6a56ffdc2d9",
+    "placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json@e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "GW_reference_run": 35751978638
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p2-h4-finalize.yml": "5f3165949e081a9fd586a4fea8877e59a7416b5a",
+    "tests/rom/analyze_rom_purpose_p2_h4_corichards.py": "62e5ae79a02ef96f5e0965862f4be6bb6d2bd9a6",
+    "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c",
+    "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f",
+    "tests/rom/analyze_rom_purpose_p2_reference.py": "235a6f0efbadaeff182c7fd5450c20f3d7920795",
+    "integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json": "7a93e58e7cc1191a38568be80d8dc6a56ffdc2d9",
+    "integration/f-rom/ROM_PURPOSE_P2_H4_SURFACE_FAILURE_EVIDENCE.json": "23a171cb01d15cf16616fdbff1c9eb8b9be789be",
+    "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json": "e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5"
+  },
+  "scientific_firewall": {
+    "surface_numerical_failure_repaired": false,
+    "fallback_policy_changed": false,
+    "grid_retuned": false,
+    "representation_retuned": false,
+    "closure_tuned": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
