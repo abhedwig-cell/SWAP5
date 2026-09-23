@@ -1,0 +1,32 @@
+name: RM15 dynamic-top duration census
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/ribasim-management/test_rm15_dynamic_top_point.py'
+      - 'tests/ribasim-management/aggregate_rm15_dynamic_top_census.py'
+      - 'tests/ribasim-management/run_rm15_dynamic_top_census.sh'
+      - 'integration/ribasim-management/RM15_*'
+      - '.github/workflows/rm15-dynamic-top-duration-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  census:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM15 dynamic-top duration census
+        run: bash tests/ribasim-management/run_rm15_dynamic_top_census.sh
