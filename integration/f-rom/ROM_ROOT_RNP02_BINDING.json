@@ -37,6 +37,8 @@
     "purpose": "Trigger the already-bound RNP02 trace workflow.",
     "scientific_semantics_changed": false,
     "reduced_candidate_response_generated": false,
-    "action": "PUSH_PATH_TRIGGER_ONLY"
+    "action": "PUSH_PATH_TRIGGER_ONLY",
+    "sequence": 2,
+    "reason": "No workflow run was visible after the original bound trigger; retrigger only, with unchanged bound implementation and semantics."
   }
 }
