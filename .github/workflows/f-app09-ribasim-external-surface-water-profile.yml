@@ -7,6 +7,7 @@ on:
     paths:
       - 'src/process/mod_drainage_extended_exchange.f90'
       - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
       - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
       - 'tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90'
@@ -17,6 +18,7 @@ on:
     paths:
       - 'src/process/mod_drainage_extended_exchange.f90'
       - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
       - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
       - 'tests/fapp/*fapp09*surface_water_profile*'
