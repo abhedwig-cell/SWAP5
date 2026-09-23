@@ -40,12 +40,15 @@ jobs:
           import json,subprocess
           p=json.load(open('integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json'))
           b=json.load(open('integration/f-rom/ROM_ROOT_S3_BINDING.json'))
-          c0=json.load(open('integration/f-rom/ROM_ROOT_S3C0_RESULT.json'))
-          s2=json.load(open('integration/f-rom/ROM_ROOT_S2_CLOSEOUT.json'))
+          c0r=json.load(open('integration/f-rom/ROM_ROOT_S3C0R_RESULT.json'))
+          s2r=json.load(open('integration/f-rom/ROM_ROOT_S2R_CLOSEOUT.json'))
+          repair=json.load(open('integration/f-rom/ROM_ROOT_S3_PRE_SCIENTIFIC_REPAIR.json'))
           assert p['state']=='PREREGISTERED_BEFORE_ANY_STAGE3_REDUCED_DYNAMIC_FEEDBACK_RESPONSE'
           assert b['state']=='BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE'
-          assert c0['status']=='S3C0_FULL_POTENTIAL_REFERENCE_QUALIFIED'
-          assert s2['status']=='CLOSED_STAGE2_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED'
+          assert c0r['status']=='S3C0R_FULL_POTENTIAL_REFERENCE_QUALIFIED'
+          assert s2r['status']=='CLOSED_PRESCRIBED_SINK_HARNESS_QUALIFIED_STAGE3_MAY_BE_PREREGISTERED'
+          assert repair['state']=='BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE'
+          assert repair['scientific_semantics_changed'] is False
           for path,expected in b['implementation_blobs'].items():
               got=subprocess.check_output(['git','hash-object',path],text=True).strip()
               assert got==expected,(path,got,expected)
@@ -60,7 +63,7 @@ jobs:
             --history "${{ matrix.history }}" \
             --member "${{ matrix.member }}" \
             --prereg integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json \
-            --s3c0-result integration/f-rom/ROM_ROOT_S3C0_RESULT.json \
+            --s3c0-result integration/f-rom/ROM_ROOT_S3C0R_RESULT.json \
             --output "candidate/${{ matrix.material }}_${{ matrix.history }}_${{ matrix.member }}.json" \
             | tee candidate/runner.txt
           python3 - "candidate/${{ matrix.material }}_${{ matrix.history }}_${{ matrix.member }}.json" <<'PY'
@@ -98,10 +101,10 @@ jobs:
           python3 - <<'PY'
           import json,os
           ra=json.load(open('integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json'))
-          c0=json.load(open('integration/f-rom/ROM_ROOT_S3C0_RESULT.json'))
+          c0r=json.load(open('integration/f-rom/ROM_ROOT_S3C0R_RESULT.json'))
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               f.write("ra02r_run=%s\n" % ra['authority']['workflow_run'])
-              f.write("s3c0_run=%s\n" % c0['authority']['workflow_run'])
+              f.write("s3c0_run=%s\n" % c0r['authority']['source_physics_run'])
           PY
 
       - uses: actions/download-artifact@v4
@@ -131,7 +134,7 @@ jobs:
           python3 tests/rom/analyze_rom_root_s3_dynamic_feedback.py \
             --prereg integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json \
             --ra02r-result integration/f-rom/ROM_ROOT_RA02R_RESULT.json \
-            --s3c0-result integration/f-rom/ROM_ROOT_S3C0_RESULT.json \
+            --s3c0-result integration/f-rom/ROM_ROOT_S3C0R_RESULT.json \
             --candidate-dir /tmp/candidates \
             --ra02r-b01-r512-t32 /tmp/ra02r/B01_R512_T32_o0.txt \
             --ra02r-b01-r1024-t32 /tmp/ra02r/B01_R1024_T32_o0.txt \
@@ -158,7 +161,8 @@ jobs:
           cp integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json S3_EVIDENCE/
           cp integration/f-rom/ROM_ROOT_S3_BINDING.json S3_EVIDENCE/
           cp integration/f-rom/ROM_ROOT_RA02R_RESULT.json S3_EVIDENCE/
-          cp integration/f-rom/ROM_ROOT_S3C0_RESULT.json S3_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3C0R_RESULT.json S3_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3_PRE_SCIENTIFIC_REPAIR.json S3_EVIDENCE/
           sha256sum S3_EVIDENCE/* > S3_EVIDENCE/sha256.txt
 
       - name: Enforce Stage 3 firewall
