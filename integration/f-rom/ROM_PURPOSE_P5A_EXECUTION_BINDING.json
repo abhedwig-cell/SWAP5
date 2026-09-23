@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.rom-purpose.p5a.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5A-SURF-NUMERICAL-DOMAIN",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P5A_DIAGNOSTIC_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P5A_PREREGISTRATION.json@fbe2319114567817365cc771f447235f0cf0c80b",
+  "p4_matched_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json@2c4ea4d1e6aedec7869628cdef1a97d379532d31",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "matrix": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "members": [
+      "S8",
+      "S12",
+      "S16"
+    ],
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ]
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P5_LIVE_RECONCILIATION.json": "f1f8637bae4e31dd9799657f0fb4a6fdac315e0c",
+    "integration/f-rom/ROM_PURPOSE_P5A_PREREGISTRATION.json": "fbe2319114567817365cc771f447235f0cf0c80b",
+    "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json": "2c4ea4d1e6aedec7869628cdef1a97d379532d31",
+    "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json": "ad5604fba2252e956015403d461d3df17ddec28c",
+    "tests/rom/materialize_rom_purpose_p5a_surface_diagnostic.py": "efb61039cace36bd9522658961e6a5f4c40f7955",
+    "tests/rom/run_rom_purpose_p5a_surface_diagnostic.py": "7a11424baa5c838eba8512351f48a089f0fc2ee1",
+    "tests/rom/analyze_rom_purpose_p5a_surface_diagnostic.py": "3258f24c29e2d9ef29d0879ecb426ebe70939e5a",
+    ".github/workflows/f-rom-purpose-p5a.yml": "19f10e1a92963ae780a58ee4e3d14cc64f475267"
+  },
+  "scientific_firewall": {
+    "diagnostic_only": true,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "failing_route_continuation_enabled": false,
+    "p4_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
