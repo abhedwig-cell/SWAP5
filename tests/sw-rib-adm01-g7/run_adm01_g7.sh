@@ -53,7 +53,8 @@ echo "SW_RIB_ADM01_G7_RIBASIM_PIN=PASS sha=$ACTUAL_PIN"
 cat "$BUILD/ribasim.txt"
 grep -Fq 'SW_RIB_ADM01_G7_REAL_RIBASIM=PASS' "$BUILD/ribasim.txt" || fail "live Ribasim final marker"
 grep -Fq 'SW_RIB_ADM01_G7_RIBASIM_SAME_ORIGIN_RECOMPOSITION=PASS' "$BUILD/ribasim.txt" || fail "Ribasim recomposition marker"
-test "$(grep -c '^G7_RECEIPT,' "$BUILD/ribasim.txt")" -eq 3 || fail "receipt count"
+test "$(grep -c '^G7_ITER,' "$BUILD/ribasim.txt")" -ge 4 || fail "iteration receipt count"
+grep -Fq 'G7_ITER,E3_NEGATIVE_INFILTRATION_LIMITED,' "$BUILD/ribasim.txt" || fail "E3 iteration evidence"
 
 python3 - "$BUILD/compile-order.txt" <<'PY'
 from pathlib import Path
@@ -113,19 +114,26 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" -o "$OUT/test" || fail "link O$opt"
 
   : > "$OUT/stable.txt"
-  while IFS=',' read -r prefix case_id head_cm requested first_realized second_realized residual; do
-    test "$prefix" = "G7_RECEIPT" || continue
-    "$OUT/test" "$case_id" "$head_cm" "$requested" "$first_realized" "$second_realized" "100.0"       > "$OUT/$case_id.txt" 2>&1 || {
-        cat "$OUT/$case_id.txt" >&2
-        fail "F-APP09 live receipt O$opt $case_id"
+  iter_count=0
+  while IFS=',' read -r prefix case_id iteration head_cm requested realized residual disposition; do
+    test "$prefix" = "G7_ITER" || continue
+    iter_count=$((iter_count+1))
+    outfile="$OUT/${case_id}_${iteration}.txt"
+    "$OUT/test" "$case_id" "$iteration" "$head_cm" "$requested" "$realized" "100.0" "$disposition" \
+      > "$outfile" 2>&1 || {
+        cat "$outfile" >&2
+        fail "F-APP09 live receipt O$opt $case_id iteration $iteration"
       }
-    cat "$OUT/$case_id.txt"
-    grep '^SW_RIB_ADM01_G7_' "$OUT/$case_id.txt" >> "$OUT/stable.txt"
+    cat "$outfile"
+    grep '^SW_RIB_ADM01_G7_' "$outfile" >> "$OUT/stable.txt"
   done < "$BUILD/ribasim.txt"
 
-  test "$(grep -c '^SW_RIB_ADM01_G7_CASE_PASS=' "$OUT/stable.txt")" -eq 3 || fail "O$opt case markers"
-  grep -Fq 'SW_RIB_ADM01_G7_RECOMPOSITION_FROM_SAME_ORIGIN=PASS' "$OUT/stable.txt" || fail "O$opt FAPP09 recomposition marker"
-  test "$(grep -c '^SW_RIB_ADM01_G7_FAPP09_LIVE_RECEIPT=PASS' "$OUT/stable.txt")" -eq 3 || fail "O$opt final receipt markers"
+  test "$iter_count" -ge 4 || fail "O$opt insufficient iteration evidence"
+  grep -Fq 'SW_RIB_ADM01_G7_ITER_COMMIT_PASS=E1_POSITIVE_DRAINAGE,1' "$OUT/stable.txt" || fail "O$opt E1 commit"
+  grep -Fq 'SW_RIB_ADM01_G7_ITER_COMMIT_PASS=E2_NEGATIVE_INFILTRATION_SUFFICIENT,1' "$OUT/stable.txt" || fail "O$opt E2 commit"
+  grep -Fq 'SW_RIB_ADM01_G7_ITER_RECOMPOSE_PASS=E3_NEGATIVE_INFILTRATION_LIMITED,' "$OUT/stable.txt" || fail "O$opt E3 recomposition"
+  grep -Fq 'SW_RIB_ADM01_G7_ITER_COMMIT_PASS=E3_NEGATIVE_INFILTRATION_LIMITED,' "$OUT/stable.txt" || fail "O$opt E3 final commit"
+  test "$(grep -c '^SW_RIB_ADM01_G7_FAPP09_LIVE_RECEIPT=PASS' "$OUT/stable.txt")" -eq "$iter_count" || fail "O$opt receipt marker count"
   echo "SW_RIB_ADM01_G7_O${opt}=PASS"
 done
 
