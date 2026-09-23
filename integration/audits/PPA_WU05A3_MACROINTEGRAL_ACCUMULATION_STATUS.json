@@ -2,7 +2,7 @@
   "schema": "swap5.ppa_wu05a3_macrointegral_accumulation.status.v1",
   "work_unit": "PPA-WU05-A3-MACROINTEGRAL-ACCUMULATION",
   "baseline": "aae943b7d49842f78adb0a1e513ca1ad79bcd5b0",
-  "phase": "IMPLEMENTED_FOCUSED_CHECK_PASSED",
+  "phase": "PERSISTED_ISOLATED_TESTS_PASSED",
   "source": "B1.11 macropore.f90 lines 1247-1292, intermediate and cumulative integration",
   "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
   "scope": "Candidate accumulators from explicit aggregated rates for main/internal domains; source-ordered cell sums and exchange signs",
@@ -12,7 +12,8 @@
   "implementation": "src/process/mod_ppa_wu05a3_macrointegral_accumulation.f90",
   "test": "tests/fapp/test_ppa_wu05a3_macrointegral_accumulation.f90",
   "gate": "tests/fapp/run_ppa_wu05a3_macrointegral_accumulation.ps1",
-  "test_result": "Persisted runner at 6955bac795f4148ab72f8a2599e2597d915acb88 PASS O0/O2 with identical transcripts, bounds checks and floating-point traps",
+  "recovery_point": "11a7776e290b16a6e6de49bc63974eb6f9637aad",
+  "test_result": "Persisted PowerShell runner at 11a7776e290b16a6e6de49bc63974eb6f9637aad PASS O0/O2 with identical transcripts, warnings-as-errors, bounds checks and floating-point traps; accumulation, exchange signs, history isolation, invalid inputs, reset tasks and source cell-rounding order",
   "extension_preregistration": {
     "source": "B1.11 MACRORESET lines 1597-1642 accumulator zeroing only",
     "scope": "Task 0 clears both accumulator groups; task 1 clears intermediate only; task 2 clears cumulative only; input history immutable",
@@ -22,5 +23,5 @@
   "expected_tests": ["Hand-calculated intermediate, cumulative and exchange amounts", "Excluded upper cells preserved", "Nonzero history and repeated intervals", "Input history immutable", "Invalid shape/time rejected", "O0/O2 transcript identity with bounds checks and floating traps"],
   "qualified": false,
   "production_admission": "NONE",
-  "next_action": "Run the persisted runner; extend independent source coverage while corrected-reference icgwl policy remains unresolved"
+  "next_action": "Continue the MACROSTATE sorptivity-event update and beginning-period inventory source contracts; full MACROSTATE composition still requires corrected-reference icgwl policy"
 }
