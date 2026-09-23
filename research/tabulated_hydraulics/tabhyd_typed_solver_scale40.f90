@@ -59,12 +59,9 @@ program tabhyd_typed_solver_scale40
 
   h0=initial_head
   fldtmin=.false.
-  do i=1,nodes
-    dz(i)=5.0_real64
-    z(i)=-(real(i,real64)-0.5_real64)*dz(i)
-  end do
-  disnod=5.0_real64
 
+  ! Geometry is owned by the patched 40-node F-SI04 fixture. Do not mutate
+  ! its parameter arrays from the benchmark program.
   parameters%parameter_set_id=71001
   parameters%active_nodes=nodes
   allocate(parameters%z(nodes),parameters%dz(nodes),parameters%node_distance(nodes))
