@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.ribasim_management.canonical_bounded_closeout.v1",
+  "date": "2026-09-23",
+  "source_research_branch": "work/ribasim-management-coupling-closeout",
+  "source_closeout_commit": "183d1d6ba452316c5ec6ea3c5e1f94a613cb1b61",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "state": "BOUNDED_MANAGEMENT_AUTHORITY_READY_FOR_CANONICAL_GOVERNANCE_ONLY",
+  "production_triangle_admission": false,
+  "qualified_bounded_authorities": {
+    "real_Ribasim_product_semantics": "frozen and sufficient for coupling",
+    "management_contract": "request, allocation, physical supply and accepted irrigation are distinct",
+    "typed_irrigation_state": "transaction-safe reject/replay/restart/exactly-once commit",
+    "read_only_demand_receipt": "origin-bound",
+    "real_Ribasim_full_realization": "qualified only when physical reduction mechanisms are prospectively excluded",
+    "origin_bound_realization_receipt": "qualified; cross-origin and partial-realization fail closed",
+    "fixed_allocation_clock": "coupler-owned scheduling qualified for Ribasim v2026.1.1",
+    "groundwater_fixed_interface": "already canonical-admitted and remains unchanged",
+    "drainage_owner": "NONE in the first combined profile"
+  },
+  "preserved_falsifications": {
+    "allocation_not_equal_physical_realization": true,
+    "active_irrigation_inherited_temporal_budget_not_transferable": true,
+    "smaller_timesteps_not_automatically_safer": true,
+    "exact_qswap_identity_not_demonstrated_for_active_irrigation": true
+  },
+  "active_irrigation_temporal_effect_characterization": {
+    "global_max_head_difference_cm": 0.0463838022838558572,
+    "bottom_node_head_difference_cm": 0.0000435876321063233263,
+    "column_storage_difference_cm": 0.0,
+    "top_flux_difference_cm_per_day": 0.0,
+    "bottom_flux_difference_cm_per_day": 0.0,
+    "qswap_response_difference_m_per_s": 3.46816556953720273e-12,
+    "coupled_head_shift_m": 1.7051093870179557e-10,
+    "integrated_groundwater_transfer_shift_m3_over_8_64s_1m2": 2.9958798482770209e-11
+  },
+  "single_remaining_blocker": {
+    "name": "ACTIVE_IRRIGATION_TEMPORAL_FIDELITY_REQUIREMENT",
+    "status": "INDEPENDENT_QUANTITATIVE_REQUIREMENT_NOT_AVAILABLE",
+    "meaning": "Observed numerical effect sizes are characterized but may not be converted post hoc into a production threshold.",
+    "valid_reopen_inputs": [
+      "application-owner requirement on named hydrological outputs",
+      "independent validation authority with a prospective criterion",
+      "separately preregistered numerical-accuracy requirement justified independently of the observed RM13-RM28 outcomes"
+    ]
+  },
+  "stop_rules": {
+    "do_not_continue_generic_Ribasim_characterization": true,
+    "do_not_continue_smaller_timestep_search": true,
+    "do_not_tune_tolerance_to_current_case": true,
+    "do_not_claim_production_triangle": true
+  },
+  "nonclaims": [
+    "No production-admitted active-irrigation SWAP5-MODFLOW6-Ribasim triangle.",
+    "No partial-supply irrigation policy.",
+    "No active drainage in the first triangle.",
+    "No active root uptake in the first triangle.",
+    "No native Ribasim checkpoint API.",
+    "No universal active-irrigation temporal tolerance."
+  ]
+}
