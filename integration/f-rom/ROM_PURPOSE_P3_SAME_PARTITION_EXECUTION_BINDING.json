@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.rom-purpose.p3.same-partition-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SAME-PARTITION-RICHARDS",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P3_STATE_COUNT_TRIGGER",
+  "trigger_head_before_binding": "05566b66544985c5289d49dccc4d4231ab67af7b",
+  "state_count_authority": {
+    "result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json",
+    "result_blob": "73681c56e9d0347bdcd0288fea5b7509ed6b380b",
+    "trigger_count": 4,
+    "trigger_cases": [
+      "SURF_P/B01/S8",
+      "SURF_P/B14/S8",
+      "GW_LB/B01/G8",
+      "GW_LB/B14/G8"
+    ]
+  },
+  "reference_runs": {
+    "SURF_P": 35876282704,
+    "GW_LB": 35887290359
+  },
+  "frozen_numerical_policy": {
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "trace_completeness_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "comparator": "R512_T32 against R2048_T32",
+    "componentwise_equality_tolerance": 1e-12
+  },
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p3-same-partition.yml": "ee3c1f81c430080fcd1386b847de8c213888a711",
+    "tests/rom/materialize_rom_purpose_p3_same_partition_richards.py": "68a2807069ef7683db0cfea48e6eabf635718ad3",
+    "tests/rom/run_rom_purpose_p3_same_partition_route.py": "ffa2dba8b9634e3a721a0b534eb24b815c135fc4",
+    "tests/rom/analyze_rom_purpose_p3_same_partition_richards.py": "e6b18344a9c02a87c6f14aaab333ca6390e7550c",
+    "tests/rom/materialize_rom_purpose_p1_coarse_output.py": "991c896fcdd3b580d72ab5a262fdf0c0f86412ef",
+    "tests/rom/rom_purpose_p1_variable_grid_stubs.py": "261583a0b4b05ac5598572ac6e2630cfa75fa0a1",
+    "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json": "40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json": "73681c56e9d0347bdcd0288fea5b7509ed6b380b"
+  },
+  "scientific_firewall": {
+    "state_count_response_seen_before_binding": true,
+    "only_preregistered_terminal_triggers_executed": true,
+    "nonterminal_diagnostic_forbidden": true,
+    "partition_changed": false,
+    "closure_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
