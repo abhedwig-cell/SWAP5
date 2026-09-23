@@ -1,0 +1,42 @@
+name: F-APP09 current-canonical signed exchange replay
+
+on:
+  push:
+    branches:
+      - integration/sw-rib-pa01-coupled-surfacewater-admission
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'tests/fapp09/**'
+      - 'integration/f-app/F-APP09_*'
+      - '.github/workflows/f-app09-signed-exchange-replay.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'tests/fapp09/**'
+      - 'integration/f-app/F-APP09_*'
+      - '.github/workflows/f-app09-signed-exchange-replay.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay source-bound signed exchange
+        run: bash tests/fapp09/run_extended_exchange_candidate.sh
+      - name: Replay transactional runtime binding
+        run: bash tests/fapp09/run_extended_runtime_binding.sh

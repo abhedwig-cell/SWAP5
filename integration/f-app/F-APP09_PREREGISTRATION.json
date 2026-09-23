@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.f_app09.preregistration.v1",
+  "work_unit": "F-APP09",
+  "title": "Ribasim-coupled surface-water application profile admission",
+  "date": "2026-09-23",
+  "baseline": "integration/f-ci-canonical@43577e083ae1e315d86cafd55f971d80279db27c",
+  "research_authority": "SW-RIB-SWM01 closeout @ 7ce7d8f388747e87f4e60c19d46d1505e1c0db4c; branch closeout head 48df989b098d73208eed2496005b656f588ebffd",
+  "status": "PREREGISTERED_BEFORE_CURRENT_CANONICAL_REPLAY",
+  "objective": "Admit one narrow application profile in which real Ribasim is sole owner of the represented surface-water store, SWAP retains the signed extended drainage/infiltration process, and the coupling layer enforces accepted-state external heads, feasibility/recomposition and exactly-once transfer semantics.",
+  "admitted_profile_candidate": {
+    "name": "EXTERNAL_RIBASIM_SURFACE_WATER_V1",
+    "surface_water_state_owner": "RIBASIM",
+    "internal_swap_fixed_weir_state_active": false,
+    "signed_exchange_variant": "FMR_DRAIN_VARIANT_EXTENDED_SIGNED",
+    "external_head_source": "accepted Ribasim surface-water level supplied explicitly per drainage level",
+    "storage_geometry_representation": "Q1H epsilon-controlled continuous-area representation",
+    "storage_geometry_epsilon_m": 0.000001,
+    "exact_nonlinear_swqhr1_parity_required": false,
+    "ribasim_native_management_semantics": true
+  },
+  "hard_invariants": [
+    "SWAP_FIXED_WEIR_STATE_OWNER XOR EXTERNAL_RIBASIM_STATE_OWNER for the same physical store.",
+    "External Ribasim profile may not allocate or commit SWST-equivalent surface-water storage inside SWAP.",
+    "Each active extended signed exchange level requires one finite accepted external surface-water head.",
+    "Positive drainage and negative infiltration remain signed SWAP process responses and are booked exactly once.",
+    "If Ribasim availability changes a requested negative transfer, the coupled window is recomposed from accepted origins; accept-with-clip is forbidden.",
+    "Rejected trials cannot mutate accepted SWAP state, accepted Ribasim state, or management-policy memory.",
+    "Q1H storage representation epsilon is frozen at 1e-6 m for this admission candidate.",
+    "Exact nonlinear SWQHR1 numerical parity is outside this application profile."
+  ],
+  "gates": [
+    "A: replay Q4A source-bound stateless process candidate on current canonical.",
+    "B: replay Q4B transactional signed runtime binding on current canonical.",
+    "C: implement and qualify fail-closed external-Ribasim owner profile validation.",
+    "D: qualify Q1H epsilon=1e-6 geometry contract and provenance binding.",
+    "E: end-to-end accepted-head, signed-transfer, retry/restart and mass composition without internal SWAP surface-water state."
+  ],
+  "nonclaims": [
+    "No whole-file surfacewater.f90 deletion.",
+    "No standalone F-CI52 retirement.",
+    "No exact nonlinear SWQHR1 parity.",
+    "No production admission until all gates pass on current canonical-derived branch."
+  ]
+}

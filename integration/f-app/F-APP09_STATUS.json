@@ -1,0 +1,12 @@
+{
+  "work_unit": "F-APP09",
+  "date": "2026-09-23",
+  "baseline": "integration/f-ci-canonical@43577e083ae1e315d86cafd55f971d80279db27c",
+  "status": "CURRENT_CANONICAL_REPLAY_PENDING",
+  "implemented_candidate": true,
+  "qualified": false,
+  "production_admission": false,
+  "owner_profile_enforced": false,
+  "q1h_epsilon_m": 0.000001,
+  "next_action": "Replay Q4A/Q4B on current canonical-derived branch, then implement owner-profile validation and end-to-end coupling-profile gates."
+}
