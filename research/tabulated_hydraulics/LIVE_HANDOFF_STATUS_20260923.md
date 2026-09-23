@@ -147,3 +147,26 @@ Selected production-style performance characterization from the same replay:
 These timings remain characterization, not portable speed gates.
 
 Research disposition remains unchanged: production ownership stays on F-TAB02; this branch only records the closed handoff and supplemental scaling evidence.
+
+
+## F0 readiness after G closure
+
+The production preregistration
+`integration/f-tab/F-TAB02_F0_PREREGISTRATION.json` names only one prerequisite:
+F-TAB02-G PASS.
+
+That prerequisite is now satisfied by same-postimage sequential replay
+`35882579159`.
+
+Therefore, from the research side:
+
+- no additional constitutive research gate is required before F0;
+- F0 may proceed under its own production ownership;
+- F0 remains responsible for analytical-default preservation, explicit opt-in,
+  one-time immutable generated-state lifetime, deterministic invalidation,
+  fail-closed unsupported neighbors, and proving no generated numerical state is
+  stored in committed/transaction state;
+- only after F0_1..F0_5 PASS may the exact whole-Hupsel F gate execute.
+
+This is a handoff/readiness statement only. It does not change F0 status or
+production code from the research branch.
