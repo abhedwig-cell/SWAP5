@@ -6,7 +6,9 @@ module mod_rm13_management_c_bridge
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_executor_t, kernel_result_t, kernel_diagnostics_t, KERNEL_COMMIT_STATUS_COMMITTED
   use mod_tcs1_dcs2_sprinkling_irrigation_process, only: tcs1_dcs2_sprinkling_parameters_t, &
-       tcs1_dcs2_sprinkling_state_t, tcs1_dcs2_sprinkling_request_t
+       tcs1_dcs2_sprinkling_state_t, tcs1_dcs2_sprinkling_request_t, &
+       tcs1_dcs2_sprinkling_result_t, tcs1_dcs2_sprinkling_diagnostics_t, &
+       evaluate_tcs1_dcs2_sprinkling_interval
   use mod_rutter_interception_process, only: rutter_state_t, rutter_interval_input_t
   use mod_fmr_hupsel_management_transaction
   use mod_fmr_ribasim_management_binding
@@ -48,6 +50,9 @@ contains
     type(rutter_state_t) :: rutter0
     type(fmr_hupsel_management_state_t) :: management0
     type(tcs1_dcs2_sprinkling_request_t) :: request
+    type(tcs1_dcs2_sprinkling_state_t) :: direct_candidate
+    type(tcs1_dcs2_sprinkling_result_t) :: direct_result
+    type(tcs1_dcs2_sprinkling_diagnostics_t) :: direct_diagnostics
     type(kernel_checkpoint_t) :: checkpoint
     class(transaction_state_t), allocatable :: initial
     logical :: ok,available
@@ -104,6 +109,17 @@ contains
     end if
     request_depth_cm=demand%requested_depth_cm()
     if(abs(real(request_depth_cm,real64)-REQUEST_DEPTH_CM)>1.0e-12_real64)then
+      call evaluate_tcs1_dcs2_sprinkling_interval(irrigation_parameters,irrigation0,request, &
+           direct_candidate,direct_result,direct_diagnostics)
+      write(*,'(A,ES26.17E3)') 'RM13_DIRECT_REQUEST_DEPTH_CM=',direct_result%event_depth_cm
+      write(*,'(A,L1)') 'RM13_DIRECT_EVENT_STARTED=',direct_result%event_started
+      write(*,'(A,L1)') 'RM13_DIRECT_STRESS_TRIGGERED=',direct_diagnostics%stress_triggered
+      write(*,'(A,L1)') 'RM13_DIRECT_INTERVAL_GATE=',direct_diagnostics%interval_gate_passed
+      write(*,'(A,ES26.17E3)') 'RM13_DIRECT_TRANSP_RATIO=',direct_diagnostics%transpiration_ratio
+      write(*,'(A,ES26.17E3)') 'RM13_DIRECT_THRESHOLD=',direct_diagnostics%interpolated_trel
+      write(*,'(A,ES26.17E3)') 'RM13_DIRECT_INTERPOLATED_DEPTH_CM=',direct_diagnostics%interpolated_depth_cm
+      write(*,'(A,I0)') 'RM13_DIRECT_STATUS=',direct_diagnostics%status
+      write(*,'(A,I0)') 'RM13_DIRECT_DAYFIX=',irrigation0%dayfix
       rm13_management_initialize_c=402_c_int
       return
     end if
