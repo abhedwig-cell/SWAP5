@@ -1,0 +1,36 @@
+name: RM10 origin-bound Ribasim realization receipt
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'src/runtime/mod_fmr_ribasim_management_binding.f90'
+      - 'tests/ribasim-management/test_rm10_origin_bound_realization_receipt.f90'
+      - 'tests/ribasim-management/run_rm10_origin_bound_realization_receipt.sh'
+      - 'integration/ribasim-management/RM10_*'
+      - '.github/workflows/rm10-origin-bound-ribasim-realization.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'src/runtime/mod_fmr_ribasim_management_binding.f90'
+      - 'tests/ribasim-management/test_rm10_origin_bound_realization_receipt.f90'
+      - 'tests/ribasim-management/run_rm10_origin_bound_realization_receipt.sh'
+      - 'integration/ribasim-management/RM10_*'
+      - '.github/workflows/rm10-origin-bound-ribasim-realization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM10 typed realization qualification
+        run: bash tests/ribasim-management/run_rm10_origin_bound_realization_receipt.sh
