@@ -5,11 +5,12 @@
   "date": "2026-09-23",
   "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
   "authority": {
-    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@fa7b2f0b3edba1bcc341ac826a2ef376717a4989",
     "representation_ladder": "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json@40e8067b21add9cf64549c60fbb13ce3c38bb894",
     "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
     "candidate_response_authorized": false,
-    "authorization_dependency": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json must explicitly set candidate_response_authorized=true"
+    "authorization_dependency": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json must explicitly set candidate_response_authorized=true",
+    "pre_response_authority_repair": "integration/f-rom/ROM_PURPOSE_P3_PRE_RESPONSE_AUTHORITY_REPAIR.json@1d4e8537ab3c6aeaa82c1179ef558c5829bdaaf2"
   },
   "implementation_blobs": {
     "tests/rom/run_rom_purpose_p3_candidate.py": "e9e249717cd9f402e282bd5a5e80ec6fcffbcd35",
@@ -61,7 +62,8 @@
     "candidate_execution_binding_created": false,
     "candidate_response_generated": false,
     "boundaries_changed": false,
-    "closure_changed": false
+    "closure_changed": false,
+    "pre_response_repairs_complete": true
   },
   "technical_repairs_before_candidate_response": [
     "4f1a970fe78fc3be835acd3b808aede34cc6090d: repaired literal newline syntax and removed obsolete P1 candidate dependency.",
