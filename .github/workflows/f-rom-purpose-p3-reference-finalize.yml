@@ -1,0 +1,132 @@
+name: F-ROM-PURPOSE P3 Reference finalize
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_REFERENCE_FINALIZATION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-reference-finalize
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify finalization authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p3_reference.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_FINALIZATION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_AFTER_BOTH_P3_REFERENCE_RUNS_COMPLETE'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_NEW_P3_REFERENCE_OR_CANDIDATE_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Verify source runs and download frozen route artifacts
+        run: |
+          set -euo pipefail
+          surface_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_FINALIZATION_BINDING.json'))['runs']['SURF_P'])")"
+          gw_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_FINALIZATION_BINDING.json'))['runs']['GW_LB'])")"
+          for rid in "$surface_run" "$gw_run"; do
+            test "$(gh run view "$rid" --repo abhedwig-cell/SWAP5 --json status -q .status)" = completed
+            test "$(gh run view "$rid" --repo abhedwig-cell/SWAP5 --json conclusion -q .conclusion)" = success
+          done
+          mkdir -p /tmp/surface /tmp/gw /tmp/reference
+          gh run download "$surface_run" --repo abhedwig-cell/SWAP5 -n p3ref-surface-routes -D /tmp/surface
+          gh run download "$gw_run" --repo abhedwig-cell/SWAP5 -n p3ref-gw-routes -D /tmp/gw
+          cp /tmp/surface/surface_* /tmp/reference/
+          cp /tmp/gw/gw_* /tmp/reference/
+          test "$(find /tmp/reference -maxdepth 1 -type f -name 'surface_*_o0.txt' | wc -l)" -eq 10
+          test "$(find /tmp/reference -maxdepth 1 -type f -name 'gw_*_o0.txt' | wc -l)" -eq 10
+      - name: Qualify fresh P3 Reference
+        id: qualify
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p3_reference.py \
+            --prereg integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json \
+            --root /tmp/reference \
+            --output result/ROM_PURPOSE_P3_REFERENCE_RESULT.json \
+            | tee result/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test -s result/ROM_PURPOSE_P3_REFERENCE_RESULT.json
+          status="$(python3 -c "import json;print(json.load(open('result/ROM_PURPOSE_P3_REFERENCE_RESULT.json'))['status'])")"
+          auth="$(python3 -c "import json;print(str(json.load(open('result/ROM_PURPOSE_P3_REFERENCE_RESULT.json'))['candidate_response_authorized']).lower())")"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "authorized=$auth" >> "$GITHUB_OUTPUT"
+          if [[ "$rc" -ne 0 && "$rc" -ne 3 ]]; then exit "$rc"; fi
+          cp integration/f-rom/ROM_PURPOSE_P3_REFERENCE_FINALIZATION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p3-reference-result
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_RUN: ${{ github.run_id }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p3-reference-result
+          path: /tmp/result
+      - name: Persist P3 Reference result and gate
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P3_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P3_STATUS.json')
+          s=json.load(open(p))
+          authorized=bool(r['candidate_response_authorized'])
+          s.update({
+            'status':'P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED' if authorized else 'P3_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES',
+            'current_gate':'BLIND_CANDIDATE_VALIDATION' if authorized else 'REFERENCE_NUMERICAL_QUALIFICATION_FAILED',
+            'candidate_response_authorized':authorized,
+            'reference_result':'integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json',
+            'reference_finalization_workflow_run':int(os.environ['SOURCE_RUN']),
+            'reference_finalization_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':(
+              ['Bind and execute frozen P3 candidate ladder.']
+              if authorized else
+              ['Stop before candidates. Preserve Reference nonqualification without tolerance relaxation.']
+            )
+          })
+          s['scientific_firewall']['any_new_p3_reference_response_seen']=True
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P3_STATUS.json
+          git commit -m "ROM-PURPOSE P3: persist fresh Reference qualification" || exit 0
+          git push origin HEAD:work/f-rom-purpose
