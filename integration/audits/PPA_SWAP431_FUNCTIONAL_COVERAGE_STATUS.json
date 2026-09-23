@@ -119,7 +119,7 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Continue PPA-WU05-A3 by tracing MACROGEOM's domain partition calculation and domain-bottom lumping gates from the exact source. Keep those algorithms isolated from runtime ownership, mass receipts, retry/restart and A4 admission.",
+  "next_safe_step": "Continue PPA-WU05-A3 with exact-source ICpBtDmPot bottom detection and same-bottom PpDmCp domain lumping. Preserve the sequential shift/zeroing order; full MACROGEOM and production ownership, mass receipts, retry/restart and A4 admission remain open.",
   "recovery_point": "latest committed campaign checkpoint acc376e6eb5144128245a4d678ce41d1d8481f35 (PPA-SOL-AGE-INITIAL-STORAGE initial profile storage/samini oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
@@ -141,6 +141,7 @@
     "PPA-WU05-A3-DEFINECOMPART: exact-source-ordered deterministic cases for interior breakpoint split/node mapping, near-depth merge, existing-grid alignment and undersized-input fail-closed at O0/O2; compiler warnings-as-errors, bounds/FPE traps, identical transcripts.",
     "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT: hand-computable main-bypass, static cutoff, IC surface and both SPoint power-branch segment contributions plus invalid exponent; O0/O2 output identity with bounds/FPE traps.",
     "PPA-WU05-A3-MACROGEOM-AGGREGATE: exact-source per-cell PpIcCp zero/positive branches, static-volume scaling and unclamped FrArMtrx expression; invalid domains fail closed; O0/O2 transcript identity.",
+    "PPA-WU05-A3-MACROGEOM-PARTITION: exact-source compartment domain-share allocation for full/partial subdivisions, residual, truncation/cap, strict thresholds, saturated and no-IC routes; sum-to-one and O0/O2 checks.",
     "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked.",
     "PPA-IRR-SURFACE-SOLUTE-EXCHANGE: 100000 O0/O2 bitwise pond concentration, matrix top-flux, and residual-store comparisons; strict gate and overflow rejection checked.",
     "PPA-IRR-BOTTOM-SOLUTE-FLUX: 100000 O0/O2 bitwise bottom water-flux sign and selected-concentration comparisons; invalid/overflow rejection checked.",
@@ -213,6 +214,21 @@
       "PPA_WU05A3_MACROGEOM_STATIC_OVERFULL_SOURCE_RESULT_PRESERVED=PASS",
       "PPA_WU05A3_MACROGEOM_AGGREGATE_INVALID_FAIL_CLOSED=PASS",
       "PPA_WU05A3_MACROGEOM_AGGREGATE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_partition_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-PARTITION",
+    "source": "B1.11 macropore.f90 MACROGEOM section C per-compartment PpDmCp allocation",
+    "test": "Full and partial subdomain shares/residual, integer truncation/cap, strict thresholds, saturated/no-IC branches; O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_PARTITION_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_EQUAL_SUBDOMAINS_AND_RESIDUAL=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_FLOOR_AND_CAP=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_LOW_IC_THRESHOLD=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_RZAH_BRANCHES=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_INVALID_DIVISOR_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

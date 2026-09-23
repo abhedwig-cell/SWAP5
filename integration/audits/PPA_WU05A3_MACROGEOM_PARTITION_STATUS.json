@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_partition.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-PARTITION",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@9f68d7a32d4652b5cfe7ffc57a165b965d7f80ff",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_PARTITION_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_partition.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_partition_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_partition_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["full and partial IC subdivision", "integer floor and cap", "strict PpIcCp threshold", "Rzah saturated route", "no-IC route", "invalid divisor fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; PpDmCp compartment allocation only; NumDm cross-cell side effect, ICpBtDmPot bottom lookup, domain lumping, whole MACROGEOM and production integration remain open",
+  "next_action": "Continue A3 by implementing bounded ICpBtDmPot bottom detection and same-bottom domain lumping with explicit source-order tests.",
+  "blockers": []
+}

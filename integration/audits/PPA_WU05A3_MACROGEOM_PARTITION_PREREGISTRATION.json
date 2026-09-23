@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_partition.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-PARTITION",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@9f68d7a32d4652b5cfe7ffc57a165b965d7f80ff",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROGEOM",
+    "source_region": "section C volumetric partitioning per compartment (PpDmCp), excluding later bottom-domain lumping"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_partition.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_partition_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_partition_source_oracle.sh",
+  "in_scope": [
+    "multiple internal-catchment subdomain equal shares plus residual",
+    "source integer truncation and NumSbDm cap",
+    "strict PpIcCp > 1e-3 branch",
+    "strict Rzah < 0.991 multi-domain versus saturated two-domain route",
+    "no-IC-domain route and invalid zero divisor fail-closed"
+  ],
+  "out_of_scope": [
+    "NumDm cross-compartment mutation side effect when the first cell has no IC domain",
+    "ICpBtDmPot bottom detection and domain lumping",
+    "full MACROGEOM integration, production ownership, mass, retry, restart and A4 admission"
+  ],
+  "expected_tests": [
+    "four-domain exact equal partition with residual and sum-to-one check",
+    "partial subdomain partition and floor/cap check",
+    "threshold, saturated and no-IC branches",
+    "O0/O2 output identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated PpDmCp allocation equation only"
+}

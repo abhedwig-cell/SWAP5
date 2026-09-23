@@ -2022,6 +2022,13 @@
       "effect": "PpIcCp, VlMpStCp and FrArMtrx per-cell equations are tested independently. Domain partition/lumping and all production integration remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROGEOM-PARTITION",
+      "state": "ISOLATED_PPDMC_PARTITION_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROGEOM_PARTITION_STATUS.json; preregistered against B1.11 macropore.f90 MACROGEOM source hash",
+      "production_delta": "NONE",
+      "effect": "Per-compartment MB/IC domain shares and residual allocation are tested in isolation; ICpBtDmPot bottom mapping, same-bottom lumping, full MACROGEOM and production integration remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
