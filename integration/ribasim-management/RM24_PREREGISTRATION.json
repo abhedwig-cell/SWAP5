@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ribasim_management.temporal_budget_provenance_audit.preregistration.v1",
+  "work_unit": "RM24",
+  "date": "2026-09-23",
+  "title": "Scientific provenance and transferability audit of the inherited F-GC44 temporal head budget",
+  "depends_on": {
+    "RM19": "the inherited 1e-5 cm budget rejects the active-irrigation transaction",
+    "RM23": "independent same-horizon one-step versus two-half endpoint difference is about 0.0464 cm"
+  },
+  "question": "What evidence originally justified HEAD_BUDGET=1e-5 cm in F-GC44, and does that evidence authorize transferring the budget from the admitted short near-equilibrium groundwater case to active surface irrigation?",
+  "audit_sources": [
+    "git history of tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "F-GC30 closeout and canonical-admission records",
+    "F-GC44 status and end-to-end application documentation",
+    "RM19-RM23 active-irrigation evidence"
+  ],
+  "hypotheses": [
+    "HEAD_BUDGET=1e-5 cm was introduced as part of aligning the F-GC44 qualification fixture with the short F-GC30 numerical envelope rather than from an independently documented application-accuracy requirement.",
+    "F-GC44 explicitly excludes irrigation from its admitted envelope.",
+    "No F-GC30/F-GC44 authority document transfers the 1e-5 cm budget to active irrigation.",
+    "Therefore the budget may remain valid inside the admitted near-equilibrium F-GC44 fixture but is not an independent acceptance authority for RM13B active irrigation."
+  ],
+  "failure_rule": "Do not infer absence of provenance merely from a failed search. Bind every conclusion to concrete repository history or authority documents. Do not propose or tune a replacement threshold in RM24.",
+  "nonclaims": [
+    "RM24 does not invalidate F-GC44 inside its admitted envelope.",
+    "RM24 does not define a new temporal budget.",
+    "RM24 does not admit RM13B."
+  ]
+}
