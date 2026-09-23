@@ -33,6 +33,12 @@ on:
       - 'integration/f-tab/F-TAB02_D_QUALIFICATION.json'
       - 'integration/f-tab/F-TAB02_E_QUALIFICATION.json'
       - 'integration/f-tab/F-TAB02_F_BLOCKER.json'
+      - 'integration/f-tab/F-TAB02_G_PREREGISTRATION.json'
+      - 'integration/f-tab/F-TAB02_G_QUALIFICATION.json'
+      - 'tests/fsi/test_ftab02g_bounded_ksatexm_generated_provider.f90'
+      - 'tests/fsi/run_ftab02g_bounded_ksatexm_generated_provider.sh'
+      - 'tests/fsi/test_ftab02g_reference_richards_ksatexm.f90'
+      - 'tests/fsi/run_ftab02g_reference_richards_ksatexm.sh'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
 
@@ -230,3 +236,45 @@ jobs:
             F-TAB02-E_PROVIDER_RICHARDS.log
             F-TAB02-E_SERIALIZED.log
           if-no-files-found: warn
+
+
+  slice-g:
+    needs: slice-e
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-TAB02-G bounded F-SI39 qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fsi/run_ftab02g_bounded_ksatexm_generated_provider.sh | tee F-TAB02-G_GATE.log
+          bash tests/fsi/run_ftab02g_reference_richards_ksatexm.sh | tee F-TAB02-G_RICHARDS_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-G"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_G_|^F-TAB02-G ' F-TAB02-G_GATE.log || true
+            grep -E '^F_TAB02_G_|^F-TAB02-G ' F-TAB02-G_RICHARDS_GATE.log || true
+          } > F-TAB02-G_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-g-evidence
+          path: |
+            F-TAB02-G_EVIDENCE.txt
+            F-TAB02-G_GATE.log
+            F-TAB02-G_RICHARDS_GATE.log
+          if-no-files-found: error
