@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.rom-purpose.p2.pre-response-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE",
+  "date": "2026-09-23",
+  "status": "PRE_RESPONSE_TECHNICAL_REPAIR_SUPERSEDES_FIRST_TRIGGER",
+  "first_trigger_commit": "7e556d482b76b6e856cd541f0abb86bade719ef4",
+  "defect": {
+    "path": "tests/rom/materialize_rom_purpose_p2_surface_reference.py",
+    "original_blob": "a3c3b6db260f58e787b63eececbf98a5b30e650c",
+    "issue": "The generated Fortran time-grid replacement contained a literal backslash-n sequence rather than a newline.",
+    "failure_stage": "generated Fortran compile/materialization path before any hydrological Reference response",
+    "scientific_effect": "NONE"
+  },
+  "repair": {
+    "commit": "a0bdccf4cb7a4f6a3315b5608d5b6a3aed9f2b2e",
+    "repaired_blob": "d0361bd03cd624cda51336ed8655c3d2ed8cc2cf",
+    "change": "Replace only the accidental escaped newline with the intended generated newline.",
+    "workload_changed": false,
+    "histories_changed": false,
+    "forcing_changed": false,
+    "metrics_changed": false,
+    "observability_contract_changed": false,
+    "solver_or_physics_changed": false
+  },
+  "authority_rule": "Any execution from the first trigger is superseded regardless of scheduler state and must not become P2 Reference authority. Only a new binding that pins the repaired materializer may authorize P2 Reference evidence.",
+  "observed_repository_state": {
+    "P2_reference_result_persisted": false,
+    "candidate_response_generated": false
+  },
+  "scientific_firewall": {
+    "response_based_repair": false,
+    "P1_failure_overridden": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false
+  }
+}
