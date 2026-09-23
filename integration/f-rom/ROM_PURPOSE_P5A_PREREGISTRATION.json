@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.rom-purpose.p5a.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5A-SURF-NUMERICAL-DOMAIN",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_P5A_DIAGNOSTIC_RESPONSE",
+  "title": "Surface same-partition Richards fail-closed numerical-domain characterization",
+  "authority": {
+    "p5_reconciliation": "integration/f-rom/ROM_PURPOSE_P5_LIVE_RECONCILIATION.json",
+    "p4_closeout": "integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json",
+    "p4_matched_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json@2c4ea4d1e6aedec7869628cdef1a97d379532d31",
+    "p4_ladder": "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json@ad5604fba2252e956015403d461d3df17ddec28c",
+    "p4_preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "central_question": "Why do the P4 SURF_P same-partition Richards routes leave the frozen qualified numerical domain, and is the fail-closed boundary caused by the existing fixed integrated local-residual allowance rather than loss of solver state integrity or head convergence?",
+  "frozen_matrix": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "members": [
+      "S8",
+      "S12",
+      "S16"
+    ],
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "histories": [
+      "S17",
+      "S18",
+      "S19",
+      "S20"
+    ],
+    "total_route_configurations": 18
+  },
+  "hypotheses": {
+    "H1": "Failing routes terminate in strict_first_sample under RETRY_LOCAL_BALANCE with head_flags=0 and finite total residual already within the prospective representation bound.",
+    "H2": "The terminal failure is specifically the pre-existing local_integrated <= 1.6e-15 cm fail-closed check, not a changed solver convergence criterion.",
+    "H3": "Failure incidence depends on material, vertical partition and temporal factor because the fixed absolute integrated-local-residual allowance interacts with the resolved residual magnitude and transaction duration.",
+    "H4": "Successful routes remain bitwise O0/O2 identical under the unchanged numerical policy; failing routes show the same diagnostic failure signature across O0/O2."
+  },
+  "diagnostic_instrumentation": {
+    "inserted_before_existing_require": true,
+    "marker": "ROMPURP_P5A_LOCAL_ALLOWANCE",
+    "fields": [
+      "t0",
+      "t1",
+      "dt",
+      "failure_class",
+      "bal_flags",
+      "head_flags",
+      "rmax",
+      "rsum",
+      "imax",
+      "local_integrated_cm",
+      "allowance_cm",
+      "ratio_to_allowance",
+      "rep_bound_cm",
+      "abs_total_residual_cm"
+    ],
+    "existing_allowance_cm": 1.6e-15,
+    "require_preserved": true,
+    "failing_route_continuation_forbidden": true
+  },
+  "observables": [
+    "route return code",
+    "trace completeness",
+    "O0/O2 diagnostic marker identity",
+    "marker count",
+    "maximum ratio_to_allowance",
+    "terminal failure ratio_to_allowance",
+    "failure_class",
+    "balance/head flags",
+    "last accepted CASE and STEP before failure"
+  ],
+  "decision_logic": {
+    "CONTRACT_BOUNDARY_SUPPORTED": "All observed fail-closed routes terminate at the unchanged local integrated-residual allowance with RETRY_LOCAL_BALANCE, zero head flags, and O0/O2-identical diagnostic signature; successful routes never cross the allowance.",
+    "MIXED_NUMERICAL_FAILURE": "At least one failing route has a different failure class, nonzero head flags, nonfinite diagnostic quantity, or O0/O2 disagreement.",
+    "DIAGNOSTIC_INCOMPLETE": "Instrumentation cannot identify the terminal fail-closed condition for one or more failing routes."
+  },
+  "prohibited": [
+    "relax or scale the 1.6e-15 cm allowance",
+    "change max iterations or backtracking",
+    "change solver physics or constitutive functions",
+    "change P4 partitions or histories",
+    "continue a route after the original fail-closed require",
+    "use P5A to claim Layer-ROM closure deficiency",
+    "use P5A to admit an application or production ROM"
+  ],
+  "scientific_firewall": {
+    "p4_reopened": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "candidate_response_generated": false,
+    "matched_hydrological_metrics_reinterpreted": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
