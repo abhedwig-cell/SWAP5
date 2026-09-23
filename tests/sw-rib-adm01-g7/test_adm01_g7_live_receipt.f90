@@ -104,8 +104,8 @@ contains
       heads(1)=recomposed_head_cm
       call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial2,status)
       call require(status==FMR_SW_PARTICIPANT_OK .and. trial2%valid,'G7 recomposed candidate')
-      call require(abs(trial2%signed_soil_to_surface_exchange_cm-realized_cm)<=receipt_tol_cm,'G7 recomposed candidate matches real Ribasim receipt')
-      call participant%commit_candidate(backend,committed,t0,t1,first_realized_cm,receipt_tol_cm,did_commit,status)
+      call require(abs(trial2%signed_soil_to_surface_exchange_cm-recomposed_realized_cm)<=receipt_tol_cm,'G7 recomposed candidate matches real Ribasim receipt')
+      call participant%commit_candidate(backend,committed,t0,t1,recomposed_realized_cm,receipt_tol_cm,did_commit,status)
       call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,'G7 recomposed realization commits')
       call require(committed%current_revision()==1_int64,'G7 recomposed sole commit revision')
       write(*,'(A)') 'SW_RIB_ADM01_G7_RECOMPOSITION_FROM_SAME_ORIGIN=PASS'
