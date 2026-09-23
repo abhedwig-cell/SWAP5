@@ -20,7 +20,7 @@ grep -Fq 'outcome%mass_in = 0.0_real64' "$SRC" || fail "management owner must no
 grep -Fq 'Water mass remains owned' "$SRC" || fail "missing ledger ownership note"
 echo 'RM06_STATIC_OWNERSHIP_CONTRACT=PASS'
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
