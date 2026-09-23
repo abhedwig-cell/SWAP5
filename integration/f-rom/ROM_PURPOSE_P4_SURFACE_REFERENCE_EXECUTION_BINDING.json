@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.rom-purpose.p4.surface-reference-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-SURFACE-REFERENCE",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P4_REFERENCE_RESPONSE",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "route_set": [
+    "R512_T32",
+    "R1024_T32",
+    "R2048_T32",
+    "R2048_T16",
+    "R2048_T8"
+  ],
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "histories": [
+    "S17",
+    "S18",
+    "S19",
+    "S20"
+  ],
+  "execution_topology": {
+    "R512_T32": "full histories",
+    "R1024_T32": "full histories",
+    "R2048_T8": "8192-step exact-state segments",
+    "R2048_T16": "two 8192-step exact-state segments",
+    "R2048_T32": "four 8192-step exact-state segments"
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p4-surface-reference.yml": "0cadb82ccae33909dbf049655053dbdb75a1b7f6",
+    "tests/rom/materialize_rom_purpose_p4_surface_reference.py": "ff04a5a38c84b2d4d290cdb1933a4ea2f701b93a",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py": "716d41a88954a7e67f21bcc988102a4a1cf7add0",
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab"
+  },
+  "scientific_firewall": {
+    "response_seen_before_binding": false,
+    "forcing_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "representation_changed": false
+  }
+}
