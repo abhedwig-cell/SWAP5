@@ -51,7 +51,7 @@ contains
     real(real64) :: head_a(numnod),head_g(numnod),out_theta_a(numnod),out_theta_g(numnod)
     real(real64) :: at(NROUND),gt(NROUND),ma,mg,checksum_a,checksum_g,t0,t1
     logical :: ok
-    integer :: r
+    integer :: r,q
 
     call initialize_parameters(pa,.false.,ores,osat,alpha,npar,ksat,lexp,column_id+100_int64)
     call initialize_parameters(pg,.true., ores,osat,alpha,npar,ksat,lexp,column_id+200_int64)
@@ -84,11 +84,41 @@ contains
     checksum_a=0.0_real64; checksum_g=0.0_real64
     do r=1,NROUND
       if(mod(r,2)==1) then
-        call time_route(.false.,at(r),checksum_a)
-        call time_route(.true.,gt(r),checksum_g)
+        call cpu_time(t0)
+        do q=1,NREPEAT
+          call ba%run_trial(column,template,pa,ca,fa,config,0.0_real64,DURATION,cpa,ra,canda,da)
+          if(ra%status/=CANONICAL_STATUS_COMPLETED .or. .not.ra%completed) error stop 'timed analytic runtime failed'
+          checksum_a=checksum_a+ra%mass%residual+real(da%nonlinear_iterations,real64)
+        end do
+        call cpu_time(t1)
+        at(r)=t1-t0
+
+        call cpu_time(t0)
+        do q=1,NREPEAT
+          call bg%run_trial(column,template,pg,cg,fg,config,0.0_real64,DURATION,cpg,rg,candg,dg)
+          if(rg%status/=CANONICAL_STATUS_COMPLETED .or. .not.rg%completed) error stop 'timed generated runtime failed'
+          checksum_g=checksum_g+rg%mass%residual+real(dg%nonlinear_iterations,real64)
+        end do
+        call cpu_time(t1)
+        gt(r)=t1-t0
       else
-        call time_route(.true.,gt(r),checksum_g)
-        call time_route(.false.,at(r),checksum_a)
+        call cpu_time(t0)
+        do q=1,NREPEAT
+          call bg%run_trial(column,template,pg,cg,fg,config,0.0_real64,DURATION,cpg,rg,candg,dg)
+          if(rg%status/=CANONICAL_STATUS_COMPLETED .or. .not.rg%completed) error stop 'timed generated runtime failed'
+          checksum_g=checksum_g+rg%mass%residual+real(dg%nonlinear_iterations,real64)
+        end do
+        call cpu_time(t1)
+        gt(r)=t1-t0
+
+        call cpu_time(t0)
+        do q=1,NREPEAT
+          call ba%run_trial(column,template,pa,ca,fa,config,0.0_real64,DURATION,cpa,ra,canda,da)
+          if(ra%status/=CANONICAL_STATUS_COMPLETED .or. .not.ra%completed) error stop 'timed analytic runtime failed'
+          checksum_a=checksum_a+ra%mass%residual+real(da%nonlinear_iterations,real64)
+        end do
+        call cpu_time(t1)
+        at(r)=t1-t0
       end if
     end do
     ma=median_small(at); mg=median_small(gt)
@@ -107,27 +137,6 @@ contains
     write(*,'(a,f14.8)') 'F_TAB02_E_SERIALIZED_DELTA_PCT=',100.0_real64*(mg/ma-1.0_real64)
     write(*,'(a)') 'F_TAB02_E_SERIALIZED_TIMING_CAPTURED=PASS'
 
-  contains
-    subroutine time_route(use_generated,seconds,checksum)
-      logical,intent(in)::use_generated
-      real(real64),intent(out)::seconds
-      real(real64),intent(inout)::checksum
-      integer::q
-      call cpu_time(t0)
-      do q=1,NREPEAT
-        if(use_generated) then
-          call bg%run_trial(column,template,pg,cg,fg,config,0.0_real64,DURATION,cpg,rg,candg,dg)
-          if(rg%status/=CANONICAL_STATUS_COMPLETED .or. .not.rg%completed) error stop 'timed generated runtime failed'
-          checksum=checksum+rg%mass%residual+real(dg%nonlinear_iterations,real64)
-        else
-          call ba%run_trial(column,template,pa,ca,fa,config,0.0_real64,DURATION,cpa,ra,canda,da)
-          if(ra%status/=CANONICAL_STATUS_COMPLETED .or. .not.ra%completed) error stop 'timed analytic runtime failed'
-          checksum=checksum+ra%mass%residual+real(da%nonlinear_iterations,real64)
-        end if
-      end do
-      call cpu_time(t1)
-      seconds=t1-t0
-    end subroutine time_route
   end subroutine benchmark_profile
 
   subroutine initialize_parameters(p,generated,ores,osat,alpha,npar,ksat,lexp,parameter_id)
