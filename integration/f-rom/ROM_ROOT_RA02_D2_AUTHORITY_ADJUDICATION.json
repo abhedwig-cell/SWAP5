@@ -4,7 +4,7 @@
   "work_unit": "ROM-ROOT-RA02-D2",
   "date": "2026-09-23",
   "state": "CLOSED_PRE_SCIENTIFIC_AUTHORITY_INTERPRETATION",
-  "timing": "BEFORE_ANY_REPAIRED_D2_REFERENCE_RESPONSE",
+  "timing": "BEFORE_ANY_D2_RESULT_ADJUDICATION_AFTER_PARTIAL_REPAIRED_EXECUTION",
   "trigger": "Reconciliation found that the original ROM-ROOT-RA02 stress panel had already been independently closed for a preregistered design defect before D2 was executed.",
   "authorities": {
     "d2_preregistration": "integration/f-rom/ROM_ROOT_RA02_D2_PREREGISTRATION.json",
@@ -26,5 +26,12 @@
   "response_based_change": false,
   "scientific_threshold_changed": false,
   "diagnostic_metric_changed": false,
-  "model_changed": false
+  "model_changed": false,
+  "partial_execution_disclosure": {
+    "prior_run": 35823104576,
+    "fact": "A subset of repaired D2 execution jobs completed before the concurrency cancellation took effect.",
+    "scientific_d2_output_inspected_or_used_for_this_adjudication": false,
+    "basis_of_adjudication": "Repository authority only: ROM_ROOT_RA02_DESIGN_DEFECT and independently preregistered RA02R successor.",
+    "implication": "The authority interpretation remains response-independent, but it must not be described as pre-execution."
+  }
 }
