@@ -153,7 +153,8 @@ contains
     c(1)=0.02_real64;c(2)=0.433878_real64;c(3)=83.24164_real64;c(4)=0.021645_real64
     c(5)=7.202077_real64;c(6)=1.34877_real64;c(7)=1.0_real64-1.0_real64/c(6)
     c(8)=0.021645_real64;c(9)=0.0_real64;c(10)=832.4163_real64
-    call derive_threshold(c)
+    ! Exact admitted F-SI39 Hupsel threshold authority; do not rederive algebraically.
+    c(11)=0.99628918798955624_real64;c(12)=36.025513440889291_real64
     c(22)=-1.0e6_real64;c(23)=1.0e-12_real64
   end subroutine set_upper
 
@@ -163,7 +164,8 @@ contains
     c(1)=0.02_real64;c(2)=0.3870640000000001_real64;c(3)=22.76176_real64;c(4)=0.016083_real64
     c(5)=2.4396619999999993_real64;c(6)=1.524418_real64;c(7)=1.0_real64-1.0_real64/c(6)
     c(8)=0.016083_real64;c(9)=0.0_real64;c(10)=227.61759999999998_real64
-    call derive_threshold(c)
+    ! Exact admitted F-SI39 Hupsel threshold authority; do not rederive algebraically.
+    c(11)=0.9981816467911503_real64;c(12)=15.814441314772257_real64
     c(22)=-1.0e6_real64;c(23)=1.0e-12_real64
   end subroutine set_lower
 
