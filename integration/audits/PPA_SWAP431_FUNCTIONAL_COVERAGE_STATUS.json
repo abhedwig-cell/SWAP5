@@ -101,7 +101,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint 144412cf6 (bottom solute flux source oracle); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 2510e4eaf (cumulative bottom solute source oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
@@ -111,15 +111,16 @@
     "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked.",
     "PPA-IRR-SURFACE-SOLUTE-EXCHANGE: 100000 O0/O2 bitwise pond concentration, matrix top-flux, and residual-store comparisons; strict gate and overflow rejection checked.",
     "PPA-IRR-BOTTOM-SOLUTE-FLUX: 100000 O0/O2 bitwise bottom water-flux sign and selected-concentration comparisons; invalid/overflow rejection checked.",
-    "PPA-IRR-BOTTOM-SOLUTE-CUMULATIVE: 100000 O0/O2 bitwise prior mass plus bottom flux and interval increment using the pre-update matrix concentration."
+    "PPA-IRR-BOTTOM-SOLUTE-CUMULATIVE: 100000 O0/O2 bitwise prior mass plus bottom flux and interval increment using the pre-update matrix concentration.",
+    "PPA-SOLUTE-INTERNAL-FACE-FLUX: 100000 O0/O2 bitwise advection plus concentration-gradient dispersion and interval amount; invalid/overflow rejection checked."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-IRR-BOTTOM-SOLUTE-CUMULATIVE",
-    "source": "B1.11 solute.f90 task 2: sqbot=sqbot+qbot*cseep*dtsolu or sqbot=sqbot+qbot*cml(numnod)*dtsolu before matrix update",
-    "test": "100000 bitwise cumulative bottom solute amount comparisons at O0/O2 with sign-selected source concentration",
+    "work_unit": "PPA-SOLUTE-INTERNAL-FACE-FLUX",
+    "source": "B1.11 solute.f90 task 2 internal cfluxb convective plus dispersive-gradient flux amount",
+    "test": "100000 bitwise internal-face flux amount comparisons at O0/O2 with signed advection and concentration gradient",
     "test_markers": [
-      "PPA_IRR_BOTTOM_SOLUTE_CUMULATIVE_MASS_SOURCE_ORACLE_100000=PASS",
-      "PPA_IRR_INTERCEPTION_SOLUTE_MASS_O0_O2_IDENTITY=PASS"
+      "PPA_SOLUTE_INTERNAL_FACE_FLUX_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOLUTE_INTERNAL_FACE_FLUX_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }
