@@ -21,7 +21,7 @@
   "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "implementation": {
     "workflow": ".github/workflows/rom-root-ra01.yml",
-    "workflow_blob": "dc93964b8497389fa7e59d09c8c8ce9e8e48b209",
+    "workflow_blob": "4b7583ed9f7a86312cf9b135c8cc22d1bd3568f4",
     "policy_materializer": "tests/rom/materialize_rom_root_ra01_reference_policy.py",
     "policy_materializer_blob": "6745a40bfda00f81bfd6d0eba25e929794cbc253",
     "wrapper_analyzer": "tests/rom/analyze_rom_root_ra01_reference_transfer.py",
@@ -76,5 +76,14 @@
     "reduced_candidate_response_generated": false,
     "stage2_executed": false,
     "stage3_executed": false
-  }
+  },
+  "pre_scientific_repair": "integration/f-rom/ROM_ROOT_RA01_PRE_SCIENTIFIC_REPAIR.json",
+  "execution_attempts": [
+    {
+      "run_id": 35819683599,
+      "head": "584ad1b8b2842b0fdfefcba29ba46523941c3a46",
+      "outcome": "PRE_SCIENTIFIC_AUTHORITY_VERIFICATION_FAILURE",
+      "scientific_execution_started": false
+    }
+  ]
 }
