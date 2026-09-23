@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.sw_rib_adm01.g7.preregistration_amendment.v1",
+  "work_unit": "SW-RIB-ADM01-G7",
+  "amendment": "COUPLED_RECOMPOSITION_AMENDMENT_01",
+  "date": "2026-09-23",
+  "classification": "SOURCE_DERIVED_COUPLING_SEMANTICS_CORRECTION_BEFORE_DECISIVE_EXECUTION",
+  "reason": "Pinned Ribasim applies a storage-dependent low-storage factor to infiltration. Therefore one assignment request:=realized does not in general produce a fixed point on the next same-origin physical replay.",
+  "corrected_E3_contract": {
+    "origin": "Every iteration restarts from the same accepted Ribasim initial state and same accepted SWAP origin.",
+    "iteration": [
+      "SWAP candidate request q_n is represented by the source-derived external head that yields q_n under the frozen single-level extended-exchange law.",
+      "Ribasim is rerun from its same accepted initial state with |q_n| as infiltration request.",
+      "Measured physical realization r_n is returned as receipt.",
+      "If |r_n-q_n| exceeds tolerance, SWAP commit must fail closed and the candidate is discarded.",
+      "Set q_(n+1)=r_n and repeat from the same accepted origins.",
+      "Commit is permitted only on an iteration whose measured receipt matches its request within tolerance."
+    ],
+    "receipt_fixed_point_tolerance_m3": 1e-8,
+    "max_iterations": 64,
+    "required_first_iteration": "RECOMPOSITION_REQUIRED",
+    "required_final_iteration": "COMMIT_READY",
+    "no_commit_before_final": true
+  },
+  "unchanged": [
+    "Ribasim v2026.1.2 exact pin",
+    "represented area 100 m2",
+    "0.25 day coupling window",
+    "initial E3 request -0.0025 m3",
+    "Ribasim E3 initial level 0.0775 m and profile bottom 0.0675 m",
+    "F-APP09 production postimages",
+    "mass residual tolerance 1e-8 m3",
+    "O0/O2 identity requirement"
+  ],
+  "scientific_effect": "Strengthens G7 from a one-replay assumption to an actual same-origin coupled fixed-point/recomposition contract. No observed product endpoint is used to tune a tolerance."
+}
