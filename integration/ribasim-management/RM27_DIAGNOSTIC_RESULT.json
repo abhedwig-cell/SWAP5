@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_groundwater_functional_equivalence.diagnostic.v1",
+  "work_unit": "RM27",
+  "date": "2026-09-23",
+  "status": "DIAGNOSTIC_FALSIFICATION_FORMAL_24_04_AUTHORITY_PENDING",
+  "workflow": "RM27 groundwater functional diagnostic",
+  "workflow_run": 35905344482,
+  "workflow_job": 107331516263,
+  "classification": "FUNCTIONAL_EQUIVALENCE_FALSIFIED_AT_FGC44_NUMERICAL_RESOLUTION",
+  "observations": {
+    "all_six_probe_solves_converged": true,
+    "probe_qswap_m_per_s": {
+      "minus_2e_6_m": {
+        "one_step": 1.37866996161697225e-7,
+        "two_half": 1.37863527996127688e-7,
+        "abs_difference": 3.46816556953720273e-12
+      },
+      "reference": {
+        "one_step": 1.37859119191273564e-7,
+        "two_half": 1.37855651034698882e-7,
+        "abs_difference": 3.46815657468257760e-12
+      },
+      "plus_2e_6_m": {
+        "one_step": 1.37851242220849904e-7,
+        "two_half": 1.37847774073784066e-7,
+        "abs_difference": 3.46814706583777216e-12
+      }
+    },
+    "max_abs_qswap_difference_m_per_s": 3.46816556953720273e-12,
+    "FGC44_flux_residual_resolution_m_per_s": 1e-15,
+    "difference_over_FGC44_resolution": 3468.165569537203,
+    "relative_difference_at_reference_head": 0.000025157265205,
+    "response_slope_one_step_per_s": -3.9384852118302654e-6,
+    "response_slope_two_half_per_s": -3.9384805859054078e-6,
+    "origin_bottom_node_head_difference_cm": 4.35876321063233263e-5,
+    "origin_column_storage_difference_cm": 0.0
+  },
+  "interpretation": [
+    "The RM23 temporal endpoint difference is detectable in the next-window fixed-interface q_swap(H) response.",
+    "The response difference is nearly a constant vertical offset over the preregistered F-GC44 head bracket; response slopes are very similar.",
+    "Therefore the two temporal endpoints are not functionally identical at the admitted F-GC44 nonlinear residual resolution.",
+    "The F-GC44 1e-15 m/s residual is a coupling-solve closure criterion, not yet an independent application temporal-accuracy requirement; RM27 must not convert this falsification into an application rejection by itself.",
+    "The absolute response difference is small relative to the physical groundwater flux, so its integrated and coupled-endpoint effect must be quantified separately."
+  ],
+  "nonclaims": [
+    "RM27 does not establish that the response difference is hydrologically material.",
+    "RM27 does not define a replacement temporal tolerance.",
+    "RM27 does not admit or reject the three-model triangle at application level.",
+    "RM27 does not override RM25."
+  ],
+  "next_required_boundary": "Quantify the induced same-window groundwater-transfer difference and the shift in the coupled SWAP-MODFLOW fixed-interface endpoint using the already admitted F-GC44 one-cell groundwater response. Keep this as effect-size characterization, not threshold calibration."
+}
