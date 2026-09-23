@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.sw_rib_adm01.g3.result.v1",
+  "work_unit": "SW-RIB-ADM01-G3",
+  "date": "2026-09-23",
+  "tested_head": "b322ad859227cbbd81c990f1197c3716e1b5cf54",
+  "evidence_run": 35890790845,
+  "evidence_job": 107282567279,
+  "decision": "PASS_ACCEPTED_EXTERNAL_SURFACE_WATER_HEAD_BINDING",
+  "checks": [
+    "external Ribasim owner profile required",
+    "internal fixed-weir state forbidden",
+    "unaccepted snapshot rejected",
+    "accepted revision required",
+    "only extended signed drainage levels receive resolved external surface-water heads",
+    "Q4B transaction runtime replay remains green"
+  ],
+  "production_admission": false
+}
