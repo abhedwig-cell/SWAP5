@@ -7,8 +7,12 @@ on:
     paths:
       - 'src/solver/mod_b110_generated_mvg_tspack.f90'
       - 'src/solver/mod_b110_generated_mvg_table_state.f90'
+      - 'src/solver/mod_b110_generated_mvg_provider.f90'
       - 'tests/fsi/test_ftab02a_generated_mvg_table_state.f90'
       - 'tests/fsi/run_ftab02a_generated_mvg_table_state.sh'
+      - 'tests/fsi/test_ftab02b_generated_mvg_provider.f90'
+      - 'tests/fsi/run_ftab02b_generated_mvg_provider.sh'
+      - 'tests/fsi/fixtures/ftab02_staring1994_mvg.dat'
       - 'integration/f-tab/F-TAB02_PREREGISTRATION.json'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
@@ -50,4 +54,40 @@ jobs:
           path: |
             F-TAB02-A_EVIDENCE.txt
             F-TAB02-A_GATE.log
+          if-no-files-found: error
+
+  slice-b:
+    needs: slice-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-TAB02-B qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02b_generated_mvg_provider.sh | tee F-TAB02-B_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-B"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_B_|^F-TAB02-B ' F-TAB02-B_GATE.log || true
+          } > F-TAB02-B_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-b-evidence
+          path: |
+            F-TAB02-B_EVIDENCE.txt
+            F-TAB02-B_GATE.log
           if-no-files-found: error
