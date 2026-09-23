@@ -16,9 +16,9 @@ program test_sw_rib_adm01_g5a_transaction
   request%accepted_surface_water_head_cm = -50.0_real64
 
   ! E1: positive drainage, full realization.
-  request%requested_signed_soil_to_surface_amount_cm = 0.01_real64
+  request%requested_signed_soil_to_surface_volume_m3 = 0.01_real64
   realization%origin = origin
-  realization%realized_signed_soil_to_surface_amount_cm = 0.01_real64
+  realization%realized_signed_soil_to_surface_volume_m3 = 0.01_real64
   call evaluate_external_surface_water_transaction(origin,request,realization,result)
   call require(result%disposition == EXT_SW_TX_COMMIT_READY,'E1 disposition')
   call require(result%swap_may_commit .and. result%ribasim_may_commit,'E1 joint commit')
@@ -26,24 +26,24 @@ program test_sw_rib_adm01_g5a_transaction
   write(*,'(A)') 'SW_RIB_ADM01_G5A_E1_POSITIVE_FULL=PASS'
 
   ! E2: negative infiltration, full realization.
-  request%requested_signed_soil_to_surface_amount_cm = -0.005_real64
-  realization%realized_signed_soil_to_surface_amount_cm = -0.005_real64
+  request%requested_signed_soil_to_surface_volume_m3 = -0.005_real64
+  realization%realized_signed_soil_to_surface_volume_m3 = -0.005_real64
   call evaluate_external_surface_water_transaction(origin,request,realization,result)
   call require(result%disposition == EXT_SW_TX_COMMIT_READY,'E2 disposition')
-  call require(result%accepted_signed_soil_to_surface_amount_cm < 0.0_real64,'E2 sign')
+  call require(result%accepted_signed_soil_to_surface_volume_m3 < 0.0_real64,'E2 sign')
   write(*,'(A)') 'SW_RIB_ADM01_G5A_E2_NEGATIVE_FULL=PASS'
 
   ! E3: Ribasim availability changes the realized negative transfer.
-  request%requested_signed_soil_to_surface_amount_cm = -0.0051_real64
-  realization%realized_signed_soil_to_surface_amount_cm = -0.0020_real64
+  request%requested_signed_soil_to_surface_volume_m3 = -0.0051_real64
+  realization%realized_signed_soil_to_surface_volume_m3 = -0.0020_real64
   call evaluate_external_surface_water_transaction(origin,request,realization,result)
   call require(result%disposition == EXT_SW_TX_RECOMPOSITION_REQUIRED,'E3 disposition')
   call require(.not. result%swap_may_commit .and. .not. result%ribasim_may_commit,'E3 no first commit')
   call require(.not. result%exactly_once_transfer_ready,'E3 not bookable')
-  call require(same_bits(result%accepted_signed_soil_to_surface_amount_cm,-0.0020_real64),'E3 realized authority')
+  call require(same_bits(result%accepted_signed_soil_to_surface_volume_m3,-0.0020_real64),'E3 realized authority')
 
   ! Recompose from the exact same accepted origins with the realized transfer.
-  request%requested_signed_soil_to_surface_amount_cm = result%accepted_signed_soil_to_surface_amount_cm
+  request%requested_signed_soil_to_surface_volume_m3 = result%accepted_signed_soil_to_surface_volume_m3
   call evaluate_external_surface_water_transaction(origin,request,realization,replay)
   call require(replay%disposition == EXT_SW_TX_COMMIT_READY,'E3 recomposed disposition')
   call require(replay%exactly_once_transfer_ready,'E3 recomposed exactly once')
@@ -60,13 +60,13 @@ program test_sw_rib_adm01_g5a_transaction
 
   ! E5: deterministic same-origin replay.
   realization%origin = origin
-  request%requested_signed_soil_to_surface_amount_cm = -0.0051_real64
-  realization%realized_signed_soil_to_surface_amount_cm = -0.0020_real64
+  request%requested_signed_soil_to_surface_volume_m3 = -0.0051_real64
+  realization%realized_signed_soil_to_surface_volume_m3 = -0.0020_real64
   call evaluate_external_surface_water_transaction(origin,request,realization,result)
   call evaluate_external_surface_water_transaction(origin,request,realization,replay)
   call require(result%disposition == replay%disposition,'E5 disposition replay')
-  call require(same_bits(result%accepted_signed_soil_to_surface_amount_cm, &
-                         replay%accepted_signed_soil_to_surface_amount_cm),'E5 amount replay')
+  call require(same_bits(result%accepted_signed_soil_to_surface_volume_m3, &
+                         replay%accepted_signed_soil_to_surface_volume_m3),'E5 amount replay')
   call require(result%swap_may_commit .eqv. replay%swap_may_commit,'E5 swap replay')
   call require(result%ribasim_may_commit .eqv. replay%ribasim_may_commit,'E5 ribasim replay')
   write(*,'(A)') 'SW_RIB_ADM01_G5A_E5_RETRY_DETERMINISM=PASS'
