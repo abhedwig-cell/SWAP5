@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.sw_rib_swm01.ribasim_capability_map.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "status": "PINNED_PRODUCT_SEMANTICS_FOR_RESEARCH_MAPPING",
+  "capabilities": {
+    "basin_state": {
+      "owner_candidate": "surface-water storage and level",
+      "evidence": "Basin Profile + State",
+      "coupled_use": "sole accepted surface-water state for represented store"
+    },
+    "level_demand": {
+      "semantics": "minimum and maximum level are independently optional; allocation targets end-of-allocation-step level/storage range",
+      "coupled_use": {
+        "fixed_weir_supply": "one-sided min_level = HBWEIR-WLDIP, max_level missing",
+        "automatic_management": "candidate band min=WLSTAR-WLDIP, max=WLSTAR"
+      }
+    },
+    "allocation_controlled_supply": {
+      "components": [
+        "Pump",
+        "Outlet"
+      ],
+      "capacity": "finite max_flow_rate",
+      "coupled_use": "realize WSCAP-like supply capacity and scarcity in Ribasim"
+    },
+    "tabulated_rating_curve": {
+      "interpolation": "PCHIP between supplied points; Q=0 below lowest supplied level; extrapolation behavior above maximum follows product rule",
+      "allocation_controlled": "allocation chooses flow within predicted physical Q(h) capacity; physical layer applies min(allocated,Q(h)) plus reduction factors",
+      "coupled_use": {
+        "fixed_weir": "uncontrolled physical Q(h)",
+        "automatic_management": "candidate allocation-controlled discharge capacity"
+      },
+      "q1a_warning": "Three-point [-1,0,1] / [0,0,0.5] table is not a linear 0.5*h relation on 0<h<1 because PCHIP sees a flat segment below the crest. Two-point [0,1] / [0,0.5] is the product-native candidate for an exactly linear above-crest relation while the below-lowest rule supplies Q=0."
+    },
+    "basin_vertical_forcings": {
+      "drainage": "non-negative m3/s Basin inflow",
+      "infiltration": "non-negative m3/s Basin outflow",
+      "surface_runoff": "non-negative m3/s Basin inflow",
+      "coupled_use": "mass-transfer endpoints, not replacements for SWAP constitutive exchange physics"
+    }
+  },
+  "hard_mapping_rules": [
+    "Do not identify a Ribasim parameter name with SWAP process ownership merely because the names match.",
+    "Do not represent the same physical surface-water storage in SWAP and Ribasim.",
+    "Do not encode a signed SWAP exchange as a single unsigned Ribasim forcing without preserving direction.",
+    "Do not assume TabulatedRatingCurve interpolation is piecewise linear.",
+    "Do not use allocation output as accepted physical mass before the coupled physical transaction accepts."
+  ],
+  "production_admission": false
+}
