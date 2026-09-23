@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.rom_root.ref01.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-REF01",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_REF01_ROOT_ACTIVE_RESPONSE",
+  "purpose": "Prospectively qualify a new research-only root-active high-resolution Reference using an independently derived total-balance representation-floor policy. This is not a repair or reopening of C6R.",
+  "inheritance": {
+    "c6r_closeout": "integration/f-rom/LARE_BC2_C6R_CLOSEOUT.json",
+    "rnp03_closeout": "integration/f-rom/ROM_ROOT_RNP03_CLOSEOUT.json",
+    "c6r_reopened": false,
+    "c6r_result_rewritten": false
+  },
+  "external_numerical_authority": {
+    "total_balance_floor": {
+      "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+      "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+      "result": "docs/publication/P2E18D3_REFERENCE_TOTAL_BALANCE_FLOOR_RESULT.json",
+      "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+      "bounded_use": "Independent evidence that strict domain-summed balance discrimination can lie below a prospectively estimated real64 representation scale."
+    },
+    "ref_high_policy": {
+      "branch": "work/pub-p2e20-ref-high-floor-policy",
+      "head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+      "preregistration": "docs/publication/P2E20_REF_HIGH_FLOOR_POLICY_PREREGISTRATION.json",
+      "preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+      "result": "docs/publication/P2E20_REF_HIGH_FLOOR_POLICY_RESULT.json",
+      "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+      "bounded_use": "Formula authority only. Its 36-case fixed solver-seam qualification is not treated as root-active validation."
+    }
+  },
+  "transferred_policy": {
+    "safety_factor": 1,
+    "compartment_balance_rate_tolerance_cm_per_day": "UNCHANGED_C6R_1E-12",
+    "total_integrated_representation_bound_formula": "F_repr_cm = sum_i(dz_i * spacing(theta_s_i))",
+    "total_integrated_allowance_formula": "A_total_cm = max(1.6e-15 cm, F_repr_cm)",
+    "total_rate_tolerance_formula": "CritDevBalTot = A_total_cm / actual_trial_dt_day",
+    "observed_c6r_retry_residuals_used_to_choose_policy": false,
+    "fitted_multiplier": false,
+    "production_policy_change": false,
+    "seed_policy": "UNCHANGED_STRICT_C6R_SEED",
+    "root_active_trial_policy": "REPRESENTATION_FLOOR_TOTAL_ONLY"
+  },
+  "frozen_scientific_panel": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "root_depth_cm": 80,
+    "root_distributions": [
+      "SHALLOW",
+      "UNIFORM"
+    ],
+    "root_evaluation_timing": "Committed hydraulic state before every transaction; resulting sink prescribed inside the hydraulic trial.",
+    "top_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "bottom_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "candidate_response_generated": false
+  },
+  "numerical_panel": {
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "reference_target": "R2048_T32",
+    "max_iterations": 16,
+    "max_iterations_changed_from_c6r": false,
+    "fallback": "FAIL_CLOSED_NO_DYN0A_FALLBACK",
+    "max_abs_transaction_mass_cm": 1e-12,
+    "O0_O2_identity_required": true,
+    "reference_uncertainty_analyzer": "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py",
+    "analyzer_semantics_changed": false
+  },
+  "qualification_rule": {
+    "integrity": [
+      "All frozen root-active histories complete on all five routes without fallback.",
+      "Every accepted transaction satisfies the unchanged hard mass gate abs(mass)<=1e-12 cm.",
+      "O0 and O2 outputs are byte-identical for each material and route.",
+      "Every emitted representation-floor policy value is finite, positive and exactly derived from the frozen formula."
+    ],
+    "numerical_uncertainty": "The unchanged C6R three-level space-time analyzer must qualify all five componentwise Reference metrics for both B01 and B14.",
+    "pass": "QUALIFIED_ROOT_ACTIVE_REFERENCE_UNDER_INDEPENDENT_REPRESENTATION_FLOOR_POLICY",
+    "fail": "REFERENCE_REMAINS_NOT_QUALIFIED_STOP_BEFORE_REDUCED_RESPONSE"
+  },
+  "firewalls": {
+    "reduced_candidate_response_generated": false,
+    "stage2_prescribed_sink_equivalence_authorized_before_pass": false,
+    "stage3_dynamic_feedback_authorized_before_stage2": false,
+    "new_root_state_selected": false,
+    "application_tolerance_selected": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "reference_richards_source_change_allowed": false,
+    "headcalc_source_change_allowed": false,
+    "feddes_change_allowed": false,
+    "root_sink_provider_change_allowed": false
+  }
+}
