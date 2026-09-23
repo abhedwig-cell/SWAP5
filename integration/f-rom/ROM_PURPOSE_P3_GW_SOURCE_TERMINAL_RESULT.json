@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-source-terminal-result.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-SOURCE",
+  "date": "2026-09-23",
+  "status": "TERMINAL_SOURCE_ROUTE_SET_WITH_R2048_T32_TECHNICAL_FAILURE_ONLY",
+  "source_run": 35876286853,
+  "run_conclusion": "failure",
+  "run_status": "completed",
+  "job_counts": {
+    "total": 82,
+    "success": 65,
+    "failure": 16,
+    "skipped": 1
+  },
+  "scientific_route_accounting": {
+    "non_r2048_expected_slice_count": 64,
+    "non_r2048_successful_slice_count": 64,
+    "non_r2048_failure_count": 0,
+    "r2048_t32_expected_slice_count": 16,
+    "r2048_t32_successful_slice_count": 0,
+    "r2048_t32_failure_count": 16,
+    "preflight_success": true,
+    "assemble_skipped_due_failed_source_matrix": true
+  },
+  "r2048_t32_failure_jobs": [
+    {
+      "job_id": 107234972630,
+      "name": "slices (B01, R2048_T32, 2, 2)"
+    },
+    {
+      "job_id": 107234972632,
+      "name": "slices (B01, R2048_T32, 0, 2)"
+    },
+    {
+      "job_id": 107234972634,
+      "name": "slices (B01, R2048_T32, 0, 1)"
+    },
+    {
+      "job_id": 107234972643,
+      "name": "slices (B01, R2048_T32, 0, 4)"
+    },
+    {
+      "job_id": 107234972919,
+      "name": "slices (B01, R2048_T32, 2, 3)"
+    },
+    {
+      "job_id": 107234972943,
+      "name": "slices (B01, R2048_T32, 0, 3)"
+    },
+    {
+      "job_id": 107234972952,
+      "name": "slices (B01, R2048_T32, 2, 1)"
+    },
+    {
+      "job_id": 107234972988,
+      "name": "slices (B01, R2048_T32, 2, 4)"
+    },
+    {
+      "job_id": 107234981975,
+      "name": "slices (B14, R2048_T32, 0, 4)"
+    },
+    {
+      "job_id": 107234981998,
+      "name": "slices (B14, R2048_T32, 0, 1)"
+    },
+    {
+      "job_id": 107234982161,
+      "name": "slices (B14, R2048_T32, 0, 2)"
+    },
+    {
+      "job_id": 107234982197,
+      "name": "slices (B14, R2048_T32, 0, 3)"
+    },
+    {
+      "job_id": 107234983161,
+      "name": "slices (B14, R2048_T32, 2, 2)"
+    },
+    {
+      "job_id": 107234983329,
+      "name": "slices (B14, R2048_T32, 2, 4)"
+    },
+    {
+      "job_id": 107234983453,
+      "name": "slices (B14, R2048_T32, 2, 1)"
+    },
+    {
+      "job_id": 107234983504,
+      "name": "slices (B14, R2048_T32, 2, 3)"
+    }
+  ],
+  "failure_classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
+  "route_authority": {
+    "R512_T32": "SOURCE_RUN_SUCCESSFUL_SLICES_AUTHORITATIVE",
+    "R1024_T32": "SOURCE_RUN_SUCCESSFUL_SLICES_AUTHORITATIVE",
+    "R2048_T16": "SOURCE_RUN_SUCCESSFUL_SLICES_AUTHORITATIVE",
+    "R2048_T8": "SOURCE_RUN_SUCCESSFUL_SLICES_AUTHORITATIVE",
+    "R2048_T32": "SOURCE_RUN_NOT_AUTHORITATIVE_USE_V2_FULL_STRATUM_RECOVERY"
+  },
+  "targeted_non_r2048_repair_required": false,
+  "downstream_requirement": "Consolidate the 64 successful non-R2048 source slices with the complete authoritative R2048_T32 v2 recovery after that recovery reaches terminal success.",
+  "scientific_firewall": {
+    "reference_response_adjudicated": false,
+    "candidate_response_generated": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "metric_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false
+  }
+}
