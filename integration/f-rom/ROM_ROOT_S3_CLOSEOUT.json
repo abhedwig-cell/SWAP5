@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.rom_root.s3.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3",
+  "date": "2026-09-23",
+  "status": "CLOSED_MINIMAL_LAYER_MEAN_HEAD_FEEDBACK_FALSIFIED_MISSING_INFORMATION_NOT_YET_RESOLVED",
+  "result": "integration/f-rom/ROM_ROOT_S3_RESULT.json",
+  "decision": {
+    "minimal_feedback_falsified": true,
+    "all_tested_representations_bounded_success": false,
+    "at_least_one_representation_bounded_success": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "bounded_conclusion": "The frozen layer-mean-head Feddes feedback is numerically distinguishable from the qualified stress-active Reference in every tested representation. Upper-zone state placement is clearly important, but R16 also fails, so no conclusion that placement alone is sufficient is allowed.",
+  "next": {
+    "work_unit": "ROM-ROOT-S3-D1",
+    "question": "On the same qualified RA02R fine-node hydraulic states, is the remaining R16 uptake discrepancy caused by sub-10-cm threshold crossing and/or root-weighted pressure-head distribution, independent of reduced hydraulic propagation?",
+    "constraint": "Diagnostic only. No new reduced state, partition, closure, fitted coefficient, correction, memory variable or application tolerance."
+  },
+  "model_changed": false
+}
