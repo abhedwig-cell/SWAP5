@@ -23,8 +23,9 @@ program tabhyd_kx05_ksatexm_constitutive_gate
   real(real64) :: frac,expo,relsa,relst,f,err,relerr
   real(real64) :: max_theta,max_c,max_logk,max_branch_abs,max_branch_rel
   real(real64) :: max_transition_abs, continuity_jump, below_kdiff, fmin_active, fmax_active
-  real(real64) :: kleft,kright,keq,mismatch_hmin(NODES),mismatch_hmax(NODES),first_active(NODES),hprobe,thetaauth,seauth
-  integer :: iu,ios,i,j,q,mismatch,mismatch_local,active_count,mismatch_node(NODES),f_nonfinite,ulp_steps(NODES)
+  real(real64) :: kleft,kright,keq,mismatch_hmin(NODES),mismatch_hmax(NODES),first_active(NODES), &
+       hprobe,thetaauth,seauth,hlow,hhigh,hmid,hnext
+  integer :: iu,ios,i,j,q,mismatch,mismatch_local,active_count,mismatch_node(NODES),f_nonfinite,search_steps(NODES)
   character(len=512) :: path
   character(len=32) :: label(NODES)
 
@@ -71,17 +72,31 @@ program tabhyd_kx05_ksatexm_constitutive_gate
   call initialize_tabhyd_raw_provider(table,headtab,thetatab,ktab,cof,STEP)
 
   do i=1,NODES
-    hprobe=HTHR
-    ulp_steps(i)=0
+    hlow=HTHR
+    hhigh=0.0_real64
+    search_steps(i)=0
+    thetaauth=authority_theta(cof(:,i),hlow)
+    seauth=(thetaauth-cof(1,i))/(cof(2,i)-cof(1,i))
+    if(seauth>cof(11,i)) error stop 'KX05 lower search bound unexpectedly active'
+    thetaauth=authority_theta(cof(:,i),hhigh)
+    seauth=(thetaauth-cof(1,i))/(cof(2,i)-cof(1,i))
+    if(seauth<=cof(11,i)) error stop 'KX05 upper search bound unexpectedly inactive'
     do
-      thetaauth=authority_theta(cof(:,i),hprobe)
+      hnext=nearest(hlow,1.0_real64)
+      if(hnext>=hhigh) exit
+      hmid=hlow+0.5_real64*(hhigh-hlow)
+      if(hmid==hlow .or. hmid==hhigh) exit
+      thetaauth=authority_theta(cof(:,i),hmid)
       seauth=(thetaauth-cof(1,i))/(cof(2,i)-cof(1,i))
-      if(seauth>cof(11,i)) exit
-      hprobe=nearest(hprobe,1.0_real64)
-      ulp_steps(i)=ulp_steps(i)+1
-      if(ulp_steps(i)>128) error stop 'KX05 first-active search exceeded bound'
+      if(seauth>cof(11,i)) then
+        hhigh=hmid
+      else
+        hlow=hmid
+      end if
+      search_steps(i)=search_steps(i)+1
+      if(search_steps(i)>128) error stop 'KX05 bisection exceeded bound'
     end do
-    first_active(i)=hprobe
+    first_active(i)=hhigh
   end do
 
   max_theta=0.0_real64
@@ -244,7 +259,7 @@ program tabhyd_kx05_ksatexm_constitutive_gate
   write(*,'(a,es24.16)') 'KX05_ACTIVE_F_MAX=',fmax_active
   write(*,'(a,i0)') 'KX05_ACTIVE_F_NONFINITE=',f_nonfinite
   write(*,'(a,2(1x,es24.16))') 'KX05_FIRST_ACTIVE_HEAD',first_active
-  write(*,'(a,2(1x,i0))') 'KX05_FIRST_ACTIVE_ULP_STEPS',ulp_steps
+  write(*,'(a,2(1x,i0))') 'KX05_FIRST_ACTIVE_SEARCH_STEPS',search_steps
   write(*,'(a)') 'KX05_CONSTITUTIVE_GATE_COMPLETED'
 contains
 
