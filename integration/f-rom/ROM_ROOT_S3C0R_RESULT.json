@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.rom_root.s3c0r.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-C0R",
+  "date": "2026-09-23",
+  "status": "S3C0R_FULL_POTENTIAL_REFERENCE_QUALIFIED",
+  "decision": "STAGE3_DYNAMIC_REDUCED_RESPONSE_MAY_EXECUTE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3C0R_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3C0R_BINDING.json",
+    "source_c0": "integration/f-rom/ROM_ROOT_S3C0_RESULT.json",
+    "source_failure": "integration/f-rom/ROM_ROOT_S3C0_FAILURE_CLASSIFICATION.json",
+    "source_physics_run": 35854345998,
+    "source_artifact": {
+      "id": 10747053751,
+      "digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920"
+    },
+    "requalification_run": 35856045192,
+    "requalification_head": "c19dab77edd9b1713d21a2651f22bdb42f7901c1",
+    "artifact": {
+      "id": 10747112756,
+      "name": "rom-root-s3c0r",
+      "digest": "sha256:a904ae2bf06b0986bea776be431e8e5333d27dce0399125834e0a51b6df99bfd"
+    }
+  },
+  "full_potential_route_identity_pass": true,
+  "hydraulic_uncertainty_pass": true,
+  "interval_root_arithmetic_U_cm_per_day": 2.9103830456733704e-11,
+  "cumulative_root_arithmetic_U_cm": 2.4069231585599535e-11,
+  "materials": {
+    "B01": {
+      "reference_uncertainty_pass": true,
+      "metrics": {
+        "root_zone_0_40_storage_rmse_cm": {
+          "U_combined": 1.691152093966881e-7,
+          "qualified": true,
+          "qualification_route": "UNCHANGED_C0_THREE_LEVEL"
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "U_combined": 2.0301269940642019e-7,
+          "qualified": true,
+          "qualification_route": "UNCHANGED_C0_THREE_LEVEL"
+        },
+        "mapped_10cm_theta_rmse": {
+          "U_combined": 1.1286244590900568e-8,
+          "qualified": true,
+          "qualification_route": "UNCHANGED_C0_THREE_LEVEL"
+        },
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "U_combined": 2.9103830456733704e-11,
+          "qualified": true,
+          "qualification_route": "PRESCRIBED_INVARIANT_ARITHMETIC_ENVELOPE"
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "U_combined": 2.4069231585599535e-11,
+          "qualified": true,
+          "qualification_route": "PRESCRIBED_INVARIANT_ARITHMETIC_ENVELOPE"
+        }
+      }
+    },
+    "B14": {
+      "reference_uncertainty_pass": true,
+      "metrics": {
+        "root_zone_0_40_storage_rmse_cm": {
+          "U_combined": 5.187337304925879e-9,
+          "qualified": true,
+          "qualification_route": "UNCHANGED_C0_THREE_LEVEL"
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "U_combined": 7.008966621289017e-7,
+          "qualified": true,
+          "qualification_route": "UNCHANGED_C0_THREE_LEVEL"
+        },
+        "mapped_10cm_theta_rmse": {
+          "U_combined": 2.480120718141229e-8,
+          "qualified": true,
+          "qualification_route": "UNCHANGED_C0_THREE_LEVEL"
+        },
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "U_combined": 2.9103830456733704e-11,
+          "qualified": true,
+          "qualification_route": "PRESCRIBED_INVARIANT_ARITHMETIC_ENVELOPE"
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "U_combined": 2.4069231585599535e-11,
+          "qualified": true,
+          "qualification_route": "PRESCRIBED_INVARIANT_ARITHMETIC_ENVELOPE"
+        }
+      }
+    }
+  },
+  "bounded_interpretation": [
+    "C0 itself remains formally not qualified under its original generic three-level rule.",
+    "C0R reuses the immutable C0 physics and independently qualifies the two prescribed root-uptake metrics as arithmetic invariants after all five routes satisfy the preregistered full-potential identity guard.",
+    "The three hydraulic uncertainty metrics are unchanged from C0.",
+    "This authorizes Stage 3 dynamic reduced response but does not prejudge that response."
+  ],
+  "scientific_firewall": {
+    "c0_reclassified": false,
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
