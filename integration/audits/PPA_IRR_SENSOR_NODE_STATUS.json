@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ppa_irr_sensor_node.status.v1",
+  "work_unit": "PPA-IRR-SENSOR-NODE",
+  "parent_work_unit": "PPA-IRR-TCS7-DCS2",
+  "status": "IRRIGATION_SENSOR_NODE_SOURCE_ORACLE_PASS_GRID_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@b9ceb7748",
+  "preregistration": "integration/audits/PPA_IRR_SENSOR_NODE_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; bounded in-profile node locator only; no grid construction, coordinate conversion, hydraulic state, parser, restart or production admission",
+  "implementation": "src/process/mod_ppa_irr_sensor_node.f90::locate_irrigation_sensor_node",
+  "test": "tests/fapp/test_ppa_irr_sensor_node_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_sensor_node_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "287-293",
+    "equation": "first i beginning at 1 for which zbotcp(i) <= dcrit+1e-5; source loop advances while zbotcp(i)>dcrit+1e-5"
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_SENSOR_NODE_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_SENSOR_NODE_TOLERANCE_BOUNDARIES=PASS",
+      "PPA_IRR_SENSOR_NODE_SOURCE_ORACLE=PASS",
+      "PPA_IRR_SENSOR_NODE_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "efe13aed74d4c94fd863d05c4889116e1c64628f8be96b81e31d68b1206571b8"
+  },
+  "qualification_status": "NOT_QUALIFIED; source search equation only; caller-supplied compartment grid and sensor depth are not validated against a production owner",
+  "next_action": "Continue source-bound management selector equations separately; keep grid/date ownership and production route held.",
+  "recovery_point": "completed irrigation root-zone accounting checkpoint b9ceb7748",
+  "blockers": ["The source search assumes the caller provides an in-profile sensor depth and monotonically ordered compartment bottoms. The bounded helper reports no match rather than reproducing B1.11 out-of-range memory access."]
+}
