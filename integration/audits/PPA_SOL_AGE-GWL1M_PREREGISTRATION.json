@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_sol_age_gwl1m_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-GWL1M",
+  "parent_work_units": ["PPA-SOL-AGE-SUBSTEP", "PPA-SOL-AGE-OUTPUT"],
+  "title": "B1.11 AgeTracer saturation-weighted age over one-metre groundwater plane",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "229845ccb62200cdc6ddecd3011140820224b123",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "AgeTracer task-2 one metre groundwater plane clipped-compartment accumulation lines 1006-1020"
+  },
+  "scope": {
+    "inputs": "Explicit clipped compartment top/bottom elevations, updated age concentration, saturated water content, water-table elevation, and legacy no-value sentinel",
+    "equations": "For each source-visited compartment, clip zztop=min(z_top,gwl), zzbot=max(z_bottom,gwl-100), deltaz=zztop-zzbot; sum1 += deltaz*Ageml*thetas; sum0 += deltaz*thetas; initialize result to -9999.9; if sum0>1e-12 set sum1/sum0.",
+    "source_loop_boundary": "Candidate consumes a bounded explicit segment vector; no nodgwl, grid, or owner state is read",
+    "output_state_restart_task_loop_production": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "Compare source-ordered clipped segment integrations against direct B1.11 expressions at O0/O2",
+    "Exercise no overlap, partial/full clipping, zero overlap, and sum0 threshold",
+    "Reject invalid dimensions/nonfinite or inverted geometry inputs",
+    "No task-state, grid-boundary, restart, or production output claim"
+  ],
+  "decision_rule": "Preserve legacy sentinel and strict sum0>1e-12 test; do not infer behavior for source grid-index edge cases outside the supplied bounded segment vector."
+}
