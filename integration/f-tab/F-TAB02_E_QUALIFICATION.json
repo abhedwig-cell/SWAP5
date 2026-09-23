@@ -1,0 +1,125 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-E",
+  "title": "Generated default-MvG K0 performance qualification",
+  "result": "PASS",
+  "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "qualified_head": "6bcf2b5852d59b4bf628f34eb1ac7bca8bfa12ac",
+  "workflow_run": 35824004715,
+  "workflow_job": 107061697704,
+  "scope": {
+    "generated_default_mvg": true,
+    "swkimpl": 0,
+    "generic_user_tables": false,
+    "timing_characterization_not_speed_gate": true,
+    "correctness_before_timing": true
+  },
+  "evidence": {
+    "provider": {
+      "nodes": 30,
+      "analytic_median_s": 0.058450500000000016,
+      "generated_median_s": 0.055903500000000016,
+      "delta_pct": -4.3575333,
+      "generated_state_init_median_s": 0.003568249999999995,
+      "saved_per_vector_eval_s": 9.949218750000002e-8,
+      "break_even_vector_evals": 35864.62504907729,
+      "generated_state_bytes": 683280,
+      "timing_captured": "PASS"
+    },
+    "richards": [
+      {
+        "profile": "coarse",
+        "head_max_abs_cm": 0.0000023771343649059418,
+        "theta_max_abs": 8.566507864182782e-9,
+        "mass_residual_diff_cm": 1.7985612998927537e-16,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_median_s": 0.004635500000000015,
+        "generated_median_s": 0.004075499999999899,
+        "delta_pct": -12.0806817
+      },
+      {
+        "profile": "loam",
+        "head_max_abs_cm": 1.9326330402691383e-7,
+        "theta_max_abs": 3.5998282132965187e-10,
+        "mass_residual_diff_cm": 1.1990408665951691e-16,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_median_s": 0.004634999999999945,
+        "generated_median_s": 0.004010500000000028,
+        "delta_pct": -13.47357066
+      },
+      {
+        "profile": "clay",
+        "head_max_abs_cm": 7.220186830636521e-7,
+        "theta_max_abs": 1.183506181945404e-9,
+        "mass_residual_diff_cm": 1.8353374375834616e-17,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_median_s": 0.004661499999999985,
+        "generated_median_s": 0.0038645000000000485,
+        "delta_pct": -17.0975008
+      }
+    ],
+    "serialized": [
+      {
+        "profile": "coarse",
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 3.841900825252154e-9,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_retries": 0,
+        "generated_retries": 0,
+        "analytic_median_s": 0.002584500000000001,
+        "generated_median_s": 0.002462500000000001,
+        "delta_pct": -4.72044883
+      },
+      {
+        "profile": "loam",
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 4.4297171486462616e-10,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_retries": 0,
+        "generated_retries": 0,
+        "analytic_median_s": 0.002594500000000003,
+        "generated_median_s": 0.0024164999999999985,
+        "delta_pct": -6.8606668
+      },
+      {
+        "profile": "clay",
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 3.7850289569263396e-10,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_retries": 0,
+        "generated_retries": 0,
+        "analytic_median_s": 0.002766500000000005,
+        "generated_median_s": 0.002512499999999994,
+        "delta_pct": -9.18127598
+      }
+    ],
+    "correctness_before_timing": "PASS",
+    "paired_timing_capture": "PASS",
+    "owner_qualification": "PASS"
+  },
+  "interpretation": [
+    "Performance qualification is characterization, not a minimum-speed pass/fail criterion.",
+    "Generated-provider setup cost is measurable and must be amortized through persistent immutable provider ownership.",
+    "Production harness retains material runtime reduction at provider, Reference-Richards, and serialized-runtime levels.",
+    "Do not generalize these percentages to whole-SWAP, whole-Hupsel, or MultiSWAP."
+  ],
+  "prerequisites": {
+    "slice_a": "PASS",
+    "slice_b": "PASS",
+    "slice_c": "PASS",
+    "slice_d": "PASS"
+  },
+  "nonclaims": [
+    "generic SWSOPHY=1 production",
+    "arbitrary user-supplied hydraulic tables",
+    "SWKIMPL=1 production",
+    "whole-Hupsel generated-provider qualification",
+    "portable whole-model speedup"
+  ]
+}
