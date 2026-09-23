@@ -53,7 +53,9 @@ def build_model(case) -> Model:
         starttime=start,
         endtime=start + timedelta(seconds=DURATION_SECONDS),
         crs="EPSG:28992",
-        solver=Solver(saveat=DURATION_SECONDS),
+        # Ribasim requires finite saveat to be an integer number of seconds.
+        # This is output cadence only; the frozen physical endpoint remains 8.64 s.
+        solver=Solver(saveat=1),
     )
 
     source = model.flow_boundary.add(
