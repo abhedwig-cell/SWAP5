@@ -4,14 +4,17 @@
   "handoff_work_unit": "F-TAB02",
   "handoff_capability": "generated default-MvG K0 constitutive acceleration provider",
   "research_branch": "research/tabulated-hydraulics-characterization",
-  "research_head": "67790e155a79ea78cf4c250803856173a38eee4c",
-  "canonical_at_handoff": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+  "research_head": "906bfa10ec0b50d94306fb1a4d9cb5fc82fe2d0c",
+  "canonical_at_handoff": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "production_scope": {
     "swkimpl": 0,
     "generated_tables_only": true,
     "generic_swsophy1": false,
     "user_supplied_tables": false,
-    "k1": false
+    "k1": false,
+    "fsi39_ksatexm_bounded_hupsel_subslice": true,
+    "generic_ksatexm": false,
+    "fsi39_minimum_qualified_envelope": "exact Hupsel upper/lower materials"
   },
   "controlling_evidence": {
     "typed_provider_reproduced_runs": [
@@ -21,7 +24,14 @@
     "reference_richards_run": 35538295638,
     "serialized_reference_run": 35538295619,
     "dynamic_certificate_run": 35818703618,
-    "bounds_safe_constitutive_run": 35534127461
+    "bounds_safe_constitutive_run": 35534127461,
+    "kx05_constitutive_run": 35863485123,
+    "kx06_reference_richards_runs": [
+      35863794528,
+      35863919254
+    ],
+    "context_compatibility_run": 35819421154,
+    "preprocessing_break_even_run": 35538710173
   },
   "performance_characterization": {
     "typed_provider_delta_pct_approx": -19,
@@ -33,7 +43,15 @@
       -31.37,
       -28.24
     ],
-    "preprocessing_break_even_vector_evals_30_nodes": 8860
+    "preprocessing_break_even_vector_evals_30_nodes": 8860,
+    "kx05_vs_kx03_compact_fixture_pct_range": [
+      -24.61,
+      -20.69
+    ],
+    "kx05_active_extension_vs_analytic_pct_range": [
+      -3.28,
+      -2.93
+    ]
   },
   "blockers": [
     {
@@ -47,8 +65,9 @@
     "arbitrary user-supplied hydraulic tables",
     "production SWKIMPL=1",
     "portable whole-model 20-30 percent speedup",
-    "byte-exact historical B0 execution equivalence"
+    "byte-exact historical B0 execution equivalence",
+    "generic KSATEXM parameter space"
   ],
   "recommended_branch": "work/f-tab02-generated-k0-provider",
-  "instruction": "Start from live integration/f-ci-canonical; do not merge the research branch wholesale."
+  "instruction": "Start from live integration/f-ci-canonical; do not merge the research branch wholesale. Core production scope is generated default-MvG K0. Treat F-SI39/KSATEXM only as a separately owned bounded Hupsel sub-slice using KX05 semantics."
 }
