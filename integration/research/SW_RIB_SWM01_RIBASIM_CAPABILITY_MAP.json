@@ -32,13 +32,22 @@
         "fixed_weir": "uncontrolled physical Q(h)",
         "automatic_management": "candidate allocation-controlled discharge capacity"
       },
-      "q1a_warning": "Three-point [-1,0,1] / [0,0,0.5] table is not a linear 0.5*h relation on 0<h<1 because PCHIP sees a flat segment below the crest. Two-point [0,1] / [0,0.5] is the product-native candidate for an exactly linear above-crest relation while the below-lowest rule supplies Q=0."
+      "q1a_warning": "Native TabulatedRatingCurve exact equivalence to the hard-kink linear SWQHR1 law is falsified for the pinned release. V1 three-point and R2 two-point inputs both inherit PCHIP smoothing because Ribasim internally augments the knot set. Use native TRC only under an explicit approximation envelope or for source tables whose PCHIP representation is independently acceptable."
     },
     "basin_vertical_forcings": {
       "drainage": "non-negative m3/s Basin inflow",
       "infiltration": "non-negative m3/s Basin outflow",
       "surface_runoff": "non-negative m3/s Basin inflow",
       "coupled_use": "mass-transfer endpoints, not replacements for SWAP constitutive exchange physics"
+    },
+    "explicit_controlled_discharge": {
+      "components": [
+        "ContinuousControl",
+        "Pump"
+      ],
+      "semantics": "Source-derived control maps Basin level to the intended nonnegative discharge law; Pump realizes one-way physical flow.",
+      "q1a_result": "Q1A-R3 trajectory and Q1A-R3L direct-ledger PASS for the frozen BETAW=1 fixed-weir cases.",
+      "limitation": "Research-qualified mapping only; no production admission and no generic nonlinear SWQHR1 claim."
     }
   },
   "hard_mapping_rules": [
@@ -46,7 +55,8 @@
     "Do not represent the same physical surface-water storage in SWAP and Ribasim.",
     "Do not encode a signed SWAP exchange as a single unsigned Ribasim forcing without preserving direction.",
     "Do not assume TabulatedRatingCurve interpolation is piecewise linear.",
-    "Do not use allocation output as accepted physical mass before the coupled physical transaction accepts."
+    "Do not use allocation output as accepted physical mass before the coupled physical transaction accepts.",
+    "Do not treat a two-point TabulatedRatingCurve as piecewise-linear exactness in the pinned release; internal knot augmentation plus PCHIP changes the above-crest curve."
   ],
   "production_admission": false
 }
