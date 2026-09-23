@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-23",
+  "classification": "HISTORICAL_PRESERVATION_BASELINE_REBIND",
+  "failed_run": 35882587009,
+  "failed_job": 107254519406,
+  "observations": [
+    "candidate replay passed completely with identical output hash a6c4eebbd53b7b15d4cab4540cca94bbbd420ed5df12dccd1932d3f5bdd99df1",
+    "precomputed DIVDRA source locks and O0/O2 preservation passed",
+    "failure occurred before fixed-weir replay because the historical F-PM14 script compared fixed-weir production files against e7b512cb..., the canonical head at F-PM14 time",
+    "src/runtime/mod_fmr_restart_state_contract.f90 already differs between e7b512cb... and PA01 canonical base a2d99ddd... independently of PA01"
+  ],
+  "repair": {
+    "preservation_baseline_old": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "preservation_baseline_new": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "method": "ephemeral qualification-script substitution only; source tests and current candidate remain untouched",
+    "compile_dependency_addition": "mod_drainage_extended_exchange.f90 remains the only ephemeral compile-list addition required by the unchanged drainage-response binding"
+  },
+  "unchanged": [
+    "frozen candidate head and all three production blobs",
+    "candidate runtime/profile tests",
+    "fixed-weir executable tests and assertions",
+    "DIVDRA tests and blob locks",
+    "Q1H epsilon envelope",
+    "all scientific tolerances and pass criteria"
+  ],
+  "candidate_semantics_changed": false
+}
