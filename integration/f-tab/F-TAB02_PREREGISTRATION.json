@@ -5,7 +5,7 @@
   "protocol": "RECONCILE -> PREREGISTER -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
   "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "source_authority": {
-    "canonical": "integration/f-ci-canonical@b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "canonical": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "research_handoff": "research/tabulated-hydraulics-characterization@f402259b33b99e418a25d7f8f3dc2ff1c479ef31",
     "research_state": "RESEARCH_CLOSED_FOR_K0_REPRESENTATION_PRODUCTION_HANDOFF_READY",
     "whole_hupsel_authority_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
@@ -150,8 +150,9 @@
     "date": "2026-09-23",
     "previous_base": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
     "current_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-    "live_delta": "nine canonical commits; only MODFLOW6 fixed-interface closeout documentation/status/contract records changed; F-TAB02 constitutive, solver-contract and runtime composition dependency surface unchanged",
-    "branch_recovery_head": "e43a8021644a977f2e52fabf0e438feb61e90cb5",
-    "action": "canonical delta copied into work branch before F-TAB02-C"
+    "canonical_delta": "nine metadata/documentation-only F-GC fixed-interface closeout commits; no constitutive, solver-contract, temporal-indicator or serialized-runtime semantics changed",
+    "merge_commit": "7903d68122ed1d43ab48ea1c4a569eb9415ccb1d",
+    "branch_postimage": "7903d68122ed1d43ab48ea1c4a569eb9415ccb1d",
+    "action": "current canonical is now an explicit merge parent of the F-TAB02 work branch; rerun A/B/C gates from this postimage"
   }
 }
