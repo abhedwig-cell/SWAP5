@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.sw_rib_swm01.q4b.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q4B",
+  "date": "2026-09-23",
+  "decision": "PASS_TRANSACTIONAL_SIGNED_EXTENDED_EXCHANGE_BINDING",
+  "tested_head": "b2bea3efdf4221968cf09d7c22efa72502046608",
+  "evidence_run": 35875941474,
+  "evidence_job": 107231734926,
+  "compile_closure_files": 67,
+  "checks": {
+    "compile_closure": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_exact_text_identity": "PASS",
+    "positive_drainage_single_booking": "PASS",
+    "negative_infiltration_single_booking": "PASS",
+    "signed_hard_mass_closure": "PASS",
+    "invalid_process_rollback": "PASS",
+    "transactional_runtime": "PASS"
+  },
+  "output_sha256": "667911de4a3ee3008b1e98e4366968edfdc889b62d498576de93c211d96a2871",
+  "interpretation": [
+    "The Q4A stateless signed extended drainage/infiltration law is bound as a normal F-PM14 drainage-response variant.",
+    "Positive drainage and negative infiltration propagate through the existing serialized transaction runtime without clipping.",
+    "Mass is booked by the existing trial ledger exactly once; the response binding itself does not book a second transfer.",
+    "Invalid process configuration rejects the trial and leaves committed state and revision unchanged.",
+    "No surface-water storage, management memory or Ribasim availability state is introduced into the SWAP process/runtime."
+  ],
+  "qualification_state": "RESEARCH_RUNTIME_BINDING_PASS",
+  "production_admission": false,
+  "retirement_authority": false
+}

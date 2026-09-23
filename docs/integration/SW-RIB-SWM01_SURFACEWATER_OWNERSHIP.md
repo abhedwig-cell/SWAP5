@@ -121,3 +121,10 @@ SW-RIB-SWM01 can close only when:
 **Authorized research direction:** determine whether the legacy container can ultimately retire after responsibilities are separated into Ribasim-owned system state in coupled mode, SWAP-owned exchange physics and coupler-owned management policy, while standalone SWAP5 retains its separately qualified fixed-weir profile.
 
 This work unit is deliberately non-blocking for the minimal SWAP5 + MODFLOW6 + Ribasim triangle unless that triangle depends on a legacy surface-water-management behaviour covered here. It is blocking for any claim that the legacy SWAP surface-water subsystem is obsolete or safe to retire.
+
+
+## Research closeout
+
+The ownership/decomposition research question is closed. Q4B demonstrates that the retained signed extended exchange physics can be bound transactionally without reintroducing SWAP-owned surface-water storage. The externally coupled target split is therefore research-qualified.
+
+Production admission remains separate. Whole-file deletion remains unauthorized until the coupled application profile enforces the ownership XOR and explicitly disposes of the remaining representation choices documented in the closeout.

@@ -3,16 +3,16 @@
   "work_unit": "SW-RIB-SWM01",
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "status": "OPEN_QUALIFICATION",
-  "checkpoint_commit": "42fe1314cd23f4a64207a2a3288dd02ba72fb937",
-  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_PASS__Q2B2_SEMANTIC_DECISION__Q3A_RETRY_QUEUED__Q1G_QUEUED__Q1H_QUEUED__Q3B_QUEUED__Q4A_CANDIDATE_IMPLEMENTED",
+  "status": "RESEARCH_CLOSED__PRODUCTION_ADMISSION_PENDING",
+  "checkpoint_commit": "b2bea3efdf4221968cf09d7c22efa72502046608",
+  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_PASS__Q2B2_DECIDED__Q1G_CHARACTERIZED__Q1H_PASS__Q3A_PASS__Q3B_PASS__Q4A_PASS__Q4B_PASS",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "production_admission": false,
   "retirement_authority": false,
-  "last_reconciled_head": "42fe1314cd23f4a64207a2a3288dd02ba72fb937",
+  "last_reconciled_head": "b2bea3efdf4221968cf09d7c22efa72502046608",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "owned_surface": [
     "legacy surfacewater.f90 responsibility decomposition",
@@ -83,7 +83,15 @@
     "integration/research/SW_RIB_SWM01_Q1G_PREREGISTRATION.json",
     "integration/research/SW_RIB_SWM01_Q1H_PREREGISTRATION.json",
     "integration/research/SW_RIB_SWM01_Q3B_PREREGISTRATION.json",
-    "integration/research/SW_RIB_SWM01_Q4A_PREREGISTRATION.json"
+    "integration/research/SW_RIB_SWM01_Q4A_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q1G_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q1H_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q3A_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q3B_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q4A_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q4B_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q4B_RESULT.json",
+    "integration/research/SW_RIB_SWM01_CLOSEOUT.json"
   ],
   "dependency_surface": [
     "surface-water state/storage ownership",
@@ -103,10 +111,6 @@
     "q1a_r2": {
       "decision": "FALSIFIED_NATIVE_TRC_EXACT_EQUIVALENCE",
       "run": 35858432805
-    },
-    "q1a_r3_trajectory": {
-      "decision": "PASS",
-      "run": 35859378070
     },
     "q1a_r3_direct_ledger": {
       "decision": "PASS",
@@ -129,49 +133,47 @@
       "job": 107190477656
     },
     "q2b2": {
-      "decision": "NO_EXACT_SINGLE_NATIVE_MAPPING; APPLICATION_PROFILE_DECISION_PERSISTED"
-    },
-    "q3a": {
-      "first_run": 35864871815,
-      "first_job": 107193802387,
-      "first_classification": "TECHNICAL_SOURCE_RATE_GUARD_EXCEEDED_BY_1.16e-12_CM_PER_DAY_BEFORE_PHYSICAL_EXECUTION",
-      "technical_amendment": "SW_RIB_SWM01_Q3A_TECHNICAL_AMENDMENT_01.json",
-      "retry_state": "QUEUED"
+      "decision": "SEMANTIC_PROFILE_DECISION"
     },
     "q1g": {
-      "state": "QUEUED_CHARACTERIZATION"
+      "decision": "FALSIFIED_EXACT_DIRECT_MAPPING__CHARACTERIZED",
+      "run": 35870770982,
+      "job": 107213959271
     },
     "q1h": {
-      "state": "PREREGISTERED_CONFIRMATORY_PENDING_CI",
-      "seed": 2026092317,
-      "cases": 2000
+      "decision": "PASS_CONTROLLED_EPSILON_REPRESENTATION",
+      "run": 35870771050,
+      "job": 107213958102
+    },
+    "q3a": {
+      "decision": "PASS_SIGNED_LOWER_EXCHANGE_WITH_RECOMPOSITION_SEMANTICS",
+      "run": 35870771087,
+      "job": 107213957327
     },
     "q3b": {
-      "state": "PREREGISTERED_PENDING_Q3A_EVIDENCE_AND_CI"
+      "decision": "PASS_TRANSFER_IDENTITIES",
+      "run": 35870771049,
+      "job": 107213959004
     },
     "q4a": {
-      "state": "CANDIDATE_IMPLEMENTED__REPOSITORY_CI_PENDING",
-      "local_sanity": {
-        "compiler": "GNU Fortran 14.2.0",
-        "cases": 1507,
-        "o0": "PASS",
-        "o2": "PASS",
-        "o0_o2_identity": "PASS",
-        "note": "Local sanity used a type-compatible process_hydraulic_view stub; repository CI compiles against the actual canonical solver contract."
-      }
+      "decision": "PASS_STATELESS_SIGNED_EXCHANGE_CANDIDATE",
+      "run": 35870771077,
+      "job": 107213959581
+    },
+    "q4b": {
+      "decision": "PASS_TRANSACTIONAL_BINDING",
+      "run": 35875941474,
+      "job": 107231734926,
+      "tested_head": "b2bea3efdf4221968cf09d7c22efa72502046608"
     }
   },
-  "next_action": "Qualify Q4A against the actual canonical process_hydraulic_view contract. If Q4A passes, design Q4B as the minimal runtime binding/transaction composition for signed extended exchange. Continue queued Q3A/Q1G/Q1H/Q3B evidence separately; none of those may be inferred from local sanity.",
-  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@d2aa3180797fd31f6d3fb2def0158db6157e889b",
+  "next_action": "Open a separate production-admission work unit for the Ribasim-coupled application profile. Enforce owner XOR, bind accepted external surface-water heads to the Q4B-qualified signed exchange variant, freeze a storage-geometry representation/epsilon, and qualify end-to-end restart/retry/mass behavior. Do not reopen SW-RIB-SWM01 research unless the intended application requires exact nonlinear SWQHR1 or another excluded legacy seam.",
+  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@b2bea3efdf4221968cf09d7c22efa72502046608",
   "blockers": [
-    "Q3A signed drainage/infiltration exchange and external availability are not yet qualified; first failure was technical before physical execution and a bounded amendment is queued.",
-    "Q1G storage-geometry representation is preregistered but not yet persisted as CI evidence.",
-    "Q3B top/rapid transfer identities remain design-only.",
-    "Exact nonlinear SWQHR1 parity remains open unless explicitly excluded by the coupled application contract.",
-    "No production admission or whole-subsystem retirement authority exists.",
-    "Pinned Ribasim checkout emits a model-metadata/core-version warning; resolve before production admission.",
-    "Q1H controlled STTAB representation is preregistered but not yet CI-qualified.",
-    "Q3B transfer-identity preservation is preregistered but not yet CI-qualified.",
-    "The retained signed extended exchange law now has a production-path candidate, but Q4A repository qualification and Q4B runtime binding are still required before legacy surfacewater.f90 can be retired."
+    "Production admission of the Ribasim-coupled application profile is not yet performed.",
+    "Whole-file surfacewater.f90 deletion remains unauthorized until production mapping/admission proves no configured retained responsibility is lost.",
+    "Exact nonlinear SWQHR1 numerical parity remains outside the qualified coupled profile unless separately required and qualified.",
+    "Production must choose and freeze an accepted Q1H storage-geometry representation/epsilon rather than treating direct STTAB mapping as exact.",
+    "Pinned Ribasim model-metadata/core-version warning remains a provenance issue to resolve before production admission."
   ]
 }

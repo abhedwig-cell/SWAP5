@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.sw_rib_swm01.closeout.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "closeout_state": "RESEARCH_CLOSED__PRODUCTION_ADMISSION_PENDING",
+  "central_conclusion": "In an explicit SWAP5+Ribasim application profile, Ribasim can be the sole surface-water state/system owner while SWAP retains soil/drainage exchange physics and the coupler owns accepted-state management policy and cross-model feasibility. Whole-file legacy deletion is not the architectural operation; responsibilities are split and only coupled-mode legacy state/control/container duties become retirement candidates.",
+  "evidence": {
+    "fixed_weir_external_owner": {
+      "result": "PASS via Q1A-R3/R3L for frozen linear BETAW=1 envelope",
+      "native_tabulated_exactness": "FALSIFIED for pinned Ribasim PCHIP representation"
+    },
+    "bounded_supply": "Q1B PASS",
+    "automatic_policy": "Q2A PASS including WLSTAR memory, rollback/replay and DROPR seams",
+    "managed_band_realization": "Q2B1 PASS",
+    "dynamic_qh_allocation": "Q2B2 semantic decision: no demonstrated single native mapping that is both exact legacy SWQHR1 and dynamically allocation-aware in the pinned release",
+    "storage_geometry": {
+      "direct_sttab": "Q1G FALSIFIED exact inter-knot mapping",
+      "controlled_representation": "Q1H PASS with epsilon-controlled error; application acceptance epsilon remains external"
+    },
+    "signed_lower_exchange": "Q3A PASS including availability-limited recomposition requirement",
+    "transfer_identities": "Q3B PASS",
+    "extracted_process": "Q4A PASS",
+    "transactional_runtime_binding": "Q4B PASS"
+  },
+  "coupled_profile_ownership": {
+    "RIBASIM": [
+      "accepted surface-water storage and level",
+      "network topology and hydraulic realization",
+      "supply availability, allocation and scarcity",
+      "system-level discharge routes"
+    ],
+    "SWAP5": [
+      "signed soil/drainage constitutive exchange",
+      "multilevel drainage geometry and resistances",
+      "soil-generated runoff, rapid drainage and other qualified process fluxes"
+    ],
+    "COUPLER": [
+      "accepted-SWAP-state management policy",
+      "WLSTAR policy memory and explicit management events",
+      "cross-model feasibility/recomposition when Ribasim cannot realize a requested withdrawal",
+      "exactly-once transfer identity across model boundaries"
+    ]
+  },
+  "retirement_disposition": {
+    "coupled_mode_research_retirement_candidates": [
+      "legacy SWST-owned secondary surface-water storage container",
+      "legacy WLS derivation from SWST for the externally represented store",
+      "legacy local fixed/automatic surface-water balance realization",
+      "legacy WLDIP/WSCAP actual-supply realization inside SWAP",
+      "legacy SWMAN=2 target evaluation inside surfacewater.f90 after policy extraction",
+      "legacy WLSBAK/OSSWLM physical-state interpretation; these are numerical policy/history only",
+      "legacy calendar/parser/container plumbing after typed adapter mapping"
+    ],
+    "must_remain_or_be_extracted": [
+      "signed extended drainage/infiltration constitutive law",
+      "multilevel drainage and DIVDRA responsibilities where separately qualified",
+      "runoff/top-boundary physics",
+      "rapid/macropore drainage generation",
+      "standalone SWAP5 F-CI52 restricted fixed-weir capability"
+    ],
+    "whole_surfacewater_f90_delete_authority": false
+  },
+  "application_contract_holds": [
+    "A coupled profile must enforce SWAP_FIXED_WEIR_STATE_OWNER XOR EXTERNAL_RIBASIM_STATE_OWNER for each physical store.",
+    "Exact nonlinear SWQHR1 numerical parity is not qualified; either declare Ribasim-native hydraulic semantics/approximation or exclude that parity requirement.",
+    "Direct STTAB storage-knot mapping is not exact between knots. Production must choose an accepted epsilon-controlled Q1H representation or another explicitly qualified geometry mapping.",
+    "Availability-limited negative exchange must trigger joint recomposition from accepted origins; accept-with-clip is forbidden.",
+    "Pinned Ribasim model-metadata/core-version warning remains a provenance issue to resolve before production admission.",
+    "Production admission of the new signed exchange variant and coupled application-profile enforcement remains a separate canonical qualification step."
+  ],
+  "production_admission": false,
+  "retirement_authority": false,
+  "next_authority_step": "Create a narrowly scoped production-admission work unit for the Ribasim-coupled application profile: enforce owner XOR, bind accepted external surface-water heads to the Q4B-qualified signed exchange variant, choose/freeze storage-geometry representation, and qualify end-to-end mode exclusion plus mass/restart/retry on current canonical."
+}

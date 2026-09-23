@@ -28,3 +28,10 @@ SW-RIB-SWM01 records an open qualification question for the legacy `surfacewater
 This is not current production authority and does not authorize retirement of the legacy behaviour. The container or control path may be retired only after the legacy responsibilities have been inventoried and the retained behaviour has been qualified against a real-Ribasim reconstruction.
 
 See [SW-RIB-SWM01: legacy SWAP surface-water ownership decomposition](../integration/SW-RIB-SWM01_SURFACEWATER_OWNERSHIP.md).
+
+
+### SW-RIB-SWM01 research closeout
+
+The coupled-mode ownership decomposition has reached research closeout. In an explicit external-Ribasim profile, the legacy secondary surface-water state/control container is a retirement candidate, while signed drainage/infiltration and other soil-generated exchange physics remain SWAP-owned or extracted SWAP process components. Q4A/Q4B demonstrate that the retained signed extended exchange law can live outside `surfacewater.f90` and inside the existing transactional drainage-response runtime.
+
+This is **not production deletion authority**. Production admission must still enforce mutually exclusive surface-water state ownership, freeze storage-geometry representation, bind accepted external heads and prove end-to-end restart/retry/mass behavior. See `docs/integration/SW-RIB-SWM01_CLOSEOUT.md`.

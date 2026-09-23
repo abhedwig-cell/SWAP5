@@ -94,3 +94,17 @@ external Ribasim ownership qualified
 ```
 
 This distinction is intentional: removing duplicate surface-water **state ownership** can be correct before deleting every legacy source container that still contains retained SWAP process physics.
+
+
+## Research closeout disposition
+
+SW-RIB-SWM01 is now research-closed for the ownership/decomposition question. Q3A/Q3B qualify the signed and identity-preserving coupling semantics, and Q4A/Q4B qualify extraction and transactional runtime binding of the retained signed exchange law.
+
+For an explicitly declared external-Ribasim application profile, legacy surface-water **state/control/container ownership** is therefore a research-qualified retirement candidate. This does not extend to retained SWAP process physics and is not yet production retirement authority.
+
+Two representation choices must remain explicit in any production profile:
+
+1. direct exact STTAB-to-Ribasim mapping is false; use a qualified controlled representation such as Q1H with an application-frozen error envelope;
+2. exact generic nonlinear SWQHR1 parity is not established by native Ribasim TabulatedRatingCurve semantics.
+
+See [SW-RIB-SWM01 research closeout](SW-RIB-SWM01_CLOSEOUT.md).
