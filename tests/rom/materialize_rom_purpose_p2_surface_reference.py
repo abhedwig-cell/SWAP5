@@ -151,7 +151,7 @@ def main():
     text=a.source.read_text()
 
     text=one(text,"integer, parameter :: NHIST=24, NSTEPS=1024",
-             f"integer, parameter :: NHIST=4, NSTEPS={1024*factor}\n  integer, parameter :: OUTPUT_FACTOR={factor}","time grid")
+             f"integer, parameter :: NHIST=4, NSTEPS={1024*factor}"+chr(10)+f"  integer, parameter :: OUTPUT_FACTOR={factor}","time grid")
     text=one(text,"real(real64), parameter :: step_dt=0.0008_real64",
              f"real(real64), parameter :: step_dt={0.0008/factor:.12g}_real64","dt")
     text=block(text,r"^  pure integer function bottom_kind\(ih\) result\(value\).*?^  end function bottom_kind\n",bottom_block(),"bottom kind")
@@ -162,8 +162,8 @@ def main():
     text=block(text,r"^  pure function forcing_label\(kind\) result\(label\).*?^  end function forcing_label\n",forcing_label_block(),"forcing label")
     text=block(text,r"^  subroutine configure_case\(ih,step,h0,k0,qeq,p,forcing\).*?^  end subroutine configure_case\n",configure_block(),"configure")
 
-    text=one(text,"    real(real64) :: total\n    integer :: node\n",
-             "    real(real64) :: total,bin_theta\n    integer :: bin,lo_node,hi_node,nodes_per_bin\n","emit decl")
+    text=one(text,"    real(real64) :: total"+chr(10)+"    integer :: node"+chr(10),
+             "    real(real64) :: total,bin_theta"+chr(10)+"    integer :: bin,lo_node,hi_node,nodes_per_bin"+chr(10),"emit decl")
     pat=(r"\n      do node=1,numnod\n"
          r"        write\(\*,'\(\*\(g0\)\)'\) 'LAREDYN0R_NODE\|CASE=',trim\(case_label\(ih\)\),'\|STEP=',step,'\|NODE=',node, &\n"
          r"             '\|Z=',z\(node\),'\|DZ=',dz\(node\),'\|H=',physical%pressure_head\(node\),'\|THETA=',physical%water_content\(node\)\n"
@@ -173,7 +173,7 @@ def main():
         raise SystemExit(f"profile replacement found {n}")
 
     text=one(text,"  write(*,'(A)') 'LAREDYN0R_EXECUTION_COMPLETE=PASS'",
-             "  write(*,'(A)') 'LAREDYN0R_ROMPURP_P2_SURFACE_REFERENCE_GENERATED=TRUE'\n  write(*,'(A)') 'LAREDYN0R_EXECUTION_COMPLETE=PASS'","marker")
+             "  write(*,'(A)') 'LAREDYN0R_ROMPURP_P2_SURFACE_REFERENCE_GENERATED=TRUE'"+chr(10)+"  write(*,'(A)') 'LAREDYN0R_EXECUTION_COMPLETE=PASS'","marker")
     a.output.write_text(text)
 
     m={
