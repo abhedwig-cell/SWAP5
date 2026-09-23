@@ -1,0 +1,191 @@
+{
+  "schema": "swap5.rom_root.ra02r.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02R",
+  "date": "2026-09-23",
+  "status": "RA02R_STRESS_ACTIVE_REFERENCE_QUALIFIED",
+  "decision": "NEW_STRESS_ACTIVE_REFERENCE_AUTHORITY_AVAILABLE_STAGE2_MAY_BE_PREREGISTERED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RA02R_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RA02R_BINDING.json",
+    "design_defect_predecessor": "integration/f-rom/ROM_ROOT_RA02_DESIGN_DEFECT.json",
+    "workflow_run": 35822918094,
+    "workflow_head": "b32d9a0ae8226cb5794ef88f39519dddef5dce67",
+    "analyzer_job": 107064688368,
+    "evidence_artifact": {
+      "id": 10734827983,
+      "name": "rom-root-ra02r",
+      "digest": "sha256:5a3fbda60b034b51888cc31e019a736af83544e6816a937cb1ee155b67a090bb"
+    },
+    "raw_result_path_in_artifact": "ROM_ROOT_RA02R_RESULT.json"
+  },
+  "execution": {
+    "workflow_conclusion": "success",
+    "total_jobs": 129,
+    "execution_and_segment_jobs_success": 128,
+    "analyzer_success": true,
+    "o0_o2_identity": "PASS",
+    "integrity_pass": true,
+    "reference_target": "R2048_T32",
+    "stress_activation_pass": true,
+    "uncertainty_pass": true
+  },
+  "stress_activation_guard": 2.9103830456733704e-11,
+  "stress_activation": {
+    "B01": {
+      "V01": {
+        "first_fraction": 1.0000000000000002,
+        "first_stress_observation": 36,
+        "minimum_fraction": 0.9960138231026691,
+        "maximum_fraction_deficit": 0.00398617689733094,
+        "stress_observation_count": 989
+      },
+      "V02": {
+        "first_fraction": 1.0000000000000002,
+        "first_stress_observation": 71,
+        "minimum_fraction": 0.9965025754879192,
+        "maximum_fraction_deficit": 0.0034974245120807934,
+        "stress_observation_count": 954
+      },
+      "V03": {
+        "first_fraction": 1.0000000000000193,
+        "first_stress_observation": 68,
+        "minimum_fraction": 0.9971207791478592,
+        "maximum_fraction_deficit": 0.0028792208521407625,
+        "stress_observation_count": 957
+      },
+      "V04": {
+        "first_fraction": 1.0000000000000193,
+        "first_stress_observation": 136,
+        "minimum_fraction": 0.9975445130088603,
+        "maximum_fraction_deficit": 0.0024554869911397326,
+        "stress_observation_count": 889
+      }
+    },
+    "B14": {
+      "V01": {
+        "first_fraction": 1.0000000000000002,
+        "first_stress_observation": 35,
+        "minimum_fraction": 0.9997858366337955,
+        "maximum_fraction_deficit": 0.0002141633662045006,
+        "stress_observation_count": 990
+      },
+      "V02": {
+        "first_fraction": 1.0000000000000002,
+        "first_stress_observation": 69,
+        "minimum_fraction": 0.9996388414662,
+        "maximum_fraction_deficit": 0.00036115853380003227,
+        "stress_observation_count": 956
+      },
+      "V03": {
+        "first_fraction": 1.0000000000000193,
+        "first_stress_observation": 68,
+        "minimum_fraction": 0.9998487301343342,
+        "maximum_fraction_deficit": 0.00015126986566582623,
+        "stress_observation_count": 957
+      },
+      "V04": {
+        "first_fraction": 1.0000000000000193,
+        "first_stress_observation": 136,
+        "minimum_fraction": 0.9997463597354161,
+        "maximum_fraction_deficit": 0.00025364026458385425,
+        "stress_observation_count": 889
+      }
+    }
+  },
+  "materials": {
+    "B01": {
+      "reference_uncertainty_pass": true,
+      "max_abs_transaction_mass_cm": 7.508309634294587e-13,
+      "max_profile_state_total_difference_cm": 7.460698725481052e-13,
+      "metrics": {
+        "root_zone_0_40_storage_rmse_cm": {
+          "U_combined": 1.7561004127327865e-7,
+          "p_space": 2.0002291750872145,
+          "p_time": 0.9999924183975148,
+          "qualified": true
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "U_combined": 1.9189470432512592e-7,
+          "p_space": 1.999670513623683,
+          "p_time": 0.9999466698101872,
+          "qualified": true
+        },
+        "mapped_10cm_theta_rmse": {
+          "U_combined": 1.1278344342483165e-8,
+          "p_space": 1.9996831691914432,
+          "p_time": 0.9999738855482212,
+          "qualified": true
+        },
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "U_combined": 3.1885130266026757e-8,
+          "p_space": 1.9999947405887877,
+          "p_time": 0.999991696440608,
+          "qualified": true
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "U_combined": 1.4224527533005653e-8,
+          "p_space": 1.999830460560506,
+          "p_time": 0.9999618090402383,
+          "qualified": true
+        }
+      }
+    },
+    "B14": {
+      "reference_uncertainty_pass": true,
+      "max_abs_transaction_mass_cm": 8.122891533121797e-13,
+      "max_profile_state_total_difference_cm": 1.850963826655061e-12,
+      "metrics": {
+        "root_zone_0_40_storage_rmse_cm": {
+          "U_combined": 4.678840274427421e-9,
+          "p_space": 2.001252196439612,
+          "p_time": 1.0000340805936996,
+          "qualified": true
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "U_combined": 7.003479279009622e-7,
+          "p_space": 1.9904458868888977,
+          "p_time": 0.9999664972054945,
+          "qualified": true
+        },
+        "mapped_10cm_theta_rmse": {
+          "U_combined": 2.4798509841431497e-8,
+          "p_space": 1.990455116078488,
+          "p_time": 0.9999688557804655,
+          "qualified": true
+        },
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "U_combined": 2.226921254305664e-9,
+          "p_space": 1.9921310436487316,
+          "p_time": 0.9999880941066553,
+          "qualified": true
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "U_combined": 9.427732331868692e-10,
+          "p_space": 1.9944504361428737,
+          "p_time": 0.9999598578952067,
+          "qualified": true
+        }
+      }
+    }
+  },
+  "bounded_interpretation": [
+    "The corrected stress panel activates drought-limited root uptake after the first observation for every material/history pair while preserving the preregistered unstressed first observation.",
+    "The full five-metric three-level Reference uncertainty gate qualifies for both B01 and B14.",
+    "The earlier C6R and RA01 failures remain historically valid for their frozen contracts; RA02R supplies a new, independently preregistered stress-active Reference authority rather than reclassifying them.",
+    "This result authorizes preregistration of Stage 2 prescribed-sink reduced-harness equivalence only. It does not yet authorize dynamic reduced root-feedback candidate execution."
+  ],
+  "scientific_firewall": {
+    "c6r_reopened": false,
+    "c6r_reclassified": false,
+    "ra01_reclassified": false,
+    "stage2_executed": false,
+    "stage3_executed": false,
+    "reduced_candidate_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
