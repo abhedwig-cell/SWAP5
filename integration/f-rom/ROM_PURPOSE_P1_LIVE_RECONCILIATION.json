@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.rom-purpose.p1.live-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P1",
+  "date": "2026-09-23",
+  "protocol": "RECONCILE -> AUTHORITY BINDING -> REFERENCE GATE -> FAIL CLOSED",
+  "observed": {
+    "research_branch": "work/f-rom-purpose",
+    "research_head": "4aea206151dc7cd4ac2cd571eb09e51f4e69c5a9",
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "frozen_p1_baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "previous_reconciled_canonical": "b7d9c976e9b474545d54fa79b71ae134c25da156"
+  },
+  "branch_relation": {
+    "merge_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "research_ahead_of_current_canonical": 59,
+    "research_behind_current_canonical": 51,
+    "disposition": "P1 remains historical and internally comparable on its prospectively frozen baseline; do not silently rebase the failed scientific gate."
+  },
+  "canonical_delta_since_previous_reconcile": {
+    "commits": 8,
+    "files": [
+      ".github/workflows/f-gc-fixed-interface-closeout.yml",
+      "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+      "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+      "integration/f-gc/F-GC_FIXED_INTERFACE_CLOSEOUT_STATUS.json",
+      "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json"
+    ],
+    "p1_dependency_surface_intersection": [],
+    "disposition": "NO_P1_REQUALIFICATION_TRIGGER_FROM_NEW_CANONICAL_DELTA"
+  },
+  "authoritative_reference_execution": {
+    "workflow_run": 35751978638,
+    "attempt": 2,
+    "visible_jobs": 30,
+    "visible_jobs_success": 30,
+    "checkpoint_topology_surface": "PASS",
+    "checkpoint_topology_gw": "PASS",
+    "route_artifact": {
+      "name": "p1ref-routes",
+      "id": 10732812360,
+      "digest": "sha256:b76a3d898568e51d4b781863c1a97f9994bd582267a880efc5e1ced7d486f144"
+    },
+    "qualification_artifact": {
+      "name": "rom-purpose-p1-reference",
+      "id": 10733140337,
+      "digest": "sha256:919e174472f6e93c4c6491872b4fd6cf06505c5120b1766fdaef6b9b93d07f54"
+    }
+  },
+  "pinned_evidence": {
+    "reference_result": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json@041c8be484f47363c0f545ac28f5490559969072",
+    "failure_diagnosis": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json@517eae5c765679d2c96a82f2cb4d16d3d05a2446",
+    "status_pre_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_STATUS.json@e26341749beba54f26d00e8c2b9ff451305ce49e"
+  },
+  "reference_gate": {
+    "status": "P1_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES",
+    "candidate_response_authorized": false,
+    "candidate_response_generated": false,
+    "GW_LB": {
+      "B01": "PASS",
+      "B14": "PASS"
+    },
+    "SURF_P": {
+      "B01": "FAIL",
+      "B01_blocker": "total_storage_rmse_cm strict positive monotone observed-order requirement at numerical-floor magnitude",
+      "B14": "FAIL",
+      "B14_blockers": [
+        "total_storage_rmse_cm strict positive monotone observed-order requirement",
+        "upper_0_80_storage_rmse_cm temporal observed-order requirement",
+        "storage extremum timing guard on near-flat plateau"
+      ]
+    },
+    "interpretation": "The preregistered Reference gate fails. Evidence diagnoses numerical observability limitations for SURF_P; it does not establish a Layer-ROM placement or closure failure and does not authorize post-hoc relaxation."
+  },
+  "hypothesis_status": {
+    "H1": "NOT_ADJUDICATED",
+    "H2": "NOT_ADJUDICATED",
+    "H3": "NOT_ADJUDICATED",
+    "H4": "NOT_TRIGGERED_OR_ADJUDICATED"
+  },
+  "candidate_stage": {
+    "execution_binding_created": false,
+    "blind_candidate_matrix_executed": false,
+    "analyzer_contract_guard_action": "NOT_AUTHORIZED_OR_REQUIRED_BEFORE_REFERENCE_GATE_IS_REOPENED_UNDER_NEW_PROSPECTIVE_AUTHORITY",
+    "withdrawn_gw_only_split_authority": "integration/f-rom/ROM_PURPOSE_P1G_PREREGISTRATION.json was deleted at research head 4aea206151dc7cd4ac2cd571eb09e51f4e69c5a9"
+  },
+  "application_authority_status": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE",
+  "blockers": [
+    "P1_REFERENCE_QUALIFICATION_FAILED",
+    "SURF_P_REFERENCE_NUMERICAL_OBSERVABILITY_BLOCKER",
+    "NEW_PROSPECTIVE_REFERENCE_AUTHORITY_REQUIRED"
+  ],
+  "next_authority_boundary": {
+    "automatic_choice_authorized": false,
+    "permitted_alternatives": [
+      "Prospectively define numerical-indistinguishability and plateau/extremum observability semantics, then validate them on fresh surface Reference workloads before any candidate response.",
+      "Prospectively define a fresh surface forcing/event workload whose timing observables are non-degenerate, then requalify the Reference route before any candidate response."
+    ],
+    "reuse_exposed_surface_histories_for_new_validation": false
+  },
+  "scientific_firewall": {
+    "reference_gate_relaxed_post_hoc": false,
+    "candidate_response_generated": false,
+    "representation_reselected": false,
+    "closure_tuned": false,
+    "H1_H2_H3_H4_adjudicated": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json",
+  "natural_boundary": "A new prospective Reference authority requires a scientific choice not authorized by existing P1 governance."
+}
