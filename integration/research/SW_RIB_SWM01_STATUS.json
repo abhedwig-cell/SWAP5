@@ -4,12 +4,15 @@
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "status": "OPEN_QUALIFICATION",
+  "checkpoint_commit": "f0ba1e4688e83bdd9ab1de4bc926766455cc71af",
   "implemented": false,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_admission": false,
   "retirement_authority": false,
+  "last_reconciled_head": "f0ba1e4688e83bdd9ab1de4bc926766455cc71af",
+  "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "owned_surface": [
     "legacy surfacewater.f90 responsibility decomposition",
     "SWAP5/Ribasim/coupler ownership hypothesis",
@@ -33,6 +36,8 @@
     "src/legacy/**/surfacewater.f90",
     "legacy drainage and management dependencies"
   ],
+  "test_paths": [],
+  "evidence_paths": [],
   "dependency_surface": [
     "surface-water state/storage ownership",
     "drainage and infiltration/subirrigation exchange physics",
