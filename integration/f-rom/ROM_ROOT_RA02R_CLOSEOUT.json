@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.rom_root.ra02r.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02R",
+  "date": "2026-09-23",
+  "status": "CLOSED_STRESS_ACTIVE_REFERENCE_QUALIFIED_STAGE2_MAY_BE_PREREGISTERED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RA02R_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RA02R_BINDING.json",
+    "result": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "workflow_run": 35822918094,
+    "workflow_head": "b32d9a0ae8226cb5794ef88f39519dddef5dce67",
+    "evidence_artifact_id": 10734827983
+  },
+  "conclusions": [
+    "The corrected material-specific demand-dependent h3+0.001 stress panel satisfies the activation contract for B01 and B14, SHALLOW and UNIFORM roots, and both potential-transpiration levels.",
+    "All 128 execution and segmented jobs succeeded; O0/O2 identity and integrity checks passed.",
+    "All five frozen three-level Reference uncertainty metrics qualify for both materials.",
+    "RA02R therefore supplies a qualified stress-active Reference authority for the ROM-ROOT mechanism domain.",
+    "This does not reclassify C6R or RA01; their failures remain valid for their frozen contracts."
+  ],
+  "decision": {
+    "reference_qualified": true,
+    "stage2_prescribed_sink_equivalence_may_be_preregistered": true,
+    "stage2_executed": false,
+    "stage3_dynamic_feedback_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-S2",
+    "question": "With the qualified RA02R Reference root sink prescribed identically into the reduced hydraulic harness, do retained representations preserve sink accounting, transaction semantics and mass closure before any reduced stress feedback is evaluated?",
+    "constraint": "No reduced feedback approximation in Stage 2. Root sink must be externally prescribed from the qualified Reference trajectory and identical by construction."
+  },
+  "model_changed": false
+}
