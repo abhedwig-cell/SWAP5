@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low03.cauchy.status.v1",
+  "work_unit": "PPA-LOW03-CAUCHY",
+  "parent_work_unit": "PPA-LOW03",
+  "status": "EXPLICIT_CAUCHY_LAW_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "1eee317ae",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; implicit Cauchy solver, profile resistance, groundwater state, accepted flux ledger, restart and application routes unchanged",
+  "source_census": "integration/audits/PPA_LOW03_CAUCHY_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW03_CAUCHY_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low03_cauchy_flux.f90",
+  "test": "tests/fapp/test_ppa_low03_cauchy_flux.f90",
+  "gate": "tests/fapp/run_ppa_low03_cauchy_flux.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW03_EXPLICIT_CAUCHY_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW03_CAUCHY_SHAPE_RESISTANCE_AND_EXTRA_FLUX=PASS",
+      "PPA_LOW03_CAUCHY_STATELESS_A_B_A=PASS",
+      "PPA_LOW03_CAUCHY_NONFINITE_AND_ZERO_RESISTANCE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "273b9b0b93b34f3b5be655f598e3436378d9055f52e5153562a1754ed2169b29",
+    "o2_executable_sha256": "92cc6b6993762a74e16004ebc48d0fb3079b6e3965a9d0f8c2e7e02d3daf5710",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Keep implicit HeadCalc regime and profile C-value calculation as separate open owner slices; continue to another independent migration capability.",
+  "recovery_point": "this status and PPA_LOW03_CAUCHY_SOURCE_CENSUS.json"
+}
