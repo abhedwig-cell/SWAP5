@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01",
+  "title": "Ribasim-coupled surface-water application profile production admission",
+  "phase": "PREREGISTER",
+  "date": "2026-09-23",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "research_authority": {
+    "branch": "research/sw-rib-swm01-surfacewater-ownership",
+    "closeout_head": "7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
+    "closeout_record": "integration/research/SW_RIB_SWM01_CLOSEOUT.json",
+    "decision": "RESEARCH_CLOSED__PRODUCTION_ADMISSION_PENDING"
+  },
+  "admission_target": {
+    "profile_id": "RIBASIM_COUPLED_SURFACE_WATER_V1",
+    "purpose": "Admit the smallest production SWAP5-side profile in which Ribasim is the sole accepted surface-water store/system owner and SWAP5 contributes only qualified process exchange through existing transaction semantics.",
+    "production_scope": [
+      "Q4A stateless signed extended drainage/infiltration process",
+      "Q4B F-PM14 drainage-response variant binding",
+      "explicit Ribasim-coupled owner-XOR/profile validation",
+      "accepted external surface-water head binding into extended-signed controls",
+      "no additional SWAP surface-water committed state",
+      "existing serialized trial/commit/rollback and mass ledger"
+    ]
+  },
+  "frozen_owner_contract": {
+    "surface_water_state_owner": "EXTERNAL_RIBASIM",
+    "internal_fixed_weir_state_owner": false,
+    "accepted_external_head_required": true,
+    "signed_lower_exchange_owner": "SWAP5_PROCESS",
+    "external_availability_owner": "RIBASIM",
+    "cross_model_feasibility_owner": "COUPLER",
+    "management_policy_owner": "COUPLER",
+    "invariant": "SWAP_FIXED_WEIR_STATE_OWNER XOR EXTERNAL_RIBASIM_STATE_OWNER"
+  },
+  "frozen_process_mapping": {
+    "variant_id": 9,
+    "variant_name": "FMR_DRAIN_VARIANT_EXTENDED_SIGNED",
+    "source_candidate": "research/sw-rib-swm01-surfacewater-ownership:src/process/mod_drainage_extended_exchange.f90",
+    "runtime_binding": "research/sw-rib-swm01-surfacewater-ownership:src/runtime/mod_fmr_drainage_response_binding.f90",
+    "external_head_semantics": "accepted Ribasim surface-water level in centimetres, supplied as interval forcing/control and never persisted as SWAP state",
+    "availability_semantics": "If Ribasim cannot realize a requested outward transfer, the coupled trial must be rejected/recomposed from accepted origins; accept-with-clip is forbidden."
+  },
+  "frozen_storage_geometry": {
+    "representation": "Q1H symmetric epsilon-area representation of legacy piecewise-linear STTAB",
+    "epsilon_m": 0.00001,
+    "q1h_population_cases": 2000,
+    "q1h_observed_max_error_m3_on_normalized_1m2": 0.000003342027508469389,
+    "q1h_theorem_bound_m3_on_normalized_1m2": 0.0000033420275084829225,
+    "decision_basis": "Explicit production-profile design choice within the three Q1H-qualified epsilons. It is not claimed to be universally optimal or a hydrological accuracy tolerance.",
+    "direct_sttab_mapping_exact": false
+  },
+  "nonlinear_weir_scope": {
+    "exact_legacy_swqhr1_nonlinear_parity_required": false,
+    "ribasim_native_hydraulic_realization_allowed": true,
+    "note": "Q1A V1/R2 falsified native exact hard-kink mapping; Q1A R3/R3L passed only the frozen linear BETAW=1 controlled-connector envelope."
+  },
+  "ribasim_provenance": {
+    "git_sha": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "core_version": "2026.1.1",
+    "workspace_version": "2026.1.1",
+    "python_package_version_at_same_sha": "2026.1.0",
+    "policy": "Exact git SHA is primary authority. Production model metadata targeting the core must declare ribasim_version=2026.1.1. The Python/core version-string mismatch at this SHA is an upstream metadata seam and may not be used as sole provenance."
+  },
+  "required_candidate_checks": [
+    "Only the Q4A process file and Q4B drainage-response binding production mutations are imported from research.",
+    "A dedicated Ribasim-coupled serialized wrapper binds accepted external heads and never configures the internal fixed-weir context.",
+    "The wrapper rejects the fixed-weir optional-state layout before execution.",
+    "The wrapper rejects pre-populated drainage-response controls so external accepted heads remain the sole authority.",
+    "All configured levels use FMR_DRAIN_VARIANT_EXTENDED_SIGNED and finite accepted external heads.",
+    "Positive drainage and negative infiltration commit with exactly-once mass booking and hard mass closure.",
+    "Invalid profile, owner conflict, missing/mismatched/nonfinite external heads, and invalid process configuration fail before commit or rollback without revision/state mutation.",
+    "The coupled profile adds no persistent SWAP surface-water state.",
+    "Existing fixed-weir standalone preservation and F-PM14 preservation remain green.",
+    "Q1H epsilon=1e-5 representation bound is replayed exactly.",
+    "Ribasim provenance pin and Python/core metadata discrepancy are checked explicitly."
+  ],
+  "required_independent_qualification": [
+    "Candidate production blobs must be frozen before independent qualification.",
+    "Independent qualification may add tests/evidence only and must not mutate src or reference.",
+    "O0/O2 equality for the signed exchange route.",
+    "Existing restart and transactional preservation must be replayed or dependency-preservation must be proven on the exact candidate tree.",
+    "Canonical promotion remains a separate admission gate after independent qualification."
+  ],
+  "nonclaims": [
+    "No whole-file surfacewater.f90 deletion.",
+    "No exact nonlinear SWQHR1 parity.",
+    "No new Ribasim allocation algorithm.",
+    "No new SWAP surface-water storage state.",
+    "No automatic SWMAN=2 production implementation inside SWAP5.",
+    "No broad SWAP5-Ribasim network production claim beyond the frozen profile."
+  ],
+  "production_admission": false,
+  "canonical_admission": false
+}
