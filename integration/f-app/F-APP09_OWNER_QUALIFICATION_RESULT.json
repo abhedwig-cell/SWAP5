@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.f_app09.owner_qualification_result.v1",
+  "work_unit": "F-APP09",
+  "date": "2026-09-23",
+  "decision": "PASS_OWNER_QUALIFICATION",
+  "subject_candidate": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "evidence_run": 35884620992,
+  "evidence_job": 107261490688,
+  "source_postimages": {
+    "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "0cdf05c1fc066f80aad7807c35a4e718fdecdb09",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "1029cd4658a28f4aaf21db3cd480872c2d17722a",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "5fd5007cf8e523d3b2cd4236114e887d0c383f0a"
+  },
+  "amendments": [
+    "F-APP09_SCOPE_AMENDMENT_01: V1 narrowed to exactly one EXTENDED_SIGNED drainage-response level.",
+    "F-APP09_TECHNICAL_AMENDMENT_01: owner fixture restored to exact Q4B-qualified uniform pressure-head state.",
+    "F-APP09_TECHNICAL_AMENDMENT_02: accepted-window signed exchange accumulated transactionally across the accepted full/half route."
+  ],
+  "checks": {
+    "compile_closure_62_files": "PASS",
+    "single_level_v1_scope": "PASS",
+    "typed_external_head_materializer": "PASS",
+    "surface_water_state_owner_xor": "PASS",
+    "no_persistent_surface_water_state": "PASS",
+    "recomposition_discard_replay": "PASS",
+    "positive_drainage_transaction": "PASS",
+    "negative_infiltration_transaction": "PASS",
+    "stale_origin_fail_closed": "PASS",
+    "full_profile_gate": "PASS",
+    "O0_O2_stable_identity": "PASS"
+  },
+  "accepted_window_semantics": "The participant publishes the transactionally accumulated signed drainage exchange for the accepted coupling window; the existing per-physical-advance observation remains unchanged.",
+  "known_nonblocking_test_warning": "gfortran reports a possible short-circuit evaluation warning for an impure test accessor in one assertion; O0 and O2 outputs are identical and the warning does not affect production source or gate semantics.",
+  "production_admission": false,
+  "independent_qualification": false,
+  "canonical_admission": false,
+  "next_action": "Execute independent F-VQ128 against these exact subject source postimages. No production source may change on the qualification branch."
+}
