@@ -15,7 +15,7 @@
   "baseline": "SWAP 4.3.1 B1.11; manifest SHA-256 24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
   "scope": [
     "homogeneous serialized Reference production application, bottom_mode=5, outside groundwater participant/ledger ownership",
-    "typed immutable numeric DATE5-equivalent T1900/HBOT5 table control sampled at legacy substep-end time",
+    "typed immutable numeric DATE5-equivalent T1900/HBOT5 table control, with substep-end source interpolation and explicit qualification scope",
     "reuse the already existing mode-5 Richards lower-face head condition and solver-owned qbot/mass accounting",
     "preserve the existing groundwater-owned mode-5 profile and reject mixed ownership or attached control on another mode"
   ],
@@ -28,11 +28,12 @@
   "pass_conditions": [
     "standalone mode-5 profile initializes without groundwater datum, participant registry, or interface mass ledger",
     "groundwater mode-5 profile remains registered and qualified; mixed/ambiguous ownership fails closed",
-    "typed table samples AFGEN at substep-end T1900 mapped from canonical interval origin; invalid/nonfinite/unsorted control fails closed",
-    "controlled application matches independently bootstrapped constant-head mode-5 application for a flat table",
-    "non-flat table changes applied lower-face head as expected and accepted results retain solver and hard mass-balance checks",
-    "retry/replay and committed restart preserve deterministic output; a control attached to a non-mode-5 application fails closed",
-    "focused direct compiler O0/O2 tests pass with transcript identity and no changes to solver science or groundwater ownership"
+    "typed table matches B1.11 AFGEN on 100000 deterministic vectors including a non-flat substep-end query; invalid/nonfinite/unsorted controls fail closed",
+    "the standalone mode-5 flat-table production route matches independently bootstrapped direct-head mode 5 and closes its hard mass balance",
+    "existing groundwater-owned mode-5 bootstrap, participant and restricted route qualification remain green",
+    "a table control attached to a non-mode-5 application fails closed; no new parser, participant or state owner is introduced",
+    "focused direct compiler O0/O2 tests pass with transcript identity and no changes to solver science",
+    "non-flat application-level time variation, retry/restart equivalence and canonical admission remain explicitly unqualified and are not closure claims"
   ],
   "implementation_boundary": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -43,5 +44,8 @@
     "tests/fapp/",
     "integration/audits/PPA_LOW05_APP_STATUS.json",
     "integration/audits/PPA_LOW05_APP_SOURCE_CENSUS.json"
+  ],
+  "held_work": [
+    "Non-flat HBOT5 source interpolation passes its pure exact-source oracle, but the attempted standalone transaction completed without commit (kernel_status=2); the cause is not yet isolated. Keep full PPA-LOW05-APP OPEN until variable-head transaction behavior, accepted mass, retry and restart are qualified."
   ]
 }
