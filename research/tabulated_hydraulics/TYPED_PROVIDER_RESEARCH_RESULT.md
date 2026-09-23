@@ -444,3 +444,36 @@ Production implementation remains held until a dedicated work unit owns:
 
 Generic user-supplied `SWSOPHY=1` tables and production `SWKIMPL=1` remain
 separate capabilities and are not admitted by this result.
+
+
+## 2026-09-23 F-SI39 / KSATEXM performance closure
+
+The exact Hupsel application authority includes F-SI39 KSATEXM, so the
+generated-provider research was extended only far enough to determine whether
+that already-admitted constitutive extension can coexist with the acceleration
+representation.
+
+KX03/KX04 established a scientifically correct oracle implementation by
+recomputing canonical analytical theta/Se in the active branch. The direct
+four-node solver gate passed but the active extension became roughly 22-27%
+slower than analytical.
+
+KX05 replaced only that repeated authority-state computation by immutable
+per-material floating branch metadata. Controlling constitutive run
+`35863485123` reported zero branch-classification mismatches and passed all
+frozen constitutive gates.
+
+KX06 then compared analytical, KX03 and KX05 in the same three-regime typed
+Reference-Richards fixture. Two independent runs, `35863794528` and
+`35863919254`, showed:
+
+- KX05 head/theta/mass fidelity equal to KX03 at reported precision;
+- equal nonlinear and linear solve counts;
+- KX05 approximately 20-24% faster than KX03 in every regime;
+- active-extension KX05 approximately 3% faster than analytical in both runs.
+
+Therefore the bounded exact-Hupsel F-SI39 extension no longer presents a known
+scientific or local performance blocker to the generated K0 provider handoff.
+
+This does not admit generic KSATEXM parameter space. Production must keep the
+extension fail-closed outside a separately preregistered supported envelope.
