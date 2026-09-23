@@ -31,9 +31,9 @@ program test_ftab02c_serialized_generated_provider
   integer :: analytic_iterations, table_iterations, repeat_iterations
   integer :: analytic_retries, table_retries, repeat_retries
 
-  call run_route(.false.,.false.,analytic_head,analytic_theta,analytic_iterations,analytic_retries,.true.)
-  call run_route(.true., .false.,table_head,table_theta,table_iterations,table_retries,.true.)
-  call run_route(.true., .false.,repeat_head,repeat_theta,repeat_iterations,repeat_retries,.true.)
+  call run_route(.false.,.false.,.false.,analytic_head,analytic_theta,analytic_iterations,analytic_retries,.true.)
+  call run_route(.true., .false.,.false.,table_head,table_theta,table_iterations,table_retries,.true.)
+  call run_route(.true., .false.,.false.,repeat_head,repeat_theta,repeat_iterations,repeat_retries,.true.)
 
   call require(maxval(abs(table_head-analytic_head)) <= 5.0e-2_real64, 'generated head fidelity')
   call require(maxval(abs(table_theta-analytic_theta)) <= 5.0e-3_real64, 'generated theta fidelity')
@@ -42,7 +42,11 @@ program test_ftab02c_serialized_generated_provider
        'repeated generated solver semantics')
 
   ! Generic/legacy tabulated hydraulics remains a separate, unadmitted route.
-  call run_route(.false.,.true.,repeat_head,repeat_theta,repeat_iterations,repeat_retries,.false.)
+  call run_route(.false.,.true.,.false.,repeat_head,repeat_theta,repeat_iterations,repeat_retries,.false.)
+
+  ! Explicit generated selection with unsupported H_ENPR must be rejected at
+  ! admission; it must never fall back to the analytical provider.
+  call run_route(.true.,.false.,.true.,repeat_head,repeat_theta,repeat_iterations,repeat_retries,.false.)
 
   write(*,'(a,es24.16)') 'F_TAB02_C_HEAD_MAX_ABS=',maxval(abs(table_head-analytic_head))
   write(*,'(a,es24.16)') 'F_TAB02_C_THETA_MAX_ABS=',maxval(abs(table_theta-analytic_theta))
@@ -52,12 +56,13 @@ program test_ftab02c_serialized_generated_provider
   write(*,'(a,i0)') 'F_TAB02_C_GENERATED_RETRIES=',table_retries
   write(*,'(a)') 'F_TAB02_C_REPEATED_GENERATED_IDENTITY=PASS'
   write(*,'(a)') 'F_TAB02_C_GENERIC_TABULATED_FAIL_CLOSED=PASS'
+  write(*,'(a)') 'F_TAB02_C_UNSUPPORTED_HENPR_FAIL_CLOSED_NO_FALLBACK=PASS'
   write(*,'(a)') 'F-TAB02-C SERIALIZED PROVIDER SELECTION GATE PASS'
 
 contains
 
-  subroutine run_route(generated,generic_table,head_out,theta_out,iterations,retries,expect_success)
-    logical,intent(in)::generated,generic_table,expect_success
+  subroutine run_route(generated,generic_table,unsupported_henpr,head_out,theta_out,iterations,retries,expect_success)
+    logical,intent(in)::generated,generic_table,unsupported_henpr,expect_success
     real(real64),intent(out)::head_out(numnod),theta_out(numnod)
     integer,intent(out)::iterations,retries
     type(fmr_b110_physical_parameters_t) :: parameters
@@ -77,11 +82,12 @@ contains
     logical :: ok,available
 
     call initialize_parameters(parameters,generated,generic_table)
+    if (unsupported_henpr) parameters%cofgen(9,1)=-5.0_real64
     call analytical_initial_conductivity(parameters,qref)
     call initialize_forcing(forcing,qref)
     call initialize_column_template(column,template)
     call initialize_config(config)
-    call initialize_committed(committed,parameters,generated,ok)
+    call initialize_committed(committed,parameters,generated .and. .not. unsupported_henpr,ok)
     call require(ok,'committed initialization')
     call fmr_capture_checkpoint(committed,checkpoint,ok)
     call require(ok,'checkpoint capture')
