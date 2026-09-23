@@ -12,10 +12,11 @@ module mod_fmr_serialized_multiswap_runtime
   use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t, fmr_commit_candidate_with_owned_receipt
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_build_execution_order, fmr_count_templates, &
-       FMR_BACKEND_SERIALIZED_REFERENCE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_OPTIONAL_STATE_LAYOUT_BASE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t
+  use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_candidate_t, fmr_bottom_thermal_sample_t, &
        FMR_BOTTOM_THERMAL_DONOR_EXTERNAL
   use mod_fmr_bottom_external_thermal_binding, only: fmr_bottom_external_thermal_binding_bundle_t, &
@@ -313,6 +314,30 @@ contains
     type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(inout) :: active_physical_calls
+    logical :: current_time_available
+
+    ! SW-RIB-PA01: the signed extended drainage variant is the production-facing
+    ! marker for an externally owned surface-water head.  Its first admission is
+    ! deliberately bounded to the BASE optional-state topology so the same
+    ! physical store cannot simultaneously acquire the F-CI52 fixed-weir state
+    ! (or any other unqualified optional-state composition).
+    if (external_surface_water_context_required(parameters)) then
+      if (.not. external_surface_water_context_valid(template, parameters, effective_forcing)) then
+        output%admission_assessed = .true.
+        output%admitted = .false.
+        output%admission_status = 'EXT_SURFACE_OWNER_REJECTED'
+        output%initial_revision = committed_state%current_revision()
+        output%final_revision = output%initial_revision
+        call committed_state%current_time(output%final_committed_time, current_time_available)
+        output%final_committed_time_bound = current_time_available
+        diagnostic%rejected = 1
+        diagnostic%failure_classification = 'EXT_SURFACE_OWNER_REJECTED'
+        diagnostic%committed_revision = output%final_revision
+        diagnostic%committed_time = output%final_committed_time
+        diagnostic%committed_time_bound = current_time_available
+        return
+      end if
+    end if
 
     if (.not. resolved_column_is_routable(column, template)) then
       output%admission_status = 'ROUTING_REJECTED'
@@ -1040,6 +1065,44 @@ contains
          column%forcing_handle <= int(size(forcing_registry), int64)
     if (routable) routable = templates(template_index)%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
   end function column_is_routable
+
+  logical function external_surface_water_context_required(parameters) result(required)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    integer :: i
+
+    required = .false.
+    if (.not. parameters%drainage_response_active) return
+    if (.not. allocated(parameters%drainage_response_levels)) return
+    do i = 1, size(parameters%drainage_response_levels)
+      if (parameters%drainage_response_levels(i)%variant == FMR_DRAIN_VARIANT_EXTENDED_SIGNED) then
+        required = .true.
+        return
+      end if
+    end do
+  end function external_surface_water_context_required
+
+  logical function external_surface_water_context_valid(template, parameters, forcing) result(valid)
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    integer :: i
+
+    valid = .false.
+    if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+    if (.not. parameters%drainage_response_active) return
+    if (.not. allocated(parameters%drainage_response_levels)) return
+    if (size(parameters%drainage_response_levels) <= 0) return
+    if (.not. allocated(forcing%drainage_response_controls)) return
+    if (size(forcing%drainage_response_controls) /= size(parameters%drainage_response_levels)) return
+
+    do i = 1, size(parameters%drainage_response_levels)
+      if (parameters%drainage_response_levels(i)%variant /= FMR_DRAIN_VARIANT_EXTENDED_SIGNED) return
+      if (forcing%drainage_response_controls(i)%drain_head_supplied) return
+      if (.not. forcing%drainage_response_controls(i)%resolved_surface_water_head_supplied) return
+      if (.not. ieee_is_finite(forcing%drainage_response_controls(i)%resolved_surface_water_head_cm)) return
+    end do
+    valid = .true.
+  end function external_surface_water_context_valid
 
   logical function resolved_column_is_routable(column, template) result(routable)
     type(fmr_logical_column_t), intent(in) :: column
