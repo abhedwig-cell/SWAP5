@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "amendment": "TECHNICAL_AMENDMENT_03",
+  "date": "2026-09-23",
+  "classification": "QUALIFICATION_PATCH_ANCHOR_REPAIR_ONLY",
+  "failed_run": 35884472551,
+  "failed_job": 107260985177,
+  "observation": "Candidate replay passed again. Failure occurred before preservation execution because TECHNICAL_AMENDMENT_02 searched for a literal backslash-n inside the historical Python triple-quoted augmentation block rather than the actual source prefix.",
+  "repair": {
+    "old_anchor": "extra triple-quoted line including escaped newline",
+    "new_anchor": "stable prefix `extra='''  src/process/mod_drainage_process.f90`",
+    "compile_dependencies_unchanged": [
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90"
+    ]
+  },
+  "unchanged": [
+    "candidate production blobs",
+    "historical source/test assertions",
+    "preservation baseline",
+    "scientific tolerances",
+    "production semantics"
+  ],
+  "candidate_semantics_changed": false
+}
