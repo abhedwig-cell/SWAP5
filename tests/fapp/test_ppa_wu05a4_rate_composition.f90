@@ -4,6 +4,8 @@ program test_rate_composition
   use mod_ppa_wu05a4_outflow_limit
   use mod_ppa_wu05a4_redistribution
   use mod_ppa_wu05a4_trial_exchange
+  use mod_ppa_wu05a3_satflow_exchange
+  use mod_ppa_wu05a3_satflow_derivative
   implicit none
   type(redistribution_candidate)::redistributed
   type(macro_exchange_evaluation)::evaluation
@@ -56,7 +58,55 @@ program test_rate_composition
   end do
   print '(a)','PPA_WU05A4_RATE_COMPOSITION_FOUR_DT=PASS'
   print '(a)','PPA_WU05A4_RATE_COMPOSITION_INTERNAL_TRANSFER=PASS'
+  call check_generated_satflow()
 contains
+  subroutine check_generated_satflow()
+    type(macro_exchange_evaluation)::e
+    type(macro_used_exchange)::captured
+    real(real64)::head,difference,potential,step,inpot,outpot,frac,tmp,mx,top_excess
+    real(real64)::toprates(2),qin(1),qinternal(1),qout(1),quns(1),qrapid(1),hout(1),derivative(1)
+    real(real64)::equation(1),diagonal(1),store,expected_rate
+    real(real64),allocatable::transfer_amount(:)
+    integer::sign_case,k,status
+    logical::valid
+    do sign_case=1,2
+      head=real(sign_case,real64)-0.5_real64
+      expected_rate=(1.0_real64-head)*0.25_real64
+      do k=1,4
+        step=real(k,real64)/4
+        ! Saturated pore head = reference_level-node_elevation = 1 cm.
+        ! Fixed geometry/conductance; no partial saturation or seepage branch.
+        call ppa_wu05a3_satflow_exchange(head,0.0_real64,-1.0_real64,1.0_real64, &
+            0.0_real64,0,0,1,1.0_real64,0.25_real64,0,1.0_real64,1.0_real64, &
+            0.5_real64,1.0_real64,acos(-1.0_real64),1.0_real64,step,difference,potential,status)
+        call check(status==PPA_WU05A3_SATFLOW_OK,10)
+        inpot=max(potential,0.0_real64); outpot=max(-potential,0.0_real64)
+        call limit_domain_inflow(0.5_real64,1.0_real64,1.0_real64,step,0.0_real64,0.0_real64, &
+            0.0_real64,inpot,outpot,[0.0_real64],[inpot],frac,tmp,mx,top_excess,toprates,qinternal,qin,valid)
+        call check(valid,11)
+        call limit_domain_outflow(step,outpot,0.0_real64,[outpot],[0.0_real64],[0.0_real64], &
+            frac,qout,quns,qrapid,valid)
+        call check(valid,12)
+        call ppa_wu05a3_satflow_derivative(1,1,1,[head],[difference],qin,qout,[0.0_real64], &
+            hout,derivative,status)
+        call check(status==PPA_WU05A3_SATFLOW_DERIVATIVE_OK,13)
+        call check(abs(derivative(1)+0.25_real64)<tiny(head),14)
+        e%key=macro_trial_key(2_int64,0_int64,int(sign_case,int64),int(k,int64))
+        e%dt=step; e%head=[head]; e%rate=qout-qin; e%derivative=derivative
+        call check(abs(e%rate(1)-expected_rate)<tiny(head),15)
+        equation=0; diagonal=1
+        call apply_macro_residual(e,e%key,e%head,equation,captured,valid)
+        call check(valid,16)
+        call apply_macro_diagonal(captured,e%key,.true.,diagonal,valid)
+        call check(valid.and.abs(diagonal(1)-1.25_real64)<tiny(head),17)
+        call copy_matrix_transfer(captured,e%key,transfer_amount,valid)
+        call check(valid,18)
+        store=0.5_real64+(qin(1)-qout(1))*step
+        call check(abs(store-0.5_real64+transfer_amount(1))<tiny(head),19)
+      end do
+    end do
+    print '(a)','PPA_WU05A4_GENERATED_SATFLOW_RATE_DERIVATIVE=PASS'
+  end subroutine
   subroutine check(condition,code)
     logical,intent(in)::condition
     integer,intent(in)::code

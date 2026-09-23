@@ -9,5 +9,11 @@
   "checks": "Repeat at dt 0.25, 0.5, 0.75 and 1 day. Candidate macro storage change plus applied-vector matrix transfer equals external top input within 1e-14 cm. The same supplied interval potentials give dt-scaled rates and invariant amounts.",
   "qualification_boundary": "No actual Richards solve, matrix storage state, nonlinear derivative, accepted mass receipt, restart or production binding is exercised. This is analytic component composition, not whole-column qualification or full B1.11 MACRORATE replay. Surface geometry and potentials are supplied fixture data.",
   "production_admitted": false,
+  "generated_satflow_extension": {
+    "scope": "Single saturated cell, fixed pore head 1 cm and reciprocal resistance 0.25/day, matrix heads 0.5 and 1.5 cm. SATFLOW generates integrated potentials; standard-domain limiters produce actual rates; SATFLOW derivative uses those rates; trial residual/diagonal capture consumes both.",
+    "analytic_expectation": "Matrix input rates +0.125 and -0.125 cm/day, derivative -0.25/day, diagonal increment +0.25/day and opposite macro storage transfer; tested at four dt values.",
+    "limits": "No active storage limiting, partial saturation, seepage, absorption or nonlinear Richards solve in this extension. Fixed geometry/pore head remain fixture data. The prior two-domain redistribution fixture still supplies its own potentials.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "next_action": "Extend standard-domain composition to generated source potentials, domain exchange aggregation and corresponding SATFLOW/ABSORPTION derivatives before production-owner wiring."
 }
