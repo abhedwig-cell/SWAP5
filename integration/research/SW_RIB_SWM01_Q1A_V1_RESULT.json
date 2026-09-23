@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_v1.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-V1",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_RIBASIM_RATING_MAPPING_NOT_EXTERNAL_STATE_OWNERSHIP",
+  "tested_head": "bbe369f77c0836b95d09c120d14e58c1af06d5ee",
+  "evidence_run": 35856818818,
+  "evidence_job": 107167150520,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "frozen_mapping": {
+    "levels_m": [
+      -1,
+      0,
+      1
+    ],
+    "flow_m3_per_day": [
+      0,
+      0,
+      0.5
+    ],
+    "intended_relation": "Q=0 below crest; Q=0.5*h above crest",
+    "actual_product_interpolation": "PCHIP"
+  },
+  "observations": {
+    "C0_NO_DISCHARGE": {
+      "result": "PASS",
+      "final_level_ribasim_m": -0.19999199999999995,
+      "final_level_oracle_m": -0.19999200000000003,
+      "final_storage_ribasim_m3": 0.800008,
+      "final_storage_oracle_m3": 0.800008,
+      "discharge_ribasim_inferred_m3": 0,
+      "discharge_oracle_m3": 0,
+      "mass_residual_m3": 7.999379153869612e-18
+    },
+    "C1_MODERATE_DISCHARGE": {
+      "result": "FAIL_FROZEN_FINAL_LEVEL_TOLERANCE",
+      "final_level_ribasim_m": 0.30001392489015055,
+      "final_level_oracle_m": 0.30000499974994455,
+      "observed_difference_m": 0.000008925140206006432,
+      "frozen_tolerance_m": 1e-8,
+      "endpoint_model_execution": "Ribasim model finished successfully before comparator failure"
+    },
+    "C2_HIGH_DISCHARGE": {
+      "result": "NOT_EXECUTED_AFTER_C1_FAIL"
+    }
+  },
+  "preregistered_prediction_match": {
+    "authority": "integration/research/SW_RIB_SWM01_Q1A_V1_PCHIP_DIAGNOSTIC_PREDICTION.json",
+    "prediction_commit": "b8245b65d3782416c10be0f7c2d1ce34b2e6f4be",
+    "prediction_persisted_before_C1_endpoint_log": true,
+    "predicted_C1_difference_m": 0.000008924983671887432,
+    "observed_C1_difference_m": 0.000008925140206006432,
+    "observed_minus_predicted_m": 1.5653411900018455e-10,
+    "interpretation": "Observed sign and magnitude match the preregistered PCHIP diagnosis to about 1.6e-10 m absolute difference."
+  },
+  "scientific_interpretation": [
+    "External Ribasim ownership is not falsified: the below-crest C0 storage/level/mass case is equivalent.",
+    "The three-point rating-table representation is falsified as an equivalent encoding of the canonical linear fixed-weir law.",
+    "The mismatch is explained by Ribasim PCHIP interpolation across a flat below-crest segment and is not a numerical tolerance issue.",
+    "Frozen scientific tolerances are not widened."
+  ],
+  "successor_required": {
+    "id": "SW-RIB-SWM01-Q1A-R2",
+    "mapping": "two-point TabulatedRatingCurve level=[0,1], flow=[0,0.5] with Ribasim's documented Q=0 below lowest level",
+    "requirement": "separate preregistration and execution; do not rewrite V1 evidence"
+  },
+  "production_admission": false,
+  "retirement_authority": false
+}
