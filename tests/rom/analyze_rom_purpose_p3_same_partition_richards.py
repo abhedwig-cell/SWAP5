@@ -160,7 +160,8 @@ def numerical_qualification(routes:dict,statuses:dict,purpose:str)->dict:
     execution_pass=all(
         int(statuses[k]["return_code_o0"])==0 and
         int(statuses[k]["return_code_o2"])==0 and
-        bool(statuses[k]["scientific_trace_identity"])
+        bool(statuses[k]["scientific_trace_identity"]) and
+        bool(statuses[k]["trace_complete"])
         for k in FACTORS
     )
     if not execution_pass:
