@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.sw_rib_swm01.q4.retirement_decision_contract.v1",
+  "work_unit": "SW-RIB-SWM01-Q4",
+  "date": "2026-09-23",
+  "status": "FROZEN_DECISION_RULE_BEFORE_FINAL_QUALIFICATION",
+  "purpose": "Define in advance when legacy SWAP secondary surface-water ownership may be retired in an external-Ribasim application, without confusing that decision with full legacy feature parity.",
+  "decision_levels": {
+    "COUPLED_STATE_OWNERSHIP_RETIREMENT": {
+      "claim": "For a declared SWAP5+Ribasim application profile, SWAP no longer owns the represented secondary surface-water storage/level/control realization.",
+      "required": [
+        "Q1A external Ribasim state/discharge ownership passes with direct mass ledger for the declared fixed-weir representation.",
+        "Q1B or equivalent external supply realization passes when supply is in scope.",
+        "Q2A passes if soil-state-driven automatic target policy is in scope.",
+        "Q2B realization passes if automatic target realization is in scope.",
+        "Q3A signed lower exchange and availability transaction passes when reverse exchange is in scope.",
+        "Q3B passes for runoff/rapid/top-surface exchange classes that are active in the declared profile.",
+        "Mode gate enforces exactly one physical surface-water state owner.",
+        "Every active exchange is booked exactly once per model with opposite signs.",
+        "No legacy SWST/WLS availability limiter remains hidden in SWAP when Ribasim owns storage."
+      ],
+      "may_exclude_by_application_contract": [
+        "nonlinear SWQHR1 parity if the coupled application profile does not use it",
+        "SWQHR2 legacy threshold seam if not used",
+        "SWSRF=1 undefined-WL legacy route",
+        "negative power-interflow route",
+        "legacy WLSBAK/OSSWLM numerical policy"
+      ]
+    },
+    "FULL_LEGACY_FUNCTIONAL_PARITY": {
+      "claim": "Every scientifically retained legacy surface-water-management behaviour has an explicit equivalent or documented intentional change.",
+      "required_additionally": [
+        "Q1C nonlinear SWQHR1 representation or explicit exact alternative",
+        "SWQHR2 table interpolation/crest-seam disposition",
+        "all active multilevel signed-exchange combinations",
+        "all active runoff/macropore/top-surface mappings",
+        "automatic hydraulic-capacity discrepancy adjudication"
+      ],
+      "note": "This stronger claim is not required merely to operate a narrower Ribasim-coupled production profile."
+    },
+    "WHOLE_FILE_DELETION": {
+      "claim": "No remaining compiled production responsibility requires the legacy surfacewater.f90 container.",
+      "required_additionally": [
+        "all retained SWAP exchange physics has a non-legacy production owner",
+        "all required adapters/configuration are typed outside the legacy container",
+        "no active standalone SWAP5 profile depends on deleting the same modern capability",
+        "source/dependency and preservation gates prove removal does not delete qualified standalone F-CI52 functionality"
+      ],
+      "note": "Whole-file deletion is a code-migration decision distinct from external-owner architecture."
+    }
+  },
+  "fail_closed_rules": [
+    "A coupled application cannot activate internal SWAP surface-water storage and external Ribasim ownership for the same physical store.",
+    "An open feature parity item cannot be silently treated as equivalent; it must be qualified or excluded explicitly by the application contract.",
+    "A Ribasim capacity/availability reduction cannot be applied only after SWAP has committed the unconstrained transfer.",
+    "A passing mass balance does not by itself prove correct ownership or correct process semantics."
+  ],
+  "current_expected_outcome": "Evidence is trending toward coupled-state-ownership retirement being supportable for a bounded Ribasim profile while full legacy parity and whole-file deletion remain separate stronger decisions.",
+  "production_admission": false,
+  "retirement_authority": false
+}
