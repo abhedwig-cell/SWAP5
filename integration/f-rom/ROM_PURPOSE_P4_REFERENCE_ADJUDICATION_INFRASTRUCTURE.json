@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.rom-purpose.p4.reference-adjudication-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-REFERENCE-ADJUDICATION",
+  "date": "2026-09-23",
+  "status": "PREPARED_NOT_BOUND_PENDING_TERMINAL_ROUTE_SETS",
+  "required_authoritative_runs": {
+    "SURF_P": 35900590109,
+    "GW_SEGMENTED_NON_R2048_T32": 35901466303,
+    "GW_SEGMENTED_R2048_T32": 35900642592
+  },
+  "explicitly_excluded_runs": {
+    "35900612668": "superseded monolithic GW execution topology; no scientific authority"
+  },
+  "workflow": ".github/workflows/f-rom-purpose-p4-reference-adjudicate.yml",
+  "analyzer": "tests/rom/analyze_rom_purpose_p4_reference.py",
+  "binding_rule": "Create the adjudication binding only after all three authoritative route producers are terminal-success and their route artifacts are complete.",
+  "gate": "All four purpose/material Reference cases must qualify; partial response authorization is forbidden.",
+  "scientific_firewall": {
+    "reference_metrics_adjudicated": false,
+    "layer_rom_response_authorized": false,
+    "matched_richards_response_authorized": false,
+    "monolithic_gw_artifacts_usable": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
