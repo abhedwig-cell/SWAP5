@@ -1,0 +1,167 @@
+name: F-ROM-PURPOSE P4 fresh groundwater Reference non-R2048-T32
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p4-gw-reference-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reference:
+    name: ref-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        purpose: [gw]
+        material: [B01, B14]
+        route: [R512_T32, R1024_T32, R2048_T16, R2048_T8]
+        opt: [0, 2]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen P4 Reference authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json'))
+          def blob(path):
+              return subprocess.check_output(['git','hash-object',path],text=True).strip()
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE'
+          assert b['status']=='BOUND_BEFORE_ANY_P4_REFERENCE_RESPONSE'
+          for path, expected in b['implementation_blobs'].items():
+              assert blob(path)==expected, (path,blob(path),expected)
+          print('ROM_PURPOSE_P4_REFERENCE_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p1_surface_reference.py             tests/rom/materialize_rom_purpose_p4_gw_reference.py             tests/rom/analyze_rom_purpose_p1_reference.py
+
+      - name: Resolve numerical route
+        id: cfg
+        run: |
+          set -euo pipefail
+          case "${{ matrix.route }}" in
+            R512_T32)  echo "nodes=512" >> "$GITHUB_OUTPUT"; echo "dz=0.3125" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R1024_T32) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R2048_T32) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R2048_T16) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T8)  echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=8" >> "$GITHUB_OUTPUT" ;;
+            *) exit 2 ;;
+          esac
+
+      - name: Materialize fresh blind Reference
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"
+          material="${{ matrix.material }}"
+          factor="${{ steps.cfg.outputs.factor }}"
+          generated="tests/rom/rom_purpose_p4_generated_${purpose}_${material}.f90"
+          manifest="/tmp/manifest.json"
+          if [[ "$purpose" == "surface" ]]; then
+            if [[ "$material" == "B01" ]]; then
+              source="tests/rom/rom_purpose_p1_surface_b01_source.f90"
+            else
+              source="tests/rom/rom_purpose_p1_surface_b14_source.f90"
+            fi
+            python3 tests/rom/materialize_rom_purpose_p1_surface_reference.py               --source "$source" --material "$material" --temporal-factor "$factor"               --output "$generated" --manifest "$manifest"
+          else
+            python3 tests/rom/materialize_rom_purpose_p4_gw_reference.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --source tests/rom/rom_purpose_p1_gw_source.f90               --material "$material" --temporal-factor "$factor"               --output "$generated" --manifest "$manifest"
+          fi
+          python3 - "$manifest" "$purpose" "$material" "$factor" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1]))
+          assert m['response_based'] is False
+          assert m['solver_or_physics_changed'] is False
+          assert m['material']==sys.argv[3]
+          assert m['temporal_factor']==int(sys.argv[4])
+          print('ROM_PURPOSE_P4_MATERIALIZATION_FIREWALL=PASS')
+          PY
+
+      - name: Compile and execute Reference
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"; material="${{ matrix.material }}"
+          route="${{ matrix.route }}"; opt="${{ matrix.opt }}"
+          n="${{ steps.cfg.outputs.nodes }}"; dz="${{ steps.cfg.outputs.dz }}"; factor="${{ steps.cfg.outputs.factor }}"
+          generated="tests/rom/rom_purpose_p4_generated_${purpose}_${material}.f90"
+          stub="p1_${purpose}_${material}_${route}_o${opt}_stubs.f90"
+          python3 tests/rom/materialize_f_rom0_headcalc_stubs.py             --source tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/p1_${purpose}_${material}_${route}_o${opt}"
+          python3 tests/rom/compile_f_rom0_fortran_closure.py             --root . --stub "$stub" --target "$generated"             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
+          mkdir -p slice
+          log="slice/${purpose}_${material}_${route}_o${opt}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          if [[ "$purpose" == "surface" ]]; then
+            grep -Fq 'LAREDYN0R_ROMPURP_P1_SURFACE_REFERENCE_GENERATED=TRUE' "$log"
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+            test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq $((4*1024*factor))
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq $((4*1024*16))
+          else
+            grep -Fq 'LAREGW1_ROMPURP_P4_GW_REFERENCE_GENERATED=TRUE' "$log"
+            grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+            test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq $((4*1024*factor))
+            test "$(grep -c '^LAREGW1_PROFILE|' "$log")" -eq $((4*1024*16))
+          fi
+          cp /tmp/manifest.json slice/
+          sha256sum slice/* > slice/sha256.txt
+          git diff --quiet -- src reference
+          echo "ROM_PURPOSE_P4_REFERENCE_SLICE=PASS|${purpose}|${material}|${route}|O${opt}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p4gref-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}
+          path: slice/
+          if-no-files-found: error
+
+
+  assemble:
+    needs: reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p4gref-gw-*
+          path: /tmp/all
+          merge-multiple: false
+      - name: Assemble complete P4 groundwater routes
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32 R2048_T16 R2048_T8; do
+              for opt in 0 2; do
+                src="$(find /tmp/all -type f -name "gw_${material}_${route}_o${opt}.txt" -print -quit)"
+                test -n "$src"
+                cp "$src" "routes/gw_${material}_${route}_o${opt}.txt"
+              done
+              cmp "routes/gw_${material}_${route}_o0.txt" "routes/gw_${material}_${route}_o2.txt"
+              case "$route" in *_T32) factor=32;; *_T16) factor=16;; *) factor=8;; esac
+              test "$(grep -c '^LAREGW1_STATE|' "routes/gw_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+              test "$(grep -c '^LAREGW1_PROFILE|' "routes/gw_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+            done
+          done
+          sha256sum routes/* > routes/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p4ref-gw-non-r2048-t32-routes
+          path: routes/
+          if-no-files-found: error
