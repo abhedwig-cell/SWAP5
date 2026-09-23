@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.rom_root.s3d4.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D4",
+  "date": "2026-09-23",
+  "status": "CLOSED_FIXED_THRESHOLD_DESCRIPTOR_NOT_FORCING_PORTABLE_EXACT_BRANCH_REACHES_DISTRIBUTIONAL_INFORMATION_BOUNDARY",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D4_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_ROOT_S3D4_RESULT.json"
+  },
+  "conclusions": [
+    "U_i and J_i are exact for the frozen piecewise-linear Feddes functional when the current h3 is known, but the pair is not invariant to a change in h3.",
+    "The tested existing retained hydraulic state does not uniquely determine U_i and J_i.",
+    "For arbitrary demand-dependent h3, an exact forcing-portable non-tautological representation is threshold-queryable root-weighted pressure-head distribution information.",
+    "No useful exact low-dimensional forcing-portable root state has been established."
+  ],
+  "decision": {
+    "minimal_layer_mean_feedback_remains_falsified": true,
+    "compact_exact_fixed_h3_information_identified": true,
+    "forcing_portable_exact_low_dimensional_state_identified": false,
+    "new_root_specific_state_selected": false,
+    "dynamic_augmented_candidate_authorized": false,
+    "exactness_branch_closed": true
+  },
+  "handoff": {
+    "approximate_state_design_requires": "Independent purpose-dependent fidelity/tolerance authority, or a prospectively frozen approximation hierarchy whose outcomes are reported without an acceptance claim.",
+    "permitted_research_without_application_tolerance": "Derive candidate-independent approximation families and error frontiers, but do not select a sufficient operational state from observed error.",
+    "prohibited": "Do not fit a U/J surrogate to the S3 response, do not choose descriptor dimension from an observed application error threshold, and do not make a production or performance claim."
+  },
+  "model_changed": false
+}
