@@ -1,0 +1,115 @@
+name: ROM-ROOT Stage 2R prescribed-sink requalification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_S2R_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-s2r-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  execute:
+    name: ${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify bound S2R authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_S2R_BINDING.json'))
+          f=json.load(open('integration/f-rom/ROM_ROOT_S2_FAILURE_CLASSIFICATION.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_S2R_EXECUTION'
+          assert b['state']=='BOUND_BEFORE_S2R_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['dynamic_root_feedback_implemented'] is False
+          assert f['status']=='CLOSED_NOT_QUALIFIED_ARITHMETIC_ACCUMULATION_GUARD_DEFECT'
+          assert p['scientific_firewall']['s2_reclassified'] is False
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Execute S2R
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_root_s2r_prescribed_sink.py             --material "${{ matrix.material }}"             --history "${{ matrix.history }}"             --prereg integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json             --output "evidence/${{ matrix.material }}_${{ matrix.history }}.json"             | tee "evidence/${{ matrix.material }}_${{ matrix.history }}.txt"
+          sha256sum evidence/* > evidence/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s2r-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: execute
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-root-s2r-*
+          path: /tmp/rom-root-s2r
+          merge-multiple: true
+
+      - name: Analyze S2R
+        run: |
+          set -euo pipefail
+          mkdir -p S2R_EVIDENCE
+          test "$(find /tmp/rom-root-s2r -maxdepth 1 -type f -name 'B??_V??.json' | wc -l)" -eq 8
+          python3 tests/rom/analyze_rom_root_s2r.py             --prereg integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json             --input-dir /tmp/rom-root-s2r             --output S2R_EVIDENCE/ROM_ROOT_S2R_RESULT.json             | tee S2R_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json S2R_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S2R_BINDING.json S2R_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S2_FAILURE_CLASSIFICATION.json S2R_EVIDENCE/
+          sha256sum S2R_EVIDENCE/* > S2R_EVIDENCE/sha256.txt
+
+      - name: Enforce S2R firewall
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('S2R_EVIDENCE/ROM_ROOT_S2R_RESULT.json'))
+          assert r['status']=='S2R_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED'
+          assert r['decision']=='STAGE3_DYNAMIC_FEEDBACK_MAY_BE_PREREGISTERED'
+          assert r['case_count']==32
+          assert r['all_32_cases_pass'] is True
+          f=r['scientific_firewall']
+          assert f['s2_reclassified'] is False
+          assert f['feddes_evaluated'] is False
+          assert f['dynamic_root_feedback_implemented'] is False
+          assert f['reduced_feedback_response_generated'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_S2R_FIREWALL=PASS')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s2r
+          path: S2R_EVIDENCE/
+          if-no-files-found: error
