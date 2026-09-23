@@ -1,0 +1,77 @@
+! Restricted single standard-domain evaluator: SATFLOW only, no surface input,
+! absorption, rapid drainage, covering layer or interdomain redistribution.
+module mod_ppa_wu05a4_saturated_trial
+  use, intrinsic::iso_fortran_env,only:real64
+  use, intrinsic::ieee_arithmetic,only:ieee_is_finite
+  use mod_ppa_wu05a3_satflow_task1
+  use mod_ppa_wu05a3_satflow_derivative
+  use mod_ppa_wu05a4_storage_bounds
+  use mod_ppa_wu05a4_inflow_limit
+  use mod_ppa_wu05a4_outflow_limit
+  use mod_ppa_wu05a4_trial_exchange,only:macro_trial_key,macro_exchange_evaluation
+  implicit none
+  private
+  type,public::saturated_domain_inputs
+    integer::matrix_top=0,pore_saturated_top=0
+    real(real64)::bottom=0,pore_level=0,matrix_level=0,storage=0,saturated_fraction=0
+    real(real64),allocatable::z(:),dz(:),volume(:),resistance_inverse(:)
+  end type
+  public::prepare_saturated_trial
+contains
+  subroutine prepare_saturated_trial(input,head,dt,key,evaluation,storage_candidate,ok)
+    type(saturated_domain_inputs),intent(in)::input
+    real(real64),intent(in)::head(:),dt
+    type(macro_trial_key),intent(in)::key
+    type(macro_exchange_evaluation),intent(out)::evaluation
+    real(real64),intent(out)::storage_candidate
+    logical,intent(out)::ok
+    real(real64),allocatable::dh(:),potential(:),inpot(:),outpot(:),zeros(:),ones(:)
+    real(real64),allocatable::qin(:),qout(:),unused(:),unused2(:),hout(:),derivative(:)
+    real(real64)::total_in,total_out,ground,minimum,total_volume,frac,tmp,maximum,excess,top(2),candidate
+    integer::n,status
+    logical::valid
+    ok=.false.; storage_candidate=0
+    n=size(head)
+    if(n<1.or.key%lineage<=0.or.key%revision<0.or.key%attempt<=0.or.key%evaluation<=0) return
+    if(.not.ieee_is_finite(dt))return
+    if(dt<=0)return
+    if(.not.allocated(input%z).or..not.allocated(input%dz).or..not.allocated(input%volume) &
+        .or..not.allocated(input%resistance_inverse))return
+    if(size(input%z)/=n.or.size(input%dz)/=n.or.size(input%volume)/=n &
+        .or.size(input%resistance_inverse)/=n)return
+    if(.not.all(ieee_is_finite(head)))return
+    total_volume=sum(input%volume)
+    call domain_storage_bounds(input%bottom,n,input%dz,input%volume,total_volume,input%storage, &
+        input%matrix_level,input%bottom,.false.,ground,minimum,valid)
+    if(.not.valid)return
+    allocate(dh(n),potential(n),inpot(n),outpot(n),zeros(n),ones(n),qin(n),qout(n), &
+        unused(n),unused2(n),hout(n),derivative(n))
+    zeros=0; ones=1
+    ! Only the wet-pore Darcy branch is admitted here: dry-pore seepage/shape
+    ! resistance would require additional physical parameters, not defaults.
+    if(input%matrix_top<1.or.input%matrix_top>n)return
+    if(.not.ieee_is_finite(input%pore_level))return
+    if(.not.all(ieee_is_finite(input%z)))return
+    if(any(input%pore_level-input%z(input%matrix_top:n)<=0))return
+    call ppa_wu05a3_satflow_task1(n,input%matrix_top,n,input%pore_saturated_top, &
+        input%pore_level,input%matrix_level,head,input%z,input%dz,input%saturated_fraction, &
+        input%resistance_inverse,0,ones,ones,zeros,zeros,acos(-1.0_real64),1.0_real64,dt, &
+        dh,potential,inpot,total_in,status)
+    if(status/=PPA_WU05A3_SATFLOW_TASK1_OK)return
+    outpot=max(-potential,0.0_real64); total_out=sum(outpot)
+    call limit_domain_inflow(input%storage,total_volume,ground,dt,0.0_real64,0.0_real64, &
+        0.0_real64,total_in,total_out,zeros,inpot,frac,tmp,maximum,excess,top,unused,qin,valid)
+    if(.not.valid)return
+    call limit_domain_outflow(dt,total_out,max(0.0_real64,minimum-tmp),outpot,zeros,zeros, &
+        frac,qout,unused,unused2,valid)
+    if(.not.valid)return
+    call ppa_wu05a3_satflow_derivative(input%matrix_top,n,1,head,dh,qin,qout,zeros,hout,derivative,status)
+    if(status/=PPA_WU05A3_SATFLOW_DERIVATIVE_OK)return
+    candidate=input%storage+(sum(qin)-sum(qout))*dt
+    if(.not.ieee_is_finite(candidate))return
+    evaluation%key=key; evaluation%dt=dt; evaluation%head=head
+    evaluation%rate=qout-qin; evaluation%derivative=derivative
+    storage_candidate=candidate
+    ok=.true.
+  end subroutine
+end module

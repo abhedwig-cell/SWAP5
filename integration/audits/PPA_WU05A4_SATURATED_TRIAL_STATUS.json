@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-WU05-A4-SATURATED-TRIAL",
+  "baseline": "eff707da5",
+  "implementation": "src/adapter/mod_ppa_wu05a4_saturated_trial.f90",
+  "scope": "First restricted executable evaluator composing VOLUNDR geometry bounds, SATFLOW task 1, standard-domain incoming/outgoing limits, SATFLOW derivative and typed exchange evaluation. No production HeadCalc modification.",
+  "contract": "One standard domain with no external top input, covering layer, absorption, rapid drainage or interdomain redistribution. Only wet-pore Darcy branch; dry-pore seepage is rejected rather than filled with assumed physical parameters. Input remains immutable, failed preparation returns no evaluation arrays. Geometry and matrix-zone metadata are supplied by caller; no committed state or receipt is published.",
+  "gate": "tests/fapp/run_ppa_wu05a4_saturated_trial.ps1",
+  "fixture": "Two one-cm cells with 0.25 cm pore volume each. Pore level -0.5 cm implies initial store 0.375 cm, matrix level -1 cm implies minimum store 0.25 cm. Matrix heads [-0.5,0.5] at nodes [-0.5,-1.5] generate bottom-cell outgoing rate 0.125 cm/day. At dt=2 days, storage cap reduces rate to 0.0625 and source tangent to -0.125.",
+  "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
+  "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
+  "production_admitted": false,
+  "next_action": "Exercise head-dependent repeated evaluations and rejection in the restricted trial evaluator, then design the opt-in Richards callback wiring without enabling unsupported physics or a separate commit owner."
+}
