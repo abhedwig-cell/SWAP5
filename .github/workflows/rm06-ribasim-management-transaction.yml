@@ -1,0 +1,34 @@
+name: RM06 Ribasim management transaction qualification
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/**'
+      - 'integration/ribasim-management/RM06_*'
+      - '.github/workflows/rm06-ribasim-management-transaction.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/**'
+      - 'integration/ribasim-management/RM06_*'
+      - '.github/workflows/rm06-ribasim-management-transaction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM06 transactional management qualification
+        run: bash tests/ribasim-management/run_rm06_management_transaction.sh
