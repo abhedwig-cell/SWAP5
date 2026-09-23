@@ -120,3 +120,30 @@ The broader K1 route is reference-runtime blocked on difficult analytical cases 
 3. If scientifically red, diagnose scaling limits without reopening the qualified K0 representation automatically.
 4. Do not implement production changes from this branch.
 5. Track F-TAB02 only as an external consumer of the closed research authority.
+
+
+## Live delta — same-postimage A→E→G closed
+
+Production run `35882579159` on
+`work/f-tab02-generated-k0-provider@43c63185fb0455e59292c9839e46668d67424794`
+completed successfully with:
+
+- `F_TAB02_AEG_A=PASS`;
+- `F_TAB02_AEG_B=PASS`;
+- `F_TAB02_AEG_C=PASS`;
+- `F_TAB02_AEG_D=PASS`;
+- `F_TAB02_AEG_E=PASS`;
+- `F_TAB02_AEG_G=PASS`;
+- `F_TAB02_AEG_SEQUENTIAL_PRESERVATION=PASS`.
+
+Selected production-style performance characterization from the same replay:
+
+- 30-node provider delta: `-13.44%`;
+- Reference-Richards coarse/loam/clay deltas: `-16.12%`, `-18.75%`, `-21.13%`;
+- serialized coarse/loam/clay deltas: `-8.02%`, `-11.69%`, `-7.11%`;
+- generated-state initialization median: about `3.65 ms`;
+- provider break-even estimate: about `11,816` 30-node vector evaluations.
+
+These timings remain characterization, not portable speed gates.
+
+Research disposition remains unchanged: production ownership stays on F-TAB02; this branch only records the closed handoff and supplemental scaling evidence.
