@@ -60,9 +60,24 @@ Accepted Ribasim storage memory and current forecast forcing are separate alloca
 
 No same-boundary retroactive management correction is inferred from a physical exchange that the Ribasim allocator did not observe at that boundary.
 
+## Qualified real-Ribasim realization envelope
+
+RM08 falsified the assumption that sufficient source supply plus a full allocation automatically implies full physical UserDemand realization. In that fixture, the accepted Basin source level lay inside Ribasim's physical source-level reduction band: allocation was 2.0 cm while measured physical supply was 1.6488994020651218 cm. The component water ledger still closed.
+
+RM09 therefore qualifies a narrower first full-realization profile in which the relevant physical reduction mechanisms are inactive by construction. For the tested Ribasim v2026.1.1 route:
+
+- allocated depth must equal the accepted SWAP request within 1e-6 cm;
+- physically supplied depth must equal the accepted SWAP request within 1e-4 cm;
+- the source-level margin must be at least three times `level_difference_threshold`;
+- the physical low-storage factor must equal one within 1e-12.
+
+RM10 encodes that envelope in an origin-bound realization receipt. The receipt binds the SWAP management lineage, revision, crop-origin revision, interval and requested quantity to an opaque coupler-owned Ribasim origin id/revision while retaining allocated and physically supplied quantities as separate fields. Cross-origin mixing and RM08-like partial realization fail closed for this first profile.
+
+These bounds are admission conditions, not a claim that partial realization is physically invalid. A future partial-supply policy requires its own preregistered transaction and hydrological response contract.
+
 ## Initial admitted profile
 
-The first real SWAP–Ribasim fixture is one SWAP column, one surface-water supply route, one irrigation demand, no drainage and aligned management/coupling clocks. The first three-model fixture adds one MODFLOW cell using the bounded canonical fixed-interface groundwater contract and still keeps drainage disabled.
+The first real SWAP–Ribasim fixture is one SWAP column, one surface-water supply route, one irrigation demand, no drainage and aligned management/coupling clocks. RM09 qualifies that fixture only inside the bounded full-realization envelope above. RM11/RM12 additionally qualify explicit coupler-owned fixed-allocation scheduling for one noncommensurate clock case. The first three-model fixture adds one MODFLOW cell using the bounded canonical fixed-interface groundwater contract and still keeps drainage disabled.
 
 ## Nonclaims
 
