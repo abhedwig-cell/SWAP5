@@ -13,6 +13,8 @@ def load_module(name,path):
     if spec is None or spec.loader is None: raise RuntimeError(path)
     mod=importlib.util.module_from_spec(spec); sys.modules[name]=mod; spec.loader.exec_module(mod); return mod
 
+decision_policy=load_module("rom_purpose_p4_decision_policy",HERE/"rom_purpose_p4_decision_policy.py")
+
 p3=load_module("rom_purpose_p4_p3_analysis",HERE/"analyze_rom_purpose_p3_candidates.py")
 p3.SURF_H=SURF_H; p3.GW_H=GW_H
 p3.base.SURF_H=SURF_H; p3.base.GW_H=GW_H
@@ -52,7 +54,6 @@ def main():
         cases[purpose]={}; decisions[purpose]={}
         for material in ("B01","B14"):
             cases[purpose][material]={}
-            minimum=None
             for member in RUNGS[purpose]:
                 cand=load_candidate(a.candidate_root,purpose,material,member)
                 metrics=p3.candidate_metrics(purpose,cand,refs[purpose][material])
@@ -64,13 +65,18 @@ def main():
                   "max_abs_water_ledger_cm":cand["max_abs_water_ledger_cm"],
                   "failures":cand["failures"]
                 }
-                if minimum is None and cls=="REPRESENTATION_COMPARATOR_REACHED":
-                    minimum=member
+            frontier=decision_policy.frontier([
+                (m, cases[purpose][material][m]["status"]=="QUALIFIED",
+                 cases[purpose][material][m]["representation_sufficiency"]=="REPRESENTATION_COMPARATOR_REACHED")
+                for m in RUNGS[purpose]
+            ])
+            minimum=frontier["minimum_tested_member"]
             decisions[purpose][material]={
               "minimum_tested_member":minimum,
               "minimum_tested_state_count":None if minimum is None else int(minimum[1:]),
               "minimum_tested_state_placement_cm":None if minimum is None else cases[purpose][material][minimum]["boundaries_cm"],
-              "representation_frontier_status":("MINIMUM_TESTED_REPRESENTATION_IDENTIFIED" if minimum else "REPRESENTATION_FRONTIER_NOT_REACHED"),
+              "representation_frontier_status":frontier["frontier_status"],
+              "frontier_evidence":frontier,
               "rungs":[
                 {"member":m,"dimension":int(m[1:]),"classification":cases[purpose][material][m]["representation_sufficiency"]}
                 for m in RUNGS[purpose]
@@ -78,10 +84,13 @@ def main():
             }
         mins=[decisions[purpose][m]["minimum_tested_state_count"] for m in ("B01","B14")]
         summary[purpose]={
-          "both_materials_reach_comparator":all(x is not None for x in mins),
+          "both_materials_reach_comparator":all(
+              decisions[purpose][m]["frontier_evidence"]["first_comparator_reaching_member"] is not None
+              for m in ("B01","B14")),
+          "both_material_minima_identified":all(x is not None for x in mins),
           "material_minima":{m:decisions[purpose][m]["minimum_tested_state_count"] for m in ("B01","B14")},
           "status":("PURPOSE_SPECIFIC_FINITE_REPRESENTATION_FRONTIER_SUPPORTED" if all(x is not None for x in mins)
-                    else "REPRESENTATION_FRONTIER_NOT_REACHED_WITHIN_P4")
+                    else "REPRESENTATION_FRONTIER_NOT_ESTABLISHED_WITHIN_P4")
         }
     out={
       "schema":"swap5.rom-purpose.p4.layer-frontier-result.v1",
