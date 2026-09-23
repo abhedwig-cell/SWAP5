@@ -4,8 +4,8 @@
   "title": "Exact whole-Hupsel execution readiness reconciliation",
   "date": "2026-09-23",
   "branch": "work/f-tab02-generated-k0-provider",
-  "source_postimage": "3cae08e70317450072c7db01726775d495d4a4e9",
-  "classification": "READY_SCIENTIFIC_CONTRACT__EXECUTION_HARNESS_AND_ASSET_BINDING_NOT_YET_PRESENT",
+  "source_postimage": "4994170390b6865ffd8eaebfb6d02fd7d9f73382",
+  "classification": "EXACT_HUPSEL_INPUTS_LOCATED_AND_BOUND__WHOLE_APPLICATION_BUILD_HARNESS_REMAINS",
   "reconciled_facts": {
     "F0_selection_lifetime": "PASS",
     "G_bounded_exact_hupsel_ksatexm": "PASS",
@@ -15,7 +15,9 @@
     "generated_selection_scope": "standalone exact-M1 profile only",
     "current_ftab02_main_workflow_executes_F": false,
     "current_source_snapshot_workflow_executes_F": false,
-    "historical_m1_owner_runner_is_candidate_drop_in": false
+    "historical_m1_owner_runner_is_candidate_drop_in": false,
+    "exact_hupsel_inputs_located_on_github": true,
+    "exact_hupsel_input_source": "SWAP-model/swap-testcases@a1b15843e9e9732713bed1ee41d09c16c3136593/cases/hupselbrook/legacy"
   },
   "historical_runner_reason": "tests/m1/run_m1_c3_final_owner_qualification.sh freezes the historical three-file production delta and historical compile roster; reusing it unchanged would qualify the historical M1-C3 contract rather than the F-TAB02 generated candidate.",
   "exact_asset_authority": {
@@ -23,7 +25,9 @@
     "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "size_bytes": 8959314,
     "materialized_and_verified_in_prior_production_evidence": true,
-    "bound_to_current_github_actions_F_job": false
+    "bound_to_current_github_actions_F_job": true,
+    "binding_workflow": ".github/workflows/f-tab02-f-exact-hupsel-assets.yml",
+    "note": "The exact Hupsel input members are fetched from an immutable GitHub commit and checked against the preregistered hashes. B1.11 source/archive authority remains inherited from the prior exact M1-C3 qualification and is not redefined by this binding."
   },
   "source_snapshot_repair": {
     "commit": "3cae08e70317450072c7db01726775d495d4a4e9",
@@ -33,21 +37,24 @@
     "qualification_change": "NONE"
   },
   "required_next_implementation": [
-    "candidate-specific exact whole-Hupsel build/execution harness",
+    "candidate-specific exact whole-Hupsel build/execution harness using the now-bound exact GitHub Hupsel inputs",
     "explicit analytical-default run and explicit standalone generated-opt-in run on identical exact input bytes",
     "exact archive and nested authority verification before execution",
-    "fresh accepted-interval, retry, route-census, mass and normalized result.bal/result.blc evidence",
-    "fail closed if exact asset is not supplied to the execution environment"
+    "fresh accepted-interval, retry, route-census, mass and normalized result.bal/result.blc evidence"
   ],
   "frozen_acceptance": {
     "accepted_intervals": 32518,
-    "route_census": [3505, 14062, 14951],
+    "route_census": [
+      3505,
+      14062,
+      14951
+    ],
     "output_normalization": "remove only nondeterministic Generated at: line",
     "physics_mutation": "NONE",
     "tolerance_mutation": "NONE",
     "timestep_mutation": "NONE",
     "retry_policy_mutation": "NONE"
   },
-  "verdict": "DO_NOT_CLAIM_F_PASS__NEXT_WORK_IS_EXECUTION_HARNESS_AND_EXACT_ASSET_BINDING",
+  "verdict": "HUPSEL_INPUT_ASSET_BLOCKER_CLEARED__NEXT_WORK_IS_WHOLE_APPLICATION_BUILD_EXECUTION_HARNESS",
   "research_reopen": false
 }
