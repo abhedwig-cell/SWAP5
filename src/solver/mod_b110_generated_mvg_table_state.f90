@@ -288,7 +288,7 @@ contains
       if (h >= 0.0_real64) then
         water_content(i) = state%theta_saturated(i)
         capacity(i) = 0.0_real64
-        call evaluate_fsi39_overlay(state, i, water_content(i), ksatexm_value, ksatexm_applied)
+        call evaluate_fsi39_overlay(state, i, h, ksatexm_value, ksatexm_applied)
         if (ksatexm_applied) then
           conductivity(i) = ksatexm_value
         else
@@ -326,7 +326,7 @@ contains
         end if
       end if
 
-      call evaluate_fsi39_overlay(state, i, water_content(i), ksatexm_value, ksatexm_applied)
+      call evaluate_fsi39_overlay(state, i, h, ksatexm_value, ksatexm_applied)
       if (ksatexm_applied) then
         conductivity(i) = ksatexm_value
       else if (h > state%kbranch_head(i)) then
@@ -355,22 +355,36 @@ contains
     status = F_TAB02_STATE_OK
   end subroutine evaluate_b110_generated_mvg_table_state
 
-  pure subroutine evaluate_fsi39_overlay(state, node, theta, conductivity, applied)
+  pure subroutine evaluate_fsi39_overlay(state, node, pressure_head, conductivity, applied)
     type(b110_generated_mvg_table_state_t), intent(in) :: state
     integer, intent(in) :: node
-    real(real64), intent(in) :: theta
+    real(real64), intent(in) :: pressure_head
     real(real64), intent(out) :: conductivity
     logical, intent(out) :: applied
-    real(real64) :: relsat, term
+    real(real64) :: relsat, term, help, theta_exact
 
     conductivity = 0.0_real64
     applied = .false.
     if (.not. state%ksatexm_extension_enabled) return
     if (state%source_cofgen(10,node) <= state%source_cofgen(3,node)) return
 
-    relsat = (theta-state%source_cofgen(1,node))/state%source_cofgen(25,node)
-    if (relsat <= state%source_cofgen(11,node)) return
+    ! F-TAB03 candidate C: F-TAB02 already fails closed for H_ENPR /= 0.
+    ! Reconstruct only the admitted H_ENPR=0 default-MvG relative saturation
+    ! exactly from h, so F-SI39 does not inherit table-theta approximation.
+    if (pressure_head >= 0.0_real64) then
+      relsat = 1.0_real64
+    else if (pressure_head > H_CRIT) then
+      theta_exact = state%source_cofgen(26,node) + &
+           state%source_cofgen(27,node)*(pressure_head-H_CRIT)
+      theta_exact = min(theta_exact,state%source_cofgen(2,node))
+      relsat = (theta_exact-state%source_cofgen(1,node))/state%source_cofgen(25,node)
+    else
+      help = abs(state%source_cofgen(4,node)*pressure_head)**state%source_cofgen(6,node)
+      help = (1.0_real64+help)**state%source_cofgen(7,node)
+      relsat = 1.0_real64/help
+    end if
 
+    if (relsat <= state%source_cofgen(11,node)) return
     term = (relsat-state%source_cofgen(11,node))/(1.0_real64-state%source_cofgen(11,node))
     conductivity = term*state%source_cofgen(10,node) + (1.0_real64-term)*state%source_cofgen(12,node)
     applied = .true.
