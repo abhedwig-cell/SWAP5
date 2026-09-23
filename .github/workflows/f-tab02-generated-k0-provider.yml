@@ -21,6 +21,8 @@ on:
       - 'tests/fsi/run_ftab02c_serialized_generated_provider.sh'
       - 'tests/fsi/test_ftab02d_constitutive_context_capability.f90'
       - 'tests/fsi/run_ftab02d_constitutive_context_capability.sh'
+      - 'tests/fsi/test_ftab02d_generated_temporal_certificate.f90'
+      - 'tests/fsi/run_ftab02d_generated_temporal_certificate.sh'
       - 'integration/f-tab/F-TAB02_PREREGISTRATION.json'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
@@ -150,7 +152,10 @@ jobs:
           sudo apt-get install -y gfortran
       - name: Run F-TAB02-D qualification
         shell: bash
-        run: bash tests/fsi/run_ftab02d_constitutive_context_capability.sh | tee F-TAB02-D_GATE.log
+        run: |
+          set -euo pipefail
+          bash tests/fsi/run_ftab02d_constitutive_context_capability.sh | tee F-TAB02-D_GATE.log
+          bash tests/fsi/run_ftab02d_generated_temporal_certificate.sh | tee -a F-TAB02-D_GATE.log
       - name: Record evidence
         if: always()
         shell: bash
