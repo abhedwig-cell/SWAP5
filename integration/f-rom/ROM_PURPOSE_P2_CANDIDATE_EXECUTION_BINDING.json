@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.rom-purpose.p2.candidate-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-CANDIDATES",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P2_REFERENCE_QUALIFICATION",
+  "trigger_head_before_binding": "f22f5c483cf3000dc34c0618d1965ddfceb7a1bf",
+  "p2_reference_authority": {
+    "result": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
+    "result_blob": "f701aee1d612e6af509a639bc8505b1d90be716c",
+    "status": "P2_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+    "candidate_response_authorized": true,
+    "source_workflow_run": 35853590210,
+    "r1024_equivalence_blob": "7e4c8735a047a28117751f3a4d4efea07ff73a80"
+  },
+  "inherited_groundwater_reference": {
+    "result": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
+    "result_blob": "041c8be484f47363c0f545ac28f5490559969072",
+    "B01_qualified": true,
+    "B14_qualified": true,
+    "P1_global_failure_overridden": false
+  },
+  "frozen_design": {
+    "purposes": [
+      "SURF_P",
+      "GW_LB"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "members": [
+      "S4",
+      "G4",
+      "U4"
+    ],
+    "cases": 12,
+    "representations": {
+      "S4": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "G4": [
+        0,
+        80,
+        120,
+        140,
+        160
+      ],
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ]
+    },
+    "dimension": 4,
+    "closure": "CURRENT_LAYER_FACE",
+    "SURF_P_histories": [
+      "S05",
+      "S06",
+      "S07",
+      "S08"
+    ],
+    "GW_LB_histories": [
+      "G01",
+      "G02",
+      "G03",
+      "G04"
+    ],
+    "candidate_dt_day": 0.0001
+  },
+  "metric_authority": {
+    "contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json",
+    "contract_blob": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "componentwise_equality_tolerance": 1e-12,
+    "tolerance_code_guard_required": true,
+    "weighted_score_used": false,
+    "materials_aggregated_for_decision": false
+  },
+  "numerical_comparator": {
+    "target": "R2048_T32",
+    "comparator": "R512_T32",
+    "SURF_P_source_run": 35821534912,
+    "GW_LB_source_run": 35751978638
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p2-candidates.yml": "c1bdebceeb095a8ad3baf7a8ca2cc00ee81f2a37",
+    "tests/rom/run_rom_purpose_p2_candidate.py": "1ac1d181f9ad411f36092e9740f2990669068999",
+    "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c",
+    "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json": "251f83af8df691b7a3142f86e4869373b8e21156",
+    "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json": "2e566b35d16a4655b4f9e33c353f57652f5741b1",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json": "f701aee1d612e6af509a639bc8505b1d90be716c",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json": "041c8be484f47363c0f545ac28f5490559969072",
+    "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json": "7e4c8735a047a28117751f3a4d4efea07ff73a80"
+  },
+  "hypotheses": {
+    "H1": "GW_LB: G4 componentwise no worse than U4 with at least one strict improvement per qualified material.",
+    "H2": "SURF_P: S4 componentwise no worse than U4 with at least one strict improvement per qualified material.",
+    "H3": "At least one purpose/material shows purpose-aligned partition strict equal-dimension information value over U4.",
+    "H4": "Same-partition coarse-Richards diagnostic only if aligned candidate fails the frozen R512 comparator."
+  },
+  "scientific_firewall": {
+    "candidate_response_seen_before_binding": false,
+    "representation_changed_after_reference": false,
+    "closure_changed_after_reference": false,
+    "tolerance_changed_after_reference": false,
+    "P1_failure_overridden": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
