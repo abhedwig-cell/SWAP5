@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.technical_amendment.v1",
+  "work_unit": "RM13-TA01",
+  "date": "2026-09-23",
+  "parent_preregistration": "integration/ribasim-management/RM13_PREREGISTRATION.json",
+  "classification": "TECHNICAL_FIXTURE_COMPATIBILITY_AMENDMENT",
+  "trigger_evidence": {
+    "workflow_run": 35884041661,
+    "workflow_job": 107259500605,
+    "observation": "Exact Ribasim v2026.1.1 rejects finite solver.saveat=8.64 because finite saveat must be an integer number of seconds.",
+    "source_contract": "core/src/config.jl convert_saveat: finite saveat != round(saveat) is invalid"
+  },
+  "amendment": {
+    "original_solver_saveat_seconds": 8.64,
+    "amended_solver_saveat": "Inf",
+    "amended_semantics": "save only start and end of the 8.64-second model horizon"
+  },
+  "unchanged": {
+    "physical_window_seconds": 8.64,
+    "physical_window_days": 0.0001,
+    "allocation_dt_seconds": 8.64,
+    "requested_irrigation_depth_cm": 0.0036,
+    "irrigation_rate_cm_per_day": 36.0,
+    "represented_area_m2": 1.0,
+    "surface_supply_m3_per_day": 0.36,
+    "user_demand_m3_per_day": 0.36,
+    "all_scientific_hypotheses": "UNCHANGED",
+    "all_tolerances": "UNCHANGED",
+    "publication_order": "UNCHANGED"
+  },
+  "authority_basis": [
+    "RM01/20D: allocation.dt, not solver.saveat, owns fixed UserDemand management cadence in the tested product route.",
+    "RM03/RM12: saveat is not a competing allocation clock and explicit coupler-owned boundaries determine management execution.",
+    "Inf saveat is an explicitly supported exact-release configuration that writes the simulation start and end."
+  ],
+  "prohibition": "Do not use this amendment to change any physical duration, management boundary, allocation expectation, supply expectation, groundwater envelope or numerical acceptance tolerance.",
+  "disposition": "The original 8.64-second finite saveat is an invalid fixture encoding, not a scientific falsification of the RM13 three-model composition hypothesis."
+}
