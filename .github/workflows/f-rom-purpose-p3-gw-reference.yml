@@ -34,7 +34,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify frozen P1 Reference authority
+      - name: Verify frozen P3 Reference authority
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -128,3 +128,40 @@ jobs:
           path: slice/
           if-no-files-found: error
 
+
+  assemble:
+    needs: reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3gref-gw-*
+          path: /tmp/all
+          merge-multiple: false
+      - name: Assemble complete P3 groundwater routes
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              for opt in 0 2; do
+                src="$(find /tmp/all -type f -name "gw_${material}_${route}_o${opt}.txt" -print -quit)"
+                test -n "$src"
+                cp "$src" "routes/gw_${material}_${route}_o${opt}.txt"
+              done
+              cmp "routes/gw_${material}_${route}_o0.txt" "routes/gw_${material}_${route}_o2.txt"
+              case "$route" in *_T32) factor=32;; *_T16) factor=16;; *) factor=8;; esac
+              test "$(grep -c '^LAREGW1_STATE|' "routes/gw_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+              test "$(grep -c '^LAREGW1_PROFILE|' "routes/gw_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+            done
+          done
+          sha256sum routes/* > routes/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3ref-gw-routes
+          path: routes/
+          if-no-files-found: error
