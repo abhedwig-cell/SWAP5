@@ -69,7 +69,37 @@ def module_sources(runner: Path) -> list[Path]:
     missing = [path for path in paths if not path.is_file()]
     if missing:
         raise RuntimeError(f"missing module source: {missing[0]}")
-    return paths
+    providers: dict[str, int] = {}
+    provided_by_source: list[set[str]] = []
+    used_by_source: list[set[str]] = []
+    for index, path in enumerate(paths):
+        source = path.read_text(encoding="utf-8").lower()
+        provided = set(re.findall(r"(?m)^\s*module\s+(?!procedure\b)([a-z_]\w*)", source))
+        used = set(re.findall(r"(?m)^\s*use(?:\s*,\s*non_intrinsic\s*)?(?:\s*::\s*|\s+)([a-z_]\w*)", source))
+        for name in provided:
+            if name in providers:
+                raise RuntimeError(f"duplicate module provider {name}: {paths[providers[name]]} and {path}")
+            providers[name] = index
+        provided_by_source.append(provided)
+        used_by_source.append(used)
+
+    dependencies = {
+        index: {providers[name] for name in used_by_source[index] if name in providers and providers[name] != index}
+        for index in range(len(paths))
+    }
+    ordered: list[Path] = []
+    pending = set(dependencies)
+    while pending:
+        ready = sorted(index for index in pending if not (dependencies[index] & pending))
+        if not ready:
+            blocked = ", ".join(paths[index].name for index in sorted(pending))
+            raise RuntimeError(f"cyclic Fortran module dependency in {runner}: {blocked}")
+        for index in ready:
+            ordered.append(paths[index])
+            pending.remove(index)
+    if ordered != paths:
+        print(f"M7_PROFILE_MODULE_ORDERED_BY_USE_DEPENDENCIES={runner.name}")
+    return ordered
 
 
 def compile_run(name: str, spec: dict[str, object], opt: str, temp: Path, compiler: str) -> str:
