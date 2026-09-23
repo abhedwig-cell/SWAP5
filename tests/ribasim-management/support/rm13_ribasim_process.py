@@ -21,9 +21,11 @@ class RibasimWorker:
         self.lib_path=Path(lib_path).resolve()
         self.ribasim_root=Path(ribasim_root).resolve()
         self.log_path=Path(log_path).resolve()
-        read_fd,write_fd=os.pipe()
+        response_read_fd,response_write_fd=os.pipe()
+        command_read_fd,command_write_fd=os.pipe()
         env=os.environ.copy()
-        env["RM13_WORKER_RESPONSE_FD"]=str(write_fd)
+        env["RM13_WORKER_RESPONSE_FD"]=str(response_write_fd)
+        env["RM13_WORKER_COMMAND_FD"]=str(command_read_fd)
         env["RM13_RIBASIM_ROOT"]=str(self.ribasim_root)
         env["RM13_WORKER_MODEL"]=str(self.model_path)
         env["RM13_LIBRIBASIM"]=str(self.lib_path)
@@ -31,16 +33,18 @@ class RibasimWorker:
         worker=Path(__file__).with_name("rm13_ribasim_worker.py")
         self._process=subprocess.Popen(
             [sys.executable,str(worker)],
-            stdin=subprocess.PIPE,
+            stdin=subprocess.DEVNULL,
             stdout=self._log,
             stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,
             env=env,
-            pass_fds=(write_fd,),
+            pass_fds=(response_write_fd,command_read_fd),
         )
-        os.close(write_fd)
-        self._response=os.fdopen(read_fd,"r",encoding="utf-8",buffering=1)
+        os.close(response_write_fd)
+        os.close(command_read_fd)
+        self._response=os.fdopen(response_read_fd,"r",encoding="utf-8",buffering=1)
+        self._command=os.fdopen(command_write_fd,"w",encoding="utf-8",buffering=1)
         ready=self._read_response()
         if ready.get("op")!="ready":
             raise RuntimeError(f"RM13 worker did not return ready: {ready}")
@@ -74,9 +78,8 @@ class RibasimWorker:
                 f"RM13 Ribasim worker already exited rc={self._process.returncode}; "
                 f"log tail:\n{self._tail_log()}"
             )
-        assert self._process.stdin is not None
-        self._process.stdin.write(json.dumps({"op":op,**kwargs},separators=(",",":"))+"\n")
-        self._process.stdin.flush()
+        self._command.write(json.dumps({"op":op,**kwargs},separators=(",",":"))+"\n")
+        self._command.flush()
         return self._read_response()
 
     def snapshot(self) -> dict[str,float]:
@@ -100,6 +103,7 @@ class RibasimWorker:
             self._process.kill()
             self._process.wait(timeout=10)
         self._response.close()
+        self._command.close()
         self._log.close()
 
     def __enter__(self) -> "RibasimWorker":
