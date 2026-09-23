@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.rom-practical.p4.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P4",
+  "date": "2026-09-23",
+  "status": "CLOSED_PRIMARY_FIXED_STEP_REJECTED_HALF_STEP_VIABILITY_SUPPORTED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P4_PREREGISTRATION.json",
+    "execution_contract": "integration/f-rom/ROM_PRACTICAL_P4_EXECUTION_CONTRACT.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P4_RESULT.json",
+    "workflow_run": 35918105354
+  },
+  "primary_target": {
+    "method": "compiled classical RK4",
+    "dt_day": 0.01,
+    "completed_cases": 7,
+    "total_cases": 8,
+    "failed_case": {
+      "purpose": "GW_LB",
+      "material": "B05",
+      "history": "GD02",
+      "day": 1,
+      "substep": 4,
+      "stage": 4,
+      "reason": "STAGE_DOMAIN"
+    },
+    "robustness_gate_passed": false,
+    "practical_speed_gate_passed": false,
+    "decision": "REJECT_AS_GENERAL_PRACTICAL_NUMERICAL_POLICY"
+  },
+  "preregistered_comparator": {
+    "method": "compiled classical RK4",
+    "dt_day": 0.005,
+    "completed_cases": 8,
+    "total_cases": 8,
+    "robustness": "ALL_CASES_COMPLETE_WITHIN_FROZEN_DOMAIN_AND_LEDGER_GATES",
+    "same_runner_wall_ratio_vs_R128": {
+      "SURF_P": {
+        "min": 0.07834908994708745,
+        "max": 0.1316842712301766
+      },
+      "GW_LB": {
+        "min": 0.13180051403560297,
+        "max": 0.27481647387794983
+      },
+      "validation": {
+        "SURF_P_B05": 0.1316842712301766,
+        "SURF_P_B16": 0.08951549779537629,
+        "GW_LB_B05": 0.2212885640442041,
+        "GW_LB_B16": 0.13992247048304574
+      }
+    },
+    "interpretation": [
+      "The comparator cannot retroactively qualify the failed dt=0.01 primary target.",
+      "It prospectively demonstrates that the frozen S4/G8 equations can be integrated robustly on the bounded P4 panel without new states or closure changes.",
+      "All measured same-runner comparator/R128 wall ratios are below one, including both validation materials and both purposes.",
+      "The speed evidence is process-level for these controlled harnesses, not a portable kernel or Full-SWAP speedup."
+    ]
+  },
+  "equation_conformance": {
+    "status": "PASS_ALL_CASES",
+    "maximum_scaled_errors_order": "approximately machine precision",
+    "endpoint_rejection": true
+  },
+  "hydrological_fidelity": {
+    "note": "Compiled RK4 preserves the P3 error regimes rather than repairing them by numerical policy.",
+    "SURF_P": {
+      "B05": "19-day extrema timing error persists",
+      "B16": "0-day extrema timing error retained"
+    },
+    "GW_LB": {
+      "B05_half_step": "0 sign mismatch days; 0 sequence mismatches; 0 reversal timing error days under P3 daily forcing",
+      "B16_half_step": "0 sign mismatch days; 0 sequence mismatches; 0 reversal timing error days"
+    }
+  },
+  "attribution": [
+    "The P3 Python/Heun speed reversal was implementation/numerical-policy dominated rather than an inherent consequence of reduced state dimension.",
+    "The P3 G8/B02 Heun block is removed by compiled RK4 at dt=0.01.",
+    "The P3 G8/B05 Heun block is not removed by dt=0.01 RK4, but is removed by the preregistered dt=0.005 RK4 comparator.",
+    "B05 therefore exposes a real timestep-stability constraint of the frozen reduced equations under this explicit integration family."
+  ],
+  "practical_family_status": {
+    "P-ROM-SM": {
+      "representation": "S4",
+      "numerical_policy_status": "RK4_0.005_PROSPECTIVELY_PROMISING",
+      "hydrological_status": "RESEARCH_CANDIDATE_WITH_MATERIAL_DEPENDENT_TIMING_ERROR"
+    },
+    "P-ROM-GW": {
+      "representation": "G8",
+      "numerical_policy_status": "RK4_0.005_PROSPECTIVELY_PROMISING",
+      "hydrological_status": "RESEARCH_CANDIDATE_WITH_KNOWN_REVERSAL_REGIME_LIMITS_FROM_SHORT_HORIZON_TESTS"
+    },
+    "P-ROM-ET": {
+      "status": "NOT_OPENED"
+    }
+  },
+  "next_authorized": {
+    "id": "ROM-PRACTICAL-P5",
+    "title": "prospective robust fast numerical policy",
+    "objective": "Treat RK4 dt=0.005 as a new prospectively frozen candidate numerical policy, then test robustness, fidelity preservation and cost on an expanded material panel before any practical research release.",
+    "allowed": [
+      "freeze RK4 dt=0.005 as new primary numerical policy",
+      "expand material panel with previously unused B06 and B12",
+      "same frozen S4/G8 representations and closure",
+      "direct same-runner R128 timing",
+      "optional transaction-safe adaptive 0.01→0.005 policy only as a separately preregistered challenger"
+    ],
+    "forbidden": [
+      "retroactive relabeling of P4 dt=0.005 as P4 primary success",
+      "new closure",
+      "state-count escalation",
+      "material-specific tuning",
+      "P-ROM-ET",
+      "application acceptance",
+      "production admission"
+    ]
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
