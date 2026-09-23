@@ -37,10 +37,19 @@ module mod_fgc44_real_swap_c_bridge
   use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t, &
        compose_modflow6_linear_boundary_term, MODFLOW6_LINEAR_BACKEND_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
-       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t, &
+       b110_dynamic_top_boundary_result_t, evaluate_b110_dynamic_top_boundary
+  use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
+       bind_b110_dynamic_top_boundary_solver_provider
+  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
+  use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
+       reference_richards_legacy_workspace_t
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
-  use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t
+  use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t, &
+       soil_water_solve_request_t, soil_water_solve_result_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
   implicit none
   private
@@ -110,6 +119,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c, fgc44_last_trial_response_c
   public :: fgc44_predictor_run_diagnostics_c
+  public :: fgc44_rm16_provider_raw_solve_c
 
 contains
 
@@ -487,6 +497,129 @@ contains
     bottom_exchange_cm=last_trial%bottom_outward_exchange_cm
     fgc44_last_trial_diagnostics_c=0_c_int
   end function fgc44_last_trial_diagnostics_c
+
+  integer(c_int) function fgc44_rm16_provider_raw_solve_c(duration_day,irrigation_rate, &
+       provider_status,provider_regime,provider_top_flux,provider_surface_head,provider_ponding, &
+       provider_runoff,provider_face_k,provider_net_surface,raw_status,raw_iterations,raw_backtracking, &
+       raw_internal_retries,raw_top_flux,raw_ponding) bind(C,name="fgc44_rm16_provider_raw_solve_c")
+    real(c_double), value, intent(in) :: duration_day,irrigation_rate
+    integer(c_int), intent(out) :: provider_status,provider_regime,raw_status,raw_iterations,raw_backtracking,raw_internal_retries
+    real(c_double), intent(out) :: provider_top_flux,provider_surface_head,provider_ponding,provider_runoff
+    real(c_double), intent(out) :: provider_face_k,provider_net_surface,raw_top_flux,raw_ponding
+    type(fmr_b110_physical_parameters_t) :: p
+    type(soil_water_parameter_set_t), target :: geometry
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t), target :: constitutive
+    type(b110_source_sink_provider_t), target :: source_sink
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: dynamic_provider
+    type(b110_dynamic_top_boundary_request_t) :: direct_request
+    type(b110_dynamic_top_boundary_result_t) :: direct_result
+    type(reference_richards_legacy_solver_t) :: solver
+    type(reference_richards_legacy_workspace_t) :: workspace
+    type(soil_water_solve_request_t) :: request
+    type(soil_water_solve_result_t) :: solve_result
+    real(real64), target, allocatable :: qdra(:,:),qssdi(:),qrot_zero(:)
+    real(real64), allocatable :: heads(:),water(:)
+    real(real64) :: fixed_top_k
+    logical :: ok
+    integer :: i
+
+    fgc44_rm16_provider_raw_solve_c=1_c_int
+    provider_status=0_c_int; provider_regime=0_c_int
+    raw_status=0_c_int; raw_iterations=0_c_int; raw_backtracking=0_c_int; raw_internal_retries=0_c_int
+    provider_top_flux=0.0_c_double; provider_surface_head=0.0_c_double; provider_ponding=0.0_c_double
+    provider_runoff=0.0_c_double; provider_face_k=0.0_c_double; provider_net_surface=0.0_c_double
+    raw_top_flux=0.0_c_double; raw_ponding=0.0_c_double
+    if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(irrigation_rate,real64)) .or. irrigation_rate<0.0_c_double)return
+
+    call initialize_parameters(p,SW_STEP_CONTROL_BOTTOM_FLUX)
+    geometry%parameter_set_id=p%parameter_set_id
+    geometry%active_nodes=p%active_nodes
+    allocate(geometry%z(numnod),geometry%dz(numnod),geometry%node_distance(numnod))
+    geometry%z=p%z; geometry%dz=p%dz; geometry%node_distance=p%node_distance
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+    call bind_b110_default_mvg_provider(constitutive,hp,real(duration_day,real64))
+
+    allocate(heads(numnod),water(numnod))
+    heads(1)=H0_CM
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
+    call constitutive%evaluate(heads,water)
+    call evaluate_b110_default_mvg_conductivity(hp,1,heads(1),fixed_top_k,ok)
+    if(.not.ok)return
+
+    direct_request=b110_dynamic_top_boundary_request_t()
+    direct_request%conductivity_mean_method=p%swkmean
+    direct_request%pressure_head_top_cm=heads(1)
+    direct_request%water_content_top=water(1)
+    direct_request%candidate_ponding_depth_cm=0.0_real64
+    direct_request%previous_ponding_depth_cm=0.0_real64
+    direct_request%step_duration_day=real(duration_day,real64)
+    direct_request%irrigation_rate_cm_per_day=real(irrigation_rate,real64)
+    direct_request%ponding_max_cm=1.0_real64
+    direct_request%runoff_resistance_day=1.0_real64
+    direct_request%runoff_exponent=1.0_real64
+    direct_request%fixed_top_node_conductivity_cm_per_day=fixed_top_k
+    call evaluate_b110_dynamic_top_boundary(geometry,hp,direct_request,direct_result)
+    provider_status=int(direct_result%status,c_int)
+    provider_regime=int(direct_result%regime,c_int)
+    provider_top_flux=direct_result%actual_top_flux_cm_per_day
+    provider_surface_head=direct_result%surface_head_cm
+    provider_ponding=direct_result%candidate_ponding_depth_cm
+    provider_runoff=direct_result%runoff_depth_cm
+    provider_face_k=direct_result%surface_face_conductivity_cm_per_day
+    provider_net_surface=direct_result%net_potential_surface_flux_cm_per_day
+
+    allocate(qdra(1,numnod),qssdi(numnod),qrot_zero(numnod))
+    qdra=0.0_real64; qssdi=0.0_real64; qrot_zero=0.0_real64
+    call bind_b110_source_sink_provider(source_sink,qdra,qssdi,qrot_zero)
+    call bind_b110_dynamic_top_boundary_solver_provider(dynamic_provider,geometry,hp,p%swkmean,0.0_real64, &
+         real(duration_day,real64),0.0_real64,real(irrigation_rate,real64),0.0_real64,0.0_real64, &
+         0.0_real64,0.0_real64,1.0_real64,1.0_real64,1.0_real64,fixed_top_k)
+
+    request=soil_water_solve_request_t()
+    request%parameters=>geometry
+    request%step_duration=real(duration_day,real64)
+    request%base_state%active_nodes=numnod
+    allocate(request%base_state%pressure_head(numnod),request%base_state%water_content(numnod))
+    request%base_state%pressure_head=heads
+    request%base_state%water_content=water
+    request%base_state%ponding_depth=0.0_real64
+    request%base_state%groundwater_level=-2.0_real64
+    request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
+    request%boundary%bottom_mode=SW_STEP_CONTROL_BOTTOM_FLUX
+    request%boundary%top_head=H0_CM
+    request%boundary%bottom_flux=DEFAULT_PREDICTOR_QBOT
+    request%boundary%bottom_head=H0_CM
+    request%numerical%max_iterations=p%max_iterations
+    request%numerical%max_backtracking=p%max_backtracking
+    request%numerical%conductivity_implicit_mode=p%swkimpl
+    request%numerical%conductivity_mean_method=p%swkmean
+    request%numerical%min_step_duration=p%min_step_duration
+    request%numerical%compartment_balance_tolerance=p%compartment_balance_tolerance
+    request%numerical%total_balance_tolerance=p%total_balance_tolerance
+    request%numerical%head_abs_tolerance=p%head_abs_tolerance
+    request%numerical%head_rel_tolerance=p%head_rel_tolerance
+    request%numerical%ponding_tolerance=p%ponding_tolerance
+    request%evaluation%constitutive=>constitutive
+    request%evaluation%source_sink=>source_sink
+    request%evaluation%dynamic_top_boundary=>dynamic_provider
+    call bind_b110_serialized_legacy_context(request,ok)
+    if(.not.ok)then
+      fgc44_rm16_provider_raw_solve_c=2_c_int
+      return
+    end if
+    call solver%solve(request,workspace,solve_result)
+    raw_status=int(solve_result%status,c_int)
+    raw_iterations=int(solve_result%diagnostics%nonlinear_iterations,c_int)
+    raw_backtracking=int(solve_result%diagnostics%backtracking_attempts,c_int)
+    raw_internal_retries=int(solve_result%diagnostics%internal_retries,c_int)
+    raw_top_flux=solve_result%top_flux
+    if(allocated(solve_result%candidate_state%pressure_head)) raw_ponding=solve_result%candidate_state%ponding_depth
+    fgc44_rm16_provider_raw_solve_c=0_c_int
+  end function fgc44_rm16_provider_raw_solve_c
 
   subroutine initialize_parameters(p,bottom_mode)
     type(fmr_b110_physical_parameters_t),intent(out)::p
