@@ -5,7 +5,7 @@
   "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "branch": "work/f-app09-ribasim-external-surface-water-profile",
   "frozen_candidate_head": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
-  "decision": "OWNER_QUALIFIED_CANDIDATE_READY_FOR_INDEPENDENT_VQ",
+  "decision": "OWNER_QUALIFIED__INDEPENDENT_QUALIFICATION_PENDING",
   "implementation": true,
   "owner_qualified": true,
   "independent_qualification": false,
@@ -20,10 +20,22 @@
     "one accepted SWAP substep per coupling window",
     "realized-transfer mismatch requires discard/replay before commit"
   ],
-  "next_action": "Run F-VQ128 independent qualification on the frozen ba3699f source postimages; on PASS, prepare canonical admission without broadening profile scope.",
+  "next_action": "Run F-VQ128 independent qualification against exact F-APP09 owner source postimages, then admit only the independently qualified source postimage through F-CI109 if current canonical still matches the frozen base.",
   "blockers": [
     "Independent F-VQ128 qualification has not yet passed.",
     "Canonical admission has not occurred.",
     "Live Ribasim network execution remains outside F-APP09 V1 and must be qualified at the higher coupling/application layer."
-  ]
+  ],
+  "owner_candidate": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "owner_evidence": {
+    "run": 35884620992,
+    "job": 107261490688
+  },
+  "source_postimages": {
+    "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "0cdf05c1fc066f80aad7807c35a4e718fdecdb09",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "1029cd4658a28f4aaf21db3cd480872c2d17722a",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "5fd5007cf8e523d3b2cd4236114e887d0c383f0a"
+  }
 }
