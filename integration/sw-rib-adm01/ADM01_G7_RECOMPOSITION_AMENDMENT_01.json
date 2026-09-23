@@ -19,7 +19,9 @@
     "max_iterations": 64,
     "required_first_iteration": "RECOMPOSITION_REQUIRED",
     "required_final_iteration": "COMMIT_READY",
-    "no_commit_before_final": true
+    "no_commit_before_final": true,
+    "fapp09_receipt_match_tolerance_cm": 1e-8,
+    "tolerance_mapping": "At represented area 100 m2, 1e-8 m3 corresponds exactly to 1e-8 cm water depth; use the same bound for final F-APP09 publication readiness."
   },
   "unchanged": [
     "Ribasim v2026.1.2 exact pin",
@@ -31,5 +33,7 @@
     "mass residual tolerance 1e-8 m3",
     "O0/O2 identity requirement"
   ],
-  "scientific_effect": "Strengthens G7 from a one-replay assumption to an actual same-origin coupled fixed-point/recomposition contract. No observed product endpoint is used to tune a tolerance."
+  "scientific_effect": "Strengthens G7 from a one-replay assumption to an actual same-origin coupled fixed-point/recomposition contract. No observed product endpoint is used to tune a tolerance.",
+  "supersedes": "Original G7 receipt_match_tolerance_cm=1e-10 for the iterative E3 fixed-point commit only; E1/E2 remain far inside either bound.",
+  "anti_tuning": "The 1e-8 bound is derived from the preregistered physical fixed-point tolerance and area conversion before the decisive iterative run, not fitted to an observed endpoint."
 }
