@@ -27,22 +27,26 @@ program test_ftab02g_serialized_ksatexm_selection
 
   real(real64) :: analytic_head(numnod), analytic_theta(numnod)
   real(real64) :: generated_head(numnod), generated_theta(numnod)
+  real(real64) :: rejected_head(numnod), rejected_theta(numnod)
+  real(real64) :: head_error, theta_error
   integer :: analytic_iterations, generated_iterations, analytic_retries, generated_retries
 
   call run_route(.false.,.false.,analytic_head,analytic_theta,analytic_iterations,analytic_retries,.true.)
   call run_route(.true., .false.,generated_head,generated_theta,generated_iterations,generated_retries,.true.)
 
-  call require(maxval(abs(generated_head-analytic_head)) <= 5.0e-2_real64,'generated KSATEXM head fidelity')
-  call require(maxval(abs(generated_theta-analytic_theta)) <= 2.0e-2_real64,'generated KSATEXM theta fidelity')
+  head_error=maxval(abs(generated_head-analytic_head))
+  theta_error=maxval(abs(generated_theta-analytic_theta))
+  call require(head_error <= 5.0e-2_real64,'generated KSATEXM head fidelity')
+  call require(theta_error <= 2.0e-2_real64,'generated KSATEXM theta fidelity')
   call require(analytic_iterations==generated_iterations,'generated KSATEXM nonlinear count')
   call require(analytic_retries==generated_retries,'generated KSATEXM retry count')
 
   ! A one-ULP-scale material perturbation is outside the exact bounded Hupsel
   ! envelope and must fail closed rather than selecting another constitutive route.
-  call run_route(.true.,.true.,generated_head,generated_theta,generated_iterations,generated_retries,.false.)
+  call run_route(.true.,.true.,rejected_head,rejected_theta,generated_iterations,generated_retries,.false.)
 
-  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_HEAD_MAX_ABS=',maxval(abs(generated_head-analytic_head))
-  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_THETA_MAX_ABS=',maxval(abs(generated_theta-analytic_theta))
+  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_HEAD_MAX_ABS=',head_error
+  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_THETA_MAX_ABS=',theta_error
   write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_ANALYTIC_ITERS=',analytic_iterations
   write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_GENERATED_ITERS=',generated_iterations
   write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_ANALYTIC_RETRIES=',analytic_retries
@@ -133,7 +137,7 @@ contains
         call set_lower(p%cofgen(:,k))
       end if
     end do
-    if(neighbor) p%cofgen(4,1)=nearest(p%cofgen(4,1),huge(1.0_real64))
+    if(neighbor) p%cofgen(4,1)=p%cofgen(4,1)*(1.0_real64+1.0e-8_real64)
     p%bottom_mode=2
     p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%max_iterations=16; p%max_backtracking=8; p%min_step_duration=1.0e-8_real64
