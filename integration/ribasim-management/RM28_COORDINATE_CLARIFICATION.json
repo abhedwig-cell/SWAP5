@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_coupled_effect_size.coordinate_clarification.v1",
+  "work_unit": "RM28-CC01",
+  "date": "2026-09-23",
+  "parent_preregistration": "integration/ribasim-management/RM28_PREREGISTRATION.json",
+  "classification": "COORDINATE_SEMANTICS_CLARIFICATION",
+  "issue": "RM28_PREREGISTRATION labels the RM27 SWAP probe coordinates as swap_head_probes_m. Those numerical values are SWAP lower-boundary pressure-head coordinates expressed in metres, not fixed-interface hydraulic heads.",
+  "canonical_mapping": {
+    "source": "F-GC fixed-interface datum-aligned lower-face mapping",
+    "SWAP_pressure_head_cm": [-75.0002, -75.0, -74.9998],
+    "SWAP_pressure_head_m": [-0.750002, -0.75, -0.749998],
+    "fixed_interface_hydraulic_head_m": [-0.715002, -0.715, -0.714998],
+    "datum_offset_m": 0.035
+  },
+  "unchanged": [
+    "all three RM27 q_swap observations",
+    "the F-GC44 groundwater oracle",
+    "the 8.64 second window",
+    "cell area and irrigation volume",
+    "all RM28 requested outputs",
+    "RM28 remains effect-size only with no acceptance threshold"
+  ],
+  "prohibition": "Do not fit or intersect the RM27 q_swap response against MODFLOW hydraulic head without applying this datum mapping."
+}
