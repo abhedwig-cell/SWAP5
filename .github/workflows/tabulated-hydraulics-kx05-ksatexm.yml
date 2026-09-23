@@ -119,7 +119,7 @@ jobs:
           ]
           missing=[k for k in required if k not in scalar]
           for k in ["KX05_SAT_ANALYTIC","KX05_SAT_CANDIDATE","KX05_HM1_ANALYTIC","KX05_HM1_CANDIDATE",
-                    "KX05_FIRST_ACTIVE_HEAD","KX05_FIRST_ACTIVE_ULP_STEPS"]:
+                    "KX05_FIRST_ACTIVE_HEAD","KX05_FIRST_ACTIVE_SEARCH_STEPS"]:
               if k not in vectors: missing.append(k)
           if missing:
               raise SystemExit(f"missing metrics: {missing}")
