@@ -97,11 +97,14 @@ def main():
     ap.add_argument("--material",required=True)
     ap.add_argument("--materials",required=True,type=pathlib.Path)
     ap.add_argument("--base",required=True,type=pathlib.Path)
-    ap.add_argument("--member",default=None,choices=("G4","G6","S4"))\n    ap.add_argument("--output",required=True,type=pathlib.Path)
+    ap.add_argument("--member",default=None,choices=("G4","G6","S4"))
+    ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
     mats=json.loads(a.materials.read_text())["materials"]
     if a.material not in mats: raise SystemExit("unknown material")
-    member=a.member or ("S4" if a.purpose=="SURF_P" else "G4")\n    if a.purpose=="SURF_P" and member!="S4": raise SystemExit("SURF_P only S4 in this runner")\n    if a.purpose=="GW_LB" and member not in ("G4","G6"): raise SystemExit("GW_LB only G4/G6")
+    member=a.member or ("S4" if a.purpose=="SURF_P" else "G4")
+    if a.purpose=="SURF_P" and member!="S4": raise SystemExit("SURF_P only S4 in this runner")
+    if a.purpose=="GW_LB" and member not in ("G4","G6"): raise SystemExit("GW_LB only G4/G6")
     bc=load_module(a.base); configure_material(bc,mats[a.material])
     wall=[]; cpu=[]; payload=None; ledger=0.; maxiter=0
     for _ in range(3):
