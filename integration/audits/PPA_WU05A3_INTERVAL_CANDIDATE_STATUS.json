@@ -1,7 +1,10 @@
 {
   "work_unit": "PPA-WU05-A3-INTERVAL-CANDIDATE",
   "baseline": "2b8c31b9d",
-  "phase": "PREREGISTERED",
+  "phase": "PERSISTED_ISOLATED_LIFECYCLE_TESTS_PASSED",
+  "recovery_point": "a7abc9a53d220f98c1c7947c26eabd5643faf9d8",
+  "gate": "tests/fapp/run_ppa_wu05a3_interval_candidate.ps1",
+  "test_result": "Persisted O0/O2 gate PASS with identical transcripts, warnings-as-errors, bounds and floating checks; overdraw cannot commit, unchanged checkpoint retry, successful commit, history advancement, restart-equivalent continuation, stale rejection and NaN-time rejection",
   "scope": "Isolated SWMBF=1/top-cell-1, unchanged domain bottoms, prescribed geometry and rates; compose storage/wetting/proposed conservative flux into existing A2 candidate",
   "ownership": "Checkpoint input immutable. Candidate created only after successful computations and lower-boundary closure. Commit remains the existing A2 owner operation.",
   "history": "Copy old bottom, pore volume and pore water to previous-step fields; update current volume, water and storage; preserve other continuation fields",
@@ -11,5 +14,5 @@
   "implementation": "src/adapter/mod_ppa_wu05a3_interval_candidate.f90",
   "test": "tests/fapp/test_ppa_wu05a3_interval_candidate.f90",
   "qualified": false,
-  "next_action": "Implement and test isolated lifecycle binding"
+  "next_action": "Compose sorptivity/history advancement into the isolated candidate with explicit supplied drivers and atomic failure semantics; preserve the separate corrected-reference and Richards-owner admission gates"
 }
