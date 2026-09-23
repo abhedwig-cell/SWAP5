@@ -42,7 +42,13 @@ def main()->int:
     assert pre["reference_and_comparator"]["O0_O2_scientific_identity_required"] is True
     assert float(pre["reference_and_comparator"]["max_abs_transaction_mass_cm"])==1.0e-12
 
-    p2.SURF_H=SURF_H
+    p2.HISTORIES=SURF_H
+    p2.PHASES={
+        "S09":("WET","DRY","WET","DRY"),
+        "S10":("DRY","WET","DRY","WET"),
+        "S11":("WET","DRY","WET","DRY"),
+        "S12":("DRY","WET","DRY","WET"),
+    }
     p1.GW_H=GW_H
 
     surface={m:p2.qualify_surface(m,a.root) for m in ("B01","B14")}
