@@ -49,6 +49,10 @@ module mod_irrigation_process
     logical :: scheduled_irrigation_enabled = .false.
     integer :: timing_criterion = IRRIGATION_TIMING_TCS7_PRESSURE_HEAD
     real(real64) :: concentration = 0.0_real64
+    logical :: solute_enabled = .false.
+    logical :: solute_overirrigation_enabled = .false.
+    real(real64) :: solute_concentration_threshold = 0.0_real64
+    real(real64) :: solute_overirrigation_percent = 0.0_real64
     integer :: active_nodes = 0
     integer :: sensor_node = 0
     integer :: single_ssdi_node = 0
@@ -82,6 +86,7 @@ module mod_irrigation_process
     real(real64) :: t0 = 0.0_real64
     real(real64) :: t1 = 0.0_real64
     real(real64) :: dvs = 0.0_real64
+    real(real64) :: sensor_solute_concentration = 0.0_real64
     logical :: selection_opportunity = .false.
     logical :: irrigation_enabled = .false.
     logical :: schedule_enabled = .false.
@@ -343,6 +348,12 @@ contains
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
     end if
+    if (parameters%solute_enabled .and. parameters%solute_overirrigation_enabled) then
+      if (.not. ieee_is_finite(request%sensor_solute_concentration)) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+    end if
     if (.not. valid_scheduled_hydraulic_view(parameters, hydraulic_view)) then
       diagnostics%status = IRRIGATION_INVALID_HYDRAULIC_VIEW
       return
@@ -379,6 +390,11 @@ contains
     if (depth <= 0.0_real64) then
       diagnostics%status = IRRIGATION_INVALID_EVENT
       return
+    end if
+    if (parameters%solute_enabled .and. parameters%solute_overirrigation_enabled) then
+      if (request%sensor_solute_concentration > parameters%solute_concentration_threshold) then
+        depth = depth + 0.01_real64*parameters%solute_overirrigation_percent*depth
+      end if
     end if
 
     duration = depth / parameters%irr_rate_cm_per_day
@@ -477,6 +493,14 @@ contains
     if (parameters%irr_rate_cm_per_day <= 0.0_real64) return
     if (.not. ieee_is_finite(parameters%concentration)) return
     if (parameters%concentration < 0.0_real64 .or. parameters%concentration > 100.0_real64) return
+    if (parameters%solute_enabled .and. parameters%solute_overirrigation_enabled) then
+      if (.not. ieee_is_finite(parameters%solute_concentration_threshold)) return
+      if (.not. ieee_is_finite(parameters%solute_overirrigation_percent)) return
+      if (parameters%solute_concentration_threshold < 0.0_real64 .or. &
+          parameters%solute_concentration_threshold > 100.0_real64) return
+      if (parameters%solute_overirrigation_percent < 0.0_real64 .or. &
+          parameters%solute_overirrigation_percent > 100.0_real64) return
+    end if
     select case (parameters%timing_criterion)
     case (IRRIGATION_TIMING_TCS7_PRESSURE_HEAD)
       if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return

@@ -157,6 +157,11 @@ PPA-IRR-SCHEDULED-SOLUTE-CARRIER carries B1.11's scheduled `cirrs` value,
 bounded to its input range, alongside the typed SSDI source. Its 100,000-event
 oracle confirms concentration preservation and unchanged offered water amount;
 solute mass integration and transport remain unqualified.
+PPA-IRR-SCHEDULED-SOLUTE-OVERIRRIGATION composes the strict dual-switch
+`cml(nodsen) > cirrthres` rule after scheduled DCS2 depth selection and before
+rate/duration materialization. It preserves the one-node SSDI water vector and
+tests both switches, equality and one-switch-disabled branches over 100,000
+events. DCS1 integration and solute mass booking remain unqualified.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
