@@ -14,6 +14,11 @@ class Fgc44RealSwap:
             ctypes.c_double, ctypes.c_double,
             ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_swap_initialize_forced_c.restype = ctypes.c_int
+        self.lib.fgc44_swap_initialize_forced_c.argtypes = [
+            ctypes.c_double, ctypes.c_double, ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
+        ]
         self.lib.fgc44_swap_trial_c.restype = ctypes.c_int
         self.lib.fgc44_swap_trial_c.argtypes = [ctypes.c_double, ctypes.POINTER(ctypes.c_double)]
         for name in [
@@ -66,6 +71,21 @@ class Fgc44RealSwap:
         if status:
             raise RuntimeError(f"configured SWAP initialize failed: {status}")
         return hcof,rhs,href
+
+    def initialize_forced(
+        self,
+        duration_day: float,
+        predictor_qbot_cm_per_day: float,
+        top_flux_cm_per_day: float,
+    ) -> tuple[float,float,float]:
+        hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
+        status=self.lib.fgc44_swap_initialize_forced_c(
+            float(duration_day),float(predictor_qbot_cm_per_day),float(top_flux_cm_per_day),
+            ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href)
+        )
+        if status:
+            raise RuntimeError(f"forced SWAP initialize failed: {status}")
+        return hcof.value,rhs.value,href.value
 
     def trial(self, head_m: float) -> float:
         q=ctypes.c_double()
