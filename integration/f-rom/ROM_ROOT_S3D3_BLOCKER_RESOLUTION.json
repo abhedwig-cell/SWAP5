@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.rom_root.s3d3.blocker-resolution.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D3",
+  "date": "2026-09-23",
+  "status": "CLOSED_ORIGINAL_BOUND_ANALYZER_COMPLETED_SUCCESSFULLY",
+  "prior_blocker": "integration/f-rom/ROM_ROOT_S3D3_RUNNER_BLOCKER.json",
+  "workflow_run": 35864381308,
+  "workflow_head": "88133dd26670d4111c1d71acc381ad5c2da3a52a",
+  "analyzer_job": 107194832789,
+  "analyzer_conclusion": "success",
+  "analyzer_artifact": {
+    "id": 10752439881,
+    "name": "rom-root-s3d3",
+    "digest": "sha256:8496562c245198b445c6e2a8e07a81256c52188ea2afcd3668df268297202cd6",
+    "created_at": "2026-09-23T13:23:30Z"
+  },
+  "alternative_replay_used_for_authority": false,
+  "note": "The independently inspected artifact replay remains corroborating evidence only; the original preregistered and bound workflow analyzer supplied the authoritative result.",
+  "scientific_semantics_changed": false,
+  "model_changed": false
+}
