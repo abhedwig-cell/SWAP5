@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.ppa_wu05a3_sorptivity_events.status.v1",
+  "work_unit": "PPA-WU05-A3-SORPTIVITY-EVENTS",
+  "baseline": "7f5cf1e41",
+  "phase": "PREREGISTERED",
+  "source": "B1.11 macropore.f90 MACROSTATE lines 1423-1455",
+  "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+  "scope": "Explicit candidate absorption time, sorptivity, reference water content and shared wall correction during the event loop",
+  "source_order": "Domains ascend. Ending an event zeros the shared cell wall factor before subsequent domains use it. Outside the event region, time/sorptivity/reference reset, but wall factor is preserved.",
+  "extension_preregistration": "MACROSTATE lines 1457-1460: refresh wall(top:n)=sqrt(1-volume/main_proportion/thickness), preserve above-top entries; reject nonpositive denominators and negative radicand before evaluation. Test known square roots, untouched upper cells and invalid geometry.",
+  "excluded": ["Event selection and rate ownership", "Production binding and A4 qualification"],
+  "invariants": [3, 7, 13, 21, 25],
+  "interfaces_changed": "New isolated candidate routine only",
+  "implementation": "src/process/mod_ppa_wu05a3_sorptivity_events.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_sorptivity_events.f90",
+  "expected_tests": ["Analytic square-root increment", "Shared wall-factor domain order", "Upper/lower resets and empty region", "Disabled absorption preserves history", "Invalid input and history isolation", "O0/O2 identity with runtime checks"],
+  "qualified": false,
+  "production_admission": "NONE",
+  "next_action": "Implement and test candidate event lifecycle"
+}
