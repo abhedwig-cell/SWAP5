@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.ribasim_management.origin_bound_realization_receipt.preregistration.v1",
+  "work_unit": "RM10",
+  "date": "2026-09-23",
+  "title": "Typed origin-bound Ribasim realization receipt",
+  "depends_on": {
+    "RM07": "QUALIFIED_READ_ONLY_ORIGIN_BOUND_MANAGEMENT_DEMAND_RECEIPT",
+    "RM08": "FALSIFIED_FULL_PHYSICAL_REALIZATION_ASSUMPTION",
+    "RM09": "QUALIFIED_BOUNDED_REAL_RIBASIM_FULL_REALIZATION_BRIDGE"
+  },
+  "problem": "The RM09 executable fixture proves the causal sequence, but the production-facing RM06 forcing constructor still accepts detached scalar allocated_depth_cm and supplied_depth_cm values. That permits accidental cross-origin mixing that the type system cannot detect.",
+  "scope": "Introduce provenance and admission plumbing only. Do not change irrigation physics, Rutter physics, Ribasim allocation logic or partial-supply policy.",
+  "requirements": [
+    "The RM07 demand receipt retains and can return an immutable copy of the complete TCS1/DCS2 request used to derive it.",
+    "A typed Ribasim realization receipt binds SWAP management lineage, SWAP management revision, crop-origin revision, management interval and requested depth to an opaque coupler-owned Ribasim origin id and revision.",
+    "Allocated and physically supplied depths remain separate fields.",
+    "The first admitted realization profile requires full allocation within 1e-6 cm and full physical supply within 1e-4 cm, exactly matching RM09 qualification tolerances.",
+    "The receipt carries the Ribasim full-realization precondition evidence: source-level margin, level-difference threshold and physical low-storage factor.",
+    "The full-realization receipt fails closed unless margin >= 3 * level_difference_threshold and low_storage_factor = 1 within numerical tolerance.",
+    "Preparing RM06 forcing from a realization receipt requires exact provenance match to the RM07 demand receipt and uses the request copy from that receipt; no detached allocation or supply scalar enters the forcing API.",
+    "A realization receipt from another management lineage, revision, crop revision or interval is rejected.",
+    "A receipt with supplied < allocated outside the RM09 tolerance remains rejected; RM10 does not create a partial-irrigation policy.",
+    "Same origin plus same values reproduces an identical typed receipt and the existing RM06 candidate replay/commit behavior."
+  ],
+  "qualified_constants": {
+    "full_allocation_tolerance_cm": 1e-6,
+    "full_supply_tolerance_cm": 1e-4,
+    "required_level_margin_multiple": 3.0,
+    "low_storage_factor_target": 1.0
+  },
+  "falsification_conditions": [
+    "The forcing can be constructed with realization values detached from the demand origin.",
+    "A mismatched lineage/revision/interval/crop origin is accepted.",
+    "The full request cannot be reconstructed from the RM07 receipt.",
+    "A partial physical realization outside the RM09 tolerance is admitted.",
+    "The typed route changes RM06 requested, allocated, supplied or net-applied numerical outcomes relative to the already qualified scalar route."
+  ],
+  "nonclaims": [
+    "The opaque Ribasim origin id is coupler provenance, not a Ribasim product checkpoint API.",
+    "No partial-supply policy.",
+    "No noncommensurate clock qualification.",
+    "No full Richards-state composition.",
+    "No MODFLOW composition.",
+    "No canonical admission by RM10 alone."
+  ]
+}
