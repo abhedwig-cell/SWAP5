@@ -48,6 +48,13 @@
       "semantics": "Source-derived control maps Basin level to the intended nonnegative discharge law; Pump realizes one-way physical flow.",
       "q1a_result": "Q1A-R3 trajectory and Q1A-R3L direct-ledger PASS for the frozen BETAW=1 fixed-weir cases.",
       "limitation": "Research-qualified mapping only; no production admission and no generic nonlinear SWQHR1 claim."
+    },
+    "basin_storage_profile": {
+      "pinned_source_semantics": "Basin/Profile accepts `storage` with `level`; if area is absent, Ribasim differentiates storage by a recurrence, linearly interpolates dS/dh, and integrates/inverts that area curve.",
+      "exact_input_knot_storage": "By construction storage increments at supplied profile knots are reproduced, apart from the separate bottom-origin convention.",
+      "inter_knot_semantics": "Generally not the same as SWAP STTAB piecewise-linear storage interpolation; the integrated linear area curve is quadratic within an interval whenever endpoint dS/dh differs.",
+      "bottom_storage": "Ribasim physical storage origin is zero at the profile bottom; frozen SWAP may have a sub-ULP positive bottom STTAB value from knot construction.",
+      "qualification": "Q1G preregistered; exact direct STTAB mapping not assumed."
     }
   },
   "hard_mapping_rules": [
@@ -56,7 +63,8 @@
     "Do not encode a signed SWAP exchange as a single unsigned Ribasim forcing without preserving direction.",
     "Do not assume TabulatedRatingCurve interpolation is piecewise linear.",
     "Do not use allocation output as accepted physical mass before the coupled physical transaction accepts.",
-    "Do not treat a two-point TabulatedRatingCurve as piecewise-linear exactness in the pinned release; internal knot augmentation plus PCHIP changes the above-crest curve."
+    "Do not treat a two-point TabulatedRatingCurve as piecewise-linear exactness in the pinned release; internal knot augmentation plus PCHIP changes the above-crest curve.",
+    "Do not equate a Ribasim Basin storage-profile input with exact SWAP STTAB piecewise-linear interpolation between knots until Q1G is closed."
   ],
   "production_admission": false
 }
