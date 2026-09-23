@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: abhedwig-cell/SWAP5
-          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          ref: a2d99ddd149ffaa422d9c422f96bd66e92c8555d
           path: canonical-src
 
       - uses: actions/checkout@v4
@@ -33,6 +33,16 @@ jobs:
           repository: Murilodsv/SWAP-SAMUCA
           ref: main
           path: staring-source
+
+      - name: Verify current canonical solver seam
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical-src rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = 90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
+          test "$(git -C canonical-src rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
+          test "$(git -C canonical-src rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = 4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
+          test "$(git -C canonical-src rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55
+          echo TABHYD_TYPED_SOLVER_CURRENT_CANONICAL_RECONCILE=PASS
 
       - name: Generate five bounded solver-seam cases
         shell: bash
