@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ribasim_management.qualification_preregistration.v1",
+  "work_unit": "RM06",
+  "date": "2026-09-23",
+  "title": "Transactional Hupsel management-state qualification before real Ribasim binding",
+  "canonical_origin": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "subject": "src/runtime/mod_fmr_hupsel_management_transaction.f90",
+  "hypotheses": [
+    "A kernel candidate produced from one accepted management origin does not mutate committed irrigation or Rutter state before commit.",
+    "After explicit rollback, replay from the same accepted origin and identical forcing produces bit-identical irrigation continuation, Rutter continuation and management observations.",
+    "One successful commit advances the committed revision exactly once and publishes the candidate state exactly once.",
+    "Allocated depth, physically supplied gross depth and Rutter-derived net irrigation remain semantically distinct.",
+    "Supply larger than allocation fails before a candidate is created.",
+    "A positive demand with partial allocation/supply fails closed under the current bounded admission profile rather than inventing a partial-irrigation dayfix policy.",
+    "Export/reconstruct of accepted management persistence preserves irrigation continuation and Rutter state exactly."
+  ],
+  "fixed_profile": {
+    "irrigation": "Hupsel TCS1/DCS2 sprinkler",
+    "requested_depth_cm": 2.0,
+    "rate_cm_per_day": 36.0,
+    "minimum_interval_days": 7,
+    "initial_dayfix": 12,
+    "rutter_interception": true,
+    "allocation": "exact full realization for admitted candidate",
+    "kernel_temporal_mode": "MODEL_CERTIFICATE",
+    "kernel_max_retries": 0,
+    "kernel_max_committed_substeps": 1
+  },
+  "scientific_failure_rule": "Do not alter expected results after execution. A mismatch in state replay, ownership or gross/net accounting is a coupling-contract failure, not a technical failure.",
+  "nonclaims": [
+    "No real Ribasim execution is claimed by RM06.",
+    "No partial-irrigation response policy is admitted.",
+    "No coupled SWAP Richards-state commit is claimed yet.",
+    "No MODFLOW composition is claimed yet."
+  ]
+}
