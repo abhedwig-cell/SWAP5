@@ -1,0 +1,404 @@
+{
+  "cases": {
+    "GW_LB/B01": {
+      "boundaries_cm": [
+        0.0,
+        80.0,
+        100.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        155.0,
+        160.0
+      ],
+      "decision": "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+      "layer_rom_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+      "material": "B01",
+      "member": "G8",
+      "purpose": "GW_LB",
+      "same_partition_richards_T32_metrics_against_R2048_T32": {
+        "bottom_flux_sign_mismatch_count": 19,
+        "cumulative_bottom_exchange_error_cm": 0.0028543044591120676,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.001834265052173822,
+        "interval_bottom_flux_error_cm_per_day": 0.5213192769714707,
+        "long_horizon_exchange_drift_cm": 0.003596789920777166,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 10,
+        "total_storage_error_cm": 0.0028543044590757104
+      },
+      "same_partition_richards_crosses_R512_T32_comparator": false,
+      "same_partition_richards_numerical_qualification": {
+        "T16_vs_T32": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 4.3626248069482686e-06,
+          "history_signed_bottom_flux_bias_cm_per_day": 2.8056066432786158e-06,
+          "interval_bottom_flux_error_cm_per_day": 0.0005604774955757517,
+          "long_horizon_exchange_drift_cm": 3.7697594308383486e-06,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 4.3626248095111844e-06
+        },
+        "T8_vs_T16": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 8.709456305215403e-06,
+          "history_signed_bottom_flux_bias_cm_per_day": 5.612309137383499e-06,
+          "interval_bottom_flux_error_cm_per_day": 0.001107473186031112,
+          "long_horizon_exchange_drift_cm": 7.538999142298053e-06,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 8.709456295924807e-06
+        },
+        "componentwise_nonincreasing": true,
+        "execution_status": {
+          "T16": {
+            "material": "B01",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "temporal_factor": 16,
+            "trace_complete": true,
+            "triggered": true
+          },
+          "T32": {
+            "material": "B01",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "temporal_factor": 32,
+            "trace_complete": true,
+            "triggered": true
+          },
+          "T8": {
+            "material": "B01",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "temporal_factor": 8,
+            "trace_complete": true,
+            "triggered": true
+          }
+        },
+        "finite_complete_vector": true,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": true,
+        "max_abs_transaction_mass_cm": {
+          "T16": 3.552713678800501e-14,
+          "T32": 3.552713678800501e-14,
+          "T8": 2.842170943040401e-14
+        },
+        "qualified": true,
+        "reason": "QUALIFIED"
+      },
+      "same_partition_richards_vs_R512_T32_comparator": {
+        "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+        "equality_tolerance": 1e-12,
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 19.0,
+          "cumulative_bottom_exchange_error_cm": 0.002838527148465743,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0018263632956742686,
+          "interval_bottom_flux_error_cm_per_day": 0.5139436415887777,
+          "long_horizon_exchange_drift_cm": 0.0035808237064141046,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 10.0,
+          "total_storage_error_cm": 0.002838527148033116
+        },
+        "left_no_worse": false,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": true
+      }
+    },
+    "GW_LB/B14": {
+      "boundaries_cm": [
+        0.0,
+        80.0,
+        100.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        155.0,
+        160.0
+      ],
+      "decision": "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+      "layer_rom_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+      "material": "B14",
+      "member": "G8",
+      "purpose": "GW_LB",
+      "same_partition_richards_T32_metrics_against_R2048_T32": {
+        "bottom_flux_sign_mismatch_count": 6,
+        "cumulative_bottom_exchange_error_cm": 0.004610509167680423,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.004201062818441105,
+        "interval_bottom_flux_error_cm_per_day": 0.12118251040753754,
+        "long_horizon_exchange_drift_cm": 0.006874594215418021,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 6,
+        "total_storage_error_cm": 0.004610509167687068
+      },
+      "same_partition_richards_crosses_R512_T32_comparator": false,
+      "same_partition_richards_numerical_qualification": {
+        "T16_vs_T32": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 4.911233438242896e-07,
+          "history_signed_bottom_flux_bias_cm_per_day": 4.556732053315749e-07,
+          "interval_bottom_flux_error_cm_per_day": 5.397922880593006e-06,
+          "long_horizon_exchange_drift_cm": 6.450032614679913e-07,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 4.911238052183965e-07
+        },
+        "T8_vs_T16": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 9.820093723489778e-07,
+          "history_signed_bottom_flux_bias_cm_per_day": 9.11270158724409e-07,
+          "interval_bottom_flux_error_cm_per_day": 1.0789158716156479e-05,
+          "long_horizon_exchange_drift_cm": 1.289907899604259e-06,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 9.820093232917261e-07
+        },
+        "componentwise_nonincreasing": true,
+        "execution_status": {
+          "T16": {
+            "material": "B14",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "temporal_factor": 16,
+            "trace_complete": true,
+            "triggered": true
+          },
+          "T32": {
+            "material": "B14",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "temporal_factor": 32,
+            "trace_complete": true,
+            "triggered": true
+          },
+          "T8": {
+            "material": "B14",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "temporal_factor": 8,
+            "trace_complete": true,
+            "triggered": true
+          }
+        },
+        "finite_complete_vector": true,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": true,
+        "max_abs_transaction_mass_cm": {
+          "T16": 3.552713678800501e-14,
+          "T32": 4.263256414560601e-14,
+          "T8": 2.842170943040401e-14
+        },
+        "qualified": true,
+        "reason": "QUALIFIED"
+      },
+      "same_partition_richards_vs_R512_T32_comparator": {
+        "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+        "equality_tolerance": 1e-12,
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 6.0,
+          "cumulative_bottom_exchange_error_cm": 0.004568104987662216,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.004179444128577653,
+          "interval_bottom_flux_error_cm_per_day": 0.09904018329415526,
+          "long_horizon_exchange_drift_cm": 0.006837060813339231,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 6.0,
+          "total_storage_error_cm": 0.004568104987310716
+        },
+        "left_no_worse": false,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": true
+      }
+    },
+    "SURF_P/B01": {
+      "boundaries_cm": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        60.0,
+        80.0,
+        160.0
+      ],
+      "decision": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE",
+      "layer_rom_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+      "material": "B01",
+      "member": "S8",
+      "purpose": "SURF_P",
+      "same_partition_richards_T32_metrics_against_R2048_T32": null,
+      "same_partition_richards_crosses_R512_T32_comparator": false,
+      "same_partition_richards_numerical_qualification": {
+        "T16_vs_T32": null,
+        "T8_vs_T16": null,
+        "componentwise_nonincreasing": false,
+        "execution_status": {
+          "T16": {
+            "material": "B01",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": 1,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "temporal_factor": 16,
+            "trace_complete": false,
+            "triggered": true
+          },
+          "T32": {
+            "material": "B01",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": 1,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "temporal_factor": 32,
+            "trace_complete": false,
+            "triggered": true
+          },
+          "T8": {
+            "material": "B01",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": 1,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "temporal_factor": 8,
+            "trace_complete": false,
+            "triggered": true
+          }
+        },
+        "finite_complete_vector": false,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": false,
+        "max_abs_transaction_mass_cm": null,
+        "qualified": false,
+        "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+      },
+      "same_partition_richards_vs_R512_T32_comparator": null
+    },
+    "SURF_P/B14": {
+      "boundaries_cm": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        60.0,
+        80.0,
+        160.0
+      ],
+      "decision": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE",
+      "layer_rom_representation_sufficiency": "BELOW_NUMERICAL_COMPARATOR",
+      "material": "B14",
+      "member": "S8",
+      "purpose": "SURF_P",
+      "same_partition_richards_T32_metrics_against_R2048_T32": null,
+      "same_partition_richards_crosses_R512_T32_comparator": false,
+      "same_partition_richards_numerical_qualification": {
+        "T16_vs_T32": null,
+        "T8_vs_T16": null,
+        "componentwise_nonincreasing": false,
+        "execution_status": {
+          "T16": {
+            "material": "B14",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": 1,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "temporal_factor": 16,
+            "trace_complete": false,
+            "triggered": true
+          },
+          "T32": {
+            "material": "B14",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": 1,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "temporal_factor": 32,
+            "trace_complete": false,
+            "triggered": true
+          },
+          "T8": {
+            "material": "B14",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": 1,
+            "schema": "swap5.rom-purpose.p3.same-partition-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "temporal_factor": 8,
+            "trace_complete": false,
+            "triggered": true
+          }
+        },
+        "finite_complete_vector": false,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": false,
+        "max_abs_transaction_mass_cm": null,
+        "qualified": false,
+        "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+      },
+      "same_partition_richards_vs_R512_T32_comparator": null
+    }
+  },
+  "closure_deficit_supported_for_any_case": false,
+  "componentwise_equality_tolerance": 1e-12,
+  "decisions": {
+    "GW_LB/B01": "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+    "GW_LB/B14": "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+    "SURF_P/B01": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE",
+    "SURF_P/B14": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE"
+  },
+  "new_closure_family_authorized": false,
+  "schema": "swap5.rom-purpose.p3.same-partition-richards-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "closure_tuned": false,
+    "only_preregistered_terminal_triggers_analyzed": true,
+    "partition_retuned": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false,
+    "representation_retuned": false,
+    "weighted_score_used": false
+  },
+  "status": "P3_SAME_PARTITION_DIAGNOSTIC_PARTLY_OR_FULLY_UNAVAILABLE",
+  "trigger_count": 4,
+  "work_unit": "ROM-PURPOSE-P3-SAME-PARTITION-RICHARDS",
+  "workstream": "ROM-PURPOSE"
+}

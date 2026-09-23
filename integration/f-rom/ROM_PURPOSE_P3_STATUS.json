@@ -22,7 +22,7 @@
     "GW_R2048_T32_ROUTE_RECOVERY_BOUND",
     "GW_REFERENCE_CONSOLIDATION_V2_PREPARED_NOT_EXECUTED"
   ],
-  "current_gate": "SAME_PARTITION_RICHARDS_DIAGNOSTIC",
+  "current_gate": "P3_CLOSEOUT",
   "date": "2026-09-23",
   "gw_missing_slice_repair_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json",
   "gw_r2048_t32_recovery": {
@@ -50,7 +50,7 @@
   "gw_reference_consolidation_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json",
   "gw_reference_consolidation_v2_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_INFRASTRUCTURE.json",
   "next_actions": [
-    "Execute only the preregistered same-partition Richards diagnostics for terminal unresolved cases."
+    "Bind deterministic P3 closeout generation."
   ],
   "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
   "reference_adjudication_sha": "4e6b0dc26f18379b3be5e9b26e93f5b9a0a34b1a",
@@ -127,7 +127,11 @@
     "preregistration_commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
     "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
   },
+  "same_partition_execution_sha": "a166f340c6ec2b354aaf0b587f7dd7c884b7b2b9",
   "same_partition_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_INFRASTRUCTURE.json",
+  "same_partition_preserved_surface_source_run": 35891150093,
+  "same_partition_result": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_RESULT.json",
+  "same_partition_source_workflow_run": 35891590096,
   "schema": "swap5.rom-purpose.p3.status.v1",
   "scientific_firewall": {
     "any_new_p3_candidate_response_seen": true,
@@ -145,11 +149,11 @@
     "production_rom_authorized": false,
     "reference_execution_started": true,
     "reference_response_adjudicated": true,
-    "same_partition_execution_binding_created": false,
-    "same_partition_response_generated": false
+    "same_partition_execution_binding_created": true,
+    "same_partition_response_generated": true
   },
   "state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json",
-  "status": "P3_STATE_COUNT_COMPLETE_SAME_PARTITION_DIAGNOSTIC_REQUIRED",
+  "status": "P3_SAME_PARTITION_DIAGNOSTIC_COMPLETE",
   "work_unit": "ROM-PURPOSE-P3",
   "workstream": "ROM-PURPOSE"
 }
