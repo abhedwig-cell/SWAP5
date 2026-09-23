@@ -1,0 +1,384 @@
+name: F-ROM-PURPOSE P3 repaired surface Reference
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_REPAIR_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-surface-reference-repair-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Verify frozen P3 authority and implementation
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p3_surface_reference.py             tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             tests/rom/analyze_rom_purpose_p2_reference.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json'))
+          p1=json.load(open('integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json'))
+          repair=json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_NEW_P3_REFERENCE_OR_CANDIDATE_RESPONSE'
+          assert p1['status']=='P1_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES'
+          assert p1['candidate_response_authorized'] is False
+          assert repair['status']=='RESPONSE_BLIND_TECHNICAL_REPAIR_BOUND_BEFORE_REFERENCE_ADJUDICATION'
+          assert repair['repair']['SURF_P']['scientific_effect']=='NONE'
+          assert all(p1['results']['gw'][m]['qualified'] for m in ('B01','B14'))
+          assert b['status']=='BOUND_TECHNICAL_MARKER_REPAIR_AFTER_FAILED_RUN'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  coarse:
+    needs: preflight
+    name: full-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        route: [R512_T32, R1024_T32]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Materialize and execute complete independent history
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; route="${{ matrix.route }}"; opt="${{ matrix.opt }}"; history="${{ matrix.history }}"
+          nodes="${route#R}"; nodes="${nodes%%_*}"
+          factor="${route##*_T}"
+          printf -v label "S%02d" $((history+8))
+          if [[ "$material" == "B01" ]]; then
+            source=tests/rom/rom_purpose_p1_surface_b01_source.f90
+          else
+            source=tests/rom/rom_purpose_p1_surface_b14_source.f90
+          fi
+          target=canonical/tests/rom/test_p2ref.f90
+          python3 tests/rom/materialize_rom_purpose_p3_surface_reference.py             --source "$source" --material "$material" --temporal-factor "$factor"             --output "$target" --manifest /tmp/manifest.json
+          stub="canonical/p2ref_o${opt}_stubs.f90"
+          dz="$(python3 - <<PY
+          print(160.0/$nodes)
+          PY
+          )"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$nodes" --dz-cm "$dz"
+          build="/tmp/p2ref_${material}_${route}_o${opt}_h${history}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical --stub "p2ref_o${opt}_stubs.f90" --target tests/rom/test_p2ref.f90             --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+          mkdir -p evidence
+          LARE_DYN0A_CASE_FILTER="$label" "$build/rom0_test" > "evidence/surface_${material}_${route}_o${opt}_h${history}.txt" 2>&1
+          test "$(grep -c '^LAREDYN0R_STATE|' "evidence/surface_${material}_${route}_o${opt}_h${history}.txt")" -eq $((1024*factor))
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/surface_${material}_${route}_o${opt}_h${history}.txt")" -eq $((1024*16))
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3sfull-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment1:
+    needs: preflight
+    name: s1-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        route: [R2048_T32, R2048_T16, R2048_T8]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Execute segment 1 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; route="${{ matrix.route }}"; history="${{ matrix.history }}"
+          factor="${route##*_T}"; printf -v label "S%02d" $((history+8))
+          if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p3_surface_reference.py             --source "$source" --material "$material" --temporal-factor "$factor"             --segment-start 1 --segment-end 8192 --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2seg_s1_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p2seg_s1_${material}_${route}_h${history}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2seg_s1_o${opt}_stubs.f90" --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="$label" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3sseg1-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment2:
+    needs: segment1
+    name: s2-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        route: [R2048_T32, R2048_T16]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p3sseg1-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+          path: previous
+      - name: Execute segment 2 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; route="${{ matrix.route }}"; history="${{ matrix.history }}"
+          factor="${route##*_T}"; printf -v label "S%02d" $((history+8))
+          if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p3_surface_reference.py             --source "$source" --material "$material" --temporal-factor "$factor"             --segment-start 8193 --segment-end 16384 --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2seg_s2_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p2seg_s2_${material}_${route}_h${history}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2seg_s2_o${opt}_stubs.f90" --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="$label" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3sseg2-${{ matrix.material }}-${{ matrix.route }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment3:
+    needs: segment2
+    name: s3-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p3sseg2-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: previous
+      - name: Execute segment 3 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; history="${{ matrix.history }}"; printf -v label "S%02d" $((history+8))
+          if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p3_surface_reference.py             --source "$source" --material "$material" --temporal-factor 32             --segment-start 16385 --segment-end 24576 --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2seg_s3_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p2seg_s3_${material}_h${history}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2seg_s3_o${opt}_stubs.f90" --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="$label" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3sseg3-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment4:
+    needs: segment3
+    name: s4-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p3sseg3-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: previous
+      - name: Execute segment 4 with O0/O2 identity
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; history="${{ matrix.history }}"; printf -v label "S%02d" $((history+8))
+          if [[ "$material" == "B01" ]]; then source=tests/rom/rom_purpose_p1_surface_b01_source.f90; else source=tests/rom/rom_purpose_p1_surface_b14_source.f90; fi
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p3_surface_reference.py             --source "$source" --material "$material" --temporal-factor 32             --segment-start 24577 --segment-end 32768 --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2seg_s4_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/p2seg_s4_${material}_h${history}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2seg_s4_o${opt}_stubs.f90" --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER="$label" "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3sseg4-${{ matrix.material }}-R2048_T32-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  assemble:
+    needs: [coarse, segment1, segment2, segment3, segment4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3sfull-*
+          path: /tmp/full
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3sseg1-*
+          path: /tmp/s1
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3sseg2-*
+          path: /tmp/s2
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3sseg3-*
+          path: /tmp/s3
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3sseg4-*
+          path: /tmp/s4
+          merge-multiple: false
+      - name: Assemble complete P3 surface routes
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32; do
+              for opt in 0 2; do
+                out="routes/surface_${material}_${route}_o${opt}.txt"; : > "$out"
+                for i in 1 2 3 4; do
+                  src="$(find /tmp/full -type f -name "surface_${material}_${route}_o${opt}_h${i}.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out"
+                done
+              done
+            done
+            for route in R2048_T32 R2048_T16 R2048_T8; do
+              out0="routes/surface_${material}_${route}_o0.txt"; : > "$out0"
+              for i in 1 2 3 4; do
+                cat "/tmp/s1/p3sseg1-${material}-${route}-h${i}/segment.txt" >> "$out0"
+                if [[ "$route" != "R2048_T8" ]]; then
+                  cat "/tmp/s2/p3sseg2-${material}-${route}-h${i}/segment.txt" >> "$out0"
+                fi
+                if [[ "$route" == "R2048_T32" ]]; then
+                  cat "/tmp/s3/p3sseg3-${material}-R2048_T32-h${i}/segment.txt" >> "$out0"
+                  cat "/tmp/s4/p3sseg4-${material}-R2048_T32-h${i}/segment.txt" >> "$out0"
+                fi
+              done
+              cp "$out0" "routes/surface_${material}_${route}_o2.txt"
+            done
+            for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              cmp "routes/surface_${material}_${route}_o0.txt" "routes/surface_${material}_${route}_o2.txt"
+              case "$route" in *_T32) factor=32;; *_T16) factor=16;; *) factor=8;; esac
+              test "$(grep -c '^LAREDYN0R_STATE|' "routes/surface_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+              test "$(grep -c '^LAREDYN0R_PROFILE|' "routes/surface_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+            done
+          done
+          sha256sum routes/* > routes/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3ref-surface-routes
+          path: routes/
+          if-no-files-found: error
+
