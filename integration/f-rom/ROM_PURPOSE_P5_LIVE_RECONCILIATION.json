@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.rom-purpose.p5.live-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5",
+  "date": "2026-09-23",
+  "status": "RECONCILED_AFTER_P4_CLOSEOUT_BEFORE_P5_RESPONSE",
+  "repository": {
+    "branch": "work/f-rom-purpose",
+    "live_canonical": "43577e083ae1e315d86cafd55f971d80279db27c",
+    "frozen_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "inherited_authority": {
+    "p4_closeout": "integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json",
+    "p4_purpose_map": "integration/f-rom/ROM_PURPOSE_P4_PURPOSE_MAP.json",
+    "p4_matched_richards_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json",
+    "p4_layer_result": "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json"
+  },
+  "inherited_facts": [
+    "P4 is closed and must not be reopened.",
+    "Layer-ROM misses the comparator at S8/S12/S16 and G8/G12/G16 for both materials.",
+    "GW matched Richards is numerically qualified at G8/G12/G16 for both materials and also misses the comparator.",
+    "SURF_P matched Richards is outside the frozen qualified domain on all rungs; B14/S16 succeeds at T16 and T32 but not T8.",
+    "Observed failing SURF_P routes terminate in strict_first_sample on the fixed local integrated residual allowance 1.6e-15 cm after RETRY_LOCAL_BALANCE classification.",
+    "P4 supports no closure-deficit claim and no new closure family."
+  ],
+  "p5_scope": {
+    "P5A_SURF_NUMERICAL_DOMAIN": "Characterize the fail-closed same-partition Richards surface numerical-domain boundary without relaxing it.",
+    "P5B_GW_INFORMATION_CARRIER": "Prospectively test whether adding physically distinct lower-column hydraulic information, rather than only more storage layers, changes the groundwater representation frontier. P5B remains blocked until its representation class is independently derived and frozen."
+  },
+  "scientific_firewall": {
+    "p4_reopened": false,
+    "any_p5a_response_seen": false,
+    "any_p5b_response_seen": false,
+    "tolerance_relaxation_authorized": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
