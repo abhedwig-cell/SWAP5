@@ -22,17 +22,17 @@ This matrix is the compact architecture outcome of the exact-source F-PM08D reco
 | Runoff/top surface exchange | Soil/surface process contribution | SWAP generation | **SWAP generation -> Ribasim transfer** when represented in Ribasim | Later mapped-process qualification |
 | `SWQHR=1`, `ALPHAW/BETAW/HBWEIR` | Analytic power-law fixed-weir Q(h) | Retained in F-CI52 restricted profile | **Ribasim explicit controlled discharge** for exact hard-kink mapping; native TabulatedRatingCurve only under an approximation envelope | Q1A-R3/R3L pass for `BETAW=1`; nonlinear Q1C open |
 | `SWQHR=2`, `HHTAB/QHTAB` | Tabular Q(h) relation | Not in restricted F-CI52 admission | Ribasim TabulatedRatingCurve | Structurally direct; legacy HBWEIR threshold seam must be adjudicated |
-| `WLDIP` | Fixed-weir supply target below crest | F-CI52 restricted supply logic | **Ribasim LevelDemand lower target** candidate | Q1B preregistered |
-| `WSCAP` | Maximum external supply capacity | F-CI52 restricted capacity | **Ribasim supply-route capacity** | Q1B; never relabel capacity as actual supply |
-| Actual supply flux | Realized water added to surface store | SWAP combined-system external inflow in F-CI52 | **Ribasim realized inflow/allocation** | Q1B |
+| `WLDIP` | Fixed-weir supply target below crest | F-CI52 restricted supply logic | **Ribasim LevelDemand lower target** | **Q1B bounded research PASS** |
+| `WSCAP` | Maximum external supply capacity | F-CI52 restricted capacity | **Ribasim supply-route capacity** | **Q1B PASS**; capacity remains distinct from realized supply |
+| Actual supply flux | Realized water added to surface store | SWAP combined-system external inflow in F-CI52 | **Ribasim realized inflow/allocation** | **Q1B PASS** with direct cumulative Pump ledger |
 | Fixed-weir discharge | Surface-system external outflow | SWAP F-CI52 | **Ribasim network outflow** | Q1A/Q1C |
-| `SWMAN=2` target selection | Soil-state-driven water-level management | Not in current restricted F-CI52 production admission | **Coupler / management policy** | Retain functionality; Q2 |
+| `SWMAN=2` target selection | Soil-state-driven water-level management | Not in current restricted F-CI52 production admission | **Coupler / management policy** | **Q2A bounded research PASS**, including phase seams and accepted-state rollback/replay |
 | `GWLCRIT` | Groundwater criterion for automatic target phase | Legacy policy input | Not Ribasim-native soil state | **Coupler reads accepted SWAP state** | Q2 |
 | `VCRIT` | Total soil-air-volume criterion | Legacy policy input | Not Ribasim-native soil state | **Coupler reads accepted SWAP state** | Q2 |
 | `HCRIT/HDEPTH` | Pressure-head criterion at selected soil depth | Legacy policy input | Not Ribasim-native soil state | **Coupler reads accepted SWAP state** | Q2 |
-| `WLSMAN` | Phase-specific target water levels | Legacy policy table | Ribasim realizes requested target; does not select it from soil state | Coupler policy -> Ribasim request |
-| `WLSTAR` | Continuation-critical previous automatic target | Legacy management memory | Not physical surface-water storage | **Coupler accepted policy state** | Q2 transaction/replay |
-| `DROPR` | Bounds downward target change | Legacy policy | Not surface-water hydraulics | **Coupler policy** | Q2 |
+| `WLSMAN` | Phase-specific target water levels | Legacy policy table | Ribasim realizes requested target; does not select it from soil state | **Q2A policy PASS + Q2B1 managed-band realization PASS** |
+| `WLSTAR` | Continuation-critical previous automatic target | Legacy management memory | Not physical surface-water storage | **Coupler accepted policy state** | **Q2A PASS**: between-event memory, reject/replay and stale-commit fail-closed |
+| `DROPR` | Bounds downward target change | Legacy policy | Not surface-water hydraulics | **Coupler policy** | **Q2A PASS**, including `DROPR=0.001` equality seam and immediate upward changes |
 | `INTWL` / calendar adjustment schedule | Target reevaluation timing | Legacy controller timing | Not intrinsic Ribasim hydraulic state | **Coupler explicit event schedule** | Replace calendar arithmetic with explicit coupling events |
 | `WLSBAK` | Oscillation/numerical history | Legacy numerical continuation | No physical owner | Candidate retire in external-owner mode |
 | `OSSWLM` | Legacy timestep-reduction/oscillation policy | Legacy numerical policy | No physical owner | Candidate retire; do not preserve as physics |
@@ -68,7 +68,7 @@ The legacy state-dependent availability limiter is therefore not allowed to surv
 1. **Q1A**: linear fixed-weir external ownership with real Ribasim. **Closed as bounded research PASS through R3/R3L; native TRC exactness separately falsified.**
 2. **Q1B**: level-triggered supply with explicit Ribasim demand and route capacity. **Closed as bounded research PASS for the three preregistered cases.**
 3. **Q1C**: nonlinear SWQHR1 power-law representation by Ribasim tabulated rating curves.
-4. **Q2**: accepted-soil-state-driven automatic management policy and `WLSTAR` transaction semantics.
+4. **Q2**: accepted-soil-state-driven automatic management policy and `WLSTAR` transaction semantics. **Q2A PASS. Q2B1 managed-band realization PASS; dynamic Q(h)-limited composition remains Q2B2.**
 5. **Q3**: signed drainage/infiltration exchange, availability and mass reclassification.
 6. **Q4**: final legacy container/parser retirement adjudication.
 
