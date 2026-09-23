@@ -107,6 +107,15 @@ program test_m7_serialized_worker_scratch_reuse
     call require(observation%common_work_payload_bytes > 0_int64, 'BASE common workspace payload measured')
     call require(observation%soil_temperature_optional_payload_bytes == 0_int64, &
          'BASE soil-temperature workspace payload absent')
+    call require(runtime%snow_event_evaluation_calls == 0 .and. &
+         runtime%black_evaporation_evaluation_calls == 0 .and. &
+         runtime%boesten_evaporation_evaluation_calls == 0 .and. &
+         runtime%soil_temperature_evaluation_calls == 0 .and. &
+         runtime%drainage_response_evaluation_calls == 0, 'BASE batch option-call totals absent')
+    call require(runtime%max_common_work_payload_bytes == observation%common_work_payload_bytes, &
+         'BASE batch common-work peak matches serialized backend')
+    call require(runtime%max_soil_temperature_optional_payload_bytes == 0_int64, &
+         'BASE batch soil-temperature optional-work peak absent')
     call require(.not. allocated(parameters(i)%black_evaporation) .and. &
          .not. allocated(parameters(i)%boesten_evaporation) .and. .not. allocated(parameters(i)%snow) .and. &
          .not. allocated(parameters(i)%soil_temperature), 'BASE optional parameter payloads absent')

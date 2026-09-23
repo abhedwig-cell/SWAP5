@@ -153,6 +153,13 @@ module mod_fmr_serialized_multiswap_runtime
     real(real64) :: effective_t0 = 0.0_real64
     real(real64) :: effective_t1 = 0.0_real64
     real(real64) :: max_abs_column_mass_residual = 0.0_real64
+    integer :: snow_event_evaluation_calls = 0
+    integer :: black_evaporation_evaluation_calls = 0
+    integer :: boesten_evaporation_evaluation_calls = 0
+    integer :: soil_temperature_evaluation_calls = 0
+    integer :: drainage_response_evaluation_calls = 0
+    integer(int64) :: max_common_work_payload_bytes = 0_int64
+    integer(int64) :: max_soil_temperature_optional_payload_bytes = 0_int64
     type(canonical_mass_accounting_t) :: authoritative_aggregate_mass
   end type fmr_serialized_batch_diagnostics_t
 
@@ -625,6 +632,21 @@ contains
       output%solver_executed = observation%solver_executed
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
+      runtime%snow_event_evaluation_calls = runtime%snow_event_evaluation_calls + &
+           observation%snow_event_evaluation_calls
+      runtime%black_evaporation_evaluation_calls = runtime%black_evaporation_evaluation_calls + &
+           observation%black_evaporation_evaluation_calls
+      runtime%boesten_evaporation_evaluation_calls = runtime%boesten_evaporation_evaluation_calls + &
+           observation%boesten_evaporation_evaluation_calls
+      runtime%soil_temperature_evaluation_calls = runtime%soil_temperature_evaluation_calls + &
+           observation%soil_temperature_evaluation_calls
+      runtime%drainage_response_evaluation_calls = runtime%drainage_response_evaluation_calls + &
+           observation%drainage_response_evaluation_calls
+      runtime%max_common_work_payload_bytes = max(runtime%max_common_work_payload_bytes, &
+           observation%common_work_payload_bytes)
+      runtime%max_soil_temperature_optional_payload_bytes = max( &
+           runtime%max_soil_temperature_optional_payload_bytes, &
+           observation%soil_temperature_optional_payload_bytes)
       if (output%solver_executed) then
         runtime%max_simultaneous_real_physical_solves = max( &
              runtime%max_simultaneous_real_physical_solves, simultaneous_physical_calls)
