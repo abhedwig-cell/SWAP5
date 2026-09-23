@@ -1,0 +1,116 @@
+name: ROM-ROOT Stage 2 prescribed-sink harness equivalence
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_S2_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-s2-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  execute:
+    name: ${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+        history: [V01, V02, V03, V04]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify bound Stage 2 authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_S2_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_STAGE2_REDUCED_RESPONSE'
+          assert b['state']=='BOUND_BEFORE_STAGE2_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['dynamic_root_feedback_implemented'] is False
+          assert b['reduced_feedback_response_generated'] is False
+          assert r['status']=='CLOSED_STRESS_ACTIVE_REFERENCE_QUALIFIED_STAGE2_MAY_BE_PREREGISTERED'
+          assert r['decision']['reference_qualified'] is True
+          assert r['decision']['stage2_prescribed_sink_equivalence_may_be_preregistered'] is True
+          for path, expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Execute prescribed-sink equivalence
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_root_s2_prescribed_sink.py             --material "${{ matrix.material }}"             --history "${{ matrix.history }}"             --prereg integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json             --output "evidence/${{ matrix.material }}_${{ matrix.history }}.json"             | tee "evidence/${{ matrix.material }}_${{ matrix.history }}.txt"
+          sha256sum evidence/* > evidence/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s2-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: execute
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-root-s2-*
+          path: /tmp/rom-root-s2
+          merge-multiple: true
+
+      - name: Analyze Stage 2 equivalence
+        run: |
+          set -euo pipefail
+          mkdir -p S2_EVIDENCE
+          test "$(find /tmp/rom-root-s2 -maxdepth 1 -type f -name 'B??_V??.json' | wc -l)" -eq 8
+          python3 tests/rom/analyze_rom_root_s2.py             --prereg integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json             --input-dir /tmp/rom-root-s2             --output S2_EVIDENCE/ROM_ROOT_S2_RESULT.json             | tee S2_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json S2_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S2_BINDING.json S2_EVIDENCE/
+          sha256sum S2_EVIDENCE/* > S2_EVIDENCE/sha256.txt
+
+      - name: Enforce Stage 2 firewall
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('S2_EVIDENCE/ROM_ROOT_S2_RESULT.json'))
+          assert r['status']=='STAGE2_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED'
+          assert r['decision']=='STAGE3_DYNAMIC_FEEDBACK_MAY_BE_PREREGISTERED'
+          assert r['case_count']==32
+          assert r['all_32_cases_pass'] is True
+          f=r['scientific_firewall']
+          assert f['feddes_evaluated'] is False
+          assert f['dynamic_root_feedback_implemented'] is False
+          assert f['reduced_feedback_response_generated'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_S2_FIREWALL=PASS')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s2
+          path: S2_EVIDENCE/
+          if-no-files-found: error
