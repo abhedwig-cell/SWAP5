@@ -10,6 +10,7 @@ from pathlib import Path
 import numpy as np
 
 RESPONSE_FD = int(os.environ["RM13_WORKER_RESPONSE_FD"])
+COMMAND_FD = int(os.environ["RM13_WORKER_COMMAND_FD"])
 RIBASIM_ROOT = Path(os.environ["RM13_RIBASIM_ROOT"]).resolve()
 MODEL = Path(os.environ["RM13_WORKER_MODEL"]).resolve()
 LIB = Path(os.environ["RM13_LIBRIBASIM"]).resolve()
@@ -49,30 +50,31 @@ def main() -> None:
         api=RibasimApi(LIB,LIB.parent)
         api.initialize(str(MODEL))
         respond({"ok":True,"op":"ready","runtime":runtime,"snapshot":snapshot(api)})
-        for line in sys.stdin:
-            if not line.strip():
-                continue
-            cmd=json.loads(line)
-            op=cmd.get("op")
-            if op=="snapshot":
-                respond({"ok":True,"op":"snapshot","snapshot":snapshot(api)})
-            elif op=="update_until":
-                target=float(cmd["time_s"])
-                api.update_until(target)
-                respond({"ok":True,"op":"update_until","snapshot":snapshot(api)})
-            elif op=="finalize":
-                if not finalized:
-                    api.finalize()
-                    finalized=True
-                respond({"ok":True,"op":"finalize"})
-            elif op=="stop":
-                if api is not None and not finalized:
-                    api.finalize()
-                    finalized=True
-                respond({"ok":True,"op":"stop"})
-                return
-            else:
-                raise RuntimeError(f"unknown RM13 worker op {op!r}")
+        with os.fdopen(COMMAND_FD,"r",encoding="utf-8",buffering=1) as commands:
+          for line in commands:
+              if not line.strip():
+                  continue
+              cmd=json.loads(line)
+              op=cmd.get("op")
+              if op=="snapshot":
+                  respond({"ok":True,"op":"snapshot","snapshot":snapshot(api)})
+              elif op=="update_until":
+                  target=float(cmd["time_s"])
+                  api.update_until(target)
+                  respond({"ok":True,"op":"update_until","snapshot":snapshot(api)})
+              elif op=="finalize":
+                  if not finalized:
+                      api.finalize()
+                      finalized=True
+                  respond({"ok":True,"op":"finalize"})
+              elif op=="stop":
+                  if api is not None and not finalized:
+                      api.finalize()
+                      finalized=True
+                  respond({"ok":True,"op":"stop"})
+                  return
+              else:
+                  raise RuntimeError(f"unknown RM13 worker op {op!r}")
     except BaseException as exc:
         try:
             respond({
