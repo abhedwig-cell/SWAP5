@@ -1,7 +1,9 @@
 {
   "work_unit": "PPA-WU05-A3-CONSERVATIVE-FLUX-PROPOSAL",
   "baseline": "f22f45af8",
-  "phase": "FOCUSED_TESTS_PASSED_EXTENDED_TEST_PENDING",
+  "phase": "PERSISTED_PROPOSAL_TESTS_PASSED",
+  "recovery_point": "002ee710576323dcab63490f502e33e1b59b9067",
+  "test_result": "Persisted gate PASS O0/O2, identical transcripts, warnings-as-errors, bounds/floating checks; all 512 manufactured cases match prescribed faces exactly; localized drainage, redistribution and boundary/input guards pass",
   "focused_result": "351c21041fdba73fa737bf6a38b06a4c47488d6e O0/O2 PASS with identical transcripts, warnings-as-errors and runtime checks",
   "extended_test": "512 manufactured face-flux cases with dyadic data, sign reversals, four time steps and exact zero-tolerance boundary/face comparisons; invalid time, tolerance and shape guards",
   "gate": "tests/fapp/run_ppa_wu05a3_conservative_flux.ps1",
@@ -15,5 +17,5 @@
   "implementation": "src/process/mod_ppa_wu05a3_conservative_flux.f90",
   "test": "tests/fapp/test_ppa_wu05a3_conservative_flux.f90",
   "qualified": false,
-  "next_action": "Implement and test the proposed continuity reconstruction"
+  "next_action": "Compose the proposed diagnostic with storage/wetting candidates and verify expected lower-boundary consistency across changing profiles before any corrected-reference or runtime admission"
 }

@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Derive and test a proposed flux recurrence with explicit cell continuity, rapid drainage and lower boundary. Domain-front and rapid-drainage residual evidence is recorded in PPA_WU05A3_FLUX_TRANSITION_STATUS.json; whole-domain closure alone misses the observed compensating local errors.",
-  "recovery_point": "e3bfc84cedf60850b30468302d31bc5d9c3f25da: MACRORESET beginning inventories and counter composition PASS O0/O2. See PPA_WU05A3_RESET_INVENTORY_STATUS.json. Prior sorptivity and MACROINTEGRAL evidence unchanged; local candidate evidence only.",
+  "next_safe_step": "Compose the tested conservative-flux proposal with storage/wetting candidates and verify lower-boundary consistency across changing profiles. See PPA_WU05A3_CONSERVATIVE_FLUX_STATUS.json; corrected-reference and runtime admission remain open.",
+  "recovery_point": "002ee710576323dcab63490f502e33e1b59b9067: proposed conservative face-flux reconstruction PASS O0/O2 including 512 exact manufactured cases. Earlier source-oracle and reference-gap evidence unchanged; no production admission.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
