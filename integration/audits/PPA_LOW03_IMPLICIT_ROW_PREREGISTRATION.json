@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW03-IMPLICIT-ROW",
+  "title": "Pure B1.11 SWBOTB3IMPL residual and Jacobian row terms",
+  "protocol": "PIN_HEADCALC_SIGN_AND_RESISTANCE -> IMPLEMENT_TYPED_ROW_CONTRACT -> 100000_SOURCE_ORACLES -> O0_O2_REPLAY -> HOLD_NEWTON_OWNER",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW03_IMPLICIT_ROW_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW03_CVAL_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW03_CAUCHY_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+  ],
+  "scope": [
+    "Implicit Cauchy qbot under both vertical-resistance switches",
+    "Residual increment sign F(NN)-=qbot and exact diagonal-Jacobian reciprocal resistance",
+    "Optional SW4 flux addition to qbot"
+  ],
+  "non_goals": [
+    "HeadCalc/Newton production binding, nonlinear iterations or transaction/retry semantics",
+    "Deep aquifer/GWL advancement or SW4 table ingestion",
+    "Mass ledger, restart or production application admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid vectors bitwise match qbot, residual and Jacobian source terms",
+    "resistance switches, optional flux, A/B/A, zero-resistance and nonfinite cases pass",
+    "O0/O2 transcripts match",
+    "no solver state or application behavior changes"
+  ]
+}
