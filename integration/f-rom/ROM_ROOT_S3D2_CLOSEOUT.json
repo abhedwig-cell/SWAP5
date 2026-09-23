@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.rom_root.s3d2.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D2",
+  "date": "2026-09-23",
+  "status": "CLOSED_PURE_HYDRAULIC_SUPPORT_FRONTIER_AT_REFERENCE_NODE_SCALE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D2_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3D2_BINDING.json",
+    "result": "integration/f-rom/ROM_ROOT_S3D2_RESULT.json",
+    "workflow_run": 35859838038,
+    "workflow_head": "f444e857a0f454fe0efb0bfa1b841a777c7576d5",
+    "evidence_artifact_id": 10748658279
+  },
+  "conclusions": [
+    "A, B and total static Feddes functional error all decrease under the preregistered dyadic refinement sweep.",
+    "The all-case numerical-distinguishability frontier for A, B and total error is 0.078125 cm, exactly the 2048-node Reference support.",
+    "At 0.15625 cm, total functional error remains above the frozen numerical guard in every tested material/history case.",
+    "Therefore the tested mechanism does not support a useful reduced pure-hydraulic vertical support as the complete remedy for the R16 root-feedback error.",
+    "This does not by itself select a root-specific state, because D2 diagnoses information demand but not a minimal sufficient root-information representation or its dynamic closure."
+  ],
+  "decision": {
+    "pure_hydraulic_static_refinement_explains_error_collapse": true,
+    "useful_reduced_pure_hydraulic_static_frontier_demonstrated": false,
+    "new_root_specific_state_selected": false,
+    "dynamic_augmented_candidate_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-S3-D3",
+    "question": "For the frozen drought-only piecewise-linear Feddes functional, what is the minimal root-weighted within-layer information that is mathematically sufficient to reconstruct the exact layer uptake functional, and which smaller information sets remain non-unique?",
+    "role": "SUFFICIENCY_DERIVATION_AND_SAME_STATE_VERIFICATION_ONLY",
+    "constraint": "No dynamic reduced candidate, no new propagated state, no fitted coefficients, no application tolerance and no performance claim."
+  },
+  "model_changed": false
+}
