@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.ribasim_management.real_ribasim_aligned_fixture.preregistration.v1",
+  "work_unit": "RM08",
+  "date": "2026-09-23",
+  "title": "Minimal real SWAP management to real Ribasim aligned-boundary fixture",
+  "depends_on": {
+    "RM06": "QUALIFIED_BOUNDED_TRANSACTIONAL_MANAGEMENT_STATE",
+    "RM07": "QUALIFIED_READ_ONLY_ORIGIN_BOUND_MANAGEMENT_DEMAND_RECEIPT",
+    "ribasim_characterization": "RM01 frozen"
+  },
+  "ribasim_pin": {
+    "repository": "Deltares/Ribasim",
+    "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "release_context": "v2026.1.1 product-release authority already used by the frozen characterization"
+  },
+  "fixed_case": {
+    "management_window_days": 1.0,
+    "allocation_dt_seconds": 86400.0,
+    "solver_saveat_seconds": 86400.0,
+    "represented_area_m2": 1000.0,
+    "swap_expected_request_depth_cm": 2.0,
+    "surface_supply_m3_per_day": 25.0,
+    "user_demand_priority": 2,
+    "initial_basin_level_m": 1.0,
+    "user_demand_min_level_m": 0.99,
+    "drainage": "off",
+    "competing_user_demands": 0
+  },
+  "frozen_sequence": [
+    "derive RM07 read-only receipt from accepted SWAP management checkpoint",
+    "convert receipt depth to Ribasim UserDemand using represented area",
+    "initialize an accepted real Ribasim origin without advancing it",
+    "run candidate A from the same serialized Ribasim origin and discard it",
+    "prove accepted Ribasim origin did not advance and accumulated no UserDemand inflow",
+    "run candidate B independently from the same serialized origin",
+    "require candidate A/B allocation, physical supplied volume and Basin endpoint replay",
+    "feed candidate-B allocated and physically supplied equivalent depths into RM06",
+    "reject first SWAP candidate, replay from same checkpoint, commit second candidate exactly once"
+  ],
+  "hypotheses": [
+    "Real Ribasim allocates the full 2 cm equivalent request because the frozen case has sufficient supply.",
+    "Real Ribasim physically supplies the full request over the accepted one-day window.",
+    "Discarding candidate A does not mutate the accepted Ribasim origin.",
+    "Candidate B reproduces candidate A within frozen replay tolerances.",
+    "Allocation and physical supply remain separately observed quantities even when numerically equal in this sufficient-supply case.",
+    "The real Ribasim quantities are accepted by the same RM06 SWAP transaction without changing the original RM07 request."
+  ],
+  "tolerances": {
+    "allocated_equivalent_depth_cm": 1e-6,
+    "supplied_equivalent_depth_cm": 1e-4,
+    "candidate_replay_equivalent_depth_cm": 1e-8,
+    "candidate_replay_basin_level_m": 1e-10
+  },
+  "failure_rule": "Scientific expectations and tolerances are frozen before execution. Only technical setup or compiler failures may be repaired automatically.",
+  "nonclaims": [
+    "No partial-supply policy.",
+    "No noncommensurate clock qualification.",
+    "No full Richards hydrological application yet.",
+    "No MODFLOW composition.",
+    "Discard/promote of separate Ribasim model instances is a qualification fixture transaction pattern, not a claimed production checkpoint API."
+  ]
+}
