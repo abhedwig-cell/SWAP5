@@ -135,6 +135,7 @@ module mod_transaction_reference
     real(real64) :: accepted_dt = 0.0_real64
     real(real64) :: temporal_error = huge(0.0_real64)
     real(real64) :: temporal_indicator = huge(0.0_real64)
+    real(real64) :: max_temporal_indicator = 0.0_real64
     real(real64) :: full_mass_residual = huge(0.0_real64)
     real(real64) :: half_mass_residual = huge(0.0_real64)
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
@@ -494,6 +495,9 @@ contains
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
       result%temporal_indicator = outcome%temporal_indicator
+      if (ieee_is_finite(outcome%temporal_indicator) .and. outcome%temporal_indicator >= 0.0_real64) then
+        result%max_temporal_indicator = max(result%max_temporal_indicator,outcome%temporal_indicator)
+      end if
 
       accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
       accepted_missing_mask = ior(accepted_missing_mask, outcome%missing_mass_contribution_mask)
