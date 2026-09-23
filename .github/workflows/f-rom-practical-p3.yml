@@ -79,16 +79,31 @@ jobs:
           done
       - name: Execute Reference routes
         run: |
-          set -euo pipefail
+          set -uo pipefail
           /tmp/p3_r64/rom0_test > evidence/r64.txt 2>&1
-          /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o evidence/r128_timing.json             /tmp/p3_r128/rom0_test > evidence/r128.txt 2>&1
+          s64=$?
+          /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o evidence/r128_timing.json /tmp/p3_r128/rom0_test > evidence/r128.txt 2>&1
+          s128=$?
+          echo "REFERENCE_STATUS_R64=$s64"
+          echo "REFERENCE_STATUS_R128=$s128"
           if [ "${{ matrix.purpose }}" = "SURF_P" ]; then
-            test "$(grep -c '^LAREDYN0R_STATE|' evidence/r128.txt)" -eq 3840
-            test "$(grep -c '^LAREDYN0R_PROFILE|' evidence/r128.txt)" -eq 1920
+            cstate=$(grep -c '^LAREDYN0R_STATE|' evidence/r128.txt || true)
+            cprof=$(grep -c '^LAREDYN0R_PROFILE|' evidence/r128.txt || true)
+            echo "REFERENCE_STATE_COUNT=$cstate"
+            echo "REFERENCE_PROFILE_COUNT=$cprof"
           else
-            test "$(grep -c '^LAREGW1_STATE|' evidence/r128.txt)" -eq 3840
-            test "$(grep -c '^LAREGW1_PROFILE|' evidence/r128.txt)" -eq 1920
+            cstate=$(grep -c '^LAREGW1_STATE|' evidence/r128.txt || true)
+            cprof=$(grep -c '^LAREGW1_PROFILE|' evidence/r128.txt || true)
+            echo "REFERENCE_STATE_COUNT=$cstate"
+            echo "REFERENCE_PROFILE_COUNT=$cprof"
           fi
+          if [ "$s64" -ne 0 ] || [ "$s128" -ne 0 ]; then
+            echo "=== R64 tail ==="; tail -80 evidence/r64.txt || true
+            echo "=== R128 tail ==="; tail -80 evidence/r128.txt || true
+            exit 1
+          fi
+          test "$cstate" -eq 3840
+          test "$cprof" -eq 1920
       - name: Analyze daily practical case
         run: |
           python3 tools/rom/analyze_rom_practical_p3.py             --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}"             --candidate evidence/candidate.json --r64 evidence/r64.txt --r128 evidence/r128.txt             --r128-timing evidence/r128_timing.json --split "${{ steps.split.outputs.name }}"             --output evidence/result.json
