@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.sw_rib_adm01.g5.preregistration.v1",
+  "work_unit": "SW-RIB-ADM01-G5",
+  "date": "2026-09-23",
+  "title": "End-to-end external surface-water exchange transaction",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Qualify one origin-bound coupled transaction in which accepted Ribasim surface-water state supplies the control head, SWAP computes a signed exchange request, Ribasim realizes the physical transfer subject to availability, and both sides commit exactly once only when the realized transfer and accepted origins are mutually consistent.",
+  "authorities": {
+    "swap_process": "SW-RIB-SWM01 Q4B signed extended exchange runtime binding",
+    "availability": "SW-RIB-SWM01 Q3A signed lower-exchange availability",
+    "transaction_contract": "RM02 management contract",
+    "origin_binding": "RM10 origin-bound realization receipt",
+    "accepted_state_policy": "SW-RIB-ADM01 G1-G3"
+  },
+  "decomposition": {
+    "G5A_ORIGIN_BOUND_TRANSACTION": {
+      "no_real_ribasim_required": true,
+      "objective": "Qualify typed origin identity, nonmutating candidate evaluation, stale-origin rejection, retry determinism and recomposition state machine independently of product execution.",
+      "objects": [
+        "accepted SWAP origin revision",
+        "accepted Ribasim origin id/revision",
+        "accepted external surface-water head snapshot",
+        "signed SWAP requested transfer",
+        "Ribasim realized transfer receipt",
+        "coupled candidate disposition"
+      ]
+    },
+    "G5B_EXACT_RELEASE_REALIZATION": {
+      "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "objective": "Use exact-release Ribasim to realize the frozen positive, sufficient-negative and availability-limited-negative cases, then feed the resulting receipt into the G5A transaction state machine."
+    }
+  },
+  "cases": [
+    {
+      "id": "E1_POSITIVE_DRAINAGE_FULL_REALIZATION",
+      "requested_direction": "SWAP_TO_RIBASIM",
+      "expected": "realized equals requested; one joint commit; both accepted revisions advance exactly once"
+    },
+    {
+      "id": "E2_NEGATIVE_INFILTRATION_FULL_REALIZATION",
+      "requested_direction": "RIBASIM_TO_SWAP",
+      "expected": "realized equals requested; one joint commit; exactly-once opposite-sign booking"
+    },
+    {
+      "id": "E3_NEGATIVE_INFILTRATION_AVAILABILITY_LIMITED",
+      "requested_direction": "RIBASIM_TO_SWAP",
+      "expected": "first candidate does not commit; realized transfer differs from requested; disposition RECOMPOSITION_REQUIRED; both models restart from unchanged accepted origins; recomposed candidate may commit only with the realized transfer"
+    },
+    {
+      "id": "E4_STALE_ORIGIN",
+      "expected": "receipt or candidate bound to a stale SWAP or Ribasim revision fails closed with no commit"
+    },
+    {
+      "id": "E5_RETRY_DETERMINISM",
+      "expected": "same accepted origins and identical external inputs reproduce identical request, realization receipt and recomposition disposition"
+    }
+  ],
+  "hard_invariants": [
+    "Requested transfer is never accepted physical mass by itself.",
+    "Ribasim realized transfer is authoritative for external physical mass.",
+    "If requested and realized differ, neither side may commit the first candidate.",
+    "Recomposition starts from the exact same accepted SWAP and Ribasim origins.",
+    "No accepted state changes on rejection.",
+    "Exactly one accepted transfer identity is booked on SWAP and Ribasim with opposite signs.",
+    "A stale origin revision fails closed.",
+    "Accepted external head snapshot revision must match the Ribasim origin used by the realization receipt."
+  ],
+  "forbidden": [
+    "accept SWAP requested infiltration then clip only Ribasim",
+    "reuse a trial Ribasim head as accepted control input",
+    "mix a realization receipt from one Ribasim revision with a SWAP candidate from another coupled origin",
+    "book both requested and realized transfer"
+  ],
+  "production_admission": false
+}
