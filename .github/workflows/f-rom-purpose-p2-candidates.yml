@@ -1,0 +1,172 @@
+name: F-ROM-PURPOSE P2 candidate placement
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p2-candidates
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify candidate authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile             tests/rom/run_rom_purpose_p2_candidate.py             tests/rom/analyze_rom_purpose_p2_candidates.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_EXECUTION_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json'))
+          i=json.load(open('integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json'))
+          m=json.load(open('integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json'))
+          assert b['status']=='BOUND_AFTER_P2_REFERENCE_QUALIFICATION'
+          assert r['status']=='P2_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED'
+          assert r['candidate_response_authorized'] is True
+          assert i['status']=='PREPARED_NOT_AUTHORIZED_NOT_EXECUTED'
+          assert float(m['placement_decision']['componentwise_equality_tolerance'])==1.0e-12
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  candidate:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B01, B14]
+        member: [S4, G4, U4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Run frozen candidate
+        run: |
+          set -euo pipefail
+          mkdir -p candidate
+          python3 tests/rom/run_rom_purpose_p2_candidate.py             --purpose "${{ matrix.purpose }}"             --material "${{ matrix.material }}"             --member "${{ matrix.member }}"             --p2-prereg integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --p2-reference-result integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json             --p1-reference-result integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json             --output "candidate/${{ matrix.purpose }}_${{ matrix.material }}_${{ matrix.member }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2candidate-${{ matrix.purpose }}-${{ matrix.material }}-${{ matrix.member }}
+          path: candidate/
+          if-no-files-found: error
+
+  analyze:
+    needs: candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p2candidate-*
+          path: /tmp/candidates
+          merge-multiple: true
+      - name: Reconstruct frozen surface Reference target and comparator
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p2src/full /tmp/p2src/s1 /tmp/p2src/s2 /tmp/p2src/s3 /tmp/p2src/s4 /tmp/p2surface
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2full-*' -D /tmp/p2src/full
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg1-*' -D /tmp/p2src/s1
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg2-*' -D /tmp/p2src/s2
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg3-*' -D /tmp/p2src/s3
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg4-*' -D /tmp/p2src/s4
+          for material in B01 B14; do
+            out="/tmp/p2surface/surface_${material}_R512_T32_o0.txt"; : > "$out"
+            for i in 1 2 3 4; do
+              src="$(find /tmp/p2src/full -type f -name "surface_${material}_R512_T32_o0_h${i}.txt" -print -quit)"
+              test -n "$src"; cat "$src" >> "$out"
+            done
+            out="/tmp/p2surface/surface_${material}_R2048_T32_o0.txt"; : > "$out"
+            for i in 1 2 3 4; do
+              for d in s1 s2 s3 s4; do
+                src="$(find /tmp/p2src/${d} -type f -path "*/p2seg${d#s}-${material}-R2048_T32-h${i}/segment.txt" -print -quit)"
+                test -n "$src"; cat "$src" >> "$out"
+              done
+            done
+          done
+      - name: Download inherited P1 GW Reference routes
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p1gw
+          gh run download 35751978638 --repo abhedwig-cell/SWAP5             -n p1ref-routes -D /tmp/p1gw
+          test -f /tmp/p1gw/gw_B01_R2048_T32_o0.txt
+          test -f /tmp/p1gw/gw_B14_R2048_T32_o0.txt
+          test -f /tmp/p1gw/gw_B01_R512_T32_o0.txt
+          test -f /tmp/p1gw/gw_B14_R512_T32_o0.txt
+      - name: Analyze purpose-specific placement
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p2_candidates.py             --p2-prereg integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --p2-reference-result integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json             --p1-reference-result integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json             --surface-reference-root /tmp/p2surface             --gw-reference-root /tmp/p1gw             --candidate-root /tmp/candidates             --output result/ROM_PURPOSE_P2_PLACEMENT_RESULT.json             | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p2-placement
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_RUN: ${{ github.run_id }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p2-placement
+          path: /tmp/result
+      - name: Persist placement result
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P2_PLACEMENT_RESULT.json integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json'))
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P2_STATUS.json'))
+          h4=bool(r['hypotheses']['H4_same_partition_corichards_diagnostic_required'])
+          s.update({
+            'phase':'P2_PLACEMENT_RESULT_PERSISTED_H4_PENDING' if h4 else 'P2_PLACEMENT_RESULT_PERSISTED',
+            'candidate_response_authorized':True,
+            'candidate_response_generated':True,
+            'placement_result':'integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json',
+            'candidate_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'candidate_execution_sha':os.environ['SOURCE_SHA'],
+            'blockers':['H4_SAME_PARTITION_CORICHARDS_DIAGNOSTIC_REQUIRED'] if h4 else [],
+            'next_action':'RUN_H4_SAME_PARTITION_CORICHARDS_DIAGNOSTIC' if h4 else 'CLOSE_P2_PLACEMENT_WITHOUT_GENERAL_CLOSURE_SEARCH',
+            'recovery_point':'integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json'
+          })
+          s['scientific_firewall']['any_layer_rom_candidate_response_seen']=True
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json integration/f-rom/ROM_PURPOSE_P2_STATUS.json
+          git commit -m "ROM-PURPOSE P2: persist purpose-specific placement result" || exit 0
+          git push origin HEAD:work/f-rom-purpose
