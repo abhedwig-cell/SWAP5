@@ -14,7 +14,7 @@
     "source_equation": "AgeTracer task-1 afgen_2(agemltb,nconc,abs(z(i)),ageml(i),ipos) and exact afgen_2 search/clamp/interpolation semantics"
   },
   "scope": {
-    "input_table": "B1.11 alternating x/y values, odd-length active table, monotone full pairs followed by optional descending-x partial terminator",
+    "input_table": "B1.11 alternating x/y values, even-length active table, monotone full pairs followed by optional descending-x partial terminator",
     "input_depth": "absolute node depth, nonnegative",
     "cursor": "Historical ipos hint, zero or odd on entry; updated to source-selected segment position",
     "state_owner_ingestion_validation_and_file_errors": "OUT OF SCOPE"
