@@ -2,10 +2,11 @@
   "schema": "swap5.m7.optional_resource_runtime_measurement.v1",
   "criterion": "M7-03",
   "method": "O0/O2 direct GNU Fortran runtime measurement with per-run process-evaluation counters and payload sizes from allocated array extents; production physics and solver tolerances unchanged",
-  "scope": "same-node-count serialized BASE inactive-option replay versus admitted PPA-WU04A Black runtime profile; external common parameter/state/forcing arrays, runtime common solver/work arrays, Black input payload, and exact Black process-call count",
+  "scope": "same-node-count serialized BASE inactive-option replay versus admitted PPA-WU04A Black and PPA-WU04B Boesten runtime profiles; external common parameter/state/forcing arrays, runtime common solver/work arrays, option input payloads, and exact process-call counts",
   "workload": {
     "base": "three-column serialized A-B-A batch with BASE state/parameter/forcing layouts; Black, Boesten, snow and restricted soil-temperature allocatable payloads are asserted absent",
     "black": "admitted WU04A Black production-application profile plus one direct full/half backend trial used to inspect exact option evaluation-call count",
+    "boesten": "admitted WU04B Boesten production-application profile plus one direct full/half backend trial used to inspect exact option evaluation-call count",
     "active_nodes": 4,
     "hard_mass_tolerance": 1e-12
   },
@@ -26,11 +27,20 @@
       "soil_temperature_optional_parameter_and_workspace_arrays": 0,
       "black_parameter_forcing_and_continuation_scalar_payload": 104
     },
+    "boesten": {
+      "common_parameter_arrays": 864,
+      "common_physical_state_arrays": 64,
+      "common_forcing_arrays": 128,
+      "serialized_common_solver_and_work_arrays": 1352,
+      "soil_temperature_optional_parameter_and_workspace_arrays": 0,
+      "boesten_parameter_forcing_and_continuation_scalar_payload": 96
+    },
     "accounting_note": "Byte totals use element storage_size multiplied by actual allocated array extents, plus existing Richards and A23BU workspace payload counters. They exclude Fortran allocation descriptors, allocator metadata/alignment, fixed backend record storage, automatic stack temporaries and transient high-water buffers cleared before observation."
   },
   "option_process_evaluation_calls_per_run_trial": {
     "base_a_b_a_columns": [0, 0, 0],
     "black_full_half_trial": 3,
+    "boesten_full_half_trial": 3,
     "boesten_snow_soil_temperature_drainage_response_in_measured_profiles": 0
   },
   "verification": {
@@ -39,16 +49,16 @@
       "tests/fmr/test_m7_serialized_worker_scratch_reuse.f90",
       "tests/fapp/test_ppa_wu04a_black_runtime.f90"
     ],
-    "result": "PASS_O0_O2_IDENTICAL_TRANSCRIPTS_FOR_BASE_AND_BLACK",
+    "result": "PASS_O0_O2_IDENTICAL_TRANSCRIPTS_FOR_BASE_BLACK_AND_BOESTEN",
     "additional_checks": [
       "BASE optional parameter, forcing and physical-state payloads are absent",
       "BASE option-specific process-call counters remain zero across all three columns",
       "BASE and Black common parameter/state/forcing payloads and serialized common workspace bytes match",
-      "Black evaluated exactly three times for the direct full/half trial",
+      "Black and Boesten each evaluated exactly three times for their direct full/half trial",
       "the WU04A production application retains its existing hard-mass, retry, restart and layout-guard gates"
     ]
   },
   "criterion_status": "PARTIAL",
-  "remaining_gap": "Runtime active/inactive measurement covers BASE versus Black only. Runtime option calls and payloads for snow, restricted soil temperature and drainage response, other optional-state compositions, fixed descriptors, allocator overhead and transient peak memory are not measured by this checkpoint.",
+  "remaining_gap": "Runtime active/inactive measurement covers BASE versus Black and Boesten only. Runtime option calls and payloads for snow, restricted soil temperature and drainage response, other optional-state compositions, fixed descriptors, allocator overhead and transient peak memory are not measured by this checkpoint.",
   "next_action": "Extend the same counters and payload census to admitted active snow, restricted soil-temperature and drainage-response cases where their qualification prerequisites permit; do not treat zero counters in inactive profiles as qualification of the active option."
 }

@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "678581d0de34c6c34d4bcdba132dfaf4d3fd69de",
-    "local_relation_to_previous_canonical_base": "187 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "877c4b92820528daaca7f62dc53e315b7b629d88",
+    "local_relation_to_previous_canonical_base": "189 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "678581d0de34c6c34d4bcdba132dfaf4d3fd69de",
+    "last_reconciled_head": "877c4b92820528daaca7f62dc53e315b7b629d88",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -1221,7 +1221,7 @@
           "id": "M7-03",
           "text": "inactive optional functionality does not allocate equivalent persistent memory or compute on every column",
           "status": "PARTIAL",
-          "gap": "A runtime payload/call census now compares BASE against admitted Black at equal node count and records identical common arrays/workspace plus zero BASE versus three Black process evaluations. This runtime measurement does not yet cover active snow, restricted soil temperature, Boesten or drainage-response resource/call behavior; fixed descriptors, allocator overhead and transient peak buffers remain unmeasured. The prior static census still excludes rejected optional physics.",
+          "gap": "A runtime payload/call census now compares BASE against admitted Black and Boesten at equal node count and records identical common arrays/workspace plus zero BASE versus three option-process evaluations per active full/half trial. This runtime measurement does not yet cover active snow, restricted soil temperature or drainage-response resource/call behavior; fixed descriptors, allocator overhead and transient peak buffers remain unmeasured. The prior static census still excludes rejected optional physics.",
           "evidence": [
             "integration/audits/M7_OPTIONAL_STATE_ALLOCATION_CENSUS.json",
             "integration/audits/M7_OPTIONAL_RESOURCE_RUNTIME_MEASUREMENT.json",
@@ -1229,7 +1229,8 @@
             "tests/fmr/run_m7_optional_state_allocation_census.py",
             "tests/fmr/run_m7_optional_resource_measurement.py",
             "tests/fmr/test_m7_serialized_worker_scratch_reuse.f90",
-            "tests/fapp/test_ppa_wu04a_black_runtime.f90"
+            "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+            "tests/fapp/test_ppa_wu04b_boesten_runtime.f90"
           ],
           "next_bounded_action": "Extend the same per-run evaluation counters and allocated-payload census to active snow, restricted soil-temperature and drainage-response profiles only where their qualification prerequisites permit; preserve serial execution and physics."
         },
@@ -1391,5 +1392,5 @@
     }
   ],
   "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
-    "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=678581d0de34c6c34d4bcdba132dfaf4d3fd69de (M7-03 BASE-versus-Black O0/O2 payload and process-call census passed); M7-03 remains partial beyond Black; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
+    "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=877c4b92820528daaca7f62dc53e315b7b629d88 (M7-03 BASE/Black/Boesten O0/O2 payload and process-call census passed); M7-03 remains partial for snow, restricted soil temperature and drainage response; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
 }
