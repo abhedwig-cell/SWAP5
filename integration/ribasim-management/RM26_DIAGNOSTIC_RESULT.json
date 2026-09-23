@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_temporal_localization.diagnostic.v1",
+  "work_unit": "RM26",
+  "date": "2026-09-23",
+  "status": "DIAGNOSTIC_PASS_FORMAL_24_04_AUTHORITY_PENDING",
+  "workflow": "RM26 temporal localization diagnostic",
+  "workflow_run": 35904726073,
+  "workflow_job": 107329410134,
+  "conclusion": "success",
+  "frozen_case": {
+    "horizon_seconds": 8.64,
+    "comparison": "one 8.64 s step versus two sequential 4.32 s steps",
+    "irrigation_rate_cm_per_day": 36.0,
+    "bottom_flux_cm_per_day": 1e-6,
+    "node_count": 4
+  },
+  "observations": {
+    "global_max_head_difference_cm": 0.0463838022838558572,
+    "global_max_head_node": 1,
+    "global_max_head_node_z_cm": -0.25,
+    "bottom_node_head_difference_cm": 0.0000435876321063233263,
+    "upper20_max_head_difference_cm": 0.0463838022838558572,
+    "lower20_max_head_difference_cm": 0.0000435876321063233263,
+    "global_max_water_content_difference": 0.000046720584927051334,
+    "column_storage_difference_signed_cm": 0.0,
+    "column_storage_difference_abs_cm": 0.0,
+    "ponding_difference_cm": 0.0,
+    "top_flux_difference_cm_per_day": 0.0,
+    "bottom_flux_difference_cm_per_day": 0.0,
+    "top_to_bottom_head_difference_ratio": 1064.1357874601
+  },
+  "interpretation": [
+    "The independent same-horizon temporal discrepancy is strongly localized at the top node.",
+    "The bottom-node pressure-head discrepancy is more than three orders of magnitude smaller than the global maximum.",
+    "Total column water storage is identical at reported precision despite the internal profile redistribution difference.",
+    "Surface ponding and imposed top/bottom transfer rates are identical.",
+    "Therefore the RM23 global maximum pressure-head difference is not representative of the conservation state or the lower-interface state relevant to the current fixed-interface coupling purpose."
+  ],
+  "authority_boundary": {
+    "formal_RM26_ubuntu_24_04": "PENDING",
+    "replacement_temporal_tolerance": "NONE",
+    "triangle_admission": "NOT_CLAIMED"
+  },
+  "next_required_boundary": "RM27 must test whether the two endpoints remain distinguishable in the admitted fixed-interface q_swap(H) response at the existing F-GC44 interface resolution."
+}
