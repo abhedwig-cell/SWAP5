@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ctypes
 import math
 import os
 import shutil
@@ -46,6 +47,13 @@ HEAD_REPLAY_TOL=1.0e-10
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def preload_ribasim_julia_runtime(bundle_root: Path) -> Path:
+    candidates=sorted(bundle_root.rglob("libjulia.so.1.12"))
+    require(len(candidates)==1,f"expected one bundled libjulia.so.1.12, found {candidates}")
+    ctypes.CDLL(str(candidates[0]),mode=ctypes.RTLD_GLOBAL)
+    return candidates[0]
 
 
 def make_ribasim_api_copy(source_lib: Path, dep_dir: Path, tag: str, workdir: Path) -> RibasimApi:
@@ -185,6 +193,8 @@ def main()->None:
     require(swaplib.is_file(),"missing SWAP shared library")
     require(ribasim_model.is_file(),"missing Ribasim model")
     require(ribasim_lib.is_file(),"missing exact-release libribasim")
+    bundled_julia=preload_ribasim_julia_runtime(ribasim_lib.parent.parent)
+    print(f"RM13_RIBASIM_BUNDLED_JULIA_RUNTIME={bundled_julia}")
 
     management=Rm13Management(swaplib)
     requested=management.initialize()
