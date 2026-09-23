@@ -202,24 +202,24 @@ contains
 
     if (state%ksatexm_extension_enabled) then
       allocate(ext_lo(n), ext_hi(n), ext_mid(n), relsat(n))
-      ! F-SI39 is defined by the strict relsat > threshold predicate.
-      ! Do not assume the nominal source head (-2 cm) is bitwise on the
-      ! inactive side: reconstructing relsat from theta can differ by one ULP.
-      ! Bracket from a guaranteed dry state and locate the actual floating
-      ! transition used by the analytical authority.
-      ext_lo = GENERATION_H_DRY
+      ! Reproduce the controlling TAB-HYD-KX05 floating-boundary authority.
+      ! Branch ownership is located with the same explicit theta relation used
+      ! by KX05, not with the generated table and not with a tolerance.
+      ext_lo = FSI39_SOURCE_HEAD
       ext_hi = 0.0_real64
 
-      hvec = ext_lo
-      call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+      do i = 1, n
+        theta(i) = authority_theta(parameters%cofgen(:,i),ext_lo(i))
+      end do
       relsat = (theta-state%theta_r)/state%delta_theta
       if (any(relsat > state%relsat_threshold)) then
         status = F_TAB02_STATE_GENERATION_FAILED
         return
       end if
 
-      hvec = ext_hi
-      call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+      do i = 1, n
+        theta(i) = authority_theta(parameters%cofgen(:,i),ext_hi(i))
+      end do
       relsat = (theta-state%theta_r)/state%delta_theta
       if (any(relsat <= state%relsat_threshold)) then
         status = F_TAB02_STATE_GENERATION_FAILED
@@ -234,8 +234,9 @@ contains
             ext_mid(i) = ext_lo(i) + 0.5_real64*(ext_hi(i)-ext_lo(i))
           end if
         end do
-        hvec = ext_mid
-        call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+        do i = 1, n
+          theta(i) = authority_theta(parameters%cofgen(:,i),ext_mid(i))
+        end do
         relsat = (theta-state%theta_r)/state%delta_theta
         do i = 1, n
           if (nearest(ext_lo(i),1.0_real64) >= ext_hi(i)) cycle
@@ -505,6 +506,27 @@ contains
     if (self%ksatexm_extension_enabled) bytes = bytes + int(6*self%active_nodes,int64)*8_int64
   end function generated_state_estimated_bytes
 
+
+  pure real(real64) function authority_theta(c,hv) result(theta)
+    real(real64), intent(in) :: c(:),hv
+    real(real64) :: m,delta,theta_crit,wet_capacity,help
+
+    m = 1.0_real64 - 1.0_real64/c(6)
+    delta = c(2)-c(1)
+    if (hv >= 0.0_real64) then
+      theta = c(2)
+    else if (hv > H_CRIT) then
+      help = abs(c(4)*H_CRIT)**c(6)
+      theta_crit = c(1) + delta/((1.0_real64+help)**m)
+      wet_capacity = (c(2)-theta_crit)/(-H_CRIT)
+      theta = theta_crit + wet_capacity*(hv-H_CRIT)
+      theta = min(theta,c(2))
+    else
+      help = abs(c(4)*hv)**c(6)
+      help = (1.0_real64+help)**m
+      theta = c(1) + delta/help
+    end if
+  end function authority_theta
 
   pure logical function b110_generated_mvg_ksatexm_profile_supported(cofgen) result(supported)
     real(real64), intent(in) :: cofgen(:,:)
