@@ -13,7 +13,7 @@
   "implementation_blobs": {
     ".github/workflows/rom-root-ra02-d2.yml": "a4633cfa60b831eb5ed8eb5efd73d225e6ae5ec7",
     "tests/rom/materialize_rom_root_ra02_d2_node_regime.py": "3107334f73e3ea4eabe1068f7a3c86547bfa9133",
-    "tests/rom/analyze_rom_root_ra02_d2.py": "95ddc059bb7e68722ede34f951d134903280c5c1"
+    "tests/rom/analyze_rom_root_ra02_d2.py": "d1e563a3025df9af9ce77636f2470045f80c4c59"
   },
   "inherited_execution_blobs": {
     "tests/rom/materialize_rom_root_ra01_reference_policy.py": "35406bf5e9fd4e86525338dc14969cf91d4f1fa7",
@@ -64,5 +64,8 @@
   "technical_repairs": [
     "integration/f-rom/ROM_ROOT_RA02_D2_TECHNICAL_REPAIR.json"
   ],
-  "rebound_after_technical_repair": true
+  "rebound_after_technical_repair": true,
+  "authority_adjudication": "integration/f-rom/ROM_ROOT_RA02_D2_AUTHORITY_ADJUDICATION.json",
+  "original_ra02_release_authorized": false,
+  "ra02r_dependency_on_d2": false
 }
