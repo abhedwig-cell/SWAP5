@@ -36,6 +36,25 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
+      - name: Freeze production source delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=43577e083ae1e315d86cafd55f971d80279db27c
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-only "$BASE"..HEAD -- src | sort > /tmp/fapp09-src.txt
+          printf '%s\n' \
+            src/adapter/mod_ribasim_surface_water_profile.f90 \
+            src/process/mod_drainage_extended_exchange.f90 \
+            src/runtime/mod_fmr_drainage_response_binding.f90 | sort > /tmp/fapp09-expected-src.txt
+          diff -u /tmp/fapp09-expected-src.txt /tmp/fapp09-src.txt
+          test "$(git rev-parse HEAD:src/process/mod_drainage_extended_exchange.f90)" = "25d76013d25c2eaa2d254865149c740bc3257617"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_drainage_response_binding.f90)" = "263cf55b2c336d149ba41b4d04f510e10c4207e2"
+          ! grep -Eiq 'SWST|WLSTAR|WLSBAK|OSSWLM|WSCAP' src/adapter/mod_ribasim_surface_water_profile.f90
+          ! grep -Eiq 'ribasim|surface.?water.?storage|WLSTAR|WLSBAK|OSSWLM|WSCAP' src/process/mod_drainage_extended_exchange.f90
+          echo 'FAPP09_EXACT_PRODUCTION_SOURCE_DELTA=PASS'
+          echo 'FAPP09_RESEARCH_BLOB_BINDING=PASS'
+          echo 'FAPP09_NO_DUPLICATE_SURFACE_STATE_STATIC=PASS'
       - name: Replay source-bound signed exchange
         run: bash tests/fapp09/run_extended_exchange_candidate.sh
       - name: Replay transactional runtime binding
@@ -44,3 +63,5 @@ jobs:
         run: bash tests/fapp09/run_profile_contract.sh
       - name: Qualify frozen Q1H storage geometry epsilon
         run: bash tests/fapp09/run_storage_geometry_epsilon.sh
+      - name: Qualify restart and accepted-head composition
+        run: bash tests/fapp09/run_restart_e2e.sh
