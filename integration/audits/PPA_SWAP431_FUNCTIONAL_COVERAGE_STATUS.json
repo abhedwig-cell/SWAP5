@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Reconcile the complete B1.11 AgeTracer task-1 initialization order, derived storage/profile totals and interval-accumulator reset/commit lifecycle against SWAP5 owner contracts. Continue with stateless algebra/serialization work, do not create duplicate persistent ownership.",
-  "recovery_point": "latest committed campaign checkpoint 691768661a16727a5afcbfb97a366f8c0a7fab22 (PPA-SOL-AGE-INIT task-1 table-to-node source oracle); local campaign branch only, not pushed or canonically admitted.",
+  "next_safe_step": "Inspect the existing B1.10 process checkpoint solute/ageml owner, accepted trial/restart coverage and B1.11 task dispatch contracts. Identify which AgeTracer persistent fields and reports already have a single owner before attempting lifecycle composition; continue safe source/report slices meanwhile.",
+  "recovery_point": "latest committed campaign checkpoint acc376e6eb5144128245a4d678ce41d1d8481f35 (PPA-SOL-AGE-INITIAL-STORAGE initial profile storage/samini oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
@@ -132,6 +132,7 @@
     "PPA-SOL-AGE-GWL1M: 100000 eight-segment exact B1.11 clipped one-metre groundwater-plane weighted means at O0/O2; sentinel and invalid geometry covered.",
     "PPA-SOL-AGE-REPORT: 100000 seven-node/four-level task-3 numeric report candidates at O0/O2; profile copy, interval normalization and positive drainage sum verified.",
     "PPA-SOL-AGE-INIT: 100000 cursor-aware seven-node B1.11 afgen_2 table initializations at O0/O2; clamp, interpolation, partial-table terminator and invalid inputs checked.",
+    "PPA-SOL-AGE-INITIAL-STORAGE: 100000 nine-compartment B1.11 task-1 storage/samini initializations at O0/O2; storage and ascending-index total are bitwise verified.",
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
