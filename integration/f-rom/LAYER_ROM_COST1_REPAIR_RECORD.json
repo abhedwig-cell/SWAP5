@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.layer-rom.cost1.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-COST1",
+  "status": "PRE_TIMING_ORCHESTRATION_REPAIRED_SINGLE_AUTHORITY_ROUTE",
+  "scientific_preregistration": "integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json",
+  "failed_pre_timing_runs": [
+    {
+      "run": 35507206074,
+      "workflow": ".github/workflows/f-rom-layer-cost1-shared-host.yml",
+      "failure": "Python syntax error in tests/rom/materialize_layer_rom_cost1_lare.py during py_compile",
+      "timing_exposed": false
+    },
+    {
+      "run": 35507229507,
+      "workflow": ".github/workflows/f-rom-layer-cost1.yml",
+      "failure": "same Python syntax error during py_compile",
+      "timing_exposed": false
+    },
+    {
+      "run": 35507262111,
+      "workflow": ".github/workflows/f-rom-layer-cost1-shared-host.yml",
+      "failure": "pre-timing successor run on duplicate workflow, superseded during workflow reconciliation",
+      "timing_exposed": false
+    },
+    {
+      "run": 35507294494,
+      "workflow": ".github/workflows/f-rom-layer-cost1.yml",
+      "failure": "B16 R16-only calibration found the indivisible complete four-history workload at 15.339844 CPU-s for repeats=1, above the operational 4 s calibration target; no comparative Layer-ROM/CoRichards timing round was exposed before cancellation.",
+      "timing_exposed": false,
+      "calibration_only_exposed": true
+    }
+  ],
+  "repair": {
+    "syntax": "Closed missing list-comprehension bracket in frozen material lambda extraction; no scientific formula, route, material, timestep, metric or threshold changed.",
+    "workflow_reconciliation": "Removed duplicate f-rom-layer-cost1-shared-host.yml and retained .github/workflows/f-rom-layer-cost1.yml as the single COST1 execution authority.",
+    "reference_binding": [
+      "Layer-ROM compiled-equivalence validation uses the 1024-observation immutable B1H R16 trajectory required by the frozen C4V validation semantics.",
+      "The R16 timing comparator is separately materialized at the B1HCL ultrafine dt=0.000125 d authority and byte-validated against the immutable B1HCL artifact.",
+      "B05 CoRichards L6/R8 use the B1HCO dt=0.000125 d authority; all other same-partition CoRichards routes use the B1HCN dt=0.00025 d authority."
+    ],
+    "atomic_workload_calibration": [
+      "If R16 repeats=1 already exceeds target_cpu_seconds_max, retain repeats=1 with calibration_mode=ATOMIC_WORKLOAD_OVER_TARGET.",
+      "The complete four-history workload remains indivisible and unchanged.",
+      "Warmups=2, measured rounds=20, position-balanced route order, checksum checks, pairwise two-SE rule and all routes/materials remain unchanged."
+    ]
+  },
+  "current_authoritative_run": 35507539740,
+  "current_authoritative_head": "3a6f03ae57a8c8100f52a37bbec4b821612bee59",
+  "timing_exposure_before_authoritative_run": false,
+  "fidelity_freeze_changed": false,
+  "route_set_changed": false,
+  "acceptance_rule_changed": false,
+  "production_rom_authorized": false,
+  "calibration_exposure_before_authoritative_run": {
+    "route": "R16",
+    "material": "B16",
+    "comparative_routes_exposed": false,
+    "disposition": "OPERATIONAL_FEASIBILITY_REPAIR_ONLY"
+  }
+}

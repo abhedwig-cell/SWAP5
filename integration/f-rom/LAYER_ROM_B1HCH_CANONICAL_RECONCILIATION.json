@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.layer-rom.b1hch.canonical-reconciliation.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCH",
+  "date": "2026-09-20",
+  "branch_head_at_reconciliation": "b6e02ea763fc381860e761c6423a822e935b05fd",
+  "canonical_head": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "agents_md": {
+    "path": "AGENTS.md",
+    "canonical_blob_sha": "3da9ffe679b8fcde0ccab1fa1311dd6c81e5336b",
+    "governing_retrieval_rule": "status first -> exact ref -> relevant delta -> bounded files -> search only if needed"
+  },
+  "prior_reconciled_canonical": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "canonical_delta": {
+    "commits_ahead": 12,
+    "intersects_layer_rom_integration_paths": false,
+    "production_change": "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+    "research_change": "HYDRO_MEMORY_DYN02_VIEW01 research harness/docs",
+    "adjudication": "NO_INVALIDATION_OF_IMMUTABLE_B1H_OR_B1HCG_EVIDENCE"
+  },
+  "evidence_reuse": {
+    "B1H_material_artifacts": "retained immutable evidence",
+    "B1HCG_result": "retained",
+    "B1HCH_basis": "pinned selectively to work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215",
+    "reason": "B1HCH executes research-only candidate self-convergence without current production source or Reference source mutation."
+  },
+  "invariants_affected": [],
+  "shared_interfaces_changed": [],
+  "scope_guards": [
+    "research only",
+    "no src/** mutation",
+    "no reference/** mutation",
+    "no production ROM",
+    "no application acceptance",
+    "no closure/state redesign during B1HCH"
+  ],
+  "decision": "B1HCH_EXECUTION_AUTHORIZED_ON_PERSISTED_POSTIMAGE",
+  "production_rom_authorized": false
+}

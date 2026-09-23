@@ -1,0 +1,200 @@
+{
+  "schema": "swap5.layer-rom.phase-a3.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A3",
+  "phase": "PREREGISTERED_BEFORE_FIRST_MOMENT_STATE_RESULT",
+  "canonical_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "predecessors": {
+    "A1": "L3 minimum bounded state-information candidate in the frozen common cohort; L4/L6 added no demonstrated future-response information there.",
+    "A2": "No tested simple storage-only closure had broad L3 support.",
+    "A2B": "Integrated-centroid and storage-constrained quasi-steady closures improved the severe S3 case but worsened all three S2 primary cases; decision A2B_NO_STORAGE_ONLY_CLOSURE_SUPPORTED.",
+    "MECH1": "Prior branch-local mechanism evidence attributes the dominant standard-LARE error to hydraulic-gradient reconstruction at a long-layer-to-local-layer interface."
+  },
+  "scientific_question": "Does one physically interpretable first vertical moment of water storage inside the L3 long layer supply the missing local profile information needed for a broadly supported long-to-local Darcy closure, and is that information more useful than spending the same fourth state on an explicit 130-140 cm storage layer?",
+  "state_candidates": {
+    "L3": {
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state": [
+        "W_0_140",
+        "W_140_150",
+        "W_150_160"
+      ],
+      "role": "storage-only baseline"
+    },
+    "L3_M1": {
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state": [
+        "W_0_140",
+        "W_140_150",
+        "W_150_160",
+        "M1_0_140"
+      ],
+      "M1_definition": "M1_0_140 = (1/L) * integral_0^L [(z-L/2) * theta(z)] dz, L=140 cm, depth z positive downward",
+      "physical_interpretation": "first centered vertical water-storage moment; equivalently the displacement of water storage toward the upper or lower part of the long layer",
+      "role": "minimal additional internal-profile state"
+    },
+    "L4": {
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state": [
+        "W_0_130",
+        "W_130_140",
+        "W_140_150",
+        "W_150_160"
+      ],
+      "role": "same-dimension explicit-resolution control"
+    }
+  },
+  "teacher_forced_state_source": {
+    "artifact_id": 10586020583,
+    "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
+    "reference": "fine 16 x 10 cm B01 DYN0A fixed-flux Reference",
+    "primary_cases": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F3"
+    ],
+    "rule": "All storage and moment coordinates are exact projections of the Reference state. No reduced-state propagation occurs in A3."
+  },
+  "moment_closures": [
+    {
+      "id": "C_M1_LINEAR_THETA",
+      "definition": [
+        "Assume theta(z) is linear across 0-140 cm.",
+        "Mean theta is fixed by W_0_140 and slope is fixed analytically by M1_0_140.",
+        "Evaluate reconstructed theta and constitutive psi/K at z=135 cm, the center of the fine 130-140 cm cell adjacent to the 140 cm face.",
+        "Use the exact L3 140-150 cm layer mean as the lower 145 cm representative state.",
+        "Compute the 140 cm face flux with the same 10 cm center-to-center Darcy geometry and arithmetic interface conductivity as the fine Reference diagnostic."
+      ],
+      "fitted_parameters": false
+    },
+    {
+      "id": "C_M1_LINEAR_PSI",
+      "definition": [
+        "Assume capillary head psi(z)=a+b*(z-70 cm) across 0-140 cm.",
+        "Solve a and b so the integrated mean theta and first centered theta moment exactly match W_0_140 and M1_0_140 under the frozen Mualem-Van Genuchten relation.",
+        "Evaluate psi/K at z=135 cm and combine with the exact 140-150 cm layer representative state using the same fine-face Darcy geometry."
+      ],
+      "fitted_parameters": false
+    }
+  ],
+  "controls": {
+    "C_LARE_TAYLOR_L3": "unchanged L3 storage-only long-interface baseline at 140 cm",
+    "L4_LOCAL_140": "same-dimension L4 140 cm local-local face identity control; expected to reproduce the fine face to numerical noise",
+    "L4_LONG_130": "same-dimension L4 actual long-to-local closure burden at 130 cm under standard LARE"
+  },
+  "response_vector": [
+    "reconstructed theta at 135 cm error",
+    "reconstructed capillary head at 135 cm error",
+    "reconstructed conductivity at 135 cm error",
+    "140 cm interface flux RMS error",
+    "140 cm interface maximum absolute flux error",
+    "140 cm interface mean signed flux error",
+    "140 cm flux-sign mismatch count",
+    "reconstruction failure/out-of-physical-domain count",
+    "per-case metrics before pooled metrics",
+    "same-dimension comparison with L4 long-interface 130 cm standard-LARE error"
+  ],
+  "adjudication": {
+    "moment_information_supported": "At least one L3_M1 closure must be noninferior to L3 C_LARE_TAYLOR on every pooled primary flux component and reconstruction failure count, strictly improve at least one flux magnitude component, and not be worse than L3 C_LARE_TAYLOR on both RMS and maximum flux error in any primary case.",
+    "same_dimension_value": "Report L3_M1 against L4 as a vector. Do not collapse interface-local fidelity and representation simplicity to one score.",
+    "propagation_gate": "No A3 state may be propagated until the moment-information gate passes and a separate moment-evolution law is preregistered.",
+    "failure_route": "If neither first-moment closure passes, do not fit an empirical correction. Reconcile whether a second moment/front coordinate or explicit extra layer is scientifically preferable."
+  },
+  "numerical_contract": {
+    "quadrature": "fixed 64-point Gauss-Legendre for M1 and nonlinear reconstruction, independently crosschecked at 128 points",
+    "root_solve": "deterministic least_squares for C_M1_LINEAR_PSI with fixed tolerances committed before execution",
+    "physical_domain": "theta_r < theta < theta_s and psi > 0.01 cm over the reconstructed long layer",
+    "identity_tests": [
+      "uniform theta gives M1=0 and both moment closures reduce to the uniform constitutive state",
+      "synthetic linear-theta profile is exactly reconstructed by C_M1_LINEAR_THETA",
+      "synthetic linear-psi profile is recovered by C_M1_LINEAR_PSI",
+      "L4_LOCAL_140 reproduces the fine Reference 140 cm face operator to numerical precision"
+    ]
+  },
+  "firewalls": [
+    "NO_RESPONSE_FITTING",
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_PARTITION_RETUNING",
+    "NO_REDUCED_PROPAGATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false,
+  "pre_execution_numerical_freeze": {
+    "date": "2026-09-20",
+    "before_first_A3_execution": true,
+    "quadrature_orders": [
+      64,
+      128
+    ],
+    "linear_psi_parameterization": "psi_center = 0.01 + exp(x0); slope = [(psi_center-0.01)/(L/2)] * tanh(x1), guaranteeing psi>0.01 at both long-layer endpoints",
+    "least_squares": {
+      "xtol": 1e-12,
+      "ftol": 1e-12,
+      "gtol": 1e-12,
+      "max_nfev": 80
+    },
+    "residual_scaling": {
+      "mean_theta": "divide by theta_s-theta_r",
+      "first_moment": "divide by (theta_s-theta_r)*L"
+    },
+    "reconstruction_gates": {
+      "max_abs_mean_theta_residual": 1e-10,
+      "max_abs_M1_residual_cm": 1e-9,
+      "max_abs_64_vs_128_mean_theta": 1e-10,
+      "max_abs_64_vs_128_M1_cm": 1e-9,
+      "L4_local_140_flux_identity_cm_per_day": 1e-10
+    },
+    "failure_semantics": "Any candidate reconstruction outside the frozen physical domain or beyond the residual/crosscheck gates is counted as a candidate failure; no fallback model or response-derived retuning is allowed."
+  },
+  "pre_execution_operationalization": {
+    "date": "2026-09-20",
+    "before_first_A3_execution": true,
+    "exact_reference_M1": "For piecewise-constant 10 cm Reference cells, compute M1 exactly as sum(theta_i*dz_i*(z_i-70))/140 over z=0..140 cm.",
+    "linear_theta_slope": "b_theta = 12*M1/L^2; evaluate theta_135 = theta_bar + b_theta*(135-L/2). Reject if the reconstructed long-layer endpoint theta values leave (theta_r,theta_s).",
+    "linear_psi_initialization": [
+      "psi_center initial = psi(theta_bar).",
+      "Construct an affine-theta endpoint estimate from b_theta. If both endpoint theta values are physical, map them to psi and use their secant slope as the initial psi slope; otherwise initialize slope=0.",
+      "Map the initial slope into the frozen tanh parameterization and clip only the internal tanh argument to +/-0.95 to remain inside the preregistered positive-psi domain. This is numerical initialization, not a fitted coefficient.",
+      "Every observation is solved fresh from its own state-derived initial value; no response-based warm start or fallback closure is allowed."
+    ],
+    "reference_face_formula": "q_ref at 130/140 cm uses the adjacent fine-cell MvG conductivities with arithmetic mean and the 10 cm pressure-head gradient, matching the frozen DYN0A swkmean=1 diagnostic.",
+    "candidate_face_formula": "q = 0.5*(K_virtual+K_lower) * [1 + (psi_lower-psi_virtual)/10 cm], positive downward.",
+    "decision_labels": {
+      "supported": "A3_FIRST_MOMENT_OPERATOR_SUPPORTED_DYNAMICS_LAW_REQUIRED",
+      "unsupported": "A3_FIRST_MOMENT_OPERATOR_NOT_BROADLY_SUPPORTED",
+      "blocked": "A3_MOMENT_AUDIT_BLOCKED"
+    },
+    "comparison_semantics": "L4_LOCAL_140 is an operator identity guard. L4_LONG_130 is the same-scalar-dimension localization control and is reported as a vector, not folded into the A3 support gate.",
+    "scientific_effect": "NONE; this freezes deterministic implementation details before any A3 moment result."
+  },
+  "pre_execution_authority_reconciliation": {
+    "date": "2026-09-20",
+    "before_first_A3_execution": true,
+    "governing_numerics": "pre_execution_numerical_freeze plus pre_execution_operationalization",
+    "withdrawn_unexecuted_parallel_amendment": "A later endpoint-parameterized numerical amendment was briefly persisted by a parallel branch action but no A3 workflow/result used it. It is not part of the A3 design.",
+    "reason": "Keep one deterministic implementation contract matching the already-persisted A3 analyzer and workflow before any scientific output exists.",
+    "scientific_effect": "NONE. State coordinates, closures, cases, partitions, response vector and adjudication are unchanged."
+  }
+}

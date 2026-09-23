@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.layer-rom.phase-a2b.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A2B",
+  "failed_execution": {
+    "workflow_run": 35494477854,
+    "executed_head": "5f0c3f6f8ec8fc1d68ed4237ff7344913df0a460",
+    "conclusion": "failure",
+    "reached_reference_candidate_comparison": false,
+    "failure_stage": "structural synthetic identity test",
+    "failure": "Integrated-centroid synthetic fixture used q=0.65*K(psi=45 cm) over a 75 cm centroid path, causing the synthetic ODE to leave the frozen psi>0.01 cm strict-unsaturated domain before any Reference case was analyzed.",
+    "failed_artifact_id": 10599374237,
+    "failed_artifact_role": "technical failure trace only; no scientific A2B result"
+  },
+  "repair": {
+    "class": "TECHNICAL_PREFLIGHT_FIX_ONLY",
+    "closure_equations_changed": false,
+    "partitions_changed": false,
+    "reference_evidence_changed": false,
+    "numerical_tolerances_changed": false,
+    "adjudication_changed": false,
+    "application_threshold_changed": false,
+    "change": "Replace the out-of-domain synthetic centroid trajectory by an in-domain constant-flux synthetic trajectory and separate synthetic-test error bookkeeping.",
+    "final_repair_head_for_rerun": "ed23f162e98b1365e3b4021f228b19486467c383",
+    "repaired_fixture": "psi_start=45 cm, q=0.98*K(psi_start), centroid distance=75 cm",
+    "domain_check": "synthetic trajectory remains on the declared strict-unsaturated MvG branch",
+    "prospective_integrity": "No A2B closure-versus-Reference flux result existed before this repair."
+  },
+  "rerun": {
+    "workflow_run": 35494593395,
+    "executed_head": "ed23f162e98b1365e3b4021f228b19486467c383",
+    "status_at_record_creation": "IN_PROGRESS"
+  },
+  "production_rom_authorized": false
+}

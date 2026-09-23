@@ -1,0 +1,98 @@
+name: F-ROM Layer-ROM A3 first-moment operator audit
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_A3_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_a3_moment_operator.py'
+      - '.github/workflows/f-rom-layer-a3-moment-operator.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  moment-operator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert research-only source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d...HEAD -- src reference
+          echo "LAYER_ROM_A3_SOURCE_FREEZE=PASS"
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Recover immutable DYN0A fine Reference evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/layer-rom-a3/ref
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/layer-rom-a3/ref.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/layer-rom-a3/ref.zip" | sha256sum -c -
+          unzip -q /tmp/layer-rom-a3/ref.zip -d /tmp/layer-rom-a3/ref
+          for case in S2_B1_F2 S2_B1_F3 S2_B1_F4 S3_B1_F3; do
+            test -f "/tmp/layer-rom-a3/ref/fine-${case}-o2.txt"
+          done
+
+      - name: Lock A3 preregistration
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_A3_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_FIRST_MOMENT_STATE_RESULT'
+          assert p['pre_execution_numerical_freeze']['before_first_A3_execution'] is True
+          assert p['pre_execution_operationalization']['before_first_A3_execution'] is True
+          assert [c['id'] for c in p['moment_closures']]==[
+              'C_M1_LINEAR_THETA','C_M1_LINEAR_PSI'
+          ]
+          assert p['pre_execution_numerical_freeze']['least_squares']=={
+              'xtol':1e-12,'ftol':1e-12,'gtol':1e-12,'max_nfev':80
+          }
+          assert 'NO_REDUCED_PROPAGATION' in p['firewalls']
+          print('LAYER_ROM_A3_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute first-moment operator audit
+        run: |
+          set -euo pipefail
+          mkdir -p LAYER_ROM_A3_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_a3_moment_operator.py             --reference-dir /tmp/layer-rom-a3/ref             --prereg integration/f-rom/LAYER_ROM_A3_PREREGISTRATION.json             --output LAYER_ROM_A3_EVIDENCE/LAYER_ROM_A3_RESULT.json             | tee LAYER_ROM_A3_EVIDENCE/analyzer.txt
+
+      - name: Validate A3 result gates
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LAYER_ROM_A3_EVIDENCE/LAYER_ROM_A3_RESULT.json'))
+          assert p['decision'] in {
+              'A3_FIRST_MOMENT_OPERATOR_SUPPORTED_DYNAMICS_LAW_REQUIRED',
+              'A3_FIRST_MOMENT_OPERATOR_NOT_BROADLY_SUPPORTED',
+          }
+          assert p['reduced_state_propagated'] is False
+          assert p['application_acceptance'] is False
+          assert p['speed_claim'] is False
+          assert p['production_rom_authorized'] is False
+          assert p['same_dimension_controls']['L4_LOCAL_140']['maximum_abs_flux_identity_error_cm_per_day'] <= 1e-10
+          print('LAYER_ROM_A3_RESULT_GATE=PASS')
+          PY
+          sha256sum LAYER_ROM_A3_EVIDENCE/* > LAYER_ROM_A3_EVIDENCE/sha256.txt
+          git diff --check b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d...HEAD
+          echo "LAYER_ROM_A3_MOMENT_OPERATOR=PASS"
+
+      - name: Upload A3 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-a3-moment-operator
+          path: LAYER_ROM_A3_EVIDENCE/
+          if-no-files-found: error

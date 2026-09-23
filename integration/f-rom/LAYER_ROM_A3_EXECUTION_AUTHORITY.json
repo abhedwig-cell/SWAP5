@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.layer-rom.phase-a3.execution-authority.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A3",
+  "authority": "ONLY_POST_OPERATIONALIZATION_MOMENT_OPERATOR_ROUTE_IS_DECISION_AUTHORITY",
+  "preregistration_commit": "162f137ebd5672c33a610288acf7aa40d3aa6bbe",
+  "authoritative_analyzer": "tests/rom/analyze_layer_rom_a3_moment_operator.py",
+  "authoritative_workflow": ".github/workflows/f-rom-layer-a3-moment-operator.yml",
+  "authoritative_initial_run": 35495160112,
+  "stale_parallel_execution": {
+    "workflow_run": 35495157493,
+    "head": "169b28cef52172eef4e11c2eaba0583531050cc7",
+    "conclusion": "success",
+    "artifact_id": 10599374858,
+    "artifact_digest": "sha256:20fe172f48021d00da4a58a86fe1331d2eba68f16a68faff88c9d648c45765c9",
+    "role": "DIAGNOSTIC_ONLY_NOT_DECISION_AUTHORITY",
+    "reason": [
+      "The run started from a pre-operationalization A3 head.",
+      "Its linear-psi initialization does not implement the later frozen state-derived secant initialization.",
+      "The live branch has a single successor route that explicitly validates the pre-execution operationalization."
+    ],
+    "observed_diagnostic_direction": "Neither first-moment closure passed broad support; this observation must not substitute for the authoritative rerun."
+  },
+  "no_scientific_change_from_routing": true,
+  "production_rom_authorized": false,
+  "authoritative_final_run": {
+    "workflow_run": 35495220671,
+    "head": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
+    "conclusion": "success",
+    "artifact_id": 10599939300,
+    "artifact_digest": "sha256:6dcfcfbe7d05b28ab62e0d14d3911959e541a39caeaa22690d824e9aa5152a24",
+    "result_sha256": "bab62de3e2841e3352808cb9a77d93b66f0cfc2a6fb513b199c2f5bcacf97945",
+    "role": "DECISION_AUTHORITY"
+  },
+  "authoritative_initial_run_role": "REPRODUCED_PREDECESSOR",
+  "final_rerun_reproduced_initial_result_bitwise": true
+}

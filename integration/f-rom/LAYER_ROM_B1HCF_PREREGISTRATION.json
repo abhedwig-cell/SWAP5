@@ -1,0 +1,142 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcf.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCF",
+  "phase": "PREREGISTERED_BEFORE_CORRECTED_FIXED_HEAD_FLUX_METRICS",
+  "title": "Fixed-head flux metric semantics reconciliation",
+  "trigger": {
+    "E1_decision": "B1HCE_E1_BOTTOM_TERMINAL_OPERATOR_SEMANTICS_DIFFER_E2_HELD",
+    "authority": "integration/f-rom/LAYER_ROM_B1HCE_E1_CLOSEOUT.json",
+    "discrepancy": "For SWBOTB=5 the persisted Reference BOTTOM_FLUX is a water-balance-materialized interval-average outward flux, while prior Layer-ROM analyses compared it with an instantaneous terminal Darcy flux."
+  },
+  "code_authority": {
+    "canonical": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "reference_adapter": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "reference_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "mode5_materializer": "materialize_prescribed_head_bottom_flux",
+    "laboratory_identity": "With qtop=0 and inactive sinks/sources, printed Reference BOTTOM_FLUX = BOTTOM_OUTWARD_EXCHANGE / dt and is an interval-average outward exchange rate."
+  },
+  "scope": {
+    "primary_reconciliation": "B1H six-material transfer and B1HC-D same-partition comparison",
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "representations": [
+      "L4",
+      "L6",
+      "R8",
+      "U4",
+      "U8",
+      "R16_OP"
+    ],
+    "same_partition_comparators": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "checkpoints_steps": [
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "observation_dt_day": 0.001,
+    "candidate_integrator_dt_day": 0.0001,
+    "no_new_reference_trajectory": true
+  },
+  "corrected_flux_observables": {
+    "QAVG": {
+      "name": "interval-average outward bottom flux",
+      "Reference": "BOTTOM_OUTWARD_EXCHANGE / observation_dt; must equal persisted Reference BOTTOM_FLUX within numerical tolerance.",
+      "CoRichards": "BOTTOM_OUTWARD_EXCHANGE / observation_dt; must equal persisted comparator BOTTOM_FLUX within numerical tolerance.",
+      "LayerROM": "increment of prognostic cumulative bottom exchange over one observation interval divided by observation_dt.",
+      "physical_role": "commensurate interval exchange rate; appropriate companion to cumulative recharge/capillary exchange."
+    },
+    "QEND": {
+      "name": "terminal end-state zero-head Darcy diagnostic",
+      "Reference": "Reconstruct from committed R16 bottom-cell theta using frozen MvG K/psi and the 5-cm half-cell gradient to h_boundary=0.",
+      "CoRichards": "Reconstruct from the committed same-partition bottom-cell theta using its 5-cm half-cell gradient.",
+      "LayerROM": "Standard qbottom_zero_head from the candidate terminal state.",
+      "physical_role": "commensurate end-state flux diagnostic; not the interval water-balance flux."
+    }
+  },
+  "hard_controls": {
+    "reference_QAVG_vs_persisted_BOTTOM_FLUX_max_abs_cm_per_day": 1e-10,
+    "corichards_QAVG_vs_persisted_BOTTOM_FLUX_max_abs_cm_per_day": 1e-10,
+    "rerun_LayerROM_storage_cumulative_profile_vs_persisted_B1H_max_abs": 1e-11,
+    "R16_OP_water_ledger_cm": 1e-10
+  },
+  "response_vectors": {
+    "GW": [
+      "storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "qavg_rmse_cm_per_day",
+      "qavg_sign_errors",
+      "abs_mean_signed_qavg_error_cm_per_day",
+      "qend_rmse_cm_per_day",
+      "qend_sign_errors",
+      "abs_mean_signed_qend_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm"
+    ],
+    "PROFILE": [
+      "upper_storage_rmse_cm",
+      "lower_storage_rmse_cm",
+      "mapped_theta_rmse"
+    ]
+  },
+  "comparisons": {
+    "placement": "For L4 versus U4 and R8 versus U8 report GW and PROFILE componentwise relations separately. Do not combine them into one score.",
+    "dimension": "For L4 -> L6 -> R8 report nonincreasing status independently for every corrected component.",
+    "same_partition": "For each material and L4/L6/R8 compare Layer-ROM with CoRichards separately on corrected GW and PROFILE vectors.",
+    "R16_OP": "Report R16_OP corrected QAVG/QEND together with storage/profile. Do not call a residual a spatial-closure floor unless E1 and corrected semantics support that attribution."
+  },
+  "adjudication_rules": {
+    "relation_tolerance": 1e-12,
+    "componentwise_no_worse": "No component larger than control by more than numerical tolerance, and at least one component strictly smaller.",
+    "no_weighted_score": true,
+    "no_application_threshold": true,
+    "supersession": [
+      "All prior fixed-head Layer-ROM bottom_flux_rmse_cm_per_day and bottom_flux_sign_errors using terminal-candidate versus interval-average Reference semantics are superseded for scientific interpretation.",
+      "Storage, cumulative exchange and profile components are retained unless an independent inconsistency is found.",
+      "Any prior multi-component frontier requiring the superseded flux components is HELD pending a semantics-corrected rerun/re-adjudication."
+    ]
+  },
+  "expected_outputs": [
+    "per material/member/checkpoint corrected QAVG and QEND errors",
+    "corrected targeted-placement GW and PROFILE relations",
+    "corrected dimension-order diagnostics",
+    "corrected Layer-ROM versus same-partition CoRichards relations",
+    "R16_OP corrected full-state control",
+    "explicit old-metric to corrected-metric impact table"
+  ],
+  "successor": {
+    "if_R16_OP_QAVG_and_QEND_converge_with_existing_dt": "Reconsider whether temporal refinement is needed before any new closure work.",
+    "if_R16_OP_QAVG_or_QEND_remains_material": "Preregister a temporal/state-evolution diagnosis using corrected metrics only.",
+    "B01_fixed_head": "After B1HCF, separately repair B01 B1/B2 fixed-head frontier authority using the same QAVG/QEND semantics before restoring those frontier claims."
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_NEW_PARTITION_OR_STATE",
+    "NO_CLOSURE_FITTING",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_USE_OF_SUPERSEDED_BOTTOM_FLUX_METRIC_FOR_DECISIONS",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "performance_comparison_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}

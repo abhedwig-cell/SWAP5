@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-q.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-Q",
+  "failed_run": {
+    "workflow_run": 35499370033,
+    "executed_head": "e12c9cbbdf8600896a1a10322e7ed9aab5b7de74",
+    "conclusion": "failure",
+    "material_jobs": 6,
+    "all_R16_identity_controls_passed": true,
+    "all_six_material_qualification_steps_reached_scientific_output": true,
+    "all_six_material_artifacts_uploaded": true,
+    "aggregate_skipped": true
+  },
+  "diagnosis": {
+    "class": "TECHNICAL_REPOSITORY_WHITESPACE_GATE_OUTSIDE_WORKSTREAM",
+    "issue": "The final unscoped git diff --check traversed pre-existing trailing whitespace in docs/development/SWAP5_PROJECT_CONTROL.md, outside the B1HC-Q change surface.",
+    "scientific_computation_failure": false,
+    "provenance_failure": false,
+    "R16_control_failure": false
+  },
+  "artifacts": {
+    "B02": {
+      "id": 10601940211,
+      "digest": "sha256:99c9af7b59c0b557d0a4413c6c44007021255911f6580adc85fd00b2bc7bf6f1"
+    },
+    "B05": {
+      "id": 10601539784,
+      "digest": "sha256:03da9133dcacf17a89d5049952ee8a6ad9e6e712bb25d5de68a210a66514dcae"
+    },
+    "B06": {
+      "id": 10602025177,
+      "digest": "sha256:30b154f6eb6d91d7b2f3b04574f8c2e0178f7682a5094f8577c5ce4df045767d"
+    },
+    "B11": {
+      "id": 10602045042,
+      "digest": "sha256:69f880c1f5608ca717c541fd6162696a338b8b60e2758a4e448a5b9b34492215"
+    },
+    "B12": {
+      "id": 10601719449,
+      "digest": "sha256:7bf540aea9cebcede6d95909fbd6eb6c3f39250f24844a7700aa78298ab1aae0"
+    },
+    "B16": {
+      "id": 10602060078,
+      "digest": "sha256:2a4bdf568c46459507da64efa17f6966534f9ff1f6b34cde18d490e3625134dd"
+    }
+  },
+  "repair": {
+    "change": "Scope git diff --check to B1HC-Q-owned preregistration/tooling/workflow paths.",
+    "numerical_policy_changed": false,
+    "material_set_changed": false,
+    "histories_changed": false,
+    "partitions_changed": false,
+    "qualification_status_rules_changed": false,
+    "thresholds_changed": false,
+    "note": "The failed run exposed numerical qualification statuses only. No hydrological LARE-versus-CoRichards comparison or candidate retuning occurred."
+  },
+  "rerun_required": true,
+  "production_rom_authorized": false
+}

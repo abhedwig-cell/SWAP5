@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.layer-rom.phase-b.synthesis-closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-B-SYNTHESIS",
+  "status": "CLOSED_FIDELITY_FRONTIER_FROZEN_COST_SCREEN_AUTHORIZED",
+  "decision": "MATERIAL_AND_PURPOSE_DEPENDENT_TARGETED_LAYER_FRONTIER",
+  "authority": "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+  "conclusions": [
+    "No universal minimum dimension is supported.",
+    "L3 is only a bounded B01 state-information lower bound.",
+    "L4, L6 and R8 form the retained targeted candidate ladder for cost screening.",
+    "R8 is the first tested targeted dimension with six-material placement support, but B05 remains a groundwater-vector tradeoff versus same-partition CoRichards.",
+    "Cost is now a separate axis and may not be used to retroactively change the fidelity gate."
+  ],
+  "next_authorized": "LAYER-ROM-COST1_SHARED_HOST_FROZEN_FIDELITY_SCREEN",
+  "production_rom_authorized": false
+}

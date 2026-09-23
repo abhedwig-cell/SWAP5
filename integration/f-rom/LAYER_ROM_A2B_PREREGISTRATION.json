@@ -1,0 +1,179 @@
+{
+  "schema": "swap5.layer-rom.phase-a2b.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A2B",
+  "phase": "PREREGISTERED_BEFORE_QUASI_STEADY_CLOSURE_RESULTS",
+  "purpose": "Complete the physically justified storage-only closure screen before adding gradient, moment or front-position state.",
+  "trigger": {
+    "A1": "L3 is the minimum bounded state-information candidate; L3/L4/L6 were information-equivalent in the frozen common cohort.",
+    "A2": "Neither harmonic-K nor storage-consistent linear-head reconstruction had broad L3 support; the unresolved error is concentrated at the long-layer-to-local-layer interface.",
+    "reason_not_to_augment_state_yet": "A2 did not test a constant-flux quasi-steady reconstruction or an integrated constitutive flux relation."
+  },
+  "state_representations": {
+    "L3": {
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "long_interface_cm": 140
+    },
+    "L4": {
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "long_interface_cm": 130
+    },
+    "state": "exact layer storage only; no added state"
+  },
+  "reference": {
+    "artifact_id": 10586020583,
+    "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
+    "source": "fine 16 x 10 cm B01 DYN0A fixed-flux Reference Richards",
+    "primary_cases": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F3"
+    ]
+  },
+  "closures": [
+    {
+      "id": "C_LARE_TAYLOR",
+      "role": "unchanged baseline"
+    },
+    {
+      "id": "C_INT_CENTROID_LONG_ONLY",
+      "role": "numerically integrated constitutive flux relation",
+      "definition": [
+        "At the single long-to-local interface only, map each layer mean theta to its Mualem-Van Genuchten capillary head at the layer centroid.",
+        "Assume a constant Darcy flux q between the two centroids and integrate dpsi/dz=q/K(psi)-1 across the centroid distance.",
+        "Solve q so the integrated endpoint head equals the lower-layer centroid head.",
+        "At interfaces where both adjacent layers are 10 cm, use the unchanged C_LARE_TAYLOR flux."
+      ],
+      "added_state": false,
+      "fitted_parameters": false
+    },
+    {
+      "id": "C_QS_STORAGE_LONG_ONLY",
+      "role": "constant-flux quasi-steady storage-constrained profile reconstruction",
+      "definition": [
+        "At the single long-to-local interface only, assume one continuous quasi-steady profile satisfying dpsi/dz=q/K(psi)-1 with constant q across the adjacent layer pair.",
+        "Unknowns are interface capillary head and q.",
+        "Integrate backward through the upper layer and forward through the lower layer.",
+        "Solve the two unknowns so the integrated mean theta in each layer equals its exact layer-storage state.",
+        "At interfaces where both adjacent layers are 10 cm, use the unchanged C_LARE_TAYLOR flux."
+      ],
+      "added_state": false,
+      "fitted_parameters": false
+    }
+  ],
+  "numerical_contract": {
+    "ODE": "deterministic scipy solve_ivp DOP853 with fixed declared tolerances",
+    "nonlinear_solve": "deterministic scipy least_squares with previous-step warm start used only as numerical initialization",
+    "strict_unsaturated_domain": "psi > 0.01 cm everywhere along reconstructed profile",
+    "storage_residual_max_theta": 1e-10,
+    "synthetic_identity_tests": [
+      "uniform state reconstructs q=K(theta)",
+      "synthetic constant-flux profile generated from the same ODE is recovered by C_QS_STORAGE_LONG_ONLY",
+      "C_INT_CENTROID_LONG_ONLY recovers a synthetic constant-flux centroid-to-centroid trajectory"
+    ],
+    "failure_rule": "fail closed and count closure solve failure; no fallback to a fitted or empirical correction"
+  },
+  "comparison": {
+    "operator_scope": "teacher-forced exact Reference-projected layer storage; no reduced propagation",
+    "primary_metrics": [
+      "RMS flux error at the long-to-local interface",
+      "maximum absolute flux error at that interface",
+      "mean signed flux error",
+      "flux-sign mismatch count",
+      "solve failure count"
+    ],
+    "resolution_control": "compare the same closure at L3 140 cm and L4 130 cm long interfaces",
+    "fine_limit_guard": "local-local 10 cm interfaces remain C_LARE_TAYLOR by construction and are not redefined by A2B"
+  },
+  "adjudication": {
+    "support_rule": "A storage-only A2B closure is supported only if on L3 it is noninferior to C_LARE_TAYLOR in RMS, maximum absolute error, sign mismatches and solve failures over the pooled primary cohort, with at least one strict improvement, and it is not worse on both RMS and maximum error in any primary case block at the long interface.",
+    "propagation_gate": "Only a supported A2B closure may proceed to reduced-state fixed-flux propagation.",
+    "state_augmentation_gate": "If neither A2 nor A2B yields a broadly supported storage-only closure, A3 may preregister one physically interpretable added state such as an internal gradient/moment or front position."
+  },
+  "firewalls": [
+    "NO_RESPONSE_TUNING",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_PARTITION_CHANGE",
+    "NO_REDUCED_PROPAGATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false,
+  "pre_execution_numerical_freeze": {
+    "before_first_official_A2B_result": true,
+    "ode_method": "DOP853",
+    "ode_rtol": 1e-9,
+    "ode_atol": 1e-11,
+    "ode_max_step_rule": "max(abs(layer_or_centroid_distance)/8, 0.5 cm)",
+    "centroid_least_squares": {
+      "scaled_q": "q/Ksat",
+      "bounds": [
+        -20,
+        20
+      ],
+      "xtol": 1e-10,
+      "ftol": 1e-10,
+      "gtol": 1e-10,
+      "max_nfev": 30,
+      "endpoint_scaled_residual_max": 1e-9
+    },
+    "qs_least_squares": {
+      "variables": [
+        "log(psi_interface-0.0100001)",
+        "q/Ksat"
+      ],
+      "bounds": [
+        [
+          -20,
+          -20
+        ],
+        [
+          20,
+          20
+        ]
+      ],
+      "xtol": 1e-10,
+      "ftol": 1e-10,
+      "gtol": 1e-10,
+      "max_nfev": 30,
+      "storage_residual_max_theta": 1e-10
+    },
+    "warm_start": "previous observation solution within the same case/partition/closure only; first observation uses LARE state-derived initialization; warm start changes numerical initialization only",
+    "rationale": "Operational numerical freeze after a no-output runtime preflight. No A2B scientific flux result was produced or inspected before this freeze."
+  },
+  "pre_execution_numerical_amendment": {
+    "before_first_A2B_result": true,
+    "observation_set": "all 1024 accepted Reference observations for each of the four frozen primary cases",
+    "solve_ivp": {
+      "method": "DOP853",
+      "rtol": 2e-10,
+      "atol_psi": 1e-10,
+      "atol_theta_integral": 1e-11
+    },
+    "least_squares": {
+      "xtol": 1e-12,
+      "ftol": 1e-12,
+      "gtol": 1e-12,
+      "max_nfev": 40
+    },
+    "initialization_order": [
+      "previous-step converged transformed unknowns for the same case/partition/closure",
+      "fresh state-derived initialization from current layer-centroid heads and C_LARE_TAYLOR flux"
+    ],
+    "retry_semantics": "numerical initialization retry only; physical equations, state, partition and acceptance gates remain unchanged",
+    "scientific_effect": "No response selection, threshold, closure formula or state definition changed."
+  }
+}

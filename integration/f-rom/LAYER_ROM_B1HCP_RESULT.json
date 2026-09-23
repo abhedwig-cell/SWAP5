@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcp.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCP",
+  "decision": "B1HCP_CORRECTED_MODEL_FORM_DECOMPOSITION_COMPLETE",
+  "relation_counts_by_dimension": {
+    "L4": {
+      "COR_COMPONENTWISE_NO_WORSE": 3,
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": 3
+    },
+    "L6": {
+      "COR_COMPONENTWISE_NO_WORSE": 1,
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5
+    },
+    "R8": {
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5,
+      "TRADEOFF": 1
+    }
+  },
+  "groundwater_relations": {
+    "B02": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+    },
+    "B05": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "COR_COMPONENTWISE_NO_WORSE",
+      "R8": "TRADEOFF"
+    },
+    "B06": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+    },
+    "B11": {
+      "L4": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+    },
+    "B12": {
+      "L4": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+    },
+    "B16": {
+      "L4": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+      "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+    }
+  },
+  "profile_lower_error_route_counts": {
+    "L4": {
+      "CoRichards": 3,
+      "LayerROM": 3
+    },
+    "L6": {
+      "CoRichards": 1,
+      "LayerROM": 5
+    },
+    "R8": {
+      "CoRichards": 1,
+      "LayerROM": 5
+    }
+  },
+  "bounded_attribution_cells": {
+    "CoRichards_componentwise_no_worse": [
+      "B02:L4",
+      "B05:L4",
+      "B05:L6",
+      "B06:L4"
+    ],
+    "LayerROM_componentwise_no_worse": [
+      "B02:L6",
+      "B02:R8",
+      "B06:L6",
+      "B06:R8",
+      "B11:L4",
+      "B11:L6",
+      "B11:R8",
+      "B12:L4",
+      "B12:L6",
+      "B12:R8",
+      "B16:L4",
+      "B16:L6",
+      "B16:R8"
+    ],
+    "tradeoff": [
+      "B05:R8"
+    ],
+    "numerically_equivalent": []
+  },
+  "corrected_QEND_relation_changes": [],
+  "execution": {
+    "workflow_run": 35506606866,
+    "executed_head": "f47b5bee1226296f9b4c80b09f8cd68f0b768212",
+    "artifact_id": 10603996508,
+    "artifact_digest": "sha256:dd65050ea0951267a2912bf3ff7cbb596cac3209f05b9356a100a16da8c8ddab",
+    "conclusion": "success"
+  },
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json",
+    "CoRichards_input_binding": "integration/f-rom/LAYER_ROM_B1HCP_CORICHARDS_INPUT_BINDING.json",
+    "LayerROM_continuous_time": "integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json",
+    "CoRichards_temporal_closeout": "integration/f-rom/LAYER_ROM_B1HCO_CLOSEOUT.json"
+  },
+  "interpretation": [
+    "Same-partition Richards spatial discretization is not a universal lower-error bound: Layer-ROM is componentwise no-worse on 13 of 18 groundwater cells under the frozen vector, CoRichards is no-worse on four, and B05:R8 remains a tradeoff.",
+    "The four CoRichards-no-worse cells identify bounded low-dimensional cases where Layer-ROM closure/localization adds error beyond same-partition Richards discretization.",
+    "The 13 Layer-ROM-no-worse cells may contain error compensation and do not establish superior physical fidelity.",
+    "B05 is the persistent hard material: CoRichards dominates at L4 and L6 and neither route dominates at R8.",
+    "Profile fidelity remains a separate purpose axis; the route with lower groundwater-vector error is not automatically the route with lower profile error.",
+    "Correcting Layer-ROM QEND semantics changes no relation label in this panel, but the corrected calculation is the retained authority."
+  ],
+  "dimension_order_scope_note": "B1HCP reports monotonicity on the frozen seven-component groundwater vector only. B1HCMR stability gates additionally require direction to survive both R_star and ultrafine reference bases, so their transition classifications answer a stricter question and are not contradictory.",
+  "raw_result_authority": "GitHub Actions artifact 10603996508",
+  "application_acceptance_adjudicated": false,
+  "performance_measurement_performed": false,
+  "production_rom_authorized": false
+}

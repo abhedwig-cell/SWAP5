@@ -1,0 +1,283 @@
+{
+  "schema": "swap5.layer-rom.phase-a.dimension-state-closure-fidelity-curve.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1",
+  "phase": "CROSS_REGIME_SYNTHESIS",
+  "canonical_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "question": "How do vertical state dimension, state placement, closure resolution and boundary regime jointly control fidelity in the B01 160 cm pure-hydraulics laboratory?",
+  "evidence_classes": {
+    "A1": "closure-free future-response state-information replay on immutable Reference futures; partly exposed development evidence",
+    "A2_A2B_A3": "teacher-forced operator diagnostics on immutable fixed-flux Reference states; development evidence",
+    "DYN0A": "propagated fixed-flux standard-LARE research evidence inherited selectively from work/f-rom-lare-rs1",
+    "C4R_C4S_C4T_C4V": "blind/prospective fixed-zero-head groundwater laboratory evidence and same-partition CoRichards controls inherited selectively from work/f-rom-lare-rs1",
+    "BC1": "fixed-domain prescribed-head boundary authority and resolution ladder inherited selectively from work/f-rom-lare-rs1"
+  },
+  "representation_curve": [
+    {
+      "id": "L2",
+      "dimension": 2,
+      "boundaries_cm": [
+        0,
+        150,
+        160
+      ],
+      "state_information": {
+        "A1_radius_1x_alias_pairs": 45,
+        "disposition": "AGGRESSIVE_CHALLENGE_STATE_AMBIGUITY_REMAINS"
+      },
+      "fixed_flux": {
+        "standard_LARE": "less robust than L3; additional domain exits in predecessor DYN0A",
+        "same_partition_CoRichards": "UNAVAILABLE_UNDER_FROZEN_FIXED_FLUX_Q1_AUTHORITY"
+      },
+      "fixed_head": {
+        "role": "not selected Layer-ROM minimum candidate",
+        "note": "R2 uniform/coarse comparator exists but is not the active-zone L2 same-partition representation"
+      }
+    },
+    {
+      "id": "L3_R3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state_information": {
+        "A1_radius_1x_alias_pairs": 0,
+        "A1_radius_2x_alias_pairs": 58,
+        "A1_radius_4x_alias_pairs": 151,
+        "disposition": "MINIMUM_BOUNDED_B01_STATE_INFORMATION_CANDIDATE"
+      },
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 24.52332276685631,
+        "operator_LARE_long_interface_rms_cm_per_day": 0.6396881114475617,
+        "operator_first_moment_supported": false,
+        "storage_only_alternative_closure_supported": false,
+        "interpretation": "State information is not the immediate limiter; long-to-local gradient reconstruction is."
+      },
+      "fixed_head_0p064d": {
+        "LARE_bottom_flux_rmse_cm_per_day": 1.9233891036737358,
+        "LARE_bottom_flux_sign_errors": 35,
+        "LARE_cumulative_bottom_rmse_cm": 0.04601214158154669,
+        "CoRichards_bottom_flux_rmse_cm_per_day": 1.629685210895146,
+        "CoRichards_bottom_flux_sign_errors": 23,
+        "CoRichards_cumulative_bottom_rmse_cm": 0.03954781791546987,
+        "comparator_relative_GW_frontier_crossing": false
+      }
+    },
+    {
+      "id": "L4_R4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state_information": {
+        "A1_radius_1x_alias_pairs": 0,
+        "A1_radius_2x_alias_pairs": 58,
+        "A1_radius_4x_alias_pairs": 151,
+        "incremental_A1_information_over_L3": "NONE_DEMONSTRATED"
+      },
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 6.877291124718212,
+        "D3_to_D4_critical_error_reduction_fraction": 0.7195612034266013,
+        "long_interface_operator_rms_cm_per_day": 0.2920398250207365,
+        "same_dimension_L3_plus_global_M1_better": false,
+        "interpretation": "Localized fourth storage materially improves closure resolution."
+      },
+      "fixed_head_0p064d": {
+        "LARE_bottom_flux_rmse_cm_per_day": 0.28192349905536246,
+        "LARE_bottom_flux_sign_errors": 1,
+        "LARE_cumulative_bottom_rmse_cm": 0.005734214567883345,
+        "CoRichards_bottom_flux_rmse_cm_per_day": 0.17268447608224521,
+        "CoRichards_bottom_flux_sign_errors": 0,
+        "CoRichards_cumulative_bottom_rmse_cm": 0.0035730725094454806,
+        "comparator_relative_GW_frontier_crossing": true
+      },
+      "fixed_head_persistence": {
+        "crosses_both_FMC_and_R2_at_0p064d": true,
+        "crosses_both_at_every_checkpoint_0p128_to_1p024d": false
+      }
+    },
+    {
+      "id": "R5",
+      "dimension": 5,
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 1.74283577975757
+      },
+      "fixed_head_0p064d": {
+        "LARE_bottom_flux_rmse_cm_per_day": 0.09867745837481132,
+        "LARE_cumulative_bottom_rmse_cm": 0.00312922054705379,
+        "CoRichards_bottom_flux_rmse_cm_per_day": 0.016143930257497427,
+        "CoRichards_cumulative_bottom_rmse_cm": 0.00028326663486347804,
+        "comparator_relative_GW_frontier_crossing": true
+      },
+      "fixed_head_persistence": {
+        "crosses_both_through_0p256d": true,
+        "crosses_both_at_0p512d": false,
+        "crosses_both_at_1p024d": false
+      }
+    },
+    {
+      "id": "L6_R6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state_information": {
+        "A1_alias_structure_relative_to_L3": "IDENTICAL_AT_ALL_FROZEN_RADII_IN_COMMON_COHORT",
+        "incremental_A1_information_over_L3": "NONE_DEMONSTRATED"
+      },
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 1.105792169697466
+      },
+      "fixed_head_0p064d": {
+        "LARE_bottom_flux_rmse_cm_per_day": 0.09294109912748069,
+        "LARE_cumulative_bottom_rmse_cm": 0.0031133801324331354,
+        "CoRichards_bottom_flux_rmse_cm_per_day": 0.0012684568982315068,
+        "CoRichards_cumulative_bottom_rmse_cm": 0.000018656745441593377,
+        "comparator_relative_GW_frontier_crossing": true
+      },
+      "fixed_head_persistence": {
+        "crosses_both_through_0p512d": true,
+        "crosses_both_at_1p024d": false
+      }
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 0.8031871185790607
+      },
+      "fixed_head_0p064d": {
+        "LARE_bottom_flux_rmse_cm_per_day": 0.09287249292140921,
+        "LARE_cumulative_bottom_rmse_cm": 0.0031137677437941412,
+        "CoRichards_bottom_flux_rmse_cm_per_day": 0.000003308088986277072,
+        "CoRichards_cumulative_bottom_rmse_cm": 3.542894577735253e-8,
+        "comparator_relative_GW_frontier_crossing": true
+      },
+      "fixed_head_persistence": {
+        "crosses_both_FMC_and_R2_at_every_checkpoint_0p128_to_1p024d": true
+      }
+    },
+    {
+      "id": "R12",
+      "dimension": 12,
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 0.28789551084429377
+      },
+      "fixed_head_0p064d": {
+        "LARE_bottom_flux_rmse_cm_per_day": 0.09287249853374263,
+        "LARE_cumulative_bottom_rmse_cm": 0.003113767520544167,
+        "CoRichards_bottom_flux_rmse_cm_per_day": 9.068558285046774e-12,
+        "CoRichards_cumulative_bottom_rmse_cm": 7.627482662061554e-15,
+        "comparator_relative_GW_frontier_crossing": true,
+        "comparator_relative_FMC_PROFILE_crossing": true
+      },
+      "fixed_head_persistence": {
+        "crosses_both_FMC_and_R2_at_every_checkpoint_0p128_to_1p024d": true
+      }
+    },
+    {
+      "id": "R16",
+      "dimension": 16,
+      "role": "fine-grid/no-spatial-reduction control for LARE formulation; Reference Richards remains separate",
+      "fixed_flux": {
+        "standard_LARE_critical_max_common_band_error_mm": 0.012684125483701791
+      },
+      "fixed_head": {
+        "BC1_max_common_storage_error_cm": 0.001960648224072159,
+        "BC1_max_cumulative_bottom_error_cm": 0.00122184061351982,
+        "boundary_time_level_diagnostic": "Lagged-K does not remove residual plateau; CURRENT_LAYER_FACE remains physical closure authority."
+      }
+    }
+  ],
+  "placement_evidence": {
+    "B01": "Active-lower-zone L2/L3/L4/L6 representations have far fewer state aliases than same-dimension uniform controls in A1.",
+    "B14_transfer": {
+      "source": "work/f-rom-lare-rs1 LARE_BC2_C4X_RESULT.json",
+      "dimension4": {
+        "targeted_R4_bottom_flux_rmse_cm_per_day": 0.0010885023952685996,
+        "P4_TOP_LOWER_bottom_flux_rmse_cm_per_day": 0.004958911055768371,
+        "uniform_U4_bottom_flux_rmse_cm_per_day": 0.846280737649129
+      },
+      "dimension8": {
+        "targeted_R8_bottom_flux_rmse_cm_per_day": 0.0010487723999150237,
+        "uniform_U8_bottom_flux_rmse_cm_per_day": 0.6096767688282941
+      },
+      "interpretation": "Placement transfers as a material design axis, but the exact B01 partition is not universalized."
+    }
+  },
+  "error_separation": {
+    "state_information_error": "A1: largely exhausted by L3 in bounded B01 common cohort; L4/L6 add no demonstrated predictive-state separation there.",
+    "closure_resolution_error": "Fixed-flux DYN0A and A2/A2B/A3: dominant long-to-local gradient/localization error; localized explicit refinement helps far more than a global first moment.",
+    "numerical_discretization_error": "Fixed-head C4S/C4T: same-partition CoRichards converges rapidly with dimension and separates spatial Richards discretization from LARE closure error.",
+    "high_dimension_fixed_head_floor": "LARE R6/R8/R12 bottom-exchange error plateaus while same-partition CoRichards approaches Reference. BC1 shows the plateau is not primarily removed by importing lagged Reference lower-face K timing."
+  },
+  "purpose_response": {
+    "GW-D": {
+      "evidence": "Short-horizon fixed-head comparator-relative frontier begins at dimension 4, but 1.024-day persistence begins at dimension 8.",
+      "application_acceptance": false
+    },
+    "GW-R": {
+      "evidence": "R8 and R12 are the first tested members with comparator-relative GW crossing persistent across every prospective checkpoint through 1.024 day.",
+      "application_acceptance": false
+    },
+    "SCI-P": {
+      "evidence": "Profile comparator-relative requirement is stricter against FMC in C4R: minimum crossing dimension 12; against R2 it begins at dimension 4.",
+      "application_acceptance": false
+    },
+    "AG-WB": {
+      "evidence": "NOT_YET_IN_APPLICATION_ENVELOPE: no ET/root uptake in Phase A.",
+      "application_acceptance": false
+    },
+    "EVT": {
+      "evidence": "NOT_YET_IN_APPLICATION_ENVELOPE: no infiltration/ponding/runoff event physics in Phase A.",
+      "application_acceptance": false
+    }
+  },
+  "computational_screen": {
+    "authority": "work/f-rom-lare-rs1 LARE_BC2_C4T_RESULT.json",
+    "class": "SHARED_HOST_SCREENING_ONLY",
+    "cpu_seconds_per_workload": {
+      "LARE_R3": 0.004576272395833333,
+      "LARE_R4": 0.005699882291666666,
+      "LARE_R5": 0.006996413020833332,
+      "LARE_R6": 0.008260583854166666,
+      "LARE_R8": 0.010855024479166666,
+      "LARE_R12": 0.015928071874999998,
+      "Reference_R16": 0.011035129687499999,
+      "CoRichards_R4": 0.029112023437500002,
+      "CoRichards_R8": 0.0375886828125,
+      "FMC": 0.07498378958333334
+    },
+    "interpretation": "Useful cost signal only; no formal or portable speedup claim. Fidelity and cost are not collapsed to one score."
+  },
+  "phase_A_adjudication": [
+    "There is no single minimum layer count independent of boundary regime, horizon and purpose.",
+    "For B01, three well-placed storages are a bounded lower bound on predictive state information, but three layers are not a broadly adequate propagated model under the tested closures.",
+    "The fourth scalar is more valuable as localized storage resolution near the active interface than as a global first moment over the long layer.",
+    "For short fixed-head groundwater response, four targeted layers reach the frozen comparator-relative frontier; for persistence through 1.024 day the frontier moves to eight layers.",
+    "At higher dimension, same-partition CoRichards continues to converge while LARE groundwater-exchange error approaches a closure/semantics floor; more layers alone therefore eventually stop buying exchange fidelity.",
+    "Absolute application adequacy remains undecided because external purpose tolerances are absent."
+  ],
+  "next_research_question": "Can the fixed-head high-dimension error floor be localized to internal-interface versus prescribed-head operator/model-form terms using teacher-forced Reference states, and does that diagnosis identify a physically justified closure improvement without changing the state representation?",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM",
+    "NO_MOVING_WATER_TABLE_SEMANTICS",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_PORTABLE_SPEEDUP_CLAIM"
+  ],
+  "production_rom_authorized": false
+}

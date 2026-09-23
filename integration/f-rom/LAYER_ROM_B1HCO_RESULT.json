@@ -1,0 +1,141 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hco.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCO",
+  "decision": "B1HCO_B05_L6_R8_TEMPORAL_LIMIT_SUPPORTED",
+  "execution": {
+    "workflow_run": 35506180114,
+    "executed_head": "e6469e14d3aaa213b71113c9d45f957db75cb720",
+    "aggregate_artifact_id": 10603856403,
+    "aggregate_artifact_digest": "sha256:d2e657b4ed744065f28076b85934132dcb794a4cf05ed44279e62f5d2abc34a6",
+    "member_artifacts": {
+      "L6": {
+        "id": 10604095931,
+        "digest": "sha256:f316da4f474cb9a7c57576c243c64c4cf56f313d0e7ef1e813003aa2b1bc1fbb"
+      },
+      "R8": {
+        "id": 10603419858,
+        "digest": "sha256:a9cf48023575fef3fd1ec16c85859a0ff666396bd30d6674a9fb156ea4f4cca1"
+      }
+    },
+    "conclusion": "success"
+  },
+  "temporal_qualification": {
+    "unresolved_cells_before": [
+      "B05:L6",
+      "B05:R8"
+    ],
+    "unresolved_cells_after": [],
+    "panel_cells_qualified_after": 18,
+    "panel_cells_total": 18,
+    "order_frozen": 1,
+    "gate_relaxed": false,
+    "hydrological_model_changed": false
+  },
+  "dimension_order_CoRichards": {
+    "B02": {
+      "L4_to_L6_componentwise_nonworse": true,
+      "L6_to_R8_componentwise_nonworse": true,
+      "full_ladder_componentwise_nonworse": true
+    },
+    "B05": {
+      "L4_to_L6_componentwise_nonworse": true,
+      "L6_to_R8_componentwise_nonworse": true,
+      "full_ladder_componentwise_nonworse": true
+    },
+    "B06": {
+      "L4_to_L6_componentwise_nonworse": true,
+      "L6_to_R8_componentwise_nonworse": true,
+      "full_ladder_componentwise_nonworse": true
+    },
+    "B11": {
+      "L4_to_L6_componentwise_nonworse": true,
+      "L6_to_R8_componentwise_nonworse": true,
+      "full_ladder_componentwise_nonworse": true
+    },
+    "B12": {
+      "L4_to_L6_componentwise_nonworse": true,
+      "L6_to_R8_componentwise_nonworse": true,
+      "full_ladder_componentwise_nonworse": true
+    },
+    "B16": {
+      "L4_to_L6_componentwise_nonworse": true,
+      "L6_to_R8_componentwise_nonworse": true,
+      "full_ladder_componentwise_nonworse": true
+    }
+  },
+  "original_run_relation_diagnostics": {
+    "groundwater_relation_counts": {
+      "L4": {
+        "COR_COMPONENTWISE_NO_WORSE": 3,
+        "LAYER_ROM_COMPONENTWISE_NO_WORSE": 3
+      },
+      "L6": {
+        "COR_COMPONENTWISE_NO_WORSE": 1,
+        "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5
+      },
+      "R8": {
+        "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5,
+        "TRADEOFF": 1
+      }
+    },
+    "groundwater_relations": {
+      "B02": {
+        "L4": "COR_COMPONENTWISE_NO_WORSE",
+        "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+      },
+      "B05": {
+        "L4": "COR_COMPONENTWISE_NO_WORSE",
+        "L6": "COR_COMPONENTWISE_NO_WORSE",
+        "R8": "TRADEOFF"
+      },
+      "B06": {
+        "L4": "COR_COMPONENTWISE_NO_WORSE",
+        "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+      },
+      "B11": {
+        "L4": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+      },
+      "B12": {
+        "L4": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+      },
+      "B16": {
+        "L4": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "L6": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+        "R8": "LAYER_ROM_COMPONENTWISE_NO_WORSE"
+      }
+    },
+    "profile_lower_error_route_counts": {
+      "L4": {
+        "CoRichards": 3,
+        "LayerROM": 3
+      },
+      "L6": {
+        "CoRichards": 1,
+        "LayerROM": 5
+      },
+      "R8": {
+        "CoRichards": 1,
+        "LayerROM": 5
+      }
+    },
+    "authority": "DIAGNOSTIC_ONLY_FOR_FINAL_MODEL_FORM_COMPARISON",
+    "reason": "The B1HCO aggregator inherited B1HCM Layer-ROM QEND semantics. B1HCMR subsequently became the corrected continuous-time Layer-ROM authority. The CoRichards temporal qualification remains valid; final relation counts must be recomputed against B1HCMR."
+  },
+  "adjudication": [
+    "The two previously unresolved B05 cells, L6 and R8, pass the preregistered fourth-level first-order CoRichards temporal holdout.",
+    "All 18 material-member CoRichards cells are now temporally qualified for the fixed-head six-material panel.",
+    "No temporal-order fit, gate relaxation, closure change, partition change or application tolerance was introduced.",
+    "Only the CoRichards temporal qualification and continuous-time CoRichards vectors are inherited from B1HCO for the next model-form decomposition."
+  ],
+  "next": "LAYER-ROM-B1HCP_CORRECTED_FULL_PANEL_MODEL_FORM_DECOMPOSITION",
+  "application_acceptance": false,
+  "performance_claim": false,
+  "production_rom_authorized": false
+}

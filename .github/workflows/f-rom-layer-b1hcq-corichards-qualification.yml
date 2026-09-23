@@ -1,0 +1,268 @@
+name: F-ROM Layer-ROM B1HC-Q CoRichards qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json'
+      - 'tests/rom/materialize_layer_rom_variable_grid_stubs.py'
+      - 'tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py'
+      - 'tests/rom/analyze_layer_rom_b1hcq_member.py'
+      - 'tests/rom/aggregate_layer_rom_b1hcq.py'
+      - '.github/workflows/f-rom-layer-b1hcq-corichards-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcq-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, artifact_id: 10600214649, digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0'}
+          - {material: B05, artifact_id: 10600409481, digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5'}
+          - {material: B06, artifact_id: 10600414651, digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380'}
+          - {material: B11, artifact_id: 10600034910, digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c'}
+          - {material: B12, artifact_id: 10599789755, digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7'}
+          - {material: B16, artifact_id: 10600289675, digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Lock authority and recover immutable B1H material
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- src reference
+
+          git fetch --no-tags origin 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4
+          mkdir -p /tmp/b1hcq/b1h
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.artifact_id }}/zip" > /tmp/b1hcq/b1h.zip
+          echo "${{ matrix.digest }}  /tmp/b1hcq/b1h.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcq/b1h.zip -d /tmp/b1hcq/b1h
+
+          test -f "/tmp/b1hcq/b1h/R16_${{ matrix.material }}.txt"
+          test -f "/tmp/b1hcq/b1h/materialization.json"
+
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/b1hcq/d13_base.f90
+          test "$(git hash-object /tmp/b1hcq/d13_base.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+
+          python3 tests/rom/materialize_layer_rom_b1h_material.py             --base-fortran /tmp/b1hcq/d13_base.f90             --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json             --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --material "${{ matrix.material }}"             --output /tmp/b1hcq/b1h_material.f90             --manifest /tmp/b1hcq/materialization.json
+          cmp /tmp/b1hcq/materialization.json /tmp/b1hcq/b1h/materialization.json
+
+          python3 tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py             --b1h-source /tmp/b1hcq/b1h_material.f90             --output /tmp/b1hcq/B1HCQ_REFERENCE.f90             --manifest /tmp/b1hcq/B1HCQ_HARNESS.json
+
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_SAME_PARTITION_CORICHARDS_TRANSFER_QUALIFICATION'
+          assert p['frozen_cohort']['materials']==['B02','B05','B06','B11','B12','B16']
+          assert [x['id'] for x in p['partitions']]==['L4','L6','R8']
+          assert p['hydrological_comparison_authorized'] is False
+          h=json.load(open('/tmp/b1hcq/B1HCQ_HARNESS.json'))
+          assert h['solver_or_physics_changed'] is False
+          assert h['numerical_policy_changed'] is False
+          print('LAYER_ROM_B1HCQ_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Reproduce immutable R16 control exactly
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCQ_EVIDENCE/control
+          cp /tmp/b1hcq/B1HCQ_REFERENCE.f90 canonical/tests/rom/test_layer_rom_b1hcq_reference.f90
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output canonical/b1hcq_r16_stubs.f90 --nodes 16 --dz-cm 10
+
+          for opt in 0 2; do
+            build="/tmp/b1hcq/control-o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical               --stub b1hcq_r16_stubs.f90               --target tests/rom/test_layer_rom_b1hcq_reference.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt "$opt"
+            "$build/rom0_test" > "/tmp/b1hcq/R16_o${opt}.txt" 2>&1
+          done
+          cmp /tmp/b1hcq/R16_o0.txt /tmp/b1hcq/R16_o2.txt
+          cmp /tmp/b1hcq/R16_o0.txt "/tmp/b1hcq/b1h/R16_${{ matrix.material }}.txt"
+
+          python3 - <<'PY'
+          import hashlib,json
+          material="${{ matrix.material }}"
+          path="/tmp/b1hcq/R16_o0.txt"
+          raw=open(path,'rb').read()
+          out={
+            'schema':'swap5.layer-rom.phase-b1hc-q.control.v1',
+            'material':material,
+            'pass':True,
+            'R16_exact_B1H_reproduction':True,
+            'R16_stdout_sha256':hashlib.sha256(raw).hexdigest(),
+            'canonical_head':'1caa431002d5c128c73cfcfbd31af4cc39ee9f12',
+            'D13_harness_source_head':'9d66a3e8a7fda6d1e456188cfc87cf9f884075a4',
+          }
+          open(f'B1HCQ_EVIDENCE/control/LAYER_ROM_B1HCQ_{material}_CONTROL.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out,sort_keys=True))
+          PY
+          cp /tmp/b1hcq/B1HCQ_HARNESS.json B1HCQ_EVIDENCE/control/
+          echo "LAYER_ROM_B1HCQ_R16_CONTROL=PASS"
+
+      - name: Qualify L4 L6 R8 histories fail-closed
+        run: |
+          set -euo pipefail
+          while IFS='|' read -r member dimension thickness; do
+            edir="B1HCQ_EVIDENCE/${member}"
+            mkdir -p "$edir"
+            stub="canonical/b1hcq_${member}_stubs.f90"
+            python3 tests/rom/materialize_layer_rom_variable_grid_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub"               --layer-thickness-cm "$thickness"
+
+            for opt in 0 2; do
+              build="/tmp/b1hcq/${member}-o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "b1hcq_${member}_stubs.f90"                 --target tests/rom/test_layer_rom_b1hcq_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+            done
+
+            python3 - "$edir/execution_manifest.json" "${{ matrix.material }}" "$member" <<'PY'
+          import json,sys
+          path,material,member=sys.argv[1:]
+          h={x:{} for x in ('X01','X02','X03','X04')}
+          json.dump({'schema':'swap5.layer-rom.phase-b1hc-q.execution-manifest.v1','material':material,'member':member,'histories':h},open(path,'w'),indent=2,sort_keys=True)
+          PY
+
+            for hist in X01 X02 X03 X04; do
+              statuses=()
+              for opt in 0 2; do
+                log="$edir/${member}-${hist}-o${opt}.txt"
+                set +e
+                B1HC_HISTORY_FILTER="$hist" "/tmp/b1hcq/${member}-o${opt}/rom0_test" > "$log" 2>&1
+                rc=$?
+                set -e
+                status="$(python3 - "$log" "$rc" <<'PY'
+          import sys
+          path,rc=sys.argv[1],int(sys.argv[2])
+          raw=open(path,errors='replace').read()
+          if rc==0 and 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' in raw and raw.count('F_ROMV2_D13_REF_STATE|')==1024:
+              print('QUALIFIED')
+          elif 'F_ROMV2_D13_REF_FAIL' in raw:
+              print('FAIL_CLOSED_REFERENCE_POLICY')
+          else:
+              print('TECHNICAL_FAILURE')
+          PY
+          )"
+                statuses+=("$status")
+              done
+
+              if [[ "${statuses[0]}" != "${statuses[1]}" ]]; then
+                status="TECHNICAL_FAILURE"
+              else
+                status="${statuses[0]}"
+              fi
+
+              if [[ "$status" == "QUALIFIED" ]]; then
+                cmp "$edir/${member}-${hist}-o0.txt" "$edir/${member}-${hist}-o2.txt" || status="TECHNICAL_FAILURE"
+              elif [[ "$status" == "FAIL_CLOSED_REFERENCE_POLICY" ]]; then
+                if ! python3 - "$edir/${member}-${hist}-o0.txt" "$edir/${member}-${hist}-o2.txt" <<'PY'
+          import sys
+          def first(p):
+              for line in open(p,errors='replace'):
+                  if line.startswith('F_ROMV2_D13_REF_FAIL'):
+                      return line.strip()
+          a,b=first(sys.argv[1]),first(sys.argv[2])
+          if a is None or a!=b: raise SystemExit(1)
+          PY
+                then
+                  status="TECHNICAL_FAILURE"
+                fi
+              fi
+
+              python3 - "$edir/execution_manifest.json" "$hist" "$status" <<'PY'
+          import json,sys
+          path,hist,status=sys.argv[1:]
+          p=json.load(open(path))
+          p['histories'][hist]={
+            'status':status,
+            'o0_file':f"{p['member']}-{hist}-o0.txt",
+            'o2_file':f"{p['member']}-{hist}-o2.txt"
+          }
+          json.dump(p,open(path,'w'),indent=2,sort_keys=True)
+          PY
+            done
+
+            python3 tests/rom/analyze_layer_rom_b1hcq_member.py               --evidence-dir "$edir"               --material "${{ matrix.material }}"               --member "$member"               --dimension "$dimension"               --thickness "$thickness"               --output "$edir/LAYER_ROM_B1HCQ_${{ matrix.material }}_${member}_RESULT.json"               | tee "$edir/analyzer.txt"
+          done <<'SPECS'
+          L4|4|130,10,10,10
+          L6|6|110,10,10,10,10,10
+          R8|8|90,10,10,10,10,10,10,10
+          SPECS
+
+          sha256sum $(find B1HCQ_EVIDENCE -type f | sort) > B1HCQ_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- \
+            integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json \
+            integration/f-rom/LAYER_ROM_B1HCQ_REPAIR_RECORD.json \
+            tests/rom/materialize_layer_rom_variable_grid_stubs.py \
+            tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py \
+            tests/rom/analyze_layer_rom_b1hcq_member.py \
+            tests/rom/aggregate_layer_rom_b1hcq.py \
+            .github/workflows/f-rom-layer-b1hcq-corichards-qualification.yml
+          echo "LAYER_ROM_B1HCQ_MATERIAL_QUALIFICATION=PASS"
+
+      - name: Upload material qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcq-${{ matrix.material }}
+          path: B1HCQ_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcq-B*
+          path: /tmp/b1hcq-results
+          merge-multiple: false
+
+      - name: Aggregate strict comparator availability
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCQ_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcq.py             --input-dir /tmp/b1hcq-results             --prereg integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json             --output B1HCQ_AGGREGATE/LAYER_ROM_B1HCQ_RESULT.json             | tee B1HCQ_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('B1HCQ_AGGREGATE/LAYER_ROM_B1HCQ_RESULT.json'))
+          assert r['decision'] in {
+            'B1HCQ_FULL_COMMON_COHORT_AVAILABLE',
+            'B1HCQ_PARTIAL_COMMON_COHORT_ONLY',
+            'B1HCQ_REDUCED_COMPARATOR_UNAVAILABLE',
+            'B1HCQ_COMPARATOR_AUTHORITY_BLOCKED'
+          }
+          assert r['hydrological_comparison_performed'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCQ_FIREWALL=PASS')
+          PY
+          sha256sum B1HCQ_AGGREGATE/* > B1HCQ_AGGREGATE/sha256.txt
+
+      - name: Upload aggregate comparator authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcq-aggregate
+          path: B1HCQ_AGGREGATE/
+          if-no-files-found: error

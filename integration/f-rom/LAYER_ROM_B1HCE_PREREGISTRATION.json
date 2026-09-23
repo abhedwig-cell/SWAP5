@@ -1,0 +1,205 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hce.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCE",
+  "phase": "PREREGISTERED_BEFORE_FIXED_HEAD_OPERATOR_LOCALIZATION",
+  "title": "Fixed-head operator localization and conditional temporal-refinement audit",
+  "scientific_question": "Is the remaining fixed-head Layer-ROM error caused primarily by state projection at internal interfaces, by the pointwise lower-boundary operator, or by reduced-model time propagation once the spatial state is held fixed?",
+  "authority": {
+    "canonical": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "B1H": "integration/f-rom/LAYER_ROM_B1H_CLOSEOUT.json",
+    "B1HCQ": "integration/f-rom/LAYER_ROM_B1HCQ_CLOSEOUT.json",
+    "B1HCD": "integration/f-rom/LAYER_ROM_B1HCD_CLOSEOUT.json",
+    "required_B1HCD_decision": "B1HCD_FULL_COHORT_HYDROLOGICAL_DECOMPOSITION_COMPLETE"
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "column_depth_cm": 160,
+    "boundary": "fixed zero pressure head at the 160-cm lower face, zero top flux",
+    "sinks": false,
+    "moving_water_table": false,
+    "production": false
+  },
+  "stage_E1_teacher_forced_operator_localization": {
+    "rule": "Use only immutable committed R16 Reference states. No Layer-ROM state propagation occurs in E1.",
+    "representations": [
+      {
+        "id": "L4",
+        "boundaries_cm": [
+          0,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "L6",
+        "boundaries_cm": [
+          0,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R8",
+        "boundaries_cm": [
+          0,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R16_OP",
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      }
+    ],
+    "state_projection": "Exact volume-weighted layer mean theta from the immutable 16 x 10 cm committed Reference state.",
+    "internal_interface_candidate": "Standard LARE adjacent-layer Darcy/Taylor interface flux using projected layer means, Mualem-Van Genuchten psi/K and the frozen thickness-weighted arithmetic face conductivity.",
+    "fine_face_diagnostic": "At each candidate boundary that coincides with a 10-cm Reference face, compute the same Darcy face diagnostic from the two adjacent immutable fine-cell Reference theta states and arithmetic fine-cell conductivity. This is a spatial-operator diagnostic, not an independently logged Reference internal flux.",
+    "bottom_candidate": "q_bottom = K(theta_bottom_layer) * [1 + (0 - psi(theta_bottom_layer))/(0.5*dz_bottom)] with positive-downward convention.",
+    "bottom_oracle": "Logged immutable Reference terminal BOTTOM_FLUX at the same committed state and step.",
+    "constitutive_guard": "Compare psi(theta_logged) with -h_logged and K(theta_logged) with the same frozen material constitutive law before interpreting operator differences.",
+    "response_vector": [
+      "per material/member/interface RMS candidate-minus-fine-face diagnostic flux",
+      "per material/member/interface maximum absolute diagnostic flux error",
+      "per material/member/interface sign mismatch count",
+      "bottom pointwise RMS candidate-minus-logged-Reference flux",
+      "bottom pointwise maximum absolute error",
+      "bottom pointwise sign mismatch count",
+      "R16_OP equal-grid internal-interface identity maximum absolute error",
+      "constitutive psi(theta) versus logged -h maximum absolute residual"
+    ],
+    "hard_identity_gates": {
+      "R16_OP_internal_interface_max_abs_cm_per_day": 1e-10,
+      "bottom_pointwise_R16_OP_max_abs_cm_per_day": 1e-10,
+      "constitutive_psi_vs_logged_head_max_abs_cm": 1e-8
+    },
+    "interpretation": {
+      "if_R16_identity_passes": "The nonzero prognostic R16_OP error is not attributable to the instantaneous equal-grid spatial flux algebra. Proceed to frozen temporal-refinement E2.",
+      "if_bottom_identity_fails": "Stop before E2 and diagnose lower-boundary semantics/algebra. Do not retune a temporal integrator.",
+      "if_internal_equal_grid_identity_fails": "Stop before E2 and diagnose spatial operator mismatch.",
+      "coarse_interface_error": "Teacher-forced L4/L6/R8 internal-interface error localizes state-projection/closure burden without propagation drift."
+    }
+  },
+  "stage_E2_conditional_temporal_refinement": {
+    "execution_condition": "E1 R16_OP equal-grid internal and bottom pointwise identity gates both pass.",
+    "model_states": [
+      "R8",
+      "R16_OP"
+    ],
+    "dt_day": [
+      0.0001,
+      0.00005,
+      0.000025
+    ],
+    "observation_dt_day": 0.001,
+    "integrator": "unchanged source-anchored iterative Heun Layer-ROM research propagator",
+    "initial_states": "exact same frozen B1H material/history initial states",
+    "closure": "unchanged standard LARE internal and zero-head bottom operators",
+    "control": "dt=0.0001 day must reproduce the immutable B1H R8 and R16_OP summaries to numerical tolerance before finer dt results are interpreted.",
+    "response_vector": [
+      "storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "bottom_flux_rmse_cm_per_day",
+      "bottom_flux_sign_errors",
+      "abs_mean_signed_bottom_flux_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm",
+      "mapped_theta_rmse",
+      "upper_storage_rmse_cm",
+      "lower_storage_rmse_cm"
+    ],
+    "adjudication": [
+      "Report every component separately by material, member and dt.",
+      "Temporal convergence is supported for a component only when its error is nonincreasing over the frozen dt ladder; no scalar convergence score.",
+      "If R16_OP errors collapse with dt refinement while E1 operator identity passes, classify the former R16_OP prognostic floor as a temporal research-integrator/propagation floor rather than a spatial closure floor.",
+      "If R16_OP errors persist despite E1 operator identity and dt refinement, investigate the reduced ODE/state-evolution formulation before altering boundary algebra.",
+      "Compare R8 and R16_OP at each dt as a vector; do not subtract their errors as an additive closure estimate."
+    ],
+    "no_post_result_extension": true
+  },
+  "provenance": {
+    "immutable_B1H_workflow_run": 35495947476,
+    "B1H_material_artifacts": {
+      "B02": {
+        "id": 10600214649,
+        "digest": "sha256:fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0"
+      },
+      "B05": {
+        "id": 10600409481,
+        "digest": "sha256:7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5"
+      },
+      "B06": {
+        "id": 10600414651,
+        "digest": "sha256:3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380"
+      },
+      "B11": {
+        "id": 10600034910,
+        "digest": "sha256:b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c"
+      },
+      "B12": {
+        "id": 10599789755,
+        "digest": "sha256:ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7"
+      },
+      "B16": {
+        "id": 10600289675,
+        "digest": "sha256:fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c"
+      }
+    },
+    "C4V_basis_head": "e3b11802e88316dcd57147569e985153be99e215",
+    "current_reference_head": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_NEW_STATE_OR_PARTITION",
+    "NO_CLOSURE_FITTING",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false
+}

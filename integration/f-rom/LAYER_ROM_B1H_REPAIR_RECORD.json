@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.layer-rom.phase-b1h.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1H",
+  "failed_run": {
+    "workflow_run": 35495719330,
+    "executed_head": "bf80806f245104249d7c57b61f7542b65b894eca",
+    "conclusion": "failure",
+    "failed_step": "Assert research-only source freeze and recover pinned basis",
+    "response_generated": false,
+    "material_preflight_executed": false,
+    "scientific_result_generated": false
+  },
+  "diagnosis": {
+    "class": "TECHNICAL_GOVERNANCE_CHECK_ONLY",
+    "issue": "The source-freeze guard used triple-dot diff against current canonical on a branch whose history diverged from canonical, so it inspected branch-only ancestry rather than net tree differences.",
+    "direct_tree_reconciliation": "GitHub direct compare current canonical -> Layer-ROM branch reports no src/** or reference/** differences.",
+    "pinned_basis_blob_checks": "The D13 base, C4V analyzer and BC1 runner blob SHAs match their declared provenance."
+  },
+  "repair": {
+    "change": "Replace triple-dot source-freeze diff with direct two-tree diff: git diff --quiet <canonical> HEAD -- src reference.",
+    "scientific_design_changed": false,
+    "material_panel_changed": false,
+    "initial_state_scaling_changed": false,
+    "partitions_changed": false,
+    "closure_changed": false,
+    "response_vector_changed": false,
+    "threshold_changed": false,
+    "prospective_integrity": "No new B1H material preflight or Reference response ran before the repair."
+  },
+  "rerun_required": false,
+  "production_rom_authorized": false,
+  "additional_failed_pre_response_runs": [
+    {
+      "workflow_run": 35495829737,
+      "executed_head": "282c465fec513b4e4eea10a63baabc4f5f43b291",
+      "failure": "Fresh checkout did not contain historical evidence commits needed by git show.",
+      "response_generated": false
+    },
+    {
+      "workflow_run": 35495877981,
+      "executed_head": "64c58727a79937f4d9fa7f08d6b3bd1bb844a6ba",
+      "failure": "Provenance gate still failed before response; explicit log confirmed source/reference diff NONE.",
+      "response_generated": false
+    },
+    {
+      "workflow_run": 35495910480,
+      "executed_head": "bfbc9669eea7ec3087ef94872997229a11abb7be",
+      "failure": "Exact historical commits were fetched and all printed blob/canonical SHAs matched expected values, but shell equality assertions still returned nonzero before response.",
+      "response_generated": false
+    }
+  ],
+  "final_technical_repair": {
+    "class": "PROVENANCE_ASSERTION_IMPLEMENTATION_ONLY",
+    "change": "Fetch exact historical commits, expose recovered SHAs, and verify the same four frozen values in a deterministic Python string assertion.",
+    "expected_rerun": 35495947476,
+    "scientific_design_changed": false,
+    "response_generated_before_final_repair": false
+  },
+  "final_successful_execution": {
+    "workflow_run": 35495947476,
+    "executed_head": "4c68807f392f7458fc0786fa085b487b92dd24d0",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10600374489,
+    "aggregate_artifact_digest": "sha256:ca2197a7cb4e7479e39a097d5652916582e473e6500dbe7be6a810d65ddf6852",
+    "all_six_material_jobs_success": true,
+    "aggregate_gate_success": true
+  }
+}

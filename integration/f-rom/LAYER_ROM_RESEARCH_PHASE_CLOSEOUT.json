@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.layer-rom.research-phase.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-RESEARCH-PHASE",
+  "status": "CLOSED_CORE_FEASIBILITY_SUPPORTED_APPLICATION_SELECTION_BLOCKED",
+  "decision": "PRACTICAL_TARGETED_LAYER_ROM_RESEARCH_CASE_SUPPORTED_NO_UNIVERSAL_APPLICATION_MINIMUM",
+  "authority": {
+    "agents": "AGENTS.md",
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "phase_a_curve": "integration/f-rom/LAYER_ROM_PHASE_A_DIMENSION_CLOSURE_FIDELITY_CURVE.json",
+    "phase_b_curve": "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "cost1_result": "integration/f-rom/LAYER_ROM_COST1_RESULT.json",
+    "cost1_closeout": "integration/f-rom/LAYER_ROM_COST1_CLOSEOUT.json",
+    "final_curve": "integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json",
+    "cf1_workflow_run": 35508569250,
+    "cf1_artifact_id": 10604583217,
+    "cf1_artifact_digest": "sha256:7e41186838724a7aee90da65c8d847fe449525cafb28414e78c4087ea827466a"
+  },
+  "answered_questions": {
+    "vertical_state_information": "Within the bounded B01 cohort, L3 is the minimum tested predictive-state-information candidate. Additional explicit lower-zone storages did not demonstrate additional future-response information there.",
+    "layer_placement": "Uniform placement is not supported as a default. Localized lower-zone resolution is repeatedly more informative for propagation fidelity, and the equal-dimension L3+global-moment route did not replace L4.",
+    "closure": "The tested storage-only and first-global-moment closures do not make L3 broadly adequate. Standard Layer-ROM/LARE closure fidelity improves strongly with localized resolution.",
+    "purpose": "GW-R/GW-D and SCI-P have visibly different fidelity burdens. AG-WB and EVT remain outside the present no-sink/no-event envelope.",
+    "computation": "L4/L6/R8 all show a preregistered robust shared-host CPU-reduction signal versus R16 on all six fixed-head transfer materials, including the fourfold-refined timing bracket."
+  },
+  "retained_frontier": [
+    {
+      "id": "L4",
+      "role": "aggressive low-dimension candidate",
+      "caveat": "material-dependent; CoRichards componentwise no-worse on B02/B05/B06"
+    },
+    {
+      "id": "L6",
+      "role": "intermediate candidate",
+      "caveat": "stronger across panel; B05 remains CoRichards-no-worse"
+    },
+    {
+      "id": "R8",
+      "role": "broad targeted-placement candidate",
+      "caveat": "placement support on all six materials; B05 remains groundwater tradeoff"
+    }
+  ],
+  "rejected_or_held": [
+    "L3 as a generally adequate propagated Layer-ROM",
+    "one global first moment as replacement for localized fourth storage",
+    "uniform same-dimension partition as default",
+    "empirical closure correction without new physical authority",
+    "universal minimum layer count",
+    "application acceptance without independent purpose tolerances",
+    "portable/formal speedup claim",
+    "production ROM admission"
+  ],
+  "current_blocker": {
+    "type": "SCIENTIFIC_APPLICATION_AUTHORITY",
+    "description": "The evidence now supports a cost-effective representation frontier, but choosing a sufficient member for GW-R, GW-D or SCI-P requires independently sourced purpose-specific tolerances and temporal-allocation semantics. Current repository evidence explicitly does not provide those absolute application thresholds.",
+    "consequence": "Further lowering or selecting dimension from the present research errors would be post-hoc application acceptance.",
+    "resolution_options": [
+      "Bind external GW-R recharge/water-balance tolerances and temporal aggregation rules.",
+      "Bind external GW-D head/exchange/reversal tolerances and temporal allocation rules.",
+      "Bind SCI-P profile/process tolerances if profile research is the target.",
+      "Open separate AG-WB/EVT authority only after ET/root-uptake or event physics are authorized."
+    ]
+  },
+  "next_safe_step": "Choose and source an independent purpose-specific acceptance envelope, then perform blind application-envelope validation on the frozen L4/L6/R8 frontier. Do not retune partitions or closures from those validation responses.",
+  "production_rom_authorized": false
+}

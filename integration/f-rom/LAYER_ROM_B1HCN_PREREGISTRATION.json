@@ -1,0 +1,205 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcn.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCN",
+  "phase": "PREREGISTERED_BEFORE_NEW_CORICHARDS_TEMPORAL_RESPONSE",
+  "title": "Temporal-limit same-partition CoRichards decomposition",
+  "scientific_question": "After temporally qualifying same-partition CoRichards on L4, L6 and R8, how much of the continuous-time reduced Layer-ROM residual is shared with Richards spatial discretization and how much remains Layer-ROM-specific?",
+  "trigger": {
+    "B1HCM_decision": "B1HCM_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+    "B1HCM_closeout": "integration/f-rom/LAYER_ROM_B1HCM_CLOSEOUT.json",
+    "B1HCQ_decision": "B1HCQ_FULL_COMMON_COHORT_AVAILABLE",
+    "reason": "Layer-ROM candidate temporal error and fine-Reference temporal truncation are now controlled, while same-partition CoRichards still exists only at dt=0.001 d."
+  },
+  "authority": {
+    "canonical_execution_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "D13_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "B1HCQ": "integration/f-rom/LAYER_ROM_B1HCQ_RESULT.json",
+    "B1HCM": "integration/f-rom/LAYER_ROM_B1HCM_RESULT.json",
+    "B1HCL": "integration/f-rom/LAYER_ROM_B1HCL_RESULT.json"
+  },
+  "cohort": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "members": [
+      {
+        "id": "L4",
+        "dimension": 4,
+        "thickness_cm": [
+          130,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "L6",
+        "dimension": 6,
+        "thickness_cm": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "R8",
+        "dimension": 8,
+        "thickness_cm": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      }
+    ],
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "mode-5 zero pressure head at fixed 160 cm",
+    "common_observation_interval_day": 0.001,
+    "common_observation_count": 1024,
+    "horizon_day": 1.024,
+    "no_coverage_selection": true
+  },
+  "corichards_temporal_ladder": [
+    {
+      "id": "COR_COARSE",
+      "dt_day": 0.001,
+      "substeps_per_observation": 1,
+      "source": "immutable B1HCQ qualified O0 trajectory"
+    },
+    {
+      "id": "COR_MID",
+      "dt_day": 0.0005,
+      "substeps_per_observation": 2,
+      "source": "new"
+    },
+    {
+      "id": "COR_FINE",
+      "dt_day": 0.00025,
+      "substeps_per_observation": 4,
+      "source": "new prospective holdout"
+    }
+  ],
+  "temporal_hypothesis": {
+    "frozen_order": 1,
+    "prediction": "COR_FINE_predicted = COR_MID + 0.5*(COR_MID-COR_COARSE) pointwise",
+    "richardson_limit": "COR_star = 2*COR_FINE-COR_MID pointwise",
+    "basis": "same Reference-Richards outer-step integration family as B1HCL, tested prospectively on each nonuniform same-partition geometry rather than assumed from R16"
+  },
+  "corrected_observables": [
+    "total_storage_cm",
+    "cumulative_bottom_exchange_cm",
+    "QAVG_cm_per_day from interval bottom exchange",
+    "QEND_cm_per_day reconstructed from terminal bottom-cell theta and zero-head Darcy operator",
+    "mapped_10cm_theta"
+  ],
+  "numerical_floors": {
+    "storage_rms": 1e-12,
+    "cumulative_bottom_rms": 1e-12,
+    "qavg_rms": 1e-9,
+    "qend_rms": 1e-9,
+    "mapped_theta_rms": 1e-13,
+    "source": "unchanged B1HCI/B1HCL floors"
+  },
+  "temporal_gate": {
+    "per_component": [
+      "COR_MID-to-COR_FINE RMS <= COR_COARSE-to-COR_MID RMS + floor",
+      "predicted-COR_FINE RMS <= max(floor, 0.10 * COR_MID-to-COR_FINE RMS)"
+    ],
+    "member_material_supported": "all five components pass",
+    "panel_supported": "all 18 material-member combinations pass",
+    "observed_order": "report log2(coarse-mid / mid-fine) diagnostically; do not fit or retune order"
+  },
+  "reference_limit": {
+    "formula": "REF_star = 2*REF_DT_1P25E4 - REF_DT_2P5E4",
+    "authority": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_SUPPORTED_ALL_MATERIALS"
+  },
+  "continuous_time_decomposition": {
+    "LayerROM_source": "B1HCM DOP853/Radau-resolved error vector versus REF_star",
+    "CoRichards_source": "COR_star error vector versus REF_star",
+    "primary_groundwater_components": [
+      "storage_rms_cm",
+      "cumulative_bottom_rms_cm",
+      "qavg_rms_cm_per_day",
+      "qavg_sign_mismatch",
+      "qend_rms_cm_per_day",
+      "qend_sign_mismatch",
+      "max_abs_final_cumulative_bottom_error_cm"
+    ],
+    "profile_component": "mapped_theta_rms",
+    "relation_rule": {
+      "tolerance": 1e-12,
+      "COR_COMPONENTWISE_NO_WORSE": "CoRichards error no worse on every groundwater component and strictly better on at least one.",
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": "Layer-ROM error no worse on every groundwater component and strictly better on at least one.",
+      "NUMERICALLY_EQUIVALENT": "all groundwater components equal within frozen tolerance.",
+      "TRADEOFF": "neither route componentwise no-worse."
+    },
+    "nonadditivity_firewall": "Layer-ROM minus CoRichards error is descriptive only and must not be called an additive closure error."
+  },
+  "diagnostics": {
+    "B05_L4": "retest persistent dimension-4 counterexample after both routes are temporally qualified",
+    "B02_B16_old_tradeoffs": "test whether continuous-time CoRichards and Layer-ROM dimension ladders are both monotone",
+    "R8_materials": "report whether residual reduced Layer-ROM exchange tracks COR_star discretization error or exceeds it"
+  },
+  "decisions": {
+    "complete": "B1HCN_TEMPORAL_LIMIT_SAME_PARTITION_DECOMPOSITION_COMPLETE",
+    "temporal_unresolved": "B1HCN_CORICHARDS_TEMPORAL_LIMIT_UNRESOLVED"
+  },
+  "B1HCQ_artifacts": {
+    "B02": {
+      "id": 10601589862,
+      "digest": "sha256:dd31968a447019f4d483a1ec931a17c073806b52c58541ea97cc632cb08218cf"
+    },
+    "B05": {
+      "id": 10602175157,
+      "digest": "sha256:c65d6fa84fa0d3df4f9401e46808dc78d12813c48b61ec63402edebf4ae95ab9"
+    },
+    "B06": {
+      "id": 10602070291,
+      "digest": "sha256:82575403367398a86543d94754bef596ace3688552b3042fc5912c5f0d2c4f19"
+    },
+    "B11": {
+      "id": 10600849049,
+      "digest": "sha256:f63648c948018e01d9d1e857cec0336bcbf7dcac125a59274e0e5dbd54be7e65"
+    },
+    "B12": {
+      "id": 10602120091,
+      "digest": "sha256:b5199abdd53798f1076a72320dd2e6ae26e5335bbddf3e916988aa67576f6303"
+    },
+    "B16": {
+      "id": 10601764361,
+      "digest": "sha256:8dfe5424b7e96170b6c7588ab5bd54e6ee8926fe35f4795e9928dccbf3dc2295"
+    }
+  },
+  "firewalls": [
+    "NO_NEW_FINE_REFERENCE_TRAJECTORY",
+    "NO_LAYER_ROM_TRAJECTORY_CHANGE",
+    "NO_PARTITION_RETUNING",
+    "NO_CORICHARDS_TOLERANCE_RELAXATION",
+    "NO_POST_RESPONSE_TEMPORAL_ORDER_FIT",
+    "NO_WEIGHTED_SCORE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_MEASUREMENT",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

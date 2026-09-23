@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.layer-rom.phase-a2.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A2",
+  "phase": "PREREGISTERED_BEFORE_NEW_CLOSURE_FLUX_RESULTS",
+  "purpose": "Hold the Layer-ROM state representation fixed and test whether physically justified storage-only inter-layer closures can recover fine-Reference interface fluxes before any reduced-state propagation.",
+  "trigger": {
+    "A1_decision": "L3_MINIMUM_BOUNDED_STATE_INFORMATION_CANDIDATE_ACTIVE_ZONE_PLACEMENT_SUPPORTED_CLOSURE_TEST_JUSTIFIED",
+    "A1_result": "integration/f-rom/LAYER_ROM_A1_RESULT.json",
+    "prior_mechanism": "work/f-rom-lare-rs1 LARE-DYN0A-MECH1 found gradient reconstruction dominant"
+  },
+  "state_representations": {
+    "primary": {
+      "id": "L3",
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state": "exact layer storage only"
+    },
+    "resolution_control": {
+      "id": "L4",
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state": "exact layer storage only"
+    },
+    "rule": "No added gradient, moment, front-position or hidden profile state in A2."
+  },
+  "immutable_reference": {
+    "source": "fine 16 x 10 cm B01 DYN0A fixed-flux Reference Richards artifact",
+    "workflow_artifact_id": 10586020583,
+    "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
+    "observations_per_case": 1024,
+    "reference_face_flux": "SWKMEAN=1 arithmetic fine-cell conductivity with native fine-cell head gradient, normalized positive downward"
+  },
+  "cohort": {
+    "primary_high_state_dynamic_cases": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F3"
+    ],
+    "secondary": "all fine-Reference cases already QUALIFIED in the immutable artifact",
+    "selection": "frozen by predecessor DYN0A-MECH1 before A2 closure results"
+  },
+  "closures": [
+    {
+      "id": "C_LARE_TAYLOR",
+      "class": "published/source-anchored baseline",
+      "formula": "psi_i=psi(theta_bar_i); K_i=K(theta_bar_i); K_face=(L_j*K_i+L_i*K_j)/(L_i+L_j); q=K_face*[1+2*(psi_j-psi_i)/(L_i+L_j)]"
+    },
+    {
+      "id": "C_DARCY_HARMONIC",
+      "class": "finite-volume Darcy control",
+      "formula": "psi_i=psi(theta_bar_i); K_i=K(theta_bar_i); K_face=(L_i+L_j)/(L_i/K_i+L_j/K_j); q=K_face*[1+2*(psi_j-psi_i)/(L_i+L_j)]",
+      "role": "changes conductivity localization only; gradient information is identical to the layer-centroid closure"
+    },
+    {
+      "id": "C_HEAD_LINEAR",
+      "class": "nonlinear storage-consistent head-profile reconstruction",
+      "definition": [
+        "For each adjacent layer pair use local z=0 at the interface, upper domain [-L_i,0], lower domain [0,L_j].",
+        "Assume one continuous linear capillary-head profile psi(z)=a+b*z over the pair.",
+        "Solve a and b so numerical integration of theta(psi(z)) over each layer reproduces its exact layer-average theta.",
+        "Evaluate interface conductivity as K(psi(0)) and flux as q=K(psi(0))*(1+b).",
+        "No response data, fitted coefficient or additional dynamic state enters the reconstruction."
+      ],
+      "numerical_route": "deterministic Gauss-Legendre layer integration plus bounded nonlinear least-squares; fail closed if storage constraints or strict-unsaturated domain cannot be satisfied"
+    }
+  ],
+  "diagnostic_oracles": [
+    "EXACT_LAYER_MEANS: predecessor MECH1 exact volume means of psi and K, diagnostic only",
+    "LOCAL_K_MEAN_GRADIENT: predecessor MECH1 fine-interface K with layer-mean gradient, diagnostic only",
+    "FINE_REFERENCE_FACE_FLUX"
+  ],
+  "structural_tests": [
+    "uniform-state gravity identity: q=K(theta) for every candidate closure",
+    "synthetic linear-head reconstruction identity for C_HEAD_LINEAR",
+    "strict-unsaturated psi>0.01 cm at reconstruction quadrature and interface points",
+    "storage reconstruction residual <= 1e-11 theta in each layer",
+    "finite deterministic result"
+  ],
+  "response_vector": [
+    "per case/interface RMS interface-flux error",
+    "per case/interface maximum absolute interface-flux error",
+    "pooled primary-cohort RMS error by partition and closure",
+    "pooled primary-cohort maximum absolute error by partition and closure",
+    "flux-sign mismatch count",
+    "error at the critical Se0=0.95 DRY case",
+    "closure solve failure count",
+    "L3 versus L4 error change for the same closure at shared interfaces"
+  ],
+  "adjudication": {
+    "no_single_score": true,
+    "storage_only_closure_improvement": "A candidate supports a storage-only closure improvement only if, on L3 primary high-state dynamics, it has no greater pooled RMS error, no greater pooled maximum absolute error and no more flux-sign mismatches than C_LARE_TAYLOR, with strict improvement in at least one of these components.",
+    "broad_support": "In addition, the candidate must not be worse than C_LARE_TAYLOR on both RMS and maximum absolute error in any primary case/interface block.",
+    "resolution_interpretation": "If L4 materially improves a closure while L3/L4 were A1 state-information equivalent, attribute the improvement to closure resolution/localization rather than added state information.",
+    "escalation_rule": "Only if all storage-only closures remain materially limited may A3 preregister an additional gradient/moment or front-position state."
+  },
+  "firewalls": [
+    "NO_REDUCED_STATE_PROPAGATION_IN_A2",
+    "NO_PARAMETER_FIT",
+    "NO_PARTITION_RETUNING",
+    "NO_RESPONSE_DEPENDENT_CLOSURE_SELECTION_BEFORE_RESULT",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "provenance": {
+    "LARE_MECH1_prereg": "work/f-rom-lare-rs1:integration/f-rom/LARE_DYN0A_MECH1_PREREGISTRATION.json",
+    "LARE_MECH1_analyzer": "work/f-rom-lare-rs1:tests/rom/analyze_lare_dyn0a_mech1.py",
+    "reuse_rule": "A2 may reuse constitutive constants, Reference parser and fine-face flux semantics with attribution, but the new closure implementation is persisted independently on work/f-rom-layer-a."
+  },
+  "production_rom_authorized": false
+}

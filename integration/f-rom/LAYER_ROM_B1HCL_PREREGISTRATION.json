@@ -1,0 +1,157 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcl.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCL",
+  "phase": "PREREGISTERED_BEFORE_FOURTH_REFERENCE_LEVEL_RESPONSE",
+  "title": "Prospective fourth-level Reference refinement and first-order Richardson-limit confirmation",
+  "trigger": {
+    "B1HCK_decision": "B1HCK_REFERENCE_TEMPORAL_BOUND_MIXED",
+    "B1HCK_result": "integration/f-rom/LAYER_ROM_B1HCK_RESULT.json",
+    "observation": "All 30 material-component Reference sequences converged, while mid-fine Reference self-difference remained approximately equal to the DOP853-to-fine-Reference residual.",
+    "reason": "Test the newly exposed first-order finite-Reference truncation hypothesis prospectively before any closure/model-form attribution."
+  },
+  "authority": {
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "controlled_reference_basis": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "reference_source_commit": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "candidate_basis_head": "e3b11802e88316dcd57147569e985153be99e215",
+    "B1HCK_run": 35504899043,
+    "B1HCK_aggregate_artifact": {
+      "id": 10602634969,
+      "digest": "sha256:d7346060fcc804003f6e9dfe6b09b5634bcb1c210f60c23d2fa78d76aa8c785d"
+    }
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "geometry": "R16 Reference Richards, 16 x 10 cm",
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero prescribed pressure head at fixed 160 cm",
+    "sinks": false,
+    "moving_water_table": false,
+    "hydrological_model_changed": false,
+    "candidate": "unchanged R16_OP equal-grid Layer-ROM DOP853 oracle"
+  },
+  "inherited_reference_levels": [
+    {
+      "id": "REF_DT_5E4",
+      "dt_day": 0.0005,
+      "source": "B1HCK material artifact"
+    },
+    {
+      "id": "REF_DT_2P5E4",
+      "dt_day": 0.00025,
+      "source": "B1HCK material artifact"
+    }
+  ],
+  "new_holdout_level": {
+    "id": "REF_DT_1P25E4",
+    "dt_day": 0.000125,
+    "substeps_per_observation": 8,
+    "common_observation_interval_day": 0.001,
+    "common_observations": 1024,
+    "compiler_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "hard_mass_gate_cm": 1e-12,
+    "no_solver_tolerance_change": true,
+    "no_constitutive_change": true,
+    "no_boundary_change": true
+  },
+  "B1HCK_material_artifacts": {
+    "B02": {
+      "id": 10602639932,
+      "digest": "sha256:bf12533bd3165202e96a03c2db37ee9a4e82506be7eb2f60c735a11fca36cc7e"
+    },
+    "B05": {
+      "id": 10602999048,
+      "digest": "sha256:07327da8b991913350fdf314e367ae02d8caceb2993eabd7af583f4decfefac4"
+    },
+    "B06": {
+      "id": 10603098741,
+      "digest": "sha256:f6a2313150ef7b9080eb2556012a1e3543c11f90c43d8826d89c8650fa129d5d"
+    },
+    "B11": {
+      "id": 10603393122,
+      "digest": "sha256:f67a14afab9c94ccfe34b843d731437a4be50bd33ebd5547e433b6c2d829428c"
+    },
+    "B12": {
+      "id": 10603830084,
+      "digest": "sha256:96d4e3e7b087c559ab6faf8bfb08da7c54d8b804a3b7b3bd53fa15bba7e86fc9"
+    },
+    "B16": {
+      "id": 10603820596,
+      "digest": "sha256:6cfaa5be827c70cba39dd4d03961cbd545b8939014c0fc12c2625a685d4a936d"
+    }
+  },
+  "hypothesis": {
+    "temporal_model": "For each common observable, finite Reference error is asymptotically first order in outer interval dt over the tested levels.",
+    "frozen_order": 1,
+    "prediction": "REF_DT_1P25E4 should lie near the first-order prediction R_fine + 0.5*(R_fine-R_mid), and DOP853 should lie near the first-order Richardson limit 2*R_ultra-R_fine.",
+    "interpretation": "This is a temporal-axis hypothesis only; it does not assert physical equivalence or application acceptance."
+  },
+  "common_observables": [
+    "total_storage_cm",
+    "cumulative_bottom_exchange_cm",
+    "QAVG_cm_per_day over each 0.001 d observation interval",
+    "QEND_cm_per_day at the common observation endpoint",
+    "mapped_10cm_theta"
+  ],
+  "numerical_floors": {
+    "storage_rms": 1e-12,
+    "cumulative_bottom_rms": 1e-12,
+    "qavg_rms": 1e-9,
+    "qend_rms": 1e-9,
+    "mapped_theta_rms": 1e-13,
+    "source": "inherited from B1HCI/B1HCK"
+  },
+  "frozen_diagnostics": {
+    "reference_continued_convergence": "fine-ultra RMS <= mid-fine RMS + floor",
+    "holdout_first_order_ratio": "report fine-ultra RMS / mid-fine RMS; expected asymptotic value 0.5",
+    "observed_order": "log2(mid-fine RMS / fine-ultra RMS), diagnostic only",
+    "candidate_continued_convergence": "DOP853-to-ultra RMS <= DOP853-to-fine RMS + floor",
+    "first_order_holdout_prediction": "pointwise predicted ultra = fine + 0.5*(fine-mid); compare predicted ultra to actual ultra",
+    "richardson_limit": "pointwise R_star = 2*ultra - fine; compare DOP853 to R_star"
+  },
+  "gates": {
+    "per_component": {
+      "continued_reference_convergence": true,
+      "continued_candidate_convergence": true,
+      "holdout_prediction_bound": "prediction-to-ultra RMS <= max(floor, 0.10 * fine-ultra RMS)",
+      "richardson_limit_bound": "DOP853-to-R_star RMS <= max(floor, 0.10 * DOP853-to-ultra RMS)"
+    },
+    "material_supported": "all five components satisfy all four per-component gates",
+    "panel_supported": "all six materials supported"
+  },
+  "decisions": {
+    "supported": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_SUPPORTED_ALL_MATERIALS",
+    "mixed": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_MIXED",
+    "blocked": "B1HCL_HOLDOUT_EXECUTION_BLOCKED"
+  },
+  "next_if_supported": "Treat the R16_OP equal-grid residual as Reference temporal truncation at the finite B1H/B1HCK step sizes, then rebase reduced L4/L6/R8 fixed-head fidelity against a temporally qualified Reference before any model-form claim.",
+  "next_if_mixed": "Remain on the Reference temporal/operator axis for only the failing material-component mechanisms; do not redesign Layer-ROM state or closure.",
+  "firewalls": [
+    "NO_CLOSURE_OR_STATE_CHANGE",
+    "NO_POST_RESPONSE_ORDER_FIT_IN_DECISION_GATE",
+    "NO_PARTITION_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "evidence_classification": "PROSPECTIVE_HOLDOUT_CONFIRMATION_OF_AN_EXPOSED_B1HCK_TEMPORAL_HYPOTHESIS",
+  "production_rom_authorized": false
+}

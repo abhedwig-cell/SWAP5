@@ -1,0 +1,233 @@
+name: F-ROM Layer-ROM B1HCL Richardson holdout
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json
+      - tests/rom/materialize_layer_rom_b1hcl_reference.py
+      - tests/rom/analyze_layer_rom_b1hcl_richardson.py
+      - tests/rom/aggregate_layer_rom_b1hcl.py
+      - .github/workflows/f-rom-layer-b1hcl-richardson.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcl-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', b1hck_id: 10602639932, b1hck_digest: 'bf12533bd3165202e96a03c2db37ee9a4e82506be7eb2f60c735a11fca36cc7e'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', b1hck_id: 10602999048, b1hck_digest: '07327da8b991913350fdf314e367ae02d8caceb2993eabd7af583f4decfefac4'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', b1hck_id: 10603098741, b1hck_digest: 'f6a2313150ef7b9080eb2556012a1e3543c11f90c43d8826d89c8650fa129d5d'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', b1hck_id: 10603393122, b1hck_digest: 'f67a14afab9c94ccfe34b843d731437a4be50bd33ebd5547e433b6c2d829428c'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7', b1hck_id: 10603830084, b1hck_digest: '96d4e3e7b087c559ab6faf8bfb08da7c54d8b804a3b7b3bd53fa15bba7e86fc9'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', b1hck_id: 10603820596, b1hck_digest: '6cfaa5be827c70cba39dd4d03961cbd545b8939014c0fc12c2625a685d4a936d'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Authority and source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_FOURTH_REFERENCE_LEVEL_RESPONSE'
+          assert p['new_holdout_level']['dt_day']==0.000125
+          assert p['new_holdout_level']['substeps_per_observation']==8
+          assert p['hypothesis']['frozen_order']==1.0
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCL_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile \
+            tests/rom/materialize_layer_rom_b1hcl_reference.py \
+            tests/rom/analyze_layer_rom_b1hcl_richardson.py \
+            tests/rom/aggregate_layer_rom_b1hcl.py
+
+      - name: Recover immutable B1H and B1HCK evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            9d66a3e8a7fda6d1e456188cfc87cf9f884075a4 \
+            e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hcl/b1h /tmp/b1hcl/b1hck /tmp/b1hcl/basis
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/b1hcl/d13_base.f90
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hcl/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hcl/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hcl/d13_base.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+          test "$(git hash-object /tmp/b1hcl/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/b1hcl/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcl/b1h.zip
+          actual="$(sha256sum /tmp/b1hcl/b1h.zip | awk '{print $1}')"
+          if [ "$actual" != "${{ matrix.b1h_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1H archive digest: $actual" >&2
+            exit 1
+          fi
+          unzip -q /tmp/b1hcl/b1h.zip -d /tmp/b1hcl/b1h
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1hck_id }}/zip" > /tmp/b1hcl/b1hck.zip
+          echo "${{ matrix.b1hck_digest }}  /tmp/b1hcl/b1hck.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcl/b1hck.zip -d /tmp/b1hcl/b1hck
+
+          test -f "/tmp/b1hcl/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          test -f "/tmp/b1hcl/b1h/materialization.json"
+          test -f "/tmp/b1hcl/b1hck/R16_${{ matrix.material }}_mid.txt"
+          test -f "/tmp/b1hcl/b1hck/R16_${{ matrix.material }}_fine.txt"
+
+      - name: Reproduce B1H material harness and materialize holdout
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_layer_rom_b1h_material.py \
+            --base-fortran /tmp/b1hcl/d13_base.f90 \
+            --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json \
+            --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json \
+            --material "${{ matrix.material }}" \
+            --output /tmp/b1hcl/base_material.f90 \
+            --manifest /tmp/b1hcl/base_material.json
+          python3 - <<'PY'
+          import hashlib,json
+          old=json.load(open('/tmp/b1hcl/b1h/materialization.json'))
+          new=json.load(open('/tmp/b1hcl/base_material.json'))
+          assert old['output_fortran_sha256']==new['output_fortran_sha256']
+          assert hashlib.sha256(open('/tmp/b1hcl/base_material.f90','rb').read()).hexdigest()==old['output_fortran_sha256']
+          print('LAYER_ROM_B1HCL_BASE_REPRODUCTION=PASS')
+          PY
+          mkdir -p B1HCL_EVIDENCE
+          python3 tests/rom/materialize_layer_rom_b1hcl_reference.py \
+            --base-fortran /tmp/b1hcl/base_material.f90 \
+            --dt-day 0.000125 --material "${{ matrix.material }}" \
+            --output /tmp/b1hcl/ref_ultra.f90 \
+            --manifest B1HCL_EVIDENCE/ref_ultra_manifest.json
+
+      - name: Compile and execute fourth Reference level
+        run: |
+          set -euo pipefail
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+            --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            --output canonical/b1hcl_r16_stubs.f90 --nodes 16 --dz-cm 10
+          cp /tmp/b1hcl/ref_ultra.f90 canonical/tests/rom/test_layer_rom_b1hcl_reference.f90
+          for opt in 0 2; do
+            build="/tmp/b1hcl/build_ultra_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+              --root canonical \
+              --stub b1hcl_r16_stubs.f90 \
+              --target tests/rom/test_layer_rom_b1hcl_reference.f90 \
+              --external-source src/legacy/b1_10_port/headcalc.f90 \
+              --build "$build" --opt "$opt"
+            "$build/rom0_test" > "/tmp/b1hcl/ref_ultra_o${opt}.txt" 2>&1
+            grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "/tmp/b1hcl/ref_ultra_o${opt}.txt"
+            test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "/tmp/b1hcl/ref_ultra_o${opt}.txt")" -eq 32768
+          done
+          cmp /tmp/b1hcl/ref_ultra_o0.txt /tmp/b1hcl/ref_ultra_o2.txt
+          python3 - <<'PY'
+          import re
+          raw=open('/tmp/b1hcl/ref_ultra_o0.txt',errors='replace').read()
+          m=re.search(r'F_ROMV2_D13_REF_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          mass=float(m.group(1))
+          assert mass<=1e-12,mass
+          print(f'LAYER_ROM_B1HCL_REFERENCE_ULTRA_MASS={mass}')
+          PY
+          cp /tmp/b1hcl/ref_ultra_o0.txt "B1HCL_EVIDENCE/R16_${{ matrix.material }}_ultra.txt"
+          git -C canonical diff --quiet -- src reference
+          echo "LAYER_ROM_B1HCL_REFERENCE_HOLDOUT=PASS"
+
+      - name: Install analysis stack
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Analyze prospective holdout
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_layer_rom_b1hcl_richardson.py \
+            --material "${{ matrix.material }}" \
+            --mid-reference "/tmp/b1hcl/b1hck/R16_${{ matrix.material }}_mid.txt" \
+            --fine-reference "/tmp/b1hcl/b1hck/R16_${{ matrix.material }}_fine.txt" \
+            --ultra-reference "B1HCL_EVIDENCE/R16_${{ matrix.material }}_ultra.txt" \
+            --b1h-result "/tmp/b1hcl/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json" \
+            --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json \
+            --b1hci-prereg integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json \
+            --basis-dir /tmp/b1hcl/basis \
+            --prereg integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json \
+            --output "B1HCL_EVIDENCE/LAYER_ROM_B1HCL_${{ matrix.material }}_RESULT.json" \
+            | tee B1HCL_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json,glob
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json'))
+          fs=glob.glob('B1HCL_EVIDENCE/LAYER_ROM_B1HCL_*_RESULT.json')
+          assert len(fs)==1
+          r=json.load(open(fs[0]))
+          assert r['decision'] in {'B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED','B1HCL_MATERIAL_FIRST_ORDER_LIMIT_NOT_SUPPORTED'}
+          assert r['integrity']['pass'] is True
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCL_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCL_EVIDENCE/* > B1HCL_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcl-${{ matrix.material }}
+          path: B1HCL_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcl-B*
+          path: /tmp/b1hcl-results
+          merge-multiple: false
+      - name: Aggregate Richardson holdout
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCL_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcl.py \
+            --input-dir /tmp/b1hcl-results \
+            --prereg integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json \
+            --output B1HCL_AGGREGATE/LAYER_ROM_B1HCL_RESULT.json \
+            | tee B1HCL_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json'))
+          r=json.load(open('B1HCL_AGGREGATE/LAYER_ROM_B1HCL_RESULT.json'))
+          assert r['decision'] in {p['decisions']['supported'],p['decisions']['mixed']}
+          assert r['integrity']['pass'] is True
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCL_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCL_AGGREGATE/* > B1HCL_AGGREGATE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1HCL=PASS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcl-aggregate
+          path: B1HCL_AGGREGATE/
+          if-no-files-found: error

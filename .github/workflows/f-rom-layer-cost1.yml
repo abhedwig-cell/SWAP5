@@ -1,0 +1,289 @@
+name: F-ROM Layer-ROM COST1 shared-host screen
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json
+      - integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json
+      - integration/f-rom/LAYER_ROM_B1HCP_RESULT.json
+      - tests/rom/materialize_layer_rom_cost1_lare.py
+      - tests/rom/validate_layer_rom_cost1_lare.py
+      - tests/rom/materialize_layer_rom_cost1_benchmark_mode.py
+      - tests/rom/run_layer_rom_cost1_timing.py
+      - tests/rom/aggregate_layer_rom_cost1.py
+      - .github/workflows/f-rom-layer-cost1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-cost1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', cn_id: 10603836176, cn_digest: 'bdb676eef7c1a120738edce4ed36b94764daf97199cb11d781d4b64cdb025a98', cl_id: 10603208865, cl_digest: 'd0e4971839ee9d27e80359855784b7d6bd95175fe088fc94e95ce028b1d9ae7d'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', cn_id: 10603304734, cn_digest: 'e69255eb66e4ba2c8ae8c08a6840de58a8348758490da8bfab7c84e0eaf27510', cl_id: 10602989491, cl_digest: 'f5bfdcb0fe34d32a1d8a412c474bcf39c858fc217a4a9a589f4db7312e9ff32c'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', cn_id: 10604270319, cn_digest: 'ee163877dd4deab3108203fe5529f6d5a6685c0a30f0feec64c6732b213b0904', cl_id: 10603760794, cl_digest: 'fee06409ee7bdfcf77ec3a2bb92b790c15585ba10783c904bdfbb5803f313212'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', cn_id: 10603693882, cn_digest: 'ffa3604eac5ca5efd8d948c12972a2e3ff2f9a4f123c5dcfe4dd73c08cc2aa25', cl_id: 10603223814, cl_digest: '97a3ce162c4a1f0b42359d2871779c43a3727d0f895ecfaeb374179201c6b17c'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7', cn_id: 10603723399, cn_digest: '820a761ce8484ef95f3715fedd654c072c4eb3f3fa387d8d55b446bedffaedb5', cl_id: 10603770562, cl_digest: '68110523e84b1691abfa7cfc32d2df204d61b30cf56054f65b4a0d385231c5b6'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', cn_id: 10603624076, cn_digest: 'b8511c3aa238ce4d0499cc1c451880944d9f7129afe61d52db4f2e243121e8ba', cl_id: 10603433546, cl_digest: 'd6ddb83994bd9090107eb855f62711fb173a37ad8d296ced802e073453e6d1ae'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Lock COST1 authority and toolchain
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          gfortran --version
+          python3 --version
+          python3 -m pip install --disable-pip-version-check numpy
+          python3 -m py_compile             tests/rom/materialize_layer_rom_cost1_lare.py             tests/rom/validate_layer_rom_cost1_lare.py             tests/rom/materialize_layer_rom_cost1_benchmark_mode.py             tests/rom/run_layer_rom_cost1_timing.py             tests/rom/aggregate_layer_rom_cost1.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_AFTER_PHASE_B_FIDELITY_FREEZE_BEFORE_NEW_TIMING_EXPOSURE'
+          assert p['timing_protocol']['base_order']==['LR4_BASE','LR6_BASE','LR8_BASE','LR4_FINE','LR6_FINE','LR8_FINE','COR4','COR6','COR8','R16']
+          assert p['performance_class']=='SHARED_HOST_SCREENING_ONLY'
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_COST1_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover pinned source and evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/cost1/b1h /tmp/cost1/cn /tmp/cost1/cl /tmp/cost1/basis /tmp/cost1/hold6 /tmp/cost1/hold8
+          git fetch --no-tags origin             9d66a3e8a7fda6d1e456188cfc87cf9f884075a4             e3b11802e88316dcd57147569e985153be99e215             4f938b040d92ee46646e3397278c78a46942944c
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/cost1/d13_base.f90
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/cost1/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/cost1/basis/run_lare_bc1_stage_b.py
+          git show 4f938b040d92ee46646e3397278c78a46942944c:tests/rom/test_lare_bc2_c4t_lare_compiled.f90 > /tmp/cost1/lare_base.f90
+          test "$(git hash-object /tmp/cost1/d13_base.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+          test "$(git hash-object /tmp/cost1/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/cost1/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          test "$(git hash-object /tmp/cost1/lare_base.f90)" = "97d7aca98326f6f1e91a8a1c9af537a5f0056419"
+
+          fetch_artifact () {
+            local id="$1" digest="$2" zip="$3" out="$4" allow_digest_drift="${5:-0}"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/$id/zip" > "$zip"
+            actual="$(sha256sum "$zip" | awk '{print $1}')"
+            if [ "$actual" != "$digest" ] && [ "$allow_digest_drift" != "1" ]; then
+              echo "artifact digest mismatch id=$id actual=$actual expected=$digest" >&2; exit 1
+            fi
+            unzip -q "$zip" -d "$out"
+          }
+          b12=0; [ "${{ matrix.material }}" = "B12" ] && b12=1
+          fetch_artifact "${{ matrix.b1h_id }}" "${{ matrix.b1h_digest }}" /tmp/cost1/b1h.zip /tmp/cost1/b1h "$b12"
+          fetch_artifact "${{ matrix.cn_id }}" "${{ matrix.cn_digest }}" /tmp/cost1/cn.zip /tmp/cost1/cn
+          fetch_artifact "${{ matrix.cl_id }}" "${{ matrix.cl_digest }}" /tmp/cost1/cl.zip /tmp/cost1/cl
+          if [ "${{ matrix.material }}" = "B05" ]; then
+            fetch_artifact 10604095931 f316da4f474cb9a7c57576c243c64c4cf56f313d0e7ef1e813003aa2b1bc1fbb /tmp/cost1/hold6.zip /tmp/cost1/hold6
+            fetch_artifact 10603419858 a9cf48023575fef3fd1ec16c85859a0ff666396bd30d6674a9fb156ea4f4cca1 /tmp/cost1/hold8.zip /tmp/cost1/hold8
+          fi
+
+          test -f "/tmp/cost1/b1h/R16_${{ matrix.material }}.txt"
+          test -f /tmp/cost1/b1h/materialization.json
+          test -f "/tmp/cost1/cl/R16_${{ matrix.material }}_ultra.txt"
+          for member in L4 L6 R8; do
+            for hist in X01 X02 X03 X04; do
+              test -f "/tmp/cost1/cn/fine/COR_FINE_${member}_${hist}.txt"
+            done
+          done
+          echo 'LAYER_ROM_COST1_EVIDENCE_RECOVERY=PASS'
+
+      - name: Reproduce material source
+        run: |
+          set -euo pipefail
+          mkdir -p COST1_EVIDENCE/equivalence
+          python3 tests/rom/materialize_layer_rom_b1h_material.py             --base-fortran /tmp/cost1/d13_base.f90             --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json             --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --material "${{ matrix.material }}"             --output /tmp/cost1/b1h_material.f90             --manifest /tmp/cost1/materialization.json
+          cmp /tmp/cost1/materialization.json /tmp/cost1/b1h/materialization.json
+          echo 'LAYER_ROM_COST1_MATERIAL_REPRODUCTION=PASS'
+
+      - name: Build and validate compiled Layer-ROM BASE/FINE
+        run: |
+          set -euo pipefail
+          flags="-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow"
+          for variant in BASE FINE; do
+            if [ "$variant" = BASE ]; then dt=0.0001; else dt=0.000025; fi
+            python3 tests/rom/materialize_layer_rom_cost1_lare.py               --base-fortran /tmp/cost1/lare_base.f90               --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json               --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json               --cost-prereg integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json               --material "${{ matrix.material }}" --dt-day "$dt" --variant "$variant"               --output "/tmp/cost1/lare_${variant}.f90"               --manifest "COST1_EVIDENCE/equivalence/lare_${variant}_materialization.json"
+            gfortran $flags -O0 "/tmp/cost1/lare_${variant}.f90" -o "/tmp/cost1/lare_${variant}_o0"
+            gfortran $flags -O2 "/tmp/cost1/lare_${variant}.f90" -o "/tmp/cost1/lare_${variant}_o2"
+            for member in L4 L6 R8; do
+              route="LR${member:1}_${variant}"
+              "/tmp/cost1/lare_${variant}_o0" "$route" validate > "/tmp/cost1/${route}_o0.txt"
+              "/tmp/cost1/lare_${variant}_o2" "$route" validate > "/tmp/cost1/${route}_o2.txt"
+              python3 tests/rom/validate_layer_rom_cost1_lare.py                 --compiled-o0 "/tmp/cost1/${route}_o0.txt"                 --compiled-o2 "/tmp/cost1/${route}_o2.txt"                 --reference "/tmp/cost1/b1h/R16_${{ matrix.material }}.txt"                 --basis-dir /tmp/cost1/basis                 --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json                 --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json                 --cost-prereg integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json                 --material "${{ matrix.material }}" --member "$member" --variant "$variant"                 --output "COST1_EVIDENCE/equivalence/${route}.json"
+            done
+          done
+          echo 'LAYER_ROM_COST1_LARE_EQUIVALENCE=PASS'
+
+      - name: Materialize CoRichards and ultrafine R16 benchmark sources
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py             --b1h-source /tmp/cost1/b1h_material.f90             --output /tmp/cost1/cor_base.f90 --manifest /tmp/cost1/cor_base.json
+          python3 tests/rom/materialize_layer_rom_b1hcn_corichards_temporal.py             --base-harness /tmp/cost1/cor_base.f90 --dt-day 0.00025             --output /tmp/cost1/cor_fine.f90 --manifest /tmp/cost1/cor_fine.json
+          if [ "${{ matrix.material }}" = "B05" ]; then
+            python3 tests/rom/materialize_layer_rom_b1hco_corichards_ultra.py               --base-harness /tmp/cost1/cor_base.f90               --output /tmp/cost1/cor_ultra.f90 --manifest /tmp/cost1/cor_ultra.json
+          fi
+          python3 tests/rom/materialize_layer_rom_b1hcl_reference.py             --base-fortran /tmp/cost1/b1h_material.f90 --dt-day 0.000125             --material "${{ matrix.material }}"             --output /tmp/cost1/ref_ultra.f90 --manifest /tmp/cost1/ref_ultra.json
+          python3 tests/rom/materialize_layer_rom_cost1_benchmark_mode.py             --source /tmp/cost1/cor_fine.f90 --output /tmp/cost1/cor_fine_bench.f90 --manifest /tmp/cost1/cor_fine_bench.json
+          if [ "${{ matrix.material }}" = "B05" ]; then
+            python3 tests/rom/materialize_layer_rom_cost1_benchmark_mode.py               --source /tmp/cost1/cor_ultra.f90 --output /tmp/cost1/cor_ultra_bench.f90 --manifest /tmp/cost1/cor_ultra_bench.json
+          fi
+          python3 tests/rom/materialize_layer_rom_cost1_benchmark_mode.py             --source /tmp/cost1/ref_ultra.f90 --output /tmp/cost1/ref_ultra_bench.f90 --manifest /tmp/cost1/ref_ultra_bench.json
+          echo 'LAYER_ROM_COST1_BENCHMARK_MATERIALIZATION=PASS'
+
+      - name: Build and byte-validate CoRichards routes
+        run: |
+          set -euo pipefail
+          for row in 'L4|130,10,10,10' 'L6|110,10,10,10,10,10' 'R8|90,10,10,10,10,10,10,10'; do
+            IFS='|' read -r member thickness <<< "$row"
+            source=/tmp/cost1/cor_fine_bench.f90
+            expected_dir=/tmp/cost1/cn/fine
+            expected_tag=FINE
+            if [ "${{ matrix.material }}" = "B05" ] && [ "$member" != "L4" ]; then
+              source=/tmp/cost1/cor_ultra_bench.f90
+              expected_dir="/tmp/cost1/hold${member:1}/ultra"
+              expected_tag=ULTRA
+            fi
+            python3 tests/rom/materialize_layer_rom_variable_grid_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/cost1_${member}_stubs.f90" --layer-thickness-cm "$thickness"
+            cp "$source" "canonical/tests/rom/test_cost1_${member}.f90"
+            for opt in 0 2; do
+              build="/tmp/cost1/cor_${member}_o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical --stub "cost1_${member}_stubs.f90"                 --target "tests/rom/test_cost1_${member}.f90"                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+              for hist in X01 X02 X03 X04; do
+                B1HC_HISTORY_FILTER="$hist" "$build/rom0_test" > "/tmp/cost1/COR_${member}_${hist}_o${opt}.txt" 2>&1
+              done
+            done
+            for hist in X01 X02 X03 X04; do
+              cmp "/tmp/cost1/COR_${member}_${hist}_o0.txt" "/tmp/cost1/COR_${member}_${hist}_o2.txt"
+              cmp "/tmp/cost1/COR_${member}_${hist}_o2.txt" "${expected_dir}/COR_${expected_tag}_${member}_${hist}.txt"
+            done
+            echo "{\"member\":\"$member\",\"pass\":true,\"source_level\":\"$expected_tag\"}" > "COST1_EVIDENCE/equivalence/COR_${member}.json"
+          done
+          echo 'LAYER_ROM_COST1_CORICHARDS_EQUIVALENCE=PASS'
+
+      - name: Build and byte-validate ultrafine R16
+        run: |
+          set -euo pipefail
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output canonical/cost1_r16_stubs.f90 --nodes 16 --dz-cm 10
+          cp /tmp/cost1/ref_ultra_bench.f90 canonical/tests/rom/test_cost1_r16.f90
+          for opt in 0 2; do
+            build="/tmp/cost1/r16_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub cost1_r16_stubs.f90               --target tests/rom/test_cost1_r16.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt "$opt"
+            "$build/rom0_test" > "/tmp/cost1/R16_o${opt}.txt" 2>&1
+          done
+          cmp /tmp/cost1/R16_o0.txt /tmp/cost1/R16_o2.txt
+          cmp /tmp/cost1/R16_o2.txt "/tmp/cost1/cl/R16_${{ matrix.material }}_ultra.txt"
+          echo '{"route":"R16","pass":true,"dt_day":0.000125}' > COST1_EVIDENCE/equivalence/R16.json
+          git -C canonical diff --quiet -- src reference
+          echo 'LAYER_ROM_COST1_R16_EQUIVALENCE=PASS'
+
+      - name: Run position-balanced shared-host timing
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          m='${{ matrix.material }}'
+          routes={}
+          for d in (4,6,8):
+              routes[f'LR{d}_BASE']={
+                'emitted_route':f'LR{d}_BASE',
+                'command':['/tmp/cost1/lare_BASE_o2',f'LR{d}_BASE','bench','{repeats}']
+              }
+              routes[f'LR{d}_FINE']={
+                'emitted_route':f'LR{d}_FINE',
+                'command':['/tmp/cost1/lare_FINE_o2',f'LR{d}_FINE','bench','{repeats}']
+              }
+              member='L'+str(d) if d in (4,6) else 'R8'
+              routes[f'COR{d}']={
+                'emitted_route':f'COR{d}',
+                'command':[f'/tmp/cost1/cor_{member}_o2/rom0_test','bench','{repeats}',f'COR{d}']
+              }
+          routes['R16']={
+            'emitted_route':'R16',
+            'command':['/tmp/cost1/r16_o2/rom0_test','bench','{repeats}','R16']
+          }
+          spec={
+            'material':m,
+            'base_order':['LR4_BASE','LR6_BASE','LR8_BASE','LR4_FINE','LR6_FINE','LR8_FINE','COR4','COR6','COR8','R16'],
+            'routes':routes
+          }
+          json.dump(spec,open('/tmp/cost1/routes.json','w'),indent=2,sort_keys=True)
+          PY
+          python3 tests/rom/run_layer_rom_cost1_timing.py             --routes-json /tmp/cost1/routes.json             --output "COST1_EVIDENCE/LAYER_ROM_COST1_${{ matrix.material }}_RESULT.json"             | tee COST1_EVIDENCE/timing-summary.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('COST1_EVIDENCE/LAYER_ROM_COST1_${{ matrix.material }}_RESULT.json'))
+          assert r['decision']=='COST1_MATERIAL_SHARED_HOST_TIMING_COMPLETE'
+          assert r['formal_performance_claim'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_COST1_MATERIAL_GATE=PASS')
+          PY
+          sha256sum $(find COST1_EVIDENCE -type f | sort) > COST1_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-cost1-${{ matrix.material }}
+          path: COST1_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-cost1-B*
+          path: /tmp/cost1-results
+          merge-multiple: false
+      - name: Aggregate COST1 without pooling speedup
+        run: |
+          set -euo pipefail
+          mkdir -p COST1_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_cost1.py             --input-dir /tmp/cost1-results             --prereg integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json             --fidelity integration/f-rom/LAYER_ROM_B1HCP_RESULT.json             --output COST1_AGGREGATE/LAYER_ROM_COST1_RESULT.json             | tee COST1_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json'))
+          r=json.load(open('COST1_AGGREGATE/LAYER_ROM_COST1_RESULT.json'))
+          assert r['decision']==p['decisions']['complete']
+          assert r['formal_performance_claim'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_COST1_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum COST1_AGGREGATE/* > COST1_AGGREGATE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo 'LAYER_ROM_COST1=PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-cost1-aggregate
+          path: COST1_AGGREGATE/
+          if-no-files-found: error
+
+# COST1 authority route: single reconciled workflow

@@ -1,0 +1,181 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hck.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCK",
+  "phase": "PREREGISTERED_BEFORE_NEW_REFERENCE_TEMPORAL_RESPONSE",
+  "title": "Finite Reference temporal refinement on the six-material fixed-head panel",
+  "trigger": {
+    "B1HCJ_decision": "B1HCJ_B12_FLOATING_INVARIANT_DRIFT_CONFIRMED",
+    "B1HCJ_closeout": "integration/f-rom/LAYER_ROM_B1HCJ_CLOSEOUT.json",
+    "reason": "Candidate ODE integration uncertainty is separated and the sole B12 storage exception is a floating state-accumulation effect. The next unresolved causal axis is finite Reference temporal discretization."
+  },
+  "authority": {
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "controlled_reference_basis": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "basis_reason": "The immutable B1H coarse Reference trajectories were generated from 1caa4310. The later canonical delta changes no Reference source or solver path used by this laboratory; B1HCK varies only the outer Reference interval on the identical basis.",
+    "candidate_oracle": "integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json DOP853_STRICT",
+    "panel": "integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json",
+    "workload": "integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json"
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "geometry": "R16 Reference Richards, 16 x 10 cm",
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero prescribed pressure head at fixed 160 cm",
+    "sinks": false,
+    "moving_water_table": false,
+    "hydrological_model_changed": false,
+    "candidate_representation": "R16_OP equal-grid Layer-ROM only as continuous-time residual comparator"
+  },
+  "reference_temporal_ladder": {
+    "observation_interval_day": 0.001,
+    "horizon_day": 1.024,
+    "common_observations": 1024,
+    "levels": [
+      {
+        "id": "REF_DT_1E3",
+        "dt_day": 0.001,
+        "source": "immutable B1H artifact",
+        "new_reference_generated": false
+      },
+      {
+        "id": "REF_DT_5E4",
+        "dt_day": 0.0005,
+        "substeps_per_observation": 2,
+        "new_reference_generated": true
+      },
+      {
+        "id": "REF_DT_2P5E4",
+        "dt_day": 0.00025,
+        "substeps_per_observation": 4,
+        "new_reference_generated": true
+      }
+    ],
+    "compiler_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "hard_mass_gate_cm": 1e-12,
+    "no_solver_tolerance_change": true,
+    "no_constitutive_change": true,
+    "no_boundary_change": true
+  },
+  "immutable_coarse_artifacts": {
+    "B02": {
+      "artifact_id": 10600214649,
+      "digest": "sha256:fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0"
+    },
+    "B05": {
+      "artifact_id": 10600409481,
+      "digest": "sha256:7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5"
+    },
+    "B06": {
+      "artifact_id": 10600414651,
+      "digest": "sha256:3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380"
+    },
+    "B11": {
+      "artifact_id": 10600034910,
+      "digest": "sha256:b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c"
+    },
+    "B12": {
+      "artifact_id": 10599789755,
+      "digest": "sha256:ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7"
+    },
+    "B16": {
+      "artifact_id": 10600289675,
+      "digest": "sha256:fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c"
+    }
+  },
+  "common_observables": [
+    "total_storage_cm",
+    "cumulative_bottom_exchange_cm",
+    "QAVG_cm_per_day over each 0.001 d observation interval",
+    "QEND_cm_per_day at the common observation endpoint",
+    "mapped_10cm_theta"
+  ],
+  "candidate_oracle": {
+    "id": "DOP853_STRICT",
+    "method": "scipy.integrate.solve_ivp DOP853",
+    "rtol": 1e-11,
+    "atol": 1e-13,
+    "max_step_day": 0.001,
+    "state": "unchanged R16_OP Layer-ROM ODE",
+    "authority_note": "B1HCI established independent DOP853/Radau agreement; B1HCJ resolved the only Heun storage exception. No new candidate model is introduced."
+  },
+  "numerical_floors": {
+    "source": "B1HCI preregistered independent-oracle floors",
+    "storage_rms": 1e-12,
+    "cumulative_bottom_rms": 1e-12,
+    "qavg_rms": 1e-9,
+    "qend_rms": 1e-9,
+    "mapped_theta_rms": 1e-13
+  },
+  "metrics": [
+    "Reference coarse-mid and mid-fine pooled RMS/max-absolute self-differences",
+    "Reference apparent order from coarse-mid versus mid-fine RMS where resolvable",
+    "DOP853 candidate-to-Reference pooled RMS/max-absolute residual at all three Reference levels",
+    "Reference coarse-to-fine shift",
+    "finest unresolved Reference temporal scale divided by candidate-to-fine-Reference residual scale",
+    "bottom-flux sign differences between Reference levels",
+    "water-balance and O0/O2 integrity"
+  ],
+  "component_classification": {
+    "SATURATED": "coarse-mid and mid-fine RMS are both <= the inherited component numerical floor",
+    "CONVERGING": "mid-fine RMS <= coarse-mid RMS + inherited numerical floor",
+    "NONCONVERGENT": "otherwise"
+  },
+  "material_gate": {
+    "label_bounded": "REFERENCE_TEMPORAL_BOUNDED_AT_FINEST",
+    "label_not_bounded": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED",
+    "label_unresolved": "REFERENCE_TEMPORAL_REFINEMENT_NONCONVERGENT",
+    "bounded_if": [
+      "Every component is SATURATED or CONVERGING.",
+      "For every component, Reference mid-fine RMS <= max(inherited numerical floor, 0.10 * DOP853-to-finest-Reference RMS)."
+    ],
+    "rationale": "The 0.10 factor is inherited from the B1HCI numerical-oracle resolution principle. It is a causal-resolution bound, not hydrological or application acceptance."
+  },
+  "panel_decisions": {
+    "all_bounded": "B1HCK_REFERENCE_TEMPORAL_BOUNDED_ALL_MATERIALS",
+    "mixed": "B1HCK_REFERENCE_TEMPORAL_BOUND_MIXED",
+    "blocked": "B1HCK_REFERENCE_REFINEMENT_BLOCKED"
+  },
+  "interpretation_rules": [
+    "If all six materials are bounded, finite Reference temporal discretization is too small at the finest tested level to explain the remaining equal-grid candidate-to-Reference residual under the frozen numerical-resolution rule.",
+    "A bounded temporal axis does not prove Layer-ROM closure correctness; it isolates the remaining equal-grid discrepancy as model-form/closure/spatial-operator difference on this laboratory.",
+    "If any material is not bounded, refine or diagnose only that Reference temporal axis before revisiting closure/state.",
+    "Do not use these numerical gates as application tolerances."
+  ],
+  "provenance": {
+    "B1H_run": 35495947476,
+    "B1H_basis_head": "4c68807f392f7458fc0786fa085b487b92dd24d0",
+    "Reference_basis_commit": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "pinned_D13_source_commit": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "candidate_basis_head": "e3b11802e88316dcd57147569e985153be99e215",
+    "B1HCJ_run": 35502826121,
+    "B1HCJ_artifact_id": 10602958541
+  },
+  "firewalls": [
+    "NO_REFERENCE_SOLVER_TOLERANCE_RETUNING",
+    "NO_REFERENCE_PHYSICS_CHANGE",
+    "NO_CANDIDATE_CLOSURE_OR_STATE_CHANGE",
+    "NO_POST_RESPONSE_TEMPORAL_LEVEL_SELECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

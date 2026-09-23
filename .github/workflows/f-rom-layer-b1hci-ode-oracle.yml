@@ -1,0 +1,157 @@
+name: F-ROM Layer-ROM B1HCI independent ODE oracle
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1hci_oracle.py'
+      - 'tests/rom/aggregate_layer_rom_b1hci.py'
+      - '.github/workflows/f-rom-layer-b1hci-ode-oracle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9fc6c9ac0daf65d94bd7'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock B1HCI authority and source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_INDEPENDENT_NUMERICAL_ORACLE_RESULTS'
+          assert [x['id'] for x in p['independent_oracles']]==['DOP853_STRICT','RADAU_STRICT']
+          assert p['scope']['new_reference_trajectory'] is False
+          assert p['scope']['reference_used_in_primary_oracle_decision'] is False
+          assert p['scope']['hydrological_model_changed'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCI_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile tests/rom/analyze_layer_rom_b1hci_oracle.py tests/rom/aggregate_layer_rom_b1hci.py
+
+      - name: Recover pinned basis and immutable prior evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hci/basis /tmp/b1hci/b1h /tmp/b1hci/ch
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hci/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hci/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hci/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/b1hci/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hci/b1h.zip
+          actual="$(sha256sum /tmp/b1hci/b1h.zip | awk '{print $1}')"
+          if [ "$actual" != "${{ matrix.b1h_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1H archive digest drift: $actual" >&2
+            exit 1
+          fi
+          unzip -q /tmp/b1hci/b1h.zip -d /tmp/b1hci/b1h
+          test -f "/tmp/b1hci/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          if [ "${{ matrix.material }}" = "B12" ]; then
+            test "$(sha256sum /tmp/b1hci/b1h/LAYER_ROM_B1H_B12_RESULT.json | awk '{print $1}')" = "dd429968299341397077eb44d0db1314b9db1e0dc10a4ad33502f0ad6086b9cb"
+          fi
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602199199/zip" > /tmp/b1hci/ch.zip
+          test "$(sha256sum /tmp/b1hci/ch.zip | awk '{print $1}')" = "151834b72480a4906f9f8171a30189a91baaa656fbd072cf6ea59d79201eab3f"
+          unzip -q /tmp/b1hci/ch.zip -d /tmp/b1hci/ch
+          test "$(sha256sum /tmp/b1hci/ch/LAYER_ROM_B1HCH_RESULT.json | awk '{print $1}')" = "f86679614840e6795811fab677835fae39108b6065515cb54c8fea508a87b6db"
+          echo "LAYER_ROM_B1HCI_IMMUTABLE_INPUTS=PASS"
+
+      - name: Install independent numerical stack
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Execute independent ODE oracle
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCI_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hci_oracle.py             --material "${MATERIAL}"             --b1h-result "/tmp/b1hci/b1h/LAYER_ROM_B1H_${MATERIAL}_RESULT.json"             --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --b1hch-result /tmp/b1hci/ch/LAYER_ROM_B1HCH_RESULT.json             --basis-dir /tmp/b1hci/basis             --prereg integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json             --output "B1HCI_EVIDENCE/LAYER_ROM_B1HCI_${MATERIAL}_RESULT.json"             | tee B1HCI_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json,os
+          m=os.environ['MATERIAL']
+          r=json.load(open(f'B1HCI_EVIDENCE/LAYER_ROM_B1HCI_{m}_RESULT.json'))
+          assert r['decision'] in {
+            'B1HCI_MATERIAL_ORACLE_UNRESOLVED',
+            'B1HCI_MATERIAL_HEUN_LIMIT_SUPPORTED',
+            'B1HCI_MATERIAL_HEUN_ORACLE_RELATION_MIXED'
+          }
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['reference_trajectory_used'] is False
+          assert r['integrity']['hydrological_model_changed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCI_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCI_EVIDENCE/* > B1HCI_EVIDENCE/sha256.txt
+
+      - name: Upload material oracle evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hci-${{ matrix.material }}
+          path: B1HCI_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hci-B*
+          path: /tmp/b1hci-results
+          merge-multiple: false
+
+      - name: Aggregate independent-oracle evidence
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCI_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hci.py             --input-dir /tmp/b1hci-results             --prereg integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json             --output B1HCI_AGGREGATE/LAYER_ROM_B1HCI_RESULT.json             | tee B1HCI_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json'))
+          r=json.load(open('B1HCI_AGGREGATE/LAYER_ROM_B1HCI_RESULT.json'))
+          assert r['decision'] in set(p['panel_decision_labels'].values())
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCI_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCI_AGGREGATE/* > B1HCI_AGGREGATE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1HCI=PASS"
+
+      - name: Upload aggregate oracle evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hci-aggregate
+          path: B1HCI_AGGREGATE/
+          if-no-files-found: error

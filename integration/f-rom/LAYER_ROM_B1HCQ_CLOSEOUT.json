@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-q.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-Q",
+  "status": "CLOSED_FULL_SAME_PARTITION_CORICHARDS_TRANSFER_COHORT_AVAILABLE",
+  "decision": "B1HCQ_FULL_COMMON_COHORT_AVAILABLE",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json",
+    "repair_record": "integration/f-rom/LAYER_ROM_B1HCQ_REPAIR_RECORD.json",
+    "result": "integration/f-rom/LAYER_ROM_B1HCQ_RESULT.json",
+    "workflow_run": 35499501536,
+    "artifact_id": 10601659925,
+    "artifact_digest": "sha256:0544f94b58ccf12503c7250ed0cdffa037706f3ac31df82e88a69cae427f3f1f"
+  },
+  "conclusions": [
+    "L4, L6 and R8 each provide a complete 24-cell same-partition CoRichards comparator cohort across the six frozen transfer materials.",
+    "The hydrological decomposition can use a full common cohort without post-result coverage selection.",
+    "B1HC-Q itself makes no fidelity or computational-value claim."
+  ],
+  "next_authorized": "LAYER-ROM-B1HC-D_HYDROLOGICAL_ERROR_DECOMPOSITION",
+  "production_rom_authorized": false
+}

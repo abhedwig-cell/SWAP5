@@ -1,0 +1,156 @@
+name: F-ROM Layer-ROM B1HCG corrected temporal diagnosis
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1hcg_temporal.py'
+      - 'tests/rom/aggregate_layer_rom_b1hcg.py'
+      - '.github/workflows/f-rom-layer-b1hcg-temporal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', cf_id: 10601827816, cf_digest: 'd0af703476f31c0e14f09acb28b2e2d0b92e90d62a20ddfe88b239285db04a4b'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', cf_id: 10602590720, cf_digest: '1c216230f987159399e0470252f91848cdd32683a761a3ddb62a8c85d8a75af1'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', cf_id: 10602262095, cf_digest: 'f702d76397ec4a28a65c68dca0e6aaca357638d8c859b27f4ea47494e6d3950f'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', cf_id: 10602082251, cf_digest: 'd7f22bec2e219eb500b4f06a0f2e79bc13796439016a856bbf7dbe6fe8a7d318'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9fc6c9ac0daf65d94bd7', cf_id: 10602057254, cf_digest: '59fbdf4b5738d74739f078178d44a84c01ef2503001a1ed296939f4f5c827f3e'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', cf_id: 10602247167, cf_digest: '08e178b6c4c6cd658b6d0ac207e2547ce277941b49ba99e66add0933ea80ff56'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert authority and source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_TEMPORAL_REFINEMENT_RESULTS'
+          assert p['pre_execution_operationalization']['before_first_B1HCG_execution'] is True
+          assert p['temporal_ladder']['dt_day']==[0.0001,0.00005,0.000025]
+          assert p['scope']['no_new_reference_trajectory'] is True
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCG_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover pinned basis and immutable evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hcg/basis /tmp/b1hcg/b1h /tmp/b1hcg/cf
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hcg/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hcg/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hcg/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/b1hcg/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcg/b1h.zip
+          b1h_actual="$(sha256sum /tmp/b1hcg/b1h.zip | awk '{print $1}')"
+          if [ "$b1h_actual" != "${{ matrix.b1h_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1H archive digest drift: $b1h_actual" >&2
+            exit 1
+          fi
+          unzip -q /tmp/b1hcg/b1h.zip -d /tmp/b1hcg/b1h
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.cf_id }}/zip" > /tmp/b1hcg/cf.zip
+          cf_actual="$(sha256sum /tmp/b1hcg/cf.zip | awk '{print $1}')"
+          if [ "$cf_actual" != "${{ matrix.cf_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1HCF archive digest drift: $cf_actual" >&2
+            exit 1
+          fi
+          unzip -q /tmp/b1hcg/cf.zip -d /tmp/b1hcg/cf
+
+          test -f "/tmp/b1hcg/b1h/R16_${{ matrix.material }}.txt"
+          test -f "/tmp/b1hcg/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          test -f "/tmp/b1hcg/cf/LAYER_ROM_B1HCF_${{ matrix.material }}_RESULT.json"
+          if [ "${{ matrix.material }}" = "B12" ]; then
+            test "$(sha256sum /tmp/b1hcg/b1h/R16_B12.txt | awk '{print $1}')" = "16598c0be9ab6c26a1196d5836d400d632f0c1bf9c0fb24a68312407b83b2652"
+            test "$(sha256sum /tmp/b1hcg/b1h/LAYER_ROM_B1H_B12_RESULT.json | awk '{print $1}')" = "dd429968299341397077eb44d0db1314b9db1e0dc10a4ad33502f0ad6086b9cb"
+            test "$(sha256sum /tmp/b1hcg/cf/LAYER_ROM_B1HCF_B12_RESULT.json | awk '{print $1}')" = "bb023e36d52fd66637e152fa25d9c20dad346ebae6a1da94f6cddcabdeba4346"
+            echo "LAYER_ROM_B1HCG_B12_FILE_LEVEL_INTEGRITY=PASS"
+          fi
+          echo "LAYER_ROM_B1HCG_IMMUTABLE_EVIDENCE=PASS"
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Execute corrected temporal ladder
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCG_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hcg_temporal.py             --material "${{ matrix.material }}"             --reference "/tmp/b1hcg/b1h/R16_${{ matrix.material }}.txt"             --b1h-result "/tmp/b1hcg/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"             --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --b1hcf-result "/tmp/b1hcg/cf/LAYER_ROM_B1HCF_${{ matrix.material }}_RESULT.json"             --basis-dir /tmp/b1hcg/basis             --prereg integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json             --output "B1HCG_EVIDENCE/LAYER_ROM_B1HCG_${{ matrix.material }}_RESULT.json"             | tee B1HCG_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          r=json.load(open(f'B1HCG_EVIDENCE/LAYER_ROM_B1HCG_{m}_RESULT.json'))
+          assert r['decision']=='B1HCG_MATERIAL_TEMPORAL_LADDER_CHARACTERIZED'
+          assert r['integrity']['pass'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCG_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCG_EVIDENCE/* > B1HCG_EVIDENCE/sha256.txt
+        env:
+          MATERIAL: ${{ matrix.material }}
+
+      - name: Upload material temporal evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcg-${{ matrix.material }}
+          path: B1HCG_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcg-B*
+          path: /tmp/b1hcg-results
+          merge-multiple: false
+
+      - name: Aggregate temporal diagnosis
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCG_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcg.py             --input-dir /tmp/b1hcg-results             --prereg integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json             --output B1HCG_AGGREGATE/LAYER_ROM_B1HCG_RESULT.json             | tee B1HCG_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json'))
+          r=json.load(open('B1HCG_AGGREGATE/LAYER_ROM_B1HCG_RESULT.json'))
+          assert r['decision'] in set(p['adjudication']['decision_labels'].values())
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCG_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCG_AGGREGATE/* > B1HCG_AGGREGATE/sha256.txt
+          echo "LAYER_ROM_B1HCG=PASS"
+
+      - name: Upload aggregate temporal evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcg-aggregate
+          path: B1HCG_AGGREGATE/
+          if-no-files-found: error

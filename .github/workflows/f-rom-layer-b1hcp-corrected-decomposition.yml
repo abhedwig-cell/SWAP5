@@ -1,0 +1,110 @@
+name: F-ROM Layer-ROM B1HCP corrected decomposition
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json
+      - integration/f-rom/LAYER_ROM_B1HCP_CORICHARDS_INPUT_BINDING.json
+      - integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json
+      - integration/f-rom/LAYER_ROM_B1HCO_RESULT.json
+      - tests/rom/analyze_layer_rom_b1hcp_decomposition.py
+      - .github/workflows/f-rom-layer-b1hcp-corrected-decomposition.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcp-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  decomposition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock corrected evidence authority
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 -m py_compile tests/rom/analyze_layer_rom_b1hcp_decomposition.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/LAYER_ROM_B1HCP_CORICHARDS_INPUT_BINDING.json'))
+          lr=json.load(open('integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json'))
+          co=json.load(open('integration/f-rom/LAYER_ROM_B1HCO_RESULT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_CORRECTED_FULL_PANEL_RELATION_RECOMPUTATION'
+          assert p['cohort']['cell_count']==18
+          assert b['cell_count']==18 and b['all_temporal_cells_supported'] is True
+          assert lr['decision']=='B1HCMR_CORRECTED_CONTINUOUS_TIME_REDUCED_LADDER_REBASED'
+          assert co['temporal_qualification']['panel_cells_qualified_after']==18
+          assert lr['production_rom_authorized'] is False and co['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCP_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Verify immutable source artifact metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > /tmp/b1hcp-artifacts.tsv
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json'))
+          for m,a in p['authority']['B1HCN']['material_artifacts'].items():
+              print(a['id'],a['digest'],f'B1HCN:{m}',sep='\t')
+          for cell,a in p['authority']['B1HCO']['replacement_artifacts'].items():
+              print(a['id'],a['digest'],f'B1HCO:{cell}',sep='\t')
+          a=p['authority']['B1HCMR']['aggregate_artifact']
+          print(a['id'],a['digest'],'B1HCMR:aggregate',sep='\t')
+          PY
+          while IFS=$'\t' read -r id expected label; do
+            actual="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}" --jq '.digest')"
+            test "$actual" = "$expected"
+            echo "ARTIFACT_OK $label $id $actual"
+          done < /tmp/b1hcp-artifacts.tsv
+
+      - name: Recompute corrected continuous-time relations
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCP_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hcp_decomposition.py \
+            --prereg integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json \
+            --cor-binding integration/f-rom/LAYER_ROM_B1HCP_CORICHARDS_INPUT_BINDING.json \
+            --layerrom-result integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json \
+            --old-diagnostic integration/f-rom/LAYER_ROM_B1HCO_RESULT.json \
+            --output B1HCP_EVIDENCE/LAYER_ROM_B1HCP_RESULT.json \
+            | tee B1HCP_EVIDENCE/analyzer.txt
+
+      - name: Validate closeout gates
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json'))
+          r=json.load(open('B1HCP_EVIDENCE/LAYER_ROM_B1HCP_RESULT.json'))
+          assert r['decision']==p['decisions']['complete']
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['cell_count']==18
+          assert r['integrity']['all_CoRichards_temporal_cells_supported'] is True
+          assert r['integrity']['corrected_LayerROM_QEND'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCP_RESULT_GATE=PASS')
+          PY
+          sha256sum B1HCP_EVIDENCE/* > B1HCP_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo 'LAYER_ROM_B1HCP=PASS'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcp-corrected-decomposition
+          path: B1HCP_EVIDENCE/
+          if-no-files-found: error

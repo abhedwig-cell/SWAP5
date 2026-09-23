@@ -1,0 +1,145 @@
+name: F-ROM Layer-ROM B1HCF corrected fixed-head metrics
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCF_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1hcf_material.py'
+      - 'tests/rom/aggregate_layer_rom_b1hcf.py'
+      - '.github/workflows/f-rom-layer-b1hcf-corrected-metrics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcf-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', cor_id: 10601589862, cor_digest: 'dd31968a447019f4d483a1ec931a17c073806b52c58541ea97cc632cb08218cf'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', cor_id: 10602175157, cor_digest: 'c65d6fa84fa0d3df4f9401e46808dc78d12813c48b61ec63402edebf4ae95ab9'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', cor_id: 10602070291, cor_digest: '82575403367398a86543d94754bef596ace3688552b3042fc5912c5f0d2c4f19'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', cor_id: 10600849049, cor_digest: 'f63648c948018e01d9d1e857cec0336bcbf7dcac125a59274e0e5dbd54be7e65'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7', cor_id: 10602120091, cor_digest: 'b5199abdd53798f1076a72320dd2e6ae26e5335bbddf3e916988aa67576f6303'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', cor_id: 10601764361, cor_digest: '8dfe5424b7e96170b6c7588ab5bd54e6ee8926fe35f4795e9928dccbf3dc2295'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert authority and source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCF_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_CORRECTED_FIXED_HEAD_FLUX_METRICS'
+          assert p['scope']['no_new_reference_trajectory'] is True
+          assert p['performance_comparison_authorized'] is False
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCF_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover pinned analysis basis and immutable evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hcf/basis /tmp/b1hcf/b1h /tmp/b1hcf/cor
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hcf/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hcf/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hcf/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/b1hcf/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcf/b1h.zip
+          echo "${{ matrix.b1h_digest }}  /tmp/b1hcf/b1h.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcf/b1h.zip -d /tmp/b1hcf/b1h
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.cor_id }}/zip" > /tmp/b1hcf/cor.zip
+          echo "${{ matrix.cor_digest }}  /tmp/b1hcf/cor.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcf/cor.zip -d /tmp/b1hcf/cor
+
+          test -f "/tmp/b1hcf/b1h/R16_${{ matrix.material }}.txt"
+          test -f "/tmp/b1hcf/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          for member in L4 L6 R8; do
+            test -f "/tmp/b1hcf/cor/${member}/${member}-X01-o0.txt"
+            test -f "/tmp/b1hcf/cor/${member}/${member}-X04-o0.txt"
+          done
+          echo "LAYER_ROM_B1HCF_IMMUTABLE_EVIDENCE=PASS"
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recompute corrected QAVG QEND metrics
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCF_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hcf_material.py             --material "${{ matrix.material }}"             --reference "/tmp/b1hcf/b1h/R16_${{ matrix.material }}.txt"             --b1h-result "/tmp/b1hcf/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"             --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --b1hcq-dir /tmp/b1hcf/cor             --basis-dir /tmp/b1hcf/basis             --prereg integration/f-rom/LAYER_ROM_B1HCF_PREREGISTRATION.json             --output "B1HCF_EVIDENCE/LAYER_ROM_B1HCF_${{ matrix.material }}_RESULT.json"             | tee B1HCF_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open("B1HCF_EVIDENCE/LAYER_ROM_B1HCF_${{ matrix.material }}_RESULT.json"))
+          assert r['decision']=='B1HCF_MATERIAL_RECONCILED'
+          assert r['integrity']['pass'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCF_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCF_EVIDENCE/* > B1HCF_EVIDENCE/sha256.txt
+
+      - name: Upload corrected material evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcf-${{ matrix.material }}
+          path: B1HCF_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcf-B*
+          path: /tmp/b1hcf-results
+          merge-multiple: false
+
+      - name: Aggregate corrected metric reconciliation
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCF_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcf.py             --input-dir /tmp/b1hcf-results             --prereg integration/f-rom/LAYER_ROM_B1HCF_PREREGISTRATION.json             --output B1HCF_AGGREGATE/LAYER_ROM_B1HCF_RESULT.json             | tee B1HCF_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('B1HCF_AGGREGATE/LAYER_ROM_B1HCF_RESULT.json'))
+          assert r['decision']=='B1HCF_CORRECTED_FIXED_HEAD_METRICS_RECONCILED'
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCF_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCF_AGGREGATE/* > B1HCF_AGGREGATE/sha256.txt
+          echo "LAYER_ROM_B1HCF=PASS"
+
+      - name: Upload corrected aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcf-aggregate
+          path: B1HCF_AGGREGATE/
+          if-no-files-found: error

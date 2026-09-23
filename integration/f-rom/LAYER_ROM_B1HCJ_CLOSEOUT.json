@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcj.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCJ",
+  "status": "CLOSED_FLOATING_INVARIANT_DRIFT_CONFIRMED_REFERENCE_TEMPORAL_AXIS_AUTHORIZED",
+  "decision": "B1HCJ_B12_FLOATING_INVARIANT_DRIFT_CONFIRMED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json",
+    "workflow_run": 35502826121,
+    "artifact_id": 10602958541,
+    "artifact_digest": "sha256:0f93f3f7678300bcd103d7d646ea2e0e6ca151509ebfd948ca3f38bf100a41ab",
+    "raw_result_sha256": "46f1e1d922ea98e0a5d0e34c3b968c4e9db9ef9a92a97a486e427853cc60a6be"
+  },
+  "next_authorized": "LAYER-ROM-B1HCK_FINITE_REFERENCE_TEMPORAL_REFINEMENT",
+  "held": [
+    "closure/state redesign",
+    "application acceptance",
+    "performance claims",
+    "production ROM"
+  ],
+  "production_rom_authorized": false
+}

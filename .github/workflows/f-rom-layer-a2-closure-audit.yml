@@ -1,0 +1,75 @@
+name: F-ROM Layer-ROM A2 closure audit
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_A2_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_a2_closure_audit.py'
+      - '.github/workflows/f-rom-layer-a2-closure-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  closure-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert research-only source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d...HEAD -- src reference
+          echo "LAYER_ROM_A2_SOURCE_FREEZE=PASS"
+
+      - name: Install analysis dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Recover immutable DYN0A fine Reference evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/layer-rom-a2/ref
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/layer-rom-a2/ref.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/layer-rom-a2/ref.zip" | sha256sum -c -
+          unzip -q /tmp/layer-rom-a2/ref.zip -d /tmp/layer-rom-a2/ref
+          test -f /tmp/layer-rom-a2/ref/LARE_DYN0A_FX_REFERENCE_STATUS.json
+          test -f /tmp/layer-rom-a2/ref/fine-S3_B1_F3-o2.txt
+
+      - name: Lock preregistered A2 design
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open("integration/f-rom/LAYER_ROM_A2_PREREGISTRATION.json"))
+          assert p["phase"]=="PREREGISTERED_BEFORE_NEW_CLOSURE_FLUX_RESULTS"
+          assert p["state_representations"]["primary"]["id"]=="L3"
+          assert p["state_representations"]["resolution_control"]["id"]=="L4"
+          assert [c["id"] for c in p["closures"]]==["C_LARE_TAYLOR","C_DARCY_HARMONIC","C_HEAD_LINEAR"]
+          assert "NO_REDUCED_STATE_PROPAGATION_IN_A2" in p["firewalls"]
+          print("LAYER_ROM_A2_AUTHORITY_LOCK=PASS")
+          PY
+
+      - name: Execute same-state closure audit
+        run: |
+          set -euo pipefail
+          mkdir -p LAYER_ROM_A2_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_a2_closure_audit.py             --reference-dir /tmp/layer-rom-a2/ref             --reference-status /tmp/layer-rom-a2/ref/LARE_DYN0A_FX_REFERENCE_STATUS.json             --prereg integration/f-rom/LAYER_ROM_A2_PREREGISTRATION.json             --output LAYER_ROM_A2_EVIDENCE/LAYER_ROM_A2_CLOSURE_AUDIT_RESULT.json             | tee LAYER_ROM_A2_EVIDENCE/analyzer.txt
+          sha256sum LAYER_ROM_A2_EVIDENCE/* > LAYER_ROM_A2_EVIDENCE/sha256.txt
+          git diff --check b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d...HEAD
+          echo "LAYER_ROM_A2_CLOSURE_AUDIT=PASS"
+
+      - name: Upload A2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-a2-closure-audit
+          path: LAYER_ROM_A2_EVIDENCE/
+          if-no-files-found: error

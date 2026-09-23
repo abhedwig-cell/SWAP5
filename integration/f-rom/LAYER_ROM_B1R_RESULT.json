@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.layer-rom.phase-b1r.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1R",
+  "decision": "B1R_CORRECTED_R2_FRONTIER_REBUILT",
+  "execution": {
+    "workflow_run": 35501337422,
+    "executed_head": "1fb4ae3b5a52cbd5561a39f9e8743bfe40733b5c",
+    "artifact_id": 10602616038,
+    "artifact_digest": "sha256:7b24e6fc4484dfea8e0013b0b77016fe9c6c14f717807dbf42b22c030c6bbaac",
+    "raw_result_sha256": "a1a9d8e0a10141be6af08e5770914c5442aa761f0334798d031eea8481c043f8",
+    "conclusion": "success"
+  },
+  "corrected_R2_GW_frontier": {
+    "minimum_dimension": 4,
+    "crossing_members": [
+      "L4",
+      "L6"
+    ]
+  },
+  "R2_corrected": {
+    "storage_rmse_cm": 0.28428824617379994,
+    "cumulative_bottom_rmse_cm": 0.2842882461738036,
+    "qavg_rmse_cm_per_day": 7.154329410128041,
+    "qavg_sign_errors": 4,
+    "abs_mean_signed_qavg_error_cm_per_day": 4.8931013154913945,
+    "qend_rmse_cm_per_day": 7.230100159810121,
+    "qend_sign_errors": 4,
+    "abs_mean_signed_qend_error_cm_per_day": 4.9325537908749375,
+    "max_abs_final_cumulative_bottom_error_cm": 0.795373757993616,
+    "mapped_theta_rmse": 0.04499198933820675
+  },
+  "candidates": {
+    "L2": {
+      "GW_relation_to_R2": "TRADEOFF",
+      "qavg_sign_errors": 111,
+      "qend_sign_errors": 113,
+      "storage_rmse_cm": 0.21086734481849725,
+      "cumulative_bottom_rmse_cm": 0.21086734481850522,
+      "qavg_rmse_cm_per_day": 5.874225596531798,
+      "qend_rmse_cm_per_day": 5.975000409666917,
+      "mapped_theta_rmse": 0.05110706029983261
+    },
+    "L3": {
+      "GW_relation_to_R2": "TRADEOFF",
+      "qavg_sign_errors": 35,
+      "qend_sign_errors": 35,
+      "storage_rmse_cm": 0.046012141581535736,
+      "cumulative_bottom_rmse_cm": 0.04601214158154691,
+      "qavg_rmse_cm_per_day": 1.8845562969138905,
+      "qend_rmse_cm_per_day": 1.9342654026685333,
+      "mapped_theta_rmse": 0.03857070309872652
+    },
+    "L4": {
+      "GW_relation_to_R2": "A_COMPONENTWISE_NO_WORSE",
+      "qavg_sign_errors": 1,
+      "qend_sign_errors": 1,
+      "storage_rmse_cm": 0.005734214567878725,
+      "cumulative_bottom_rmse_cm": 0.005734214567883706,
+      "qavg_rmse_cm_per_day": 0.2851932967818008,
+      "qend_rmse_cm_per_day": 0.2855754796400254,
+      "mapped_theta_rmse": 0.028917216263134846
+    },
+    "L6": {
+      "GW_relation_to_R2": "A_COMPONENTWISE_NO_WORSE",
+      "qavg_sign_errors": 1,
+      "qend_sign_errors": 1,
+      "storage_rmse_cm": 0.0031133801324227358,
+      "cumulative_bottom_rmse_cm": 0.0031133801324331584,
+      "qavg_rmse_cm_per_day": 0.12930896964437322,
+      "qend_rmse_cm_per_day": 0.09633128661247414,
+      "mapped_theta_rmse": 0.01584726431670571
+    }
+  },
+  "integrity": {
+    "pass": true,
+    "max_retained_B1_reproduction_abs": 0,
+    "max_water_ledger_cm": 1.0141193440560414e-13,
+    "max_corrector_iterations": 6
+  },
+  "FMC": {
+    "corrected_flux_frontier": "HELD",
+    "reason": "Immutable C4R artifacts do not contain raw FMC terminal states needed for commensurate QEND."
+  },
+  "supersession": {
+    "old_B1_R2_flux_frontier": "SUPERSEDED_BY_B1R",
+    "old_B1_FMC_flux_frontier": "HELD",
+    "B2_one_day_reversal_frontier": "HELD_PENDING_CORRECTED_REPAIR"
+  },
+  "interpretation": [
+    "After QAVG/QEND repair the bounded short-horizon B01 R2-relative groundwater frontier remains dimension 4.",
+    "L3 improves most continuous errors over R2 but remains a trade-off because it has substantially more QAVG and QEND sign errors.",
+    "L4 and L6 are componentwise no worse than R2 on the corrected GW vector; this is a development-comparator frontier, not application acceptance.",
+    "Profile relations remain trade-offs for L3/L4/L6; purpose dependence remains explicit."
+  ],
+  "next": "Complete B1HCG temporal diagnosis, then repair the one-day B2 authority with corrected QAVG/QEND semantics.",
+  "application_acceptance_adjudicated": false,
+  "performance_measurement_performed": false,
+  "production_rom_authorized": false
+}

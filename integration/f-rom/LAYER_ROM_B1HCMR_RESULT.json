@@ -1,0 +1,431 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcmr.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCMR",
+  "execution": {
+    "workflow_run": 35505812730,
+    "executed_head": "398ca5d80be4a7a2bda6fd4d87c42e6e27ff882b",
+    "aggregate_artifact_id": 10603364421,
+    "aggregate_artifact_digest": "sha256:d2b2dcba548a75b29b18bc3fb22f8d1996b01db80a8eb92b6004efa255cc8a12",
+    "conclusion": "success"
+  },
+  "decision": "B1HCMR_CORRECTED_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+  "placement_support": {
+    "dimension4": {
+      "material_count": 6,
+      "not_stable_supported": [
+        "B05"
+      ],
+      "stable_supported": [
+        "B02",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "support_count": 5
+    },
+    "dimension8": {
+      "material_count": 6,
+      "not_stable_supported": [],
+      "stable_supported": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "support_count": 6
+    }
+  },
+  "selected_Rstar_fidelity_vectors": {
+    "B02": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 0.20575048246456837,
+        "lower_80_160_storage_rms_cm": 1.4421355176589052,
+        "mapped_theta_rms": 0.030073344072767117,
+        "max_abs_final_cumulative_bottom_error_cm": 0.610913771495027,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.7129063217740831,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.7133274243967166,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.20575048246455013,
+        "upper_0_80_storage_rms_cm": 1.5755232288714485
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.0022420862840324667,
+        "lower_80_160_storage_rms_cm": 0.5028378287727092,
+        "mapped_theta_rms": 0.009823451094709798,
+        "max_abs_final_cumulative_bottom_error_cm": 0.011399946158914709,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.012501385908232333,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.012525835339593122,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.002242086284036878,
+        "upper_0_80_storage_rms_cm": 0.5015828415079571
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 0.0000035548565417027725,
+        "lower_80_160_storage_rms_cm": 0.0000035548565724333057,
+        "mapped_theta_rms": 8.112116437643686e-8,
+        "max_abs_final_cumulative_bottom_error_cm": 9.301695920171937e-7,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.00011114430250146491,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.000022944162328914548,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.000003554856537627511,
+        "upper_0_80_storage_rms_cm": 5.097206929598339e-13
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 0.0000035561783872696415,
+        "lower_80_160_storage_rms_cm": 0.1294692679611857,
+        "mapped_theta_rms": 0.004515860508769931,
+        "max_abs_final_cumulative_bottom_error_cm": 0.0000014996215456086759,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.00011115867518590942,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.000023012519247336835,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.000003556178385622225,
+        "upper_0_80_storage_rms_cm": 0.1294698841384955
+      }
+    },
+    "B05": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 1.2410283409456937,
+        "lower_80_160_storage_rms_cm": 1.4606775583013452,
+        "mapped_theta_rms": 0.0237952202255643,
+        "max_abs_final_cumulative_bottom_error_cm": 2.654284985346824,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.256510386492237,
+        "qavg_sign_mismatch": 481,
+        "qend_rms_cm_per_day": 2.2570215288579374,
+        "qend_sign_mismatch": 481,
+        "storage_rms_cm": 1.2410283409456893,
+        "upper_0_80_storage_rms_cm": 0.886602879950083
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.16532077580265422,
+        "lower_80_160_storage_rms_cm": 0.564366085370764,
+        "mapped_theta_rms": 0.013087377150618343,
+        "max_abs_final_cumulative_bottom_error_cm": 0.4373710133253246,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.3443927085311063,
+        "qavg_sign_mismatch": 68,
+        "qend_rms_cm_per_day": 0.34451819656408905,
+        "qend_sign_mismatch": 68,
+        "storage_rms_cm": 0.16532077580265472,
+        "upper_0_80_storage_rms_cm": 0.4880048787383449
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 2.0036307377869828e-7,
+        "lower_80_160_storage_rms_cm": 1.999917772156262e-7,
+        "mapped_theta_rms": 7.973133198776672e-9,
+        "max_abs_final_cumulative_bottom_error_cm": 1.4782342461217013e-8,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.00009500655579510504,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.00008381052237181913,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 2.0036307238949405e-7,
+        "upper_0_80_storage_rms_cm": 3.5982480444656566e-9
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 0.033134402364880335,
+        "lower_80_160_storage_rms_cm": 0.12099227915713848,
+        "mapped_theta_rms": 0.008050198450761475,
+        "max_abs_final_cumulative_bottom_error_cm": 0.10970301735208832,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.08347343327704425,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.08351491871368136,
+        "qend_sign_mismatch": 1,
+        "storage_rms_cm": 0.033134402364868365,
+        "upper_0_80_storage_rms_cm": 0.11471064170036065
+      }
+    },
+    "B06": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 0.9243354907476372,
+        "lower_80_160_storage_rms_cm": 1.672971308837449,
+        "mapped_theta_rms": 0.034580647772558995,
+        "max_abs_final_cumulative_bottom_error_cm": 2.0175421585562043,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.178342723763505,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 2.17903968372992,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.9243354907476345,
+        "upper_0_80_storage_rms_cm": 2.5110627969051764
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.05047954889014417,
+        "lower_80_160_storage_rms_cm": 0.8850141104439607,
+        "mapped_theta_rms": 0.016481478761795596,
+        "max_abs_final_cumulative_bottom_error_cm": 0.20118054135103236,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.27146788828698226,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.271789398575733,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.05047954889014667,
+        "upper_0_80_storage_rms_cm": 0.8893198737054018
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 0.0000058917695980064545,
+        "lower_80_160_storage_rms_cm": 0.000005838221053437502,
+        "mapped_theta_rms": 1.0498568408517765e-7,
+        "max_abs_final_cumulative_bottom_error_cm": 0.0000018792557616720273,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.0001228063471074149,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.0000220579497831286,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.000005891769595214221,
+        "upper_0_80_storage_rms_cm": 3.662188591071077e-7
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 0.006673505765182431,
+        "lower_80_160_storage_rms_cm": 0.13816910124634982,
+        "mapped_theta_rms": 0.005386441104505594,
+        "max_abs_final_cumulative_bottom_error_cm": 0.027650710072630424,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.03153592255783988,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.031579630171576036,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.006673505765209224,
+        "upper_0_80_storage_rms_cm": 0.13290747944045536
+      }
+    },
+    "B11": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 5.511806536301103e-9,
+        "lower_80_160_storage_rms_cm": 0.4814596339116235,
+        "mapped_theta_rms": 0.008210877473440823,
+        "max_abs_final_cumulative_bottom_error_cm": 2.2710203134712614e-8,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.4184735839412466e-8,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 2.4229107022519316e-8,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 5.511800613551046e-9,
+        "upper_0_80_storage_rms_cm": 0.4814596359431546
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 1.0271103767947058e-11,
+        "lower_80_160_storage_rms_cm": 0.23016610135177298,
+        "mapped_theta_rms": 0.00439775510071955,
+        "max_abs_final_cumulative_bottom_error_cm": 2.071239013634596e-11,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.4825519657505365e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 2.2738448482348587e-12,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 1.0261373738796983e-11,
+        "upper_0_80_storage_rms_cm": 0.23016610134292456
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 1.03168403593064e-11,
+        "lower_80_160_storage_rms_cm": 1.0138926886962189e-11,
+        "mapped_theta_rms": 7.064589048399451e-13,
+        "max_abs_final_cumulative_bottom_error_cm": 2.094789619544457e-11,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.489314247561044e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 2.550458695682363e-12,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 1.031178534685846e-11,
+        "upper_0_80_storage_rms_cm": 2.5440610415022503e-13
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 1.0316840299009971e-11,
+        "lower_80_160_storage_rms_cm": 0.06298799173219963,
+        "mapped_theta_rms": 0.002229717495860982,
+        "max_abs_final_cumulative_bottom_error_cm": 2.094789619544457e-11,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.4893141398249306e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 2.550458695682363e-12,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 1.0319157568463702e-11,
+        "upper_0_80_storage_rms_cm": 0.06298799172374815
+      }
+    },
+    "B12": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 4.982462338228402e-13,
+        "lower_80_160_storage_rms_cm": 0.3663021458916551,
+        "mapped_theta_rms": 0.006239018999722135,
+        "max_abs_final_cumulative_bottom_error_cm": 1.994049890485794e-12,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 1.824839667135526e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 2.168744712703223e-12,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 4.732137161259966e-13,
+        "upper_0_80_storage_rms_cm": 0.3663021458916153
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 2.1897729324904982e-13,
+        "lower_80_160_storage_rms_cm": 0.17548788498062357,
+        "mapped_theta_rms": 0.0033628804075139145,
+        "max_abs_final_cumulative_bottom_error_cm": 5.328966434792193e-13,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 1.811731001003506e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 1.6264597656632007e-15,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 2.1931390140733647e-13,
+        "upper_0_80_storage_rms_cm": 0.17548788498043472
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 2.1897771205531447e-13,
+        "lower_80_160_storage_rms_cm": 2.681443736752825e-13,
+        "mapped_theta_rms": 8.609543586721998e-15,
+        "max_abs_final_cumulative_bottom_error_cm": 5.328983782026953e-13,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 1.811730655271076e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 1.6262282465274772e-15,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 2.1906160454631156e-13,
+        "upper_0_80_storage_rms_cm": 2.1307140288198093e-13
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 2.1897771205531447e-13,
+        "lower_80_160_storage_rms_cm": 0.0480888657913138,
+        "mapped_theta_rms": 0.001724679148198796,
+        "max_abs_final_cumulative_bottom_error_cm": 5.328983782026953e-13,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 1.811730655271076e-11,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 1.6262282465274772e-15,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 3.214593588219685e-13,
+        "upper_0_80_storage_rms_cm": 0.04808886579111797
+      }
+    },
+    "B16": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 0.0017493307130094795,
+        "lower_80_160_storage_rms_cm": 1.6450164400331782,
+        "mapped_theta_rms": 0.028769303590443097,
+        "max_abs_final_cumulative_bottom_error_cm": 0.00705949071887968,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.008282395355081514,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.008296404407008129,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.001749330713025487,
+        "upper_0_80_storage_rms_cm": 1.6440212685871138
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.000004336399640613237,
+        "lower_80_160_storage_rms_cm": 0.7586618914862667,
+        "mapped_theta_rms": 0.014537886317269884,
+        "max_abs_final_cumulative_bottom_error_cm": 0.000020691697014907362,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 0.000026774922389236844,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 0.000026786808344884634,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 0.000004336399636274577,
+        "upper_0_80_storage_rms_cm": 0.758659748382452
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 1.1917139112972252e-7,
+        "lower_80_160_storage_rms_cm": 1.1917121242289006e-7,
+        "mapped_theta_rms": 1.8561540920086632e-9,
+        "max_abs_final_cumulative_bottom_error_cm": 2.3477477961719728e-7,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.754947500555554e-7,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 3.538837704136801e-8,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 1.1917138406727781e-7,
+        "upper_0_80_storage_rms_cm": 4.3502219919496914e-13
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 1.1850454788464382e-7,
+        "lower_80_160_storage_rms_cm": 0.199198814936027,
+        "mapped_theta_rms": 0.00705182077529941,
+        "max_abs_final_cumulative_bottom_error_cm": 2.3477478361400017e-7,
+        "oracle_resolved": true,
+        "qavg_rms_cm_per_day": 2.8204037250510473e-7,
+        "qavg_sign_mismatch": 0,
+        "qend_rms_cm_per_day": 4.900549006108369e-8,
+        "qend_sign_mismatch": 0,
+        "storage_rms_cm": 1.1850453469597622e-7,
+        "upper_0_80_storage_rms_cm": 0.19919886766129918
+      }
+    }
+  },
+  "transitions": {
+    "L4_to_L6": {
+      "stable_componentwise_no_worse_materials": [
+        "B02",
+        "B05",
+        "B06",
+        "B16"
+      ],
+      "stable_strict_improvement_materials": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "tradeoff_or_worse_materials": [
+        "B11",
+        "B12"
+      ]
+    },
+    "L6_to_R8": {
+      "stable_componentwise_no_worse_materials": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12"
+      ],
+      "stable_strict_improvement_materials": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "tradeoff_or_worse_materials": [
+        "B16"
+      ]
+    }
+  },
+  "semantic_repair": {
+    "supersedes": "LAYER-ROM-B1HCM for continuous-time QEND-based fidelity claims",
+    "retained_from_B1HCM": [
+      "state representations",
+      "partitions",
+      "candidate trajectories",
+      "DOP853/Radau numerical qualification",
+      "Reference Richardson state/QAVG construction"
+    ],
+    "corrected": "QEND is reconstructed from the Richardson-limit terminal bottom-cell state through the zero-head Darcy operator; finite-step persisted BOTTOM_FLUX is not extrapolated directly."
+  },
+  "adjudication": [
+    "The corrected-QEND rebase completes the continuous-time Layer-ROM ladder on all six frozen materials without changing state, closure, partition or candidate trajectories.",
+    "Targeted placement remains supported on five of six materials at dimension four; B05 remains the persistent dimension-four counterexample.",
+    "At dimension eight, targeted placement is supported on all six materials.",
+    "The L4-L6-R8 groundwater ladder is not strictly componentwise monotone on B11/B12 at L4->L6 and B16 at L6->R8 under corrected QEND, but those tradeoffs occur in regimes where exchange components are at or near the equal-grid temporal-limit residual. They must not be converted into an application threshold.",
+    "Same-partition CoRichards must still be temporally qualified before residual differences can be attributed to Layer-ROM closure/model form."
+  ],
+  "application_acceptance": false,
+  "performance_claim": false,
+  "production_rom_authorized": false
+}

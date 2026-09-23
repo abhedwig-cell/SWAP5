@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.layer-rom.phase-a2.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A2",
+  "decision": "NO_TESTED_A2_STORAGE_ONLY_CLOSURE_HAS_BROAD_SUPPORT_QS_INTEGRATED_CLOSURE_STILL_REQUIRED",
+  "execution": {
+    "workflow_run": 35494166638,
+    "executed_head": "e0ee688d0d5df357e0505ce0dcea6ec59b25d0ae",
+    "artifact_id": 10600227055,
+    "artifact_digest": "sha256:50530e41851ab81b61b917d4b26504c092fcb517acee3524a7f1d78c1e59bc61",
+    "conclusion": "success"
+  },
+  "primary_cohort": ["S2_B1_F2","S2_B1_F3","S2_B1_F4","S3_B1_F3"],
+  "L3_pooled_primary": {
+    "C_LARE_TAYLOR": {
+      "rms_error_cm_per_day": 0.4523278014489868,
+      "max_abs_error_cm_per_day": 2.9219646195368796,
+      "flux_sign_mismatch_count": 0,
+      "solve_failure_count": 0
+    },
+    "C_DARCY_HARMONIC": {
+      "rms_error_cm_per_day": 0.4417716745164052,
+      "max_abs_error_cm_per_day": 2.108734324981844,
+      "flux_sign_mismatch_count": 0,
+      "solve_failure_count": 0,
+      "pooled_noninferior_to_LARE": true,
+      "broad_support": false
+    },
+    "C_HEAD_LINEAR": {
+      "rms_error_cm_per_day": 0.46624903629150766,
+      "max_abs_error_cm_per_day": 2.958576642768091,
+      "flux_sign_mismatch_count": 0,
+      "solve_failure_count": 0,
+      "pooled_noninferior_to_LARE": false,
+      "broad_support": false
+    }
+  },
+  "L4_pooled_primary": {
+    "C_LARE_TAYLOR": {"rms_error_cm_per_day":0.16860927158981343,"max_abs_error_cm_per_day":1.4147938305151513},
+    "C_DARCY_HARMONIC": {"rms_error_cm_per_day":0.3660064577255376,"max_abs_error_cm_per_day":2.1388651192905996},
+    "C_HEAD_LINEAR": {"rms_error_cm_per_day":0.1852843944311121,"max_abs_error_cm_per_day":1.425480551506956}
+  },
+  "critical_case_S3_B1_F3": {
+    "L3_interface_140": {
+      "C_LARE_TAYLOR_rms": 1.2768395726582613,
+      "C_DARCY_HARMONIC_rms": 1.1010138636069022,
+      "C_HEAD_LINEAR_rms": 1.2920373114316477
+    },
+    "L3_interface_150": {
+      "C_LARE_TAYLOR_rms": 2.4395051051216883e-14,
+      "C_DARCY_HARMONIC_rms": 0.4747708647759161,
+      "C_HEAD_LINEAR_rms": 0.25152814236773874
+    }
+  },
+  "structural": {
+    "C_HEAD_LINEAR_max_storage_reconstruction_residual_theta": 5.101474798152594e-12,
+    "structural_tests": "PASS"
+  },
+  "interpretation": [
+    "Changing only conductivity averaging to a harmonic finite-volume control reduces the pooled L3 RMS and maximum error, but fails the preregistered broad-support condition because several primary case/interface blocks worsen on both RMS and maximum error.",
+    "The storage-consistent linear-head reconstruction does not improve the L3 pooled vector and also fails broad support.",
+    "At the 150 cm L3 interface, where both adjacent layers are already 10 cm and coincide with the fine Reference cells, the standard LARE closure reproduces the Reference face flux to roundoff while both alternative closures introduce error. This is direct evidence that a closure should preserve the fine-grid limit.",
+    "The dominant unresolved error remains the coarse-to-local 140 cm interface. The tested A2 alternatives do not resolve it robustly.",
+    "A2 has not yet tested the physically distinct constant-flux quasi-steady constitutive reconstruction or an integrated constitutive flux relation. Therefore escalation to extra gradient/moment state is premature."
+  ],
+  "firewalls": [
+    "NO_REDUCED_STATE_PROPAGATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_PRODUCTION_ROM",
+    "NO_SPEED_CLAIM"
+  ],
+  "next": "LAYER-ROM-A2B: test non-fitted constant-flux quasi-steady and integrated-constitutive storage-only closures on the same frozen L3/L4 states before any state augmentation."
+}

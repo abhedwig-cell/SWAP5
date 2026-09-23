@@ -1,0 +1,204 @@
+name: F-ROM Layer-ROM B1HCN CoRichards temporal limit
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_B1HCN_PREREGISTRATION.json
+      - tests/rom/materialize_layer_rom_b1hcn_corichards_temporal.py
+      - tests/rom/analyze_layer_rom_b1hcn_corichards_temporal.py
+      - tests/rom/aggregate_layer_rom_b1hcn.py
+      - .github/workflows/f-rom-layer-b1hcn-corichards-temporal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcn-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', q_id: 10601589862, q_digest: 'dd31968a447019f4d483a1ec931a17c073806b52c58541ea97cc632cb08218cf', ck_id: 10602639932, ck_digest: 'bf12533bd3165202e96a03c2db37ee9a4e82506be7eb2f60c735a11fca36cc7e', cl_id: 10603208865, cl_digest: 'd0e4971839ee9d27e80359855784b7d6bd95175fe088fc94e95ce028b1d9ae7d', cm_id: 10603573696, cm_digest: '478c970f30243177cabee094b71dbf27c9a1386412211ffa338990ce8a4486d6'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', q_id: 10602175157, q_digest: 'c65d6fa84fa0d3df4f9401e46808dc78d12813c48b61ec63402edebf4ae95ab9', ck_id: 10602999048, ck_digest: '07327da8b991913350fdf314e367ae02d8caceb2993eabd7af583f4decfefac4', cl_id: 10602989491, cl_digest: 'f5bfdcb0fe34d32a1d8a412c474bcf39c858fc217a4a9a589f4db7312e9ff32c', cm_id: 10603658516, cm_digest: '4eb87fde5099e246039e8d18dfec8ce8313a449a4ae2cee84b41b22d6eab8852'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', q_id: 10602070291, q_digest: '82575403367398a86543d94754bef596ace3688552b3042fc5912c5f0d2c4f19', ck_id: 10603098741, ck_digest: 'f6a2313150ef7b9080eb2556012a1e3543c11f90c43d8826d89c8650fa129d5d', cl_id: 10603760794, cl_digest: 'fee06409ee7bdfcf77ec3a2bb92b790c15585ba10783c904bdfbb5803f313212', cm_id: 10603900509, cm_digest: 'b0c6513ea719abbe09dd657a908503a9f4e3f6157a6542bdcf89a2b02b522d43'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', q_id: 10600849049, q_digest: 'f63648c948018e01d9d1e857cec0336bcbf7dcac125a59274e0e5dbd54be7e65', ck_id: 10603393122, ck_digest: 'f67a14afab9c94ccfe34b843d731437a4be50bd33ebd5547e433b6c2d829428c', cl_id: 10603223814, cl_digest: '97a3ce162c4a1f0b42359d2871779c43a3727d0f895ecfaeb374179201c6b17c', cm_id: 10602999646, cm_digest: '25c5dc9e1d57e4503a867f7b0149095a15c58ac3d2ab23c85ce911d3f40a2cbb'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7', q_id: 10602120091, q_digest: 'b5199abdd53798f1076a72320dd2e6ae26e5335bbddf3e916988aa67576f6303', ck_id: 10603830084, ck_digest: '96d4e3e7b087c559ab6faf8bfb08da7c54d8b804a3b7b3bd53fa15bba7e86fc9', cl_id: 10603770562, cl_digest: '68110523e84b1691abfa7cfc32d2df204d61b30cf56054f65b4a0d385231c5b6', cm_id: 10603448940, cm_digest: '784227345bd9661ba8691b125e9b82f2866a9b8f948086e08b929c6cc5436955'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', q_id: 10601764361, q_digest: '8dfe5424b7e96170b6c7588ab5bd54e6ee8926fe35f4795e9928dccbf3dc2295', ck_id: 10603820596, ck_digest: '6cfaa5be827c70cba39dd4d03961cbd545b8939014c0fc12c2625a685d4a936d', cl_id: 10603433546, cl_digest: 'd6ddb83994bd9090107eb855f62711fb173a37ad8d296ced802e073453e6d1ae', cm_id: 10603538770, cm_digest: '05efe24d3823b270317def861def8ba929faf016675c3a6f176988f53ae5bb2d'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Lock B1HCN authority
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCN_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_NEW_CORICHARDS_TEMPORAL_RESPONSE'
+          assert [x['id'] for x in p['cohort']['members']]==['L4','L6','R8']
+          assert [x['dt_day'] for x in p['corichards_temporal_ladder']]==[0.001,0.0005,0.00025]
+          assert p['temporal_hypothesis']['frozen_order']==1.0
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCN_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile tests/rom/materialize_layer_rom_b1hcn_corichards_temporal.py tests/rom/analyze_layer_rom_b1hcn_corichards_temporal.py tests/rom/aggregate_layer_rom_b1hcn.py
+
+      - name: Recover immutable authority artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/b1hcn/b1h /tmp/b1hcn/q /tmp/b1hcn/ck /tmp/b1hcn/cl /tmp/b1hcn/cm /tmp/b1hcn/basis
+          git fetch --no-tags origin 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4 e3b11802e88316dcd57147569e985153be99e215
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/b1hcn/d13_base.f90
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hcn/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hcn/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hcn/d13_base.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+
+          fetch_artifact () {
+            local id="$1" digest="$2" zip="$3" out="$4" allow_b12="${5:-0}"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/$id/zip" > "$zip"
+            actual="$(sha256sum "$zip" | awk '{print $1}')"
+            if [ "$actual" != "$digest" ] && [ "$allow_b12" != "1" ]; then
+              echo "artifact digest mismatch id=$id actual=$actual expected=$digest" >&2; exit 1
+            fi
+            unzip -q "$zip" -d "$out"
+          }
+          b12=0; [ "${{ matrix.material }}" = "B12" ] && b12=1
+          fetch_artifact "${{ matrix.b1h_id }}" "${{ matrix.b1h_digest }}" /tmp/b1hcn/b1h.zip /tmp/b1hcn/b1h "$b12"
+          fetch_artifact "${{ matrix.q_id }}" "${{ matrix.q_digest }}" /tmp/b1hcn/q.zip /tmp/b1hcn/q
+          fetch_artifact "${{ matrix.ck_id }}" "${{ matrix.ck_digest }}" /tmp/b1hcn/ck.zip /tmp/b1hcn/ck
+          fetch_artifact "${{ matrix.cl_id }}" "${{ matrix.cl_digest }}" /tmp/b1hcn/cl.zip /tmp/b1hcn/cl
+          fetch_artifact "${{ matrix.cm_id }}" "${{ matrix.cm_digest }}" /tmp/b1hcn/cm.zip /tmp/b1hcn/cm
+
+          test -f "/tmp/b1hcn/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          test -f "/tmp/b1hcn/b1h/materialization.json"
+          test -f "/tmp/b1hcn/ck/R16_${{ matrix.material }}_fine.txt"
+          test -f "/tmp/b1hcn/cl/R16_${{ matrix.material }}_ultra.txt"
+          test -f "/tmp/b1hcn/cm/LAYER_ROM_B1HCM_${{ matrix.material }}_RESULT.json"
+          for member in L4 L6 R8; do
+            for hist in X01 X02 X03 X04; do
+              test -f "/tmp/b1hcn/q/$member/$member-$hist-o0.txt"
+            done
+          done
+
+      - name: Reproduce material and CoRichards harness
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_layer_rom_b1h_material.py             --base-fortran /tmp/b1hcn/d13_base.f90             --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json             --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --material "${{ matrix.material }}"             --output /tmp/b1hcn/b1h_material.f90             --manifest /tmp/b1hcn/materialization.json
+          cmp /tmp/b1hcn/materialization.json /tmp/b1hcn/b1h/materialization.json
+          python3 tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py             --b1h-source /tmp/b1hcn/b1h_material.f90             --output /tmp/b1hcn/cor_base.f90             --manifest /tmp/b1hcn/cor_base.json
+          python3 tests/rom/materialize_layer_rom_b1hcn_corichards_temporal.py             --base-harness /tmp/b1hcn/cor_base.f90 --dt-day 0.0005             --output /tmp/b1hcn/cor_mid.f90 --manifest /tmp/b1hcn/cor_mid.json
+          python3 tests/rom/materialize_layer_rom_b1hcn_corichards_temporal.py             --base-harness /tmp/b1hcn/cor_base.f90 --dt-day 0.00025             --output /tmp/b1hcn/cor_fine.f90 --manifest /tmp/b1hcn/cor_fine.json
+          echo 'LAYER_ROM_B1HCN_HARNESS=PASS'
+
+      - name: Execute prospective CoRichards temporal ladder
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCN_EVIDENCE/mid B1HCN_EVIDENCE/fine
+          for row in 'L4|130,10,10,10' 'L6|110,10,10,10,10,10' 'R8|90,10,10,10,10,10,10,10'; do
+            IFS='|' read -r member thickness <<< "$row"
+            stub="canonical/b1hcn_${member}_stubs.f90"
+            python3 tests/rom/materialize_layer_rom_variable_grid_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --layer-thickness-cm "$thickness"
+            for level in mid fine; do
+              cp "/tmp/b1hcn/cor_${level}.f90" "canonical/tests/rom/test_b1hcn_${level}.f90"
+              expected=2048; [ "$level" = fine ] && expected=4096
+              for opt in 0 2; do
+                build="/tmp/b1hcn/${member}-${level}-o${opt}"
+                python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                   --root canonical --stub "b1hcn_${member}_stubs.f90"                   --target "tests/rom/test_b1hcn_${level}.f90"                   --external-source src/legacy/b1_10_port/headcalc.f90                   --build "$build" --opt "$opt"
+              done
+              for hist in X01 X02 X03 X04; do
+                for opt in 0 2; do
+                  log="/tmp/b1hcn/${level}_${member}_${hist}_o${opt}.txt"
+                  B1HC_HISTORY_FILTER="$hist" "/tmp/b1hcn/${member}-${level}-o${opt}/rom0_test" > "$log" 2>&1
+                  grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "$log"
+                  test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "$log")" -eq "$expected"
+                done
+                cmp "/tmp/b1hcn/${level}_${member}_${hist}_o0.txt" "/tmp/b1hcn/${level}_${member}_${hist}_o2.txt"
+                tag="$(echo "$level" | tr '[:lower:]' '[:upper:]')"
+                cp "/tmp/b1hcn/${level}_${member}_${hist}_o0.txt" "B1HCN_EVIDENCE/${level}/COR_${tag}_${member}_${hist}.txt"
+              done
+            done
+          done
+          git -C canonical diff --quiet -- src reference
+          echo 'LAYER_ROM_B1HCN_TEMPORAL_EXECUTION=PASS'
+
+      - name: Install analysis stack
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Analyze same-partition temporal limits
+        run: |
+          set -euo pipefail
+          for member in L4 L6 R8; do
+            python3 tests/rom/analyze_layer_rom_b1hcn_corichards_temporal.py               --material "${{ matrix.material }}" --member "$member"               --coarse-dir /tmp/b1hcn/q               --mid-dir B1HCN_EVIDENCE/mid --fine-dir B1HCN_EVIDENCE/fine               --ref-fine "/tmp/b1hcn/ck/R16_${{ matrix.material }}_fine.txt"               --ref-ultra "/tmp/b1hcn/cl/R16_${{ matrix.material }}_ultra.txt"               --b1h-result "/tmp/b1hcn/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"               --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json               --b1hcm-result "/tmp/b1hcn/cm/LAYER_ROM_B1HCM_${{ matrix.material }}_RESULT.json"               --basis-dir /tmp/b1hcn/basis               --prereg integration/f-rom/LAYER_ROM_B1HCN_PREREGISTRATION.json               --output "B1HCN_EVIDENCE/LAYER_ROM_B1HCN_${{ matrix.material }}_${member}_RESULT.json"               | tee "B1HCN_EVIDENCE/analyzer-${member}.txt"
+          done
+          python3 - <<'PY'
+          import glob,json
+          fs=glob.glob('B1HCN_EVIDENCE/LAYER_ROM_B1HCN_*_RESULT.json'); assert len(fs)==3
+          for f in fs:
+              r=json.load(open(f))
+              assert r['decision'] in {'B1HCN_MEMBER_TEMPORAL_LIMIT_SUPPORTED','B1HCN_MEMBER_TEMPORAL_LIMIT_UNRESOLVED'}
+              assert max(r['max_mass_residual_cm'].values())<=1e-12
+              assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCN_MATERIAL_GATE=PASS')
+          PY
+          sha256sum $(find B1HCN_EVIDENCE -type f | sort) > B1HCN_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcn-${{ matrix.material }}
+          path: B1HCN_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcn-B*
+          path: /tmp/b1hcn-results
+          merge-multiple: false
+      - name: Aggregate temporal-limit decomposition
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCN_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcn.py             --input-dir /tmp/b1hcn-results             --prereg integration/f-rom/LAYER_ROM_B1HCN_PREREGISTRATION.json             --output B1HCN_AGGREGATE/LAYER_ROM_B1HCN_RESULT.json             | tee B1HCN_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCN_PREREGISTRATION.json'))
+          r=json.load(open('B1HCN_AGGREGATE/LAYER_ROM_B1HCN_RESULT.json'))
+          assert r['decision'] in {p['decisions']['complete'],p['decisions']['temporal_unresolved']}
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCN_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCN_AGGREGATE/* > B1HCN_AGGREGATE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo 'LAYER_ROM_B1HCN=PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcn-aggregate
+          path: B1HCN_AGGREGATE/
+          if-no-files-found: error

@@ -1,0 +1,287 @@
+{
+  "schema": "swap5.layer-rom.phase-b1h.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1H",
+  "phase": "PREREGISTERED_BEFORE_NEW_MATERIAL_FIXED_HEAD_RESPONSE",
+  "purpose": "Test whether the Phase-A targeted explicit-layer placement and dimension pattern transfers across a response-independent Staringreeks B-material contrast panel under the frozen one-day fixed-head laboratory.",
+  "authority": {
+    "phase_A": "integration/f-rom/LAYER_ROM_PHASE_A_CLOSEOUT.json",
+    "panel": "integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json",
+    "fixed_head_boundary": "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "prior_B01": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215 LARE_BC2_C4V",
+    "prior_B14": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215 LARE_BC2_C4X"
+  },
+  "workload": {
+    "depth_cm": 160,
+    "top_flux_cm_per_day": 0,
+    "bottom_pressure_head_cm": 0,
+    "observation_dt_day": 0.001,
+    "steps": 1024,
+    "horizon_day": 1.024,
+    "sinks": false,
+    "ET_root_uptake": false,
+    "moving_water_table": false
+  },
+  "material_roles": {
+    "inherited_anchors": [
+      "B01",
+      "B14"
+    ],
+    "new_response_materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "rule": "No new B01/B14 Reference trajectory is required unless anchor reproduction fails."
+  },
+  "initial_state_transfer": {
+    "family": "C4X finite-water-content capillary-front profile used only to define matched initial conditions",
+    "source_B01_lambda": [
+      0.375,
+      0.625,
+      0.875,
+      1.125
+    ],
+    "reference_Se": 0.505,
+    "invariant": "preserve deepest active-front height from B01",
+    "formula": "lambda_m=lambda_B01*psi_B01(Se=0.505)/psi_m(Se=0.505)",
+    "psi_B01_Se0p505_cm": 102.93247655038844,
+    "frozen_scaled_lambda": {
+      "B02": [
+        0.12445156386438572,
+        0.2074192731073095,
+        0.2903869823502333,
+        0.37335469159315715
+      ],
+      "B05": [
+        0.811872936139296,
+        1.35312156023216,
+        1.894370184325024,
+        2.435618808417888
+      ],
+      "B06": [
+        0.04932725730113524,
+        0.08221209550189207,
+        0.1150969337026489,
+        0.14798177190340572
+      ],
+      "B11": [
+        0.0013831302117881187,
+        0.0023052170196468645,
+        0.0032273038275056104,
+        0.004149390635364356
+      ],
+      "B12": [
+        0.00034153775748981213,
+        0.0005692295958163535,
+        0.0007969214341428949,
+        0.0010246132724694363
+      ],
+      "B16": [
+        0.07263921262210019,
+        0.12106535437016697,
+        0.16949149611823375,
+        0.21791763786630056
+      ]
+    },
+    "history_labels": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "response_based": false,
+    "no_post_response_rescaling": true
+  },
+  "model": {
+    "material": "homogeneous per run",
+    "constitutive": "catalog unimodal Mualem-Van Genuchten using KSATFIT",
+    "LARE_interior_closure": "unchanged standard adjacent-layer Taylor/Darcy",
+    "LARE_bottom_closure": "BC1 CURRENT_LAYER_FACE",
+    "LARE_integrator": "iterative Heun",
+    "LARE_internal_dt_day": 0.0001,
+    "no_clipping": true,
+    "no_fallback": true
+  },
+  "representations": [
+    {
+      "id": "L4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "Phase-A short-horizon targeted candidate"
+    },
+    {
+      "id": "L6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "intermediate targeted resolution"
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "Phase-A persistent-GW targeted candidate"
+    },
+    {
+      "id": "U4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "role": "same-dimension uniform placement control"
+    },
+    {
+      "id": "U8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "role": "same-dimension uniform placement control"
+    },
+    {
+      "id": "R16_OP",
+      "dimension": 16,
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "no-spatial-reduction LARE operator control"
+    }
+  ],
+  "reference": {
+    "id": "R16_REFERENCE",
+    "geometry": "16 x 10 cm",
+    "route": "current canonical Reference Richards mode-5 strict accepted trajectory policy",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "transaction_mass_gate_cm": 1e-12
+  },
+  "pre_reference_gates": [
+    "material parameters equal frozen catalog rows",
+    "scaled lambdas equal frozen values",
+    "all initial R16 and reduced layer states are finite and inside constitutive physical bounds",
+    "no response has been generated for the new B1H material before its preflight passes"
+  ],
+  "checkpoints_steps": [
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "response_vector": [
+    "total-storage RMSE",
+    "cumulative-bottom-exchange RMSE",
+    "bottom-flux RMSE",
+    "bottom-flux sign-error count",
+    "absolute mean signed bottom-flux error",
+    "maximum absolute final cumulative-bottom-exchange error across histories",
+    "mapped 10-cm theta RMSE",
+    "upper/lower storage RMSE",
+    "reversal sequence/timing by history",
+    "water-ledger residual",
+    "qualified-domain coverage"
+  ],
+  "placement_test": {
+    "dimension4": [
+      "L4",
+      "U4"
+    ],
+    "dimension8": [
+      "R8",
+      "U8"
+    ],
+    "componentwise_primary": [
+      "cumulative-bottom-exchange RMSE",
+      "bottom-flux RMSE",
+      "bottom-flux sign-error count",
+      "mapped 10-cm theta RMSE"
+    ],
+    "support_rule": "Targeted placement is supported for a material/dimension only if it is no worse in every primary component at day 1.024 within 1e-12 equality and strictly better in at least one."
+  },
+  "dimension_test": {
+    "ladder": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "rule": "Report componentwise changes at every checkpoint; do not select a minimum dimension without an external application tolerance.",
+    "B01_R8_persistence_rule_not_assumed_universal": true
+  },
+  "decisions": {
+    "B1H_TRANSFER_PANEL_CHARACTERIZED": "All six new R16 Reference runs pass integrity, all targeted members are attempted, and no technical provenance failure occurs. Scientific outcomes may include domain exits and non-transfer.",
+    "B1H_REFERENCE_OR_HARNESS_BLOCKED": "Any material/source/Reference/provenance hard gate fails."
+  },
+  "comparator_staging": {
+    "same_partition_CoRichards": "HELD_FOR_B1H_COMP_AFTER_B1H_REFERENCE_TRANSFER",
+    "FMC": "NOT_REQUIRED_FOR_B1H",
+    "reason": "B1H first tests representation/placement transfer against the same fine Reference; comparator decomposition follows on the frozen material-response set."
+  },
+  "firewalls": [
+    "NO_POST_RESPONSE_MATERIAL_OR_PARTITION_SELECTION",
+    "NO_NEW_CLOSURE",
+    "NO_FMC_RANKING",
+    "NO_CORICHARDS_RANKING_IN_B1H",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_TIMING_OR_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

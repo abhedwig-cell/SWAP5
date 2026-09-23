@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcn.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCN",
+  "decision": "B1HCN_CORICHARDS_TEMPORAL_LIMIT_UNRESOLVED",
+  "execution": {
+    "workflow_run": 35505862660,
+    "executed_head": "b37069e33f9e86d3459e277ccd6e932299e24505",
+    "aggregate_artifact_id": 10603609225,
+    "aggregate_artifact_digest": "sha256:057514cf17ae0aa13342144e6501c4e89bb2a5ce24a8a01812f0b08a9d91dbe2",
+    "conclusion": "success"
+  },
+  "temporal_support": {
+    "supported_cell_count": 16,
+    "total_cell_count": 18,
+    "unresolved_cells": [
+      "B05:L6",
+      "B05:R8"
+    ],
+    "unresolved_component": "qavg_rms only",
+    "B05_L6": {
+      "qavg_coarse_mid_rms": 0.007355955323951436,
+      "qavg_mid_fine_rms": 0.003977220068835211,
+      "observed_order": 0.8871523256127565,
+      "first_order_prediction_error_rms": 0.0004017793187542976,
+      "frozen_prediction_bound": 0.00039772200688352114,
+      "exceedance_fraction": 0.010201515380264
+    },
+    "B05_R8": {
+      "qavg_coarse_mid_rms": 0.007366856650996522,
+      "qavg_mid_fine_rms": 0.0039822077118610855,
+      "observed_order": 0.8874806960552796,
+      "first_order_prediction_error_rms": 0.0004017762434587589,
+      "frozen_prediction_bound": 0.0003982207711861086,
+      "exceedance_fraction": 0.008928392188653
+    }
+  },
+  "qualified_cell_observations": [
+    "All B02, B06, B11, B12 and B16 L4/L6/R8 cells satisfy every frozen CoRichards temporal gate.",
+    "B05 L4 also satisfies every frozen temporal gate.",
+    "B05 L6 and B05 R8 satisfy storage, cumulative exchange, QEND and mapped-theta temporal gates but miss only the QAVG first-order holdout prediction gate.",
+    "Both unresolved QAVG sequences continue to converge; failure is the stricter prospective first-order prediction criterion, not nonconvergence."
+  ],
+  "diagnostic_only_relations_from_unresolved_run": {
+    "warning": "The following complete-run relation counts are diagnostic only because the preregistered all-18 temporal gate did not close.",
+    "L4": {
+      "COR_COMPONENTWISE_NO_WORSE": 3,
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": 3
+    },
+    "L6": {
+      "COR_COMPONENTWISE_NO_WORSE": 1,
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5
+    },
+    "R8": {
+      "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5,
+      "TRADEOFF": 1
+    },
+    "B05": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "COR_COMPONENTWISE_NO_WORSE",
+      "R8": "TRADEOFF"
+    }
+  },
+  "stable_dimension_evidence": {
+    "LayerROM": "L4->L6->R8 componentwise nonworse on all six materials under B1HCM",
+    "CoRichards_diagnostic": "L4->L6->R8 componentwise nonworse on all six materials in B1HCN output, but full panel model-form decomposition remains held until B05 L6/R8 temporal gate resolves"
+  },
+  "adjudication": [
+    "B1HCN does not authorize a full six-material Layer-ROM-versus-CoRichards model-form decomposition because two preregistered temporal cells remain unresolved.",
+    "The unresolved scope is sharply bounded to B05 L6/R8 QAVG. No closure, state, partition, material, solver policy or hydrological boundary needs to change.",
+    "The miss is approximately one percent relative to the frozen QAVG prediction bound, but no tolerance relaxation is permitted.",
+    "A single additional prospective CoRichards time level for only B05 L6/R8 is the minimal authorized successor."
+  ],
+  "next": "LAYER-ROM-B1HCO_B05_L6_R8_CORICHARDS_TEMPORAL_HOLDOUT",
+  "firewalls": [
+    "NO_MODEL_FORM_ADJUDICATION_FOR_B05_L6_R8",
+    "NO_GATE_RELAXATION",
+    "NO_CLOSURE_OR_PARTITION_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

@@ -1,0 +1,147 @@
+{
+  "schema": "swap5.layer-rom.phase-b2.evidence-binding.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B2",
+  "phase": "FROZEN_EXTRACTION_OF_PREEXISTING_PROSPECTIVE_EVIDENCE",
+  "purpose": "Bind previously prospective one-day fixed-water-table and reversal evidence to the Layer-ROM representation question without misclassifying it as a new blind validation.",
+  "current_layer_predecessor": {
+    "B1_result": "integration/f-rom/LAYER_ROM_B1_RESULT.json",
+    "B1_decision": "B1_DIMENSION4_GW_FRONTIER_REPLICATED",
+    "B1_horizon_day": 0.064
+  },
+  "source_authority": {
+    "repository": "abhedwig-cell/SWAP5",
+    "branch_at_binding": "work/f-rom-lare-rs1",
+    "exact_ref": "133009f60c31fb8c7d7edbf9754c1f4c4071f2f8",
+    "C4V_result": {
+      "path": "integration/f-rom/LARE_BC2_C4V_RESULT.json",
+      "blob_sha": "dbbf889e75bcd255c1b98ef19e05d4f2775936f4"
+    },
+    "C4V_closeout": {
+      "path": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+      "blob_sha": "9f2ec6b464997a1726e384c3070ba59687b9182d"
+    },
+    "C4W_result": {
+      "path": "integration/f-rom/LARE_BC2_C4W_RESULT.json",
+      "blob_sha": "9cf1b5fe0f891837ffc5b6bf64e1dbb746a486e4"
+    },
+    "C4W_closeout": {
+      "path": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
+      "blob_sha": "811dd0e77ebd682e62de96341d3f969f75ca10e2"
+    },
+    "C4V_execution": {
+      "workflow_run": 35493542460,
+      "artifact_id": 10599921961,
+      "artifact_digest": "sha256:cd15afd49f198199644895dd783bdf390f86835624f83578cb5fdd610b952365",
+      "result_sha256": "58453f537bdc3d6b47e2738cd5b3050fed1b18fad0d2734744b3fd9853ec3be3"
+    },
+    "C4W_execution": {
+      "workflow_run": 35493886557,
+      "artifact_id": 10599418376,
+      "artifact_digest": "sha256:f8a7e03d8c6ecac6fee1af0457b3f106bc7881f8d873abfdcbdced0103ba8648",
+      "result_sha256": "57083e95228c96b6ec1c66474c315cfb0a7acd90266d838625984f29ee70cac2"
+    }
+  },
+  "evidence_classification": {
+    "C4V_at_original_execution": "PROSPECTIVE_BEYOND_EXPOSED_0P064_DAY_PREFIX",
+    "C4W_at_original_execution": "POST_C4V_DIAGNOSTIC_WITH_FROZEN_IMMUTABLE_C4V_DECISION",
+    "Layer_ROM_B2": "RETROSPECTIVE_AUTHORITY_BINDING_AND_REANALYSIS_ONLY",
+    "rule": "Do not describe B2 itself as blind or prospective. Preserve the original evidence classification and exact authority."
+  },
+  "frozen_representation_subset": [
+    {
+      "Layer_ROM": "L3",
+      "source_member": "R3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "Layer_ROM": "L4",
+      "source_member": "R4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "Layer_ROM": "L6",
+      "source_member": "R6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    }
+  ],
+  "contextual_resolution_control": {
+    "source_member": "R8",
+    "dimension": 8,
+    "boundaries_cm": [
+      0,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160
+    ],
+    "role": "first source member persistently crossing both one-day groundwater comparators; contextual control, not part of B1 frozen ladder"
+  },
+  "extraction_rules": {
+    "prospective_checkpoints": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "primary_horizon_day": 1.024,
+    "groundwater_components": [
+      "storage_RMSE_cm",
+      "cumulative_bottom_RMSE_cm",
+      "bottom_flux_RMSE_cm_per_day",
+      "bottom_flux_sign_errors",
+      "abs_mean_signed_bottom_flux_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm"
+    ],
+    "profile_diagnostic": "mapped_theta_RMSE",
+    "reversal_context": [
+      "V03 candidate reversal steps",
+      "V03 sign mismatch count",
+      "V03 first mismatch Reference flux magnitude and percentile",
+      "V04 one-step timing diagnostic"
+    ],
+    "no_recomputed_hydrology": true
+  },
+  "decision_logic": {
+    "B2_ONE_DAY_GW_FRONTIER_PERSISTS_WITHIN_L3_L4_L6": "At least one of R3/R4/R6 persistently crosses both R2 and FMC over all original prospective checkpoints.",
+    "B2_ONE_DAY_GW_FRONTIER_NOT_REACHED_WITHIN_L3_L4_L6_R8_REQUIRED": "None of R3/R4/R6 persistently crosses both, while R8 does under the immutable C4V authority.",
+    "B2_SOURCE_AUTHORITY_INCONSISTENT": "Any exact-ref, blob, C4V/C4W decision or B1 predecessor check fails."
+  },
+  "firewalls": [
+    "NO_NEW_BLIND_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_POST_HOC_DEADBAND",
+    "NO_CLOSURE_RETUNING",
+    "NO_MOVING_WATER_TABLE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_if_R8_required": "Close same-material fixed-head dimension/horizon characterization and expose the independent transfer-axis choice: material/constitutive transfer versus lower-boundary-semantics transfer.",
+  "production_rom_authorized": false
+}

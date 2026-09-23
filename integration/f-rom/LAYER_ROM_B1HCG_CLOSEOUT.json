@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcg.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCG",
+  "status": "CLOSED_SIMPLE_TEMPORAL_FLOOR_NOT_SUPPORTED_SELF_CONVERGENCE_AUTHORIZED",
+  "decision": "B1HCG_TEMPORAL_SIGNATURE_MIXED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json",
+    "repair_record": "integration/f-rom/LAYER_ROM_B1HCG_REPAIR_RECORD.json",
+    "workflow_run": 35501504092,
+    "executed_head": "d080f44daa0ed9b5e4f55b5b49f67665427438d0",
+    "aggregate_artifact_id": 10602347830,
+    "aggregate_artifact_digest": "sha256:55397a1211e38285c6ae021389e4279fae0615ec9ea73767490999914689d7da",
+    "raw_result_sha256": "c79fd107dd60f45f6a53c68d2a8d0b85c52aef2c0842cad7aa5bb8356fcb7a01"
+  },
+  "conclusions": [
+    "The complete six-material run satisfies the frozen execution and integrity route after pre-result repairs.",
+    "A single monotone Heun time-step-error explanation is rejected by the frozen causal-core gate.",
+    "The next causal test is Reference-independent candidate self-convergence, not closure fitting and not an immediate new Reference campaign."
+  ],
+  "next_authorized": "LAYER-ROM-B1HCH_CANDIDATE_SELF_CONVERGENCE",
+  "production_rom_authorized": false
+}
