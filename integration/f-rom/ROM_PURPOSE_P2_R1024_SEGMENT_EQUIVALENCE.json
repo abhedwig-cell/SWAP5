@@ -1,0 +1,29 @@
+{
+  "PROFILE_lines_exact": true,
+  "all_other_STATE_fields_exact": true,
+  "full_O0_O2_raw_byte_identity": true,
+  "full_o0_sha256": "88b73817ec7906b59810e382782603e3a0e5da6528a471f903e22872b5efeaff",
+  "full_o2_sha256": "88b73817ec7906b59810e382782603e3a0e5da6528a471f903e22872b5efeaff",
+  "ignored_nonhydrologic_field": [
+    "REV"
+  ],
+  "mismatch": null,
+  "qualified": true,
+  "reason_REV_ignored": "Revision counters are local restart bookkeeping and were already excluded from hydrologic checkpoint authority.",
+  "schema": "swap5.rom-purpose.p2.r1024-segment-equivalence.v1",
+  "scientific_change": false,
+  "scientific_line_counts": {
+    "profile": 16384,
+    "state": 32768
+  },
+  "segment_sha256": [
+    "f364b530cc760dab9cfc194ff0f3f3171d8da87ce9da2c679793343e3716e05e",
+    "ac0ca1e422226485a6cbb5bbb760ed19f665978ccfd33607ff7972447d6b49c3",
+    "3f062ce34dda98e4d69058525cbace15912da69cd8420d7820610d1c9379fef9",
+    "d57527616899b3a98ea1a899c1c009e4ebefd18c1151aba4c2ec99c58954fc9e"
+  ],
+  "segmented_matches_full_scientific_output_exactly": true,
+  "witness_case": "B01/R1024_T32/S06",
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE",
+  "workstream": "ROM-PURPOSE"
+}

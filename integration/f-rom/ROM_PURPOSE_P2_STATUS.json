@@ -1,33 +1,38 @@
 {
-  "schema": "swap5.rom-purpose.p2.status.v1",
-  "workstream": "ROM-PURPOSE",
-  "work_unit": "ROM-PURPOSE-P2",
-  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "phase": "P2_REFERENCE_R1024_SEGMENT_EQUIVALENCE_ACTIVE",
-  "implemented": true,
-  "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "candidate_response_authorized": false,
-  "candidate_response_generated": false,
-  "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
-  "fresh_surface_reference_status": "ALL_REQUIRED_EXCEPT_B01_R1024_S05_O0_O2_COMPLETED_SOURCE_RUN",
-  "checkpoint_commit": "24a3a50a195b864ec97aed145d9bf4fc2872a405",
-  "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "R1024_S05_execution_topology": "SEGMENTED_AFTER_EXACT_S06_EQUIVALENCE_WITNESS",
+  "active_reference_repair_run": {
+    "preflight": "PASS",
+    "run": 35853590210,
+    "scientific_change": false,
+    "scope": [
+      "R1024 S06 exact segment-equivalence witness",
+      "R1024 S05 segmented execution only after witness PASS"
+    ],
+    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b"
+  },
+  "authoritative_reference_run": {
+    "authority_record": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json",
+    "execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+    "execution_jobs_status": "QUEUED",
+    "preflight_job": 107054233178,
+    "preflight_status": "PASS",
+    "run": 35821534912
+  },
   "authority_paths": [
     "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json",
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json"
   ],
-  "relevant_paths": [
-    "tests/rom/materialize_rom_purpose_p2_surface_reference.py",
-    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py",
-    "tests/rom/analyze_rom_purpose_p2_reference.py",
-    "tests/rom/rom_purpose_p1_surface_b01_source.f90",
-    "tests/rom/rom_purpose_p1_surface_b14_source.f90",
-    "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json"
-  ],
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "blockers": [],
+  "candidate_infrastructure": {
+    "record": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json",
+    "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED"
+  },
+  "candidate_response_authorized": true,
+  "candidate_response_generated": false,
+  "checkpoint_commit": "24a3a50a195b864ec97aed145d9bf4fc2872a405",
+  "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "dependency_surface": [
     "src/",
     "reference/",
@@ -37,73 +42,69 @@
     "tests/rom/rom_purpose_p1_surface_b01_source.f90",
     "tests/rom/rom_purpose_p1_surface_b14_source.f90"
   ],
+  "fresh_surface_reference_status": "P2_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+  "implemented": true,
+  "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
+  "last_execution_sha": "4f6c29be554ca254575e8e8a67270f6741acc1b4",
+  "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "next_action": "BIND_P2_FROZEN_CANDIDATE_MATRIX",
+  "persisted": true,
+  "phase": "P2_REFERENCE_QUALIFIED",
+  "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
+  "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json@e094ebe8b90c573dfae76713866ff9a73bcc66f4",
+  "qualified": true,
+  "r1024_segment_repair": {
+    "run": 35853590210,
+    "scientific_change": false,
+    "status": "WITNESS_EXECUTION_ACTIVE",
+    "target_case": "B01/R1024_T32/S05",
+    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
+    "witness_case": "B01/R1024_T32/S06"
+  },
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
+  "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d",
+  "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
+  "reference_segmented_recovery_binding": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json",
+  "reference_timeout_repair_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json",
+  "reference_workflow_runs": [
+    {
+      "disposition": "TECHNICAL_FAILURE_BEFORE_REFERENCE_RESPONSE",
+      "head": "7e556d482b76b6e856cd541f0abb86bade719ef4",
+      "run": 35821291555
+    },
+    {
+      "disposition": "SUPERSEDED_PARALLEL_REPAIR_RUN_QUEUED",
+      "head": "5c06d39f5e0cefbd5318d73f24e12c014cf10aa4",
+      "run": 35821452344
+    },
+    {
+      "disposition": "AUTHORITATIVE_TECHNICAL_RERUN_QUEUED",
+      "head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+      "run": 35821534912
+    }
+  ],
+  "relevant_paths": [
+    "tests/rom/materialize_rom_purpose_p2_surface_reference.py",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py",
+    "tests/rom/analyze_rom_purpose_p2_reference.py",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90",
+    "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json"
+  ],
+  "schema": "swap5.rom-purpose.p2.status.v1",
   "scientific_firewall": {
     "P1_failure_overridden": false,
     "P1_surface_histories_reused": false,
-    "any_P2_reference_response_seen": false,
+    "any_P2_reference_response_seen": true,
     "any_layer_rom_candidate_response_seen": false,
-    "representation_retuned": false,
-    "closure_changed": false,
     "application_acceptance_adjudicated": false,
+    "closure_changed": false,
     "performance_claim_authorized": false,
-    "production_rom_authorized": false
+    "production_rom_authorized": false,
+    "representation_retuned": false
   },
-  "blockers": [
-    "R1024_SEGMENT_EQUIVALENCE_WITNESS_PENDING"
-  ],
-  "next_action": "RESUME_FROM_R1024_SEGMENT_REPAIR_RUN_35853590210",
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_BINDING.json",
-  "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
-  "reference_workflow_runs": [
-    {
-      "run": 35821291555,
-      "head": "7e556d482b76b6e856cd541f0abb86bade719ef4",
-      "disposition": "TECHNICAL_FAILURE_BEFORE_REFERENCE_RESPONSE"
-    },
-    {
-      "run": 35821452344,
-      "head": "5c06d39f5e0cefbd5318d73f24e12c014cf10aa4",
-      "disposition": "SUPERSEDED_PARALLEL_REPAIR_RUN_QUEUED"
-    },
-    {
-      "run": 35821534912,
-      "head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
-      "disposition": "AUTHORITATIVE_TECHNICAL_RERUN_QUEUED"
-    }
-  ],
-  "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json@e094ebe8b90c573dfae76713866ff9a73bcc66f4",
-  "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d",
-  "authoritative_reference_run": {
-    "run": 35821534912,
-    "execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
-    "preflight_job": 107054233178,
-    "preflight_status": "PASS",
-    "execution_jobs_status": "QUEUED",
-    "authority_record": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json"
-  },
-  "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
-  "reference_timeout_repair_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json",
-  "active_reference_repair_run": {
-    "run": 35853590210,
-    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
-    "preflight": "PASS",
-    "scope": [
-      "R1024 S06 exact segment-equivalence witness",
-      "R1024 S05 segmented execution only after witness PASS"
-    ],
-    "scientific_change": false
-  },
-  "candidate_infrastructure": {
-    "record": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json",
-    "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED"
-  },
-  "reference_segmented_recovery_binding": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json",
-  "r1024_segment_repair": {
-    "run": 35853590210,
-    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
-    "witness_case": "B01/R1024_T32/S06",
-    "target_case": "B01/R1024_T32/S05",
-    "status": "WITNESS_EXECUTION_ACTIVE",
-    "scientific_change": false
-  }
+  "source_workflow_run": 35853331143,
+  "tested": true,
+  "work_unit": "ROM-PURPOSE-P2",
+  "workstream": "ROM-PURPOSE"
 }

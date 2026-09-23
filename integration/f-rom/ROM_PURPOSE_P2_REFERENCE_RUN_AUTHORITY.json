@@ -1,32 +1,49 @@
 {
-  "schema": "swap5.rom-purpose.p2.reference-run-authority.v1",
-  "workstream": "ROM-PURPOSE",
-  "work_unit": "ROM-PURPOSE-P2-REFERENCE",
-  "date": "2026-09-23",
+  "R1024_segmented_recovery": {
+    "failed_complete_history_jobs": [
+      "B01/R1024_T32/S05/O0",
+      "B01/R1024_T32/S05/O2"
+    ],
+    "failure_class": "HOSTED_RUNNER_SHUTDOWN_EXIT_143",
+    "ignored_nonhydrologic_field": [
+      "REV"
+    ],
+    "scientific_change": false,
+    "segment_model_steps": 8192,
+    "source_run": 35821534912,
+    "witness": "B01/R1024_T32/S06",
+    "witness_exact_scientific_equivalence": true
+  },
   "authoritative_execution": {
-    "workflow_run": 35821534912,
-    "execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
     "binding_blob": "ec2bd209c39dbd14d18c815ff004df90c4033a0d",
-    "status": "AUTHORIZED_PENDING_COMPLETION"
+    "execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+    "segmented_recovery_execution_head": "4f6c29be554ca254575e8e8a67270f6741acc1b4",
+    "segmented_recovery_run": 35853331143,
+    "status": "CLOSED_BY_QUALIFIED_R1024_SEGMENTED_RECOVERY",
+    "workflow_run": 35821534912
+  },
+  "authority_rule": "Only workflow run 35821534912 may provide P2 Reference authority under the current binding. Results or persistence from superseded runs are non-authoritative and must be reconciled away if they reach the branch.",
+  "date": "2026-09-23",
+  "schema": "swap5.rom-purpose.p2.reference-run-authority.v1",
+  "scientific_firewall": {
+    "P1_failure_overridden": false,
+    "authority_selected_before_P2_reference_response": true,
+    "candidate_response_generated": false,
+    "metrics_changed": false,
+    "workload_changed_after_authority_selection": false
   },
   "superseded_runs": [
     {
-      "workflow_run": 35821291555,
+      "disposition": "SUPERSEDED_TECHNICAL_FAILURE_BEFORE_REFERENCE_RESPONSE",
       "execution_head": "7e556d482b76b6e856cd541f0abb86bade719ef4",
-      "disposition": "SUPERSEDED_TECHNICAL_FAILURE_BEFORE_REFERENCE_RESPONSE"
+      "workflow_run": 35821291555
     },
     {
-      "workflow_run": 35821452344,
+      "disposition": "SUPERSEDED_BY_LATER_PRE_RESPONSE_TECHNICAL_REPAIR_REGARDLESS_OF_EVENTUAL_RESULT",
       "execution_head": "5c06d39f5e0cefbd5318d73f24e12c014cf10aa4",
-      "disposition": "SUPERSEDED_BY_LATER_PRE_RESPONSE_TECHNICAL_REPAIR_REGARDLESS_OF_EVENTUAL_RESULT"
+      "workflow_run": 35821452344
     }
   ],
-  "authority_rule": "Only workflow run 35821534912 may provide P2 Reference authority under the current binding. Results or persistence from superseded runs are non-authoritative and must be reconciled away if they reach the branch.",
-  "scientific_firewall": {
-    "authority_selected_before_P2_reference_response": true,
-    "candidate_response_generated": false,
-    "P1_failure_overridden": false,
-    "metrics_changed": false,
-    "workload_changed_after_authority_selection": false
-  }
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE",
+  "workstream": "ROM-PURPOSE"
 }
