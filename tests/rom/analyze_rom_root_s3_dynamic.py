@@ -276,11 +276,12 @@ def threshold_diagnostics(ref_profile:np.ndarray,material:str,history:str,member
         for i,(lo,hi) in enumerate(zip(bounds,bounds[1:])):
             if lo>=80.0 or retained_frac[i]==0.0:
                 continue
-            bins=list(range(int(lo//10),int(min(hi,80.0)//10)))
-            theta_bar=float(np.mean(ref_profile[obs,bins]))
+            bins_full=list(range(int(lo//10),int(hi//10)))
+            bins_root=list(range(int(lo//10),int(min(hi,80.0)//10)))
+            theta_bar=float(np.mean(ref_profile[obs,bins_full]))
             hbar=float(pressure_head_from_theta(np.asarray([theta_bar]),material)[0])
             layer_feedback+=float(retained_frac[i])*float(feddes_alpha(np.asarray([hbar]),tp,material)[0])
-            vals=h10[obs,bins]
+            vals=h10[obs,bins_root]
             if float(np.min(vals))<=h3<=float(np.max(vals)):
                 any_h3=True
             if float(np.min(vals))<=h4<=float(np.max(vals)):
