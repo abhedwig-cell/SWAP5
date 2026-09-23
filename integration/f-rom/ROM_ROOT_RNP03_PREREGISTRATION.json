@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.rom_root.rnp03.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP03",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_RNP03_VECTOR_RESPONSE",
+  "inherits": "integration/f-rom/ROM_ROOT_RNP02_CLOSEOUT.json",
+  "question": "Does the persistent B01 R1024_T32 V02 Reference-Richards shadow solve return to the same full pressure-head and nonlinear residual vectors on the 24-iteration recurrence indicated by RNP02 aggregate diagnostics?",
+  "known_evidence": {
+    "target": "B01 R1024_T32 V02",
+    "target_status_at_128": "RETRY_ADVISED",
+    "aggregate_recurrence": true,
+    "first_aggregate_pair": [
+      26,
+      50
+    ],
+    "observed_cycle_length": 24,
+    "control": "B01 R2048_T32 V02",
+    "control_converges_at_iteration": 17
+  },
+  "frozen_execution": {
+    "material": "B01",
+    "history": "V02",
+    "temporal_factor": 32,
+    "optimization": 0,
+    "target": {
+      "route": "R1024_T32",
+      "nodes": 1024,
+      "dz_cm": 0.15625
+    },
+    "control": {
+      "route": "R2048_T32",
+      "nodes": 2048,
+      "dz_cm": 0.078125
+    },
+    "shadow_max_iterations": 128,
+    "total_balance_tolerance": 1e-12,
+    "compartment_balance_tolerance": 1e-12,
+    "head_tolerances_unchanged": true,
+    "dt_unchanged": true,
+    "root_sink_unchanged": true,
+    "shadow_commit": false
+  },
+  "snapshots": {
+    "target_iterations": [
+      26,
+      27,
+      32,
+      50,
+      51,
+      56
+    ],
+    "comparison_pairs": [
+      [
+        26,
+        50
+      ],
+      [
+        27,
+        51
+      ],
+      [
+        32,
+        56
+      ]
+    ],
+    "control_snapshot_iteration": 17,
+    "fields": [
+      "pressure_head_bits",
+      "residual_bits"
+    ],
+    "encoding": "IEEE-754 real64 bit pattern emitted as 16-digit hexadecimal",
+    "node_scope": "all active nodes"
+  },
+  "preregistered_interpretation": {
+    "FULL_VECTOR_PAIR_RECURRENCE": "For a preregistered pair, every active-node pressure-head bit pattern and every active-node residual bit pattern is identical.",
+    "MULTIPAIR_FULL_VECTOR_RECURRENCE": "All three preregistered target pairs satisfy FULL_VECTOR_PAIR_RECURRENCE.",
+    "AGGREGATE_ONLY_RECURRENCE": "RNP02 aggregate recurrence is present but at least one full-vector pair differs.",
+    "CONTROL_PRESERVATION": "R2048 control remains SW_SOLVE_CONVERGED under the unchanged 128-cap diagnostic."
+  },
+  "prohibited": [
+    "No tolerance modification.",
+    "No production HeadCalc or Reference Richards change.",
+    "No fallback enablement.",
+    "No reduced ROM response.",
+    "No C6R reopening.",
+    "No solver-policy/admission change from RNP03 itself."
+  ],
+  "decision_boundary": "If MULTIPAIR_FULL_VECTOR_RECURRENCE is confirmed, ROM-ROOT treats the Stage-1 blocker as a Reference-Richards numerical-method cycle and hands further method changes outside the ROM candidate workstream."
+}
