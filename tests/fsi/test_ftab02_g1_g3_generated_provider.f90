@@ -5,7 +5,7 @@ program test_ftab02_g1_g3_generated_provider
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_generated_mvg_provider, only: b110_generated_mvg_provider_t, &
-       initialize_b110_generated_mvg_provider, B110_GENERATED_MVG_OK, &
+       initialize_b110_generated_mvg_provider, bind_b110_generated_mvg_step_duration, B110_GENERATED_MVG_OK, &
        B110_GENERATED_MVG_INVALID_INPUT, B110_GENERATED_MVG_UNSUPPORTED_PROFILE
   implicit none
 
@@ -52,11 +52,16 @@ program test_ftab02_g1_g3_generated_provider
 
   call initialize_b110_default_mvg_parameters(apar,cofgen)
   call bind_b110_default_mvg_provider(analytic,apar,0.04_real64)
-  call initialize_b110_generated_mvg_provider(table1,cofgen,0.04_real64,status)
+  call initialize_b110_generated_mvg_provider(table1,cofgen,status)
   call require(status==B110_GENERATED_MVG_OK,'generated provider initializes')
-  call initialize_b110_generated_mvg_provider(table2,cofgen,0.04_real64,status)
+  call initialize_b110_generated_mvg_provider(table2,cofgen,status)
   call require(status==B110_GENERATED_MVG_OK,'second generated provider initializes')
   call require(table1%ready() .and. table2%ready(),'generated providers ready')
+  call require(.not. table1%context_compatible(0.04_real64),'generated context unbound fails closed')
+  call bind_b110_generated_mvg_step_duration(table1,0.04_real64,status)
+  call require(status==B110_GENERATED_MVG_OK,'generated timestep binds')
+  call bind_b110_generated_mvg_step_duration(table2,0.04_real64,status)
+  call require(status==B110_GENERATED_MVG_OK,'second generated timestep binds')
 
   call require(.not. dummy%context_compatible(0.04_real64),'default context capability fails closed')
   call require(analytic%context_compatible(0.04_real64),'analytical context compatible')
@@ -66,15 +71,15 @@ program test_ftab02_g1_g3_generated_provider
 
   bad=cofgen
   bad(9,1)=-1.0_real64
-  call initialize_b110_generated_mvg_provider(bad_provider,bad,0.04_real64,status)
+  call initialize_b110_generated_mvg_provider(bad_provider,bad,status)
   call require(status==B110_GENERATED_MVG_UNSUPPORTED_PROFILE,'H_ENPR fails closed')
   bad=cofgen
   bad(10,1)=2.0_real64*bad(3,1)
-  call initialize_b110_generated_mvg_provider(bad_provider,bad,0.04_real64,status)
+  call initialize_b110_generated_mvg_provider(bad_provider,bad,status)
   call require(status==B110_GENERATED_MVG_UNSUPPORTED_PROFILE,'KSATEXM fails closed in core slice')
   bad=cofgen
   bad(4,1)=0.0_real64
-  call initialize_b110_generated_mvg_provider(bad_provider,bad,0.04_real64,status)
+  call initialize_b110_generated_mvg_provider(bad_provider,bad,status)
   call require(status==B110_GENERATED_MVG_INVALID_INPUT,'invalid alpha fails closed')
 
   allocate(h(n),ta(n),ka(n),ca(n),da(n),t1(n),k1(n),c1(n),d1(n),t2(n),k2(n),c2(n),d2(n))
