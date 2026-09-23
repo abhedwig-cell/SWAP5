@@ -31,7 +31,13 @@ def load_module(name:str,path:pathlib.Path):
 base=load_module("rom_purpose_p3_p2_candidate_analysis",HERE/"analyze_rom_purpose_p2_candidates.py")
 base.SURF_H=SURF_H
 base.GW_H=GW_H
-base.p2ref.SURF_H=SURF_H
+base.p2ref.HISTORIES=SURF_H
+base.p2ref.PHASES={
+    "S09":("WET","DRY","WET","DRY"),
+    "S10":("DRY","WET","DRY","WET"),
+    "S11":("WET","DRY","WET","DRY"),
+    "S12":("DRY","WET","DRY","WET"),
+}
 base.p1ref.GW_H=GW_H
 
 
