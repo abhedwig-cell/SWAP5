@@ -1,0 +1,290 @@
+name: TAB-HYD CTX01 timestep-context capability
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-context-capability.yml'
+      - 'research/tabulated_hydraulics/TIMESTEP_CONTEXT_CAPABILITY_PREREGISTRATION.md'
+      - 'research/tabulated_hydraulics/patch_context_capability.py'
+      - 'research/tabulated_hydraulics/make_context_capability_harness.py'
+      - 'research/tabulated_hydraulics/tabhyd_context_default_probe.f90'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: b7d9c976e9b474545d54fa79b71ae134c25da156
+          path: baseline-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: b7d9c976e9b474545d54fa79b71ae134c25da156
+          path: capability-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Prepare capability source and prove hot ABI unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/ctx
+          cp research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90 build/ctx/table-provider-cap.f90
+
+          python3 - <<'PY'
+          from pathlib import Path
+          a=Path("baseline-src/src/solver/mod_soil_water_solver_contract.f90").read_text()
+          start=a.index("     subroutine constitutive_evaluate_ifc")
+          end=a.index("     end subroutine constitutive_evaluate_ifc",start)+len("     end subroutine constitutive_evaluate_ifc")
+          Path("build/ctx/evaluate-abi-before.txt").write_text(a[start:end]+"\n")
+          PY
+
+          python3 research/tabulated_hydraulics/patch_context_capability.py             capability-src/src/solver/mod_soil_water_solver_contract.f90             capability-src/src/solver/mod_b110_default_mvg_provider.f90             build/ctx/table-provider-cap.f90             capability-src/src/solver/mod_reference_richards_temporal_indicator.f90             build/ctx/mod_reference_richards_temporal_indicator_context_research.f90
+
+          python3 research/tabulated_hydraulics/make_context_capability_harness.py             research/tabulated_hydraulics/tabhyd_temporal_indicator_equivalence.f90             build/ctx/tabhyd_context_capability_equivalence.f90
+
+          python3 - <<'PY'
+          from pathlib import Path
+          b=Path("capability-src/src/solver/mod_soil_water_solver_contract.f90").read_text()
+          start=b.index("     subroutine constitutive_evaluate_ifc")
+          end=b.index("     end subroutine constitutive_evaluate_ifc",start)+len("     end subroutine constitutive_evaluate_ifc")
+          after=b[start:end]+"\n"
+          before=Path("build/ctx/evaluate-abi-before.txt").read_text()
+          if before != after:
+              raise SystemExit("hot constitutive evaluate ABI changed")
+          if "compatible = .false." not in b:
+              raise SystemExit("default fail-closed capability missing")
+          if "context_compatible => constitutive_context_incompatible" not in b:
+              raise SystemExit("generic capability binding missing")
+          Path("build/ctx/abi-check.txt").write_text(
+              "TABHYD_CTX01_HOT_EVALUATE_ABI_UNCHANGED=PASS\n"
+              "TABHYD_CTX01_DEFAULT_CAPABILITY_STATIC_FAIL_CLOSED=PASS\n")
+          print(Path("build/ctx/abi-check.txt").read_text(),end="")
+          PY
+
+      - name: Generate bounded temporal cases and 30-soil provider benchmark input
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/ctx/cases
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+
+          cases={
+            "coarse_dry_free":("b4","o5",-180.0,0.10,2,-999999.0),
+            "loam_mid_free":("b9","o9",-75.0,0.10,2,-999999.0),
+            "clay_wet_free":("b12","o13",-40.0,0.10,2,-999999.0),
+            "coarse_dry_pulse":("b4","o5",-180.0,0.80,2,-999999.0),
+            "loam_capillary":("b9","o9",-120.0,0.10,5,-120.0),
+          }
+          for name,(top,sub,h0,flux_factor,bmode,bhead) in cases.items():
+              mats=[top,top,sub,sub]
+              k0=prep.k_policy(h0,series[top])
+              qtop=flux_factor*k0
+              with (Path("build/ctx/cases")/f"{name}.dat").open("w") as fh:
+                  fh.write(f"4 400 4.0e-2 {h0:.17e} {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
+                  for soil in mats:
+                      par=series[soil]
+                      rows=mod.loghead_rows(par,400)
+                      fh.write(f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} {par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n")
+                      for h,t,k in rows:
+                          fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+
+          names=sorted(series)
+          with Path("build/ctx/provider-input.dat").open("w") as fh:
+              fh.write(f"{len(names)} 400 4.0e-2\n")
+              for soil in names:
+                  par=series[soil]
+                  if par["h_enpr"] != 0.0:
+                      raise SystemExit(f"H_ENPR out of CTX01 provider benchmark: {soil}")
+                  rows=mod.loghead_rows(par,400)
+                  fh.write(f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} {par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n")
+                  for h,t,k in rows:
+                      fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+          print(f"TABHYD_CTX01_PROVIDER_SOILS={len(names)}")
+          PY
+
+      - name: Compile and run default fail-closed probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/ctx/default-mod
+          F="-O2 -std=f2008 -ffree-line-length-none"
+          gfortran $F -J build/ctx/default-mod -I build/ctx/default-mod             -c capability-src/src/solver/mod_soil_water_solver_contract.f90 -o build/ctx/default-contract.o
+          gfortran $F -J build/ctx/default-mod -I build/ctx/default-mod             research/tabulated_hydraulics/tabhyd_context_default_probe.f90 build/ctx/default-contract.o             -o build/ctx/default-probe
+          build/ctx/default-probe | tee build/ctx/default-probe.txt
+          grep -Fq 'TABHYD_CTX01_DEFAULT_FAIL_CLOSED=PASS' build/ctx/default-probe.txt
+
+      - name: Compile temporal capability matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/ctx/temporal-mod build/ctx/temporal-obj
+          F="-O3 -std=f2008 -ffree-line-length-none -fopenmp"
+          compile () {
+            src="$1"
+            obj="build/ctx/temporal-obj/$(basename "$src").o"
+            gfortran $F -J build/ctx/temporal-mod -I build/ctx/temporal-mod -c "$src" -o "$obj"
+          }
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path("capability-src/tests/fsi/fsi04_real_headcalc_stubs.f90")
+          s=p.read_text()
+          pat=r"(?ms)^subroutine tridag\(n, upper, main, lower, rhs, solution, ierror\).*?^end subroutine tridag\s*"
+          s2,n=re.subn(pat,"",s,count=1)
+          if n!=1: raise SystemExit(f"expected one tridag stub, got {n}")
+          p.write_text(s2)
+          PY
+
+          compile research/tabulated_hydraulics/array_dimensions_stub.f90
+          compile legacy-src/src/soil/sptabulated.f90
+          compile capability-src/tests/fsi/fsi04_real_headcalc_stubs.f90
+          compile capability-src/src/transaction/mod_transaction_reference.f90
+          compile capability-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
+          compile capability-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+          compile capability-src/src/runtime/mod_a23bu_worker_execution_context.f90
+          compile capability-src/src/transaction/mod_accepted_trajectory_directional_publication.f90
+          compile capability-src/src/transaction/mod_fkt_temporal_indicator_history.f90
+          compile capability-src/src/runtime/mod_canonical_contracts.f90
+          compile capability-src/src/runtime/mod_canonical_interval_runtime.f90
+          compile capability-src/src/kernel/mod_kernel_transactions.f90
+          compile capability-src/src/runtime/mod_fmr_runtime_core.f90
+          compile capability-src/src/runtime/mod_fmr_checkpoint_orchestrator.f90
+          compile capability-src/src/solver/mod_soil_water_solver_contract.f90
+          compile capability-src/src/solver/mod_process_hydraulic_view.f90
+          compile capability-src/src/process/mod_drainage_process.f90
+          compile capability-src/src/process/mod_drainage_tabulated_response.f90
+          compile capability-src/src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+          compile capability-src/src/process/mod_drainage_hooghoudt_ipos1_response.f90
+          compile capability-src/src/process/mod_drainage_hooghoudt_ipos23_response.f90
+          compile capability-src/src/process/mod_drainage_ernst_ipos45_preparation.f90
+          compile capability-src/src/process/mod_drainage_ernst_ipos45_response.f90
+          compile capability-src/src/process/mod_drainage_empirical_interflow_response.f90
+          compile capability-src/src/process/mod_drainage_multilevel_aggregation.f90
+          compile capability-src/src/runtime/mod_fmr_drainage_response_binding.f90
+          compile capability-src/src/solver/mod_b110_smooth_freatic_projection.f90
+          compile capability-src/src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
+          compile capability-src/src/process/mod_soil_temperature_contract.f90
+          compile capability-src/src/process/mod_restricted_soil_temperature.f90
+          compile capability-src/src/solver/mod_reference_richards_workspace.f90
+          compile capability-src/src/solver/mod_reference_richards_state_binding.f90
+          compile capability-src/src/solver/mod_reference_linear_solver.f90
+          compile research/tabulated_hydraulics/reference_tridag_external_wrapper.f90
+          compile capability-src/src/solver/mod_b110_default_mvg_provider.f90
+          compile build/ctx/table-provider-cap.f90
+          compile capability-src/src/solver/mod_b110_source_sink_provider.f90
+          compile capability-src/src/solver/mod_fixed_flux_top_boundary_provider.f90
+          compile capability-src/src/process/mod_restricted_surface_evaporation.f90
+          compile capability-src/src/solver/mod_b110_dynamic_top_boundary_provider.f90
+          compile capability-src/src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+          compile capability-src/src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+          compile capability-src/src/solver/mod_b110_root_sink_provider.f90
+          compile capability-src/src/solver/mod_reference_richards_temporal_indicator.f90
+          compile build/ctx/mod_reference_richards_temporal_indicator_context_research.f90
+          compile capability-src/src/legacy/b1_10_port/headcalc.f90
+          compile capability-src/src/adapter/mod_reference_richards_legacy_binding.f90
+          compile build/ctx/tabhyd_context_capability_equivalence.f90
+
+          gfortran -O3 -fopenmp build/ctx/temporal-obj/*.o -o build/ctx/context-temporal
+
+      - name: Run temporal capability matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/ctx/temporal-summary.txt
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            build/ctx/context-temporal "build/ctx/cases/$scenario.dat" | tee "build/ctx/context-$scenario.txt"
+            for marker in               TABHYD_CTX01_ANALYTIC_IDENTITY=PASS               TABHYD_CTX01_TABLE_AVAILABLE=PASS               TABHYD_CTX01_ANALYTIC_DT_MISMATCH_FAIL_CLOSED=PASS               TABHYD_CTX01_TABLE_DT_MISMATCH_FAIL_CLOSED=PASS; do
+              grep -Fq "$marker" "build/ctx/context-$scenario.txt"
+            done
+            echo "$scenario PASS" >> build/ctx/temporal-summary.txt
+          done
+          cat build/ctx/temporal-summary.txt
+
+      - name: Compile baseline and capability provider benchmarks
+        shell: bash
+        run: |
+          set -euo pipefail
+          F="-O3 -std=f2018 -ffree-line-length-none"
+          build_bench () {
+            tag="$1"; root="$2"; table_src="$3"
+            mkdir -p "build/ctx/$tag-mod"
+            gfortran $F -J "build/ctx/$tag-mod" -c research/tabulated_hydraulics/array_dimensions_stub.f90 -o "build/ctx/$tag-arrays.o"
+            gfortran $F -I "build/ctx/$tag-mod" -J "build/ctx/$tag-mod" -c legacy-src/src/soil/sptabulated.f90 -o "build/ctx/$tag-sptab.o"
+            gfortran $F -I "build/ctx/$tag-mod" -J "build/ctx/$tag-mod" -c "$root/src/solver/mod_soil_water_solver_contract.f90" -o "build/ctx/$tag-contract.o"
+            gfortran $F -I "build/ctx/$tag-mod" -J "build/ctx/$tag-mod" -c "$root/src/solver/mod_b110_default_mvg_provider.f90" -o "build/ctx/$tag-mvg.o"
+            gfortran $F -I "build/ctx/$tag-mod" -J "build/ctx/$tag-mod" -c "$table_src" -o "build/ctx/$tag-table.o"
+            gfortran $F -I "build/ctx/$tag-mod" -J "build/ctx/$tag-mod"               research/tabulated_hydraulics/tabhyd_typed_provider_benchmark.f90               "build/ctx/$tag-arrays.o" "build/ctx/$tag-sptab.o" "build/ctx/$tag-contract.o" "build/ctx/$tag-mvg.o" "build/ctx/$tag-table.o"               -o "build/ctx/bench-$tag"
+          }
+          build_bench baseline baseline-src research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90
+          build_bench capability capability-src build/ctx/table-provider-cap.f90
+
+      - name: Run balanced provider performance preservation check
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/ctx/bench-baseline build/ctx/provider-input.dat > build/ctx/perf-baseline-1.txt
+          build/ctx/bench-capability build/ctx/provider-input.dat > build/ctx/perf-capability-1.txt
+          build/ctx/bench-capability build/ctx/provider-input.dat > build/ctx/perf-capability-2.txt
+          build/ctx/bench-baseline build/ctx/provider-input.dat > build/ctx/perf-baseline-2.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import statistics
+          def metric(path,key):
+              for line in Path(path).read_text().splitlines():
+                  if line.startswith(key+"="):
+                      return float(line.split("=",1)[1])
+              raise RuntimeError((path,key))
+          b=[metric(f"build/ctx/perf-baseline-{i}.txt","TYPED_ANALYTIC_MEDIAN_S") for i in (1,2)]
+          c=[metric(f"build/ctx/perf-capability-{i}.txt","TYPED_ANALYTIC_MEDIAN_S") for i in (1,2)]
+          bm=statistics.median(b); cm=statistics.median(c)
+          delta=100*(cm/bm-1)
+          lines=[
+              f"baseline_analytic_median_s={bm:.17g}",
+              f"capability_analytic_median_s={cm:.17g}",
+              f"capability_delta_pct={delta:.9g}",
+          ]
+          Path("build/ctx/performance-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          if abs(delta) > 5.0:
+              raise SystemExit("material analytical provider benchmark regression")
+          PY
+
+      - name: Upload CTX01 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-ctx01-context-capability
+          path: |
+            build/ctx/abi-check.txt
+            build/ctx/default-probe.txt
+            build/ctx/temporal-summary.txt
+            build/ctx/context-*.txt
+            build/ctx/performance-summary.txt
+            build/ctx/perf-*.txt
