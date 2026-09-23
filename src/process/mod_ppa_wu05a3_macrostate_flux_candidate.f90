@@ -58,6 +58,13 @@ contains
         any(domain_volume(1:num_domains,1:num_nodes)<0.0_real64) .or. &
         any(domain_volume_previous(1:num_domains,1:num_nodes)<0.0_real64)) return
 
+    ! Both descending recurrences read one flux below the deepest active cell.
+    ! This bounded interface has no num_nodes+1 boundary-flux slot.
+    do id=1_int32,num_domains
+      if((swmbf==1 .or. id>1) .and. water_top(id)<domain_bottom(id)) then
+        if(max(domain_bottom(id),previous_domain_bottom(id))>=num_nodes) return
+      end if
+    end do
     flux_candidate(1:num_domains,1:num_nodes)=flux_previous(1:num_domains,1:num_nodes)
     do id=1_int32,num_domains
       if(swmbf==1 .or. id>1) then
@@ -71,10 +78,6 @@ contains
         end do
         if(water_top(id)<domain_bottom(id)) then
           if(domain_bottom(id)<previous_domain_bottom(id)) then
-            if(previous_domain_bottom(id)>=num_nodes) then
-              flux_candidate=0.0_real64
-              return
-            end if
             do ic=previous_domain_bottom(id),domain_bottom(id)+1_int32,-1_int32
               flux_candidate(id,ic)=flux_candidate(id,ic+1)-water_cell_previous(id,ic)/dt
             end do

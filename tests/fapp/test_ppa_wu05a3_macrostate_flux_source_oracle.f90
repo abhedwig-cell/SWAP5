@@ -11,12 +11,14 @@ program test_ppa_wu05a3_macrostate_flux_source_oracle
   call check_swmbf_domain_gate()
   call check_empty_domain_top()
   call check_invalid_previous_bottom()
+  call check_missing_lower_boundary()
   print '(A)','PPA_WU05A3_MACROSTATE_FLUX_SOURCE_ORACLE=PASS'
   print '(A)','PPA_WU05A3_MACROSTATE_FLUX_UNSATURATED_SATURATED=PASS'
   print '(A)','PPA_WU05A3_MACROSTATE_FLUX_SHALLOWER_BOTTOM=PASS'
   print '(A)','PPA_WU05A3_MACROSTATE_FLUX_SWMBF_DOMAIN_GATE=PASS'
   print '(A)','PPA_WU05A3_MACROSTATE_FLUX_EMPTY_DOMAIN_TOP=PASS'
   print '(A)','PPA_WU05A3_MACROSTATE_FLUX_INVALID_PREVIOUS_BOTTOM_FAIL_CLOSED=PASS'
+  print '(A)','PPA_WU05A3_MACROSTATE_FLUX_MISSING_LOWER_BOUNDARY=PASS'
 contains
   subroutine require(ok,code)
     logical,intent(in)::ok
@@ -85,6 +87,21 @@ contains
     call invoke(1_int32)
     call require(status==PPA_WU05A3_MACROSTATE_FLUX_OK,12)
     call require(maxval(abs(q))<1.0e-12_real64,13)
+  end subroutine
+
+  subroutine check_missing_lower_boundary()
+    call initialize()
+    bottom(1)=5_int32; bottom_m1(1)=5_int32; watertop(1)=2_int32
+    call invoke(1_int32)
+    call require(status==PPA_WU05A3_MACROSTATE_FLUX_INVALID,16)
+    call require(maxval(abs(q))<1.0e-12_real64,17)
+    ! The excluded main domain does not consume a lower boundary flux.
+    call invoke(2_int32)
+    call require(status==PPA_WU05A3_MACROSTATE_FLUX_OK,18)
+    ! A wholly unsaturated recurrence does not read below the last node either.
+    watertop(1)=5_int32
+    call invoke(1_int32)
+    call require(status==PPA_WU05A3_MACROSTATE_FLUX_OK,19)
   end subroutine
 
   subroutine check_invalid_previous_bottom()

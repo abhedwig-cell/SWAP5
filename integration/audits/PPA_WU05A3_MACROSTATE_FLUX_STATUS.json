@@ -21,6 +21,13 @@
     ],
     "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
   },
+  "repair_review": {
+    "baseline": "ed743d618432535506b0d593cca34ea521300e4e",
+    "changes": ["Validate the lower flux boundary before either descending recurrence", "Retain SWMBF exclusion and wholly unsaturated last-node routes"],
+    "interfaces_changed": false,
+    "validation": "Pending persisted-postimage O0/O2 rerun",
+    "remaining_interface_gap": "Supporting a saturated domain ending at NumNod requires an explicit lower boundary flux slot"
+  },
   "qualified": false,
   "production_admission": "NONE; isolated internal flux candidates only; no mutation, accepted mass, retry/restart or A4 integration",
   "next_action": "Continue MACROSTATE section E aggregate aliases and any still-independent source equations; keep all flux/mass/state publication gates closed.",

@@ -51,13 +51,21 @@ contains
         .not.all(ieee_is_finite(water_unsaturated(1:num_domains)))) return
     if(any(saturated_storage_previous(1:num_domains)<0.0_real64) .or. &
         any(water_unsaturated(1:num_domains)<0.0_real64)) return
+    ! The fully saturated source fallback sums from cell 1, even when IcTopMP>1.
+    if(swmbf==2) then
+      if(.not.all(ieee_is_finite(profile_water(1,1:domain_bottom(1))))) return
+      if(any(profile_water(1,1:domain_bottom(1))<0.0_real64)) return
+    end if
 
     do id=1_int32,num_domains
       if(swmbf==1 .or. id>1) then
         net_flux=incoming_lateral(id)+incoming_vertical(id)- &
             sum(matrix_exchange(id,ic_top_mp:domain_bottom(id)))
-        if(id==1) net_flux=net_flux-sum(rapid_drainage(ic_top_mp:domain_bottom(id)))
-        saturated_candidate(id)=max(0.0_real64,saturated_storage_previous(id)+net_flux*dt)
+        ! Preserve the two rounded storage updates in B1.11 MACROSTATE section C.
+        saturated_candidate(id)=saturated_storage_previous(id)+net_flux*dt
+        if(id==1) saturated_candidate(id)=saturated_candidate(id)- &
+            sum(rapid_drainage(ic_top_mp:domain_bottom(id)))*dt
+        saturated_candidate(id)=max(0.0_real64,saturated_candidate(id))
         unsaturated_candidate(id)=saturated_candidate(id)
       else
         if(domain_bottom(id)>0) then

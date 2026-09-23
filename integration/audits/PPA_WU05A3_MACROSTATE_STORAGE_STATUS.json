@@ -21,6 +21,13 @@
     ],
     "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
   },
+  "repair_review": {
+    "baseline": "ed743d618432535506b0d593cca34ea521300e4e",
+    "changes": ["Preserve separate source storage and drainage rounding", "Validate profile cells above IcTopMP consumed by the source saturated fallback"],
+    "invariants": [3, 7, 13, 21, 25],
+    "interfaces_changed": false,
+    "validation": "Pending postimage O0/O2 rerun; earlier test_result describes the original checkpoint"
+  },
   "qualified": false,
   "production_admission": "NONE; isolated MACROSTATE inventory equations only; no mutation, accepted mass, retry/restart or A4 integration",
   "next_action": "Continue MACROSTATE section D water-wall wetting and water-level equations as a candidate; do not publish state or join accepted fluxes.",

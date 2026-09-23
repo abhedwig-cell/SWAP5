@@ -24,7 +24,7 @@
   "out_of_scope": [
     "matrix exchange and boundary flux computation owners",
     "mutating MACROSTATE flux arrays, accepting external mass or retry/restart state",
-    "the legacy previous bottom equal to NumNod case whose q(ic+1) access exceeds the grid; this isolated candidate rejects it",
+    "descending recurrence needing a flux at NumNod+1; the current isolated interface has no boundary slot and rejects this case, without claiming a legacy-source defect",
     "production Richards integration and A4 mass admission"
   ],
   "expected_tests": [
