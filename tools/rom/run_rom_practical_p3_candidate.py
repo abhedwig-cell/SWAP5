@@ -109,21 +109,26 @@ def main():
     mat=mats[a.material]
     member="S4" if a.purpose=="SURF_P" else "G8"
     bc=load_module(a.base); configure_material(bc,mat)
-    wall=[]; cpu=[]; payload=None; ledger=0.; maxiter=0
-    for _ in range(3):
-        t0=time.perf_counter(); c0=time.process_time()
-        h,l,it=run_once(bc,a.purpose,member)
-        wall.append(time.perf_counter()-t0); cpu.append(time.process_time()-c0)
-        if payload is None: payload=h; ledger=l; maxiter=it
+    wall=[]; cpu=[]; payload=None; ledger=0.; maxiter=0; error=None
+    try:
+        for _ in range(3):
+            t0=time.perf_counter(); c0=time.process_time()
+            h,l,it=run_once(bc,a.purpose,member)
+            wall.append(time.perf_counter()-t0); cpu.append(time.process_time()-c0)
+            if payload is None: payload=h; ledger=l; maxiter=it
+        status="QUALIFIED"
+    except (ValueError,RuntimeError,FloatingPointError) as exc:
+        status="NUMERICAL_BLOCKED"; error=str(exc)
     out={
       "schema":"swap5.rom-practical.p3.candidate.v1","purpose":a.purpose,
       "material":a.material,"member":member,"boundaries_cm":PARTITIONS[member],
-      "status":"QUALIFIED","horizon_day":60.0,"observation_dt_day":1.0,
-      "candidate_dt_day":DT,"max_abs_water_ledger_cm":ledger,
-      "max_corrector_iterations":maxiter,"histories":payload,
-      "timing":{"wall_s_median":float(np.median(wall)),"cpu_s_median":float(np.median(cpu)),"repeats":3}
+      "status":status,"failure":error,"horizon_day":60.0,"observation_dt_day":1.0,
+      "candidate_dt_day":DT,"max_abs_water_ledger_cm":ledger if status=="QUALIFIED" else None,
+      "max_corrector_iterations":maxiter if status=="QUALIFIED" else None,"histories":payload if status=="QUALIFIED" else None,
+      "timing":({"wall_s_median":float(np.median(wall)),"cpu_s_median":float(np.median(cpu)),"repeats":3}
+                if status=="QUALIFIED" else None)
     }
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
-    print(json.dumps({"purpose":a.purpose,"material":a.material,"member":member,"status":"QUALIFIED","wall_s":out["timing"]["wall_s_median"]},sort_keys=True))
+    print(json.dumps({"purpose":a.purpose,"material":a.material,"member":member,"status":status,"wall_s":None if out["timing"] is None else out["timing"]["wall_s_median"]},sort_keys=True))
 if __name__=="__main__": main()
