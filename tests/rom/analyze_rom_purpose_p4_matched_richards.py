@@ -143,7 +143,7 @@ def main():
     for purpose in ("SURF_P","GW_LB"):
         cases[purpose]={}; decisions[purpose]={}
         for material in ("B01","B14"):
-            cases[purpose][material]={}; first=None
+            cases[purpose][material]={}
             for member in RUNGS[purpose]:
                 bounds=[float(x) for x in ladder[purpose]["family"][member]["boundaries_cm"]]
                 statuses={}; routes={}
@@ -159,17 +159,25 @@ def main():
                     cand={"status":"QUALIFIED","histories":routes[32]["histories"]}
                     metrics=p4.p3.candidate_metrics(purpose,cand,refs[purpose][material])
                     reaches,relation=p4.p3.base.crosses(metrics,comparators[purpose][material],TOL)
-                    if reaches and first is None: first=member
                 cases[purpose][material][member]={
                   "numerical_qualification":nq,"metrics_against_R2048_T32":metrics,
                   "comparator_relation":relation,"comparator_reached":bool(reaches),
                   "boundaries_cm":bounds,"dimension":len(bounds)-1}
+            frontier=p4.decision_policy.frontier([
+                (m, bool(cases[purpose][material][m]["numerical_qualification"]["qualified"]),
+                 bool(cases[purpose][material][m]["comparator_reached"])) for m in RUNGS[purpose]
+            ])
+            first=frontier["minimum_tested_member"]
             decisions[purpose][material]={
               "minimum_tested_matched_richards_member":first,
               "minimum_tested_matched_richards_state_count":None if first is None else int(first[1:]),
-              "frontier_status":("MATCHED_RICHARDS_FRONTIER_IDENTIFIED" if first else "MATCHED_RICHARDS_FRONTIER_NOT_REACHED")}
+              "frontier_status":frontier["frontier_status"],
+              "frontier_evidence":frontier}
         vals=[decisions[purpose][m]["minimum_tested_matched_richards_state_count"] for m in ("B01","B14")]
-        summary[purpose]={"both_materials_reach_comparator":all(v is not None for v in vals),
+        summary[purpose]={"both_materials_reach_comparator":all(
+                              decisions[purpose][m]["frontier_evidence"]["first_comparator_reaching_member"] is not None
+                              for m in ("B01","B14")),
+                          "both_material_minima_identified":all(v is not None for v in vals),
                           "material_minima":{m:decisions[purpose][m]["minimum_tested_matched_richards_state_count"] for m in ("B01","B14")}}
     out={"schema":"swap5.rom-purpose.p4.matched-richards-frontier-result.v1","workstream":"ROM-PURPOSE",
          "work_unit":"ROM-PURPOSE-P4-MATCHED-RICHARDS","cases":cases,"decisions":decisions,"purpose_summary":summary,
