@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.rom_root.ra02_d1.metric_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D1",
+  "date": "2026-09-23",
+  "preceding_successful_run": 35821883146,
+  "failure_class": "SECONDARY_METRIC_SEMANTICS_MISMATCH_ONLY",
+  "scientific_response_exposed": true,
+  "observed_issue": "The D1 analyzer compared the raw LAREDYN0R_ROOT CUMULATIVE_ROOT field across reconstructed routes. For segmented R2048_T32 logs this field is segment-local, so direct route comparison creates artificial O(0.36864 cm) discontinuities.",
+  "frozen_ra01_authority": "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py reconstructs cumulative actual root uptake from ACTUAL_RATE*0.0008 day at the common observation grid and does not consume the raw CUMULATIVE_ROOT marker.",
+  "permitted_repair": "For the secondary CUMULATIVE_ROOT verification only, reconstruct cumulative uptake from parsed ACTUAL_RATE with the frozen RA01 observation interval 0.0008 day. Do not change ACTUAL_RATE, ACTUAL_FRACTION, ULP diagnostics, aggregation-roundoff reference, threshold proxy, classifications, or any firewall.",
+  "classification_dependencies": {
+    "AVAILABLE_OUTPUT_SUPPORTS_NUMERICAL_FLOOR": [
+      "ACTUAL_RATE roundoff-reference exceed count",
+      "10-cm threshold straddle count"
+    ],
+    "THRESHOLD_EFFECT_PLAUSIBLE_AT_BIN_SCALE": [
+      "10-cm threshold straddle count"
+    ],
+    "ROOT_RATE_EXCEEDS_AGGREGATION_ROUNDOFF_REFERENCE": [
+      "ACTUAL_RATE only"
+    ],
+    "cumulative_metric_used_for_classification": false
+  },
+  "scientific_semantics_changed": false,
+  "thresholds_changed": false,
+  "classification_rules_changed": false,
+  "new_simulation_authorized": false,
+  "reduced_candidate_response_generated": false
+}
