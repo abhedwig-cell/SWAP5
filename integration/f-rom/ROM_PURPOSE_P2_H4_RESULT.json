@@ -1,0 +1,390 @@
+{
+  "all_trigger_cases_support_closure_deficit": false,
+  "application_authority_status": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE",
+  "cases": {
+    "GW_LB/B01": {
+      "corichards_T32_metrics_against_R2048_T32": {
+        "bottom_flux_sign_mismatch_count": 62,
+        "cumulative_bottom_exchange_error_cm": 0.022607348999180273,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.017242971438642406,
+        "interval_bottom_flux_error_cm_per_day": 0.8184037766896589,
+        "long_horizon_exchange_drift_cm": 0.02792640008588787,
+        "reversal_sequence_mismatch_count": 4,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.02260734899919627
+      },
+      "corichards_crosses_R512_T32_comparator": false,
+      "corichards_numerical_qualification": {
+        "T16_vs_T32": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 1.6087149002527858e-06,
+          "history_signed_bottom_flux_bias_cm_per_day": 1.219197034900768e-06,
+          "interval_bottom_flux_error_cm_per_day": 1.8324869070842925e-05,
+          "long_horizon_exchange_drift_cm": 3.348538982095306e-06,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 1.6087147722673284e-06
+        },
+        "T8_vs_T16": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 3.217852051158308e-06,
+          "history_signed_bottom_flux_bias_cm_per_day": 2.4389930548346996e-06,
+          "interval_bottom_flux_error_cm_per_day": 3.662860625076353e-05,
+          "long_horizon_exchange_drift_cm": 6.699127226283963e-06,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 3.217852080347056e-06
+        },
+        "componentwise_nonincreasing": true,
+        "exact_fine_pair_metrics": [
+          "bottom_flux_sign_mismatch_count",
+          "reversal_sequence_mismatch_count",
+          "reversal_timing_error_steps"
+        ],
+        "execution_status": {
+          "T16": {
+            "material": "B01",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "source_run": 35857841206,
+            "temporal_factor": 16
+          },
+          "T32": {
+            "material": "B01",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "source_run": 35857841206,
+            "temporal_factor": 32
+          },
+          "T8": {
+            "material": "B01",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "source_run": 35857841206,
+            "temporal_factor": 8
+          }
+        },
+        "finite_complete_vector": true,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": true,
+        "max_abs_transaction_mass_cm": {
+          "T16": 2.842170943040401e-14,
+          "T32": 2.842170943040401e-14,
+          "T8": 2.1316282072803006e-14
+        },
+        "qualified": true,
+        "reason": "QUALIFIED"
+      },
+      "corichards_vs_R512_T32_comparator": {
+        "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+        "equality_tolerance": 1e-12,
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 62.0,
+          "cumulative_bottom_exchange_error_cm": 0.022589056283662465,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.017229923990323165,
+          "interval_bottom_flux_error_cm_per_day": 0.8112635974749972,
+          "long_horizon_exchange_drift_cm": 0.02790639826657948,
+          "reversal_sequence_mismatch_count": 4.0,
+          "reversal_timing_error_steps": 1024.0,
+          "total_storage_error_cm": 0.022589056282998985
+        },
+        "left_no_worse": false,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": true
+      },
+      "decision": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+      "layer_rom_crosses_R512_T32_comparator": false,
+      "material": "B01",
+      "partition": "G4",
+      "purpose": "GW_LB"
+    },
+    "GW_LB/B14": {
+      "corichards_T32_metrics_against_R2048_T32": {
+        "bottom_flux_sign_mismatch_count": 0,
+        "cumulative_bottom_exchange_error_cm": 0.010754298003393408,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.013339373899736492,
+        "interval_bottom_flux_error_cm_per_day": 0.14274778476909766,
+        "long_horizon_exchange_drift_cm": 0.016908160605922307,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 0,
+        "total_storage_error_cm": 0.01075429800362922
+      },
+      "corichards_crosses_R512_T32_comparator": false,
+      "corichards_numerical_qualification": {
+        "T16_vs_T32": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 1.4478177675480756e-08,
+          "history_signed_bottom_flux_bias_cm_per_day": 1.2369990014905094e-08,
+          "interval_bottom_flux_error_cm_per_day": 1.1821470980296869e-07,
+          "long_horizon_exchange_drift_cm": 1.988662745588954e-08,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 1.4478155569229527e-08
+        },
+        "T8_vs_T16": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 2.8955519870726044e-08,
+          "history_signed_bottom_flux_bias_cm_per_day": 2.4734981857921662e-08,
+          "interval_bottom_flux_error_cm_per_day": 2.364212645435083e-07,
+          "long_horizon_exchange_drift_cm": 3.977061169280205e-08,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 2.8955572162517982e-08
+        },
+        "componentwise_nonincreasing": true,
+        "exact_fine_pair_metrics": [
+          "bottom_flux_sign_mismatch_count",
+          "reversal_sequence_mismatch_count",
+          "reversal_timing_error_steps"
+        ],
+        "execution_status": {
+          "T16": {
+            "material": "B14",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "source_run": 35857841206,
+            "temporal_factor": 16
+          },
+          "T32": {
+            "material": "B14",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "source_run": 35857841206,
+            "temporal_factor": 32
+          },
+          "T8": {
+            "material": "B14",
+            "purpose": "GW_LB",
+            "return_code_o0": 0,
+            "return_code_o2": 0,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": true,
+            "source_run": 35857841206,
+            "temporal_factor": 8
+          }
+        },
+        "finite_complete_vector": true,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": true,
+        "max_abs_transaction_mass_cm": {
+          "T16": 2.1316282072803006e-14,
+          "T32": 2.1316282072803006e-14,
+          "T8": 2.1316282072803006e-14
+        },
+        "qualified": true,
+        "reason": "QUALIFIED"
+      },
+      "corichards_vs_R512_T32_comparator": {
+        "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+        "equality_tolerance": 1e-12,
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 0.0,
+          "cumulative_bottom_exchange_error_cm": 0.010711012294566802,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.013312657109877495,
+          "interval_bottom_flux_error_cm_per_day": 0.11894044344131283,
+          "long_horizon_exchange_drift_cm": 0.016877770928218228,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 0.0,
+          "total_storage_error_cm": 0.010711012294754997
+        },
+        "left_no_worse": false,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": true
+      },
+      "decision": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+      "layer_rom_crosses_R512_T32_comparator": false,
+      "material": "B14",
+      "partition": "G4",
+      "purpose": "GW_LB"
+    },
+    "SURF_P/B01": {
+      "corichards_T32_metrics_against_R2048_T32": null,
+      "corichards_crosses_R512_T32_comparator": false,
+      "corichards_numerical_qualification": {
+        "T16_vs_T32": null,
+        "T8_vs_T16": null,
+        "componentwise_nonincreasing": false,
+        "exact_fine_pair_metrics": [],
+        "execution_status": {
+          "T16": {
+            "failure_labels_o0": [
+              "Frozen four-cell SURF_P route failed during executable stage in run 35857841206."
+            ],
+            "failure_labels_o2": [],
+            "material": "B01",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": -1,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "source_run": 35857841206,
+            "temporal_factor": 16
+          },
+          "T32": {
+            "failure_labels_o0": [
+              "Frozen four-cell SURF_P route failed during executable stage in run 35857841206."
+            ],
+            "failure_labels_o2": [],
+            "material": "B01",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": -1,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "source_run": 35857841206,
+            "temporal_factor": 32
+          },
+          "T8": {
+            "failure_labels_o0": [
+              "LAREDYN0R_FAIL LAREDYN0R local residual within prior integrated allowance"
+            ],
+            "failure_labels_o2": [],
+            "material": "B01",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": -1,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "source_run": 35858291597,
+            "temporal_factor": 8
+          }
+        },
+        "finite_complete_vector": false,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": false,
+        "max_abs_transaction_mass_cm": null,
+        "qualified": false,
+        "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+      },
+      "corichards_vs_R512_T32_comparator": null,
+      "decision": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+      "layer_rom_crosses_R512_T32_comparator": false,
+      "material": "B01",
+      "partition": "S4",
+      "purpose": "SURF_P"
+    },
+    "SURF_P/B14": {
+      "corichards_T32_metrics_against_R2048_T32": null,
+      "corichards_crosses_R512_T32_comparator": false,
+      "corichards_numerical_qualification": {
+        "T16_vs_T32": null,
+        "T8_vs_T16": null,
+        "componentwise_nonincreasing": false,
+        "exact_fine_pair_metrics": [],
+        "execution_status": {
+          "T16": {
+            "failure_labels_o0": [
+              "Frozen four-cell SURF_P route failed during executable stage in run 35857841206."
+            ],
+            "failure_labels_o2": [],
+            "material": "B14",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": -1,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "source_run": 35857841206,
+            "temporal_factor": 16
+          },
+          "T32": {
+            "failure_labels_o0": [
+              "Frozen four-cell SURF_P route failed during executable stage in run 35857841206."
+            ],
+            "failure_labels_o2": [],
+            "material": "B14",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": -1,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "source_run": 35857841206,
+            "temporal_factor": 32
+          },
+          "T8": {
+            "failure_labels_o0": [
+              "LAREDYN0R_FAIL LAREDYN0R local residual within prior integrated allowance"
+            ],
+            "failure_labels_o2": [],
+            "material": "B14",
+            "purpose": "SURF_P",
+            "return_code_o0": 1,
+            "return_code_o2": -1,
+            "schema": "swap5.rom-purpose.p2.h4-route-execution.v1",
+            "scientific_change": false,
+            "scientific_trace_identity": false,
+            "source_run": 35858291597,
+            "temporal_factor": 8
+          }
+        },
+        "finite_complete_vector": false,
+        "mass_gate_cm": 1e-12,
+        "mass_gate_pass": false,
+        "max_abs_transaction_mass_cm": null,
+        "qualified": false,
+        "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+      },
+      "corichards_vs_R512_T32_comparator": null,
+      "decision": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+      "layer_rom_crosses_R512_T32_comparator": false,
+      "material": "B14",
+      "partition": "S4",
+      "purpose": "SURF_P"
+    }
+  },
+  "componentwise_equality_tolerance": 1e-12,
+  "decisions": {
+    "GW_LB/B01": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+    "GW_LB/B14": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+    "SURF_P/B01": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+    "SURF_P/B14": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE"
+  },
+  "interpretation": {
+    "application_acceptance_adjudicated": false,
+    "new_closure_family_authorized": false,
+    "performance_claim_authorized": false,
+    "placement_evidence_retained": true,
+    "production_rom_authorized": false,
+    "state_count_increase_inferred": false
+  },
+  "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json",
+  "schema": "swap5.rom-purpose.p2.h4-result.v1",
+  "scientific_firewall": {
+    "P1_failure_overridden": false,
+    "closure_tuned": false,
+    "materials_aggregated_for_case_decision": false,
+    "partition_retuned": false,
+    "representation_retuned": false,
+    "weighted_score_used": false
+  },
+  "status": "P2_H4_DIAGNOSTIC_PARTLY_OR_FULLY_UNAVAILABLE",
+  "work_unit": "ROM-PURPOSE-P2-H4",
+  "workstream": "ROM-PURPOSE"
+}

@@ -1,4 +1,7 @@
 {
+  "H4_execution_sha": "9a3f14d4dfe6737ebf3b9061590a013127161c17",
+  "H4_result": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json",
+  "H4_source_workflow_run": 35858995457,
   "R1024_S05_execution_topology": "SEGMENTED_AFTER_EXACT_S06_EQUIVALENCE_WITNESS",
   "active_reference_repair_run": {
     "preflight": "PASS",
@@ -25,7 +28,8 @@
   ],
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "blockers": [
-    "H4_SAME_PARTITION_CORICHARDS_DIAGNOSTIC_REQUIRED"
+    "H4_CORICHARDS_DIAGNOSTIC_UNAVAILABLE:SURF_P/B01",
+    "H4_CORICHARDS_DIAGNOSTIC_UNAVAILABLE:SURF_P/B14"
   ],
   "candidate_execution_sha": "fc2173e09da3981983dd5455c445e053ca16eaa7",
   "candidate_infrastructure": {
@@ -51,9 +55,9 @@
   "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
   "last_execution_sha": "707838d6251262f6e74320fa399847a8bdf8462b",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "next_action": "RUN_H4_SAME_PARTITION_CORICHARDS_DIAGNOSTIC",
+  "next_action": "CLOSE_P2_WITH_H4_UNRESOLVED_CASES",
   "persisted": true,
-  "phase": "P2_PLACEMENT_RESULT_PERSISTED_H4_PENDING",
+  "phase": "P2_H4_PARTIAL_DIAGNOSTIC_UNAVAILABLE",
   "placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
   "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
   "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json@e094ebe8b90c573dfae76713866ff9a73bcc66f4",
@@ -66,7 +70,7 @@
     "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
     "witness_case": "B01/R1024_T32/S06"
   },
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json",
   "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d",
   "reference_execution_repair": "R1024_SEGMENT_EQUIVALENCE_WITNESS_THEN_S05_SEGMENT_REPAIR",
   "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",

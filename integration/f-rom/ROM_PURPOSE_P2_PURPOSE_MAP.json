@@ -1,0 +1,73 @@
+{
+  "application_authority_status": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE",
+  "purposes": {
+    "GW_LB": {
+      "materials": {
+        "B01": {
+          "H4_decision": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+          "placement_decision": "PLACEMENT_SUPPORTED",
+          "remaining_fidelity_limit": "Same-partition four-cell Richards also misses the frozen numerical comparator, so closure versus four-state information/resolution cannot be separated.",
+          "required_closure_class": "UNRESOLVED"
+        },
+        "B14": {
+          "H4_decision": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+          "placement_decision": "PLACEMENT_SUPPORTED",
+          "remaining_fidelity_limit": "Same-partition four-cell Richards also misses the frozen numerical comparator, so closure versus four-state information/resolution cannot be separated.",
+          "required_closure_class": "UNRESOLVED"
+        }
+      },
+      "minimum_tested_state_placement": {
+        "boundaries_cm": [
+          0,
+          80,
+          120,
+          140,
+          160
+        ],
+        "dimension": 4,
+        "id": "G4",
+        "qualification": "PLACEMENT_SUPPORTED for B01 and B14 against U4 at equal dimension"
+      },
+      "required_vertical_information": "Bottom-adjacent/lower-column information concentrated over 80-160 cm."
+    },
+    "SURF_P": {
+      "materials": {
+        "B01": {
+          "H4_decision": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+          "placement_decision": "PLACEMENT_SUPPORTED",
+          "remaining_fidelity_limit": "Same-partition four-cell Richards leaves the frozen qualified numerical domain, so closure versus representation cannot be adjudicated.",
+          "required_closure_class": "UNRESOLVED_DIAGNOSTIC_UNAVAILABLE"
+        },
+        "B14": {
+          "H4_decision": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+          "placement_decision": "PLACEMENT_SUPPORTED",
+          "remaining_fidelity_limit": "Same-partition four-cell Richards leaves the frozen qualified numerical domain, so closure versus representation cannot be adjudicated.",
+          "required_closure_class": "UNRESOLVED_DIAGNOSTIC_UNAVAILABLE"
+        }
+      },
+      "minimum_tested_state_placement": {
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          80,
+          160
+        ],
+        "dimension": 4,
+        "id": "S4",
+        "qualification": "PLACEMENT_SUPPORTED for B01 and B14 against U4 at equal dimension"
+      },
+      "required_vertical_information": "Upper-column/surface-profile information at 0-20, 0-40 and 0-80 cm."
+    }
+  },
+  "schema": "swap5.rom-purpose.p2.purpose-map.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "general_closure_search_authorized": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "scope": "Minimum tested placement within the frozen equal-dimension four-state family; not a universal minimum state-count claim.",
+  "status": "P2_RESEARCH_MAP_PERSISTED",
+  "workstream": "ROM-PURPOSE"
+}
