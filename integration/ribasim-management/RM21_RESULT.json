@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ribasim_management.transaction_temporal_provenance.result.v1",
+  "work_unit": "RM21",
+  "date": "2026-09-23",
+  "decision": "DIAGNOSTIC_AGGREGATION_DEFECT_CONFIRMED",
+  "workflow": "RM21 transaction temporal provenance",
+  "workflow_run": 35902725094,
+  "workflow_job": 107322686328,
+  "conclusion": "success",
+  "retry_points": [
+    {"seconds":8.64,"raw_solver_status":1,"head_inf_bound_cm":3.6149301467317963,"normalized":361493.0146731796},
+    {"seconds":4.32,"raw_solver_status":1,"head_inf_bound_cm":1.8362505811340228,"normalized":183625.05811340228},
+    {"seconds":2.16,"raw_solver_status":1,"head_inf_bound_cm":0.9256971928978531,"normalized":92569.71928978531},
+    {"seconds":1.08,"raw_solver_status":2,"temporal_indicator_available":false}
+  ],
+  "rm19_reported_max_temporal_indicator": 92569.71928978531,
+  "source_cause": {
+    "transaction_reference": "transaction_result%temporal_indicator is overwritten on each solver-successful attempt",
+    "canonical_interval_runtime": "kernel diagnostics max_temporal_indicator takes max only across transaction_result%temporal_indicator values, not across retry attempts",
+    "effect": "for a retry-exhausted single transaction followed by solver failures, the field named max_temporal_indicator contains the last solver-successful temporal indicator"
+  },
+  "acceptance_effect": "NONE",
+  "interpretation": [
+    "The RM19 accept/reject result is valid: each of the first three solver-successful attempts individually exceeds the threshold 1.",
+    "The reported diagnostic underestimates the actual maximum by a factor of about 3.905.",
+    "The full-window temporal indicator is the true maximum over the frozen successful retry attempts.",
+    "The diagnostic aggregation should be repaired independently from any temporal policy discussion."
+  ],
+  "nonclaims": [
+    "RM21 does not alter the temporal budget.",
+    "RM21 does not admit a shorter timestep.",
+    "RM21 does not alter any transaction acceptance decision.",
+    "RM21 does not resolve the scientific applicability of HEAD_BUDGET=1e-5 cm."
+  ],
+  "next_required_boundary": "Repair max_temporal_indicator aggregation to include every solver-successful retry attempt and replay existing transaction behavior unchanged. Separately establish the provenance/applicability of the active-irrigation temporal budget."
+}
