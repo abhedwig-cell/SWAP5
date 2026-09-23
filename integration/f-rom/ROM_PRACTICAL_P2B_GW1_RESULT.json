@@ -1,0 +1,499 @@
+{
+  "G8_executed": false,
+  "application_acceptance_adjudicated": false,
+  "cases": [
+    {
+      "G4_metrics": {
+        "bottom_flux_sign_mismatch_count": 218,
+        "cumulative_bottom_exchange_error_cm": 0.014990835986061378,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.013082778968211462,
+        "interval_bottom_flux_error_cm_per_day": 0.34841268797254654,
+        "long_horizon_exchange_drift_cm": 0.02907857238648305,
+        "reversal_sequence_mismatch_count": 3,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.014990835986074317
+      },
+      "G6_metrics": {
+        "bottom_flux_sign_mismatch_count": 89,
+        "cumulative_bottom_exchange_error_cm": 0.008501989961985361,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.008087256080279872,
+        "interval_bottom_flux_error_cm_per_day": 0.2959341139580388,
+        "long_horizon_exchange_drift_cm": 0.012047206181425324,
+        "reversal_sequence_mismatch_count": 2,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.00850198996213775
+      },
+      "G6_reference_comparator_relation": {
+        "candidate_reaches_comparator": false,
+        "reference_numerical_comparator": {
+          "bottom_flux_sign_mismatch_count": 2,
+          "cumulative_bottom_exchange_error_cm": 0.0003051318641664618,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0001632958994911797,
+          "interval_bottom_flux_error_cm_per_day": 0.057556347840196566,
+          "long_horizon_exchange_drift_cm": 0.00026613341713499494,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 2,
+          "total_storage_error_cm": 0.0003051318641436783
+        }
+      },
+      "application_acceptance_adjudicated": false,
+      "continuous_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "cumulative_bottom_exchange_error_cm": -0.006488846024076017,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.00499552288793159,
+          "interval_bottom_flux_error_cm_per_day": -0.05247857401450773,
+          "long_horizon_exchange_drift_cm": -0.017031366205057727,
+          "total_storage_error_cm": -0.0064888460239365675
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "development_only": true,
+      "event_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "bottom_flux_sign_mismatch_count": -129.0,
+          "reversal_sequence_mismatch_count": -1.0,
+          "reversal_timing_error_steps": 0.0
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "event_repair_supported": true,
+      "interpretation": "G6 improves the complete discrete event vector without event degradation.",
+      "material": "B02",
+      "performance": {
+        "candidate_cpu_s": 5.360914135,
+        "candidate_over_reference_cpu_ratio": 0.2766209563983488,
+        "candidate_over_reference_wall_ratio": 0.2766550492776058,
+        "candidate_wall_s": 5.361574855000001,
+        "reference_R256_cpu_s": 19.38,
+        "reference_R256_wall_s": 19.38
+      },
+      "production_rom_authorized": false,
+      "schema": "swap5.rom-practical.p2b-gw1.case-result.v1"
+    },
+    {
+      "G4_metrics": {
+        "bottom_flux_sign_mismatch_count": 9,
+        "cumulative_bottom_exchange_error_cm": 0.01282895334348871,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.00536726916942807,
+        "interval_bottom_flux_error_cm_per_day": 0.8532240634187181,
+        "long_horizon_exchange_drift_cm": 0.005739830693009207,
+        "reversal_sequence_mismatch_count": 4,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.01282895334347869
+      },
+      "G6_metrics": {
+        "bottom_flux_sign_mismatch_count": 9,
+        "cumulative_bottom_exchange_error_cm": 0.005715738281234373,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.005681819015884543,
+        "interval_bottom_flux_error_cm_per_day": 0.7088981454662463,
+        "long_horizon_exchange_drift_cm": 0.004841324387147239,
+        "reversal_sequence_mismatch_count": 4,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.005715738281150991
+      },
+      "G6_reference_comparator_relation": {
+        "candidate_reaches_comparator": false,
+        "reference_numerical_comparator": {
+          "bottom_flux_sign_mismatch_count": 1,
+          "cumulative_bottom_exchange_error_cm": 0.00010786537866599146,
+          "history_signed_bottom_flux_bias_cm_per_day": 4.061147551929776e-05,
+          "interval_bottom_flux_error_cm_per_day": 0.08560211459908482,
+          "long_horizon_exchange_drift_cm": 8.422436022925694e-05,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 1,
+          "total_storage_error_cm": 0.00010786537861565074
+        }
+      },
+      "application_acceptance_adjudicated": false,
+      "continuous_relation": {
+        "G4_no_worse": false,
+        "G4_strict": true,
+        "G6_minus_G4": {
+          "cumulative_bottom_exchange_error_cm": -0.007113215062254337,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0003145498464564734,
+          "interval_bottom_flux_error_cm_per_day": -0.14432591795247185,
+          "long_horizon_exchange_drift_cm": -0.000898506305861968,
+          "total_storage_error_cm": -0.007113215062327699
+        },
+        "G6_no_worse": false,
+        "G6_strict": true,
+        "decision": "TRADEOFF"
+      },
+      "development_only": true,
+      "event_relation": {
+        "G4_no_worse": true,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "bottom_flux_sign_mismatch_count": 0.0,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 0.0
+        },
+        "G6_no_worse": true,
+        "G6_strict": false,
+        "decision": "EQUAL_WITHIN_TOLERANCE"
+      },
+      "event_repair_supported": false,
+      "interpretation": "G6 does not provide a componentwise event-vector repair relative to G4.",
+      "material": "B05",
+      "performance": {
+        "candidate_cpu_s": 8.127050649999997,
+        "candidate_over_reference_cpu_ratio": 0.3122186189012677,
+        "candidate_over_reference_wall_ratio": 0.31228774264310405,
+        "candidate_wall_s": 8.128849940999999,
+        "reference_R256_cpu_s": 26.03,
+        "reference_R256_wall_s": 26.03
+      },
+      "production_rom_authorized": false,
+      "schema": "swap5.rom-practical.p2b-gw1.case-result.v1"
+    },
+    {
+      "G4_metrics": {
+        "bottom_flux_sign_mismatch_count": 82,
+        "cumulative_bottom_exchange_error_cm": 0.011491716959065645,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.007401141243465727,
+        "interval_bottom_flux_error_cm_per_day": 0.46391410756783424,
+        "long_horizon_exchange_drift_cm": 0.012109117559138127,
+        "reversal_sequence_mismatch_count": 2,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.011491716959092515
+      },
+      "G6_metrics": {
+        "bottom_flux_sign_mismatch_count": 59,
+        "cumulative_bottom_exchange_error_cm": 0.004016205756201701,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.0022834177734469925,
+        "interval_bottom_flux_error_cm_per_day": 0.378322337650325,
+        "long_horizon_exchange_drift_cm": 0.00398232341041016,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 30,
+        "total_storage_error_cm": 0.004016205756181855
+      },
+      "G6_reference_comparator_relation": {
+        "candidate_reaches_comparator": false,
+        "reference_numerical_comparator": {
+          "bottom_flux_sign_mismatch_count": 1,
+          "cumulative_bottom_exchange_error_cm": 7.610381380399491e-05,
+          "history_signed_bottom_flux_bias_cm_per_day": 3.0215292507600855e-05,
+          "interval_bottom_flux_error_cm_per_day": 0.048697067337267426,
+          "long_horizon_exchange_drift_cm": 5.147684142770004e-05,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 1,
+          "total_storage_error_cm": 7.610381379011812e-05
+        }
+      },
+      "application_acceptance_adjudicated": false,
+      "continuous_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "cumulative_bottom_exchange_error_cm": -0.007475511202863944,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.005117723470018734,
+          "interval_bottom_flux_error_cm_per_day": -0.08559176991750922,
+          "long_horizon_exchange_drift_cm": -0.008126794148727967,
+          "total_storage_error_cm": -0.007475511202910659
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "development_only": true,
+      "event_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "bottom_flux_sign_mismatch_count": -23.0,
+          "reversal_sequence_mismatch_count": -2.0,
+          "reversal_timing_error_steps": -994.0
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "event_repair_supported": true,
+      "interpretation": "G6 improves the complete discrete event vector without event degradation.",
+      "material": "B06",
+      "performance": {
+        "candidate_cpu_s": 8.059062248,
+        "candidate_over_reference_cpu_ratio": 0.3088946817937907,
+        "candidate_over_reference_wall_ratio": 0.3083147932950193,
+        "candidate_wall_s": 8.047016105000004,
+        "reference_R256_cpu_s": 26.09,
+        "reference_R256_wall_s": 26.1
+      },
+      "production_rom_authorized": false,
+      "schema": "swap5.rom-practical.p2b-gw1.case-result.v1"
+    },
+    {
+      "G4_metrics": {
+        "bottom_flux_sign_mismatch_count": 384,
+        "cumulative_bottom_exchange_error_cm": 0.00604419792815591,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.00844615191474977,
+        "interval_bottom_flux_error_cm_per_day": 0.05740577076720689,
+        "long_horizon_exchange_drift_cm": 0.00913684072057783,
+        "reversal_sequence_mismatch_count": 1,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.006044197927711874
+      },
+      "G6_metrics": {
+        "bottom_flux_sign_mismatch_count": 0,
+        "cumulative_bottom_exchange_error_cm": 0.005193990847390977,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.007320524673361932,
+        "interval_bottom_flux_error_cm_per_day": 0.05244676261497235,
+        "long_horizon_exchange_drift_cm": 0.007360938954064845,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 0,
+        "total_storage_error_cm": 0.00519399084670912
+      },
+      "G6_reference_comparator_relation": {
+        "candidate_reaches_comparator": false,
+        "reference_numerical_comparator": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 0.0003958568059386195,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.00021736581509550226,
+          "interval_bottom_flux_error_cm_per_day": 0.017614242085081413,
+          "long_horizon_exchange_drift_cm": 0.0003880021381093071,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 0.00039585680592191627
+        }
+      },
+      "application_acceptance_adjudicated": false,
+      "continuous_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "cumulative_bottom_exchange_error_cm": -0.0008502070807649333,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0011256272413878374,
+          "interval_bottom_flux_error_cm_per_day": -0.004959008152234538,
+          "long_horizon_exchange_drift_cm": -0.001775901766512985,
+          "total_storage_error_cm": -0.0008502070810027535
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "development_only": true,
+      "event_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "bottom_flux_sign_mismatch_count": -384.0,
+          "reversal_sequence_mismatch_count": -1.0,
+          "reversal_timing_error_steps": -1024.0
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "event_repair_supported": true,
+      "interpretation": "G6 improves the complete discrete event vector without event degradation.",
+      "material": "B11",
+      "performance": {
+        "candidate_cpu_s": 4.441788612000001,
+        "candidate_over_reference_cpu_ratio": 0.292222935,
+        "candidate_over_reference_wall_ratio": 0.29207212031558194,
+        "candidate_wall_s": 4.442416950000002,
+        "reference_R256_cpu_s": 15.200000000000001,
+        "reference_R256_wall_s": 15.21
+      },
+      "production_rom_authorized": false,
+      "schema": "swap5.rom-practical.p2b-gw1.case-result.v1"
+    },
+    {
+      "G4_metrics": {
+        "bottom_flux_sign_mismatch_count": 73,
+        "cumulative_bottom_exchange_error_cm": 0.0026996712257952742,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.0035315471275020067,
+        "interval_bottom_flux_error_cm_per_day": 0.022760622095844157,
+        "long_horizon_exchange_drift_cm": 0.0045813888646773155,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 73,
+        "total_storage_error_cm": 0.002699671225215559
+      },
+      "G6_metrics": {
+        "bottom_flux_sign_mismatch_count": 0,
+        "cumulative_bottom_exchange_error_cm": 0.0025022636766609137,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.0033946043926876813,
+        "interval_bottom_flux_error_cm_per_day": 0.021252796542926722,
+        "long_horizon_exchange_drift_cm": 0.0043602395685583065,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 0,
+        "total_storage_error_cm": 0.00250226367650767
+      },
+      "G6_reference_comparator_relation": {
+        "candidate_reaches_comparator": false,
+        "reference_numerical_comparator": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 0.00045138438500828674,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0004473113261781527,
+          "interval_bottom_flux_error_cm_per_day": 0.007624716994548755,
+          "long_horizon_exchange_drift_cm": 0.000650810652942375,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 0.00045138438507159813
+        }
+      },
+      "application_acceptance_adjudicated": false,
+      "continuous_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "cumulative_bottom_exchange_error_cm": -0.00019740754913436052,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0001369427348143254,
+          "interval_bottom_flux_error_cm_per_day": -0.0015078255529174349,
+          "long_horizon_exchange_drift_cm": -0.000221149296119009,
+          "total_storage_error_cm": -0.00019740754870788916
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "development_only": true,
+      "event_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "bottom_flux_sign_mismatch_count": -73.0,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": -73.0
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "event_repair_supported": true,
+      "interpretation": "G6 improves the complete discrete event vector without event degradation.",
+      "material": "B12",
+      "performance": {
+        "candidate_cpu_s": 5.612123808999998,
+        "candidate_over_reference_cpu_ratio": 0.338487563872135,
+        "candidate_over_reference_wall_ratio": 0.33831719216395395,
+        "candidate_wall_s": 5.612682217999996,
+        "reference_R256_cpu_s": 16.58,
+        "reference_R256_wall_s": 16.59
+      },
+      "production_rom_authorized": false,
+      "schema": "swap5.rom-practical.p2b-gw1.case-result.v1"
+    },
+    {
+      "G4_metrics": {
+        "bottom_flux_sign_mismatch_count": 469,
+        "cumulative_bottom_exchange_error_cm": 0.025804198354506532,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.035307425070709886,
+        "interval_bottom_flux_error_cm_per_day": 0.3218432208035179,
+        "long_horizon_exchange_drift_cm": 0.03985570392155058,
+        "reversal_sequence_mismatch_count": 3,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.02580419835443275
+      },
+      "G6_metrics": {
+        "bottom_flux_sign_mismatch_count": 85,
+        "cumulative_bottom_exchange_error_cm": 0.016426533258832594,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.01769382147455699,
+        "interval_bottom_flux_error_cm_per_day": 0.28461356632131496,
+        "long_horizon_exchange_drift_cm": 0.025895631643137573,
+        "reversal_sequence_mismatch_count": 2,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.01642653325850821
+      },
+      "G6_reference_comparator_relation": {
+        "candidate_reaches_comparator": false,
+        "reference_numerical_comparator": {
+          "bottom_flux_sign_mismatch_count": 2,
+          "cumulative_bottom_exchange_error_cm": 0.0005270555842488963,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.00018664316495543148,
+          "interval_bottom_flux_error_cm_per_day": 0.08807663115863403,
+          "long_horizon_exchange_drift_cm": 0.0004459134381420704,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 1,
+          "total_storage_error_cm": 0.0005270555843612401
+        }
+      },
+      "application_acceptance_adjudicated": false,
+      "continuous_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "cumulative_bottom_exchange_error_cm": -0.009377665095673938,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.017613603596152896,
+          "interval_bottom_flux_error_cm_per_day": -0.037229654482202945,
+          "long_horizon_exchange_drift_cm": -0.013960072278413005,
+          "total_storage_error_cm": -0.00937766509592454
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "development_only": true,
+      "event_relation": {
+        "G4_no_worse": false,
+        "G4_strict": false,
+        "G6_minus_G4": {
+          "bottom_flux_sign_mismatch_count": -384.0,
+          "reversal_sequence_mismatch_count": -1.0,
+          "reversal_timing_error_steps": 0.0
+        },
+        "G6_no_worse": true,
+        "G6_strict": true,
+        "decision": "G6_COMPONENTWISE_NO_WORSE"
+      },
+      "event_repair_supported": true,
+      "interpretation": "G6 improves the complete discrete event vector without event degradation.",
+      "material": "B16",
+      "performance": {
+        "candidate_cpu_s": 6.871559320999999,
+        "candidate_over_reference_cpu_ratio": 0.10646977565850636,
+        "candidate_over_reference_wall_ratio": 0.10654188738962042,
+        "candidate_wall_s": 6.877278830999998,
+        "reference_R256_cpu_s": 64.53999999999999,
+        "reference_R256_wall_s": 64.55
+      },
+      "production_rom_authorized": false,
+      "schema": "swap5.rom-practical.p2b-gw1.case-result.v1"
+    }
+  ],
+  "closure_changed": false,
+  "continuous_relation_by_material": {
+    "B02": "G6_COMPONENTWISE_NO_WORSE",
+    "B05": "TRADEOFF",
+    "B06": "G6_COMPONENTWISE_NO_WORSE",
+    "B11": "G6_COMPONENTWISE_NO_WORSE",
+    "B12": "G6_COMPONENTWISE_NO_WORSE",
+    "B16": "G6_COMPONENTWISE_NO_WORSE"
+  },
+  "decision": "G6_EVENT_REPAIR_NOT_GENERALIZED_STOP_BEFORE_BLIND_REVALIDATION",
+  "development_only": true,
+  "event_relation_by_material": {
+    "B02": "G6_COMPONENTWISE_NO_WORSE",
+    "B05": "EQUAL_WITHIN_TOLERANCE",
+    "B06": "G6_COMPONENTWISE_NO_WORSE",
+    "B11": "G6_COMPONENTWISE_NO_WORSE",
+    "B12": "G6_COMPONENTWISE_NO_WORSE",
+    "B16": "G6_COMPONENTWISE_NO_WORSE"
+  },
+  "event_repair_supported_materials": [
+    "B02",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "next_gate": "ATTRIBUTION_REVIEW_NO_AUTOMATIC_G8_OR_CLOSURE",
+  "production_rom_authorized": false,
+  "same_runner_G6_over_R256_wall_ratio": {
+    "max": 0.33831719216395395,
+    "median": 0.30019345680530063,
+    "min": 0.10654188738962042
+  },
+  "schema": "swap5.rom-practical.p2b-gw1.aggregate-result.v1",
+  "status": "P2B_GW1_DEVELOPMENT_CHALLENGE_COMPLETE",
+  "work_unit": "ROM-PRACTICAL-P2B-GW1",
+  "workstream": "ROM-PRACTICAL"
+}
