@@ -27,7 +27,7 @@ program tabhyd_typed_solver_scale40
   real(real64), allocatable, target :: drainage(:,:), irrigation(:), roots(:)
   real(real64), allocatable :: cofgen(:,:), headtab(:,:), thetatab(:,:), ktab(:,:)
   real(real64), allocatable :: h0(:), theta0a(:), theta0t(:), ka(:), ca(:), da(:), tt(:), kt(:), ct(:), dtbl(:)
-  real(real64) :: step_duration, initial_head, top_flux, bottom_flux, bottom_head, max_h, max_theta, checksum_a, checksum_t
+  real(real64) :: step_duration, initial_head, top_flux, bottom_flux, bottom_head, max_h, rms_h, max_theta, rms_theta, dmass, checksum_a, checksum_t
   real(real64) :: t0,t1, atime(NROUNDS), ttime(NROUNDS), med_a, med_t
   integer :: nodes, nt, bottom_mode, i,j,r,rep,iu,ios
   character(len=512) :: path
@@ -97,9 +97,19 @@ program tabhyd_typed_solver_scale40
   if(res_a%status/=SW_SOLVE_CONVERGED .or. res_t%status/=SW_SOLVE_CONVERGED) stop 23
 
   max_h=maxval(abs(res_t%candidate_state%pressure_head-res_a%candidate_state%pressure_head))
+  rms_h=sqrt(sum((res_t%candidate_state%pressure_head-res_a%candidate_state%pressure_head)**2)/real(nodes,real64))
   max_theta=maxval(abs(res_t%candidate_state%water_content-res_a%candidate_state%water_content))
+  rms_theta=sqrt(sum((res_t%candidate_state%water_content-res_a%candidate_state%water_content)**2)/real(nodes,real64))
+  dmass=abs(res_t%integrated_mass_balance_residual_cm-res_a%integrated_mass_balance_residual_cm)
   write(*,'(a,es24.16)') 'SCALE40_HEAD_MAX_ABS=',max_h
+  write(*,'(a,es24.16)') 'SCALE40_HEAD_RMS=',rms_h
   write(*,'(a,es24.16)') 'SCALE40_THETA_MAX_ABS=',max_theta
+  write(*,'(a,es24.16)') 'SCALE40_THETA_RMS=',rms_theta
+  write(*,'(a,es24.16)') 'SCALE40_DMASS=',dmass
+  if(max_h>5.0e-2_real64 .or. rms_h>1.0e-2_real64 .or. max_theta>2.0e-2_real64) stop 24
+  if(abs(res_a%integrated_mass_balance_residual_cm)>1.0e-8_real64 .or. &
+     abs(res_t%integrated_mass_balance_residual_cm)>1.0e-8_real64) stop 25
+  if(res_a%diagnostics%nonlinear_iterations/=res_t%diagnostics%nonlinear_iterations) stop 26
 
   checksum_a=0.0_real64; checksum_t=0.0_real64
   do r=1,NROUNDS
@@ -118,6 +128,7 @@ program tabhyd_typed_solver_scale40
   write(*,'(a,f14.8)') 'SCALE40_TABLE_DELTA_PCT=',100.0_real64*(med_t/med_a-1.0_real64)
   write(*,'(a,es24.16)') 'SCALE40_ANALYTIC_CHECKSUM=',checksum_a
   write(*,'(a,es24.16)') 'SCALE40_TABLE_CHECKSUM=',checksum_t
+  write(*,'(a)') 'TABHYD_TYPED_SOLVER_SCALE40=PASS'
 
 contains
   subroutine build_request(req,use_analytic)
