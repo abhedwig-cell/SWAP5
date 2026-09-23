@@ -26,7 +26,8 @@
     "If same_partition_richards_triggers is non-empty, persisted P3 same-partition result is mandatory.",
     "If no trigger exists, closeout must not require or invent a same-partition result.",
     "Binding must freeze exact evidence and builder/workflow blobs.",
-    "Closeout may recommend a separate closure workstream only for cases already classified CLOSURE_DEFICIT_SUPPORTED."
+    "Closeout may recommend a separate closure workstream only for cases already classified CLOSURE_DEFICIT_SUPPORTED.",
+    "Binding must use the exact original preregistration blob c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e."
   ],
   "response_firewall": {
     "execution_binding_created": false,
@@ -36,5 +37,9 @@
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
     "production_rom_authorized": false
+  },
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "authority_drift_disposition": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json; original c1e0 preregistration remains binding"
   }
 }
