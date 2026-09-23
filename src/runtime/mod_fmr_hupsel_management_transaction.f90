@@ -40,6 +40,7 @@ module mod_fmr_hupsel_management_transaction
     real(real64) :: t1_value = 0.0_real64
     real(real64) :: application_t1_value = 0.0_real64
     real(real64) :: requested_depth_cm_value = 0.0_real64
+    type(tcs1_dcs2_sprinkling_request_t) :: request_value
   contains
     procedure, public :: ready => fmr_hupsel_demand_receipt_ready
     procedure, public :: origin_lineage_id => fmr_hupsel_demand_receipt_lineage
@@ -48,6 +49,7 @@ module mod_fmr_hupsel_management_transaction
     procedure, public :: interval => fmr_hupsel_demand_receipt_interval
     procedure, public :: application_t1 => fmr_hupsel_demand_receipt_application_t1
     procedure, public :: requested_depth_cm => fmr_hupsel_demand_receipt_requested_depth
+    procedure, public :: request_copy => fmr_hupsel_demand_receipt_request_copy
   end type fmr_hupsel_management_demand_receipt_t
 
   type, public :: fmr_hupsel_management_persistence_t
@@ -156,7 +158,9 @@ contains
          ieee_is_finite(self%t1_value) .and. self%t1_value > self%t0_value .and. &
          ieee_is_finite(self%application_t1_value) .and. self%application_t1_value > self%t0_value .and. &
          self%application_t1_value <= self%t1_value + quantity_tolerance(self%application_t1_value,self%t1_value) .and. &
-         ieee_is_finite(self%requested_depth_cm_value) .and. self%requested_depth_cm_value >= 0.0_real64
+         ieee_is_finite(self%requested_depth_cm_value) .and. self%requested_depth_cm_value >= 0.0_real64 .and. &
+         ieee_is_finite(self%request_value%t0) .and. ieee_is_finite(self%request_value%t1) .and. &
+         same_time(self%request_value%t0,self%t0_value) .and. same_time(self%request_value%t1,self%t1_value)
   end function fmr_hupsel_demand_receipt_ready
 
   integer(int64) function fmr_hupsel_demand_receipt_lineage(self) result(value)
@@ -205,6 +209,15 @@ contains
       value=0.0_real64
     end if
   end function fmr_hupsel_demand_receipt_requested_depth
+
+  subroutine fmr_hupsel_demand_receipt_request_copy(self,request,available)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    type(tcs1_dcs2_sprinkling_request_t), intent(out) :: request
+    logical, intent(out) :: available
+    request = tcs1_dcs2_sprinkling_request_t()
+    available = self%ready()
+    if (available) request = self%request_value
+  end subroutine fmr_hupsel_demand_receipt_request_copy
 
   subroutine derive_fmr_hupsel_management_demand_receipt(checkpoint, parameters, request, crop_origin_revision, &
        receipt, status)
@@ -287,6 +300,7 @@ contains
       receipt%application_t1_value = application_t1
       receipt%requested_depth_cm_value = 0.0_real64
       if (irrigation_result%event_started) receipt%requested_depth_cm_value = irrigation_result%event_depth_cm
+      receipt%request_value = request
       receipt%initialized = .true.
       if (.not. receipt%ready()) then
         receipt = fmr_hupsel_management_demand_receipt_t()
