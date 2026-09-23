@@ -1,0 +1,140 @@
+name: F-ROM-PURPOSE P3 GW missing-slice repair
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-gw-missing-slice-repair
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Verify repair binding and build matrix
+        id: matrix
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py             tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py             tests/rom/assemble_rom_purpose_p3_gw_missing_slices.py
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_BINDING.json'))
+          assert b['status']=='BOUND_AFTER_TECHNICAL_EXIT143_SLICE_FAILURES'
+          assert len(b['cases'])>0
+          seen=set()
+          for c in b['cases']:
+              key=(c['material'],c['route'],int(c['opt']),int(c['history']))
+              assert key not in seen
+              seen.add(key)
+              assert c['failure_classification']=='TECHNICAL_RUNNER_INTERRUPTION_EXIT_143'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          print('matrix='+json.dumps({'include':b['cases']},separators=(',',':')))
+          PY
+
+  segment1:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJSON(needs.preflight.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Execute first exact-state half
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py             --material "${{ matrix.material }}"             --route "${{ matrix.route }}"             --opt "${{ matrix.opt }}"             --history "${{ matrix.history }}"             --segment 1             --canonical-root canonical             --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3gwseg1-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment2:
+    needs: [preflight, segment1]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJSON(needs.preflight.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p3gwseg1-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: previous
+      - name: Execute second exact-state half
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py             --material "${{ matrix.material }}"             --route "${{ matrix.route }}"             --opt "${{ matrix.opt }}"             --history "${{ matrix.history }}"             --segment 2             --checkpoint-in previous/checkpoint.bin             --canonical-root canonical             --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3gwseg2-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  assemble:
+    needs: [preflight, segment1, segment2]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3gwseg1-*
+          path: /tmp/seg1
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3gwseg2-*
+          path: /tmp/seg2
+          merge-multiple: false
+      - name: Reconstruct repaired missing slices
+        run: |
+          set -euo pipefail
+          mkdir -p repaired
+          python3 tests/rom/assemble_rom_purpose_p3_gw_missing_slices.py             --binding integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_BINDING.json             --segment1-root /tmp/seg1             --segment2-root /tmp/seg2             --output-dir repaired
+          sha256sum repaired/* > repaired/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3gw-repaired-missing-slices
+          path: repaired/
+          if-no-files-found: error
