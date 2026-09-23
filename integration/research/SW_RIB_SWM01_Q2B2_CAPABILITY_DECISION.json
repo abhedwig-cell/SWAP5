@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.sw_rib_swm01.q2b2.capability_decision.v1",
+  "work_unit": "SW-RIB-SWM01-Q2B2",
+  "date": "2026-09-23",
+  "status": "DESIGN_DECISION__NO_EXACT_SINGLE_NATIVE_MAPPING_IN_PINNED_RELEASE",
+  "purpose": "Decide how automatic-management discharge capacity should be owned after Q2A policy and Q2B1 managed-band realization pass.",
+  "authorities": {
+    "legacy": "F-PM08D5 automatic-control source inventory",
+    "q2a": "SW_RIB_SWM01_Q2A_RESULT.json PASS",
+    "q2b1": "SW_RIB_SWM01_Q2B1_RESULT.json PASS",
+    "q1a_native_trc": [
+      "Q1A-V1 falsified",
+      "Q1A-R2 falsified"
+    ],
+    "q1a_exact_control": "Q1A-R3/R3L PASS for linear BETAW=1 ContinuousControl + Pump",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "source_findings": [
+    "Allocation-controlled TabulatedRatingCurve is natively constrained by its physical Q(h) capacity.",
+    "Pinned TabulatedRatingCurve uses PCHIP and does not exactly reproduce the legacy hard-kink linear SWQHR1 law even for nominally linear inputs.",
+    "ContinuousControl + Pump can reproduce the frozen linear hard-kink law in the physical layer.",
+    "Ribasim allocation does not anticipate ContinuousControl evolution within an allocation interval; it extrapolates the controlled structure flow from the start of the allocation optimization step.",
+    "An allocation-controlled Pump has allocation as its control authority; combining exact continuously controlled flow and allocation as two simultaneous flow authorities would violate the one-owner rule."
+  ],
+  "conclusion": "For the pinned release there is no demonstrated single native component mapping that is simultaneously exact to legacy SWQHR1 hard-kink Q(h), dynamically allocation-aware over the allocation interval, and sole flow authority.",
+  "application_profiles": {
+    "RIBASIM_NATIVE_MANAGEMENT": {
+      "description": "Coupler selects accepted WLSTAR; Ribasim LevelDemand represents the band; allocation-controlled TabulatedRatingCurve or other native hydraulic structure provides physical discharge capacity.",
+      "preserves": [
+        "soil-state-driven target semantics",
+        "accepted WLSTAR memory",
+        "band management intent",
+        "Ribasim-native scarcity/allocation",
+        "physical capacity limitation"
+      ],
+      "changes": [
+        "exact legacy SWQHR1 interpolation/crest semantics where PCHIP differs",
+        "documented legacy SWQHR1/SWQHR2 automatic-capacity asymmetry is not reproduced"
+      ],
+      "authority_status": "CANDIDATE_COUPLED_PROFILE; requires declared approximation/behavior-change envelope for Q(h), not exact legacy-parity claim"
+    },
+    "LEGACY_QH_PRESERVATION": {
+      "description": "Use exact/source-derived external Q(h) evaluation or ContinuousControl + one-way connector, with management target selected by the coupler.",
+      "preserves": [
+        "declared legacy Q(h) law in qualified domain",
+        "surface-water state remains Ribasim-owned"
+      ],
+      "limitations": [
+        "not shown to be dynamically anticipated by Ribasim allocation inside the same allocation interval",
+        "requires outer coupling/event semantics or a deliberately short/recomputed management interval if allocation is also required"
+      ],
+      "authority_status": "RESEARCH_OPTION; not a native exact allocation-aware replacement"
+    }
+  },
+  "recommended_research_scope": "For the intended SWAP5-Ribasim coupled architecture, treat Ribasim-native hydraulic realization as the default research target and preserve exact legacy Q(h) only where an application explicitly requires it. Do not make full legacy numerical-parity a hidden retirement prerequisite.",
+  "retirement_effect": "Q2B2 does not block retirement of SWAP-owned automatic surface-water state/control in a coupled profile if the profile explicitly adopts Ribasim-native hydraulic capacity semantics. It does block any claim of complete numerical/functional parity with all legacy SWQHR1 automatic-discharge behavior.",
+  "production_admission": false,
+  "retirement_authority": false
+}
