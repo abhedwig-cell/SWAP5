@@ -108,13 +108,14 @@ jobs:
           compile canonical-src/src/solver/mod_reference_richards_state_binding.f90 build/richards/statebind.o
           compile canonical-src/src/solver/mod_b110_default_mvg_provider.f90 build/richards/mvg.o
           compile canonical-src/src/solver/mod_b110_source_sink_provider.f90 build/richards/source.o
+          compile canonical-src/src/solver/mod_b110_root_sink_provider.f90 build/richards/root.o
           compile canonical-src/src/solver/mod_fixed_flux_top_boundary_provider.f90 build/richards/top.o
           compile canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90 build/richards/temporal.o
           compile canonical-src/src/legacy/b1_10_port/headcalc.f90 build/richards/headcalc.o
           compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90 build/richards/refbind.o
           compile research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90 build/richards/tableprovider.o
           compile research/tabulated_hydraulics/tabhyd_reference_richards_benchmark.f90 build/richards/bench.o
-          gfortran -O3 -fopenmp build/richards/stubs.o build/richards/arrays.o build/richards/sptabulated.o             build/richards/contract.o build/richards/stepdir.o build/richards/trajsens.o build/richards/worker.o             build/richards/linear.o build/richards/workspace.o build/richards/statebind.o build/richards/mvg.o             build/richards/source.o build/richards/top.o build/richards/temporal.o build/richards/headcalc.o             build/richards/refbind.o build/richards/tableprovider.o build/richards/bench.o -o build/richards/benchmark
+          gfortran -O3 -fopenmp build/richards/stubs.o build/richards/arrays.o build/richards/sptabulated.o             build/richards/contract.o build/richards/stepdir.o build/richards/trajsens.o build/richards/worker.o             build/richards/linear.o build/richards/workspace.o build/richards/statebind.o build/richards/mvg.o             build/richards/source.o build/richards/root.o build/richards/top.o build/richards/temporal.o build/richards/headcalc.o             build/richards/refbind.o build/richards/tableprovider.o build/richards/bench.o -o build/richards/benchmark
 
       - name: Run Reference Richards benchmark
         shell: bash
