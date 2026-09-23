@@ -6,6 +6,7 @@ program test_rate_composition
   use mod_ppa_wu05a4_trial_exchange
   use mod_ppa_wu05a3_satflow_exchange
   use mod_ppa_wu05a3_satflow_derivative
+  use mod_ppa_wu05a4_storage_bounds
   implicit none
   type(redistribution_candidate)::redistributed
   type(macro_exchange_evaluation)::evaluation
@@ -59,7 +60,35 @@ program test_rate_composition
   print '(a)','PPA_WU05A4_RATE_COMPOSITION_FOUR_DT=PASS'
   print '(a)','PPA_WU05A4_RATE_COMPOSITION_INTERNAL_TRANSFER=PASS'
   call check_generated_satflow()
+  call check_geometry_bounds()
 contains
+  subroutine check_geometry_bounds()
+    real(real64)::ground,minimum,limit,tmp,mx,rejected_top,toprate(2),qi(2),qm(2),sr(2),ur(2),rr(2)
+    logical::valid
+    call domain_storage_bounds(-2.0_real64,2,[1.0_real64,1.0_real64],[0.25_real64,0.5_real64], &
+        0.75_real64,0.375_real64,-1.5_real64,-1.75_real64,.true.,ground,minimum,valid)
+    call check(valid,30)
+    call check(abs(ground-0.25_real64)+abs(minimum-0.125_real64)<tiny(ground),31)
+    ! Geometry-derived minimum feeds the final outgoing availability calculation.
+    call limit_domain_outflow(0.5_real64,0.5_real64,minimum-(0.375_real64-0.5_real64), &
+        [0.0_real64,0.5_real64],[0.0_real64,0.0_real64],[0.0_real64,0.0_real64],limit,sr,ur,rr,valid)
+    call check(valid.and.abs(sum(sr)*0.5_real64-0.25_real64)<tiny(ground),32)
+    call domain_storage_bounds(-2.0_real64,2,[1.0_real64,1.0_real64],[0.25_real64,0.5_real64], &
+        0.75_real64,0.125_real64,-1.5_real64,-1.75_real64,.false.,ground,minimum,valid)
+    call check(valid.and.abs(minimum-0.125_real64)<tiny(ground),33)
+    ! Matrix-only input is capped by the geometry-derived groundwater volume.
+    call limit_domain_inflow(0.125_real64,0.75_real64,ground,0.5_real64,0.0_real64,0.0_real64, &
+        0.0_real64,0.5_real64,0.0_real64,[0.0_real64,0.0_real64],[0.0_real64,0.5_real64], &
+        limit,tmp,mx,rejected_top,toprate,qi,qm,valid)
+    call check(valid.and.abs(mx-0.25_real64)+abs(sum(qm)*0.5_real64-0.125_real64)<tiny(ground),34)
+    call domain_storage_bounds(-2.0_real64,2,[1.0_real64,1.0_real64],[0.25_real64,0.5_real64], &
+        0.75_real64,0.375_real64,999.0_real64,-1.75_real64,.true.,ground,minimum,valid)
+    call check(valid.and.abs(ground)+abs(minimum)<tiny(ground),35)
+    call domain_storage_bounds(-2.0_real64,2,[0.0_real64,1.0_real64],[0.25_real64,0.5_real64], &
+        0.75_real64,0.375_real64,999.0_real64,-2.0_real64,.false.,ground,minimum,valid)
+    call check(.not.valid,36)
+    print '(a)','PPA_WU05A4_GEOMETRY_STORAGE_BOUNDS_COMPOSITION=PASS'
+  end subroutine
   subroutine check_generated_satflow()
     type(macro_exchange_evaluation)::e
     type(macro_used_exchange)::captured
