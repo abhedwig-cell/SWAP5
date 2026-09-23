@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_transaction_requalification.preregistration.v1",
+  "work_unit": "RM19",
+  "date": "2026-09-23",
+  "title": "Prospective requalification of the frozen RM14 dynamic-top transaction under RM18 temporal authority",
+  "depends_on": {
+    "RM14": "FALSIFIED_DYNAMIC_TOP_WITHIN_INHERITED_FGC44_NUMERICAL_ENVELOPE",
+    "RM16": "raw 8.64 s dynamic-top Richards solve converges",
+    "RM17": "dynamic FLUX and explicit qtop=-36 raw trajectories are bit-identical",
+    "RM18": "QUALIFIED_FAIL_CLOSED_DYNAMIC_FLUX_TEMPORAL_CERTIFICATE"
+  },
+  "frozen_case": {
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "irrigation_depth_cm": 0.0036,
+    "dynamic_top_irrigation_rate_cm_per_day": 36.0,
+    "ponding_max_cm": 1.0,
+    "runoff_resistance_day": 1.0,
+    "runoff_exponent": 1.0,
+    "predictor_bottom_flux_cm_per_day": 1e-6,
+    "root_uptake": "off",
+    "drainage": "off"
+  },
+  "unchanged_from_rm14": [
+    "Richards equations",
+    "dynamic-top provider physics",
+    "transaction retry count",
+    "retry scale",
+    "temporal budget",
+    "mass tolerances",
+    "irrigation quantity",
+    "irrigation rate",
+    "groundwater ownership"
+  ],
+  "only_new_authority": "The Reference temporal indicator may admit the RM18 fail-closed verified constant-FLUX dynamic-top envelope.",
+  "hypotheses": [
+    "The unchanged RM14 predictor now completes under the unchanged transaction policy because the previously missing temporal certificate is available for the verified dynamic FLUX regime.",
+    "At least one Richards substep is accepted.",
+    "No mass rejection occurs.",
+    "The resulting accepted dynamic route remains inside the RM18 constant-FLUX envelope.",
+    "The exact same test remains fail-closed if the dynamic boundary enters HEAD/ponding/runoff conditions outside RM18."
+  ],
+  "failure_rule": "Do not change any frozen physical quantity, solver setting, retry setting, temporal tolerance or mass tolerance after execution. A failure is a new composition/numerical result, not a tuning invitation.",
+  "nonclaims": [
+    "No three-model admission by RM19.",
+    "No dynamic HEAD-regime authority.",
+    "No active runoff or ponding authority.",
+    "No root uptake or drainage.",
+    "No change to the permanent RM14 falsification under the pre-RM18 authority."
+  ]
+}
