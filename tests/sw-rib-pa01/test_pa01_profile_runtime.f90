@@ -7,7 +7,7 @@ program test_sw_rib_pa01_profile_runtime
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
-       FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+       FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
@@ -15,8 +15,9 @@ program test_sw_rib_pa01_profile_runtime
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK
   use mod_ribasim_surface_water_profile_contract, only: RIBASIM_SW_PROFILE_OK, RIBASIM_SW_PROFILE_OWNER_CONFLICT, &
-       RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, &
-       RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, RIBASIM_SW_STTAB_EPSILON_M, RIBASIM_SW_GIT_SHA, &
+       RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, RIBASIM_SW_PROFILE_SHAPE_MISMATCH, &
+       RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, &
+       RIBASIM_SW_PROFILE_UNSUPPORTED_OPTIONAL_STATE_LAYOUT, RIBASIM_SW_STTAB_EPSILON_M, RIBASIM_SW_GIT_SHA, &
        RIBASIM_SW_CORE_VERSION, RIBASIM_SW_PYTHON_VERSION_AT_PIN, ribasim_surface_water_profile_status, &
        bind_ribasim_surface_water_controls, fmr_execute_serialized_ribasim_surface_water_resolved_column
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
@@ -42,6 +43,64 @@ program test_sw_rib_pa01_profile_runtime
   write(*,'(A)') 'SW_RIB_PA01_CANDIDATE_RUNTIME=PASS'
 
 contains
+
+  subroutine verify_profile_contract()
+    type(fmr_drainage_response_level_parameters_t) :: level_parameters(1)
+    type(fmr_drainage_response_level_control_t), allocatable :: controls(:)
+    real(real64) :: nan_head
+    integer :: status
+
+    level_parameters(1)%variant = FMR_DRAIN_VARIANT_EXTENDED_SIGNED
+
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_BASE, level_parameters, &
+         [-12.25_real64], .false.)
+    call require(status == RIBASIM_SW_PROFILE_OK, 'base external-owner profile accepted')
+
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
+         level_parameters, [-12.25_real64], .false.)
+    call require(status == RIBASIM_SW_PROFILE_OWNER_CONFLICT, 'fixed-weir owner conflict')
+
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_SNOW, level_parameters, &
+         [-12.25_real64], .false.)
+    call require(status == RIBASIM_SW_PROFILE_UNSUPPORTED_OPTIONAL_STATE_LAYOUT, &
+         'unqualified optional-state composition rejected')
+
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_BASE, level_parameters, &
+         [-12.25_real64], .true.)
+    call require(status == RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, 'duplicate control rejected')
+
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_BASE, level_parameters, &
+         [-12.25_real64, -11.0_real64], .false.)
+    call require(status == RIBASIM_SW_PROFILE_SHAPE_MISMATCH, 'head shape mismatch rejected')
+
+    level_parameters(1)%variant = FMR_DRAIN_VARIANT_LINEAR
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_BASE, level_parameters, &
+         [-12.25_real64], .false.)
+    call require(status == RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, 'non-extended variant rejected')
+
+    level_parameters(1)%variant = FMR_DRAIN_VARIANT_EXTENDED_SIGNED
+    nan_head = ieee_value(0.0_real64, ieee_quiet_nan)
+    status = ribasim_surface_water_profile_status(FMR_OPTIONAL_STATE_LAYOUT_BASE, level_parameters, &
+         [nan_head], .false.)
+    call require(status == RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, 'nonfinite accepted head rejected')
+
+    call bind_ribasim_surface_water_controls(FMR_OPTIONAL_STATE_LAYOUT_BASE, level_parameters, &
+         [-12.25_real64], .false., controls, status)
+    call require(status == RIBASIM_SW_PROFILE_OK .and. allocated(controls), 'external controls bound')
+    call require(size(controls) == 1, 'one external control')
+    call require(.not. controls(1)%drain_head_supplied, 'legacy drain head remains unset')
+    call require(controls(1)%resolved_surface_water_head_supplied, 'resolved external head supplied')
+    call require(abs(controls(1)%resolved_surface_water_head_cm + 12.25_real64) <= 1.0e-15_real64, &
+         'resolved external head value')
+
+    call require(abs(RIBASIM_SW_STTAB_EPSILON_M-1.0e-5_real64) <= 1.0e-18_real64, 'storage epsilon frozen')
+    call require(trim(RIBASIM_SW_GIT_SHA) == 'e7fc8ade52a4bedeec10e508d2065577f33eb76a', 'Ribasim SHA frozen')
+    call require(trim(RIBASIM_SW_CORE_VERSION) == '2026.1.1', 'Ribasim core version frozen')
+    call require(trim(RIBASIM_SW_PYTHON_VERSION_AT_PIN) == '2026.1.0', 'Ribasim Python seam frozen')
+
+    write(*,'(A)') 'SW_RIB_PA01_PROFILE_CONTRACT=PASS'
+    write(*,'(A)') 'SW_RIB_PA01_BASE_OPTIONAL_STATE_SCOPE=PASS'
+  end subroutine verify_profile_contract
 
   subroutine verify_wrapper_owner_conflicts()
     type(fmr_serialized_reference_backend_t) :: backend
