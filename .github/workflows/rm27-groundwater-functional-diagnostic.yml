@@ -1,0 +1,23 @@
+name: RM27 groundwater functional diagnostic
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - '.github/workflows/rm27-groundwater-functional-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM27 groundwater-response diagnostic
+        run: bash tests/ribasim-management/run_rm27_groundwater_functional_equivalence.sh
