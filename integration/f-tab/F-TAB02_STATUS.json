@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.workunit_status.v1",
+  "workunit": "F-TAB02",
+  "title": "Generated default-MvG K0 constitutive acceleration provider",
+  "date": "2026-09-23",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "branch_head": "0523a7672511cad69c1abca270f350e458175ef3",
+  "canonical_authority": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "canonical_relation": {
+    "ahead_by": 76,
+    "behind_by": 0,
+    "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
+  },
+  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__FINAL_APPLICATION_GATE_BLOCKED_EXTERNAL",
+  "slices": {
+    "A": {
+      "status": "PASS",
+      "record": "integration/f-tab/F-TAB02_A_QUALIFICATION.json"
+    },
+    "B": {
+      "status": "PASS",
+      "record": "integration/f-tab/F-TAB02_B_QUALIFICATION.json"
+    },
+    "C": {
+      "status": "PASS",
+      "record": "integration/f-tab/F-TAB02_C_QUALIFICATION.json"
+    },
+    "D": {
+      "status": "PASS",
+      "record": "integration/f-tab/F-TAB02_D_QUALIFICATION.json"
+    },
+    "E": {
+      "status": "PASS",
+      "record": "integration/f-tab/F-TAB02_E_QUALIFICATION.json",
+      "workflow_run": 35824004715
+    },
+    "F": {
+      "status": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE",
+      "record": "integration/f-tab/F-TAB02_F_BLOCKER.json"
+    }
+  },
+  "production_scope": {
+    "physics": "existing default Mualem-van Genuchten only",
+    "swkimpl": 0,
+    "provider": "generated immutable raw-head400 acceleration provider",
+    "analytical_reference_preserved": true,
+    "explicit_opt_in": true,
+    "generic_user_tables": false,
+    "legacy_swsophy1": false,
+    "swkimpl1": false
+  },
+  "latest_performance_characterization": {
+    "provider_delta_pct": -4.3575333,
+    "reference_richards_delta_pct_range": [
+      -17.0975008,
+      -12.0806817
+    ],
+    "serialized_runtime_delta_pct_range": [
+      -9.18127598,
+      -4.72044883
+    ],
+    "generated_state_init_median_s": 0.003568249999999995,
+    "break_even_vector_evals_30_nodes": 35864.62504907729,
+    "generated_state_bytes_30_nodes": 683280,
+    "interpretation": "Material reductions survive the production harness, but percentages are execution-envelope characterization and not a portable whole-SWAP claim."
+  },
+  "final_gate": {
+    "authority": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
+    "required_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "exact_materializable_bytes_available": false,
+    "substitutions_authorized": false,
+    "resume_condition": "Exact authorized archive bytes become materializable, then execute F-TAB02-F."
+  },
+  "nonclaims": [
+    "canonical production admission",
+    "whole-Hupsel generated-provider equivalence",
+    "generic SWSOPHY=1 production",
+    "arbitrary user-supplied tabulated hydraulics",
+    "SWKIMPL=1 production",
+    "portable whole-SWAP or MultiSWAP speedup"
+  ]
+}
