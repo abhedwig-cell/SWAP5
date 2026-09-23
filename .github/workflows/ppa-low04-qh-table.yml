@@ -1,0 +1,27 @@
+name: PPA-LOW04 B1.11 q(h) table oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low04-qh-table.yml'
+      - 'src/adapter/mod_ppa_low04_qh_table.f90'
+      - 'tests/fapp/test_ppa_low04_qh_table.f90'
+      - 'tests/fapp/run_ppa_low04_qh_table.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low04-qh-table.yml'
+      - 'src/adapter/mod_ppa_low04_qh_table.f90'
+      - 'tests/fapp/test_ppa_low04_qh_table.f90'
+      - 'tests/fapp/run_ppa_low04_qh_table.sh'
+
+jobs:
+  qh-table-law:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay B1.11 SWQHBOT=2 table law
+        run: bash tests/fapp/run_ppa_low04_qh_table.sh
