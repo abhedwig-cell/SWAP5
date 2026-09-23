@@ -1,0 +1,110 @@
+{
+  "schema": "swap5.ppa_wu05b.frost_authority_contract.v1",
+  "workunit": "PPA-WU05-B",
+  "authority": {
+    "corrected_reference": {
+      "snapshot": "B1.11",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "files": {
+        "SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+        "SWAP/temperature.f90": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+      },
+      "corrections_touching_family": [],
+      "identity_relation": "Both members are unchanged from the pinned B0 member manifest into B1.11."
+    },
+    "current_swap5": [
+      "src/process/mod_soil_temperature_contract.f90",
+      "src/process/mod_restricted_soil_temperature.f90",
+      "integration/f-ci/F-CI45_STATUS.json",
+      "integration/f-ci/F-CI45P_STATUS.json",
+      "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+      "integration/audits/production_physics_application_envelope_gap_register.json"
+    ],
+    "corroborating_historical_evidence": {
+      "classification": "CORROBORATING_ONLY_NOT_EQUATION_OR_STATE_AUTHORITY",
+      "observations": [
+        "Historical execution surfaces import MOD_frost frozencond/frozenbounds/rfcp and soil-water consumes rfcp.",
+        "Historical constitutive-performance review requires frost reduction factor/state in cache identity and requires frost scaling to remain consistent across K and dKdh updates.",
+        "Historical energy-accounting audit classifies legacy frozencond as a temperature-driven hydraulic reduction route and explicitly finds no closed latent-heat/ice-storage energy model.",
+        "Historical A23 lineage mentions a dedicated frost saturation adapter, supporting an explicit hydraulic-view ownership concern."
+      ]
+    }
+  },
+  "frozen_boundaries": {
+    "legacy_target": "HYDRAULIC_FROST_MODIFIER_ONLY",
+    "thermodynamic_phase_change": "OUTSIDE_LEGACY_MIGRATION_AUTHORITY_NEW_PHYSICS",
+    "sensible_temperature_owner": "Existing restricted soil-temperature owner remains authoritative for temperature state.",
+    "hydraulic_owner": "Existing Richards/hydraulic owner remains authoritative for pressure head, water content, conductivity and Jacobian.",
+    "expected_interface_shape": "A later legacy-parity frost process may consume a read-only temperature field and explicit hydraulic/config views and publish an explicit frost-effect result. Exact fields, dimensions and equations are NOT frozen before source materialization.",
+    "mass_semantics": "A frost hydraulic reduction factor is not an independent water-mass storage or flux.",
+    "energy_semantics": "No latent-heat, ice-water storage or thermodynamic freeze-thaw energy claim is admitted by legacy provenance.",
+    "transaction": "Any true frost continuation state must be discovered from exact source and then participate in the same accepted outer transaction; rejected trials may not advance it.",
+    "restart": "UNKNOWN_DO_NOT_INFER until exact source trace.",
+    "recomputability": "UNKNOWN_DO_NOT_INFER until exact source trace.",
+    "macropore": "Legacy frost-plus-macropore compatibility remains fail-closed pending source-bound proof and independent qualification.",
+    "snow": "Snow plus frost/temperature composition remains a separate later workunit.",
+    "root_stress": "Frost root-stress composition remains blocked on an admitted frost hydraulic view."
+  },
+  "richards_consistency": {
+    "rule": "If legacy frost scales or otherwise modifies hydraulic conductivity, the same accepted/candidate frost effect must be represented consistently in K and every derivative/Jacobian term that differentiates the active K relation.",
+    "swap011_preservation": "SWAP-011 model-specific dK/dh/Jacobian authority may not be bypassed or combined with a stale frost factor.",
+    "backtracking_retry": "A constitutive reevaluation after head update/backtracking/retry must not reuse a frost modifier that exact source semantics would require to be recomputed.",
+    "implementation_status": "RULE_FROZEN_EQUATION_BINDING_PENDING_SOURCE"
+  },
+  "unresolved_source_trace": {
+    "state": "BLOCKED_EXACT_SOURCE_MATERIALIZATION_REQUIRED",
+    "required": [
+      "full B1.11 frozencond.f90 bytes matching pinned SHA256",
+      "full B1.11 temperature.f90 bytes matching pinned SHA256",
+      "exact call sites for frozencond/frozenbounds/rfcp",
+      "all module-scope and cross-call mutable frost fields",
+      "exact use of soil temperature, water content, saturation/hydraulic parameters and timestep",
+      "exact persistence versus recomputation behavior",
+      "restart representation if any",
+      "equation-level interaction with K, dKdh, drainage and lower boundary"
+    ],
+    "attempted_recovery": [
+      "canonical B0/B1.11 manifests and hashes recovered",
+      "current canonical source tree inspected",
+      "historical S9/S11/A23 patch evidence inspected",
+      "historical energy-accounting and constitutive audit evidence inspected",
+      "Project/Library source archive located but raw-byte materialization blocked by current file-surface export policy",
+      "historical Git trees searched but full legacy frozencond/temperature blobs not present"
+    ],
+    "prohibited_inference": [
+      "do not infer zero persistent frost state from absence of a current typed state",
+      "do not infer explicit ice state from the word frost",
+      "do not infer latent heat from temperature-dependent hydraulic reduction",
+      "do not infer exact rfcp dimensions or update timing from historical adapters",
+      "do not infer restart semantics"
+    ]
+  },
+  "migration_slices": [
+    {
+      "id": "PPA-WU05-B1",
+      "scope": "Exact B1.11 frozencond/temperature source materialization and call/state census",
+      "state": "BLOCKED_SOURCE_MATERIALIZATION_REQUIRED",
+      "production_admission": "NONE"
+    },
+    {
+      "id": "PPA-WU05-B2",
+      "scope": "Typed legacy hydraulic frost-effect contract and exact equation oracle",
+      "state": "HELD_ON_B1",
+      "production_admission": "NONE"
+    },
+    {
+      "id": "PPA-WU05-B3",
+      "scope": "Reference Richards integration with K/dKdh/Jacobian and atomic thermal-hydraulic transaction",
+      "state": "HELD_ON_B2",
+      "production_admission": "NONE"
+    },
+    {
+      "id": "PPA-WU05-B4",
+      "scope": "Snow plus frost/temperature composition",
+      "state": "HELD_ON_B3_AND_SNOW_ENERGY_AUTHORITY",
+      "production_admission": "NONE"
+    }
+  ],
+  "review_verdict": "OWNER_AND_NONCONFLATION_BOUNDARIES_FROZEN_DETAILED_FROST_AUTHORITY_BLOCKED_ON_EXACT_SOURCE_MATERIALIZATION",
+  "production_admission": "NONE_REVIEW_ONLY_BLOCKED"
+}
