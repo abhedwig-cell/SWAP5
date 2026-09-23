@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.rom-purpose.p3.reference-technical-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE-REPAIR",
+  "date": "2026-09-23",
+  "status": "RESPONSE_BLIND_TECHNICAL_REPAIR_BOUND_BEFORE_REFERENCE_ADJUDICATION",
+  "failed_runs": {
+    "SURF_P": {
+      "run_id": 35867575880,
+      "conclusion": "failure",
+      "preflight": "PASS",
+      "observed_failure": "P3 surface segment jobs failed in materialization with 'segmented marker: expected one match, found 0'.",
+      "classification": "TECHNICAL_MARKER_CONTRACT_MISMATCH",
+      "scientific_response_values_inspected": false
+    },
+    "GW_LB": {
+      "run_id": 35867586225,
+      "conclusion": "failure",
+      "observed_failure": "Reference executables were terminated by runner shutdown signals with exit code 143, including R512/R1024/R2048 routes.",
+      "classification": "TECHNICAL_RUNNER_INTERRUPTION",
+      "scientific_response_values_inspected": false
+    }
+  },
+  "repair": {
+    "SURF_P": {
+      "method": "Re-execute the frozen P3 surface Reference workflow using the current P3 surface materializer that emits compatibility markers consumed by the already-qualified segmented wrapper.",
+      "scientific_effect": "NONE",
+      "current_surface_materializer_blob": "31060946d233ba80e88ca42e43c90f512dc890de",
+      "forcing_changed": false,
+      "histories_changed": false,
+      "metric_changed": false,
+      "numerical_policy_changed": false,
+      "solver_or_physics_changed": false
+    },
+    "GW_LB": {
+      "method": "Partition workflow execution by independent groundwater history. Each history is materialized and executed from its own frozen initial condition; no history is split internally and no state is transferred between histories.",
+      "scientific_effect": "NONE",
+      "forcing_changed": false,
+      "histories_changed": false,
+      "history_state_continuity_changed": false,
+      "metric_changed": false,
+      "numerical_policy_changed": false,
+      "solver_or_physics_changed": false,
+      "response_based": false
+    }
+  },
+  "unchanged_authority": [
+    "S09-S12 and G06-G09 workload definitions",
+    "R512_T32 numerical comparator",
+    "R2048_T32 Reference target",
+    "R512/R1024/R2048 spatial ladder",
+    "T8/T16/T32 temporal ladder",
+    "O0/O2 identity requirement",
+    "1e-12 Reference transaction mass gate",
+    "purpose-specific metric contract",
+    "candidate gate"
+  ],
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "representation_changed": false,
+    "state_boundaries_changed": false,
+    "closure_changed": false,
+    "tolerance_relaxed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
