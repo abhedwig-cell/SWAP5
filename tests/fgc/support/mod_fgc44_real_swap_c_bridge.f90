@@ -11,7 +11,9 @@ module mod_fgc44_real_swap_c_bridge
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
+       fmr_b110_physical_state_t, fmr_dynamic_top_irrigation_forcing_t, fmr_serialized_reference_backend_t, &
+       fmr_new_b110_temporal_indicator_committed_state, construct_fmr_dynamic_top_irrigation_forcing, &
+       FMR_DYNAMIC_TOP_IRRIGATION_OK
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
@@ -36,6 +38,7 @@ module mod_fgc44_real_swap_c_bridge
        compose_modflow6_linear_boundary_term, MODFLOW6_LINEAR_BACKEND_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
@@ -101,7 +104,7 @@ module mod_fgc44_real_swap_c_bridge
   type(kernel_diagnostics_t), save :: e3d2_predictor_diagnostics
 
   public :: fgc44_swap_initialize_c, fgc44_swap_initialize_configured_c, fgc44_swap_initialize_forced_c, &
-       fgc44_swap_trial_c, fgc44_swap_discard_c
+       fgc44_swap_initialize_dynamic_irrigation_c, fgc44_swap_trial_c, fgc44_swap_discard_c
   public :: fgc44_swap_preflight_c, fgc44_ledger_prepare_c, fgc44_ledger_preflight_c
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
@@ -112,8 +115,8 @@ contains
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
-    call fgc44_initialize_impl(DEFAULT_DURATION_DAY,DEFAULT_PREDICTOR_QBOT,DEFAULT_PREDICTOR_QBOT, &
-         hcof,rhs,reference_head,fgc44_swap_initialize_c)
+    call fgc44_initialize_impl(DEFAULT_DURATION_DAY,DEFAULT_PREDICTOR_QBOT,DEFAULT_PREDICTOR_QBOT,.false., &
+         0.0_real64,0.0_real64,hcof,rhs,reference_head,fgc44_swap_initialize_c)
   end function fgc44_swap_initialize_c
 
   integer(c_int) function fgc44_swap_initialize_configured_c(duration_day,predictor_qbot,hcof,rhs,reference_head) &
@@ -121,7 +124,7 @@ contains
     real(c_double), value, intent(in) :: duration_day,predictor_qbot
     real(c_double), intent(out) :: hcof,rhs,reference_head
     call fgc44_initialize_impl(real(duration_day,real64),real(predictor_qbot,real64),real(predictor_qbot,real64), &
-         hcof,rhs,reference_head,fgc44_swap_initialize_configured_c)
+         .false.,0.0_real64,0.0_real64,hcof,rhs,reference_head,fgc44_swap_initialize_configured_c)
   end function fgc44_swap_initialize_configured_c
 
   integer(c_int) function fgc44_swap_initialize_forced_c(duration_day,predictor_qbot,top_flux,hcof,rhs,reference_head) &
@@ -129,15 +132,27 @@ contains
     real(c_double), value, intent(in) :: duration_day,predictor_qbot,top_flux
     real(c_double), intent(out) :: hcof,rhs,reference_head
     call fgc44_initialize_impl(real(duration_day,real64),real(predictor_qbot,real64),real(top_flux,real64), &
-         hcof,rhs,reference_head,fgc44_swap_initialize_forced_c)
+         .false.,0.0_real64,0.0_real64,hcof,rhs,reference_head,fgc44_swap_initialize_forced_c)
   end function fgc44_swap_initialize_forced_c
 
-  subroutine fgc44_initialize_impl(duration_day,predictor_qbot,top_flux,hcof,rhs,reference_head,c_status)
-    real(real64), intent(in) :: duration_day,predictor_qbot,top_flux
+  integer(c_int) function fgc44_swap_initialize_dynamic_irrigation_c(duration_day,predictor_qbot,irrigation_rate, &
+       ponding_max,hcof,rhs,reference_head) bind(C,name="fgc44_swap_initialize_dynamic_irrigation_c")
+    real(c_double), value, intent(in) :: duration_day,predictor_qbot,irrigation_rate,ponding_max
+    real(c_double), intent(out) :: hcof,rhs,reference_head
+    call fgc44_initialize_impl(real(duration_day,real64),real(predictor_qbot,real64),0.0_real64,.true., &
+         real(irrigation_rate,real64),real(ponding_max,real64),hcof,rhs,reference_head, &
+         fgc44_swap_initialize_dynamic_irrigation_c)
+  end function fgc44_swap_initialize_dynamic_irrigation_c
+
+  subroutine fgc44_initialize_impl(duration_day,predictor_qbot,top_flux,use_dynamic_irrigation,irrigation_rate, &
+       ponding_max,hcof,rhs,reference_head,c_status)
+    real(real64), intent(in) :: duration_day,predictor_qbot,top_flux,irrigation_rate,ponding_max
+    logical, intent(in) :: use_dynamic_irrigation
     real(c_double), intent(out) :: hcof,rhs,reference_head
     integer(c_int), intent(out) :: c_status
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: result
+    type(b110_dynamic_top_boundary_request_t) :: dynamic_request
     type(kernel_candidate_state_t) :: candidate
     type(kernel_diagnostics_t) :: diagnostics
     type(fmr_b110_physical_forcing_t) :: predictor_forcing
@@ -164,7 +179,9 @@ contains
     e3d2_predictor_result=kernel_result_t()
     e3d2_predictor_diagnostics=kernel_diagnostics_t()
     if(.not.ieee_is_finite(duration_day) .or. duration_day<=0.0_real64)return
-    if(.not.ieee_is_finite(predictor_qbot) .or. .not.ieee_is_finite(top_flux))return
+    if(.not.ieee_is_finite(predictor_qbot) .or. .not.ieee_is_finite(top_flux) .or. &
+       .not.ieee_is_finite(irrigation_rate) .or. .not.ieee_is_finite(ponding_max))return
+    if(use_dynamic_irrigation .and. (irrigation_rate < 0.0_real64 .or. ponding_max < 0.0_real64))return
     active_duration_day=duration_day
     active_predictor_qbot=predictor_qbot
 
@@ -172,6 +189,19 @@ contains
     call initialize_parameters(corrector_parameters,5)
     qeq=active_predictor_qbot
     call initialize_forcing(base_forcing,qeq,top_flux)
+    if(use_dynamic_irrigation)then
+      dynamic_request=b110_dynamic_top_boundary_request_t()
+      dynamic_request%irrigation_rate_cm_per_day=irrigation_rate
+      dynamic_request%ponding_max_cm=ponding_max
+      dynamic_request%runoff_resistance_day=1.0_real64
+      dynamic_request%runoff_exponent=1.0_real64
+      allocate(base_forcing%dynamic_top_irrigation)
+      call construct_fmr_dynamic_top_irrigation_forcing(dynamic_request,base_forcing%dynamic_top_irrigation,dynamic_status)
+      if(dynamic_status/=FMR_DYNAMIC_TOP_IRRIGATION_OK)then
+        c_status=109_c_int
+        return
+      end if
+    end if
     call initialize_column_template(column,template)
     call initialize_configs(predictor_config,corrector_config)
     c_status=102_c_int
@@ -267,7 +297,7 @@ contains
   integer(c_int) function fgc44_swap_trial_c(head_m,q_swap_m_per_s) bind(C,name="fgc44_swap_trial_c")
     real(c_double), value, intent(in) :: head_m
     real(c_double), intent(out) :: q_swap_m_per_s
-    integer :: status
+    integer :: status, dynamic_status
     fgc44_swap_trial_c=1_c_int; q_swap_m_per_s=0.0_c_double
     if(.not.initialized)return
     call participant%trial_from_origin(corrector_backend,column,template,corrector_parameters,committed,materializer, &
