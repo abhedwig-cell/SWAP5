@@ -23,10 +23,12 @@
   "pinned_ribasim": {
     "sha": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
     "verified_product_features": [
-      "LevelDemand Static min_level/max_level with demand_priority",
-      "allocation-controlled Pump/Outlet with max_flow_rate",
-      "LevelBoundary participation in allocation network"
-    ]
+      "LevelDemand min_level and max_level are independently optional; missing max_level means demand-only behavior with no surplus side.",
+      "LevelDemand is evaluated by allocation at the end of the allocation time step.",
+      "allocation-controlled Pump/Outlet supports max_flow_rate capacity.",
+      "LevelBoundary participates as hydraulic source in the allocation network."
+    ],
+    "level_demand_authority": "Deltares/Ribasim@e7fc8ade52a4bedeec10e508d2065577f33eb76a:docs/reference/node/level-demand.qmd"
   },
   "frozen_model": {
     "represented_area_m2": 1,
@@ -39,14 +41,15 @@
       1
     ],
     "supply_target_level_m": -0.2,
-    "level_demand_max_level_m": 1,
     "allocation_dt_s": 86400,
     "physical_duration_s": 86400,
     "upstream_source": "LevelBoundary with sufficient hydraulic availability",
-    "supply_route": "allocation-controlled Pump with flow_rate=0 and case-specific max_flow_rate",
+    "supply_route": "allocation-controlled Pump with flow_rate=0, positive route priority and case-specific max_flow_rate",
     "drainage": 0,
     "weir_discharge": "disabled in Q1B to isolate supply semantics",
-    "runoff_and_rapid_drainage": 0
+    "runoff_and_rapid_drainage": 0,
+    "level_demand_max_level": "MISSING_DEFAULT_PLUS_INFINITY",
+    "allocation_semantics": "one-sided lower LevelDemand at -0.2 m, evaluated at end of 86400 s allocation interval"
   },
   "cases": [
     {
@@ -92,5 +95,11 @@
     "No fixed-weir discharge in the same test.",
     "No negative SWAP infiltration exchange.",
     "No production admission."
+  ],
+  "design_rationale": [
+    "The legacy WLDIP supply rule is one-sided: it requests supply below HBWEIR-WLDIP but does not create a surplus demand above that level.",
+    "Therefore Q1B uses only LevelDemand.min_level and leaves max_level missing.",
+    "A positive route-priority cost ensures unnecessary supply flow is disfavored after the higher-priority demand objective is satisfied.",
+    "The capacity-limited case deliberately tests that unmet lower-level demand remains visible rather than being hidden by a SWAP-side storage floor."
   ]
 }
