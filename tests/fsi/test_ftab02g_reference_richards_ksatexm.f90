@@ -38,7 +38,7 @@ contains
     type(soil_water_solve_request_t)::ra,rg
     type(soil_water_solve_result_t)::resa,resg
     real(real64),target::drainage(1,numnod),subsurface(numnod),root_sink(numnod)
-    real(real64)::cof(24,numnod),ha(numnod),hg(numnod),ta(numnod),ka(numnod),ca(numnod),da(numnod)
+    real(real64)::cof(42,numnod),ha(numnod),hg(numnod),ta(numnod),ka(numnod),ca(numnod),da(numnod)
     real(real64)::tg(numnod),kg(numnod),cg(numnod),dg(numnod)
     real(real64)::head_diff,theta_diff,mass_diff,top_flux
     integer::i,status
