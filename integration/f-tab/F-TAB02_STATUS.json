@@ -23,7 +23,7 @@
     "behind_by": 0,
     "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
   },
-  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__G_REQUALIFICATION_PENDING",
+  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__G_DEDICATED_PASS_SEQUENTIAL_PENDING",
   "slices": {
     "A": {
       "status": "PASS",
@@ -54,14 +54,18 @@
       "prerequisite": "F-TAB02-G PASS followed by preregistered F-TAB02-F0 standalone exact-Hupsel selection/lifetime seam"
     },
     "G": {
-      "status": "REQUALIFICATION_PENDING_FIXTURE_AUTHORITY_REPAIR",
+      "status": "DEDICATED_PASS_SEQUENTIAL_A_E_G_PENDING",
       "preregistration": "integration/f-tab/F-TAB02_G_PREREGISTRATION.json",
       "diagnosis": "integration/f-tab/F-TAB02_G_FIXTURE_AUTHORITY_DIAGNOSIS.json",
+      "dedicated_checkpoint": "integration/f-tab/F-TAB02_G_DEDICATED_REQUALIFICATION_CHECKPOINT.json",
       "production_postimage": "398b3300fad97f485bfbefe7fa87ef9202fc0871",
       "production_mutation_since_postimage": "NONE",
-      "dedicated_rerun": 35877873722,
-      "sequential_a_through_g_rerun": 35877944838,
-      "note": "Prior G failure was traced to one-ULP re-derivation drift in qualification fixtures at the strict F-SI39 h=-2 cm threshold. Fixtures now bind exact admitted cofgen(11:12); no tolerance, solver, physics, or production-source change was made."
+      "fixture_repair_head": "100b51cad90a5bb76de1cac914658d897e84a842",
+      "dedicated_rerun": 35880260492,
+      "dedicated_result": "PASS",
+      "sequential_a_through_g_rerun": 35880260640,
+      "sequential_state": "QUEUED",
+      "note": "Dedicated G owner qualification now passes constitutive, three-regime Reference Richards, and homogeneous upper/lower serialized gates after fixture-only repairs. Final G PASS remains held until sequential A->E->G preservation replay passes."
     }
   },
   "production_scope": {
@@ -135,7 +139,7 @@
     "executable_probe_status": 3,
     "executable_probe_symbol": "F_TAB02_STATE_UNSUPPORTED_KSATEXM",
     "substitutions_authorized": false,
-    "resume_condition": "Dedicated F-TAB02-G and sequential A->E->G must pass on the unchanged production postimage; then implement and qualify F-TAB02-F0 before executing the exact M1-C3 whole-Hupsel gate."
+    "resume_condition": "Sequential A->E->G run 35880260640 must pass; then bind G qualification, implement/qualify preregistered F-TAB02-F0, and only then execute the exact M1-C3 whole-Hupsel gate."
   },
   "nonclaims": [
     "canonical production admission",
