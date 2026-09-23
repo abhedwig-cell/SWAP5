@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.rom-practical.p3.provisional-closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P3",
+  "date": "2026-09-23",
+  "status": "P3_RESULT_AVAILABLE_REFERENCE_COMPARATOR_REPAIR_PENDING",
+  "authority": {
+    "result": "integration/f-rom/ROM_PRACTICAL_P3_RESULT.json@ac08b87c15ec40e8e1c58c7148cea655ff58bf24",
+    "successful_result_run": 35900574883,
+    "comparator_repair_commit": "24c04c139392245d85865a38eeb44a69ebd387dc"
+  },
+  "findings": [
+    "The frozen 60-day daily workload is substantially harder than the short P2A/P2B workloads.",
+    "S4 remains numerically qualified on all four tested materials. B11 and B16 are DAILY_APPROXIMATE; B02 and B05 show candidate-specific daily storage-extremum timing errors of 16 and 19 days against a zero-day R64-vs-R128 comparator.",
+    "G8 is numerically qualified for B11 and B16 and has zero daily flux-sign mismatch, zero reversal-sequence mismatch and zero reversal-timing error in those cases.",
+    "G8 is NUMERICAL_BLOCKED for B02 and B05 under the frozen candidate dt=0.01 day, with iterative Heun corrector non-convergence. This is a practical robustness failure under the frozen P3 numerical policy.",
+    "For qualified 60-day cases, the current Python Layer-ROM implementation is slower than the compiled R128 Reference harness: S4 ratios are about 2.0-2.7 and G8 about 3.0-3.3. Earlier short-horizon speed signals therefore do not transfer to this implementation/workload."
+  ],
+  "correction_note": "The persisted successful P3 result used an R128 target and a nominal R64 comparator. The GW R64 route was later found to retain a stale P2A geometry guard. A repair is queued; no GW comparator-based observability conclusion is final until that rerun completes. The R128 target outputs and candidate numerical-blocking outcomes are unaffected by this guard issue.",
+  "practical_implications": [
+    "Do not claim practical speedup for the current Python S4/G8 research implementation on long daily workloads.",
+    "Do not treat G8 as robust across the tested daily panel because B02 and B05 fail numerically.",
+    "Do not tune dt or increase state count inside P3; any numerical-policy repair requires a separately frozen work unit.",
+    "P-ROM-ET remains closed."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
