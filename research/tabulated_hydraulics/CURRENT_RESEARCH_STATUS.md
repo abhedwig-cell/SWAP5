@@ -2,7 +2,7 @@
 
 Date: 2026-09-23
 
-Status: **K0 RESEARCH CLOSED / PRODUCTION HANDOFF ACTIVE / SCALE40 SUPPLEMENT PENDING**
+Status: **K0 RESEARCH CLOSED / PRODUCTION HANDOFF ACTIVE / SCALE40 PASS**
 
 This file is the current navigation authority for the TAB-HYD research branch. Older long-form status and experiment records remain evidence for their recorded phase but do not override this summary.
 
@@ -125,35 +125,51 @@ Generic external tabulated hydraulics is a separate future capability.
 
 ## Supplemental 40-node scale gate
 
-Purpose:
-
-check whether the typed K0 acceleration remains visible when the Reference-Richards fixture grows from 4 to 40 nodes.
+The supplemental 40-node typed Reference-Richards scaling question is closed.
 
 Preregistration:
 
 `TYPED_REFERENCE_RICHARDS_SCALE40_PREREGISTRATION.md`
 
-Current rerun:
+Result:
 
-`35882147418`
+`TYPED_REFERENCE_RICHARDS_SCALE40_RESULT.md`
 
-Earlier failures were technical harness failures before model evaluation. The repaired harness now:
+Controlling run:
 
-- uses a valid 40-node grid stub;
-- writes/reads scenario identity consistently;
-- compiles the actual 40-node program;
-- initializes analytical and generated routes with provider-consistent water contents;
-- applies prospective fidelity, mass and iteration gates.
+`35883123788`
 
-This scale gate is supplemental. It does not reopen K0 research closure.
+Independent execution-equivalent repeat:
+
+`35883189377`
+
+Both runs PASS all five hydraulic scenarios.
+
+Across the controlling run:
+
+- max head differences are between `3.24e-7` and `1.38e-5 cm`;
+- mass-residual differences are of order `1e-15 cm`;
+- nonlinear iteration counts are identical route-by-route;
+- generated-provider timing reductions are approximately 30–33%.
+
+The independent repeat reproduces the scientific values and the sign/material
+size of the performance reduction, with timing deltas approximately 34–39%.
+
+These percentages remain fixture-specific characterization. The supported scale
+claim is that the typed K0 acceleration survives enlargement from 4 to 40 nodes
+in the bounded current-canonical Reference-Richards fixture.
+
+Classification:
+
+**SCALE_PASS / K0 RESEARCH SCALE QUESTION CLOSED**
 
 ## Next safe action
 
-1. Read run `35882147418`.
-2. Classify it as:
-   - SCALE_PASS,
-   - PERFORMANCE_SCALE_LIMIT, or
-   - SCIENTIFIC_SCALE_GATE_FAILURE.
-3. Persist the scale result.
-4. Do not tune representation parameters in response to timing alone.
-5. Keep production admission and F-TAB02 sequencing in the production workstream.
+No further K0 representation tuning is justified.
+
+Research should remain closed unless the separately owned production F-TAB02
+workstream exposes a new concrete scientific discrepancy or dependency that
+falls within TAB-HYD research ownership.
+
+Production admission, F0 provider selection/lifetime, and exact whole-Hupsel
+qualification remain production-workstream responsibilities.
