@@ -1,0 +1,62 @@
+name: F-ROM-PURPOSE P3 GW Reference consolidation
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-gw-reference-consolidation
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify consolidation authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/consolidate_rom_purpose_p3_gw_reference.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_BINDING.json'))
+          assert b['status']=='BOUND_AFTER_SOURCE_AND_MISSING_SLICE_REPAIR'
+          assert b['source_run_conclusion']=='failure'
+          assert b['missing_slice_repair_run_conclusion']=='success'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Download successful source slices
+        run: |
+          set -euo pipefail
+          source_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_BINDING.json'))['source_run'])")"
+          mkdir -p /tmp/source
+          gh run download "$source_run" --repo abhedwig-cell/SWAP5 -p 'p3gwfix-*' -D /tmp/source
+      - name: Download repaired missing slices
+        run: |
+          set -euo pipefail
+          repair_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_BINDING.json'))['missing_slice_repair_run'])")"
+          mkdir -p /tmp/repair
+          gh run download "$repair_run" --repo abhedwig-cell/SWAP5 -n p3gw-repaired-missing-slices -D /tmp/repair
+      - name: Consolidate complete GW Reference route set
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          python3 tests/rom/consolidate_rom_purpose_p3_gw_reference.py             --source-root /tmp/source             --repair-root /tmp/repair             --repair-binding integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_BINDING.json             --output-dir routes
+          sha256sum routes/* > routes/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3ref-gw-routes
+          path: routes/
+          if-no-files-found: error
