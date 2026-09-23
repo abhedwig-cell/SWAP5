@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "work_unit": "SW-RIB-PA01",
-  "phase": "CANDIDATE_QUALIFIED",
-  "status": "CANDIDATE_GATE_PASS__INDEPENDENT_VQ_IN_PROGRESS",
+  "phase": "RECONCILE",
+  "status": "BLOCKED_ON_TRANSACTION_AND_GEOMETRY_PROFILE_RECONCILIATION",
   "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "research_closeout": "48df989b098d73208eed2496005b656f588ebffd",
   "candidate_branch": "work/sw-rib-pa01-coupled-profile-production-admission",
@@ -11,13 +11,14 @@
     "src/runtime/mod_fmr_drainage_response_binding.f90",
     "src/runtime/mod_ribasim_surface_water_profile_contract.f90"
   ],
-  "tested": true,
+  "tested": false,
   "independently_qualified": false,
   "canonical_admitted": false,
-  "next_action": "Complete SW-RIB-PA01-VQ on the frozen candidate postimage. If it passes, freeze the independent evidence and open the separate canonical-promotion gate. Keep accepted external-head lineage/revision provenance as an explicit later end-to-end coupler admission requirement.",
+  "next_action": "Do not promote PA01 as the full coupled profile. First close F-APP09 transaction-participant qualification, then reconcile PA01 into either (a) the F-APP09 transaction-safe Ribasim-native profile or (b) a separately named pre-resolved-head/legacy-geometry emulation profile.",
   "blockers": [
-    "Independent qualification is still in progress.",
-    "Accepted external-head lineage/revision provenance is not part of PA01 and remains required before a full SWAP5+Ribasim end-to-end production claim."
+    "Current PA01 wrapper calls the ordinary serialized executor and commits without a realized-external-transfer comparison, so it does not implement the Q3A mismatch -> discard -> same-origin recomposition rule required for a general coupled profile.",
+    "PA01 freezes Q1H epsilon=1e-5 legacy STTAB emulation, while F-APP09 freezes Ribasim-native surface-water geometry for the first production profile; these are distinct application contracts and may not share one V1 authority label.",
+    "F-APP09 transaction participant owner gate is not yet qualified."
   ],
   "candidate_source_postimage": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
   "candidate_qualified": true,

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01",
+  "amendment": "SCOPE_RECONCILIATION_HOLD_02",
+  "date": "2026-09-23",
+  "classification": "ARCHITECTURE_SCOPE_HOLD_BEFORE_CANDIDATE_ADMISSION",
+  "findings": [
+    "SW-RIB-SWM01 Q3A requires a candidate signed SWAP transfer to be compared with the externally realized feasible transfer before SWAP commit; mismatch requires discard and recomposition from the same accepted origins.",
+    "The current PA01 wrapper binds accepted external heads and delegates directly to the ordinary serialized executor, which may commit the SWAP interval before any external realized-transfer receipt is compared.",
+    "F-APP09 implements the missing checkpoint -> trial -> realized-transfer comparison -> discard/replay or sole commit boundary.",
+    "PA01 selects the Q1H epsilon=1e-5 legacy STTAB emulation while F-APP09's first production profile selects Ribasim-native surface-water geometry. Both are defensible but they are not the same V1 profile."
+  ],
+  "disposition": {
+    "current_pa01_wrapper": "PRE_RESOLVED_HEAD_EXECUTION_SUBPROFILE_ONLY",
+    "full_coupled_profile_admission": "HELD",
+    "transaction_authority": "F-APP09 participant candidate must qualify before full coupled admission.",
+    "geometry_authority": "Choose and name the production geometry profile explicitly. Do not silently combine RIBASIM_NATIVE and Q1H_LEGACY_EMULATION under one profile id."
+  },
+  "allowed_work": [
+    "PA01 tests may continue as diagnostics for typed accepted-head binding, owner-XOR and Q4B mass behavior.",
+    "No independent or canonical admission claim for the general coupled profile may use a PA01 candidate PASS until this hold is reconciled."
+  ],
+  "forbidden_claims": [
+    "PA01 candidate PASS proves cross-model availability/recomposition.",
+    "Q1H epsilon geometry and Ribasim-native geometry are interchangeable.",
+    "PA01 supersedes the F-APP09 transaction participant."
+  ],
+  "production_admission": false,
+  "canonical_admission": false
+}
