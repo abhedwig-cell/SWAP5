@@ -150,6 +150,11 @@ contains
     heads(1)=-12.25_real64
     call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial1,status)
     expected=signed_rate*duration
+    if (status /= FMR_SW_PARTICIPANT_OK .or. .not. trial1%valid) then
+      write(*,'(A,I0)') 'FAPP09_DIAG_POSITIVE_TRIAL_STATUS=',status
+      write(*,'(A,L1)') 'FAPP09_DIAG_POSITIVE_TRIAL_VALID=',trial1%valid
+      write(*,'(A,I0)') 'FAPP09_DIAG_POSITIVE_TRIAL_SUBSTEPS=',trial1%accepted_substeps
+    end if
     call require(status==FMR_SW_PARTICIPANT_OK .and. trial1%valid,'positive candidate trial')
     call require(trial1%accepted_substeps==1,'single accepted substep profile')
     call require(abs(trial1%signed_soil_to_surface_exchange_cm-expected)<=exchange_tol,'positive requested exchange')
