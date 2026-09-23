@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.rom_root.s2r.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2R",
+  "date": "2026-09-23",
+  "status": "CLOSED_PRESCRIBED_SINK_HARNESS_QUALIFIED_STAGE3_MAY_BE_PREREGISTERED",
+  "result": "integration/f-rom/ROM_ROOT_S2R_RESULT.json",
+  "decision": {
+    "prescribed_sink_harness_qualified": true,
+    "stage3_dynamic_feedback_may_be_preregistered": true,
+    "stage3_executed": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "production_rom_authorized": false
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-S3",
+    "candidate_feedback": "theta_bar_i -> inverse retention h_bar_i -> unchanged Feddes alpha(h_bar_i) -> exact retained root fraction",
+    "representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "reference": "ROM_ROOT_RA02R_RESULT.json",
+    "rule": "Preregister componentwise comparison and diagnostic interpretation before generating any dynamic reduced-feedback response."
+  },
+  "model_changed": false
+}
