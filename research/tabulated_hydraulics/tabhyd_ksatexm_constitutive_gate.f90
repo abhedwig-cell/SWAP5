@@ -22,8 +22,8 @@ program tabhyd_ksatexm_constitutive_gate
   real(real64) :: frac,expo,relsa,relst,f,err,relerr
   real(real64) :: max_theta,max_c,max_logk,max_branch_abs,max_branch_rel
   real(real64) :: max_transition_abs, continuity_jump, below_kdiff
-  real(real64) :: kleft,kright,keq
-  integer :: iu,ios,i,j,q,mismatch,mismatch_local,active_count
+  real(real64) :: kleft,kright,keq,mismatch_hmin(NODES),mismatch_hmax(NODES)
+  integer :: iu,ios,i,j,q,mismatch,mismatch_local,active_count,mismatch_node(NODES)
   character(len=512) :: path
   character(len=32) :: label(NODES)
 
@@ -77,6 +77,9 @@ program tabhyd_ksatexm_constitutive_gate
   max_transition_abs=0.0_real64
   mismatch=0
   mismatch_local=0
+  mismatch_node=0
+  mismatch_hmin=huge(1.0_real64)
+  mismatch_hmax=-huge(1.0_real64)
   active_count=0
 
   do q=1,NSCAN
@@ -117,7 +120,12 @@ program tabhyd_ksatexm_constitutive_gate
     do i=1,NODES
       relsa=(ta(i)-cof(1,i))/(cof(2,i)-cof(1,i))
       relst=(tt(i)-cof(1,i))/(cof(2,i)-cof(1,i))
-      if ((relsa>cof(11,i)) .neqv. (relst>cof(11,i))) mismatch_local=mismatch_local+1
+      if ((relsa>cof(11,i)) .neqv. (relst>cof(11,i))) then
+        mismatch_local=mismatch_local+1
+        mismatch_node(i)=mismatch_node(i)+1
+        mismatch_hmin(i)=min(mismatch_hmin(i),h(i))
+        mismatch_hmax(i)=max(mismatch_hmax(i),h(i))
+      end if
       if (relst>cof(11,i)) then
         f=(relst-cof(11,i))/(1.0_real64-cof(11,i))
         kc(i)=f*cof(10,i)+(1.0_real64-f)*cof(12,i)
@@ -195,6 +203,9 @@ program tabhyd_ksatexm_constitutive_gate
   write(*,'(a,es24.16)') 'KX01_TRANSITION_K_MAX_ABS=',max_transition_abs
   write(*,'(a,i0)') 'KX01_BRANCH_CLASS_MISMATCH=',mismatch
   write(*,'(a,i0)') 'KX01_BRANCH_CLASS_MISMATCH_LOCAL=',mismatch_local
+  write(*,'(a,2(1x,i0))') 'KX01_BRANCH_CLASS_MISMATCH_NODE',mismatch_node
+  write(*,'(a,2(1x,es24.16))') 'KX01_BRANCH_MISMATCH_HMIN',mismatch_hmin
+  write(*,'(a,2(1x,es24.16))') 'KX01_BRANCH_MISMATCH_HMAX',mismatch_hmax
   write(*,'(a,i0)') 'KX01_ACTIVE_SAMPLES=',active_count
   write(*,'(a,es24.16)') 'KX01_CONTINUITY_LOCAL_JUMP=',continuity_jump
   write(*,'(a,2(1x,es24.16))') 'KX01_THRESHOLDS',cof(11,1),cof(11,2)
