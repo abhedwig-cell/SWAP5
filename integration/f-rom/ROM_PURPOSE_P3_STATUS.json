@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.rom-purpose.p3.status.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "status": "P3_PREREGISTERED_REFERENCE_QUALIFICATION_REQUIRED",
+  "repository": {
+    "branch": "work/f-rom-purpose",
+    "preregistration_commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
+    "live_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "completed": [
+    "RECONCILE",
+    "P3_AUTHORITY_BINDING",
+    "PHYSICAL_PURPOSE_SPECIFIC_REPRESENTATION_LADDER",
+    "BLIND_VALIDATION_WORKLOAD_FREEZE",
+    "P3_PREREGISTRATION"
+  ],
+  "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
+  "candidate_response_authorized": false,
+  "next_actions": [
+    "Implement response-blind P3 Reference materialization for S09-S12 and G06-G09.",
+    "Qualify R512_T32/R1024_T32/R2048_T32 and R2048_T8/T16/T32 with O0/O2 identity and frozen mass/observability gates.",
+    "Persist P3 Reference result.",
+    "Only if all four purpose/material Reference cases qualify, bind and execute the frozen S4/S6/S8 and G4/G6/G8 candidate ladders with U4/U6/U8 comparators."
+  ],
+  "scientific_firewall": {
+    "any_new_p3_reference_response_seen": false,
+    "any_new_p3_candidate_response_seen": false,
+    "closure_research_open": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
