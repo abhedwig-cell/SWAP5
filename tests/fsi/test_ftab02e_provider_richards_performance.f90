@@ -70,11 +70,45 @@ contains
     checksum_g=0.0_real64
     do r=1,NROUND
       if (mod(r,2)==1) then
-        call time_provider(.false.,at(r),checksum_a)
-        call time_provider(.true.,gt(r),checksum_g)
+        call cpu_time(t0)
+        do rep=1,NREPEAT
+          do j=1,NSEQ
+            call analytic%evaluate(seq(:,j),ta,ka,ca,da)
+            checksum_a=checksum_a+ta(1)+ka(n)+ca(1+mod(j-1,n))
+          end do
+        end do
+        call cpu_time(t1)
+        at(r)=t1-t0
+
+        call cpu_time(t0)
+        do rep=1,NREPEAT
+          do j=1,NSEQ
+            call generated%evaluate(seq(:,j),tg,kg,cg,dg)
+            checksum_g=checksum_g+tg(1)+kg(n)+cg(1+mod(j-1,n))
+          end do
+        end do
+        call cpu_time(t1)
+        gt(r)=t1-t0
       else
-        call time_provider(.true.,gt(r),checksum_g)
-        call time_provider(.false.,at(r),checksum_a)
+        call cpu_time(t0)
+        do rep=1,NREPEAT
+          do j=1,NSEQ
+            call generated%evaluate(seq(:,j),tg,kg,cg,dg)
+            checksum_g=checksum_g+tg(1)+kg(n)+cg(1+mod(j-1,n))
+          end do
+        end do
+        call cpu_time(t1)
+        gt(r)=t1-t0
+
+        call cpu_time(t0)
+        do rep=1,NREPEAT
+          do j=1,NSEQ
+            call analytic%evaluate(seq(:,j),ta,ka,ca,da)
+            checksum_a=checksum_a+ta(1)+ka(n)+ca(1+mod(j-1,n))
+          end do
+        end do
+        call cpu_time(t1)
+        at(r)=t1-t0
       end if
     end do
 
@@ -114,27 +148,6 @@ contains
     write(*,'(a,i0)') 'F_TAB02_E_GENERATED_STATE_BYTES=',state%estimated_bytes()
     write(*,'(a)') 'F_TAB02_E_PROVIDER_TIMING_CAPTURED=PASS'
 
-  contains
-    subroutine time_provider(use_generated,seconds,checksum)
-      logical,intent(in)::use_generated
-      real(real64),intent(out)::seconds
-      real(real64),intent(inout)::checksum
-      integer::rr,jj
-      call cpu_time(t0)
-      do rr=1,NREPEAT
-        do jj=1,NSEQ
-          if(use_generated) then
-            call generated%evaluate(seq(:,jj),tg,kg,cg,dg)
-            checksum=checksum+tg(1)+kg(n)+cg(1+mod(jj-1,n))
-          else
-            call analytic%evaluate(seq(:,jj),ta,ka,ca,da)
-            checksum=checksum+ta(1)+ka(n)+ca(1+mod(jj-1,n))
-          end if
-        end do
-      end do
-      call cpu_time(t1)
-      seconds=t1-t0
-    end subroutine time_provider
   end subroutine provider_benchmark
 
   subroutine richards_profile(label,ores,osat,alpha,npar,ksat,lexp,hbase)
@@ -150,13 +163,13 @@ contains
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: wa, wg
     type(soil_water_solve_request_t) :: ra, rg
-    type(soil_water_solve_result_t) :: resa, resg
+    type(soil_water_solve_result_t) :: resa, resg, timed_res
     real(real64), target :: drainage(1,numnod),subsurface(numnod),root_sink(numnod)
     real(real64) :: cofgen(24,numnod), heads(numnod),ta(numnod),ka(numnod),ca(numnod),da(numnod)
     real(real64) :: tg(numnod),kg(numnod),cg(numnod),dg(numnod), top_flux
     real(real64) :: at(NRICH_ROUND),gt(NRICH_ROUND),ma,mg,checksum_a,checksum_g,t0,t1
     real(real64) :: head_diff,theta_diff,mass_diff
-    integer :: i,r,rep,status
+    integer :: i,r,rep,q,status
 
     call fill_cofgen(cofgen,ores,osat,alpha,npar,ksat,lexp)
     call initialize_b110_default_mvg_parameters(hp,cofgen)
@@ -181,8 +194,8 @@ contains
     call generated%evaluate(heads,tg,kg,cg,dg)
     top_flux=-0.97_real64*ka(1)
 
-    call build_request(ra,analytic,heads,ta,top_flux)
-    call build_request(rg,generated,heads,tg,top_flux)
+    call build_richards_request(ra,analytic,parameters,source_sink,top_provider,heads,ta,top_flux)
+    call build_richards_request(rg,generated,parameters,source_sink,top_provider,heads,tg,top_flux)
 
     call solver%solve(ra,wa,resa)
     call solver%solve(rg,wg,resg)
@@ -202,11 +215,41 @@ contains
     checksum_a=0.0_real64; checksum_g=0.0_real64
     do r=1,NRICH_ROUND
       if(mod(r,2)==1) then
-        call time_solve(.false.,at(r),checksum_a)
-        call time_solve(.true.,gt(r),checksum_g)
+        call cpu_time(t0)
+        do q=1,NRICH_REPEAT
+          call solver%solve(ra,wa,timed_res)
+          if(timed_res%status/=SW_SOLVE_CONVERGED) error stop 'timed analytical Richards route failed'
+          checksum_a=checksum_a+timed_res%candidate_state%pressure_head(1)+timed_res%bottom_flux
+        end do
+        call cpu_time(t1)
+        at(r)=t1-t0
+
+        call cpu_time(t0)
+        do q=1,NRICH_REPEAT
+          call solver%solve(rg,wg,timed_res)
+          if(timed_res%status/=SW_SOLVE_CONVERGED) error stop 'timed generated Richards route failed'
+          checksum_g=checksum_g+timed_res%candidate_state%pressure_head(1)+timed_res%bottom_flux
+        end do
+        call cpu_time(t1)
+        gt(r)=t1-t0
       else
-        call time_solve(.true.,gt(r),checksum_g)
-        call time_solve(.false.,at(r),checksum_a)
+        call cpu_time(t0)
+        do q=1,NRICH_REPEAT
+          call solver%solve(rg,wg,timed_res)
+          if(timed_res%status/=SW_SOLVE_CONVERGED) error stop 'timed generated Richards route failed'
+          checksum_g=checksum_g+timed_res%candidate_state%pressure_head(1)+timed_res%bottom_flux
+        end do
+        call cpu_time(t1)
+        gt(r)=t1-t0
+
+        call cpu_time(t0)
+        do q=1,NRICH_REPEAT
+          call solver%solve(ra,wa,timed_res)
+          if(timed_res%status/=SW_SOLVE_CONVERGED) error stop 'timed analytical Richards route failed'
+          checksum_a=checksum_a+timed_res%candidate_state%pressure_head(1)+timed_res%bottom_flux
+        end do
+        call cpu_time(t1)
+        at(r)=t1-t0
       end if
     end do
     ma=median_small(at); mg=median_small(gt)
@@ -224,60 +267,45 @@ contains
     write(*,'(a,f14.8)') 'F_TAB02_E_RICHARDS_DELTA_PCT=',100.0_real64*(mg/ma-1.0_real64)
     write(*,'(a)') 'F_TAB02_E_RICHARDS_TIMING_CAPTURED=PASS'
 
-  contains
-    subroutine build_request(req,provider,h0,theta0,qtop)
-      type(soil_water_solve_request_t),intent(out)::req
-      class(constitutive_hydraulics_provider_t),target,intent(in)::provider
-      real(real64),intent(in)::h0(:),theta0(:),qtop
-      req=soil_water_solve_request_t()
-      req%parameters=>parameters
-      req%base_state%active_nodes=numnod
-      allocate(req%base_state%pressure_head(numnod),req%base_state%water_content(numnod))
-      req%base_state%pressure_head=h0; req%base_state%water_content=theta0
-      req%base_state%ponding_depth=0.0_real64; req%base_state%groundwater_level=-100.0_real64
-      req%step_duration=STEP_DURATION
-      req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
-      req%boundary%bottom_mode=5
-      req%boundary%top_flux=qtop
-      req%boundary%top_head=h0(1)
-      req%boundary%bottom_flux=0.0_real64
-      req%boundary%bottom_head=h0(numnod)+2.0_real64
-      req%physical%macropore_active=.false.
-      req%numerical%max_iterations=20
-      req%numerical%max_backtracking=8
-      req%numerical%conductivity_implicit_mode=0
-      req%numerical%conductivity_mean_method=1
-      req%numerical%min_step_duration=1.0e-8_real64
-      req%numerical%compartment_balance_tolerance=1.0e-7_real64
-      req%numerical%total_balance_tolerance=1.0e-7_real64
-      req%numerical%head_abs_tolerance=1.0e-6_real64
-      req%numerical%head_rel_tolerance=1.0e-6_real64
-      req%numerical%ponding_tolerance=1.0e-8_real64
-      req%evaluation%constitutive=>provider
-      req%evaluation%source_sink=>source_sink
-      req%evaluation%top_boundary=>top_provider
-    end subroutine build_request
-
-    subroutine time_solve(use_generated,seconds,checksum)
-      logical,intent(in)::use_generated
-      real(real64),intent(out)::seconds
-      real(real64),intent(inout)::checksum
-      type(soil_water_solve_result_t)::res
-      integer::q
-      call cpu_time(t0)
-      do q=1,NRICH_REPEAT
-        if(use_generated) then
-          call solver%solve(rg,wg,res)
-        else
-          call solver%solve(ra,wa,res)
-        end if
-        if(res%status/=SW_SOLVE_CONVERGED) error stop 'timed Richards route failed'
-        checksum=checksum+res%candidate_state%pressure_head(1)+res%bottom_flux
-      end do
-      call cpu_time(t1)
-      seconds=t1-t0
-    end subroutine time_solve
   end subroutine richards_profile
+
+  subroutine build_richards_request(req,provider,parameters,source_sink,top_provider,h0,theta0,qtop)
+    type(soil_water_solve_request_t),intent(out)::req
+    class(constitutive_hydraulics_provider_t),target,intent(in)::provider
+    type(soil_water_parameter_set_t),target,intent(in)::parameters
+    type(b110_source_sink_provider_t),target,intent(in)::source_sink
+    type(fixed_flux_top_boundary_provider_t),target,intent(in)::top_provider
+    real(real64),intent(in)::h0(:),theta0(:),qtop
+    req=soil_water_solve_request_t()
+    req%parameters=>parameters
+    req%base_state%active_nodes=numnod
+    allocate(req%base_state%pressure_head(numnod),req%base_state%water_content(numnod))
+    req%base_state%pressure_head=h0
+    req%base_state%water_content=theta0
+    req%base_state%ponding_depth=0.0_real64
+    req%base_state%groundwater_level=-100.0_real64
+    req%step_duration=STEP_DURATION
+    req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
+    req%boundary%bottom_mode=5
+    req%boundary%top_flux=qtop
+    req%boundary%top_head=h0(1)
+    req%boundary%bottom_flux=0.0_real64
+    req%boundary%bottom_head=h0(numnod)+2.0_real64
+    req%physical%macropore_active=.false.
+    req%numerical%max_iterations=20
+    req%numerical%max_backtracking=8
+    req%numerical%conductivity_implicit_mode=0
+    req%numerical%conductivity_mean_method=1
+    req%numerical%min_step_duration=1.0e-8_real64
+    req%numerical%compartment_balance_tolerance=1.0e-7_real64
+    req%numerical%total_balance_tolerance=1.0e-7_real64
+    req%numerical%head_abs_tolerance=1.0e-6_real64
+    req%numerical%head_rel_tolerance=1.0e-6_real64
+    req%numerical%ponding_tolerance=1.0e-8_real64
+    req%evaluation%constitutive=>provider
+    req%evaluation%source_sink=>source_sink
+    req%evaluation%top_boundary=>top_provider
+  end subroutine build_richards_request
 
   subroutine read_fixture(path,cofgen,n)
     character(len=*),intent(in)::path
