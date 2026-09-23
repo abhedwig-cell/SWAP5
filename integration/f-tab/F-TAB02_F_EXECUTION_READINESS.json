@@ -4,8 +4,8 @@
   "title": "Exact whole-Hupsel execution readiness reconciliation",
   "date": "2026-09-23",
   "branch": "work/f-tab02-generated-k0-provider",
-  "source_postimage": "4994170390b6865ffd8eaebfb6d02fd7d9f73382",
-  "classification": "EXACT_HUPSEL_INPUTS_LOCATED_AND_BOUND__WHOLE_APPLICATION_BUILD_HARNESS_REMAINS",
+  "source_postimage": "8e6787af0aebab97346e5d6554eca8e36f1da0b3",
+  "classification": "EXACT_AUTHORITY_PREVIOUSLY_VERIFIED_EXTERNALLY__PUBLIC_GITHUB_LINEAGE_COPIES_TESTED_AND_NOT_BYTE_IDENTICAL__APPLICATION_HARNESS_REMAINS",
   "reconciled_facts": {
     "F0_selection_lifetime": "PASS",
     "G_bounded_exact_hupsel_ksatexm": "PASS",
@@ -16,8 +16,10 @@
     "current_ftab02_main_workflow_executes_F": false,
     "current_source_snapshot_workflow_executes_F": false,
     "historical_m1_owner_runner_is_candidate_drop_in": false,
-    "exact_hupsel_inputs_located_on_github": true,
-    "exact_hupsel_input_source": "SWAP-model/swap-testcases@a1b15843e9e9732713bed1ee41d09c16c3136593/cases/hupselbrook/legacy"
+    "exact_hupsel_inputs_located_on_github": false,
+    "exact_hupsel_input_source": "Prior F-VQ99 external official SWAP_4.3.1 distribution evidence; exact fixture bytes were not committed to the public SWAP5 repository.",
+    "public_hupsel_lineage_copies_located_on_github": true,
+    "public_hupsel_lineage_raw_identity": "NO_MATCH"
   },
   "historical_runner_reason": "tests/m1/run_m1_c3_final_owner_qualification.sh freezes the historical three-file production delta and historical compile roster; reusing it unchanged would qualify the historical M1-C3 contract rather than the F-TAB02 generated candidate.",
   "exact_asset_authority": {
@@ -25,9 +27,9 @@
     "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "size_bytes": 8959314,
     "materialized_and_verified_in_prior_production_evidence": true,
-    "bound_to_current_github_actions_F_job": true,
+    "bound_to_current_github_actions_F_job": false,
     "binding_workflow": ".github/workflows/f-tab02-f-exact-hupsel-assets.yml",
-    "note": "The exact Hupsel input members are fetched from an immutable GitHub commit and checked against the preregistered hashes. B1.11 source/archive authority remains inherited from the prior exact M1-C3 qualification and is not redefined by this binding."
+    "note": "The pinned public SWAP-model/swap-testcases lineage copies were tested and are not byte-identical to the preregistered F authority. F-VQ99 records that the exact official distribution fixture was user-supplied external evidence and was not committed to the public repository. Do not substitute public lineage copies."
   },
   "source_snapshot_repair": {
     "commit": "3cae08e70317450072c7db01726775d495d4a4e9",
@@ -55,6 +57,6 @@
     "timestep_mutation": "NONE",
     "retry_policy_mutation": "NONE"
   },
-  "verdict": "HUPSEL_INPUT_ASSET_BLOCKER_CLEARED__NEXT_WORK_IS_WHOLE_APPLICATION_BUILD_EXECUTION_HARNESS",
+  "verdict": "DO_NOT_CLAIM_ASSET_BLOCKER_CLEARED__PUBLIC_LINEAGE_SUBSTITUTION_REJECTED__EXACT_AUTHORITY_EXISTS_IN_PRIOR_EVIDENCE_BUT_BYTES_NOT_REPOSITORY_RESIDENT",
   "research_reopen": false
 }
