@@ -1,0 +1,130 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r2.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R2",
+  "date": "2026-09-23",
+  "title": "Real-Ribasim external-owner equivalence with product-conformant linear fixed-weir mapping",
+  "predecessor": {
+    "work_unit": "SW-RIB-SWM01-Q1A-V1",
+    "result": "FALSIFIED_RIBASIM_RATING_MAPPING_NOT_EXTERNAL_STATE_OWNERSHIP",
+    "authority": "integration/research/SW_RIB_SWM01_Q1A_V1_RESULT.json",
+    "reason_for_new_candidate": "The V1 three-point table was not equivalent to the intended linear Q(h) because Ribasim uses PCHIP interpolation."
+  },
+  "purpose": "Retest the same external surface-water ownership claim with a Ribasim representation that exactly encodes the intended linear above-crest fixed-weir Q(h) while preserving Ribasim's native zero-flow rule below the lowest table level.",
+  "authorities": {
+    "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "swap5_oracle": "F-CI52/F-VQ59 restricted fixed-weir process",
+    "oracle_path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "product_interpolation_authority": "Pinned Ribasim TabulatedRatingCurve documentation: PCHIP interpolation and Q=0 below lowest supplied level."
+  },
+  "scientific_change_from_v1": {
+    "only_change": "Ribasim rating table representation",
+    "v1": {
+      "level_m": [
+        -1,
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0,
+        0.5
+      ]
+    },
+    "r2": {
+      "level_m": [
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0.5
+      ]
+    },
+    "physical_law_unchanged": "Q=0 for h<=0; Q=0.5*h m3/day for 0<h<=1",
+    "justification": "With exactly two table points PCHIP is the straight segment between them; below 0 m Ribasim's documented below-lowest rule gives Q=0."
+  },
+  "frozen_mapping": {
+    "represented_area_m2": 1,
+    "level_domain_m": [
+      -1,
+      1
+    ],
+    "storage_mapping": "V_m3 = level_m + 1.0 for 1 m2 constant Basin area; SWAP oracle storage_cm converts as V_m3 = storage_cm * 0.01",
+    "weir_crest_m": 0,
+    "oracle_rating_exponent": 1,
+    "oracle_rating_coefficient_cm_per_day_per_cm_head": 0.5,
+    "ribasim_rating_points": {
+      "level_m": [
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0.5
+      ]
+    },
+    "oracle_supply_capacity_cm_per_day": 0,
+    "oracle_supply_dip_cm": 10,
+    "duration_day": 0.0001,
+    "duration_seconds": 8.64,
+    "ribasim_solver_saveat_seconds": 1
+  },
+  "cases": [
+    {
+      "id": "C0_NO_DISCHARGE",
+      "initial_storage_cm": 80,
+      "initial_level_cm": -20,
+      "secondary_drainage_cm_per_day": 8
+    },
+    {
+      "id": "C1_MODERATE_DISCHARGE",
+      "initial_storage_cm": 130,
+      "initial_level_cm": 30,
+      "secondary_drainage_cm_per_day": 20
+    },
+    {
+      "id": "C2_HIGH_DISCHARGE",
+      "initial_storage_cm": 170,
+      "initial_level_cm": 70,
+      "secondary_drainage_cm_per_day": 5
+    }
+  ],
+  "comparators": [
+    "final surface-water level",
+    "final surface-water storage",
+    "integrated drainage input volume",
+    "integrated weir discharge inferred from the independent Ribasim mass ledger",
+    "oracle mass residual",
+    "Ribasim mass residual"
+  ],
+  "tolerances": {
+    "final_level_m_abs": 1e-8,
+    "final_storage_m3_abs": 1e-8,
+    "integrated_discharge_m3_abs": 1e-8,
+    "oracle_mass_residual_storage_cm_abs": 1e-12,
+    "ribasim_mass_residual_m3_abs": 1e-8,
+    "auxiliary_initial_level_serialization_abs_m": 1e-10
+  },
+  "preregistered_method_difference": {
+    "explanation": "F-CI52 uses an implicit end-step rating balance; Ribasim integrates the continuous linear ODE. This numerical-method difference is expected and remains well inside the frozen 1e-8 m endpoint tolerance.",
+    "C1_predicted_continuous_minus_oracle_m": 1.249895742461149e-10,
+    "C2_predicted_continuous_minus_oracle_m": -7.499375564989919e-10
+  },
+  "hypotheses": [
+    "C0 remains below crest with zero discharge and matches the canonical oracle.",
+    "C1 and C2 discharge with the intended linear Q(h).",
+    "All three final levels and storages match the canonical F-CI52 oracle within the unchanged frozen tolerances.",
+    "Integrated Ribasim discharge inferred from the mass ledger matches the oracle discharge within the unchanged frozen tolerance.",
+    "Ribasim alone owns the surface-water state in the candidate route."
+  ],
+  "failure_rule": "Do not change cases, duration, physical law or scientific tolerances after execution. A mismatch outside the frozen envelope is an R2 falsification and remains visible.",
+  "pass_meaning": "Bounded evidence that the restricted linear fixed-weir surface-water storage/level/discharge responsibility can be externally owned by real Ribasim for the tested no-supply profile.",
+  "nonclaims": [
+    "Not full legacy surfacewater.f90 equivalence.",
+    "No level-triggered supply.",
+    "No SWMAN=2 automatic management.",
+    "No negative drainage/infiltration.",
+    "No production admission or retirement authority."
+  ]
+}
