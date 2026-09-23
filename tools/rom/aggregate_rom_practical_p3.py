@@ -17,12 +17,12 @@ def main():
             rs=[r for r in rr if r["split"]==split]
             counts={}
             for r in rs: counts[r["classification"]]=counts.get(r["classification"],0)+1
-            ratios=[r["performance"]["candidate_over_reference_wall_ratio"] for r in rs]
+            ratios=[r["performance"]["candidate_over_reference_wall_ratio"] for r in rs if r["performance"]["candidate_over_reference_wall_ratio"] is not None]
             bysplit[split]={
               "classification_counts":counts,
               "materials":{r["material"]:r["classification"] for r in rs},
               "observable_primary_discrete_claim_count":sum(bool(r["reference_observable_for_primary_discrete_claim"]) for r in rs),
-              "wall_ratio":{"min":min(ratios),"median":statistics.median(ratios),"max":max(ratios)}
+              "wall_ratio":({"min":min(ratios),"median":statistics.median(ratios),"max":max(ratios)} if ratios else None)
             }
         summary[purpose]=bysplit
     val=[r for r in rows if r["split"]=="validation"]
