@@ -101,7 +101,7 @@ def qtop_surface(sym:str,k0:float)->float:
 
 
 def boundary_surface(history:str,sym:str,psi0:float):
-    # P2 SURF_P has fixed gravity-equilibrium bottom flux.
+    # P3 SURF_P retains the frozen gravity-equilibrium bottom flux.
     return None
 
 
@@ -173,7 +173,9 @@ def run_candidate(purpose:str,material:str,member:str):
     else:
         raise ValueError(purpose)
 
-    if member not in ALLOWED[purpose]:\n        raise ValueError(f"{member} not authorized for {purpose}")\n    bounds=PARTITIONS[member]
+    if member not in ALLOWED[purpose]:
+        raise ValueError(f"{member} not authorized for {purpose}")
+    bounds=PARTITIONS[member]
     result={}
     failures={}
     overall="QUALIFIED"
@@ -230,22 +232,17 @@ def main():
     ap.add_argument("--p3-prereg",required=True,type=pathlib.Path)
     ap.add_argument("--metric-contract",required=True,type=pathlib.Path)
     ap.add_argument("--p3-reference-result",required=True,type=pathlib.Path)
-    ap.add_argument("--p1-reference-result",required=True,type=pathlib.Path)
     ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
 
     pre=json.loads(a.p3_prereg.read_text())
     metric=json.loads(a.metric_contract.read_text())
     p3ref=json.loads(a.p3_reference_result.read_text())
-    p1ref=json.loads(a.p1_reference_result.read_text())
 
     assert pre["phase"]=="PREREGISTERED_BEFORE_ANY_NEW_P3_REFERENCE_OR_CANDIDATE_RESPONSE"
     assert metric["status"]=="FROZEN_BEFORE_ANY_P1_REFERENCE_RESPONSE"
     assert p3ref["status"]=="P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED"
     assert p3ref["candidate_response_authorized"] is True
-    assert p1ref["status"]=="P1_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES"
-    assert p1ref["candidate_response_authorized"] is False
-    assert all(p1ref["results"]["gw"][m]["qualified"] for m in ("B01","B14"))
 
     reps=pre["frozen_representations"]
     if a.member.startswith("S"):
@@ -267,7 +264,7 @@ def main():
       "authority":{
         "surface_reference":"P3 fresh S09-S12",
         "groundwater_reference":"P3 fresh G06-G09",
-        "P1_failure_overridden":False
+        "P2_closed_not_reopened":True
       },
       "scientific_firewall":{
         "P3_reference_qualified_before_response":True,
