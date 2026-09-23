@@ -11,6 +11,9 @@ on:
       - 'tests/fsi/test_ftab03_ksatexm_generated_provider.f90'
       - 'tests/fsi/run_ftab03_ksatexm_generated_provider.sh'
       - 'src/solver/mod_b110_generated_mvg_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fsi/test_ftab03_serialized_ksatexm_generated.f90'
+      - 'tests/fsi/run_ftab03_serialized_ksatexm_generated.sh'
       - 'integration/f-tab/F-TAB03_PREREGISTRATION.json'
       - 'integration/f-tab/F-TAB03_STATUS.json'
       - '.github/workflows/f-tab03-ksatexm-generated-provider.yml'
@@ -111,4 +114,39 @@ jobs:
           path: |
             F-TAB03_PROVIDER_EVIDENCE.txt
             F-TAB03_PROVIDER_GATE.log
+          if-no-files-found: error
+
+  serialized-composition:
+    needs: exact-hupsel-provider
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run serialized Reference generated+KSATEXM composition gate
+        shell: bash
+        run: bash tests/fsi/run_ftab03_serialized_ksatexm_generated.sh | tee F-TAB03_SERIAL_GATE.log
+      - name: Record serialized evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB03-SERIAL"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            grep -E '^F_TAB03_SERIAL_|^F-TAB03 ' F-TAB03_SERIAL_GATE.log || true
+          } > F-TAB03_SERIAL_EVIDENCE.txt
+      - name: Upload serialized evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab03-serialized-evidence
+          path: |
+            F-TAB03_SERIAL_EVIDENCE.txt
+            F-TAB03_SERIAL_GATE.log
           if-no-files-found: error
