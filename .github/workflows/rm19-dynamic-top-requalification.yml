@@ -1,0 +1,30 @@
+name: RM19 dynamic-top transaction requalification
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/ribasim-management/run_rm14_dynamic_top_predictor.sh'
+      - 'tests/ribasim-management/test_rm14_dynamic_top_predictor.py'
+      - 'tests/ribasim-management/run_rm19_dynamic_top_requalification.sh'
+      - 'integration/ribasim-management/RM19_*'
+      - '.github/workflows/rm19-dynamic-top-requalification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM19 unchanged dynamic-top transaction requalification
+        run: bash tests/ribasim-management/run_rm19_dynamic_top_requalification.sh
