@@ -7,6 +7,7 @@ on:
   pull_request:
     paths:
       - 'src/process/mod_surface_water_ownership_profile.f90'
+      - 'src/process/mod_surface_water_geometry_policy.f90'
       - 'src/process/mod_drainage_extended_exchange.f90'
       - 'src/process/mod_surface_water_ownership_profile.f90'
       - 'src/runtime/mod_fmr_drainage_response_binding.f90'
@@ -39,3 +40,12 @@ jobs:
           grep -Fq 'SW_RIB_ADM01_OWNER_XOR=PASS' /tmp/sw-rib-adm01/owner.txt
       - name: Canonical Q4B signed exchange replay
         run: bash tests/sw-rib-adm01/run_q4b_extended_runtime_binding.sh
+      - name: Geometry policy fail-closed guard
+        run: |
+          mkdir -p /tmp/sw-rib-adm01-g4
+          gfortran -std=f2008 -Wall -Wextra -Werror -J /tmp/sw-rib-adm01-g4 -I /tmp/sw-rib-adm01-g4 \
+            src/process/mod_surface_water_geometry_policy.f90 \
+            tests/sw-rib-adm01/test_geometry_policy.f90 \
+            -o /tmp/sw-rib-adm01-g4/test_geometry
+          /tmp/sw-rib-adm01-g4/test_geometry | tee /tmp/sw-rib-adm01-g4/output.txt
+          grep -Fq 'SW_RIB_ADM01_G4_GEOMETRY_POLICY_GUARD=PASS' /tmp/sw-rib-adm01-g4/output.txt
