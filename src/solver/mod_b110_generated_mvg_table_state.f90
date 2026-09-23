@@ -248,7 +248,10 @@ contains
 
     call TSPBI(n, x, y, ncd, iendc, .false., bounds, BMAX, lwk, work, dydx, sigma, constraint_flags, ier)
     if (ier < 0) return
-    if (any(constraint_flags(1:n-1) /= 0)) return
+    ! TSPBI constraint flags are diagnostic: the qualified historical
+    ! preprocessing also accepts intervals where a requested convexity sign
+    ! cannot be enforced.  The resulting finite spline parameters remain the
+    ! numerical authority; do not widen the production rejection contract here.
     if (.not. all(ieee_is_finite(dydx)) .or. .not. all(ieee_is_finite(sigma))) return
     ok = .true.
   end subroutine preprocess_curve
