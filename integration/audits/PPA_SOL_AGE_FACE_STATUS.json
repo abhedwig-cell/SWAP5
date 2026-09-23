@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ppa_sol_age_face_status.v1",
+  "work_unit": "PPA-SOL-AGE-FACE",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE_FACE_PREREGISTRATION.json",
+  "implementation_commit": "6c86af98a70e15426cc8e3c2856fa94be54f9862",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation": "AgeTracer task 2 internal-face Agefluxb in SWAP/solute.f90"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_face_flux.f90",
+    "test": "tests/fapp/test_ppa_sol_age_face_flux_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_face_flux_source_oracle.sh",
+    "scope": "One internal-face advective plus dispersive age amount using already-derived face age and dispersion inputs."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_vectors_per_build": 100000,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_FACE_B1_11_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOL_AGE_FACE_ADVECTION_DISPERSION_AMOUNT=PASS",
+      "PPA_SOL_AGE_FACE_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ],
+    "runner_shell": "Manual PowerShell compiler execution; local Git Bash signal-pipe failure unchanged."
+  },
+  "scope_boundary": {
+    "face_age_interpolation_or_dispersion_setup": "OUT OF SCOPE; inputs already derived",
+    "physical_state_owner_or_vertical_profile_composition": "NONE",
+    "restart_mass_or_production_admission": "NONE"
+  },
+  "next_action": "Compose the face amount with the separately source-tested age-cell candidate update over a bounded vertical profile; do not infer stateful age-tracer or runtime admission."
+}
