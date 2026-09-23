@@ -36,8 +36,7 @@ contains
     if(size(head_table,2)/=n .or. size(theta_table,2)/=n .or. size(conductivity_table,2)/=n) &
       error stop 'KX05 provider: table/node shape mismatch'
 
-    call initialize_tabhyd_raw_provider(provider%base,head_table,thetatab=theta_table,conductivity_table=conductivity_table, &
-         cofgen=cofgen,step_duration=step_duration)
+    call initialize_tabhyd_raw_provider(provider%base,head_table,theta_table,conductivity_table,cofgen,step_duration)
 
     provider%active_nodes=n
     allocate(provider%theta_r(n),provider%theta_s(n),provider%delta_theta(n),provider%ksatexm(n), &
