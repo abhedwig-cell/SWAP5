@@ -1,7 +1,7 @@
 {
   "schema": "swap5.m7.optional_state_allocation_census.v1",
   "criterion": "M7-03",
-  "baseline": "c2d04baba",
+  "baseline": "e3ec06543",
   "method": "read-only source census; no runtime instrumentation or production changes",
   "scope": "serialized Reference backend optional persistent state, per-interval optional forcing/work allocations, and request-gated thermal carrier sample buffers",
   "findings": [
@@ -90,6 +90,20 @@
   ],
   "result": {
     "static_evidence": "For admitted snow, restricted soil temperature, Black/Boesten and drainage-response options, variable-size persistent optional payloads are represented by allocatable components and guarded active paths; inactive incompatible optional payloads fail closed. Request-gated thermal carrier payload buffers are allocatable.",
+    "bounded_state_clone_test": {
+      "state": "PASS_DIRECT_O0_O2",
+      "compiler": "gfortran 13.3.0 Windows UCRT64",
+      "flags": "-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "runner": "tests/fmr/run_m7_optional_state_allocation_census.py",
+      "test": "tests/fmr/test_m7_optional_state_allocation_census.f90",
+      "markers": [
+        "M7_OPTIONAL_STATE_INACTIVE_BASE_PAYLOADS_ABSENT=PASS",
+        "M7_OPTIONAL_STATE_ACTIVE_PAYLOAD_CLONE_IDENTITY=PASS",
+        "M7_OPTIONAL_STATE_ALLOCATION_CENSUS_TEST PASS"
+      ],
+      "o0_o2_transcript_identity": true,
+      "scope_note": "Confirms base-state snapshots omit inactive snow/soil-temperature payloads and preserve explicitly present payloads when cloned; it does not execute the processes or measure bytes/CPU."
+    },
     "limitations": [
       "This is source inspection, not an executable active/inactive batch allocation or CPU census.",
       "Per-interval root-sink, drainage-flux/qbot and related workspace arrays still allocate on the common route; no allocation-free inactive claim is made.",

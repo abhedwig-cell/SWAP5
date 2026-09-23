@@ -1218,7 +1218,9 @@
           "status": "PARTIAL",
           "gap": "A read-only source census now confirms conditional variable-size state and active-path guards for admitted snow, restricted soil-temperature, Black/Boesten and drainage-response options. It does not instrument batch allocation/CPU; common root-sink/drainage forcing arrays still allocate, fixed descriptor bytes are unmeasured, and unadmitted options are excluded.",
           "evidence": [
-            "integration/audits/M7_OPTIONAL_STATE_ALLOCATION_CENSUS.json"
+            "integration/audits/M7_OPTIONAL_STATE_ALLOCATION_CENSUS.json",
+            "tests/fmr/test_m7_optional_state_allocation_census.f90",
+            "tests/fmr/run_m7_optional_state_allocation_census.py"
           ],
           "next_bounded_action": "Instrument representative active/inactive serialized batches for allocated payload bytes and option-specific call counts, including common forcing/work arrays; keep serial execution and physics unchanged."
         },
