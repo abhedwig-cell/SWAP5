@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.rom-practical.p4.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P4",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_P4_NUMERICAL_RESPONSE",
+  "title": "Frozen-physics numerical implementation and integrator viability",
+  "central_question": "Can the frozen S4/G8 reduced equations be integrated robustly and at materially lower computational cost than the current Python iterative-Heun route, without changing representation, closure or forcing?",
+  "frozen_physics": {
+    "S4": {
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "closure": "CURRENT_LAYER_FACE"
+    },
+    "G8": {
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "closure": "CURRENT_LAYER_FACE"
+    },
+    "constitutive_parameters": "material-specific values from ROM_PRACTICAL_P2A_MATERIALS.json",
+    "forcing": "ROM-PRACTICAL-P3 60-day SD01/SD02/GD01/GD02 unchanged"
+  },
+  "panel": {
+    "development": [
+      "B02",
+      "B11"
+    ],
+    "validation": [
+      "B05",
+      "B16"
+    ],
+    "horizon_days": 60
+  },
+  "numerical_candidates": {
+    "H_FIXED": {
+      "implementation": "existing Python iterative Heun",
+      "dt_day": 0.01,
+      "max_corrector": 50,
+      "tolerance_theta": 1e-13,
+      "role": "frozen P3 baseline"
+    },
+    "RK4_FIXED": {
+      "implementation": "compiled Fortran explicit classical RK4",
+      "dt_day": 0.01,
+      "role": "primary compiled fixed-step candidate"
+    },
+    "RK4_HALF": {
+      "implementation": "compiled Fortran explicit classical RK4",
+      "dt_day": 0.005,
+      "role": "numerical refinement comparator"
+    }
+  },
+  "prospective_gates": {
+    "robustness": "All 8 purpose/material cases complete with finite state, qualified constitutive domain and water-ledger <=1e-8 cm.",
+    "numerical_refinement": "RK4_FIXED vs RK4_HALF purpose metrics remain small relative to RK4_FIXED vs R128 hydrological error; report componentwise, no scalar gate.",
+    "performance": "Same-job compiled RK4_FIXED wall time is compared to R128_T32 and to Python H_FIXED where H_FIXED completes.",
+    "practical_speed_support": "RK4_FIXED/R128 wall ratio <1 for every completed validation case and no robustness failure.",
+    "no_speed_support": "Any validation RK4_FIXED/R128 wall ratio >=1, or compiled candidate fails robustness."
+  },
+  "metrics": [
+    "P3 hydrological metrics unchanged",
+    "max water ledger",
+    "failure status",
+    "wall time",
+    "CPU time",
+    "RHS evaluations",
+    "compiled/Python ratio",
+    "compiled/R128 ratio"
+  ],
+  "attribution_rules": [
+    "If compiled RK4 is robust where Python Heun blocks, attribute the P3 blocking primarily to the iterative-Heun numerical policy/implementation, not to frozen G8 physics.",
+    "If compiled RK4 also blocks in the same cases, retain a frozen-equation numerical stiffness/robustness limitation.",
+    "If compiled RK4 is faster than R128 while preserving the P3 error regime, implementation overhead explained the P3 speed reversal.",
+    "If compiled RK4 remains slower than R128, state-count reduction is not sufficient for practical speed under this workload."
+  ],
+  "firewalls": [
+    "No new closure",
+    "No state-count escalation",
+    "No material-specific tuning",
+    "No forcing change",
+    "No P-ROM-ET",
+    "No application acceptance",
+    "No production admission"
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
