@@ -1,0 +1,30 @@
+name: SW-RIB-SWM01 Q1G STTAB representation
+
+on:
+  push:
+    branches:
+      - research/sw-rib-swm01-surfacewater-ownership
+    paths:
+      - 'tests/sw-rib-swm01/test_q1g_sttab_ribasim_representation.py'
+      - 'tests/sw-rib-swm01/run_q1g_sttab_representation.sh'
+      - 'integration/research/SW_RIB_SWM01_Q1G_*'
+      - '.github/workflows/sw-rib-swm01-q1g.yml'
+  pull_request:
+    paths:
+      - 'tests/sw-rib-swm01/test_q1g_sttab_ribasim_representation.py'
+      - 'tests/sw-rib-swm01/run_q1g_sttab_representation.sh'
+      - 'integration/research/SW_RIB_SWM01_Q1G_*'
+      - '.github/workflows/sw-rib-swm01-q1g.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Q1G source-bound STTAB representation characterization
+        run: bash tests/sw-rib-swm01/run_q1g_sttab_representation.sh
