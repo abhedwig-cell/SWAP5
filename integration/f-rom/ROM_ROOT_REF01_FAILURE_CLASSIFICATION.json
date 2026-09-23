@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom_root.ref01.failure-classification.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-REF01",
+  "date": "2026-09-23",
+  "status": "CLOSED_TECHNICAL_POLICY_OVERRIDDEN_BEFORE_REFERENCE_SOLVE",
+  "scientific_falsification": false,
+  "failed_run": {
+    "run_id": 35819380793,
+    "head": "69698941e50b739e5582485d6519d011f4a0a297",
+    "workflow": ".github/workflows/rom-root-ref01.yml",
+    "pattern": "Broad immediate failures across base and segmented B01/B14 jobs after a valid ROM_ROOT_REF01_POLICY marker."
+  },
+  "representative_evidence": [
+    {
+      "job_id": 107047768247,
+      "case": "B01 R512_T32 o0 V02",
+      "emitted_policy": {
+        "F_repr_cm": 8.881784197001252e-15,
+        "A_total_cm": 8.881784197001252e-15,
+        "nominal_dt_day": 0.000025,
+        "nominal_total_rate_cm_per_day": 3.552713678800501e-10,
+        "local_rate_cm_per_day": 1e-12,
+        "max_iterations": 16
+      },
+      "terminal": "LAREDYN0R_FAIL LAREDYN0R C6R accepted root-active history step"
+    },
+    {
+      "job_id": 107047767491,
+      "case": "B14 R2048_T32 o0 V02 segmented",
+      "terminal": "LAREDYN0R_FAIL LAREDYN0R C6R accepted segmented root-active step"
+    }
+  ],
+  "root_cause": {
+    "generated_harness": "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py output",
+    "subroutine": "strict_first_sample",
+    "statement": "p%total_balance_tolerance=original_total_tol",
+    "interaction": "tests/rom/materialize_rom_root_ref01_policy.py sets the prospectively authorized REF01 total tolerance immediately before strict_first_sample, but strict_first_sample overwrites it before sample_fresh.",
+    "seed_impact": "NONE. seed_steady invokes sample_fresh directly and therefore does not depend on the strict_first_sample reset.",
+    "consequence": "The failed run did not execute root-active trials under the preregistered REF01 total-balance policy and cannot qualify or falsify REF01."
+  },
+  "repair_class": "HARNESS_POLICY_PROPAGATION_ONLY",
+  "permitted_repair": [
+    "Remove only the strict_first_sample overwrite of the caller-supplied total_balance_tolerance in the generated REF01 research harness.",
+    "Retain the strict seed path unchanged.",
+    "Retain the externally authorized REF01 formula, safety factor 1, max_iterations=16, local balance tolerance=1e-12, fail-closed root-active fallback rule and hard transaction mass gate=1e-12 cm.",
+    "Retain frozen Reference Richards, HeadCalc, Feddes and b110_root_sink_provider_t sources."
+  ],
+  "prohibited": [
+    "No change to representation-floor formula or multiplier.",
+    "No increase of max_iterations.",
+    "No local-balance tolerance change.",
+    "No fallback enablement.",
+    "No reduced candidate response.",
+    "No C6R reopening."
+  ],
+  "candidate_response_generated": false,
+  "model_changed": false,
+  "next": "Bind a technical R1 harness repair before rerunning the complete REF01 Reference-only matrix."
+}
