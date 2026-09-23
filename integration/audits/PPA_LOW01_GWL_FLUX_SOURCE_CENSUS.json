@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.ppa_low01.gwl-flux.source-census.v1",
+  "work_unit": "PPA-LOW01-GWL-FLUX",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "source_equations": {
+    "flux_seed": "qv(1)=qtop",
+    "per_compartment_flux": "qv(i+1)=qv(i)+dz(i)*FrArMtrx(i)*(theta(i)-thetm1(i))/dt+sink(i)-source(i)+qrot(i)",
+    "bottom_flux": "qbot=qv(numnod+1)",
+    "saturated_heads": "h(i)=h(i-1)+disnod(i)*(qv(i)/kmean(i)+1), i=NN+1..numnod"
+  },
+  "mapping": "Explicit values correspond to HeadCalc's committed time state and typed profile arrays; this oracle owns none of them and is only valid for SWBOTB=1 with GWL in-profile.",
+  "interpretation": "Pure recurrence oracle; does not qualify root-source assembly, macro routing, HeadCalc convergence, bottom mass acceptance or groundwater transition state."
+}
