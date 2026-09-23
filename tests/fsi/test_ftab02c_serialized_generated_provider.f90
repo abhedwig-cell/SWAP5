@@ -83,7 +83,7 @@ contains
 
     call initialize_parameters(parameters,generated,generic_table)
     if (unsupported_henpr) parameters%cofgen(9,1)=-5.0_real64
-    call analytical_initial_conductivity(parameters,qref)
+    call route_initial_conductivity(parameters,generated .and. .not. unsupported_henpr,qref)
     call initialize_forcing(forcing,qref)
     call initialize_column_template(column,template)
     call initialize_config(config)
@@ -161,19 +161,32 @@ contains
     p%tabulated_hydraulics_active=generic_table
   end subroutine initialize_parameters
 
-  subroutine analytical_initial_conductivity(p,qref)
+  subroutine route_initial_conductivity(p,generated,qref)
     type(fmr_b110_physical_parameters_t),intent(in)::p
+    logical,intent(in)::generated
     real(real64),intent(out)::qref
     type(b110_default_mvg_parameters_t),target::hp
-    type(b110_default_mvg_provider_t)::provider
+    type(b110_default_mvg_provider_t)::ap
+    type(b110_generated_mvg_table_state_t),target::ts
+    type(b110_generated_mvg_provider_t)::tp
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
+    integer::status
+
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
-    call bind_b110_default_mvg_provider(provider,hp,duration)
     heads=h0
-    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
+    if(generated) then
+      call initialize_b110_generated_mvg_table_state(ts,hp,status)
+      call require(status==F_TAB02_STATE_OK,'equilibrium table state')
+      call bind_b110_generated_mvg_provider(tp,ts,duration,status)
+      call require(status==F_TAB02_PROVIDER_OK,'equilibrium table provider')
+      call tp%evaluate(heads,water,conductivity,capacity,dkdh)
+    else
+      call bind_b110_default_mvg_provider(ap,hp,duration)
+      call ap%evaluate(heads,water,conductivity,capacity,dkdh)
+    end if
     qref=conductivity(1)
-    call require(qref>0.0_real64 .and. ieee_is_finite(qref),'reference conductivity')
-  end subroutine analytical_initial_conductivity
+    call require(qref>0.0_real64 .and. ieee_is_finite(qref),'route-consistent reference conductivity')
+  end subroutine route_initial_conductivity
 
   subroutine initialize_committed(c,p,generated,ok)
     type(kernel_committed_state_t),intent(out)::c
@@ -234,10 +247,9 @@ contains
   subroutine initialize_config(c)
     type(canonical_numerical_config_t),intent(out)::c
     c%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    ! Slice C qualifies provider selection/lifetime, not the strict temporal
-    ! error-control contract owned by F-TAB02-D. Keep full/half mechanics live
-    ! but make temporal rejection non-limiting for this bounded C oracle.
-    c%transaction%temporal_tolerance=1.0_real64
+    ! Keep the existing strict full/half gate. The generated equilibrium
+    ! fixture is made provider-consistent rather than weakening acceptance.
+    c%transaction%temporal_tolerance=1.0e-6_real64
     c%transaction%mass_tolerance=mass_tolerance
     c%transaction%retry_scale=0.5_real64
     c%transaction%max_retries=8
