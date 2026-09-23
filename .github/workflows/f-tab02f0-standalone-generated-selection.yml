@@ -1,0 +1,57 @@
+name: F-TAB02-F0 standalone generated selection
+
+on:
+  push:
+    branches:
+      - work/f-tab02-generated-k0-provider
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'tests/fsi/test_ftab02f0_standalone_generated_selection.f90'
+      - 'tests/fsi/run_ftab02f0_standalone_generated_selection.sh'
+      - 'integration/f-tab/F-TAB02_F0_PREREGISTRATION.json'
+      - 'integration/f-tab/F-TAB02_F0_QUALIFICATION.json'
+      - '.github/workflows/f-tab02f0-standalone-generated-selection.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Run F-TAB02-F0 qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02f0_standalone_generated_selection.sh | tee F-TAB02-F0_GATE.log
+
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-F0"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_F0_|^F-TAB02-F0 |^FSI35_' F-TAB02-F0_GATE.log || true
+          } > F-TAB02-F0_EVIDENCE.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-f0-evidence
+          path: |
+            F-TAB02-F0_EVIDENCE.txt
+            F-TAB02-F0_GATE.log
+          if-no-files-found: error
