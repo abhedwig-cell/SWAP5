@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.rom-practical.p2d-b05.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2D-B05",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_B05_EIGHT_STATE_RESPONSE",
+  "purpose": "Determine whether the persistent B05 groundwater event defect is caused by insufficient state count or by lower-focused placement, using equal-dimension G8 and U8 with same-partition Richards controls.",
+  "authority": {
+    "p2c_closeout": "integration/f-rom/ROM_PRACTICAL_P2C_B05_CLOSEOUT.json",
+    "p2c_result": "integration/f-rom/ROM_PRACTICAL_P2C_B05_RESULT.json",
+    "frozen_representation_source": "ROM-PURPOSE P3 preregistration"
+  },
+  "material": "B05",
+  "histories": [
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+  ],
+  "candidates": {
+    "G8": {
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "dimension": 8,
+      "role": "lower-focused purpose placement"
+    },
+    "U8": {
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "dimension": 8,
+      "role": "equal-dimension uniform placement"
+    }
+  },
+  "solvers": [
+    "Layer-ROM CURRENT_LAYER_FACE",
+    "same-partition conventional Richards"
+  ],
+  "fine_reference": "R256_T8",
+  "numerical_comparator": "R128_T8",
+  "prior_baseline": "G6",
+  "primary_event_vector": [
+    "bottom_flux_sign_mismatch_count",
+    "reversal_sequence_mismatch_count",
+    "reversal_timing_error_steps"
+  ],
+  "secondary_continuous_vector": [
+    "cumulative_bottom_exchange_error_cm",
+    "interval_bottom_flux_error_cm_per_day",
+    "total_storage_error_cm",
+    "history_signed_bottom_flux_bias_cm_per_day",
+    "long_horizon_exchange_drift_cm"
+  ],
+  "prospective_interpretation": {
+    "LOWER_FOCUSED_STATE_COUNT_VALUE": "G8 is componentwise no worse than prior G6 on event vector with strict improvement, and G8 is componentwise no worse than U8.",
+    "PLACEMENT_MISMATCH_SUPPORTED": "U8 is componentwise no worse than G8 on event vector with strict improvement.",
+    "EIGHT_STATE_REPRESENTATION_INSUFFICIENT": "Neither G8 nor U8 improves the persistent G6 event failure materially.",
+    "CLOSURE_EFFECT_EMERGES_AT_EIGHT_STATES": "Same-partition Richards is strictly componentwise better than Layer-ROM for the same G8 or U8 event vector.",
+    "MIXED": "relations do not fit one of the above clean cases."
+  },
+  "stop_rules": [
+    "No state count above eight.",
+    "No new closure family.",
+    "No empirical correction or B05-specific tuning.",
+    "No P-ROM-ET.",
+    "No application acceptance or production admission."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
