@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Bind the tested candidate-mass accounting as a mandatory guard in a bounded commit coordinator and test no state/revision change on failure plus single-commit/stale behavior. Matrix-side amounts remain supplied; no Richards-owner integration yet.",
-  "recovery_point": "4382fb91808419f6775b96f7cb233199dcb8c9c3: candidate mass accounting PASS O0/O2 with per-cell/per-domain guards and internal cancellation. See PPA_WU05A3_CANDIDATE_MASS_STATUS.json. No accepted runtime receipt or production admission.",
+  "next_safe_step": "Locate the typed Richards matrix-source/transaction seam and derive a bounded whole-column trial contract using current authorities. Isolated accounted commit passes; matrix-side amounts must be sourced from the real owner before A4 qualification.",
+  "recovery_point": "bc14a7bcf6e3de1e7fc5c3ddbd36559e667f1156: isolated mass-guarded commit and computed interval-candidate integration PASS O0/O2; reject/retry/single/stale/duplicate behavior tested. No whole-column runtime admission.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",

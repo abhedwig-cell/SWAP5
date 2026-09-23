@@ -2,9 +2,9 @@
   "work_unit": "PPA-WU05-A3-CANDIDATE-MASS",
   "baseline": "15d5a28ee",
   "phase": "PERSISTED_ISOLATED_ACCOUNTING_TESTS_PASSED",
-  "recovery_point": "4382fb91808419f6775b96f7cb233199dcb8c9c3",
+  "recovery_point": "bc14a7bcf6e3de1e7fc5c3ddbd36559e667f1156",
   "gate": "tests/fapp/run_ppa_wu05a3_candidate_mass.ps1",
-  "test_result": "Persisted O0/O2 gate PASS with identical transcripts, warnings-as-errors, bounds/floating checks; signed exchange cancellation, external-only column accounting, compensating cell/domain mismatch rejection, stale/discarded candidate rejection and unchanged committed state",
+  "test_result": "Persisted bc14a7bcf candidate-mass and interval gates PASS O0/O2 with identical transcripts and runtime checks; accounting rejection invalidates candidate without state/revision change, corrected retry commits once, stale/duplicate attempts fail, and actual storage/wetting/flux candidate follows the same guarded route",
   "commit_extension": "New isolated coordinator captures current committed authority, validates mass, then invokes A2 commit once. Accounting/capture/commit failure invalidates candidate and account; no committed state or revision changes on failure. Tests cover correcting a rejected transfer, single success, stale and duplicate attempts.",
   "limitation": "Matrix-side amounts are explicit test inputs, not an executed Richards result. The coordinator commits only the isolated macropore DTO, not a whole-column owner or an external receipt. Generic A2 commit remains available for its pre-existing isolated uses.",
   "authority": "PPA_WU05A1_SOURCE_CENSUS.json mass_transfer_trace",
@@ -15,5 +15,5 @@
   "implementation": "src/adapter/mod_ppa_wu05a3_candidate_mass.f90",
   "test": "tests/fapp/test_ppa_wu05a3_candidate_mass.f90",
   "qualified": false,
-  "next_action": "Bind candidate accounting as a mandatory guard in a bounded commit coordinator; invalidate on accounting failure and test no state/revision change, successful single commit and duplicate/stale rejection, without claiming Richards-owner integration"
+  "next_action": "Locate the typed Richards matrix-source/transaction seam and derive a bounded whole-column trial contract from existing authorities; matrix amounts must come from that owner before A4 qualification"
 }
