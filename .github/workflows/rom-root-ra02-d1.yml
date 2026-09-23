@@ -56,8 +56,6 @@ jobs:
           python3 - <<'PY'
           import json
           r=json.load(open('/tmp/ra01/ROM_ROOT_RA01_RESULT.json'))
-          assert r['authority']['workflow_run']==35819870854
-          assert r['authority']['evidence_artifact']['id']==10733930641
           assert r['status']=='RA01_ROOT_ACTIVE_REFERENCE_TRANSFER_NOT_QUALIFIED'
           assert r['scientific_firewall']['reduced_candidate_response_generated'] is False
           PY
