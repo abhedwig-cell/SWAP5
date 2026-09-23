@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_coupled_effect_size.preregistration.v1",
+  "work_unit": "RM28",
+  "date": "2026-09-23",
+  "title": "Coupled fixed-interface effect size of RM27 temporal endpoint difference",
+  "depends_on": {
+    "RM26": "temporal state discrepancy is surface-localized with zero column-storage difference in the diagnostic run",
+    "RM27": "same-horizon endpoints differ in q_swap(H) by about 3.47e-12 m/s over the F-GC44 bracket",
+    "F-GC44": "independent one-cell MODFLOW6 6.8.0 constant-flux endpoint oracle"
+  },
+  "purpose": "Quantify, without accepting or rejecting, how the RM27 SWAP response difference propagates into the coupled SWAP-MODFLOW endpoint and integrated groundwater transfer.",
+  "frozen_inputs": {
+    "window_seconds": 8.64,
+    "cell_area_m2": 1.0,
+    "surface_irrigation_volume_m3": 0.000036,
+    "swap_head_probes_m": [-0.750002,-0.75,-0.749998],
+    "swap_q_one_step_m_per_s": [1.37866996161697225e-7,1.37859119191273564e-7,1.37851242220849904e-7],
+    "swap_q_two_half_m_per_s": [1.37863527996127688e-7,1.37855651034698882e-7,1.37847774073784066e-7],
+    "groundwater_q_probes_m_per_s": [-2e-8,0.0,2e-8],
+    "modflow_release": "6.8.0",
+    "modflow_asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "one_cell_profile": "exact F-GC44 closeout model and stopping-compatible solver settings"
+  },
+  "required_outputs": [
+    "three MODFLOW oracle heads and fitted q_groundwater(H) slope/intercept",
+    "coupled root head for the one-step SWAP response",
+    "coupled root head for the two-half SWAP response",
+    "absolute coupled head shift",
+    "absolute coupled flux shift",
+    "integrated groundwater-transfer shift over 8.64 s and 1 m2",
+    "transfer shift relative to the 3.6e-5 m3 surface irrigation pulse",
+    "transfer shift relative to the coupled groundwater transfer magnitude"
+  ],
+  "acceptance": "NONE_EFFECT_SIZE_ONLY",
+  "failure_rule": "Do not change RM27 response samples, MODFLOW topology, probes, area or window after execution. A MODFLOW oracle failure is technical; a large or small effect is scientific evidence but not an acceptance threshold.",
+  "nonclaims": [
+    "RM28 does not define an application temporal tolerance.",
+    "RM28 does not admit the three-model triangle.",
+    "RM28 does not use F-GC44 nonlinear residual tolerance as an application-accuracy criterion.",
+    "RM28 does not qualify multi-window hydrological memory."
+  ]
+}
