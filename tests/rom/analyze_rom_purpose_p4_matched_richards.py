@@ -14,6 +14,29 @@ def load_module(name,path):
 p4=load_module("rom_purpose_p4_frontier_analysis",HERE/"analyze_rom_purpose_p4_candidates.py")
 SURF_H=p4.SURF_H; GW_H=p4.GW_H; RUNGS=p4.RUNGS
 
+
+def map_piecewise_to_10cm(storage,bounds):
+    dz=np.diff(np.asarray(bounds,dtype=float))
+    theta=np.asarray(storage,dtype=float)/dz
+    out=[]
+    for j in range(16):
+        lo=10.0*j; hi=lo+10.0; water=0.0
+        for t,a,b in zip(theta,bounds,bounds[1:]):
+            w=max(0.0,min(hi,b)-max(lo,a))
+            if w>0.0: water+=float(t)*w
+        out.append(water/10.0)
+    return out
+
+
+def integrated_storage(storage,bounds,lo,hi):
+    dz=np.diff(np.asarray(bounds,dtype=float))
+    theta=np.asarray(storage,dtype=float)/dz
+    water=0.0
+    for t,a,b in zip(theta,bounds,bounds[1:]):
+        w=max(0.0,min(hi,b)-max(lo,a))
+        if w>0.0: water+=float(t)*w
+    return float(water)
+
 def fields(line):
     out={}
     for item in line.split("|")[1:]:
@@ -69,10 +92,10 @@ def parse_route(path,purpose,factor,bounds):
         if purpose=="SURF_P":
             out[h]={
               "total_storage_cm":list(map(float,total)),
-              "surface_0_20_storage_cm":[p4.p3.base.integrated_storage(x,bounds,0.0,20.0) for x in storage],
-              "root_zone_0_40_storage_cm":[p4.p3.base.integrated_storage(x,bounds,0.0,40.0) for x in storage],
-              "upper_0_80_storage_cm":[p4.p3.base.integrated_storage(x,bounds,0.0,80.0) for x in storage],
-              "theta_10cm":[p4.p3.base.map_piecewise_to_10cm(x,bounds) for x in storage]
+              "surface_0_20_storage_cm":[integrated_storage(x,bounds,0.0,20.0) for x in storage],
+              "root_zone_0_40_storage_cm":[integrated_storage(x,bounds,0.0,40.0) for x in storage],
+              "upper_0_80_storage_cm":[integrated_storage(x,bounds,0.0,80.0) for x in storage],
+              "theta_10cm":[map_piecewise_to_10cm(x,bounds) for x in storage]
             }
         else:
             out[h]={
