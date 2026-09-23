@@ -1,25 +1,21 @@
 {
   "H4_execution_sha": "9a3f14d4dfe6737ebf3b9061590a013127161c17",
-  "H4_result": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json",
+  "H4_result": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json@dcb9918f53cf595673dd0f470f8e71a9cfb4eff8",
   "H4_source_workflow_run": 35858995457,
   "R1024_S05_execution_topology": "SEGMENTED_AFTER_EXACT_S06_EQUIVALENCE_WITNESS",
   "active_reference_repair_run": {
-    "preflight": "PASS",
     "run": 35853590210,
-    "scientific_change": false,
-    "scope": [
-      "R1024 S06 exact segment-equivalence witness",
-      "R1024 S05 segmented execution only after witness PASS"
-    ],
-    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b"
+    "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
+    "status": "COMPLETED",
+    "preflight": "PASS",
+    "scientific_change": false
   },
   "authoritative_reference_run": {
-    "authority_record": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json",
-    "execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
-    "execution_jobs_status": "QUEUED",
-    "preflight_job": 107054233178,
-    "preflight_status": "PASS",
-    "run": 35821534912
+    "run": 35853590210,
+    "execution_head": "707838d6251262f6e74320fa399847a8bdf8462b",
+    "status": "COMPLETED_QUALIFIED_BY_R1024_SEGMENT_EQUIVALENCE_RECOVERY",
+    "reference_result": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json@f701aee1d612e6af509a639bc8505b1d90be716c",
+    "authority_record": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json"
   },
   "authority_paths": [
     "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json",
@@ -28,13 +24,15 @@
   ],
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "blockers": [
-    "H4_CORICHARDS_DIAGNOSTIC_UNAVAILABLE:SURF_P/B01",
-    "H4_CORICHARDS_DIAGNOSTIC_UNAVAILABLE:SURF_P/B14"
+    "CLOSED_UNRESOLVED:SURF_P_CLOSURE_VS_REPRESENTATION",
+    "CLOSED_UNRESOLVED:GW_LB_FOUR_STATE_INFORMATION_VS_SPATIAL_RESOLUTION"
   ],
   "candidate_execution_sha": "fc2173e09da3981983dd5455c445e053ca16eaa7",
   "candidate_infrastructure": {
     "record": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json",
-    "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED"
+    "status": "EXECUTED_AFTER_REFERENCE_AUTHORIZATION",
+    "source_workflow_run": 35856471915,
+    "execution_sha": "fc2173e09da3981983dd5455c445e053ca16eaa7"
   },
   "candidate_response_authorized": true,
   "candidate_response_generated": true,
@@ -55,22 +53,23 @@
   "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
   "last_execution_sha": "707838d6251262f6e74320fa399847a8bdf8462b",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "next_action": "CLOSE_P2_WITH_H4_UNRESOLVED_CASES",
+  "next_action": "NEW_PROSPECTIVE_AUTHORITY_REQUIRED_FOR_ANY_FURTHER_STATE_COUNT_CLOSURE_NUMERICAL_POLICY_OR_APPLICATION_ACCEPTANCE_STUDY",
   "persisted": true,
-  "phase": "P2_H4_PARTIAL_DIAGNOSTIC_UNAVAILABLE",
-  "placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
+  "phase": "P2_CLOSED_PURPOSE_PLACEMENT_SUPPORTED_H4_PARTIALLY_UNRESOLVED",
+  "placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json@e49f2414423538e4ecae4d4af35d599e46bc5273",
   "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
   "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json@e094ebe8b90c573dfae76713866ff9a73bcc66f4",
   "qualified": true,
   "r1024_segment_repair": {
     "run": 35853590210,
-    "scientific_change": false,
-    "status": "WITNESS_EXECUTION_ACTIVE",
-    "target_case": "B01/R1024_T32/S05",
     "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
-    "witness_case": "B01/R1024_T32/S06"
+    "witness_case": "B01/R1024_T32/S06",
+    "target_case": "B01/R1024_T32/S05",
+    "status": "COMPLETED_EXACT_EQUIVALENCE_WITNESS_PASS",
+    "scientific_change": false,
+    "equivalence_record": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json@7e4c8735a047a28117751f3a4d4efea07ff73a80"
   },
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_CLOSEOUT.json",
   "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d",
   "reference_execution_repair": "R1024_SEGMENT_EQUIVALENCE_WITNESS_THEN_S05_SEGMENT_REPAIR",
   "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
@@ -116,5 +115,14 @@
   "source_workflow_run": 35853590210,
   "tested": true,
   "work_unit": "ROM-PURPOSE-P2",
-  "workstream": "ROM-PURPOSE"
+  "workstream": "ROM-PURPOSE",
+  "closeout": "integration/f-rom/ROM_PURPOSE_P2_CLOSEOUT.json@c1cac2a0b6a89a932d7729dd21d8412a677eb3ec",
+  "purpose_map": "integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json@5d074f5eff2c4410b7a35f42ae76f6e7c053c625",
+  "closeout_boundary": {
+    "placement_supported": true,
+    "universal_minimum_state_count_claim": false,
+    "H4_closure_deficit_supported": false,
+    "application_authority_status": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE",
+    "general_closure_search_authorized": false
+  }
 }
