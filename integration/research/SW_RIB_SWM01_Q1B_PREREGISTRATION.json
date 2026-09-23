@@ -5,7 +5,7 @@
   "status": "PREREGISTERED_BLOCKED_ON_Q1A_PASS",
   "title": "Ribasim-owned level-triggered supply with explicit capacity",
   "purpose": "Test the legacy fixed-weir supply concept without retaining a private SWAP surface-water store: the target basin level is Ribasim-owned, LevelDemand expresses the lower-level requirement, and an allocation-controlled supply route carries the capacity corresponding to WSCAP.",
-  "prerequisite": "SW-RIB-SWM01-Q1A must pass or be explicitly adjudicated before Q1B execution.",
+  "prerequisite": "SW-RIB-SWM01-Q1A-R3L direct connector-ledger gate must pass immediately before Q1B execution.",
   "source_semantics": {
     "legacy_authority": [
       "F-PM08D3 mass/availability inventory",
@@ -76,10 +76,11 @@
   ],
   "comparators": [
     "Ribasim final Basin level",
-    "Ribasim storage increase as realized supply volume",
+    "Ribasim Basin storage change",
+    "direct cumulative physical supply volume from model.integrator.u.pump",
     "maximum-capacity compliance",
     "zero supply when already above the legacy-equivalent supply target",
-    "mass closure"
+    "direct mass residual = Basin storage change - Pump cumulative supply"
   ],
   "tolerances": {
     "final_level_m_abs": 0.000001,
@@ -101,5 +102,11 @@
     "Therefore Q1B uses only LevelDemand.min_level and leaves max_level missing.",
     "A positive route-priority cost ensures unnecessary supply flow is disfavored after the higher-priority demand objective is satisfied.",
     "The capacity-limited case deliberately tests that unmet lower-level demand remains visible rather than being hidden by a SWAP-side storage floor."
-  ]
+  ],
+  "direct_ledger_authority": {
+    "source": "Pinned Ribasim docs/dev/numerics.qmd and core/src/solve.jl",
+    "statement": "Pump has one cumulative horizontal-flow state with derivative equal to physical Pump flow.",
+    "anti_tautology": "Q1B does not infer supplied volume from Basin storage; it compares Basin storage change to the independently integrated Pump state."
+  },
+  "execution_contract": "In the closure workflow Q1B is a later step after R3L; shell fail-fast semantics prevent Q1B from executing if R3L fails."
 }
