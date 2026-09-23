@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.workunit_preregistration.v1",
+  "workunit": "F-TAB02-F0",
+  "title": "Standalone exact-Hupsel generated-provider selection and lifetime seam",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_PENDING_F_TAB02_G_PASS",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "purpose": "Prepare the exact M1-C3 whole-Hupsel application gate without regenerating generated-MvG tables inside Task2 trial/retry calls and without changing the analytical default route.",
+  "prerequisite": {
+    "required": "F-TAB02-G bounded Hupsel F-SI39 extension PASS",
+    "reason": "The exact M1-C3 Hupsel application profile activates F-SI39 KSATEXM."
+  },
+  "authority": {
+    "whole_application": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "accepted_intervals": 32518,
+    "task2_attempts": 32552,
+    "application_route": "legacy file/application processing -> M1-C3 typed SoilWater Task2 seam -> Reference Richards",
+    "current_gap": "mod_b110_production_soil_water_task2 binds b110_default_mvg_provider_t directly; F-TAB02 generated-provider selection currently exists in the serialized FMR backend, not this exact standalone M1-C3 application seam."
+  },
+  "frozen_design": {
+    "default_route": "analytical MvG remains default and unchanged",
+    "selection": "explicit opt-in qualification/application composition control; never infer generated selection from SWSOPHY=0 or from KSATEXM presence",
+    "standalone_scope": "Use the existing standalone_worker lifetime only for the exact standalone M1-C3 gate.",
+    "generated_state_lifetime": "Materialize once per exact immutable hydraulic parameter authority and reuse across Task2 attempts/accepted intervals; never generate inside a nonlinear solve or retry hot loop.",
+    "cache_semantics": "Immutable numerical representation only; no committed physical state, transaction state, retry state or accepted-state memory.",
+    "invalidation": "Exact parameter-authority mismatch invalidates/rebuilds before use; no tolerance-based cache identity.",
+    "multiswap": "Do not introduce module-global generated selection for worker/MultiSWAP. Existing FMR typed selection remains the authority outside the standalone exact-Hupsel qualification seam.",
+    "output": "Legacy file/output path remains unchanged so result.bal/result.blc can be compared to M1-C3 authority."
+  },
+  "allowed_production_delta": [
+    "src/adapter/mod_b110_production_soil_water_task2.f90",
+    "bounded standalone selection/cache helper if needed",
+    "qualification-only entry/harness that opts in generated acceleration before the unchanged legacy application loop"
+  ],
+  "forbidden": [
+    "legacy input grammar change",
+    "automatic generated selection for all M1-C3 runs",
+    "per-Task2 or per-retry table generation",
+    "generic user-supplied table input",
+    "SWKIMPL=1",
+    "new retry/timestep/tolerance policy",
+    "hidden physical state",
+    "coarse-sand expansion as an admission prerequisite"
+  ],
+  "gates": {
+    "F0_1": "Analytical default remains bit/route-preserved with opt-in disabled.",
+    "F0_2": "Opt-in exact Hupsel M1 profile binds generated provider with F-TAB02-G KSATEXM semantics.",
+    "F0_3": "Generated table state generation count is one for unchanged exact parameter authority across multiple Task2 calls/retries.",
+    "F0_4": "Parameter mutation invalidates or rejects cache deterministically; unsupported neighbor material fails closed.",
+    "F0_5": "No generated state is stored in committed physical state or transaction snapshots.",
+    "F0_6": "Only after F0_1..F0_5 PASS may the exact whole-Hupsel F gate execute."
+  },
+  "final_F_gate": {
+    "exact_asset_required": true,
+    "substitutions_authorized": false,
+    "required_outputs": [
+      "normal completion",
+      "32518 accepted intervals",
+      "retry accounting preserved",
+      "historical active-route census preserved",
+      "hard mass closure",
+      "result.bal and result.blc comparison against exact M1-C3 authority after only the already-authorized Generated-at normalization"
+    ]
+  },
+  "disposition": "HOLD_IMPLEMENTATION_UNTIL_G_PASS"
+}
