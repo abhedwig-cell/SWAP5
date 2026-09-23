@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.rom_root.ra02r.pre_scientific_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02R",
+  "date": "2026-09-23",
+  "state": "CLOSED_PRE_SCIENTIFIC_BINDING_SCHEMA_COMPATIBILITY_REPAIR",
+  "failed_run": 35822798029,
+  "failed_job": 107058052587,
+  "failure": "Authority verification raised KeyError for top-level c6r_physics_changed before any Reference executable or scientific response.",
+  "scientific_execution_started": false,
+  "repair": {
+    "class": "BINDING_SCHEMA_ALIAS_ONLY",
+    "add_top_level": {
+      "c6r_physics_changed": false,
+      "candidate_response_generated": false
+    },
+    "rationale": "The reused RA02R workflow verifies these legacy top-level firewall aliases. Their values are already implied by the bound RA02R firewall and reduced_candidate_response_generated fields.",
+    "implementation_hashes_changed": false,
+    "stress_contract_changed": false,
+    "numerical_contract_changed": false,
+    "physics_changed": false,
+    "response_based": false
+  },
+  "firewall": {
+    "reduced_candidate_response_generated": false,
+    "reference_response_generated": false,
+    "thresholds_changed": false,
+    "initial_states_changed": false,
+    "production_source_changed": false
+  }
+}
