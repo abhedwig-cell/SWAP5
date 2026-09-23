@@ -1,0 +1,552 @@
+{
+  "P_ROM_ET_opened": false,
+  "application_acceptance_adjudicated": false,
+  "cases": [
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_count": 218,
+        "cumulative_bottom_exchange_error_cm": 0.014990835986061378,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.013082778968211462,
+        "interval_bottom_flux_error_cm_per_day": 0.34841268797254654,
+        "long_horizon_exchange_drift_cm": 0.02907857238648305,
+        "reversal_sequence_mismatch_count": 3,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.014990835986074317
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "EVENT_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B02",
+      "performance": {
+        "candidate_cpu_s": 6.692638843000001,
+        "candidate_over_reference_cpu_ratio": 0.279208962995411,
+        "candidate_over_reference_wall_ratio": 0.27914114507923243,
+        "candidate_wall_s": 6.693804658999994,
+        "reference_R256_cpu_s": 23.97,
+        "reference_R256_wall_s": 23.98
+      },
+      "purpose": "GW_LB",
+      "reference_numerical_comparator": {
+        "bottom_flux_sign_mismatch_count": 2,
+        "cumulative_bottom_exchange_error_cm": 0.0003051318641664618,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.0001632958994911797,
+        "interval_bottom_flux_error_cm_per_day": 0.057556347840196566,
+        "long_horizon_exchange_drift_cm": 0.00026613341713499494,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 2,
+        "total_storage_error_cm": 0.0003051318641436783
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_count": 9,
+        "cumulative_bottom_exchange_error_cm": 0.01282895334348871,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.00536726916942807,
+        "interval_bottom_flux_error_cm_per_day": 0.8532240634187181,
+        "long_horizon_exchange_drift_cm": 0.005739830693009207,
+        "reversal_sequence_mismatch_count": 4,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.01282895334347869
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "EVENT_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B05",
+      "performance": {
+        "candidate_cpu_s": 7.525979565999999,
+        "candidate_over_reference_cpu_ratio": 0.2895721264332435,
+        "candidate_over_reference_wall_ratio": 0.289498979923077,
+        "candidate_wall_s": 7.526973478000002,
+        "reference_R256_cpu_s": 25.990000000000002,
+        "reference_R256_wall_s": 26.0
+      },
+      "purpose": "GW_LB",
+      "reference_numerical_comparator": {
+        "bottom_flux_sign_mismatch_count": 1,
+        "cumulative_bottom_exchange_error_cm": 0.00010786537866599146,
+        "history_signed_bottom_flux_bias_cm_per_day": 4.061147551929776e-05,
+        "interval_bottom_flux_error_cm_per_day": 0.08560211459908482,
+        "long_horizon_exchange_drift_cm": 8.422436022925694e-05,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 1,
+        "total_storage_error_cm": 0.00010786537861565074
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_count": 82,
+        "cumulative_bottom_exchange_error_cm": 0.011491716959065645,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.007401141243465727,
+        "interval_bottom_flux_error_cm_per_day": 0.46391410756783424,
+        "long_horizon_exchange_drift_cm": 0.012109117559138127,
+        "reversal_sequence_mismatch_count": 2,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.011491716959092515
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "EVENT_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B06",
+      "performance": {
+        "candidate_cpu_s": 7.338264676,
+        "candidate_over_reference_cpu_ratio": 0.28202400753266715,
+        "candidate_over_reference_wall_ratio": 0.2820407571263926,
+        "candidate_wall_s": 7.341520908,
+        "reference_R256_cpu_s": 26.02,
+        "reference_R256_wall_s": 26.03
+      },
+      "purpose": "GW_LB",
+      "reference_numerical_comparator": {
+        "bottom_flux_sign_mismatch_count": 1,
+        "cumulative_bottom_exchange_error_cm": 7.610381380399491e-05,
+        "history_signed_bottom_flux_bias_cm_per_day": 3.0215292507600855e-05,
+        "interval_bottom_flux_error_cm_per_day": 0.048697067337267426,
+        "long_horizon_exchange_drift_cm": 5.147684142770004e-05,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 1,
+        "total_storage_error_cm": 7.610381379011812e-05
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_count": 384,
+        "cumulative_bottom_exchange_error_cm": 0.00604419792815591,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.00844615191474977,
+        "interval_bottom_flux_error_cm_per_day": 0.05740577076720689,
+        "long_horizon_exchange_drift_cm": 0.00913684072057783,
+        "reversal_sequence_mismatch_count": 1,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.006044197927711874
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "EVENT_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B11",
+      "performance": {
+        "candidate_cpu_s": 5.676386076,
+        "candidate_over_reference_cpu_ratio": 0.30193542957446806,
+        "candidate_over_reference_wall_ratio": 0.30185546852737927,
+        "candidate_wall_s": 5.677901363000004,
+        "reference_R256_cpu_s": 18.8,
+        "reference_R256_wall_s": 18.81
+      },
+      "purpose": "GW_LB",
+      "reference_numerical_comparator": {
+        "bottom_flux_sign_mismatch_count": 0,
+        "cumulative_bottom_exchange_error_cm": 0.0003958568059386195,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.00021736581509550226,
+        "interval_bottom_flux_error_cm_per_day": 0.017614242085081413,
+        "long_horizon_exchange_drift_cm": 0.0003880021381093071,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 0,
+        "total_storage_error_cm": 0.00039585680592191627
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_count": 73,
+        "cumulative_bottom_exchange_error_cm": 0.0026996712257952742,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.0035315471275020067,
+        "interval_bottom_flux_error_cm_per_day": 0.022760622095844157,
+        "long_horizon_exchange_drift_cm": 0.0045813888646773155,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 73,
+        "total_storage_error_cm": 0.002699671225215559
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "EVENT_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B12",
+      "performance": {
+        "candidate_cpu_s": 4.452255495000001,
+        "candidate_over_reference_cpu_ratio": 0.2662832233851675,
+        "candidate_over_reference_wall_ratio": 0.26600159743130236,
+        "candidate_wall_s": 4.452866741000001,
+        "reference_R256_cpu_s": 16.72,
+        "reference_R256_wall_s": 16.74
+      },
+      "purpose": "GW_LB",
+      "reference_numerical_comparator": {
+        "bottom_flux_sign_mismatch_count": 0,
+        "cumulative_bottom_exchange_error_cm": 0.00045138438500828674,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.0004473113261781527,
+        "interval_bottom_flux_error_cm_per_day": 0.007624716994548755,
+        "long_horizon_exchange_drift_cm": 0.000650810652942375,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 0,
+        "total_storage_error_cm": 0.00045138438507159813
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_count": 469,
+        "cumulative_bottom_exchange_error_cm": 0.025804198354506532,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.035307425070709886,
+        "interval_bottom_flux_error_cm_per_day": 0.3218432208035179,
+        "long_horizon_exchange_drift_cm": 0.03985570392155058,
+        "reversal_sequence_mismatch_count": 3,
+        "reversal_timing_error_steps": 1024,
+        "total_storage_error_cm": 0.02580419835443275
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "EVENT_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B16",
+      "performance": {
+        "candidate_cpu_s": 4.695461270999999,
+        "candidate_over_reference_cpu_ratio": 0.08552752770491802,
+        "candidate_over_reference_wall_ratio": 0.0849044322163541,
+        "candidate_wall_s": 4.662102373000003,
+        "reference_R256_cpu_s": 54.9,
+        "reference_R256_wall_s": 54.91
+      },
+      "purpose": "GW_LB",
+      "reference_numerical_comparator": {
+        "bottom_flux_sign_mismatch_count": 2,
+        "cumulative_bottom_exchange_error_cm": 0.0005270555842488963,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.00018664316495543148,
+        "interval_bottom_flux_error_cm_per_day": 0.08807663115863403,
+        "long_horizon_exchange_drift_cm": 0.0004459134381420704,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_steps": 1,
+        "total_storage_error_cm": 0.0005270555843612401
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "history_signed_storage_bias_cm": 7.500944310123714e-14,
+        "mapped_10cm_theta_error": 0.00014519478977703941,
+        "root_zone_0_40_storage_error_cm": 0.0013819879710791705,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 0.0015884042629845166,
+        "total_storage_error_cm": 1.1593567392876997e-13,
+        "upper_0_80_storage_error_cm": 0.0014206730238667045
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B02",
+      "performance": {
+        "candidate_cpu_s": 5.01352743,
+        "candidate_over_reference_cpu_ratio": 0.21003466401340593,
+        "candidate_over_reference_wall_ratio": 0.20998790414572838,
+        "candidate_wall_s": 5.014511150999994,
+        "reference_R256_cpu_s": 23.87,
+        "reference_R256_wall_s": 23.88
+      },
+      "purpose": "SURF_P",
+      "reference_numerical_comparator": {
+        "history_signed_storage_bias_cm": 1.6962646565144013e-13,
+        "mapped_10cm_theta_error": 2.544650451920726e-07,
+        "root_zone_0_40_storage_error_cm": 5.247269952560332e-06,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 5.7358729334446326e-06,
+        "total_storage_error_cm": 2.1586244737555928e-13,
+        "upper_0_80_storage_error_cm": 3.0385023941440106e-06
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "history_signed_storage_bias_cm": 5.3920409803787095e-14,
+        "mapped_10cm_theta_error": 0.0018678776421521626,
+        "root_zone_0_40_storage_error_cm": 0.008088710335845052,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 0.006622780682612404,
+        "total_storage_error_cm": 9.809805248387765e-14,
+        "upper_0_80_storage_error_cm": 0.01978879856006689
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B05",
+      "performance": {
+        "candidate_cpu_s": 5.786585815999999,
+        "candidate_over_reference_cpu_ratio": 0.21049784707166236,
+        "candidate_over_reference_wall_ratio": 0.2105214861767917,
+        "candidate_wall_s": 5.7872356550000035,
+        "reference_R256_cpu_s": 27.490000000000002,
+        "reference_R256_wall_s": 27.49
+      },
+      "purpose": "SURF_P",
+      "reference_numerical_comparator": {
+        "history_signed_storage_bias_cm": 2.6239427297625184e-14,
+        "mapped_10cm_theta_error": 1.6259502396933771e-06,
+        "root_zone_0_40_storage_error_cm": 2.5567148931283793e-05,
+        "storage_extremum_timing_error_steps": 0,
+        "surface_0_20_storage_error_cm": 2.3133747710860048e-05,
+        "total_storage_error_cm": 7.928158510707993e-14,
+        "upper_0_80_storage_error_cm": 2.5160367270886886e-05
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "history_signed_storage_bias_cm": 6.006480035569695e-14,
+        "mapped_10cm_theta_error": 0.00012075861358374813,
+        "root_zone_0_40_storage_error_cm": 0.0007317732187579673,
+        "storage_extremum_timing_error_steps": 0,
+        "surface_0_20_storage_error_cm": 0.0010091567721220366,
+        "total_storage_error_cm": 9.365170487454416e-14,
+        "upper_0_80_storage_error_cm": 0.0009077918752402468
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "APPROXIMATE_TRANSFER",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B06",
+      "performance": {
+        "candidate_cpu_s": 5.107102146000001,
+        "candidate_over_reference_cpu_ratio": 0.1950764761650115,
+        "candidate_over_reference_wall_ratio": 0.19503830538373432,
+        "candidate_wall_s": 5.108053218000002,
+        "reference_R256_cpu_s": 26.18,
+        "reference_R256_wall_s": 26.19
+      },
+      "purpose": "SURF_P",
+      "reference_numerical_comparator": {
+        "history_signed_storage_bias_cm": 2.569819357312042e-14,
+        "mapped_10cm_theta_error": 1.1652420669516552e-07,
+        "root_zone_0_40_storage_error_cm": 3.0248447744447565e-06,
+        "storage_extremum_timing_error_steps": 0,
+        "surface_0_20_storage_error_cm": 3.123649596804891e-06,
+        "total_storage_error_cm": 5.883469768860719e-14,
+        "upper_0_80_storage_error_cm": 1.719470032480315e-06
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "history_signed_storage_bias_cm": 6.649888972809492e-13,
+        "mapped_10cm_theta_error": 3.2896400357804594e-06,
+        "root_zone_0_40_storage_error_cm": 2.935318041816024e-07,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 9.111378433798751e-06,
+        "total_storage_error_cm": 1.3936219910620762e-12,
+        "upper_0_80_storage_error_cm": 2.068047617070953e-09
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B11",
+      "performance": {
+        "candidate_cpu_s": 3.345805248,
+        "candidate_over_reference_cpu_ratio": 0.205642608973571,
+        "candidate_over_reference_wall_ratio": 0.20553005233415195,
+        "candidate_wall_s": 3.346029251999994,
+        "reference_R256_cpu_s": 16.27,
+        "reference_R256_wall_s": 16.28
+      },
+      "purpose": "SURF_P",
+      "reference_numerical_comparator": {
+        "history_signed_storage_bias_cm": 1.6489587473245138e-13,
+        "mapped_10cm_theta_error": 7.877095031902324e-09,
+        "root_zone_0_40_storage_error_cm": 3.1954932480880325e-11,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 4.3592172969123224e-08,
+        "total_storage_error_cm": 2.1028081301049169e-13,
+        "upper_0_80_storage_error_cm": 3.3276886419140104e-14
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "history_signed_storage_bias_cm": 8.649279209516081e-13,
+        "mapped_10cm_theta_error": 5.896132380976127e-07,
+        "root_zone_0_40_storage_error_cm": 4.624672744961049e-09,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 5.235493904962655e-07,
+        "total_storage_error_cm": 1.3911214425160281e-12,
+        "upper_0_80_storage_error_cm": 9.192708134861083e-12
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B12",
+      "performance": {
+        "candidate_cpu_s": 2.1761298489999996,
+        "candidate_over_reference_cpu_ratio": 0.20001193465073527,
+        "candidate_over_reference_wall_ratio": 0.1996787066972475,
+        "candidate_wall_s": 2.176497902999998,
+        "reference_R256_cpu_s": 10.879999999999999,
+        "reference_R256_wall_s": 10.9
+      },
+      "purpose": "SURF_P",
+      "reference_numerical_comparator": {
+        "history_signed_storage_bias_cm": 2.309593488680761e-13,
+        "mapped_10cm_theta_error": 1.0445477134161033e-09,
+        "root_zone_0_40_storage_error_cm": 3.243334912680016e-14,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 1.6915857562043868e-10,
+        "total_storage_error_cm": 2.649266421161141e-13,
+        "upper_0_80_storage_error_cm": 3.5257972270109134e-14
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    },
+    {
+      "candidate_metrics": {
+        "history_signed_storage_bias_cm": 3.7015876475088305e-13,
+        "mapped_10cm_theta_error": 7.204204958340636e-05,
+        "root_zone_0_40_storage_error_cm": 0.00014133300578558297,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 0.0003947629194723082,
+        "total_storage_error_cm": 4.1005759396194887e-13,
+        "upper_0_80_storage_error_cm": 1.906981004926104e-05
+      },
+      "candidate_reaches_comparator": false,
+      "classification": "TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "portable_speedup": false,
+        "production_admission": false
+      },
+      "material": "B16",
+      "performance": {
+        "candidate_cpu_s": 4.54484804,
+        "candidate_over_reference_cpu_ratio": 0.05780043291364619,
+        "candidate_over_reference_wall_ratio": 0.05779202965034964,
+        "candidate_wall_s": 4.545343131999999,
+        "reference_R256_cpu_s": 78.63,
+        "reference_R256_wall_s": 78.65
+      },
+      "purpose": "SURF_P",
+      "reference_numerical_comparator": {
+        "history_signed_storage_bias_cm": 4.132805209167145e-13,
+        "mapped_10cm_theta_error": 2.0693720470600376e-07,
+        "root_zone_0_40_storage_error_cm": 6.635431848076061e-07,
+        "storage_extremum_timing_error_steps": 512,
+        "surface_0_20_storage_error_cm": 2.2221382575541146e-06,
+        "total_storage_error_cm": 5.360761050722395e-13,
+        "upper_0_80_storage_error_cm": 1.0498475550793299e-08
+      },
+      "schema": "swap5.rom-practical.p2a.case-result.v1"
+    }
+  ],
+  "decision": "TARGETED_GW_REPRESENTATION_CHALLENGE_AUTHORIZED",
+  "gw_event_sensitive_materials": [
+    "B02",
+    "B05",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "limitations": [
+    "Short-horizon controlled dynamic pilot; not yet the requested longer production-like daily/seasonal forcing panel.",
+    "R256 target with R128-vs-R256 comparator is a practical Reference Richards screen, not a new application authority.",
+    "Performance ratios are same-job GitHub Actions implementation measurements only.",
+    "No application acceptance or production admission."
+  ],
+  "production_rom_authorized": false,
+  "schema": "swap5.rom-practical.p2a.aggregate-result.v1",
+  "status": "P2A_CROSS_MATERIAL_PILOT_COMPLETE",
+  "summary": {
+    "GW_LB": {
+      "candidate_reaches_reference_comparator_count": 0,
+      "classification_counts": {
+        "EVENT_SENSITIVE": 6
+      },
+      "cpu_ratio": {
+        "max": 0.30193542957446806,
+        "median": 0.28061648526403904,
+        "min": 0.08552752770491802
+      },
+      "materials": {
+        "B02": "EVENT_SENSITIVE",
+        "B05": "EVENT_SENSITIVE",
+        "B06": "EVENT_SENSITIVE",
+        "B11": "EVENT_SENSITIVE",
+        "B12": "EVENT_SENSITIVE",
+        "B16": "EVENT_SENSITIVE"
+      },
+      "wall_ratio": {
+        "max": 0.30185546852737927,
+        "median": 0.2805909511028125,
+        "min": 0.0849044322163541
+      }
+    },
+    "SURF_P": {
+      "candidate_reaches_reference_comparator_count": 0,
+      "classification_counts": {
+        "APPROXIMATE_TRANSFER": 1,
+        "TIMING_SENSITIVE": 5
+      },
+      "cpu_ratio": {
+        "max": 0.21049784707166236,
+        "median": 0.20282727181215315,
+        "min": 0.05780043291364619
+      },
+      "materials": {
+        "B02": "TIMING_SENSITIVE",
+        "B05": "TIMING_SENSITIVE",
+        "B06": "APPROXIMATE_TRANSFER",
+        "B11": "TIMING_SENSITIVE",
+        "B12": "TIMING_SENSITIVE",
+        "B16": "TIMING_SENSITIVE"
+      },
+      "wall_ratio": {
+        "max": 0.2105214861767917,
+        "median": 0.2026043795156997,
+        "min": 0.05779202965034964
+      }
+    }
+  },
+  "surface_timing_sensitive_materials": [
+    "B02",
+    "B05",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "work_unit": "ROM-PRACTICAL-P2A",
+  "workstream": "ROM-PRACTICAL"
+}
