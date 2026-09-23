@@ -170,7 +170,7 @@ contains
     type(modflow6_multiswap_cell_response_t) :: cell
     type(modflow6_linear_boundary_term_t) :: term
     real(real64) :: qeq,q_swap,q_groundwater
-    integer :: status,flux_status
+    integer :: status,flux_status,dynamic_status
     logical :: ok
 
     c_status=101_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
