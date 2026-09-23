@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.rom-purpose.p4.pre-response-contract-audit.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-SOFTWARE-CONTRACT-AUDIT",
+  "date": "2026-09-23",
+  "status": "REPAIRED_AND_LOCALLY_TESTED_SOFTWARE_ONLY_CI_REQUESTED",
+  "before_commit": "1f2a31130bb0714058948c297f356d6ed6dd39bf",
+  "live_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "frozen_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "scope": "Correct implementation and reporting of the existing P4 contract before any candidate or matched-Richards model response. This is not a numerical-policy change, new scientific experiment, Reference qualification result or application acceptance.",
+  "findings": [
+    {
+      "id": "P4-WIRING-01",
+      "finding": "Reference analyzer selected S17-S20 but its phase dictionary still used S09-S12; inherited compare_surface indexes PHASES by the selected history and raises KeyError S17.",
+      "prior_analyzer_blob": "479634e790d104fe25521d415ab582bb348b120f",
+      "repaired_analyzer_blob": "9c7c7a8a504e47470a4aa4c1c06217bfda7c8e54",
+      "repair": "Four dictionary keys and two history descriptions only. Phase sequences, numerical formulas and thresholds unchanged.",
+      "concurrent_write_disposition": "The same six-line repair appeared on the live branch during this audit. A stale-SHA write was rejected and the identical existing repaired blob was retained rather than overwritten.",
+      "existing_repair_record": "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ANALYZER_TECHNICAL_REPAIR.json"
+    },
+    {
+      "id": "P4-CLAIM-01",
+      "finding": "The prepared closeout could label a numerically unqualified Layer-ROM as a closure deficit whenever qualified matched Richards reached the comparator.",
+      "repair": "Require numerical qualification of both methods for closure attribution. Unqualified Layer-ROM receives LAYER_ROM_NUMERICALLY_UNAVAILABLE; mismatched partitions and logically inconsistent reach flags are rejected."
+    },
+    {
+      "id": "P4-CLAIM-02",
+      "finding": "The prepared frontier analyzers labeled the first qualified comparator-reaching rung as a minimum even when lower rungs had no qualified response.",
+      "repair": "Report first qualified reach separately. A minimum is established only when every lower frozen rung has qualified evidence that misses the comparator. Unknown numerical cases are not converted into state-information failures."
+    }
+  ],
+  "local_software_test_evidence": {
+    "reference_wiring": {
+      "original_behavior": "KeyError: S17 reproduced using imported policy mocks",
+      "repaired_behavior": "PASS",
+      "all_four_gate_combinations": 16,
+      "history_drift_rejections": 2,
+      "fixture_scope": "Relevant fields copied from the frozen preregistration for the local wiring test; the CI test reads the full unchanged repository preregistration."
+    },
+    "decision_policy": {
+      "status": "PASS",
+      "frontier_truth_table_cases": 54,
+      "attribution_truth_table_cases": 16,
+      "inconsistent_qualification_rejections_within_attribution_cases": 7
+    },
+    "integration": {
+      "status": "PASS",
+      "candidate_analyzer_mock_cases": 27,
+      "closeout_fixture_combinations": 729,
+      "same_partition_drift_rejections": 1
+    },
+    "numerical_function_ast_identity": "PASS",
+    "model_simulations_executed": 0,
+    "fixtures_are_scientific_evidence": false
+  },
+  "unchanged_numerical_functions": [
+    "fields",
+    "parse_mass",
+    "parse_route",
+    "metric_vector",
+    "finite_vector",
+    "qualify"
+  ],
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab",
+    "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json": "ad5604fba2252e956015403d461d3df17ddec28c",
+    "tests/rom/analyze_rom_purpose_p4_reference.py": "9c7c7a8a504e47470a4aa4c1c06217bfda7c8e54",
+    "tests/rom/rom_purpose_p4_decision_policy.py": "09e137a0b6c86b4f5cbd29c5c6d915cc62ac4a32",
+    "tests/rom/analyze_rom_purpose_p4_candidates.py": "62f402c8113243b9548b66875760aacf91ff37e2",
+    "tests/rom/analyze_rom_purpose_p4_matched_richards.py": "41bfd5f5c4851c719315d1e48b1ad60155a1432e",
+    "tests/rom/build_rom_purpose_p4_closeout.py": "b942bbadbc88858b64103990db98f674c9371b58",
+    "tests/rom/test_rom_purpose_p4_reference_wiring.py": "340188452003170a459e6031809a3d7f3531a036",
+    "tests/rom/test_rom_purpose_p4_decision_policy.py": "3b823f21cdb966a50503cf86b222379fe3b19973",
+    "tests/rom/test_rom_purpose_p4_claim_integration.py": "9f98d0d8c6e3c7e802a0e7c5a4f48f6c5f31e797",
+    ".github/workflows/f-rom-purpose-p4-reference-adjudicate.yml": "98ee4967d5fdcd90389e2a13d34fad39db5c251c",
+    ".github/workflows/f-rom-purpose-p4-software-contract-audit.yml": "db0f0cd10eb9f54724bbd0969ac2337edbe305ce"
+  },
+  "future_execution_binding_requirements": [
+    "Reference adjudication binds the repaired analyzer and the mandatory reference-wiring regression test.",
+    "Candidate, matched-Richards and closeout execution bindings include the new decision-policy module and their repaired analyzer/builder blobs.",
+    "Do not use the old prepared reporting code to infer minima or closure deficits.",
+    "A software-test PASS never opens the hydrological Reference gate. All required fresh Reference route sets must still qualify first."
+  ],
+  "scientific_firewall": {
+    "model_response_used_for_repair": false,
+    "candidate_or_matched_model_response_generated_by_audit": false,
+    "reference_producers_changed": false,
+    "successful_reference_slices_replaced": false,
+    "reference_execution_retriggered_by_audit": false,
+    "preregistration_changed": false,
+    "state_boundaries_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false,
+    "p3_reopened": false
+  }
+}
