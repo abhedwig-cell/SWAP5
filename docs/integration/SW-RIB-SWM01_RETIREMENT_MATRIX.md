@@ -15,19 +15,19 @@ The core conclusion is mode-dependent:
 
 | Legacy responsibility | Exact legacy meaning | Ribasim-coupled disposition | Standalone SWAP5 | Qualification still required |
 |---|---|---|---|---|
-| `SWST` | conserved secondary surface-water storage for `SWSEC=2` | **RIBASIM OWNER**. Do not allocate the same physical store in SWAP | retain F-CI52 optional state | Q1A/Q1B/Q2 plus mode-exclusion gate |
-| `WLS` under `SWSEC=2` | level derived from `SWST` | **RIBASIM OWNER**. Pass accepted level to SWAP exchange physics | derived from F-CI52 storage | Q1A |
+| `SWST` | conserved secondary surface-water storage for `SWSEC=2` | **RIBASIM OWNER**. Do not allocate the same physical store in SWAP | retain F-CI52 optional state | Q1A/Q1B/Q2A/Q2B1 are bounded research PASS; production mode-exclusion gate still required |
+| `WLS` under `SWSEC=2` | level derived from `SWST` | **RIBASIM OWNER**. Pass accepted level to SWAP exchange physics | derived from F-CI52 storage | Q1A-R3/R3L bounded research PASS for the declared linear fixed-weir profile |
 | `WLS` under `SWSEC=1` | prescribed secondary level forcing | **RIBASIM-RESOLVED FORCING** | legacy/adapter forcing if supported | forcing mapping only |
 | `WLP` | prescribed primary-system level forcing | **RIBASIM-RESOLVED FORCING** | external forcing | forcing mapping only |
 | `STTAB` | 22-knot secondary storage-level relation | **RETIRE FROM COUPLED SWAP STATE**. Represent storage geometry in Ribasim Basin profile | retain where F-CI52 requires it | geometry mapping, not duplicate calibration |
-| `SWMAN=1`, `HBWEIR`, power Q(h) | fixed-weir target and physical discharge relation | **RIBASIM HYDRAULICS** using physical rating relation | retain F-CI52 | Q1A. Ribasim interpolation semantics must be explicit |
+| `SWMAN=1`, `HBWEIR`, power Q(h) | fixed-weir target and physical discharge relation | **RIBASIM HYDRAULICS** using an explicitly qualified representation | retain F-CI52 | `BETAW=1`: Q1A-R3/R3L PASS via ContinuousControl + Pump. General nonlinear `BETAW`: Q1C open |
 | `SWQHR=2`, tabular Q(h) | tabulated discharge relation with legacy crest-threshold seam | **RIBASIM HYDRAULICS** using the Q(h) table itself | not admitted by current restricted F-CI52 | separate mapping; do not migrate inferred legacy crest seam silently |
-| `WLDIP` + `WSCAP` | one-sided low-level supply trigger plus maximum supply capacity | **RIBASIM ALLOCATION/ROUTE CAPACITY** | retain current fixed-weir envelope | Q1B |
-| `SWMAN=2` phase selection | choose managed target from GWL, total air volume and selected pressure head | **COUPLER MANAGEMENT POLICY** driven only by accepted SWAP state | future standalone feature only if separately admitted | Q2A |
-| `WLSTAR` | continuation-critical managed target memory | **COUPLER ACCEPTED POLICY STATE** | not in current F-CI52 scope | Q2A rollback/replay |
-| `DROPR` | downward target-rate limiter | **COUPLER POLICY** | not in current F-CI52 scope | Q2A temporal semantics |
-| automatic discharge capacity | attempt to realize target subject to hydraulic capacity | **RIBASIM REALIZATION**. Candidate design: LevelDemand band + allocation-controlled rating curve | legacy branch has documented discrepancy | Q2B |
-| extended `QDRAIN` drainage/infiltration law | stateless soil/drain exchange from GWL, water level, geometry and resistance | **RETAIN IN SWAP** | retain/qualify as SWAP process physics | Q3A |
+| `WLDIP` + `WSCAP` | one-sided low-level supply trigger plus maximum supply capacity | **RIBASIM ALLOCATION/ROUTE CAPACITY** | retain current fixed-weir envelope | Q1B bounded research PASS |
+| `SWMAN=2` phase selection | choose managed target from GWL, total air volume and selected pressure head | **COUPLER MANAGEMENT POLICY** driven only by accepted SWAP state | future standalone feature only if separately admitted | Q2A bounded research PASS |
+| `WLSTAR` | continuation-critical managed target memory | **COUPLER ACCEPTED POLICY STATE** | not in current F-CI52 scope | Q2A rollback/replay PASS |
+| `DROPR` | downward target-rate limiter | **COUPLER POLICY** | not in current F-CI52 scope | Q2A temporal semantics PASS |
+| automatic discharge capacity | attempt to realize target subject to hydraulic capacity | **RIBASIM REALIZATION** | legacy branch has documented discrepancy | Q2B1 managed-band + bounded routes PASS; dynamic Q(h)-limited capacity is separate Q2B2 |
+| extended `QDRAIN` drainage/infiltration law | stateless soil/drain exchange from GWL, water level, geometry and resistance | **RETAIN IN SWAP** | **production owner still incomplete for full signed legacy route**; F-PM08D2 is readiness-only | Q3A research coupling + later production migration/admission required before whole-file deletion |
 | `DIVDRA` distribution | distribute one authoritative drainage transfer over soil nodes | **RETAIN IN SWAP** | already separately qualified in restricted routes | Q3A composition |
 | secondary availability limiter | cap net infiltration using `SWST` + supply availability | **CROSS-MODEL FEASIBILITY**, not hidden SWAP state | internal only when SWAP owns the store | Q3A, especially negative exchange |
 | `QRapDra` | rapid/macropore delivery into secondary water | **SWAP PROCESS -> RIBASIM TRANSFER** | SWAP process | Q3B |
@@ -70,12 +70,27 @@ accepted SWAP GWL / air volume / selected pressure head
     -> allocation-controlled physical rating-curve discharge
 ```
 
-The pinned Ribasim release explicitly supports allocation-controlled TabulatedRatingCurve nodes whose allocated flow remains bounded by the physical Q(h) curve. A **positive** route priority is the candidate policy for the automatic-weir discharge route: discharge should occur only as needed to remove surplus above the managed upper level, not because the route is rewarded for flowing.
-
-This is a hypothesis for Q2B, not current production authority.
+Q2B1 has now qualified the narrower and cleaner realization claim: a Ribasim LevelDemand band plus separately bounded supply and discharge routes reaches the band when capacity is adequate, remains explicitly outside it when capacity is insufficient, and closes the direct mass ledger. Dynamic Q(h)-limited discharge remains Q2B2. It must not inherit an exactness claim from native `TabulatedRatingCurve`, because Q1A-V1/R2 demonstrated the pinned PCHIP representation is not exactly equivalent to the legacy hard-kink linear law.
 
 ## Important non-retirement conclusion
 
 The statement “Ribasim makes the SWAP surface-water module unnecessary” is only correct for the **surface-water state and system-management realization** in a coupled application. It is incorrect for the whole legacy source file.
 
 The future architecture should therefore remove duplicated ownership, not indiscriminately remove process physics.
+
+
+## Whole-file deletion remains a stronger migration decision
+
+Even if Q3 closes the external-owner coupling semantics, `surfacewater.f90` cannot yet be deleted solely on that basis. The exact-source F-PM08D2 work identifies a scientifically retained signed drainage/infiltration law that is not yet a fully admitted production provider in current canonical SWAP5. In particular, the current Drainage-v1 documentation explicitly does not admit unrestricted drain-to-soil reverse exchange.
+
+Therefore the final sequence is:
+
+```text
+external Ribasim ownership qualified
+    -> signed exchange transaction qualified
+    -> retained exchange physics receives a non-legacy production owner
+    -> application-profile mode guard admitted
+    -> only then consider deleting the legacy container
+```
+
+This distinction is intentional: removing duplicate surface-water **state ownership** can be correct before deleting every legacy source container that still contains retained SWAP process physics.
