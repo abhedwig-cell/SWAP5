@@ -26,8 +26,31 @@ compile_and_run 2
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 cat "$BUILD/o2/output.txt"
 
-git diff --exit-code 79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e -- src/solver/mod_b110_default_mvg_provider.f90
+python3 - <<'PY'
+from pathlib import Path
+import re, subprocess
+
+path="src/solver/mod_b110_default_mvg_provider.f90"
+baseline=subprocess.check_output(
+    ["git","show","79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e:"+path],
+    text=True,
+)
+current=Path(path).read_text()
+
+binding="     procedure :: context_compatible => b110_default_mvg_context_compatible\n"
+if current.count(binding) != 1:
+    raise SystemExit("F-TAB02-B preservation: expected one D context binding")
+normalized=current.replace(binding,"",1)
+
+pattern=r"""(?ms)^  logical function b110_default_mvg_context_compatible\(self, step_duration\) result\(compatible\)\n.*?^  end function b110_default_mvg_context_compatible\n\n"""
+normalized,n=re.subn(pattern,"",normalized,count=1)
+if n != 1:
+    raise SystemExit("F-TAB02-B preservation: expected one D context capability body")
+if normalized != baseline:
+    raise SystemExit("F-TAB02-B preservation: analytical provider changed outside authorized D capability")
+print("F_TAB02_B_ANALYTICAL_EVALUATE_SEMANTICS_PRESERVED=PASS")
+print("F_TAB02_B_ONLY_AUTHORIZED_D_CONTEXT_DELTA=PASS")
+PY
 
 echo "F_TAB02_B_O0_O2_OUTPUT_IDENTITY=PASS"
-echo "F_TAB02_B_ANALYTICAL_PROVIDER_UNCHANGED=PASS"
 echo "F-TAB02-B OWNER QUALIFICATION PASS"
