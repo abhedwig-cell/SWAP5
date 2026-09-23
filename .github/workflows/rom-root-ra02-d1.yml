@@ -1,0 +1,103 @@
+name: ROM-ROOT RA02-D1 persisted root uncertainty diagnosis
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_RA02_D1_BINDING.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: rom-root-ra02-d1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen RA02-D1 authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_RA02_D1_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_RA02_D1_BINDING.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_RA02_D1_ANALYSIS'
+          assert b['state']=='BOUND_BEFORE_RA02_D1_ANALYSIS'
+          assert b['new_simulation_authorized'] is False
+          assert b['reduced_candidate_response_generated'] is False
+          for path, expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+      - name: Download authoritative RA01 evidence only
+        uses: actions/download-artifact@v4
+        with:
+          name: rom-root-ra01
+          path: /tmp/ra01
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 35819870854
+
+      - name: Verify RA01 evidence identity
+        run: |
+          set -euo pipefail
+          test -s /tmp/ra01/ROM_ROOT_RA01_RESULT.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/ra01/ROM_ROOT_RA01_RESULT.json'))
+          assert r['authority']['workflow_run']==35819870854
+          assert r['authority']['evidence_artifact']['id']==10733930641
+          assert r['status']=='RA01_ROOT_ACTIVE_REFERENCE_TRANSFER_NOT_QUALIFIED'
+          assert r['scientific_firewall']['reduced_candidate_response_generated'] is False
+          PY
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              test -s "/tmp/ra01/${material}_${route}_o0.txt"
+            done
+          done
+
+      - name: Analyze persisted root response and bin-mean threshold proxy
+        run: |
+          set -euo pipefail
+          mkdir -p RA02_D1_EVIDENCE
+          python3 tests/rom/analyze_rom_root_ra02_d1.py             --evidence-dir /tmp/ra01             --prereg integration/f-rom/ROM_ROOT_RA02_D1_PREREGISTRATION.json             --output RA02_D1_EVIDENCE/ROM_ROOT_RA02_D1_RESULT.json             | tee RA02_D1_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_RA02_D1_PREREGISTRATION.json RA02_D1_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_RA02_D1_BINDING.json RA02_D1_EVIDENCE/
+
+      - name: Enforce diagnostic firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('RA02_D1_EVIDENCE/ROM_ROOT_RA02_D1_RESULT.json'))
+          assert r['status']=='DIAGNOSTIC_COMPLETE_NO_REFERENCE_POLICY_DECISION'
+          assert r['classifications']['NODE_LEVEL_ADJUDICATION_UNAVAILABLE'] is True
+          assert r['classifications']['REFERENCE_AUTHORITY_CHANGE'] is False
+          f=r['scientific_firewall']
+          assert f['new_simulation_executed'] is False
+          assert f['reference_qualified'] is False
+          assert f['stage2_authorized'] is False
+          assert f['stage3_authorized'] is False
+          assert f['reduced_candidate_response_generated'] is False
+          assert f['uncertainty_gate_changed'] is False
+          assert f['production_change_authorized'] is False
+          print('ROM_ROOT_RA02_D1_FIREWALL=PASS')
+          PY
+          sha256sum RA02_D1_EVIDENCE/* > RA02_D1_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-ra02-d1
+          path: RA02_D1_EVIDENCE/
+          if-no-files-found: error
