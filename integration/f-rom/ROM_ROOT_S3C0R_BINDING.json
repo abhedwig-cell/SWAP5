@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.rom_root.s3c0r.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-C0R",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_C0R_REQUALIFICATION",
+  "preregistration": "integration/f-rom/ROM_ROOT_S3C0R_PREREGISTRATION.json",
+  "predecessor_result": "integration/f-rom/ROM_ROOT_S3C0_RESULT.json",
+  "predecessor_failure": "integration/f-rom/ROM_ROOT_S3C0_FAILURE_CLASSIFICATION.json",
+  "immutable_source": {
+    "workflow_run": 35854345998,
+    "artifact_id": 10747053751,
+    "artifact_digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920"
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s3c0r.yml": "1cd771f1da289d2b318f31c63d563f70ebec082c",
+    "tests/rom/analyze_rom_root_s3c0r_reference.py": "b3f94b786849ced22295ba5d53b7890e5d06cb83",
+    "integration/f-rom/ROM_ROOT_S3C0R_PREREGISTRATION.json": "cc668e6398109fde42e5970e862dc76872f7cfde"
+  },
+  "changed_semantics": [
+    "Only the qualification semantics for analytically prescribed root-uptake metrics are replaced by the preregistered arithmetic envelope."
+  ],
+  "unchanged_semantics": [
+    "C0 physical response",
+    "Reference Richards",
+    "full-potential root sink",
+    "materials and histories",
+    "space-time hierarchy",
+    "O0/O2 identity",
+    "three hydraulic U_combined metrics",
+    "Stage 3 candidate definition"
+  ],
+  "scientific_firewall": {
+    "c0_reclassified": false,
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
