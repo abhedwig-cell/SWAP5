@@ -46,14 +46,17 @@ program test_rm06_management_transaction
   rutter0%canopy_storage_cm = 0.0_real64
 
   call initialize_fmr_hupsel_management_state(irrigation0, rutter0, physical0, status)
-  call require(status == FMR_RM_OK .and. physical0%ready(), 'initial management state')
+  available = physical0%ready()
+  call require(status == FMR_RM_OK .and. available, 'initial management state')
 
   call construct_fmr_hupsel_management_parameters(irrigation_parameters, parameters, status)
-  call require(status == FMR_RM_OK .and. parameters%ready(), 'management parameters')
+  available = parameters%ready()
+  call require(status == FMR_RM_OK .and. available, 'management parameters')
 
   call physical0%clone(initial)
   call committed%initialize(lineage_id, initial, ok, initial_time=t0)
-  call require(ok .and. committed%ready(), 'committed origin')
+  available = committed%ready()
+  call require(ok .and. available, 'committed origin')
   call executor%bind_model(model)
   call setup_config(config)
 
@@ -62,11 +65,13 @@ program test_rm06_management_transaction
 
   call prepare_fmr_hupsel_management_forcing(request, rutter_template, crop_revision, &
        2.0_real64, 2.0_real64, forcing, status)
-  call require(status == FMR_RM_OK .and. forcing%ready(), 'full-realization forcing')
+  available = forcing%ready()
+  call require(status == FMR_RM_OK .and. available, 'full-realization forcing')
 
   ! First trial: candidate only. Committed state must remain untouched.
   call executor%advance_interval(parameters, committed, forcing, config, t0, t1, result_a, candidate_a, diag_a)
-  call require(result_a%completed .and. candidate_a%ready(), 'first candidate materialized')
+  available = candidate_a%ready()
+  call require(result_a%completed .and. available, 'first candidate materialized')
   call require(committed%current_revision() == 0_int64, 'first trial does not commit')
   call model%observation(obs_a)
   call require_observation(obs_a, 'first observation')
@@ -75,7 +80,8 @@ program test_rm06_management_transaction
   call unpack_management(candidate_snapshot_a, irr_a, rut_a)
 
   call executor%rollback_candidate(candidate_a, diag_a)
-  call require(.not. candidate_a%ready(), 'first candidate rolled back')
+  available = candidate_a%ready()
+  call require(.not. available, 'first candidate rolled back')
   call require(committed%current_revision() == 0_int64, 'rollback leaves revision unchanged')
   call committed%snapshot(committed_snapshot, available)
   call require(available, 'origin snapshot after rollback')
@@ -86,7 +92,8 @@ program test_rm06_management_transaction
 
   ! Replay from exactly the same accepted origin.
   call executor%advance_interval(parameters, committed, forcing, config, t0, t1, result_b, candidate_b, diag_b)
-  call require(result_b%completed .and. candidate_b%ready(), 'replay candidate materialized')
+  available = candidate_b%ready()
+  call require(result_b%completed .and. available, 'replay candidate materialized')
   call model%observation(obs_b)
   call candidate_b%snapshot(candidate_snapshot_b, available)
   call require(available .and. allocated(candidate_snapshot_b), 'replay candidate snapshot')
@@ -106,7 +113,8 @@ program test_rm06_management_transaction
   call executor%commit_candidate(committed, candidate_b, diag_b, did_commit, commit_status)
   call require(did_commit .and. commit_status == KERNEL_COMMIT_STATUS_COMMITTED, 'candidate commit')
   call require(committed%current_revision() == 1_int64, 'commit advances revision once')
-  call require(.not. candidate_b%ready(), 'committed candidate consumed')
+  available = candidate_b%ready()
+  call require(.not. available, 'committed candidate consumed')
 
   call committed%snapshot(committed_snapshot, available)
   call require(available .and. allocated(committed_snapshot), 'committed snapshot')
@@ -121,9 +129,11 @@ program test_rm06_management_transaction
   class default
     call require(.false., 'committed snapshot type')
   end select
-  call require(exported .and. status == FMR_RM_OK .and. persistence%ready(), 'persistence export')
+  available = persistence%ready()
+  call require(exported .and. status == FMR_RM_OK .and. available, 'persistence export')
   call reconstruct_fmr_hupsel_management_from_persistence(persistence, restart_state, reconstructed, status)
-  call require(reconstructed .and. status == FMR_RM_OK .and. restart_state%ready(), 'persistence reconstruction')
+  available = restart_state%ready()
+  call require(reconstructed .and. status == FMR_RM_OK .and. available, 'persistence reconstruction')
   call restart_state%snapshot(irr_restart, rut_restart, available)
   call require(available, 'restart snapshot')
   call require(same_irrigation(irr_commit, irr_restart), 'restart irrigation identity')
@@ -133,7 +143,8 @@ program test_rm06_management_transaction
   ! supplied > allocated must fail before any candidate can exist.
   call prepare_fmr_hupsel_management_forcing(request, rutter_template, crop_revision, &
        1.0_real64, 1.1_real64, invalid_forcing, status)
-  call require(status == FMR_RM_INVALID_FORCING .and. .not. invalid_forcing%ready(), 'supply bounded by allocation')
+  available = invalid_forcing%ready()
+  call require(status == FMR_RM_INVALID_FORCING .and. .not. available, 'supply bounded by allocation')
 
   ! Partial realization is an explicit fail-closed nonclaim in this profile.
   call physical0%clone(initial)
@@ -145,7 +156,8 @@ program test_rm06_management_transaction
   call executor%advance_interval(parameters, committed_partial, partial_forcing, config, t0, t1, &
        result_partial, candidate_partial, diag_partial)
   call model%observation(obs_partial)
-  call require(.not. result_partial%completed .and. .not. candidate_partial%ready(), 'partial supply no candidate')
+  available = candidate_partial%ready()
+  call require(.not. result_partial%completed .and. .not. available, 'partial supply no candidate')
   call require(model%last_status_code() == FMR_RM_PARTIAL_SUPPLY_NOT_ADMITTED, 'partial supply fail closed')
   call require(committed_partial%current_revision() == 0_int64, 'partial rejection does not commit')
   call require(abs(obs_partial%requested_depth_cm-2.0_real64) <= tol, 'partial request diagnostic')
