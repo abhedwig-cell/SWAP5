@@ -110,9 +110,13 @@ jobs:
       - name: Download frozen P3 Reference route artifacts
         run: |
           set -euo pipefail
-          reference_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'))['reference_run'])")"
-          mkdir -p /tmp/reference
-          gh run download "$reference_run" --repo abhedwig-cell/SWAP5 -n p3ref-routes -D /tmp/reference
+          surface_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gw_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['GW_LB'])")"
+          mkdir -p /tmp/surface /tmp/gw /tmp/reference
+          gh run download "$surface_run" --repo abhedwig-cell/SWAP5 -n p3ref-surface-routes -D /tmp/surface
+          gh run download "$gw_run" --repo abhedwig-cell/SWAP5 -n p3ref-gw-routes -D /tmp/gw
+          cp /tmp/surface/surface_* /tmp/reference/
+          cp /tmp/gw/gw_* /tmp/reference/
       - name: Analyze frozen state-count ladder
         run: |
           set -euo pipefail
