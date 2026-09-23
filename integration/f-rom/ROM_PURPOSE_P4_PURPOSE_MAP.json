@@ -1,0 +1,257 @@
+{
+  "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P4",
+  "purposes": {
+    "GW_LB": {
+      "materials": {
+        "B01": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P4",
+          "first_closure_deficit_rung": null,
+          "layer_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": []
+          },
+          "matched_richards_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": []
+          },
+          "minimum_tested_layer_rom_state_count": null,
+          "minimum_tested_matched_richards_state_count": null,
+          "propagation_closure_limit": "No propagation/closure deficit is identified by the frozen P4 rung comparisons.",
+          "rungs": [
+            {
+              "attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING",
+              "dimension": 8,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": true,
+              "matched_richards_reaches": false,
+              "member": "G8"
+            },
+            {
+              "attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING",
+              "dimension": 12,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": true,
+              "matched_richards_reaches": false,
+              "member": "G12"
+            },
+            {
+              "attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING",
+              "dimension": 16,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": true,
+              "matched_richards_reaches": false,
+              "member": "G16"
+            }
+          ],
+          "spatial_resolution_limit": "Matched conventional Richards comparator frontier not reached within the frozen 16-cell P4 ladder.",
+          "state_information_limit": "Layer-ROM comparator frontier not reached within the frozen 16-state P4 ladder."
+        },
+        "B14": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P4",
+          "first_closure_deficit_rung": null,
+          "layer_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": []
+          },
+          "matched_richards_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": []
+          },
+          "minimum_tested_layer_rom_state_count": null,
+          "minimum_tested_matched_richards_state_count": null,
+          "propagation_closure_limit": "No propagation/closure deficit is identified by the frozen P4 rung comparisons.",
+          "rungs": [
+            {
+              "attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING",
+              "dimension": 8,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": true,
+              "matched_richards_reaches": false,
+              "member": "G8"
+            },
+            {
+              "attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING",
+              "dimension": 12,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": true,
+              "matched_richards_reaches": false,
+              "member": "G12"
+            },
+            {
+              "attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING",
+              "dimension": 16,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": true,
+              "matched_richards_reaches": false,
+              "member": "G16"
+            }
+          ],
+          "spatial_resolution_limit": "Matched conventional Richards comparator frontier not reached within the frozen 16-cell P4 ladder.",
+          "state_information_limit": "Layer-ROM comparator frontier not reached within the frozen 16-state P4 ladder."
+        }
+      },
+      "physical_support_region": "lower-column transmission, storage memory and lower-boundary response"
+    },
+    "SURF_P": {
+      "materials": {
+        "B01": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P4",
+          "first_closure_deficit_rung": null,
+          "layer_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": []
+          },
+          "matched_richards_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": [
+              "S8",
+              "S12",
+              "S16"
+            ]
+          },
+          "minimum_tested_layer_rom_state_count": null,
+          "minimum_tested_matched_richards_state_count": null,
+          "propagation_closure_limit": "No propagation/closure deficit is identified by the frozen P4 rung comparisons.",
+          "rungs": [
+            {
+              "attribution": "MATCHED_RICHARDS_UNAVAILABLE",
+              "dimension": 8,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": false,
+              "matched_richards_reaches": false,
+              "member": "S8"
+            },
+            {
+              "attribution": "MATCHED_RICHARDS_UNAVAILABLE",
+              "dimension": 12,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": false,
+              "matched_richards_reaches": false,
+              "member": "S12"
+            },
+            {
+              "attribution": "MATCHED_RICHARDS_UNAVAILABLE",
+              "dimension": 16,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": false,
+              "matched_richards_reaches": false,
+              "member": "S16"
+            }
+          ],
+          "spatial_resolution_limit": "Matched Richards frontier is unresolved because numerical qualification is incomplete.",
+          "state_information_limit": "Layer-ROM comparator frontier not reached within the frozen 16-state P4 ladder."
+        },
+        "B14": {
+          "application_authority_status": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P4",
+          "first_closure_deficit_rung": null,
+          "layer_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": []
+          },
+          "matched_richards_frontier_evidence": {
+            "first_comparator_reaching_member": null,
+            "first_comparator_reaching_state_count": null,
+            "frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+            "minimum_tested_member": null,
+            "minimum_tested_state_count": null,
+            "unqualified_lower_members": [],
+            "unqualified_members": [
+              "S8",
+              "S12",
+              "S16"
+            ]
+          },
+          "minimum_tested_layer_rom_state_count": null,
+          "minimum_tested_matched_richards_state_count": null,
+          "propagation_closure_limit": "No propagation/closure deficit is identified by the frozen P4 rung comparisons.",
+          "rungs": [
+            {
+              "attribution": "MATCHED_RICHARDS_UNAVAILABLE",
+              "dimension": 8,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": false,
+              "matched_richards_reaches": false,
+              "member": "S8"
+            },
+            {
+              "attribution": "MATCHED_RICHARDS_UNAVAILABLE",
+              "dimension": 12,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": false,
+              "matched_richards_reaches": false,
+              "member": "S12"
+            },
+            {
+              "attribution": "MATCHED_RICHARDS_UNAVAILABLE",
+              "dimension": 16,
+              "layer_rom_numerically_qualified": true,
+              "layer_rom_reaches": false,
+              "matched_richards_numerically_qualified": false,
+              "matched_richards_reaches": false,
+              "member": "S16"
+            }
+          ],
+          "spatial_resolution_limit": "Matched Richards frontier is unresolved because numerical qualification is incomplete.",
+          "state_information_limit": "Layer-ROM comparator frontier not reached within the frozen 16-state P4 ladder."
+        }
+      },
+      "physical_support_region": "surface through 80 cm plus profile propagation"
+    }
+  },
+  "schema": "swap5.rom-purpose.p4.purpose-map.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "new_closure_family_admitted": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "scope": "Prospectively frozen S8/S12/S16 and G8/G12/G16 frontier extension on fresh blind histories.",
+  "status": "P4_RESEARCH_MAP_PERSISTED",
+  "workstream": "ROM-PURPOSE"
+}

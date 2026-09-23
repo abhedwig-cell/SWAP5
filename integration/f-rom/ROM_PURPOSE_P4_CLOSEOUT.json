@@ -1,0 +1,63 @@
+{
+  "case_outcomes": {
+    "GW_LB/B01": {
+      "first_closure_deficit_rung": null,
+      "layer_frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+      "layer_minimum": null,
+      "richards_frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+      "richards_minimum": null,
+      "terminal_attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING"
+    },
+    "GW_LB/B14": {
+      "first_closure_deficit_rung": null,
+      "layer_frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+      "layer_minimum": null,
+      "richards_frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+      "richards_minimum": null,
+      "terminal_attribution": "REPRESENTATION_OR_RESOLUTION_LIMITING"
+    },
+    "SURF_P/B01": {
+      "first_closure_deficit_rung": null,
+      "layer_frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+      "layer_minimum": null,
+      "richards_frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+      "richards_minimum": null,
+      "terminal_attribution": "MATCHED_RICHARDS_UNAVAILABLE"
+    },
+    "SURF_P/B14": {
+      "first_closure_deficit_rung": null,
+      "layer_frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+      "layer_minimum": null,
+      "richards_frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+      "richards_minimum": null,
+      "terminal_attribution": "MATCHED_RICHARDS_UNAVAILABLE"
+    }
+  },
+  "central_question": "At what extended purpose-aligned vertical state count does the frozen numerical comparator become reachable, and when can residual Layer-ROM error be attributed to propagation/closure rather than same-partition spatial resolution?",
+  "claims_not_made": [
+    "mathematical minimum",
+    "universal minimum",
+    "all-soil minimum",
+    "application acceptance",
+    "production-ROM admission",
+    "performance or speedup",
+    "replacement of Reference Richards"
+  ],
+  "closure_workstream_recommendation": "No separate closure workstream is supported by P4 evidence.",
+  "layer_result": "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json",
+  "matched_richards_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json",
+  "purpose_map": "integration/f-rom/ROM_PURPOSE_P4_PURPOSE_MAP.json",
+  "schema": "swap5.rom-purpose.p4.closeout.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "boundaries_retuned_after_response": false,
+    "closure_tuned": false,
+    "p3_reopened": false,
+    "production_rom_authorized": false,
+    "weighted_general_score_used": false
+  },
+  "status": "P4_CLOSED_FRONTIER_EVIDENCE_INCOMPLETE_NUMERICAL_GAPS",
+  "terminal_dimension": 16,
+  "work_unit": "ROM-PURPOSE-P4",
+  "workstream": "ROM-PURPOSE"
+}

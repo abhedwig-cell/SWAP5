@@ -6,7 +6,10 @@
     "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json",
     "representation_ladder": "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json"
   },
-  "candidate_response_authorized": true,
+  "candidate_response_authorized": false,
+  "closeout": "integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json",
+  "closeout_execution_sha": "d4a2a03ebbf0baa313fc9611b14351a3c8336859",
+  "closeout_source_workflow_run": 35919753231,
   "completed": [
     "RECONCILE",
     "P4_AUTHORITY_BINDING",
@@ -15,7 +18,7 @@
     "P4_PREREGISTRATION",
     "REFERENCE_INFRASTRUCTURE_PREPARED"
   ],
-  "current_gate": "BLIND_FRONTIER_EXECUTION",
+  "current_gate": "P4_CLOSED",
   "date": "2026-09-23",
   "gw_reference_topology_supersession": "integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_TOPOLOGY_SUPERSESSION.json",
   "layer_frontier_execution_sha": "396ff259ab5d84604d7f4e28943fc287cba7adf6",
@@ -25,9 +28,8 @@
   "matched_richards_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json",
   "matched_richards_route_source_run": 35918266166,
   "matched_richards_source_workflow_run": 35919489247,
-  "next_actions": [
-    "Bind the already-frozen Layer-ROM and matched same-partition Richards frontier executions."
-  ],
+  "next_actions": [],
+  "purpose_map": "integration/f-rom/ROM_PURPOSE_P4_PURPOSE_MAP.json",
   "reference_adjudication_sha": "bae6f98f4109a361aa7e4f0727e2766692294c7d",
   "reference_adjudication_source_workflow_run": 35918064570,
   "reference_response_adjudicated": true,
@@ -55,7 +57,7 @@
     "performance_claim_authorized": false,
     "production_rom_authorized": false
   },
-  "status": "P4_REFERENCE_QUALIFIED_RESPONSES_AUTHORIZED",
+  "status": "P4_CLOSED_FRONTIER_EVIDENCE_INCOMPLETE_NUMERICAL_GAPS",
   "work_unit": "ROM-PURPOSE-P4",
   "workstream": "ROM-PURPOSE"
 }
