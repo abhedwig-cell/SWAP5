@@ -1,0 +1,47 @@
+name: F-ROM-PURPOSE P3 surface same-partition failure diagnosis
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_SURFACE_SAME_PARTITION_DIAG_BINDING.json'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify diagnostic authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_SURFACE_SAME_PARTITION_DIAG_BINDING.json'))
+          assert b['status']=='BOUND_READ_ONLY_DIAGNOSIS'
+          assert b['source_run']==35891150093
+          assert b['rerun_response'] is False
+          PY
+      - name: Download preserved SURF_P artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/surf
+          gh run download 35891150093 --repo abhedwig-cell/SWAP5 -p 'p3same-SURF_P-*' -D /tmp/surf
+          find /tmp/surf -type f -name 'richards_SURF_P_*_o0.txt' | sort > /tmp/logs.txt
+          test "$(wc -l < /tmp/logs.txt)" -eq 6
+      - name: Print fail-closed evidence
+        run: |
+          set -euo pipefail
+          while IFS= read -r f; do
+            echo "===== $f ====="
+            echo "--- diagnostic markers ---"
+            grep -Ei 'fail|error|stop|require|mass|ledger|residual|iteration|converg|invalid|complete' "$f" | tail -80 || true
+            echo "--- tail ---"
+            tail -80 "$f"
+          done < /tmp/logs.txt
