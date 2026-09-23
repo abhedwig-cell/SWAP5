@@ -1,11 +1,12 @@
 {
-  "schema": "swap5.sw_rib_adm01.g5a.result.v1",
+  "schema": "swap5.sw_rib_adm01.g5a.result.v2",
   "work_unit": "SW-RIB-ADM01-G5A",
   "date": "2026-09-23",
-  "tested_head": "886b31b2a5b0a275fd4c3e26e11e53ba984ebe65",
-  "evidence_run": 35891590143,
-  "evidence_job": 107285214961,
+  "tested_head": "35544304549acc1577f0e9650a82129fc5f9c68b",
+  "evidence_run": 35891947042,
+  "evidence_job": 107286362245,
   "decision": "PASS_ORIGIN_BOUND_RECOMPOSITION_TRANSACTION",
+  "physical_transfer_unit": "m3 per represented coupling window",
   "passed": [
     "E1 positive drainage full realization commit-ready",
     "E2 negative infiltration full realization commit-ready",
@@ -13,5 +14,6 @@
     "E4 stale Ribasim origin fails closed",
     "E5 same-origin retry deterministic"
   ],
+  "correction_from_v1": "Field names were clarified from an erroneous cm suffix to volume_m3 before any G5B product execution. Frozen numeric values and transaction logic were unchanged; this v2 authority supersedes v1.",
   "production_admission": false
 }
