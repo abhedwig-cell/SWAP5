@@ -89,8 +89,19 @@
     "No new surface-water storage in SWAP.",
     "No automatic SWMAN=2 implementation inside SWAP.",
     "No nonlinear SWQHR1 parity.",
-    "No canonical admission until PA01 independent qualification is green and PA02 has separate candidate plus independent qualification."
+    "No canonical admission until PA01 independent qualification is green and PA02 has separate candidate plus independent qualification.",
+    "No dependency on unadmitted RM10/RM11 source is created by this design preregistration."
   ],
   "production_admission": false,
-  "canonical_admission": false
+  "canonical_admission": false,
+  "dependency_admission": {
+    "canonical_fact": "mod_fmr_ribasim_management_binding.f90 and mod_fmr_ribasim_management_scheduler.f90 are not present on integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "research_authority_branch": "work/ribasim-management-coupling-closeout",
+    "rule": "RM10/RM11/RM12 semantics may be cited as qualified research authority, but PA02 production code may not import or depend on their work-branch modules until those dependencies are independently production-admitted.",
+    "allowed_paths": [
+      "wait for RM10/RM11 production admission and then depend on admitted modules",
+      "open a separate generic provenance admission that is prospectively shared by management realization and accepted surface-water state"
+    ],
+    "forbidden": "Copy or fork RM10 lineage/revision semantics into a second PA02-specific provenance system without an explicit reconciliation/admission step."
+  }
 }
