@@ -1,0 +1,51 @@
+name: F-ROM Practical P4 compiled viability
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P4_PREREGISTRATION.json
+      - tools/rom/rom_practical_p4_rk4.f90
+      - .github/workflows/f-rom-practical-p4.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compiled:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B02, B05, B11, B16]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile frozen RK4
+        run: |
+          gfortran -O3 -std=f2008 -Wall -Wextra tools/rom/rom_practical_p4_rk4.f90 -o /tmp/p4_rk4
+      - name: Execute and time
+        run: |
+          set +e
+          /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o timing.json             /tmp/p4_rk4 "${{ matrix.purpose }}" "${{ matrix.material }}" > output.txt 2>&1
+          status=$?
+          python3 - <<'PY'
+          import json,os
+          status=int(os.environ["STATUS"])
+          timing={}
+          try: timing=json.load(open("timing.json"))
+          except Exception: pass
+          out=open("output.txt",errors="replace").read()
+          obj={"schema":"swap5.rom-practical.p4.compiled-case.v1",
+               "purpose":os.environ["PURPOSE"],"material":os.environ["MATERIAL"],
+               "status":"QUALIFIED" if status==0 else "NUMERICAL_BLOCKED",
+               "exit_status":status,"timing":timing,"output":out}
+          open("result.json","w").write(json.dumps(obj,indent=2)+"\n")
+          PY
+        env:
+          STATUS: "$?"
+          PURPOSE: "${{ matrix.purpose }}"
+          MATERIAL: "${{ matrix.material }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p4-${{ matrix.purpose }}-${{ matrix.material }}
+          path: result.json
