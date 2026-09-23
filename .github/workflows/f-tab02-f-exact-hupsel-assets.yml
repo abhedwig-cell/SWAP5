@@ -33,8 +33,7 @@ jobs:
           curl -fsSL --retry 3 "$base/swap.dra" -o F-TAB02-F-HUPSEL/swap.dra
           curl -fsSL --retry 3 "$base/swap_linux.swp.template" -o F-TAB02-F-HUPSEL/swap.swp
 
-          cat > F-TAB02-F-HUPSEL/SHA256SUMS.expected
-            F-TAB02-F-HUPSEL/SHA256SUMS.observed <<'EOF'
+          cat > F-TAB02-F-HUPSEL/SHA256SUMS.expected <<'EOF'
           1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6  283.met
           8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882  grassd.crp
           2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33  maizes.crp
@@ -66,4 +65,5 @@ jobs:
           path: |
             F-TAB02-F-ASSET-EVIDENCE.txt
             F-TAB02-F-HUPSEL/SHA256SUMS.expected
+            F-TAB02-F-HUPSEL/SHA256SUMS.observed
           if-no-files-found: error
