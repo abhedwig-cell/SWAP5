@@ -1,0 +1,47 @@
+name: TAB-HYD KSATEXM Candidate C Reference-Richards
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-ksatexm-characterization
+    paths:
+      - 'src/solver/mod_b110_generated_mvg_table_state.f90'
+      - 'research/tabulated_hydraulics/test_ksatexm_candidate_c_richards.f90'
+      - 'research/tabulated_hydraulics/run_ksatexm_candidate_c_richards.sh'
+      - 'research/tabulated_hydraulics/KSATEXM_CANDIDATE_C_PREREGISTRATION.md'
+      - '.github/workflows/tabulated-hydraulics-ksatexm-richards.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Candidate C Reference-Richards gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x research/tabulated_hydraulics/run_ksatexm_candidate_c_richards.sh
+          research/tabulated_hydraulics/run_ksatexm_candidate_c_richards.sh
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            grep -E '^TABHYD_KSATEXM_|^TABHYD-KSATEXM ' TABHYD-KSATEXM-C-RICHARDS.log || true
+          } > TABHYD-KSATEXM-C-RICHARDS-EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tabhyd-ksatexm-c-richards
+          path: |
+            TABHYD-KSATEXM-C-RICHARDS.log
+            TABHYD-KSATEXM-C-RICHARDS-EVIDENCE.txt
+          if-no-files-found: warn
