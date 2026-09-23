@@ -2,7 +2,10 @@
   "schema": "swap5.ppa_wu05a3_sorptivity_events.status.v1",
   "work_unit": "PPA-WU05-A3-SORPTIVITY-EVENTS",
   "baseline": "7f5cf1e41",
-  "phase": "SOURCE_TESTS_PASSED_DTO_COMPOSITION_PREREGISTERED",
+  "phase": "PERSISTED_ISOLATED_SOURCE_AND_DTO_TESTS_PASSED",
+  "recovery_point": "1f3539781b15172b30f794b8513ddc742bfa6bfb",
+  "gate": "tests/fapp/run_ppa_wu05a3_sorptivity_events.ps1",
+  "test_result": "Persisted postimage 1f3539781b15172b30f794b8513ddc742bfa6bfb PASS O0/O2 with identical transcripts, warnings-as-errors, bounds checks and floating traps; analytic increments, shared wall order, resets, disabled route, invalid geometry, history isolation, discard/retry and restart continuation",
   "source_test_result": "2efcbe2696d2455206d3ff0aafd788fddd2106f7: O0/O2 PASS with identical transcripts, warnings-as-errors, bounds checks and floating traps",
   "dto_composition_preregistration": "Use existing A2 checkpoint/candidate/restart interfaces in the test harness: real event update, discard, retry, commit, restart roundtrip and equal continuation of event fields under identical explicit drivers. No production integration claim.",
   "source": "B1.11 macropore.f90 MACROSTATE lines 1423-1455",
@@ -18,5 +21,5 @@
   "expected_tests": ["Analytic square-root increment", "Shared wall-factor domain order", "Upper/lower resets and empty region", "Disabled absorption preserves history", "Invalid input and history isolation", "O0/O2 identity with runtime checks"],
   "qualified": false,
   "production_admission": "NONE",
-  "next_action": "Implement and test candidate event lifecycle"
+  "next_action": "Continue MACRORESET beginning-period inventory contracts and candidate composition; resolve icgwl reference-policy gap before whole-MACROSTATE equivalence"
 }
