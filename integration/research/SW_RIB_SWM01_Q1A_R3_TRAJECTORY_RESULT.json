@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r3.trajectory_result.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R3",
+  "date": "2026-09-23",
+  "decision": "TRAJECTORY_EQUIVALENCE_PASS_DIRECT_LEDGER_HARDENING_REQUIRED",
+  "tested_head": "d0ce636bfe59927b07a431c4f23d8e60673d75fc",
+  "evidence_run": 35859378070,
+  "evidence_job": 107175535048,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "mapping": "Ribasim Basin + ContinuousControl(level -> flow_rate) + nonnegative-clamped one-way Pump",
+  "observations": {
+    "C0_NO_DISCHARGE": {
+      "final_level_ribasim_m": -0.19999199999999995,
+      "final_level_oracle_m": -0.19999200000000003,
+      "final_storage_ribasim_m3": 0.800008,
+      "final_storage_oracle_m3": 0.800008,
+      "inferred_discharge_ribasim_m3": 0,
+      "oracle_discharge_m3": 0,
+      "result": "PASS"
+    },
+    "C1_MODERATE_DISCHARGE": {
+      "final_level_ribasim_m": 0.30000500029136945,
+      "final_level_oracle_m": 0.30000499974994455,
+      "level_difference_m": 5.414249049096043e-10,
+      "final_storage_ribasim_m3": 1.3000050002913695,
+      "final_storage_oracle_m3": 1.3000049997499445,
+      "inferred_discharge_ribasim_m3": 0.00001499970863050315,
+      "oracle_discharge_m3": 0.000015000250055550168,
+      "result": "PASS"
+    },
+    "C2_HIGH_DISCHARGE": {
+      "final_level_ribasim_m": 0.6999700017802568,
+      "final_level_oracle_m": 0.6999700015003327,
+      "level_difference_m": 2.799240839124195e-10,
+      "final_storage_ribasim_m3": 1.6999700017802568,
+      "final_storage_oracle_m3": 1.6999700015003327,
+      "inferred_discharge_ribasim_m3": 0.000034998219743176406,
+      "oracle_discharge_m3": 0.000034998499667153735,
+      "result": "PASS"
+    }
+  },
+  "frozen_tolerances_preserved": true,
+  "interpretation": [
+    "The source-derived ContinuousControl + one-way connector representation removes the PCHIP crest-smoothing mismatch seen in V1/R2.",
+    "All three frozen endpoint trajectories pass the original 1e-8 m level/storage and 1e-8 m3 discharge tolerances.",
+    "This establishes bounded trajectory equivalence while keeping surface-water state exclusively in Ribasim.",
+    "The current comparator infers Ribasim discharge from storage change and known inflow; direct connector cumulative mass is therefore required before full mass-conservative qualification."
+  ],
+  "qualification_state": "PARTIAL_PASS_LEDGER_HARDENING_PENDING",
+  "production_admission": false,
+  "retirement_authority": false
+}
