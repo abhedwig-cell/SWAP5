@@ -1,0 +1,160 @@
+{
+  "schema": "swap5.rom_root.s3d2.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D2",
+  "date": "2026-09-23",
+  "status": "S3D2_DYADIC_STATIC_SUPPORT_SWEEP_COMPLETE",
+  "decision": "DYADIC_HYDRAULIC_SUPPORT_COLLAPSES_A_AND_B_TO_NUMERICAL_GUARD",
+  "authority": {
+    "workflow_run": 35859838038,
+    "workflow_head": "f444e857a0f454fe0efb0bfa1b841a777c7576d5",
+    "evidence_artifact_id": 10748658279,
+    "evidence_artifact_name": "rom-root-s3d2",
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D2_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3D2_BINDING.json",
+    "predecessor": "integration/f-rom/ROM_ROOT_S3D1_RESULT.json"
+  },
+  "numerical_guard": 2.9103830456733704e-11,
+  "support_order_cm": [
+    10,
+    5,
+    2.5,
+    1.25,
+    0.625,
+    0.3125,
+    0.15625,
+    0.078125
+  ],
+  "all_case_frontiers": {
+    "total_functional_error": {
+      "support_cm": 0.078125,
+      "nodes_per_layer": 1,
+      "total_column_layers": 2048
+    },
+    "A_threshold_nonlinearity": {
+      "support_cm": 0.078125,
+      "nodes_per_layer": 1,
+      "total_column_layers": 2048
+    },
+    "B_representative_head_distribution": {
+      "support_cm": 0.078125,
+      "nodes_per_layer": 1,
+      "total_column_layers": 2048
+    }
+  },
+  "case_frontiers": {
+    "B01_V01": {
+      "A_cm": 0.078125,
+      "B_cm": 0.078125,
+      "E_cm": 0.078125
+    },
+    "B01_V02": {
+      "A_cm": 0.078125,
+      "B_cm": 0.078125,
+      "E_cm": 0.078125
+    },
+    "B01_V03": {
+      "A_cm": 0.078125,
+      "B_cm": 0.078125,
+      "E_cm": 0.078125
+    },
+    "B01_V04": {
+      "A_cm": 0.078125,
+      "B_cm": 0.15625,
+      "E_cm": 0.078125
+    },
+    "B14_V01": {
+      "A_cm": 0.15625,
+      "B_cm": 0.078125,
+      "E_cm": 0.078125
+    },
+    "B14_V02": {
+      "A_cm": 0.078125,
+      "B_cm": 0.078125,
+      "E_cm": 0.078125
+    },
+    "B14_V03": {
+      "A_cm": 0.078125,
+      "B_cm": 0.15625,
+      "E_cm": 0.078125
+    },
+    "B14_V04": {
+      "A_cm": 0.078125,
+      "B_cm": 0.15625,
+      "E_cm": 0.078125
+    }
+  },
+  "near_frontier_0_15625_cm": {
+    "note": "At 0.15625 cm some individual A or B components reach the guard, but total E fails the guard in all eight cases.",
+    "B01_V01": {
+      "A_max_abs": 5.153479865072086e-10,
+      "B_max_abs": 1.970707597109822e-9,
+      "E_max_abs": 1.9707087073328466e-9
+    },
+    "B01_V02": {
+      "A_max_abs": 6.07147332409852e-10,
+      "B_max_abs": 2.1856987331148048e-9,
+      "E_max_abs": 2.3676809401962373e-9
+    },
+    "B01_V03": {
+      "A_max_abs": 2.1218978796255783e-9,
+      "B_max_abs": 2.975020230167047e-11,
+      "E_max_abs": 2.12284023692888e-9
+    },
+    "B01_V04": {
+      "A_max_abs": 4.459862146255489e-9,
+      "B_max_abs": 2.5823454485873754e-11,
+      "E_max_abs": 4.462622937850824e-9
+    },
+    "B14_V01": {
+      "A_max_abs": 9.807377132631245e-12,
+      "B_max_abs": 1.6596835017423928e-10,
+      "E_max_abs": 1.7092771642523985e-10
+    },
+    "B14_V02": {
+      "A_max_abs": 3.592537378693805e-11,
+      "B_max_abs": 2.8122515427497774e-10,
+      "E_max_abs": 3.1138391864971027e-10
+    },
+    "B14_V03": {
+      "A_max_abs": 4.373590378747849e-10,
+      "B_max_abs": 1.2500223078859563e-11,
+      "E_max_abs": 4.3781767100625757e-10
+    },
+    "B14_V04": {
+      "A_max_abs": 2.039941660036959e-9,
+      "B_max_abs": 2.8069879753900295e-11,
+      "E_max_abs": 2.042870095309013e-9
+    }
+  },
+  "full_node_support": {
+    "support_cm": 0.078125,
+    "max_errors_order": "approximately 1e-16 to 5e-14 across cases",
+    "all_A_within_guard": true,
+    "all_B_within_guard": true,
+    "all_E_within_guard": true
+  },
+  "monotonicity": {
+    "all_cases_A_nonincreasing_with_guard": true,
+    "all_cases_B_nonincreasing_with_guard": true,
+    "all_cases_E_nonincreasing_with_guard": true
+  },
+  "integrity": {
+    "pass": true,
+    "max_A_plus_B_identity_error": 0
+  },
+  "interpretation": {
+    "dynamic_reduced_candidate_executed": false,
+    "root_specific_state_selected": false,
+    "application_tolerance_used": false,
+    "bounded": "Pure hydraulic support can recover the static Feddes functional under refinement, but the all-case arithmetic frontier coincides with the full 2048-node Reference support. D2 therefore supplies no evidence for a useful reduced pure-hydraulic static representation."
+  },
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
