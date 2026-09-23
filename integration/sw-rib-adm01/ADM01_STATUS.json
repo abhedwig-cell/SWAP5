@@ -1,21 +1,29 @@
 {
   "work_unit": "SW-RIB-ADM01",
-  "status": "ACTIVE_ADMISSION",
+  "status": "ACTIVE_ADMISSION_G7_PENDING",
   "base": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "source_port": "Q4A/Q4B research-qualified signed extended exchange candidate",
   "completed": [
     "ADM01-G1_OWNER_XOR",
     "ADM01-G2_CANONICAL_Q4B_REPLAY",
     "ADM01-G3_ACCEPTED_EXTERNAL_HEAD_BINDING",
-    "ADM01-G4_GEOMETRY_POLICY_GUARD"
+    "ADM01-G4_GEOMETRY_POLICY_GUARD",
+    "ADM01-G4_PROFILE_SELECTION",
+    "ADM01-G5A_ORIGIN_BOUND_TRANSACTION",
+    "ADM01-G5B_EXACT_RIBASIM_REALIZATION",
+    "ADM01-G6_PROVENANCE"
   ],
   "qualified": [
-    "ADM01-G1",
-    "ADM01-G2",
-    "ADM01-G3",
-    "ADM01-G4_GUARD"
+    "ADM01-G1_OWNER_XOR",
+    "ADM01-G2_CANONICAL_Q4B_REPLAY",
+    "ADM01-G3_ACCEPTED_EXTERNAL_HEAD_BINDING",
+    "ADM01-G4_GEOMETRY_POLICY_GUARD",
+    "ADM01-G4_PROFILE_SELECTION",
+    "ADM01-G5A_ORIGIN_BOUND_TRANSACTION",
+    "ADM01-G5B_EXACT_RIBASIM_REALIZATION",
+    "ADM01-G6_PROVENANCE"
   ],
-  "next_action": "Execute preregistered G5A origin-bound transaction semantics, then G5B exact-release Ribasim realization. Final admission remains blocked on an explicit G4 application geometry error envelope or native geometry contract.",
+  "next_action": "Execute ADM01-G7 independent current-tree qualification without mutating production source. G7 binds F-APP09/F-CI109 SWAP-side authority to exact-release Ribasim v2026.1.2 G5B receipts and verifies G1-G6 fail-closed semantics. Final full application admission waits for F-CI109 canonical merge and G7 PASS.",
   "production_admission": false,
   "current_head": "ac1ff395d8aac0af440cb2ed58f93a039d14b23e",
   "evidence": {
@@ -33,12 +41,31 @@
       "run": 35891333005,
       "job": 107284253053,
       "decision": "PASS_FAIL_CLOSED_GUARD"
+    },
+    "G5A": {
+      "run": 35891947042,
+      "job": 107286362245,
+      "decision": "PASS"
+    },
+    "G5B": {
+      "run": 35892401977,
+      "job": 107288075790,
+      "decision": "PASS"
+    },
+    "G6": {
+      "run": 35892401977,
+      "job": 107288075790,
+      "decision": "PASS_VERSION_COHERENCE_v2026.1.2"
     }
   },
   "open": [
-    "G4_APPLICATION_ERROR_ENVELOPE",
-    "G5_END_TO_END_TRANSACTION",
-    "G6_RIBASIM_PROVENANCE",
-    "G7_INDEPENDENT_ADMISSION"
-  ]
+    "G7_INDEPENDENT_APPLICATION_ADMISSION",
+    "F-CI109_CANONICAL_MERGE"
+  ],
+  "geometry_profile": "RIBASIM_NATIVE_GEOMETRY_V1",
+  "swapside_authority": {
+    "owner": "F-APP09",
+    "independent_qualification": "F-VQ128_PASS",
+    "canonical_admission_candidate": "F-CI109_PR_593"
+  }
 }
