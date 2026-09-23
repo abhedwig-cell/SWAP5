@@ -1,0 +1,106 @@
+name: F-ROM Practical P6A research interface regression
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P6A_PREREGISTRATION.json
+      - tools/rom/run_rom_practical_research.py
+      - .github/workflows/f-rom-practical-p6a.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: rom-practical-p6a-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  case:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B02, B05, B06, B11, B12, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Bind interface/core authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tools/rom/rom_practical_p4_rk4.f90)" = 5f8f96300523fb8a1534b3cc2f1c159921c95a05
+          test "$(git hash-object tools/rom/run_rom_practical_research.py)" = 324119d2caac9d55992b9d9d225bb8ddd4abd769
+          test "$(git hash-object integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json)" = b2d8885a9bb01b078a3510086c70945207ab0882
+      - name: Compile frozen core
+        run: |
+          gfortran -O2 -std=f2008 -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow tools/rom/rom_practical_p4_rk4.f90 -o /tmp/rom_practical
+      - name: Execute research interface
+        run: |
+          set -euo pipefail
+          profile=P3_SD
+          if [ "${{ matrix.purpose }}" = "GW_LB" ]; then profile=P3_GD; fi
+          python3 tools/rom/run_rom_practical_research.py             --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}"             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --exe /tmp/rom_practical --forcing-profile "$profile"             --namelist-out evidence/material.nml --raw-output evidence/wrapper.log             --output evidence/result.json
+      - name: Direct-core trajectory identity
+        run: |
+          set -euo pipefail
+          /tmp/rom_practical "${{ matrix.purpose }}" "${{ matrix.material }}" evidence/material.nml 0.005 > evidence/direct.log 2>&1
+          grep -E '^(P4_STATE|P4_LAYER|P4_HISTORY_PASS|P4_EXECUTION_COMPLETE=)' evidence/wrapper.log > evidence/wrapper.stable
+          grep -E '^(P4_STATE|P4_LAYER|P4_HISTORY_PASS|P4_EXECUTION_COMPLETE=)' evidence/direct.log > evidence/direct.stable
+          cmp evidence/wrapper.stable evidence/direct.stable
+          python3 - <<'PY'
+          import json
+          r=json.load(open('evidence/result.json'))
+          assert r['schema']=='swap5.rom-practical.research-interface.v1'
+          assert r['status']=='QUALIFIED'
+          assert r['dt_day']==0.005
+          assert r['horizon_days']==60
+          assert r['max_water_ledger_cm']<=1e-8
+          assert len(r['histories'])==2
+          assert all(len(v)==60 for v in r['histories'].values())
+          print('P6A_CASE=PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-practical-p6a-${{ matrix.purpose }}-${{ matrix.material }}
+          path: evidence/result.json
+          if-no-files-found: error
+  aggregate:
+    needs: case
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p6a-*
+          path: /tmp/p6a
+      - name: Aggregate interface regression
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          rows=[json.load(open(p)) for p in pathlib.Path('/tmp/p6a').rglob('result.json')]
+          expected={(p,m) for p in ('SURF_P','GW_LB') for m in ('B02','B05','B06','B11','B12','B16')}
+          ids={(r['purpose'],r['material']) for r in rows}
+          assert len(rows)==12 and ids==expected
+          assert all(r['status']=='QUALIFIED' and r['max_water_ledger_cm']<=1e-8 for r in rows)
+          out={
+            'schema':'swap5.rom-practical.p6a.result.v1','workstream':'ROM-PRACTICAL','work_unit':'ROM-PRACTICAL-P6A',
+            'status':'P6A_RESEARCH_INTERFACE_QUALIFIED','completed_cases':12,'total_cases':12,
+            'dt_day':0.005,'trajectory_identity_gate':True,'wrapper_status_gate':True,
+            'cases':[{'purpose':r['purpose'],'material':r['material'],'member':r['member'],
+                      'max_water_ledger_cm':r['max_water_ledger_cm'],
+                      'stable_core_output_sha256':r['provenance']['stable_core_output_sha256']} for r in rows],
+            'production_rom_authorized':False,'application_acceptance_adjudicated':False,'P_ROM_ET_opened':False
+          }
+          pathlib.Path('integration/f-rom/ROM_PRACTICAL_P6A_RESULT.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({'status':out['status'],'completed_cases':12}))
+          PY
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-rom/ROM_PRACTICAL_P6A_RESULT.json
+          git commit -m 'ROM-PRACTICAL P6A: persist research interface qualification' || exit 0
+          git push origin HEAD:work/f-rom-practical
