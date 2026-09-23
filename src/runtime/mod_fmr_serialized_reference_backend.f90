@@ -36,6 +36,8 @@ module mod_fmr_serialized_reference_backend
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
+  use mod_reference_richards_workspace, only: reference_workspace_payload_bytes
+  use mod_a23bu_worker_execution_context, only: a23bu_scratch_payload_bytes
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_rossfast_solver_selection_binding, only: fmr_rossfast_solver_selection_binding_t, &
        FMR_ROSSFAST_BIND_INTERNAL_ERROR
@@ -299,6 +301,7 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_qbot_projection_available = .false.
     real(real64) :: drainage_projected_groundwater_level = 0.0_real64
     integer :: drainage_response_evaluations = 0
+    integer :: drainage_response_evaluation_calls = 0
     logical :: drainage_response_mass_accounted_in_trial = .false.
     real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
     type(fmr_drainage_response_diagnostics_t) :: drainage_response
@@ -314,6 +317,12 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: boesten_empirical_demand = 0.0_real64
     real(real64) :: boesten_candidate_spev = 0.0_real64
     real(real64) :: boesten_candidate_saev = 0.0_real64
+    integer :: snow_event_evaluation_calls = 0
+    integer :: black_evaporation_evaluation_calls = 0
+    integer :: boesten_evaporation_evaluation_calls = 0
+    integer :: soil_temperature_evaluation_calls = 0
+    integer(int64) :: common_work_payload_bytes = 0_int64
+    integer(int64) :: soil_temperature_optional_payload_bytes = 0_int64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -345,6 +354,11 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
     integer :: drainage_response_evaluations = 0
+    integer :: snow_event_evaluation_calls = 0
+    integer :: black_evaporation_evaluation_calls = 0
+    integer :: boesten_evaporation_evaluation_calls = 0
+    integer :: soil_temperature_evaluation_calls = 0
+    integer :: drainage_response_evaluation_calls = 0
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     integer :: bottom_mode = 7
@@ -737,6 +751,7 @@ contains
       if (parameters%snow_active) then
         if (.not. allocated(parameters%snow) .or. .not. allocated(forcing%snow) .or. &
             .not. allocated(physical%snow)) return
+        model%snow_event_evaluation_calls = model%snow_event_evaluation_calls + 1
         call evaluate_snow_reference_call(parameters%snow, physical%snow%process, forcing%snow, t0, t1, &
              model%snow_candidate, model%snow_fluxes, model%snow_diagnostics)
         if (model%snow_diagnostics%status /= SNOW_OK .or. .not. model%snow_diagnostics%mass%available) return
@@ -1121,6 +1136,12 @@ contains
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical :: bottom_thermal_ok, top_sensible_ok
 
+    self%model%snow_event_evaluation_calls = 0
+    self%model%black_evaporation_evaluation_calls = 0
+    self%model%boesten_evaporation_evaluation_calls = 0
+    self%model%soil_temperature_evaluation_calls = 0
+    self%model%drainage_response_evaluation_calls = 0
+    self%model%last_observation = fmr_serialized_physical_observation_t()
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
@@ -1248,6 +1269,19 @@ contains
     end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
+    self%model%last_observation%snow_event_evaluation_calls = self%model%snow_event_evaluation_calls
+    self%model%last_observation%black_evaporation_evaluation_calls = &
+         self%model%black_evaporation_evaluation_calls
+    self%model%last_observation%boesten_evaporation_evaluation_calls = &
+         self%model%boesten_evaporation_evaluation_calls
+    self%model%last_observation%soil_temperature_evaluation_calls = &
+         self%model%soil_temperature_evaluation_calls
+    self%model%last_observation%drainage_response_evaluation_calls = &
+         self%model%drainage_response_evaluation_calls
+    self%model%last_observation%common_work_payload_bytes = &
+         serialized_common_work_payload_bytes(self%model)
+    self%model%last_observation%soil_temperature_optional_payload_bytes = &
+         serialized_optional_work_payload_bytes(self%model)
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
@@ -1930,6 +1964,7 @@ contains
                black_physical%ponding_depth > BLACK_EVAP_PONDING_CLASSIFICATION_CM
           black_process_forcing%wetting_reset_event = self%black_evaporation_forcing%wetting_reset_event .and. &
                same_real_bits(t0, self%black_evaporation_forcing%wetting_event_time)
+          self%black_evaporation_evaluation_calls = self%black_evaporation_evaluation_calls + 1
           call evaluate_black_evaporation_reduction(self%black_evaporation_parameters, &
                black_physical%black_evaporation, black_process_forcing, step_duration, black_result)
           self%last_observation%black_evaporation_evaluated = black_result%status == BLACK_EVAP_AVAILABLE
@@ -1968,6 +2003,7 @@ contains
                self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
           boesten_process_forcing%surface_is_ponded = &
                boesten_physical%ponding_depth > BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
+          self%boesten_evaporation_evaluation_calls = self%boesten_evaporation_evaluation_calls + 1
           call evaluate_boesten_evaporation_reduction(self%boesten_evaporation_parameters, &
                boesten_physical%boesten_evaporation, boesten_process_forcing, step_duration, boesten_result)
           self%last_observation%boesten_evaporation_evaluated = boesten_result%status == BOESTEN_EVAP_AVAILABLE
@@ -2032,6 +2068,7 @@ contains
       call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, self%drainage_response_controls, &
            hydraulic_start, self%qdra, self%drainage_response_diagnostics)
       self%drainage_response_evaluations = self%drainage_response_evaluations + 1
+      self%drainage_response_evaluation_calls = self%drainage_response_evaluation_calls + 1
       self%last_observation%drainage_response_evaluations = self%drainage_response_evaluations
       self%last_observation%drainage_response = self%drainage_response_diagnostics
       if (self%drainage_response_diagnostics%status /= FMR_DRAIN_BIND_OK) return
@@ -2192,6 +2229,7 @@ contains
       if (self%soil_temperature_active) then
         call build_process_hydraulic_view(solve_result%candidate_state, hydraulic_end, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
+        self%soil_temperature_evaluation_calls = self%soil_temperature_evaluation_calls + 1
         call trial_restricted_soil_temperature(self%soil_temperature_parameters, self%soil_temperature_numerical, &
              self%soil_temperature_forcing, hydraulic_start, hydraulic_end, physical%soil_temperature, t0, t1, &
              self%soil_temperature_workspace, soil_temperature_trial, soil_temperature_result, soil_temperature_diagnostics)
@@ -2723,5 +2761,69 @@ contains
     end do
     value = y_table(size(y_table))
   end function afgen_pairs
+
+  function serialized_common_work_payload_bytes(model) result(nbytes)
+    type(fmr_serialized_reference_model_t), intent(in) :: model
+    integer(int64) :: nbytes, nreal
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+
+    nreal = 0_int64
+    if (associated(model%qdra)) nreal = nreal + size(model%qdra, kind=int64)
+    if (associated(model%qssdi)) nreal = nreal + size(model%qssdi, kind=int64)
+    if (associated(model%qrot)) nreal = nreal + size(model%qrot, kind=int64)
+    nbytes = nreal * REAL_BYTES + reference_workspace_payload_bytes(model%workspace%richards) + &
+             int(a23bu_scratch_payload_bytes(model%workspace%legacy_worker), int64)
+  end function serialized_common_work_payload_bytes
+
+  function serialized_optional_work_payload_bytes(model) result(nbytes)
+    type(fmr_serialized_reference_model_t), intent(in) :: model
+    integer(int64) :: nbytes, nreal
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+
+    nreal = 0_int64
+    if (allocated(model%soil_temperature_parameters)) then
+      if (allocated(model%soil_temperature_parameters%dz_cm)) &
+        nreal = nreal + size(model%soil_temperature_parameters%dz_cm, kind=int64)
+      if (allocated(model%soil_temperature_parameters%distance_above_cm)) &
+        nreal = nreal + size(model%soil_temperature_parameters%distance_above_cm, kind=int64)
+      if (allocated(model%soil_temperature_parameters%theta_sat)) &
+        nreal = nreal + size(model%soil_temperature_parameters%theta_sat, kind=int64)
+      if (allocated(model%soil_temperature_parameters%f_quartz)) &
+        nreal = nreal + size(model%soil_temperature_parameters%f_quartz, kind=int64)
+      if (allocated(model%soil_temperature_parameters%f_clay)) &
+        nreal = nreal + size(model%soil_temperature_parameters%f_clay, kind=int64)
+      if (allocated(model%soil_temperature_parameters%f_organic)) &
+        nreal = nreal + size(model%soil_temperature_parameters%f_organic, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fkk_qco_dry)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fkk_qco_dry, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fk_qco_dry)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fk_qco_dry, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fkk_qco_wet)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fkk_qco_wet, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fk_qco_wet)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fk_qco_wet, kind=int64)
+    end if
+    if (allocated(model%soil_temperature_workspace%old_temperature_c)) &
+      nreal = nreal + size(model%soil_temperature_workspace%old_temperature_c, kind=int64)
+    if (allocated(model%soil_temperature_workspace%average_water_content)) &
+      nreal = nreal + size(model%soil_temperature_workspace%average_water_content, kind=int64)
+    if (allocated(model%soil_temperature_workspace%heat_capacity_j_cm3_k)) &
+      nreal = nreal + size(model%soil_temperature_workspace%heat_capacity_j_cm3_k, kind=int64)
+    if (allocated(model%soil_temperature_workspace%node_conductivity_j_cm_k_day)) &
+      nreal = nreal + size(model%soil_temperature_workspace%node_conductivity_j_cm_k_day, kind=int64)
+    if (allocated(model%soil_temperature_workspace%face_conductivity_j_cm_k_day)) &
+      nreal = nreal + size(model%soil_temperature_workspace%face_conductivity_j_cm_k_day, kind=int64)
+    if (allocated(model%soil_temperature_workspace%lower)) &
+      nreal = nreal + size(model%soil_temperature_workspace%lower, kind=int64)
+    if (allocated(model%soil_temperature_workspace%diagonal)) &
+      nreal = nreal + size(model%soil_temperature_workspace%diagonal, kind=int64)
+    if (allocated(model%soil_temperature_workspace%upper)) &
+      nreal = nreal + size(model%soil_temperature_workspace%upper, kind=int64)
+    if (allocated(model%soil_temperature_workspace%rhs)) &
+      nreal = nreal + size(model%soil_temperature_workspace%rhs, kind=int64)
+    if (allocated(model%soil_temperature_workspace%solution)) &
+      nreal = nreal + size(model%soil_temperature_workspace%solution, kind=int64)
+    nbytes = nreal * REAL_BYTES
+  end function serialized_optional_work_payload_bytes
 
 end module mod_fmr_serialized_reference_backend

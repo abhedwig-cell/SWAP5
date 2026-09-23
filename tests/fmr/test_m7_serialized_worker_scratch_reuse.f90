@@ -8,7 +8,7 @@ program test_m7_serialized_worker_scratch_reuse
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_new_b110_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_execute_serialized_physical_column
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -32,6 +32,7 @@ program test_m7_serialized_worker_scratch_reuse
   type(fmr_serialized_column_result_t) :: results(NCOLUMN)
   type(fmr_column_diagnostics_t) :: diagnostics(NCOLUMN)
   type(fmr_serialized_batch_diagnostics_t) :: runtime
+  type(fmr_serialized_physical_observation_t) :: observation
   type(fmr_b110_physical_state_t) :: initial_state
   type(fmr_b110_physical_state_t) :: first_state, middle_state, last_state
   type(fixed_flux_top_boundary_provider_t), target :: top
@@ -89,6 +90,7 @@ program test_m7_serialized_worker_scratch_reuse
     diagnostics(i)%column_id = columns(i)%column_id
     call fmr_execute_serialized_physical_column(backend, transaction_control, columns(i), templates, parameters, &
          forcings, states, numerical, T0, T1, results(i), diagnostics(i), runtime, active_physical_calls)
+    observation = backend%observation()
     write(*,'(a,1x,i0,1x,l1,1x,l1,1x,a,1x,i0,1x,i0,1x,a,1x,es24.16e3)') &
          'M7_WORKER_SCRATCH_COLUMN', i, results(i)%completed, results(i)%committed, &
          trim(results(i)%admission_status), results(i)%kernel_status, results(i)%accepted_substeps, &
@@ -97,6 +99,31 @@ program test_m7_serialized_worker_scratch_reuse
     call require(results(i)%mass%complete, 'A-B-A column mass complete')
     call require(abs(results(i)%mass%residual) <= HARD_MASS_GATE, 'A-B-A hard mass gate')
     call require(states(i)%current_revision() == 1_int64, 'A-B-A committed revision')
+    call require(observation%snow_event_evaluation_calls == 0 .and. &
+         observation%black_evaporation_evaluation_calls == 0 .and. &
+         observation%boesten_evaporation_evaluation_calls == 0 .and. &
+         observation%soil_temperature_evaluation_calls == 0 .and. &
+         observation%drainage_response_evaluation_calls == 0, 'BASE has zero optional-process calls')
+    call require(observation%common_work_payload_bytes > 0_int64, 'BASE common workspace payload measured')
+    call require(observation%soil_temperature_optional_payload_bytes == 0_int64, &
+         'BASE soil-temperature workspace payload absent')
+    call require(.not. allocated(parameters(i)%black_evaporation) .and. &
+         .not. allocated(parameters(i)%boesten_evaporation) .and. .not. allocated(parameters(i)%snow) .and. &
+         .not. allocated(parameters(i)%soil_temperature), 'BASE optional parameter payloads absent')
+    call require(.not. allocated(forcings(i)%black_evaporation) .and. &
+         .not. allocated(forcings(i)%boesten_evaporation) .and. .not. allocated(forcings(i)%snow) .and. &
+         .not. allocated(forcings(i)%soil_temperature), 'BASE optional forcing payloads absent')
+    call require(.not. allocated(initial_state%snow) .and. .not. allocated(initial_state%soil_temperature), &
+         'BASE optional physical-state payloads absent')
+    write(*,'(a,1x,i0,1x,a,1x,i0,1x,a,1x,i0,1x,a,1x,i0,1x,a,1x,i0,1x,a,1x,i0)') &
+         'M7_RESOURCE_BASE_COLUMN', i, &
+         'COMMON_WORK_BYTES', observation%common_work_payload_bytes, &
+         'SOIL_TEMP_WORK_BYTES', observation%soil_temperature_optional_payload_bytes, &
+         'COMMON_FORCING_BYTES', common_forcing_payload_bytes(forcings(i)), &
+         'COMMON_PARAMETER_BYTES', common_parameter_payload_bytes(parameters(i)), &
+         'COMMON_STATE_ARRAY_BYTES', common_state_payload_bytes(initial_state)
+    print '(a)', 'M7_RESOURCE_BASE_OPTION_CALLS=0'
+    print '(a)', 'M7_RESOURCE_BASE_OPTION_INPUT_BYTES=0'
   end do
 
   call snapshot_physical_state(states(1), first_state, ok)
@@ -208,6 +235,36 @@ contains
       forcing%root_extraction_sink(k) = 0.0_real64
     end do
   end subroutine configure_forcing
+
+  integer(int64) function common_forcing_payload_bytes(forcing) result(nbytes)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+    nbytes = 0_int64
+    if (allocated(forcing%drainage_flux_by_level)) &
+      nbytes = nbytes + size(forcing%drainage_flux_by_level, kind=int64) * REAL_BYTES
+    if (allocated(forcing%subsurface_irrigation_source)) &
+      nbytes = nbytes + size(forcing%subsurface_irrigation_source, kind=int64) * REAL_BYTES
+    if (allocated(forcing%root_extraction_sink)) &
+      nbytes = nbytes + size(forcing%root_extraction_sink, kind=int64) * REAL_BYTES
+  end function common_forcing_payload_bytes
+
+  integer(int64) function common_parameter_payload_bytes(p) result(nbytes)
+    type(fmr_b110_physical_parameters_t), intent(in) :: p
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+    nbytes = 0_int64
+    if (allocated(p%z)) nbytes = nbytes + size(p%z, kind=int64) * REAL_BYTES
+    if (allocated(p%dz)) nbytes = nbytes + size(p%dz, kind=int64) * REAL_BYTES
+    if (allocated(p%node_distance)) nbytes = nbytes + size(p%node_distance, kind=int64) * REAL_BYTES
+    if (allocated(p%cofgen)) nbytes = nbytes + size(p%cofgen, kind=int64) * REAL_BYTES
+  end function common_parameter_payload_bytes
+
+  integer(int64) function common_state_payload_bytes(state) result(nbytes)
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+    nbytes = 0_int64
+    if (allocated(state%pressure_head)) nbytes = nbytes + size(state%pressure_head, kind=int64) * REAL_BYTES
+    if (allocated(state%water_content)) nbytes = nbytes + size(state%water_content, kind=int64) * REAL_BYTES
+  end function common_state_payload_bytes
 
   subroutine snapshot_physical_state(committed, state, available)
     type(kernel_committed_state_t), intent(in) :: committed
