@@ -52,7 +52,7 @@ def make_ribasim_api_copy(source_lib: Path, dep_dir: Path, tag: str, workdir: Pa
     # JuliaC's release library may resolve sibling runtime files relative to
     # $ORIGIN. Give each candidate a distinct main-library inode/global state
     # while preserving the exact official release dependency tree.
-    candidate_dir=workdir/tag)
+    candidate_dir=workdir/tag
     candidate_dir.mkdir(parents=True)
     for entry in dep_dir.iterdir():
         target=candidate_dir/entry.name
