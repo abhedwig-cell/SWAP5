@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.sw_rib_swm01.q2b1.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q2B1",
+  "date": "2026-09-23",
+  "decision": "PASS_REAL_RIBASIM_MANAGED_LEVEL_BAND_WITH_BOUNDED_ROUTES",
+  "tested_head": "a562a745b8fb0b0894743fe373dfae1f70023f3b",
+  "evidence_run": 35863877490,
+  "evidence_job": 107190477656,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "band": {
+    "lower_m": -0.3,
+    "upper_m": -0.2
+  },
+  "cases": {
+    "M1_BELOW_BAND_ADEQUATE": {
+      "final_level_m": -0.30000000232757895,
+      "direct_supply_m3": 0.09999999767242111,
+      "direct_discharge_m3": 0,
+      "storage_change_m3": 0.09999999767242107,
+      "mass_residual_m3": -4.163336342344337e-17,
+      "result": "PASS"
+    },
+    "M2_BELOW_BAND_LIMITED": {
+      "final_level_m": -0.3500000011637895,
+      "direct_supply_m3": 0.04999999883621057,
+      "direct_discharge_m3": 0,
+      "storage_change_m3": 0.049999998836210535,
+      "mass_residual_m3": -3.469446951953614e-17,
+      "result": "PASS"
+    },
+    "M3_INSIDE_BAND": {
+      "final_level_m": -0.25,
+      "direct_supply_m3": 0,
+      "direct_discharge_m3": 0,
+      "storage_change_m3": 0,
+      "mass_residual_m3": 0,
+      "result": "PASS"
+    },
+    "M4_ABOVE_BAND_ADEQUATE": {
+      "final_level_m": -0.19999999767242105,
+      "direct_supply_m3": 0,
+      "direct_discharge_m3": 0.09999999767242111,
+      "storage_change_m3": -0.09999999767242107,
+      "mass_residual_m3": 4.163336342344337e-17,
+      "result": "PASS"
+    },
+    "M5_ABOVE_BAND_LIMITED": {
+      "final_level_m": -0.1499999988362105,
+      "direct_supply_m3": 0,
+      "direct_discharge_m3": 0.04999999883621057,
+      "storage_change_m3": -0.049999998836210535,
+      "mass_residual_m3": 3.469446951953614e-17,
+      "result": "PASS"
+    }
+  },
+  "interpretation": [
+    "Ribasim realizes the accepted WLSTAR band without any SWAP-owned surface-water storage.",
+    "Adequate supply/discharge brings the Basin to the requested band edge; finite capacity leaves an explicit unmet deficit or surplus.",
+    "The inside-band case generates no management transfer.",
+    "No case exhibits simultaneous nonzero management supply and discharge.",
+    "Direct route ledgers close against Basin storage to near machine precision."
+  ],
+  "q2b2_hold": "This result qualifies a managed level band with fixed route capacities. It does not qualify dynamic legacy Q(h)-limited discharge; Q2B2 remains a separate representation/composition question.",
+  "qualification_state": "BOUNDED_RESEARCH_PASS",
+  "production_admission": false,
+  "retirement_authority": false
+}
