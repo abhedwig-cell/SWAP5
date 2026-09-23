@@ -1371,8 +1371,11 @@ contains
         ! requested generated-provider capability from typed immutable inputs
         ! only; table materialization happens afterwards in configure_parameters.
         ! advance() remains fail-closed if materialization did not become ready.
-        ok = ok .and. .not. parameters%ksatexm_extension_active .and. &
-             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
+        ! TAB-HYD KSATEXM Candidate C research only: constitutive and direct
+        ! Reference-Richards gates have qualified generated+F-SI39 semantics.
+        ! Remove only the prior F-TAB02 scope guard; all other fail-closed
+        ! production-profile restrictions remain unchanged on this research branch.
+        ok = ok .and. (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%drainage_response_active .and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
