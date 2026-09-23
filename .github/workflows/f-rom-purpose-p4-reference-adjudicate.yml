@@ -46,7 +46,7 @@ jobs:
           gw_t32_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json'))['reference_runs']['GW_R2048_T32'])")"
           mkdir -p /tmp/surface /tmp/gwbase /tmp/gwt32 /tmp/reference
           gh run download "$surface_run" --repo abhedwig-cell/SWAP5 -n p4ref-surface-routes -D /tmp/surface
-          gh run download "$gw_base_run" --repo abhedwig-cell/SWAP5 -n p4ref-gw-non-r2048-t32-routes -D /tmp/gwbase
+          gh run download "$gw_base_run" --repo abhedwig-cell/SWAP5 -n p4ref-gw-segmented-routes -D /tmp/gwbase
           gh run download "$gw_t32_run" --repo abhedwig-cell/SWAP5 -n p4gw-r2048-t32-routes -D /tmp/gwt32
           cp /tmp/surface/surface_* /tmp/reference/
           cp /tmp/gwbase/gw_* /tmp/reference/
