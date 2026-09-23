@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Implement the proposed opt-in Richards trial evaluation payload following integration/audits/PPA_WU05A4_RICHARDS_TRIAL_CONTRACT.json. Seam inventory distinguishes once-per-step external sources from nonlinear macropore residual/Jacobian exchange, geometry/surface partition and reduction-history ownership. Preserve frozen provider ABI and inactive production behavior; no production admission is claimed by the proposal.",
-  "recovery_point": "bc14a7bcf6e3de1e7fc5c3ddbd36559e667f1156: isolated mass-guarded commit and computed interval-candidate integration PASS O0/O2; reject/retry/single/stale/duplicate behavior tested. No whole-column runtime admission.",
+  "next_safe_step": "Follow PPA_WU05A4_TRIAL_EXCHANGE_STATUS.json: bind source-derived nonlinear exchange evaluation and explicit geometry/surface trial inputs to the Richards owner. Candidate used-vector capture now composes with isolated interval mass accounting; actual HeadCalc wiring, backtracking lifecycle and whole-column acceptance remain open. Preserve frozen provider ABI and inactive production behavior.",
+  "recovery_point": "85c21c235e3702643b9815aeecdf3a2b03c552c9: trial exchange capture, candidate-mass and interval composition gates PASS O0/O2 against persisted source; no production HeadCalc binding or whole-column runtime admission.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",

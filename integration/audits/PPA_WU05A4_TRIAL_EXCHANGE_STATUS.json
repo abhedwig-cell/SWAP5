@@ -1,7 +1,9 @@
 {
   "work_unit": "PPA-WU05-A4-TRIAL-EXCHANGE",
   "baseline": "bd968e2aa",
-  "status": "IMPLEMENTED_ISOLATED_PENDING_PERSISTED_REPLAY",
+  "status": "PERSISTED_ISOLATED_TESTS_PASS",
+  "recovery_point": "85c21c235e3702643b9815aeecdf3a2b03c552c9",
+  "test_result": "All three listed gates replayed against persisted source at O0/O2 with identical transcripts, bounds checks and invalid/zero/overflow traps; PASS. No production admission implied.",
   "contract": "integration/audits/PPA_WU05A4_RICHARDS_TRIAL_CONTRACT.json",
   "implementation": "src/solver/mod_ppa_wu05a4_trial_exchange.f90",
   "scope": "Opt-in candidate residual/diagonal exchange application and private deep-copy capture of the actual applied vector. Existing provider ABI and production HeadCalc are unchanged.",
