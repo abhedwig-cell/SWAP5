@@ -24,41 +24,77 @@ program test_ftab02g_serialized_ksatexm_selection
   real(real64), parameter :: mass_tolerance=1.0e-12_real64
   real(real64), parameter :: h0=-1.0_real64
   integer(int64), parameter :: column_id=9703001_int64
+  integer, parameter :: MATERIAL_UPPER=1, MATERIAL_LOWER=2
 
-  real(real64) :: analytic_head(numnod), analytic_theta(numnod)
-  real(real64) :: generated_head(numnod), generated_theta(numnod)
   real(real64) :: rejected_head(numnod), rejected_theta(numnod)
-  real(real64) :: head_error, theta_error
-  integer :: analytic_iterations, generated_iterations, analytic_retries, generated_retries
+  real(real64) :: head_error_max, theta_error_max
+  integer :: rejected_iterations, rejected_retries
 
-  call run_route(.false.,.false.,analytic_head,analytic_theta,analytic_iterations,analytic_retries,.true.)
-  call run_route(.true., .false.,generated_head,generated_theta,generated_iterations,generated_retries,.true.)
+  head_error_max=0.0_real64
+  theta_error_max=0.0_real64
 
-  head_error=maxval(abs(generated_head-analytic_head))
-  theta_error=maxval(abs(generated_theta-analytic_theta))
-  call require(head_error <= 5.0e-2_real64,'generated KSATEXM head fidelity')
-  call require(theta_error <= 2.0e-2_real64,'generated KSATEXM theta fidelity')
-  call require(analytic_iterations==generated_iterations,'generated KSATEXM nonlinear count')
-  call require(analytic_retries==generated_retries,'generated KSATEXM retry count')
+  ! The serialized full/half fixture must itself be a valid temporal-control
+  ! case. A mixed upper/lower column at one uniform head is not an equilibrium
+  ! because the two materials have different K(h). Test the two exact admitted
+  ! Hupsel F-SI39 materials as separate homogeneous columns instead. The mixed
+  ! stratigraphy is already exercised by the dedicated Reference-Richards G4
+  ! gate; this gate owns serialized provider selection/lifetime only.
+  call compare_material(MATERIAL_UPPER,'upper',head_error_max,theta_error_max)
+  call compare_material(MATERIAL_LOWER,'lower',head_error_max,theta_error_max)
 
-  ! A one-ULP-scale material perturbation is outside the exact bounded Hupsel
-  ! envelope and must fail closed rather than selecting another constitutive route.
-  call run_route(.true.,.true.,rejected_head,rejected_theta,generated_iterations,generated_retries,.false.)
+  ! A bounded neighboring material is outside the exact admitted Hupsel
+  ! envelope and must fail closed rather than falling back to another
+  ! constitutive route.
+  call run_route(.true.,.true.,MATERIAL_UPPER,rejected_head,rejected_theta, &
+       rejected_iterations,rejected_retries,.false.)
 
-  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_HEAD_MAX_ABS=',head_error
-  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_THETA_MAX_ABS=',theta_error
-  write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_ANALYTIC_ITERS=',analytic_iterations
-  write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_GENERATED_ITERS=',generated_iterations
-  write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_ANALYTIC_RETRIES=',analytic_retries
-  write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_GENERATED_RETRIES=',generated_retries
+  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_HEAD_MAX_ABS=',head_error_max
+  write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_THETA_MAX_ABS=',theta_error_max
+  write(*,'(a)') 'F_TAB02_G_SERIALIZED_UPPER_MATERIAL=PASS'
+  write(*,'(a)') 'F_TAB02_G_SERIALIZED_LOWER_MATERIAL=PASS'
   write(*,'(a)') 'F_TAB02_G_SERIALIZED_SUPPORTED_KSATEXM=PASS'
   write(*,'(a)') 'F_TAB02_G_SERIALIZED_NEIGHBOR_FAIL_CLOSED=PASS'
   write(*,'(a)') 'F-TAB02-G SERIALIZED KSATEXM SELECTION GATE PASS'
 
 contains
 
-  subroutine run_route(generated,neighbor,head_out,theta_out,iterations,retries,expect_success)
+  subroutine compare_material(material,label,head_max,theta_max)
+    integer,intent(in)::material
+    character(len=*),intent(in)::label
+    real(real64),intent(inout)::head_max,theta_max
+    real(real64)::analytic_head(numnod),analytic_theta(numnod)
+    real(real64)::generated_head(numnod),generated_theta(numnod)
+    real(real64)::head_error,theta_error
+    integer::analytic_iterations,generated_iterations,analytic_retries,generated_retries
+
+    call run_route(.false.,.false.,material,analytic_head,analytic_theta, &
+         analytic_iterations,analytic_retries,.true.)
+    call run_route(.true., .false.,material,generated_head,generated_theta, &
+         generated_iterations,generated_retries,.true.)
+
+    head_error=maxval(abs(generated_head-analytic_head))
+    theta_error=maxval(abs(generated_theta-analytic_theta))
+    head_max=max(head_max,head_error)
+    theta_max=max(theta_max,theta_error)
+
+    call require(head_error <= 5.0e-2_real64,trim(label)//' generated KSATEXM head fidelity')
+    call require(theta_error <= 2.0e-2_real64,trim(label)//' generated KSATEXM theta fidelity')
+    call require(analytic_iterations==generated_iterations,trim(label)//' generated KSATEXM nonlinear count')
+    call require(analytic_retries==generated_retries,trim(label)//' generated KSATEXM retry count')
+
+    write(*,'(a,a)') 'F_TAB02_G_SERIALIZED_PROFILE=',trim(label)
+    write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_PROFILE_HEAD_MAX_ABS=',head_error
+    write(*,'(a,es24.16)') 'F_TAB02_G_SERIALIZED_PROFILE_THETA_MAX_ABS=',theta_error
+    write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_ANALYTIC_ITERS=',analytic_iterations
+    write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_GENERATED_ITERS=',generated_iterations
+    write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_ANALYTIC_RETRIES=',analytic_retries
+    write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_GENERATED_RETRIES=',generated_retries
+    write(*,'(a)') 'F_TAB02_G_SERIALIZED_PROFILE_PASS=PASS'
+  end subroutine compare_material
+
+  subroutine run_route(generated,neighbor,material,head_out,theta_out,iterations,retries,expect_success)
     logical,intent(in)::generated,neighbor,expect_success
+    integer,intent(in)::material
     real(real64),intent(out)::head_out(numnod),theta_out(numnod)
     integer,intent(out)::iterations,retries
     type(fmr_b110_physical_parameters_t) :: parameters
@@ -77,10 +113,10 @@ contains
     real(real64) :: qref
     logical :: ok,available
 
-    call initialize_parameters(parameters,generated,neighbor)
+    call initialize_parameters(parameters,generated,neighbor,material)
     call route_initial_conductivity(parameters,generated .and. .not. neighbor,qref)
     call initialize_forcing(forcing,qref)
-    call initialize_column_template(column,template)
+    call initialize_column_template(column,template,material)
     call initialize_config(config)
     call initialize_committed(committed,parameters,generated .and. .not. neighbor,ok)
     call require(ok,'committed initialization')
@@ -102,8 +138,9 @@ contains
     end if
 
     if (result%status/=CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then
-      write(error_unit,'(a,l1,1x,a,l1,1x,a,i0)') 'F_TAB02_G_SERIALIZED_RUNTIME_FAIL generated=',generated, &
-           ' neighbor=',neighbor,' status=',result%status
+      write(error_unit,'(a,l1,1x,a,l1,1x,a,i0,1x,a,i0)') &
+           'F_TAB02_G_SERIALIZED_RUNTIME_FAIL generated=',generated,' neighbor=',neighbor, &
+           ' material=',material,' status=',result%status
       write(error_unit,'(a,5(1x,i0))') 'F_TAB02_G_SERIALIZED_COUNTS', diagnostics%attempts, diagnostics%retries, &
            diagnostics%solver_rejections, diagnostics%temporal_rejections, diagnostics%admission_rejections
     end if
@@ -121,21 +158,25 @@ contains
     end select
   end subroutine run_route
 
-  subroutine initialize_parameters(p,generated,neighbor)
+  subroutine initialize_parameters(p,generated,neighbor,material)
     type(fmr_b110_physical_parameters_t),intent(out)::p
     logical,intent(in)::generated,neighbor
+    integer,intent(in)::material
     integer::k
 
-    p%parameter_set_id=9703100_int64
+    p%parameter_set_id=9703100_int64+int(material,int64)
     p%active_nodes=numnod
     allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(42,numnod))
     p%z=z; p%dz=dz; p%node_distance=disnod(1:numnod); p%cofgen=0.0_real64
     do k=1,numnod
-      if(k<=numnod/2) then
+      select case(material)
+      case(MATERIAL_UPPER)
         call set_upper(p%cofgen(:,k))
-      else
+      case(MATERIAL_LOWER)
         call set_lower(p%cofgen(:,k))
-      end if
+      case default
+        call require(.false.,'invalid material selector')
+      end select
     end do
     if(neighbor) p%cofgen(4,1)=p%cofgen(4,1)*(1.0_real64+1.0e-8_real64)
     p%bottom_mode=2
@@ -153,7 +194,6 @@ contains
     c(1)=0.02_real64;c(2)=0.433878_real64;c(3)=83.24164_real64;c(4)=0.021645_real64
     c(5)=7.202077_real64;c(6)=1.34877_real64;c(7)=1.0_real64-1.0_real64/c(6)
     c(8)=0.021645_real64;c(9)=0.0_real64;c(10)=832.4163_real64
-    ! Exact admitted F-SI39 Hupsel threshold authority; do not rederive algebraically.
     c(11)=0.99628918798955624_real64;c(12)=36.025513440889291_real64
     c(22)=-1.0e6_real64;c(23)=1.0e-12_real64
   end subroutine set_upper
@@ -164,19 +204,9 @@ contains
     c(1)=0.02_real64;c(2)=0.3870640000000001_real64;c(3)=22.76176_real64;c(4)=0.016083_real64
     c(5)=2.4396619999999993_real64;c(6)=1.524418_real64;c(7)=1.0_real64-1.0_real64/c(6)
     c(8)=0.016083_real64;c(9)=0.0_real64;c(10)=227.61759999999998_real64
-    ! Exact admitted F-SI39 Hupsel threshold authority; do not rederive algebraically.
     c(11)=0.9981816467911503_real64;c(12)=15.814441314772257_real64
     c(22)=-1.0e6_real64;c(23)=1.0e-12_real64
   end subroutine set_lower
-
-  subroutine derive_threshold(c)
-    real(real64),intent(inout)::c(:)
-    real(real64)::m,se,term1
-    m=1.0_real64-1.0_real64/c(6)
-    se=(1.0_real64+abs(c(4)*(-2.0_real64))**c(6))**(-m)
-    term1=(1.0_real64-se**(1.0_real64/m))**m
-    c(11)=se;c(12)=c(3)*se**c(5)*(1.0_real64-term1)*(1.0_real64-term1)
-  end subroutine derive_threshold
 
   subroutine route_initial_conductivity(p,generated,qref)
     type(fmr_b110_physical_parameters_t),intent(in)::p
@@ -188,6 +218,7 @@ contains
     type(b110_generated_mvg_provider_t)::tp
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
     integer::status
+
     call initialize_b110_default_mvg_parameters(hp,p%cofgen,enable_ksatexm_extension=.true.)
     heads=h0
     if(generated) then
@@ -216,6 +247,7 @@ contains
     type(b110_generated_mvg_provider_t)::tp
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
     integer::status
+
     heads=h0
     call initialize_b110_default_mvg_parameters(hp,p%cofgen,enable_ksatexm_extension=.true.)
     if(generated) then
@@ -243,14 +275,20 @@ contains
     f%drainage_flux_by_level=0.0_real64; f%subsurface_irrigation_source=0.0_real64; f%root_extraction_sink=0.0_real64
   end subroutine initialize_forcing
 
-  subroutine initialize_column_template(c,t)
+  subroutine initialize_column_template(c,t,material)
     type(fmr_logical_column_t),intent(out)::c
     type(fmr_template_t),intent(out)::t
-    t%template_id=9703201_int64;t%physics_topology_id=9703202_int64;t%vertical_layout_id=9703203_int64
-    t%state_layout_id=9703204_int64;t%solver_interface_id=9703205_int64;t%optional_state_layout_id=0_int64
+    integer,intent(in)::material
+    t%template_id=9703201_int64+int(material,int64)
+    t%physics_topology_id=9703202_int64+int(material,int64)
+    t%vertical_layout_id=9703203_int64+int(material,int64)
+    t%state_layout_id=9703204_int64+int(material,int64)
+    t%solver_interface_id=9703205_int64+int(material,int64)
+    t%optional_state_layout_id=0_int64
     t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     t%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
-    c%column_id=column_id;c%template_id=t%template_id;c%parameter_ref=1_int64
+    c%column_id=column_id+int(material,int64)
+    c%template_id=t%template_id;c%parameter_ref=1_int64
     c%state_handle=1_int64;c%forcing_handle=1_int64;c%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   end subroutine initialize_column_template
 
