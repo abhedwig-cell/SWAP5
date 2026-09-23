@@ -44,10 +44,10 @@ def main()->int:
 
     p2.HISTORIES=SURF_H
     p2.PHASES={
-        "S09":("WET","DRY","WET","DRY"),
-        "S10":("DRY","WET","DRY","WET"),
-        "S11":("WET","DRY","WET","DRY"),
-        "S12":("DRY","WET","DRY","WET"),
+        "S17":("WET","DRY","WET","DRY"),
+        "S18":("DRY","WET","DRY","WET"),
+        "S19":("WET","DRY","WET","DRY"),
+        "S20":("DRY","WET","DRY","WET"),
     }
     p1.GW_H=GW_H
 
@@ -70,8 +70,8 @@ def main()->int:
         "GW_LB":gw
       },
       "reference_policy":{
-        "SURF_P":"P2 frozen numerical-observability and extremum-observability policy, applied to fresh S09-S12.",
-        "GW_LB":"P1/P2 inherited three-level numerical and discrete reversal qualification policy, applied to fresh G06-G09.",
+        "SURF_P":"P2 frozen numerical-observability and extremum-observability policy, applied to fresh S17-S20.",
+        "GW_LB":"P1/P2 inherited three-level numerical and discrete reversal qualification policy, applied to fresh G17-G20.",
         "target":"R2048_T32",
         "comparator":"R512_T32"
       },
