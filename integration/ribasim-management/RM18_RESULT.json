@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_flux_temporal_certificate.result.v1",
+  "work_unit": "RM18",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_FAIL_CLOSED_DYNAMIC_FLUX_TEMPORAL_CERTIFICATE",
+  "authority_head": "8f6c88f9f713ef6f64fa8b2b0f440b2b2a43ae3e",
+  "workflow": "RM18 dynamic flux temporal certificate",
+  "workflow_run": 35900528182,
+  "workflow_job": 107315244203,
+  "conclusion": "success",
+  "depends_on": {
+    "RM16": "8.64 s raw dynamic-top solve converges",
+    "RM17": "dynamic-top FLUX and explicit qtop=-36 raw solves are bit-identical"
+  },
+  "observations": {
+    "dynamic_head_inf_bound_cm": 3.61493014673179625,
+    "fixed_head_inf_bound_cm": 3.61493014673179625,
+    "difference_cm": 0.0,
+    "dynamic_route": "reference-dynamic-flux-raw-bound",
+    "negative_head_regime_route": "dynamic-flux-envelope-deferred"
+  },
+  "preservation": {
+    "FSI38_static_operator_contract": "PASS",
+    "FSI38_mode2_cases": 10,
+    "FSI38_mode2_O0_O2_semantic_identity": "PASS",
+    "FSI38_mode5_preservation_O0_O2": "PASS",
+    "FSI38_qualification_gate": "PASS"
+  },
+  "qualified_claims": [
+    "For the exact RM17 trajectory, a b110 dynamic-top request that remains in the verified constant FLUX regime at the required path checks may use the existing explicit-flux temporal defect operator unchanged.",
+    "The dynamic-top route produces the same temporal head infinity bound as the explicit qtop=-36 cm/day route when the guarded equivalence envelope holds.",
+    "The extension fails closed when the candidate enters a HEAD regime.",
+    "No temporal tolerance, defect operator, predecessor-history semantics, nonlinear solver, retry policy or acceptance budget was changed."
+  ],
+  "guarded_envelope": [
+    "dynamic provider type is b110_dynamic_top_boundary_solver_provider_t",
+    "provider remains FLUX at guarded path checks",
+    "same flux at guarded path checks and equal to solved top flux",
+    "zero runoff",
+    "zero provider candidate ponding",
+    "existing SWKIMPL=0 and SWKMEAN=1 requirements",
+    "existing bottom-mode, constitutive, source/sink, root/macropore and predecessor-derivative requirements"
+  ],
+  "nonclaims": [
+    "No dynamic HEAD-regime certificate.",
+    "No ponding or runoff certificate.",
+    "No precipitation, evaporation, snowmelt or runon certificate.",
+    "No general dynamic-top certificate outside the verified constant-flux envelope.",
+    "No three-model admission by RM18 alone."
+  ],
+  "next_required_boundary": "Prospectively rerun the unchanged frozen RM14 8.64-second dynamic-top transaction under the RM18 temporal authority. Only if that transaction accepts may the unchanged RM13B three-model physical composition be attempted again."
+}
