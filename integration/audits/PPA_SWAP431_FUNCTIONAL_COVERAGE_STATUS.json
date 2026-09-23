@@ -101,7 +101,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint 7b348685d (internal solute transport flux oracle); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 9b8ca4e06 (solute cell balance source oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
@@ -113,15 +113,16 @@
     "PPA-IRR-BOTTOM-SOLUTE-FLUX: 100000 O0/O2 bitwise bottom water-flux sign and selected-concentration comparisons; invalid/overflow rejection checked.",
     "PPA-IRR-BOTTOM-SOLUTE-CUMULATIVE: 100000 O0/O2 bitwise prior mass plus bottom flux and interval increment using the pre-update matrix concentration.",
     "PPA-SOLUTE-INTERNAL-FACE-FLUX: 100000 O0/O2 bitwise advection plus concentration-gradient dispersion and interval amount; invalid/overflow rejection checked.",
-    "PPA-SOLUTE-CELL-BALANCE: 100000 O0/O2 bitwise cmsy update from net face amounts, thickness, and decomposition/root/lateral sink terms."
+    "PPA-SOLUTE-CELL-BALANCE: 100000 O0/O2 bitwise cmsy update from net face amounts, thickness, and decomposition/root/lateral sink terms.",
+    "PPA-SOLUTE-LINEAR-INVERSION: 100000 O0/O2 bitwise Freundlich-exponent-near-one storage-to-concentration conversions plus source roundoff handling."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-SOLUTE-CELL-BALANCE",
-    "source": "B1.11 solute.f90 task 2 cmsy(i) flux divergence plus decomposition, root uptake and lateral drainage update",
-    "test": "100000 bitwise compartment storage update comparisons at O0/O2",
+    "work_unit": "PPA-SOLUTE-LINEAR-INVERSION",
+    "source": "B1.11 solute.f90 task 2 strict vsmall roundoff handling and abs(frexp-1)<0.001 linear cml inversion",
+    "test": "100000 bitwise cmsy-to-cml and roundoff comparisons at O0/O2; nonlinear domain explicitly held",
     "test_markers": [
-      "PPA_SOLUTE_CELL_STORAGE_UPDATE_SOURCE_ORACLE_100000=PASS",
-      "PPA_SOLUTE_CELL_BALANCE_O0_O2_IDENTITY=PASS"
+      "PPA_SOLUTE_LINEAR_STORAGE_INVERSION_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOLUTE_LINEAR_INVERSION_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

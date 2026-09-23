@@ -195,7 +195,10 @@ zero-advection/diffusion branches; invalid and overflow inputs fail closed.
 The per-cell `cmsy` flux-divergence plus decomposition/root/lateral sink
 storage update is also an independent 100,000-vector equation oracle. This
 does not qualify concentration inversion, nonlinear adsorption, reaction
-parameterization, solver iteration, accepted state or mass closure.
+parameterization, solver iteration, accepted state or mass closure. The
+linear-Freundlich `cmsy`→`cml` inversion and strict sub-`vsmall` roundoff branch
+are independently checked over 100,000 vectors; the nonlinear fixed-point
+adsorption inversion remains explicitly unsupported.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
