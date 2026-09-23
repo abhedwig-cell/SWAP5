@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "date": "2026-09-23",
+  "title": "Independent qualification of Ribasim-coupled surface-water profile candidate",
+  "candidate": {
+    "branch": "work/sw-rib-pa01-coupled-profile-production-admission",
+    "frozen_head": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
+    "canonical_parent": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "production_blobs": {
+      "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+      "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+      "src/runtime/mod_ribasim_surface_water_profile_contract.f90": "2c6ce53cf0d039c56724aab43af1bfaafe6f21b3"
+    }
+  },
+  "qualification_scope": {
+    "may_modify": [
+      "integration/sw-rib/qualification/**",
+      "tests/sw-rib-pa01-qualification/**",
+      ".github/workflows/sw-rib-pa01-independent.yml"
+    ],
+    "forbidden": [
+      "src/**",
+      "reference/**"
+    ],
+    "candidate_semantics_mutation": false
+  },
+  "independent_checks": [
+    "exact candidate parent and three production blobs",
+    "no src/reference delta on qualification branch",
+    "candidate runtime/profile gate replay",
+    "independent source-level profile contract audit for BASE-only scope, owner conflict, no fixed-weir configuration and frozen provenance constants",
+    "historical F-PM14 precomputed-DIVDRA and fixed-weir preservation replay on the exact candidate, with only ephemeral compile dependency augmentation for mod_drainage_extended_exchange",
+    "O0/O2 identity inherited by replayed candidate gate",
+    "Q1H epsilon=1e-5 replay inherited by candidate gate"
+  ],
+  "explicit_hold": {
+    "accepted_external_head_provenance": "not qualified by PA01-VQ; raw accepted head values are trusted application-boundary inputs. External Ribasim accepted-state lineage/revision binding remains a later end-to-end coupler gate."
+  },
+  "pass_meaning": "Independent evidence that the frozen SWAP-side RIBASIM_COUPLED_SURFACE_WATER_V1 candidate preserves existing drainage/fixed-weir authority and enforces its bounded profile contract. It is not canonical admission and not a full SWAP5+Ribasim end-to-end production claim.",
+  "canonical_admission": false
+}
