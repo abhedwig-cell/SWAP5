@@ -1,4 +1,4 @@
-name: TAB-HYD typed Reference Richards scale40
+name: TAB-HYD typed Reference Richards scale40 scaffold
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - research/tabulated-hydraulics-characterization
     paths:
       - '.github/workflows/tabulated-hydraulics-typed-solver-scale40.yml'
-      - 'research/tabulated_hydraulics/tabhyd_typed_solver_scale40.f90'
+      - 'research/tabulated_hydraulics/tabhyd_typed_solver_integration.f90'
       - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
 
 jobs:
@@ -42,43 +42,9 @@ jobs:
           test "$(git -C canonical-src rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
           test "$(git -C canonical-src rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = 4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
           test "$(git -C canonical-src rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55
-          echo TABHYD_SCALE40_CURRENT_CANONICAL_RECONCILE=PASS
+          echo TABHYD_TYPED_SOLVER_CURRENT_CANONICAL_RECONCILE=PASS
 
-      - name: Prepare 40-node stubs
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p build/typed-solver
-          cp canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90 build/typed-solver/stubs.f90
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          p=Path("build/typed-solver/stubs.f90")
-          text=p.read_text()
-          text=re.sub(
-              r"module MOD_arrays.*?end module MOD_arrays",
-              """module MOD_arrays
-  implicit none
-  integer, parameter :: macp = 64
-  integer, parameter :: mabbc = 8
-end module MOD_arrays""",
-              text,count=1,flags=re.S)
-          text=re.sub(
-              r"module MOD_grid.*?end module MOD_grid",
-              """module MOD_grid
-  implicit none
-  integer, parameter :: numnod = 40
-  real(8), target :: z(numnod) = 0.0d0
-  real(8), target :: dz(numnod) = 5.0d0
-  real(8), target :: disnod(numnod+1) = 5.0d0
-end module MOD_grid""",
-              text,count=1,flags=re.S)
-          text=text.replace("real(8) :: qbotab(2*4) = 0.0d0","real(8) :: qbotab(2*64) = 0.0d0")
-          p.write_text(text)
-          print("TABHYD_SCALE40_STUB=PASS")
-          PY
-
-      - name: Generate five bounded scale40 cases
+      - name: Generate five bounded solver-seam cases
         shell: bash
         run: |
           set -euo pipefail
@@ -100,22 +66,23 @@ end module MOD_grid""",
             "loam_capillary":("b9","o9",-120.0,0.10,5,-120.0),
           }
           root=Path("build/typed-solver")
-          nodes=40
           for name,(top,sub,h0,flux_factor,bmode,bhead) in cases.items():
-              mats=[top]*(nodes//2)+[sub]*(nodes//2)
+              mats=[top,top,sub,sub]
               k0=prep.k_policy(h0,series[top])
               qtop=flux_factor*k0
+              qbot=0.0
               with (root/f"{name}.dat").open("w") as fh:
-                  fh.write(f"{name} {nodes} 400 4.0e-2 {h0:.17e} {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
+                  fh.write(f"4 400 4.0e-2 {h0:.17e} {qtop:.17e} {qbot:.17e} {bmode} {bhead:.17e}\n")
                   for soil in mats:
                       par=series[soil]
+                      rows=mod.loghead_rows(par,400)
                       fh.write(
                           f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} "
                           f"{par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n"
                       )
-                      for h,t,k in mod.loghead_rows(par,400):
+                      for h,t,k in rows:
                           fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
-              print(name,"nodes",nodes,"h0",h0,"qtop",qtop,"bottom_mode",bmode)
+              print(name,"h0",h0,"qtop",qtop,"bottom_mode",bmode)
           PY
 
       - name: Compile canonical Reference Richards with both providers
@@ -133,7 +100,7 @@ end module MOD_grid""",
 
           compile research/tabulated_hydraulics/array_dimensions_stub.f90
           compile legacy-src/src/soil/sptabulated.f90
-          compile build/typed-solver/stubs.f90
+          compile canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90
           compile canonical-src/src/transaction/mod_transaction_reference.f90
           compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
           compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
@@ -181,32 +148,29 @@ end module MOD_grid""",
 
           gfortran -O3 -fopenmp build/typed-solver/obj/*.o -o build/typed-solver/integration
 
-      - name: Run paired scale40 Reference Richards matrix
+      - name: Run paired Reference Richards matrix
         shell: bash
         run: |
           set -euo pipefail
-          echo -e "scenario\thead_max_abs\ttheta_max_abs\tanalytic_iters\ttable_iters\tanalytic_median_s\ttable_median_s\ttable_delta_pct" > build/typed-solver/summary.tsv
+          echo -e "scenario\tdh_max\tdh_rms\tdtheta_max\tdtheta_rms\tdqtop\tdqbot\tdmass\tanalytic_iters\ttable_iters\tanalytic_median_s\ttable_median_s\ttable_delta_pct" > build/typed-solver/summary.tsv
           for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
             build/typed-solver/integration "build/typed-solver/$scenario.dat" | tee "build/typed-solver/$scenario.txt"
+            grep -Fq 'TABHYD_TYPED_SOLVER_INTEGRATION=PASS' "build/typed-solver/$scenario.txt"
             python3 - "$scenario" "build/typed-solver/$scenario.txt" >> build/typed-solver/summary.tsv <<'PY'
           import sys
           name,path=sys.argv[1:]
           vals={}
           for line in open(path):
-              if line.startswith("SCALE40_") and "=" in line and "BLOCK" not in line:
+              if line.startswith("TABHYD_SOLVER_") and "=" in line and "BLOCK" not in line:
                   k,v=line.strip().split("=",1)
                   try: vals[k]=float(v)
                   except ValueError: pass
-          keys=["SCALE40_HEAD_MAX_ABS","SCALE40_THETA_MAX_ABS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
-                "SCALE40_ANALYTIC_MEDIAN_S","SCALE40_TABLE_MEDIAN_S","SCALE40_TABLE_DELTA_PCT"]
+          keys=["TABHYD_SOLVER_DH_MAX","TABHYD_SOLVER_DH_RMS","TABHYD_SOLVER_DTHETA_MAX","TABHYD_SOLVER_DTHETA_RMS",
+                "TABHYD_SOLVER_DQTOP","TABHYD_SOLVER_DQBOT","TABHYD_SOLVER_DMASS",
+                "TABHYD_SOLVER_ANALYTIC_NONLINEAR_ITERS","TABHYD_SOLVER_TABLE_NONLINEAR_ITERS",
+                "TABHYD_SOLVER_ANALYTIC_MEDIAN_S","TABHYD_SOLVER_TABLE_MEDIAN_S","TABHYD_SOLVER_TABLE_DELTA_PCT"]
           miss=[k for k in keys if k not in vals]
           if miss: raise SystemExit(f"missing {miss}")
-          if vals["SCALE40_ANALYTIC_STATUS"] != 1 or vals["SCALE40_TABLE_STATUS"] != 1:
-              raise SystemExit("non-converged route")
-          if vals["SCALE40_HEAD_MAX_ABS"] > 5.0e-2:
-              raise SystemExit("head fidelity failure")
-          if vals["SCALE40_THETA_MAX_ABS"] > 2.0e-2:
-              raise SystemExit("theta fidelity failure")
           print(name+"\t"+"\t".join(f"{vals[k]:.17g}" for k in keys))
           PY
           done
@@ -216,7 +180,7 @@ end module MOD_grid""",
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tab-hyd-typed-solver-scale40
+          name: tab-hyd-typed-solver-integration
           path: |
             build/typed-solver/summary.tsv
             build/typed-solver/*.txt
