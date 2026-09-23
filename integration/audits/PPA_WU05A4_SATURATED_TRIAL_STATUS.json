@@ -16,7 +16,8 @@
     "interface": "evaluate_saturated_system applies residual and source diagonal contributions to local scratch copies and exposes both caller vectors, used transfer and scalar candidate storage only after both operations succeed.",
     "tests": "Valid paired assembly, short-diagonal failure after successful residual preparation with both caller vectors unchanged and old transfer unavailable, plus derivative-disabled branch preserving the diagonal while applying the residual.",
     "ownership": "Atomic numerical scratch assembly only, not a physical state commit or canonical transaction. Additional allocations are unbenchmarked; production callbacks remain unwired.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "1865d592f",
+    "test_result": "Persisted 1865d592f evaluator and rate-composition gates PASS O0/O2 with identical transcripts, runtime checks and floating-point traps"
   },
   "geometry_consistency_extension": {
     "baseline": "f3e43aa74",
