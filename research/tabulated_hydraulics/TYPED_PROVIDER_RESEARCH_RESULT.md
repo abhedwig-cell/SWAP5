@@ -321,3 +321,126 @@ cache lifetime in the actual application/MultiSWAP ownership model. Rebuilding
 the table provider on every trial would be architecturally wrong and would
 destroy this amortization; preprocessing belongs to immutable parameter/provider
 configuration and must be reused across trials.
+
+
+## 2026-09-23 current-canonical dynamic certificate closure
+
+The research branch was reconciled against current
+`integration/f-ci-canonical@b7d9c976e9b474545d54fa79b71ae134c25da156`.
+The relevant constitutive contract, analytical provider, temporal-indicator,
+serialized Reference backend and FMR44R fixture source blobs are unchanged from
+the earlier pinned research preimage.
+
+The previous FMR44R table attempts were reclassified. The last 2026-09-20
+attempt had compiled both routes but failed before temporal-certificate
+evaluation because the committed table-route water content had been initialized
+by the analytical MvG provider. This reproduced the already known
+provider-inconsistent t0 fixture defect rather than a table-provider failure.
+
+A research-only fixture repair retained the exact same pressure heads and
+forcing but derived initial water content from the active generated table
+provider in the table copy. The analytical production oracle remained
+unchanged. Run `35818703618` then completed successfully against the current
+canonical source.
+
+Both routes passed:
+
+- positive prescribed-qbot transaction acceptance;
+- hard mass gate;
+- temporal-certificate availability;
+- explicit head-budget gate;
+- nearby bottom-mode fail-closed behavior;
+- serialized prescribed-qbot runtime gate.
+
+Measured certificate comparison:
+
+| metric | analytical | generated table | absolute difference |
+| --- | ---: | ---: | ---: |
+| mass residual | -2.2204460493e-16 | 0 | 2.2204460493e-16 |
+| Binf (cm) | 1.2362884647834298e-11 | 1.2362881480142714e-11 | 3.1676915840e-18 |
+| normalized Ch | 0.4945153859133719 | 0.4945152592057085 | 1.2670766336e-7 |
+| total in | 1.0000000000000002e-14 | same | 0 |
+| total out | 1.0000000000000002e-14 | same | 0 |
+
+This closes the bounded dynamic transaction/certificate characterization for
+the K0 generated-provider route. It does not by itself change the production
+provider contract or admit the research provider.
+
+## K1 disposition
+
+The broader `SWKIMPL=1` trajectory experiment is **not table-falsified** but
+is not qualified either.
+
+The expanded run `35535291129` completed the first coarse case with the same
+small table/analytical differences already observed, then hit its 45 s timeout
+on the next route before a comparison could be made.
+
+The dedicated difficult-route diagnostic `35537869771` established that the
+first failing route is the **analytical** `loam_mid_free` K1 reference; it did
+not complete within 120 s. A subsequent slow-route matrix with 240 s per route
+was cancelled after prolonged analytical execution.
+
+Therefore:
+
+- the approximately 10-13% K1 speed reductions remain bounded coarse/Hupsel
+  research observations;
+- the broader K1 envelope is blocked on a tractable analytical reference;
+- current SWAP5 production does not admit `SWKIMPL=1` in this route anyway;
+- K1 is not a prerequisite for the generated K0 provider acceleration work unit.
+
+## Whole-Hupsel application gate
+
+Canonical M1-C3 already defines and historically executed the exact whole-Hupsel
+typed Task2 application route, including 32,518 accepted physical intervals and
+exact normalized BAL/BLC identity for the admitted analytical provider.
+
+That makes it the correct eventual whole-application gate for the generated
+provider. However the gate requires the exact authorized SWAP 4.3.1
+distribution bytes with frozen SHA-256
+`2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`.
+
+On 2026-09-23 the current Project/Library surfaces were checked again. The exact
+distribution archive is still not available through an authorized raw-byte
+materialization path. Derived audit ZIPs are present, but they are not valid
+substitutes for the exact distribution authority.
+
+The whole-Hupsel generated-provider rerun is therefore:
+
+**BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE**
+
+No alternate parser, public copy, reconstructed archive or synthetic fixture is
+accepted as a substitute for this final gate.
+
+## Research decision boundary
+
+The K0 acceleration hypothesis is now supported strongly enough to hand off to
+a separately owned production work unit:
+
+1. generated raw-head400 provider-only evaluation: reproducibly about 19% lower
+   constitutive evaluation cost;
+2. real Reference-Richards K0 solve: material reduction with unchanged nonlinear
+   and linear solve counts;
+3. serialized Reference equilibrium runtime: material reduction with equal
+   retries/iterations and mass accounting;
+4. provider-agnostic temporal-indicator mathematics: qualified in research;
+5. dynamic prescribed-qbot transaction/certificate fixture: PASS on current
+   canonical;
+6. deterministic preprocessing break-even: approximately 8,860 30-node
+   constitutive vector evaluations.
+
+The remaining production work is architectural/admission work, not a request
+for more interpolation tuning.
+
+Production implementation remains held until a dedicated work unit owns:
+
+- immutable generated-table state lifetime;
+- explicit provider selection;
+- timestep-context validation in the common constitutive contract;
+- analytical-provider reference preservation;
+- fail-closed scope validation;
+- independent K0 qualification;
+- and, when exact authorized bytes become available, the final whole-Hupsel
+  application gate.
+
+Generic user-supplied `SWSOPHY=1` tables and production `SWKIMPL=1` remain
+separate capabilities and are not admitted by this result.
