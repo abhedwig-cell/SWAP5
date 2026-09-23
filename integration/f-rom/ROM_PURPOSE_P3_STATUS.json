@@ -3,7 +3,7 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P3",
   "date": "2026-09-23",
-  "status": "P3_PREREGISTERED_REFERENCE_QUALIFICATION_REQUIRED",
+  "status": "P3_REFERENCE_EXECUTION_ACTIVE_CANDIDATES_BLOCKED",
   "repository": {
     "branch": "work/f-rom-purpose",
     "preregistration_commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
@@ -15,15 +15,17 @@
     "P3_AUTHORITY_BINDING",
     "PHYSICAL_PURPOSE_SPECIFIC_REPRESENTATION_LADDER",
     "BLIND_VALIDATION_WORKLOAD_FREEZE",
-    "P3_PREREGISTRATION"
+    "P3_PREREGISTRATION",
+    "REFERENCE_EXECUTION_BINDING",
+    "CANDIDATE_INFRASTRUCTURE_PREPARED_NOT_EXECUTED"
   ],
   "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
   "candidate_response_authorized": false,
   "next_actions": [
-    "Implement response-blind P3 Reference materialization for S09-S12 and G06-G09.",
-    "Qualify R512_T32/R1024_T32/R2048_T32 and R2048_T8/T16/T32 with O0/O2 identity and frozen mass/observability gates.",
-    "Persist P3 Reference result.",
-    "Only if all four purpose/material Reference cases qualify, bind and execute the frozen S4/S6/S8 and G4/G6/G8 candidate ladders with U4/U6/U8 comparators."
+    "Complete both frozen P3 Reference route sets.",
+    "Rerun only technically interrupted Reference jobs after the containing run is eligible for rerun; do not change scientific policy.",
+    "Finalize and persist P3 Reference qualification from the bound route artifacts.",
+    "Only if the persisted P3 Reference result authorizes candidates, create the candidate execution binding and run the frozen state-count ladder."
   ],
   "scientific_firewall": {
     "any_new_p3_reference_response_seen": false,
@@ -31,6 +33,29 @@
     "closure_research_open": false,
     "new_closure_family_authorized": false,
     "application_acceptance_adjudicated": false,
-    "production_rom_authorized": false
-  }
+    "production_rom_authorized": false,
+    "reference_execution_started": true,
+    "reference_response_adjudicated": false
+  },
+  "reference_execution": {
+    "SURF_P": {
+      "run_id": 35867575880,
+      "trigger_commit": "0bad7082b711d29abb3accc084bb296ed3c2fecd",
+      "state": "ACTIVE_OR_QUEUED",
+      "preflight": "PASS"
+    },
+    "GW_LB": {
+      "run_id": 35867586225,
+      "trigger_commit": "f6a91839b8a26394b4aec26a8cc155ce77107ae6",
+      "state": "ACTIVE_WITH_ONE_TECHNICAL_INTERRUPTION",
+      "technical_interruption": {
+        "job_id": 107203017109,
+        "case": "B14_R2048_T16_O0",
+        "exit_code": 143,
+        "classification": "TECHNICAL_RUNNER_INTERRUPTION_NOT_SCIENTIFIC_FAILURE"
+      }
+    }
+  },
+  "authority_drift_record": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json",
+  "candidate_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json"
 }
