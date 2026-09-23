@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3.design.v1",
+  "work_unit": "SW-RIB-SWM01-Q3",
+  "date": "2026-09-23",
+  "status": "DESIGN_FROZEN_NOT_YET_PREREGISTERED_FOR_EXECUTION",
+  "purpose": "Qualify the remaining physical SWAP-to-Ribasim exchange responsibilities after external surface-water state ownership is established.",
+  "authorities": {
+    "lower_exchange": "F-PM08D2 exact-source extended drainage exchange inventory",
+    "availability": "F-PM08D3 exact-source availability and mass inventory",
+    "top_surface_and_mass": "F-PM08D parent source inventory",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "transaction_semantics": "current SWAP5 accepted-state transaction authority"
+  },
+  "Q3A_LOWER_EXCHANGE": {
+    "swap_owner": "unconstrained signed drainage/infiltration constitutive response",
+    "ribasim_owner": "accepted surface-water level/storage and available water",
+    "coupler_owner": "feasibility resolution and exactly-once transfer receipt",
+    "directional_mapping": {
+      "positive_q_swap": "Ribasim drainage-class inflow",
+      "negative_q_swap": "Ribasim infiltration-class outflow"
+    },
+    "required_cases": [
+      "positive drainage with dynamic Ribasim level",
+      "negative infiltration with sufficient Ribasim storage",
+      "negative infiltration limited by external availability/supply",
+      "same accepted origins replay",
+      "rejected coupled window leaves both accepted states unchanged"
+    ],
+    "hard_rule": "Never clip a negative exchange after SWAP has already accepted it. If external availability changes the realized exchange, SWAP and Ribasim must be recomposed from the same accepted origins so both accept the same realized transfer.",
+    "later_hold": "mixed-sign multilevel legacy proportional scaling remains a separate scientific disposition"
+  },
+  "Q3B_TOP_AND_RAPID_EXCHANGE": {
+    "QRapDra": "SWAP-generated rapid/macropore inflow to surface water; publish as separately identified SWAP->Ribasim transfer",
+    "RUNOTS_positive": "SWAP runoff/top-surface inflow; map to Ribasim surface_runoff-class inflow with transfer identity",
+    "RUNOTS_negative": "surface-water inundation/withdrawal delivered to SWAP top boundary; book as Ribasim->SWAP transfer, not negative Ribasim surface_runoff",
+    "required_cases": [
+      "positive runoff only",
+      "rapid drainage only where process authority exists",
+      "surface-water-to-SWAP inundation/top-boundary transfer",
+      "combined ledger closure without double counting"
+    ]
+  },
+  "mass_invariant": "Every physical exchange identity is booked once on SWAP and once on Ribasim with opposite signs; Ribasim Basin forcing names are ledger endpoints, not independent process providers.",
+  "nonclaims": [
+    "No production admission.",
+    "No generic multilevel negative-power-interflow qualification.",
+    "No claim that current RM13 drainage-off triangle qualifies Q3."
+  ]
+}
