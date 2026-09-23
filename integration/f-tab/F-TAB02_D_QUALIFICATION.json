@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-D",
+  "title": "Provider-generic constitutive timestep context capability",
+  "result": "PASS",
+  "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "qualified_head": "690689cbdf184ae7789f2e9aa3bc7f1f329ba2fe",
+  "workflow_run": 35822360338,
+  "workflow_job": 107057524991,
+  "scope": {
+    "generated_default_mvg": true,
+    "swkimpl": 0,
+    "hot_evaluate_abi_changed": false,
+    "temporal_indicator_provider_generic": true,
+    "generic_user_tables": false
+  },
+  "evidence": {
+    "hot_evaluate_abi_unchanged": "PASS",
+    "temporal_provider_generic": "PASS",
+    "analytical_context_match": "PASS",
+    "generated_context_match": "PASS",
+    "mismatched_timestep_fail_closed": "PASS",
+    "default_unknown_provider_fail_closed": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "full_a_b_c_d_chain_same_postimage": "PASS"
+  },
+  "contract": {
+    "capability": "context_compatible(step_duration) -> logical",
+    "default": "false",
+    "analytical_override": true,
+    "generated_override": true,
+    "mismatch_route": "constitutive-dt-mismatch",
+    "hot_constitutive_evaluate_interface": "unchanged"
+  },
+  "preservation": {
+    "analytical_evaluate_semantics": "preserved outside the authorized context capability",
+    "slice_a": "PASS on workflow run 35822360338",
+    "slice_b": "PASS on workflow run 35822360338",
+    "slice_c": "PASS on workflow run 35822360338",
+    "slice_d": "PASS on workflow run 35822360338"
+  },
+  "nonclaims": [
+    "generic SWSOPHY=1 production",
+    "SWKIMPL=1 production",
+    "whole-model speedup",
+    "final whole-Hupsel admission"
+  ]
+}
