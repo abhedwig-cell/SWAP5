@@ -1,0 +1,107 @@
+name: F-ROM Practical P6B SM realistic Hupsel workload
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json
+      - integration/f-rom/ROM_PRACTICAL_P6B_SM_PREREGISTRATION.json
+      - tools/rom/materialize_rom_practical_p6b_sm_core.py
+      - tools/rom/materialize_rom_practical_p6b_sm_reference.py
+      - tools/rom/qualify_rom_practical_p6b_sm.py
+      - .github/workflows/f-rom-practical-p6b-sm.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: rom-practical-p6b-sm-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+jobs:
+  case:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B02, B05, B06, B11, B12, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 1
+      - name: Bind frozen authority sources
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext evidence
+          while read -r blob name; do
+            git cat-file blob "$blob" > "ext/$name"
+            test "$(git hash-object "ext/$name")" = "$blob"
+          done <<'BLOBS'
+          b2df7793d3f56f5d8d1d121636d2eb1a0952e271 rom_purpose_p1_surface_b01_source.f90
+          31060946d233ba80e88ca42e43c90f512dc890de materialize_rom_purpose_p3_surface_reference.py
+          33a68fc51d5c1905b9f377e2d14626aeebe27f98 rom_purpose_p1_layer_base.py
+          BLOBS
+          test "$(git hash-object integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json)" = b2d8885a9bb01b078a3510086c70945207ab0882
+          test "$(git hash-object tools/rom/run_rom_practical_p3_candidate.py)" = 0021329e9aae426720adf87a1461311d764efab8
+          test "$(git hash-object tools/rom/prepare_rom_practical_p3_reference.py)" = 548505a02ed74b61f9cbee4fd63812d7f9356cc5
+          test "$(git hash-object tools/rom/rom_practical_p4_rk4.f90)" = 5f8f96300523fb8a1534b3cc2f1c159921c95a05
+          test "$(git hash-object integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json)" = 2c692a2c3ad37c8bfb911551ab918ea8090af07d
+          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_core.py)" = fb4dec41aca862e5537cb7c1d03c53fddb39f83d
+          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_reference.py)" = fcda43a5fea2ec454344678b71f85be496b727bd
+          test "$(git hash-object tools/rom/qualify_rom_practical_p6b_sm.py)" = ea4165e35c84979546adf977a66532609a74a8a2
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+      - name: Materialize realistic S4 candidate core
+        run: |
+          python3 tools/rom/materialize_rom_practical_p6b_sm_core.py             --source tools/rom/rom_practical_p4_rk4.f90             --workload integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json             --output /tmp/p6b_sm_core.f90
+          gfortran -O2 -std=f2008 -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow             /tmp/p6b_sm_core.f90 -o /tmp/p6b_sm
+      - name: Materialize matching R64 and R128 Richards reference
+        run: |
+          set -euo pipefail
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py             --purpose SURF_P --material '${{ matrix.material }}'             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --surface-source ext/rom_purpose_p1_surface_b01_source.f90             --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py             --output /tmp/p6b_base.f90 --manifest evidence/base_materialization.json
+          python3 tools/rom/prepare_rom_practical_p3_reference.py             --purpose SURF_P --source /tmp/p6b_base.f90 --output /tmp/p6b_p3ref.f90
+          python3 tools/rom/materialize_rom_practical_p6b_sm_reference.py             --source /tmp/p6b_p3ref.f90             --workload integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json             --output canonical/tests/rom/test_p6b_sm_reference.f90
+          for nodes in 64 128; do
+            dz="$(python3 -c "print(160.0/$nodes)")"
+            stub="p6b_sm_r${nodes}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/$stub" --nodes "$nodes" --dz-cm "$dz"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "$stub" --target tests/rom/test_p6b_sm_reference.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/p6b_sm_r${nodes}" --opt 2
+          done
+      - name: Qualify realistic workload
+        run: |
+          python3 tools/rom/qualify_rom_practical_p6b_sm.py case             --material '${{ matrix.material }}'             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --exe /tmp/p6b_sm --reference64 /tmp/p6b_sm_r64/rom0_test --reference128 /tmp/p6b_sm_r128/rom0_test             --outdir evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rom-practical-p6b-sm-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+  aggregate:
+    needs: case
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p6b-sm-*
+          path: /tmp/p6b-sm
+      - name: Aggregate
+        run: |
+          python3 tools/rom/qualify_rom_practical_p6b_sm.py aggregate             --input-dir /tmp/p6b-sm --output integration/f-rom/ROM_PRACTICAL_P6B_SM_RESULT.json
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-rom/ROM_PRACTICAL_P6B_SM_RESULT.json
+          git commit -m 'ROM-PRACTICAL P6B-SM: persist realistic Hupsel workload' || exit 0
+          git push origin HEAD:work/f-rom-practical
