@@ -26,7 +26,7 @@ def build_model() -> Model:
         endtime=end,
         crs="EPSG:28992",
         allocation=Allocation(dt=WINDOW_S),
-        solver=Solver(saveat=WINDOW_S),
+        solver=Solver(saveat=float("inf")),
         experimental=Experimental(allocation=True),
     )
     source = model.flow_boundary.add(
