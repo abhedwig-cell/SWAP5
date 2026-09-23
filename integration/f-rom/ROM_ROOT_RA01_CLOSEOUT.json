@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.rom_root.ra01.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "status": "CLOSED_REFERENCE_TRANSFER_NOT_QUALIFIED_ROOT_UPTAKE_UNCERTAINTY_UNRESOLVED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RA01_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RA01_BINDING.json",
+    "authority_adjudication": "integration/f-rom/ROM_ROOT_RA01_AUTHORITY_ADJUDICATION.json",
+    "result": "integration/f-rom/ROM_ROOT_RA01_RESULT.json",
+    "workflow_run": 35819870854,
+    "workflow_head": "2fe5b9fbfaf915b09e756df8a8686f019ad200a1"
+  },
+  "conclusions": [
+    "The transferred P2E20 total representation-bound discriminator removed the earlier C6R total-residual execution blocker on the complete frozen root-active matrix.",
+    "All 128 execution jobs passed and O0/O2 route output identity passed.",
+    "The frozen hydraulic-state uncertainty metrics qualified for both B01 and B14.",
+    "The frozen interval and cumulative actual-root-uptake uncertainty requirements did not jointly qualify because route differences at approximately 1e-16 to 1e-15 were not strictly monotone under the frozen three-level estimator.",
+    "The RA01 preregistered all-metrics pass rule therefore fails. The Reference is not admitted and ROM-ROOT Stage 2 and Stage 3 remain blocked.",
+    "No conclusion about adequacy or inadequacy of the minimal layer-mean-head Feddes feedback is permitted."
+  ],
+  "boundary": {
+    "reference_qualified": false,
+    "stage2_prescribed_sink_equivalence_authorized": false,
+    "stage3_dynamic_feedback_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "tolerance_change_authorized": false,
+    "uncertainty_estimator_change_authorized": false,
+    "new_root_state_authorized": false,
+    "production_change_authorized": false
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-RA02-D1",
+    "question": "Are the RA01 root-uptake route differences physically meaningful threshold/regime differences, or are the compared Reference trajectories root-response-identical up to deterministic floating-point aggregation noise?",
+    "scope": "Diagnostic only. Inspect existing RA01 root records and Feddes regimes without changing numerical policy, uncertainty gates, cases, physics or reduced candidates.",
+    "decision_after_diagnostic": "A new Reference authority may only be preregistered if the diagnostic independently establishes a numerical-resolution-floor class and supplies a non-response-fitted treatment."
+  },
+  "model_changed": false
+}
