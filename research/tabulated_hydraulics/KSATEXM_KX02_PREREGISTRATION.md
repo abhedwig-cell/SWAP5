@@ -61,7 +61,8 @@ Required:
 - lower h=-1 canonical oracle preserved;
 - h=-5 extension remains exact no-op;
 - local K continuity jump <= 1e-5 cm/d;
-- all active-branch interpolation fractions finite and within a separately reported numerical neighborhood of [0,1].
+- all active-branch interpolation fractions finite;
+- frozen numerical neighborhood: minimum f >= -1e-6 and maximum f <= 1+1e-12. No clamping is allowed.
 
 No solver or acceptance tolerance may change.
 
