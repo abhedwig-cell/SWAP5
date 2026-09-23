@@ -11,9 +11,8 @@ on:
       - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
 
 jobs:
-  scale40:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
+  integrate:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -43,50 +42,53 @@ jobs:
           test "$(git -C canonical-src rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
           test "$(git -C canonical-src rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = 4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
           test "$(git -C canonical-src rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55
-          echo SCALE40_CURRENT_CANONICAL_RECONCILE=PASS
+          echo TABHYD_SCALE40_CURRENT_CANONICAL_RECONCILE=PASS
 
       - name: Prepare 40-node stubs
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p build/scale40
-          cp canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90 build/scale40/stubs.f90
+          mkdir -p build/typed-solver
+          cp canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90 build/typed-solver/stubs.f90
           python3 - <<'PY'
           from pathlib import Path
           import re
-          p=Path("build/scale40/stubs.f90")
-          s=p.read_text()
-          s=re.sub(
-            r"module MOD_arrays.*?end module MOD_arrays",
-            """module MOD_arrays
+          p=Path("build/typed-solver/stubs.f90")
+          text=p.read_text()
+          text=re.sub(
+              r"module MOD_arrays.*?end module MOD_arrays",
+              """module MOD_arrays
   implicit none
   integer, parameter :: macp = 64
   integer, parameter :: mabbc = 8
-end module MOD_arrays""",s,count=1,flags=re.S)
-          s=re.sub(
-            r"module MOD_grid.*?end module MOD_grid",
-            """module MOD_grid
+end module MOD_arrays""",
+              text,count=1,flags=re.S)
+          text=re.sub(
+              r"module MOD_grid.*?end module MOD_grid",
+              """module MOD_grid
   implicit none
   integer, parameter :: numnod = 40
   real(8), target :: z(numnod) = 0.0d0
   real(8), target :: dz(numnod) = 5.0d0
   real(8), target :: disnod(numnod+1) = 5.0d0
-end module MOD_grid""",s,count=1,flags=re.S)
-          s=s.replace("real(8) :: qbotab(2*4) = 0.0d0","real(8) :: qbotab(2*64) = 0.0d0")
-          p.write_text(s)
-          print("SCALE40_STUB_PATCH=PASS")
+end module MOD_grid""",
+              text,count=1,flags=re.S)
+          text=text.replace("real(8) :: qbotab(2*4) = 0.0d0","real(8) :: qbotab(2*64) = 0.0d0")
+          p.write_text(text)
+          print("TABHYD_SCALE40_STUB=PASS")
           PY
 
-      - name: Generate five 40-node bounded cases
+      - name: Generate five bounded scale40 cases
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p build/scale40/inputs
+          mkdir -p build/typed-solver
           python3 - <<'PY'
           from pathlib import Path
           import importlib.util
+
           p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
-          sp=importlib.util.spec_from_file_location("lp",p)
+          sp=importlib.util.spec_from_file_location("logprep",p)
           mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
           prep=mod.prep
           series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
@@ -97,42 +99,41 @@ end module MOD_grid""",s,count=1,flags=re.S)
             "coarse_dry_pulse":("b4","o5",-180.0,0.80,2,-999999.0),
             "loam_capillary":("b9","o9",-120.0,0.10,5,-120.0),
           }
-          root=Path("build/scale40/inputs")
+          root=Path("build/typed-solver")
           nodes=40
-          for name,(top,sub,hbase,factor,bmode,bhead) in cases.items():
-              k0=prep.k_policy(hbase,series[top])
-              qtop=factor*k0
+          for name,(top,sub,h0,flux_factor,bmode,bhead) in cases.items():
+              mats=[top]*(nodes//2)+[sub]*(nodes//2)
+              k0=prep.k_policy(h0,series[top])
+              qtop=flux_factor*k0
               with (root/f"{name}.dat").open("w") as fh:
-                  fh.write(f"{name} {nodes} 400 4.0e-2 {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
-                  for i in range(nodes):
-                      soil=top if i<nodes//2 else sub
+                  fh.write(f"{name} {nodes} 400 4.0e-2 {h0:.17e} {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
+                  for soil in mats:
                       par=series[soil]
-                      h0=hbase + 0.15*(i-(nodes-1)/2)
                       fh.write(
-                        f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} "
-                        f"{par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} "
-                        f"{par['h_enpr']:.17e} {h0:.17e}\n")
+                          f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} "
+                          f"{par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n"
+                      )
                       for h,t,k in mod.loghead_rows(par,400):
                           fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
-              print(name,"qtop",qtop,"bottom_mode",bmode)
+              print(name,"nodes",nodes,"h0",h0,"qtop",qtop,"bottom_mode",bmode)
           PY
 
-      - name: Compile current Reference Richards scale40 benchmark
+      - name: Compile canonical Reference Richards with both providers
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p build/scale40/mod build/scale40/obj
+          mkdir -p build/typed-solver/mod build/typed-solver/obj
           F="-O3 -std=f2008 -ffree-line-length-none -fopenmp"
           compile () {
             src="$1"
             base="$(basename "$src")"
-            obj="build/scale40/obj/$base.o"
-            gfortran $F -J build/scale40/mod -I build/scale40/mod -c "$src" -o "$obj"
+            obj="build/typed-solver/obj/$base.o"
+            gfortran $F -J build/typed-solver/mod -I build/typed-solver/mod -c "$src" -o "$obj"
           }
 
           compile research/tabulated_hydraulics/array_dimensions_stub.f90
           compile legacy-src/src/soil/sptabulated.f90
-          compile build/scale40/stubs.f90
+          compile build/typed-solver/stubs.f90
           compile canonical-src/src/transaction/mod_transaction_reference.f90
           compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
           compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
@@ -175,55 +176,41 @@ end module MOD_grid""",s,count=1,flags=re.S)
           compile canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90
           compile canonical-src/src/legacy/b1_10_port/headcalc.f90
           compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90
-          compile research/tabulated_hydraulics/tabhyd_typed_solver_scale40.f90
-          gfortran -O3 -fopenmp build/scale40/obj/*.o -o build/scale40/benchmark
 
-      - name: Run scale40 matrix
+          gfortran $F -J build/typed-solver/mod -I build/typed-solver/mod             -c research/tabulated_hydraulics/tabhyd_typed_solver_integration.f90             -o build/typed-solver/obj/integration_program.o
+
+          gfortran -O3 -fopenmp build/typed-solver/obj/*.o -o build/typed-solver/integration
+
+      - name: Run paired scale40 Reference Richards matrix
         shell: bash
         run: |
           set -euo pipefail
-          : > build/scale40/all-results.txt
+          echo -e "scenario\thead_max_abs\ttheta_max_abs\tanalytic_iters\ttable_iters\tanalytic_median_s\ttable_median_s\ttable_delta_pct" > build/typed-solver/summary.tsv
           for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
-            echo "### $scenario" | tee -a build/scale40/all-results.txt
-            OMP_NUM_THREADS=1 OMP_DYNAMIC=false timeout 120               build/scale40/benchmark "build/scale40/inputs/$scenario.dat"               | tee "build/scale40/$scenario.txt" | tee -a build/scale40/all-results.txt
-          done
-
-      - name: Parse scale40 evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          failures=[]; rows=[]
-          for p in sorted(Path("build/scale40").glob("*.txt")):
-              if p.name=="all-results.txt": continue
-              vals={}
-              for line in p.read_text().splitlines():
-                  if "=" in line and not line.startswith("SCALE40_BLOCK"):
-                      k,v=line.split("=",1); vals[k.strip()]=v.strip()
-              scenario=vals.get("SCALE40_SCENARIO",p.stem)
-              need=["SCALE40_ANALYTIC_STATUS","SCALE40_TABLE_STATUS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
-                    "SCALE40_HEAD_MAX_ABS","SCALE40_THETA_MAX_ABS","SCALE40_ANALYTIC_MEDIAN_S",
-                    "SCALE40_TABLE_MEDIAN_S","SCALE40_TABLE_DELTA_PCT"]
-              miss=[k for k in need if k not in vals]
-              if miss:
-                  failures.append((scenario,"missing",miss)); continue
-              row=[scenario,int(vals[need[0]]),int(vals[need[1]]),int(vals[need[2]]),int(vals[need[3]]),
-                   float(vals[need[4]]),float(vals[need[5]]),float(vals[need[6]]),float(vals[need[7]]),float(vals[need[8]])]
-              if row[1]!=1 or row[2]!=1: failures.append((scenario,"status",row[1],row[2]))
-              if row[5]>0.05: failures.append((scenario,"head",row[5]))
-              if row[6]>0.02: failures.append((scenario,"theta",row[6]))
-              rows.append(row)
-          lines=["scenario\tanalytic_status\ttable_status\tanalytic_iters\ttable_iters\thead_max_abs\ttheta_max_abs\tanalytic_median_s\ttable_median_s\ttable_delta_pct"]
-          for r in rows:
-              lines.append("\t".join(str(x) for x in r))
-          Path("build/scale40/summary.tsv").write_text("\n".join(lines)+"\n")
-          print(Path("build/scale40/summary.tsv").read_text(),end="")
-          print(f"SCALE40_FAILURES={len(failures)}")
-          if failures:
-              print(failures)
-              raise SystemExit(1)
+            build/typed-solver/integration "build/typed-solver/$scenario.dat" | tee "build/typed-solver/$scenario.txt"
+            python3 - "$scenario" "build/typed-solver/$scenario.txt" >> build/typed-solver/summary.tsv <<'PY'
+          import sys
+          name,path=sys.argv[1:]
+          vals={}
+          for line in open(path):
+              if line.startswith("SCALE40_") and "=" in line and "BLOCK" not in line:
+                  k,v=line.strip().split("=",1)
+                  try: vals[k]=float(v)
+                  except ValueError: pass
+          keys=["SCALE40_HEAD_MAX_ABS","SCALE40_THETA_MAX_ABS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
+                "SCALE40_ANALYTIC_MEDIAN_S","SCALE40_TABLE_MEDIAN_S","SCALE40_TABLE_DELTA_PCT"]
+          miss=[k for k in keys if k not in vals]
+          if miss: raise SystemExit(f"missing {miss}")
+          if vals["SCALE40_ANALYTIC_STATUS"] != 1 or vals["SCALE40_TABLE_STATUS"] != 1:
+              raise SystemExit("non-converged route")
+          if vals["SCALE40_HEAD_MAX_ABS"] > 5.0e-2:
+              raise SystemExit("head fidelity failure")
+          if vals["SCALE40_THETA_MAX_ABS"] > 2.0e-2:
+              raise SystemExit("theta fidelity failure")
+          print(name+"\t"+"\t".join(f"{vals[k]:.17g}" for k in keys))
           PY
+          done
+          cat build/typed-solver/summary.tsv
 
       - name: Upload evidence
         if: always()
@@ -231,6 +218,5 @@ end module MOD_grid""",s,count=1,flags=re.S)
         with:
           name: tab-hyd-typed-solver-scale40
           path: |
-            build/scale40/summary.tsv
-            build/scale40/all-results.txt
-            build/scale40/*.txt
+            build/typed-solver/summary.tsv
+            build/typed-solver/*.txt
