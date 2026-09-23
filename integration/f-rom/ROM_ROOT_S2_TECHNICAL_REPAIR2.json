@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom_root.s2.technical_repair2.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2-R2",
+  "date": "2026-09-23",
+  "status": "BOUND_TECHNICAL_CUMULATIVE_LEDGER_ACCUMULATION_REPAIR",
+  "failed_run": {
+    "run_id": 35852865011,
+    "head": "08422170dbb8541e1d4c4b695787b1940dca90f8",
+    "pattern": "All 8 material/history jobs fail all 4 retained representations only on cumulative_root_within_arithmetic_guard."
+  },
+  "classification": "TECHNICAL_BOOKKEEPING_ACCUMULATION_ONLY",
+  "evidence": {
+    "all_other_checks_pass": true,
+    "root_generic_bit_identity": true,
+    "zero_sink_legacy_bit_identity": true,
+    "all_water_ledgers_pass": true,
+    "fraction_and_sink_rate_arithmetic_guards_pass": true,
+    "mechanism": "The frozen root withdrawal rate is constant, but cumulative_root_withdrawal_cm was integrated by repeated binary64 additions through the auxiliary ODE ledger coordinate.",
+    "deterministic_reproduction": {
+      "transaction_dt_day": 0.0001,
+      "substeps": 8192,
+      "tp_0_6_naive_accumulation_error_cm": 3.1030733538273125e-14,
+      "tp_0_3_naive_accumulation_error_cm": 1.5515366769136563e-14,
+      "preregistered_64epsilon_absolute_guard_cm": 1.4210854715202004e-14
+    }
+  },
+  "repair": {
+    "change": "For the auxiliary cumulative-root bookkeeping coordinate only, overwrite the post-substep ledger value with substep_count * DT * frozen_total_sink_rate.",
+    "frozen_total_sink_rate": "math.fsum of the already frozen retained-layer sink vector; zero for LEGACY_NO_SINK.",
+    "hydraulic_storage_update_changed": false,
+    "hydraulic_flux_changed": false,
+    "heun_corrector_changed": false,
+    "root_fraction_changed": false,
+    "sink_schedule_changed": false,
+    "sink_rate_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "dt_changed": false,
+    "water_ledger_gate_changed": false,
+    "arithmetic_guard_changed": false,
+    "identity_rule_changed": false,
+    "pass_rule_changed": false
+  },
+  "scientific_firewall": {
+    "feddes_evaluated": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
