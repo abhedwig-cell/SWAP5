@@ -1,0 +1,133 @@
+name: F-ROM-PURPOSE P5A surface numerical-domain characterization
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P5A_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p5a-surface-numerical-domain
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Verify P5A authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p5a_surface_diagnostic.py             tests/rom/run_rom_purpose_p5a_surface_diagnostic.py             tests/rom/analyze_rom_purpose_p5a_surface_diagnostic.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P5A_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P5A_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_BEFORE_ANY_P5A_DIAGNOSTIC_RESPONSE'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P5A_DIAGNOSTIC_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  routes:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 18
+      matrix:
+        material: [B01, B14]
+        member: [S8, S12, S16]
+        factor: [8, 16, 32]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute fail-closed diagnostic route
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p5a_surface_diagnostic.py             --material "${{ matrix.material }}"             --member "${{ matrix.member }}"             --factor "${{ matrix.factor }}"             --representation-ladder integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json             --canonical-root canonical             --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p5a-${{ matrix.material }}-${{ matrix.member }}-T${{ matrix.factor }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: routes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'p5a-*', path: /tmp/p5a, merge-multiple: true}
+      - name: Characterize frozen P5A matrix
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p5a_surface_diagnostic.py             --prereg integration/f-rom/ROM_PURPOSE_P5A_PREREGISTRATION.json             --p4-matched-result integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json             --root /tmp/p5a             --output result/ROM_PURPOSE_P5A_RESULT.json | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P5A_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p5a-result
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p5a-result, path: /tmp/result}
+      - name: Persist P5A result
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P5A_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P5A_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P5_STATUS.json')
+          if p.exists():
+              s=json.load(open(p))
+          else:
+              s={'schema':'swap5.rom-purpose.p5.status.v1','workstream':'ROM-PURPOSE','work_unit':'ROM-PURPOSE-P5','date':'2026-09-23','scientific_firewall':{}}
+          s.update({
+            'status':'P5A_CLOSED_'+r['decision'],
+            'current_gate':'P5B_REPRESENTATION_DERIVATION',
+            'p5a_result':'integration/f-rom/ROM_PURPOSE_P5A_RESULT.json',
+            'p5a_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p5a_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':['Derive and preregister the P5B groundwater information-carrier representation class before any P5B response.']
+          })
+          s['scientific_firewall'].update({
+            'p4_reopened':False,'tolerance_relaxation_authorized':False,
+            'new_closure_family_authorized':False,'application_acceptance_adjudicated':False,
+            'production_rom_authorized':False,'any_p5a_response_seen':True
+          })
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P5A_RESULT.json integration/f-rom/ROM_PURPOSE_P5_STATUS.json
+          git commit -m "ROM-PURPOSE P5A: persist surface numerical-domain characterization" || exit 0
+          git push origin HEAD:work/f-rom-purpose
