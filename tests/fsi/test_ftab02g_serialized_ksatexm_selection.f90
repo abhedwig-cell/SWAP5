@@ -49,7 +49,6 @@ program test_ftab02g_serialized_ksatexm_selection
   write(*,'(a,i0)') 'F_TAB02_G_SERIALIZED_GENERATED_RETRIES=',generated_retries
   write(*,'(a)') 'F_TAB02_G_SERIALIZED_SUPPORTED_KSATEXM=PASS'
   write(*,'(a)') 'F_TAB02_G_SERIALIZED_NEIGHBOR_FAIL_CLOSED=PASS'
-  write(*,'(a)') 'F-TAB02-G SERIALIZED KSA...'
   write(*,'(a)') 'F-TAB02-G SERIALIZED KSATEXM SELECTION GATE PASS'
 
 contains
