@@ -1,0 +1,198 @@
+{
+  "schema": "swap5.rom-practical.p3.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P3",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_P3_LONG_HORIZON_RESPONSE",
+  "title": "Fresh 60-day daily practical validation of S4 and G8",
+  "purpose": "Test whether the retained purpose-specific practical ROM family remains numerically stable and hydrologically interpretable under genuinely daily, longer-horizon forcing without further state escalation or tuning.",
+  "horizon": {
+    "days": 60,
+    "observation_interval_day": 1,
+    "observations": 60
+  },
+  "materials": {
+    "development": [
+      "B02",
+      "B11"
+    ],
+    "validation": [
+      "B05",
+      "B16"
+    ],
+    "note": "Materials are not globally blind; the forcing histories are fresh and frozen before response."
+  },
+  "representations": {
+    "SURF_P": {
+      "id": "S4",
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "state_count": 4,
+      "closure": "CURRENT_LAYER_FACE"
+    },
+    "GW_LB": {
+      "id": "G8",
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "state_count": 8,
+      "closure": "CURRENT_LAYER_FACE"
+    }
+  },
+  "forcing": {
+    "SURF_P": {
+      "histories": {
+        "SD01": {
+          "initial_Se": 0.72,
+          "segments": [
+            {
+              "days": 15,
+              "net_top_perturbation_cm_per_day": 0.12
+            },
+            {
+              "days": 15,
+              "net_top_perturbation_cm_per_day": -0.08
+            },
+            {
+              "days": 15,
+              "net_top_perturbation_cm_per_day": 0.06
+            },
+            {
+              "days": 15,
+              "net_top_perturbation_cm_per_day": -0.04
+            }
+          ]
+        },
+        "SD02": {
+          "initial_Se": 0.86,
+          "segments": [
+            {
+              "days": 20,
+              "net_top_perturbation_cm_per_day": -0.06
+            },
+            {
+              "days": 10,
+              "net_top_perturbation_cm_per_day": 0.1
+            },
+            {
+              "days": 20,
+              "net_top_perturbation_cm_per_day": -0.03
+            },
+            {
+              "days": 10,
+              "net_top_perturbation_cm_per_day": 0.08
+            }
+          ]
+        }
+      },
+      "semantics": "Top flux equals material-specific gravity-equilibrium flux plus the frozen net daily perturbation. Bottom remains fixed gravity-equilibrium flux. This isolates profile redistribution/storage response without introducing crop/root sinks."
+    },
+    "GW_LB": {
+      "histories": {
+        "GD01": {
+          "initial_Se": 0.72,
+          "segments": [
+            {
+              "days": 20,
+              "bottom_head_multiplier": 0.97
+            },
+            {
+              "days": 20,
+              "bottom_head_multiplier": 1.03
+            },
+            {
+              "days": 20,
+              "bottom_head_multiplier": 1
+            }
+          ]
+        },
+        "GD02": {
+          "initial_Se": 0.88,
+          "segments": [
+            {
+              "days": 15,
+              "bottom_head_multiplier": 1.03
+            },
+            {
+              "days": 30,
+              "bottom_head_multiplier": 0.97
+            },
+            {
+              "days": 15,
+              "bottom_head_multiplier": 1
+            }
+          ]
+        }
+      },
+      "semantics": "Top flux remains gravity-equilibrium. Bottom pressure head changes slowly by ±3% around initial equilibrium head, with a final hold period."
+    }
+  },
+  "numerics": {
+    "candidate": {
+      "internal_dt_day": 0.01,
+      "substeps_per_day": 100,
+      "water_ledger_gate_cm": 1e-9
+    },
+    "reference": {
+      "target": "R128_T32",
+      "comparator": "R64_T32",
+      "transaction_dt_day": 0.03125,
+      "optimization": 2
+    },
+    "rationale": "Daily physical time is explicit. Candidate and Reference use independent numerical routes; R64-vs-R128 quantifies practical reference-resolution uncertainty."
+  },
+  "metrics": {
+    "SURF_P": [
+      "surface_0_20_storage_rmse_cm",
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm",
+      "mapped_10cm_theta_rmse",
+      "total_storage_rmse_cm",
+      "final_total_storage_bias_cm",
+      "daily_storage_extremum_timing_error_days"
+    ],
+    "GW_LB": [
+      "cumulative_bottom_exchange_rmse_cm",
+      "daily_bottom_flux_rmse_cm_per_day",
+      "bottom_flux_sign_mismatch_days",
+      "reversal_sequence_mismatch_count",
+      "reversal_timing_error_days",
+      "total_storage_rmse_cm",
+      "final_exchange_drift_cm"
+    ],
+    "performance": [
+      "candidate_wall_s",
+      "reference_R128_wall_s",
+      "candidate_over_reference_wall_ratio"
+    ]
+  },
+  "qualification": {
+    "numerical_fail_closed": true,
+    "no_scalar_score": true,
+    "reference_observability_rule": "Discrete timing/sign claims are qualified when R64-vs-R128 comparator shows the same defect magnitude/order.",
+    "purpose_result": "Report per material/history and aggregate by purpose; do not collapse to one ROM score."
+  },
+  "firewalls": [
+    "No state count above S4/G8.",
+    "No closure change.",
+    "No material-specific tuning.",
+    "No P-ROM-ET.",
+    "No application acceptance or production admission.",
+    "Do not call this seasonal validation; it is a 60-day daily validation."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
