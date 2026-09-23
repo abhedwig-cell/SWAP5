@@ -1,0 +1,634 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm.hupsel-workload.v1",
+  "date": "2026-09-23",
+  "source": {
+    "repository": "moritzshore/rswap",
+    "commit": "c30f40227004191ca729f25cc35f500301cb4bab",
+    "path": "inst/extdata/rswap_example_input/283.met",
+    "github_blob": "7d1b71eab5d229e45ae351117188a034efef4e15",
+    "public_raw_sha256_observed_previously": "ec92d20437787134a0bd91e7fb0c5553c4ed57f592dc3f7c28e156c0c425a6d8",
+    "authority_note": "Pinned public Hupsel meteorological table. Supporting realistic-workload provenance only; not a replacement for the official SWAP 4.3.1 Hupsel raw-file authority."
+  },
+  "period": {
+    "start": "2002-05-01",
+    "end": "2002-06-29",
+    "days": 60
+  },
+  "transformation": {
+    "formula": "delta_top_cm_per_day = (Rain_mm_per_day - ETref_mm_per_day) / 10",
+    "candidate_top_flux": "q_top = K(initial_state) + delta_top_cm_per_day",
+    "bottom_flux": "q_bottom = K(initial_state)",
+    "interpretation": "ETref is an externally imposed atmospheric extraction proxy at the upper boundary. It is not partitioned into soil evaporation and root uptake and is not a Hupsel-equivalence claim."
+  },
+  "initial_effective_saturation": [
+    0.72,
+    0.86
+  ],
+  "totals": {
+    "rain_mm": 101.79999999999998,
+    "etref_mm": 172.8,
+    "net_proxy_cm": -7.1
+  },
+  "records": [
+    {
+      "date": "2002-05-01",
+      "rain_mm_per_day": 4.5,
+      "etref_mm_per_day": 2.7,
+      "net_atmospheric_proxy_cm_per_day": 0.18,
+      "radiation_kj_m2_day": 17810,
+      "tmin_c": 6.5,
+      "tmax_c": 15.2,
+      "wet": 0.142
+    },
+    {
+      "date": "2002-05-02",
+      "rain_mm_per_day": 2.1,
+      "etref_mm_per_day": 1.8,
+      "net_atmospheric_proxy_cm_per_day": 0.030000000000000006,
+      "radiation_kj_m2_day": 11750,
+      "tmin_c": 6.8,
+      "tmax_c": 15.4,
+      "wet": 0.088
+    },
+    {
+      "date": "2002-05-03",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 0.9,
+      "net_atmospheric_proxy_cm_per_day": -0.09,
+      "radiation_kj_m2_day": 6540,
+      "tmin_c": 7.3,
+      "tmax_c": 11.9,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-04",
+      "rain_mm_per_day": 7,
+      "etref_mm_per_day": 0.5,
+      "net_atmospheric_proxy_cm_per_day": 0.65,
+      "radiation_kj_m2_day": 3800,
+      "tmin_c": 6,
+      "tmax_c": 10,
+      "wet": 0.317
+    },
+    {
+      "date": "2002-05-05",
+      "rain_mm_per_day": 14.7,
+      "etref_mm_per_day": 0.6,
+      "net_atmospheric_proxy_cm_per_day": 1.41,
+      "radiation_kj_m2_day": 4150,
+      "tmin_c": 5.9,
+      "tmax_c": 11.6,
+      "wet": 0.408
+    },
+    {
+      "date": "2002-05-06",
+      "rain_mm_per_day": 0.5,
+      "etref_mm_per_day": 1.4,
+      "net_atmospheric_proxy_cm_per_day": -0.09,
+      "radiation_kj_m2_day": 9550,
+      "tmin_c": 2.7,
+      "tmax_c": 12.6,
+      "wet": 0.083
+    },
+    {
+      "date": "2002-05-07",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.6,
+      "net_atmospheric_proxy_cm_per_day": -0.36,
+      "radiation_kj_m2_day": 23830,
+      "tmin_c": 4.7,
+      "tmax_c": 17.8,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-08",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 2.1,
+      "net_atmospheric_proxy_cm_per_day": -0.21000000000000002,
+      "radiation_kj_m2_day": 13700,
+      "tmin_c": 9.5,
+      "tmax_c": 16.6,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-09",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.1,
+      "net_atmospheric_proxy_cm_per_day": -0.31,
+      "radiation_kj_m2_day": 18260,
+      "tmin_c": 10.8,
+      "tmax_c": 23,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-10",
+      "rain_mm_per_day": 3.1,
+      "etref_mm_per_day": 1,
+      "net_atmospheric_proxy_cm_per_day": 0.21000000000000002,
+      "radiation_kj_m2_day": 6380,
+      "tmin_c": 8.5,
+      "tmax_c": 17.8,
+      "wet": 0.071
+    },
+    {
+      "date": "2002-05-11",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 1.2,
+      "net_atmospheric_proxy_cm_per_day": -0.12,
+      "radiation_kj_m2_day": 7690,
+      "tmin_c": 12.2,
+      "tmax_c": 15.8,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-12",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 0.9,
+      "net_atmospheric_proxy_cm_per_day": -0.09,
+      "radiation_kj_m2_day": 5960,
+      "tmin_c": 10,
+      "tmax_c": 14.2,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-13",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.7,
+      "net_atmospheric_proxy_cm_per_day": -0.37,
+      "radiation_kj_m2_day": 22210,
+      "tmin_c": 6.1,
+      "tmax_c": 22,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-14",
+      "rain_mm_per_day": 10.4,
+      "etref_mm_per_day": 2.2,
+      "net_atmospheric_proxy_cm_per_day": 0.82,
+      "radiation_kj_m2_day": 14020,
+      "tmin_c": 9.2,
+      "tmax_c": 17.7,
+      "wet": 0.108
+    },
+    {
+      "date": "2002-05-15",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.1,
+      "net_atmospheric_proxy_cm_per_day": -0.31,
+      "radiation_kj_m2_day": 19720,
+      "tmin_c": 8.3,
+      "tmax_c": 19.6,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-16",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.4,
+      "net_atmospheric_proxy_cm_per_day": -0.44000000000000006,
+      "radiation_kj_m2_day": 25580,
+      "tmin_c": 7,
+      "tmax_c": 23.8,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-17",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.3,
+      "net_atmospheric_proxy_cm_per_day": -0.43,
+      "radiation_kj_m2_day": 25300,
+      "tmin_c": 7.6,
+      "tmax_c": 23,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-18",
+      "rain_mm_per_day": 1.4,
+      "etref_mm_per_day": 1.6,
+      "net_atmospheric_proxy_cm_per_day": -0.020000000000000018,
+      "radiation_kj_m2_day": 10080,
+      "tmin_c": 10.3,
+      "tmax_c": 20.1,
+      "wet": 0.062
+    },
+    {
+      "date": "2002-05-19",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 2.6,
+      "net_atmospheric_proxy_cm_per_day": -0.26,
+      "radiation_kj_m2_day": 15750,
+      "tmin_c": 9.6,
+      "tmax_c": 20,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-20",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.8,
+      "net_atmospheric_proxy_cm_per_day": -0.38,
+      "radiation_kj_m2_day": 22350,
+      "tmin_c": 8.6,
+      "tmax_c": 23,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-21",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.6,
+      "net_atmospheric_proxy_cm_per_day": -0.45999999999999996,
+      "radiation_kj_m2_day": 25690,
+      "tmin_c": 11.9,
+      "tmax_c": 25.1,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-22",
+      "rain_mm_per_day": 1.7,
+      "etref_mm_per_day": 1.8,
+      "net_atmospheric_proxy_cm_per_day": -0.010000000000000009,
+      "radiation_kj_m2_day": 10260,
+      "tmin_c": 14.6,
+      "tmax_c": 21.1,
+      "wet": 0.133
+    },
+    {
+      "date": "2002-05-23",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 2.2,
+      "net_atmospheric_proxy_cm_per_day": -0.22000000000000003,
+      "radiation_kj_m2_day": 13570,
+      "tmin_c": 12,
+      "tmax_c": 18.8,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-24",
+      "rain_mm_per_day": 1.8,
+      "etref_mm_per_day": 2.4,
+      "net_atmospheric_proxy_cm_per_day": -0.059999999999999984,
+      "radiation_kj_m2_day": 15170,
+      "tmin_c": 7.5,
+      "tmax_c": 18.4,
+      "wet": 0.142
+    },
+    {
+      "date": "2002-05-25",
+      "rain_mm_per_day": 2.1,
+      "etref_mm_per_day": 2.1,
+      "net_atmospheric_proxy_cm_per_day": 0,
+      "radiation_kj_m2_day": 13820,
+      "tmin_c": 8.3,
+      "tmax_c": 16.7,
+      "wet": 0.071
+    },
+    {
+      "date": "2002-05-26",
+      "rain_mm_per_day": 2.2,
+      "etref_mm_per_day": 2.6,
+      "net_atmospheric_proxy_cm_per_day": -0.039999999999999994,
+      "radiation_kj_m2_day": 16610,
+      "tmin_c": 8.3,
+      "tmax_c": 18.6,
+      "wet": 0.042
+    },
+    {
+      "date": "2002-05-27",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.2,
+      "net_atmospheric_proxy_cm_per_day": -0.42000000000000004,
+      "radiation_kj_m2_day": 25310,
+      "tmin_c": 8.1,
+      "tmax_c": 19.6,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-28",
+      "rain_mm_per_day": 0.3,
+      "etref_mm_per_day": 2.7,
+      "net_atmospheric_proxy_cm_per_day": -0.24000000000000005,
+      "radiation_kj_m2_day": 16330,
+      "tmin_c": 11.7,
+      "tmax_c": 20.4,
+      "wet": 0.092
+    },
+    {
+      "date": "2002-05-29",
+      "rain_mm_per_day": 1.1,
+      "etref_mm_per_day": 2.2,
+      "net_atmospheric_proxy_cm_per_day": -0.11000000000000001,
+      "radiation_kj_m2_day": 14310,
+      "tmin_c": 7.8,
+      "tmax_c": 18,
+      "wet": 0.062
+    },
+    {
+      "date": "2002-05-30",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.3,
+      "net_atmospheric_proxy_cm_per_day": -0.32999999999999996,
+      "radiation_kj_m2_day": 20850,
+      "tmin_c": 7.8,
+      "tmax_c": 19.7,
+      "wet": 0
+    },
+    {
+      "date": "2002-05-31",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.2,
+      "net_atmospheric_proxy_cm_per_day": -0.32,
+      "radiation_kj_m2_day": 20660,
+      "tmin_c": 5.4,
+      "tmax_c": 19.1,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-01",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.5,
+      "net_atmospheric_proxy_cm_per_day": -0.45,
+      "radiation_kj_m2_day": 28650,
+      "tmin_c": 2.9,
+      "tmax_c": 19.2,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-02",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.9,
+      "net_atmospheric_proxy_cm_per_day": -0.49000000000000005,
+      "radiation_kj_m2_day": 28280,
+      "tmin_c": 8.5,
+      "tmax_c": 23.6,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-03",
+      "rain_mm_per_day": 0.1,
+      "etref_mm_per_day": 3.7,
+      "net_atmospheric_proxy_cm_per_day": -0.36,
+      "radiation_kj_m2_day": 20700,
+      "tmin_c": 13,
+      "tmax_c": 26.5,
+      "wet": 0.012
+    },
+    {
+      "date": "2002-06-04",
+      "rain_mm_per_day": 0.1,
+      "etref_mm_per_day": 4.8,
+      "net_atmospheric_proxy_cm_per_day": -0.47000000000000003,
+      "radiation_kj_m2_day": 26500,
+      "tmin_c": 12.1,
+      "tmax_c": 25.5,
+      "wet": 0.008
+    },
+    {
+      "date": "2002-06-05",
+      "rain_mm_per_day": 3,
+      "etref_mm_per_day": 2,
+      "net_atmospheric_proxy_cm_per_day": 0.1,
+      "radiation_kj_m2_day": 11210,
+      "tmin_c": 14.9,
+      "tmax_c": 24.7,
+      "wet": 0.083
+    },
+    {
+      "date": "2002-06-06",
+      "rain_mm_per_day": 0.8,
+      "etref_mm_per_day": 2.4,
+      "net_atmospheric_proxy_cm_per_day": -0.15999999999999998,
+      "radiation_kj_m2_day": 14140,
+      "tmin_c": 14.5,
+      "tmax_c": 21.6,
+      "wet": 0.096
+    },
+    {
+      "date": "2002-06-07",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 2.3,
+      "net_atmospheric_proxy_cm_per_day": -0.22999999999999998,
+      "radiation_kj_m2_day": 13270,
+      "tmin_c": 13.4,
+      "tmax_c": 20.7,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-08",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 2.8,
+      "net_atmospheric_proxy_cm_per_day": -0.27999999999999997,
+      "radiation_kj_m2_day": 16220,
+      "tmin_c": 10.2,
+      "tmax_c": 21,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-09",
+      "rain_mm_per_day": 0.9,
+      "etref_mm_per_day": 4.3,
+      "net_atmospheric_proxy_cm_per_day": -0.33999999999999997,
+      "radiation_kj_m2_day": 24080,
+      "tmin_c": 13.8,
+      "tmax_c": 23.8,
+      "wet": 0.012
+    },
+    {
+      "date": "2002-06-10",
+      "rain_mm_per_day": 4.7,
+      "etref_mm_per_day": 2,
+      "net_atmospheric_proxy_cm_per_day": 0.27,
+      "radiation_kj_m2_day": 12450,
+      "tmin_c": 11,
+      "tmax_c": 18.1,
+      "wet": 0.188
+    },
+    {
+      "date": "2002-06-11",
+      "rain_mm_per_day": 1.9,
+      "etref_mm_per_day": 2.9,
+      "net_atmospheric_proxy_cm_per_day": -0.1,
+      "radiation_kj_m2_day": 18460,
+      "tmin_c": 9.7,
+      "tmax_c": 18.1,
+      "wet": 0.058
+    },
+    {
+      "date": "2002-06-12",
+      "rain_mm_per_day": 10.7,
+      "etref_mm_per_day": 2.1,
+      "net_atmospheric_proxy_cm_per_day": 0.86,
+      "radiation_kj_m2_day": 12490,
+      "tmin_c": 10.9,
+      "tmax_c": 19.9,
+      "wet": 0.283
+    },
+    {
+      "date": "2002-06-13",
+      "rain_mm_per_day": 0.3,
+      "etref_mm_per_day": 1,
+      "net_atmospheric_proxy_cm_per_day": -0.06999999999999999,
+      "radiation_kj_m2_day": 6300,
+      "tmin_c": 12,
+      "tmax_c": 16.8,
+      "wet": 0.029
+    },
+    {
+      "date": "2002-06-14",
+      "rain_mm_per_day": 7.1,
+      "etref_mm_per_day": 3,
+      "net_atmospheric_proxy_cm_per_day": 0.41,
+      "radiation_kj_m2_day": 17240,
+      "tmin_c": 13.8,
+      "tmax_c": 23.1,
+      "wet": 0.067
+    },
+    {
+      "date": "2002-06-15",
+      "rain_mm_per_day": 2.8,
+      "etref_mm_per_day": 4,
+      "net_atmospheric_proxy_cm_per_day": -0.12000000000000002,
+      "radiation_kj_m2_day": 22580,
+      "tmin_c": 15.3,
+      "tmax_c": 21.1,
+      "wet": 0.108
+    },
+    {
+      "date": "2002-06-16",
+      "rain_mm_per_day": 1.1,
+      "etref_mm_per_day": 2.6,
+      "net_atmospheric_proxy_cm_per_day": -0.15,
+      "radiation_kj_m2_day": 15030,
+      "tmin_c": 13,
+      "tmax_c": 23.3,
+      "wet": 0.062
+    },
+    {
+      "date": "2002-06-17",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 5.4,
+      "net_atmospheric_proxy_cm_per_day": -0.54,
+      "radiation_kj_m2_day": 27950,
+      "tmin_c": 14.5,
+      "tmax_c": 31.6,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-18",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.5,
+      "net_atmospheric_proxy_cm_per_day": -0.45,
+      "radiation_kj_m2_day": 23000,
+      "tmin_c": 14.6,
+      "tmax_c": 33.5,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-19",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.7,
+      "net_atmospheric_proxy_cm_per_day": -0.37,
+      "radiation_kj_m2_day": 20880,
+      "tmin_c": 11.1,
+      "tmax_c": 24.1,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-20",
+      "rain_mm_per_day": 6.6,
+      "etref_mm_per_day": 1.3,
+      "net_atmospheric_proxy_cm_per_day": 0.53,
+      "radiation_kj_m2_day": 7390,
+      "tmin_c": 13.6,
+      "tmax_c": 19.3,
+      "wet": 0.142
+    },
+    {
+      "date": "2002-06-21",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3,
+      "net_atmospheric_proxy_cm_per_day": -0.3,
+      "radiation_kj_m2_day": 17810,
+      "tmin_c": 10.4,
+      "tmax_c": 20.7,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-22",
+      "rain_mm_per_day": 1.6,
+      "etref_mm_per_day": 3.4,
+      "net_atmospheric_proxy_cm_per_day": -0.18,
+      "radiation_kj_m2_day": 19060,
+      "tmin_c": 9.6,
+      "tmax_c": 23.8,
+      "wet": 0.054
+    },
+    {
+      "date": "2002-06-23",
+      "rain_mm_per_day": 0.6,
+      "etref_mm_per_day": 3.9,
+      "net_atmospheric_proxy_cm_per_day": -0.32999999999999996,
+      "radiation_kj_m2_day": 23130,
+      "tmin_c": 10.4,
+      "tmax_c": 20.5,
+      "wet": 0.075
+    },
+    {
+      "date": "2002-06-24",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.3,
+      "net_atmospheric_proxy_cm_per_day": -0.43,
+      "radiation_kj_m2_day": 26310,
+      "tmin_c": 8,
+      "tmax_c": 20.8,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-25",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.7,
+      "net_atmospheric_proxy_cm_per_day": -0.37,
+      "radiation_kj_m2_day": 22240,
+      "tmin_c": 6.5,
+      "tmax_c": 22.1,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-26",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 4.3,
+      "net_atmospheric_proxy_cm_per_day": -0.43,
+      "radiation_kj_m2_day": 24850,
+      "tmin_c": 8.1,
+      "tmax_c": 23.1,
+      "wet": 0
+    },
+    {
+      "date": "2002-06-27",
+      "rain_mm_per_day": 0.2,
+      "etref_mm_per_day": 3.5,
+      "net_atmospheric_proxy_cm_per_day": -0.32999999999999996,
+      "radiation_kj_m2_day": 21400,
+      "tmin_c": 8.2,
+      "tmax_c": 19.7,
+      "wet": 0.017
+    },
+    {
+      "date": "2002-06-28",
+      "rain_mm_per_day": 6.4,
+      "etref_mm_per_day": 2.5,
+      "net_atmospheric_proxy_cm_per_day": 0.39,
+      "radiation_kj_m2_day": 16200,
+      "tmin_c": 8.4,
+      "tmax_c": 16.4,
+      "wet": 0.225
+    },
+    {
+      "date": "2002-06-29",
+      "rain_mm_per_day": 0,
+      "etref_mm_per_day": 3.2,
+      "net_atmospheric_proxy_cm_per_day": -0.32,
+      "radiation_kj_m2_day": 19990,
+      "tmin_c": 7.7,
+      "tmax_c": 18.7,
+      "wet": 0
+    }
+  ]
+}
