@@ -164,7 +164,7 @@ def main()->int:
         text=one(
           text,
           "write(*,'(A)') 'LAREGW1_C5A_B14_DYNAMIC_HEAD_GENERATED=TRUE'",
-          "write(*,'(A)') 'LAREGW1_ROMPURP_P3_GW_REFERENCE_GENERATED=TRUE'",
+          "write(*,'(A)') 'LAREGW1_ROMPURP_P3_GW_REFERENCE_GENERATED=TRUE'"+chr(10)+"          write(*,'(A)') 'LAREGW1_ROMPURP_P1_GW_REFERENCE_GENERATED=TRUE'",
           "completion marker"
         )
     text=one(text,"forcing%bottom_head=0.875_real64*h0","forcing%bottom_head=0.90_real64*h0","rise multiplier")
