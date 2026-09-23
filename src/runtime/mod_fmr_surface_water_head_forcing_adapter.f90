@@ -39,7 +39,7 @@ contains
     status = FMR_SW_HEAD_FORCING_PROFILE_NOT_ADMITTED
     if (.not. parameters%drainage_response_active) return
     if (.not. allocated(parameters%drainage_response_levels)) return
-    if (size(parameters%drainage_response_levels) <= 0) return
+    if (size(parameters%drainage_response_levels) /= 1) return
     if (any(parameters%drainage_response_levels%variant /= FMR_DRAIN_VARIANT_EXTENDED_SIGNED)) return
 
     status = FMR_SW_HEAD_FORCING_COMPETING_DRAINAGE_INPUT
