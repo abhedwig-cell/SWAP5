@@ -209,10 +209,10 @@ equation, continuous peat curve, and three-piece peat curve are each covered
 in a 100,000-vector bitwise O0/O2 source oracle. Non-finite inputs and the
 undefined rigid-soil (`SwSoilShr=0`) legacy branch fail closed; this is a pure
 equation evaluator, not a macropore runtime/state-owner migration. The clay
-SHRINKPAR clay task-1 reference-moisture reconstruction and task-2 typical-point
-Newton calibration are separately bitwise checked over 100,000 vectors each.
-Task 2 is guarded by a finite iteration limit and a convergent input domain;
-source-bound and invalid-input failures are explicit. The standalone `DiamPolyg` geometry equation is
+SHRINKPAR clay tasks 1 and 2 and the peat task-4 typical-point calibration are
+bitwise checked over 100,000 vectors each. Both Newton/root paths have finite
+iteration limits, guarded domains, and explicit invalid/source-error checks.
+The standalone `DiamPolyg` geometry equation is
 also bitwise tested over 100,000 vectors across each of its three density
 paths and fixed-diameter fallback. B1.11 assigns local `SorpFac` only inside that branch but
 later reads it unconditionally in arbitration; stale/undefined cases remain
