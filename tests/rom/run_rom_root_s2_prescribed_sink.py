@@ -50,6 +50,12 @@ def load_module(name: str, path: pathlib.Path):
 bc = load_module("rom_root_s2_bc", HERE / "run_lare_bc1_stage_b.py")
 
 
+def json_default(value):
+    if isinstance(value, np.generic):
+        return value.item()
+    raise TypeError(f"Object of type {value.__class__.__name__} is not JSON serializable")
+
+
 def configure_material(material: str) -> None:
     if material == "B01":
         bc.THETA_R = 0.02
@@ -334,7 +340,7 @@ def main() -> int:
         "history": args.history,
         "pass": out["pass"],
         "members": {m: {"pass": v["pass"], "checks": v["checks"]} for m, v in cases.items()},
-    }, sort_keys=True))
+    }, sort_keys=True, default=json_default))
     return 0 if out["pass"] else 1
 
 
