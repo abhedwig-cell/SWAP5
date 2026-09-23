@@ -21,10 +21,14 @@ function one(model, name)
     return Float64(v[1])
 end
 
-function run_case(root, case)
-    path = joinpath(root, case.id, "ribasim.toml")
+function physical_run(path, kind; override_infiltration=nothing)
     model = BMI.initialize(Ribasim.Model, path)
     try
+        if override_infiltration !== nothing
+            v = BMI.get_value_ptr(model, "basin.infiltration")
+            require(length(v) == 1, "G7 recomposition requires one infiltration forcing")
+            v[1] = override_infiltration / DURATION
+        end
         initial_level = one(model, "basin.level")
         initial_storage = one(model, "basin.storage")
         initial_drain = one(model, "basin.cumulative_drainage")
@@ -42,20 +46,48 @@ function run_case(root, case)
         require(abs(residual) <= MASS_TOL, "$(case.id) mass residual $residual")
         require(final_storage >= -STORAGE_TOL, "$(case.id) negative storage $final_storage")
 
-        if case.kind == :drainage
-            require(abs(signed_realized - case.requested) <= FULL_TOL, "$(case.id) full drainage realization")
-        elseif case.kind == :infiltration
-            require(abs(signed_realized - case.requested) <= FULL_TOL, "$(case.id) full infiltration realization")
-        else
-            require(signed_realized < 0.0, "$(case.id) expected outward transfer")
-            require(abs(signed_realized) < abs(case.requested) - LIMITED_GAP, "$(case.id) not availability limited")
-        end
-
-        println("G7_RECEIPT,$(case.id),$(100.0*initial_level),$(case.requested),$signed_realized,$residual")
-        println("SW_RIB_ADM01_G7_PHYSICAL_CASE_PASS=$(case.id)")
+        return (
+            initial_level=initial_level,
+            initial_storage=initial_storage,
+            final_storage=final_storage,
+            drain=drain,
+            inf=inf,
+            signed_realized=signed_realized,
+            residual=residual,
+        )
     finally
         BMI.finalize(model)
     end
+end
+
+function run_case(root, case)
+    path = joinpath(root, case.id, "ribasim.toml")
+    first = physical_run(path, case.kind)
+    require(abs(first.residual) <= MASS_TOL, "$(case.id) first mass residual")
+    require(first.final_storage >= -STORAGE_TOL, "$(case.id) first negative storage")
+
+    second_realized = first.signed_realized
+    second_residual = first.residual
+
+    if case.kind == :drainage
+        require(abs(first.signed_realized - case.requested) <= FULL_TOL, "$(case.id) full drainage realization")
+    elseif case.kind == :infiltration
+        require(abs(first.signed_realized - case.requested) <= FULL_TOL, "$(case.id) full infiltration realization")
+    else
+        require(first.signed_realized < 0.0, "$(case.id) expected outward transfer")
+        require(abs(first.signed_realized) < abs(case.requested) - LIMITED_GAP, "$(case.id) not availability limited")
+        second = physical_run(path, case.kind; override_infiltration=abs(first.signed_realized))
+        second_realized = second.signed_realized
+        second_residual = second.residual
+        require(abs(second_residual) <= MASS_TOL, "$(case.id) recomposed mass residual")
+        require(second.final_storage >= -STORAGE_TOL, "$(case.id) recomposed negative storage")
+        require(abs(second_realized - first.signed_realized) <= FULL_TOL,
+            "$(case.id) same-origin Ribasim recomposition did not realize adjusted request")
+        println("SW_RIB_ADM01_G7_RIBASIM_SAME_ORIGIN_RECOMPOSITION=PASS")
+    end
+
+    println("G7_RECEIPT,$(case.id),$(100.0*first.initial_level),$(case.requested),$(first.signed_realized),$second_realized,$second_residual")
+    println("SW_RIB_ADM01_G7_PHYSICAL_CASE_PASS=$(case.id)")
 end
 
 function main()
