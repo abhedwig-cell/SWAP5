@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.sw_rib_adm01.g5b.preregistration.v1",
+  "work_unit": "SW-RIB-ADM01-G5B",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "title": "Exact-release Ribasim realization into G5A origin-bound transaction",
+  "prerequisite": "G5A production transaction module present; G5B result is not admissible unless G5A gate passes.",
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "cases": [
+    {
+      "id": "E1_POSITIVE_DRAINAGE",
+      "initial_level_m": -0.5,
+      "requested_m3": 0.01,
+      "forcing": "drainage",
+      "expected": "realized=0.01 within 1e-6 m3, G5A COMMIT_READY"
+    },
+    {
+      "id": "E2_NEGATIVE_INFILTRATION_SUFFICIENT",
+      "initial_level_m": -0.5,
+      "requested_m3": 0.005,
+      "forcing": "infiltration",
+      "expected": "realized=0.005 within 1e-6 m3, G5A COMMIT_READY"
+    },
+    {
+      "id": "E3_NEGATIVE_INFILTRATION_LIMITED",
+      "initial_level_m": -0.998,
+      "requested_m3": 0.0051,
+      "forcing": "infiltration",
+      "expected": "realized strictly below requested and nonnegative; G5A first pass RECOMPOSITION_REQUIRED; second pass from same origin with request=realized COMMIT_READY"
+    }
+  ],
+  "origin": {
+    "swap_revision": 11,
+    "ribasim_origin_id": 901,
+    "ribasim_revision": 17,
+    "accepted_surface_water_head": "initial Ribasim Basin level converted to cm"
+  },
+  "tolerances": {
+    "full_realization_m3_abs": 0.000001,
+    "mass_residual_m3_abs": 1e-8,
+    "nonnegative_storage_m3": 1e-10,
+    "limited_strict_difference_m3": 0.000001
+  },
+  "direct_evidence": [
+    "BMI basin.storage start/end",
+    "BMI basin.cumulative_drainage or basin.cumulative_infiltration",
+    "measured realized transfer passed to the compiled G5A production module",
+    "G5A disposition and recomposition marker"
+  ],
+  "anti_tuning": "No request, initial state, duration or tolerance may be changed after product execution. Technical API/harness repairs must be recorded separately.",
+  "production_admission": false
+}
