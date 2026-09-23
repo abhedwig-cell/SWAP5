@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.rom_root.s3c0.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-C0",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_S3C0_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json",
+  "inherited_reference_authority": "integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json",
+  "purpose": "Numerically qualify the full-potential high-resolution control required for Stage 3 feedback-specific error separation before any reduced dynamic feedback response.",
+  "reduced_dynamic_feedback_response_generated": false,
+  "reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s3c0.yml": "2a7c1a09475d3e6fd2c1b9de1dd8b235b3001a1f",
+    "tests/rom/materialize_rom_root_s3c0_full_potential_reference.py": "214aca39b8a9a93dc40975596e8b87ad3c8e7099",
+    "tests/rom/analyze_rom_root_s3c0_reference.py": "37333e01ecfb017ab0b05d4adea83cb357b21e6f"
+  },
+  "control_semantics": {
+    "initial_states": "identical to RA02R corrected stress panel",
+    "root_distribution": "identical fine-node RA02R SHALLOW/UNIFORM distribution",
+    "potential_transpiration": "identical V01-V04 RA02R schedule",
+    "drought_reduction": "diagnostic alpha=1 after unchanged root-process evaluation",
+    "hydraulic_solver_changed": false,
+    "numerical_policy_changed": false,
+    "total_balance_policy": "same transferred PUB-P2E20 representation-floor policy as RA02R",
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "legacy_fallback": false
+  },
+  "qualification": {
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_levels": [
+      0,
+      2
+    ],
+    "reference_target": "R2048_T32",
+    "metrics": [
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm",
+      "mapped_10cm_theta_rmse",
+      "interval_actual_root_uptake_rmse_cm_per_day",
+      "cumulative_actual_root_uptake_rmse_cm"
+    ],
+    "full_potential_identity_required": true,
+    "o0_o2_identity_required": true
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "feddes_parameters_changed": false,
+    "candidate_definition_changed": false,
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
