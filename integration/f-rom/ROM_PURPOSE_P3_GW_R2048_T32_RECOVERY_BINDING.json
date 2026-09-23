@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-r2048-t32-recovery-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-R2048-T32-RECOVERY",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_SYSTEMATIC_R2048_T32_EXIT143",
+  "source_run": 35876286853,
+  "verified_technical_trigger_jobs": [
+    107234972634,
+    107234972632,
+    107234972943,
+    107234972643,
+    107234972952
+  ],
+  "route": "R2048_T32",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "execution_matrix": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "histories": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "histories_per_material": 4,
+    "cases": 16,
+    "segments_per_case": 2
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_EXECUTION_REPAIR.json": "e5c15fa0fdf48b57b9aeee6821ab79819bfda983",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "tests/rom/materialize_rom_purpose_p3_gw_reference.py": "83dbec28cd92b76bc1e2a4ac704103622a5cab28",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py": "9aa6440e22deec1a93ff3ec75a77aa2c61dba573",
+    "tests/rom/assemble_rom_purpose_p3_gw_r2048_t32_recovery.py": "e6ab4891a2d29389cdd6347b95a3bae7f0f43c3c",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    ".github/workflows/f-rom-purpose-p3-gw-r2048-t32-recovery.yml": "b09503df29415a07ecd73d0832823a526b993b70"
+  },
+  "scientific_firewall": {
+    "response_values_used_for_repair_design": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "temporal_factor_changed": false,
+    "spatial_resolution_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "candidate_response_generated": false
+  }
+}
