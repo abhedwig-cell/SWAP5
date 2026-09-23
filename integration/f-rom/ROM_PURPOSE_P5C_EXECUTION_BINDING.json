@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.rom-purpose.p5c.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5C-GW-BOUNDARY-INTERFACE-CARRIER",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P5C_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json@d8b11e23b52f7ac6f0c4c689686b3010e76b2171",
+  "p5b_supersession": "integration/f-rom/ROM_PURPOSE_P5B_ESTIMATOR_AUTHORITY_RECONCILIATION.json@e434fee0ce672bb9fe3ba2d1744f9a5c00d43b1c",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "route": {
+    "spatial_resolution": 512,
+    "temporal_factor": 8,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "G21",
+      "G22",
+      "G23",
+      "G24"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ]
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json": "d8b11e23b52f7ac6f0c4c689686b3010e76b2171",
+    "integration/f-rom/ROM_PURPOSE_P5B_ESTIMATOR_AUTHORITY_RECONCILIATION.json": "e434fee0ce672bb9fe3ba2d1744f9a5c00d43b1c",
+    "tests/rom/materialize_rom_purpose_p5c_gw_reference.py": "3889169684b0c6e43a5d65253a7face035f71a04",
+    "tests/rom/materialize_rom_purpose_p5c_gw_interface.py": "4c8400a20d7a1731b592c17e35c0b4cdfa6588fc",
+    "tests/rom/run_rom_purpose_p5c_gw_interface.py": "70df9aa26c20939124ce5f46b34cec6946f977e9",
+    "tests/rom/analyze_rom_purpose_p5c_gw_interface.py": "cd485846cd05ff89a8dfb82d0374456c44e72263",
+    ".github/workflows/f-rom-purpose-p5c.yml": "b1cb01b486f28fc179d041ead1b1c99a1ebf5945"
+  },
+  "scientific_firewall": {
+    "fresh_histories": true,
+    "boundary_operator_source_bound": true,
+    "p5b_estimator_not_reused": true,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "minimum_state_count_claim_authorized": false,
+    "dynamic_state_sufficiency_authorized": false,
+    "closure_deficit_claim_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
