@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.rom_root.ra02_d2.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D2",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_RA02_D2_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_RA02_D2_PREREGISTRATION.json",
+  "predecessor": "integration/f-rom/ROM_ROOT_RA02_D1_CLOSEOUT.json",
+  "scientific_semantics_changed": false,
+  "reduced_candidate_response_generated": false,
+  "reference_qualified": false,
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "implementation_blobs": {
+    ".github/workflows/rom-root-ra02-d2.yml": "a4633cfa60b831eb5ed8eb5efd73d225e6ae5ec7",
+    "tests/rom/materialize_rom_root_ra02_d2_node_regime.py": "0343e8a48ad4def49d160785049bf4483962e9f9",
+    "tests/rom/analyze_rom_root_ra02_d2.py": "95ddc059bb7e68722ede34f951d134903280c5c1"
+  },
+  "inherited_execution_blobs": {
+    "tests/rom/materialize_rom_root_ra01_reference_policy.py": "35406bf5e9fd4e86525338dc14969cf91d4f1fa7",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34"
+  },
+  "domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_level": 0,
+    "target_segmentation": "R2048_T32 in four frozen 8192-step checkpoint segments"
+  },
+  "diagnostic_contract": {
+    "exact_alpha_lt_one_classifier": true,
+    "exact_h_minus_h3_sign": true,
+    "spatial_remapping": false,
+    "tolerance_added": false,
+    "response_based": false
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "numerical_policy_changed": false,
+    "uncertainty_gate_changed": false,
+    "reduced_candidate_response_generated": false,
+    "stage2_executed": false,
+    "stage3_executed": false
+  }
+}
