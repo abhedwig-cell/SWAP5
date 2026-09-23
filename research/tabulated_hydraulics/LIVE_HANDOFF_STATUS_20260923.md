@@ -91,21 +91,36 @@ The dedicated production G rerun passed:
 
 Final G authority is still held pending sequential same-postimage replay.
 
-## Independent scale gate still in research
+## Independent 40-node scale gate
 
-A 40-node typed Reference-Richards scaling experiment remains a research-only supplemental characterization.
+The supplemental scale gate is now closed.
 
-The first execution failed before model evaluation because of scaffold defects. Those defects were repaired by:
+Controlling run:
 
-- declaring the implied-do index in the generated 40-node grid stub;
-- writing the scenario name into the 40-node case header;
-- compiling the actual 40-node program rather than the earlier four-node integration program;
-- using provider-consistent initial water contents;
-- adding explicit fidelity, mass and nonlinear-iteration gates.
+`35883123788`
 
-Current rerun: `35882147418`.
+Independent execution-equivalent repeat:
 
-This scale gate is **supplemental**. It does not reopen the already closed K0 research handoff and it does not supersede F-TAB02-E production qualification.
+`35883189377`
+
+Both pass all five 40-node Reference-Richards scenarios with:
+
+- identical nonlinear iteration counts between analytical/generated routes;
+- maximum head differences no larger than about `1.38e-5 cm`;
+- mass-residual differences of order `1e-15 cm`;
+- material generated-provider runtime reductions in every scenario.
+
+Record:
+
+`TYPED_REFERENCE_RICHARDS_SCALE40_RESULT.md`
+
+Classification:
+
+**SCALE_PASS**
+
+This is supplemental research evidence only. It strengthens the handoff but does
+not alter F-TAB02 production authority or justify a portable whole-SWAP speedup
+percentage.
 
 ## K1
 
