@@ -101,7 +101,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint 06cb0fc0c (solute timestep stability source oracle); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint b012ea4b6 (composed solute transport substep oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
@@ -119,15 +119,19 @@
     "PPA-SOLUTE-DECOMPOSITION: 100000 O0/O2 bitwise temperature, dryness, Freundlich adsorption and decomposition-rate comparisons.",
     "PPA-SOLUTE-DISPERSION: 100000 O0/O2 bitwise moisture-dependent molecular diffusion, pore velocity, longitudinal dispersion and timestep correction comparisons.",
     "PPA-SOLUTE-TIMESTEP: 100000 O0/O2 bitwise eight-layer stability minima, dispersion floors, remaining interval caps and dtmin floors.",
-    "PPA-SOLUTE-TRANSPORT-SUBSTEP: 100000 O0/O2 bitwise composed six-layer dispersion-to-stability-to-substep comparisons."
+    "PPA-SOLUTE-TRANSPORT-SUBSTEP: 100000 O0/O2 bitwise composed six-layer dispersion-to-stability-to-substep comparisons.",
+    "PPA-SOLUTE-SUBSTEP-ADVANCE: 100000 O0/O2 bitwise B1.11 substep-loop schedule comparisons, including strict remaining-time gate, minimum-step overshoot, and invalid/no-progress/overflow rejection."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-SOLUTE-TRANSPORT-SUBSTEP",
-    "source": "B1.11 solute.f90 task 2 composed per-layer diffusivity/dispersion, global stability minimum, and substep clamps",
-    "test": "100000 bitwise six-layer dispersion-to-timestep composition comparisons at O0/O2",
+    "work_unit": "PPA-SOLUTE-SUBSTEP-ADVANCE",
+    "source": "B1.11 solute.f90 task 2 do-while remainder gate, min/max substep selection, and cumulative-time update",
+    "test": "100000 bitwise substep schedule comparisons at O0/O2, including dtmin final-step behavior and fail-closed invalid domains",
     "test_markers": [
-      "PPA_SOLUTE_TRANSPORT_SUBSTEP_COMPOSITION_100000=PASS",
-      "PPA_SOLUTE_TRANSPORT_SUBSTEP_COMPOSITION_O0_O2_IDENTITY=PASS"
+      "PPA_SOLUTE_SUBSTEP_ADVANCE_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOLUTE_SUBSTEP_LOOP_ORDER_AND_STRICT_REMAINDER_GATE=PASS",
+      "PPA_SOLUTE_SUBSTEP_MINIMUM_STEP_FINAL_OVERSHOOT=PASS",
+      "PPA_SOLUTE_SUBSTEP_INVALID_NO_PROGRESS_AND_OVERFLOW_FAIL_CLOSED=PASS",
+      "PPA_SOLUTE_SUBSTEP_ADVANCE_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

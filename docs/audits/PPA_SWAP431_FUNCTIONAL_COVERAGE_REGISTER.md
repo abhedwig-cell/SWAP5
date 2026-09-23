@@ -212,6 +212,13 @@ also compared over 100,000 eight-layer cases; this is not a complete transport
 subcycling or accepted-state integration. A separate composed regression
 feeds per-layer dispersion into the global stability minimum and timestep
 clamps for 100,000 six-layer cases at O0/O2.
+The subsequent substep-advance operation is now independently compared with
+the B1.11 `do while ((dt-tcumsol)>1e-15)` loop over 100,000 deterministic
+schedules. The oracle preserves the `min`-then-`max(dtmin)` ordering, including
+the legacy final-step overshoot, and checks exact elapsed-time updates and
+continuation decisions at O0/O2. Invalid, non-progressing and overflowing
+advances fail closed; no transport-state or production-owner integration is
+implied.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
