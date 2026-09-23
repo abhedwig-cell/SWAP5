@@ -8,6 +8,9 @@ on:
       - 'src/solver/mod_b110_generated_mvg_table_state.f90'
       - 'tests/fsi/test_ftab03_ksatexm_generated_state.f90'
       - 'tests/fsi/run_ftab03_ksatexm_generated_state.sh'
+      - 'tests/fsi/test_ftab03_ksatexm_generated_provider.f90'
+      - 'tests/fsi/run_ftab03_ksatexm_generated_provider.sh'
+      - 'src/solver/mod_b110_generated_mvg_provider.f90'
       - 'integration/f-tab/F-TAB03_PREREGISTRATION.json'
       - 'integration/f-tab/F-TAB03_STATUS.json'
       - '.github/workflows/f-tab03-ksatexm-generated-provider.yml'
@@ -50,4 +53,62 @@ jobs:
           path: |
             F-TAB03_EVIDENCE.txt
             F-TAB03_GATE.log
+          if-no-files-found: error
+
+  default-provider-regression:
+    needs: constitutive-gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Re-run unchanged F-TAB02-B default-provider gate
+        shell: bash
+        run: bash tests/fsi/run_ftab02b_generated_mvg_provider.sh | tee F-TAB03_DEFAULT_REGRESSION.log
+      - name: Upload default regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab03-default-provider-regression
+          path: F-TAB03_DEFAULT_REGRESSION.log
+          if-no-files-found: error
+
+  exact-hupsel-provider:
+    needs: default-provider-regression
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run exact Hupsel F-SI39 typed-provider gate
+        shell: bash
+        run: bash tests/fsi/run_ftab03_ksatexm_generated_provider.sh | tee F-TAB03_PROVIDER_GATE.log
+      - name: Record provider evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB03-PROVIDER"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            grep -E '^F_TAB03_PROVIDER_|^F-TAB03 ' F-TAB03_PROVIDER_GATE.log || true
+          } > F-TAB03_PROVIDER_EVIDENCE.txt
+      - name: Upload provider evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab03-provider-evidence
+          path: |
+            F-TAB03_PROVIDER_EVIDENCE.txt
+            F-TAB03_PROVIDER_GATE.log
           if-no-files-found: error
