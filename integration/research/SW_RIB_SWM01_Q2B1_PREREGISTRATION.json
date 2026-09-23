@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.sw_rib_swm01.q2b1.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q2B1",
+  "date": "2026-09-23",
+  "title": "Ribasim realization of accepted WLSTAR band with bounded bidirectional management routes",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "prerequisite": {
+    "q2a": "PASS_ACCEPTED_STATE_AUTOMATIC_MANAGEMENT_POLICY",
+    "evidence_run": 35863579741,
+    "q1b": "PASS one-sided supply realization",
+    "q1a_r3l": "PASS direct-ledger external surface-water owner"
+  },
+  "purpose": "Qualify the hydraulic realization layer after the coupler has already selected an accepted WLSTAR: Ribasim must keep the Basin inside [WLSTAR-WLDIP, WLSTAR] when capacity permits and expose unmet target when capacity is insufficient.",
+  "frozen_mapping": {
+    "represented_area_m2": 1,
+    "basin_profile_level_m": [
+      -1,
+      1
+    ],
+    "basin_profile_area_m2": [
+      1,
+      1
+    ],
+    "wlstar_m": -0.2,
+    "wldip_m": 0.1,
+    "level_demand_min_m": -0.3,
+    "level_demand_max_m": -0.2,
+    "allocation_dt_s": 86400,
+    "physical_duration_s": 86400,
+    "supply_source": "LevelBoundary at 1.0 m",
+    "supply_route": "allocation-controlled Pump with explicit max_flow_rate",
+    "discharge_route": "allocation-controlled Pump to Terminal with explicit max_flow_rate",
+    "route_priority": 10,
+    "no_other_forcings": true
+  },
+  "cases": [
+    {
+      "id": "M1_BELOW_BAND_ADEQUATE",
+      "initial_level_m": -0.4,
+      "max_supply_m3": 0.2,
+      "max_discharge_m3": 0.2,
+      "expected_supply_m3": 0.1,
+      "expected_discharge_m3": 0,
+      "expected_final_level_m": -0.3
+    },
+    {
+      "id": "M2_BELOW_BAND_LIMITED",
+      "initial_level_m": -0.4,
+      "max_supply_m3": 0.05,
+      "max_discharge_m3": 0.2,
+      "expected_supply_m3": 0.05,
+      "expected_discharge_m3": 0,
+      "expected_final_level_m": -0.35
+    },
+    {
+      "id": "M3_INSIDE_BAND",
+      "initial_level_m": -0.25,
+      "max_supply_m3": 0.2,
+      "max_discharge_m3": 0.2,
+      "expected_supply_m3": 0,
+      "expected_discharge_m3": 0,
+      "expected_final_level_m": -0.25
+    },
+    {
+      "id": "M4_ABOVE_BAND_ADEQUATE",
+      "initial_level_m": -0.1,
+      "max_supply_m3": 0.2,
+      "max_discharge_m3": 0.2,
+      "expected_supply_m3": 0,
+      "expected_discharge_m3": 0.1,
+      "expected_final_level_m": -0.2
+    },
+    {
+      "id": "M5_ABOVE_BAND_LIMITED",
+      "initial_level_m": -0.1,
+      "max_supply_m3": 0.2,
+      "max_discharge_m3": 0.05,
+      "expected_supply_m3": 0,
+      "expected_discharge_m3": 0.05,
+      "expected_final_level_m": -0.15
+    }
+  ],
+  "tolerances": {
+    "final_level_m_abs": 0.000001,
+    "realized_route_volume_m3_abs": 0.000001,
+    "direct_mass_residual_m3_abs": 1e-8
+  },
+  "hard_checks": [
+    "No simultaneous nonzero supply and discharge in any case.",
+    "Neither realized route exceeds its frozen capacity.",
+    "Inside-band case has zero management transfer.",
+    "Capacity-limited cases remain outside the requested band by exactly the unresolved storage deficit/surplus within tolerance.",
+    "Basin storage change equals direct supply minus direct discharge."
+  ],
+  "q2b2_hold": "Dynamic Q(h)-limited discharge is not part of Q2B1. Native TabulatedRatingCurve exactness is already falsified for the linear hard-kink law. Q2B2 must explicitly compose allocation with a separately qualified physical capacity representation.",
+  "pass_meaning": "Ribasim can realize an accepted automatic-management level band with explicit bounded routes while remaining sole owner of surface-water storage and while exposing capacity shortfall rather than masking it.",
+  "production_admission": false
+}
