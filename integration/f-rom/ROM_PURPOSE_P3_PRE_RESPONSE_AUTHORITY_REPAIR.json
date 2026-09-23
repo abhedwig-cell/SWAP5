@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.rom-purpose.p3.pre-response-authority-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "status": "PRE_RESPONSE_AUTHORITY_CLARIFIED_NO_SCIENTIFIC_RESPONSE_SEEN",
+  "reason": "The initial P3 preregistration described P2 numerical-observability mathematics too broadly. P2 added that observability repair to SURF_P while groundwater Reference evidence remained inherited from the already-qualified P1 GW authority.",
+  "repaired_rule": {
+    "SURF_P": "P2 floating-point indistinguishability plus extremum-observability policy.",
+    "GW_LB": "P1/P2 inherited three-level numerical convergence plus exact sign/reversal discrete guards."
+  },
+  "invariant_rules": [
+    "R2048_T32 remains the Reference target.",
+    "R512_T32 remains the numerical comparator.",
+    "O0/O2 scientific identity remains required.",
+    "The 1e-12 transaction mass gate remains unchanged.",
+    "Fresh P3 histories remain S09-S12 and G06-G09.",
+    "No candidate response is authorized before all four purpose/material Reference cases qualify."
+  ],
+  "response_firewall": {
+    "any_p3_reference_response_seen": false,
+    "any_p3_candidate_response_seen": false,
+    "metric_changed": false,
+    "state_boundary_changed": false,
+    "closure_changed": false,
+    "tolerance_relaxed": false
+  },
+  "preregistration_commit_after_repair": "abc59f2b891884c2a27805c048c858ff81c4c949"
+}
