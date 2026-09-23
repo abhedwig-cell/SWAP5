@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_groundwater_functional_equivalence.preregistration.v1",
+  "work_unit": "RM27",
+  "date": "2026-09-23",
+  "title": "Groundwater-response functional equivalence of same-horizon irrigation endpoints",
+  "depends_on": {
+    "RM23": "one-step and two-half active-irrigation endpoints both converge over the same 8.64 s horizon",
+    "RM24": "global inherited head budget is not transferable to active irrigation",
+    "RM25": "purpose-specific fidelity dimensions require explicit groundwater-response qualification",
+    "F-GC_FIXED_INTERFACE": "corrector value is real-SWAP outward interface flux at prescribed interface head"
+  },
+  "question": "Do the RM23 one-step and two-half accepted endpoints produce distinguishable fixed-interface groundwater responses under an identical next-window no-irrigation probe?",
+  "frozen_probe": {
+    "endpoint_origins": ["RM23 one-step 8.64 s", "RM23 two sequential 4.32 s"],
+    "probe_duration_seconds": 8.64,
+    "surface_forcing": "zero precipitation, zero irrigation, zero evaporation/runon/snow",
+    "root_uptake": "off",
+    "drainage": "off",
+    "bottom_control": "prescribed lower hydraulic-head coordinate",
+    "head_probe_offsets_m": [-0.000002, 0.0, 0.000002],
+    "reference_pressure_head_cm": -75.0,
+    "head_probe_offsets_cm": [-0.0002, 0.0, 0.0002]
+  },
+  "independent_acceptance_authority": {
+    "source": "F-GC44 fixed-interface closeout",
+    "flux_response_resolution_m_per_s": 1e-15,
+    "head_probe_half_width_m": 2e-6,
+    "note": "These values predate RM23/RM27 and belong to the admitted fixed-interface endpoint qualification."
+  },
+  "required_outputs": [
+    "raw Richards convergence status for each endpoint/head probe",
+    "outward q_swap at each prescribed head for each endpoint",
+    "maximum absolute q_swap difference between the two temporal endpoints over the three probes",
+    "linear response slope/intercept for each endpoint over the same three head probes",
+    "bottom-node and total-storage differences carried into the probe origins"
+  ],
+  "pass_condition": "All six probe solves converge and max absolute q_swap difference <= 1e-15 m/s.",
+  "failure_rule": "Do not change probe heads, duration, forcing, flux tolerance, solver tolerances or endpoint origins after execution. Failure is evidence that the temporal state discrepancy is material to the existing groundwater corrector resolution.",
+  "nonclaims": [
+    "RM27 does not qualify full soil-profile temporal fidelity.",
+    "RM27 does not qualify later irrigation-demand memory.",
+    "RM27 does not define a new global head tolerance.",
+    "RM27 cannot by itself admit the three-model triangle."
+  ]
+}
