@@ -35,7 +35,7 @@ confirmed B0 defects are not migration targets.
 | Lower boundary mode 5 prescribed head | PPA-WU02-C / PPA-LOW05 | PARTIAL_ORACLES_PRODUCTION_HELD | DATE5/HBOT5 AFGEN law is source-tested; ordinary non-groundwater mode-5 semantics remain distinct from groundwater-owned bottom_mode=5 | Define ordinary adapter/ownership and mass-publication contract before production binding |
 | Lower boundary mode 8 lysimeter | PPA-WU02-G / PPA-LOW08 | PARTIAL_ORACLES_PRODUCTION_HELD | Strict task-1 active threshold, task-2 flag reuse, plate gradient, residual and Jacobian terms have source oracles; active-set lifecycle is not integrated | Preserve transactional active-set behavior across nonlinear iterations and rejected steps before any admission |
 | WOFOST bounded runtime | Status-A traceability | CANONICALLY_ADMITTED | Capability-specific qualified runtime | Preserve bounded runtime; no broad API claim |
-| Management: full irrigation, tillage and parser grammar | B1; PPA audit | PARTIAL_ORACLES_PRODUCTION_HELD | TCS1–4, TCS7 and TCS8/DCS2 selectors match B1.11 timing/AFGEN rules over 100,000 O0/O2 inputs; isolated TCS6 weekly-counter/deficit gate, TCSFIX interval filter, DCS1 amount/rain/limit/solute equations and rate/duration materialization match their source rules; generic management parsing, other TCS/DCS modes, event-calendar ingestion, production binding and accepted-mass/restart integration remain absent; tillage has unresolved SWAP-003/004 policy | Continue remaining source-bound selector equations separately; do not infer broad management or runtime admission |
+| Management: full irrigation, tillage and parser grammar | B1; PPA audit | PARTIAL_ORACLES_PRODUCTION_HELD | TCS1–4, TCS7 and TCS8/DCS2 selectors match B1.11 timing/AFGEN rules over 100,000 O0/O2 inputs; isolated TCS6 weekly-counter/deficit gate, TCSFIX interval filter, fixed-event date match, DCS1 amount/rain/limit/solute equations and rate/duration materialization match their source rules; generic management parsing, other TCS/DCS modes, event-calendar ingestion, production binding and accepted-mass/restart integration remain absent; tillage has unresolved SWAP-003/004 policy | Continue remaining source-bound selector equations separately; do not infer broad management or runtime admission |
 | Snow restricted daily path | Status-A | CANONICALLY_ADMITTED | Exact-head preservation | Preserve; advanced Snow is future scope |
 | Drainage and surface evaporation | Status-A | CANONICALLY_ADMITTED | Current preservation authority | Preserve |
 | Restart v1 and serialized MultiSWAP v1 | Status-A | CANONICALLY_ADMITTED | Same-tree and permanent preservation | Preserve; parallel real physics is separately bounded |
@@ -101,6 +101,10 @@ rates producing durations over one day are temporarily adapted to one day,
 while zero rate spreads the selected depth across the full day. The source
 oracle also reproduces per-node SSDI assignment; its rate sum is expressly not
 treated as a whole-column accepted-water amount.
+PPA-IRR-FIXED-DATE-MATCH compares the existing typed fixed-event evaluator to
+B1.11's strict absolute date tolerance (`<1e-3` day) and verifies that only a
+match advances the candidate event index. Its 100,000-vector O0/O2 test is a
+date-selector check, not event-calendar, persistence or accepted-mass evidence.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

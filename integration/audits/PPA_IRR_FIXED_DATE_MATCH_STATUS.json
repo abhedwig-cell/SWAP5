@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ppa_irr_fixed_date_match.status.v1",
+  "work_unit": "PPA-IRR-FIXED-DATE-MATCH",
+  "parent_work_unit": "PPA-IRR-RATE-MATERIALIZATION",
+  "status": "FIXED_IRRIGATION_DATE_SOURCE_ORACLE_PASS_CALENDAR_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@da750a7aa",
+  "preregistration": "integration/audits/PPA_IRR_FIXED_DATE_MATCH_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; existing typed fixed-event interval evaluator is checked against its B1.11 date selector; no calendar ingestion, owner, source receipt, accepted mass, restart or production admission",
+  "implementation": "src/process/mod_irrigation_process.f90::evaluate_fixed_irrigation_interval",
+  "test": "tests/fapp/test_ppa_irr_fixed_date_match_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_fixed_date_match_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "419-434",
+    "equation": "abs(irdate(nirri)-t1900)<1e-3; a match applies the event and advances the next-event index, while a miss leaves it unchanged."
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_FIXED_DATE_MATCH_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_FIXED_DATE_STRICT_1E3_DAY_BOUNDARY=PASS",
+      "PPA_IRR_FIXED_EVENT_APPLICATION_AND_INDEX_ADVANCE=PASS",
+      "PPA_IRR_FIXED_DATE_MATCH_SOURCE_ORACLE=PASS",
+      "PPA_IRR_FIXED_DATE_MATCH_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "e3ca9dbd9b385dc7c7a8aa55df333db9cb7ec028dd8f64832ebf2767c84c1724"
+  },
+  "qualification_status": "NOT_QUALIFIED; no event-file ordering, date/calendar conversion, daily invocation, accepted-mass, transaction, restart or production qualification",
+  "next_action": "Continue independent fixed-event application/amount source equations; keep event-calendar and production admission NONE.",
+  "recovery_point": "this status record, preregistration, existing evaluator and source-oracle test",
+  "blockers": ["The date-indexed irrigation schedule's read/parser/calendar owner, persistent cursor and accepted soil-source receipt are not bound by this date-match comparison."]
+}
