@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.rom-purpose.p4.status.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4",
+  "date": "2026-09-23",
+  "status": "P4_PREREGISTERED_REFERENCE_NOT_EXECUTED",
+  "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
+  "repository": {
+    "branch": "work/f-rom-purpose",
+    "live_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "authority": {
+    "live_reconciliation": "integration/f-rom/ROM_PURPOSE_P4_LIVE_RECONCILIATION.json",
+    "authority_binding": "integration/f-rom/ROM_PURPOSE_P4_AUTHORITY_BINDING.json",
+    "representation_ladder": "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json",
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json",
+    "p3_closeout": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT.json"
+  },
+  "completed": [
+    "RECONCILE",
+    "P4_AUTHORITY_BINDING",
+    "EXTENDED_REPRESENTATION_LADDER_FREEZE",
+    "FRESH_BLIND_WORKLOAD_FREEZE",
+    "P4_PREREGISTRATION",
+    "REFERENCE_INFRASTRUCTURE_PREPARED"
+  ],
+  "candidate_response_authorized": false,
+  "reference_response_adjudicated": false,
+  "next_actions": [
+    "Execute fresh P4 surface and groundwater Reference routes.",
+    "Adjudicate the complete frozen Reference comparator before any Layer-ROM or matched same-partition Richards response."
+  ],
+  "scientific_firewall": {
+    "any_p4_reference_response_seen": false,
+    "any_p4_layer_rom_response_seen": false,
+    "any_p4_same_partition_richards_response_seen": false,
+    "candidate_execution_binding_created": false,
+    "matched_richards_execution_binding_created": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
