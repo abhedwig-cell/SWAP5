@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r3.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R3",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BEFORE_Q1A_R2_ENDPOINT_OBSERVATION",
+  "title": "Exact functional fixed-weir law inside Ribasim via ContinuousControl and one-way connector",
+  "motivation": {
+    "v1": "Three-point TabulatedRatingCurve falsified because PCHIP smooths the crest kink.",
+    "r2_prediction": "Pinned qh_interpolation prepends a zero-flow point, so the nominal two-point table is internally smoothed the same way.",
+    "r3_source_derived_alternative": "ContinuousControl with two collinear points is exactly linear; Pump/Outlet physical flow is clamped by min_flow_rate, default/explicit zero."
+  },
+  "authorities": {
+    "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "swap5_oracle": "F-CI52/F-VQ59 restricted fixed-weir process",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "continuous_control_docs": "docs/reference/node/continuous-control.qmd",
+    "continuous_control_source": "core/src/read.jl continuous_control_functions + core/src/solve.jl formulate_continuous_control!",
+    "pump_flow_source": "core/src/solve.jl formulate_pump_or_outlet_flow!"
+  },
+  "exact_functional_mapping": {
+    "surface_water_state": "Ribasim Basin only",
+    "drainage_inflow": "FlowBoundary representing positive SWAP drainage",
+    "discharge_connector": "Ribasim Pump from Basin to Terminal; used as a one-way flow carrier, not claimed to be a structural weir object",
+    "control_input": "current Ribasim Basin level h",
+    "control_function": {
+      "supplied_input_m": [
+        0,
+        1
+      ],
+      "supplied_output_m3_per_day": [
+        0,
+        0.5
+      ],
+      "product_behavior": "Ribasim inserts the collinear midpoint for two-point ContinuousControl functions, then uses PCHIP with linear extrapolation; the resulting target is q*=0.5*h."
+    },
+    "nonnegative_flow_rule": "Pump physical q is clamped to min_flow_rate=0, therefore q=max(0,q*)=max(0,0.5*h).",
+    "low_storage_factor": "Ribasim also multiplies Pump flow by its upstream low-storage factor. In all frozen Q1A cases the Basin bottom is -1 m and level stays >= -0.2 m, far above the default 0.1 m depth threshold, so the factor is exactly 1 in the tested envelope."
+  },
+  "frozen_mapping": {
+    "represented_area_m2": 1,
+    "basin_profile_level_m": [
+      -1,
+      1
+    ],
+    "basin_profile_area_m2": [
+      1,
+      1
+    ],
+    "weir_crest_m": 0,
+    "physical_law": "Q=max(0,0.5*h) m3/day",
+    "duration_day": 0.0001,
+    "duration_seconds": 8.64,
+    "solver_saveat_seconds": 1,
+    "supply": 0
+  },
+  "cases": [
+    {
+      "id": "C0_NO_DISCHARGE",
+      "initial_storage_cm": 80,
+      "initial_level_cm": -20,
+      "secondary_drainage_cm_per_day": 8
+    },
+    {
+      "id": "C1_MODERATE_DISCHARGE",
+      "initial_storage_cm": 130,
+      "initial_level_cm": 30,
+      "secondary_drainage_cm_per_day": 20
+    },
+    {
+      "id": "C2_HIGH_DISCHARGE",
+      "initial_storage_cm": 170,
+      "initial_level_cm": 70,
+      "secondary_drainage_cm_per_day": 5
+    }
+  ],
+  "tolerances": {
+    "final_level_m_abs": 1e-8,
+    "final_storage_m3_abs": 1e-8,
+    "integrated_discharge_m3_abs": 1e-8,
+    "oracle_mass_residual_storage_cm_abs": 1e-12,
+    "ribasim_mass_residual_m3_abs": 1e-8,
+    "auxiliary_initial_level_serialization_abs_m": 1e-10
+  },
+  "preregistered_method_difference": {
+    "C1_continuous_minus_implicit_oracle_m": 1.249895742461149e-10,
+    "C2_continuous_minus_implicit_oracle_m": -7.499375564989919e-10,
+    "expectation": "Both remain well inside unchanged 1e-8 m tolerance."
+  },
+  "hypotheses": [
+    "C0 has zero physical Pump discharge after nonnegative clamping and matches the oracle.",
+    "C1 and C2 follow the exact linear above-crest law within the frozen envelope.",
+    "All endpoint and inferred-discharge comparisons pass unchanged Q1A scientific tolerances.",
+    "No SWAP surface-water storage state is needed in the Ribasim route."
+  ],
+  "interpretation_limits": [
+    "Passing R3 would qualify behavioral equivalence of the fixed-weir law in this envelope, not semantic identity of a Pump with a weir.",
+    "Near Basin dryness Ribasim low-storage reduction can intentionally modify the discharge; that domain is outside this Q1A-R3 envelope.",
+    "Production design must later choose between exact legacy-law preservation via controlled connector and native Ribasim TabulatedRatingCurve smoothing based on application requirements."
+  ],
+  "production_admission": false,
+  "retirement_authority": false
+}
