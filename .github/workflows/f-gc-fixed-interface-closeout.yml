@@ -1,5 +1,7 @@
 name: F-GC fixed-interface groundwater closeout
 on:
+  push:
+    branches: [integration/f-ci-canonical]
   pull_request:
     branches: [integration/f-ci-canonical]
     paths:
