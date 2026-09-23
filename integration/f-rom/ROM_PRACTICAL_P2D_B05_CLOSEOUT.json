@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.rom-practical.p2d-b05.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2D-B05",
+  "date": "2026-09-23",
+  "status": "CLOSED_G8_LOWER_FOCUSED_INFORMATION_VALUE_SUPPORTED_RESIDUAL_EVENT_FRONTIER_NOT_REACHED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P2D_B05_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P2D_B05_RESULT.json@57b0407d9441f1522099032ef597a7bd502b93e8",
+    "workflow_run": 35897501994
+  },
+  "primary_findings": {
+    "LayerROM_G6_event": [
+      9,
+      4,
+      1024
+    ],
+    "LayerROM_G8_event": [
+      5,
+      2,
+      1024
+    ],
+    "LayerROM_U8_event": [
+      9,
+      4,
+      1024
+    ],
+    "CoRichards_G8_event": [
+      4,
+      2,
+      1024
+    ],
+    "CoRichards_U8_event": [
+      9,
+      4,
+      1024
+    ],
+    "reference_R128_vs_R256_event": [
+      1,
+      0,
+      1
+    ]
+  },
+  "conclusions": [
+    "Increasing lower-focused support from G6 to G8 improves the B05 event vector: sign mismatches 9→5 and reversal-sequence mismatches 4→2, although reversal-timing error remains 1024 steps.",
+    "Equal-dimension U8 provides no event improvement over G6: 9 sign mismatches, 4 sequence mismatches and 1024-step timing error persist.",
+    "The same placement ordering appears under conventional Richards: COR_G8 is better than COR_U8 on the event vector.",
+    "Therefore B05 does not falsify purpose-specific lower-zone placement. It shows that stronger lower-focused support carries real information value, whereas uniform eight-state placement does not.",
+    "At G8, conventional Richards improves the sign-mismatch count only from 5 to 4 relative to Layer-ROM and leaves sequence and timing errors unchanged. This is evidence for a secondary closure/propagation contribution, not for closure as the dominant remaining event limitation.",
+    "The tested eight-state frontier does not resolve the B05 reversal event semantics to the Reference numerical comparator. The practical GW representation frontier therefore remains below Reference-like event fidelity at the terminal authorized dimension."
+  ],
+  "attribution": {
+    "dominant": "REPRESENTATION_RESOLUTION_LIMIT_WITH_PURPOSE_SPECIFIC_PLACEMENT_VALUE",
+    "secondary": "REDUCED_PROPAGATION_CLOSURE_CONTRIBUTION_EMERGES_AT_G8",
+    "not_supported": [
+      "uniform eight-state placement as an adequate repair",
+      "closure as the primary cause of persistent reversal-sequence/timing failure",
+      "Reference-like event fidelity at or below eight reduced states"
+    ]
+  },
+  "practical_family_update": {
+    "P-ROM-GW": {
+      "preferred_tested_candidate": "G8",
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "status": "BEST_TESTED_PRACTICAL_GW_REPRESENTATION_BUT_EVENT_SENSITIVE",
+      "reason": "G8 improves G6 and U8 on B05 event response and preserves the purpose-specific lower-zone placement signal, but still misses reversal sequence/timing and the numerical comparator."
+    },
+    "P-ROM-SM": {
+      "preferred_tested_candidate": "S4",
+      "status": "RETAINED_PENDING_LONGER_DYNAMIC_VALIDATION"
+    },
+    "P-ROM-ET": {
+      "status": "NOT_OPENED"
+    }
+  },
+  "next_authorized": {
+    "state_count_above_8": false,
+    "new_closure_family": false,
+    "targeted_B05_tuning": false,
+    "practical_next_step": "Freeze and execute a longer fresh daily/seasonal practical validation panel for S4 and G8, treating groundwater event sensitivity as an explicit error regime rather than continuing state escalation."
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
