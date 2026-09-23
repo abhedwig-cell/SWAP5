@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r2.internal_qh_augmentation_prediction.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R2",
+  "date": "2026-09-23",
+  "status": "PERSISTED_BEFORE_R2_ENDPOINT_OBSERVATION",
+  "active_push_run": 35858248650,
+  "active_head": "c076940ace88b653e6cb88e10c063a759457a92f",
+  "pinned_source": {
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "path": "core/src/util.jl",
+    "function": "qh_interpolation",
+    "behavior": [
+      "Requires first supplied flow_rate to equal zero.",
+      "Prepends level = first(level)-1.0 and flow_rate = 0.0 before constructing PCHIPInterpolation.",
+      "Uses ConstantExtrapolation left and Linear extrapolation right."
+    ]
+  },
+  "consequence": {
+    "r2_input": {
+      "level_m": [
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0.5
+      ]
+    },
+    "internal_interpolation_knots": {
+      "level_m": [
+        -1,
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0,
+        0.5
+      ]
+    },
+    "relation_to_v1": "The R2 internal PCHIP knot set is identical to the V1 supplied knot set that produced the measured mapping falsification.",
+    "prediction": "R2 should reproduce essentially the same C1/C2 mapping mismatch as V1 and should not pass the frozen equivalence tolerance."
+  },
+  "scientific_interpretation": "A native TabulatedRatingCurve cannot exactly represent the legacy hard kink Q=max(0, alpha*(h-hcrest)) at the crest when its first supplied flow is zero, because qh_interpolation deliberately smooths the transition by prepending a flat zero-flow segment.",
+  "decision_rule": "If R2 fails with the V1 signature, close the TabulatedRatingCurve-exact-equivalence route rather than adding arbitrary knots to fit the three frozen cases. Search for a different Ribasim native control/connector representation or explicitly qualify an approximation envelope.",
+  "production_admission": false
+}
