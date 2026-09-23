@@ -1,0 +1,155 @@
+name: TAB-HYD KX06 KX03-KX05 solver comparison
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-kx06-richards.yml'
+      - 'research/tabulated_hydraulics/mod_tabhyd_kx05_typed_provider_research.f90'
+      - 'research/tabulated_hydraulics/tabhyd_kx06_solver_gate.f90'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: a2d99ddd149ffaa422d9c422f96bd66e92c8555d
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - name: Generate exact-material cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/kx06
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          upper=dict(comment="hupsel_upper",ores=0.02,osat=0.433878,alpha=0.021645,n=1.34877,ksat=83.24164,lexp=7.202077,alfaw=0.04329,h_enpr=0.0,ksatexm=832.4163)
+          lower=dict(comment="hupsel_lower",ores=0.02,osat=0.387064,alpha=0.016083,n=1.524418,ksat=22.76176,lexp=2.439662,alfaw=0.032166,h_enpr=0.0,ksatexm=227.6176)
+          materials=[upper,upper,lower,lower]
+          for name,h0 in {"below_threshold":-5.0,"transition":-2.0,"active_extension":-1.0}.items():
+              with (Path("build/kx06")/f"{name}.dat").open("w") as fh:
+                  fh.write(f"4 400 4.0e-2 {h0:.17e} 2.0e-2 0.0 2 -9.99999e5\n")
+                  for m in materials:
+                      rows=mod.loghead_rows(m,400)
+                      fh.write(f"{m['comment']} {m['ores']:.17e} {m['osat']:.17e} {m['alpha']:.17e} {m['n']:.17e} {m['ksat']:.17e} {m['lexp']:.17e} {m['h_enpr']:.17e} {m['ksatexm']:.17e}\n")
+                      for h,t,k in rows:
+                          fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+          PY
+
+      - name: Compile three-provider Reference Richards gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/kx06/mod build/kx06/obj
+          F="-O3 -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -fbacktrace"
+          compile () {
+            src="$1"
+            base="$(basename "$src")"
+            obj="build/kx06/obj/$base.o"
+            gfortran $F -J build/kx06/mod -I build/kx06/mod -c "$src" -o "$obj"
+          }
+          compile research/tabulated_hydraulics/array_dimensions_stub.f90
+          compile legacy-src/src/soil/sptabulated.f90
+          compile canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90
+          compile canonical-src/src/transaction/mod_transaction_reference.f90
+          compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+          compile canonical-src/src/runtime/mod_a23bu_worker_execution_context.f90
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_publication.f90
+          compile canonical-src/src/transaction/mod_fkt_temporal_indicator_history.f90
+          compile canonical-src/src/runtime/mod_canonical_contracts.f90
+          compile canonical-src/src/runtime/mod_canonical_interval_runtime.f90
+          compile canonical-src/src/kernel/mod_kernel_transactions.f90
+          compile canonical-src/src/runtime/mod_fmr_runtime_core.f90
+          compile canonical-src/src/runtime/mod_fmr_checkpoint_orchestrator.f90
+          compile canonical-src/src/solver/mod_soil_water_solver_contract.f90
+          compile canonical-src/src/solver/mod_process_hydraulic_view.f90
+          compile canonical-src/src/process/mod_drainage_process.f90
+          compile canonical-src/src/process/mod_drainage_tabulated_response.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_ipos1_response.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_ipos23_response.f90
+          compile canonical-src/src/process/mod_drainage_ernst_ipos45_preparation.f90
+          compile canonical-src/src/process/mod_drainage_ernst_ipos45_response.f90
+          compile canonical-src/src/process/mod_drainage_empirical_interflow_response.f90
+          compile canonical-src/src/process/mod_drainage_multilevel_aggregation.f90
+          compile canonical-src/src/runtime/mod_fmr_drainage_response_binding.f90
+          compile canonical-src/src/solver/mod_b110_smooth_freatic_projection.f90
+          compile canonical-src/src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
+          compile canonical-src/src/process/mod_soil_temperature_contract.f90
+          compile canonical-src/src/process/mod_restricted_soil_temperature.f90
+          compile canonical-src/src/solver/mod_reference_richards_workspace.f90
+          compile canonical-src/src/solver/mod_reference_richards_state_binding.f90
+          compile canonical-src/src/solver/mod_reference_linear_solver.f90
+          compile canonical-src/src/solver/mod_b110_default_mvg_provider.f90
+          compile research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90
+          compile research/tabulated_hydraulics/mod_tabhyd_kx03_typed_provider_research.f90
+          compile research/tabulated_hydraulics/mod_tabhyd_kx05_typed_provider_research.f90
+          compile canonical-src/src/solver/mod_b110_source_sink_provider.f90
+          compile canonical-src/src/solver/mod_fixed_flux_top_boundary_provider.f90
+          compile canonical-src/src/process/mod_restricted_surface_evaporation.f90
+          compile canonical-src/src/solver/mod_b110_dynamic_top_boundary_provider.f90
+          compile canonical-src/src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+          compile canonical-src/src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+          compile canonical-src/src/solver/mod_b110_root_sink_provider.f90
+          compile canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90
+          compile canonical-src/src/legacy/b1_10_port/headcalc.f90
+          compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90
+          compile research/tabulated_hydraulics/tabhyd_kx06_solver_gate.f90
+          gfortran -O3 -fopenmp build/kx06/obj/*.o -o build/kx06/gate
+
+      - name: Run KX06 matrix
+        shell: bash
+        env:
+          OMP_NUM_THREADS: 1
+          OMP_DYNAMIC: "false"
+        run: |
+          set -euo pipefail
+          echo -e "scenario\tkx03_dh\tkx05_dh\tkx03_dtheta\tkx05_dtheta\tkx03_dmass\tkx05_dmass\tanalytic_s\tkx03_s\tkx05_s\tkx03_delta_pct\tkx05_delta_pct\tkx05_vs_kx03_pct" > build/kx06/summary.tsv
+          for scenario in below_threshold transition active_extension; do
+            build/kx06/gate "build/kx06/$scenario.dat" | tee "build/kx06/$scenario.txt"
+            grep -Fq 'KX06_TYPED_RICHARDS=PASS' "build/kx06/$scenario.txt"
+            python3 - "$scenario" "build/kx06/$scenario.txt" >> build/kx06/summary.tsv <<'PY'
+          import sys
+          name,path=sys.argv[1:]
+          vals={}
+          for line in open(path):
+              if line.startswith("KX06_") and "=" in line and "BLOCK" not in line:
+                  k,v=line.strip().split("=",1)
+                  try: vals[k]=float(v)
+                  except ValueError: pass
+          keys=["KX06_KX03_DH_MAX","KX06_KX05_DH_MAX","KX06_KX03_DTHETA_MAX","KX06_KX05_DTHETA_MAX",
+                "KX06_KX03_DMASS","KX06_KX05_DMASS","KX06_ANALYTIC_MEDIAN_S","KX06_KX03_MEDIAN_S","KX06_KX05_MEDIAN_S",
+                "KX06_KX03_DELTA_VS_ANALYTIC_PCT","KX06_KX05_DELTA_VS_ANALYTIC_PCT","KX06_KX05_DELTA_VS_KX03_PCT"]
+          miss=[k for k in keys if k not in vals]
+          if miss: raise SystemExit(f"missing {miss}")
+          print(name+"\t"+"\t".join(f"{vals[k]:.17g}" for k in keys))
+          PY
+          done
+          cat build/kx06/summary.tsv
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-kx06-richards
+          path: |
+            build/kx06/summary.tsv
+            build/kx06/*.txt
