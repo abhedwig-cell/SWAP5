@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.host_qualification.v1",
+  "work_unit": "RM13B-TA02",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_PROCESS_ISOLATED_RIBASIM_TRANSACTION_HOST",
+  "workflow": "RM13 Ribasim release loader smoke",
+  "workflow_run": 35886343836,
+  "workflow_job": 107267343652,
+  "conclusion": "success",
+  "ribasim_release": "v2026.1.1",
+  "observations": {
+    "accepted_origin": {
+      "time_s": 0.0,
+      "basin_level_m": 1.0,
+      "user_demand_cumulative_inflow_m3": 0.0
+    },
+    "candidate_endpoint": {
+      "time_s": 8.64,
+      "basin_level_m": 1.0,
+      "user_demand_cumulative_inflow_m3": 0.00003600000000000001
+    }
+  },
+  "passed": [
+    "one official JuliaC/Ribasim runtime per OS process initializes without cross-runtime abort",
+    "accepted witness remains at the serialized origin while candidate A is advanced and finalized",
+    "candidate B independently reproduces candidate A time, Basin level and physical UserDemand supply",
+    "dedicated command and response pipes remain live across JuliaC initialization",
+    "8.64-second physical window with solver.saveat=Inf executes successfully",
+    "physical UserDemand supply equals the frozen 0.0036 cm request over 1 m2"
+  ],
+  "superseded_technical_patterns": [
+    "multiple copied libribasim.so instances in one Python process",
+    "stdin-based worker command transport"
+  ],
+  "nonclaims": [
+    "No native Ribasim checkpoint API is claimed.",
+    "This is transaction-host qualification only; full SWAP-MODFLOW-Ribasim composition remains RM13B.",
+    "No production iMOD Coupler process architecture is admitted."
+  ]
+}
