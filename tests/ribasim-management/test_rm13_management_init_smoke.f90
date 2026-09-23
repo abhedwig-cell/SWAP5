@@ -6,6 +6,7 @@ program test_rm13_management_init_smoke
   integer(c_int) :: status, revision
 
   status = rm13_management_initialize_c(request_depth)
+  write(*,'(A,ES26.17E3)') 'RM13_COMPUTED_REQUEST_DEPTH_CM=',request_depth
   write(*,'(A,I0)') 'RM13_INIT_STATUS=',status
   if(status /= 0_c_int) error stop 1
   if(abs(request_depth-0.0036_c_double) > 1.0e-12_c_double) error stop 2
