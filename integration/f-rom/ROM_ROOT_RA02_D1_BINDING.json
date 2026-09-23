@@ -12,7 +12,7 @@
   "reduced_candidate_response_generated": false,
   "implementation_blobs": {
     ".github/workflows/rom-root-ra02-d1.yml": "9806398adbbb9cedb868810b0c538e3c3e465b4c",
-    "tests/rom/analyze_rom_root_ra02_d1.py": "07f0bbea4263d56584b85705a1bc71165e4b475f"
+    "tests/rom/analyze_rom_root_ra02_d1.py": "5eb137ebe17e927ae3bdd81ad54c11b2627a7e44"
   },
   "scientific_semantics": {
     "reads_existing_ra01_evidence_only": true,
@@ -34,5 +34,6 @@
     "new_root_state_selected": false,
     "production_change_authorized": false
   },
-  "technical_repair": "integration/f-rom/ROM_ROOT_RA02_D1_TECHNICAL_REPAIR.json"
+  "technical_repair": "integration/f-rom/ROM_ROOT_RA02_D1_TECHNICAL_REPAIR.json",
+  "metric_repair": "integration/f-rom/ROM_ROOT_RA02_D1_METRIC_REPAIR.json"
 }
