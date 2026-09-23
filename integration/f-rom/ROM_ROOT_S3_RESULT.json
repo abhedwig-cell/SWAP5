@@ -1,0 +1,197 @@
+{
+  "schema": "swap5.rom_root.s3.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3",
+  "date": "2026-09-23",
+  "status": "STAGE3_DYNAMIC_FEEDBACK_BLIND_COMPARISON_COMPLETE",
+  "decision": "MINIMAL_FEEDBACK_FALSIFIED_ON_AT_LEAST_ONE_COMPONENT_IN_EVERY_TESTED_REPRESENTATION",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json",
+    "stage3_binding": "integration/f-rom/ROM_ROOT_S3_BINDING.json",
+    "pre_scientific_repair": "integration/f-rom/ROM_ROOT_S3_PRE_SCIENTIFIC_REPAIR.json",
+    "technical_repair": "integration/f-rom/ROM_ROOT_S3_TECHNICAL_REPAIR.json",
+    "candidate_response_run": 35856657989,
+    "candidate_response_head": "b59006feb99350edee45cdf7b458bdf377ff969f",
+    "candidate_artifact_count": 32,
+    "analyzer_repair": "integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR.json",
+    "analyzer_repair_binding": "integration/f-rom/ROM_ROOT_S3_ANALYZER_REPAIR_BINDING.json",
+    "analyzer_run": 35857186103,
+    "analyzer_head": "16a9648de09756268b56e65771c789643b86aaa9",
+    "analyzer_job": 107168358627,
+    "analyzer_artifact": {
+      "id": 10747169020,
+      "name": "rom-root-s3-repaired-analysis",
+      "digest": "sha256:d82cbb565f6090257868b00d82755a2eefc40998cd0a6cc0c238fe3bc191047b"
+    },
+    "dynamic_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "prescribed_sink_harness": "integration/f-rom/ROM_ROOT_S2R_RESULT.json",
+    "full_potential_reference_uncertainty": "integration/f-rom/ROM_ROOT_S3C0R_RESULT.json",
+    "full_potential_raw_physics_run": 35854345998
+  },
+  "execution": {
+    "candidate_cases": 32,
+    "candidate_jobs_success": 32,
+    "analyzer_success": true,
+    "immutable_candidate_surface_verified": true,
+    "candidate_response_regenerated_for_analyzer_repair": false,
+    "scientific_firewall_pass": true
+  },
+  "representation_summary": {
+    "U4": {
+      "bounded_success_cases": 0,
+      "case_count": 8,
+      "max_feedback_effect_to_bound_ratio": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 2275.0683342084744,
+        "cumulative_actual_root_uptake_rmse_cm": 1719.878,
+        "mapped_10cm_theta_rmse": 55.737,
+        "root_zone_0_40_storage_rmse_cm": 82.768,
+        "upper_0_80_storage_rmse_cm": 64.563
+      },
+      "numerically_distinguishable_failure_count": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 8,
+        "cumulative_actual_root_uptake_rmse_cm": 8,
+        "mapped_10cm_theta_rmse": 6,
+        "root_zone_0_40_storage_rmse_cm": 5,
+        "upper_0_80_storage_rmse_cm": 5
+      },
+      "stress_timing_failure_cases": 5,
+      "hydraulic_propagation_D_supported_cases": 4
+    },
+    "U8": {
+      "bounded_success_cases": 0,
+      "case_count": 8,
+      "max_feedback_effect_to_bound_ratio": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 732.115209486737,
+        "cumulative_actual_root_uptake_rmse_cm": 490.056,
+        "mapped_10cm_theta_rmse": 24.997,
+        "root_zone_0_40_storage_rmse_cm": 20.742,
+        "upper_0_80_storage_rmse_cm": 24.694
+      },
+      "numerically_distinguishable_failure_count": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 8,
+        "cumulative_actual_root_uptake_rmse_cm": 8,
+        "mapped_10cm_theta_rmse": 4,
+        "root_zone_0_40_storage_rmse_cm": 4,
+        "upper_0_80_storage_rmse_cm": 4
+      },
+      "stress_timing_failure_cases": 4,
+      "hydraulic_propagation_D_supported_cases": 6
+    },
+    "R8": {
+      "bounded_success_cases": 0,
+      "case_count": 8,
+      "max_feedback_effect_to_bound_ratio": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 14518.917023143791,
+        "cumulative_actual_root_uptake_rmse_cm": 10486.488,
+        "mapped_10cm_theta_rmse": 147.844,
+        "root_zone_0_40_storage_rmse_cm": 1326.18,
+        "upper_0_80_storage_rmse_cm": 456.186
+      },
+      "numerically_distinguishable_failure_count": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 8,
+        "cumulative_actual_root_uptake_rmse_cm": 8,
+        "mapped_10cm_theta_rmse": 6,
+        "root_zone_0_40_storage_rmse_cm": 8,
+        "upper_0_80_storage_rmse_cm": 8
+      },
+      "stress_timing_failure_cases": 8,
+      "hydraulic_propagation_D_supported_cases": 2
+    },
+    "R16": {
+      "bounded_success_cases": 0,
+      "case_count": 8,
+      "max_feedback_effect_to_bound_ratio": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 296.6998382669359,
+        "cumulative_actual_root_uptake_rmse_cm": 222.4368900508681,
+        "mapped_10cm_theta_rmse": 3.7931326513619954,
+        "root_zone_0_40_storage_rmse_cm": 5.306216218372968,
+        "upper_0_80_storage_rmse_cm": 10.145893811681535
+      },
+      "numerically_distinguishable_failure_count": {
+        "interval_actual_root_uptake_rmse_cm_per_day": 8,
+        "cumulative_actual_root_uptake_rmse_cm": 8,
+        "mapped_10cm_theta_rmse": 3,
+        "root_zone_0_40_storage_rmse_cm": 2,
+        "upper_0_80_storage_rmse_cm": 4
+      },
+      "stress_timing_failure_cases": 4,
+      "hydraulic_propagation_D_supported_cases": 6,
+      "actual_transpiration_fraction_rmse_range": [
+        5.294044880894062e-7,
+        0.000016746213354658117
+      ],
+      "maximum_abs_cumulative_root_uptake_terminal_error_cm": 0.000006843558406577355,
+      "maximum_cumulative_bottom_exchange_rmse_cm": 6.558123226378368e-15,
+      "maximum_interval_bottom_flux_rmse_cm_per_day": 6.843134409154886e-14,
+      "maximum_abs_water_ledger_cm": 6.577793865147896e-13
+    }
+  },
+  "missing_information_diagnostics": {
+    "C_upper_zone_spatial_placement": {
+      "status": "SUPPORTED",
+      "evidence": [
+        "R8, with a single retained 0-90 cm layer spanning the root zone, is the worst representation by a large margin.",
+        "The uptake feedback-effect error decreases strongly from U4 to U8 to R16 as root-zone placement is refined.",
+        "R16 remains falsified, so placement refinement is important but not sufficient."
+      ]
+    },
+    "A_threshold_crossing_within_retained_layer": {
+      "status": "SUPPORTED_FOR_COARSER_REPRESENTATIONS_UNRESOLVED_BELOW_10CM_FOR_R16",
+      "evidence": {
+        "U4_h3_span_cases": 8,
+        "U8_h3_span_cases": 8,
+        "R8_h3_span_cases": 8,
+        "R16_h3_span_cases_at_10cm_proxy": 0,
+        "h4_span_cases_all_representations": 0
+      },
+      "limitation": "The Stage 3 threshold diagnostic uses mapped 10 cm Reference profiles. For R16 the diagnostic resolution equals the retained layer thickness, so it cannot observe threshold crossings inside a 10 cm layer."
+    },
+    "B_root_weighted_pressure_head_distribution": {
+      "status": "SUPPORTED_FOR_COARSER_REPRESENTATIONS_UNRESOLVED_AT_FINE_SCALE_FOR_R16",
+      "evidence": [
+        "The 10 cm root-weighted versus retained-mean alpha proxy is nonzero for U4, U8 and R8.",
+        "For R16 the proxy is only 8.19e-17 to 9.70e-17 RMSE with max absolute 2.22e-16 to 3.33e-16, i.e. arithmetic noise at the 10 cm proxy scale.",
+        "R16 nevertheless fails uptake feedback in all eight material/history cases, so a fine-node diagnostic below 10 cm is required before attributing the remaining error to B."
+      ]
+    },
+    "D_hydraulic_propagation": {
+      "status": "PARTIAL_NOT_SUFFICIENT",
+      "evidence": [
+        "Some storage/profile components are explainable by the full-potential reduced hydraulic baseline.",
+        "R16 still exceeds the feedback-effect uncertainty bound for interval and cumulative root uptake in all eight cases.",
+        "R16 bottom-exchange diagnostics remain near arithmetic precision, so bottom hydraulic propagation cannot explain the uptake failure."
+      ]
+    },
+    "E_prior_stress_memory": {
+      "status": "NOT_ADJUDICATED",
+      "evidence": "No Stage 3 result requires a memory variable once A, B and C remain unresolved at finer vertical support."
+    }
+  },
+  "state_sufficiency_interpretation": {
+    "minimal_existing_state_feedback_sufficient": false,
+    "new_root_specific_state_justified": false,
+    "conclusion": "Layer-mean water content mapped to one representative head per retained layer is not sufficient to reproduce the qualified dynamic drought-stress feedback on the tested domain. The evidence does not yet distinguish whether the R16 residual requires sub-10-cm threshold/distribution information or a genuinely new root-specific state.",
+    "next_required_diagnostic": "Evaluate the exact fine-node Feddes functional and the R16 layer-mean approximation on the same qualified RA02R hydraulic states, before changing any reduced state."
+  },
+  "application_boundary": {
+    "crop_model_validation": false,
+    "drought_damage_validation": false,
+    "operational_ET_suitability": false,
+    "application_acceptance": false,
+    "production_rom_admission": false,
+    "performance_claim": false,
+    "note": "Numerical distinguishability from the qualified Reference is not an application tolerance."
+  },
+  "scientific_firewall": {
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "new_root_specific_state_selected": false,
+    "fitted_coefficient_used": false,
+    "error_correction_used": false,
+    "relaxation_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
