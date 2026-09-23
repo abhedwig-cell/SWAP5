@@ -8,6 +8,9 @@ on:
       - 'src/solver/mod_b110_generated_mvg_tspack.f90'
       - 'src/solver/mod_b110_generated_mvg_table_state.f90'
       - 'src/solver/mod_b110_generated_mvg_provider.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fsi/test_ftab02a_generated_mvg_table_state.f90'
       - 'tests/fsi/run_ftab02a_generated_mvg_table_state.sh'
@@ -16,6 +19,8 @@ on:
       - 'tests/fsi/fixtures/ftab02_staring1994_mvg.dat'
       - 'tests/fsi/test_ftab02c_serialized_generated_provider.f90'
       - 'tests/fsi/run_ftab02c_serialized_generated_provider.sh'
+      - 'tests/fsi/test_ftab02d_constitutive_context_capability.f90'
+      - 'tests/fsi/run_ftab02d_constitutive_context_capability.sh'
       - 'integration/f-tab/F-TAB02_PREREGISTRATION.json'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
@@ -129,4 +134,40 @@ jobs:
           path: |
             F-TAB02-C_EVIDENCE.txt
             F-TAB02-C_GATE.log
+          if-no-files-found: error
+
+  slice-d:
+    needs: slice-c
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-TAB02-D qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02d_constitutive_context_capability.sh | tee F-TAB02-D_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-D"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_D_|^F-TAB02-D ' F-TAB02-D_GATE.log || true
+          } > F-TAB02-D_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-d-evidence
+          path: |
+            F-TAB02-D_EVIDENCE.txt
+            F-TAB02-D_GATE.log
           if-no-files-found: error
