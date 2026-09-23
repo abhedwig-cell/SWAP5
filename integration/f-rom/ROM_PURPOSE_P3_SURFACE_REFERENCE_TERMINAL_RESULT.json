@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.rom-purpose.p3.surface-reference-terminal-result.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SURFACE-REFERENCE",
+  "date": "2026-09-23",
+  "status": "SURFACE_REFERENCE_ROUTE_SET_TERMINAL_SUCCESS",
+  "run_id": 35876282704,
+  "run_conclusion": "success",
+  "job_counts": {
+    "total": 90,
+    "success": 90,
+    "failure": 0,
+    "skipped": 0
+  },
+  "artifact": {
+    "name": "p3ref-surface-routes",
+    "artifact_id": 10763026250,
+    "size_in_bytes": 98635109,
+    "expired": false
+  },
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "role": "authoritative fresh SURF_P route producer for later joint P3 Reference adjudication"
+  },
+  "route_set": [
+    "R512_T32",
+    "R1024_T32",
+    "R2048_T32",
+    "R2048_T16",
+    "R2048_T8"
+  ],
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "histories": [
+    "S09",
+    "S10",
+    "S11",
+    "S12"
+  ],
+  "optimization_modes": [
+    0,
+    2
+  ],
+  "scientific_firewall": {
+    "reference_response_adjudicated": false,
+    "candidate_response_generated": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "downstream_requirement": "Joint Reference adjudication remains forbidden until the complete authoritative GW route set is consolidated and its exact workflow run ID is frozen alongside this surface run ID."
+}
