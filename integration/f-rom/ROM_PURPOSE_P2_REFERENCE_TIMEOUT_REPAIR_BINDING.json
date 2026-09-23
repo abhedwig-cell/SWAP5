@@ -66,5 +66,16 @@
     "no_application_acceptance": true,
     "no_performance_claim": true,
     "no_production_rom": true
+  },
+  "missing_jobs": [
+    "p2full-B01-R1024_T32-o0-h1",
+    "p2full-B01-R1024_T32-o2-h1"
+  ],
+  "preflight_schema_repair": {
+    "failed_run": 35851936802,
+    "failure": "KeyError: missing_jobs",
+    "scientific_response_generated": false,
+    "change": "Expose the already-bound missing_jobs list at the top level for workflow preflight only.",
+    "scientific_change": false
   }
 }
