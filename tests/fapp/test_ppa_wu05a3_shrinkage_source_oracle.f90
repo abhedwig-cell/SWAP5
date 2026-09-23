@@ -52,6 +52,11 @@ program test_ppa_wu05a3_shrinkage_source_oracle
   call require(status==PPA_WU05A3_SHRINKAGE_INVALID_INPUT,4)
   call ppa_wu05a3_relative_shrinkage(0,1,0.6_real64,0.2_real64,p,actual,status)
   call require(status==PPA_WU05A3_SHRINKAGE_INVALID_INPUT,5)
+  call ppa_wu05a3_relative_shrinkage(1,1,0.6_real64,0.2_real64, &
+       [0.2_real64,0.0_real64,0.1_real64,0.0_real64,0.0_real64],actual,status)
+  call require(status==PPA_WU05A3_SHRINKAGE_OK,6)
+  call compare_real(0.6_real64-0.5_real64*(1.0_real64-0.6_real64),actual,7)
+  print '(A)','PPA_WU05A3_SHRINKAGE_CLAY_ZERO_REFERENCE_BOUNDARY=PASS'
   print '(A)','PPA_WU05A3_SHRINKAGE_NONFINITE_AND_UNDEFINED_MODE_FAIL_CLOSED=PASS'
 
 contains

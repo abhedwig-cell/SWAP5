@@ -37,7 +37,7 @@ contains
       beta = parameters(2)
       gamma = parameters(3)
       moisture_at_reference = parameters(4)
-      if (alpha < 0.0_real64 .or. beta < 0.0_real64 .or. moisture_at_reference <= 0.0_real64) return
+      if (alpha < 0.0_real64 .or. beta < 0.0_real64 .or. moisture_at_reference < 0.0_real64) return
       if (moisture_ratio > moisture_at_reference) then
         void_ratio = moisture_ratio
       else
