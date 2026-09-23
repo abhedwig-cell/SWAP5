@@ -103,7 +103,7 @@ grep -Fq 'SW_RIB_SWM01_Q1H_EPSILON=1.0e-05 MAX_ERROR_M3=3.342027508469389e-06' "
 echo 'SW_RIB_PA01_STORAGE_GEOMETRY_EPSILON=PASS'
 
 bash tests/fpm/run_fpm08d7_fixed_weir_process_checkpoint.sh > "$BUILD/fixed-weir.txt"
-grep -Fq 'FPM08D7_FIXED_WEIR_PROCESS_CHECKPOINT PASS' "$BUILD/fixed-weir.txt" || fail "standalone fixed-weir preservation"
+grep -Fq 'PASS_FPM08D7_FIXED_WEIR_O0_O2_IDENTITY' "$BUILD/fixed-weir.txt" || fail "standalone fixed-weir preservation"
 echo 'SW_RIB_PA01_STANDALONE_FIXED_WEIR_PRESERVATION=PASS'
 
 python3 - <<'PY'
