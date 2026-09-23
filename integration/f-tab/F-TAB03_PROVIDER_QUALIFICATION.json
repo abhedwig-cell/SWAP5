@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB03-PROVIDER",
+  "date": "2026-09-23",
+  "status": "PASS",
+  "controlling_run": 35853808497,
+  "controlling_head": "1da1812400dc86a6f30b388deab8baf0c9d87157",
+  "candidate": "C_EXACT_FSI39_OVERLAY_WITH_EXACT_HEAD_DERIVED_RELSAT",
+  "gates": {
+    "constitutive_state": "PASS",
+    "default_ftab02b_regression": "PASS",
+    "exact_hupsel_typed_provider": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "metrics": {
+    "constitutive_theta_max_abs": 0.0000058343131775842605,
+    "constitutive_capacity_max_abs": 0.00002323398076850436,
+    "constitutive_log10k_max_abs": 0.00030963298183905863,
+    "lower_h_minus_1_abs_k": 0,
+    "upper_h_minus_1_abs_k": 0,
+    "default_30_soil_theta_max_abs": 0.0000532097575379753,
+    "default_30_soil_capacity_max_abs": 0.0000517194039108124,
+    "default_30_soil_log10k_max_abs": 0.00028942250791175184,
+    "hupsel_provider_theta_max_abs": 4.1753510815478734e-8,
+    "hupsel_provider_capacity_max_abs": 0.00002536713770437025,
+    "hupsel_provider_log10k_max_abs": 1.8291238301770818e-8
+  },
+  "conclusion": "Generated K0 provider can represent the already-admitted F-SI39 KSATEXM branch by keeping the smooth default-MvG relation tabulated and overlaying exact F-SI39 conductivity using exact head-derived relative saturation. No provider ABI or solver change is required.",
+  "nonclaims": [
+    "serialized Reference composition qualification",
+    "whole Hupsel application equivalence",
+    "production admission",
+    "SWKIMPL=1",
+    "generic SWSOPHY=1"
+  ]
+}
