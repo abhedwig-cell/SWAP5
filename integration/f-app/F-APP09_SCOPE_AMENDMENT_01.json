@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.f_app09.scope_amendment.v1",
+  "work_unit": "F-APP09",
+  "date": "2026-09-23",
+  "amendment": "SCOPE_AMENDMENT_01_SINGLE_LEVEL_V1",
+  "classification": "PRODUCTION_SCOPE_NARROWING_BEFORE_OWNER_QUALIFICATION",
+  "authority": {
+    "q4b_preregistration": "integration/research/SW_RIB_SWM01_Q4B_PREREGISTRATION.json",
+    "q4b_runtime_cases": "all decisive Q4B transaction cases use one drainage-response level",
+    "multilevel_structural_authority": "F-VQ43/F-PM08C4 qualifies deterministic multilevel aggregation but not this external-head transaction composition as a production profile"
+  },
+  "change": {
+    "previous_implicit_scope": "one finite external head per active drainage level with no explicit level-count ceiling",
+    "admitted_v1_scope": "exactly one active drainage-response level using FMR_DRAIN_VARIANT_EXTENDED_SIGNED",
+    "reason": "Avoid implicit admission of a multilevel external-head transaction composition not directly exercised by Q4B/F-APP09 production evidence."
+  },
+  "future_extension": "A multilevel Ribasim external-owner profile may be admitted separately by composing Q4A signed per-level physics, F-VQ43 aggregation authority, external-head materialization, availability/recomposition and transaction tests over multiple levels including mixed signs.",
+  "production_admission": false,
+  "canonical_admission": false
+}
