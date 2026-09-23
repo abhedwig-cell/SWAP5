@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.rom_root.ra02_d2.technical-repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D2",
+  "date": "2026-09-23",
+  "status": "BOUND_TECHNICAL_MATERIALIZER_SELECTOR_REPAIR_BEFORE_D2_RESPONSE",
+  "failed_run": 35822781975,
+  "representative_failed_jobs": [
+    107058005317,
+    107058005339
+  ],
+  "failure_class": "PRE_EXECUTION_MATERIALIZER_AMBIGUOUS_TEXT_SELECTOR",
+  "observed_error": "history diagnostic reset: expected exactly one occurrence, found 2",
+  "scientific_falsification": false,
+  "reference_solver_executed_in_failed_jobs": false,
+  "root_response_generated_in_failed_jobs": false,
+  "root_cause": "The D2 output-only materializer selected the standalone observation_root=0 assignment, which occurs both at history initialization and after each observation-output accumulation block.",
+  "repair": {
+    "change": "Replace only the unique four-line history initialization block (history_fallbacks, history_max_mass, cumulative_root, observation_root) and append D2 diagnostic counter/minimum initialization there.",
+    "old_materializer_blob": "0343e8a48ad4def49d160785049bf4483962e9f9",
+    "repaired_materializer_blob": "3107334f73e3ea4eabe1068f7a3c86547bfa9133",
+    "scientific_semantics_changed": false,
+    "diagnostic_metrics_changed": false,
+    "classification_rules_changed": false,
+    "simulation_state_changed": false,
+    "root_sink_changed": false,
+    "numerical_policy_changed": false,
+    "tolerances_changed": false
+  },
+  "preserved_authority": [
+    "integration/f-rom/ROM_ROOT_RA02_D2_PREREGISTRATION.json",
+    "exact alpha<1 classifier",
+    "exact h-h3 sign diagnostic",
+    "frozen RA01 domain and RA01 numerical policy",
+    "candidate firewall"
+  ],
+  "next": "Rebind the repaired materializer hash and rerun the same preregistered D2 workflow."
+}
