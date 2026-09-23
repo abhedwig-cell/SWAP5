@@ -3,11 +3,11 @@
   "workunit": "F-TAB02",
   "title": "Generated default-MvG K0 constitutive acceleration provider",
   "protocol": "RECONCILE -> PREREGISTER -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
-  "base": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+  "base": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
   "source_authority": {
-    "canonical": "integration/f-ci-canonical@79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
-    "research_handoff": "research/tabulated-hydraulics-characterization@a01a0a44bb6cde43c4ab857f389142ad4d1f982f",
-    "research_state": "RESEARCH_CLOSED_READY_FOR_SEPARATE_PRODUCTION_PREREGISTRATION",
+    "canonical": "integration/f-ci-canonical@b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "research_handoff": "research/tabulated-hydraulics-characterization@f402259b33b99e418a25d7f8f3dc2ff1c479ef31",
+    "research_state": "RESEARCH_CLOSED_FOR_K0_REPRESENTATION_PRODUCTION_HANDOFF_READY",
     "whole_hupsel_authority_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
   },
   "capability_contract": {
@@ -145,5 +145,12 @@
     "production SWKIMPL=1",
     "portable whole-model 20-30 percent speedup",
     "byte-exact historical B0 runtime equivalence"
-  ]
+  ],
+  "reconciliation": {
+    "date": "2026-09-23",
+    "previous_base": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "current_canonical": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "live_delta": "groundwater fixed-interface closeout only; constitutive/solver/provider authority unchanged",
+    "branch_merge": "fa20a7dd50e5b32849e6ee05258cc7efb4778e08"
+  }
 }
