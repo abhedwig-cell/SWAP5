@@ -1,0 +1,165 @@
+{
+  "schema": "swap5.rom_root.s2.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_STAGE2_REDUCED_RESPONSE",
+  "role": "PRESCRIBED_SINK_REDUCED_HARNESS_EQUIVALENCE_ONLY",
+  "question": "Can the existing reduced hydraulic harness carry an externally prescribed root-extraction sink with exact retained-layer aggregation, correct sign and mass accounting, and transaction-equivalent behavior before any reduced Feddes feedback is evaluated?",
+  "authority": {
+    "canonical_reconciled_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "research_predecessor": "integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "c6q_architecture": "integration/f-rom/LARE_BC2_C6Q_RECONCILIATION.json",
+    "prescribed_root_authority": [
+      "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+      "integration/audits/PPA_ROOT_HYD02_RESULT.json"
+    ],
+    "reduced_harness_basis": [
+      "tests/rom/run_lare_bc1_stage_b.py",
+      "tests/rom/run_lare_bc2_c6n2_surface_candidate.py"
+    ]
+  },
+  "domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": {
+      "V01": {
+        "root": "SHALLOW",
+        "potential_transpiration_cm_per_day": 0.6,
+        "initial_state": "RA02R_HIGH"
+      },
+      "V02": {
+        "root": "SHALLOW",
+        "potential_transpiration_cm_per_day": 0.3,
+        "initial_state": "RA02R_LOW"
+      },
+      "V03": {
+        "root": "UNIFORM",
+        "potential_transpiration_cm_per_day": 0.6,
+        "initial_state": "RA02R_HIGH"
+      },
+      "V04": {
+        "root": "UNIFORM",
+        "potential_transpiration_cm_per_day": 0.3,
+        "initial_state": "RA02R_LOW"
+      }
+    },
+    "initial_effective_saturation": {
+      "B01": {
+        "RA02R_HIGH": 0.551,
+        "RA02R_LOW": 0.42671759600680326
+      },
+      "B14": {
+        "RA02R_HIGH": 0.551,
+        "RA02R_LOW": 0.40713288830832667
+      }
+    },
+    "representations": {
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "U8": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "R8": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R16": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    "closure": "CURRENT_LAYER_FACE",
+    "root_depth_cm": 80,
+    "horizon_day": 0.8192,
+    "observation_dt_day": 0.0008,
+    "candidate_transaction_dt_day": 0.0001,
+    "top_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "bottom_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX"
+  },
+  "prescribed_sink": {
+    "feedback": false,
+    "stress_factor": "NOT_EVALUATED",
+    "temporal_schedule": "constant full-potential prescribed sink for the complete history",
+    "cumulative_root_fraction": {
+      "SHALLOW": "F(u)=2u-u^2 for u=z/80 on 0<=z<=80",
+      "UNIFORM": "F(u)=u for u=z/80 on 0<=z<=80"
+    },
+    "layer_fraction": "Delta F_i = F(min(z_bottom,80)/80)-F(min(z_top,80)/80), with zero support below 80 cm",
+    "layer_sink_rate": "Q_root_i = T_p * Delta F_i",
+    "reason": "Stage 2 isolates sink transport/accounting. It deliberately does not evaluate alpha(h) and cannot test root-feedback fidelity.",
+    "response_based": false
+  },
+  "paired_routes": {
+    "PRESCRIBED_ROOT": "Dedicated root-sink argument is subtracted once from each retained-layer storage balance and tracked in a cumulative root-withdrawal ledger.",
+    "GENERIC_SINK": "The identical frozen layer sink vector is supplied through a separate generic external-sink argument and enters the same conservative layer balance.",
+    "ZERO_SINK_CONTROL": "The sink-capable PRESCRIBED_ROOT route with an exact zero vector is compared against the unmodified no-sink reduced balance."
+  },
+  "integrity_and_pass_rules": {
+    "arithmetic_guard_fraction": "64 * IEEE754 binary64 epsilon; arithmetic integrity only, not a hydrological tolerance",
+    "root_fraction_nonnegative": true,
+    "root_fraction_sum_to_one": "within arithmetic_guard_fraction",
+    "prescribed_total_rate_matches_Tp": "within arithmetic_guard_fraction scaled by max(1,|Tp|)",
+    "cumulative_root_matches_Tp_times_horizon": "within arithmetic_guard_fraction scaled by max(1,|Tp*horizon|)",
+    "root_vs_generic_observation_trajectory": "bit-identical layer storage, cumulative top exchange, cumulative bottom exchange and cumulative root withdrawal",
+    "zero_sink_vs_legacy_no_sink": "bit-identical observation trajectory",
+    "inherited_reduced_water_ledger_gate_cm": 1e-10,
+    "all_32_material_history_representation_cases_must_pass": true,
+    "hydrological_reference_accuracy_is_not_a_stage2_gate": true
+  },
+  "decision_rule": {
+    "pass": "STAGE2_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED. Stage 3 dynamic-feedback comparison may be preregistered.",
+    "fail": "STOP_BEFORE_DYNAMIC_FEEDBACK. Classify sink aggregation, sign, transaction, constitutive-domain, numerical or ledger failure without changing the sink schedule or gate."
+  },
+  "scientific_firewall": {
+    "reference_changed": false,
+    "feddes_evaluated": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
