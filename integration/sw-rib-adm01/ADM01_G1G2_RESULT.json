@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.sw_rib_adm01.g1g2.result.v1",
+  "work_unit": "SW-RIB-ADM01",
+  "date": "2026-09-23",
+  "tested_head": "21dbf9579e8c4fce3c062d06e9737bb3c4c7f471",
+  "evidence_run": 35890507429,
+  "evidence_job": 107281558365,
+  "decision": "PASS_INITIAL_ADMISSION_GATES",
+  "gates": {
+    "G1_OWNER_XOR": "PASS",
+    "G2_CANONICAL_Q4B_REPLAY": "PASS"
+  },
+  "interpretation": [
+    "The external-Ribasim and internal SWAP fixed-weir state-owner modes are fail-closed against duplicate ownership.",
+    "The research-qualified signed extended drainage/infiltration process and runtime binding replay successfully on the canonical production-admission branch.",
+    "No production admission claim is made yet; accepted external-head binding, geometry freeze and end-to-end coupled transaction gates remain open."
+  ],
+  "production_admission": false
+}
