@@ -1,36 +1,11 @@
 name: RM13 real SWAP MODFLOW Ribasim triangle
 
 on:
-  push:
-    branches:
-      - work/ribasim-management-coupling-closeout
-    paths:
-      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'src/runtime/mod_fmr_ribasim_management_binding.f90'
-      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
-      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
-      - 'tests/ribasim-management/support/mod_rm13_management_c_bridge.f90'
-      - 'tests/ribasim-management/support/rm13_management_ctypes.py'
-      - 'tests/ribasim-management/generate_rm13_real_ribasim.py'
-      - 'tests/ribasim-management/test_rm13_real_three_model_transaction.py'
-      - 'tests/ribasim-management/run_rm13_real_three_model_transaction.sh'
-      - 'integration/ribasim-management/RM13_*'
-      - '.github/workflows/rm13-real-three-model-transaction.yml'
-  pull_request:
-    paths:
-      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'src/runtime/mod_fmr_ribasim_management_binding.f90'
-      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
-      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
-      - 'tests/ribasim-management/support/mod_rm13_management_c_bridge.f90'
-      - 'tests/ribasim-management/support/rm13_management_ctypes.py'
-      - 'tests/ribasim-management/generate_rm13_real_ribasim.py'
-      - 'tests/ribasim-management/test_rm13_real_three_model_transaction.py'
-      - 'tests/ribasim-management/run_rm13_real_three_model_transaction.sh'
-      - 'integration/ribasim-management/RM13_*'
-      - '.github/workflows/rm13-real-three-model-transaction.yml'
   workflow_dispatch:
 
+# RM13 is a closed invalid-fixture authority: finite solver.saveat=8.64 s is
+# rejected by exact Ribasim v2026.1.1 before model advance. Active three-model
+# qualification moved prospectively to RM13B with saveat=Inf.
 permissions:
   contents: read
 
