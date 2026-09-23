@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa_sol_age_report_status.v1",
+  "work_unit": "PPA-SOL-AGE-REPORT",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE-REPORT_PREREGISTRATION.json",
+  "implementation_commit": "dd671e75e717848e4a8346ca15772fec4941f1a0",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation": "AgeTracer task-3 numeric profile/effluent values and positive drainage discharge sums"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_report.f90",
+    "test": "tests/fapp/test_ppa_sol_age_report_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_report_source_oracle.sh",
+    "scope": "Numeric output candidates only: profile copy, accumulated age rates divided by output interval, positive inqdra sum by level."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_profiles_per_build": 100000,
+    "nodes_per_profile": 7,
+    "drain_levels_per_profile": 4,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_REPORT_B1_11_NUMERIC_VALUES_100000x7x4=PASS",
+      "PPA_SOL_AGE_REPORT_POSITIVE_DRAINAGE_AND_INTERVAL_NORMALIZATION=PASS",
+      "PPA_SOL_AGE_REPORT_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ]
+  },
+  "scope_boundary": {
+    "CSV_serialization_date_file_lifecycle_and_task_dispatch": "NONE",
+    "persistent_accumulator_owner_restart_mass_production": "NONE",
+    "complete_AgeTracer_migration": "NOT CLAIMED"
+  },
+  "next_action": "Reconcile B1.11 initialization/reset/task lifecycle and report/file operations with SWAP5 equivalents; do not turn equation oracles into state owners."
+}
