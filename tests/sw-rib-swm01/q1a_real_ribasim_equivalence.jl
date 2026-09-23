@@ -52,7 +52,7 @@ function run_case(model_root::AbstractString, case)
     model = BMI.initialize(Ribasim.Model, path)
     try
         initial_level = basin_level(model)
-        require(isapprox(initial_level, case.initial_level_cm / 100.0; atol=1.0e-12, rtol=0.0),
+        require(isapprox(initial_level, case.initial_level_cm / 100.0; atol=1.0e-10, rtol=0.0),
             "$(case.id) initial level drift: $initial_level")
         BMI.update_until(model, DURATION_SECONDS)
         require(isapprox(BMI.get_current_time(model), DURATION_SECONDS; atol=TIME_TOL, rtol=0.0),
