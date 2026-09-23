@@ -12,6 +12,8 @@ on:
       - 'tests/fsi/run_ftab02g_bounded_ksatexm_generated_provider.sh'
       - 'tests/fsi/test_ftab02g_reference_richards_ksatexm.f90'
       - 'tests/fsi/run_ftab02g_reference_richards_ksatexm.sh'
+      - 'tests/fsi/test_ftab02g_serialized_ksatexm_selection.f90'
+      - 'tests/fsi/run_ftab02g_serialized_ksatexm_selection.sh'
       - 'integration/f-tab/F-TAB02_G_PREREGISTRATION.json'
       - '.github/workflows/f-tab02g-bounded-ksatexm.yml'
   workflow_dispatch:
@@ -37,6 +39,9 @@ jobs:
       - name: Run F-TAB02-G Reference Richards qualification
         shell: bash
         run: bash tests/fsi/run_ftab02g_reference_richards_ksatexm.sh | tee F-TAB02-G_RICHARDS_GATE.log
+      - name: Run F-TAB02-G serialized selection qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02g_serialized_ksatexm_selection.sh | tee F-TAB02-G_SERIALIZED_GATE.log
       - name: Record evidence
         if: always()
         shell: bash
@@ -48,6 +53,7 @@ jobs:
             echo "compiler=$(gfortran --version | head -n1 || true)"
             grep -E '^F_TAB02_G_|^F-TAB02-G ' F-TAB02-G_GATE.log || true
             grep -E '^F_TAB02_G_|^F-TAB02-G ' F-TAB02-G_RICHARDS_GATE.log || true
+            grep -E '^F_TAB02_G_|^F-TAB02-G ' F-TAB02-G_SERIALIZED_GATE.log || true
           } > F-TAB02-G_EVIDENCE.txt
       - name: Upload evidence
         if: always()
@@ -58,4 +64,5 @@ jobs:
             F-TAB02-G_EVIDENCE.txt
             F-TAB02-G_GATE.log
             F-TAB02-G_RICHARDS_GATE.log
+            F-TAB02-G_SERIALIZED_GATE.log
           if-no-files-found: error
