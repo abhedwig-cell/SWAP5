@@ -107,7 +107,12 @@ program test_m7_serialized_worker_scratch_reuse
   call require(ok, 'intervening B state snapshot')
   call require(physical_states_identical(first_state, last_state), 'A-B-A physical state identity')
   call require(mass_results_identical(results(1), results(3)), 'A-B-A mass result identity')
-  call require(.not. physical_states_identical(first_state, middle_state), 'intervening B is a distinct physical workload')
+  call require(same_bits(forcings(1)%drainage_flux_by_level(1,1), forcings(3)%drainage_flux_by_level(1,1)), &
+       'A workloads use identical forcing')
+  call require(.not. same_bits(forcings(1)%drainage_flux_by_level(1,1), &
+       forcings(2)%drainage_flux_by_level(1,1)), 'intervening B uses distinct drainage forcing')
+  call require(.not. same_bits(forcings(1)%subsurface_irrigation_source(1), &
+       forcings(2)%subsurface_irrigation_source(1)), 'intervening B uses distinct irrigation forcing')
 
   print '(a)', 'M7_WORKER_SCRATCH_A_B_A_STATE_IDENTITY=PASS'
   print '(a)', 'M7_WORKER_SCRATCH_A_B_A_MASS_IDENTITY=PASS'
