@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.rom_root.s3.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json",
+  "pre_scientific_repair": "integration/f-rom/ROM_ROOT_S3_PRE_SCIENTIFIC_REPAIR.json",
+  "authorities": {
+    "dynamic_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "prescribed_sink_harness": "integration/f-rom/ROM_ROOT_S2R_RESULT.json",
+    "full_potential_reference_uncertainty": "integration/f-rom/ROM_ROOT_S3C0R_RESULT.json",
+    "full_potential_raw_physics_run": 35854345998,
+    "full_potential_raw_artifact": {
+      "id": 10747053751,
+      "digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920"
+    }
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s3.yml": "08f943fdbb27aefe4dd6d216114a51b52b27dc15",
+    "tests/rom/run_rom_root_s3_dynamic_feedback.py": "5ffdc23c6a9dfb829ba9e71cffc91f20c0e99fd5",
+    "tests/rom/analyze_rom_root_s3_dynamic_feedback.py": "98f99a34bb3c0e0a6b79e64a71e1b6872662d26a",
+    "integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json": "12157ec6c3f70d0f2400abfb80bcf1bd89e18987",
+    "integration/f-rom/ROM_ROOT_S3_PRE_SCIENTIFIC_REPAIR.json": "629455f6996acb536e69f0bd61bb04bc29a171cd",
+    "integration/f-rom/ROM_ROOT_RA02R_RESULT.json": "bbff44cd15b98cdbf535096a87d4f5041637bda2",
+    "integration/f-rom/ROM_ROOT_S2R_RESULT.json": "5c361ea676277d96f115a861a4cc9c6e6656c854",
+    "integration/f-rom/ROM_ROOT_S3C0R_RESULT.json": "6f502303d72e03486e255e93c68eb03d2c2f7753"
+  },
+  "frozen_candidates": [
+    "U4",
+    "U8",
+    "R8",
+    "R16"
+  ],
+  "frozen_feedback": "theta_bar_i -> inverse retention h_bar_i -> unchanged Feddes alpha(h_bar_i) -> exact retained root fraction",
+  "scientific_semantics_changed": false,
+  "response_based_design": false,
+  "scientific_firewall": {
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "new_root_specific_state_selected": false,
+    "fitted_coefficient_used": false,
+    "error_correction_used": false,
+    "relaxation_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
