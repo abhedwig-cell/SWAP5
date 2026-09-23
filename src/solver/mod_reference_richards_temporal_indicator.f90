@@ -7,7 +7,6 @@ module mod_reference_richards_temporal_indicator
        SW_TEMPORAL_INDICATOR_FAILED
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_linear_solver, only: reference_tridag
-  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -178,22 +177,15 @@ contains
 
     allocate(water_base(n), conductivity_base(n), capacity_base(n), dkdh_base(n))
     allocate(water_candidate(n), conductivity_candidate(n), capacity_candidate(n), dkdh_candidate(n))
-    select type (constitutive => request%evaluation%constitutive)
-    type is (b110_default_mvg_provider_t)
-       scale = max(1.0_real64, abs(constitutive%step_duration), abs(dt))
-       if (abs(constitutive%step_duration-dt) > 16.0_real64*epsilon(1.0_real64)*scale) then
-          indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
-          indicator_result%route = 'constitutive-dt-mismatch'
-          return
-       end if
-       call constitutive%evaluate(request%base_state%pressure_head, water_base, conductivity_base, capacity_base, dkdh_base)
-       call constitutive%evaluate(solve_result%candidate_state%pressure_head, water_candidate, conductivity_candidate, &
-            capacity_candidate, dkdh_candidate)
-    class default
-       indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
-       indicator_result%route = 'constitutive-policy-deferred'
+    if (.not. request%evaluation%constitutive%context_compatible(dt)) then
+       indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+       indicator_result%route = 'constitutive-dt-mismatch'
        return
-    end select
+    end if
+    call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, water_base, conductivity_base, &
+         capacity_base, dkdh_base)
+    call request%evaluation%constitutive%evaluate(solve_result%candidate_state%pressure_head, water_candidate, &
+         conductivity_candidate, capacity_candidate, dkdh_candidate)
 
     if (any(.not. ieee_is_finite(conductivity_base)) .or. any(conductivity_base <= 0.0_real64) .or. &
         any(.not. ieee_is_finite(capacity_candidate)) .or. any(capacity_candidate <= 0.0_real64)) then
