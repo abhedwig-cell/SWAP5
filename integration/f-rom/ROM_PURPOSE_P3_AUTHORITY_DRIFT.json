@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.rom-purpose.p3.authority-drift.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "status": "DRIFT_DETECTED_AND_RESTORED_FAIL_CLOSED",
+  "bound_preregistration": {
+    "commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
+    "blob": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e"
+  },
+  "observed_post_start_change": {
+    "commit": "abc59f2b891884c2a27805c048c858ff81c4c949",
+    "changed_only": "reference policy explanatory text and an explicit false firewall flag",
+    "representation_changed": false,
+    "workload_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "closure_changed": false,
+    "admitted_as_authority": false
+  },
+  "restoration": {
+    "commit": "94c95cb4962d0ee5a058623badb132105e421819",
+    "restored_blob": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e"
+  },
+  "consequence": "The exact preregistration used by both triggered P3 Reference runs remains the authority. No post-start textual clarification is used to alter qualification or candidate decisions."
+}
