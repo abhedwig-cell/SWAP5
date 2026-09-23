@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.rom_root.s3d3.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D3",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_S3D3_SUFFICIENCY_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_ROOT_S3D3_PREREGISTRATION.json",
+  "authority": {
+    "s3d1_result": "integration/f-rom/ROM_ROOT_S3D1_RESULT.json",
+    "s3d2_result": "integration/f-rom/ROM_ROOT_S3D2_RESULT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "target": "R2048_T32",
+    "optimization": 0
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s3d3.yml": "6aa8f797fdac6d84be5c0403e698e9c0f08de763",
+    "integration/f-rom/ROM_ROOT_S3D3_PREREGISTRATION.json": "fe16cb67f721d1f78bf428ec92383d5bebe47638",
+    "tests/rom/materialize_rom_root_s3d3_sufficient_statistics.py": "dd4581b97bf8cf6baf9765be7d8cc07c7925bde2",
+    "tests/rom/analyze_rom_root_s3d3_sufficient_statistics.py": "8f2e826c7e3b64774f2d69cc17049b770ae73a50",
+    "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/materialize_rom_root_ra02r_stress_panel.py": "640e23373e2df7c8073f8102e863e802d2711c74",
+    "tests/rom/materialize_rom_root_ra02r_reference_policy.py": "954d459102c4e5427c9912b43fbacd5f15ab777c",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "integration/f-rom/ROM_ROOT_S3D1_RESULT.json": "0f0de9877764982b63f287623a274b430270ad48",
+    "integration/f-rom/ROM_ROOT_S3D2_RESULT.json": "730a4977f8faf858d658d898e549aead3742bae5",
+    "integration/f-rom/ROM_ROOT_RA02R_RESULT.json": "bbff44cd15b98cdbf535096a87d4f5041637bda2"
+  },
+  "descriptor_families": {
+    "exact_expanded": "UTH",
+    "exact_compact": "UJ",
+    "compact_reconstruction": "F_i = U_i + J_i/(h3-h4)"
+  },
+  "numerical_guard": 2.9103830456733704e-11,
+  "scientific_semantics_changed": false,
+  "response_based_design": false,
+  "reduced_candidate_response_generated": false,
+  "scientific_firewall": {
+    "new_propagated_root_state_selected": false,
+    "dynamic_closure_defined": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
