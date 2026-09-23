@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.rom-practical.p2b-gw1.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2B-GW1",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_G6_RESPONSE",
+  "purpose": "Targeted attribution of the generalized G4 groundwater event/reversal defect to insufficient lower-zone state information.",
+  "authority": {
+    "p2a_closeout": "integration/f-rom/ROM_PRACTICAL_P2A_CLOSEOUT.json",
+    "p2a_result": "integration/f-rom/ROM_PRACTICAL_P2A_RESULT.json",
+    "representation_source": "ROM-PURPOSE P3 preregistered G6 ladder"
+  },
+  "development_only": true,
+  "materials": [
+    "B02",
+    "B05",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "histories": [
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+  ],
+  "baseline": {
+    "id": "G4",
+    "boundaries_cm": [
+      0,
+      80,
+      120,
+      140,
+      160
+    ],
+    "source": "P2A persisted result"
+  },
+  "challenge": {
+    "id": "G6",
+    "boundaries_cm": [
+      0,
+      80,
+      100,
+      120,
+      140,
+      150,
+      160
+    ],
+    "closure": "CURRENT_LAYER_FACE",
+    "candidate_dt_day": 0.0001
+  },
+  "frozen_change": "state placement/count only: four to six states with additional lower-zone support",
+  "forbidden_changes": [
+    "closure",
+    "constitutive parameters",
+    "forcing histories",
+    "material-specific tuning",
+    "bias correction",
+    "G8 execution",
+    "application thresholds"
+  ],
+  "primary_comparison": {
+    "event_vector": [
+      "bottom_flux_sign_mismatch_count",
+      "reversal_sequence_mismatch_count",
+      "reversal_timing_error_steps"
+    ],
+    "continuous_vector": [
+      "cumulative_bottom_exchange_error_cm",
+      "interval_bottom_flux_error_cm_per_day",
+      "total_storage_error_cm",
+      "history_signed_bottom_flux_bias_cm_per_day",
+      "long_horizon_exchange_drift_cm"
+    ],
+    "event_repair_supported": "G6 is componentwise no worse than G4 on the full event vector and strictly better on at least one event component.",
+    "continuous_effect": "Report componentwise relation separately. It does not override the event decision."
+  },
+  "reference": "Same P2A R256_T8 Reference Richards route with R128_T8 numerical comparator, rerun under identical harness semantics.",
+  "next_gate": {
+    "if_event_repair_supported_all_materials": "Freeze a new blind groundwater history panel for G4-vs-G6 revalidation.",
+    "otherwise": "Persist material-specific failure pattern. G8 or closure work requires a separate prospective decision after attribution; do not auto-escalate."
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
