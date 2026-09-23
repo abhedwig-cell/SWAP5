@@ -47,6 +47,7 @@ module mod_fmr_serialized_reference_backend
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
        black_evaporation_forcing_t, black_evaporation_result_t, evaluate_black_evaporation_reduction, &
        BLACK_EVAP_AVAILABLE, BLACK_EVAP_PONDING_CLASSIFICATION_CM, &
@@ -231,6 +232,23 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: runoff_exponent = 1.0_real64
   end type fmr_boesten_evaporation_runtime_forcing_t
 
+  integer, parameter, public :: FMR_DYNAMIC_TOP_IRRIGATION_OK = 0
+  integer, parameter, public :: FMR_DYNAMIC_TOP_IRRIGATION_INVALID = 1
+  integer, parameter, public :: FMR_DYNAMIC_TOP_IRRIGATION_UNSUPPORTED_SURFACE_TERM = 2
+
+  ! RM14: restricted application-facing carrier for the already admitted
+  ! F-APP07/F-APP08 dynamic-top irrigation field. State-dependent quantities
+  ! (top-node head/water content, current ponding and substep duration) remain
+  ! owned by the Richards candidate and are never copied from the request.
+  type, public :: fmr_dynamic_top_irrigation_forcing_t
+    real(real64) :: irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 0.0_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
+    real(real64) :: runoff_exponent = 1.0_real64
+  contains
+    procedure, public :: ready => fmr_dynamic_top_irrigation_forcing_ready
+  end type fmr_dynamic_top_irrigation_forcing_t
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
@@ -245,6 +263,7 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
+    type(fmr_dynamic_top_irrigation_forcing_t), allocatable :: dynamic_top_irrigation
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -314,6 +333,9 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: boesten_empirical_demand = 0.0_real64
     real(real64) :: boesten_candidate_spev = 0.0_real64
     real(real64) :: boesten_candidate_saev = 0.0_real64
+    logical :: dynamic_top_irrigation_active = .false.
+    real(real64) :: dynamic_top_irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: dynamic_top_runoff_depth_cm = 0.0_real64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -394,6 +416,8 @@ module mod_fmr_serialized_reference_backend
     logical :: boesten_evaporation_active = .false.
     type(boesten_evaporation_parameters_t) :: boesten_evaporation_parameters
     type(fmr_boesten_evaporation_runtime_forcing_t) :: boesten_evaporation_forcing
+    logical :: dynamic_top_irrigation_active = .false.
+    type(fmr_dynamic_top_irrigation_forcing_t) :: dynamic_top_irrigation_forcing
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
@@ -457,7 +481,50 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_black_evaporation_committed_state
   public :: fmr_new_b110_boesten_evaporation_committed_state
 
+  public :: construct_fmr_dynamic_top_irrigation_forcing
+
 contains
+
+  logical function fmr_dynamic_top_irrigation_forcing_ready(self) result(ready)
+    class(fmr_dynamic_top_irrigation_forcing_t), intent(in) :: self
+    ready = ieee_is_finite(self%irrigation_rate_cm_per_day) .and. self%irrigation_rate_cm_per_day >= 0.0_real64 .and. &
+         ieee_is_finite(self%ponding_max_cm) .and. self%ponding_max_cm >= 0.0_real64 .and. &
+         ieee_is_finite(self%runoff_resistance_day) .and. self%runoff_resistance_day >= 0.0_real64 .and. &
+         ieee_is_finite(self%runoff_exponent) .and. self%runoff_exponent == 1.0_real64
+  end function fmr_dynamic_top_irrigation_forcing_ready
+
+  subroutine construct_fmr_dynamic_top_irrigation_forcing(request, forcing, status)
+    type(b110_dynamic_top_boundary_request_t), intent(in) :: request
+    type(fmr_dynamic_top_irrigation_forcing_t), intent(out) :: forcing
+    integer, intent(out) :: status
+
+    forcing = fmr_dynamic_top_irrigation_forcing_t()
+    status = FMR_DYNAMIC_TOP_IRRIGATION_INVALID
+    if (.not. ieee_is_finite(request%irrigation_rate_cm_per_day) .or. &
+        request%irrigation_rate_cm_per_day < 0.0_real64) return
+    if (.not. ieee_is_finite(request%ponding_max_cm) .or. request%ponding_max_cm < 0.0_real64) return
+    if (.not. ieee_is_finite(request%runoff_resistance_day) .or. request%runoff_resistance_day < 0.0_real64) return
+    if (.not. ieee_is_finite(request%runoff_exponent) .or. request%runoff_exponent /= 1.0_real64) return
+
+    ! The first admitted carrier is irrigation-only. Other surface terms retain
+    ! their existing owners and may not be smuggled through this seam.
+    status = FMR_DYNAMIC_TOP_IRRIGATION_UNSUPPORTED_SURFACE_TERM
+    if (request%precipitation_rate_cm_per_day /= 0.0_real64 .or. &
+        request%snowmelt_rate_cm_per_day /= 0.0_real64 .or. request%runon_rate_cm_per_day /= 0.0_real64 .or. &
+        request%potential_bare_soil_evaporation_cm_per_day /= 0.0_real64 .or. &
+        request%potential_pond_evaporation_cm_per_day /= 0.0_real64) return
+
+    forcing%irrigation_rate_cm_per_day = request%irrigation_rate_cm_per_day
+    forcing%ponding_max_cm = request%ponding_max_cm
+    forcing%runoff_resistance_day = request%runoff_resistance_day
+    forcing%runoff_exponent = request%runoff_exponent
+    if (.not. forcing%ready()) then
+      forcing = fmr_dynamic_top_irrigation_forcing_t()
+      status = FMR_DYNAMIC_TOP_IRRIGATION_INVALID
+      return
+    end if
+    status = FMR_DYNAMIC_TOP_IRRIGATION_OK
+  end subroutine construct_fmr_dynamic_top_irrigation_forcing
 
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
