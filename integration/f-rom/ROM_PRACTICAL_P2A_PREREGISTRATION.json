@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.rom-practical.p2a.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2A",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_P2A_RESPONSE",
+  "title": "Cross-material purpose-transfer and direct timing pilot",
+  "rationale": "Before building the longer production-like daily/seasonal panel, test whether the P1 S4/G4 signal transfers beyond B01/B14 under fresh dynamic histories and directly time the purpose-specific implementations against a Reference Richards route.",
+  "materials": [
+    "B02",
+    "B05",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "material_authority": "LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION",
+  "histories": {
+    "SURF_P": {
+      "ids": [
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "source": "ROM-PURPOSE P3 preregistered fresh surface histories",
+      "candidate_exposure_in_ROM_PRACTICAL": false
+    },
+    "GW_LB": {
+      "ids": [
+        "G06",
+        "G07",
+        "G08",
+        "G09"
+      ],
+      "source": "ROM-PURPOSE P3 preregistered fresh groundwater histories",
+      "candidate_exposure_in_ROM_PRACTICAL": false
+    }
+  },
+  "representations": {
+    "SURF_P": {
+      "primary": "S4",
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ]
+    },
+    "GW_LB": {
+      "primary": "G4",
+      "boundaries_cm": [
+        0,
+        80,
+        120,
+        140,
+        160
+      ]
+    },
+    "closure": "CURRENT_LAYER_FACE",
+    "candidate_dt_day": 0.0001
+  },
+  "reference": {
+    "solver": "SWAP5 Reference Richards legacy binding via frozen ROM-PURPOSE harness",
+    "target": "R256_T8",
+    "comparator": "R128_T8",
+    "qualification": "O0/O2 identity required for target on each material/purpose; R128-vs-R256 difference retained as numerical-resolution comparator, not application tolerance",
+    "canonical_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "metrics": {
+    "SURF_P": [
+      "surface_0_20_storage_error_cm",
+      "root_zone_0_40_storage_error_cm",
+      "upper_0_80_storage_error_cm",
+      "mapped_10cm_theta_error",
+      "total_storage_error_cm",
+      "storage_extremum_timing_error_steps",
+      "history_signed_storage_bias_cm"
+    ],
+    "GW_LB": [
+      "cumulative_bottom_exchange_error_cm",
+      "interval_bottom_flux_error_cm_per_day",
+      "bottom_flux_sign_mismatch_count",
+      "reversal_sequence_mismatch_count",
+      "reversal_timing_error_steps",
+      "total_storage_error_cm",
+      "history_signed_bottom_flux_bias_cm_per_day",
+      "long_horizon_exchange_drift_cm"
+    ],
+    "performance": [
+      "candidate_wall_s",
+      "reference_R256_wall_s",
+      "candidate_over_reference_wall_ratio",
+      "candidate_cpu_s",
+      "reference_R256_cpu_s"
+    ]
+  },
+  "regime_rule": {
+    "EVENT_SENSITIVE": "any GW sign mismatch, reversal sequence mismatch or nonzero reversal timing error",
+    "TIMING_SENSITIVE": "nonzero SURF_P storage-extremum timing error",
+    "ROBUST_RELATIVE": "qualified candidate, no discrete event/timing mismatch, and complete metric vector is componentwise no worse than the R128-vs-R256 numerical comparator",
+    "APPROXIMATE_TRANSFER": "qualified and no discrete event/timing mismatch but does not reach numerical comparator",
+    "STRUCTURALLY_UNRELIABLE": "candidate or Reference not numerically qualified"
+  },
+  "performance_firewall": "Ratios are valid only within the same GitHub Actions job/runner and are implementation measurements, not portable speedups.",
+  "scope_firewall": [
+    "P2A is a cross-material short-horizon transfer pilot, not the final production-like daily/seasonal panel.",
+    "No application acceptance.",
+    "No production admission.",
+    "No P-ROM-ET.",
+    "No targeted repair until aggregate P2A result is available."
+  ]
+}
