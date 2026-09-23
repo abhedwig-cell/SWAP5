@@ -2092,6 +2092,13 @@
       "effect": "Minimum-width-filtered compartment volume, deepest/potential domain bottom limits, ordered per-domain cell and aggregate volume, and the dynamic nonnegative candidate are checked in isolation. No macro state, flux, mass, retry or restart state is published."
     },
     {
+      "workunit": "PPA-WU05-A3-MPVOLUME-HYSTERESIS-CANDIDATE",
+      "state": "ISOLATED_TASK2_SHRINKAGE_RELIEF_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MPVOLUME_HYSTERESIS_STATUS.json; preregistered against B1.11 macropore.f90 MPVOLUME task 2",
+      "production_delta": "NONE",
+      "effect": "Storage-excess test, SWMBF-gated bounded shrinkage relief and source-order proportional domain-cell update pass isolated cases. No MacroState ownership, mutable state, accepted flux, mass, retry or restart behavior is admitted."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
