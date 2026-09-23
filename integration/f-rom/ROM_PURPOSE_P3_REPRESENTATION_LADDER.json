@@ -1,0 +1,184 @@
+{
+  "schema": "swap5.rom-purpose.p3.representation-ladder.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "status": "FROZEN_BEFORE_ANY_P3_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "design_principles": {
+    "nested_within_purpose_family": true,
+    "same_reduced_closure_at_all_rungs": "CURRENT_LAYER_FACE",
+    "no_cross_purpose_tuning": true,
+    "primary_admission_uses_only_purpose_aligned_family": true,
+    "uniform_same_dimension_comparators_are_secondary": true,
+    "terminal_dimension": 8,
+    "terminal_rule": "If the eight-state aligned rung does not reach the frozen numerical comparator, P3 stops. Any state count above eight requires a new prospective phase."
+  },
+  "SURF_P": {
+    "physical_information_target": [
+      "near-surface storage and hydraulic response",
+      "exact P2 storage anchors at 0-20, 0-40 and 0-80 cm",
+      "downward propagation of surface forcing through the upper profile",
+      "vertical moisture-profile information without reallocating states toward the lower boundary"
+    ],
+    "family": {
+      "S4": {
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          80,
+          160
+        ],
+        "origin": "P2 retained baseline"
+      },
+      "S6": {
+        "dimension": 6,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          40,
+          60,
+          80,
+          160
+        ],
+        "derivation": "Add a 0-10 cm surface discriminator and bisect the 40-80 cm propagation interval at 60 cm while preserving all P2 anchors."
+      },
+      "S8": {
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          80,
+          160
+        ],
+        "derivation": "Further resolve the 20-60 cm transmission zone at 10 cm support while retaining 60-80 cm as the deepest upper-profile transition state and leaving 80-160 cm intentionally coarse."
+      }
+    }
+  },
+  "GW_LB": {
+    "physical_information_target": [
+      "lower-column storage memory",
+      "capillary response and boundary reversal propagation",
+      "bottom-flux sign and reversal sequence",
+      "increasing hydraulic-state density toward the lower boundary"
+    ],
+    "family": {
+      "G4": {
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          80,
+          120,
+          140,
+          160
+        ],
+        "origin": "P2 retained baseline"
+      },
+      "G6": {
+        "dimension": 6,
+        "boundaries_cm": [
+          0,
+          80,
+          100,
+          120,
+          140,
+          150,
+          160
+        ],
+        "derivation": "Bisect 80-120 cm and the bottom-most 140-160 cm interval, preserving P2 anchors and increasing bottom-adjacent resolution."
+      },
+      "G8": {
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          80,
+          100,
+          120,
+          130,
+          140,
+          150,
+          155,
+          160
+        ],
+        "derivation": "Bisect 120-140 cm and then the remaining bottom-most 150-160 cm interval, producing progressive refinement toward the boundary while preserving all earlier anchors."
+      }
+    }
+  },
+  "uniform_comparators": {
+    "U4": {
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ]
+    },
+    "U6": {
+      "dimension": 6,
+      "generation_rule": "linspace(0,160,7)",
+      "boundaries_cm": [
+        0,
+        26.6666666666667,
+        53.3333333333333,
+        80,
+        106.666666666667,
+        133.333333333333,
+        160
+      ]
+    },
+    "U8": {
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ]
+    }
+  },
+  "comparison_rules": {
+    "aligned_state_count_order": {
+      "SURF_P": [
+        "S4",
+        "S6",
+        "S8"
+      ],
+      "GW_LB": [
+        "G4",
+        "G6",
+        "G8"
+      ]
+    },
+    "uniform_pairs": {
+      "S4": "U4",
+      "S6": "U6",
+      "S8": "U8",
+      "G4": "U4",
+      "G6": "U6",
+      "G8": "U8"
+    },
+    "uniform_role": "Distinguish gain from additional state count from gain due to purpose-aligned placement. Uniform comparators do not define the purpose-specific minimum.",
+    "cross_purpose_role": "Diagnostic only; never used to alter boundaries or primary admission."
+  },
+  "response_firewall": {
+    "any_p3_reference_response_seen": false,
+    "any_p3_candidate_response_seen": false,
+    "boundaries_selected_from_response": false,
+    "state_count_selected_from_response": false,
+    "closure_selected_from_response": false
+  }
+}
