@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.rom-purpose.p4.matched-richards-analysis-technical-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-MATCHED-RICHARDS",
+  "date": "2026-09-23",
+  "status": "REPAIRED_AFTER_ROUTE_EXECUTION_BEFORE_SCIENTIFIC_CLASSIFICATION",
+  "source_run": 35918266166,
+  "source_run_accounting": {
+    "preflight": "SUCCESS",
+    "route_jobs_expected": 36,
+    "route_jobs_success": 36,
+    "route_jobs_failure": 0,
+    "analysis": "FAILED_BEFORE_CLASSIFICATION",
+    "persist": "SKIPPED"
+  },
+  "failure": {
+    "stage": "POST_PROCESSING_SURFACE_AGGREGATION",
+    "exception": "AttributeError: module 'rom_purpose_p3_p2_candidate_analysis' has no attribute 'integrated_storage'",
+    "cause": "The matched-Richards analyzer referenced storage aggregation helpers through the P3 analysis-module chain even though those helpers are defined by the P4 candidate runner contract, not the P2 analysis module.",
+    "scientific_response_classified_before_failure": false
+  },
+  "repair": {
+    "file": "tests/rom/analyze_rom_purpose_p4_matched_richards.py",
+    "repaired_blob": "735ee86333181ca27df6214b49bc9f09395ce047",
+    "regression_test": "tests/rom/test_rom_purpose_p4_matched_richards_wiring.py@bd76bf1fb465cf3dec29c6973d99444df6187bbf",
+    "change": "Copy the exact deterministic integrated-storage and 10-cm mapping helper semantics from the already-bound P4 Layer-ROM candidate runner into the matched-Richards analyzer and call them locally."
+  },
+  "recovery_policy": {
+    "rerun_matched_richards_routes": false,
+    "reuse_route_artifacts_from_run": 35918266166,
+    "rerun_analysis_only": true,
+    "reference_runs": {
+      "SURF_P": 35900590109,
+      "GW_BASE": 35901466303,
+      "GW_R2048_T32": 35900642592
+    }
+  },
+  "scientific_firewall": {
+    "route_response_used_to_choose_repair": false,
+    "scientific_classification_seen_before_repair": false,
+    "partition_changed": false,
+    "forcing_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_definition_changed": false,
+    "tolerance_changed": false,
+    "closure_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
