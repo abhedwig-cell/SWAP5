@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.rom-purpose.p5b.estimator-authority-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5B-GW-INFORMATION-CARRIER-SCREEN",
+  "date": "2026-09-23",
+  "status": "P5B_SCREEN_SCIENTIFIC_AUTHORITY_SUPERSEDED_BY_BOUNDARY_OPERATOR_MISMATCH",
+  "source_result": "integration/f-rom/ROM_PURPOSE_P5B_RESULT.json",
+  "source_run": 35922641574,
+  "observed_result": "NO_ROBUST_SIGNAL",
+  "source_code_authority": {
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "file": "src/legacy/b1_10_port/headcalc.f90",
+    "prescribed_head_gradient": "head_gradient(NN+1) = (h(NN) - hbot) / disnod(NN+1) + 1",
+    "bottom_face_conductivity": "kmean(numnod+1) initialized from k(numnod)",
+    "native_flux_sign": "bottom flux is negative conductivity times the hydraulic gradient; free drainage explicitly sets qbot=-kmean(numnod+1)"
+  },
+  "mismatch": {
+    "p5b_estimator": "Internal pressure-head slope among retained bottom cells, q=-K*(1-dh/dd).",
+    "actual_operator": "Boundary-interface pressure-head difference between the bottom state and prescribed hbot over the bottom center-to-face distance.",
+    "consequence": "P5B's very large sign mismatch counts and flux errors cannot adjudicate whether storage split or hydraulic-shape information is useful for the actual prescribed-head boundary response."
+  },
+  "disposition": {
+    "result_retained_for_provenance": true,
+    "usable_as_information_carrier_rejection": false,
+    "application_or_closure_authority": false,
+    "next_phase": "P5C prospectively tests equal-budget boundary-interface state estimators against the exact SWBOTB=5 operator."
+  },
+  "scientific_firewall": {
+    "p5b_result_deleted": false,
+    "p5b_metrics_retuned": false,
+    "p4_reopened": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
