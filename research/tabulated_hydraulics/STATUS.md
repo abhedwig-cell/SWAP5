@@ -447,11 +447,11 @@ The research decision is therefore:
 
 Formal handoff:
 
-- `research/tabulated_hydraulics/F-TAB01_GENERATED_K0_PROVIDER_HANDOFF.md`;
-- `research/tabulated_hydraulics/F-TAB01_GENERATED_K0_PROVIDER_HANDOFF.json`.
+- `research/tabulated_hydraulics/F-TAB02_GENERATED_K0_PROVIDER_HANDOFF.md`;
+- `research/tabulated_hydraulics/F-TAB02_GENERATED_K0_PROVIDER_HANDOFF.json`.
 
 Recommended next branch:
 
-`work/f-tab01-generated-k0-provider`
+`work/f-tab02-generated-k0-provider`
 
 That work unit must start from the live canonical at creation time. The research branch is evidence authority only and must not be merged wholesale into production.
