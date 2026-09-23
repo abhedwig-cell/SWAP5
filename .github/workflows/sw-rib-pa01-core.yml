@@ -33,5 +33,7 @@ jobs:
         run: gfortran --version
       - name: Owner XOR contract
         run: bash tests/sw-rib-pa01/run_owner_contract.sh
+      - name: Bounded external-Ribasim bootstrap profile
+        run: bash tests/sw-rib-pa01/run_bootstrap_profile_contract.sh
       - name: Transactional signed exchange
         run: bash tests/sw-rib-pa01/run_signed_exchange_runtime.sh
