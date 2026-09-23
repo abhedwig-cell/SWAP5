@@ -3,7 +3,7 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P4",
   "date": "2026-09-23",
-  "status": "P4_PREREGISTERED_REFERENCE_NOT_EXECUTED",
+  "status": "P4_REFERENCE_EXECUTION_BOUND_AND_QUEUED",
   "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
   "repository": {
     "branch": "work/f-rom-purpose",
@@ -28,9 +28,8 @@
   "candidate_response_authorized": false,
   "reference_response_adjudicated": false,
   "next_actions": [
-    "Complete authoritative segmented P4 Reference route sets.",
-    "Bind exact terminal surface and segmented groundwater run IDs for Reference adjudication.",
-    "Keep Layer-ROM and matched-Richards response firewall closed until Reference qualification passes."
+    "Complete all three frozen P4 Reference route sets.",
+    "Adjudicate complete fresh P4 Reference comparator before any Layer-ROM or matched same-partition Richards response."
   ],
   "scientific_firewall": {
     "any_p4_reference_response_seen": false,
@@ -45,23 +44,9 @@
     "gw_monolithic_reference_superseded": true
   },
   "reference_runs": {
-    "SURF_P": {
-      "run_id": 35900590109,
-      "authority": "PENDING_TERMINAL_ROUTE_SET"
-    },
-    "GW_MONOLITHIC_SUPERSEDED": {
-      "run_id": 35900612668,
-      "authority": "NOT_SCIENTIFIC_AUTHORITY",
-      "reason": "systematic runner shutdown exit 143"
-    },
-    "GW_SEGMENTED_NON_R2048_T32": {
-      "run_id": 35901466303,
-      "authority": "PENDING_TERMINAL_ROUTE_SET"
-    },
-    "GW_SEGMENTED_R2048_T32": {
-      "run_id": 35900642592,
-      "authority": "PENDING_TERMINAL_ROUTE_SET"
-    }
+    "SURF_P": 35901901370,
+    "GW_BASE_SEGMENTED": 35901909951,
+    "GW_R2048_T32": 35901832096
   },
   "gw_reference_topology_supersession": "integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_TOPOLOGY_SUPERSESSION.json"
 }
