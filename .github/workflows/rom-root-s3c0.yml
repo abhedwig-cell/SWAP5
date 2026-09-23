@@ -119,7 +119,7 @@ jobs:
           python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --temporal-factor "${{ steps.cfg.outputs.factor }}"             --output canonical/tests/rom/test_lare_bc2_c6r_reference.f90             --manifest /tmp/c6r_manifest.json
           python3 tests/rom/materialize_rom_root_ra02r_stress_panel.py --input canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --output canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --material "${{ matrix.material }}" --manifest /tmp/s3c0_stress.json
           python3 tests/rom/materialize_rom_root_ra02r_reference_policy.py --input canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --output canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --manifest /tmp/s3c0_policy.json
-          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --output canonical/tests/rom/canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --manifest /tmp/s3c0_control.json
+          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --output canonical/tests/rom/test_lare_bc2_c6r_reference.f90 --manifest /tmp/s3c0_control.json
 
       - name: Execute RA02R root-active Reference
         env:
@@ -163,6 +163,7 @@ jobs:
           cp /tmp/c6r_manifest.json route/
           cp /tmp/s3c0_stress.json route/
           cp /tmp/s3c0_policy.json route/
+          cp /tmp/s3c0_control.json route/
           sha256sum route/* > route/sha256.txt
 
       - uses: actions/upload-artifact@v4
@@ -265,7 +266,7 @@ jobs:
           python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 1 --segment-end 8192             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
           python3 tests/rom/materialize_rom_root_ra02r_stress_panel.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --material "${{ matrix.material }}" --manifest /tmp/s3c0_stress.json
           python3 tests/rom/materialize_rom_root_ra02r_reference_policy.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_policy.json
-          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
+          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
 
       - name: Execute R2048 T32 segment 1
         env:
@@ -310,6 +311,7 @@ jobs:
           cp /tmp/c6r_manifest.json seg/
           cp /tmp/s3c0_stress.json seg/
           cp /tmp/s3c0_policy.json seg/
+          cp /tmp/s3c0_control.json seg/
           sha256sum seg/* > seg/sha256.txt
 
       - uses: actions/upload-artifact@v4
@@ -414,7 +416,7 @@ jobs:
           python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 8193 --segment-end 16384             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
           python3 tests/rom/materialize_rom_root_ra02r_stress_panel.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --material "${{ matrix.material }}" --manifest /tmp/s3c0_stress.json
           python3 tests/rom/materialize_rom_root_ra02r_reference_policy.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_policy.json
-          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
+          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
 
       - name: Execute R2048 T32 segment 2
         env:
@@ -460,6 +462,7 @@ jobs:
           cp /tmp/c6r_manifest.json seg/
           cp /tmp/s3c0_stress.json seg/
           cp /tmp/s3c0_policy.json seg/
+          cp /tmp/s3c0_control.json seg/
           sha256sum seg/* > seg/sha256.txt
 
       - uses: actions/upload-artifact@v4
@@ -564,7 +567,7 @@ jobs:
           python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 16385 --segment-end 24576             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
           python3 tests/rom/materialize_rom_root_ra02r_stress_panel.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --material "${{ matrix.material }}" --manifest /tmp/s3c0_stress.json
           python3 tests/rom/materialize_rom_root_ra02r_reference_policy.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_policy.json
-          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
+          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
 
       - name: Execute R2048 T32 segment 3
         env:
@@ -610,6 +613,7 @@ jobs:
           cp /tmp/c6r_manifest.json seg/
           cp /tmp/s3c0_stress.json seg/
           cp /tmp/s3c0_policy.json seg/
+          cp /tmp/s3c0_control.json seg/
           sha256sum seg/* > seg/sha256.txt
 
       - uses: actions/upload-artifact@v4
@@ -714,7 +718,7 @@ jobs:
           python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 24577 --segment-end 32768             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
           python3 tests/rom/materialize_rom_root_ra02r_stress_panel.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --material "${{ matrix.material }}" --manifest /tmp/s3c0_stress.json
           python3 tests/rom/materialize_rom_root_ra02r_reference_policy.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_policy.json
-          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
+          python3 tests/rom/materialize_rom_root_s3c0_full_potential_reference.py --input canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90 --manifest /tmp/s3c0_control.json
 
       - name: Execute R2048 T32 segment 4
         env:
@@ -760,6 +764,7 @@ jobs:
           cp /tmp/c6r_manifest.json seg/
           cp /tmp/s3c0_stress.json seg/
           cp /tmp/s3c0_policy.json seg/
+          cp /tmp/s3c0_control.json seg/
           sha256sum seg/* > seg/sha256.txt
 
       - uses: actions/upload-artifact@v4
