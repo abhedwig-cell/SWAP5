@@ -67,7 +67,13 @@
     "owner XOR, window-vs-terminal semantics, discarded-full exclusion, mismatch replay, signed commit and stale-origin guards remain green",
     "normal repository PR checks must not reveal production regressions"
   ],
-  "production_admission": false,
+  "production_admission": true,
   "canonical_admission": false,
-  "next_permitted_action": "Run F-CI109 admission gate and normal PR checks. On PASS, merge only this bounded V1 postimage to integration/f-ci-canonical. Live Ribasim network realization remains a higher-layer coupling qualification."
+  "next_permitted_action": "Open canonical PR and admit only this bounded F-APP09 V1 postimage after normal PR checks. Higher-layer live Ribasim realization remains ADM01 scope.",
+  "admission_gate_result": {
+    "run": 35886939076,
+    "job": 107269371162,
+    "head": "f1b872b1dd922013014f9ff5a87008b458ab4981",
+    "decision": "PASS"
+  }
 }
