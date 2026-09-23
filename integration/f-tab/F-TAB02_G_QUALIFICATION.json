@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-G",
+  "title": "Bounded F-SI39 KSATEXM extension for generated K0 provider",
+  "date": "2026-09-23",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "canonical_authority": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "preregistration": "integration/f-tab/F-TAB02_G_PREREGISTRATION.json",
+  "research_authority": {
+    "handoff": "research/tabulated-hydraulics-characterization@f28cc15f1d26bf97c2e72d02dc716d8927068e8d",
+    "kx05_constitutive_run": 35863485123,
+    "kx06_reference_richards_runs": [
+      35863794528,
+      35863919254
+    ]
+  },
+  "production_postimage": "398b3300fad97f485bfbefe7fa87ef9202fc0871",
+  "production_mutation_after_postimage": "NONE",
+  "fixture_repair_head": "100b51cad90a5bb76de1cac914658d897e84a842",
+  "dedicated_owner_qualification": {
+    "run_id": 35880260492,
+    "job_id": 107246576482,
+    "conclusion": "success",
+    "constitutive": {
+      "theta_max_abs": 0.000005663988226437683,
+      "capacity_max_abs": 0.00002536713770437025,
+      "log10k_max_abs": 0.0003115310231969204,
+      "k_max_rel": 0.00005822715301919934,
+      "floating_threshold_neighborhood": "PASS",
+      "neighboring_profile_fail_closed": "PASS",
+      "o0_o2_identity": "PASS"
+    },
+    "reference_richards": {
+      "below_threshold": {
+        "head_max_abs_cm": 2.862784231894011e-9,
+        "theta_max_abs": 4.184613766611278e-11,
+        "analytic_iters": 4,
+        "generated_iters": 4
+      },
+      "transition": {
+        "head_max_abs_cm": 7.199202123331361e-9,
+        "theta_max_abs": 3.357564226647014e-11,
+        "analytic_iters": 5,
+        "generated_iters": 5
+      },
+      "active_extension": {
+        "head_max_abs_cm": 4.584734369927901e-9,
+        "theta_max_abs": 7.025491299827991e-12,
+        "analytic_iters": 5,
+        "generated_iters": 5
+      },
+      "result": "PASS"
+    },
+    "serialized": {
+      "upper": {
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 2.9344859875379825e-12,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "retries": [
+          0,
+          0
+        ]
+      },
+      "lower": {
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 1.0887402090986598e-12,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "retries": [
+          0,
+          0
+        ]
+      },
+      "neighboring_profile_fail_closed": "PASS",
+      "result": "PASS"
+    }
+  },
+  "sequential_preservation": {
+    "run_id": 35882579159,
+    "job_id": 107254490862,
+    "head": "43c63185fb0455e59292c9839e46668d67424794",
+    "tree": "db6d32206599d651e336fdf8c1287bc332ae2709",
+    "compiler": "GNU Fortran 11.4.0",
+    "slices": {
+      "A": "PASS",
+      "B": "PASS",
+      "C": "PASS",
+      "D": "PASS",
+      "E": "PASS",
+      "G": "PASS"
+    },
+    "marker": "F_TAB02_AEG_SEQUENTIAL_PRESERVATION=PASS",
+    "conclusion": "success"
+  },
+  "qualified_scope": {
+    "swkimpl": 0,
+    "generated_default_mvg": true,
+    "fsi39_ksatexm": "bounded exact Hupsel upper/lower M1-C3 materials only",
+    "generic_ksatexm": false,
+    "generic_user_tables": false,
+    "legacy_swsophy1": false,
+    "h_enpr": false,
+    "k1": false
+  },
+  "verdict": "PASS",
+  "next_authorized_step": "F-TAB02-F0 standalone exact-Hupsel generated-provider selection/lifetime seam",
+  "nonclaims": [
+    "generic KSATEXM support",
+    "generic SWSOPHY=1 production",
+    "SWKIMPL=1 production",
+    "whole-Hupsel generated-provider equivalence before F0 and F pass",
+    "portable whole-model speedup"
+  ]
+}
