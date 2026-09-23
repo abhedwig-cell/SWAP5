@@ -6,7 +6,8 @@ program test_ppa_wu05a3_shrinkpar_source_oracle
   integer,parameter::vector_count=100000
   integer(int64)::state
   integer::i,status
-  real(real64)::theta_s,alpha,beta,gamma,expected,actual,nan_value
+  real(real64)::theta_s,alpha,beta,gamma,expected,actual,nan_value,ratio,beta_expected,gamma_expected
+  real(real64)::reference_expected,beta_actual,gamma_actual,reference_actual
   state=20260923_int64
   do i=1,vector_count
     theta_s=0.3_real64+0.65_real64*next_unit(state)
@@ -29,6 +30,29 @@ program test_ppa_wu05a3_shrinkpar_source_oracle
   call ppa_wu05a3_clay_reference_moisture(0.6_real64,0.2_real64,1.0_real64,1.0001_real64,actual,status)
   call require(status==PPA_WU05A3_SHRINKPAR_SOURCE_ERROR,5)
   print '(A)','PPA_WU05A3_SHRINKPAR_TASK1_FAIL_CLOSED=PASS'
+
+  do i=1,vector_count
+    theta_s=0.8_real64
+    alpha=0.1_real64+0.1_real64*next_unit(state)
+    ratio=1.05_real64+2.5_real64*next_unit(state)
+    reference_expected=alpha*ratio
+    call source_task2(alpha,reference_expected,beta_expected,gamma_expected)
+    call ppa_wu05a3_clay_typical_points(theta_s,alpha,reference_expected,beta_actual,gamma_actual, &
+         reference_actual,status)
+    call require(status==PPA_WU05A3_SHRINKPAR_OK,6)
+    call compare_real(beta_expected,beta_actual,7)
+    call compare_real(gamma_expected,gamma_actual,8)
+    call compare_real(reference_expected,reference_actual,9)
+  end do
+  print '(A)','PPA_WU05A3_SHRINKPAR_TASK2_SOURCE_ORACLE_100000=PASS'
+  print '(A)','PPA_WU05A3_SHRINKPAR_TASK2_BOUNDED_NEWTON_CONVERGENCE=PASS'
+  call ppa_wu05a3_clay_typical_points(0.8_real64,0.2_real64,0.2_real64, &
+       beta_actual,gamma_actual,reference_actual,status)
+  call require(status==PPA_WU05A3_SHRINKPAR_INVALID_INPUT,10)
+  call ppa_wu05a3_clay_typical_points(0.6_real64,0.2_real64,2.0_real64, &
+       beta_actual,gamma_actual,reference_actual,status)
+  call require(status==PPA_WU05A3_SHRINKPAR_SOURCE_ERROR,11)
+  print '(A)','PPA_WU05A3_SHRINKPAR_TASK2_INVALID_AND_SOURCE_ERROR=PASS'
 contains
   real(real64) function next_unit(random_state) result(value)
     integer(int64),intent(inout)::random_state
@@ -44,6 +68,20 @@ contains
       error stop 9
     end if
   end subroutine source_task1
+  subroutine source_task2(a,mr,b,c)
+    real(real64),intent(in)::a,mr
+    real(real64),intent(out)::b,c
+    real(real64)::b1,funct,deriv
+    b=-log(mr/a)/mr
+    b1=b+1.0_real64
+    do while(abs(b-b1)>0.001_real64)
+      b1=b
+      funct=(a+a*mr*b1)*exp(-b1*mr)
+      deriv=(-a*mr*mr*b1)*exp(-b1*mr)
+      b=b1-funct/deriv
+    end do
+    c=1.0_real64+a*b*exp(-b*mr)
+  end subroutine source_task2
   subroutine compare_real(a,b,code)
     real(real64),intent(in)::a,b
     integer,intent(in)::code
