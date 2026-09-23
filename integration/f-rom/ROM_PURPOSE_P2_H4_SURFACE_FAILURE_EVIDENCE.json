@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom-purpose.p2.h4-surface-execution-failure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-H4",
+  "date": "2026-09-23",
+  "status": "SURFACE_CORICHARDS_OUTSIDE_FROZEN_QUALIFIED_DOMAIN",
+  "contract": "integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json@7a93e58e7cc1191a38568be80d8dc6a56ffdc2d9",
+  "rule": "All T8/T16/T32 routes must execute in the frozen qualified domain; no fallback relaxation is allowed.",
+  "materials": {
+    "B01": {
+      "decisive_route": "SURF_P/B01/S4/T8/O0",
+      "run": 35858291597,
+      "job_id": 107172121248,
+      "return_code": 1,
+      "failure_label": "LAREDYN0R_FAIL LAREDYN0R local residual within prior integrated allowance",
+      "interpretation": "Frozen fallback qualification failed. This is not an infrastructure or materialization failure and is not repaired."
+    },
+    "B14": {
+      "decisive_route": "SURF_P/B14/S4/T8/O0",
+      "run": 35858291597,
+      "job_id": 107172121192,
+      "return_code": 1,
+      "failure_label": "LAREDYN0R_FAIL LAREDYN0R local residual within prior integrated allowance",
+      "interpretation": "Frozen fallback qualification failed. This is not an infrastructure or materialization failure and is not repaired."
+    }
+  },
+  "corroboration": {
+    "repaired_run": 35857841206,
+    "all_surface_jobs_failed_during_compile_and_execute_stage": [
+      "SURF_P/B01/T8",
+      "SURF_P/B01/T16",
+      "SURF_P/B01/T32",
+      "SURF_P/B14/T8",
+      "SURF_P/B14/T16",
+      "SURF_P/B14/T32"
+    ],
+    "all_six_GW_jobs_succeeded": true
+  },
+  "H4_consequence": {
+    "SURF_P/B01": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+    "SURF_P/B14": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+    "state_count_increase_inferred": false,
+    "closure_deficit_inferred": false
+  },
+  "scientific_firewall": {
+    "tolerance_relaxed": false,
+    "fallback_policy_changed": false,
+    "grid_retuned": false,
+    "representation_retuned": false,
+    "closure_tuned": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
