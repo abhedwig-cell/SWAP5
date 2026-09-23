@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-reference-consolidation-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-REFERENCE-CONSOLIDATION",
+  "date": "2026-09-23",
+  "status": "PREPARED_NOT_BOUND_NOT_EXECUTED",
+  "purpose": "Combine successful original GW history-slice artifacts with only the exact-state repaired missing slices into one complete O0/O2-identical P3 groundwater Reference route set.",
+  "source_run": 35876286853,
+  "source_artifact_pattern": "p3gwfix-*",
+  "repair_artifact": "p3gw-repaired-missing-slices",
+  "output_artifact": "p3ref-gw-routes",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "technical_repair": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json@769dc39df6f68302f80cb5f1efc02d0da0c224e4"
+  },
+  "binding_requirements": [
+    "The original GW repair run must be terminal.",
+    "Its only scientifically admissible missing cases must be explicitly bound as verified exit-143 technical interruptions.",
+    "The missing-slice repair run must complete successfully.",
+    "Successful original slices must be used unchanged and must not be rerun or replaced.",
+    "Repaired slices may only fill cases listed in the missing-slice repair binding.",
+    "The consolidated O0 and O2 complete route traces must be identical for each material and route."
+  ],
+  "blobs": {
+    "tests/rom/consolidate_rom_purpose_p3_gw_reference.py": "bae580fac692b1c9cf5946f1df9c67b51c6459c9",
+    ".github/workflows/f-rom-purpose-p3-gw-reference-consolidate.yml": "4caf53cac113282e0268f98d246d9d23883d828a",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json": "769dc39df6f68302f80cb5f1efc02d0da0c224e4"
+  },
+  "scientific_firewall": {
+    "consolidation_binding_created": false,
+    "consolidation_executed": false,
+    "scientific_change": false,
+    "forcing_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "candidate_response_generated": false
+  }
+}
