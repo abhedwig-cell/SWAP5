@@ -25,7 +25,7 @@
     "integration/f-rom/ROM_ROOT_RA02R_RESULT.json": "bbff44cd15b98cdbf535096a87d4f5041637bda2",
     "integration/f-rom/ROM_ROOT_S2R_RESULT.json": "5c361ea676277d96f115a861a4cc9c6e6656c854",
     "integration/f-rom/ROM_ROOT_S3C0R_RESULT.json": "6f502303d72e03486e255e93c68eb03d2c2f7753",
-    "integration/f-rom/ROM_ROOT_S3_TECHNICAL_REPAIR.json": "e243a671ebc1983ac775a74bf9a353ab01f97fbc"
+    "integration/f-rom/ROM_ROOT_S3_TECHNICAL_REPAIR.json": "3a380cc7022ddab0de5c9032d9b661dafeafc008"
   },
   "frozen_candidates": [
     "U4",
@@ -51,5 +51,9 @@
   "model_changed": false,
   "technical_repair": "integration/f-rom/ROM_ROOT_S3_TECHNICAL_REPAIR.json",
   "failed_technical_run": 35856502212,
-  "repair_state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION"
+  "repair_state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION",
+  "failed_technical_runs": [
+    35856502212,
+    35856639051
+  ]
 }
