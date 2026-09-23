@@ -1,0 +1,29 @@
+name: RM21 temporal attempt provenance
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/ribasim-management/test_rm21_temporal_attempt_provenance.f90'
+      - 'tests/ribasim-management/run_rm21_temporal_attempt_provenance.sh'
+      - 'integration/ribasim-management/RM21_*'
+      - '.github/workflows/rm21-temporal-attempt-provenance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM21 temporal attempt provenance
+        run: bash tests/ribasim-management/run_rm21_temporal_attempt_provenance.sh
