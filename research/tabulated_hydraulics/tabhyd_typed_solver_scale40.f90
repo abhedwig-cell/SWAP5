@@ -26,7 +26,7 @@ program tabhyd_typed_solver_scale40
   type(soil_water_solve_result_t) :: res_a, res_t
   real(real64), allocatable, target :: drainage(:,:), irrigation(:), roots(:)
   real(real64), allocatable :: cofgen(:,:), headtab(:,:), thetatab(:,:), ktab(:,:)
-  real(real64), allocatable :: h0(:), theta0(:), ka(:), ca(:), da(:), tt(:), kt(:), ct(:), dtbl(:)
+  real(real64), allocatable :: h0(:), theta0a(:), theta0t(:), ka(:), ca(:), da(:), tt(:), kt(:), ct(:), dtbl(:)
   real(real64) :: step_duration, initial_head, top_flux, bottom_flux, bottom_head, max_h, max_theta, checksum_a, checksum_t
   real(real64) :: t0,t1, atime(NROUNDS), ttime(NROUNDS), med_a, med_t
   integer :: nodes, nt, bottom_mode, i,j,r,rep,iu,ios
@@ -76,8 +76,9 @@ program tabhyd_typed_solver_scale40
   call bind_b110_default_mvg_provider(analytic,apar,step_duration)
   call initialize_tabhyd_raw_provider(table,headtab,thetatab,ktab,cofgen,step_duration)
 
-  allocate(theta0(nodes),ka(nodes),ca(nodes),da(nodes),tt(nodes),kt(nodes),ct(nodes),dtbl(nodes))
-  call analytic%evaluate(h0,theta0,ka,ca,da)
+  allocate(theta0a(nodes),theta0t(nodes),ka(nodes),ca(nodes),da(nodes),tt(nodes),kt(nodes),ct(nodes),dtbl(nodes))
+  call analytic%evaluate(h0,theta0a,ka,ca,da)
+  call table%evaluate(h0,theta0t,kt,ct,dtbl)
 
   allocate(drainage(1,nodes),irrigation(nodes),roots(nodes))
   drainage=0.0_real64; irrigation=0.0_real64; roots=0.0_real64
@@ -128,7 +129,11 @@ contains
     req%base_state%active_nodes=nodes
     allocate(req%base_state%pressure_head(nodes),req%base_state%water_content(nodes))
     req%base_state%pressure_head=h0
-    req%base_state%water_content=theta0
+    if(use_analytic) then
+      req%base_state%water_content=theta0a
+    else
+      req%base_state%water_content=theta0t
+    end if
     req%base_state%ponding_depth=0.0_real64
     req%base_state%groundwater_level=-200.0_real64
     req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
