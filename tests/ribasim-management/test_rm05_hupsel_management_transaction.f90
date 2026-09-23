@@ -35,29 +35,34 @@ program test_rm05_hupsel_management_transaction
 
   call setup_hupsel(irrigation_parameters)
   call construct_fmr_hupsel_management_parameters(irrigation_parameters, parameters, status)
-  call require(status == FMR_RM_OK .and. parameters%ready(), 'parameters ready')
+  call require(status == FMR_RM_OK, 'parameters construction status')
+  call require(parameters%ready(), 'parameters ready')
 
   irrigation_seed = tcs1_dcs2_sprinkling_state_t()
   irrigation_seed%dayfix = 366
   rutter_seed = rutter_state_t()
   rutter_seed%canopy_storage_cm = 0.02_real64
   call initialize_fmr_hupsel_management_state(irrigation_seed, rutter_seed, initial_state, status)
-  call require(status == FMR_RM_OK .and. initial_state%ready(), 'initial state ready')
+  call require(status == FMR_RM_OK, 'initial state construction status')
+  call require(initial_state%ready(), 'initial state ready')
 
   call setup_trigger_request(request, 218.0_real64)
   call setup_rutter_template(rutter_template)
   call prepare_fmr_hupsel_management_forcing(request, rutter_template, 41_int64, 2.0_real64, 2.0_real64, &
        forcing, status)
-  call require(status == FMR_RM_OK .and. forcing%ready(), 'full supply forcing ready')
+  call require(status == FMR_RM_OK, 'full supply forcing status')
+  call require(forcing%ready(), 'full supply forcing ready')
   call setup_config(config)
   call initialize_committed(initial_state, committed, 51001_int64, 218.0_real64)
   call committed%capture_checkpoint(checkpoint, ok)
-  call require(ok .and. checkpoint%ready(), 'checkpoint ready')
+  call require(ok, 'checkpoint capture status')
+  call require(checkpoint%ready(), 'checkpoint ready')
   call kernel%bind_model(model)
 
   call kernel%advance_interval(parameters, committed, forcing, config, 218.0_real64, 219.0_real64, &
        result1, candidate1, diagnostics1, checkpoint)
-  call require(result1%status == CANONICAL_STATUS_COMPLETED .and. result1%completed, 'first trial completes')
+  call require(result1%status == CANONICAL_STATUS_COMPLETED, 'first trial status')
+  call require(result1%completed, 'first trial completes')
   call require(candidate1%ready(), 'first candidate ready')
   call model%observation(observation)
   call require(observation%decision_evaluated .and. observation%irrigation_requested, 'demand evaluated')
@@ -72,7 +77,8 @@ program test_rm05_hupsel_management_transaction
 
   call kernel%advance_interval(parameters, committed, forcing, config, 218.0_real64, 219.0_real64, &
        result2, candidate2, diagnostics2, checkpoint)
-  call require(result2%status == CANONICAL_STATUS_COMPLETED .and. candidate2%ready(), 'replay candidate ready')
+  call require(result2%status == CANONICAL_STATUS_COMPLETED, 'replay trial status')
+  call require(candidate2%ready(), 'replay candidate ready')
   call compare_candidate_states(candidate1, candidate2, 'same-origin candidate replay')
 
   call kernel%rollback_candidate(candidate1, diagnostics1)
@@ -101,9 +107,11 @@ program test_rm05_hupsel_management_transaction
   class default
     call require(.false., 'committed snapshot type for persistence')
   end select
-  call require(exported .and. status == FMR_RM_OK .and. persistence%ready(), 'persistence export')
+  call require(exported .and. status == FMR_RM_OK, 'persistence export status')
+  call require(persistence%ready(), 'persistence export ready')
   call reconstruct_fmr_hupsel_management_from_persistence(persistence, reconstructed_state, reconstructed, status)
-  call require(reconstructed .and. status == FMR_RM_OK .and. reconstructed_state%ready(), 'persistence reconstruct')
+  call require(reconstructed .and. status == FMR_RM_OK, 'persistence reconstruct status')
+  call require(reconstructed_state%ready(), 'persistence reconstruct ready')
   call reconstructed_state%snapshot(irrigation_view2, rutter_view2, available)
   call require(available .and. same_irrigation(irrigation_view1, irrigation_view2), 'restart irrigation identity')
   call require(abs(rutter_view1%canopy_storage_cm-rutter_view2%canopy_storage_cm) < tol, 'restart Rutter identity')
@@ -137,8 +145,8 @@ program test_rm05_hupsel_management_transaction
   call require(status == FMR_RM_OK, 'no-event forcing')
   call no_event_kernel%advance_interval(parameters, no_event_committed, no_event_forcing, config, &
        224.0_real64, 225.0_real64, no_event_result, no_event_candidate, no_event_diagnostics, no_event_checkpoint)
-  call require(no_event_result%status == CANONICAL_STATUS_COMPLETED .and. no_event_candidate%ready(), &
-       'no-event candidate')
+  call require(no_event_result%status == CANONICAL_STATUS_COMPLETED, 'no-event trial status')
+  call require(no_event_candidate%ready(), 'no-event candidate')
   call no_event_kernel%commit_candidate(no_event_committed, no_event_candidate, no_event_diagnostics, &
        did_commit, commit_status)
   call require(did_commit, 'no-event commit')
