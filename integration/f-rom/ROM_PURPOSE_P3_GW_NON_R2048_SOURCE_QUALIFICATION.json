@@ -1,0 +1,433 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-non-r2048-source-qualification.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-NON-R2048-SOURCE",
+  "date": "2026-09-23",
+  "status": "QUALIFIED_COMPLETE_SOURCE_SUBSET",
+  "source_run": 35876286853,
+  "source_run_conclusion": "failure",
+  "source_run_failure_scope": "R2048_T32_ONLY_SUPERSEDED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "r2048_t32_supersession": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_SUPERSESSION.json",
+    "allowed_routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "forbidden_route": "R2048_T32"
+  },
+  "execution_evidence": {
+    "expected_non_r2048_jobs": 64,
+    "successful_non_r2048_jobs": 64,
+    "failed_non_r2048_jobs": 0,
+    "successful_artifacts": 64,
+    "artifact_names": [
+      "p3gwfix-B01-R1024_T32-o0-h1",
+      "p3gwfix-B01-R1024_T32-o0-h2",
+      "p3gwfix-B01-R1024_T32-o0-h3",
+      "p3gwfix-B01-R1024_T32-o0-h4",
+      "p3gwfix-B01-R1024_T32-o2-h1",
+      "p3gwfix-B01-R1024_T32-o2-h2",
+      "p3gwfix-B01-R1024_T32-o2-h3",
+      "p3gwfix-B01-R1024_T32-o2-h4",
+      "p3gwfix-B01-R2048_T16-o0-h1",
+      "p3gwfix-B01-R2048_T16-o0-h2",
+      "p3gwfix-B01-R2048_T16-o0-h3",
+      "p3gwfix-B01-R2048_T16-o0-h4",
+      "p3gwfix-B01-R2048_T16-o2-h1",
+      "p3gwfix-B01-R2048_T16-o2-h2",
+      "p3gwfix-B01-R2048_T16-o2-h3",
+      "p3gwfix-B01-R2048_T16-o2-h4",
+      "p3gwfix-B01-R2048_T8-o0-h1",
+      "p3gwfix-B01-R2048_T8-o0-h2",
+      "p3gwfix-B01-R2048_T8-o0-h3",
+      "p3gwfix-B01-R2048_T8-o0-h4",
+      "p3gwfix-B01-R2048_T8-o2-h1",
+      "p3gwfix-B01-R2048_T8-o2-h2",
+      "p3gwfix-B01-R2048_T8-o2-h3",
+      "p3gwfix-B01-R2048_T8-o2-h4",
+      "p3gwfix-B01-R512_T32-o0-h1",
+      "p3gwfix-B01-R512_T32-o0-h2",
+      "p3gwfix-B01-R512_T32-o0-h3",
+      "p3gwfix-B01-R512_T32-o0-h4",
+      "p3gwfix-B01-R512_T32-o2-h1",
+      "p3gwfix-B01-R512_T32-o2-h2",
+      "p3gwfix-B01-R512_T32-o2-h3",
+      "p3gwfix-B01-R512_T32-o2-h4",
+      "p3gwfix-B14-R1024_T32-o0-h1",
+      "p3gwfix-B14-R1024_T32-o0-h2",
+      "p3gwfix-B14-R1024_T32-o0-h3",
+      "p3gwfix-B14-R1024_T32-o0-h4",
+      "p3gwfix-B14-R1024_T32-o2-h1",
+      "p3gwfix-B14-R1024_T32-o2-h2",
+      "p3gwfix-B14-R1024_T32-o2-h3",
+      "p3gwfix-B14-R1024_T32-o2-h4",
+      "p3gwfix-B14-R2048_T16-o0-h1",
+      "p3gwfix-B14-R2048_T16-o0-h2",
+      "p3gwfix-B14-R2048_T16-o0-h3",
+      "p3gwfix-B14-R2048_T16-o0-h4",
+      "p3gwfix-B14-R2048_T16-o2-h1",
+      "p3gwfix-B14-R2048_T16-o2-h2",
+      "p3gwfix-B14-R2048_T16-o2-h3",
+      "p3gwfix-B14-R2048_T16-o2-h4",
+      "p3gwfix-B14-R2048_T8-o0-h1",
+      "p3gwfix-B14-R2048_T8-o0-h2",
+      "p3gwfix-B14-R2048_T8-o0-h3",
+      "p3gwfix-B14-R2048_T8-o0-h4",
+      "p3gwfix-B14-R2048_T8-o2-h1",
+      "p3gwfix-B14-R2048_T8-o2-h2",
+      "p3gwfix-B14-R2048_T8-o2-h3",
+      "p3gwfix-B14-R2048_T8-o2-h4",
+      "p3gwfix-B14-R512_T32-o0-h1",
+      "p3gwfix-B14-R512_T32-o0-h2",
+      "p3gwfix-B14-R512_T32-o0-h3",
+      "p3gwfix-B14-R512_T32-o0-h4",
+      "p3gwfix-B14-R512_T32-o2-h1",
+      "p3gwfix-B14-R512_T32-o2-h2",
+      "p3gwfix-B14-R512_T32-o2-h3",
+      "p3gwfix-B14-R512_T32-o2-h4"
+    ],
+    "successful_jobs": [
+      {
+        "job_id": 107234972467,
+        "name": "slices (B01, R512_T32, 0, 4)"
+      },
+      {
+        "job_id": 107234972490,
+        "name": "slices (B01, R512_T32, 2, 1)"
+      },
+      {
+        "job_id": 107234972513,
+        "name": "slices (B01, R512_T32, 2, 3)"
+      },
+      {
+        "job_id": 107234972526,
+        "name": "slices (B01, R1024_T32, 0, 1)"
+      },
+      {
+        "job_id": 107234972576,
+        "name": "slices (B01, R1024_T32, 0, 2)"
+      },
+      {
+        "job_id": 107234972616,
+        "name": "slices (B01, R2048_T16, 0, 3)"
+      },
+      {
+        "job_id": 107234972619,
+        "name": "slices (B01, R512_T32, 2, 2)"
+      },
+      {
+        "job_id": 107234972622,
+        "name": "slices (B01, R512_T32, 0, 2)"
+      },
+      {
+        "job_id": 107234972646,
+        "name": "slices (B01, R1024_T32, 2, 4)"
+      },
+      {
+        "job_id": 107234972657,
+        "name": "slices (B01, R512_T32, 0, 1)"
+      },
+      {
+        "job_id": 107234972659,
+        "name": "slices (B01, R512_T32, 2, 4)"
+      },
+      {
+        "job_id": 107234972664,
+        "name": "slices (B01, R2048_T16, 0, 4)"
+      },
+      {
+        "job_id": 107234972665,
+        "name": "slices (B01, R1024_T32, 2, 3)"
+      },
+      {
+        "job_id": 107234972725,
+        "name": "slices (B01, R2048_T16, 2, 2)"
+      },
+      {
+        "job_id": 107234972729,
+        "name": "slices (B01, R2048_T16, 2, 1)"
+      },
+      {
+        "job_id": 107234972736,
+        "name": "slices (B01, R1024_T32, 0, 4)"
+      },
+      {
+        "job_id": 107234972742,
+        "name": "slices (B01, R1024_T32, 2, 2)"
+      },
+      {
+        "job_id": 107234972775,
+        "name": "slices (B01, R512_T32, 0, 3)"
+      },
+      {
+        "job_id": 107234972781,
+        "name": "slices (B01, R2048_T16, 0, 1)"
+      },
+      {
+        "job_id": 107234972813,
+        "name": "slices (B01, R1024_T32, 0, 3)"
+      },
+      {
+        "job_id": 107234972850,
+        "name": "slices (B01, R1024_T32, 2, 1)"
+      },
+      {
+        "job_id": 107234972864,
+        "name": "slices (B01, R2048_T16, 0, 2)"
+      },
+      {
+        "job_id": 107234975057,
+        "name": "slices (B01, R2048_T16, 2, 3)"
+      },
+      {
+        "job_id": 107234975724,
+        "name": "slices (B01, R2048_T8, 0, 1)"
+      },
+      {
+        "job_id": 107234975782,
+        "name": "slices (B01, R2048_T16, 2, 4)"
+      },
+      {
+        "job_id": 107234975932,
+        "name": "slices (B01, R2048_T8, 0, 2)"
+      },
+      {
+        "job_id": 107234976335,
+        "name": "slices (B01, R2048_T8, 0, 4)"
+      },
+      {
+        "job_id": 107234976395,
+        "name": "slices (B01, R2048_T8, 2, 2)"
+      },
+      {
+        "job_id": 107234976410,
+        "name": "slices (B01, R2048_T8, 2, 4)"
+      },
+      {
+        "job_id": 107234976444,
+        "name": "slices (B01, R2048_T8, 2, 1)"
+      },
+      {
+        "job_id": 107234976529,
+        "name": "slices (B01, R2048_T8, 0, 3)"
+      },
+      {
+        "job_id": 107234976581,
+        "name": "slices (B01, R2048_T8, 2, 3)"
+      },
+      {
+        "job_id": 107234978108,
+        "name": "slices (B14, R512_T32, 0, 3)"
+      },
+      {
+        "job_id": 107234978189,
+        "name": "slices (B14, R512_T32, 0, 2)"
+      },
+      {
+        "job_id": 107234978197,
+        "name": "slices (B14, R512_T32, 0, 4)"
+      },
+      {
+        "job_id": 107234978332,
+        "name": "slices (B14, R512_T32, 0, 1)"
+      },
+      {
+        "job_id": 107234978957,
+        "name": "slices (B14, R512_T32, 2, 4)"
+      },
+      {
+        "job_id": 107234978981,
+        "name": "slices (B14, R1024_T32, 0, 1)"
+      },
+      {
+        "job_id": 107234979036,
+        "name": "slices (B14, R1024_T32, 0, 2)"
+      },
+      {
+        "job_id": 107234979076,
+        "name": "slices (B14, R512_T32, 2, 3)"
+      },
+      {
+        "job_id": 107234979121,
+        "name": "slices (B14, R512_T32, 2, 2)"
+      },
+      {
+        "job_id": 107234979193,
+        "name": "slices (B14, R512_T32, 2, 1)"
+      },
+      {
+        "job_id": 107234980919,
+        "name": "slices (B14, R1024_T32, 0, 3)"
+      },
+      {
+        "job_id": 107234980990,
+        "name": "slices (B14, R1024_T32, 0, 4)"
+      },
+      {
+        "job_id": 107234980993,
+        "name": "slices (B14, R1024_T32, 2, 4)"
+      },
+      {
+        "job_id": 107234981035,
+        "name": "slices (B14, R1024_T32, 2, 1)"
+      },
+      {
+        "job_id": 107234981101,
+        "name": "slices (B14, R1024_T32, 2, 3)"
+      },
+      {
+        "job_id": 107234981107,
+        "name": "slices (B14, R1024_T32, 2, 2)"
+      },
+      {
+        "job_id": 107234983570,
+        "name": "slices (B14, R2048_T16, 0, 2)"
+      },
+      {
+        "job_id": 107234983719,
+        "name": "slices (B14, R2048_T16, 0, 1)"
+      },
+      {
+        "job_id": 107234983999,
+        "name": "slices (B14, R2048_T16, 0, 3)"
+      },
+      {
+        "job_id": 107234984122,
+        "name": "slices (B14, R2048_T16, 0, 4)"
+      },
+      {
+        "job_id": 107234984383,
+        "name": "slices (B14, R2048_T16, 2, 1)"
+      },
+      {
+        "job_id": 107234984590,
+        "name": "slices (B14, R2048_T16, 2, 2)"
+      },
+      {
+        "job_id": 107234985213,
+        "name": "slices (B14, R2048_T16, 2, 3)"
+      },
+      {
+        "job_id": 107234985646,
+        "name": "slices (B14, R2048_T8, 0, 1)"
+      },
+      {
+        "job_id": 107234985727,
+        "name": "slices (B14, R2048_T8, 0, 2)"
+      },
+      {
+        "job_id": 107234985745,
+        "name": "slices (B14, R2048_T16, 2, 4)"
+      },
+      {
+        "job_id": 107234985991,
+        "name": "slices (B14, R2048_T8, 0, 3)"
+      },
+      {
+        "job_id": 107234986106,
+        "name": "slices (B14, R2048_T8, 2, 2)"
+      },
+      {
+        "job_id": 107234986172,
+        "name": "slices (B14, R2048_T8, 0, 4)"
+      },
+      {
+        "job_id": 107234986181,
+        "name": "slices (B14, R2048_T8, 2, 1)"
+      },
+      {
+        "job_id": 107234986459,
+        "name": "slices (B14, R2048_T8, 2, 3)"
+      },
+      {
+        "job_id": 107234986605,
+        "name": "slices (B14, R2048_T8, 2, 4)"
+      }
+    ],
+    "failed_r2048_t32_jobs": [
+      {
+        "job_id": 107234972630,
+        "name": "slices (B01, R2048_T32, 2, 2)"
+      },
+      {
+        "job_id": 107234972632,
+        "name": "slices (B01, R2048_T32, 0, 2)"
+      },
+      {
+        "job_id": 107234972634,
+        "name": "slices (B01, R2048_T32, 0, 1)"
+      },
+      {
+        "job_id": 107234972643,
+        "name": "slices (B01, R2048_T32, 0, 4)"
+      },
+      {
+        "job_id": 107234972919,
+        "name": "slices (B01, R2048_T32, 2, 3)"
+      },
+      {
+        "job_id": 107234972943,
+        "name": "slices (B01, R2048_T32, 0, 3)"
+      },
+      {
+        "job_id": 107234972952,
+        "name": "slices (B01, R2048_T32, 2, 1)"
+      },
+      {
+        "job_id": 107234972988,
+        "name": "slices (B01, R2048_T32, 2, 4)"
+      },
+      {
+        "job_id": 107234981975,
+        "name": "slices (B14, R2048_T32, 0, 4)"
+      },
+      {
+        "job_id": 107234981998,
+        "name": "slices (B14, R2048_T32, 0, 1)"
+      },
+      {
+        "job_id": 107234982161,
+        "name": "slices (B14, R2048_T32, 0, 2)"
+      },
+      {
+        "job_id": 107234982197,
+        "name": "slices (B14, R2048_T32, 0, 3)"
+      },
+      {
+        "job_id": 107234983161,
+        "name": "slices (B14, R2048_T32, 2, 2)"
+      },
+      {
+        "job_id": 107234983329,
+        "name": "slices (B14, R2048_T32, 2, 4)"
+      },
+      {
+        "job_id": 107234983453,
+        "name": "slices (B14, R2048_T32, 2, 1)"
+      },
+      {
+        "job_id": 107234983504,
+        "name": "slices (B14, R2048_T32, 2, 3)"
+      }
+    ]
+  },
+  "disposition": {
+    "usable_for_gw_reference_consolidation": true,
+    "requires_targeted_non_r2048_repair": false,
+    "targeted_non_r2048_repair_binding_must_remain_absent": true,
+    "r2048_t32_source_artifacts_admissible": false
+  },
+  "scientific_firewall": {
+    "scientific_response_adjudicated": false,
+    "candidate_response_generated": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false
+  }
+}
