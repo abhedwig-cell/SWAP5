@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW01-SURFACE-COMPOSITION",
+  "title": "Pure composed B1.11 surface-GWL q0/qv/head/qbot path",
+  "protocol": "PIN_SOURCE_ORDER -> COMPOSE_EXISTING_TYPED_SCALAR_AND_PROFILE_LAWS -> 100000_END_TO_END_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_OWNER",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW01_SURFACE_COMPOSITION_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW01_SURFACE_SEED_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW01_GWL_SURFACE_SOURCE_CENSUS.json"
+  ],
+  "scope": [
+    "source-ordered composition from net atmospheric/runon flux through pond delta, qv profile, heads and qbot",
+    "deterministic pure evaluation over explicit typed meteorological, pond and soil inputs"
+  ],
+  "non_goals": [
+    "Meteorological/irrigation source owner, pondrunoff solver or dynamic top boundary",
+    "SWBOTB selector and hybrid GWL regime state machine integration",
+    "HeadCalc transaction, accepted flux, groundwater/restart or mass publication"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid cases bitwise match the full source-order equation composition",
+    "seed, head, profile flux, qbot and A/B/A results match at O0/O2",
+    "no source, pond, soil, or GWL state owner is changed"
+  ]
+}
