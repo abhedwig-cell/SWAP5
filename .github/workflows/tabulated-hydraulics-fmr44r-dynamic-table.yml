@@ -10,6 +10,7 @@ on:
       - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
       - 'research/tabulated_hydraulics/patch_serialized_backend_typed_table.py'
       - 'research/tabulated_hydraulics/patch_generic_temporal_indicator_inplace.py'
+      - 'research/tabulated_hydraulics/patch_fmr44r_provider_consistent_table_fixture.py'
 
 jobs:
   characterize:
@@ -20,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: abhedwig-cell/SWAP5
-          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          ref: b7d9c976e9b474545d54fa79b71ae134c25da156
           path: canonical-src
       - uses: actions/checkout@v4
         with:
@@ -38,6 +39,7 @@ jobs:
           ( cd table-src && python3 tests/fmr/_apply_fmr44r_serialized_qbot_runtime_patch.py )
           python3 research/tabulated_hydraulics/patch_serialized_backend_typed_table.py table-src/src/runtime/mod_fmr_serialized_reference_backend.f90
           python3 research/tabulated_hydraulics/patch_generic_temporal_indicator_inplace.py table-src/src/solver/mod_reference_richards_temporal_indicator.f90
+          python3 research/tabulated_hydraulics/patch_fmr44r_provider_consistent_table_fixture.py table-src/tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90
 
           # Research characterization isolates the already-qualified positive-qbot
           # temporal-history fixture. The preceding FMR44R equilibrium oracle uses
