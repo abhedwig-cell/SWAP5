@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW01-GWL",
+  "title": "Pure B1.11 SWBOTB=1 DATE1/GWLEVEL input and interpolation law",
+  "protocol": "PIN_READER_GUARDS_AND_GWLINP_AFGEN -> IMPLEMENT_TYPED_TABLE_LAW -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_HYBRID_STATE_OWNER",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW01_GWL_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "integration/audits/PPA_WU02_STATUS.json"
+  ],
+  "scope": [
+    "GWLEVEL numeric bounds, zbotcp(5) saturation guard, DATE1 simulation overlap",
+    "GWLINP = AFGEN(GWLTAB,t1900+dt) clamp and linear semantics",
+    "Explicit numeric date and groundwater inputs"
+  ],
+  "non_goals": [
+    "Raw DATE1 parsing/date conversion or production source-window progress",
+    "Low-GWL predictor/corrector, fllowgwl, NN/NODGWL and HeadCalc state transitions",
+    "Groundwater state owner, mass, restart, retry or production application route"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid vectors bitwise match B1.11 AFGEN law",
+    "reader guards, date overlap, endpoints, knots, interpolation, A/B/A and malformed inputs pass",
+    "O0/O2 transcripts match",
+    "no GWL solver state or independent state owner is introduced"
+  ]
+}
