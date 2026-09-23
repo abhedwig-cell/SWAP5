@@ -1,0 +1,68 @@
+name: F-ROM-PURPOSE P4 deterministic closeout
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p4-closeout
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  closeout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify P4 closeout authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/build_rom_purpose_p4_closeout.py
+          python3 - <<'PY'
+          import json,subprocess,pathlib
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT_EXECUTION_BINDING.json'))
+          assert b['status']=='BOUND_AFTER_P4_FRONTIER_RESULTS'
+          assert pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json').exists()
+          assert pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json').exists()
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Build frozen P4 purpose map and closeout
+        run: |
+          set -euo pipefail
+          python3 tests/rom/build_rom_purpose_p4_closeout.py             --prereg integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json             --layer-result integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json             --matched-result integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json             --purpose-map-output integration/f-rom/ROM_PURPOSE_P4_PURPOSE_MAP.json             --closeout-output integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json             --markdown-output docs/science/F-ROM_PURPOSE_P4_CLOSEOUT.md
+      - name: Persist P4 closeout
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          python3 - <<'PY'
+          import json,os,pathlib
+          close=json.load(open('integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_STATUS.json')
+          s=json.load(open(p))
+          s.update({
+            'status':close['status'],'current_gate':'P4_CLOSED',
+            'purpose_map':'integration/f-rom/ROM_PURPOSE_P4_PURPOSE_MAP.json',
+            'closeout':'integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json',
+            'closeout_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'closeout_execution_sha':os.environ['SOURCE_SHA'],
+            'candidate_response_authorized':False,'next_actions':[]
+          })
+          s['scientific_firewall']['new_closure_family_authorized']=False
+          s['scientific_firewall']['production_rom_authorized']=False
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P4_PURPOSE_MAP.json integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json                   integration/f-rom/ROM_PURPOSE_P4_STATUS.json docs/science/F-ROM_PURPOSE_P4_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P4: persist purpose map and closeout" || exit 0
+          git push origin HEAD:work/f-rom-purpose
