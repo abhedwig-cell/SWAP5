@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.rom_root.ra02r.technical_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02R",
+  "date": "2026-09-23",
+  "failed_run": 35822798029,
+  "failed_head": "3bc376d294a9747a89a1feaeab1aa88abda5d096",
+  "failure_class": "TECHNICAL_BINDING_SCHEMA_ALIAS_MISSING",
+  "scientific_response_exposed": false,
+  "failure": "Workflow verification referenced binding keys c6r_physics_changed and candidate_response_generated before any materialization or Reference execution; the binding encoded the same semantics under firewall/response_based fields but omitted these exact aliases.",
+  "permitted_repair": "Add c6r_physics_changed=false and candidate_response_generated=false to the binding only.",
+  "workflow_changed": false,
+  "materializer_changed": false,
+  "analyzer_changed": false,
+  "stress_values_changed": false,
+  "numerical_policy_changed": false,
+  "thresholds_changed": false,
+  "scientific_semantics_changed": false
+}
