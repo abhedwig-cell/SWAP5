@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.rom-purpose.p3.surface-reference-route-result.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE-SURFACE",
+  "date": "2026-09-23",
+  "status": "TERMINAL_SUCCESS_ROUTE_SET_COMPLETE",
+  "workflow_run": 35876282704,
+  "run_conclusion": "success",
+  "job_counts": {
+    "total": 90,
+    "success": 90,
+    "failure": 0,
+    "skipped": 0
+  },
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "repair_binding": "integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_REPAIR_BINDING.json",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "artifact": {
+    "name": "p3ref-surface-routes",
+    "artifact_id": 10763026250,
+    "size_bytes": 98635109,
+    "expired": false,
+    "role": "authoritative SURF_P P3 Reference route set"
+  },
+  "route_set": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "histories": [
+      "S09",
+      "S10",
+      "S11",
+      "S12"
+    ],
+    "assembled": true,
+    "o0_o2_identity_enforced_by_workflow": true
+  },
+  "downstream": {
+    "ready_for_reference_adjudication": true,
+    "candidate_response_authorized": false,
+    "paired_gw_route_set_still_required": true
+  },
+  "scientific_firewall": {
+    "reference_metrics_adjudicated": false,
+    "candidate_response_generated": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "metric_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false
+  }
+}
