@@ -1,7 +1,17 @@
 {
   "schema": "swap5.ppa_wu05a3_reference_gaps.v1",
   "baseline": "1d8279776",
-  "phase": "SOURCE_FRAGMENT_REPRODUCTION_PASSED",
+  "phase": "SOURCE_REPRODUCTION_AND_PROPOSED_RESET_FIX_TESTED",
+  "consumer_trace": {
+    "reference_manifest": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "full_source_reconstruction": "PASS, 63 members and 1886519 bytes using tools/vq/b1_11_reconstruct_git.py",
+    "consumer_file": "MOD_out_PEARL_ANIMO.f90",
+    "consumer_sha256": "af12bf3b727b3c0a2e85a45e7cc6beb28a37ce3eb6472e64831b1f30c0857785",
+    "observations": "Internal beginning profile is copied at 701 and aggregated at 821-826, with no later read of that aggregate found. Domain mass balance at 1038-1041 uses scalar IWaSrDm2Beg. Compartment mass balance at 1057-1062 uses main-domain IWaUnDm1CpBegNew only.",
+    "classification_refinement": "The repeated internal profile snapshot is wrong relative to snapshot semantics, but this trace does not establish an effect on the implemented water-balance residual or physical solution.",
+    "proposed_correction_test": "PASS O0/O2: zero-before-sum in generated source fixture leaves first reset at 2 and changes second from 4 to 2; no reference patch admitted",
+    "reconstruction_portability": "Stored patch CRLF bytes fail original verifier hashes. The new wrapper extracts Git tooling and restores scratch patch LF bytes only when the exact immutable B1.11 patch hash matches; all existing reconstruction gates then pass. Repository patches remain unchanged."
+  },
   "source_authority": "reference/swap-4.3.1/snapshots/B1.11.yml",
   "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
   "policy": "docs/verification/reference-baselines.md admission rule: reproduce, intended rule, classify, minimal patch, focused qualification, exact provenance, expected-difference ledger, immutable snapshot",
@@ -29,5 +39,5 @@
   ],
   "source_changed": false,
   "production_admission": "NONE",
-  "next_action": "Trace beginning-inventory balance consumers and test a proposed reset correction; continue independent A3 work without claiming full MACROSTATE equivalence"
+  "next_action": "Prioritize intended icgwl/flux-transition semantics for whole-MACROSTATE qualification; snapshot correction remains proposed and is not a demonstrated physical mass-balance blocker"
 }

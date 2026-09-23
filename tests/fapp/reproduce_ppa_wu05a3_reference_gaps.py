@@ -71,10 +71,34 @@ end program
                 transcripts.append(output)
             if transcripts[0] != transcripts[1]:
                 raise RuntimeError("Optimization-dependent source observation")
+        # Experimental correction only in a generated driver; never patch B1.11.
+        corrected_inventory = inventory.replace(
+            "         do id=2,numdm",
+            "         IWaUnDm2CpBeg(1:NumNod) = 0.d0\n         do id=2,numdm",
+        )
+        if corrected_inventory == inventory:
+            raise RuntimeError("Correction anchor missing")
+        driver.write_text(program.replace(inventory, corrected_inventory), encoding="utf-8")
+        corrected_outputs = []
+        for opt in ("O0", "O2"):
+            exe = root / f"corrected-{opt}.exe"
+            subprocess.run([args.compiler, "-std=f2008", "-ffree-line-length-none",
+                            "-fcheck=all", "-ffpe-trap=invalid,zero,overflow",
+                            "-finit-integer=-777", f"-{opt}", str(driver), "-o", str(exe)],
+                           check=True, capture_output=True, text=True)
+            output = subprocess.run([str(exe)], check=True, capture_output=True, text=True).stdout
+            if output.splitlines() != ["MODE=1 ICGWL=-777", "MODE=2 ICGWL=3",
+                                       "RESET=1 INTERNAL= 2.0", "RESET=2 INTERNAL= 2.0"]:
+                raise RuntimeError(f"Unexpected corrected snapshot: {output!r}")
+            corrected_outputs.append(output)
+        if corrected_outputs[0] != corrected_outputs[1]:
+            raise RuntimeError("Optimization-dependent corrected observation")
     print("B111_SOURCE_HASH=PASS")
     print("ICGWL_SWMBF1_UNASSIGNED_TWO_SENTINELS=REPRODUCED")
     print("RESET_INTERNAL_PROFILE_ACCUMULATION=REPRODUCED")
     print("O0_O2_SOURCE_OBSERVATIONS=IDENTICAL")
+    print("PROPOSED_RESET_CORRECTION_FIRST_PERIOD_UNCHANGED=PASS")
+    print("PROPOSED_RESET_CORRECTION_REPEAT_SNAPSHOT=PASS")
 
 
 if __name__ == "__main__":
