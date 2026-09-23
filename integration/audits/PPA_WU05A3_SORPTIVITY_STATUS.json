@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.sorptivity.status.v1",
+  "work_unit": "PPA-WU05-A3-SORPTIVITY",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@b8c072e70",
+  "preregistration": "integration/audits/PPA_WU05A3_SORPTIVITY_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated sorptivity event/amount equation only; no runtime state, accepted mass, rollback or restart binding",
+  "implementation": "src/process/mod_ppa_wu05a3_sorptivity.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_sorptivity_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_sorptivity_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_SORPTIVITY_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_SORPTIVITY_START_CONTINUE_END_AND_WET_GUARDS=PASS",
+      "PPA_WU05A3_SORPTIVITY_WALL_FACTOR_AND_PEAK_CAP=PASS",
+      "PPA_WU05A3_SORPTIVITY_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "92a00fa4aba8e5936c74499daf1a6fb003b9b4076f4d0d8def83f02c99c40f53"
+  },
+  "next_action": "Continue with another independent ABSORPTION source equation, with legacy state and mass binding held out.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}

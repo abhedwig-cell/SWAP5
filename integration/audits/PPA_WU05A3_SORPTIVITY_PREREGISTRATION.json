@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-SORPTIVITY",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure sorptivity-event state and absorbed-potential equation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_STATE_TRANSFORM -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:ABSORPTION sorptivity task-1 branch",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1713-1747",
+    "behavior": "Apply saturation-deficit guard; initialize or continue/end sorptivity event state; calculate event amount from square-root time increment and geometry; optionally apply wall-wetting factor; cap by 1e3*dt*dz."
+  },
+  "scope": ["explicit event/reference/sorptivity inputs and outputs", "100000 deterministic bitwise comparisons at O0/O2", "start/continue/end/wet states, wall factor and peak cap"],
+  "non_goals": ["legacy ABSORPTION mutable state owner, Darcy/diffusion route or task-2 derivatives", "accepted mass receipt, rollback/restart or runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}
