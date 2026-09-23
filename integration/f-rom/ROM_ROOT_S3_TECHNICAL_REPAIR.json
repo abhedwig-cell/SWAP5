@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.rom_root.s3.technical_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION",
+  "failed_run": 35856502212,
+  "failure_class": "TECHNICAL_MISSING_PYTHON_DEPENDENCY",
+  "observation": "Candidate jobs failed at import time with ModuleNotFoundError for numpy before the Stage 3 runner executed.",
+  "scientific_response_generated": false,
+  "repair": "Install numpy in both candidate and analyzer jobs before invoking frozen Stage 3 scripts.",
+  "scientific_semantics_changed": false,
+  "unchanged": [
+    "candidate code",
+    "candidate partitions",
+    "hydraulic closure",
+    "Feddes feedback",
+    "Reference authorities",
+    "comparison metrics",
+    "uncertainty bounds",
+    "decision rules"
+  ],
+  "scientific_firewall": {
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
