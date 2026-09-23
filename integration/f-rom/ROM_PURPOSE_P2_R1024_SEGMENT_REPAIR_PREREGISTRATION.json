@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.rom-purpose.p2.r1024-segment-repair-preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE-R1024-REPAIR",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_SEGMENTED_S05_RESPONSE",
+  "problem": {
+    "authoritative_source_run": 35821534912,
+    "failed_full_jobs": [
+      "p2full-B01-R1024_T32-o0-h1",
+      "p2full-B01-R1024_T32-o2-h1"
+    ],
+    "failure_class": "HOSTED_RUNNER_SHUTDOWN_EXIT_143",
+    "scientific_failure": false,
+    "full_route_response_available_for_S05": false
+  },
+  "witness": {
+    "case": "B01/R1024_T32/S06",
+    "reason": "Same material, spatial resolution, temporal factor, solver and forcing family as blocked S05, while a complete independent full-history O0/O2 pair already exists from the frozen authoritative source run.",
+    "source_full_artifacts": [
+      {
+        "name": "p2full-B01-R1024_T32-o0-h2",
+        "id": 10733828155,
+        "digest": "sha256:8be70545a5a7ce7a7a0a4d3cab115f562ec2b086ef94f362024869ef33ba4cad"
+      },
+      {
+        "name": "p2full-B01-R1024_T32-o2-h2",
+        "id": 10733972626,
+        "digest": "sha256:ef72a4c1e73a004ff55e5358b1dc769e4dfb735c7409ad90530e2f54896c9c85"
+      }
+    ],
+    "segmentation": [
+      [
+        1,
+        8192
+      ],
+      [
+        8193,
+        16384
+      ],
+      [
+        16385,
+        24576
+      ],
+      [
+        24577,
+        32768
+      ]
+    ],
+    "required_checks": [
+      "Each segment O0/O2 stdout is byte-identical.",
+      "Each segment O0/O2 checkpoint is byte-identical.",
+      "Full S06 O0/O2 stdout is byte-identical.",
+      "Concatenated segmented S06 STATE output equals full S06 STATE output after removing only REV fields.",
+      "Concatenated segmented S06 PROFILE output equals full S06 PROFILE output exactly.",
+      "STATE count is exactly 32768 and PROFILE count exactly 16384."
+    ],
+    "allowed_normalization": {
+      "field": "REV",
+      "reason": "Revision counters restart locally and are already excluded from hydrologic checkpoint authority."
+    },
+    "all_other_hydrologic_fields_exact": true
+  },
+  "repair_if_witness_qualifies": {
+    "target_case": "B01/R1024_T32/S05",
+    "segmentation": [
+      [
+        1,
+        8192
+      ],
+      [
+        8193,
+        16384
+      ],
+      [
+        16385,
+        24576
+      ],
+      [
+        24577,
+        32768
+      ]
+    ],
+    "use_same_materializer": true,
+    "use_same_checkpoint_payload": true,
+    "use_same_solver_and_physics": true,
+    "use_same_forcing": true,
+    "use_same_temporal_factor": true,
+    "use_same_compiler_options": [
+      0,
+      2
+    ],
+    "require_segment_O0_O2_stdout_identity": true,
+    "require_segment_O0_O2_checkpoint_identity": true,
+    "assemble_rule": "Concatenate the four S05 segment logs in step order. Use the resulting scientific route only as an execution-equivalent substitute for the two unavailable monolithic S05 full-history logs.",
+    "analyzer": "tests/rom/analyze_rom_purpose_p2_reference.py",
+    "analyzer_changed": false
+  },
+  "failure_rule": "If the S06 equivalence witness is not exact under the frozen verifier, stop before segmented S05 and before any P2 candidate response.",
+  "authority_interpretation": {
+    "original_R512_R1024_reference_design_changed": false,
+    "execution_topology_changed_only_after_exact_equivalence_witness": true,
+    "reference_metrics_changed": false,
+    "observability_contract_changed": false,
+    "application_tolerance_changed": false,
+    "candidate_response_authorized": false
+  },
+  "scientific_firewall": {
+    "segmented_S05_response_seen": false,
+    "candidate_response_generated": false,
+    "P1_failure_overridden": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "threshold_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
