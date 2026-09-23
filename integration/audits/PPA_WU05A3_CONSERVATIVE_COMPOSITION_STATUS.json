@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-WU05-A3-CONSERVATIVE-COMPOSITION",
+  "baseline": "4b1fcc2d5",
+  "phase": "PREREGISTERED",
+  "scope": "SWMBF=1 storage-to-wetting-to-proposed-flux composition with mutually consistent previous scalar/profile inventories",
+  "tests_planned": ["Three successive intervals with unequal time steps", "Explicit localized drainage", "Changed prescribed pore volumes", "Cellwise and lower-boundary closure", "Inconsistent prior profile detected", "Clipped overdraw detected"],
+  "invariants": [3, 7, 13],
+  "limitations": ["Geometry is supplied, not produced by MPVOLUME", "No Richards coupling or accepted state owner", "No source-correction admission", "No SWMBF=2 qualification"],
+  "test": "tests/fapp/test_ppa_wu05a3_conservative_composition.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_conservative_composition.ps1",
+  "qualified": false,
+  "next_action": "Implement and run O0/O2 composition gate"
+}
