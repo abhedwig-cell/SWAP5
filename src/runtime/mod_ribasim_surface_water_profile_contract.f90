@@ -113,12 +113,18 @@ contains
     type(fmr_drainage_response_level_control_t), allocatable :: external_controls(:)
 
     context_status = RIBASIM_SW_PROFILE_SHAPE_MISMATCH
-    if (.not. parameters%drainage_response_active .or. .not. allocated(parameters%drainage_response_levels)) return
+    if (.not. parameters%drainage_response_active .or. .not. allocated(parameters%drainage_response_levels)) then
+      call mark_profile_rejected(column, committed_state, t0, t1, output, diagnostic, context_status)
+      return
+    end if
 
     call bind_ribasim_surface_water_controls(template%optional_state_layout_id, parameters%drainage_response_levels, &
          accepted_surface_water_heads_cm, allocated(effective_forcing%drainage_response_controls), &
          external_controls, context_status)
-    if (context_status /= RIBASIM_SW_PROFILE_OK) return
+    if (context_status /= RIBASIM_SW_PROFILE_OK) then
+      call mark_profile_rejected(column, committed_state, t0, t1, output, diagnostic, context_status)
+      return
+    end if
 
     ! Deep-copy the interval forcing so accepted external heads remain
     ! call-local forcing authority. No Ribasim level/storage is persisted in SWAP.
@@ -132,5 +138,33 @@ contains
     call fmr_execute_serialized_resolved_physical_column(backend, transaction_control, column, template, parameters, &
          coupled_forcing, committed_state, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
   end subroutine fmr_execute_serialized_ribasim_surface_water_resolved_column
+
+  subroutine mark_profile_rejected(column, committed_state, t0, t1, output, diagnostic, context_status)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(kernel_committed_state_t), intent(in) :: committed_state
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    integer, intent(in) :: context_status
+
+    output = fmr_serialized_column_result_t()
+    output%column_id = column%column_id
+    output%requested_t0 = t0
+    output%requested_t1 = t1
+    output%admission_assessed = .true.
+    output%admitted = .false.
+    write(output%admission_status,'(A,I0)') 'RIBASIM_PROFILE_REJECTED_', context_status
+    output%completed = .false.
+    output%committed = .false.
+    output%solver_executed = .false.
+    output%initial_revision = committed_state%current_revision()
+    output%final_revision = output%initial_revision
+
+    diagnostic = fmr_column_diagnostics_t()
+    diagnostic%column_id = column%column_id
+    diagnostic%rejected = 1
+    diagnostic%failure_classification = 'RIBASIM_PROFILE_REJECTED'
+    diagnostic%committed_revision = output%final_revision
+  end subroutine mark_profile_rejected
 
 end module mod_ribasim_surface_water_profile_contract
