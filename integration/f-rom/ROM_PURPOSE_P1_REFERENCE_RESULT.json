@@ -1,0 +1,441 @@
+{
+  "candidate_response_authorized": false,
+  "interpretation": {
+    "numerical_uncertainty_is_application_tolerance": false,
+    "placement_or_closure_adjudicated": false,
+    "reference_is_continuum_truth": false
+  },
+  "results": {
+    "gw": {
+      "B01": {
+        "discrete_guard": {
+          "spatial_bottom_flux_sign_mismatch_count": 0,
+          "spatial_max_reversal_timing_difference_steps": 0,
+          "spatial_reversal_sequence_mismatch_history_count": 0,
+          "temporal_bottom_flux_sign_mismatch_count": 0,
+          "temporal_max_reversal_timing_difference_steps": 0,
+          "temporal_reversal_sequence_mismatch_history_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 4.334310688136611e-13,
+        "metrics": {
+          "cumulative_bottom_rmse_cm": {
+            "combined_reference_uncertainty": 1.7639465339959154e-05,
+            "qualified": true,
+            "space": {
+              "coarse": 1.4407396053090735e-05,
+              "fine": 3.903138822247279e-06,
+              "fine_uncertainty": 1.8128950399511724e-06,
+              "observed_order": 1.8841029300820258,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.967747855704541e-05,
+              "fine": 1.0675795682835492e-05,
+              "fine_uncertainty": 1.582657030000798e-05,
+              "observed_order": 0.8822017676674709,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "interval_bottom_flux_rmse_cm_per_day": {
+            "combined_reference_uncertainty": 0.0075505517782559085,
+            "qualified": true,
+            "space": {
+              "coarse": 0.005761728373408617,
+              "fine": 0.001400933426293424,
+              "fine_uncertainty": 0.0005625735928619404,
+              "observed_order": 2.0401132496314673,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 0.00858177352922464,
+              "fine": 0.004673978106067852,
+              "fine_uncertainty": 0.006987978185393968,
+              "observed_order": 0.8766248530025285,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 3.655611893126323e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 2.8364868395587686e-07,
+              "fine": 7.580673227418849e-08,
+              "fine_uncertainty": 3.456148176290432e-08,
+              "observed_order": 1.9037072877266654,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 4.169780324022532e-07,
+              "fine": 2.2529469961664573e-07,
+              "fine_uncertainty": 3.30999707549728e-07,
+              "observed_order": 0.8881580078755473,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.7639466443167458e-05,
+            "qualified": true,
+            "space": {
+              "coarse": 1.4407395859306719e-05,
+              "fine": 3.9031396813671365e-06,
+              "fine_uncertainty": 1.8128960197411863e-06,
+              "observed_order": 1.884102593125763,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.967747854960245e-05,
+              "fine": 1.0675795706195507e-05,
+              "fine_uncertainty": 1.582657042342627e-05,
+              "observed_order": 0.8822017639649725,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32"
+      },
+      "B14": {
+        "discrete_guard": {
+          "spatial_bottom_flux_sign_mismatch_count": 0,
+          "spatial_max_reversal_timing_difference_steps": 0,
+          "spatial_reversal_sequence_mismatch_history_count": 0,
+          "temporal_bottom_flux_sign_mismatch_count": 0,
+          "temporal_max_reversal_timing_difference_steps": 0,
+          "temporal_reversal_sequence_mismatch_history_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 3.765876499528531e-13,
+        "metrics": {
+          "cumulative_bottom_rmse_cm": {
+            "combined_reference_uncertainty": 6.5946666080010085e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.453087371969571e-05,
+              "fine": 9.010480537729683e-06,
+              "fine_uncertainty": 3.976660887525892e-06,
+              "observed_order": 1.9382108849998474,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.681295773592822e-06,
+              "fine": 1.920415501824694e-06,
+              "fine_uncertainty": 2.618005720475117e-06,
+              "observed_order": 0.93879518090243,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "interval_bottom_flux_rmse_cm_per_day": {
+            "combined_reference_uncertainty": 0.0032984437546386075,
+            "qualified": true,
+            "space": {
+              "coarse": 0.018903965624748043,
+              "fine": 0.005120502043088193,
+              "fine_uncertainty": 0.0023778077456668646,
+              "observed_order": 1.8843317387243885,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 0.0012921908981018333,
+              "fine": 0.0006744925852676285,
+              "fine_uncertainty": 0.0009206360089717427,
+              "observed_order": 0.9379447294235839,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 1.5701153423740725e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 8.448664479855421e-07,
+              "fine": 2.1906549577952117e-07,
+              "fine_uncertainty": 9.585654047017299e-08,
+              "observed_order": 1.9473610373242816,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 8.633096133867617e-08,
+              "fine": 4.49789475046493e-08,
+              "fine_uncertainty": 6.115499376723425e-08,
+              "observed_order": 0.9406281508834864,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 6.594666716396792e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.453087362413121e-05,
+              "fine": 9.01048064590521e-06,
+              "fine_uncertainty": 3.976661014757032e-06,
+              "observed_order": 1.9382108636868685,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.6812957861797175e-06,
+              "fine": 1.9204155017958163e-06,
+              "fine_uncertainty": 2.6180057016397606e-06,
+              "observed_order": 0.9387951858569119,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32"
+      }
+    },
+    "surface": {
+      "B01": {
+        "discrete_guard": {
+          "spatial_max_storage_extremum_timing_difference_steps": 0,
+          "temporal_max_storage_extremum_timing_difference_steps": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 4.263256414560601e-13,
+        "metrics": {
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 4.847386730363428e-08,
+            "qualified": true,
+            "space": {
+              "coarse": 1.4506779257504937e-08,
+              "fine": 3.6269882322562694e-09,
+              "fine_uncertainty": 1.5114081242917056e-09,
+              "observed_order": 1.999883283425001,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 7.516767967603819e-08,
+              "fine": 3.757921491443024e-08,
+              "fine_uncertainty": 4.6962459179342575e-08,
+              "observed_order": 1.000177543458193,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "root_0_40_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.2065788552404486e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 2.904994721960821e-07,
+              "fine": 7.26274506027534e-08,
+              "fine_uncertainty": 3.0262872571248605e-08,
+              "observed_order": 1.9999486984097987,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.883365357962708e-06,
+              "fine": 9.414726522559728e-07,
+              "fine_uncertainty": 1.1763159826691999e-06,
+              "observed_order": 1.0003218051229146,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "surface_0_20_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.0077801115325646e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.2451914648180475e-07,
+              "fine": 8.113342420250242e-08,
+              "fine_uncertainty": 3.3807614417440895e-08,
+              "observed_order": 1.9999353159405584,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.559066995503619e-06,
+              "fine": 7.794149737076e-07,
+              "fine_uncertainty": 9.739724971151238e-07,
+              "observed_order": 1.000219371010995,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": null,
+            "qualified": false,
+            "space": {
+              "coarse": 2.733196595275958e-13,
+              "fine": 9.567846308784434e-13,
+              "fine_uncertainty": null,
+              "observed_order": null,
+              "qualified": false,
+              "reason": "NONMONOTONE_OR_UNRESOLVED"
+            },
+            "time": {
+              "coarse": 8.989235258281549e-14,
+              "fine": 2.4489579724095774e-13,
+              "fine_uncertainty": null,
+              "observed_order": null,
+              "qualified": false,
+              "reason": "NONMONOTONE_OR_UNRESOLVED"
+            }
+          },
+          "upper_0_80_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.0977188223159236e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 2.086360935081492e-07,
+              "fine": 5.216054531675512e-08,
+              "fine_uncertainty": 2.1734406103608873e-08,
+              "observed_order": 1.9999579044485887,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.7225195354914213e-06,
+              "fine": 8.611023177821215e-07,
+              "fine_uncertainty": 1.0759844162123147e-06,
+              "observed_order": 1.0002637683262998,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": false,
+        "reference_target": "R2048_T32"
+      },
+      "B14": {
+        "discrete_guard": {
+          "spatial_max_storage_extremum_timing_difference_steps": 114,
+          "temporal_max_storage_extremum_timing_difference_steps": 50
+        },
+        "discrete_guard_pass": false,
+        "max_abs_transaction_mass_cm": 1.4210854715202004e-13,
+        "metrics": {
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 2.0084443086118054e-10,
+            "qualified": true,
+            "space": {
+              "coarse": 5.414369237703706e-10,
+              "fine": 1.3542535933633986e-10,
+              "fine_uncertainty": 5.6463994987871474e-11,
+              "observed_order": 1.9992953579262442,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 2.3080763186634636e-10,
+              "fine": 1.1543731388675307e-10,
+              "fine_uncertainty": 1.4438043587330906e-10,
+              "observed_order": 0.9995812935772186,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "root_0_40_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.459065673241474e-10,
+            "qualified": true,
+            "space": {
+              "coarse": 6.437053309644644e-10,
+              "fine": 1.6093507448440617e-10,
+              "fine_uncertainty": 6.706113791097653e-11,
+              "observed_order": 1.999921632917689,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 2.8616279186412734e-10,
+              "fine": 1.4307971177179012e-10,
+              "fine_uncertainty": 1.7884542941317087e-10,
+              "observed_order": 1.0000169815506672,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "surface_0_20_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.015856869994582e-09,
+            "qualified": true,
+            "space": {
+              "coarse": 5.37135514220441e-09,
+              "fine": 1.3432225989693344e-09,
+              "fine_uncertainty": 5.598893938495213e-10,
+              "observed_order": 1.9995877043450534,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 2.3282000462681373e-09,
+              "fine": 1.1643246179408613e-09,
+              "fine_uncertainty": 1.4559674761450609e-09,
+              "observed_order": 0.9997216815101009,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": null,
+            "qualified": false,
+            "space": {
+              "coarse": 1.2132952892638419e-12,
+              "fine": 1.3740011247129605e-12,
+              "fine_uncertainty": null,
+              "observed_order": null,
+              "qualified": false,
+              "reason": "NONMONOTONE_OR_UNRESOLVED"
+            },
+            "time": {
+              "coarse": 1.773405357493481e-14,
+              "fine": 1.8225250201427202e-14,
+              "fine_uncertainty": null,
+              "observed_order": null,
+              "qualified": false,
+              "reason": "NONMONOTONE_OR_UNRESOLVED"
+            }
+          },
+          "upper_0_80_storage_rmse_cm": {
+            "combined_reference_uncertainty": null,
+            "qualified": false,
+            "space": {
+              "coarse": 1.5548224568149065e-13,
+              "fine": 1.7847763160290613e-14,
+              "fine_uncertainty": 2.893012746431125e-15,
+              "observed_order": 3.1229346708819192,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.0887546875265388e-14,
+              "fine": 1.2116826792544646e-14,
+              "fine_uncertainty": null,
+              "observed_order": null,
+              "qualified": false,
+              "reason": "NONMONOTONE_OR_UNRESOLVED"
+            }
+          }
+        },
+        "qualified": false,
+        "reference_target": "R2048_T32"
+      }
+    }
+  },
+  "schema": "swap5.rom-purpose.p1.reference-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "representation_tuned_from_response": false
+  },
+  "status": "P1_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES",
+  "work_unit": "ROM-PURPOSE-P1-REFERENCE",
+  "workstream": "ROM-PURPOSE"
+}

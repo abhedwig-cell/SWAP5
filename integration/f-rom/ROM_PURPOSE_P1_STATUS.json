@@ -1,28 +1,42 @@
 {
-  "schema": "swap5.rom-purpose.p1.status.v1",
-  "workstream": "ROM-PURPOSE",
-  "work_unit": "ROM-PURPOSE-P1",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "cb3d491bc768f290cf387e458b679bcf0066d2a1",
-  "implemented": true,
-  "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "phase": "REFERENCE_SEGMENTED_REPAIRED_AUTHORITY_QUEUED",
-  "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
-  "reference_workflow_run": 35751978638,
-  "stale_duplicate_workflow_run": 35748342142,
-  "stale_duplicate_response_capable": false,
+  "blockers": [
+    "P1_REFERENCE_QUALIFICATION_FAILED"
+  ],
+  "candidate_implementation_staged": true,
   "candidate_response_authorized": false,
   "candidate_response_generated": false,
-  "candidate_implementation_staged": true,
-  "next_action": "QUALIFY_SURFACE_AND_GW_CHECKPOINT_TOPOLOGY_THEN_EXECUTE_BOUND_REFERENCE_MATRIX",
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json + workflow run 35751978638",
-  "blockers": [
-    "EXTERNAL_GITHUB_ACTIONS_CAPACITY"
+  "checkpoint_commit": "cb3d491bc768f290cf387e458b679bcf0066d2a1",
+  "dependency_surface": [
+    "src/",
+    "reference/",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "tests/rom/compile_f_rom0_fortran_closure.py",
+    "tests/rom/materialize_f_rom0_headcalc_stubs.py"
   ],
+  "external_scheduler_snapshot": {
+    "checkpoint_gw_status": "QUEUED",
+    "checkpoint_jobs_materialized": 2,
+    "checkpoint_surface_status": "QUEUED",
+    "segmented_run": 35751978638
+  },
+  "history_sharded_disposition": "SUPERSEDED_AFTER_R2048_T32_EXIT_143; R512/R1024 POSITIVE TECHNICAL CONTROL ONLY",
+  "history_sharded_reference_workflow_run": 35749982543,
+  "implemented": true,
   "last_reconciled_head": "cb3d491bc768f290cf387e458b679bcf0066d2a1",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "next_action": "STOP_BEFORE_CANDIDATES_REFERENCE_QUALITY_BLOCKER",
+  "original_reference_execution_disposition": "TECHNICALLY_INVALID_INCOMPLETE_EXIT_143",
+  "original_reference_workflow_run": 35748342021,
+  "persisted": true,
+  "phase": "REFERENCE_SCIENTIFICALLY_NOT_QUALIFIED",
+  "qualified": false,
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
+  "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
+  "reference_execution_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json",
+  "reference_execution_repair": "R2048_EXACT_STATE_SEGMENTED_R512_R1024_FULL_HISTORY",
+  "reference_status": "P1_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES",
+  "reference_workflow_run": 35751978638,
   "relevant_paths": [
     "integration/f-rom/ROM_PURPOSE_P0_AUTHORITY_BINDING.json",
     "docs/science/F-ROM_PURPOSE_P0_SYNTHESIS.md",
@@ -47,40 +61,28 @@
     "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py",
     ".github/workflows/f-rom-purpose-p1-reference-segmented.yml"
   ],
-  "dependency_surface": [
-    "src/",
-    "reference/",
-    "tests/fsi/fsi04_real_headcalc_stubs.f90",
-    "tests/rom/compile_f_rom0_fortran_closure.py",
-    "tests/rom/materialize_f_rom0_headcalc_stubs.py"
-  ],
+  "schema": "swap5.rom-purpose.p1.status.v1",
   "scientific_firewall": {
-    "reference_qualification_result_generated": false,
-    "usable_reference_evidence_persisted": false,
-    "candidate_response_generated": false,
-    "representation_retuned": false,
-    "reference_metric_values_used_to_design_execution_repair": false,
     "application_acceptance_adjudicated": false,
+    "candidate_response_generated": false,
     "performance_comparison_authorized": false,
-    "production_rom_authorized": false
+    "production_rom_authorized": false,
+    "reference_metric_values_used_to_design_execution_repair": false,
+    "reference_qualification_result_generated": true,
+    "representation_retuned": false,
+    "usable_reference_evidence_persisted": true
   },
-  "reference_execution_repair": "R2048_EXACT_STATE_SEGMENTED_R512_R1024_FULL_HISTORY",
+  "source_workflow_run": 35751978638,
+  "stale_duplicate_response_capable": false,
+  "stale_duplicate_workflow_run": 35748342142,
+  "superseded_segmented_workflow_run": 35751525444,
   "superseded_technical_runs": [
     35748342021,
     35748342142,
     35749728663,
     35749780410
   ],
-  "original_reference_workflow_run": 35748342021,
-  "original_reference_execution_disposition": "TECHNICALLY_INVALID_INCOMPLETE_EXIT_143",
-  "reference_execution_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json",
-  "history_sharded_reference_workflow_run": 35749982543,
-  "history_sharded_disposition": "SUPERSEDED_AFTER_R2048_T32_EXIT_143; R512/R1024 POSITIVE TECHNICAL CONTROL ONLY",
-  "external_scheduler_snapshot": {
-    "segmented_run": 35751978638,
-    "checkpoint_jobs_materialized": 2,
-    "checkpoint_surface_status": "QUEUED",
-    "checkpoint_gw_status": "QUEUED"
-  },
-  "superseded_segmented_workflow_run": 35751525444
+  "tested": true,
+  "work_unit": "ROM-PURPOSE-P1",
+  "workstream": "ROM-PURPOSE"
 }
