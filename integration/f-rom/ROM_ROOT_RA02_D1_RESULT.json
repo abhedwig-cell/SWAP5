@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.rom_root.ra02_d1.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D1",
+  "date": "2026-09-23",
+  "status": "DIAGNOSTIC_COMPLETE_AVAILABLE_OUTPUT_SUPPORTS_NUMERICAL_FLOOR_NODE_LEVEL_UNRESOLVED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RA02_D1_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RA02_D1_BINDING.json",
+    "technical_repairs": [
+      "integration/f-rom/ROM_ROOT_RA02_D1_TECHNICAL_REPAIR.json",
+      "integration/f-rom/ROM_ROOT_RA02_D1_METRIC_REPAIR.json"
+    ],
+    "ra01_workflow_run": 35819870854,
+    "ra01_evidence_artifact": {
+      "id": 10733930641,
+      "name": "rom-root-ra01",
+      "digest": "sha256:77a4fe8d5ea1a210533e30b3a87a22ef7b42c8759cbc583763a3ce018debdb0b"
+    },
+    "final_d1_run": 35822094381,
+    "final_d1_head": "3dd20320c8ba9104c0f7f7e9b75a132bbc63a2f2",
+    "final_d1_artifact": {
+      "id": 10733646926,
+      "name": "rom-root-ra02-d1",
+      "digest": "sha256:80f1c3ecd8c50d39a7c6902b1e60d29e431cf13d52ab4dedb39a4882add98503"
+    }
+  },
+  "reproduced_ra01_root_metrics": {
+    "B01": {
+      "space": {
+        "R512_T32_to_R1024_T32": {
+          "actual_rate_rmse": 1.99024178771585e-15,
+          "cumulative_rmse": 1.7691073664358404e-16
+        },
+        "R1024_T32_to_R2048_T32": {
+          "actual_rate_rmse": 6.113660907210209e-15,
+          "cumulative_rmse": 3.670150237255131e-15
+        }
+      },
+      "time": {
+        "R2048_T8_to_R2048_T16": {
+          "actual_rate_rmse": 1.3369755905155498e-16,
+          "cumulative_rmse": 2.1775681525461644e-17
+        },
+        "R2048_T16_to_R2048_T32": {
+          "actual_rate_rmse": 2.086721647378494e-16,
+          "cumulative_rmse": 4.432095343653109e-19
+        }
+      }
+    },
+    "B14": "IDENTICAL_TO_B01_FOR_THE_FROZEN_ROOT_RESPONSE_METRICS"
+  },
+  "diagnostics": {
+    "all_material_route_pairs": {
+      "bin_mean_h3_h4_threshold_straddles": 0,
+      "actual_rate_roundoff_reference_exceedances": 0,
+      "exact_full_potential_status_disagreements": 0
+    },
+    "maximum_actual_rate_fraction_of_preregistered_roundoff_reference": 0.05364583333332356,
+    "maximum_actual_rate_absolute_difference": 1.1435297153639112e-14,
+    "maximum_actual_rate_ulp_distance": 103,
+    "response_fraction_envelope": {
+      "V01_V02_min": 0.9999999999998892,
+      "V01_V02_max": 1.0000000000000293,
+      "V03_V04_min": 0.9999999999998851,
+      "V03_V04_max": 1.000000000000048
+    },
+    "critical_h3_effective_saturation": {
+      "B01": {
+        "high_demand": 0.55,
+        "low_demand_0p30": 0.42571759600680326
+      },
+      "B14": {
+        "high_demand": 0.55,
+        "low_demand_0p30": 0.40613288830832667
+      }
+    },
+    "h4_effective_saturation": 0.08
+  },
+  "classifications": {
+    "AVAILABLE_OUTPUT_SUPPORTS_NUMERICAL_FLOOR": true,
+    "THRESHOLD_EFFECT_PLAUSIBLE_AT_BIN_SCALE": false,
+    "ROOT_RATE_EXCEEDS_AGGREGATION_ROUNDOFF_REFERENCE": false,
+    "NODE_LEVEL_ADJUDICATION_UNAVAILABLE": true,
+    "REFERENCE_AUTHORITY_CHANGE": false
+  },
+  "interpretation": {
+    "bounded_conclusion": "At the persisted RA01 output resolution, the root-response differences are consistent with deterministic floating-point aggregation noise: every actual-rate difference is below the preregistered gamma-based aggregation reference, no rooted 10-cm mean profile crosses a Feddes h3 or h4 threshold between compared routes, and the frozen RA01 root RMSEs are exactly reproduced.",
+    "limitation": "The persisted evidence does not contain node-level pressure heads or drought-reduction factors. Therefore D1 cannot prove that every rooted node remains in the same Feddes regime across route pairs.",
+    "reference_status": "NOT_QUALIFIED",
+    "root_feedback_hypothesis_tested": false
+  },
+  "scientific_firewall": {
+    "new_simulation_executed": false,
+    "reference_qualified": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "uncertainty_gate_changed": false,
+    "new_root_state_selected": false,
+    "production_change_authorized": false
+  },
+  "next": "Preregister RA02-D2 as a Reference-only node-level Feddes-regime diagnostic on the frozen RA01 domain. D2 may emit pressure-head/reduction-factor regime evidence but may not change physics, numerical policy, uncertainty gates or execute reduced candidates."
+}
