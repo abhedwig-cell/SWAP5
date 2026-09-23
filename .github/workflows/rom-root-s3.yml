@@ -1,0 +1,185 @@
+name: ROM-ROOT Stage 3 blind dynamic feedback comparison
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_S3_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-s3-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  candidate:
+    name: ${{ matrix.material }}-${{ matrix.history }}-${{ matrix.member }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        history: [V01, V02, V03, V04]
+        member: [U4, U8, R8, R16]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify Stage 3 authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_S3_BINDING.json'))
+          c0=json.load(open('integration/f-rom/ROM_ROOT_S3C0_RESULT.json'))
+          s2=json.load(open('integration/f-rom/ROM_ROOT_S2_CLOSEOUT.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_ANY_STAGE3_REDUCED_DYNAMIC_FEEDBACK_RESPONSE'
+          assert b['state']=='BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE'
+          assert c0['status']=='S3C0_FULL_POTENTIAL_REFERENCE_QUALIFIED'
+          assert s2['status']=='CLOSED_STAGE2_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+      - name: Execute blind dynamic and full-potential reduced pair
+        run: |
+          set -euo pipefail
+          mkdir -p candidate
+          python3 tests/rom/run_rom_root_s3_dynamic_feedback.py \
+            --material "${{ matrix.material }}" \
+            --history "${{ matrix.history }}" \
+            --member "${{ matrix.member }}" \
+            --prereg integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json \
+            --s3c0-result integration/f-rom/ROM_ROOT_S3C0_RESULT.json \
+            --output "candidate/${{ matrix.material }}_${{ matrix.history }}_${{ matrix.member }}.json" \
+            | tee candidate/runner.txt
+          python3 - "candidate/${{ matrix.material }}_${{ matrix.history }}_${{ matrix.member }}.json" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1]))
+          f=r['scientific_firewall']
+          assert f['representation_changed'] is False
+          assert f['closure_changed'] is False
+          assert f['fitted_coefficient_used'] is False
+          assert f['error_correction_used'] is False
+          assert f['relaxation_used'] is False
+          assert f['new_memory_state_used'] is False
+          assert f['production_rom_authorized'] is False
+          PY
+          sha256sum candidate/* > candidate/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s3-${{ matrix.material }}-${{ matrix.history }}-${{ matrix.member }}
+          path: candidate/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: candidate
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve frozen Reference run authorities
+        id: authority
+        run: |
+          python3 - <<'PY'
+          import json,os
+          ra=json.load(open('integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json'))
+          c0=json.load(open('integration/f-rom/ROM_ROOT_S3C0_RESULT.json'))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write("ra02r_run=%s\n" % ra['authority']['workflow_run'])
+              f.write("s3c0_run=%s\n" % c0['authority']['workflow_run'])
+          PY
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-root-s3-*
+          path: /tmp/candidates
+          merge-multiple: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-root-ra02r
+          path: /tmp/ra02r
+          run-id: ${{ steps.authority.outputs.ra02r_run }}
+          github-token: ${{ github.token }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-root-s3c0
+          path: /tmp/s3c0
+          run-id: ${{ steps.authority.outputs.s3c0_run }}
+          github-token: ${{ github.token }}
+
+      - name: Execute frozen componentwise Stage 3 analysis
+        run: |
+          set -euo pipefail
+          mkdir -p S3_EVIDENCE
+          python3 tests/rom/analyze_rom_root_s3_dynamic_feedback.py \
+            --prereg integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json \
+            --ra02r-result integration/f-rom/ROM_ROOT_RA02R_RESULT.json \
+            --s3c0-result integration/f-rom/ROM_ROOT_S3C0_RESULT.json \
+            --candidate-dir /tmp/candidates \
+            --ra02r-b01-r512-t32 /tmp/ra02r/B01_R512_T32_o0.txt \
+            --ra02r-b01-r1024-t32 /tmp/ra02r/B01_R1024_T32_o0.txt \
+            --ra02r-b01-r2048-t32 /tmp/ra02r/B01_R2048_T32_o0.txt \
+            --ra02r-b01-r2048-t16 /tmp/ra02r/B01_R2048_T16_o0.txt \
+            --ra02r-b01-r2048-t8 /tmp/ra02r/B01_R2048_T8_o0.txt \
+            --ra02r-b14-r512-t32 /tmp/ra02r/B14_R512_T32_o0.txt \
+            --ra02r-b14-r1024-t32 /tmp/ra02r/B14_R1024_T32_o0.txt \
+            --ra02r-b14-r2048-t32 /tmp/ra02r/B14_R2048_T32_o0.txt \
+            --ra02r-b14-r2048-t16 /tmp/ra02r/B14_R2048_T16_o0.txt \
+            --ra02r-b14-r2048-t8 /tmp/ra02r/B14_R2048_T8_o0.txt \
+            --s3c0-b01-r512-t32 /tmp/s3c0/B01_R512_T32_o0.txt \
+            --s3c0-b01-r1024-t32 /tmp/s3c0/B01_R1024_T32_o0.txt \
+            --s3c0-b01-r2048-t32 /tmp/s3c0/B01_R2048_T32_o0.txt \
+            --s3c0-b01-r2048-t16 /tmp/s3c0/B01_R2048_T16_o0.txt \
+            --s3c0-b01-r2048-t8 /tmp/s3c0/B01_R2048_T8_o0.txt \
+            --s3c0-b14-r512-t32 /tmp/s3c0/B14_R512_T32_o0.txt \
+            --s3c0-b14-r1024-t32 /tmp/s3c0/B14_R1024_T32_o0.txt \
+            --s3c0-b14-r2048-t32 /tmp/s3c0/B14_R2048_T32_o0.txt \
+            --s3c0-b14-r2048-t16 /tmp/s3c0/B14_R2048_T16_o0.txt \
+            --s3c0-b14-r2048-t8 /tmp/s3c0/B14_R2048_T8_o0.txt \
+            --output S3_EVIDENCE/ROM_ROOT_S3_RESULT.json \
+            | tee S3_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json S3_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3_BINDING.json S3_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_RA02R_RESULT.json S3_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3C0_RESULT.json S3_EVIDENCE/
+          sha256sum S3_EVIDENCE/* > S3_EVIDENCE/sha256.txt
+
+      - name: Enforce Stage 3 firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('S3_EVIDENCE/ROM_ROOT_S3_RESULT.json'))
+          assert r['status']=='STAGE3_DYNAMIC_FEEDBACK_BLIND_COMPARISON_COMPLETE'
+          f=r['scientific_firewall']
+          assert f['new_partition_selected'] is False
+          assert f['new_hydraulic_closure_selected'] is False
+          assert f['new_root_specific_state_selected'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_S3_FIREWALL=PASS')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s3
+          path: S3_EVIDENCE/
+          if-no-files-found: error
