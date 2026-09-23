@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.rom-practical.p2c-b05.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2C-B05",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_B05_SAME_PARTITION_RICHARDS_RESPONSE",
+  "purpose": "Attribute the B05 failure of the G4→G6 Layer-ROM event repair to representation/placement versus reduced propagation/closure.",
+  "authority": {
+    "p2a_result": "integration/f-rom/ROM_PRACTICAL_P2A_RESULT.json",
+    "p2b_result": "integration/f-rom/ROM_PRACTICAL_P2B_GW1_RESULT.json",
+    "p2b_closeout": "integration/f-rom/ROM_PRACTICAL_P2B_GW1_CLOSEOUT.json",
+    "variable_grid_stub_source": "work/f-rom-layer-a:tests/rom/materialize_layer_rom_variable_grid_stubs.py@e0e6c17eb31f720949cd1ff034a5189bb6db73e5",
+    "reference_harness": "P2A B05 GW_LB R256_T8 materialized from frozen ROM-PURPOSE harness"
+  },
+  "material": "B05",
+  "histories": [
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+  ],
+  "tests": [
+    {
+      "id": "COR_G4",
+      "solver": "conventional Richards",
+      "boundaries_cm": [
+        0,
+        80,
+        120,
+        140,
+        160
+      ],
+      "state_count": 4
+    },
+    {
+      "id": "COR_G6",
+      "solver": "conventional Richards",
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        140,
+        150,
+        160
+      ],
+      "state_count": 6
+    }
+  ],
+  "comparison_basis": {
+    "fine_reference": "R256_T8",
+    "numerical_comparator": "R128_T8",
+    "layer_rom_G4": "P2A B05 G4",
+    "layer_rom_G6": "P2B-GW1 B05 G6",
+    "event_vector": [
+      "bottom_flux_sign_mismatch_count",
+      "reversal_sequence_mismatch_count",
+      "reversal_timing_error_steps"
+    ],
+    "continuous_vector": [
+      "cumulative_bottom_exchange_error_cm",
+      "interval_bottom_flux_error_cm_per_day",
+      "total_storage_error_cm",
+      "history_signed_bottom_flux_bias_cm_per_day",
+      "long_horizon_exchange_drift_cm"
+    ]
+  },
+  "prospective_decisions": {
+    "CLOSURE_PROPAGATION_DEFECT_SUPPORTED": "At G4 or G6, same-partition Richards is componentwise better than Layer-ROM on the event vector, with at least one strict improvement.",
+    "REPRESENTATION_PLACEMENT_DEFECT_SUPPORTED": "Same-partition Richards retains the Layer-ROM event defect at both G4 and G6 with no material event improvement.",
+    "MIXED_ATTRIBUTION": "Same-partition Richards improves some event components but does not remove the persistent reversal-sequence/timing failure, or attribution differs between G4 and G6.",
+    "G6_SPATIAL_INFORMATION_VALUE": "COR_G6 is componentwise no worse than COR_G4 on the event vector and strictly better on at least one event component.",
+    "NO_G6_SPATIAL_INFORMATION_VALUE": "COR_G6 does not improve the event vector over COR_G4."
+  },
+  "stop_rules": [
+    "Do not execute G8 in this work unit.",
+    "Do not change closure, forcing, material parameters or timestep policy.",
+    "Do not tune B05.",
+    "Do not open P-ROM-ET.",
+    "No application acceptance or production admission."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
