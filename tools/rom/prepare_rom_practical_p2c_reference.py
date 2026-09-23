@@ -9,7 +9,7 @@ def main():
     a=ap.parse_args()
     text=a.source.read_text()
     old="call require(any(numnod==[128,256]),'LAREGW1 ROMPRACT P2A geometry is R128/R256')"
-    new="call require(any(numnod==[4,6,128,256]),'LAREGW1 ROMPRACT P2C geometry is G4/G6/R128/R256')"
+    new="call require(any(numnod==[4,6,8,128,256]),'LAREGW1 ROMPRACT P2C geometry is G4/G6/G8/U8/R128/R256')"
     if text.count(old)!=1:
         raise SystemExit(f"geometry guard expected once, found {text.count(old)}")
     text=text.replace(old,new,1)
