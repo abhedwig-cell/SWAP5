@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-WATER-DEFICIT",
+  "parent_workunit": "PPA-IRR-TCS1-4-TIMING",
+  "title": "Source-bound scheduled irrigation root-zone water accounting",
+  "protocol": "PIN_B1_11_SOURCE -> REPLAY_ROOT_ZONE_LOOP_AND_LAST_NODE_FRACTION -> BITWISE_COMPARE_100000_VALID_COLUMNS -> O0_O2_REPLAY -> HOLD_WATER_CONTENT_AND_PRODUCTION_OWNERSHIP",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "462-473",
+    "equations": [
+      "frlow=(ztopcp(noddrz)+rd)/dz(noddrz)",
+      "multiply lower, middle and actual compartment water contents by dz(node), and multiply again by frlow at noddrz",
+      "awlh=sum(wclo-wchi), awmh=sum(wcme-wchi), awah=sum(wcac-wchi), cdef=sum(wclo-wcac), accumulated in increasing node order"
+    ]
+  },
+  "scope": [
+    "pure summation over supplied root-zone nodes and layer-indexed water contents",
+    "fractional last root-zone compartment handling at noddrz",
+    "100000 deterministic complete-column bitwise comparisons"
+  ],
+  "non_goals": [
+    "deriving noddrz, rd, ztopcp, dz, layer, soil water contents or watcon",
+    "TCS trigger selection, event creation, water balance or accepted source mass",
+    "calendar, solute, restart or production admission"
+  ],
+  "pass_conditions": [
+    "four accumulated values match direct B1.11 source-order replay bitwise",
+    "100000 deterministic columns pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}
