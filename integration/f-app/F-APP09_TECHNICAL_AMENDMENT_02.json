@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.f_app09.technical_amendment.v2",
+  "work_unit": "F-APP09",
+  "amendment": "TECHNICAL_TRANSACTION_OBSERVATION_REPAIR_02",
+  "date": "2026-09-23",
+  "classification": "ACCEPTED_WINDOW_TRANSFER_SEMANTICS_REPAIR_BEFORE_PRODUCTION_ADMISSION",
+  "source_diagnosis": {
+    "transaction_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "accepted_state": "two sequential half-step outcomes",
+    "existing_observation": "drainage_response_signed_exchange_native is set on each physical advance as rate * that advance duration",
+    "defect": "After accepted two-half composition, last_observation describes the second half-step and is therefore not authoritative for the integrated accepted-window drainage transfer.",
+    "consequence": "A coupling participant using last_observation.drainaige_response_signed_exchange_native can publish only the final half-step amount while committing a whole-window candidate."
+  },
+  "repair_contract": {
+    "approach": "Add worker-local signed drainage-exchange accumulation to the serialized model attempt context.",
+    "rollback": "Checkpoint/full/half/retry restore the accumulator with the same transaction attempt context as other worker-local carriers.",
+    "accepted_value": "After the accepted half path, the accumulator equals half1 + half2 signed drainage exchange for the accepted coupling window.",
+    "compatibility": "Keep existing per-physical-advance drainage_response_signed_exchange_native semantics unchanged; expose a separate window-integrated observation for F-APP09.",
+    "participant_rule": "F-APP09 may publish/compare only the window-integrated exchange, never the last physical-step exchange."
+  },
+  "unchanged": [
+    "Q4A constitutive signed drainage/infiltration law",
+    "Q4B mass booking",
+    "surface-water owner XOR",
+    "single-level V1 scope",
+    "external-head materialization",
+    "coupling window",
+    "exchange tolerance",
+    "mass tolerance",
+    "accepted-state commit/rollback authority"
+  ],
+  "anti_retuning_rule": "No numerical or scientific tolerance is widened. Owner qualification must still prove mismatch discard/replay, matched commit, signed positive/negative transfer and stale-origin rejection."
+}
