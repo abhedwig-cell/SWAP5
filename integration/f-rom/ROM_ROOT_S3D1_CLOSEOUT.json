@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.rom_root.s3d1.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D1",
+  "date": "2026-09-23",
+  "status": "CLOSED_A_AND_B_STATIC_MISSING_INFORMATION_CONFIRMED",
+  "result": "integration/f-rom/ROM_ROOT_S3D1_RESULT.json",
+  "bounded_conclusion": "The R16 dynamic root-feedback falsification has a demonstrable same-state functional source. Both within-layer h3 threshold nonlinearity (A) and storage-head versus root-weighted-head mismatch (B) are numerically distinguishable in every tested material/history case. Hydraulic propagation D is not needed to explain the existence of the error.",
+  "decision": {
+    "new_root_specific_state_selected": false,
+    "memory_state_justified": false,
+    "application_acceptance_adjudicated": false,
+    "next": "ROM-ROOT-S3-D2"
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-S3-D2",
+    "question": "Does dyadic refinement of the existing hydraulic vertical support, without any root-specific state, systematically collapse both A and B on the same qualified Reference states, and what static support frontier is observed?",
+    "role": "DIAGNOSTIC_SUPPORT_RESOLUTION_SWEEP_ONLY",
+    "prohibited": [
+      "No dynamic reduced candidate.",
+      "No application tolerance.",
+      "No new root-specific state.",
+      "No performance or production claim."
+    ]
+  },
+  "model_changed": false
+}
