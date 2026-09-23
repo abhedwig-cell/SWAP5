@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.ribasim_management.transaction_temporal_provenance.preregistration.v1",
+  "work_unit": "RM21",
+  "date": "2026-09-23",
+  "title": "Attempt-level provenance of the RM19 temporal diagnostic",
+  "depends_on": {
+    "RM19": "terminal transaction diagnostic max_temporal_indicator=92569.71928978531",
+    "RM20": "direct full-window historical-predecessor normalization=361493.0249484519"
+  },
+  "frozen_retry_sequence_seconds": [8.64, 4.32, 2.16, 1.08],
+  "frozen_predecessor": "zero vector, exactly as seeded by F-GC44 initialize_committed_state",
+  "question": "Does the transaction diagnostic named max_temporal_indicator actually report the last solver-successful temporal attempt rather than the maximum across attempts?",
+  "hypotheses": [
+    "Raw Richards solves converge at 8.64, 4.32 and 2.16 seconds and fail at or below 1.08 seconds, consistent with RM15/RM16.",
+    "The direct normalized temporal indicators at the three successful durations decrease with retry duration.",
+    "The 2.16-second normalized indicator matches RM19 max_temporal_indicator within floating-point tolerance.",
+    "The 8.64-second direct indicator is larger than the RM19 reported diagnostic, proving the current diagnostic name/aggregation is misleading for a retry-exhausted transaction."
+  ],
+  "failure_rule": "Do not alter retry_scale, retry_count, temporal budget, solver tolerances, irrigation forcing or predecessor history.",
+  "nonclaims": [
+    "RM21 does not change transaction acceptance.",
+    "RM21 does not admit any temporal budget.",
+    "RM21 does not justify shorter timesteps.",
+    "Any diagnostic repair must preserve all accept/reject semantics."
+  ]
+}
