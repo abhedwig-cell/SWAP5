@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.rom-practical.p6a.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6A",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_RESEARCH_INTERFACE_IMPLEMENTATION_RESPONSE",
+  "title": "Stable research execution interface for qualified S4/G8 core",
+  "objective": "Expose the P5-qualified reduced core through a stable research-only execution contract without changing equations, state placement, closure, timestep or forcing.",
+  "frozen_authority": {
+    "p5_closeout": "integration/f-rom/ROM_PRACTICAL_P5_CLOSEOUT.json",
+    "core_source_blob": "5f8f96300523fb8a1534b3cc2f1c159921c95a05",
+    "numerical_policy": "compiled RK4 dt=0.005 day",
+    "materials": "integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json"
+  },
+  "interface_contract": {
+    "input_fields": [
+      "purpose",
+      "material",
+      "material_parameters",
+      "horizon_days",
+      "forcing_profile",
+      "output_path"
+    ],
+    "allowed_purposes": [
+      "SURF_P",
+      "GW_LB"
+    ],
+    "allowed_forcing_profiles": [
+      "P3_SD",
+      "P3_GD"
+    ],
+    "fixed_dt_day": 0.005,
+    "output": {
+      "format": "JSON",
+      "required": [
+        "schema",
+        "status",
+        "purpose",
+        "material",
+        "member",
+        "dt_day",
+        "histories",
+        "max_water_ledger_cm",
+        "rhs_evaluations",
+        "provenance"
+      ]
+    },
+    "fail_closed": [
+      "unknown purpose",
+      "unknown material",
+      "unsupported forcing profile",
+      "core nonzero exit",
+      "incomplete 60-day output",
+      "ledger gate violation"
+    ]
+  },
+  "regression_gate": {
+    "trajectories": "New research interface must reproduce the direct P5 core daily outputs to 1e-12 absolute for persisted scalar state/flux fields.",
+    "status": "All six materials and both purposes complete.",
+    "performance": "Wrapper overhead reported separately; no new speed qualification."
+  },
+  "scope_firewall": [
+    "No physics or closure change",
+    "No state-count change",
+    "No timestep change",
+    "No P-ROM-ET",
+    "No application acceptance",
+    "No production admission"
+  ],
+  "next_if_pass": "ROM-PRACTICAL-P6B realistic daily workload qualification",
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
