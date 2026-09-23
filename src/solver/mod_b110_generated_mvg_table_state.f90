@@ -330,7 +330,7 @@ contains
       end if
 
       if (.not. ieee_is_finite(water_content(i)) .or. .not. ieee_is_finite(conductivity(i)) .or. &
-          .not. ieee_is_finite(capacity(i)) .or. conductivity(i) <= 0.0_real64 .or. capacity(i) < 0.0_real64) then
+          .not. ieee_is_finite(capacity(i)) .or. conductivity(i) <= 0.0_real64) then
         status = F_TAB02_STATE_EVALUATION_FAILED
         return
       end if
