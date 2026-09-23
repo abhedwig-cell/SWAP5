@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "4ca8b046cd5e07d8b3b5dc4eb085cb70c92c9a72",
-    "local_relation_to_previous_canonical_base": "197 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "b980496834e536018ddace2958b01a30cb3c1e7d",
+    "local_relation_to_previous_canonical_base": "198 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "4ca8b046cd5e07d8b3b5dc4eb085cb70c92c9a72",
+    "last_reconciled_head": "b980496834e536018ddace2958b01a30cb3c1e7d",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -287,7 +287,7 @@
           "id": "M2-01",
           "text": "a reviewed inventory exists for the fields needed by M3-M5",
           "status": "PARTIAL",
-          "gap": "Ownership is explicit for admitted state/process contracts, but the all-fields M3–M5 inventory or complete cross-family ownership proof is not closed.",
+          "gap": "A new M8 owner crosswalk bounds the legacy worker-local trial capsule by field group and links admitted physical water/optional process continuation to F-CI07/F-CI08 evidence. The complete reviewed all-fields M3–M5 inventory and cross-family optional-state proof remain open.",
           "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
         },
         {
@@ -1335,14 +1335,19 @@
           "id": "M8-01",
           "text": "every retained behaviour has an identified target owner",
           "status": "PARTIAL",
-      "gap": "A committed-HEAD scan bounds 136 legacy-global USE lines across 27 legacy/adapter source fragments; the only two direct HeadCalc call sites are behind adapters, and process/crop/kernel have no direct legacy-global USEs. A first crosswalk assigns the full-run shell, Reference Richards, serialized transactions, checkpoint capsules and frozen F-CI11/F-CI13 ports to bounded owners, but the generic file-driven application/parser and every capsule/process field are not all mapped to separately qualified target owners.",
+      "gap": "A committed-HEAD scan bounds 136 legacy-global USE lines across 27 legacy/adapter source fragments; the only two direct HeadCalc call sites are behind adapters, and process/crop/kernel have no direct legacy-global USEs. The capsule's major field groups now have a bounded physical-continuation versus worker-local rollback crosswalk tied to F-CI07/F-CI08/F-CI09 evidence. Generic file/calendar/application/reporting ownership, complete retained-behaviour mapping and replacement of legacy-global bridges remain open.",
       "evidence": [
         "integration/audits/M8_LEGACY_GLOBAL_STATE_BOUNDARY_INVENTORY.json",
         "docs/architecture/migration-slices.md#M8",
         "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "integration/f-ci/F-CI07_STATUS.json",
+        "integration/f-ci/F-CI08_STATE_CLASSIFICATION.json",
+        "integration/f-ci/F-CI08_QUALIFICATION.md",
+        "integration/f-ci/F-CI08_STATUS.json",
+        "integration/f-ci/F-CI09_STATUS.json",
         "docs/status-a/TRACEABILITY.md"
       ],
-      "next_bounded_action": "Join the SWAP4 behavior/function inventory to M0-M5 owner evidence, starting with fields in the legacy trial capsule. Preserve the Reference engine and source ports until every dependent qualification has a replacement authority."
+      "next_bounded_action": "Continue the retained-behaviour crosswalk with the legacy file/calendar/management and output/reporting surfaces, referencing the bounded PPA-ATM-02/PPA-MGMT/PPA-OUTPUT-LEGACY authorities. Keep M8-01 PARTIAL and preserve the Reference engine/source ports until those behaviours and dependent qualifications have replacement owners."
         },
         {
           "id": "M8-02",
@@ -1417,5 +1422,5 @@
     }
   ],
   "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
-  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=4ca8b046cd5e07d8b3b5dc4eb085cb70c92c9a72 (M7 resource/memory/fallback audits and M8 bounded legacy-global/HeadCalc owner crosswalk persisted); M7-03 remains partial for active snow/drainage and allocator/transient accounting; M7-04 remains partial for accepted field-profile/production-bootstrap memory; M7-05 awaits a representative large batch and executable qualified B12-like fixture; M7-06 awaits per-column fallback-tier batch observability/qualification; M8-01 remains partial pending complete M0-M5 behavior-to-owner crosswalk; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
+  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d (refreshed 2026-09-23); local branch checkpoint=b980496834e536018ddace2958b01a30cb3c1e7d (M7 audits and M8 legacy-global/HeadCalc boundary inventory persisted); 198 local commits ahead / 60 behind; current checkpoint adds an F-CI07/F-CI08/F-CI09 bounded B1.10 capsule field-group ownership crosswalk. M7-03 remains partial for active snow/drainage and allocator/transient accounting; M7-04 remains partial for accepted field-profile/production-bootstrap memory; M7-05 awaits a representative large batch and executable qualified B12-like fixture; M7-06 awaits per-column fallback-tier batch observability/qualification; M8-01 remains partial pending generic application/file/calendar/management/reporting owner mapping; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; pre-existing untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ remain untouched."
 }
