@@ -1,0 +1,173 @@
+{
+  "schema": "swap5.rom-practical.p1.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P1",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_P1_ANALYSIS",
+  "objective": "Characterize practical relative fidelity and computational-cost evidence for purpose-aware reduced SWAP baselines without application acceptance.",
+  "baselines": {
+    "P-ROM-GW": {
+      "primary": {
+        "id": "G4",
+        "boundaries_cm": [
+          0,
+          80,
+          120,
+          140,
+          160
+        ],
+        "states": 4,
+        "closure": "CURRENT_LAYER_FACE"
+      },
+      "reserved_ladder": [
+        {
+          "id": "G6",
+          "boundaries_cm": [
+            0,
+            80,
+            100,
+            120,
+            140,
+            150,
+            160
+          ],
+          "states": 6
+        },
+        {
+          "id": "G8",
+          "boundaries_cm": [
+            0,
+            80,
+            100,
+            120,
+            130,
+            140,
+            150,
+            155,
+            160
+          ],
+          "states": 8
+        }
+      ]
+    },
+    "P-ROM-SM": {
+      "primary": {
+        "id": "S4",
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          80,
+          160
+        ],
+        "states": 4,
+        "closure": "CURRENT_LAYER_FACE"
+      },
+      "reserved_ladder": [
+        {
+          "id": "S6",
+          "boundaries_cm": [
+            0,
+            10,
+            20,
+            40,
+            60,
+            80,
+            160
+          ],
+          "states": 6
+        },
+        {
+          "id": "S8",
+          "boundaries_cm": [
+            0,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            80,
+            160
+          ],
+          "states": 8
+        }
+      ]
+    },
+    "P-ROM-ET": {
+      "status": "NOT_OPEN_IN_P1"
+    }
+  },
+  "panel": {
+    "development": {
+      "authority": "ROM-PURPOSE P2 dynamic histories",
+      "materials": [
+        "B01",
+        "B14"
+      ],
+      "purposes": [
+        "GW_LB",
+        "SURF_P"
+      ],
+      "note": "Previously exposed P2 histories are intentionally development evidence only."
+    },
+    "blind_validation": {
+      "status": "RESERVED_NOT_EXECUTED_IN_EVIDENCE_SCREEN",
+      "rule": "A fresh production-like forcing panel must be frozen before new candidate response; P3 blind response may not be imported opportunistically."
+    }
+  },
+  "reference": "Qualified high-resolution Richards authority from ROM-PURPOSE P2 (R2048_T32 target; R512_T32 numerical comparator).",
+  "metrics": {
+    "GW": [
+      "cumulative_bottom_exchange_error_cm",
+      "interval_bottom_flux_error_cm_per_day",
+      "bottom_flux_sign_mismatch_count",
+      "reversal_sequence_mismatch_count",
+      "reversal_timing_error_steps",
+      "total_storage_error_cm",
+      "history_signed_bottom_flux_bias_cm_per_day",
+      "long_horizon_exchange_drift_cm"
+    ],
+    "SM": [
+      "surface_0_20_storage_error_cm",
+      "root_zone_0_40_storage_error_cm",
+      "upper_0_80_storage_error_cm",
+      "mapped_10cm_theta_error",
+      "total_storage_error_cm",
+      "storage_extremum_timing_error_steps",
+      "history_signed_storage_bias_cm"
+    ],
+    "performance": [
+      "CPU ratio versus same-host R16 screen",
+      "BASE/FINE timing bracket",
+      "material-wise robustness"
+    ]
+  },
+  "regime_rules": {
+    "STRUCTURALLY_UNRELIABLE": "candidate not numerically qualified or water-ledger gate fails",
+    "EVENT_SENSITIVE": "GW candidate has any sign, reversal-sequence or reversal-timing mismatch",
+    "TIMING_SENSITIVE": "SM candidate has non-zero storage-extremum timing error while remaining numerically qualified",
+    "ROBUST": "candidate is numerically qualified, has no discrete-event/timing mismatch, and its aligned placement is componentwise no worse than U4 on the frozen purpose vector",
+    "SMALL_BIAS": "reserved for later absolute-error characterization; not assigned from ungoverned thresholds in P1",
+    "GROUNDWATER_SENSITIVE": "reserved for fresh practical groundwater panel where errors covary with water-table regime",
+    "ROOT_STRESS_SENSITIVE": "reserved for P-ROM-ET",
+    "EVENT_CLASSIFICATION_IS_NOT_ACCEPTANCE": true
+  },
+  "targeted_repair_rule": "No repair in P1 evidence screen. A repair work unit may open only after a fresh practical development panel identifies one dominant attributed defect.",
+  "performance_method": {
+    "authority": "LAYER_ROM_COST1 shared-host screen",
+    "portable_speedup_claim": false,
+    "direct_speed_assignment_to_S4_G4": false,
+    "use": "state-count implementation-cost prior only, reported separately from hydrological fidelity"
+  },
+  "meta_swap": {
+    "direct_benchmark_status": "OPEN",
+    "rule": "No direct MetaSWAP result unless executable/data provenance is reproducible and semantically comparable."
+  },
+  "stop_rules": [
+    "Do not use P3 candidate response to tune P1 baselines.",
+    "Do not collapse hydrological fidelity and cost to one scalar.",
+    "Do not make production/application acceptance claims.",
+    "Do not open P-ROM-ET before GW and SM fresh practical characterization."
+  ]
+}
