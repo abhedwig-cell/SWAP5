@@ -78,7 +78,18 @@ needle="  src/runtime/mod_fmr_drainage_response_binding.f90\n"
 replacement="  src/process/mod_drainage_extended_exchange.f90\n"+needle
 if s.count(needle) != 1:
     raise SystemExit(f"expected one F-PM14 binding compile dependency, got {s.count(needle)}")
-p.write_text(s.replace(needle,replacement))
+s=s.replace(needle,replacement)
+
+# Current canonical has added accepted-trajectory directional sensitivity to
+# the fixed-weir runtime dependency graph after the historical F-PM14 runner
+# was frozen. Add those compile-only dependencies to the ephemeral runner
+# augmentation, without changing any historical test source or assertion.
+extra_anchor="extra='''  src/process/mod_drainage_process.f90\\n"
+extra_replacement="extra='''  src/solver/mod_soil_water_accepted_step_direction_contract.f90\\n  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\\n  src/process/mod_drainage_process.f90\\n"
+if s.count(extra_anchor) != 1:
+    raise SystemExit(f"expected one F-PM14 augmentation block, got {s.count(extra_anchor)}")
+s=s.replace(extra_anchor,extra_replacement)
+p.write_text(s)
 PY
 chmod +x "$PRESERVE"
 bash "$PRESERVE" | tee "$BUILD/preservation.txt"
