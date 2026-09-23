@@ -85,6 +85,12 @@ millimetre correction, strict rainfall threshold/reduction, zero floor,
 optional depth limits, and optional solute-triggered over-irrigation. Its
 100,000-vector O0/O2 oracle does not establish the crop-deficit or solute-state
 owner, event selection, or accepted source mass.
+PPA-IRR-DCS1-APPLICATION-COMPOSITION composes that DCS1 depth with the existing
+fixed-input unit/node normalization and rate materialization helpers. Its
+100,000-vector O0/O2 oracle checks surface and SSDI offered amount conservation,
+including omitted-rate fallback and selected SSDI node counts. It does not bind DCS1 to a production trigger,
+calendar, restart owner, or accepted-mass booking and does not widen production
+admission.
 PPA-IRR-TCS1-4-TIMING isolates the four earlier crop-timing comparisons. It
 source-tests the dry/saline transpiration ratio, readily available depletion
 with its source cap, total available depletion, and allowable-depletion amount.
