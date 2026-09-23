@@ -102,7 +102,8 @@ contains
       rm13_management_initialize_c=401_c_int
       return
     end if
-    if(abs(demand%requested_depth_cm()-REQUEST_DEPTH_CM)>1.0e-12_real64)then
+    request_depth_cm=demand%requested_depth_cm()
+    if(abs(real(request_depth_cm,real64)-REQUEST_DEPTH_CM)>1.0e-12_real64)then
       rm13_management_initialize_c=402_c_int
       return
     end if
