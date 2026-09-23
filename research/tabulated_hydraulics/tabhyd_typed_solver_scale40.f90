@@ -50,6 +50,8 @@ program tabhyd_typed_solver_scale40
     cofgen(10,i)=cofgen(3,i)
     cofgen(11,i)=0.999_real64
     cofgen(12,i)=0.99_real64*cofgen(3,i)
+    cofgen(22,i)=-1.0e6_real64
+    cofgen(23,i)=1.0e-12_real64
     do j=1,nt
       read(iu,*,iostat=ios) headtab(j,i),thetatab(j,i),ktab(j,i)
       if(ios/=0) error stop 'invalid table row'
@@ -143,23 +145,24 @@ contains
       req%base_state%water_content=theta0t
     end if
     req%base_state%ponding_depth=0.0_real64
-    req%base_state%groundwater_level=-200.0_real64
+    req%base_state%groundwater_level=-999.0_real64
     req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
     req%boundary%top_flux=top_flux
     req%boundary%bottom_mode=bottom_mode
     req%boundary%bottom_flux=bottom_flux
     req%boundary%bottom_head=bottom_head
-    req%numerical%max_iterations=30
+    req%numerical%max_iterations=16
     req%numerical%max_backtracking=8
     req%numerical%conductivity_implicit_mode=0
     req%numerical%conductivity_mean_method=1
     req%numerical%min_step_duration=1.0e-8_real64
-    req%numerical%compartment_balance_tolerance=1.0e-8_real64
-    req%numerical%total_balance_tolerance=1.0e-8_real64
-    req%numerical%head_abs_tolerance=1.0e-8_real64
-    req%numerical%head_rel_tolerance=1.0e-8_real64
-    req%numerical%ponding_tolerance=1.0e-8_real64
+    req%numerical%compartment_balance_tolerance=1.0e-10_real64
+    req%numerical%total_balance_tolerance=1.0e-10_real64
+    req%numerical%head_abs_tolerance=1.0e-10_real64
+    req%numerical%head_rel_tolerance=1.0e-10_real64
+    req%numerical%ponding_tolerance=1.0e-10_real64
     req%physical%macropore_active=.false.
+    req%request_interface_sensitivity=.false.
     if(use_analytic) then
       req%evaluation%constitutive=>analytic
     else
