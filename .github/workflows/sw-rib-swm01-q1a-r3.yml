@@ -1,33 +1,13 @@
-name: SW-RIB-SWM01 Q1A-R3 controlled-law external-owner equivalence
+name: SW-RIB-SWM01 Q1A-R3 archived trajectory-equivalence pass
 
 on:
-  push:
-    branches:
-      - research/sw-rib-swm01-surfacewater-ownership
-    paths:
-      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
-      - 'tests/sw-rib-swm01/emit_q1a_fixed_weir_oracle.f90'
-      - 'tests/sw-rib-swm01/q1a_real_ribasim_equivalence.jl'
-      - 'tests/sw-rib-swm01/generate_q1a_r3_real_ribasim.py'
-      - 'tests/sw-rib-swm01/run_q1a_r3_real_ribasim_equivalence.sh'
-      - 'integration/research/SW_RIB_SWM01_Q1A_R3_PREREGISTRATION.json'
-      - '.github/workflows/sw-rib-swm01-q1a-r3.yml'
-  pull_request:
-    paths:
-      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
-      - 'tests/sw-rib-swm01/emit_q1a_fixed_weir_oracle.f90'
-      - 'tests/sw-rib-swm01/q1a_real_ribasim_equivalence.jl'
-      - 'tests/sw-rib-swm01/generate_q1a_r3_real_ribasim.py'
-      - 'tests/sw-rib-swm01/run_q1a_r3_real_ribasim_equivalence.sh'
-      - 'integration/research/SW_RIB_SWM01_Q1A_R3_PREREGISTRATION.json'
-      - '.github/workflows/sw-rib-swm01-q1a-r3.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  qualify:
+  reproduce-r3:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -48,5 +28,5 @@ jobs:
           working-directory: .ribasim-product-release
       - name: Compiler identity
         run: gfortran --version
-      - name: Q1A-R3 exact-release functional equivalence
+      - name: Reproduce Q1A-R3 trajectory equivalence
         run: bash tests/sw-rib-swm01/run_q1a_r3_real_ribasim_equivalence.sh
