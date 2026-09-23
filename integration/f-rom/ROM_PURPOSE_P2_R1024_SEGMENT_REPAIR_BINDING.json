@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.rom-purpose.p2.r1024-segment-repair-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE-R1024-REPAIR",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_SEGMENTED_S05_RESPONSE",
+  "authoritative_source_run": 35821534912,
+  "source_execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+  "trigger_head_before_binding": "3e45848caee28b2b01a0cd5805cf1b68ac009134",
+  "scientific_change": false,
+  "witness_case": "B01/R1024_T32/S06",
+  "target_case": "B01/R1024_T32/S05",
+  "segmentation": [
+    [
+      1,
+      8192
+    ],
+    [
+      8193,
+      16384
+    ],
+    [
+      16385,
+      24576
+    ],
+    [
+      24577,
+      32768
+    ]
+  ],
+  "witness_full_artifacts": [
+    {
+      "name": "p2full-B01-R1024_T32-o0-h2",
+      "id": 10733828155,
+      "digest": "sha256:8be70545a5a7ce7a7a0a4d3cab115f562ec2b086ef94f362024869ef33ba4cad"
+    },
+    {
+      "name": "p2full-B01-R1024_T32-o2-h2",
+      "id": 10733972626,
+      "digest": "sha256:ef72a4c1e73a004ff55e5358b1dc769e4dfb735c7409ad90530e2f54896c9c85"
+    }
+  ],
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p2-r1024-segment-repair.yml": "b2510d1d5836a803e4d7c81ca1dc80275b7cc827",
+    "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_PREREGISTRATION.json": "53f740986c44085012a25a53b57aa8f38ef09cbe",
+    "tests/rom/verify_rom_purpose_p2_r1024_segment_equivalence.py": "6012a9252817f01390dceaec447a48a76bd41f43",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference.py": "f05de4a54d84c921793d53960f495145921b04e2",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py": "716d41a88954a7e67f21bcc988102a4a1cf7add0",
+    "tests/rom/analyze_rom_purpose_p2_reference.py": "235a6f0efbadaeff182c7fd5450c20f3d7920795",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json": "2e566b35d16a4655b4f9e33c353f57652f5741b1",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json": "041c8be484f47363c0f545ac28f5490559969072",
+    "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json": "283783057855bb8f2f055b4fe3014df403a793f7"
+  },
+  "gate": {
+    "witness_must_qualify_before_target": true,
+    "exact_state_except_REV": true,
+    "exact_profile": true,
+    "full_S06_O0_O2_raw_identity": true,
+    "target_S05_O0_O2_segment_identity": true,
+    "frozen_analyzer_unchanged": true
+  },
+  "scientific_firewall": {
+    "S05_segmented_response_seen": false,
+    "candidate_response_generated": false,
+    "P1_failure_overridden": false,
+    "reference_metric_changed": false,
+    "observability_contract_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
