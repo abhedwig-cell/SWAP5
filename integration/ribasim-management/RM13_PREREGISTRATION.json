@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.preregistration.v1",
+  "work_unit": "RM13",
+  "date": "2026-09-23",
+  "title": "Minimal real SWAP5 + MODFLOW6 + Ribasim transactional composition",
+  "authorities": {
+    "management_contract": "RM02",
+    "management_transaction": "RM06",
+    "origin_bound_ribasim_receipt": "RM10",
+    "clock_scheduler": "RM11/RM12",
+    "groundwater_contract": "F-GC_FIXED_INTERFACE_COUPLING_CONTRACT CANONICAL_ADMITTED_CLOSED",
+    "real_swap_modflow_application": "F-GC44",
+    "drainage_ownership": "NONE"
+  },
+  "purpose": "Qualify one deliberately small three-model window in which a real SWAP management decision is allocated and physically supplied by real Ribasim, the same supplied amount enters real Richards SWAP as top-boundary irrigation, and real SWAP exchanges groundwater with one live MODFLOW6 cell under the closed fixed-interface contract.",
+  "frozen_window": {
+    "duration_day": 0.0001,
+    "duration_seconds": 8.64,
+    "management_time_origin_day": 237.0,
+    "requested_irrigation_depth_cm": 0.0036,
+    "irrigation_rate_cm_per_day": 36.0,
+    "represented_area_m2": 1.0,
+    "expected_surface_water_volume_m3": 0.000036,
+    "rutter_vegetation_cover_fraction": 0.0,
+    "expected_net_equals_gross": true
+  },
+  "ribasim": {
+    "release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "allocation_dt_seconds": 8.64,
+    "solver_saveat_seconds": 8.64,
+    "initial_basin_level_m": 1.0,
+    "user_demand_min_level_m": 0.9,
+    "level_difference_threshold_m": 0.02,
+    "surface_supply_m3_per_day": 0.36,
+    "user_demand_m3_per_day": 0.36,
+    "priority": 2,
+    "expected_full_allocation": true,
+    "expected_full_physical_supply": true
+  },
+  "swap_richards_modflow": {
+    "base": "F-GC44 one-column one-cell real FMR/SWAP + MODFLOW6 6.8.0",
+    "window_day": 0.0001,
+    "drainage": "off",
+    "root_extraction": "off",
+    "macropores": "off",
+    "snow": "off",
+    "soil_temperature": "off",
+    "top_irrigation_flux_cm_per_day": -36.0,
+    "groundwater_profile": "fixed-interface HEAD_STATE_CAPACITANCE",
+    "modflow_cell_area_m2": 1.0,
+    "publication_order": [
+      "all model and ledger preflights",
+      "MODFLOW finalize_time_step",
+      "real Richards SWAP commit",
+      "groundwater interface ledger commit",
+      "SWAP management-state commit",
+      "designate isolated Ribasim candidate as accepted surface-water state"
+    ]
+  },
+  "transaction_pattern": [
+    "Keep a real Ribasim accepted-origin BMI instance unadvanced.",
+    "Run and discard one isolated real Ribasim candidate A; accepted origin must remain unchanged.",
+    "Run isolated candidate B from the same serialized Ribasim origin and retain it provisionally.",
+    "Build a typed RM10 realization receipt from candidate-B allocation and measured physical supply.",
+    "Create but do not commit the SWAP management candidate; verify net irrigation equals physical supply because vegetation cover is zero.",
+    "Create the real Richards + MODFLOW candidate from the accepted Richards origin using that net irrigation as the top forcing.",
+    "Prepare groundwater and surface-water ledgers before publication.",
+    "Only after all preflights pass publish MODFLOW, Richards SWAP, groundwater ledger, management SWAP and finally surface-water acceptance.",
+    "On any prepublication failure discard every candidate and leave all accepted origins unchanged."
+  ],
+  "ledger_contract": {
+    "surface_water_to_swap": "Ribasim UserDemand cumulative physical inflow is the single external gross irrigation transfer. The SWAP management receipt carries the equal receiver quantity. With zero vegetation cover, Richards top-boundary inflow equals the same quantity.",
+    "groundwater_interface": "Separate equal-and-opposite SWAP-MODFLOW transfer owned by the existing F-GC groundwater ledger.",
+    "internal_transfers": "No groundwater-to-surface-water route; no drainage; no Rutter interception storage in this first triangle."
+  },
+  "hypotheses": [
+    "The real SWAP management decision requests exactly 0.0036 cm over the 1e-4-day event.",
+    "Real Ribasim allocates and physically supplies that full request within the RM09 full-realization envelope.",
+    "The accepted Ribasim origin is unchanged by discarded candidate A and candidate-B replay is identical.",
+    "The RM10 typed realization receipt binds the Ribasim return to the exact SWAP management origin.",
+    "Zero-cover Rutter processing returns net irrigation equal to gross physical supply.",
+    "Real Richards SWAP with top irrigation active and live MODFLOW6 fixed-interface coupling converges inside the inherited F-GC44 transaction envelope.",
+    "Rejected real Richards correctors do not mutate accepted SWAP state or groundwater ledger.",
+    "Surface-water and groundwater ledgers remain separate and each close exactly once.",
+    "After publication the Richards SWAP and management SWAP revisions each advance exactly once; the Ribasim accepted state is candidate B and the original Ribasim witness remains unchanged.",
+    "Repeating the complete prepublication candidate sequence from the same accepted origins reproduces the same Ribasim supply, SWAP management net irrigation, coupled groundwater endpoint and transfer ledgers."
+  ],
+  "tolerances": {
+    "surface_depth_cm": 1e-8,
+    "surface_volume_m3": 1e-10,
+    "groundwater_flux_m_per_s": 1e-15,
+    "groundwater_component_balance_m3_per_day": 1e-9,
+    "replay_head_m": 1e-10
+  },
+  "failure_rule": "Do not widen the irrigation depth, groundwater head envelope, drainage/root physics or numerical tolerances after execution. Repair only technical integration failures. A Richards+MODFLOW failure under the frozen top forcing is a composition-envelope falsification and must remain visible.",
+  "nonclaims": [
+    "No active root uptake.",
+    "No groundwater influence on a later management demand; that is the next causal falsification workunit.",
+    "No drainage or groundwater-to-surface-water route.",
+    "No arbitrary Ribasim topology or competing demand.",
+    "No production iMOD Coupler driver integration.",
+    "The isolated Ribasim candidate pattern is qualification transaction evidence, not a claimed native Ribasim checkpoint API."
+  ]
+}
