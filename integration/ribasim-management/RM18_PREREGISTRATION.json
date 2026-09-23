@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_flux_temporal_certificate.preregistration.v1",
+  "work_unit": "RM18",
+  "date": "2026-09-23",
+  "title": "Fail-closed temporal certificate extension for verified dynamic-top flux regime",
+  "depends_on": {
+    "RM16": "8.64 s raw dynamic-top solve converges",
+    "RM17": "dynamic-top and explicit qtop=-36 raw solves are bit-identical"
+  },
+  "problem": "The Reference temporal indicator currently rejects every non-EXPLICIT_FLUX top boundary before evaluating the defect, even when a dynamic-top provider is demonstrably state-independent and explicit-flux equivalent over the accepted trajectory.",
+  "permitted_extension": {
+    "top_mode": "FSI_TOP_MODE_DYNAMIC_PROVIDER",
+    "provider_type": "b110_dynamic_top_boundary_solver_provider_t",
+    "required_regime": "FLUX",
+    "path_checks": ["base endpoint","arithmetic midpoint","candidate endpoint"],
+    "required_same_flux_at_all_checks": true,
+    "required_match_to_solve_result_top_flux": true,
+    "required_zero_runoff": true,
+    "required_zero_provider_candidate_ponding": true,
+    "existing_requirements_preserved": [
+      "SWKIMPL=0",
+      "SWKMEAN=1",
+      "supported bottom mode 2 or 5",
+      "b110 default MVG constitutive provider",
+      "b110 source/sink provider",
+      "no unsupported macropore/root-sink policy",
+      "valid previous right derivative",
+      "all existing state/mass-weight/tridiagonal/finite checks"
+    ]
+  },
+  "operator_derivation": "When all three path checks return the same FLUX value, the dynamic provider contributes zero state derivative to the temporal defect operator on the verified path. The existing explicit-flux operator, which contains no top-face stiffness, is therefore reused unchanged.",
+  "tests": [
+    "Existing explicit fixed-flux temporal-indicator tests must remain bit-identical.",
+    "For the RM17 dynamic and explicit raw solve results, the temporal indicator with the same valid predecessor derivative must produce the same status, availability and head_inf_bound within 1e-12 cm.",
+    "The dynamic route must identify itself separately in diagnostics.",
+    "A dynamic provider switched to HEAD regime must remain unavailable.",
+    "A dynamic FLUX provider whose base/mid/candidate fluxes differ must remain unavailable.",
+    "Nonzero dynamic runoff or provider ponding must remain unavailable."
+  ],
+  "failure_rule": "Do not modify the defect operator, temporal budget, predecessor history semantics, solver, retry policy or numerical tolerances to obtain a pass.",
+  "nonclaims": [
+    "No dynamic HEAD-regime certificate.",
+    "No ponding/runoff certificate.",
+    "No precipitation, evaporation, snowmelt or runon certificate.",
+    "No general dynamic-top certificate beyond the fail-closed verified constant-flux envelope.",
+    "No three-model admission until RM18 is qualified and the unchanged RM14/RM13B physical case is rerun prospectively."
+  ]
+}
