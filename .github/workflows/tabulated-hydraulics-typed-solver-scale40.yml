@@ -140,7 +140,8 @@ jobs:
                   try: vals[k]=float(v)
                   except ValueError: pass
           keys=["SCALE40_HEAD_MAX_ABS","SCALE40_HEAD_RMS","SCALE40_THETA_MAX_ABS","SCALE40_THETA_RMS",
-                "SCALE40_DMASS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
+                "SCALE40_DQTOP","SCALE40_DQBOT","SCALE40_DMASS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
+                "SCALE40_ANALYTIC_LINEAR_SOLVES","SCALE40_TABLE_LINEAR_SOLVES",
                 "SCALE40_ANALYTIC_MEDIAN_S","SCALE40_TABLE_MEDIAN_S","SCALE40_TABLE_DELTA_PCT"]
           miss=[k for k in keys if k not in vals]
           if miss: raise SystemExit(f"missing {miss}")
