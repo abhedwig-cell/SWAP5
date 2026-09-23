@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1h.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1H",
+  "date": "2026-09-23",
+  "status": "CONFIRMATORY_PREREGISTRATION_AFTER_EXPLORATORY_DERIVATION",
+  "title": "Controlled epsilon-area representation of legacy STTAB in Ribasim Basin semantics",
+  "purpose": "Show structurally that the piecewise-linear SWAP STTAB storage curve can be represented to an explicitly controllable error by a Ribasim-compatible continuous level-area profile without retaining SWAP surface-water state.",
+  "disclosure": "The epsilon-transition construction was analytically derived and explored before this preregistration. Q1H is therefore confirmatory rather than blind. The formal population uses a fresh seed and tests theorem-derived properties rather than an application acceptance threshold.",
+  "authorities": {
+    "swap": "F-PM08D1 exact-source 22-knot STTAB piecewise-linear storage semantics",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "ribasim_semantics": "area-only Basin Profile is trapezoid-integrated to storage and linearly interpolated as level-to-area"
+  },
+  "construction": [
+    "Convert the 22 SWAP STTAB knots to increasing SI level/storage and remove only the bottom constant roundoff offset.",
+    "Compute the constant storage slope on each SWAP interval.",
+    "At every internal STTAB knot replace the derivative jump by a symmetric linear area transition from left slope to right slope over [h-epsilon,h+epsilon].",
+    "Use the first/last interval slope at the domain endpoints.",
+    "Because the transition is symmetric, its integrated volume equals the exact step integral across the full transition; therefore cumulative error returns to zero at h+epsilon."
+  ],
+  "formal_population": {
+    "generator": "F-PM08D1 geometry family",
+    "seed": 2026092317,
+    "cases": 2000,
+    "epsilons_m": [
+      0.0001,
+      0.00001,
+      0.000001
+    ]
+  },
+  "theorem_checks": [
+    "All generated interval slopes and Ribasim area-profile values are nonnegative.",
+    "At every transition edge and all tested points outside transition zones, smoothed-profile storage equals SWAP piecewise-linear storage to 1e-11 m3.",
+    "Inside each symmetric transition the absolute storage error is bounded by epsilon*abs(slope_right-slope_left)/4 plus 1e-11 m3.",
+    "Top-of-domain cumulative storage returns to the SWAP value to 1e-11 m3.",
+    "Observed maximum error scales linearly with epsilon within floating-point tolerance."
+  ],
+  "interpretation": "Q1H establishes controllability of representation error, not that any selected epsilon is acceptable for an application. Application-specific acceptance remains a separate authority decision.",
+  "nonclaims": [
+    "No claim of exact direct STTAB mapping.",
+    "No claim that the legacy STTAB approximation is physically preferable to geometry-derived Ribasim storage.",
+    "No production admission or retirement authority."
+  ],
+  "production_admission": false,
+  "retirement_authority": false
+}

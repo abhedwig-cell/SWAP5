@@ -4,15 +4,15 @@
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "status": "OPEN_QUALIFICATION",
-  "checkpoint_commit": "d2aa3180797fd31f6d3fb2def0158db6157e889b",
-  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_PASS__Q2B2_SEMANTIC_DECISION__Q3A_TECHNICAL_RETRY_PENDING__Q1G_PENDING",
+  "checkpoint_commit": "42fe1314cd23f4a64207a2a3288dd02ba72fb937",
+  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_PASS__Q2B2_SEMANTIC_DECISION__Q3A_RETRY_QUEUED__Q1G_QUEUED__Q1H_PREREGISTERED__Q3B_PREREGISTERED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
   "production_admission": false,
   "retirement_authority": false,
-  "last_reconciled_head": "d2aa3180797fd31f6d3fb2def0158db6157e889b",
+  "last_reconciled_head": "42fe1314cd23f4a64207a2a3288dd02ba72fb937",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "owned_surface": [
     "legacy surfacewater.f90 responsibility decomposition",
@@ -50,7 +50,15 @@
     "tests/sw-rib-swm01/generate_q1a_real_ribasim.py",
     "tests/sw-rib-swm01/q1a_real_ribasim_equivalence.jl",
     "tests/sw-rib-swm01/run_q1a_real_ribasim_equivalence.sh",
-    ".github/workflows/sw-rib-swm01-q1a.yml"
+    ".github/workflows/sw-rib-swm01-q1a.yml",
+    "tests/sw-rib-swm01/test_q1h_sttab_epsilon_area_representation.py",
+    "tests/sw-rib-swm01/run_q1h_sttab_epsilon_area_representation.sh",
+    ".github/workflows/sw-rib-swm01-q1h.yml",
+    "tests/sw-rib-swm01/test_q3b_transfer_ledger.py",
+    "tests/sw-rib-swm01/generate_q3b_real_ribasim.py",
+    "tests/sw-rib-swm01/q3b_real_ribasim_transfer_identity.jl",
+    "tests/sw-rib-swm01/run_q3b_real_ribasim_transfer_identity.sh",
+    ".github/workflows/sw-rib-swm01-q3b.yml"
   ],
   "evidence_paths": [
     "integration/research/SW_RIB_SWM01_Q1A_V1_RESULT.json",
@@ -67,7 +75,9 @@
     "integration/research/SW_RIB_SWM01_Q2B2_CAPABILITY_DECISION.json",
     "integration/research/SW_RIB_SWM01_Q3A_PREREGISTRATION.json",
     "integration/research/SW_RIB_SWM01_Q3A_TECHNICAL_AMENDMENT_01.json",
-    "integration/research/SW_RIB_SWM01_Q1G_PREREGISTRATION.json"
+    "integration/research/SW_RIB_SWM01_Q1G_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q1H_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q3B_PREREGISTRATION.json"
   ],
   "dependency_surface": [
     "surface-water state/storage ownership",
@@ -124,9 +134,17 @@
     },
     "q1g": {
       "state": "QUEUED_CHARACTERIZATION"
+    },
+    "q1h": {
+      "state": "PREREGISTERED_CONFIRMATORY_PENDING_CI",
+      "seed": 2026092317,
+      "cases": 2000
+    },
+    "q3b": {
+      "state": "PREREGISTERED_PENDING_Q3A_EVIDENCE_AND_CI"
     }
   },
-  "next_action": "Complete Q3A signed lower-exchange qualification and Q1G STTAB-to-Ribasim storage-geometry characterization. If Q3A passes, persist Q3A result and preregister Q3B transfer-identity cases. Use Q2B2 capability decision to avoid claiming exact legacy automatic-discharge parity where the pinned Ribasim product has different allocation/control semantics.",
+  "next_action": "Complete queued Q3A and Q1G evidence. In parallel, run Q1H confirmatory controlled-STTAB representation and Q3B transfer-identity qualification when runners become available. Persist results without inventing application tolerances; Q1H only establishes controllable representation error.",
   "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@d2aa3180797fd31f6d3fb2def0158db6157e889b",
   "blockers": [
     "Q3A signed drainage/infiltration exchange and external availability are not yet qualified; first failure was technical before physical execution and a bounded amendment is queued.",
@@ -134,6 +152,8 @@
     "Q3B top/rapid transfer identities remain design-only.",
     "Exact nonlinear SWQHR1 parity remains open unless explicitly excluded by the coupled application contract.",
     "No production admission or whole-subsystem retirement authority exists.",
-    "Pinned Ribasim checkout emits a model-metadata/core-version warning; resolve before production admission."
+    "Pinned Ribasim checkout emits a model-metadata/core-version warning; resolve before production admission.",
+    "Q1H controlled STTAB representation is preregistered but not yet CI-qualified.",
+    "Q3B transfer-identity preservation is preregistered but not yet CI-qualified."
   ]
 }

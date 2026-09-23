@@ -1,0 +1,34 @@
+name: SW-RIB-SWM01 Q1H controlled STTAB representation
+
+on:
+  push:
+    branches:
+      - research/sw-rib-swm01-surfacewater-ownership
+    paths:
+      - 'tests/sw-rib-swm01/test_q1h_sttab_epsilon_area_representation.py'
+      - 'tests/sw-rib-swm01/run_q1h_sttab_epsilon_area_representation.sh'
+      - 'integration/research/SW_RIB_SWM01_Q1H_*'
+      - '.github/workflows/sw-rib-swm01-q1h.yml'
+  pull_request:
+    paths:
+      - 'tests/sw-rib-swm01/test_q1h_sttab_epsilon_area_representation.py'
+      - 'tests/sw-rib-swm01/run_q1h_sttab_epsilon_area_representation.sh'
+      - 'integration/research/SW_RIB_SWM01_Q1H_*'
+      - '.github/workflows/sw-rib-swm01-q1h.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Q1H controlled STTAB representation characterization
+        run: bash tests/sw-rib-swm01/run_q1h_sttab_epsilon_area_representation.sh

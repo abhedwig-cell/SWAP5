@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3b.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q3B",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "title": "Preserved SWAP transfer identities over Ribasim-owned surface-water storage",
+  "purpose": "Qualify that hydrologically distinct SWAP transfers remain auditable when they share a Ribasim Basin balance, and that top inundation remains distinct from lower infiltration.",
+  "authorities": {
+    "legacy_secondary_balance": "F-PM08D exact-source secondary balance",
+    "q3b_design": "integration/research/SW_RIB_SWM01_Q3B_DESIGN.json",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "bmi_ledgers": [
+      "basin.cumulative_drainage",
+      "basin.cumulative_surface_runoff",
+      "basin.cumulative_infiltration"
+    ],
+    "explicit_top_outflow": "one-way Pump cumulative state"
+  },
+  "transfer_classes": {
+    "LOWER_DRAINAGE": {
+      "direction": "SWAP_TO_RIBASIM",
+      "ribasim_endpoint": "basin.drainage"
+    },
+    "RAPID_DRAINAGE": {
+      "direction": "SWAP_TO_RIBASIM",
+      "ribasim_endpoint": "basin.drainage"
+    },
+    "TOP_RUNOFF": {
+      "direction": "SWAP_TO_RIBASIM",
+      "ribasim_endpoint": "basin.surface_runoff"
+    },
+    "LOWER_INFILTRATION": {
+      "direction": "RIBASIM_TO_SWAP_LOWER",
+      "ribasim_endpoint": "basin.infiltration"
+    },
+    "TOP_INUNDATION": {
+      "direction": "RIBASIM_TO_SWAP_TOP",
+      "ribasim_endpoint": "explicit Pump outflow"
+    }
+  },
+  "frozen_ribasim_mapping": {
+    "represented_area_m2": 1,
+    "basin_profile_level_m": [
+      -1,
+      1
+    ],
+    "basin_profile_area_m2": [
+      1,
+      1
+    ],
+    "duration_s": 86400,
+    "no_precipitation": true,
+    "no_evaporation": true,
+    "no_network_management": true
+  },
+  "cases": [
+    {
+      "id": "T1_INCOMING_SPLIT",
+      "initial_level_m": -0.5,
+      "lower_drainage_m3": 0.002,
+      "rapid_drainage_m3": 0.003,
+      "top_runoff_m3": 0.004,
+      "lower_infiltration_m3": 0,
+      "top_inundation_request_m3": 0,
+      "expected_final_level_m": -0.491
+    },
+    {
+      "id": "T2_OUTGOING_SPLIT",
+      "initial_level_m": -0.5,
+      "lower_drainage_m3": 0,
+      "rapid_drainage_m3": 0,
+      "top_runoff_m3": 0,
+      "lower_infiltration_m3": 0.004,
+      "top_inundation_request_m3": 0.003,
+      "expected_final_level_m": -0.507
+    },
+    {
+      "id": "T3_MIXED_IDENTITIES",
+      "initial_level_m": -0.5,
+      "lower_drainage_m3": 0.003,
+      "rapid_drainage_m3": 0.002,
+      "top_runoff_m3": 0.002,
+      "lower_infiltration_m3": 0.003,
+      "top_inundation_request_m3": 0.001,
+      "expected_final_level_m": -0.497
+    },
+    {
+      "id": "T4_TOP_INUNDATION_AVAILABILITY_LIMITED",
+      "initial_level_m": -0.998,
+      "lower_drainage_m3": 0,
+      "rapid_drainage_m3": 0,
+      "top_runoff_m3": 0,
+      "lower_infiltration_m3": 0,
+      "top_inundation_request_m3": 0.0051,
+      "expectation": "realized top inundation is nonnegative, strictly below request, does not exceed starting storage, leaves nonnegative storage, and is marked RECOMPOSITION_REQUIRED"
+    }
+  ],
+  "tolerances": {
+    "unrestricted_transfer_m3_abs": 0.000001,
+    "unrestricted_final_level_m_abs": 0.000001,
+    "direct_mass_residual_m3_abs": 1e-8,
+    "storage_nonnegative_m3": 1e-10,
+    "availability_strict_difference_m3": 0.000001
+  },
+  "hard_checks": [
+    "Coupler ledger preserves LOWER_DRAINAGE and RAPID_DRAINAGE as distinct records even though both aggregate to Ribasim drainage.",
+    "TOP_RUNOFF is not aggregated with drainage before its transfer identity is persisted.",
+    "LOWER_INFILTRATION and TOP_INUNDATION are distinct outward transfers and use distinct Ribasim endpoints.",
+    "Exactly-once mass booking holds after endpoint aggregation.",
+    "Availability-limited TOP_INUNDATION is a coupled feasibility result requiring recomposition, never accept-with-clip."
+  ],
+  "pass_meaning": "Bounded evidence that Ribasim may own the common surface-water store without erasing SWAP process/destination identity at the coupling ledger.",
+  "nonclaims": [
+    "No full real-SWAP process generation.",
+    "No multicolumn or multinode routing.",
+    "No claim that Ribasim forcing names are process-ownership labels.",
+    "No production admission."
+  ],
+  "production_admission": false,
+  "retirement_authority": false
+}
