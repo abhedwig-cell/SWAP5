@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.rom_root.s3c0.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-C0",
+  "date": "2026-09-23",
+  "status": "S3C0_FULL_POTENTIAL_REFERENCE_NOT_QUALIFIED",
+  "decision": "STOP_BEFORE_STAGE3_DYNAMIC_REDUCED_RESPONSE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3C0_BINDING.json",
+    "workflow_run": 35854345998,
+    "workflow_head": "6b1e8cb923dc62ea0c4a01453119ba78d8532ffa",
+    "analyzer_job": 107162960910,
+    "artifact": {
+      "id": 10747053751,
+      "name": "rom-root-s3c0",
+      "digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920"
+    }
+  },
+  "execution": {
+    "physics_jobs": 128,
+    "physics_jobs_success": 128,
+    "o0_o2_identity_pass": true,
+    "full_potential_identity_pass": true,
+    "integrity_pass": true,
+    "uncertainty_pass": false
+  },
+  "materials": {
+    "B01": {
+      "reference_uncertainty_pass": false,
+      "qualified_metrics": {
+        "root_zone_0_40_storage_rmse_cm": 1.691152093966881e-7,
+        "upper_0_80_storage_rmse_cm": 2.0301269940642019e-7,
+        "mapped_10cm_theta_rmse": 1.1286244590900568e-8
+      },
+      "unqualified_metrics": {
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "U_combined": null,
+          "reason": "GENERIC_THREE_LEVEL_ANALYZER_NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED_AT_ROUNDOFF_SCALE",
+          "space_coarse_to_medium": 1.99024178771585e-15,
+          "space_medium_to_fine": 6.113660907210209e-15
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "U_combined": null,
+          "reason": "GENERIC_THREE_LEVEL_ANALYZER_NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED_AT_ROUNDOFF_SCALE",
+          "space_coarse_to_medium": 1.7691073664358404e-16,
+          "space_medium_to_fine": 3.670150237255131e-15
+        }
+      }
+    },
+    "B14": {
+      "reference_uncertainty_pass": false,
+      "qualified_metrics": {
+        "root_zone_0_40_storage_rmse_cm": 5.187337304925879e-9,
+        "upper_0_80_storage_rmse_cm": 7.008966621289017e-7,
+        "mapped_10cm_theta_rmse": 2.480120718141229e-8
+      },
+      "unqualified_metrics": {
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "U_combined": null,
+          "reason": "GENERIC_THREE_LEVEL_ANALYZER_NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED_AT_ROUNDOFF_SCALE",
+          "space_coarse_to_medium": 1.99024178771585e-15,
+          "space_medium_to_fine": 6.113660907210209e-15
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "U_combined": null,
+          "reason": "GENERIC_THREE_LEVEL_ANALYZER_NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED_AT_ROUNDOFF_SCALE",
+          "space_coarse_to_medium": 1.7691073664358404e-16,
+          "space_medium_to_fine": 3.670150237255131e-15
+        }
+      }
+    }
+  },
+  "interpretation": [
+    "C0 hydrology, O0/O2 identity and full-potential forcing identity all pass.",
+    "The generic three-level convergence analyzer cannot assign a convergence order to the two prescribed root-uptake metrics because their route differences are at floating-point roundoff scale and are not monotone.",
+    "Under the frozen C0 qualification rule this is still a formal failure, so no reduced dynamic response is authorized by C0."
+  ],
+  "scientific_firewall": {
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
