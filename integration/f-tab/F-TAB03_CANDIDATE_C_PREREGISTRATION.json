@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.research_candidate_preregistration.v1",
+  "workunit": "F-TAB03",
+  "candidate": "C_EXACT_FSI39_OVERLAY_WITH_EXACT_HEAD_DERIVED_RELSAT",
+  "date": "2026-09-23",
+  "predecessor": "B_EXACT_FSI39_OVERLAY_USING_GENERATED_THETA:FALSIFIED",
+  "inherited_limits": {
+    "theta_max_abs": 0.00007,
+    "capacity_max_abs": 0.00007,
+    "log10k_max_abs": 0.0005,
+    "active_fsi39_special_k_abs_max": 1e-8
+  },
+  "scope": {
+    "swkimpl": 0,
+    "h_enpr": 0,
+    "generic_tables": false,
+    "theta_capacity_output": "unchanged F-TAB02 generated representation",
+    "default_k_output": "unchanged F-TAB02 generated representation",
+    "fsi39_activation": "unchanged exact canonical flag + cofgen(10)>cofgen(3) + relsat>cofgen(11)"
+  },
+  "candidate_contract": {
+    "relsat_for_fsi39": "derive exactly from pressure head and source default-MvG parameters using the same admitted H_ENPR=0 theta(h) branch, independent of generated theta approximation",
+    "wet_theta_branch": "for -0.01<h<0 use canonical c26/c27 linear branch",
+    "unsaturated_branch": "for h<=-0.01 use (1+abs(alpha*h)^n)^(-m)",
+    "saturated_branch": "relsat=1",
+    "fsi39_k": "term=(relsat-c11)/(1-c11); K=term*c10+(1-term)*c12",
+    "no_change": [
+      "reported theta",
+      "reported C",
+      "default K table",
+      "provider ABI",
+      "solver",
+      "transaction",
+      "tolerances"
+    ]
+  },
+  "decision_rule": "Pass only if the same previously committed F-TAB03 test passes unchanged. Do not relax any threshold."
+}
