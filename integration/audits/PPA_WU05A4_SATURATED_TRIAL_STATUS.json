@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-SATURATED-TRIAL",
   "baseline": "eff707da5",
+  "recovery_point": "96b195962",
+  "persisted_test_result": "Restricted evaluator and complete rate-composition harness PASS O0/O2 at 96b195962 with identical transcripts, runtime checks and floating-point traps",
   "implementation": "src/adapter/mod_ppa_wu05a4_saturated_trial.f90",
   "scope": "First restricted executable evaluator composing VOLUNDR geometry bounds, SATFLOW task 1, standard-domain incoming/outgoing limits, SATFLOW derivative and typed exchange evaluation. No production HeadCalc modification.",
   "contract": "One standard domain with no external top input, covering layer, absorption, rapid drainage or interdomain redistribution. Only wet-pore Darcy branch; dry-pore seepage is rejected rather than filled with assumed physical parameters. Input remains immutable, failed preparation returns no evaluation arrays. Geometry and matrix-zone metadata are supplied by caller; no committed state or receipt is published.",
