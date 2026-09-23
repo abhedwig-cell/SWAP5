@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_coupled_effect_size.result.v1",
+  "work_unit": "RM28",
+  "date": "2026-09-23",
+  "decision": "COUPLED_EFFECT_SIZE_CHARACTERIZED_NO_APPLICATION_THRESHOLD_CLAIMED",
+  "workflow": "RM28 coupled temporal effect size",
+  "workflow_run": 35906561217,
+  "workflow_job": 107335608057,
+  "conclusion": "success",
+  "evidence_composition": {
+    "SWAP_response": "RM27 formal one-step and two-half q_swap(H) observations after RM28-CC01 datum mapping",
+    "groundwater_response": "canonical F-GC fixed-interface one-cell independent MODFLOW6 6.8.0 oracle",
+    "new_physics": false,
+    "new_model_execution": false
+  },
+  "fitted_responses": {
+    "swap_one_step": {
+      "slope_per_s": -3.9384852118263267e-6,
+      "intercept_m_per_s": -2.67815780726455e-6,
+      "fit_error_m_per_s": 3.1763735522036263e-22
+    },
+    "swap_two_half": {
+      "slope_per_s": -3.9384805859014691e-6,
+      "intercept_m_per_s": -2.6781579678848514e-6,
+      "fit_error_m_per_s": 2.5688921103446827e-19
+    },
+    "groundwater": {
+      "slope_per_s": 0.020335665520960458,
+      "intercept_m_per_s": 0.014540000237417468,
+      "fit_error_m_per_s": 7.0603245472256049e-16
+    }
+  },
+  "coupled_effect": {
+    "head_one_step_m": -0.71499319213941381,
+    "head_two_half_m": -0.71499319230992475,
+    "absolute_head_shift_m": 1.7051093870179557e-10,
+    "q_one_step_m_per_s": 1.3783230653303091e-7,
+    "q_two_half_m_per_s": 1.3782883907950281e-7,
+    "absolute_q_shift_m_per_s": 3.4674535280984034e-12,
+    "root_residual_one_step_m_per_s": -2.1734865426545347e-18,
+    "root_residual_two_half_m_per_s": -1.9469052292640093e-18
+  },
+  "integrated_transfer": {
+    "window_seconds": 8.64,
+    "cell_area_m2": 1.0,
+    "groundwater_transfer_one_step_m3": 1.1908711284453871e-6,
+    "groundwater_transfer_two_half_m3": 1.1908411696469043e-6,
+    "absolute_transfer_shift_m3": 2.9958798482770209e-11,
+    "surface_irrigation_volume_m3": 3.6e-5,
+    "shift_over_irrigation_volume": 8.3218884674361693e-7,
+    "shift_over_mean_groundwater_transfer": 2.5157361371284574e-5
+  },
+  "interpretation": [
+    "RM27's q_swap(H) difference is real but the admitted one-cell groundwater response strongly constrains the resulting coupled head shift.",
+    "For the frozen 8.64-second one-cell case, changing from the one-step to the two-half SWAP endpoint changes the coupled hydraulic head by about 1.7e-10 m.",
+    "The resulting groundwater-transfer-volume difference is about 3.0e-11 m3 over 8.64 seconds and 1 m2.",
+    "That transfer difference is about 8.32e-7 of the surface irrigation volume and 2.52e-5 of the groundwater-transfer magnitude.",
+    "These are effect sizes only. Their smallness does not create an application-accuracy requirement."
+  ],
+  "relationship_to_RM25": {
+    "global_profile_head_metric": "SHOWN_NOT_PURPOSE_REPRESENTATIVE_BY_RM26",
+    "groundwater_response_identity": "FALSIFIED_AT_FGC44_NUMERICAL_CLOSURE_RESOLUTION_BY_RM27",
+    "coupled_groundwater_effect_size": "QUANTIFIED_BY_RM28",
+    "independent_application_threshold": "STILL_NOT_AVAILABLE"
+  },
+  "nonclaims": [
+    "RM28 does not define or calibrate a temporal acceptance threshold.",
+    "RM28 does not admit the three-model triangle.",
+    "RM28 does not qualify later irrigation-demand or crop-memory fidelity.",
+    "RM28 does not reinterpret F-GC44 numerical closure tolerances as application tolerances."
+  ],
+  "next_required_boundary": "Decide whether the workstream can close as research/architecture-qualified but production-admission-blocked pending an independently supplied application temporal-fidelity requirement, rather than continuing to manufacture additional numerical diagnostics."
+}
