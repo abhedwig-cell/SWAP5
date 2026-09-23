@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-B",
+  "title": "Typed generated default-MvG K0 constitutive provider",
+  "result": "PASS",
+  "qualified_head": "7b497950788680aaf2bfd90f05addcf2fd7ec979",
+  "workflow_run": 35820662142,
+  "scope": {
+    "staring_rows": 30,
+    "swkimpl": 0,
+    "provider_interface": "constitutive_hydraulics_provider_t",
+    "arbitrary_user_tables": false
+  },
+  "evidence": {
+    "theta_max_abs": 0.0000532097575379753,
+    "capacity_max_abs": 0.0000517194039108124,
+    "log10k_max_abs": 0.00028942250791175184,
+    "k0_derivative_slot_zero": "PASS",
+    "step_duration_rebind": "PASS",
+    "fail_closed_binding": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "analytical_provider_unchanged": "PASS"
+  },
+  "implementation": {
+    "provider": "src/solver/mod_b110_generated_mvg_provider.f90",
+    "fixture": "tests/fsi/fixtures/ftab02_staring1994_mvg.dat",
+    "test": "tests/fsi/test_ftab02b_generated_mvg_provider.f90",
+    "runner": "tests/fsi/run_ftab02b_generated_mvg_provider.sh"
+  },
+  "ownership": {
+    "immutable_tables": "b110_generated_mvg_table_state_t",
+    "per_trial_numerical_context": "step_duration on b110_generated_mvg_provider_t",
+    "committed_physical_state": false
+  }
+}
