@@ -2085,6 +2085,13 @@
       "effect": "Dynamic/static surface area, crack-width threshold, per-domain share and conductivity-cap equations pass isolated cases. No storage or flux is published; MPVOLUME owner integration remains open."
     },
     {
+      "workunit": "PPA-WU05-A3-MPVOLUME-DOMAINS-CANDIDATE",
+      "state": "ISOLATED_DOMAIN_VOLUME_AND_BOTTOM_LIMIT_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MPVOLUME_DOMAINS_STATUS.json; preregistered against B1.11 macropore.f90 MPVOLUME task 1 section B",
+      "production_delta": "NONE",
+      "effect": "Minimum-width-filtered compartment volume, deepest/potential domain bottom limits, ordered per-domain cell and aggregate volume, and the dynamic nonnegative candidate are checked in isolation. No macro state, flux, mass, retry or restart state is published."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,

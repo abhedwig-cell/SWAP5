@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_domains.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-DOMAINS-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@99440f01d7253f06b2d0cedb030424a8abd92245",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MPVOLUME task 1",
+    "source_region": "section B compartment pore volumes, minimum crack-width filter, deepest-active bottom, potential-bottom limits, domain cell/aggregate totals and dynamic-volume nonnegative candidate"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_domains.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_domains_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_domains_source_oracle.sh",
+  "in_scope": [
+    "candidate compartment volume = dynamic + static volume on the active geometry interval",
+    "minimum crack-width removal only while deepest active bottom remains unset and static volume is below threshold",
+    "deepest active bottom with the ICpBtDmPot(2) floor",
+    "shallower per-domain potential-bottom limits",
+    "source-ordered per-cell domain shares and per-domain/whole-domain totals",
+    "dynamic-volume nonnegative candidate after aggregation"
+  ],
+  "out_of_scope": [
+    "MPVOLUME task-1 shrinkage state and previous-step CritThet selection",
+    "surface-area calculation and capacity; covered by the separate surface candidate oracle",
+    "ZBtDm indexing when an empty domain bottom remains zero",
+    "stateful task dispatch and publication into MacroporeVar",
+    "accepted Richards transaction, mass, retry, restart and A4 admission"
+  ],
+  "expected_tests": [
+    "minimum width cutoff, static-volume threshold and first/deepest active-node selection",
+    "potential-bottom floor and per-domain cap, cell allocation and ascending-order sums",
+    "negative dynamic candidate clamp, inactive-above-top input isolation, invalid geometry and short output fail-closed",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated candidate-volume and domain accounting only; no state is published"
+}

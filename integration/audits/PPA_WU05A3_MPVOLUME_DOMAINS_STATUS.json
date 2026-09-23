@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_domains.status.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-DOMAINS-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@99440f01d7253f06b2d0cedb030424a8abd92245",
+  "preregistration": "integration/audits/PPA_WU05A3_MPVOLUME_DOMAINS_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_domains.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_domains_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_domains_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": [
+      "minimum crack-width cutoff",
+      "deepest active bottom and ICpBtDmPot domain limits",
+      "per-domain cell/total volume and whole-domain sum",
+      "negative dynamic-volume candidate clamp ordering",
+      "invalid geometry and short output fail-closed",
+      "inactive above-IcTopMp non-geometric inputs ignored"
+    ],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated candidate equations only; no state publication, accepted mass, retry/restart or A4 integration",
+  "next_action": "Trace MPVOLUME task-1 shrinkage/current-previous ownership and bridge task-1 candidate inputs to the separate shrinkage, area and domain-volume oracles without publishing state.",
+  "blockers": []
+}
