@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_v1.pchip_diagnostic_prediction.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A",
+  "date": "2026-09-23",
+  "status": "PERSISTED_BEFORE_C1_C2_ENDPOINT_OBSERVATION_ON_AMENDED_RUN",
+  "active_run": {
+    "run_id": 35856815650,
+    "head_sha": "bbe369f77c0836b95d09c120d14e58c1af06d5ee",
+    "state_at_persistence": "IN_PROGRESS"
+  },
+  "already_observed_from_prior_run": {
+    "C0_NO_DISCHARGE": "PASS",
+    "C1_C2_endpoints": "NOT_OBSERVED"
+  },
+  "source_basis": {
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "product_semantics": "TabulatedRatingCurve uses PCHIP interpolation; below the lowest supplied level flow is held at zero.",
+    "frozen_q1a_v1_table": {
+      "level_m": [
+        -1,
+        0,
+        1
+      ],
+      "flow_m3_per_day": [
+        0,
+        0,
+        0.5
+      ]
+    },
+    "intended_oracle_relation": "Q = 0.5*h m3/day for h>0, Q=0 below crest"
+  },
+  "analytic_diagnosis": {
+    "explanation": "The flat [-1,0] segment forces the PCHIP derivative at the crest to zero. The 0<h<1 segment therefore becomes cubic rather than the intended straight line.",
+    "pchip_relation_on_0_to_1": "Q(h) = -0.25*h^3 + 0.75*h^2 m3/day",
+    "points": [
+      {
+        "level_m": 0.3,
+        "q_pchip_m3_per_day": 0.06075,
+        "q_linear_m3_per_day": 0.15
+      },
+      {
+        "level_m": 0.7,
+        "q_pchip_m3_per_day": 0.28175,
+        "q_linear_m3_per_day": 0.35
+      }
+    ]
+  },
+  "predicted_endpoint_effect_for_dt_1e_4_day": {
+    "C1_MODERATE_DISCHARGE": {
+      "predicted_ribasim_level_m": 0.3000139247336844,
+      "oracle_level_m": 0.3000049997500125,
+      "predicted_difference_m": 0.000008924983671887432,
+      "expected_frozen_tolerance_result": "FAIL_1E-8"
+    },
+    "C2_HIGH_DISCHARGE": {
+      "predicted_ribasim_level_m": 0.6999768257908248,
+      "oracle_level_m": 0.6999700014999249,
+      "predicted_difference_m": 0.0000068242908998206175,
+      "expected_frozen_tolerance_result": "FAIL_1E-8"
+    }
+  },
+  "interpretation_rule": "If the observed Q1A-v1 mismatch is consistent with this predicted sign and magnitude, classify Q1A-v1 as a RIBASIM_RATING_MAPPING_FALSIFICATION, not as evidence that external surface-water state ownership is physically invalid.",
+  "successor_candidate": {
+    "name": "Q1A-R2",
+    "table_level_m": [
+      0,
+      1
+    ],
+    "table_flow_m3_per_day": [
+      0,
+      0.5
+    ],
+    "rationale": "Two-point table is an accepted Ribasim pattern; PCHIP between two points is the straight segment, while Ribasim's below-lowest-level rule supplies Q=0 below the crest.",
+    "retuning_status": "NEW_MAPPING_CANDIDATE_REQUIRING_SEPARATE_PREREGISTRATION; do not alter Q1A-v1 in place"
+  },
+  "production_admission": false
+}
