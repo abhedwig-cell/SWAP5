@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.rom-purpose.p5b.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5B-GW-INFORMATION-CARRIER-SCREEN",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P5B_DIAGNOSTIC_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P5B_PREREGISTRATION.json@0e45b5e97c3965d7b6179bced2d0ced4d2467024",
+  "derivation": "integration/f-rom/ROM_PURPOSE_P5B_REPRESENTATION_DERIVATION.json@ff90539eccd278143fb91d62dcbce90d481cf730",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "route": {
+    "spatial_resolution": 512,
+    "temporal_factor": 8,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "G17",
+      "G18",
+      "G19",
+      "G20"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ]
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P5B_REPRESENTATION_DERIVATION.json": "ff90539eccd278143fb91d62dcbce90d481cf730",
+    "integration/f-rom/ROM_PURPOSE_P5B_PREREGISTRATION.json": "0e45b5e97c3965d7b6179bced2d0ced4d2467024",
+    "tests/rom/materialize_rom_purpose_p5b_gw_shape.py": "904ef7a37732a99203dd7642b846dd2fe92a092a",
+    "tests/rom/run_rom_purpose_p5b_gw_shape.py": "37cf055d01715a0253e914301c73df8ef4c4d36c",
+    "tests/rom/analyze_rom_purpose_p5b_gw_shape.py": "c3cab537bea5d8ff1a1d8a7e17d2b947a5376b8f",
+    ".github/workflows/f-rom-purpose-p5b.yml": "f820234b780d06081a174d7a96097c9b47e82660"
+  },
+  "scientific_firewall": {
+    "screening_only": true,
+    "response_exposed_histories_acknowledged": true,
+    "minimum_state_count_claim_authorized": false,
+    "dynamic_state_sufficiency_authorized": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
