@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "b980496834e536018ddace2958b01a30cb3c1e7d",
-    "local_relation_to_previous_canonical_base": "198 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "dc296063143eb77535a219c7949435276db73461",
+    "local_relation_to_previous_canonical_base": "201 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "b980496834e536018ddace2958b01a30cb3c1e7d",
+    "last_reconciled_head": "dc296063143eb77535a219c7949435276db73461",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -232,9 +232,16 @@
         {
           "id": "M1-04",
           "text": "output serialization does not mutate physical state",
-          "status": "PARTIAL",
-          "gap": "Current typed production seams are bounded; evidence does not establish the full SWAP4-compatible non-file/file-adapter surface described by this criterion.",
-          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+          "status": "CLOSED",
+          "gap": null,
+          "evidence": [
+            "integration/m1/M1_C4_CANONICAL_ADMISSION.json",
+            "integration/audits/PPA_OUTPUT_CANON_APPLICATION_BINDING_PREREGISTRATION.json",
+            "integration/audits/PPA_OUTPUT_CANON_APPLICATION_BINDING_STATUS.json",
+            "tests/fapp/test_ppa_output_canon_application_binding.f90",
+            "implementation commit dc296063143eb77535a219c7949435276db73461"
+          ],
+          "next_bounded_action": "No action for the bounded in-memory canonical_result_t text serializer. This does not close legacy BAL/BLC/CSV output, file management or M1 as a whole."
         },
         {
           "id": "M1-05",
@@ -1422,5 +1429,5 @@
     }
   ],
   "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
-  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d (refreshed 2026-09-23); local branch checkpoint=b980496834e536018ddace2958b01a30cb3c1e7d (M7 audits and M8 legacy-global/HeadCalc boundary inventory persisted); 198 local commits ahead / 60 behind; current checkpoint adds an F-CI07/F-CI08/F-CI09 bounded B1.10 capsule field-group ownership crosswalk. M7-03 remains partial for active snow/drainage and allocator/transient accounting; M7-04 remains partial for accepted field-profile/production-bootstrap memory; M7-05 awaits a representative large batch and executable qualified B12-like fixture; M7-06 awaits per-column fallback-tier batch observability/qualification; M8-01 remains partial pending generic application/file/calendar/management/reporting owner mapping; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; pre-existing untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ remain untouched."
+  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d (refreshed 2026-09-23); local branch checkpoint=dc296063143eb77535a219c7949435276db73461, 201 local commits ahead / 60 behind. Recent local checkpoints: 478952183 M8 B1.10 capsule field-group crosswalk; e617ac0fe PPA-OUTPUT-CANON-APP preregistration; dc2960631 O0/O2 stateless canonical-result text bootstrap binding. M1-04 is closed only for this admitted typed in-memory snapshot serialization; M1 and PPA-OUTPUT-LEGACY remain partial/open, and full PPA-WU01 physical runtime was not run by the focused binding gate. M7-03 remains partial for active snow/drainage and allocator/transient accounting; M7-04 remains partial for accepted field-profile/production-bootstrap memory; M7-05 awaits a representative large batch and executable qualified B12-like fixture; M7-06 awaits per-column fallback-tier batch observability/qualification; M8-01 remains partial pending generic application/file/calendar/management/reporting owner mapping; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; pre-existing user worktree changes/artifacts remain untouched."
 }
