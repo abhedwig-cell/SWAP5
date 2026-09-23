@@ -170,3 +170,17 @@ Therefore, from the research side:
 
 This is a handoff/readiness statement only. It does not change F0 status or
 production code from the research branch.
+
+
+## Live delta — F0 unlocked on production branch
+
+After the successful A→E→G preservation replay, the production branch advanced through:
+
+- `33a448b97330b7730d5d888e7a0ab209a73e891d` — bind dedicated and sequential G qualification pass;
+- `f92ea6073ad261252cae447455f7e6b3b38c65a0` — close G and unlock F0;
+- `49be47d90e407f5888e4a6858e8918b0dc7089d0` — unlock F0 implementation after G qualification.
+
+Therefore the production work unit is no longer waiting on research or G closure before F0.
+
+Research remains evidence-only. The next production-owned sequence is unchanged:
+F0_1..F0_5 → exact whole-Hupsel F gate.
