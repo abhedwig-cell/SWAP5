@@ -18,7 +18,9 @@ actual_src="$(git diff --name-only "$BASE..HEAD" -- src | LC_ALL=C sort)"
   printf 'expected production scope:\n%s\nactual:\n%s\n' "$expected_src" "$actual_src" >&2
   fail "production source scope"
 }
-echo 'SW_RIB_PA01_EXACT_THREE_PRODUCTION_FILES=PASS'\n! grep -Fq 'configure_fixed_weir_surface_water' src/runtime/mod_ribasim_surface_water_profile_contract.f90 || fail 'coupled wrapper configures internal fixed-weir context'\necho 'SW_RIB_PA01_WRAPPER_NEVER_CONFIGURES_FIXED_WEIR=PASS'
+echo 'SW_RIB_PA01_EXACT_THREE_PRODUCTION_FILES=PASS'
+! grep -Fq 'configure_fixed_weir_surface_water' src/runtime/mod_ribasim_surface_water_profile_contract.f90 || fail 'coupled wrapper configures internal fixed-weir context'
+echo 'SW_RIB_PA01_WRAPPER_NEVER_CONFIGURES_FIXED_WEIR=PASS'
 
 python3 - "$BUILD/compile-order.txt" <<'PY'
 from pathlib import Path
