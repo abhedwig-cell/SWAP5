@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW03-CVAL",
+  "title": "Pure B1.11 SWBOTB3RESVERT profile C-value law",
+  "protocol": "PIN_NODE_SEARCH_AND_SUM -> IMPLEMENT_TYPED_PROFILE_ORACLE -> 100000_SOURCE_REPLAYS -> O0_O2_REPLAY -> HOLD_PROFILE_OWNER",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW03_CVAL_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW03_CAUCHY_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+  ],
+  "scope": [
+    "Source-ordered bottom-up saturated vertical resistance calculation",
+    "SWBOTB3RESVERT=1 zero-resistance branch",
+    "Explicit typed profile geometry and vertical conductivity inputs"
+  ],
+  "non_goals": [
+    "Hydraulic property calculation or profile state ownership",
+    "Implicit HeadCalc/Jacobian boundary solve",
+    "Groundwater/aquifer state, accepted mass or production application admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic in-domain water-table positions bitwise match the B1.11 loop",
+    "node boundaries, profile endpoints, resistance switch, A/B/A and invalid profile cases pass",
+    "O0/O2 transcripts match",
+    "no soil profile, Richards state or mass ledger changes"
+  ]
+}
