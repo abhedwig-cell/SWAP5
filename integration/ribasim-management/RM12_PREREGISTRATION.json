@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.ribasim_management.real_ribasim_scheduler_trajectory.preregistration.v1",
+  "work_unit": "RM12",
+  "date": "2026-09-23",
+  "title": "Exact-release noncommensurate scheduler trajectory equivalence",
+  "authorities": {
+    "scheduler": "RM11 QUALIFIED_COUPLER_OWNED_FIXED_ALLOCATION_BOUNDARY_SCHEDULER",
+    "clock_contract": "RM03",
+    "aliasing": "RIBASIM-DUMMY-20H10 QUALIFIED_NONCOMMENSURATE_ALLOCATION_CLOCK_ALIASING"
+  },
+  "ribasim_pin": {
+    "repository": "Deltares/Ribasim",
+    "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "release": "v2026.1.1"
+  },
+  "frozen_topology": {
+    "horizon_seconds": 86400,
+    "product_requested_targets_seconds": [21600,43200,64800,86400],
+    "allocation_dt_seconds": 18000,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1.0,
+    "fixed_supply_m3_per_day": 32.0,
+    "root_demand_m3_per_day": 40.0,
+    "external_demand_m3_per_day": 20.0,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1.0,
+    "user_demand_min_level_m": 0.99,
+    "groundwater_exchange": "none"
+  },
+  "routes": {
+    "production_scheduler": {
+      "source": "src/runtime/mod_fmr_ribasim_management_scheduler.f90",
+      "required_update_until_targets_seconds": [18000,21600,36000,43200,54000,64800,72000,86400],
+      "required_solved_allocation_boundaries_seconds": [0,18000,36000,54000,72000]
+    },
+    "explicit_reference": {
+      "source": "independently frozen static target list",
+      "update_until_targets_seconds": [18000,21600,36000,43200,54000,64800,72000,86400],
+      "expected_allocation_record_seconds": [0,18000,36000,54000,72000]
+    },
+    "naive_h10_control": {
+      "update_until_targets_seconds": [21600,43200,64800,86400],
+      "expected_allocation_record_seconds": [0]
+    }
+  },
+  "hypotheses": [
+    "The compiled RM11 production scheduler emits exactly the preregistered noncommensurate target and solve-boundary sequences.",
+    "Exact Ribasim records allocations at 0, 5, 10, 15 and 20 hours when driven by the production scheduler route.",
+    "The scheduler route and independent explicit-reference route reproduce Basin level and cumulative root/external UserDemand transfer at every emitted accepted target within frozen tolerances.",
+    "The naive 6-hour control records only the initial t=0 allocation, reproducing the H10 call-start aliasing mechanism.",
+    "The scheduler route changes day-end total physical UserDemand delivery by more than 1 m3 relative to the naive control, showing the scheduling correction is hydrologically material in this frozen topology.",
+    "For each route, cumulative UserDemand delivery plus Basin storage change closes against the 32 m3 one-day source supply within 0.05 m3."
+  ],
+  "tolerances": {
+    "route_cumulative_volume_m3": 1e-8,
+    "route_basin_level_m": 1e-10,
+    "allocation_record_time_seconds": 1e-6,
+    "mass_ledger_m3": 0.05,
+    "minimum_scheduler_naive_day_end_separation_m3": 1.0
+  },
+  "failure_rule": "Do not alter the target sequences, allocation-record expectations, materiality threshold or route-equivalence tolerances after exact-release execution. Repair only technical setup failures.",
+  "nonclaims": [
+    "No adaptive Ribasim allocation mode.",
+    "No MODFLOW or RibaMod composition is required because H10 already established that the aliasing mechanism resides in the Ribasim BMI call-start semantics for this release.",
+    "No general clock-lattice characterization.",
+    "No later Ribasim release semantics.",
+    "No canonical admission by RM12 alone."
+  ]
+}
