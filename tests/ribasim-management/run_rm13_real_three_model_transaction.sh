@@ -7,17 +7,23 @@ mkdir -p "$BUILD/modflow-bin" "$BUILD/downloads" "$BUILD/bridge"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "RM13_FAIL $*" >&2; exit 1; }
 
-python3 - <<PY
-from pathlib import Path
-from flopy.utils.get_modflow import run_main
-bindir=Path("$BUILD/modflow-bin")
-downloads=Path("$BUILD/downloads")
-run_main(bindir,owner="MODFLOW-ORG",repo="modflow6",release_id="6.8.0",
-         subset={"mf6","libmf6.so"},downloads_dir=downloads,force=True,quiet=False)
-PY
-ARCHIVE="$BUILD/downloads/modflow6-6.8.0-linux.zip"
-echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  $ARCHIVE" | sha256sum -c - || fail "MODFLOW asset hash"
-test -f "$BUILD/modflow-bin/libmf6.so" || fail "missing libmf6.so"
+MODFLOW_ARCHIVE="$BUILD/downloads/mf6.8.0_linux.zip"
+MODFLOW_RELEASE_DIR="$BUILD/modflow-release"
+curl -L --fail --retry 3 \
+  https://github.com/MODFLOW-ORG/modflow6/releases/download/6.8.0/mf6.8.0_linux.zip \
+  -o "$MODFLOW_ARCHIVE"
+echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  $MODFLOW_ARCHIVE" | \
+  sha256sum -c - || fail "MODFLOW 6.8.0 release asset hash"
+mkdir -p "$MODFLOW_RELEASE_DIR"
+unzip -q "$MODFLOW_ARCHIVE" -d "$MODFLOW_RELEASE_DIR"
+LIBMF6_SOURCE="$(find "$MODFLOW_RELEASE_DIR" -type f -name 'libmf6.so' -print -quit)"
+MF6_SOURCE="$(find "$MODFLOW_RELEASE_DIR" -type f -name 'mf6' -perm -u+x -print -quit)"
+test -n "$LIBMF6_SOURCE" -a -f "$LIBMF6_SOURCE" || fail "missing libmf6.so in official MODFLOW release"
+test -n "$MF6_SOURCE" -a -f "$MF6_SOURCE" || fail "missing mf6 in official MODFLOW release"
+cp "$LIBMF6_SOURCE" "$BUILD/modflow-bin/libmf6.so"
+cp "$MF6_SOURCE" "$BUILD/modflow-bin/mf6"
+chmod +x "$BUILD/modflow-bin/mf6"
+echo "RM13_MODFLOW680_RELEASE_BINARY=PASS sha256=33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fPIC -fopenmp)
 MODULE_SRC=(
