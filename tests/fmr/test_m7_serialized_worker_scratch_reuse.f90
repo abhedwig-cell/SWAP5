@@ -90,6 +90,10 @@ program test_m7_serialized_worker_scratch_reuse
     diagnostics(i)%column_id = columns(i)%column_id
     call fmr_execute_serialized_physical_column(backend, transaction_control, columns(i), templates, parameters, &
          forcings, states, numerical, T0, T1, results(i), diagnostics(i), runtime, active_physical_calls)
+    write(*,'(a,1x,i0,1x,l1,1x,l1,1x,a,1x,i0,1x,i0,1x,a,1x,es24.16e3)') &
+         'M7_WORKER_SCRATCH_COLUMN', i, results(i)%completed, results(i)%committed, &
+         trim(results(i)%admission_status), results(i)%kernel_status, results(i)%accepted_substeps, &
+         trim(diagnostics(i)%failure_classification), results(i)%mass%residual
     call require(results(i)%completed .and. results(i)%committed, 'A-B-A column accepted and committed')
     call require(results(i)%mass%complete, 'A-B-A column mass complete')
     call require(abs(results(i)%mass%residual) <= HARD_MASS_GATE, 'A-B-A hard mass gate')
