@@ -5,6 +5,7 @@ on:
     branches:
       - work/ribasim-management-coupling-closeout
     paths:
+      - 'tests/ribasim-management/support/mod_rm13_management_c_bridge.f90'
       - 'tests/ribasim-management/test_rm13_management_init_smoke.f90'
       - 'tests/ribasim-management/run_rm13_management_init_smoke.sh'
       - '.github/workflows/rm13-management-init-smoke.yml'
