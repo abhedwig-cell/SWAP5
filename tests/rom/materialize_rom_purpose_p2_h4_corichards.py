@@ -39,6 +39,14 @@ def main()->int:
                 "--temporal-factor",str(a.temporal_factor),
                 "--output",str(base),"--manifest",str(bm)
             ],check=True)
+            text=base.read_text()
+            text=replace_one(
+                text,
+                "call require(mod(numnod,16)==0,'LAREDYN0R ROMPURP_P2_SURFACE geometry divisible by 16')",
+                "call require(mod(numnod,16)==0,'LAREDYN0R ROMPURP_P1_SURFACE geometry divisible by 16')",
+                "surface coarse-output adapter guard-label bridge"
+            )
+            base.write_text(text)
             purpose_arg="surface"
         else:
             if None in (a.gw_materializer,a.c5a_materializer,a.c4z_materializer):
