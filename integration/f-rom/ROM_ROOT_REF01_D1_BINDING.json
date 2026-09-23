@@ -3,15 +3,16 @@
   "workstream": "ROM-ROOT",
   "work_unit": "ROM-ROOT-REF01-D1",
   "date": "2026-09-23",
-  "state": "BOUND_BEFORE_REF01_D1_EXECUTION",
+  "state": "BOUND_BEFORE_REF01_D1_R1_EXECUTION",
   "preregistration": "integration/f-rom/ROM_ROOT_REF01_D1_PREREGISTRATION.json",
   "policy_changed": false,
   "candidate_response_generated": false,
   "implementation_blobs": {
-    ".github/workflows/rom-root-ref01-d1.yml": "118828c1e840806b896be648387020bed8c3945f",
+    ".github/workflows/rom-root-ref01-d1.yml": "d1bc49ce1bfc4d357b267438ae2ce5c6d0e0c7a9",
     "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
     "tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py": "269bbc7796a5d7e0535660954f1c0f075b97634b",
-    "tests/rom/materialize_rom_root_ref01_policy.py": "1dd567250276ec74244fb3f19abe51cff32f9ba9",
+    "tests/rom/materialize_rom_root_ref01_policy.py": "76ae08ae62aabd17516fff738df6d6956dd04857",
+    "tests/rom/materialize_rom_root_ref01_d1_policy_replay.py": "1522af8971affb67049ed2945746c44f8b639d70",
     "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34"
   },
   "frozen_cases": [
@@ -24,5 +25,12 @@
     "fallback_enabled": false,
     "production_source_changed": false,
     "candidate_response_generated": false
+  },
+  "repair_provenance": {
+    "prior_run": 35819602617,
+    "prior_run_disposition": "INVALID_DIAGNOSTIC_REPLAY_POLICY_MISMATCH",
+    "defect": "Direct diagnose_failed_interval replay used original_total_tol rather than the already-bound p%total_balance_tolerance.",
+    "scientific_policy_changed": false,
+    "selected_cases_changed": false
   }
 }
