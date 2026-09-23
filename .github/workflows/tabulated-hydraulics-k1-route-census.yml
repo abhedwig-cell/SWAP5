@@ -1,0 +1,142 @@
+name: TAB-HYD K1 route census
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-k1-route-census.yml'
+      - 'research/tabulated_hydraulics/patch_raw_head_logk_lookup.py'
+      - 'research/tabulated_hydraulics/patch_raw_head_capacity_reuse.py'
+
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical/raw/rawcap K1 binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+
+          cp -a swap-src swap-raw-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-raw-src/src/utils/soilhydraulicsutils.f90 swap-raw-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_raw_head_logk_lookup.py swap-raw-src/src/soil/sptabulated.f90 swap-raw-src/src/io/readswap.f90 swap-raw-src/src/utils/soilhydraulicsutils.f90
+          cp -a swap-raw-src swap-rawcap-src
+          meson setup swap-raw-src/build swap-raw-src -Denable_pfunit=false
+          meson compile -C swap-raw-src/build
+          cp swap-raw-src/build/swap swap-table-raw
+
+          python3 research/tabulated_hydraulics/patch_raw_head_capacity_reuse.py swap-rawcap-src/src/soil/sptabulated.f90 swap-rawcap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-rawcap-src/build swap-rawcap-src -Denable_pfunit=false
+          meson compile -C swap-rawcap-src/build
+          cp swap-rawcap-src/build/swap swap-table-rawcap
+
+      - name: Prepare all five K1 scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("lp",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep
+          prep.uniform_rows=lambda par: mod.loghead_rows(par,400)
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/k1-census"); root.mkdir(parents=True)
+          for name,sc in prep.SCENARIOS.items():
+              params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{name}__analytic",params,sc,False,1)
+              prep.prepare_case(src,root/f"{name}__raw",params,sc,True,1)
+              shutil.copytree(root/f"{name}__raw",root/f"{name}__rawcap")
+          PY
+
+      - name: Run route census
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,time,csv
+          root=Path("build/k1-census").resolve()
+          bins={
+            "analytic":Path("swap-analytic").resolve(),
+            "raw":Path("swap-table-raw").resolve(),
+            "rawcap":Path("swap-table-rawcap").resolve(),
+          }
+          scenarios=["coarse_dry_free","loam_mid_free","clay_wet_free","coarse_dry_pulse","loam_capillary"]
+          rows=[]
+          for scenario in scenarios:
+              for route,binary in bins.items():
+                  work=root/f"{scenario}__{route}"
+                  t=time.perf_counter()
+                  status="unknown"; rc=-999
+                  try:
+                      p=subprocess.run([str(binary)],cwd=work,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=120)
+                      rc=p.returncode
+                      status="normal" if rc==100 else "failure"
+                      (work/"k1-census.log").write_text(p.stdout)
+                  except subprocess.TimeoutExpired as e:
+                      rc=124
+                      status="timeout"
+                      out=e.stdout or ""
+                      if isinstance(out,bytes): out=out.decode(errors="replace")
+                      (work/"k1-census.log").write_text(out)
+                  dt=time.perf_counter()-t
+                  rows.append((scenario,route,status,rc,dt))
+                  print(f"K1_CENSUS scenario={scenario} route={route} status={status} rc={rc} seconds={dt:.6f}")
+          out=root/"route-census.tsv"
+          with out.open("w",newline="") as fh:
+              w=csv.writer(fh,delimiter="\t")
+              w.writerow(["scenario","route","status","return_code","seconds"])
+              w.writerows(rows)
+          PY
+          cat build/k1-census/route-census.tsv
+
+      - name: Upload census
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-k1-route-census
+          path: |
+            build/k1-census/route-census.tsv
+            build/k1-census/*/k1-census.log
