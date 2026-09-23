@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.absorption_arbitration.status.v1",
+  "work_unit": "PPA-WU05-A3-ABSORPTION-ARBITRATION",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@65d3bd5e5",
+  "preregistration": "integration/audits/PPA_WU05A3_ABSORPTION_ARBITRATION_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated candidate-selection equation only; no runtime state or accepted mass binding",
+  "implementation": "src/process/mod_ppa_wu05a3_absorption_arbitration.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_absorption_arbitration_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_absorption_arbitration_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_ABSORPTION_ARBITRATION_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_SORPTIVITY_STRICT_GREATER_SELECTION_AND_EQUAL_DARCY_ROUTE=PASS",
+      "PPA_WU05A3_SORPTIVITY_RESIDUAL_EVENT_THRESHOLD=PASS",
+      "PPA_WU05A3_ABSORPTION_ARBITRATION_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "f9a63d1a284499f44a1b17834c4d503973d125203975b9b50f4e8bc7956458f6"
+  },
+  "next_action": "Continue with the separate ABSORPTION Darcy-candidate source equation; no runtime admission.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}
