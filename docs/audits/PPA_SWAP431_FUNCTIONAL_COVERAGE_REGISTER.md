@@ -183,7 +183,10 @@ addition over 100,000 cases. These pure source terms do not qualify SSDI solute
 transport, cumulative accepted solute balance or production mass booking. The
 surface pond dilution, matrix-only top-flux share, and remaining pond solute
 store are also bitwise checked over 100,000 cases, including the strict
-`qtop < -1e-6` gate; invalid and overflow domains fail closed.
+`qtop < -1e-6` gate; invalid and overflow domains fail closed. The bottom
+solute flux uses the source's strict positive-water-flux seepage concentration
+selection, otherwise the last matrix concentration, bitwise checked over
+100,000 cases.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

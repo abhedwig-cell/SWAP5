@@ -15,6 +15,9 @@ program test_ppa_irr_interception_solute_mass
   real(real64) :: pond_depth, top_flux, macro_area, pond_concentration, expected_pond_concentration
   real(real64) :: surface_flux_mass, expected_surface_flux_mass, updated_surface_mass, expected_updated_surface
   real(real64) :: surface_flux, expected_surface_flux
+  real(real64) :: q_bottom, seepage_concentration, matrix_concentration, bottom_solute_flux
+  real(real64) :: expected_bottom_solute_flux, source_bottom_concentration
+  logical :: selected_seepage, expected_selected_seepage
   integer(int64) :: random_state
   integer :: i, status
 
@@ -88,6 +91,19 @@ program test_ppa_irr_interception_solute_mass
     call require(same_real(surface_flux_mass,expected_surface_flux_mass),9)
     call require(same_real(updated_surface_mass,expected_updated_surface),10)
     call require(same_real(surface_flux,expected_surface_flux),11)
+
+    q_bottom=-5.0_real64+10.0_real64*unit_value
+    seepage_concentration=100.0_real64*unit_value
+    matrix_concentration=100.0_real64*(1.0_real64-unit_value)
+    expected_selected_seepage=q_bottom>0.0_real64
+    source_bottom_concentration=matrix_concentration
+    if(expected_selected_seepage)source_bottom_concentration=seepage_concentration
+    expected_bottom_solute_flux=q_bottom*source_bottom_concentration
+    call ppa_irr_bottom_solute_flux(q_bottom,seepage_concentration,matrix_concentration, &
+         bottom_solute_flux,selected_seepage,status)
+    call require(status==IRR_SURFACE_SOLUTE_OK,12)
+    call require(selected_seepage.eqv.expected_selected_seepage,13)
+    call require(same_real(bottom_solute_flux,expected_bottom_solute_flux),14)
   end do
 
   call check_invalid(-1.0_real64, 1.0_real64, 1.0_real64, 10)
@@ -109,10 +125,17 @@ program test_ppa_irr_interception_solute_mass
   call ppa_irr_surface_solute_exchange(1.0_real64,1.0_real64,-1.0_real64,1.1_real64, &
        0.1_real64,pond_concentration,surface_flux_mass,updated_surface_mass,surface_flux,status)
   call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,20)
+  call ppa_irr_bottom_solute_flux(huge(1.0_real64),100.0_real64,100.0_real64, &
+       bottom_solute_flux,selected_seepage,status)
+  call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,21)
+  call ppa_irr_bottom_solute_flux(0.0_real64,ieee_value(0.0_real64,ieee_quiet_nan), &
+       1.0_real64,bottom_solute_flux,selected_seepage,status)
+  call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,22)
   print '(A)', 'PPA_IRR_INTERCEPTION_TO_SURFACE_SOLUTE_MASS_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_AMOUNT_SOURCE_ORACLE=PASS'
   print '(A)', 'PPA_IRR_SURFACE_RAIN_AND_IRRIGATION_STORAGE_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_POND_EXCHANGE_100000=PASS'
+  print '(A)', 'PPA_IRR_BOTTOM_SOLUTE_FLUX_SOURCE_ORACLE_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_INVALID_INPUT_FAIL_CLOSED=PASS'
 
 contains

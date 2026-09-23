@@ -9,6 +9,7 @@ module mod_ppa_irr_surface_solute_mass
 
   public :: calculate_surface_irrigation_solute_mass, accumulate_surface_solute_amount
   public :: ppa_irr_surface_solute_exchange
+  public :: ppa_irr_bottom_solute_flux
 
 contains
 
@@ -166,5 +167,40 @@ contains
       status = IRR_SURFACE_SOLUTE_INVALID_INPUT
     end if
   end subroutine ppa_irr_surface_solute_exchange
+
+  pure subroutine ppa_irr_bottom_solute_flux(bottom_water_flux, seepage_concentration, &
+      matrix_concentration, bottom_solute_flux, concentration_selected, status)
+    real(real64), intent(in) :: bottom_water_flux, seepage_concentration, matrix_concentration
+    real(real64), intent(out) :: bottom_solute_flux
+    logical, intent(out) :: concentration_selected
+    integer, intent(out) :: status
+    real(real64) :: concentration
+
+    ! Source: B1.11 solute.f90 task 2 bottom solute-flux sign partition.
+    bottom_solute_flux = 0.0_real64
+    concentration_selected = .false.
+    status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+    if (.not. all(ieee_is_finite([bottom_water_flux,seepage_concentration,matrix_concentration]))) return
+    if (seepage_concentration < 0.0_real64 .or. matrix_concentration < 0.0_real64) return
+    if (bottom_water_flux > 0.0_real64) then
+      concentration = seepage_concentration
+      concentration_selected = .true.
+    else
+      concentration = matrix_concentration
+    end if
+    if (abs(bottom_water_flux) > 1.0_real64 .and. concentration > 1.0_real64) then
+      if (abs(bottom_water_flux) > huge(1.0_real64)/concentration) then
+        concentration_selected = .false.
+        return
+      end if
+    end if
+    bottom_solute_flux = bottom_water_flux*concentration
+    if (.not. ieee_is_finite(bottom_solute_flux)) then
+      bottom_solute_flux = 0.0_real64
+      concentration_selected = .false.
+      return
+    end if
+    status = IRR_SURFACE_SOLUTE_OK
+  end subroutine ppa_irr_bottom_solute_flux
 
 end module mod_ppa_irr_surface_solute_mass
