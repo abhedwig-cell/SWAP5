@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-r2048-t32-recovery-binding.v2",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-R2048-T32-RECOVERY-V2",
+  "date": "2026-09-23",
+  "status": "BOUND_PROVEN_8192_STEP_SEGMENT_TOPOLOGY",
+  "supersedes_binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json",
+  "supersedes_run": 35880655075,
+  "supersession_reason": "The v1 run was still queued and had produced no response. P1 qualified evidence demonstrates an 8192-step exact-state segment topology for R2048 recovery; v2 adopts that proven segment size before any v1 execution response.",
+  "prior_qualified_topology": {
+    "workflow_run": 35751978638,
+    "conclusion": "success",
+    "workflow": ".github/workflows/f-rom-purpose-p1-reference-segmented.yml",
+    "segment_steps": 8192
+  },
+  "source_failure_run": 35876286853,
+  "route": "R2048_T32",
+  "segment_steps": 8192,
+  "segments_per_history": 4,
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "execution_matrix": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "histories": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "cases_per_segment": 16,
+    "segment_count": 4
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_EXECUTION_REPAIR.json": "e5c15fa0fdf48b57b9aeee6821ab79819bfda983",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "tests/rom/materialize_rom_purpose_p3_gw_reference.py": "83dbec28cd92b76bc1e2a4ac704103622a5cab28",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/run_rom_purpose_p3_gw_r2048_t32_segment.py": "340a862551b546a629936cc4e23a315bced3dd33",
+    "tests/rom/assemble_rom_purpose_p3_gw_r2048_t32_recovery_v2.py": "d6cb04e73e4f1f42e43f34e7f8f0dabbcdc115ec",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    ".github/workflows/f-rom-purpose-p3-gw-r2048-t32-recovery-v2.yml": "3f8e0fd6910ca8edd20878c2ad10c09718137cdd"
+  },
+  "scientific_firewall": {
+    "v1_response_seen": false,
+    "hydrological_response_used_for_topology_change": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "temporal_factor_changed": false,
+    "spatial_resolution_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "candidate_response_generated": false
+  }
+}
