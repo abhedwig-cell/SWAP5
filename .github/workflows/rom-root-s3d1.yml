@@ -1,0 +1,213 @@
+name: ROM-ROOT S3-D1 fine-node Feddes decomposition
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_S3D1_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-s3d1-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    name: ${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [V01, V02, V03, V04]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify S3-D1 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_S3D1_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_S3D1_BINDING.json'))
+          s3=json.load(open('integration/f-rom/ROM_ROOT_S3_RESULT.json'))
+          ra=json.load(open('integration/f-rom/ROM_ROOT_RA02R_RESULT.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_S3D1_FINE_NODE_DIAGNOSTIC_RESPONSE'
+          assert b['state']=='BOUND_BEFORE_S3D1_FINE_NODE_DIAGNOSTIC_RESPONSE'
+          assert s3['decision']=='MINIMAL_FEEDBACK_FALSIFIED_ON_AT_LEAST_ONE_COMPONENT_IN_EVERY_TESTED_REPRESENTATION'
+          assert ra['status']=='RA02R_STRESS_ACTIVE_REFERENCE_QUALIFIED'
+          assert b['scientific_semantics_changed'] is False
+          assert b['reduced_candidate_response_generated'] is False
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize workflow-local Reference admission repair
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py \
+            --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            --manifest /tmp/reference_floor_repair.json
+
+      - name: Execute four qualified target segments with S3-D1 diagnostics
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          starts=(1 8193 16385 24577)
+          ends=(8192 16384 24576 32768)
+          prev=""
+          for idx in 0 1 2 3; do
+            seg=$((idx+1))
+            start="${starts[$idx]}"
+            end="${ends[$idx]}"
+            target="canonical/tests/rom/test_rom_root_s3d1_segment.f90"
+            python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py \
+              --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py \
+              --source "${{ steps.cfg.outputs.source }}" \
+              --material "${{ matrix.material }}" \
+              --segment-start "$start" --segment-end "$end" \
+              --output "$target" \
+              --manifest "/tmp/s3d1_segment_${seg}.json"
+            python3 tests/rom/materialize_rom_root_ra02r_stress_panel.py \
+              --input "$target" --output "$target" --material "${{ matrix.material }}" \
+              --manifest "/tmp/s3d1_stress_${seg}.json"
+            python3 tests/rom/materialize_rom_root_ra02r_reference_policy.py \
+              --input "$target" --output "$target" \
+              --manifest "/tmp/s3d1_policy_${seg}.json"
+            python3 tests/rom/materialize_rom_root_s3d1_fine_node_feddes.py \
+              --input "$target" --output "$target"
+
+            stub="canonical/s3d1_${{ matrix.material }}_${{ matrix.history }}_seg${seg}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+              --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+              --output "$stub" --nodes 2048 --dz-cm 0.078125
+            build="/tmp/s3d1_${{ matrix.material }}_${{ matrix.history }}_seg${seg}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+              --root canonical \
+              --stub "s3d1_${{ matrix.material }}_${{ matrix.history }}_seg${seg}_stubs.f90" \
+              --target tests/rom/test_rom_root_s3d1_segment.f90 \
+              --external-source src/legacy/b1_10_port/headcalc.f90 \
+              --build "$build" --opt 0
+
+            outcp="/tmp/s3d1_checkpoint_${seg}.bin"
+            export C6R_CHECKPOINT_OUT="$outcp"
+            if [[ "$seg" -gt 1 ]]; then
+              export C6R_CHECKPOINT_IN="$prev"
+            else
+              unset C6R_CHECKPOINT_IN || true
+            fi
+            log="evidence/${{ matrix.material }}_R2048_T32_o0_${{ matrix.history }}_seg${seg}.txt"
+            set +e
+            "$build/rom0_test" > "$log" 2>&1
+            rc=$?
+            set -e
+            if [[ "$rc" -ne 0 ]]; then
+              tail -n 240 "$log"
+              exit "$rc"
+            fi
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+            grep -Fq 'ROM_ROOT_RA02R_STRESS_PANEL=TRUE' "$log"
+            grep -Fq 'ROM_ROOT_RA02R_P2E20_REPRESENTATION_FLOOR=TRUE' "$log"
+            test "$(grep -c '^ROM_ROOT_S3D1_TX|' "$log")" -eq 8192
+            test "$(grep -c '^ROM_ROOT_S3D1_LAYER|' "$log")" -eq 2048
+            test "$(grep -c '^LAREDYN0R_ROOT|' "$log")" -eq 256
+            test -s "$outcp"
+            prev="$outcp"
+          done
+          printf '%s\n' '{"material":"${{ matrix.material }}","history":"${{ matrix.history }}","segments":4,"target":"R2048_T32","optimization":0}' \
+            > "evidence/${{ matrix.material }}_${{ matrix.history }}_manifest.json"
+          sha256sum evidence/* > "evidence/${{ matrix.material }}_${{ matrix.history }}_sha256.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s3d1-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: diagnose
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download S3-D1 diagnostic logs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: s3d1-*
+          path: /tmp/s3d1
+          merge-multiple: true
+
+      - name: Analyze exact fine-node decomposition
+        run: |
+          set -euo pipefail
+          test "$(find /tmp/s3d1 -maxdepth 1 -type f -name 'B??_R2048_T32_o0_V??_seg?.txt' | wc -l)" -eq 32
+          mkdir -p S3D1_EVIDENCE
+          python3 tests/rom/analyze_rom_root_s3d1_fine_node_feddes.py \
+            --logs-dir /tmp/s3d1 \
+            --prereg integration/f-rom/ROM_ROOT_S3D1_PREREGISTRATION.json \
+            --stage3-result integration/f-rom/ROM_ROOT_S3_RESULT.json \
+            --output S3D1_EVIDENCE/ROM_ROOT_S3D1_RESULT.json \
+            | tee S3D1_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_S3D1_PREREGISTRATION.json S3D1_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3D1_BINDING.json S3D1_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3_RESULT.json S3D1_EVIDENCE/
+          sha256sum S3D1_EVIDENCE/* > S3D1_EVIDENCE/sha256.txt
+
+      - name: Enforce S3-D1 firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('S3D1_EVIDENCE/ROM_ROOT_S3D1_RESULT.json'))
+          assert r['status']=='S3D1_FINE_NODE_STATIC_FEDDES_DECOMPOSITION_COMPLETE'
+          assert r['integrity_pass'] is True
+          f=r['scientific_firewall']
+          assert f['reduced_candidate_response_generated'] is False
+          assert f['new_partition_selected'] is False
+          assert f['new_hydraulic_closure_selected'] is False
+          assert f['new_root_specific_state_selected'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_S3D1_FIREWALL=PASS')
+          print('ROM_ROOT_S3D1_DECISION='+r['decision'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s3d1
+          path: S3D1_EVIDENCE/
+          if-no-files-found: error
