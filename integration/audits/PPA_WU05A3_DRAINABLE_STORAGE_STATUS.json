@@ -2,20 +2,35 @@
   "schema": "swap5.ppa_wu05a3.drainable_storage.status.v1",
   "work_unit": "PPA-WU05-A3-DRAINABLE-STORAGE",
   "parent_work_unit": "PPA-WU05-A3",
-  "status": "IMPLEMENTED_SOURCE_ORACLE_PENDING",
+  "status": "DRAINABLE_STORAGE_SOURCE_ORACLE_PASS_A3_PARTIAL_RUNTIME_HELD",
   "baseline": "codex/ppa-swap431-functional-gap-register@8a2c3bc05",
   "preregistration": "integration/audits/PPA_WU05A3_DRAINABLE_STORAGE_PREREGISTRATION.json",
   "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
   "implemented": true,
-  "persisted": false,
-  "tested": false,
+  "persisted": true,
+  "tested": true,
   "qualified": false,
   "production_admission": "NONE; isolated geometry/storage calculation only; RAPIDDRAIN and Richards routes unchanged",
   "implementation": "src/process/mod_ppa_wu05a3_drainable_storage.f90",
   "test": "tests/fapp/test_ppa_wu05a3_drainable_storage_source_oracle.f90",
   "gate": "tests/fapp/run_ppa_wu05a3_drainable_storage_source_oracle.sh",
-  "test_result": null,
-  "next_action": "Run direct GNU Fortran O0/O2 bitwise source oracle and persist the bounded result.",
-  "recovery_point": "this preregistration, source module, and test",
-  "blockers": []
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors": 100000,
+    "comparison": "bitwise identity against independent transcription of B1.11 drain-base gate, VOLUNDR call geometry and zero-clamped storage expression",
+    "markers": [
+      "PPA_WU05A3_DRAINABLE_STORAGE_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_DRAIN_BASE_GATE_AND_STORAGE_CAP=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "477e87cc85628ef4a9a4be0b9d4d70e2b44855ba7bace5d534bb2e4ebf26d369",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "Git Bash cannot create its signal pipe on this host; the declared compiler/test sources and flags passed directly in PowerShell."
+  },
+  "next_action": "Continue with the remaining exact-source RAPIDDRAIN flux/head equation, while preserving the runtime, retry, restart and accepted-mass hold.",
+  "recovery_point": "this status record and its containing local checkpoint commit",
+  "blockers": ["This calculation does not book accepted mass or establish RAPIDDRAIN/Richards transaction, restart or runtime integration; production admission remains NONE."]
 }
