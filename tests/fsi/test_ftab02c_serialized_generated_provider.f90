@@ -101,6 +101,14 @@ contains
       return
     end if
 
+    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then
+      write(error_unit,'(a,l1,1x,a,l1,1x,a,i0)') 'F_TAB02_C_RUNTIME_FAIL generated=',generated, &
+           'generic=',generic_table,'status=',result%status
+      write(error_unit,'(a,l1,1x,a,l1,1x,a,es24.16)') 'F_TAB02_C_RUNTIME_DIAG completed=',result%completed, &
+           'mass_complete=',result%mass%complete,'mass_residual=',result%mass%residual
+      write(error_unit,'(a,5(1x,i0))') 'F_TAB02_C_RUNTIME_COUNTS', diagnostics%attempts, diagnostics%retries, &
+           diagnostics%solver_rejections, diagnostics%temporal_rejections, diagnostics%admission_rejections
+    end if
     call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed,'runtime completed')
     call require(candidate%ready(),'candidate ready')
     call require(result%mass%complete .and. abs(result%mass%residual) <= mass_tolerance,'hard mass gate')
