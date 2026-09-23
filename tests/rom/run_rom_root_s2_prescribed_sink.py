@@ -334,7 +334,7 @@ def main() -> int:
         "model_changed": False,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(out, indent=2, sort_keys=True) + "\n")
+    args.output.write_text(json.dumps(out, indent=2, sort_keys=True, default=json_default) + "\n")
     print(json.dumps({
         "material": args.material,
         "history": args.history,
