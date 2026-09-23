@@ -1,0 +1,47 @@
+name: TAB-HYD KSATEXM Hupsel two-layer gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-ksatexm-characterization
+    paths:
+      - 'src/solver/mod_b110_generated_mvg_table_state.f90'
+      - 'research/tabulated_hydraulics/test_ksatexm_hupsel_two_layer.f90'
+      - 'research/tabulated_hydraulics/run_ksatexm_hupsel_two_layer.sh'
+      - 'research/tabulated_hydraulics/KSATEXM_CANDIDATE_C_PREREGISTRATION.md'
+      - '.github/workflows/tabulated-hydraulics-ksatexm-two-layer.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run exact two-layer candidate C gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x research/tabulated_hydraulics/run_ksatexm_hupsel_two_layer.sh
+          research/tabulated_hydraulics/run_ksatexm_hupsel_two_layer.sh | tee TABHYD-KSATEXM-C-TWO-LAYER.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            grep -E '^TABHYD_KSATEXM_|^TABHYD-KSATEXM ' TABHYD-KSATEXM-C-TWO-LAYER.log || true
+          } > TABHYD-KSATEXM-C-TWO-LAYER-EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tabhyd-ksatexm-c-two-layer
+          path: |
+            TABHYD-KSATEXM-C-TWO-LAYER.log
+            TABHYD-KSATEXM-C-TWO-LAYER-EVIDENCE.txt
+          if-no-files-found: warn
