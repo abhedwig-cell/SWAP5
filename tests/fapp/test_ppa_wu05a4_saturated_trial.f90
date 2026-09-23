@@ -66,12 +66,28 @@ program test_saturated_trial
   key%evaluation=4
   call copy_matrix_transfer(slot,key,amount,ok)
   call check(.not.ok,24)
+  input%storage=0.25_real64
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),25)
+  input%storage=0.375_real64; input%z(1)=-0.25_real64
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),26)
+  input%z(1)=-0.5_real64; input%bottom=-2.25_real64
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),27)
+  input%bottom=-2; input%volume(1)=1.25_real64
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),28)
+  input%volume(1)=0.25_real64
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(ok.and.abs(storage-0.25_real64)<1.e-14_real64,29)
   input%pore_level=-2
   call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
   call check(.not.ok.and..not.allocated(e%rate),11)
   print '(a)','PPA_WU05A4_SATURATED_TRIAL_GEOMETRY_RATE_TANGENT=PASS'
   print '(a)','PPA_WU05A4_SATURATED_TRIAL_RETRY_FAIL_CLOSED=PASS'
   print '(a)','PPA_WU05A4_SATURATED_RESIDUAL_REEVALUATION=PASS'
+  print '(a)','PPA_WU05A4_SATURATED_GEOMETRY_CONSISTENCY=PASS'
 contains
   subroutine check(condition,code)
     logical,intent(in)::condition

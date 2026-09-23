@@ -5,6 +5,7 @@ module mod_ppa_wu05a4_saturated_trial
   use, intrinsic::ieee_arithmetic,only:ieee_is_finite
   use mod_ppa_wu05a3_satflow_task1
   use mod_ppa_wu05a3_satflow_derivative
+  use mod_ppa_wu05a3_volundr,only:ppa_wu05a3_volume_under_level,PPA_WU05A3_OK
   use mod_ppa_wu05a4_storage_bounds
   use mod_ppa_wu05a4_inflow_limit
   use mod_ppa_wu05a4_outflow_limit
@@ -19,6 +20,35 @@ module mod_ppa_wu05a4_saturated_trial
   end type
   public::prepare_saturated_trial,evaluate_saturated_residual
 contains
+  ! This restricted evaluator admits fixed contiguous midpoint geometry only.
+  ! The tolerance checks representation consistency; it is not a mass tolerance.
+  logical function consistent_pore_geometry(input) result(valid)
+    type(saturated_domain_inputs),intent(in)::input
+    real(real64)::expected_storage,tolerance,scale
+    integer::n,i,status
+    valid=.false.
+    n=size(input%dz)
+    if(.not.all(ieee_is_finite(input%dz)).or..not.all(ieee_is_finite(input%z)))return
+    if(.not.all(ieee_is_finite(input%volume)))return
+    if(.not.all(ieee_is_finite([input%bottom,input%pore_level,input%storage])))return
+    if(any(input%dz<=0).or.any(input%volume<0).or.any(input%volume>input%dz))return
+    if(input%storage<0)return
+    scale=max(1.0_real64,maxval(abs(input%z)),maxval(input%dz),abs(input%bottom))
+    tolerance=32.0_real64*epsilon(1.0_real64)*scale
+    if(abs(input%bottom-(input%z(n)-0.5_real64*input%dz(n)))>tolerance)return
+    do i=2,n
+      if(abs((input%z(i-1)-0.5_real64*input%dz(i-1)) &
+          -(input%z(i)+0.5_real64*input%dz(i)))>tolerance)return
+    end do
+    if(input%pore_level<input%bottom.or.input%pore_level>input%z(1)+0.5_real64*input%dz(1))return
+    call ppa_wu05a3_volume_under_level(input%pore_level,input%bottom,n,input%dz,input%volume, &
+        expected_storage,status)
+    if(status/=PPA_WU05A3_OK)return
+    tolerance=32.0_real64*epsilon(1.0_real64)*max(1.0_real64,expected_storage,input%storage)
+    if(abs(expected_storage-input%storage)>tolerance)return
+    valid=.true.
+  end function
+
   ! A failed preparation must not leave the previous residual's transfer usable.
   ! Scalar candidate storage is exposed only after successful residual application.
   subroutine evaluate_saturated_residual(input,head,dt,key,residual,used,storage_candidate,ok)
@@ -62,6 +92,7 @@ contains
     if(size(input%z)/=n.or.size(input%dz)/=n.or.size(input%volume)/=n &
         .or.size(input%resistance_inverse)/=n)return
     if(.not.all(ieee_is_finite(head)))return
+    if(.not.consistent_pore_geometry(input))return
     total_volume=sum(input%volume)
     call domain_storage_bounds(input%bottom,n,input%dz,input%volume,total_volume,input%storage, &
         input%matrix_level,input%bottom,.false.,ground,minimum,valid)

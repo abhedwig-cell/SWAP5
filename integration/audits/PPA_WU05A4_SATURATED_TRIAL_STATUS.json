@@ -11,6 +11,14 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "geometry_consistency_extension": {
+    "baseline": "f3e43aa74",
+    "contract": "Restricted fixed contiguous midpoint grid: positive finite dz, pore volume between zero and dz, domain bottom equals bottom face, adjacent cell faces match, pore level inside domain, and supplied initial storage equals source VOLUNDR at that level. Reject before rate evaluation when inconsistent.",
+    "tolerance": "32 machine epsilons times the relevant representation scale for coordinate/storage consistency only. No mass acceptance tolerance or solver convergence gate is changed.",
+    "tests": "Mismatched initial store, disconnected cell geometry, mismatched bottom and excessive pore volume return no usable evaluation. Restoring valid data reproduces original storage/rates. Existing head/retry and invalidation tests retained.",
+    "limits": "This adds a restricted adapter precondition, not a general B1 reference behavior change. It does not establish consistency of all supplied saturation-zone metadata with arbitrary nonlinear heads or enable moving geometry.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "residual_wrapper_extension": {
     "baseline": "02efba42f",
     "interface": "evaluate_saturated_residual composes preparation and residual application, invalidates previous used-vector scratch before any preparation, and exposes candidate scalar storage only after successful application.",
