@@ -1,0 +1,189 @@
+{
+  "schema": "swap5.rom-purpose.p4.representation-ladder.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4",
+  "date": "2026-09-23",
+  "status": "FROZEN_BEFORE_ANY_P4_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "design_principles": {
+    "inherit_p3_terminal_as_first_rung": true,
+    "nested_within_purpose_family": true,
+    "purpose_support_preserved": true,
+    "same_layer_rom_closure_all_rungs": "CURRENT_LAYER_FACE",
+    "matched_same_partition_richards_all_rungs": true,
+    "no_uniform_primary_comparator": true,
+    "no_post_response_extension": true,
+    "terminal_dimension": 16
+  },
+  "SURF_P": {
+    "physical_information_target": [
+      "near-surface response",
+      "exact storage support at 0-20, 0-40 and 0-80 cm",
+      "surface-to-80-cm propagation path",
+      "profile propagation below 80 cm without reallocating the family toward the lower boundary"
+    ],
+    "family": {
+      "S8": {
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          80,
+          160
+        ],
+        "origin": "P3 terminal inherited unchanged"
+      },
+      "S12": {
+        "dimension": 12,
+        "boundaries_cm": [
+          0,
+          5,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          100,
+          120,
+          160
+        ],
+        "derivation": "Refine the top 10 cm, split 60-80 cm, and add two coarse propagation discriminators below 80 cm while retaining every S8 boundary."
+      },
+      "S16": {
+        "dimension": 16,
+        "boundaries_cm": [
+          0,
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          50,
+          60,
+          70,
+          80,
+          100,
+          120,
+          140,
+          160
+        ],
+        "derivation": "Refine the 10-40 cm transmission zone to 5-cm support and split the remaining 120-160 cm propagation interval, retaining every S12 boundary."
+      }
+    }
+  },
+  "GW_LB": {
+    "physical_information_target": [
+      "lower-column storage memory",
+      "capillary response and lower-boundary reversal propagation",
+      "bottom-flux sign and reversal timing",
+      "progressively resolved hydraulic transmission from the upper column into the lower-boundary zone"
+    ],
+    "family": {
+      "G8": {
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          80,
+          100,
+          120,
+          130,
+          140,
+          150,
+          155,
+          160
+        ],
+        "origin": "P3 terminal inherited unchanged"
+      },
+      "G12": {
+        "dimension": 12,
+        "boundaries_cm": [
+          0,
+          40,
+          80,
+          100,
+          120,
+          130,
+          140,
+          145,
+          150,
+          152.5,
+          155,
+          157.5,
+          160
+        ],
+        "derivation": "Preserve all G8 boundaries, split the coarse 0-80 cm supply region once, and refine 140-160 cm progressively toward the lower boundary."
+      },
+      "G16": {
+        "dimension": 16,
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100,
+          110,
+          120,
+          130,
+          135,
+          140,
+          145,
+          150,
+          152.5,
+          155,
+          157.5,
+          160
+        ],
+        "derivation": "Preserve every G12 boundary while adding upper-column transmission support and additional 100-140 cm transition resolution."
+      }
+    }
+  },
+  "comparison_logic": {
+    "primary_layer_rom_frontier": {
+      "SURF_P": [
+        "S8",
+        "S12",
+        "S16"
+      ],
+      "GW_LB": [
+        "G8",
+        "G12",
+        "G16"
+      ]
+    },
+    "matched_richards_frontier": {
+      "SURF_P": [
+        "S8",
+        "S12",
+        "S16"
+      ],
+      "GW_LB": [
+        "G8",
+        "G12",
+        "G16"
+      ]
+    },
+    "interpretation": [
+      "If Layer-ROM and same-partition Richards both miss the comparator, representation/resolution remains limiting at that rung.",
+      "If same-partition Richards reaches the comparator while Layer-ROM misses it, propagation/closure deficit becomes identifiable at that rung.",
+      "If Layer-ROM reaches the comparator, that rung defines the minimum tested Layer-ROM representation only if all lower frozen rungs miss.",
+      "No rung above 16 may be introduced in P4 after response."
+    ]
+  },
+  "response_firewall": {
+    "boundaries_selected_from_p4_response": false,
+    "state_counts_selected_from_p4_response": false,
+    "closure_selected_from_p4_response": false,
+    "any_p4_response_seen": false
+  }
+}
