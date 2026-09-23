@@ -1,0 +1,109 @@
+{
+  "P_ROM_ET_opened": false,
+  "application_acceptance_adjudicated": false,
+  "development_regime_map": {
+    "GW_LB": {
+      "B01": {
+        "aligned_vs_U4_componentwise_no_worse": true,
+        "candidate": "G4",
+        "classification": "EVENT_SENSITIVE",
+        "metrics": {
+          "bottom_flux_sign_mismatch_count": 62,
+          "cumulative_bottom_exchange_error_cm": 0.022572031251425408,
+          "interval_bottom_flux_error_cm_per_day": 0.8184322467988059,
+          "long_horizon_exchange_drift_cm": 0.027886523154588172,
+          "reversal_sequence_mismatch_count": 4,
+          "reversal_timing_error_steps": 1024,
+          "total_storage_error_cm": 0.022572031251445412
+        }
+      },
+      "B14": {
+        "aligned_vs_U4_componentwise_no_worse": true,
+        "candidate": "G4",
+        "classification": "ROBUST",
+        "metrics": {
+          "bottom_flux_sign_mismatch_count": 0,
+          "cumulative_bottom_exchange_error_cm": 0.010754287959983448,
+          "interval_bottom_flux_error_cm_per_day": 0.14274773936223312,
+          "long_horizon_exchange_drift_cm": 0.01690814068319683,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_steps": 0,
+          "total_storage_error_cm": 0.010754287959906576
+        }
+      }
+    },
+    "SURF_P": {
+      "B01": {
+        "aligned_vs_U4_componentwise_no_worse": true,
+        "candidate": "S4",
+        "classification": "ROBUST",
+        "metrics": {
+          "mapped_10cm_theta_error": 0.0005638107415465316,
+          "root_zone_0_40_storage_error_cm": 0.00335205731856923,
+          "storage_extremum_timing_error_steps": 0,
+          "surface_0_20_storage_error_cm": 0.00394596662999855,
+          "total_storage_error_cm": 1.1729474204196e-12,
+          "upper_0_80_storage_error_cm": 0.005293911854851403
+        }
+      },
+      "B14": {
+        "aligned_vs_U4_componentwise_no_worse": true,
+        "candidate": "S4",
+        "classification": "ROBUST",
+        "metrics": {
+          "mapped_10cm_theta_error": 9.949285399479351e-06,
+          "root_zone_0_40_storage_error_cm": 8.816637282257205e-06,
+          "storage_extremum_timing_error_steps": 0,
+          "surface_0_20_storage_error_cm": 4.345705561572374e-05,
+          "total_storage_error_cm": 1.9047757837375087e-12,
+          "upper_0_80_storage_error_cm": 3.620193898290173e-07
+        }
+      }
+    }
+  },
+  "limitations": [
+    "This is a development evidence screen over previously exposed dynamic P2 histories, not fresh blind validation.",
+    "S4/G4 timing is not directly measured here; L4/L6/R8 COST1 supplies only a state-count implementation-cost prior.",
+    "No application tolerance or production admission is adjudicated.",
+    "MetaSWAP direct execution remains open."
+  ],
+  "next_gate": "FRESH_PRACTICAL_DYNAMIC_PANEL_PREREGISTRATION_AND_EXECUTION",
+  "pareto_interpretation": [
+    "Four-state implementations have the lowest measured COST1 CPU ratios of the frozen 4/6/8-state screen, but direct S4/G4 timing is still required.",
+    "S4 is relatively robust on the exposed profile/storage development cases for both B01 and B14.",
+    "G4 is relatively robust on B14 but event-sensitive on B01 because sign/reversal behaviour is not preserved.",
+    "The first targeted practical repair, if confirmed on fresh data, should therefore focus on groundwater event/reversal representation rather than adding a general closure family."
+  ],
+  "performance_screen": {
+    "dimensions": {
+      "4": {
+        "BASE_over_R16_median": 0.003467305631707144,
+        "FINE_over_R16_median": 0.011717570274604131,
+        "materials_cheaper_BASE": 6,
+        "materials_cheaper_FINE": 6,
+        "total_materials": 6
+      },
+      "6": {
+        "BASE_over_R16_median": 0.005082690304035121,
+        "FINE_over_R16_median": 0.016784248922343967,
+        "materials_cheaper_BASE": 6,
+        "materials_cheaper_FINE": 6,
+        "total_materials": 6
+      },
+      "8": {
+        "BASE_over_R16_median": 0.006572798038083772,
+        "FINE_over_R16_median": 0.021808678443785305,
+        "materials_cheaper_BASE": 6,
+        "materials_cheaper_FINE": 6,
+        "total_materials": 6
+      }
+    },
+    "semantics": "shared-host implementation screening only; not direct timing for S4/G4 and not portable speedup"
+  },
+  "production_rom_authorized": false,
+  "reference": "Qualified high-resolution Richards authority from ROM-PURPOSE P2 (R2048_T32 target; R512_T32 numerical comparator).",
+  "schema": "swap5.rom-practical.p1.evidence-screen-result.v1",
+  "status": "P1_EVIDENCE_SCREEN_COMPLETE_FRESH_BLIND_BENCHMARK_REQUIRED",
+  "work_unit": "ROM-PRACTICAL-P1",
+  "workstream": "ROM-PRACTICAL"
+}
