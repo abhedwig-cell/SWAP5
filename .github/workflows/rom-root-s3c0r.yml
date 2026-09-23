@@ -1,0 +1,97 @@
+name: ROM-ROOT Stage 3 C0R prescribed-invariant requalification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_S3C0R_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-s3c0r-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  requalify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify C0R authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_S3C0R_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_S3C0R_BINDING.json'))
+          c0=json.load(open('integration/f-rom/ROM_ROOT_S3C0_RESULT.json'))
+          f=json.load(open('integration/f-rom/ROM_ROOT_S3C0_FAILURE_CLASSIFICATION.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_C0R_REQUALIFICATION'
+          assert b['state']=='BOUND_BEFORE_C0R_REQUALIFICATION'
+          assert c0['status']=='S3C0_FULL_POTENTIAL_REFERENCE_NOT_QUALIFIED'
+          assert f['status']=='CLOSED_NOT_QUALIFIED_PRESCRIBED_METRIC_CONVERGENCE_DEGENERACY'
+          assert p['predecessor']['immutable_artifact']['run_id']==35854345998
+          assert p['predecessor']['immutable_artifact']['artifact_id']==10747053751
+          assert p['predecessor']['immutable_artifact']['digest']=='sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+      - name: Download immutable C0 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rom-root-s3c0
+          path: /tmp/s3c0
+          run-id: 35854345998
+          github-token: ${{ github.token }}
+
+      - name: Verify frozen route surface
+        run: |
+          set -euo pipefail
+          for m in B01 B14; do
+            for r in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              test -s "/tmp/s3c0/${m}_${r}_o0.txt"
+            done
+          done
+          test -s /tmp/s3c0/ROM_ROOT_S3C0_RESULT.json
+
+      - name: Requalify prescribed-invariant metrics
+        run: |
+          set -euo pipefail
+          mkdir -p C0R_EVIDENCE
+          python3 tests/rom/analyze_rom_root_s3c0r_reference.py             --prereg integration/f-rom/ROM_ROOT_S3C0R_PREREGISTRATION.json             --c0-result integration/f-rom/ROM_ROOT_S3C0_RESULT.json             --artifact-dir /tmp/s3c0             --output C0R_EVIDENCE/ROM_ROOT_S3C0R_RESULT.json             | tee C0R_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_S3C0R_PREREGISTRATION.json C0R_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3C0R_BINDING.json C0R_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3C0_RESULT.json C0R_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_S3C0_FAILURE_CLASSIFICATION.json C0R_EVIDENCE/
+          sha256sum C0R_EVIDENCE/* > C0R_EVIDENCE/sha256.txt
+
+      - name: Enforce C0R firewall
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('C0R_EVIDENCE/ROM_ROOT_S3C0R_RESULT.json'))
+          assert r['status']=='S3C0R_FULL_POTENTIAL_REFERENCE_QUALIFIED'
+          assert r['decision']=='STAGE3_DYNAMIC_REDUCED_RESPONSE_MAY_EXECUTE'
+          assert r['source_c0_reclassified'] is False
+          f=r['scientific_firewall']
+          assert f['c0_reclassified'] is False
+          assert f['reduced_dynamic_feedback_response_generated'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_S3C0R_FIREWALL=PASS')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-s3c0r
+          path: C0R_EVIDENCE/
+          if-no-files-found: error
