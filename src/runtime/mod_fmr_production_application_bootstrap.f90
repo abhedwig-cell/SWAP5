@@ -1,7 +1,8 @@
 module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_result_t
+  use mod_canonical_result_text_adapter, only: serialize_canonical_result_text
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
@@ -46,6 +47,8 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_PLAN_FAILED = 8
   integer, parameter, public :: FMR_APP_BOOT_CONTEXT_FAILED = 9
   integer, parameter, public :: FMR_APP_BOOT_RUNTIME_FAILED = 10
+
+  public :: production_application_serialize_canonical_result_text
 
   ! WU01 established serialized Reference mode 7 standalone and mode 5 groundwater profiles.
   ! PPA-WU02-A additionally admits homogeneous typed bottom_mode=2 prescribed-qbot applications.
@@ -115,6 +118,16 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_bootstrap_t
 
 contains
+
+  ! Application-facing view of the admitted M1-C4 serializer.  This consumes
+  ! only an already-published result and returns in-memory text; it owns no
+  ! application, physical state, output file, or mass-booking semantics.
+  subroutine production_application_serialize_canonical_result_text(result, text)
+    type(canonical_result_t), intent(in) :: result
+    character(len=:), allocatable, intent(out) :: text
+
+    call serialize_canonical_result_text(result, text)
+  end subroutine production_application_serialize_canonical_result_text
 
   subroutine production_application_initialize(self, config, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
