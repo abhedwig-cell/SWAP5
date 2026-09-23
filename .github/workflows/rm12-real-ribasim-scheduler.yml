@@ -1,0 +1,52 @@
+name: RM12 real Ribasim scheduler trajectory
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_ribasim_management_scheduler.f90'
+      - 'tests/ribasim-management/emit_rm12_scheduler_targets.f90'
+      - 'tests/ribasim-management/generate_rm12_real_ribasim.py'
+      - 'tests/ribasim-management/rm12_real_ribasim_scheduler.jl'
+      - 'tests/ribasim-management/run_rm12_real_ribasim_scheduler.sh'
+      - 'integration/ribasim-management/RM12_*'
+      - '.github/workflows/rm12-real-ribasim-scheduler.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_ribasim_management_scheduler.f90'
+      - 'tests/ribasim-management/emit_rm12_scheduler_targets.f90'
+      - 'tests/ribasim-management/generate_rm12_real_ribasim.py'
+      - 'tests/ribasim-management/rm12_real_ribasim_scheduler.jl'
+      - 'tests/ribasim-management/run_rm12_real_ribasim_scheduler.sh'
+      - 'integration/ribasim-management/RM12_*'
+      - '.github/workflows/rm12-real-ribasim-scheduler.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact Ribasim product release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM12 exact-release scheduler trajectory qualification
+        run: bash tests/ribasim-management/run_rm12_real_ribasim_scheduler.sh
