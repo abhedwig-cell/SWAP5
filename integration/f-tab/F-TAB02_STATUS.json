@@ -4,10 +4,22 @@
   "title": "Generated default-MvG K0 constitutive acceleration provider",
   "date": "2026-09-23",
   "branch": "work/f-tab02-generated-k0-provider",
-  "branch_head": "0523a7672511cad69c1abca270f350e458175ef3",
   "canonical_authority": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "canonical_relation": {
-    "ahead_by": 76,
+  "qualified_postimage": {
+    "head": "f22a301ed647b2d6e57fd6a04412fdd89608f226",
+    "workflow_run": 35824244178,
+    "result": "PASS",
+    "slices": {
+      "A": "PASS",
+      "B": "PASS",
+      "C": "PASS",
+      "D": "PASS",
+      "E": "PASS"
+    },
+    "note": "Full sequential A->B->C->D->E replay passed on one postimage after qualification and blocker records were present."
+  },
+  "canonical_relation_at_qualified_postimage": {
+    "ahead_by": 78,
     "behind_by": 0,
     "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
   },
@@ -27,12 +39,14 @@
     },
     "D": {
       "status": "PASS",
-      "record": "integration/f-tab/F-TAB02_D_QUALIFICATION.json"
+      "record": "integration/f-tab/F-TAB02_D_QUALIFICATION.json",
+      "controlling_workflow_run": 35823035547
     },
     "E": {
       "status": "PASS",
       "record": "integration/f-tab/F-TAB02_E_QUALIFICATION.json",
-      "workflow_run": 35824004715
+      "owner_workflow_run": 35824004715,
+      "confirmation_replay_run": 35824244178
     },
     "F": {
       "status": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE",
@@ -49,25 +63,61 @@
     "legacy_swsophy1": false,
     "swkimpl1": false
   },
-  "latest_performance_characterization": {
-    "provider_delta_pct": -4.3575333,
-    "reference_richards_delta_pct_range": [
-      -17.0975008,
-      -12.0806817
-    ],
-    "serialized_runtime_delta_pct_range": [
-      -9.18127598,
-      -4.72044883
-    ],
-    "generated_state_init_median_s": 0.003568249999999995,
-    "break_even_vector_evals_30_nodes": 35864.62504907729,
-    "generated_state_bytes_30_nodes": 683280,
-    "interpretation": "Material reductions survive the production harness, but percentages are execution-envelope characterization and not a portable whole-SWAP claim."
+  "performance_characterization": {
+    "owner_run_35824004715": {
+      "provider_delta_pct": -4.3575333,
+      "reference_richards_delta_pct": [
+        -12.0806817,
+        -13.47357066,
+        -17.0975008
+      ],
+      "serialized_runtime_delta_pct": [
+        -4.72044883,
+        -6.8606668,
+        -9.18127598
+      ],
+      "generated_state_init_median_s": 0.003568249999999995,
+      "break_even_vector_evals_30_nodes": 35864.62504907729,
+      "generated_state_bytes_30_nodes": 683280
+    },
+    "confirmation_run_35824244178": {
+      "provider_delta_pct": -5.66007486,
+      "reference_richards_delta_pct": [
+        -15.42765787,
+        -15.8813646,
+        -17.79710569
+      ],
+      "serialized_runtime_delta_pct": [
+        -6.4174379,
+        -8.10055866,
+        -5.87227795
+      ],
+      "break_even_vector_evals_30_nodes": 28806.623815230258
+    },
+    "repeated_interpretation": {
+      "provider_delta_pct_range": [
+        -5.66007486,
+        -4.3575333
+      ],
+      "reference_richards_all_profiles_delta_pct_range": [
+        -17.79710569,
+        -12.0806817
+      ],
+      "serialized_all_profiles_delta_pct_range": [
+        -9.18127598,
+        -4.72044883
+      ],
+      "sign_reproduced": true,
+      "note": "Material reductions reproduce across two production qualification executions; exact percentages remain execution-environment characterization, not portable guarantees."
+    }
   },
   "final_gate": {
     "authority": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
+    "required_archive_name": "SWAP_4.3.1.zip",
     "required_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "exact_materializable_bytes_available": false,
+    "latest_project_library_check": "2026-09-23",
+    "available_zip_search_result": "No exact SWAP_4.3.1.zip authority found; audit/evidence archives and generated TAB-HYD archives are not authorized substitutes.",
     "substitutions_authorized": false,
     "resume_condition": "Exact authorized archive bytes become materializable, then execute F-TAB02-F."
   },
