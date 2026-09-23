@@ -7,7 +7,7 @@ program test_scratch_binding
   implicit none
   type(reference_richards_workspace_t)::ws
   type(saturated_domain_inputs)::input
-  type(macro_used_exchange)::used
+  type(reference_trial_transfer)::used
   type(macro_trial_key)::key
   real(real64)::storage
   real(real64),allocatable::amount(:)
@@ -26,13 +26,15 @@ program test_scratch_binding
   call check(abs(ws%residual(2)+0.125_real64)+abs(ws%dfdh_main(2)-1.25_real64)<1.e-14_real64,2)
   call check(maxval(abs(ws%source-5))+maxval(abs(ws%sink-6))<1.e-14_real64,3)
   call check(maxval(abs(ws%dfdh_lower-3))+maxval(abs(ws%dfdh_upper-4))<1.e-14_real64,4)
-  call copy_matrix_transfer(used,key,amount,ok)
+  call copy_reference_transfer(ws,used,key,amount,ok)
   call check(ok,5)
   call check(abs(storage-input%storage+sum(amount))<1.e-14_real64,6)
   call initialize_reference_workspace(ws,2)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),12)
   call run(generation)
   call check(.not.ok.and.maxval(abs(ws%residual))<1.e-14_real64,7)
-  call copy_matrix_transfer(used,key,amount,ok)
+  call copy_reference_transfer(ws,used,key,amount,ok)
   call check(.not.ok.and..not.allocated(amount),8)
   generation=ws%generation
   call poison_reference_workspace(ws)
@@ -42,11 +44,30 @@ program test_scratch_binding
   ws%dfdh_main=1
   call run(generation)
   call check(ok,10)
+  call poison_reference_workspace(ws)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),13)
+  call reset_reference_workspace(ws)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok,14)
+  ws%dfdh_main=1
+  call run(generation)
+  call check(ok,15)
+  call discard_reference_transfer(used)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok,16)
+  call reset_reference_workspace(ws)
+  ws%dfdh_main=1
+  call run(generation)
+  call check(ok,17)
   call release_reference_workspace(ws)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok,18)
   call run(generation)
   call check(.not.ok,11)
   print '(a)','PPA_WU05A4_REFERENCE_SCRATCH_BINDING=PASS'
   print '(a)','PPA_WU05A4_REFERENCE_SCRATCH_GENERATION_POISON=PASS'
+  print '(a)','PPA_WU05A4_REFERENCE_TRANSFER_LIFETIME=PASS'
 contains
   subroutine run(expected)
     integer(int64),intent(in)::expected
