@@ -34,6 +34,13 @@ SUBDT_NEW=SUBDT_OLD+"""    ref01_repr_floor_cm=sum(p%dz*spacing(p%cofgen(2,:)))
 CALL_OLD="""        call evaluate_committed_root_sink(ih,p,state,forcing,root_rate)
         call strict_first_sample(column,template,p,state,forcing,sub_t0,sub_t1,ok,mass,bex,bflux,status,route,nl,ir,back,fallback_used)
 """
+STRICT_OLD="""    fallback_used=.false.
+    p%total_balance_tolerance=original_total_tol
+"""
+STRICT_NEW="""    fallback_used=.false.
+    ! ROM_ROOT_REF01_POLICY_PROPAGATION: preserve caller-supplied root-active total policy.
+    ! seed_steady remains strict because it calls sample_fresh directly.
+"""
 CALL_NEW="""        p%total_balance_tolerance=ref01_total_allowance_cm/(sub_t1-sub_t0)
         call require(ieee_is_finite(p%total_balance_tolerance).and.p%total_balance_tolerance>0.0_real64, &
              'ROM-ROOT REF01 finite total rate policy')
@@ -57,6 +64,7 @@ def main()->int:
     text=one(text,DECL_OLD,DECL_NEW,"REF01 declaration")
     text=one(text,SUBDT_OLD,SUBDT_NEW+"    ! "+MARKER+"\n","REF01 floor setup")
     text=one(text,CALL_OLD,CALL_NEW,"REF01 per-trial policy")
+    text=one(text,STRICT_OLD,STRICT_NEW,"REF01 strict trial policy propagation")
     args.path.write_text(text)
     return 0
 
