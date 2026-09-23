@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.satflow_derivative.status.v1",
+  "work_unit": "PPA-WU05-A3-SATFLOW-DERIVATIVE",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@b9a3bb75c",
+  "preregistration": "integration/audits/PPA_WU05A3_SATFLOW_DERIVATIVE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated explicit SATFLOW derivative equation only; no solver-Jacobian or accepted-mass binding",
+  "implementation": "src/process/mod_ppa_wu05a3_satflow_derivative.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_satflow_derivative_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_satflow_derivative_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_SATFLOW_DERIVATIVE_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_SATFLOW_DERIVATIVE_STRICT_HEAD_THRESHOLD=PASS",
+      "PPA_WU05A3_SATFLOW_COVERING_TOP_COMPARTMENT_CORRECTION=PASS",
+      "PPA_WU05A3_SATFLOW_DERIVATIVE_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "9dee91b63d24273542204f0121d1718cb1a6682c7e26aafb23f9261dd775d9d9"
+  },
+  "next_action": "Continue with another independent source-bound macropore equation; no runtime admission.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}
