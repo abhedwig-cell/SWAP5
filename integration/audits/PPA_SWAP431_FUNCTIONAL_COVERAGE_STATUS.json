@@ -101,5 +101,19 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest completed checkpoint 4e6720400 (PPA-IRR fixed-input normalization oracle); local campaign branch only, not pushed or canonically admitted."
+  "recovery_point": "latest committed campaign checkpoint 0f61086d1 (PPA-IRR fixed-input-to-application composition); local campaign branch only, not pushed or canonically admitted.",
+  "latest_source_oracle": {
+    "work_unit": "PPA-IRR-SCHEDULED-SOLUTE-CARRIER",
+    "source": "B1.11 irrigation.f90 lines 188-189 and 451-454",
+    "test": "100000 scheduled events at O0/O2 with transcript identity; concentration bounded/carried and offered water source unchanged",
+    "test_markers": [
+      "PPA_IRR_SCHEDULED_SOLUTE_CARRIER_100000=PASS",
+      "PPA_IRR_SCHEDULED_CONCENTRATION_BOUNDS=PASS",
+      "PPA_IRR_SCHEDULED_WATER_SOURCE_UNCHANGED=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_CONCENTRATION_SOURCE_ORACLE=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_CONCENTRATION_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "ec6572205a939bd0922d1a3bed374c1a3747fb6ee95eae90f0f28fe946bbaf25",
+    "production_admission": "NONE"
+  }
 }

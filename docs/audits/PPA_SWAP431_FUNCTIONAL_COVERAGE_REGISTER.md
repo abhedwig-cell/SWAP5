@@ -153,6 +153,10 @@ typed event materializer for sprinkler, surface, and SSDI events. Across
 depth within rounding tolerance. This is not proof of soil acceptance or
 whole-column water balance; omitted-rate inputs remain covered only by the
 separate normalization oracle.
+PPA-IRR-SCHEDULED-SOLUTE-CARRIER carries B1.11's scheduled `cirrs` value,
+bounded to its input range, alongside the typed SSDI source. Its 100,000-event
+oracle confirms concentration preservation and unchanged offered water amount;
+solute mass integration and transport remain unqualified.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

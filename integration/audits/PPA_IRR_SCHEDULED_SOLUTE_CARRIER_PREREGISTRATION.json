@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-SCHEDULED-SOLUTE-CARRIER",
+  "parent_workunit": "PPA-IRR-FIXED-INPUT-APPLICATION",
+  "title": "Scheduled irrigation source concentration carrier",
+  "protocol": "PIN_B1_11_SCHEDULED_CIRRS -> VALIDATE_INPUT_RANGE -> SCHEDULED_EVENT_FLUX_RESULT -> 100000_DETERMINISTIC_EVENTS -> O0_O2_REPLAY -> HOLD_SOLUTE_MASS_BOOKING",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "188-189, 451-454",
+    "equations": [
+      "the scheduled irrigation input parser accepts cirrs in [0,100] M/L3 when solute input is enabled",
+      "on the scheduled task-3 path, cirr is assigned cirrs before the event-selection and amount logic",
+      "the scheduled result exposes that concentration as a source descriptor without calculating or booking solute mass"
+    ]
+  },
+  "scope": [
+    "add a finite scheduled concentration parameter with the B1 input range",
+    "carry it unchanged through the scheduled typed irrigation result",
+    "100000 deterministic events with varied single SSDI source nodes and unchanged water-source checks",
+    "verify zero-default backward behavior and invalid concentration rejection"
+  ],
+  "non_goals": [
+    "file parsing, solute switch ownership, fixed irrigation concentration parsing or event calendar",
+    "solute mass integration, transport, accepted Richards flux, restart or production admission",
+    "changing scheduled water depth, rate, duration, selected node or source-vector amount"
+  ],
+  "pass_conditions": [
+    "scheduled concentration is bitwise preserved for each completed event",
+    "zero default remains unchanged and nonfinite/out-of-range values fail closed",
+    "100000 deterministic events pass at O0/O2 with identical transcripts",
+    "SSDI water vector and offered amount remain unchanged",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

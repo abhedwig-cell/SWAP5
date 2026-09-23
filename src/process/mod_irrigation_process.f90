@@ -48,6 +48,7 @@ module mod_irrigation_process
   type, public :: scheduled_irrigation_parameters_t
     logical :: scheduled_irrigation_enabled = .false.
     integer :: timing_criterion = IRRIGATION_TIMING_TCS7_PRESSURE_HEAD
+    real(real64) :: concentration = 0.0_real64
     integer :: active_nodes = 0
     integer :: sensor_node = 0
     integer :: single_ssdi_node = 0
@@ -474,6 +475,8 @@ contains
     if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
     if (.not. ieee_is_finite(parameters%irr_rate_cm_per_day)) return
     if (parameters%irr_rate_cm_per_day <= 0.0_real64) return
+    if (.not. ieee_is_finite(parameters%concentration)) return
+    if (parameters%concentration < 0.0_real64 .or. parameters%concentration > 100.0_real64) return
     select case (parameters%timing_criterion)
     case (IRRIGATION_TIMING_TCS7_PRESSURE_HEAD)
       if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
@@ -599,6 +602,7 @@ contains
     fluxes%event_origin = IRRIGATION_EVENT_SCHEDULED
     fluxes%event_index = 0
     fluxes%application_type = IRRIGATION_APPLICATION_SSDI
+    fluxes%concentration = parameters%concentration
     fluxes%event_duration = event_duration
     fluxes%active_duration = active_duration
     allocate(fluxes%subsurface_source(parameters%active_nodes))
