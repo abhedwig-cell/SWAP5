@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "a9dc46e8c34510465c4b773a1d77d7e7357bee91",
-    "local_relation_to_previous_canonical_base": "193 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "e8dc01f59fe7e015b613c0441f9dd96aa1f2140d",
+    "local_relation_to_previous_canonical_base": "195 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "a9dc46e8c34510465c4b773a1d77d7e7357bee91",
+    "last_reconciled_head": "e8dc01f59fe7e015b613c0441f9dd96aa1f2140d",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -1240,13 +1240,13 @@
           "id": "M7-04",
           "text": "representative large-batch memory footprint is measured",
           "status": "PARTIAL",
-          "gap": "A bounded O2 probe measures 256 BASE worker columns at 32 nodes each: 2,162,688 bytes of resident common input arrays, a 10,424-byte shared worker workspace, 9,789,440-byte Windows high-water working set and 4,071,424-byte maximum sampled private usage. All columns committed under the hard mass gate. The controlled grid is not an official representative field workload and the public batch dispatcher/production bootstrap was not called; private usage sampling can miss sub-2-ms peaks.",
+          "gap": "A bounded O2 probe through the public serialized dispatcher measures 256 BASE columns at 32 nodes each in four serial batches: 2,162,688 bytes of resident common input arrays, a 10,424-byte shared worker workspace, 9,707,520-byte Windows high-water working set and 4,046,848-byte maximum sampled private usage. All columns committed under the hard mass gate. The controlled grid is not an official representative field workload; production-application bootstrap was not called and private usage sampling can miss sub-2-ms peaks.",
           "evidence": [
             "integration/audits/M7_LARGE_BATCH_MEMORY_MEASUREMENT.json",
             "tests/fmr/run_m7_large_batch_memory_probe.py",
             "tests/fmr/test_m7_serialized_worker_scratch_reuse.f90"
           ],
-          "next_bounded_action": "Measure the public serialized dispatcher on the narrowest accepted representative profile with this counter method; if no accepted representative fixture exists, retain PARTIAL and proceed to M7-05 without claiming field representativeness. Do not add a performance optimization."
+          "next_bounded_action": "Measure an already-admitted production-application fixture with documented representative column/node distribution; if none exists, retain PARTIAL and proceed to M7-05 without claiming field representativeness. Do not add a performance optimization."
         },
         {
           "id": "M7-05",
@@ -1399,5 +1399,5 @@
     }
   ],
   "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
-  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=a9dc46e8c34510465c4b773a1d77d7e7357bee91 (BASE/Black/Boesten O0/O2 resource matrix, pinned restricted soil-temperature resource probe and 256-column/32-node worker memory probe passed); M7-03 remains partial for active snow and drainage response, fixed descriptors, allocator overhead and transient peak memory; M7-04 remains partial because the current controlled worker-level measurement is not a public-dispatch or official field-profile measurement; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
+  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=e8dc01f59fe7e015b613c0441f9dd96aa1f2140d (BASE/Black/Boesten O0/O2 resource matrix, pinned restricted soil-temperature resource probe, and 256-column/32-node public serialized-dispatch memory probe passed); M7-03 remains partial for active snow and drainage response, fixed descriptors, allocator overhead and transient peak memory; M7-04 remains partial because no accepted representative field-profile/production-bootstrap workload is recorded; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
 }

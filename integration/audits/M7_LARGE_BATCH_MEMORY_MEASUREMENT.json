@@ -2,7 +2,7 @@
   "schema": "swap5.m7.large_batch_memory_measurement.v1",
   "criterion": "M7-04",
   "method": "Windows process-memory counters during one GNU Fortran O2 serialized Richards worker-population run; array payload computed from allocated extents; no physics or tolerance changes",
-  "scope": "BASE-only 256-column, 32-node generated worker fixture, with each column executed in serial through fmr_execute_serialized_physical_column on one shared serialized Reference backend",
+  "scope": "BASE-only 256-column, 32-node generated workload executed through the public fmr_run_serialized_physical_multiswap dispatcher with batch size 64 on one serialized Reference backend",
   "workload": {
     "logical_columns": 256,
     "active_nodes_per_column": 32,
@@ -10,7 +10,7 @@
     "optional_physics": "BASE; optional snow, soil temperature, Black, Boesten and drainage-response payloads inactive",
     "forcing_pattern": "A-B-A cross-column identity case extended to 256 columns; the second forcing differs and remaining columns reuse the A pattern",
     "vertical_grid": "generated uniform 0.05 m spacing over 32 nodes (1.6 m); controlled test fixture, not an official SWAP field profile",
-    "execution": "256 direct serialized worker calls in deterministic input order; the public fmr_run_serialized_physical_multiswap dispatcher is not invoked",
+    "execution": "one public serialized-dispatch invocation, deterministic column ordering, four serial batches of 64 columns, one shared backend",
     "hard_mass_tolerance": 1e-12
   },
   "measured_payload_bytes": {
@@ -21,8 +21,8 @@
     "shared_common_solver_and_worker_workspace_per_trial": 10424
   },
   "process_memory": {
-    "peak_working_set_bytes_windows_process_counter": 9789440,
-    "maximum_sampled_private_bytes": 4071424,
+    "peak_working_set_bytes_windows_process_counter": 9707520,
+    "maximum_sampled_private_bytes": 4046848,
     "private_bytes_sampling_interval_ms": 2,
     "accounting_note": "Peak working set is the Windows process high-water counter. Private bytes are the maximum sampled PrivateUsage value and can miss a transient shorter than the 2 ms sampling interval. Process totals include runtime/code/fixed records and are not additive to the allocated-array payload totals."
   },
@@ -38,12 +38,12 @@
       "M7_SERIALIZED_WORKER_SCRATCH_REUSE_CROSS_COLUMN=PASS"
     ],
     "claim_limitations": [
-      "This measures the serialized worker seam and fully resident column inputs, not peak memory of the public batch dispatcher or production application bootstrap.",
+      "The public serialized dispatcher is measured; the production-application bootstrap, adapters and external owner registrations are not invoked.",
       "The generated uniform grid and homogeneous BASE workload are controlled test data, not an officially representative field workload.",
       "This is a single O2 observation, not a cross-build or cross-hardware comparison; it makes no throughput, allocator-overhead, transient-private-memory or concurrency claim."
     ]
   },
   "criterion_status": "PARTIAL",
-  "remaining_gap": "Obtain an accepted representative workload and measure the public serialized batch dispatcher/production application end-to-end with optional-state composition and allocator/transient memory accounting. The present worker-level controlled BASE measurement is bounded scaling evidence only.",
-  "next_action": "Reuse this memory counter method around the public serialized batch route on the narrowest already-admitted representative profile; if no accepted representative fixture is available, retain PARTIAL and proceed to M7-05 without inventing field representativeness."
+  "remaining_gap": "Obtain an accepted representative workload and measure the production-application bootstrap end-to-end with optional-state composition and allocator/transient memory accounting. The present controlled BASE measurement is bounded dispatcher-scaling evidence, not a SWAP field workload.",
+  "next_action": "Use an already-admitted production-application fixture and documented representative column/node distribution if available; otherwise retain PARTIAL and proceed to M7-05 without inventing field representativeness."
 }
