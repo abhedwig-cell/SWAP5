@@ -29,11 +29,12 @@
   "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
   "candidate_response_authorized": false,
   "next_actions": [
-    "Let the already-bound surface and groundwater Reference repair matrices reach terminal state.",
-    "For GW only, bind exactly the source-run cases that terminate as verified technical runner interruption exit 143 into the exact-state half-segment recovery.",
-    "Consolidate unchanged successful GW source slices plus only those repaired missing slices into one complete p3ref-gw-routes artifact.",
-    "If and only if the surface route artifact and consolidated GW route artifact are both complete, bind their exact workflow run IDs into P3 Reference adjudication.",
-    "Only if the complete Reference adjudication authorizes candidates, execute the frozen state-count matrix."
+    "Complete the repaired surface Reference route set.",
+    "Complete the uniform exact-state GW R2048_T32 recovery.",
+    "Use the original GW repair run only for non-R2048_T32 routes; classify and repair any verified exit-143 gaps there if they occur.",
+    "Consolidate non-R2048_T32 successful GW source routes with the authoritative recovered R2048_T32 route set.",
+    "Bind exact surface and consolidated GW route run IDs into Reference adjudication.",
+    "Only if complete Reference adjudication authorizes candidates, execute the frozen state-count matrix."
   ],
   "scientific_firewall": {
     "any_new_p3_reference_response_seen": false,
@@ -121,5 +122,12 @@
   "reference_technical_repair": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json",
   "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
   "gw_missing_slice_repair_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json",
-  "gw_reference_consolidation_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json"
+  "gw_reference_consolidation_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json",
+  "gw_r2048_t32_recovery": {
+    "run_id": 35880655075,
+    "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json",
+    "repair_record": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_EXECUTION_REPAIR.json",
+    "state": "QUEUED",
+    "role": "Authoritative technical execution route for the complete GW R2048_T32 target stratum"
+  }
 }
