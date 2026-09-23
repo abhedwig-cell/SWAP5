@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: Deltares/Ribasim
-          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          ref: eae77424a4078497d40d8197237cb83e3aba6a83
           path: .ribasim-product-release
           fetch-depth: 1
       - name: Install Pixi
