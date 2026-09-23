@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "amendment": "TECHNICAL_AMENDMENT_06",
+  "date": "2026-09-23",
+  "classification": "HISTORICAL_CHILD_COMPILE_ORDER_REPAIR_ONLY",
+  "failed_run": 35886245433,
+  "failed_job": 107267016248,
+  "diagnosis": "Current mod_reference_richards_temporal_indicator imports mod_b110_root_sink_provider, but the frozen child compile list places the provider after the consumer.",
+  "repair": {
+    "action": "Move the already-present provider before its consumer in ephemeral generated child runners.",
+    "source": "src/solver/mod_b110_root_sink_provider.f90",
+    "before": "src/solver/mod_reference_richards_temporal_indicator.f90"
+  },
+  "unchanged": [
+    "PA01 candidate production blobs",
+    "historical test assertions",
+    "all production sources",
+    "all scientific/numerical tolerances"
+  ]
+}
