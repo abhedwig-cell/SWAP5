@@ -37,9 +37,10 @@ module mod_b110_generated_mvg_table_state
     real(real64), allocatable :: theta_saturated(:)
     real(real64), allocatable :: theta_crit(:)
     real(real64), allocatable :: wet_capacity(:)
-    real(real64), allocatable :: ksat(:)
+    real(real64), allocatable :: terminal_conductivity(:)
     real(real64), allocatable :: kbranch_head(:)
     real(real64), allocatable :: source_cofgen(:,:)
+    logical :: ksatexm_extension_enabled = .false.
   contains
     procedure :: ready => generated_state_ready
     procedure :: matches => generated_state_matches
@@ -75,10 +76,6 @@ contains
     if (any(parameters%cofgen(4,1:n) <= 0.0_real64)) return
     if (any(parameters%cofgen(6,1:n) <= 1.0_real64)) return
 
-    if (parameters%ksatexm_extension_enabled) then
-      status = F_TAB02_STATE_UNSUPPORTED_KSATEXM
-      return
-    end if
     if (any(parameters%cofgen(9,1:n) /= 0.0_real64)) then
       status = F_TAB02_STATE_UNSUPPORTED_HENPR
       return
@@ -89,9 +86,20 @@ contains
 
     call bind_b110_default_mvg_provider(analytic, parameters, 1.0_real64)
 
+    ! F-TAB03 research candidate: locate the terminal branch against the
+    ! admitted analytical provider's actual K(h=0).  This is KSATFIT on the
+    ! default route and KSATEXM on nodes where the qualified F-SI39 extension
+    ! is active.
+    hvec = 0.0_real64
+    call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
+    if (.not. all(ieee_is_finite(conductivity)) .or. any(conductivity <= 0.0_real64)) then
+      status = F_TAB02_STATE_GENERATION_FAILED
+      return
+    end if
+
     lo = GENERATION_H_DRY
     hi = GENERATION_H_WET
-    target = parameters%cofgen(3,1:n) * K_BRANCH_TARGET_FRACTION
+    target = conductivity * K_BRANCH_TARGET_FRACTION
 
     do j = 1, 140
       mid = 0.5_real64 * (lo + hi)
@@ -119,9 +127,10 @@ contains
              state%theta_slope(B110_GENERATED_MVG_TABLE_N,n), state%theta_sigma(B110_GENERATED_MVG_TABLE_N,n), &
              state%logk_slope(B110_GENERATED_MVG_TABLE_N,n), state%logk_sigma(B110_GENERATED_MVG_TABLE_N,n))
     allocate(state%theta_saturated(n), state%theta_crit(n), state%wet_capacity(n), &
-             state%ksat(n), state%kbranch_head(n))
+             state%terminal_conductivity(n), state%kbranch_head(n))
     allocate(state%source_cofgen(size(parameters%cofgen,1),n))
     state%source_cofgen = parameters%cofgen
+    state%ksatexm_extension_enabled = parameters%ksatexm_extension_enabled
 
     u0 = log10(-GENERATION_H_DRY)
     do j = 1, B110_GENERATED_MVG_TABLE_N - 1
@@ -156,7 +165,7 @@ contains
     state%logk(B110_GENERATED_MVG_TABLE_N,:) = log(conductivity)
 
     state%theta_saturated = parameters%cofgen(2,1:n)
-    state%ksat = parameters%cofgen(3,1:n)
+    state%terminal_conductivity = conductivity
     state%kbranch_head = state%head(B110_GENERATED_MVG_TABLE_N-1,:)
 
     hvec = H_CRIT
@@ -283,7 +292,7 @@ contains
       h = pressure_head(i)
       if (h >= 0.0_real64) then
         water_content(i) = state%theta_saturated(i)
-        conductivity(i) = state%ksat(i)
+        conductivity(i) = state%terminal_conductivity(i)
         capacity(i) = 0.0_real64
         cycle
       end if
@@ -318,7 +327,7 @@ contains
       end if
 
       if (h > state%kbranch_head(i)) then
-        conductivity(i) = state%ksat(i)
+        conductivity(i) = state%terminal_conductivity(i)
       else
         call locate_interval(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), h, klo, khi)
         x = state%head(klo:khi,i)
@@ -368,7 +377,7 @@ contains
          allocated(self%theta_slope) .and. allocated(self%theta_sigma) .and. &
          allocated(self%logk_slope) .and. allocated(self%logk_sigma) .and. &
          allocated(self%theta_saturated) .and. allocated(self%theta_crit) .and. &
-         allocated(self%wet_capacity) .and. allocated(self%ksat) .and. allocated(self%kbranch_head) .and. &
+         allocated(self%wet_capacity) .and. allocated(self%terminal_conductivity) .and. allocated(self%kbranch_head) .and. &
          allocated(self%source_cofgen)
   end function generated_state_ready
 
@@ -378,7 +387,7 @@ contains
 
     matches = .false.
     if (.not. self%ready()) return
-    if (parameters%ksatexm_extension_enabled) return
+    if (parameters%ksatexm_extension_enabled .neqv. self%ksatexm_extension_enabled) return
     if (parameters%active_nodes /= self%active_nodes .or. .not. allocated(parameters%cofgen)) return
     if (size(parameters%cofgen,1) /= size(self%source_cofgen,1) .or. &
         size(parameters%cofgen,2) /= size(self%source_cofgen,2)) return
