@@ -1,0 +1,229 @@
+{
+  "schema": "swap5.rom_root.s3.analyzer_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-A1",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_REPAIRED_ANALYSIS",
+  "source_stage3_run": {
+    "run_id": 35856657989,
+    "head": "b59006feb99350edee45cdf7b458bdf377ff969f",
+    "candidate_jobs_success": 32,
+    "analyzer_job": 107167270855,
+    "analyzer_conclusion": "failure",
+    "candidate_artifacts": [
+      {
+        "id": 10748320625,
+        "name": "rom-root-s3-B01-V01-R16",
+        "digest": "sha256:bfaacdd0999e254523993b7db2e77f7eed6dd0ee3b9202c4c6779d29d7563ba8",
+        "size_in_bytes": 730709
+      },
+      {
+        "id": 10747588666,
+        "name": "rom-root-s3-B01-V01-R8",
+        "digest": "sha256:733855a2d8d4327e16d68bb572c43911321f526fbd59b18e75f9a6b0dba4a8c3",
+        "size_in_bytes": 364777
+      },
+      {
+        "id": 10747901435,
+        "name": "rom-root-s3-B01-V01-U4",
+        "digest": "sha256:3dd0ee21862799e75b3efb4ce4d8ff7642b2309c8a72a018a8b3422fecfdddb1",
+        "size_in_bytes": 294341
+      },
+      {
+        "id": 10747307932,
+        "name": "rom-root-s3-B01-V01-U8",
+        "digest": "sha256:f0d058fa71ab8c0b1973b2da700e43449fc637d4732b2720379e27cf11289f92",
+        "size_in_bytes": 465702
+      },
+      {
+        "id": 10747428862,
+        "name": "rom-root-s3-B01-V02-R16",
+        "digest": "sha256:be159a196d0eb9bedc46cbbca3910368815963914f0bfce927b2d2ab1ff4b965",
+        "size_in_bytes": 675146
+      },
+      {
+        "id": 10747738287,
+        "name": "rom-root-s3-B01-V02-R8",
+        "digest": "sha256:419f8297116b9ca6b393d8b375c35102153f51ae81abf92ad11e4d798d7fe7a1",
+        "size_in_bytes": 333423
+      },
+      {
+        "id": 10748076882,
+        "name": "rom-root-s3-B01-V02-U4",
+        "digest": "sha256:998d6f04b1cec2349ca011e032372131a1f5364a51514d0ac0a0e201c23ef5c1",
+        "size_in_bytes": 287137
+      },
+      {
+        "id": 10748091826,
+        "name": "rom-root-s3-B01-V02-U8",
+        "digest": "sha256:3d818aed45ddbb4d1ad830e3be16e61dda166cc311c7338eb3d319bd9260d1ad",
+        "size_in_bytes": 444779
+      },
+      {
+        "id": 10747528684,
+        "name": "rom-root-s3-B01-V03-R16",
+        "digest": "sha256:5b6fef4302d4b3c399886ff17c1eb8c1875af433632506b8ef81aa5f67e1bb83",
+        "size_in_bytes": 734652
+      },
+      {
+        "id": 10747372808,
+        "name": "rom-root-s3-B01-V03-R8",
+        "digest": "sha256:89aae39f3076372a94857781d114fd6b7bb924110f969631172e47f701f19ee9",
+        "size_in_bytes": 364886
+      },
+      {
+        "id": 10747158413,
+        "name": "rom-root-s3-B01-V03-U4",
+        "digest": "sha256:180c9fec242b1bc543a5f6b69ffe945477a03adf28709c80334ba69e8458b56e",
+        "size_in_bytes": 292283
+      },
+      {
+        "id": 10748305319,
+        "name": "rom-root-s3-B01-V03-U8",
+        "digest": "sha256:2a202782ed6ab14b56ad37eed5b7e09e48a31bd9e4a801d3b3444bfeab808058",
+        "size_in_bytes": 465748
+      },
+      {
+        "id": 10747891494,
+        "name": "rom-root-s3-B01-V04-R16",
+        "digest": "sha256:0abe43541d315a2514ba19ee1fe14a98f69653c3ee1adcc466ad1f09348e66a2",
+        "size_in_bytes": 678207
+      },
+      {
+        "id": 10748106688,
+        "name": "rom-root-s3-B01-V04-R8",
+        "digest": "sha256:24c5454bf6373c28b4424fb39985568b4e8c95b52863a0bbf89c2260b8c1c160",
+        "size_in_bytes": 333421
+      },
+      {
+        "id": 10747268062,
+        "name": "rom-root-s3-B01-V04-U4",
+        "digest": "sha256:410a989c25ebd0c00f2bcf73e1e1f929c35c0b71d764cacde47341563e4cea90",
+        "size_in_bytes": 285055
+      },
+      {
+        "id": 10747113779,
+        "name": "rom-root-s3-B01-V04-U8",
+        "digest": "sha256:7b27998c5854c1860101173c7d0f4fb797ca01532d074a529e698a7dbeb03bb9",
+        "size_in_bytes": 440720
+      },
+      {
+        "id": 10748106720,
+        "name": "rom-root-s3-B14-V01-R16",
+        "digest": "sha256:7380bc3fea7b033b7bc10d428b93061fb709ce6770c057bd317431f31bc54668",
+        "size_in_bytes": 623933
+      },
+      {
+        "id": 10747952304,
+        "name": "rom-root-s3-B14-V01-R8",
+        "digest": "sha256:fd8eba2e73df5276050dde7d2bc6063bb78249bf4326132d7d11929fe12a4496",
+        "size_in_bytes": 278451
+      },
+      {
+        "id": 10747432578,
+        "name": "rom-root-s3-B14-V01-U4",
+        "digest": "sha256:b3da0c7eabce70ed871bf1ea98e560bc7b7d8225206c36db5cee08c3f0a30aea",
+        "size_in_bytes": 287702
+      },
+      {
+        "id": 10747248159,
+        "name": "rom-root-s3-B14-V01-U8",
+        "digest": "sha256:ed11f297a62aaae59f749a86f58c5df546ae35efb2b10d4914098ee070db900c",
+        "size_in_bytes": 431176
+      },
+      {
+        "id": 10747917546,
+        "name": "rom-root-s3-B14-V02-R16",
+        "digest": "sha256:91a2e6b007266c1b6af0abac89bd9ae164d10fa7ccf1f63f7776b44ff18bf0c7",
+        "size_in_bytes": 581334
+      },
+      {
+        "id": 10747861562,
+        "name": "rom-root-s3-B14-V02-R8",
+        "digest": "sha256:bcc26f54561fb12eb16461b27d8c6299ba67b97a9c41c4b62e64dde2408a6d5a",
+        "size_in_bytes": 250564
+      },
+      {
+        "id": 10747138484,
+        "name": "rom-root-s3-B14-V02-U4",
+        "digest": "sha256:e2dc610b27123deb3e20582bc0dc7e556ef87b2267de9ea06c63dbe27f54123e",
+        "size_in_bytes": 280463
+      },
+      {
+        "id": 10747503769,
+        "name": "rom-root-s3-B14-V02-U8",
+        "digest": "sha256:28b96cf8d1281b3d563f9b41bb0046fc09d8391afcf750db55557963e25a1d50",
+        "size_in_bytes": 404207
+      },
+      {
+        "id": 10747158467,
+        "name": "rom-root-s3-B14-V03-R16",
+        "digest": "sha256:811f79297503aff6fdb93dc9590f626c71be0bf66616eeaf7f8dfba8e12c174e",
+        "size_in_bytes": 587001
+      },
+      {
+        "id": 10748315717,
+        "name": "rom-root-s3-B14-V03-R8",
+        "digest": "sha256:1d709ee03ce7673c25ba2690fecb08e4c3db53a4311fb8b6446ff808a0d22861",
+        "size_in_bytes": 278449
+      },
+      {
+        "id": 10748156604,
+        "name": "rom-root-s3-B14-V03-U4",
+        "digest": "sha256:e1b74f42b7db49df983232cdf1ae33e0b01d09cffe8c5f8fe62f3a2ddb72754f",
+        "size_in_bytes": 284438
+      },
+      {
+        "id": 10747851793,
+        "name": "rom-root-s3-B14-V03-U8",
+        "digest": "sha256:0cedd8a5c71ce8bd3f29efa99e0dde4608313776c08cf71d2b24849eaf30c462",
+        "size_in_bytes": 420439
+      },
+      {
+        "id": 10747397725,
+        "name": "rom-root-s3-B14-V04-R16",
+        "digest": "sha256:ad02cf1b449be968d326f39d68e5e0d299eccd0ff7de3adabb3dda7d9ea4e987",
+        "size_in_bytes": 521514
+      },
+      {
+        "id": 10747218401,
+        "name": "rom-root-s3-B14-V04-R8",
+        "digest": "sha256:fc5f50c3ef1c917db45e9b75c7107103eab61f8e51652ff2d7d35d9a615e141a",
+        "size_in_bytes": 250544
+      },
+      {
+        "id": 10747103686,
+        "name": "rom-root-s3-B14-V04-U4",
+        "digest": "sha256:c0a0c942dbda72558cd6d368e6c091c4a45013d773b731f3f071d2d84ac1ba59",
+        "size_in_bytes": 275780
+      },
+      {
+        "id": 10747558699,
+        "name": "rom-root-s3-B14-V04-U8",
+        "digest": "sha256:a236300d484d8dbd30e1556152d4a5a8108e8a7ab90630a8fa830d0c6fec017f",
+        "size_in_bytes": 385230
+      }
+    ]
+  },
+  "failure_class": "TECHNICAL_ANALYZER_NAMEERROR",
+  "failure": "NameError: ROOT_DEPTH is not defined in threshold_diagnostic before a Stage 3 result could be produced.",
+  "repaired_analyzer_blob": "c1c1e73e50ad689a258a24e06084849c895f1c5f",
+  "exact_code_change": "Use candmod.ROOT_DEPTH, already defined by the frozen Stage 3 candidate module, instead of an undefined local ROOT_DEPTH symbol.",
+  "scientific_semantics_changed": false,
+  "response_based_repair": false,
+  "candidate_response_regenerated": false,
+  "analysis_rules_changed": false,
+  "uncertainty_bounds_changed": false,
+  "decision_rules_changed": false,
+  "required_replay": "Analyzer-only replay against the immutable 32 candidate artifacts from run 35856657989 plus the already qualified RA02R and immutable C0/C0R authorities.",
+  "scientific_firewall": {
+    "candidate_response_frozen": true,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
