@@ -22,7 +22,12 @@ required=[
 for token in required:
     assert token in state, token
 assert "b110_generated_mvg_ksatexm_profile_supported(parameters%cofgen" in backend
+admit=backend[backend.index("logical function fmr_serialized_execution_admitted"):backend.index("end function fmr_serialized_execution_admitted")]
+generated=admit[admit.index("if (parameters%generated_mvg_acceleration_active) then"):admit.index("end if",admit.index("if (parameters%generated_mvg_acceleration_active) then"))+6]
+assert ".not. parameters%ksatexm_extension_active" not in generated
+assert "b110_generated_mvg_ksatexm_profile_supported" in generated
 print("F_TAB02_G_STATIC_BOUNDED_FSI39=PASS")
+print("F_TAB02_G_SERIALIZED_SELECTOR_BOUNDED_KSATEXM=PASS")
 PY
 
 compile_and_run() {
