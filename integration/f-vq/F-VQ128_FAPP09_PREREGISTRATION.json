@@ -21,15 +21,26 @@
   ],
   "frozen_checks": [
     "single-level external-head materializer admits one EXTENDED_SIGNED level and rejects a two-level profile",
-    "external-owner profile rejects fixed-weir optional-state layout",
+    "materializer rejects wrong vector length, nonfinite head and competing preexisting drainage input",
+    "external-owner profile rejects fixed-weir optional-state layout and fixed-weir committed-state carrier",
     "positive drainage candidate reports the full accepted coupling-window transfer, not the terminal half-step amount",
+    "independent direct-backend observation shows terminal per-physical-advance signed exchange retains last-advance semantics while the separate window observation equals only the accepted two-half path",
+    "discarded full-step trial does not contribute to the accepted-window signed exchange accumulator",
     "realized-transfer mismatch blocks commit, discard preserves accepted origin, same-origin replay is deterministic",
     "matched positive transfer commits exactly once without adding SWAP surface-water state",
     "negative infiltration candidate reports the full accepted coupling-window transfer and commits exactly once",
+    "a stale captured origin fails closed after another participant advances the accepted revision",
     "O0/O2 stable output identity",
     "qualification source postimages equal the frozen owner candidate and qualification mutates no production source"
   ],
   "owner_gate_dependency": "Do not execute/admit F-VQ128 until the exact subject candidate passes the F-APP09 owner gate. If owner source changes, rebind all subject postimages before execution.",
   "production_admission": false,
-  "canonical_admission": false
+  "canonical_admission": false,
+  "accepted_window_semantics": {
+    "transaction_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "accepted_transfer": "half1 + half2 only",
+    "excluded_transfer": "discarded full trial",
+    "per_advance_observation": "must retain pre-F-APP09 semantics as the most recent physical advance amount",
+    "window_observation": "must be transaction-attempt-context state and rollback/replay consistently"
+  }
 }
