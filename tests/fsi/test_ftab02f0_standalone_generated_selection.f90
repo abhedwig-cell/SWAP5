@@ -128,27 +128,28 @@ contains
 
   subroutine configure_hupsel_material(lower)
     logical, intent(in) :: lower
-    real(real64) :: ores,osat,ksat,alpha,lexp,npar,ksatexm,m,se,term,kthreshold
+    real(real64) :: ores,osat,ksat,alpha,lexp,npar,ksatexm,m,se_authority,kthreshold_authority
     integer :: j
     if (lower) then
       ores=0.02_real64; osat=0.3870640000000001_real64; ksat=22.76176_real64
       alpha=0.016083_real64; lexp=2.4396619999999993_real64; npar=1.524418_real64
       ksatexm=227.61759999999998_real64
+      se_authority=0.9981816467911503_real64
+      kthreshold_authority=15.814441314772257_real64
     else
       ores=0.02_real64; osat=0.433878_real64; ksat=83.24164_real64
       alpha=0.021645_real64; lexp=7.202077_real64; npar=1.34877_real64
       ksatexm=832.4163_real64
+      se_authority=0.99628918798955624_real64
+      kthreshold_authority=36.025513440889291_real64
     end if
     m=1.0_real64-1.0_real64/npar
-    se=(1.0_real64+abs(alpha*(-2.0_real64))**npar)**(-m)
-    term=(1.0_real64-se**(1.0_real64/m))**m
-    kthreshold=ksat*se**lexp*(1.0_real64-term)**2
     cofgen=0.0_real64
     do j=1,numnod+1
       cofgen(1,j)=ores; cofgen(2,j)=osat; cofgen(3,j)=ksat
       cofgen(4,j)=alpha; cofgen(5,j)=lexp; cofgen(6,j)=npar
       cofgen(7,j)=m; cofgen(8,j)=alpha; cofgen(9,j)=0.0_real64
-      cofgen(10,j)=ksatexm; cofgen(11,j)=se; cofgen(12,j)=kthreshold
+      cofgen(10,j)=ksatexm; cofgen(11,j)=se_authority; cofgen(12,j)=kthreshold_authority
       cofgen(13,j)=0.10_real64; cofgen(14,j)=1.50_real64; cofgen(15,j)=0.50_real64
       cofgen(22,j)=-1.0e6_real64; cofgen(23,j)=1.0e-12_real64
     end do
