@@ -3,13 +3,9 @@
   "work_unit": "F-GC-FIXED-INTERFACE-CLOSEOUT",
   "title": "SWAP5-MODFLOW6 Fixed-Interface Groundwater Coupling — Final Canonical Admission",
   "protocol": "RECONCILE -> RECOMPOSE -> QUALIFY -> REVIEW -> ADMIT -> POSTIMAGE VERIFY -> CLOSE",
-  "phase": "ADMIT",
+  "phase": "CLOSE",
   "verdict": "CANONICAL_ADMITTED_CLOSED",
   "date": "2026-09-23",
-  "canonical_preimage": {
-    "branch": "integration/f-ci-canonical",
-    "head": "b7d9c976e9b474545d54fa79b71ae134c25da156"
-  },
   "source_candidate": {
     "branch": "work/f-gc-fixed-interface-closeout",
     "head": "0244570849e799d35a88abed36dc655e029d7c36",
@@ -24,10 +20,10 @@
     "authority_note": "PR 582 is historical merge provenance only and is not canonical admission authority for this closeout."
   },
   "canonical_postimage_qualification": {
-    "verified_head": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "verified_head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
     "workflow": "F-GC fixed-interface groundwater closeout",
-    "workflow_run": 35819258906,
-    "workflow_job": 107047399058,
+    "workflow_run": 35819763656,
+    "workflow_job": 107048912789,
     "conclusion": "success",
     "independent_endpoint_head_error_m": 3.297362383136715e-14,
     "independent_physical_residual_m_per_s": -7.075006056961875e-16,
@@ -107,5 +103,45 @@
     "analytical_freeze": "integration/f-gc/F-GC_FIXED_INTERFACE_ANALYTICAL_TESTBANK_FREEZE.json",
     "stopping_preregistration": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
   },
-  "next_permitted_action": "NONE_IN_THIS_WORKSTREAM_NEW_GROUNDWATER_CAPABILITIES_REQUIRE_A_SEPARATE_EXPLICIT_WORKSTREAM"
+  "next_permitted_action": "NONE_IN_THIS_WORKSTREAM_NEW_GROUNDWATER_CAPABILITIES_REQUIRE_A_SEPARATE_EXPLICIT_WORKSTREAM",
+  "pre_governance_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "b7d9c976e9b474545d54fa79b71ae134c25da156"
+  },
+  "first_canonical_postimage_qualification": {
+    "verified_head": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "workflow": "F-GC fixed-interface groundwater closeout",
+    "workflow_run": 35819258906,
+    "workflow_job": 107047399058,
+    "conclusion": "success",
+    "independent_endpoint_head_error_m": 3.297362383136715e-14,
+    "independent_physical_residual_m_per_s": -7.075006056961875e-16,
+    "production_external_residual_m_per_s": -6.092081208031304e-23,
+    "modflow_component_balance_residual_m3_per_day": -3.647099915365763e-14,
+    "accepted_interface_exchange_m": -1.0206812345027175e-12,
+    "accepted_swap_mass_residual_native": 0,
+    "fresh_process_e2e_replay": "PASS",
+    "fgc24_split_process_restart_replay_o0": "PASS",
+    "fgc24_split_process_restart_replay_o2": "PASS"
+  },
+  "closure_witness_semantics": "The admission lineage above names the exact admission canonical parent and integration commit. This later closure-witness metadata update has its own explicit parent and must pass the same push closeout gate on the resulting canonical postimage.",
+  "canonical_admission_lineage": {
+    "canonical_parent": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "integration_commit": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "integration_commit_parents": [
+      "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+      "e7fdd24147b3a336b285b7a1fa5adec37e9cb085"
+    ],
+    "integration_pr": 585,
+    "qualification_workflow": "F-GC fixed-interface groundwater closeout",
+    "qualification_run": 35819763656,
+    "qualification_job": 107048912789,
+    "qualification_conclusion": "success",
+    "production_delta_after_verified_parent": "METADATA_AND_DOCUMENTATION_ONLY"
+  },
+  "closure_witness_parent": {
+    "branch": "integration/f-ci-canonical",
+    "head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "relation": "parent of the closure-witness metadata update"
+  }
 }
