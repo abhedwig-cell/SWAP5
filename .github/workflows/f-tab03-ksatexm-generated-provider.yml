@@ -1,0 +1,53 @@
+name: F-TAB03 KSATEXM generated-provider research
+
+on:
+  push:
+    branches:
+      - research/f-tab03-ksatexm-generated-provider
+    paths:
+      - 'src/solver/mod_b110_generated_mvg_table_state.f90'
+      - 'tests/fsi/test_ftab03_ksatexm_generated_state.f90'
+      - 'tests/fsi/run_ftab03_ksatexm_generated_state.sh'
+      - 'integration/f-tab/F-TAB03_PREREGISTRATION.json'
+      - 'integration/f-tab/F-TAB03_STATUS.json'
+      - '.github/workflows/f-tab03-ksatexm-generated-provider.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  constitutive-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-TAB03 constitutive qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab03_ksatexm_generated_state.sh | tee F-TAB03_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB03"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB03_|^F-TAB03 ' F-TAB03_GATE.log || true
+          } > F-TAB03_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab03-constitutive-evidence
+          path: |
+            F-TAB03_EVIDENCE.txt
+            F-TAB03_GATE.log
+          if-no-files-found: error
