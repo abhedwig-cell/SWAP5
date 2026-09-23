@@ -4,10 +4,28 @@
   "base": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "source_port": "Q4A/Q4B research-qualified signed extended exchange candidate",
   "completed": [
-    "ADM01-G1_IMPLEMENTED",
-    "ADM01-G2_HARNESS_PORTED"
+    "ADM01-G1_OWNER_XOR",
+    "ADM01-G2_CANONICAL_Q4B_REPLAY",
+    "ADM01-G3_ACCEPTED_EXTERNAL_HEAD_BINDING"
   ],
-  "qualified": [],
-  "next_action": "Run owner-XOR and canonical Q4B replay gates. If green, bind accepted external surface-water head into a production-facing application profile without introducing SWAP surface-water storage.",
-  "production_admission": false
+  "qualified": [
+    "ADM01-G1",
+    "ADM01-G2",
+    "ADM01-G3"
+  ],
+  "next_action": "Implement G4 fail-closed geometry-policy contract. Production admission remains blocked until a specific Q1H epsilon/error envelope or Ribasim-native geometry contract is frozen, followed by G5 end-to-end restart/retry/recomposition/mass qualification.",
+  "production_admission": false,
+  "current_head": "b322ad859227cbbd81c990f1197c3716e1b5cf54",
+  "evidence": {
+    "G1_G2": {
+      "run": 35890507429,
+      "job": 107281558365,
+      "decision": "PASS"
+    },
+    "G3": {
+      "run": 35890790845,
+      "job": 107282567279,
+      "decision": "PASS"
+    }
+  }
 }
