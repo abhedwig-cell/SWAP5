@@ -24,13 +24,17 @@
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json"
   ],
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "blockers": [],
+  "blockers": [
+    "H4_SAME_PARTITION_CORICHARDS_DIAGNOSTIC_REQUIRED"
+  ],
+  "candidate_execution_sha": "fc2173e09da3981983dd5455c445e053ca16eaa7",
   "candidate_infrastructure": {
     "record": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json",
     "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED"
   },
   "candidate_response_authorized": true,
-  "candidate_response_generated": false,
+  "candidate_response_generated": true,
+  "candidate_source_workflow_run": 35856471915,
   "checkpoint_commit": "24a3a50a195b864ec97aed145d9bf4fc2872a405",
   "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "dependency_surface": [
@@ -47,9 +51,10 @@
   "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
   "last_execution_sha": "707838d6251262f6e74320fa399847a8bdf8462b",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "next_action": "BIND_P2_FROZEN_CANDIDATE_MATRIX",
+  "next_action": "RUN_H4_SAME_PARTITION_CORICHARDS_DIAGNOSTIC",
   "persisted": true,
-  "phase": "P2_REFERENCE_QUALIFIED",
+  "phase": "P2_PLACEMENT_RESULT_PERSISTED_H4_PENDING",
+  "placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
   "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
   "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json@e094ebe8b90c573dfae76713866ff9a73bcc66f4",
   "qualified": true,
@@ -61,7 +66,7 @@
     "trigger_head": "707838d6251262f6e74320fa399847a8bdf8462b",
     "witness_case": "B01/R1024_T32/S06"
   },
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
   "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d",
   "reference_execution_repair": "R1024_SEGMENT_EQUIVALENCE_WITNESS_THEN_S05_SEGMENT_REPAIR",
   "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
@@ -97,7 +102,7 @@
     "P1_failure_overridden": false,
     "P1_surface_histories_reused": false,
     "any_P2_reference_response_seen": true,
-    "any_layer_rom_candidate_response_seen": false,
+    "any_layer_rom_candidate_response_seen": true,
     "application_acceptance_adjudicated": false,
     "closure_changed": false,
     "performance_claim_authorized": false,
