@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-REDISTRIBUTION",
   "baseline": "d8cf105b6",
+  "recovery_point": "5c6cccb1f",
+  "persisted_test_result": "PASS at persisted 5c6cccb1f, O0/O2 identical transcripts with bounds checks and floating-point traps. Analytic candidate tests only.",
   "source": "B1.11 macrorate.f90 lines 1339-1373; SHA256 537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
   "implementation": "src/process/mod_ppa_wu05a4_redistribution.f90",
   "contract": "Candidate-only standard-domain top-excess redistribution. Preserve source pairwise sorting, strict thresholds, sequential remaining proportion and excess updates, and overwrite top rates from potentials. Immutable inputs; invalid denominator/shape/input returns no candidate arrays. Caller owns the source-loop total and relative deficits; these are not recomputed.",
