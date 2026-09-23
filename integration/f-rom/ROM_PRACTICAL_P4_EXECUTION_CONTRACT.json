@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.rom-practical.p4.execution-contract.v1",
+  "date": "2026-09-23",
+  "status": "FROZEN_BEFORE_REPAIRED_COMPILED_NUMERICAL_RESPONSE",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "preregistration": "ROM_PRACTICAL_P4_PREREGISTRATION.json",
+  "initial_source_blob": "4a16d92c8c0d32be71b20362725c6151181961c9",
+  "material_blob": "b2d8885a9bb01b078a3510086c70945207ab0882",
+  "python_equation_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+  "audit_findings": [
+    "The initial Fortran material literals have default-real precision before assignment to real64. Read decimal parameters directly from the authoritative JSON through real64 namelist input instead.",
+    "The initial executable implements only dt=0.01; preregistered dt=0.005 was missing.",
+    "Exit code zero alone did not test finite accepted state, complete history cardinality or the preregistered water ledger.",
+    "Centisecond process timing without a same-job Richards reference cannot establish the requested speed comparison.",
+    "The initial workflow had no aggregate or numerical refinement analysis. Original queued screen runs are not qualification authority."
+  ],
+  "scope_unchanged": {
+    "states": ["S4", "G8"],
+    "closure": "CURRENT_LAYER_FACE",
+    "histories": ["SD01", "SD02", "GD01", "GD02"],
+    "days": 60,
+    "time_steps_day": [0.01, 0.005],
+    "development": ["B02", "B11"],
+    "validation": ["B05", "B16"],
+    "candidate_tuning": false
+  },
+  "semantic_binding": "P3 implemented HOLD is prescribed bottom flux k0 (Python None; Richards bottom_mode=2), not prescribed head psi0. P4 preserves that implemented boundary condition. These controlled histories are not meteorological, seasonal or a MODFLOW coupling benchmark.",
+  "equation_conformance": {
+    "test": "Compare psi, K, dtheta/dt and both boundary fluxes with the pinned Python equations at uniform and nonuniform states in both histories and all forcing phases.",
+    "scaled_absolute_gate": "abs(actual-expected) <= 5e-12 * (1+abs(expected))",
+    "invalid_domain": "Reject input Se outside (0,1); no clipping or fallback."
+  },
+  "completion_gate": "Two histories with 60 unique daily states each; all layer states finite and in the original qualified domain; cumulative ledger <=1e-8 cm checked before every accepted substep; expected RHS count = 4*60/dt per history.",
+  "refinement": "Report full-versus-half discrepancies and their ratios to full-versus-R128 error for each P3 metric separately. No new absolute application gate. A half-step success does not retroactively qualify a failed primary dt=0.01 candidate.",
+  "timing": {
+    "warmups": 1,
+    "repeats": 5,
+    "wall": "Python perf_counter around each subprocess with output redirected to a file; identical runner and workflow, interleaved candidate, half-step and R128 calls; compilation excluded.",
+    "cpu": "Child process user+system CPU via resource.getrusage; also retain Fortran internal CPU and wall timer.",
+    "output_semantics": "Process comparison includes each harness's own output and orchestration. It is not a pure hydraulic-kernel speedup.",
+    "failed_runs": "Retain elapsed time and diagnostics as failure overhead, never as successful speedup.",
+    "portable_speed_claim": false
+  },
+  "interpretation_limits": [
+    "Compilation and integrator both change relative to Python Heun; a successful RK4 test cannot uniquely attribute gains to compilation alone.",
+    "Fixed-step failure supports a limitation of that tested numerical policy, not impossibility of integrating the frozen equations.",
+    "R128 and R64 are controlled Richards harnesses, not end-to-end Full SWAP application workflows.",
+    "B05/B16 forcing was already exposed in P3; this is frozen-panel numerical revalidation, not a fresh hydrological blind test."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "P_ROM_ET_opened": false
+}
