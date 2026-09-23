@@ -1,0 +1,39 @@
+name: F-CI109R1 F-APP09 current canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci109r1-fapp09-current-canonical-admission
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
+      - 'tests/fapp/**'
+      - 'tests/fvq/*fvq128*fapp09*'
+      - 'tests/fci/run_fci109r1_fapp09_current_canonical.sh'
+      - 'integration/f-ci/F-CI109R1_*'
+      - '.github/workflows/f-ci109r1-fapp09-current-canonical.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-ci109r1-fapp09-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI109R1 exact current-canonical gate
+        run: bash tests/fci/run_fci109r1_fapp09_current_canonical.sh

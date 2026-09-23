@@ -20,6 +20,8 @@ module mod_fmr_drainage_response_binding
   use mod_drainage_empirical_interflow_response, only: empirical_interflow_parameters_t, &
        empirical_interflow_control_t, empirical_interflow_response_t, empirical_interflow_diagnostics_t, &
        evaluate_empirical_interflow_response, INTERFLOW_OK
+  use mod_drainage_extended_exchange, only: extended_drainage_parameters_t, extended_drainage_control_t, &
+       extended_drainage_result_t, extended_drainage_diagnostics_t, evaluate_extended_drainage_exchange, EXT_DRAIN_OK
   use mod_drainage_multilevel_aggregation, only: drainage_level_exchange_t, drainage_multilevel_aggregate_t, &
        drainage_multilevel_diagnostics_t, aggregate_drainage_levels, DRAINAGE_AGGREGATION_OK
   implicit none
@@ -33,6 +35,7 @@ module mod_fmr_drainage_response_binding
   integer, parameter, public :: FMR_DRAIN_VARIANT_ERNST_IPOS4 = 6
   integer, parameter, public :: FMR_DRAIN_VARIANT_ERNST_IPOS5 = 7
   integer, parameter, public :: FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW = 8
+  integer, parameter, public :: FMR_DRAIN_VARIANT_EXTENDED_SIGNED = 9
 
   integer, parameter, public :: FMR_DRAIN_BIND_OK = 0
   integer, parameter, public :: FMR_DRAIN_BIND_INVALID_CONFIGURATION = 1
@@ -57,6 +60,7 @@ module mod_fmr_drainage_response_binding
     type(ernst_ipos4_prepared_t) :: ernst_ipos4_prepared
     type(ernst_ipos5_prepared_t) :: ernst_ipos5_prepared
     type(empirical_interflow_parameters_t) :: empirical
+    type(extended_drainage_parameters_t) :: extended
   end type fmr_drainage_response_level_parameters_t
 
   ! Interval control is deliberately separate from immutable parameters.
@@ -64,6 +68,8 @@ module mod_fmr_drainage_response_binding
   type, public :: fmr_drainage_response_level_control_t
     logical :: drain_head_supplied = .false.
     real(real64) :: drain_head = 0.0_real64
+    logical :: resolved_surface_water_head_supplied = .false.
+    real(real64) :: resolved_surface_water_head_cm = 0.0_real64
   end type fmr_drainage_response_level_control_t
 
   type, public :: fmr_drainage_response_level_diagnostics_t
@@ -109,10 +115,15 @@ contains
       select case (parameters(i)%variant)
       case (FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)
         if (.not. controls(i)%drain_head_supplied .or. .not. ieee_is_finite(controls(i)%drain_head)) return
+        if (controls(i)%resolved_surface_water_head_supplied) return
+      case (FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
+        if (controls(i)%drain_head_supplied) return
+        if (.not. controls(i)%resolved_surface_water_head_supplied .or. &
+            .not. ieee_is_finite(controls(i)%resolved_surface_water_head_cm)) return
       case (FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, &
             FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, &
             FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5)
-        if (controls(i)%drain_head_supplied) return
+        if (controls(i)%drain_head_supplied .or. controls(i)%resolved_surface_water_head_supplied) return
       case default
         status = FMR_DRAIN_BIND_UNSUPPORTED_VARIANT
         return
@@ -207,6 +218,9 @@ contains
     type(empirical_interflow_control_t) :: empirical_control
     type(empirical_interflow_response_t) :: empirical_result
     type(empirical_interflow_diagnostics_t) :: empirical_diag
+    type(extended_drainage_control_t) :: extended_control
+    type(extended_drainage_result_t) :: extended_result
+    type(extended_drainage_diagnostics_t) :: extended_diag
 
     exchange = drainage_level_exchange_t()
     diagnostic = fmr_drainage_response_level_diagnostics_t()
@@ -276,6 +290,18 @@ contains
       call bind_result(empirical_result%signed_soil_to_drain_rate, empirical_result%derivative_defined, &
            empirical_result%dq_dgroundwater_level, empirical_diag%at_activation .or. &
            empirical_diag%singular_activation_tangent)
+
+    case (FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
+      extended_control%resolved_surface_water_head_cm = control%resolved_surface_water_head_cm
+      call evaluate_extended_drainage_exchange(parameters%extended, hydraulic_view, extended_control, &
+           extended_result, extended_diag)
+      diagnostic%process_status = extended_diag%status
+      if (extended_diag%status /= EXT_DRAIN_OK) return
+      call bind_result(extended_result%signed_soil_to_surface_rate_cm_day, extended_result%derivative_defined, &
+           extended_result%dq_dgroundwater_level, extended_diag%ponding_switch_boundary .or. &
+           extended_diag%activation_boundary .or. extended_diag%control_head_branch_boundary .or. &
+           extended_diag%sign_resistance_boundary .or. extended_diag%surface_resistance_boundary .or. &
+           extended_diag%power_activation_boundary)
 
     case default
       diagnostic%binding_status = FMR_DRAIN_BIND_UNSUPPORTED_VARIANT

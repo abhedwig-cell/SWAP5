@@ -301,6 +301,8 @@ module mod_fmr_serialized_reference_backend
     integer :: drainage_response_evaluations = 0
     logical :: drainage_response_mass_accounted_in_trial = .false.
     real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
+    logical :: drainage_response_window_exchange_available = .false.
+    real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     type(fmr_drainage_response_diagnostics_t) :: drainage_response
     logical :: black_evaporation_active = .false.
     logical :: black_evaporation_evaluated = .false.
@@ -325,6 +327,8 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_active = .false.
     logical :: top_sensible_boundary_valid = .true.
     type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier
+    logical :: drainage_response_window_exchange_available = .false.
+    real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     type(accepted_trajectory_direction_t) :: trajectory_direction
   end type fmr_serialized_attempt_context_t
 
@@ -345,6 +349,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
     integer :: drainage_response_evaluations = 0
+    logical :: drainage_response_window_exchange_available = .false.
+    real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     integer :: bottom_mode = 7
@@ -1302,6 +1308,8 @@ contains
       typed%top_sensible_boundary_active = self%top_sensible_boundary_carrier_active
       typed%top_sensible_boundary_valid = self%top_sensible_boundary_carrier_valid
       call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)
+      typed%drainage_response_window_exchange_available = self%drainage_response_window_exchange_available
+      typed%drainage_response_window_signed_exchange_native = self%drainage_response_window_signed_exchange_native
       typed%trajectory_direction = self%trajectory_direction
     end select
   end subroutine fmr_serialized_capture_attempt_context
@@ -1318,6 +1326,8 @@ contains
       self%top_sensible_boundary_carrier_active = typed%top_sensible_boundary_active
       self%top_sensible_boundary_carrier_valid = typed%top_sensible_boundary_valid
       call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)
+      self%drainage_response_window_exchange_available = typed%drainage_response_window_exchange_available
+      self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%trajectory_direction = typed%trajectory_direction
     class default
       self%bottom_thermal_carrier_active = .false.
@@ -1326,6 +1336,8 @@ contains
       self%top_sensible_boundary_carrier_active = .false.
       self%top_sensible_boundary_carrier_valid = .false.
       call self%top_sensible_boundary_carrier%clear()
+      self%drainage_response_window_exchange_available = .false.
+      self%drainage_response_window_signed_exchange_native = 0.0_real64
       call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
@@ -1481,6 +1493,8 @@ contains
     self%forcing_admitted = .false.
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
+    self%drainage_response_window_exchange_available = self%drainage_response_active
+    self%drainage_response_window_signed_exchange_native = 0.0_real64
     if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
     if (allocated(self%legacy_swbotb2_control)) deallocate(self%legacy_swbotb2_control)
     self%last_observation = fmr_serialized_physical_observation_t()
@@ -1802,6 +1816,7 @@ contains
     real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
+    real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
@@ -2232,8 +2247,22 @@ contains
          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
-      self%last_observation%drainage_response_signed_exchange_native = &
-           self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
+      step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
+      self%last_observation%drainage_response_signed_exchange_native = step_drainage_exchange
+      if (self%drainage_response_window_exchange_available .and. ieee_is_finite(step_drainage_exchange)) then
+        self%drainage_response_window_signed_exchange_native = &
+             self%drainage_response_window_signed_exchange_native + step_drainage_exchange
+        if (.not. ieee_is_finite(self%drainage_response_window_signed_exchange_native)) then
+          self%drainage_response_window_exchange_available = .false.
+          self%drainage_response_window_signed_exchange_native = 0.0_real64
+        end if
+      else
+        self%drainage_response_window_exchange_available = .false.
+      end if
+      self%last_observation%drainage_response_window_exchange_available = &
+           self%drainage_response_window_exchange_available
+      self%last_observation%drainage_response_window_signed_exchange_native = &
+           self%drainage_response_window_signed_exchange_native
     end if
     outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration
     outcome%terminal_bottom_outward_flux_native = -solve_result%bottom_flux

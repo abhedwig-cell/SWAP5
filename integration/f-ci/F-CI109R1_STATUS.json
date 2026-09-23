@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI109R1",
+  "title": "F-APP09 current-canonical admission reconciliation",
+  "phase": "QUALIFY",
+  "status": "CURRENT_CANONICAL_REPLAY_PENDING",
+  "branch": "integration/f-ci109r1-fapp09-current-canonical-admission",
+  "canonical_source": "43577e083ae1e315d86cafd55f971d80279db27c",
+  "frozen_subject": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "independent_qualification": "F-VQ128 PASS",
+  "production_source_files": 5,
+  "production_blobs_changed_from_frozen_subject": false,
+  "canonical_admission": false,
+  "next_action": "Run exact owner and independent replay against current canonical-derived branch. If green, open canonical PR for the unchanged five-file postimage."
+}
