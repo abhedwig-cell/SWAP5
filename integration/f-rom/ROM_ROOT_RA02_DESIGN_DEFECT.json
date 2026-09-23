@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.rom_root.ra02.design_defect.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02",
+  "date": "2026-09-23",
+  "status": "CLOSED_PREREGISTERED_STRESS_PANEL_SEMANTIC_DEFECT_BEFORE_RESULT_ADJUDICATION",
+  "detection_basis": "Frozen Feddes implementation and already-bound RA02 inputs only; no RA02 scientific root-response output was inspected or used.",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RA02_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RA02_BINDING.json",
+    "stress_materializer": "tests/rom/materialize_rom_root_ra02_stress_panel.py",
+    "frozen_root_process": "src/process/mod_root_water_uptake_process.f90@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "running_workflow": 35821853204,
+    "running_head": "59f2335916623f02413e35f9333bd4dd716ec6fd"
+  },
+  "defect": {
+    "claimed_semantic": "Se0 = h3(Tp) effective-saturation equivalent + 0.001 for every history.",
+    "implemented_low_demand_Se0": 0.351,
+    "low_demand_potential_transpiration_cm_per_day": 0.3,
+    "feddes_rule": "For ADCRL=0.1 < Tp=0.3 <= ADCRH=0.5, critical h3 is interpolated linearly in pressure-head space between h3H and h3L; it is not h3L.",
+    "demand_specific_low_h3": {
+      "B01": {
+        "critical_Se": 0.42571759600680326,
+        "required_Se0_for_plus_0p001": 0.42671759600680326
+      },
+      "B14": {
+        "critical_Se": 0.40613288830832667,
+        "required_Se0_for_plus_0p001": 0.40713288830832667
+      }
+    },
+    "implemented_initial_alpha_at_Se0_0p351": {
+      "B01": 0.9641866120441516,
+      "B14": 0.9971327780494567
+    },
+    "activation_guard_fraction": 2.9103830456733704e-11,
+    "implication": "V02 and V04 are analytically already drought-stressed at the initial committed state, so the preregistered requirement that observation 1 be unstressed cannot be satisfied by design."
+  },
+  "adjudication": {
+    "ra02_scientific_result_authorized": false,
+    "ra02_reference_qualified": false,
+    "running_output_may_not_be_used_to_select_repair_values": true,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false
+  },
+  "repair_boundary": {
+    "in_place_ra02_repair_forbidden": true,
+    "reason": "RA02 execution has already begun and its preregistration explicitly forbids adjusting initial Se after response. A corrected panel must be a separately preregistered work unit whose values are derived only from the frozen Feddes equation.",
+    "successor": "ROM-ROOT-RA02R"
+  },
+  "model_changed": false
+}
