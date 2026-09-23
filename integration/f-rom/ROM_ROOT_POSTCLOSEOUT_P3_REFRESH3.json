@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.rom_root.postcloseout_p3_refresh3.v1",
+  "workstream": "ROM-ROOT",
+  "date": "2026-09-23",
+  "state": "CLOSED_HELD_AT_EXTERNAL_PURPOSE_AUTHORITY_BOUNDARY",
+  "rom_root": {
+    "branch": "work/f-rom-lare-rs1",
+    "observed_head_before_refresh": "85232388165cd95ac86b07ebe76595c099863506",
+    "closeout": "integration/f-rom/ROM_ROOT_CLOSEOUT.json",
+    "prior_refresh": "integration/f-rom/ROM_ROOT_POSTCLOSEOUT_P3_REFRESH2.json",
+    "exactness_track": "CLOSED",
+    "minimal_dynamic_feedback": "FALSIFIED",
+    "new_root_specific_state_selected": false
+  },
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "observed_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "external_authority_refresh": {
+    "rom_accept": {
+      "branch": "work/f-rom-accept",
+      "observed_head": "41799780d068fd2952aab82d799af28198a64526",
+      "changed_since_prior_refresh": false,
+      "matching_root_feedback_structural_error_budget_available": false
+    },
+    "rom_purpose": {
+      "branch": "work/f-rom-purpose",
+      "observed_head": "de56995401258b1c3413b962a6d105a6a32b7496",
+      "previous_observed_head": "e891c5b5e54ee9b681a19716db6a1769c6948e92",
+      "delta_commits": 1,
+      "delta": "Added tests/rom/analyze_rom_purpose_p3_same_partition_richards.py only.",
+      "status_record": "integration/f-rom/ROM_PURPOSE_P3_STATUS.json",
+      "status": "P3_REFERENCE_EXECUTION_BOUND_AWAITING_RUNNER",
+      "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
+      "candidate_response_authorized": false,
+      "current_purpose_scope": [
+        "SURF_P",
+        "GW_LB"
+      ],
+      "p3_closeout_present": false,
+      "matching_root_feedback_purpose_acceptance_authority_available": false,
+      "reason": "The new analyzer supports the prospectively triggered same-partition Richards diagnostic for SURF_P/GW_LB. It does not add any root-uptake/root-stress acceptance envelope or structural-error budget."
+    }
+  },
+  "decision": {
+    "reopen_rom_root_exactness_track": false,
+    "start_dynamic_augmented_root_candidate": false,
+    "select_finite_root_distribution_descriptor_dimension": false,
+    "derive_root_acceptance_threshold_from_existing_stage3_errors": false,
+    "start_candidate_independent_root_approximation_frontier_automatically": false,
+    "production_or_performance_claim": false,
+    "hold_rom_root_closed": true
+  },
+  "rationale": [
+    "ROM-ROOT exactness is already closed at the distributional forcing-portable information boundary.",
+    "ROM-PURPOSE remains at Reference/comparator qualification for SURF_P and GW_LB; its newest delta is diagnostic implementation support only.",
+    "No matching root-feedback purpose authority or external structural-error tolerance has appeared.",
+    "Selecting a finite approximate root descriptor remains scientifically underdetermined."
+  ],
+  "reopen_conditions": [
+    "An independent purpose owner freezes a root-feedback/root-stress structural-error budget with temporal, spatial and event semantics.",
+    "ROM-PURPOSE closes an explicit root-feedback purpose contract requiring an approximation frontier independent of application acceptance.",
+    "A separately scoped approximation-theory study is explicitly authorized with no sufficiency or application-admission claim."
+  ],
+  "scientific_firewall": {
+    "new_response_generated": false,
+    "new_propagated_root_state_selected": false,
+    "fitted_surrogate_used": false,
+    "acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
