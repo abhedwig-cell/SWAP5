@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.rom_root.ra01.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_RA01_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_RA01_PREREGISTRATION.json",
+  "authority_reconciliation": "integration/f-rom/ROM_ROOT_REFERENCE_AUTHORITY_RECONCILIATION.json",
+  "c6r_reopened": false,
+  "c6r_physics_changed": false,
+  "candidate_response_generated": false,
+  "external_authority": {
+    "workunit": "PUB-P2E20",
+    "branch": "work/pub-p2e20-ref-high-floor-policy",
+    "head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+    "preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+    "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+    "formula": "F_repr_cm=sum_i(dz_i*spacing(theta_s_i)); total_tol_rate=max(1e-12,F_repr_cm/dt_day)",
+    "safety_factor": 1
+  },
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "implementation": {
+    "workflow": ".github/workflows/rom-root-ra01.yml",
+    "workflow_blob": "dc93964b8497389fa7e59d09c8c8ce9e8e48b209",
+    "policy_materializer": "tests/rom/materialize_rom_root_ra01_reference_policy.py",
+    "policy_materializer_blob": "6745a40bfda00f81bfd6d0eba25e929794cbc253",
+    "wrapper_analyzer": "tests/rom/analyze_rom_root_ra01_reference_transfer.py",
+    "wrapper_analyzer_blob": "9193d60ca07d0ae5f473167eb0b7fc751d415b0b",
+    "root_materializer_blob": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "segmented_materializer_blob": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "frozen_uncertainty_analyzer_blob": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a",
+    "reference_floor_admission_repair_blob": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "response_based_design": false
+  },
+  "numerical_contract": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_rate": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "root_active_legacy_fallback": false,
+    "second_attempt_rescue": false
+  },
+  "frozen_domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_levels": [
+      0,
+      2
+    ],
+    "target": "R2048_T32"
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "reduced_candidate_response_generated": false,
+    "stage2_executed": false,
+    "stage3_executed": false
+  }
+}
