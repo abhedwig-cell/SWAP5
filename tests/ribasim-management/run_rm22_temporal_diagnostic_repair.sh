@@ -15,7 +15,7 @@ grep -Fq 'tx%max_temporal_indicator' "$RT" || fail "canonical runtime not bound 
 grep -Fq 'result%temporal_indicator = outcome%temporal_indicator' "$TX" || fail "terminal indicator provenance was not preserved"
 echo 'RM22_STATIC_DIAGNOSTIC_BINDING=PASS'
 
-TX_COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace)
+TX_COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace)
 for opt in 0 2; do
   OUT="$BUILD/tx_o$opt"; mkdir -p "$OUT"
   gfortran "${TX_COMMON[@]}" -O"$opt" -J "$OUT"     src/transaction/mod_transaction_reference.f90 tests/ribasim-management/test_rm22_retry_max.f90     -o "$OUT/test" || fail "targeted transaction compile O$opt"
