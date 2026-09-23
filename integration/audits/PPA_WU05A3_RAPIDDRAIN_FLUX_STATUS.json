@@ -2,20 +2,30 @@
   "schema": "swap5.ppa_wu05a3.rapiddrain_flux.status.v1",
   "work_unit": "PPA-WU05-A3-RAPIDDRAIN-FLUX",
   "parent_work_unit": "PPA-WU05-A3",
-  "status": "IMPLEMENTED_SOURCE_ORACLE_PENDING",
+  "status": "SOURCE_ORACLE_PASSED",
   "baseline": "codex/ppa-swap431-functional-gap-register@60a137919",
   "preregistration": "integration/audits/PPA_WU05A3_RAPIDDRAIN_FLUX_PREREGISTRATION.json",
   "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
   "implemented": true,
-  "persisted": false,
-  "tested": false,
+  "persisted": true,
+  "tested": true,
   "qualified": false,
   "production_admission": "NONE; scalar RAPIDDRAIN potential-flux equation only; no mass receipt or runtime binding",
   "implementation": "src/process/mod_ppa_wu05a3_rapid_drain_flux.f90",
   "test": "tests/fapp/test_ppa_wu05a3_rapid_drain_flux_source_oracle.f90",
   "gate": "tests/fapp/run_ppa_wu05a3_rapid_drain_flux_source_oracle.sh",
-  "test_result": null,
-  "next_action": "Run direct GNU Fortran O0/O2 bitwise source oracle and persist the bounded result.",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_RAPIDDRAIN_FLUX_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_RAPIDDRAIN_HEAD_RESISTANCE_AND_STORAGE_CAP=PASS",
+      "PPA_WU05A3_RAPIDDRAIN_FLUX_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "2fc05edb4a714b6662756b6bf328d01a8efef626075ad6ff478d91cc043becea"
+  },
+  "next_action": "Continue with an isolated source oracle for the full RAPIDDRAIN control flow; no runtime admission.",
   "recovery_point": "this preregistration, source module, and test",
   "blockers": []
 }
