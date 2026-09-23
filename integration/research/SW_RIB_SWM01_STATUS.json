@@ -4,8 +4,8 @@
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "status": "OPEN_QUALIFICATION",
-  "checkpoint_commit": "584d8a40c0e857ff0ebfdfd42e48559d44846116",
-  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2_NEXT",
+  "checkpoint_commit": "a562a745b8fb0b0894743fe373dfae1f70023f3b",
+  "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_EXECUTION_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -59,7 +59,10 @@
     "integration/research/SW_RIB_SWM01_Q1A_R3_LEDGER_RESULT.json",
     "integration/research/SW_RIB_SWM01_Q1B_RESULT.json",
     "integration/research/SW_RIB_SWM01_Q2_DESIGN.json",
-    "integration/research/SW_RIB_SWM01_Q3_DESIGN.json"
+    "integration/research/SW_RIB_SWM01_Q3_DESIGN.json",
+    "integration/research/SW_RIB_SWM01_Q2A_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q2A_RESULT.json",
+    "integration/research/SW_RIB_SWM01_Q2B1_PREREGISTRATION.json"
   ],
   "dependency_surface": [
     "surface-water state/storage ownership",
@@ -93,15 +96,27 @@
       "decision": "PASS",
       "run": 35860557876,
       "job": 107179447848
+    },
+    "q2a": {
+      "decision": "PASS",
+      "run": 35863579741,
+      "job": 107189471823
+    },
+    "q2b1": {
+      "state": "QUEUED",
+      "run": 35863877490,
+      "job": 107190477656,
+      "head": "a562a745b8fb0b0894743fe373dfae1f70023f3b"
     }
   },
-  "next_action": "Preregister and execute Q2A accepted-state automatic-management policy: exact phase-selection seams, WLSTAR between-event memory, DROPR downward-only rule, rollback/replay, and explicit event handling. Keep hydraulic realization separate for Q2B.",
-  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@584d8a40c0e857ff0ebfdfd42e48559d44846116",
+  "next_action": "Complete Q2B1 real-Ribasim managed-band qualification. On pass, persist direct supply/discharge ledger evidence and proceed to Q3A signed lower exchange before deciding whether Q2B2 dynamic Q(h) composition is required for the intended coupled application envelope.",
+  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@a562a745b8fb0b0894743fe373dfae1f70023f3b",
   "blockers": [
-    "Q2 automatic soil-state management policy remains unqualified.",
+    "Q2B1 real-Ribasim managed-band run is pending.",
     "Q3 signed drainage/infiltration exchange and external availability remain unqualified.",
+    "Q2B2 dynamic Q(h)-allocation composition remains open unless excluded by a narrower application contract.",
     "Q1C nonlinear SWQHR1 mapping remains open unless excluded by a narrower application contract.",
     "No production admission or retirement authority exists.",
-    "Pinned Ribasim checkout emits a 2026.1.0 model-metadata versus 2026.1.1 core-version warning; resolve before production admission."
+    "Pinned Ribasim checkout emits a model-metadata/core-version warning; resolve before production admission."
   ]
 }
