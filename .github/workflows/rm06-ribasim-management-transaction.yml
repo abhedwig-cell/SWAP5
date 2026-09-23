@@ -6,13 +6,15 @@ on:
       - work/ribasim-management-coupling-closeout
     paths:
       - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'tests/ribasim-management/**'
+      - 'tests/ribasim-management/test_rm06_management_transaction.f90'
+      - 'tests/ribasim-management/run_rm06_management_transaction.sh'
       - 'integration/ribasim-management/RM06_*'
       - '.github/workflows/rm06-ribasim-management-transaction.yml'
   pull_request:
     paths:
       - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'tests/ribasim-management/**'
+      - 'tests/ribasim-management/test_rm06_management_transaction.f90'
+      - 'tests/ribasim-management/run_rm06_management_transaction.sh'
       - 'integration/ribasim-management/RM06_*'
       - '.github/workflows/rm06-ribasim-management-transaction.yml'
   workflow_dispatch:
