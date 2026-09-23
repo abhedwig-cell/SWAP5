@@ -1,0 +1,164 @@
+{
+  "cross_material_signal": {
+    "HM17": false,
+    "SPLIT17": false
+  },
+  "decision": "ORACLE_GATE_FAILED",
+  "downstream_authority": "NO_DYNAMIC_CARRIER_VALIDATION_AUTHORIZED_BY_P5C",
+  "materials": {
+    "B01": {
+      "HM17_vs_BASE16": {
+        "componentwise_noninferior": false,
+        "delta": {
+          "bottom_flux_sign_mismatch_count": 1.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.003624513829185716,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.00383511206306153
+        },
+        "strict_gain": true
+      },
+      "HM17_vs_SPLIT17": {
+        "componentwise_noninferior": false,
+        "delta": {
+          "bottom_flux_sign_mismatch_count": 0.0,
+          "history_signed_bottom_flux_bias_cm_per_day": 1.2523680984699581e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": -0.000511459038278872
+        },
+        "strict_gain": true
+      },
+      "SPLIT17_vs_BASE16": {
+        "componentwise_noninferior": false,
+        "delta": {
+          "bottom_flux_sign_mismatch_count": 1.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0036370375101704155,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.004346571101340402
+        },
+        "strict_gain": true
+      },
+      "metrics": {
+        "BASE16": {
+          "bottom_flux_sign_mismatch_count": 3071,
+          "history_signed_bottom_flux_bias_cm_per_day": 9.598123249705592,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 11.85270144302967,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 31.93221543762968,
+          "scored_observation_count": 3072
+        },
+        "FINE_ORACLE": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 9.589806651870134,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 11.856126500147639,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 33.14877533954949,
+          "scored_observation_count": 3072
+        },
+        "HM17": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 9.594498735876407,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 11.856536555092731,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 32.94298191142484,
+          "scored_observation_count": 3072
+        },
+        "SPLIT17": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 9.594486212195422,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 11.85704801413101,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 32.98335450224364,
+          "scored_observation_count": 3072
+        }
+      },
+      "oracle": {
+        "max_abs_gate_cm_per_day": 1e-08,
+        "metrics": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 9.589806651870134,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 11.856126500147639,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 33.14877533954949,
+          "scored_observation_count": 3072
+        },
+        "pass": false,
+        "rmse_gate_cm_per_day": 1e-10
+      }
+    },
+    "B14": {
+      "HM17_vs_BASE16": {
+        "componentwise_noninferior": false,
+        "delta": {
+          "bottom_flux_sign_mismatch_count": 3.0,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.001710909177072839,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.022684918128615894
+        },
+        "strict_gain": false
+      },
+      "HM17_vs_SPLIT17": {
+        "componentwise_noninferior": false,
+        "delta": {
+          "bottom_flux_sign_mismatch_count": 1.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -6.848899716055401e-06,
+          "instantaneous_bottom_flux_rmse_cm_per_day": -0.0009374572199809528
+        },
+        "strict_gain": true
+      },
+      "SPLIT17_vs_BASE16": {
+        "componentwise_noninferior": false,
+        "delta": {
+          "bottom_flux_sign_mismatch_count": 2.0,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0017177580767888945,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.023622375348596847
+        },
+        "strict_gain": false
+      },
+      "metrics": {
+        "BASE16": {
+          "bottom_flux_sign_mismatch_count": 3069,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.07121465645666525,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.2709632246043426,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 2.741083974337854,
+          "scored_observation_count": 3072
+        },
+        "FINE_ORACLE": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.07406802773036415,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.32683846309282655,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 4.110287452875289,
+          "scored_observation_count": 3072
+        },
+        "HM17": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.07292556563373809,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.2936481427329585,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 3.1917204126417915,
+          "scored_observation_count": 3072
+        },
+        "SPLIT17": {
+          "bottom_flux_sign_mismatch_count": 3071,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.07293241453345414,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.2945855999529394,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 3.2321772025217097,
+          "scored_observation_count": 3072
+        }
+      },
+      "oracle": {
+        "max_abs_gate_cm_per_day": 1e-08,
+        "metrics": {
+          "bottom_flux_sign_mismatch_count": 3072,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.07406802773036415,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.32683846309282655,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 4.110287452875289,
+          "scored_observation_count": 3072
+        },
+        "pass": false,
+        "rmse_gate_cm_per_day": 1e-10
+      }
+    }
+  },
+  "oracle_gate_pass": false,
+  "schema": "swap5.rom-purpose.p5c.gw-boundary-interface-carrier-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "closure_admitted": false,
+    "dynamic_state_sufficiency_adjudicated": false,
+    "minimum_state_count_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "status": "P5C_SCREEN_COMPLETE",
+  "work_unit": "ROM-PURPOSE-P5C-GW-BOUNDARY-INTERFACE-CARRIER",
+  "workstream": "ROM-PURPOSE"
+}

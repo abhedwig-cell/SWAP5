@@ -8,17 +8,21 @@
   "p5b_execution_sha": "3ce2851eb37f8968378859416343d1c67588f9da",
   "p5b_result": "integration/f-rom/ROM_PURPOSE_P5B_RESULT.json",
   "p5b_source_workflow_run": 35922641574,
+  "p5c_execution_sha": "9a19c08557739bcfb99281b5fc1ff4856b1b018b",
+  "p5c_result": "integration/f-rom/ROM_PURPOSE_P5C_RESULT.json",
+  "p5c_source_workflow_run": 35923634779,
   "schema": "swap5.rom-purpose.p5.status.v1",
   "scientific_firewall": {
     "any_p5a_response_seen": true,
     "any_p5b_response_seen": true,
+    "any_p5c_response_seen": true,
     "application_acceptance_adjudicated": false,
     "new_closure_family_authorized": false,
     "p4_reopened": false,
     "production_rom_authorized": false,
     "tolerance_relaxation_authorized": false
   },
-  "status": "P5B_SCREEN_COMPLETE_NO_ROBUST_SIGNAL",
+  "status": "P5C_SCREEN_COMPLETE_ORACLE_GATE_FAILED",
   "work_unit": "ROM-PURPOSE-P5",
   "workstream": "ROM-PURPOSE"
 }
