@@ -3,14 +3,16 @@ module mod_reference_richards_temporal_indicator
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: soil_water_solve_request_t, soil_water_solve_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
+       soil_water_top_boundary_result_t, &
        SW_SOLVE_CONVERGED, SW_TEMPORAL_INDICATOR_AVAILABLE, SW_TEMPORAL_INDICATOR_UNAVAILABLE, &
-       SW_TEMPORAL_INDICATOR_FAILED
-  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+       SW_TEMPORAL_INDICATOR_FAILED, SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_FLUX
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
   implicit none
   private
 
@@ -25,6 +27,7 @@ contains
     type(soil_water_temporal_indicator_result_t), intent(out) :: indicator_result
 
     integer :: n, i, ierr
+    logical :: dynamic_flux_equivalent
     real(real64) :: dt, face_conductance, bottom_distance, raw_norm, defect_norm, bounded_norm
     real(real64) :: scale, water_diff
     real(real64), allocatable :: water_base(:), conductivity_base(:), capacity_base(:), dkdh_base(:)
@@ -141,26 +144,44 @@ contains
        indicator_result%route = 'conductivity-policy-deferred'
        return
     end if
-    if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. &
-        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2)) then
+    if (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'boundary-envelope-deferred'
        return
     end if
     if (.not. associated(request%evaluation%constitutive) .or. &
-        .not. associated(request%evaluation%source_sink) .or. &
-        .not. associated(request%evaluation%top_boundary)) then
+        .not. associated(request%evaluation%source_sink)) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'provider-envelope-incomplete'
        return
     end if
 
-    select type (top_provider => request%evaluation%top_boundary)
-    type is (fixed_flux_top_boundary_provider_t)
-       continue
-    class default
+    dynamic_flux_equivalent = .false.
+    select case (request%boundary%top_mode)
+    case (FSI_TOP_MODE_EXPLICIT_FLUX)
+       if (.not. associated(request%evaluation%top_boundary)) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'provider-envelope-incomplete'
+          return
+       end if
+       select type (top_provider => request%evaluation%top_boundary)
+       type is (fixed_flux_top_boundary_provider_t)
+          continue
+       class default
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'fixed-top-flux-required'
+          return
+       end select
+    case (FSI_TOP_MODE_DYNAMIC_PROVIDER)
+       call qualify_dynamic_flux_temporal_envelope(request, solve_result, dynamic_flux_equivalent)
+       if (.not. dynamic_flux_equivalent) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'dynamic-flux-envelope-deferred'
+          return
+       end if
+    case default
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
-       indicator_result%route = 'fixed-top-flux-required'
+       indicator_result%route = 'boundary-envelope-deferred'
        return
     end select
     select type (source_sink_provider => request%evaluation%source_sink)
@@ -299,10 +320,72 @@ contains
     indicator_result%available = .true.
     indicator_result%status = SW_TEMPORAL_INDICATOR_AVAILABLE
     if (raw_norm <= 2.0_real64*defect_norm) then
-       indicator_result%route = 'reference-richards-raw-bound'
+       if (dynamic_flux_equivalent) then
+          indicator_result%route = 'reference-dynamic-flux-raw-bound'
+       else
+          indicator_result%route = 'reference-richards-raw-bound'
+       end if
     else
-       indicator_result%route = 'reference-richards-defect-bound'
+       if (dynamic_flux_equivalent) then
+          indicator_result%route = 'reference-dynamic-flux-defect-bound'
+       else
+          indicator_result%route = 'reference-richards-defect-bound'
+       end if
     end if
   end subroutine evaluate_reference_richards_temporal_indicator
+
+  subroutine qualify_dynamic_flux_temporal_envelope(request, solve_result, qualified)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    logical, intent(out) :: qualified
+    type(soil_water_top_boundary_result_t) :: base_result, mid_result, candidate_result
+    real(real64) :: mid_head, mid_water, mid_ponding, flux_scale, state_scale, tol_flux, tol_state
+
+    qualified = .false.
+    if (.not. associated(request%evaluation%dynamic_top_boundary)) return
+    if (.not. allocated(request%base_state%water_content)) return
+    if (.not. allocated(solve_result%candidate_state%water_content)) return
+    if (size(request%base_state%water_content) < 1 .or. size(solve_result%candidate_state%water_content) < 1) return
+
+    select type (dynamic_provider => request%evaluation%dynamic_top_boundary)
+    type is (b110_dynamic_top_boundary_solver_provider_t)
+       call dynamic_provider%evaluate(request%base_state%pressure_head(1), request%base_state%water_content(1), &
+            request%base_state%ponding_depth, request%boundary, base_result)
+       mid_head = 0.5_real64*(request%base_state%pressure_head(1)+solve_result%candidate_state%pressure_head(1))
+       mid_water = 0.5_real64*(request%base_state%water_content(1)+solve_result%candidate_state%water_content(1))
+       mid_ponding = 0.5_real64*(request%base_state%ponding_depth+solve_result%candidate_state%ponding_depth)
+       call dynamic_provider%evaluate(mid_head, mid_water, mid_ponding, request%boundary, mid_result)
+       call dynamic_provider%evaluate(solve_result%candidate_state%pressure_head(1), &
+            solve_result%candidate_state%water_content(1), solve_result%candidate_state%ponding_depth, &
+            request%boundary, candidate_result)
+    class default
+       return
+    end select
+
+    if (base_result%status /= SW_TOP_BOUNDARY_AVAILABLE .or. &
+        mid_result%status /= SW_TOP_BOUNDARY_AVAILABLE .or. &
+        candidate_result%status /= SW_TOP_BOUNDARY_AVAILABLE) return
+    if (base_result%regime /= SW_TOP_BOUNDARY_REGIME_FLUX .or. &
+        mid_result%regime /= SW_TOP_BOUNDARY_REGIME_FLUX .or. &
+        candidate_result%regime /= SW_TOP_BOUNDARY_REGIME_FLUX) return
+
+    flux_scale = max(1.0_real64, abs(base_result%actual_top_flux), abs(mid_result%actual_top_flux), &
+         abs(candidate_result%actual_top_flux), abs(solve_result%top_flux))
+    tol_flux = 128.0_real64*epsilon(1.0_real64)*flux_scale
+    if (abs(base_result%actual_top_flux-mid_result%actual_top_flux) > tol_flux) return
+    if (abs(base_result%actual_top_flux-candidate_result%actual_top_flux) > tol_flux) return
+    if (abs(base_result%actual_top_flux-solve_result%top_flux) > tol_flux) return
+
+    state_scale = max(1.0_real64, abs(request%base_state%ponding_depth), &
+         abs(solve_result%candidate_state%ponding_depth))
+    tol_state = 128.0_real64*epsilon(1.0_real64)*state_scale
+    if (abs(base_result%runoff_depth) > tol_state .or. abs(mid_result%runoff_depth) > tol_state .or. &
+        abs(candidate_result%runoff_depth) > tol_state) return
+    if (abs(base_result%candidate_ponding_depth) > tol_state .or. &
+        abs(mid_result%candidate_ponding_depth) > tol_state .or. &
+        abs(candidate_result%candidate_ponding_depth) > tol_state) return
+
+    qualified = .true.
+  end subroutine qualify_dynamic_flux_temporal_envelope
 
 end module mod_reference_richards_temporal_indicator
