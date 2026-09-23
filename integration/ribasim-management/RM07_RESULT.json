@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.ribasim_management.demand_receipt_result.v1",
+  "work_unit": "RM07",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_READ_ONLY_ORIGIN_BOUND_MANAGEMENT_DEMAND_RECEIPT",
+  "qualification_head": "fc6c0be6053bbc02a94fde557a9206e721af16cd",
+  "workflow": "RM07 management demand receipt",
+  "workflow_run": 35823591344,
+  "workflow_job": 107060459778,
+  "conclusion": "success",
+  "stable_output_sha256": "29903d487230a240887033db840101a287a07c9b8bb056ba255c9a1234dd9aec",
+  "passed": [
+    "read-only demand receipt produced from an immutable kernel checkpoint",
+    "receipt binds lineage, management revision, crop-origin revision and interval",
+    "same accepted origin plus same request reproduces the receipt bit-identically",
+    "demand derivation leaves committed irrigation, Rutter state and revision unchanged",
+    "receipt demand equals the request recomputed by the later RM06 candidate path",
+    "no-event management opportunity produces a valid zero-demand receipt",
+    "active-event accepted origin fails closed for the first coupling profile",
+    "demand derivation has no allocation or supplied-water input",
+    "O0 and O2 stable outputs are identical"
+  ],
+  "qualified_causal_order": [
+    "accepted SWAP management origin",
+    "read-only demand receipt",
+    "Ribasim management request/allocation",
+    "physical supply",
+    "SWAP management/application candidate",
+    "outer acceptance"
+  ],
+  "authority_boundary": {
+    "production_candidate": "src/runtime/mod_fmr_hupsel_management_transaction.f90",
+    "canonical_admitted": false,
+    "real_ribasim_executed": false,
+    "richards_hydrology_composed": false,
+    "modflow_composed": false
+  },
+  "nonclaims": [
+    "No real Ribasim/RibaMod run is qualified by RM07.",
+    "No partial-irrigation policy is admitted.",
+    "No Richards-state application is qualified.",
+    "No MODFLOW composition is qualified."
+  ],
+  "next_required_boundary": "Execute one minimal aligned-boundary real Ribasim allocation from the RM07 receipt and bind allocation plus physical supply back to the same management origin."
+}
