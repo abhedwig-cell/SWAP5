@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-STORAGE-BOUNDS",
   "baseline": "da4fbc9ac",
+  "recovery_point": "987d3ed63",
+  "persisted_test_result": "PASS at 987d3ed63, O0/O2 identical transcripts, runtime checks and floating-point traps; all prior composition cases retained",
   "source": "B1.11 MACRORATE standard-domain groundwater/drainage storage bounds, lines 217-222 and 246-254; existing VOLUNDR source helper",
   "implementation": "src/process/mod_ppa_wu05a4_storage_bounds.f90",
   "contract": "Compute groundwater volume only below sentinel 900 and above domain bottom, cap by supplied total domain volume. Minimum storage is min(groundwater volume,current store), reduced to drainage volume only for main domain when source strict 1e-6 and minimum predicates hold. Immutable geometry/state inputs; no accepted state mutation.",
