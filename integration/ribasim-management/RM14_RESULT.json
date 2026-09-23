@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_triangle.result.v1",
+  "work_unit": "RM14",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_DYNAMIC_TOP_WITHIN_INHERITED_FGC44_NUMERICAL_ENVELOPE",
+  "scientific_classification": "COMPOSITION_ENVELOPE_FALSIFICATION",
+  "authority_head": "6c74c10dcc125be9457c75aa0410d048ae08c256",
+  "workflow": "RM14 dynamic-top predictor qualification",
+  "workflow_run": 35890969055,
+  "workflow_job": 107283018019,
+  "frozen_case": {
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "irrigation_depth_cm": 0.0036,
+    "dynamic_top_irrigation_rate_cm_per_day": 36.0,
+    "ponding_max_cm": 1.0,
+    "runoff_resistance_day": 1.0,
+    "runoff_exponent": 1.0,
+    "predictor_bottom_flux_cm_per_day": 1e-6,
+    "root_uptake": "off",
+    "drainage": "off"
+  },
+  "observed_failure": {
+    "initialize_status": 104,
+    "kernel_result_status": 2,
+    "completed": false,
+    "direction_available": false,
+    "transaction_calls": 1,
+    "accepted_substeps": 0,
+    "attempts": 9,
+    "retries": 8,
+    "trial_rollbacks": 9,
+    "solver_rejections": 6,
+    "temporal_rejections": 3,
+    "temporal_unavailable_rejections": 3,
+    "mass_rejections": 0,
+    "internal_retries": 6,
+    "max_temporal_indicator": "DBL_MAX",
+    "min_accepted_substep_duration": "DBL_MAX",
+    "max_accepted_substep_duration": 0.0
+  },
+  "falsified_hypothesis": "The admitted F-APP07/F-APP08 dynamic-top irrigation composition for the frozen 0.0036 cm event produces at least one accepted real-Richards substep inside the unchanged F-GC44 retry and temporal policy.",
+  "interpretation": [
+    "The RM14 test uses the dynamic-top entrypoint, not the RM13B direct fixed-top-flux route.",
+    "The failure occurs before any MODFLOW publication and before any accepted Richards substep.",
+    "Mass accounting is not the rejecting gate.",
+    "Six attempts are rejected by the Richards solve and three reach a state where the temporal certificate is unavailable; therefore the inherited F-GC44 transaction policy is not a qualified authority for this active-irrigation trajectory.",
+    "This does not falsify the admitted irrigation-application semantics themselves, because F-APP07/F-APP08 already qualify the field-level composition independently.",
+    "This does not falsify Ribasim allocation/supply, groundwater ownership, or the possibility of a three-model coupling."
+  ],
+  "prohibitions": [
+    "Do not change the irrigation pulse, retry count, temporal tolerance or mass tolerance and reinterpret RM14 as a pass.",
+    "Do not weaken the temporal certificate requirement post hoc.",
+    "Do not claim a qualified real three-model triangle from RM14."
+  ],
+  "next_required_boundary": "Independently characterize why the frozen dynamic-top Richards trajectory alternates between solver rejection and unavailable temporal certification. Establish a new irrigation-aware numerical authority prospectively before any new three-model admission attempt."
+}
