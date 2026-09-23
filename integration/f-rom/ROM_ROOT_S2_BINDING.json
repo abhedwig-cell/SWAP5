@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom_root.s2.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_STAGE2_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json",
+  "predecessor": "integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json",
+  "scientific_semantics_changed": false,
+  "dynamic_root_feedback_implemented": false,
+  "reduced_feedback_response_generated": false,
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s2.yml": "7d7c072c58c11bb20d8ba304332065513497e55f",
+    "tests/rom/run_rom_root_s2_prescribed_sink.py": "01d4b5d6cd70b121d58d0eb6fa82c2b11a526fff",
+    "tests/rom/analyze_rom_root_s2.py": "b062c546156033f4d19c887e9d6f55ac904f98ac",
+    "tests/rom/run_lare_bc1_stage_b.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "tests/rom/run_lare_bc2_c6n2_surface_candidate.py": "3573164a3599eeb62d0d430e234f426f07f3a0a0"
+  },
+  "frozen_execution": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "closure": "CURRENT_LAYER_FACE",
+    "candidate_transaction_dt_day": 0.0001,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "prescribed_sink": "FULL_POTENTIAL_TP_TIMES_EXACT_RETAINED_ROOT_FRACTION",
+    "feddes_evaluated": false,
+    "root_vs_generic_identity": "BIT_EXACT_OBSERVATION_TRAJECTORY",
+    "zero_sink_regression": "BIT_EXACT_VS_LEGACY_NO_SINK",
+    "water_ledger_gate_cm": 1e-10
+  },
+  "firewall": {
+    "reference_changed": false,
+    "production_source_changed": false,
+    "feddes_changed": false,
+    "root_feedback_changed": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
