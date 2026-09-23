@@ -1,0 +1,151 @@
+{
+  "schema": "swap5.sw_rib_swm01.legacy_surfacewater_inventory.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "evidence_boundary": {
+    "exact_legacy_file": {
+      "path": "SWAP/surfacewater.f90",
+      "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+      "bytes": 51312,
+      "b1_11_patch_status": "UNCHANGED_FROM_B0"
+    },
+    "raw_source_text_materialized_in_this_work_unit": false,
+    "inventory_strength": "RESPONSIBILITY_LEVEL_NOT_LINE_COMPLETE"
+  },
+  "current_canonical_fact": {
+    "capability": "F-CI52 restricted fixed-weir surface-water physics",
+    "process_path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+    "process_blob": "16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa",
+    "runtime_path": "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+    "runtime_blob": "f81229c2f4ad766fb8606111ca965963ebba46fe",
+    "qualification_authority": "F-VQ59@f65f170fc6ec5f1a228ade2def3732cb36942ebd",
+    "admission_record": "integration/f-ci/F-CI52R1_ARCHITECTURE_AUDIT.json",
+    "scope": "restricted fixed-weir storage, supply, positive secondary-drainage attribution and weir discharge on feature-active columns"
+  },
+  "application_profiles": {
+    "standalone_swap5_fixed_weir": {
+      "surface_water_state_owner": "SWAP5_FCI52"
+    },
+    "ribasim_coupled": {
+      "surface_water_state_owner": "RIBASIM",
+      "swap_role": "SOIL_TO_SURFACE_WATER_EXCHANGE"
+    },
+    "invariant": "SWAP_FIXED_WEIR XOR EXTERNAL_RIBASIM for the same physical store"
+  },
+  "classes": [
+    {
+      "class": "RETAIN_IN_SWAP_EXCHANGE_PHYSICS",
+      "examples": [
+        "NRSRF",
+        "LEV",
+        "SWDTYP",
+        "L",
+        "ZBOTDRE",
+        "GWLINF",
+        "RDRAIN",
+        "RINFI",
+        "RENTRY",
+        "REXIT",
+        "WIDTHR",
+        "TALUDR",
+        "SWDIVD",
+        "SWDIVDINF",
+        "FACDPTHINF",
+        "COFANI",
+        "SWDISLAY",
+        "SWTOPDISLAY",
+        "ZTOPDISLAY",
+        "FTOPDISLAY",
+        "SWNRSRF",
+        "RSURFDEEP",
+        "RSURFSHALLOW",
+        "COFINTFL",
+        "EXPINTFL",
+        "SWTOPNRSRF"
+      ]
+    },
+    {
+      "class": "SHARED_CONFIGURATION_MAPPING",
+      "examples": [
+        "ALTCU",
+        "physical channel/drain geometry shared by exchange and external network representation"
+      ]
+    },
+    {
+      "class": "RIBASIM_COUPLED_MODE_OWNER",
+      "examples": [
+        "surface-water storage",
+        "surface-water level",
+        "WLACT",
+        "DATEPRI/WLP",
+        "DATESEC/WLS",
+        "SWQHR",
+        "SOFCU",
+        "HBWEIR",
+        "ALPHAW",
+        "BETAW",
+        "HHTAB",
+        "QHTAB",
+        "WSCAP",
+        "system-level discharge/supply routing"
+      ]
+    },
+    {
+      "class": "COUPLER_MANAGEMENT_POLICY",
+      "examples": [
+        "SWMAN=2",
+        "HDEPTH",
+        "WLSMAN",
+        "GWLCRIT",
+        "HCRIT",
+        "VCRIT",
+        "DROPR",
+        "management phase selection"
+      ]
+    },
+    {
+      "class": "COUPLED_MODE_CONTROL_MAPPING",
+      "examples": [
+        "WLDIP",
+        "INTWL",
+        "period-specific fixed-level supply control"
+      ]
+    },
+    {
+      "class": "STANDALONE_SWAP5_RETAINED",
+      "examples": [
+        "F-CI52 restricted fixed-weir process and its qualified optional state/runtime"
+      ]
+    },
+    {
+      "class": "LEGACY_INPUT_ADAPTER_CANDIDATE_RETIRE",
+      "examples": [
+        "NMPER",
+        "IMPER_4B",
+        "IMPER_4C",
+        "IMPER_4D",
+        "IMPER_4E1",
+        "IMPER_4E2",
+        "IMPPHASE",
+        "IMPTAB",
+        "IMPEND"
+      ]
+    },
+    {
+      "class": "UNRESOLVED",
+      "examples": [
+        "SWSRF",
+        "any legacy branch not bound by exact-source or accepted equivalent authority"
+      ]
+    }
+  ],
+  "required_test_sequence": [
+    "Q1A_FIXED_WEIR_EXTERNAL_OWNER_NO_SUPPLY",
+    "Q1B_LEVEL_TRIGGERED_SUPPLY",
+    "Q2_SOIL_STATE_MANAGEMENT_POLICY",
+    "Q3_SIGNED_DRAINAGE_INFILTRATION_EXCHANGE",
+    "Q4_RETIREMENT_DECISION"
+  ],
+  "retirement_authority": false
+}
