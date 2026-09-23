@@ -20,6 +20,11 @@ def main():
     ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
     t=a.source.read_text()
+    if a.purpose=="GW_LB":
+        old_guard="call require(any(numnod==[128,256]),'LAREGW1 ROMPRACT P2A geometry is R128/R256')"
+        new_guard="call require(any(numnod==[64,128]),'LAREGW1 ROMPRACT P3 geometry is R64/R128')"
+        if t.count(old_guard)!=1: raise SystemExit(f"GW geometry guard expected once, found {t.count(old_guard)}")
+        t=t.replace(old_guard,new_guard,1)
     if a.purpose=="SURF_P":
         t=one(t,"integer, parameter :: NHIST=4, NSTEPS=8192\n  integer, parameter :: OUTPUT_FACTOR=8",
               "integer, parameter :: NHIST=2, NSTEPS=1920\n  integer, parameter :: OUTPUT_FACTOR=32","time grid")
