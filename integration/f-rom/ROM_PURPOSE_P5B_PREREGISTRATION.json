@@ -59,8 +59,9 @@
   },
   "flux_reconstruction": {
     "depth_coordinate": "positive downward",
-    "formula": "q_down_hat = K_rep * (1 - dh/dd)",
-    "target": "Reference BOTTOM_FLUX at observation windows"
+    "formula": "q_native_hat = -K_rep * (1 - dh/dd)",
+    "target": "Reference native BOTTOM_FLUX at observation windows",
+    "sign_authority": "Existing Reference harness uses qeq=-K for gravity-equilibrium fixed bottom flux; preserve native bottom-outward sign."
   },
   "metrics": [
     "pooled instantaneous bottom-flux RMSE cm/day",
