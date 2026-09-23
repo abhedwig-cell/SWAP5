@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "9366f4ac7dd0671b07307df67822cbae1faca96f",
-    "local_relation_to_previous_canonical_base": "180 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "1268b54f251962340b8a2680965edbc10d6ab3e0",
+    "local_relation_to_previous_canonical_base": "185 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "9366f4ac7dd0671b07307df67822cbae1faca96f",
+    "last_reconciled_head": "1268b54f251962340b8a2680965edbc10d6ab3e0",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -1208,9 +1208,14 @@
         {
           "id": "M7-02",
           "text": "worker scratch reuse shows no cross-column contamination",
-          "status": "PARTIAL",
-          "gap": "The admitted serialized execution and aggregate-mass evidence do not by themselves demonstrate reusable worker scratch across a representative cross-column order/reuse matrix.",
-          "next_bounded_action": "Run tests/fmr/run_m7_serialized_worker_scratch_reuse.py on O0/O2; close only if a single reused serialized backend completes A-B-A with bitwise-identical A physical/mass outcomes and hard-mass-valid commits."
+          "status": "CLOSED",
+          "gap": null,
+          "evidence": [
+            "integration/audits/M7_SERIALIZED_WORKER_SCRATCH_REUSE.json",
+            "tests/fmr/test_m7_serialized_worker_scratch_reuse.f90",
+            "tests/fmr/run_m7_serialized_worker_scratch_reuse.py"
+          ],
+          "next_bounded_action": "No action for sequential serialized-backend scratch reuse while its dependency surface remains unchanged. This does not qualify parallel workers or arbitrary column permutations."
         },
         {
           "id": "M7-03",
@@ -1261,7 +1266,7 @@
           "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the source-route census and its bounded O0/O2 application evidence."
         }
       ],
-      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for worker reuse, inactive-option resource behavior, representative memory, throughput/tail cost, and fallback route coverage. M7-07 is closed for the shared standalone kernel/transaction route with three bounded current-postimage O0/O2 profile examples; this is not an all-profile physics or production admission claim. Remaining M7 work is measurement/composition, not authorization for concurrent execution or speculative optimization.",
+      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for inactive-option resource behavior, representative memory, throughput/tail cost, and fallback route coverage. M7-02 is closed only for sequential serialized-backend A-B-A scratch reuse, and M7-07 is closed for the shared standalone kernel/transaction route with three bounded current-postimage O0/O2 profile examples; neither is an all-profile physics, parallel-worker, or production admission claim. Remaining M7 work is measurement/composition, not authorization for concurrent execution or speculative optimization.",
       "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
     },
     {
@@ -1382,5 +1387,5 @@
     }
   ],
   "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
-    "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=386008e5d65e264fd049a169945f23d52b6fc97f (M7-07 standalone shared-kernel route census); untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
+    "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=1268b54f251962340b8a2680965edbc10d6ab3e0 (M7-02 serialized A-B-A scratch-reuse runtime passed O0/O2); M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
 }
