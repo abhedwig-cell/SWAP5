@@ -1,0 +1,164 @@
+{
+  "schema": "swap5.rom-practical.p3.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P3",
+  "date": "2026-09-23",
+  "status": "CLOSED_60_DAY_DAILY_VALIDATION_PRACTICAL_VIABILITY_NOT_YET_ESTABLISHED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P3_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P3_RESULT.json@ac08b87c15ec40e8e1c58c7148cea655ff58bf24",
+    "workflow_run": 35900574883
+  },
+  "forcing_scope": {
+    "horizon_days": 60,
+    "observation_interval_day": 1,
+    "seasonal_claim": false,
+    "histories": [
+      "SD01",
+      "SD02",
+      "GD01",
+      "GD02"
+    ],
+    "material_split": {
+      "development": [
+        "B02",
+        "B11"
+      ],
+      "validation": [
+        "B05",
+        "B16"
+      ]
+    }
+  },
+  "SURF_P": {
+    "candidate": "S4 [0,20,40,80,160] cm",
+    "results": {
+      "B02": {
+        "classification": "DAILY_TIMING_SENSITIVE",
+        "extremum_timing_error_days": 16,
+        "mapped_theta_rmse": 0.007548955302658646,
+        "upper_0_80_storage_rmse_cm": 0.023246137328996625
+      },
+      "B05": {
+        "classification": "DAILY_TIMING_SENSITIVE",
+        "extremum_timing_error_days": 19,
+        "mapped_theta_rmse": 0.01256691829241655,
+        "upper_0_80_storage_rmse_cm": 0.13055907280857615
+      },
+      "B11": {
+        "classification": "DAILY_APPROXIMATE",
+        "extremum_timing_error_days": 0,
+        "mapped_theta_rmse": 0.0038815019722989543,
+        "upper_0_80_storage_rmse_cm": 0.005974222718770598
+      },
+      "B16": {
+        "classification": "DAILY_APPROXIMATE",
+        "extremum_timing_error_days": 0,
+        "mapped_theta_rmse": 0.0023983229911134552,
+        "upper_0_80_storage_rmse_cm": 0.014240247158827062
+      }
+    },
+    "reference_observability": "R64-vs-R128 extrema timing error is zero for all four cases; B02/B05 timing defects are therefore candidate-specific in this P3 panel.",
+    "interpretation": [
+      "S4 conserves total storage extremely closely in the tested formulation but redistributes water vertically with material-dependent error.",
+      "S4 daily timing fidelity is not robust across materials: B02 and validation material B05 have large, reference-observable extrema timing errors.",
+      "B11 and validation material B16 retain useful approximate daily profile behaviour without discrete timing error."
+    ]
+  },
+  "GW_LB": {
+    "candidate": "G8 [0,80,100,120,130,140,150,155,160] cm",
+    "results": {
+      "B02": {
+        "classification": "STRUCTURALLY_UNRELIABLE",
+        "failure": "iterative Heun corrector did not converge"
+      },
+      "B05": {
+        "classification": "STRUCTURALLY_UNRELIABLE",
+        "failure": "iterative Heun corrector did not converge"
+      },
+      "B11": {
+        "classification": "DAILY_APPROXIMATE",
+        "sign_mismatch_days": 0,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "cumulative_exchange_rmse_cm": 0.0004160158744121884,
+        "final_exchange_drift_cm": 0.0004394072307198904
+      },
+      "B16": {
+        "classification": "DAILY_APPROXIMATE",
+        "sign_mismatch_days": 0,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "cumulative_exchange_rmse_cm": 0.002683149932638524,
+        "final_exchange_drift_cm": 0.005865253266772896
+      }
+    },
+    "interpretation": [
+      "Where G8 remains numerically qualified (B11, B16), daily sign and reversal semantics are reproduced with zero discrete mismatch under the fresh 60-day forcing.",
+      "The frozen dt=0.01 day Heun implementation fails closed for development B02 and validation B05, so practical groundwater robustness is not established.",
+      "The B05 long-horizon failure is numerical blocking, distinct from the short-horizon representation/reversal limitation previously characterized in P2D."
+    ]
+  },
+  "performance": {
+    "reference": "R128_T32, same GitHub Actions job",
+    "SURF_P_candidate_over_R128_wall_ratio": {
+      "B02": 2.1873257627450973,
+      "B05": 2.6630687035294147,
+      "B11": 2.017591569072167,
+      "B16": 2.4446042541176345
+    },
+    "GW_LB_candidate_over_R128_wall_ratio": {
+      "B11": 3.044528327451004,
+      "B16": 3.2850107500000036,
+      "B02": null,
+      "B05": null
+    },
+    "conclusion": [
+      "The current Python/Heun practical implementation is slower than the tested R128 Reference Richards implementation for every qualified 60-day P3 case.",
+      "Earlier P2A/P2B speed ratios against R256 remain valid for those short-horizon same-runner tests, but they do not establish a general practical speed advantage.",
+      "A computationally attractive reduced state dimension alone is insufficient; implementation and time-integration cost dominate this P3 workload."
+    ],
+    "portable_speedup_claim": false
+  },
+  "updated_family_status": {
+    "P-ROM-SM": {
+      "representation": "S4",
+      "status": "RESEARCH_CANDIDATE_ONLY",
+      "reason": "Numerically stable in P3 but daily timing is material-dependent and current implementation is slower than R128."
+    },
+    "P-ROM-GW": {
+      "representation": "G8",
+      "status": "RESEARCH_CANDIDATE_ONLY_NUMERICAL_ROBUSTNESS_BLOCKED",
+      "reason": "Excellent daily event semantics in qualified B11/B16 cases, but numerical blocking in B02/B05 and current implementation slower than R128."
+    },
+    "P-ROM-ET": {
+      "status": "NOT_OPENED"
+    }
+  },
+  "scientific_conclusions": [
+    "Purpose-specific placement remains scientifically supported; P3 does not restore a universal representation claim.",
+    "Longer-horizon practical validation exposes failure modes that were not visible in the short-horizon benchmark: S4 timing sensitivity and G8 integrator robustness.",
+    "Practical usefulness cannot be claimed from state-count reduction alone.",
+    "The next blocker is numerical implementation/integration, not a justified reason to add more states or tune closure."
+  ],
+  "next_authorized": {
+    "id": "ROM-PRACTICAL-P4",
+    "title": "numerical implementation and integrator viability",
+    "scope": "Hold S4/G8 physics, placements and forcing fixed. Determine whether a robust lower-cost numerical implementation can remove Heun blocking and whether reduced execution can actually outperform a practical Richards reference under identical workloads.",
+    "allowed": [
+      "time-integration algorithm characterization",
+      "compiled implementation of the frozen reduced equations",
+      "transaction-safe adaptive stepping with prospectively frozen tolerances",
+      "profiling and operation-count attribution"
+    ],
+    "forbidden": [
+      "new closure physics",
+      "state-count escalation",
+      "material-specific calibration",
+      "application acceptance",
+      "P-ROM-ET"
+    ]
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
