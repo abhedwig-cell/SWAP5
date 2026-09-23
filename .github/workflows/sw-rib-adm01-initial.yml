@@ -1,0 +1,39 @@
+name: SW-RIB-ADM01 initial admission gates
+
+on:
+  push:
+    branches:
+      - work/sw-rib-adm01-external-surfacewater-admission
+  pull_request:
+    paths:
+      - 'src/process/mod_surface_water_ownership_profile.f90'
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'tests/sw-rib-adm01/**'
+      - 'integration/sw-rib-adm01/**'
+      - '.github/workflows/sw-rib-adm01-initial.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Owner XOR fail-closed
+        run: |
+          mkdir -p /tmp/sw-rib-adm01
+          gfortran -std=f2008 -Wall -Wextra -Werror -J /tmp/sw-rib-adm01 -I /tmp/sw-rib-adm01             src/process/mod_surface_water_ownership_profile.f90             tests/sw-rib-adm01/test_owner_xor.f90             -o /tmp/sw-rib-adm01/test_owner_xor
+          /tmp/sw-rib-adm01/test_owner_xor | tee /tmp/sw-rib-adm01/owner.txt
+          grep -Fq 'SW_RIB_ADM01_OWNER_XOR=PASS' /tmp/sw-rib-adm01/owner.txt
+      - name: Canonical Q4B signed exchange replay
+        run: bash tests/sw-rib-adm01/run_q4b_extended_runtime_binding.sh
