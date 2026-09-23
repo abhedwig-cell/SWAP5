@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_aggregate.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-AGGREGATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@9642eeaeb7e866f5c6922966fd815cb5c57a1491",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_AGGREGATE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_aggregate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_aggregate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_aggregate_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["zero/positive PpIcCp branches", "static volume and matrix remainder", "unclamped overfull source result", "invalid input fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated per-compartment aggregation only; domain partition, full MACROGEOM, production owner, mass, retry, restart and A4 integration remain open",
+  "next_action": "Continue A3 by tracing the MACROGEOM domain partition calculation and its domain-bottom lumping gates.",
+  "blockers": []
+}

@@ -2015,6 +2015,13 @@
       "effect": "Selected Alfa/Beta relative-volume segment equations and static-depth cutoffs have hand-computable tests. Full MACROGEOM aggregation, domain partition/lumping and production integration remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROGEOM-AGGREGATE",
+      "state": "ISOLATED_PER_CELL_AGGREGATION_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROGEOM_AGGREGATE_STATUS.json; preregistered against B1.11 macropore.f90 MACROGEOM source hash",
+      "production_delta": "NONE",
+      "effect": "PpIcCp, VlMpStCp and FrArMtrx per-cell equations are tested independently. Domain partition/lumping and all production integration remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
