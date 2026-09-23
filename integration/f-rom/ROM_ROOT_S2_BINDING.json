@@ -11,7 +11,7 @@
   "reduced_feedback_response_generated": false,
   "implementation_blobs": {
     ".github/workflows/rom-root-s2.yml": "7d7c072c58c11bb20d8ba304332065513497e55f",
-    "tests/rom/run_rom_root_s2_prescribed_sink.py": "01d4b5d6cd70b121d58d0eb6fa82c2b11a526fff",
+    "tests/rom/run_rom_root_s2_prescribed_sink.py": "17e63dd3e94802ab8336f894a870606e94edd5d5",
     "tests/rom/analyze_rom_root_s2.py": "b062c546156033f4d19c887e9d6f55ac904f98ac",
     "tests/rom/run_lare_bc1_stage_b.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
     "tests/rom/run_lare_bc2_c6n2_surface_candidate.py": "3573164a3599eeb62d0d430e234f426f07f3a0a0"
@@ -56,5 +56,13 @@
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
-  }
+  },
+  "technical_repair": "integration/f-rom/ROM_ROOT_S2_TECHNICAL_REPAIR.json",
+  "repair_history": [
+    {
+      "class": "TECHNICAL_OUTPUT_SERIALIZATION_ONLY",
+      "runner_blob_after": "17e63dd3e94802ab8336f894a870606e94edd5d5",
+      "scientific_semantics_changed": false
+    }
+  ]
 }
