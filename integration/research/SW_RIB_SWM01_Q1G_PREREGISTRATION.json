@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1g.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1G",
+  "date": "2026-09-23",
+  "title": "Legacy STTAB to Ribasim Basin storage-profile representation",
+  "status": "PREREGISTERED_BEFORE_CHARACTERIZATION_EXECUTION",
+  "purpose": "Determine whether the frozen piecewise-linear SWAP secondary storage-level relation can be represented exactly or only approximately by the pinned Ribasim Basin profile semantics.",
+  "authorities": {
+    "swap": "F-PM08D1 exact-source STTAB geometry and piecewise-linear SWSTLEV/WLEVST semantics",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "ribasim_source": [
+      "Basin Profile accepts level + storage with area optional",
+      "finite_difference(storage,level) constructs dS/dh recursively",
+      "LinearInterpolation is applied to dS/dh",
+      "storage/level relation is recovered by integrating/inverting that continuous area curve"
+    ]
+  },
+  "structural_hypothesis": {
+    "exact_at_input_knots": "Expected after bottom-storage normalization because the finite-difference recurrence is constructed so trapezoidal integration reproduces each supplied storage increment.",
+    "exact_between_knots": "Expected FALSE whenever consecutive SWAP piecewise-linear storage slopes differ, because Ribasim linearly interpolates dS/dh and therefore integrates a quadratic storage curve within that interval.",
+    "exact_constant_slope_case": "Expected TRUE when the storage-level slope is constant over adjacent intervals."
+  },
+  "characterization_population": {
+    "generator": "Reuse F-PM08D1 make_case/build_sttab geometry rules",
+    "seed": 20260910,
+    "cases": 1200,
+    "probes_per_interval": 3,
+    "include_nrpri": [
+      0,
+      1
+    ],
+    "secondary_level_count": "1..6",
+    "open_and_tube_mix": true,
+    "deepest_secondary_open_required": true
+  },
+  "comparison": {
+    "swap_reference": "piecewise-linear interpolation directly between the 22 STTAB (level,storage) knots",
+    "ribasim_reconstruction": "reverse to increasing level, subtract bottom storage offset, convert cm level/storage to SI for 1 m2, apply pinned finite_difference recurrence, linearly interpolate dS/dh, analytically integrate within each interval",
+    "probes": [
+      "all knots",
+      "interval quarter points",
+      "interval midpoints",
+      "interval three-quarter points"
+    ],
+    "metrics": [
+      "maximum absolute storage difference",
+      "maximum difference as equivalent water depth on 1 m2",
+      "maximum relative difference normalized by total represented storage",
+      "count of geometries yielding negative reconstructed area and therefore invalid Ribasim profiles",
+      "knot reproduction error",
+      "location of worst error"
+    ]
+  },
+  "decision_rule": {
+    "exact_parity": "Requires all inter-knot differences to be numerically zero within 1e-12 m3 for the population. Any larger structural error falsifies exact direct mapping.",
+    "approximation": "No application acceptance tolerance is invented in Q1G. If exact parity is falsified, error statistics are persisted and a later application-specific geometry envelope must decide whether approximation is acceptable or whether extra profile points/another representation are required."
+  },
+  "bottom_seam": "Frozen SWAP can have a tiny nonzero bottom-knot storage from floating-point construction. Ribasim Basin storage is zero at the profile bottom. Q1G removes only that constant sub-ULP offset before shape comparison and reports it separately; this is not treated as physical storage.",
+  "production_admission": false,
+  "retirement_authority": false
+}
