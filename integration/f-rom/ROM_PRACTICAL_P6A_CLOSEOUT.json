@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.rom-practical.p6a.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6A",
+  "date": "2026-09-23",
+  "status": "CLOSED_RESEARCH_INTERFACE_QUALIFIED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P6A_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P6A_RESULT.json",
+    "workflow_run": 35919093085
+  },
+  "outcome": {
+    "completed_cases": 12,
+    "total_cases": 12,
+    "trajectory_identity_gate": true,
+    "wrapper_status_gate": true,
+    "dt_day": 0.005,
+    "max_water_ledger_cm_across_cases": 3.200284481863491e-10
+  },
+  "conclusions": [
+    "The stable research wrapper reproduces the direct compiled core trajectory exactly for all 12 purpose/material cases.",
+    "The wrapper does not alter the P5-qualified S4/G8 equations, closure, timestep, forcing or material parameters.",
+    "The research execution contract is now stable enough to support new workload qualification without reopening the numerical core.",
+    "This remains research-only; no application acceptance or production admission follows from interface qualification."
+  ],
+  "research_interface": {
+    "executable_core": "tools/rom/rom_practical_p4_rk4.f90",
+    "wrapper": "tools/rom/run_rom_practical_research.py",
+    "output_schema": "swap5.rom-practical.research-interface.v1",
+    "supported_purposes": [
+      "SURF_P",
+      "GW_LB"
+    ],
+    "fixed_dt_day": 0.005
+  },
+  "next_authorized": {
+    "id": "ROM-PRACTICAL-P6B",
+    "title": "realistic daily workload qualification",
+    "objective": "Exercise the qualified research interface under physically realistic daily atmospheric and groundwater-boundary histories while keeping S4/G8 physics frozen.",
+    "priorities": [
+      "derive daily forcing from reproducible existing SWAP test/application data rather than inventing synthetic weather",
+      "preserve separate S4 profile and G8 groundwater purposes",
+      "compare against the corresponding Richards route on identical daily histories",
+      "characterize error accumulation, timing, event fidelity and same-runner cost",
+      "retain explicit failure regimes instead of per-case tuning"
+    ],
+    "forbidden": [
+      "new closure",
+      "state-count escalation",
+      "material calibration",
+      "P-ROM-ET opening without separate preregistration",
+      "application acceptance",
+      "production admission"
+    ]
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
