@@ -190,7 +190,7 @@ program tabhyd_kx02_ksatexm_constitutive_gate
   call table%evaluate(h,tt,kt,ct,dt)
   relst=(tt(2)-cof(1,2))/(cof(2,2)-cof(1,2))
   kleft=kt(2)
-  if(relst>cof(11,2)) then
+  if(h(2)>HTHR) then
     f=(relst-cof(11,2))/(1.0_real64-cof(11,2)); kleft=f*cof(10,2)+(1.0_real64-f)*cof(12,2)
   end if
 
@@ -198,7 +198,7 @@ program tabhyd_kx02_ksatexm_constitutive_gate
   call table%evaluate(h,tt,kt,ct,dt)
   relst=(tt(2)-cof(1,2))/(cof(2,2)-cof(1,2))
   keq=kt(2)
-  if(relst>cof(11,2)) then
+  if(h(2)>HTHR) then
     f=(relst-cof(11,2))/(1.0_real64-cof(11,2)); keq=f*cof(10,2)+(1.0_real64-f)*cof(12,2)
   end if
 
@@ -206,7 +206,7 @@ program tabhyd_kx02_ksatexm_constitutive_gate
   call table%evaluate(h,tt,kt,ct,dt)
   relst=(tt(2)-cof(1,2))/(cof(2,2)-cof(1,2))
   kright=kt(2)
-  if(relst>cof(11,2)) then
+  if(h(2)>HTHR) then
     f=(relst-cof(11,2))/(1.0_real64-cof(11,2)); kright=f*cof(10,2)+(1.0_real64-f)*cof(12,2)
   end if
   continuity_jump=max(abs(keq-kleft),abs(kright-keq))
