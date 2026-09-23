@@ -139,7 +139,10 @@ mkdir -p "$RIBASIM_RELEASE_DIR"
 unzip -q "$RIBASIM_RELEASE_ZIP" -d "$RIBASIM_RELEASE_DIR"
 LIBRIBASIM="$RIBASIM_RELEASE_DIR/ribasim/lib/libribasim.so"
 test -f "$LIBRIBASIM" || fail "official v2026.1.1 libribasim missing from release asset"
+test -d "$RIBASIM_RELEASE_DIR/ribasim/lib/julia" || fail "official Julia runtime directory missing from Ribasim release asset"
+export LD_LIBRARY_PATH="$RIBASIM_RELEASE_DIR/ribasim/lib:$RIBASIM_RELEASE_DIR/ribasim/lib/julia${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 echo "RM13_RIBASIM_RELEASE_BINARY=PASS sha256=2ebff0f4ed600660640b5828bffee861380a7f41468bff75124ef7a831815139"
+echo "RM13_RIBASIM_RELEASE_RUNTIME_PATH=PASS"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 RM13_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
