@@ -94,6 +94,13 @@ function main()
 
     b = run_candidate(path)
 
+    println(
+        "RM08_RIBASIM_DIAGNOSTIC " *
+        "a_allocated_cm=$(repr(a.allocated_cm)) a_supplied_cm=$(repr(a.supplied_cm)) a_level_m=$(repr(a.level_m)) " *
+        "b_allocated_cm=$(repr(b.allocated_cm)) b_supplied_cm=$(repr(b.supplied_cm)) b_level_m=$(repr(b.level_m)) " *
+        "expected_request_cm=$(repr(expected_request_cm))"
+    )
+
     require(isapprox(a.allocated_cm, b.allocated_cm; atol=REPLAY_DEPTH_TOL_CM, rtol=0.0),
         "same-origin allocation replay drift")
     require(isapprox(a.supplied_cm, b.supplied_cm; atol=REPLAY_DEPTH_TOL_CM, rtol=0.0),
