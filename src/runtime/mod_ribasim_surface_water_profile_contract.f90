@@ -1,5 +1,5 @@
 module mod_ribasim_surface_water_profile_contract
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
@@ -36,7 +36,7 @@ contains
 
   integer function ribasim_surface_water_profile_status(optional_state_layout_id, parameters, accepted_heads_cm, &
        controls_already_supplied) result(status)
-    integer, intent(in) :: optional_state_layout_id
+    integer(int64), intent(in) :: optional_state_layout_id
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters(:)
     real(real64), intent(in) :: accepted_heads_cm(:)
     logical, intent(in) :: controls_already_supplied
@@ -74,7 +74,7 @@ contains
 
   subroutine bind_ribasim_surface_water_controls(optional_state_layout_id, parameters, accepted_heads_cm, &
        controls_already_supplied, controls, status)
-    integer, intent(in) :: optional_state_layout_id
+    integer(int64), intent(in) :: optional_state_layout_id
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters(:)
     real(real64), intent(in) :: accepted_heads_cm(:)
     logical, intent(in) :: controls_already_supplied
