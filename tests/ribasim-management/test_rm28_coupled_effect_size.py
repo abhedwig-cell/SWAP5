@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import math
-import numpy as np
 
 WINDOW_S=8.64
 AREA_M2=1.0
@@ -9,17 +8,17 @@ IRRIGATION_VOLUME_M3=3.6e-5
 
 # RM27 SWAP lower-boundary pressure-head probes mapped through the admitted
 # fixed-interface datum relation to hydraulic head.
-H=np.asarray([-0.715002,-0.715000,-0.714998],dtype=float)
-Q1=np.asarray([
+H=[-0.715002,-0.715000,-0.714998]
+Q1=[
     1.37866996161697225e-7,
     1.37859119191273564e-7,
     1.37851242220849904e-7,
-],dtype=float)
-Q2=np.asarray([
+]
+Q2=[
     1.37863527996127688e-7,
     1.37855651034698882e-7,
     1.37847774073784066e-7,
-],dtype=float)
+]
 
 # Canonical F-GC fixed-interface independent one-cell groundwater oracle,
 # repeated identically in jobs 106941629937 and 107048912789.
@@ -33,10 +32,13 @@ def require(condition: bool,message: str)->None:
         raise AssertionError(message)
 
 
-def fit_response(q: np.ndarray)->tuple[float,float,float]:
-    slope,intercept=np.polyfit(H,q,1)
-    fit=np.max(np.abs(slope*H+intercept-q))
-    return float(slope),float(intercept),float(fit)
+def fit_response(q: list[float])->tuple[float,float,float]:
+    # Frozen symmetric three-point line. Use the outer points for the slope
+    # and verify the center independently; no fitting library is required.
+    slope=(q[2]-q[0])/(H[2]-H[0])
+    intercept=q[1]-slope*H[1]
+    fit=max(abs(slope*h+intercept-v) for h,v in zip(H,q))
+    return slope,intercept,fit
 
 
 def coupled_root(swap_slope:float,swap_intercept:float)->tuple[float,float,float]:
