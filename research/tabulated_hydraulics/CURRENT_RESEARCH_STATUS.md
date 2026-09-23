@@ -171,5 +171,6 @@ Research should remain closed unless the separately owned production F-TAB02
 workstream exposes a new concrete scientific discrepancy or dependency that
 falls within TAB-HYD research ownership.
 
-Production admission, F0 provider selection/lifetime, and exact whole-Hupsel
-qualification remain production-workstream responsibilities.
+Production status has advanced to `IMPLEMENTATION_QUALIFIED_A_THROUGH_G__F0_READY`.
+F0 provider selection/lifetime qualification and the subsequent exact whole-Hupsel
+gate remain production-workstream responsibilities.
