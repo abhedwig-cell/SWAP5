@@ -39,7 +39,7 @@ module mod_fmr_ribasim_management_scheduler
   contains
     procedure, public :: ready => fmr_rms_clock_ready
     procedure, public :: current_time => fmr_rms_current_time
-    procedure, public :: boundary_is_pending => fmr_rms_boundary_pending
+    procedure, public :: boundary_is_pending => fmr_rms_boundary_is_pending
     procedure, public :: next_boundary_time => fmr_rms_next_boundary_time
     procedure, public :: plan_advance => fmr_rms_plan_advance
     procedure, public :: accept_planned_advance => fmr_rms_accept_planned_advance
@@ -163,10 +163,10 @@ contains
     if (self%ready()) value = self%current_time_s_value
   end function fmr_rms_current_time
 
-  logical function fmr_rms_boundary_pending(self) result(pending)
+  logical function fmr_rms_boundary_is_pending(self) result(pending)
     class(fmr_ribasim_management_clock_t), intent(in) :: self
     pending = self%ready() .and. self%boundary_pending_value
-  end function fmr_rms_boundary_pending
+  end function fmr_rms_boundary_is_pending
 
   logical function fmr_rms_has_outstanding_plan(self) result(has_plan)
     class(fmr_ribasim_management_clock_t), intent(in) :: self
