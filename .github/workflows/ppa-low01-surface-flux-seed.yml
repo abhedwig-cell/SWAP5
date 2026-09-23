@@ -1,0 +1,27 @@
+name: PPA-LOW01 B1.11 surface flux seed oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low01-surface-flux-seed.yml'
+      - 'src/adapter/mod_ppa_low01_surface_flux_seed.f90'
+      - 'tests/fapp/test_ppa_low01_surface_flux_seed.f90'
+      - 'tests/fapp/run_ppa_low01_surface_flux_seed.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low01-surface-flux-seed.yml'
+      - 'src/adapter/mod_ppa_low01_surface_flux_seed.f90'
+      - 'tests/fapp/test_ppa_low01_surface_flux_seed.f90'
+      - 'tests/fapp/run_ppa_low01_surface_flux_seed.sh'
+
+jobs:
+  surface-flux-seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay q0/qv1 source law
+        run: bash tests/fapp/run_ppa_low01_surface_flux_seed.sh
