@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-A",
+  "title": "Immutable generated default-MvG table state",
+  "base": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+  "qualified_head": "d5b96a0f1ddc956fc3ce2685bbd8996f50c1be36",
+  "workflow_run": 35820265011,
+  "result": "PASS",
+  "scope": {
+    "generated_default_mvg": true,
+    "table_rows": 400,
+    "runtime_coordinate": "raw pressure head",
+    "conductivity_ordinate": "ln(K)",
+    "legacy_table_io": false,
+    "generic_user_tables": false,
+    "swkimpl": 0
+  },
+  "evidence": {
+    "theta_max_abs": 8.867052087024874e-8,
+    "capacity_max_abs": 0.000024866361909416663,
+    "log10k_max_abs": 0.00003121620461421504,
+    "state_bytes_for_3_nodes": 67320,
+    "deterministic_duplicate_generation": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "henpr_fail_closed": "PASS",
+    "ksatexm_fail_closed": "PASS"
+  },
+  "implementation": {
+    "spline_kernel": "src/solver/mod_b110_generated_mvg_tspack.f90",
+    "immutable_state": "src/solver/mod_b110_generated_mvg_table_state.f90",
+    "test": "tests/fsi/test_ftab02a_generated_mvg_table_state.f90",
+    "runner": "tests/fsi/run_ftab02a_generated_mvg_table_state.sh"
+  },
+  "notes": [
+    "Theta wet-branch and Ksat plateau thresholds are independent.",
+    "TSPACK constraint flags remain diagnostic, matching the qualified research preprocessing semantics; negative TSPBI status and non-finite metadata remain fatal.",
+    "The dry endpoint is constant-inclusive at the first table knot."
+  ]
+}
