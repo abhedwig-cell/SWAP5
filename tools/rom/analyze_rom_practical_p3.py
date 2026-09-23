@@ -129,6 +129,16 @@ def main():
     ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
     cand=json.loads(a.candidate.read_text())
+    if cand["status"]!="QUALIFIED":
+        rt=json.loads(a.r128_timing.read_text()); wall=float(rt["wall"])
+        out={"schema":"swap5.rom-practical.p3.case-result.v1","purpose":a.purpose,"material":a.material,"split":a.split,
+             "classification":"STRUCTURALLY_UNRELIABLE","candidate_status":cand["status"],"candidate_failure":cand.get("failure"),
+             "candidate_metrics":None,"reference_comparator":None,"reference_observable_for_primary_discrete_claim":False,
+             "performance":{"candidate_wall_s":None,"reference_R128_wall_s":wall,"candidate_over_reference_wall_ratio":None},
+             "firewall":{"seasonal_claim":False,"application_acceptance":False,"production_admission":False}}
+        a.output.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
+        print(json.dumps({"purpose":a.purpose,"material":a.material,"split":a.split,"classification":"STRUCTURALLY_UNRELIABLE"},sort_keys=True))
+        return
     if a.purpose=="SURF_P":
         r64=parse_surface(a.r64); r128=parse_surface(a.r128)
         metrics=surf_metrics(cand["histories"],r128); comparator=surf_metrics(pseudo_surface(r64),r128)
