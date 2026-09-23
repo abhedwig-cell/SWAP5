@@ -1,0 +1,193 @@
+{
+  "schema": "swap5.rom_root.s3.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_ANY_STAGE3_REDUCED_DYNAMIC_FEEDBACK_RESPONSE",
+  "question": "Does the frozen minimal layer-mean-head Feddes feedback preserve the hydrologically relevant dynamic drought-stress response of the qualified RA02R Reference, and can any discrepancy be separated from ordinary reduced-hydraulic propagation error?",
+  "authority": {
+    "reference": "integration/f-rom/ROM_ROOT_RA02R_CLOSEOUT.json",
+    "stage2": "integration/f-rom/ROM_ROOT_S2_CLOSEOUT.json",
+    "candidate_definition": "integration/f-rom/LARE_BC2_C6Q_RECONCILIATION.json",
+    "canonical_reconciled": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "partitions_cm": {
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "U8": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "R8": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R16": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    "root_depth_cm": 80,
+    "root_profiles": {
+      "V01": "SHALLOW",
+      "V02": "SHALLOW",
+      "V03": "UNIFORM",
+      "V04": "UNIFORM"
+    },
+    "potential_transpiration_cm_per_day": {
+      "V01": 0.6,
+      "V02": 0.3,
+      "V03": 0.6,
+      "V04": 0.3
+    },
+    "initial_effective_saturation": {
+      "B01": {
+        "V01": 0.551,
+        "V02": 0.42671759600680326,
+        "V03": 0.551,
+        "V04": 0.42671759600680326
+      },
+      "B14": {
+        "V01": 0.551,
+        "V02": 0.40713288830832667,
+        "V03": 0.551,
+        "V04": 0.40713288830832667
+      }
+    },
+    "horizon_day": 0.8192,
+    "observation_interval_day": 0.0008,
+    "candidate_transaction_dt_day": 0.0001,
+    "top_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "bottom_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "hydraulic_closure": "CURRENT_LAYER_FACE"
+  },
+  "minimal_feedback": {
+    "theta_bar": "S_i / d_i",
+    "representative_head": "frozen inverse van Genuchten retention h(theta_bar_i)",
+    "retained_root_fraction": "exact integral of the frozen SHALLOW or UNIFORM root density over retained layer i",
+    "sink": "T_p * DeltaF_i * unchanged drought-only Feddes alpha(h_bar_i)",
+    "evaluation_timing": "once from committed retained hydraulic state at the start of every candidate transaction",
+    "trial_treatment": "sink held prescribed during the hydraulic trial",
+    "fitted_coefficients": false,
+    "error_correction": false,
+    "relaxation": false,
+    "new_memory_state": false
+  },
+  "stage3_control": {
+    "id": "S3-C0_FULL_POTENTIAL_REFERENCE",
+    "purpose": "Provide a same-domain high-resolution no-drought-reduction hydraulic control so feedback-specific discrepancy can be separated from ordinary reduced-hydraulic propagation error.",
+    "reference_geometry": "RA02R high-resolution routes and target R2048_T32",
+    "initial_states": "identical RA02R stress-panel states",
+    "root_sink": "T_p times exact fine-node root fraction; alpha fixed to 1 only for this diagnostic control",
+    "hydraulics": "unchanged Reference Richards, boundaries and RA02R transferred numerical policy",
+    "qualification": "same five three-level numerical uncertainty metrics and O0/O2 identity as RA02R; stress-activation gate not applicable",
+    "candidate_response_before_control_qualification": false
+  },
+  "candidate_controls": {
+    "full_potential_reduced": "For every retained representation, run the same reduced hydraulics with Q_i=T_p*DeltaF_i. This is the already Stage2-qualified sink semantics and is used only to form feedback-effect differences.",
+    "dynamic_reduced": "Run frozen minimal feedback."
+  },
+  "metrics": {
+    "primary_componentwise": [
+      "actual transpiration fraction RMSE and maximum absolute error",
+      "cumulative actual root uptake RMSE and terminal error",
+      "stress onset observation difference",
+      "stress duration difference",
+      "root-zone 0-40 cm storage RMSE",
+      "upper-zone 0-80 cm storage RMSE",
+      "mapped 10 cm theta-profile RMSE",
+      "profile-redistribution-index RMSE",
+      "cumulative bottom exchange RMSE",
+      "interval bottom flux RMSE",
+      "maximum absolute water-ledger residual"
+    ],
+    "profile_redistribution_index": "At each observation, standard deviation over the 16 mapped 10-cm bins of theta_bin(t)-theta_bin(initial).",
+    "stress_definition": "actual transpiration fraction < 1 - RA02R activation guard 2.9103830456733704e-11",
+    "no_scalar_score": true
+  },
+  "comparator_rules": {
+    "absolute_reference_distinguishability": "For the five metrics covered by RA02R U_combined, report candidate-reference RMSE divided by the corresponding frozen RA02R numerical uncertainty. This is numerical distinguishability, not an application tolerance.",
+    "feedback_effect_definition": "DeltaX_model = X_dynamic - X_full_potential_control. Compare DeltaX_candidate with DeltaX_reference componentwise.",
+    "feedback_specific_uncertainty": "For metrics covered by both dynamic and full-potential Reference uncertainty, use the sum of the two independently qualified U_combined values as a conservative distinguishability bound.",
+    "stress_timing_uncertainty": "Derive before candidate adjudication from the fixed RA02R numerical hierarchy and S3-C0 hierarchy as the maximum target-versus-ladder onset/duration observation difference.",
+    "bounded_success": "Only if feedback-effect discrepancies are not numerically distinguishable on all covered primary metrics and stress activation/timing are within the frozen numerical timing uncertainty may the result say that new root-specific state is not shown necessary on this mechanistic domain.",
+    "bounded_failure": "If feedback-effect discrepancies are numerically distinguishable, the minimal existing-state feedback is falsified on the affected components, subject to missing-information localization.",
+    "application_acceptance": false
+  },
+  "missing_information_localization": {
+    "A": "Threshold-crossing information within a retained layer: stress timing/rate mismatch concentrated where layer mean stays near h3/h4 while mapped profile spans the threshold.",
+    "B": "Root-weighted pressure-head distribution: uptake mismatch persists after accounting for hydraulic baseline and correlates with within-root-zone profile spread rather than layer placement alone.",
+    "C": "Upper-zone spatial placement: U4/U8/R8/R16 pattern shows improvement specifically with finer 0-80 cm placement, without requiring a new root-specific memory state.",
+    "D": "Hydraulic propagation: full-potential reduced-vs-Reference baseline dominates the same storage/profile/bottom components while feedback-effect difference remains within numerical uncertainty.",
+    "E": "Memory/hysteresis-like information: residual feedback error depends on prior stress evolution for states with comparable current retained storages and cannot be explained by A-D.",
+    "no_new_state_selection_in_stage3": true
+  },
+  "decision_constraints": [
+    "No new partition, closure, root-specific state, fitted coefficient, relaxation or correction after response.",
+    "No application tolerance derived from observed candidate errors.",
+    "No performance claim.",
+    "No production admission.",
+    "If S3-C0 does not qualify, stop before dynamic reduced response.",
+    "If dynamic response fails, persist componentwise failure and localization before designing any follow-up state."
+  ],
+  "scientific_firewall": {
+    "s3_control_response_generated": false,
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
