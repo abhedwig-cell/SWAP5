@@ -44,11 +44,17 @@ def main()->int:
 
     text=one(
       text,
+      "    history_fallbacks=0\n"
+      "    history_max_mass=0.0_real64\n"
+      "    cumulative_root=0.0_real64\n"
       "    observation_root=0.0_real64\n",
+      "    history_fallbacks=0\n"
+      "    history_max_mass=0.0_real64\n"
+      "    cumulative_root=0.0_real64\n"
       "    observation_root=0.0_real64\n"
       "    d2_root_node_evals=0_int64; d2_stressed_node_evals=0_int64\n"
       "    d2_min_alpha=1.0_real64; d2_min_h_minus_h3=huge(0.0_real64)\n",
-      "history diagnostic reset"
+      "unique history diagnostic initialization"
     )
 
     text=one(
