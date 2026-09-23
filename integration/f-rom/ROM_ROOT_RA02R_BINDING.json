@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.rom_root.ra02r.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02R",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_RA02R_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_RA02R_PREREGISTRATION.json",
+  "predecessor_defect": "integration/f-rom/ROM_ROOT_RA02_DESIGN_DEFECT.json",
+  "canonical_reconciled_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "response_based_design": false,
+  "ra02_scientific_output_used": false,
+  "reduced_candidate_response_generated": false,
+  "implementation": {
+    "workflow": ".github/workflows/rom-root-ra02r.yml",
+    "workflow_blob": "2e4086bc2f4fafcf95be2595980409464886128c",
+    "policy_materializer": "tests/rom/materialize_rom_root_ra02r_reference_policy.py",
+    "policy_materializer_blob": "954d459102c4e5427c9912b43fbacd5f15ab777c",
+    "stress_materializer": "tests/rom/materialize_rom_root_ra02r_stress_panel.py",
+    "stress_materializer_blob": "640e23373e2df7c8073f8102e863e802d2711c74",
+    "wrapper_analyzer": "tests/rom/analyze_rom_root_ra02r_stress_reference.py",
+    "wrapper_analyzer_blob": "6405507bedc4ab0ff03bf126c414d7ce37f8ad9f",
+    "root_materializer_blob": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "segmented_materializer_blob": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "frozen_uncertainty_analyzer_blob": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a",
+    "reference_floor_admission_repair_blob": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34"
+  },
+  "stress_contract": {
+    "B01": {
+      "V01": 0.551,
+      "V02": 0.42671759600680326,
+      "V03": 0.551,
+      "V04": 0.42671759600680326
+    },
+    "B14": {
+      "V01": 0.551,
+      "V02": 0.40713288830832667,
+      "V03": 0.551,
+      "V04": 0.40713288830832667
+    },
+    "potential_transpiration_cm_per_day": {
+      "V01": 0.6,
+      "V02": 0.3,
+      "V03": 0.6,
+      "V04": 0.3
+    },
+    "roots": {
+      "V01": "SHALLOW",
+      "V02": "SHALLOW",
+      "V03": "UNIFORM",
+      "V04": "UNIFORM"
+    },
+    "offset_above_demand_specific_h3_Se": 0.001,
+    "root_depth_cm": 80,
+    "horizon_day": 0.8192,
+    "roundoff_guard_fraction": 2.9103830456733704e-11
+  },
+  "numerical_contract": {
+    "source": "RA01 transferred PUB-P2E20 representation-floor total-balance discriminator",
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_rate": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "root_active_legacy_fallback": false,
+    "second_attempt_rescue": false
+  },
+  "domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_levels": [
+      0,
+      2
+    ],
+    "target": "R2048_T32"
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "uncertainty_estimator_changed": false,
+    "reduced_candidate_response_generated": false,
+    "stage2_executed": false,
+    "stage3_executed": false
+  }
+}
