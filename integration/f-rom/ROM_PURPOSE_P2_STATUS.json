@@ -4,7 +4,7 @@
   "work_unit": "ROM-PURPOSE-P2",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "phase": "P2_REFERENCE_TECHNICAL_RERUN_QUEUED",
+  "phase": "P2_REFERENCE_EXECUTION_TRIGGERED_RESULT_NOT_YET_PERSISTED",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -49,9 +49,9 @@
     "production_rom_authorized": false
   },
   "blockers": [
-    "P2_FRESH_SURFACE_REFERENCE_RERUN_PENDING"
+    "P2_REFERENCE_RESULT_NOT_YET_PERSISTED"
   ],
-  "next_action": "OBSERVE_AUTHORITATIVE_P2_REFERENCE_RERUN_35821534912",
+  "next_action": "READ_PERSISTED_P2_REFERENCE_RESULT_OR_CLASSIFY_NEXT_TECHNICAL_FAILURE",
   "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json",
   "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
   "reference_workflow_runs": [
@@ -71,5 +71,6 @@
       "disposition": "AUTHORITATIVE_TECHNICAL_RERUN_QUEUED"
     }
   ],
-  "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json"
+  "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json@e094ebe8b90c573dfae76713866ff9a73bcc66f4",
+  "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json@ec2bd209c39dbd14d18c815ff004df90c4033a0d"
 }
