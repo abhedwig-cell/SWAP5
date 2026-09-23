@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "amendment": "TECHNICAL_AMENDMENT_04",
+  "date": "2026-09-23",
+  "classification": "HISTORICAL_CHILD_COMPILE_ORDER_REPAIR_ONLY",
+  "failed_run": 35884897991,
+  "failed_job": 107262437873,
+  "diagnosis": {
+    "candidate_replay": "PASS",
+    "divdra_preservation": "PASS",
+    "fixed_weir_process_replay": "PASS",
+    "failure": "Historical child runtime compile encountered mod_a23bu_worker_execution_context before mod_accepted_trajectory_directional_sensitivity.",
+    "cause": "The previous qualification-only dependency augmentation was placed at the later fixed-weir source anchor."
+  },
+  "repair": {
+    "target": "ephemeral generated historical child runners only",
+    "insertion_anchor": "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "insert_before": [
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90"
+    ],
+    "conditional": "Only generated child runners containing the worker-context anchor are changed."
+  },
+  "unchanged": [
+    "PA01 candidate production blobs",
+    "canonical production source",
+    "historical test source and assertions",
+    "F-PM14 preservation semantics",
+    "scientific and numerical tolerances"
+  ]
+}
