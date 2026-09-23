@@ -1,0 +1,50 @@
+name: TAB-HYD KSATEXM lower-layer falsification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-ksatexm-characterization
+    paths:
+      - 'src/solver/mod_b110_generated_mvg_table_state.f90'
+      - 'research/tabulated_hydraulics/test_ksatexm_lower_layer.f90'
+      - 'research/tabulated_hydraulics/run_ksatexm_lower_layer.sh'
+      - 'research/tabulated_hydraulics/KSATEXM_GENERATED_PROVIDER_PREREGISTRATION.md'
+      - '.github/workflows/tabulated-hydraulics-ksatexm-lower-layer.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: GNU Fortran
+        run: gfortran --version
+      - name: Run exact lower-layer Phase A gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x research/tabulated_hydraulics/run_ksatexm_lower_layer.sh
+          research/tabulated_hydraulics/run_ksatexm_lower_layer.sh | tee TABHYD-KSATEXM-A-LOWER.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "branch=$(git branch --show-current)"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            grep -E '^TABHYD_KSATEXM_|^TABHYD-KSATEXM ' TABHYD-KSATEXM-A-LOWER.log || true
+          } > TABHYD-KSATEXM-A-LOWER-EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tabhyd-ksatexm-lower-layer
+          path: |
+            TABHYD-KSATEXM-A-LOWER.log
+            TABHYD-KSATEXM-A-LOWER-EVIDENCE.txt
+          if-no-files-found: warn
