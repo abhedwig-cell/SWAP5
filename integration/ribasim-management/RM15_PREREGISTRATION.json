@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_numerical_census.preregistration.v1",
+  "work_unit": "RM15",
+  "date": "2026-09-23",
+  "title": "Independent duration census for the RM14 dynamic-top Richards failure",
+  "depends_on": {
+    "RM14": "FALSIFIED_DYNAMIC_TOP_WITHIN_INHERITED_FGC44_NUMERICAL_ENVELOPE",
+    "F_APP07_F_APP08": "admitted irrigation application field semantics",
+    "F_GC44": "closed no-irrigation groundwater transaction authority"
+  },
+  "question": "Is the RM14 failure caused by the 8.64-second outer physical window being outside the inherited F-GC44 numerical envelope, or does the same dynamic-top state/forcing remain structurally unqualified even at much shorter independently restarted windows?",
+  "fixed_origin": {
+    "initial_pressure_profile": "same F-GC44 hydrostatic one-column accepted origin",
+    "initial_ponding_depth_cm": 0.0,
+    "groundwater_level_m": -2.0,
+    "predictor_bottom_flux_cm_per_day": 1e-6,
+    "dynamic_top_irrigation_rate_cm_per_day": 36.0,
+    "ponding_max_cm": 1.0,
+    "runoff_resistance_day": 1.0,
+    "runoff_exponent": 1.0,
+    "root_uptake": "off",
+    "drainage": "off"
+  },
+  "unchanged_numerical_policy": {
+    "transaction_temporal_mode": "MODEL_CERTIFICATE",
+    "transaction_retry_scale": 0.5,
+    "transaction_max_retries": 8,
+    "model_temporal_indicator_budget": "same F-GC44 HEAD_BUDGET",
+    "Richards_max_iterations": 16,
+    "Richards_max_backtracking": 8,
+    "all_mass_and_head_tolerances": "same F-GC44 values"
+  },
+  "prospective_windows_seconds": [
+    8.64,
+    4.32,
+    2.16,
+    1.08,
+    0.54,
+    0.27,
+    0.135,
+    0.0675,
+    0.03375,
+    0.016875,
+    0.0084375
+  ],
+  "method": [
+    "Each census point restarts from the identical accepted F-GC44 origin.",
+    "Each point uses the same 36 cm/day dynamic-top irrigation rate; only the independently requested diagnostic interval is shorter.",
+    "The production transaction policy is not modified inside a census point.",
+    "Record status, accepted_substeps, attempts, solver_rejections, temporal_rejections, temporal_unavailable_rejections, mass_rejections and max_temporal_indicator.",
+    "Do not use the first successful window to retroactively change RM14 or RM13B."
+  ],
+  "decision_rules": [
+    "If at least one shorter window succeeds with one or more accepted substeps, classify the RM14 failure as a bounded irrigation-aware physical-window/numerical-policy mismatch and derive a new prospective scheduler/application-window authority.",
+    "If no census point succeeds, classify the failure as structural with respect to the tested dynamic-top origin/solver/certificate route and investigate solver/certificate construction before any new triangle attempt.",
+    "Mass rejection at any point is a separate accounting blocker and must not be conflated with solver or temporal failure."
+  ],
+  "nonclaims": [
+    "RM15 is diagnostic only and does not admit a smaller irrigation timestep for production.",
+    "The total delivered depth differs across diagnostic windows because the physical rate is held fixed; RM15 therefore does not replace the RM14 physical experiment.",
+    "No retry count, tolerance or temporal budget is tuned.",
+    "No MODFLOW or Ribasim execution is needed in RM15."
+  ]
+}
