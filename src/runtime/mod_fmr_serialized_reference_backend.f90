@@ -46,7 +46,7 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b110_generated_mvg_table_state, only: b110_generated_mvg_table_state_t, &
-       initialize_b110_generated_mvg_table_state, F_TAB02_STATE_OK
+       initialize_b110_generated_mvg_table_state, b110_generated_mvg_ksatexm_profile_supported, F_TAB02_STATE_OK
   use mod_b110_generated_mvg_provider, only: b110_generated_mvg_provider_t, &
        bind_b110_generated_mvg_provider, F_TAB02_PROVIDER_OK
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -1378,6 +1378,9 @@ contains
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
              .not. self%fixed_weir_surface_water_active .and. self%soil_water_selection%uses_reference()
         if (ok) ok = all(parameters%cofgen(9,1:parameters%active_nodes) == 0.0_real64)
+        if (ok .and. parameters%ksatexm_extension_active) then
+          ok = b110_generated_mvg_ksatexm_profile_supported(parameters%cofgen(:,1:parameters%active_nodes))
+        end if
       end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
