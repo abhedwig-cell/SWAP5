@@ -1,0 +1,781 @@
+{
+  "allowance_cm": 1.6e-15,
+  "cases": {
+    "B01": {
+      "S12": {
+        "T16": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 2131,
+              "marker_count": 2132,
+              "max_ratio_to_allowance": 1.0024481245095591,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.2534862037226487e-15,
+              "terminal_bal_flags": 12,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6039169992152944e-15,
+              "terminal_ratio_to_allowance": 1.0024481245095591,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 2131,
+              "marker_count": 2132,
+              "max_ratio_to_allowance": 1.0024481245095591,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.2534862037226487e-15,
+              "terminal_bal_flags": 12,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6039169992152944e-15,
+              "terminal_ratio_to_allowance": 1.0024481245095591,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T32": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 4577,
+              "marker_count": 4578,
+              "max_ratio_to_allowance": 1.0019277074673223,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.3233691920084061e-15,
+              "terminal_bal_flags": 9,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6030843319477155e-15,
+              "terminal_ratio_to_allowance": 1.0019277074673223,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 4577,
+              "marker_count": 4578,
+              "max_ratio_to_allowance": 1.0019277074673223,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.3233691920084061e-15,
+              "terminal_bal_flags": 9,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6030843319477155e-15,
+              "terminal_ratio_to_allowance": 1.0019277074673223,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T8": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 992,
+              "marker_count": 993,
+              "max_ratio_to_allowance": 1.005126537556467,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.2294166512890386e-15,
+              "terminal_bal_flags": 8,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6082024600903472e-15,
+              "terminal_ratio_to_allowance": 1.005126537556467,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 992,
+              "marker_count": 993,
+              "max_ratio_to_allowance": 1.005126537556467,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.2294166512890386e-15,
+              "terminal_bal_flags": 8,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6082024600903472e-15,
+              "terminal_ratio_to_allowance": 1.005126537556467,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        }
+      },
+      "S16": {
+        "T16": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 1580,
+              "marker_count": 17964,
+              "max_ratio_to_allowance": 1.0306755449109366,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 3.2026381546762328e-15,
+              "terminal_bal_flags": 9,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6490808718574986e-15,
+              "terminal_ratio_to_allowance": 1.0306755449109366,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 1580,
+              "marker_count": 17964,
+              "max_ratio_to_allowance": 1.0306755449109366,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 3.2026381546762328e-15,
+              "terminal_bal_flags": 9,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6490808718574986e-15,
+              "terminal_ratio_to_allowance": 1.0306755449109366,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T32": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 1703,
+              "marker_count": 34472,
+              "max_ratio_to_allowance": 1.050007303326934,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.3101963958204955e-15,
+              "terminal_bal_flags": 12,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6800116853230943e-15,
+              "terminal_ratio_to_allowance": 1.050007303326934,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 1703,
+              "marker_count": 34472,
+              "max_ratio_to_allowance": 1.050007303326934,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.3101963958204955e-15,
+              "terminal_bal_flags": 12,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6800116853230943e-15,
+              "terminal_ratio_to_allowance": 1.050007303326934,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T8": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 1593,
+              "marker_count": 9779,
+              "max_ratio_to_allowance": 1.02162722726024,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 3.031619399962945e-15,
+              "terminal_bal_flags": 10,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.634603563616384e-15,
+              "terminal_ratio_to_allowance": 1.02162722726024,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 1593,
+              "marker_count": 9779,
+              "max_ratio_to_allowance": 1.02162722726024,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 3.031619399962945e-15,
+              "terminal_bal_flags": 10,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.634603563616384e-15,
+              "terminal_ratio_to_allowance": 1.02162722726024,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        }
+      },
+      "S8": {
+        "T16": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 521,
+              "marker_count": 522,
+              "max_ratio_to_allowance": 1.008908234734236,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.087519046512003e-15,
+              "terminal_bal_flags": 6,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6142531755747776e-15,
+              "terminal_ratio_to_allowance": 1.008908234734236,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 521,
+              "marker_count": 522,
+              "max_ratio_to_allowance": 1.008908234734236,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.087519046512003e-15,
+              "terminal_bal_flags": 6,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6142531755747776e-15,
+              "terminal_ratio_to_allowance": 1.008908234734236,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T32": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 1156,
+              "marker_count": 1157,
+              "max_ratio_to_allowance": 1.005862060310281,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.430855516877005e-15,
+              "terminal_bal_flags": 8,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6093792964964497e-15,
+              "terminal_ratio_to_allowance": 1.005862060310281,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 1156,
+              "marker_count": 1157,
+              "max_ratio_to_allowance": 1.005862060310281,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.430855516877005e-15,
+              "terminal_bal_flags": 8,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6093792964964497e-15,
+              "terminal_ratio_to_allowance": 1.005862060310281,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T8": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 234,
+              "marker_count": 235,
+              "max_ratio_to_allowance": 1.0040163145319465,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.3987921931857187e-15,
+              "terminal_bal_flags": 5,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6064261032511144e-15,
+              "terminal_ratio_to_allowance": 1.0040163145319465,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S17",
+              "last_accepted_step": 234,
+              "marker_count": 235,
+              "max_ratio_to_allowance": 1.0040163145319465,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.3987921931857187e-15,
+              "terminal_bal_flags": 5,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6064261032511144e-15,
+              "terminal_ratio_to_allowance": 1.0040163145319465,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        }
+      }
+    },
+    "B14": {
+      "S12": {
+        "T16": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 9091,
+              "marker_count": 58240,
+              "max_ratio_to_allowance": 1.4835806194655774,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.6596019697388391e-15,
+              "terminal_bal_flags": 10,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 2.3737289911449237e-15,
+              "terminal_ratio_to_allowance": 1.4835806194655774,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 9091,
+              "marker_count": 58240,
+              "max_ratio_to_allowance": 1.4835806194655774,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.6596019697388391e-15,
+              "terminal_bal_flags": 10,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 2.3737289911449237e-15,
+              "terminal_ratio_to_allowance": 1.4835806194655774,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T32": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 18844,
+              "marker_count": 117149,
+              "max_ratio_to_allowance": 1.4531975883051504,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.911468635624316e-15,
+              "terminal_bal_flags": 11,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 2.3251161412882407e-15,
+              "terminal_ratio_to_allowance": 1.4531975883051504,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 18844,
+              "marker_count": 117149,
+              "max_ratio_to_allowance": 1.4531975883051504,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.911468635624316e-15,
+              "terminal_bal_flags": 11,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 2.3251161412882407e-15,
+              "terminal_ratio_to_allowance": 1.4531975883051504,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T8": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 5399,
+              "marker_count": 29889,
+              "max_ratio_to_allowance": 1.001627600305422,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 5.436456840257021e-16,
+              "terminal_bal_flags": 8,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6026041604886754e-15,
+              "terminal_ratio_to_allowance": 1.001627600305422,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 5399,
+              "marker_count": 29889,
+              "max_ratio_to_allowance": 1.001627600305422,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 5.436456840257021e-16,
+              "terminal_bal_flags": 8,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6026041604886754e-15,
+              "terminal_ratio_to_allowance": 1.001627600305422,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        }
+      },
+      "S16": {
+        "T16": {
+          "contract_condition": "SUCCESS_NEVER_CROSSES_ALLOWANCE",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": true,
+              "failure_label_seen": false,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 16384,
+              "marker_count": 65520,
+              "max_ratio_to_allowance": 0.8562733855298654,
+              "return_code": 0,
+              "terminal_abs_total_residual_cm": 8.384008765015736e-16,
+              "terminal_bal_flags": 13,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 6.901243465583868e-16,
+              "terminal_ratio_to_allowance": 0.4313277165989918,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": true,
+              "failure_label_seen": false,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 16384,
+              "marker_count": 65520,
+              "max_ratio_to_allowance": 0.8562733855298654,
+              "return_code": 0,
+              "terminal_abs_total_residual_cm": 8.384008765015736e-16,
+              "terminal_bal_flags": 13,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 6.901243465583868e-16,
+              "terminal_ratio_to_allowance": 0.4313277165989918,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": true,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": true
+        },
+        "T32": {
+          "contract_condition": "SUCCESS_NEVER_CROSSES_ALLOWANCE",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": true,
+              "failure_label_seen": false,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 32768,
+              "marker_count": 131071,
+              "max_ratio_to_allowance": 0.8577153744211756,
+              "return_code": 0,
+              "terminal_abs_total_residual_cm": 6.962305731953704e-16,
+              "terminal_bal_flags": 14,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.214512518335274e-15,
+              "terminal_ratio_to_allowance": 0.7590703239595462,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": true,
+              "failure_label_seen": false,
+              "last_accepted_case": "S20",
+              "last_accepted_step": 32768,
+              "marker_count": 131071,
+              "max_ratio_to_allowance": 0.8577153744211756,
+              "return_code": 0,
+              "terminal_abs_total_residual_cm": 6.962305731953704e-16,
+              "terminal_bal_flags": 14,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.214512518335274e-15,
+              "terminal_ratio_to_allowance": 0.7590703239595462,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": true,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": true
+        },
+        "T8": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S19",
+              "last_accepted_step": 7808,
+              "marker_count": 23755,
+              "max_ratio_to_allowance": 1.0147843936685323,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 3.793906855342337e-15,
+              "terminal_bal_flags": 10,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6236550298696517e-15,
+              "terminal_ratio_to_allowance": 1.0147843936685323,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S19",
+              "last_accepted_step": 7808,
+              "marker_count": 23755,
+              "max_ratio_to_allowance": 1.0147843936685323,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 3.793906855342337e-15,
+              "terminal_bal_flags": 10,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6236550298696517e-15,
+              "terminal_ratio_to_allowance": 1.0147843936685323,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        }
+      },
+      "S8": {
+        "T16": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 16218,
+              "marker_count": 32601,
+              "max_ratio_to_allowance": 1.0002761965075277,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.6601354839438756e-15,
+              "terminal_bal_flags": 6,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6004419144120443e-15,
+              "terminal_ratio_to_allowance": 1.0002761965075277,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 16218,
+              "marker_count": 32601,
+              "max_ratio_to_allowance": 1.0002761965075277,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 1.6601354839438756e-15,
+              "terminal_bal_flags": 6,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.6004419144120443e-15,
+              "terminal_ratio_to_allowance": 1.0002761965075277,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T32": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S19",
+              "last_accepted_step": 16387,
+              "marker_count": 81924,
+              "max_ratio_to_allowance": 1.116972725249842,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.311352498285147e-16,
+              "terminal_bal_flags": 7,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.7871563603997473e-15,
+              "terminal_ratio_to_allowance": 1.116972725249842,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S19",
+              "last_accepted_step": 16387,
+              "marker_count": 81924,
+              "max_ratio_to_allowance": 1.116972725249842,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.311352498285147e-16,
+              "terminal_bal_flags": 7,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.7871563603997473e-15,
+              "terminal_ratio_to_allowance": 1.116972725249842,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        },
+        "T8": {
+          "contract_condition": "LOCAL_ALLOWANCE_BOUNDARY",
+          "o0_o2_terminal_diagnostic_identity": true,
+          "optimization": {
+            "O0": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 5069,
+              "marker_count": 13227,
+              "max_ratio_to_allowance": 1.108329140270137,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.2308443287097677e-15,
+              "terminal_bal_flags": 3,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.773326624432219e-15,
+              "terminal_ratio_to_allowance": 1.108329140270137,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            },
+            "O2": {
+              "execution_complete": false,
+              "failure_label_seen": true,
+              "last_accepted_case": "S18",
+              "last_accepted_step": 5069,
+              "marker_count": 13227,
+              "max_ratio_to_allowance": 1.108329140270137,
+              "return_code": 1,
+              "terminal_abs_total_residual_cm": 2.2308443287097677e-15,
+              "terminal_bal_flags": 3,
+              "terminal_class": "RETRY_LOCAL_BALANCE",
+              "terminal_head_flags": 0,
+              "terminal_local_integrated_cm": 1.773326624432219e-15,
+              "terminal_ratio_to_allowance": 1.108329140270137,
+              "terminal_rep_bound_cm": 8.881784197001252e-15
+            }
+          },
+          "p4_expected_success": false,
+          "p4_pass_fail_topology_reproduced": true,
+          "p5a_success": false
+        }
+      }
+    }
+  },
+  "decision": "CONTRACT_BOUNDARY_SUPPORTED",
+  "failing_route_count": 16,
+  "interpretation": {
+    "closure_claim_authorized": false,
+    "next_numerical_policy_study_motivated": true,
+    "solver_policy_change_authorized": false,
+    "tolerance_change_authorized": false
+  },
+  "p4_pass_fail_topology_reproduced": true,
+  "schema": "swap5.rom-purpose.p5a.surface-numerical-domain-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "failing_routes_continued_after_original_require": false,
+    "p4_reopened": false,
+    "production_rom_authorized": false,
+    "solver_or_physics_changed": false,
+    "tolerance_changed": false
+  },
+  "status": "P5A_CHARACTERIZATION_COMPLETE",
+  "successful_route_count": 2,
+  "work_unit": "ROM-PURPOSE-P5A-SURF-NUMERICAL-DOMAIN",
+  "workstream": "ROM-PURPOSE"
+}
