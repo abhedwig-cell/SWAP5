@@ -9,9 +9,8 @@ program test_sw_rib_pa01_profile_runtime
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
-  use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, fmr_serialized_batch_diagnostics_t, &
-       fmr_execute_serialized_resolved_physical_column
-  use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &\n       fmr_drainage_response_level_control_t, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK\n  use mod_ribasim_surface_water_profile_contract, only: RIBASIM_SW_PROFILE_OK, RIBASIM_SW_PROFILE_OWNER_CONFLICT, &\n       RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, &\n       RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, RIBASIM_SW_STTAB_EPSILON_M, RIBASIM_SW_GIT_SHA, &\n       RIBASIM_SW_CORE_VERSION, RIBASIM_SW_PYTHON_VERSION_AT_PIN, ribasim_surface_water_profile_status, &\n       bind_ribasim_surface_water_controls
+  use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, fmr_serialized_batch_diagnostics_t
+  use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &\n       fmr_drainage_response_level_control_t, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK\n  use mod_ribasim_surface_water_profile_contract, only: RIBASIM_SW_PROFILE_OK, RIBASIM_SW_PROFILE_OWNER_CONFLICT, &\n       RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, &\n       RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, RIBASIM_SW_STTAB_EPSILON_M, RIBASIM_SW_GIT_SHA, &\n       RIBASIM_SW_CORE_VERSION, RIBASIM_SW_PYTHON_VERSION_AT_PIN, ribasim_surface_water_profile_status, &\n       bind_ribasim_surface_water_controls, fmr_execute_serialized_ribasim_surface_water_resolved_column
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -26,12 +25,51 @@ program test_sw_rib_pa01_profile_runtime
   real(real64), parameter :: mass_gate = 1.0e-10_real64
   integer(int64), parameter :: column_id = 44001_int64
 
-  call verify_profile_contract()\n  call verify_signed_commit(-12.25_real64, signed_rate, .true.)
+  call verify_profile_contract()\n  call verify_wrapper_owner_conflicts()\n  call verify_signed_commit(-12.25_real64, signed_rate, .true.)
   call verify_signed_commit(7.75_real64, -signed_rate, .false.)
   call verify_invalid_process_rolls_back()
   write(*,'(A)') 'SW_RIB_SWM01_Q4B_TRANSACTIONAL_RUNTIME=PASS'\n  write(*,'(A)') 'SW_RIB_PA01_CANDIDATE_RUNTIME=PASS'
 
 contains
+
+  subroutine verify_wrapper_owner_conflicts()
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: tx_control
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr04_fixed_flux_top_provider_t), target :: top
+    integer :: active_calls, context_status
+
+    call initialize_case(committed, column, template, parameters, forcing, config, -12.25_real64, signed_rate)
+    call backend%initialize(top)
+    call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
+    template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+    call fmr_execute_serialized_ribasim_surface_water_resolved_column(backend, tx_control, column, template, &
+         parameters, forcing, committed, config, [-12.25_real64], t0, t1, output, diagnostic, runtime, &
+         active_calls, context_status)
+    call require(context_status == RIBASIM_SW_PROFILE_OWNER_CONFLICT, 'wrapper owner conflict status')
+    call require(.not. output%committed .and. committed%current_revision() == 0_int64, &
+         'wrapper owner conflict no commit')
+
+    template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_BASE
+    allocate(forcing%drainage_response_controls(1))
+    call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
+    call fmr_execute_serialized_ribasim_surface_water_resolved_column(backend, tx_control, column, template, &
+         parameters, forcing, committed, config, [-12.25_real64], t0, t1, output, diagnostic, runtime, &
+         active_calls, context_status)
+    call require(context_status == RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, 'wrapper duplicate control status')
+    call require(.not. output%committed .and. committed%current_revision() == 0_int64, &
+         'wrapper duplicate control no commit')
+
+    write(*,'(A)') 'SW_RIB_PA01_WRAPPER_OWNER_XOR=PASS'
+  end subroutine verify_wrapper_owner_conflicts
 
   subroutine verify_signed_commit(control_head, balancing_qssdi, positive)
     real(real64), intent(in) :: control_head, balancing_qssdi
@@ -50,7 +88,7 @@ contains
     type(fmr_serialized_physical_observation_t) :: observation
     type(fmr04_fixed_flux_top_provider_t), target :: top
     real(real64) :: expected_amount, background_amount, response_rate
-    integer :: active_calls
+    integer :: active_calls, context_status
 
     call initialize_case(committed, column, template, parameters, forcing, config, control_head, balancing_qssdi)
     expected_amount = signed_rate * (t1-t0)
@@ -58,8 +96,10 @@ contains
 
     call backend%initialize(top)
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
-    call fmr_execute_serialized_resolved_physical_column(backend, tx_control, column, template, parameters, forcing, &
-         committed, config, t0, t1, output, diagnostic, runtime, active_calls)
+    call fmr_execute_serialized_ribasim_surface_water_resolved_column(backend, tx_control, column, template, &
+         parameters, forcing, committed, config, [control_head], t0, t1, output, diagnostic, runtime, &
+         active_calls, context_status)
+    call require(context_status == RIBASIM_SW_PROFILE_OK, 'coupled wrapper context accepted')
     observation = backend%observation()
 
     call require(output%completed .and. output%committed, 'signed extended response committed')
@@ -69,7 +109,7 @@ contains
          'signed extended response mass complete')
     call require(abs(output%mass%residual) <= mass_gate, 'signed extended response hard mass closure')
     call require(output%accepted_substeps == 1, 'signed extended response one accepted transaction')
-    call require(observation%drainage_response_active, 'signed extended response observation active')
+    call require(.not. observation%fixed_weir_surface_water_active, 'internal fixed-weir state inactive')\n    call require(observation%drainage_response_active, 'signed extended response observation active')
     call require(observation%drainage_response%status == FMR_DRAIN_BIND_OK, 'signed extended response diagnostics')
     call require(size(observation%drainage_response%level) == 1, 'signed extended response one level')
     call require(observation%drainage_response%level(1)%variant == FMR_DRAIN_VARIANT_EXTENDED_SIGNED, &
@@ -110,15 +150,17 @@ contains
     type(fmr_serialized_batch_diagnostics_t) :: runtime
     type(fmr04_fixed_flux_top_provider_t), target :: top
     real(real64) :: gwl_after
-    integer :: active_calls
+    integer :: active_calls, context_status
 
     call initialize_case(committed, column, template, parameters, forcing, config, -12.25_real64, signed_rate)
     parameters%drainage_response_levels(1)%extended%rdrain_day = 0.0_real64
 
     call backend%initialize(top)
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
-    call fmr_execute_serialized_resolved_physical_column(backend, tx_control, column, template, parameters, forcing, &
-         committed, config, t0, t1, output, diagnostic, runtime, active_calls)
+    call fmr_execute_serialized_ribasim_surface_water_resolved_column(backend, tx_control, column, template, &
+         parameters, forcing, committed, config, [-12.25_real64], t0, t1, output, diagnostic, runtime, &
+         active_calls, context_status)
+    call require(context_status == RIBASIM_SW_PROFILE_OK, 'invalid process profile context accepted')
 
     call require(.not. output%committed, 'invalid extended process unexpectedly committed')
     call require(committed%current_revision() == 0_int64, 'invalid extended process mutated revision')
@@ -220,9 +262,6 @@ contains
     forcing%bottom_flux = -k0
     forcing%bottom_head = -321.0_real64
     allocate(forcing%subsurface_irrigation_source(numnod), forcing%root_extraction_sink(numnod))
-    call bind_ribasim_surface_water_controls(template%optional_state_layout_id, parameters%drainage_response_levels, &
-         [control_head], allocated(forcing%drainage_response_controls), forcing%drainage_response_controls, profile_status)
-    call require(profile_status == RIBASIM_SW_PROFILE_OK, 'Ribasim profile accepted-head binding')
     forcing%subsurface_irrigation_source = 0.0_real64
     forcing%subsurface_irrigation_source(numnod) = balancing_qssdi
     forcing%root_extraction_sink = 0.0_real64
