@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.rom-purpose.p3.same-partition-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SAME-PARTITION-RICHARDS",
+  "date": "2026-09-23",
+  "status": "PREPARED_RESPONSE_BLIND_NOT_AUTHORIZED_NOT_EXECUTED",
+  "purpose": "Prepare terminal same-partition conventional Richards diagnostics without opening closure research before the preregistered trigger exists.",
+  "terminal_partitions": {
+    "SURF_P": {
+      "member": "S8",
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        80,
+        160
+      ],
+      "layer_thickness_cm": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        20,
+        80
+      ]
+    },
+    "GW_LB": {
+      "member": "G8",
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "layer_thickness_cm": [
+        80,
+        20,
+        20,
+        10,
+        10,
+        10,
+        5,
+        5
+      ]
+    }
+  },
+  "trigger_contract": {
+    "required_source": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json",
+    "required_case_state": "terminal aligned Layer-ROM is numerically qualified and classified BELOW_NUMERICAL_COMPARATOR",
+    "required_trigger_field": "same_partition_richards_triggers",
+    "no_trigger_means_no_richards_response": true,
+    "nonterminal_diagnostic_forbidden": true
+  },
+  "numerical_policy": {
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "trace_completeness_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "comparator": "R512_T32 against R2048_T32",
+    "componentwise_equality_tolerance": 1e-12,
+    "post_response_relaxation_forbidden": true
+  },
+  "decision_classes": [
+    "CLOSURE_DEFICIT_SUPPORTED",
+    "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+    "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE"
+  ],
+  "implementation_blobs": {
+    "tests/rom/materialize_rom_purpose_p3_same_partition_richards.py": "68a2807069ef7683db0cfea48e6eabf635718ad3",
+    "tests/rom/run_rom_purpose_p3_same_partition_route.py": "ffa2dba8b9634e3a721a0b534eb24b815c135fc4",
+    "tests/rom/analyze_rom_purpose_p3_same_partition_richards.py": "e6b18344a9c02a87c6f14aaab333ca6390e7550c",
+    ".github/workflows/f-rom-purpose-p3-same-partition.yml": "ee3c1f81c430080fcd1386b847de8c213888a711",
+    "tests/rom/materialize_rom_purpose_p1_coarse_output.py": "991c896fcdd3b580d72ab5a262fdf0c0f86412ef",
+    "tests/rom/rom_purpose_p1_variable_grid_stubs.py": "261583a0b4b05ac5598572ac6e2630cfa75fa0a1",
+    "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json": "40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5"
+  },
+  "future_execution_binding_requirements": [
+    "State-count result must already be persisted.",
+    "At least one exact terminal trigger must exist.",
+    "Binding must freeze exact state-count-result blob and exact Reference run IDs for SURF_P and GW_LB.",
+    "Binding must freeze the implementation blobs above plus the exact P3 Reference materializer blobs used for execution.",
+    "Binding must validate the preregistration authority inherited by the persisted state-count result; this infrastructure record does not silently choose between observed preregistration revisions.",
+    "No closure family is introduced or tuned."
+  ],
+  "response_firewall": {
+    "execution_binding_created": false,
+    "richards_response_generated": false,
+    "state_count_response_seen_by_this_preparation": false,
+    "representation_changed": false,
+    "partition_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
