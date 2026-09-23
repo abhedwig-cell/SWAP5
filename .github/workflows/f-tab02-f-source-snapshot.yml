@@ -25,7 +25,8 @@ jobs:
           cp -a integration/f-tab/F-TAB02_F0_QUALIFICATION.json ftab02-f-source/
           cp -a integration/f-tab/F-TAB02_G_QUALIFICATION.json ftab02-f-source/
           git rev-parse HEAD > ftab02-f-source/PRODUCTION_HEAD.txt
-          find ftab02-f-source -type f -print0 | sort -z | xargs -0 sha256sum > ftab02-f-source/SHA256SUMS.txt
+          find ftab02-f-source -type f ! -path 'ftab02-f-source/SHA256SUMS.txt' -print0 | sort -z | xargs -0 sha256sum > ftab02-f-source/SHA256SUMS.txt
+          sha256sum --check ftab02-f-source/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
           name: f-tab02-f-source-snapshot
