@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a.technical_amendment.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-23",
+  "classification": "HARNESS_COMPATIBILITY_REPAIR_NOT_SCIENTIFIC_RETUNING",
+  "superseded_execution": {
+    "run_id": 35854443198,
+    "job_id": 107159484116,
+    "head_sha": "0a74abb31207c915d5df4cab79fc3ffeed1ea63e",
+    "failure": "Ribasim configuration validation rejected solver.saveat=8.64 because finite saveat must be an integer number of seconds.",
+    "physical_model_initialized": false,
+    "comparator_assertions_executed": false,
+    "physical_results_observed": false
+  },
+  "repair": {
+    "field": "Ribasim Solver.saveat",
+    "old_value_seconds": 8.64,
+    "new_value_seconds": 1,
+    "reason": "Output/save cadence compatibility with Ribasim v2026.1.1. BMI update endpoint and physical model duration remain 8.64 seconds.",
+    "unchanged": [
+      "Ribasim exact release SHA e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "physical duration 8.64 s = 1e-4 day",
+      "three frozen initial states and drainage forcings",
+      "storage/level mapping",
+      "fixed-weir rating law and parameters",
+      "zero-supply condition",
+      "all physical comparators",
+      "all preregistered tolerances",
+      "failure and pass interpretation"
+    ]
+  },
+  "scientific_effect": "NONE_INTENDED; saveat controls result output cadence, not the physical forcing or requested BMI endpoint.",
+  "anti_retuning_rule": "No physical parameter, duration, case, comparator or tolerance may be changed in this amendment."
+}
