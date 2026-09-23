@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.rom_root.s3d3.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D3",
+  "date": "2026-09-23",
+  "status": "S3D3_SUFFICIENCY_DERIVATION_AND_VERIFICATION_COMPLETE",
+  "decision": "UJ_THRESHOLD_AWARE_INFORMATION_SUFFICIENT_ON_SAME_STATE_DOMAIN",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D3_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3D3_BINDING.json",
+    "prior_runner_blocker": "integration/f-rom/ROM_ROOT_S3D3_RUNNER_BLOCKER.json",
+    "raw_artifact_replay": "integration/f-rom/ROM_ROOT_S3D3_ARTIFACT_REPLAY.json",
+    "workflow_run": 35864381308,
+    "workflow_head": "88133dd26670d4111c1d71acc381ad5c2da3a52a",
+    "analyzer_job": 107194832789,
+    "analyzer_artifact": {
+      "id": 10752439881,
+      "name": "rom-root-s3d3",
+      "digest": "sha256:8496562c245198b445c6e2a8e07a81256c52188ea2afcd3668df268297202cd6"
+    },
+    "analyzer_blob": "8f2e826c7e3b64774f2d69cc17049b770ae73a50",
+    "workflow_conclusion": "success"
+  },
+  "analytic_identity": {
+    "UTH": "F_i = U_i + (h4*T_i-H_T_i)/(h4-h3)",
+    "UJ": "F_i = U_i + J_i/(h3-h4)",
+    "J_relation": "J_i = H_T_i-h4*T_i"
+  },
+  "descriptor": {
+    "sufficient_information": [
+      "DeltaF_i",
+      "U_i",
+      "J_i"
+    ],
+    "response_relevant_nontrivial_information": [
+      "U_i",
+      "J_i"
+    ],
+    "U_i": "root fraction in retained layer with h>h3",
+    "J_i": "sum of w_j*(h_j-h4) over h4<=h_j<=h3",
+    "scope": "same-state drought-only piecewise-linear Feddes functional",
+    "propagated_state_selected": false,
+    "dynamic_closure_defined": false
+  },
+  "empirical": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "retained_representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "target": "R2048_T32",
+    "transaction_count_per_case_representation": 32768,
+    "UTH_sufficient_all_cases_representations": true,
+    "UJ_sufficient_all_cases_representations": true,
+    "UTH_UJ_and_occupancy_integrity": true,
+    "transition_regime_observed": true,
+    "mixed_regime_layers_observed": true,
+    "max_layer_UJ_error": 4.6074255521943996e-14,
+    "max_total_UJ_error": 4.6074255521943996e-14,
+    "max_UJ_UTH_identity_error": 2.3314683517128287e-14,
+    "numerical_guard": 2.9103830456733704e-11,
+    "transition_regime_layer_occurrences": 3515371,
+    "mixed_regime_layer_occurrences": 496527
+  },
+  "analytic_counterexamples": {
+    "without_U": {
+      "same_deltaF": true,
+      "same_J": true,
+      "F_a": 0.30000000000000004,
+      "F_b": 0.7,
+      "distinct_functional": true
+    },
+    "without_J_occupancy_only": {
+      "same_deltaF_U_T_D": true,
+      "F_a": 0.30000000000000004,
+      "F_b": 0.5,
+      "distinct_functional": true
+    },
+    "root_weighted_mean_only": {
+      "mean_a": -6,
+      "mean_b": -6,
+      "F_a": 0.5,
+      "F_b": 0.625,
+      "distinct_functional": true
+    }
+  },
+  "necessity_within_preregistered_non_tautological_family": true,
+  "bounded_interpretation": [
+    "For the frozen drought-only piecewise-linear Feddes functional, UJ reconstructs the exact fine-node layer uptake on every tested qualified RA02R state within the preregistered numerical guard.",
+    "Regime occupancy without a transition pressure-head moment is insufficient, and root-weighted mean head without regime localization is insufficient.",
+    "The result identifies compact threshold-aware same-state information content. It does not show that U and J are recoverable from existing reduced hydraulic state, nor that they can be propagated dynamically.",
+    "No dynamic augmented ROM, new propagated root state or closure is authorized by S3-D3."
+  ],
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_propagated_root_state_selected": false,
+    "dynamic_closure_defined": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
