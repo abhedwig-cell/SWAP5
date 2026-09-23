@@ -83,7 +83,7 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "O$opt candidate execution"; }
   for marker in \
-    'SW_RIB_PA01_PROFILE_CONTRACT=PASS' \\
+    'SW_RIB_PA01_PROFILE_CONTRACT=PASS' \
     'SW_RIB_PA01_WRAPPER_OWNER_XOR=PASS' \
     'SW_RIB_SWM01_Q4B_POSITIVE_DRAINAGE_SINGLE_BOOKING=PASS' \
     'SW_RIB_SWM01_Q4B_NEGATIVE_INFILTRATION_SINGLE_BOOKING=PASS' \
