@@ -15,8 +15,8 @@ program test_fapp09_ribasim_external_surface_water_profile
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
-       FMR_SW_HEAD_FORCING_OK, FMR_SW_HEAD_FORCING_INVALID_REQUEST, FMR_SW_HEAD_FORCING_COMPETING_DRAINAGE_INPUT, &
-       FMR_SW_HEAD_FORCING_NONFINITE_HEAD
+       FMR_SW_HEAD_FORCING_OK, FMR_SW_HEAD_FORCING_INVALID_REQUEST, FMR_SW_HEAD_FORCING_PROFILE_NOT_ADMITTED, &
+       FMR_SW_HEAD_FORCING_COMPETING_DRAINAGE_INPUT, FMR_SW_HEAD_FORCING_NONFINITE_HEAD
   use mod_fmr_surface_water_swap_participant, only: fmr_surface_water_swap_participant_t, fmr_surface_water_trial_t, &
        fmr_surface_water_external_profile_admitted, FMR_SW_PARTICIPANT_OK, &
        FMR_SW_PARTICIPANT_ORIGIN_DRIFT, FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
@@ -47,7 +47,7 @@ contains
     type(kernel_committed_state_t) :: committed
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
-    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_parameters_t) :: parameters, multilevel_parameters
     type(fmr_b110_physical_forcing_t) :: base, materialized, competing
     type(canonical_numerical_config_t) :: config
     type(fmr_surface_water_head_forcing_materializer_t) :: materializer, bad_materializer
@@ -80,6 +80,14 @@ contains
     competing%drainage_flux_by_level=0.0_real64
     call bad_materializer%initialize(competing,parameters,status)
     call require(status==FMR_SW_HEAD_FORCING_COMPETING_DRAINAGE_INPUT,'competing drainage forcing rejected')
+
+    multilevel_parameters = parameters
+    deallocate(multilevel_parameters%drainage_response_levels)
+    allocate(multilevel_parameters%drainage_response_levels(2))
+    multilevel_parameters%drainage_response_levels = parameters%drainage_response_levels(1)
+    call bad_materializer%initialize(base,multilevel_parameters,status)
+    call require(status==FMR_SW_HEAD_FORCING_PROFILE_NOT_ADMITTED,'unqualified multilevel profile rejected')
+    write(*,'(A)') 'FAPP09_SINGLE_LEVEL_V1_SCOPE=PASS'
     write(*,'(A)') 'FAPP09_TYPED_EXTERNAL_HEAD_MATERIALIZER=PASS'
   end subroutine verify_materializer_guards
 
