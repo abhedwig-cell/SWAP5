@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3c.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q3C",
+  "date": "2026-09-23",
+  "title": "Mixed-sign scarcity without legacy proportional scaling",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Qualify the F-PM08D3 mixed-sign scarcity seam when a nearly empty Ribasim store simultaneously receives positive SWAP drainage and is asked to supply a larger negative SWAP infiltration transfer.",
+  "authorities": {
+    "legacy_d3": "F-PM08D3_MASS_SOURCE_INVENTORY@eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "q3a": "PASS_SIGNED_LOWER_EXCHANGE_WITH_RIBASIM_AVAILABILITY",
+    "q3b": "PASS_TRANSFER_IDENTITIES_OVER_RIBASIM_OWNED_STORE",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "legacy_behavior_being_replaced": "The legacy limiter can scale every secondary QDRAIN level with one net-shortage QDRATIO, including positive contributors. In external-owner mode this is not retained: positive SWAP drainage is incoming mass, while Ribasim-owned availability constrains withdrawals.",
+  "frozen_mapping": {
+    "represented_area_m2": 1,
+    "basin_profile_level_m": [
+      -1,
+      1
+    ],
+    "basin_profile_area_m2": [
+      1,
+      1
+    ],
+    "initial_level_m": -0.998,
+    "initial_storage_m3": 0.002,
+    "duration_s": 86400,
+    "requested_lower_infiltration_m3": 0.0051,
+    "no_other_forcings": true
+  },
+  "cases": [
+    {
+      "id": "C0_NO_POSITIVE_DRAINAGE",
+      "positive_drainage_m3": 0
+    },
+    {
+      "id": "C1_ONE_MM_POSITIVE_DRAINAGE",
+      "positive_drainage_m3": 0.001
+    },
+    {
+      "id": "C2_TEN_MM_POSITIVE_DRAINAGE",
+      "positive_drainage_m3": 0.01
+    }
+  ],
+  "preregistered_relations": [
+    "Direct cumulative Ribasim drainage equals each positive drainage input within 1e-6 m3; scarcity does not proportionally scale incoming drainage.",
+    "All realized infiltrations are nonnegative and remain at least 1e-6 m3 below the common 0.0051 m3 request.",
+    "Realized infiltration is strictly ordered C0 < C1 < C2, with C1-C0 > 1e-6 m3 and C2-C1 > 1e-5 m3.",
+    "Each final Basin storage remains nonnegative.",
+    "Each direct Basin mass residual closes within 1e-8 m3.",
+    "All cases are RECOMPOSITION_REQUIRED because the negative SWAP request is not fully realized; positive drainage is never clipped to manufacture feasibility."
+  ],
+  "interpretation_if_pass": "The coupled external-owner profile replaces legacy mixed-sign proportional QDRATIO scaling with withdrawal-side Ribasim availability. Positive drainage remains authoritative incoming mass and increases feasible withdrawal, while negative-transfer shortfall is returned for joint recomposition.",
+  "nonclaims": [
+    "No full real-SWAP recomposition loop is executed here.",
+    "No claim that the limited Ribasim infiltration can be committed on the SWAP side without re-evaluation.",
+    "No production admission."
+  ],
+  "production_admission": false,
+  "retirement_authority": false
+}
