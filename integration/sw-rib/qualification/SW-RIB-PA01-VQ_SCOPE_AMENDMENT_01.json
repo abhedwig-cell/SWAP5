@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "amendment": "SCOPE_AMENDMENT_01_POST_CANDIDATE_RECONCILIATION",
+  "date": "2026-09-23",
+  "classification": "QUALIFICATION_SCOPE_NARROWING_BEFORE_PASS_INTERPRETATION",
+  "superseding_authority": {
+    "candidate_branch": "work/sw-rib-pa01-coupled-profile-production-admission",
+    "candidate_scope_hold": "integration/sw-rib/SW-RIB-PA01_SCOPE_AMENDMENT_02.json",
+    "reason": "The qualification branch was forked before the candidate branch recorded the transaction and geometry reconciliation hold."
+  },
+  "qualification_effect": {
+    "allowed_pass_meaning": "Independent qualification of the frozen pre-resolved accepted-head, Q1H legacy-geometry emulation subprofile only.",
+    "forbidden_pass_meaning": [
+      "full cross-model SWAP-Ribasim coupling admission",
+      "qualification of realized external transfer comparison and mismatch recomposition",
+      "qualification of Ribasim-native surface-water geometry",
+      "supersession of the F-APP09 transaction participant"
+    ],
+    "missing_full_profile_authority": [
+      "externally realized signed transfer receipt before SWAP commit",
+      "mismatch -> discard -> same-origin recomposition",
+      "explicit selection of Ribasim-native versus legacy-emulation geometry profile"
+    ]
+  },
+  "relationship_to_f_app09": "F-APP09 remains the candidate transaction boundary for the full external-owner profile. PA01-VQ may provide reusable independent evidence for accepted-head binding and Q4B-preservation, but cannot close F-APP09's transaction handshake.",
+  "canonical_admission": false
+}
