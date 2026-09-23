@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA01-VQ",
+  "amendment": "TECHNICAL_AMENDMENT_05",
+  "date": "2026-09-23",
+  "classification": "HISTORICAL_CHILD_CURRENT_CANONICAL_DEPENDENCY_REPAIR",
+  "failed_run": 35885704527,
+  "failed_job": 107265183432,
+  "diagnosis": "The earlier compile-order repair successfully compiled accepted_trajectory_directional_sensitivity before mod_a23bu. The next current-canonical dependency is mod_accepted_trajectory_directional_publication, now imported by mod_canonical_contracts but absent from the frozen F-PM08D7 child compile list.",
+  "repair": {
+    "insert_before": "src/runtime/mod_canonical_contracts.f90",
+    "compile_only_dependency": "src/transaction/mod_accepted_trajectory_directional_publication.f90"
+  },
+  "unchanged": [
+    "PA01 candidate production blobs",
+    "historical tests and assertions",
+    "preservation semantics",
+    "scientific/numerical tolerances"
+  ],
+  "anti_retuning_rule": "No runtime assertion is changed. Any subsequent semantic failure remains a qualification failure."
+}
