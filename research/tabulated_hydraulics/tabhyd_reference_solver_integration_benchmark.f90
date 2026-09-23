@@ -13,7 +13,7 @@ program tabhyd_reference_solver_integration_benchmark
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
 
-  integer, parameter :: NROUNDS=8, NREPEAT=60
+  integer, parameter :: NROUNDS=8, NREPEAT=20
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: apar
   type(b110_default_mvg_provider_t), target :: analytic
