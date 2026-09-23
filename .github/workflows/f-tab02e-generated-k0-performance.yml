@@ -1,0 +1,70 @@
+name: F-TAB02-E generated K0 performance qualification
+
+on:
+  push:
+    branches:
+      - work/f-tab02-generated-k0-provider
+    paths:
+      - 'tests/fsi/test_ftab02e_provider_richards_performance.f90'
+      - 'tests/fsi/test_ftab02e_serialized_runtime_performance.f90'
+      - 'tests/fsi/run_ftab02e_generated_provider_performance.sh'
+      - 'integration/f-tab/F-TAB02_D_QUALIFICATION.json'
+      - '.github/workflows/f-tab02e-generated-k0-performance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Verify D prerequisite authority
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("integration/f-tab/F-TAB02_D_QUALIFICATION.json")
+          d=json.loads(p.read_text())
+          assert d["result"]=="PASS"
+          assert d["qualified_head"]=="a3fc107b2a2fd21fa2a8b88621749b91154f3b87"
+          assert d["workflow_run"]==35823035547
+          assert d["dynamic_certificate"]["generated_temporal_certificate"]=="PASS"
+          assert d["dynamic_certificate"]["hard_mass"]=="PASS"
+          print("F_TAB02_E_D_AUTHORITY_BOUND=PASS")
+          PY
+      - name: Run F-TAB02-E performance qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02e_generated_provider_performance.sh | tee F-TAB02-E_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-E"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_E_|^F-TAB02-E ' F-TAB02-E_GATE.log || true
+          } > F-TAB02-E_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-e-owner-evidence
+          path: |
+            F-TAB02-E_EVIDENCE.txt
+            F-TAB02-E_GATE.log
+            F-TAB02-E_SUMMARY.tsv
+            F-TAB02-E_PROVIDER_RICHARDS.log
+            F-TAB02-E_SERIALIZED.log
+          if-no-files-found: warn
