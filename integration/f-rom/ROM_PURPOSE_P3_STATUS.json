@@ -22,15 +22,17 @@
     "CANDIDATE_INFRASTRUCTURE_PREPARED_NOT_EXECUTED",
     "SAME_PARTITION_INFRASTRUCTURE_PREPARED_NOT_EXECUTED",
     "CLOSEOUT_INFRASTRUCTURE_PREPARED_NOT_EXECUTED",
-    "REFERENCE_ADJUDICATION_INFRASTRUCTURE_PREPARED_NOT_EXECUTED"
+    "REFERENCE_ADJUDICATION_INFRASTRUCTURE_PREPARED_NOT_EXECUTED",
+    "GW_MISSING_SLICE_REPAIR_INFRASTRUCTURE_PREPARED_NOT_EXECUTED"
   ],
   "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
   "candidate_response_authorized": false,
   "next_actions": [
-    "Complete both response-blind repaired Reference route sets.",
-    "If and only if both route-producing repair workflows succeed, bind exact SURF_P and GW_LB run IDs into the P3 Reference adjudication.",
-    "Persist the complete P3 Reference decision.",
-    "Only if candidate_response_authorized=true, bind and execute the frozen state-count candidate matrix."
+    "Let both currently bound repair matrices reach terminal workflow state.",
+    "For GW_LB, classify every failed slice. Bind the exact-state two-half recovery only for slices verified as TECHNICAL_RUNNER_INTERRUPTION_EXIT_143.",
+    "Assemble one complete O0/O2-identical GW route set from successful original slices plus exact-state repaired missing slices.",
+    "If and only if complete SURF_P and GW_LB route sets exist, bind exact source run IDs into P3 Reference adjudication.",
+    "Only if the complete Reference result authorizes candidates, bind and execute the frozen state-count matrix."
   ],
   "scientific_firewall": {
     "any_new_p3_reference_response_seen": false,
@@ -45,7 +47,8 @@
     "closeout_execution_binding_created": false,
     "same_partition_response_generated": false,
     "closeout_generated": false,
-    "candidate_execution_binding_created": false
+    "candidate_execution_binding_created": false,
+    "gw_missing_slice_repair_binding_created": false
   },
   "reference_execution": {
     "SURF_P": {
@@ -90,15 +93,30 @@
   "reference_repair_runs": {
     "SURF_P": {
       "run_id": 35876282704,
-      "state": "IN_PROGRESS",
+      "state": "EXECUTING_ALL_OBSERVED_JOBS_SUCCESS",
       "binding": "integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_REPAIR_BINDING.json"
     },
     "GW_LB": {
       "run_id": 35876286853,
-      "state": "QUEUED",
-      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_REPAIR_BINDING.json"
+      "state": "EXECUTING_WITH_TECHNICAL_EXIT143_SLICES",
+      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_REPAIR_BINDING.json",
+      "technical_exit143_observed_jobs": [
+        {
+          "job_id": 107234972632,
+          "case": "B01/R2048_T32/O0/history2"
+        },
+        {
+          "job_id": 107234972634,
+          "case": "B01/R2048_T32/O0/history1"
+        },
+        {
+          "job_id": 107234972643,
+          "case": "B01/R2048_T32/O0/history4"
+        }
+      ]
     }
   },
   "reference_technical_repair": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json",
-  "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json"
+  "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
+  "gw_missing_slice_repair_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json"
 }
