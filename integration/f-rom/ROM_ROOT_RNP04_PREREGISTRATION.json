@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.rom_root.rnp04.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP04",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_ROOT_ACTIVE_POLICY_RESPONSE",
+  "inherits": [
+    "integration/f-rom/ROM_ROOT_RNP01_CLOSEOUT.json",
+    "integration/f-rom/ROM_ROOT_RNP02_CLOSEOUT.json",
+    "integration/f-rom/ROM_ROOT_RNP03_CLOSEOUT.json"
+  ],
+  "external_method_authority": {
+    "P2E18D3": {
+      "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+      "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+      "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+      "role": "Independent evidence that strict total-balance retries can be numerically indistinguishable from a prospectively defined representation floor."
+    },
+    "P2E20": {
+      "branch": "work/pub-p2e20-ref-high-floor-policy",
+      "head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+      "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+      "role": "Independent qualification of a candidate-blind representation-floor total-balance policy on a non-root solver-seam matrix. It is methodology only, not direct authority for root-active C6R."
+    }
+  },
+  "question": "Can a prospectively derived representation-floor total-balance policy qualify the root-active high-resolution Reference without changing local/head convergence criteria, iteration ceiling, physics, transaction semantics or solver source?",
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "qualification_matrix": {
+    "optimization": [0],
+    "cases": [
+      {"material": "B01", "history": "V02", "route": "R512_T32", "nodes": 512, "dz_cm": 0.3125},
+      {"material": "B01", "history": "V02", "route": "R1024_T32", "nodes": 1024, "dz_cm": 0.15625},
+      {"material": "B01", "history": "V02", "route": "R2048_T32", "nodes": 2048, "dz_cm": 0.078125},
+      {"material": "B14", "history": "V01", "route": "R512_T32", "nodes": 512, "dz_cm": 0.3125},
+      {"material": "B14", "history": "V01", "route": "R1024_T32", "nodes": 1024, "dz_cm": 0.15625},
+      {"material": "B14", "history": "V01", "route": "R2048_T32", "nodes": 2048, "dz_cm": 0.078125}
+    ],
+    "temporal_factor": 32,
+    "transaction_dt_day": 0.000025,
+    "full_history_required": true
+  },
+  "candidate_policy": {
+    "first_attempt": {
+      "max_iterations": 16,
+      "compartment_balance_tolerance": 1e-12,
+      "total_balance_tolerance": 1e-12,
+      "head_tolerances": "unchanged C6R",
+      "root_sink": "prescribed from the exact committed pre-transaction state"
+    },
+    "representation_bound": {
+      "formula_cm": "F_repr = sum_i(dz_i * spacing(theta_s_i))",
+      "homogeneous_material_binding": "theta_s_i = p%cofgen(2,i)",
+      "safety_factor": 1,
+      "response_fitted": false,
+      "computed_before_first_attempt": true
+    },
+    "reattempt_admission": [
+      "first attempt status is SW_SOLVE_RETRY_ADVISED",
+      "failure class is exactly RETRY_TOTAL_ONLY",
+      "balance_flags == 0",
+      "head_flags == 0",
+      "max_abs_local_residual <= 1e-12",
+      "abs(total_residual) * dt <= F_repr",
+      "committed revision, lineage, time and physical state are bitwise unchanged after failed first attempt"
+    ],
+    "reattempt": {
+      "count": 1,
+      "same_committed_state": true,
+      "same_forcing": true,
+      "same_prescribed_root_sink": true,
+      "same_dt": true,
+      "max_iterations": 16,
+      "compartment_balance_tolerance": 1e-12,
+      "head_tolerances": "unchanged C6R",
+      "total_balance_tolerance_formula": "max(1e-12, F_repr / dt)",
+      "fallback_on_local_balance_failure": false,
+      "fallback_on_head_failure": false,
+      "fallback_on_mixed_failure": false
+    }
+  },
+  "hard_preservation_gates": {
+    "transaction_mass_abs_cm": 1e-12,
+    "revision_advances_exactly_once_per_accepted_transaction": true,
+    "failed_first_attempt_commits_nothing": true,
+    "root_uptake_reconciles_to_prescribed_sink": true,
+    "no_internal_retry_extension": true,
+    "no_DYN0A_local-balance_fallback_extension": true,
+    "production_source_unchanged": true,
+    "Reference_Richards_source_unchanged": true,
+    "Feddes_and_root_provider_unchanged": true,
+    "non_root_policy_semantics_unchanged_by_construction": true
+  },
+  "failure_class_preservation": {
+    "first_attempt_failure_class_must_be_reported_before_policy_reattempt": true,
+    "any_non_total_only_first_failure": "FAIL_CLOSED_POLICY_NOT_QUALIFIED_FOR_CASE",
+    "residual_above_representation_bound": "FAIL_CLOSED_POLICY_NOT_QUALIFIED_FOR_CASE",
+    "reattempt_failure": "FAIL_CLOSED_POLICY_NOT_QUALIFIED_FOR_CASE"
+  },
+  "diagnostics_only": [
+    "policy reattempt count",
+    "first-attempt and accepted nonlinear iterations/backtracking",
+    "representation bound",
+    "integrated rejected total residual",
+    "research-run wall time if emitted"
+  ],
+  "acceptance_rule": "RNP04 qualifies only if all six full histories complete with all hard preservation gates satisfied, every policy reattempt is admitted by the frozen rule, no other fallback class occurs, and no production/reference source is modified.",
+  "nonclaims": [
+    "No production tolerance change.",
+    "No claim that the representation bound is a rigorous propagated-error bound.",
+    "No performance or speedup claim.",
+    "No reduced-ROM response.",
+    "No C6R reopening inside RNP04.",
+    "No application acceptance."
+  ],
+  "next_if_qualified": "Persist a new root-active Reference numerical authority. A separate ROM-ROOT restart may then decide whether to rerun the previously closed C6R Stage 1 under that new authority.",
+  "next_if_not_qualified": "Keep C6R closed and localize the remaining Reference numerical-method failure without changing the preregistered policy."
+}
