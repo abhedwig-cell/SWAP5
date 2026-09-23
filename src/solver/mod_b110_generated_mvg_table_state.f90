@@ -202,7 +202,12 @@ contains
 
     if (state%ksatexm_extension_enabled) then
       allocate(ext_lo(n), ext_hi(n), ext_mid(n), relsat(n))
-      ext_lo = FSI39_SOURCE_HEAD
+      ! F-SI39 is defined by the strict relsat > threshold predicate.
+      ! Do not assume the nominal source head (-2 cm) is bitwise on the
+      ! inactive side: reconstructing relsat from theta can differ by one ULP.
+      ! Bracket from a guaranteed dry state and locate the actual floating
+      ! transition used by the analytical authority.
+      ext_lo = GENERATION_H_DRY
       ext_hi = 0.0_real64
 
       hvec = ext_lo
@@ -417,14 +422,16 @@ contains
         conductivity(i) = exp(logk_value)
       end if
 
-      if (state%ksatexm_extension_enabled .and. h >= state%first_active_head(i)) then
-        frac = ((water_content(i)-state%theta_r(i))/state%delta_theta(i)-state%relsat_threshold(i)) / &
-             (1.0_real64-state%relsat_threshold(i))
-        if (.not. ieee_is_finite(frac) .or. frac < 0.0_real64 .or. frac > 1.0_real64) then
-          status = F_TAB02_STATE_EVALUATION_FAILED
-          return
+      if (state%ksatexm_extension_enabled) then
+        if (h >= state%first_active_head(i)) then
+          frac = ((water_content(i)-state%theta_r(i))/state%delta_theta(i)-state%relsat_threshold(i)) / &
+               (1.0_real64-state%relsat_threshold(i))
+          if (.not. ieee_is_finite(frac) .or. frac < 0.0_real64 .or. frac > 1.0_real64) then
+            status = F_TAB02_STATE_EVALUATION_FAILED
+            return
+          end if
+          conductivity(i) = frac*state%ksatexm(i) + (1.0_real64-frac)*state%k_threshold(i)
         end if
-        conductivity(i) = frac*state%ksatexm(i) + (1.0_real64-frac)*state%k_threshold(i)
       end if
 
       if (.not. ieee_is_finite(water_content(i)) .or. .not. ieee_is_finite(conductivity(i)) .or. &
