@@ -47,6 +47,8 @@ program test_ftab02a_generated_mvg_table_state
     heads = probes(j)
     call analytic%evaluate(heads, theta_a, k_a, c_a, dk)
     call evaluate_b110_generated_mvg_table_state(state, heads, theta_t, k_t, c_t, status)
+    if (status /= F_TAB02_STATE_OK) write(error_unit,'(a,i0,1x,a,es24.16,1x,a,i0)') &
+         'F_TAB02_A_EVAL_FAIL_PROBE=', j, 'h=', probes(j), 'status=', status
     call require(status == F_TAB02_STATE_OK, 'table state evaluate')
     call evaluate_b110_generated_mvg_table_state(state2, heads, theta_t2, k_t2, c_t2, status)
     call require(status == F_TAB02_STATE_OK, 'second table state evaluate')
