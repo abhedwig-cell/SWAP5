@@ -35,7 +35,7 @@ confirmed B0 defects are not migration targets.
 | Lower boundary mode 5 prescribed head | PPA-WU02-C / PPA-LOW05 | PARTIAL_ORACLES_PRODUCTION_HELD | DATE5/HBOT5 AFGEN law is source-tested; ordinary non-groundwater mode-5 semantics remain distinct from groundwater-owned bottom_mode=5 | Define ordinary adapter/ownership and mass-publication contract before production binding |
 | Lower boundary mode 8 lysimeter | PPA-WU02-G / PPA-LOW08 | PARTIAL_ORACLES_PRODUCTION_HELD | Strict task-1 active threshold, task-2 flag reuse, plate gradient, residual and Jacobian terms have source oracles; active-set lifecycle is not integrated | Preserve transactional active-set behavior across nonlinear iterations and rejected steps before any admission |
 | WOFOST bounded runtime | Status-A traceability | CANONICALLY_ADMITTED | Capability-specific qualified runtime | Preserve bounded runtime; no broad API claim |
-| Management: full irrigation, tillage and parser grammar | B1; PPA audit | PARTIAL_ORACLES_PRODUCTION_HELD | TCS7 and TCS8/DCS2 scheduled selectors match B1.11 AFGEN/trigger semantics over 100,000 O0/O2 inputs; generic management parsing, other TCS/DCS modes, event-calendar ingestion, production binding and accepted-mass/restart integration remain absent; tillage has unresolved SWAP-003/004 policy | Continue remaining source-bound selector equations separately; do not infer broad management or runtime admission |
+| Management: full irrigation, tillage and parser grammar | B1; PPA audit | PARTIAL_ORACLES_PRODUCTION_HELD | TCS7 and TCS8/DCS2 selectors match B1.11 AFGEN/trigger semantics over 100,000 O0/O2 inputs; isolated TCS6 weekly-counter/deficit gate matches its strict comparison; generic management parsing, other TCS/DCS modes, event-calendar ingestion, production binding and accepted-mass/restart integration remain absent; tillage has unresolved SWAP-003/004 policy | Continue remaining source-bound selector equations separately; do not infer broad management or runtime admission |
 | Snow restricted daily path | Status-A | CANONICALLY_ADMITTED | Exact-head preservation | Preserve; advanced Snow is future scope |
 | Drainage and surface evaporation | Status-A | CANONICALLY_ADMITTED | Current preservation authority | Preserve |
 | Restart v1 and serialized MultiSWAP v1 | Status-A | CANONICALLY_ADMITTED | Same-tree and permanent preservation | Preserve; parallel real physics is separately bounded |
@@ -74,7 +74,12 @@ millimetres to centimetres. The typed evaluator preserves the existing TCS7
 default and adds an explicit TCS8 selector. Separate 100,000-vector O0/O2
 source-oracle tests cover AFGEN interpolation and endpoint semantics, trigger
 equality and the resulting event amount. They do not qualify a production
-irrigation route or alter the restricted F-APP07 admission.
+irrigation route or alter the restricted F-APP07 admission. PPA-IRR-TCS6-WEEKLY
+also isolates the legacy weekly counter transition: it increments `dayfix`,
+resets at seven, and tests `10*cdef > irgthreshold` only on reset. Its
+100,000-vector O0/O2 source oracle covers the 366 startup sentinel and strict
+threshold, but does not establish the daily invocation/calendar or restart
+owner.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-TCS6-WEEKLY",
+  "parent_workunit": "PPA-IRR-TCS7-DCS2",
+  "title": "Source-bound weekly irrigation timing counter and deficit gate",
+  "protocol": "PIN_B1_11_SOURCE -> ISOLATE_TCS6_TRANSITION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_CALENDAR_AND_RUNTIME_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "file": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "519-531",
+    "initial_state_source_lines": "395-400",
+    "equation": "Increment dayfix once on entry; when the incremented value is at least seven, reset it to zero and trigger only when 10*cdef_cm > irgthreshold_mm.",
+    "restart_domain": "The source's dormant restart read accepts dayfix 0 through 366; the normal crop-rotation initialization sets the first value to 366."
+  },
+  "scope": [
+    "pure TCS6 day-counter transition and strict weekly deficit comparison only",
+    "startup sentinel 366, ordinary within-week values 0 through 6, threshold equality and strict sides",
+    "100000 deterministic source-equation comparisons at O0 and O2 with transcript identity"
+  ],
+  "non_goals": [
+    "daily process invocation/calendar proof, event selection or irrigation amount/rate",
+    "fixed interval TCSFIX interaction, generic management parser or event-calendar ingestion",
+    "scheduled irrigation runtime, source booking, retry/restart or production admission",
+    "new state owner or restart schema"
+  ],
+  "pass_conditions": [
+    "the isolated helper matches the exact B1.11 increment/reset/strict comparison",
+    "the 366 startup sentinel performs the source's immediate first-week test and then resets to zero",
+    "the counter resets every seventh increment, independent of whether the threshold triggers",
+    "O0/O2 transcripts are byte-identical",
+    "production and calendar admission remain NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}
