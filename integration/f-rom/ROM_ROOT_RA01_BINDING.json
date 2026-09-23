@@ -23,7 +23,7 @@
     "workflow": ".github/workflows/rom-root-ra01.yml",
     "workflow_blob": "4b7583ed9f7a86312cf9b135c8cc22d1bd3568f4",
     "policy_materializer": "tests/rom/materialize_rom_root_ra01_reference_policy.py",
-    "policy_materializer_blob": "6745a40bfda00f81bfd6d0eba25e929794cbc253",
+    "policy_materializer_blob": "35406bf5e9fd4e86525338dc14969cf91d4f1fa7",
     "wrapper_analyzer": "tests/rom/analyze_rom_root_ra01_reference_transfer.py",
     "wrapper_analyzer_blob": "9193d60ca07d0ae5f473167eb0b7fc751d415b0b",
     "root_materializer_blob": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
@@ -84,6 +84,16 @@
       "head": "584ad1b8b2842b0fdfefcba29ba46523941c3a46",
       "outcome": "PRE_SCIENTIFIC_AUTHORITY_VERIFICATION_FAILURE",
       "scientific_execution_started": false
+    },
+    {
+      "run_id": 35819769779,
+      "head": "5922fbc10f4bb51d2456f2a384a763819e857edb",
+      "outcome": "PRE_SCIENTIFIC_MATERIALIZER_ESCAPE_FAILURE",
+      "scientific_execution_started": false
     }
+  ],
+  "pre_scientific_repairs": [
+    "integration/f-rom/ROM_ROOT_RA01_PRE_SCIENTIFIC_REPAIR.json",
+    "integration/f-rom/ROM_ROOT_RA01_PRE_SCIENTIFIC_REPAIR2.json"
   ]
 }
