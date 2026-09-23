@@ -12,9 +12,9 @@
     "authorization_dependency": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json must explicitly set candidate_response_authorized=true"
   },
   "implementation_blobs": {
-    "tests/rom/run_rom_purpose_p3_candidate.py": "c6f3f15b2cdbcd4633daeb44505606df307cdcd9",
-    "tests/rom/analyze_rom_purpose_p3_candidates.py": "3f2b526a4529ed9276e80538048187564f464a88",
-    ".github/workflows/f-rom-purpose-p3-candidates.yml": "6a8d0a420a2c425d06e19433ad40bcd49ec1f6b8",
+    "tests/rom/run_rom_purpose_p3_candidate.py": "e9e249717cd9f402e282bd5a5e80ec6fcffbcd35",
+    "tests/rom/analyze_rom_purpose_p3_candidates.py": "b695ac93444e3ab7ac2c747644abc92fe2ebfedb",
+    ".github/workflows/f-rom-purpose-p3-candidates.yml": "750b6dabcef6e5fd9f9db3caa90e62155d485377",
     "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
     "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c"
   },
@@ -62,5 +62,10 @@
     "candidate_response_generated": false,
     "boundaries_changed": false,
     "closure_changed": false
-  }
+  },
+  "technical_repairs_before_candidate_response": [
+    "4f1a970fe78fc3be835acd3b808aede34cc6090d: repaired literal newline syntax and removed obsolete P1 candidate dependency.",
+    "88f95c1dd791413bc5f4be8c3a0fdba1020a9cdf: aligned fresh SURF_P parser globals with P3 S09-S12 histories.",
+    "e961d7fb54daff1be8073f44d5fca87cef6d36f5: candidate workflow aligned with repaired runner."
+  ]
 }
