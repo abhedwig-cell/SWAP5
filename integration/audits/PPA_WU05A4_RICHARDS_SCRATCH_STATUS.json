@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-WU05-A4-RICHARDS-SCRATCH",
+  "baseline": "ad09ede4a",
+  "implementation": "src/adapter/mod_ppa_wu05a4_richards_scratch_binding.f90",
+  "scope": "Opt-in adapter applies restricted saturated-domain trial contributions to actual reference_richards_workspace_t residual and dfdh_main arrays; existing workspace type and production HeadCalc are unchanged",
+  "contract": "Caller identifies expected positive workspace generation. Reject poisoned, released, generation-mismatched, wrong-node-count or malformed workspaces before candidate assembly; invalidate prior output transfer. Reuse atomic residual/diagonal assembly. Do not initialize, reset or resize a caller workspace implicitly.",
+  "gate": "tests/fapp/run_ppa_wu05a4_richards_scratch.ps1",
+  "tests": "Real workspace initialize, successful residual/diagonal contribution, unchanged ordinary source/sink and off-diagonals, internal transfer balance, reinitialization generation mismatch, poison rejection, reset recovery and release rejection.",
+  "compiler_note": "Wno-unused-dummy-argument accommodates intentionally unused arguments in existing abstract solver default; other warnings remain errors and bounds/FPE checks remain active.",
+  "limitations": "No HeadCalc invocation or nonlinear matrix solve. Generation protects application time only; the returned used-transfer object is not bound to future workspace resets. Callers must discard it at trial boundaries. No accepted state, runtime receipt, restart or production physics admission.",
+  "production_admitted": false,
+  "next_action": "Specify residual/Jacobian callback ordering and candidate geometry ownership inside HeadCalc, including final-used evaluation capture and inactive-path preservation, before enabling any production route."
+}
