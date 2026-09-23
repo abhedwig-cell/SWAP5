@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.rom-purpose.p4.gw-r2048-t32-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-GW-R2048-T32",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P4_REFERENCE_RESPONSE",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "prior_qualified_execution_topology": {
+    "source": "P3/P1 exact-state segmented Reference recovery",
+    "segment_steps": 8192,
+    "rationale": "Adopt the already-qualified execution topology prospectively before any P4 response; no hydrological response is used to choose segmentation."
+  },
+  "segment_steps": 8192,
+  "segments_per_history": 4,
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "optimization_modes": [
+    0,
+    2
+  ],
+  "histories": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p4-gw-r2048-t32.yml": "2da79aa472a778469ddf9265ac27ba34cd72aa75",
+    "tests/rom/run_rom_purpose_p4_gw_r2048_t32_segment.py": "e7739e05d9e1bf03ab27142294f01f0c4a86df0c",
+    "tests/rom/assemble_rom_purpose_p4_gw_r2048_t32.py": "bcceba7e792c1564d7bcd79c8b84fa5166f712ba",
+    "tests/rom/materialize_rom_purpose_p4_gw_reference.py": "cb38351335713372938405a189f4385d07a64b90",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab"
+  },
+  "scientific_firewall": {
+    "response_seen_before_binding": false,
+    "hydrological_response_used_for_topology": false,
+    "forcing_changed": false,
+    "temporal_factor_changed": false,
+    "spatial_resolution_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false
+  }
+}
