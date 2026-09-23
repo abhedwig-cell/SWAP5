@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.rom_root.ra02_d2.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D2",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_RA02_D2_REFERENCE_RESPONSE",
+  "question": "Across the frozen RA01 Reference domain, did every positive-root-fraction node remain in the exact full-potential Feddes drought regime, or did any node enter alpha<1 so that the tiny route-to-route uptake differences could contain a physical threshold/regime component?",
+  "starting_authority": {
+    "canonical_reconciled_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "research_predecessor": "integration/f-rom/ROM_ROOT_RA02_D1_CLOSEOUT.json",
+    "ra01_result": "integration/f-rom/ROM_ROOT_RA01_RESULT.json",
+    "ra01_workflow_run": 35819870854,
+    "d1_result": "integration/f-rom/ROM_ROOT_RA02_D1_RESULT.json",
+    "d1_conclusion": "AVAILABLE_OUTPUT_SUPPORTS_NUMERICAL_FLOOR; NODE_LEVEL_ADJUDICATION_REMAINS_UNAVAILABLE",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+  },
+  "frozen_domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "initial_effective_saturation": {
+      "V01": 0.6,
+      "V02": 0.45,
+      "V03": 0.6,
+      "V04": 0.45
+    },
+    "potential_transpiration_cm_per_day": {
+      "V01": 0.6,
+      "V02": 0.3,
+      "V03": 0.6,
+      "V04": 0.3
+    },
+    "roots": {
+      "V01": "SHALLOW",
+      "V02": "SHALLOW",
+      "V03": "UNIFORM",
+      "V04": "UNIFORM"
+    },
+    "root_depth_cm": 80,
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_level": 0,
+    "ra01_numerical_policy_unchanged": true,
+    "feddes_physics_unchanged": true,
+    "forcing_unchanged": true,
+    "horizon_unchanged": true
+  },
+  "instrumentation": {
+    "scope": "output-only diagnostics evaluated inside the existing committed-state root process before each hydraulic transaction",
+    "per_history_or_segment": [
+      "root_node_evaluations",
+      "stressed_node_evaluations where exact drought_reduction_factor < 1.0",
+      "minimum exact drought_reduction_factor",
+      "minimum pressure_head minus diagnostics.critical_pressure_head over rooted nodes"
+    ],
+    "no_spatial_remapping": true,
+    "no_new_tolerance": true,
+    "no_rounded_regime_classifier": true,
+    "positive_root_fraction_note": "The frozen SHALLOW and UNIFORM cumulative-root profiles give strictly positive increments on every rooted node."
+  },
+  "integrity_rules": {
+    "expected_root_node_evaluations": "rooted_nodes multiplied by executed hydraulic transactions; segmented R2048_T32 counts must sum over all four frozen segments",
+    "all_diagnostics_finite": true,
+    "root_process_status_must_remain_ROOT_UPTAKE_OK": true,
+    "transaction_mass_gate_cm": 1e-12,
+    "fallback_forbidden": true
+  },
+  "classifications": {
+    "NODE_LEVEL_FULL_POTENTIAL_IDENTITY": "For every material, history, route and segment: stressed_node_evaluations=0, minimum drought_reduction_factor is exactly 1.0, minimum h-h3 is nonnegative, and expected evaluation counts close exactly.",
+    "NODE_LEVEL_PHYSICAL_STRESS_PRESENT": "Any rooted node on any frozen RA01 trajectory has drought_reduction_factor < 1.0 or h-h3 < 0.",
+    "DIAGNOSTIC_INTEGRITY_FAILURE": "Expected node-evaluation counts do not close or required diagnostic values are missing/nonfinite."
+  },
+  "decision_rule": {
+    "if_NODE_LEVEL_FULL_POTENTIAL_IDENTITY": "D1 numerical-floor interpretation is node-level supported. This does not reclassify RA01 as qualified, but it may release the already-preregistered RA02 stress-active Reference-only execution from governance hold.",
+    "if_NODE_LEVEL_PHYSICAL_STRESS_PRESENT": "Keep RA02 execution on hold. Do not reinterpret the RA01 root-uptake uncertainty failure as purely numerical.",
+    "if_DIAGNOSTIC_INTEGRITY_FAILURE": "Technical repair only; no scientific decision."
+  },
+  "scientific_firewall": {
+    "ra01_reclassified": false,
+    "reference_qualified": false,
+    "reduced_candidate_response_generated": false,
+    "stage2_executed": false,
+    "stage3_executed": false,
+    "uncertainty_gate_changed": false,
+    "new_root_specific_state_selected": false,
+    "production_change_authorized": false
+  },
+  "model_changed": false
+}
