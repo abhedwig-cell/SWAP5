@@ -90,6 +90,10 @@ early="  src/runtime/mod_a23bu_worker_execution_context.f90\\n"
 deps="  src/solver/mod_soil_water_accepted_step_direction_contract.f90\\n  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\\n"
 if early in s:
     s=s.replace(early,deps+early,1)
+contracts="  src/runtime/mod_canonical_contracts.f90\\n"
+publication="  src/transaction/mod_accepted_trajectory_directional_publication.f90\\n"
+if contracts in s and publication not in s:
+    s=s.replace(contracts,publication+contracts,1)
 dst.write_text(s)'''
 if s.count(child_write) != 1:
     raise SystemExit(f"expected one child write anchor, got {s.count(child_write)}")
