@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.rom_root.s2r.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2R",
+  "date": "2026-09-23",
+  "status": "S2R_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED",
+  "decision": "STAGE3_DYNAMIC_FEEDBACK_MAY_BE_PREREGISTERED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S2R_BINDING.json",
+    "preserved_s2_failure": "integration/f-rom/ROM_ROOT_S2_FAILURE_CLASSIFICATION.json",
+    "workflow_run": 35853351720,
+    "workflow_head": "54e634ebf15325ebd59ca66b12b55e5a4b79257b",
+    "analyzer_job": 107156173590,
+    "artifact": {
+      "id": 10746014928,
+      "name": "rom-root-s2r",
+      "digest": "sha256:73085e12ee18cc3abfdf0521cc0fc5df8379f43757b7b818f39306457b6bf2ed"
+    }
+  },
+  "observed": {
+    "case_count": 32,
+    "all_32_cases_pass": true,
+    "check_failures": [],
+    "maximum_abs_water_ledger_cm": 6.472600233564663e-13,
+    "maximum_cumulative_error_to_preregistered_bound_ratio": 0.034690057209463665,
+    "maximum_route_sum_error_to_preregistered_bound_ratio": 0
+  },
+  "bounded_interpretation": [
+    "All U4/U8/R8/R16 cases for B01/B14 and V01-V04 preserve the prescribed retained-layer root sink through the reduced hydraulic harness.",
+    "The dedicated root-sink and generic-sink routes are bit-identical, the zero-sink route is bit-identical to the legacy no-sink balance, and every water ledger satisfies the inherited 1e-10 cm gate.",
+    "The original S2 failure remains valid for its non-operation-count-aware cumulative arithmetic check and is not reclassified.",
+    "S2R qualifies harness plumbing only. It does not evaluate Feddes feedback or establish reduced hydrological fidelity."
+  ],
+  "scientific_firewall": {
+    "s2_reclassified": false,
+    "feddes_evaluated": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
