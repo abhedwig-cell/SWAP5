@@ -158,7 +158,27 @@ def pair_metrics(left:dict,right:dict,purpose:str)->dict:
 def finite_vector(x:dict)->bool:
     return all(math.isfinite(float(v)) and float(v)>=0.0 for v in x.values())
 
-def numerical_qualification(routes:dict,purpose:str)->dict:
+def numerical_qualification(routes:dict,statuses:dict,purpose:str)->dict:
+    execution_pass=all(
+        int(statuses[k]["return_code_o0"])==0 and
+        int(statuses[k]["return_code_o2"])==0 and
+        bool(statuses[k]["scientific_trace_identity"])
+        for k in FACTORS
+    )
+    if not execution_pass:
+        return {
+            "qualified":False,
+            "reason":"EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN",
+            "execution_status":{f"T{k}":statuses[k] for k in FACTORS},
+            "T8_vs_T16":None,
+            "T16_vs_T32":None,
+            "componentwise_nonincreasing":False,
+            "finite_complete_vector":False,
+            "max_abs_transaction_mass_cm":None,
+            "mass_gate_cm":MASS_GATE,
+            "mass_gate_pass":False,
+            "exact_fine_pair_metrics":[],
+        }
     coarse=pair_metrics(routes[8]["histories"],routes[16]["histories"],purpose)
     fine=pair_metrics(routes[16]["histories"],routes[32]["histories"],purpose)
     if set(coarse)!=set(fine):
@@ -169,6 +189,9 @@ def numerical_qualification(routes:dict,purpose:str)->dict:
     mass_pass=all(v<=MASS_GATE for v in mass.values())
     return {
         "qualified":bool(finite and nonincreasing and mass_pass),
+        "reason":("QUALIFIED" if finite and nonincreasing and mass_pass
+                  else "TEMPORAL_VECTOR_OR_MASS_QUALIFICATION_FAILED"),
+        "execution_status":{f"T{k}":statuses[k] for k in FACTORS},
         "T8_vs_T16":coarse,
         "T16_vs_T32":fine,
         "componentwise_nonincreasing":bool(nonincreasing),
@@ -211,11 +234,17 @@ def main()->int:
         assert pr["same_partition_corichards_diagnostic_required"] is True
         assert pr["aligned_crosses_R512_T32_comparator"] is False
 
+        statuses={}
         routes={}
         for factor in FACTORS:
-            p=a.route_root/f"corichards_{purpose}_{material}_T{factor}_o0.txt"
-            routes[factor]=parse_coarse(p,purpose,factor)
-        nq=numerical_qualification(routes,purpose)
+            sp=a.route_root/f"execution_{purpose}_{material}_T{factor}.json"
+            statuses[factor]=json.loads(sp.read_text())
+            if (int(statuses[factor]["return_code_o0"])==0 and
+                int(statuses[factor]["return_code_o2"])==0 and
+                bool(statuses[factor]["scientific_trace_identity"])):
+                p=a.route_root/f"corichards_{purpose}_{material}_T{factor}_o0.txt"
+                routes[factor]=parse_coarse(p,purpose,factor)
+        nq=numerical_qualification(routes,statuses,purpose)
 
         metrics_t32=None
         comparator_relation=None
