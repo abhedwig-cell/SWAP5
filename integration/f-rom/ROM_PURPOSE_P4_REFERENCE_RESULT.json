@@ -1,0 +1,2141 @@
+{
+  "candidate_response_authorized": true,
+  "fresh_reference": {
+    "GW_LB": {
+      "B01": {
+        "discrete_guard": {
+          "spatial_bottom_flux_sign_mismatch_count": 0,
+          "spatial_max_reversal_timing_difference_steps": 0,
+          "spatial_reversal_sequence_mismatch_history_count": 0,
+          "temporal_bottom_flux_sign_mismatch_count": 0,
+          "temporal_max_reversal_timing_difference_steps": 0,
+          "temporal_reversal_sequence_mismatch_history_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 4.334310688136611e-13,
+        "metrics": {
+          "cumulative_bottom_rmse_cm": {
+            "combined_reference_uncertainty": 1.5567798427081925e-05,
+            "qualified": true,
+            "space": {
+              "coarse": 1.0803552293376858e-05,
+              "fine": 2.8157942369682985e-06,
+              "fine_uncertainty": 1.2407575957096479e-06,
+              "observed_order": 1.9398919413458997,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.7952874116231864e-05,
+              "fine": 9.716238540157462e-06,
+              "fine_uncertainty": 1.4327040831372278e-05,
+              "observed_order": 0.8857450122011994,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "interval_bottom_flux_rmse_cm_per_day": {
+            "combined_reference_uncertainty": 0.007431924448609964,
+            "qualified": true,
+            "space": {
+              "coarse": 0.005256669857974328,
+              "fine": 0.0012781662716760244,
+              "fine_uncertainty": 0.0005132925554210167,
+              "observed_order": 2.0400736070742895,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 0.008572674766508095,
+              "fine": 0.004656005978607003,
+              "fine_uncertainty": 0.006918631893188947,
+              "observed_order": 0.880652500148967,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 3.342599247583335e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 2.2636725111747123e-07,
+              "fine": 5.810066990050848e-08,
+              "fine_uncertainty": 2.507693312060019e-08,
+              "observed_order": 1.9620385533497553,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.9454974328209815e-07,
+              "fine": 2.123112011272686e-07,
+              "fine_uncertainty": 3.091829916377333e-07,
+              "observed_order": 0.8940267139865036,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.556779898135764e-05,
+            "qualified": true,
+            "space": {
+              "coarse": 1.0803552369460753e-05,
+              "fine": 2.815794775500921e-06,
+              "fine_uncertainty": 1.2407581421433267e-06,
+              "observed_order": 1.939891675584528,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.79528741051522e-05,
+              "fine": 9.716238537719538e-06,
+              "fine_uncertainty": 1.4327040839214313e-05,
+              "observed_order": 0.885745011672826,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32"
+      },
+      "B14": {
+        "discrete_guard": {
+          "spatial_bottom_flux_sign_mismatch_count": 0,
+          "spatial_max_reversal_timing_difference_steps": 0,
+          "spatial_reversal_sequence_mismatch_history_count": 0,
+          "temporal_bottom_flux_sign_mismatch_count": 0,
+          "temporal_max_reversal_timing_difference_steps": 0,
+          "temporal_reversal_sequence_mismatch_history_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 3.552713678800501e-13,
+        "metrics": {
+          "cumulative_bottom_rmse_cm": {
+            "combined_reference_uncertainty": 5.996157474205823e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.1374804728419834e-05,
+              "fine": 8.057206382837462e-06,
+              "fine_uncertainty": 3.4801276343676204e-06,
+              "observed_order": 1.961254864697945,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.5222610371035957e-06,
+              "fine": 1.8400869808455917e-06,
+              "fine_uncertainty": 2.5160298398382027e-06,
+              "observed_order": 0.9367278681814093,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "interval_bottom_flux_rmse_cm_per_day": {
+            "combined_reference_uncertainty": 0.0027374021534750685,
+            "qualified": true,
+            "space": {
+              "coarse": 0.017401986113943443,
+              "fine": 0.004349237507099248,
+              "fine_uncertainty": 0.001811483108166999,
+              "observed_order": 2.0004175722880935,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 0.0013038431777965954,
+              "fine": 0.0006798584322524824,
+              "fine_uncertainty": 0.0009259190453080696,
+              "observed_order": 0.9394640885222478,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 1.4353432867573254e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 7.698029544710685e-07,
+              "fine": 1.963635553258367e-07,
+              "fine_uncertainty": 8.405126574333401e-08,
+              "observed_order": 1.97096201491245,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 8.380115560498433e-08,
+              "fine": 4.368949183116212e-08,
+              "fine_uncertainty": 5.948306293239853e-08,
+              "observed_order": 0.9396838132499251,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 5.9961576996227906e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.1374804123609796e-05,
+              "fine": 8.057206539685316e-06,
+              "fine_uncertainty": 3.480127883538038e-06,
+              "observed_order": 1.961254808802583,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.522261041446782e-06,
+              "fine": 1.8400869767662154e-06,
+              "fine_uncertainty": 2.5160298160847527e-06,
+              "observed_order": 0.9367278731587292,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32"
+      }
+    },
+    "SURF_P": {
+      "B01": {
+        "discrete_guard": {
+          "spatial_max_storage_extremum_timing_difference_steps": 0,
+          "spatial_max_timing_ambiguity_width_steps": 0,
+          "spatial_unobservable_event_count": 0,
+          "temporal_max_storage_extremum_timing_difference_steps": 0,
+          "temporal_max_timing_ambiguity_width_steps": 0,
+          "temporal_unobservable_event_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 4.061864505768703e-13,
+        "metrics": {
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 1.355450592911044e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 3.1474322413568804e-08,
+              "coarse_indistinguishability_floor": 8.07942759252068e-15,
+              "fine": 7.869148268298156e-09,
+              "fine_indistinguishability_floor": 1.5782568673484682e-14,
+              "fine_uncertainty": 3.2791271781861855e-09,
+              "observed_order": 1.999895923058309,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 2.117953382572497e-07,
+              "coarse_indistinguishability_floor": 2.091799633068373e-14,
+              "fine": 1.0586935122197279e-07,
+              "fine_indistinguishability_floor": 2.0917996324232376e-14,
+              "fine_uncertainty": 1.3226593211291822e-07,
+              "observed_order": 1.000385840096075,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "root_0_40_storage_rmse_cm": {
+            "combined_reference_uncertainty": 3.4894070003995713e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 6.54276659844217e-07,
+              "coarse_indistinguishability_floor": 1.2731592079955247e-12,
+              "fine": 1.6357501695144012e-07,
+              "fine_indistinguishability_floor": 2.5058838798382534e-12,
+              "fine_uncertainty": 6.815950832395762e-08,
+              "observed_order": 1.9999483858312224,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 5.479271335092769e-06,
+              "coarse_indistinguishability_floor": 3.3277004287483886e-12,
+              "fine": 2.7387560664931583e-06,
+              "fine_indistinguishability_floor": 3.327700363953998e-12,
+              "fine_uncertainty": 3.4212474920756136e-06,
+              "observed_order": 1.0004632732195728,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "surface_0_20_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.962208360516729e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 7.291579154857559e-07,
+              "coarse_indistinguishability_floor": 3.220071128432304e-13,
+              "fine": 1.8229720651058367e-07,
+              "fine_indistinguishability_floor": 6.301980208148944e-13,
+              "fine_uncertainty": 7.596146275493152e-08,
+              "observed_order": 1.999938842381686,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 4.6214377617860995e-06,
+              "coarse_indistinguishability_floor": 8.356587012256551e-13,
+              "fine": 2.310144903279311e-06,
+              "fine_indistinguishability_floor": 8.356586575290681e-13,
+              "fine_uncertainty": 2.8862468977617975e-06,
+              "observed_order": 1.0003584068693037,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 9.214341496195971e-11,
+            "qualified": true,
+            "space": {
+              "coarse": 3.252225294119085e-13,
+              "coarse_indistinguishability_floor": 1.9778408999033405e-11,
+              "fine": 1.007385637226578e-12,
+              "fine_indistinguishability_floor": 3.949838285981077e-11,
+              "fine_uncertainty": 3.949838285981077e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            },
+            "time": {
+              "coarse": 1.1642635243803612e-13,
+              "coarse_indistinguishability_floor": 5.264503210214893e-11,
+              "fine": 2.014029331087383e-13,
+              "fine_indistinguishability_floor": 5.264503210214895e-11,
+              "fine_uncertainty": 5.264503210214895e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            }
+          },
+          "upper_0_80_storage_rmse_cm": {
+            "combined_reference_uncertainty": 3.0902081488109595e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 4.4626106146294137e-07,
+              "coarse_indistinguishability_floor": 5.062666387895173e-12,
+              "fine": 1.1156890039856775e-07,
+              "fine_indistinguishability_floor": 9.993291584986261e-12,
+              "fine_uncertainty": 4.6489061383153345e-08,
+              "observed_order": 1.9999529947032246,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 4.87478992880246e-06,
+              "coarse_indistinguishability_floor": 1.3280375034639283e-11,
+              "fine": 2.4365880435151735e-06,
+              "fine_indistinguishability_floor": 1.328037505169292e-11,
+              "fine_uncertainty": 3.0437190874278063e-06,
+              "observed_order": 1.000477695867814,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32",
+        "timing_event_diagnostics": {
+          "spatial": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ],
+          "temporal": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ]
+        }
+      },
+      "B14": {
+        "discrete_guard": {
+          "spatial_max_storage_extremum_timing_difference_steps": 0,
+          "spatial_max_timing_ambiguity_width_steps": 0,
+          "spatial_unobservable_event_count": 0,
+          "temporal_max_storage_extremum_timing_difference_steps": 0,
+          "temporal_max_timing_ambiguity_width_steps": 0,
+          "temporal_unobservable_event_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 1.8812260870108388e-13,
+        "metrics": {
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 6.224755645287818e-10,
+            "qualified": true,
+            "space": {
+              "coarse": 1.2838071723857094e-09,
+              "coarse_indistinguishability_floor": 7.847922168497395e-15,
+              "fine": 3.211278191263466e-10,
+              "fine_indistinguishability_floor": 1.5328830980357845e-14,
+              "fine_uncertainty": 1.3390112173344336e-10,
+              "observed_order": 1.9992089707196437,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 7.807670522994623e-10,
+              "coarse_indistinguishability_floor": 2.0316103809899756e-14,
+              "fine": 3.905421162424413e-10,
+              "fine_indistinguishability_floor": 2.03161038099004e-14,
+              "fine_uncertainty": 4.885744427953384e-10,
+              "observed_order": 0.9994140360336192,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "root_0_40_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.0442827578533752e-09,
+            "qualified": true,
+            "space": {
+              "coarse": 2.185418820531279e-09,
+              "coarse_indistinguishability_floor": 1.2361072779372916e-12,
+              "fine": 5.464342810818011e-10,
+              "fine_indistinguishability_floor": 2.433040561831976e-12,
+              "fine_uncertainty": 2.2772516789700694e-10,
+              "observed_order": 1.9997898883890293,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.3060721973439525e-09,
+              "coarse_indistinguishability_floor": 3.2309960864541146e-12,
+              "fine": 6.531060797694616e-10,
+              "fine_indistinguishability_floor": 3.230996086366338e-12,
+              "fine_uncertainty": 8.165575899563683e-10,
+              "observed_order": 0.9998454052184195,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "surface_0_20_storage_rmse_cm": {
+            "combined_reference_uncertainty": 5.249625986897351e-09,
+            "qualified": true,
+            "space": {
+              "coarse": 1.1047188701213661e-08,
+              "coarse_indistinguishability_floor": 3.125831973216494e-13,
+              "fine": 2.762855125506672e-09,
+              "fine_indistinguishability_floor": 6.118135411384452e-13,
+              "fine_uncertainty": 1.151777685975038e-09,
+              "observed_order": 1.999447458610136,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 6.5492121670766344e-09,
+              "coarse_indistinguishability_floor": 8.113004390685223e-13,
+              "fine": 3.2758296594484736e-09,
+              "fine_indistinguishability_floor": 8.113004389330231e-13,
+              "fine_uncertainty": 4.097848300922313e-09,
+              "observed_order": 0.9994610291627837,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 8.948583627259455e-11,
+            "qualified": true,
+            "space": {
+              "coarse": 8.192159060156019e-13,
+              "coarse_indistinguishability_floor": 1.9208080340906428e-11,
+              "fine": 1.6663921511288604e-12,
+              "fine_indistinguishability_floor": 3.8359208686695946e-11,
+              "fine_uncertainty": 3.8359208686695946e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            },
+            "time": {
+              "coarse": 2.614310028884291e-14,
+              "coarse_indistinguishability_floor": 5.1126627585898594e-11,
+              "fine": 2.3327368329555933e-14,
+              "fine_indistinguishability_floor": 5.1126627585898594e-11,
+              "fine_uncertainty": 5.1126627585898594e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            }
+          },
+          "upper_0_80_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.2599348342487347e-11,
+            "qualified": true,
+            "space": {
+              "coarse": 1.712286379169237e-12,
+              "coarse_indistinguishability_floor": 4.915986665808739e-12,
+              "fine": 4.245573012860727e-13,
+              "fine_indistinguishability_floor": 9.703752294164311e-12,
+              "fine_uncertainty": 9.703752294164311e-12,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            },
+            "time": {
+              "coarse": 1.1118105743159457e-12,
+              "coarse_indistinguishability_floor": 1.289559604832312e-11,
+              "fine": 5.53478450695073e-13,
+              "fine_indistinguishability_floor": 1.2895596048323036e-11,
+              "fine_uncertainty": 1.2895596048323036e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32",
+        "timing_event_diagnostics": {
+          "spatial": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ],
+          "temporal": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S17",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S17",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S18",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S18",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S19",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S19",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S20",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S20",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "candidate_response_generated": false,
+    "numerical_uncertainty_is_application_tolerance": false,
+    "representation_or_closure_adjudicated": false
+  },
+  "reference_policy": {
+    "GW_LB": "P1/P2 inherited three-level numerical and discrete reversal qualification policy, applied to fresh G17-G20.",
+    "SURF_P": "P2 frozen numerical-observability and extremum-observability policy, applied to fresh S17-S20.",
+    "comparator": "R512_T32",
+    "target": "R2048_T32"
+  },
+  "schema": "swap5.rom-purpose.p4.reference-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": false,
+    "p2_admission_histories_reused": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "reference_policy_tuned_from_response": false,
+    "representation_tuned_from_response": false
+  },
+  "status": "P4_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+  "work_unit": "ROM-PURPOSE-P4-REFERENCE",
+  "workstream": "ROM-PURPOSE"
+}
