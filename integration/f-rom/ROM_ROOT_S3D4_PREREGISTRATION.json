@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.rom_root.s3d4.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D4",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_S3D4_FORCING_PORTABILITY_DERIVATION",
+  "question": "Can the fixed-h3 sufficient descriptors U_i and J_i identified by S3-D3 be uniquely recovered from the existing retained hydraulic state and remain exact when the demand-dependent Feddes threshold h3 changes, or does exact forcing-portable feedback require a richer root-weighted within-layer distribution object?",
+  "authority": {
+    "c6o": "integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json",
+    "c6p": "integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json",
+    "c6q": "integration/f-rom/LARE_BC2_C6Q_RECONCILIATION.json",
+    "s3": "integration/f-rom/ROM_ROOT_S3_RESULT.json",
+    "s3d1": "integration/f-rom/ROM_ROOT_S3D1_RESULT.json",
+    "s3d2": "integration/f-rom/ROM_ROOT_S3D2_RESULT.json",
+    "s3d3": "integration/f-rom/ROM_ROOT_S3D3_RESULT.json"
+  },
+  "fixed_h3_descriptor": {
+    "DeltaF_i": "retained root fraction",
+    "U_i": "root fraction with h>h3",
+    "J_i": "sum_j w_j*(h_j-h4) over h4<=h_j<=h3",
+    "exact_functional": "F_i(h3)=U_i+J_i/(h3-h4)"
+  },
+  "tests": {
+    "existing_state_recoverability": {
+      "rule": "If existing retained state uniquely determined U_i and J_i, then by the S3-D3 exact identity it would uniquely determine the fixed-h3 Feddes functional.",
+      "evidence": "C6P already supplies matched-storage and matched-storage-plus-geometric-first-moment fine profiles with different fixed-h3 Feddes uptake.",
+      "interpretation": "Use logical composition only; do not create new response data."
+    },
+    "moving_threshold_counterexample": {
+      "conditions": "Choose any h4 < h3_b < h3_a. Construct two root-weighted head distributions with identical DeltaF, U(h3_a) and J(h3_a), but different mass placement around h3_b.",
+      "concrete_normalized_fixture": {
+        "h4": -10,
+        "h3_a": -2,
+        "h3_b": -6,
+        "distribution_A": [
+          {
+            "w": 0.5,
+            "h": -4
+          },
+          {
+            "w": 0.5,
+            "h": -8
+          }
+        ],
+        "distribution_B": [
+          {
+            "w": 1,
+            "h": -6
+          }
+        ]
+      },
+      "preregistered_checks": [
+        "DeltaF_A == DeltaF_B",
+        "U_A(h3_a) == U_B(h3_a)",
+        "J_A(h3_a) == J_B(h3_a)",
+        "F_A(h3_a) == F_B(h3_a)",
+        "F_A(h3_b) != F_B(h3_b)"
+      ]
+    },
+    "forcing_portable_exact_object": {
+      "root_weighted_measure": "mu_i = sum_j w_j delta(h-h_j)",
+      "threshold_query_functions": [
+        "U_i(x)=mu_i(h>x)",
+        "J_i(x)=integral over h4<=h<=x of (h-h4) dmu_i"
+      ],
+      "identity": "F_i(x)=U_i(x)+J_i(x)/(x-h4) for every admissible x=h3",
+      "interpretation": "The full root-weighted pressure-head measure, or an equivalent threshold-queryable cumulative representation, is sufficient for arbitrary h3 without storing the response itself."
+    }
+  },
+  "preregistered_interpretation": {
+    "EXISTING_STATE_NOT_EXACTLY_RECOVERABLE": "C6P non-uniqueness plus S3-D3 sufficiency implies U/J are not unique functions of existing storage state; the same conclusion holds for storage plus the tested geometric first moment.",
+    "FIXED_H3_UJ_NOT_FORCING_PORTABLE": "The moving-threshold counterexample passes.",
+    "FORCING_PORTABLE_EXACT_OBJECT_IS_DISTRIBUTIONAL": "Exact arbitrary-h3 evaluation is provided by the root-weighted head measure/cumulative threshold-query object; no finite low-dimensional minimality theorem is claimed.",
+    "DYNAMIC_ROOT_STATE_NOT_SELECTED": "A distributional exact object is not automatically an admissible reduced state or closure."
+  },
+  "boundaries": [
+    "No new hydraulic or root-specific propagated state.",
+    "No dynamic reduced candidate.",
+    "No fitted distribution family.",
+    "No assumption that a finite set of moments is universally impossible beyond the tested/derived claim boundary.",
+    "No application tolerance.",
+    "No performance or production claim."
+  ],
+  "next_if_confirmed": "Close the exactness branch: a compact exact fixed-h3 response coordinate exists, but no forcing-portable exact low-dimensional state has been established. Any finite approximate root-information surrogate must be purpose/tolerance qualified before dynamic admission.",
+  "model_changed": false
+}
