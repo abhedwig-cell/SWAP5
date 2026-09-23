@@ -28,7 +28,7 @@ contains
         size(outflow) /= n .or. size(derivative_in) /= n .or. size(head_difference_out) /= n .or. &
         size(derivative_out) /= n) return
     if (top_compartment < 1 .or. bottom_compartment < top_compartment .or. bottom_compartment > n) return
-    if (top_macropore_compartment < 1 .or. top_macropore_compartment > n+1) return
+    if (top_macropore_compartment < 0 .or. top_macropore_compartment > n+1) return
     if (.not. all(ieee_is_finite(matrix_head)) .or. .not. all(ieee_is_finite(signed_head_difference)) .or. &
         .not. all(ieee_is_finite(inflow)) .or. .not. all(ieee_is_finite(outflow)) .or. &
         .not. all(ieee_is_finite(derivative_in))) return

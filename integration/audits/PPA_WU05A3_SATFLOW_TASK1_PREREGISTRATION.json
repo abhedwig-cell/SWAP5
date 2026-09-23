@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-SATFLOW-TASK1",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Composed SATFLOW task-1 interval potential exchange and incoming aggregate",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> COMPOSE_TESTED_COMPARTMENT_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:SATFLOW task 1",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1499-1574",
+    "behavior": "Apply active domain/matrix-zone gate, evaluate signed saturated matrix/macropore exchange for each interval compartment, persist head/flux terms explicitly, and sum only positive (matrix-to-macropore) potential inflows in loop order."
+  },
+  "scope": ["explicit arrays and interval bounds", "100000 deterministic bitwise comparisons at O0/O2"],
+  "non_goals": ["legacy saved trial workspace, task-2 outflow aggregation or task-4 derivative binding", "accepted mass receipt, rollback/restart or runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

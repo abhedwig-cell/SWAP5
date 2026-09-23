@@ -10,7 +10,7 @@
     "path": "SWAP/macrorate.f90:SATFLOW task 1",
     "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
     "source_lines": "1516-1565",
-    "behavior": "Compute clamped macropore-minus-matrix head difference and signed potential exchange for infiltration Darcy, exfiltration Darcy, radial seepage resistance, or Youngs seepage potential, including top/saturated-compartment partial factors."
+    "behavior": "Compute clamped macropore-minus-matrix head difference and signed potential exchange for infiltration Darcy, exfiltration Darcy, radial seepage resistance, or Youngs seepage potential, including top/saturated-compartment partial factors; PpDmCp is treated as the B1.11 macropore-domain volumetric proportion."
   },
   "scope": ["single-compartment pure potential equation", "100000 deterministic bitwise comparisons at O0/O2 across all routes"],
   "non_goals": ["SATFLOW saved trial workspace and task-2 outgoing aggregation", "accepted matrix/macropore mass receipt, retry/restart or runtime admission"],

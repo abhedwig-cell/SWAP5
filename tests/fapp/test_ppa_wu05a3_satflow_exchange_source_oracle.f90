@@ -5,7 +5,7 @@ program test_ppa_wu05a3_satflow_exchange_source_oracle
 
   integer, parameter :: vector_count = 100000
   real(real64), parameter :: pi_value = 3.1415926535897932384626433832795_real64
-  real(real64) :: matrix_head, reference_level, z, dz, lev, satfr, c_darcy, ksat, diameter, volume
+  real(real64) :: matrix_head, reference_level, z, dz, lev, satfr, c_darcy, ksat, diameter, domain_fraction
   real(real64) :: shape_factor, reduction, dt, actual_head, expected_head, actual_flux, expected_flux
   real(real64) :: states(4, 2)
   integer :: actual_status, i, branch, compartment, sat_compartment, top_compartment, seepage_switch
@@ -23,7 +23,7 @@ program test_ppa_wu05a3_satflow_exchange_source_oracle
     c_darcy = 0.01_real64 + 5.0_real64*next_unit(state)
     ksat = 0.01_real64 + 10.0_real64*next_unit(state)
     diameter = 0.01_real64 + 0.5_real64*next_unit(state)
-    volume = 0.01_real64 + next_unit(state)
+    domain_fraction = next_unit(state)
     shape_factor = 0.01_real64 + 2.0_real64*next_unit(state)
     reduction = next_unit(state)
     dt = 0.01_real64 + next_unit(state)
@@ -46,10 +46,10 @@ program test_ppa_wu05a3_satflow_exchange_source_oracle
     end select
 
     call source_exchange(matrix_head, reference_level, z, dz, lev, sat_compartment, top_compartment, compartment, &
-         satfr, c_darcy, seepage_switch, ksat, diameter, volume, shape_factor, pi_value, reduction, dt, &
+         satfr, c_darcy, seepage_switch, ksat, diameter, domain_fraction, shape_factor, pi_value, reduction, dt, &
          expected_head, expected_flux, branch)
     call ppa_wu05a3_satflow_exchange(matrix_head, reference_level, z, dz, lev, sat_compartment, top_compartment, &
-         compartment, satfr, c_darcy, seepage_switch, ksat, diameter, volume, shape_factor, pi_value, reduction, dt, &
+         compartment, satfr, c_darcy, seepage_switch, ksat, diameter, domain_fraction, shape_factor, pi_value, reduction, dt, &
          actual_head, actual_flux, actual_status)
     call require(actual_status == PPA_WU05A3_SATFLOW_OK, 1)
     actual_bits = transfer(actual_head, actual_bits); expected_bits = transfer(expected_head, expected_bits)
@@ -85,9 +85,9 @@ contains
   end function next_unit
 
   subroutine source_exchange(hma, ref, elevation, thickness, water_level, sat_comp, top_comp, ic, sat_fraction, &
-       darcy, switch, conductivity, dia, pore, shape, pi, fr_reduce, delta_t, delh, flux, flow_branch)
+       darcy, switch, conductivity, dia, fraction, shape, pi, fr_reduce, delta_t, delh, flux, flow_branch)
     real(real64), intent(in) :: hma, ref, elevation, thickness, water_level, sat_fraction, darcy, conductivity
-    real(real64), intent(in) :: dia, pore, shape, pi, fr_reduce, delta_t
+    real(real64), intent(in) :: dia, fraction, shape, pi, fr_reduce, delta_t
     integer, intent(in) :: sat_comp, top_comp, ic, switch
     real(real64), intent(out) :: delh, flux
     integer, intent(out) :: flow_branch
@@ -115,7 +115,7 @@ contains
         reshor=dia**2/(8.0_real64*thickness*conductivity)
         resvrt=thickness/conductivity
         resrad=dia*log(10.0_real64)/(pi*conductivity)
-        recres=pore/(reshor+resvrt+resrad)
+        recres=fraction/(reshor+resvrt+resrad)
         if (ic == top_comp) recres=recres*(water_level-(elevation-0.5_real64*thickness))/thickness
         flux=-fr_reduce*recres*delh*delta_t
       else

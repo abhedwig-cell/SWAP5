@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.satflow_task1.status.v1",
+  "work_unit": "PPA-WU05-A3-SATFLOW-TASK1",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@536369327",
+  "preregistration": "integration/audits/PPA_WU05A3_SATFLOW_TASK1_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; composed SATFLOW potential exchange only; no state owner, accepted mass receipt, retry/restart or runtime binding",
+  "implementation": "src/process/mod_ppa_wu05a3_satflow_task1.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_satflow_task1_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_satflow_task1_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_SATFLOW_TASK1_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_SATFLOW_TASK1_ACTIVE_ZONE_GATE_AND_BOUNDS=PASS",
+      "PPA_WU05A3_SATFLOW_TASK1_INCOMING_ONLY_TOTAL=PASS",
+      "PPA_WU05A3_SATFLOW_TASK1_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "7b0d62a374835f10f2df4f9045103315c283531a1904cb11be496e581c9b9c2e"
+  },
+  "next_action": "Continue with another independent source-bound macropore equation; no runtime admission.",
+  "recovery_point": "this preregistration, module, and test",
+  "blockers": []
+}
