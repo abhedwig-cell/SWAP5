@@ -1,0 +1,246 @@
+name: F-ROM-PURPOSE P2 H4 Finalize
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P2_H4_FINALIZATION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p2-h4-finalize
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify finalization authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p2_h4_corichards.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_FINALIZATION_BINDING.json'))
+          e=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_SURFACE_FAILURE_EVIDENCE.json'))
+          assert b['status']=='BOUND_TO_FROZEN_SURFACE_FAILURE_AND_SUCCESSFUL_GW_ROUTES'
+          assert e['status']=='SURFACE_CORICHARDS_OUTSIDE_FROZEN_QUALIFIED_DOMAIN'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  analyze:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Download successful frozen-policy GW CoRichards routes
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/gwraw /tmp/h4routes /tmp/surface_target /tmp/p1gw result
+          gh run download 35857841206 --repo abhedwig-cell/SWAP5 -p 'p2h4-GW_LB-*' -D /tmp/gwraw
+          for material in B01 B14; do
+            for factor in 8 16 32; do
+              for opt in 0 2; do
+                name="corichards_GW_LB_${material}_T${factor}_o${opt}.txt"
+                src="$(find /tmp/gwraw -type f -name "$name" -print -quit)"
+                test -n "$src"
+                cp "$src" "/tmp/h4routes/$name"
+              done
+              cmp "/tmp/h4routes/corichards_GW_LB_${material}_T${factor}_o0.txt"                   "/tmp/h4routes/corichards_GW_LB_${material}_T${factor}_o2.txt"
+              python3 - "$material" "$factor" <<'PY'
+          import json,pathlib,sys
+          material,factor=sys.argv[1:]
+          out={
+            "schema":"swap5.rom-purpose.p2.h4-route-execution.v1",
+            "purpose":"GW_LB","material":material,"temporal_factor":int(factor),
+            "return_code_o0":0,"return_code_o2":0,
+            "scientific_trace_identity":True,
+            "source_run":35857841206,
+            "scientific_change":False
+          }
+          pathlib.Path(f"/tmp/h4routes/execution_GW_LB_{material}_T{factor}.json").write_text(
+              json.dumps(out,indent=2,sort_keys=True)+"\n")
+          PY
+            done
+          done
+      - name: Materialize frozen SURF_P numerical-failure status
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          e=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_SURFACE_FAILURE_EVIDENCE.json'))
+          for material in ('B01','B14'):
+              decisive=e['materials'][material]
+              for factor in (8,16,32):
+                  out={
+                    "schema":"swap5.rom-purpose.p2.h4-route-execution.v1",
+                    "purpose":"SURF_P","material":material,"temporal_factor":factor,
+                    "return_code_o0":1,
+                    "return_code_o2":-1,
+                    "scientific_trace_identity":False,
+                    "source_run":35858291597 if factor==8 else 35857841206,
+                    "failure_labels_o0":[decisive['failure_label']] if factor==8 else
+                        ["Frozen four-cell SURF_P route failed during executable stage in run 35857841206."],
+                    "failure_labels_o2":[],
+                    "scientific_change":False
+                  }
+                  pathlib.Path(f"/tmp/h4routes/execution_SURF_P_{material}_T{factor}.json").write_text(
+                      json.dumps(out,indent=2,sort_keys=True)+"\n")
+          PY
+      - name: Download inherited P1 GW target
+        run: |
+          set -euo pipefail
+          gh run download 35751978638 --repo abhedwig-cell/SWAP5 -n p1ref-routes -D /tmp/p1gw
+          test -f /tmp/p1gw/gw_B01_R2048_T32_o0.txt
+          test -f /tmp/p1gw/gw_B14_R2048_T32_o0.txt
+      - name: Apply frozen H4 analyzer
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_rom_purpose_p2_h4_corichards.py             --contract integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --placement-result integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json             --route-root /tmp/h4routes             --surface-reference-root /tmp/surface_target             --gw-reference-root /tmp/p1gw             --output result/ROM_PURPOSE_P2_H4_RESULT.json             | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P2_H4_SURFACE_FAILURE_EVIDENCE.json result/
+          cp integration/f-rom/ROM_PURPOSE_P2_H4_FINALIZATION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p2-h4-final
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_RUN: ${{ github.run_id }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p2-h4-final
+          path: /tmp/result
+      - name: Persist H4 closeout
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P2_H4_RESULT.json integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          h=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json'))
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P2_STATUS.json'))
+          dec=h['decisions']
+          unavailable=[k for k,v in dec.items() if v=='CORICHARDS_DIAGNOSTIC_UNAVAILABLE']
+          unresolved=[k for k,v in dec.items() if v=='FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED']
+          closure=[k for k,v in dec.items() if v=='CLOSURE_DEFICIT_SUPPORTED']
+          if unavailable:
+              phase='P2_H4_PARTIAL_DIAGNOSTIC_UNAVAILABLE'
+              blockers=['H4_CORICHARDS_DIAGNOSTIC_UNAVAILABLE:'+x for x in unavailable]
+              next_action='CLOSE_P2_WITH_H4_UNRESOLVED_CASES'
+          elif unresolved:
+              phase='P2_H4_INFORMATION_OR_RESOLUTION_UNRESOLVED'
+              blockers=['H4_FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED:'+x for x in unresolved]
+              next_action='CLOSE_P2_WITH_REMAINING_REPRESENTATION_UNCERTAINTY'
+          else:
+              phase='P2_H4_CLOSURE_DEFICIT_SUPPORTED'
+              blockers=[]
+              next_action='CLOSE_P2_PURPOSE_MAP_NO_GENERAL_CLOSURE_SEARCH'
+          s.update({
+            'phase':phase,
+            'H4_result':'integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json',
+            'H4_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'H4_execution_sha':os.environ['SOURCE_SHA'],
+            'blockers':blockers,
+            'next_action':next_action,
+            'recovery_point':'integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json'
+          })
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_STATUS.json').write_text(
+              json.dumps(s,indent=2,sort_keys=True)+'\n')
+
+          def remaining(purpose,material):
+              d=dec[f'{purpose}/{material}']
+              if d=='CLOSURE_DEFICIT_SUPPORTED':
+                  return (
+                    'RICHARDS_EQUIVALENT_PROPAGATION_CLASS_NOT_CURRENT_LAYER_FACE',
+                    'CURRENT_LAYER_FACE propagation is insufficient relative to same-partition four-cell Richards; the specific reduced closure remains unidentified.'
+                  )
+              if d=='FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED':
+                  return (
+                    'UNRESOLVED',
+                    'Same-partition four-cell Richards also misses the frozen numerical comparator, so closure versus four-state information/resolution cannot be separated.'
+                  )
+              return (
+                'UNRESOLVED_DIAGNOSTIC_UNAVAILABLE',
+                'Same-partition four-cell Richards leaves the frozen qualified numerical domain, so closure versus representation cannot be adjudicated.'
+              )
+
+          m={
+            'schema':'swap5.rom-purpose.p2.purpose-map.v1',
+            'workstream':'ROM-PURPOSE',
+            'status':'P2_RESEARCH_MAP_PERSISTED',
+            'scope':'Minimum tested placement within the frozen equal-dimension four-state family; not a universal minimum state-count claim.',
+            'application_authority_status':'REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE',
+            'purposes':{},
+            'scientific_firewall':{
+              'application_acceptance_adjudicated':False,
+              'performance_claim_authorized':False,
+              'production_rom_authorized':False,
+              'general_closure_search_authorized':False
+            }
+          }
+          for purpose,pid,bounds,info in (
+            ('SURF_P','S4',[0,20,40,80,160],'Upper-column/surface-profile information at 0-20, 0-40 and 0-80 cm.'),
+            ('GW_LB','G4',[0,80,120,140,160],'Bottom-adjacent/lower-column information concentrated over 80-160 cm.')
+          ):
+              mats={}
+              for material in ('B01','B14'):
+                  cls,limit=remaining(purpose,material)
+                  mats[material]={
+                    'placement_decision':p['placement'][purpose][material]['primary']['decision'],
+                    'H4_decision':dec[f'{purpose}/{material}'],
+                    'required_closure_class':cls,
+                    'remaining_fidelity_limit':limit
+                  }
+              m['purposes'][purpose]={
+                'required_vertical_information':info,
+                'minimum_tested_state_placement':{
+                  'id':pid,'boundaries_cm':bounds,'dimension':4,
+                  'qualification':'PLACEMENT_SUPPORTED for B01 and B14 against U4 at equal dimension'
+                },
+                'materials':mats
+              }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json').write_text(
+              json.dumps(m,indent=2,sort_keys=True)+'\n')
+
+          lines=[
+            '# ROM-PURPOSE P2 closeout','',
+            f"Placement H1: **{p['hypotheses']['H1_groundwater_aligned_placement_supported']}**.",
+            f"Placement H2: **{p['hypotheses']['H2_surface_aligned_placement_supported']}**.",
+            f"Placement H3: **{p['hypotheses']['H3_any_equal_dimension_purpose_aligned_information_value']}**.",
+            f"H4 status: **{h['status']}**.",'',
+            'Purpose-dependent state placement is supported within the frozen equal-dimension four-state family.',
+            'H4 is diagnostic only. Cases with unavailable CoRichards evidence remain unresolved between closure and representation.',
+            'No application acceptance, performance authority, production-ROM admission, or general closure-family search follows from this closeout.'
+          ]
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P2_CLOSEOUT.md').write_text('\n'.join(lines)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json                   integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json                   integration/f-rom/ROM_PURPOSE_P2_STATUS.json                   docs/science/F-ROM_PURPOSE_P2_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P2: persist H4 finalization and purpose map" || exit 0
+          git push origin HEAD:work/f-rom-purpose
