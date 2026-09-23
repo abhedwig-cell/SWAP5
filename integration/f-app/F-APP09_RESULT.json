@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.f_app09.result.v1",
+  "work_unit": "F-APP09",
+  "date": "2026-09-23",
+  "decision": "OWNER_QUALIFIED_CANDIDATE_READY_FOR_INDEPENDENT_VQ",
+  "frozen_candidate_head": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "canonical_parent": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "evidence": {
+    "workflow_run": 35884620992,
+    "workflow_job": 107261490688,
+    "conclusion": "SUCCESS",
+    "compile_closure_files": 62,
+    "optimization_modes": [
+      "O0",
+      "O2"
+    ],
+    "stable_marker_identity": true
+  },
+  "production_postimages": {
+    "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "0cdf05c1fc066f80aad7807c35a4e718fdecdb09",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "1029cd4658a28f4aaf21db3cd480872c2d17722a",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "5fd5007cf8e523d3b2cd4236114e887d0c383f0a"
+  },
+  "passed_markers": [
+    "FAPP09_COMPILE_CLOSURE=PASS",
+    "FAPP09_SINGLE_LEVEL_V1_SCOPE=PASS",
+    "FAPP09_TYPED_EXTERNAL_HEAD_MATERIALIZER=PASS",
+    "FAPP09_SURFACE_WATER_STATE_OWNER_XOR=PASS",
+    "FAPP09_NO_PERSISTENT_SURFACE_WATER_STATE=PASS",
+    "FAPP09_RECOMPOSITION_DISCARD_REPLAY=PASS",
+    "FAPP09_POSITIVE_DRAINAGE_TRANSACTION=PASS",
+    "FAPP09_NEGATIVE_INFILTRATION_TRANSACTION=PASS",
+    "FAPP09_STALE_ORIGIN_FAIL_CLOSED=PASS",
+    "FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS",
+    "FAPP09_O0_O2_STABLE_IDENTITY=PASS",
+    "F-APP09 OWNER GATE PASS"
+  ],
+  "scope_binding": {
+    "profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+    "active_drainage_response_levels": 1,
+    "surface_water_state_owner": "EXTERNAL_RIBASIM_ONLY",
+    "swap_role": "SIGNED_EXTENDED_DRAINAGE_INFILTRATION_PHYSICS_ONLY",
+    "coupler_role": "TRANSACTION_FEASIBILITY_AND_ACCEPTANCE",
+    "geometry_mode": "RIBASIM_NATIVE",
+    "max_accepted_swap_substeps_per_coupling_window": 1
+  },
+  "transaction_evidence": [
+    "External accepted head is materialized through typed drainage-response control only.",
+    "Fixed-weir optional state and fixed-weir committed carrier fail owner admission.",
+    "SWAP trial remains nonmutating until externally realized signed transfer matches the candidate.",
+    "Mismatch blocks commit; explicit discard preserves accepted origin; same-origin replay is deterministic.",
+    "Matched positive drainage and negative infiltration each commit exactly once.",
+    "Stale origin fails closed.",
+    "Post-commit carrier remains base physical SWAP state with no persistent surface-water storage.",
+    "Accepted-window signed exchange is accumulated across the accepted two-half transaction path and is distinct from the existing per-physical-advance observation."
+  ],
+  "amendments": [
+    "F-APP09_SCOPE_AMENDMENT_01: V1 narrowed to exactly one EXTENDED_SIGNED drainage-response level.",
+    "F-APP09_TECHNICAL_AMENDMENT_01: test fixture restored to exact Q4B uniform-head authority.",
+    "F-APP09_TECHNICAL_AMENDMENT_02: accepted-window signed transfer observation added transactionally."
+  ],
+  "warnings_disposition": "The broad 62-file Fortran compile closure emits pre-existing warning classes. The candidate gate does not claim warning-free compilation; no warning was used to waive a failed assertion.",
+  "qualification_state": "CANDIDATE_OWNER_GATE_PASS",
+  "independent_qualification": false,
+  "production_admission": false,
+  "canonical_admission": false,
+  "next_action": "Execute F-VQ128 independent qualification against the exact five frozen production postimages. Do not mutate candidate source during VQ."
+}

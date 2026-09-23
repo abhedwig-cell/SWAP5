@@ -4,10 +4,26 @@
   "date": "2026-09-23",
   "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "branch": "work/f-app09-ribasim-external-surface-water-profile",
-  "decision": "PREREGISTERED_IMPLEMENTATION_PENDING",
-  "implementation": false,
-  "owner_qualified": false,
+  "frozen_candidate_head": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "decision": "OWNER_QUALIFIED_CANDIDATE_READY_FOR_INDEPENDENT_VQ",
+  "implementation": true,
+  "owner_qualified": true,
   "independent_qualification": false,
   "canonical_admission": false,
-  "next_action": "Implement the minimal owner-XOR surface-water head materializer and transaction participant, port only Q4A/Q4B production source, and execute the frozen production-owner gate."
+  "evidence_run": 35884620992,
+  "evidence_job": 107261490688,
+  "independent_branch": "qualification/f-vq128-fapp09-ribasim-external-surface-water-independent",
+  "scope": [
+    "single EXTENDED_SIGNED drainage-response level",
+    "external Ribasim surface-water state owner",
+    "Ribasim-native geometry contract",
+    "one accepted SWAP substep per coupling window",
+    "realized-transfer mismatch requires discard/replay before commit"
+  ],
+  "next_action": "Run F-VQ128 independent qualification on the frozen ba3699f source postimages; on PASS, prepare canonical admission without broadening profile scope.",
+  "blockers": [
+    "Independent F-VQ128 qualification has not yet passed.",
+    "Canonical admission has not occurred.",
+    "Live Ribasim network execution remains outside F-APP09 V1 and must be qualified at the higher coupling/application layer."
+  ]
 }
