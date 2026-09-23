@@ -104,11 +104,6 @@
     "stopping_preregistration": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
   },
   "next_permitted_action": "NONE_IN_THIS_WORKSTREAM_NEW_GROUNDWATER_CAPABILITIES_REQUIRE_A_SEPARATE_EXPLICIT_WORKSTREAM",
-  "canonical_parent": {
-    "branch": "integration/f-ci-canonical",
-    "head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
-    "relation": "parent of the closure-witness metadata update"
-  },
   "pre_governance_canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "b7d9c976e9b474545d54fa79b71ae134c25da156"
@@ -129,7 +124,7 @@
     "fgc24_split_process_restart_replay_o0": "PASS",
     "fgc24_split_process_restart_replay_o2": "PASS"
   },
-  "closure_witness_semantics": "This record names its exact canonical parent. The closure-witness merge itself is metadata-only and must pass the same push closeout gate on its resulting canonical postimage.",
+  "closure_witness_semantics": "The admission lineage above names the exact admission canonical parent and integration commit. This later closure-witness metadata update has its own explicit parent and must pass the same push closeout gate on the resulting canonical postimage.",
   "canonical_admission_lineage": {
     "canonical_parent": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
     "integration_commit": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
@@ -143,5 +138,10 @@
     "qualification_job": 107048912789,
     "qualification_conclusion": "success",
     "production_delta_after_verified_parent": "METADATA_AND_DOCUMENTATION_ONLY"
+  },
+  "closure_witness_parent": {
+    "branch": "integration/f-ci-canonical",
+    "head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "relation": "parent of the closure-witness metadata update"
   }
 }
