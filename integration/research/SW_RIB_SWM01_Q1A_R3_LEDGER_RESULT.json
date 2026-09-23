@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r3l.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R3L",
+  "date": "2026-09-23",
+  "decision": "PASS_DIRECT_CONNECTOR_LEDGER_EXTERNAL_OWNER_EQUIVALENCE",
+  "tested_head": "f267575d51f85f74f45608a6d8cca3231bb6876f",
+  "evidence_run": 35860557876,
+  "evidence_job": 107179447848,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "mapping": "Ribasim Basin + ContinuousControl(level -> flow_rate) + nonnegative one-way Pump",
+  "cases": {
+    "C0_NO_DISCHARGE": {
+      "final_level_ribasim_m": -0.19999199999999995,
+      "final_level_oracle_m": -0.19999200000000003,
+      "direct_pump_discharge_m3": 0,
+      "direct_mass_residual_m3": -9.259180031582267e-13,
+      "result": "PASS"
+    },
+    "C1_MODERATE_DISCHARGE": {
+      "final_level_ribasim_m": 0.30000500029136945,
+      "final_level_oracle_m": 0.30000499974994455,
+      "direct_pump_discharge_m3": 0.000014999708630581057,
+      "direct_mass_residual_m3": -5.786613558927869e-13,
+      "result": "PASS"
+    },
+    "C2_HIGH_DISCHARGE": {
+      "final_level_ribasim_m": 0.6999700017802568,
+      "final_level_oracle_m": 0.6999700015003327,
+      "direct_pump_discharge_m3": 0.00003499821974327699,
+      "direct_mass_residual_m3": 3.472244830527403e-12,
+      "result": "PASS"
+    }
+  },
+  "frozen_tolerances_preserved": true,
+  "interpretation": [
+    "The direct cumulative Ribasim Pump state closes the Basin mass ledger within the preregistered 1e-8 m3 envelope.",
+    "The explicit control representation preserves the frozen F-CI52 linear fixed-weir trajectories while keeping the physical surface-water store exclusively in Ribasim.",
+    "Native TabulatedRatingCurve exact equivalence remains falsified for the pinned release; this PASS applies to the explicit ContinuousControl + Pump representation."
+  ],
+  "version_warning": {
+    "observed": true,
+    "message": "Generated model metadata reports 2026.1.0 while the pinned core reports Ribasim v2026.1.1.",
+    "disposition": "PROVENANCE_CAVEAT_NOT_PHYSICAL_FAILURE; all cases executed successfully. Resolve before production admission."
+  },
+  "qualification_state": "BOUNDED_RESEARCH_PASS",
+  "production_admission": false,
+  "retirement_authority": false
+}
