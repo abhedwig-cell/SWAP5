@@ -1,0 +1,221 @@
+{
+  "G8_improves_G6": true,
+  "U8_better_than_G8": false,
+  "U8_improves_G6": false,
+  "application_acceptance_adjudicated": false,
+  "closure_effect_emerges": true,
+  "decision": "CLOSURE_EFFECT_EMERGES_AT_EIGHT_STATES",
+  "metrics": {
+    "COR_G8": {
+      "bottom_flux_sign_mismatch_count": 4,
+      "cumulative_bottom_exchange_error_cm": 0.002202640665306083,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.002274826018141929,
+      "interval_bottom_flux_error_cm_per_day": 0.5169925802884776,
+      "long_horizon_exchange_drift_cm": 0.002911330237701293,
+      "reversal_sequence_mismatch_count": 2,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.0022026406652562946
+    },
+    "COR_U8": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.012711720674184388,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.0038997686254739145,
+      "interval_bottom_flux_error_cm_per_day": 0.8532103147479121,
+      "long_horizon_exchange_drift_cm": 0.005582952690131648,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.012711720674182843
+    },
+    "G6": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.005715738281234373,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.005681819015884543,
+      "interval_bottom_flux_error_cm_per_day": 0.7088981454662463,
+      "long_horizon_exchange_drift_cm": 0.004841324387147239,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.005715738281150991
+    },
+    "LR_G8": {
+      "bottom_flux_sign_mismatch_count": 5,
+      "cumulative_bottom_exchange_error_cm": 0.003937631121844192,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.005310031577905754,
+      "interval_bottom_flux_error_cm_per_day": 0.5156683667866554,
+      "long_horizon_exchange_drift_cm": 0.005900117915339287,
+      "reversal_sequence_mismatch_count": 2,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.003937631121843821
+    },
+    "LR_U8": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.012709094189657866,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.003889267214408761,
+      "interval_bottom_flux_error_cm_per_day": 0.8531944208972584,
+      "long_horizon_exchange_drift_cm": 0.00557130561254926,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.012709094189631865
+    },
+    "R128_vs_R256": {
+      "bottom_flux_sign_mismatch_count": 1,
+      "cumulative_bottom_exchange_error_cm": 0.00010786537866599146,
+      "history_signed_bottom_flux_bias_cm_per_day": 4.061147551929776e-05,
+      "interval_bottom_flux_error_cm_per_day": 0.08560211459908482,
+      "long_horizon_exchange_drift_cm": 8.422436022925694e-05,
+      "reversal_sequence_mismatch_count": 0,
+      "reversal_timing_error_steps": 1,
+      "total_storage_error_cm": 0.00010786537861565074
+    }
+  },
+  "new_closure_executed": false,
+  "production_rom_authorized": false,
+  "relations": {
+    "COR_G8_vs_COR_U8_event": {
+      "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+      "left_minus_right": {
+        "bottom_flux_sign_mismatch_count": -5.0,
+        "reversal_sequence_mismatch_count": -2.0,
+        "reversal_timing_error_steps": 0.0
+      },
+      "left_no_worse": true,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": false
+    },
+    "COR_G8_vs_LR_G8_cont": {
+      "decision": "TRADEOFF",
+      "left_minus_right": {
+        "cumulative_bottom_exchange_error_cm": -0.0017349904565381095,
+        "history_signed_bottom_flux_bias_cm_per_day": -0.003035205559763825,
+        "interval_bottom_flux_error_cm_per_day": 0.0013242135018222134,
+        "long_horizon_exchange_drift_cm": -0.002988787677637994,
+        "total_storage_error_cm": -0.0017349904565875265
+      },
+      "left_no_worse": false,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": true
+    },
+    "COR_G8_vs_LR_G8_event": {
+      "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+      "left_minus_right": {
+        "bottom_flux_sign_mismatch_count": -1.0,
+        "reversal_sequence_mismatch_count": 0.0,
+        "reversal_timing_error_steps": 0.0
+      },
+      "left_no_worse": true,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": false
+    },
+    "COR_U8_vs_LR_U8_cont": {
+      "decision": "RIGHT_COMPONENTWISE_NO_WORSE",
+      "left_minus_right": {
+        "cumulative_bottom_exchange_error_cm": 2.6264845265216996e-06,
+        "history_signed_bottom_flux_bias_cm_per_day": 1.050141106515327e-05,
+        "interval_bottom_flux_error_cm_per_day": 1.589385065370319e-05,
+        "long_horizon_exchange_drift_cm": 1.1647077582388476e-05,
+        "total_storage_error_cm": 2.626484550977831e-06
+      },
+      "left_no_worse": false,
+      "left_strict": false,
+      "right_no_worse": true,
+      "right_strict": true
+    },
+    "COR_U8_vs_LR_U8_event": {
+      "decision": "EQUAL_WITHIN_TOLERANCE",
+      "left_minus_right": {
+        "bottom_flux_sign_mismatch_count": 0.0,
+        "reversal_sequence_mismatch_count": 0.0,
+        "reversal_timing_error_steps": 0.0
+      },
+      "left_no_worse": true,
+      "left_strict": false,
+      "right_no_worse": true,
+      "right_strict": false
+    },
+    "LR_G8_vs_G6_cont": {
+      "decision": "TRADEOFF",
+      "left_minus_right": {
+        "cumulative_bottom_exchange_error_cm": -0.0017781071593901809,
+        "history_signed_bottom_flux_bias_cm_per_day": -0.0003717874379787888,
+        "interval_bottom_flux_error_cm_per_day": -0.1932297786795909,
+        "long_horizon_exchange_drift_cm": 0.001058793528192048,
+        "total_storage_error_cm": -0.00177810715930717
+      },
+      "left_no_worse": false,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": true
+    },
+    "LR_G8_vs_G6_event": {
+      "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+      "left_minus_right": {
+        "bottom_flux_sign_mismatch_count": -4.0,
+        "reversal_sequence_mismatch_count": -2.0,
+        "reversal_timing_error_steps": 0.0
+      },
+      "left_no_worse": true,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": false
+    },
+    "LR_G8_vs_LR_U8_cont": {
+      "decision": "TRADEOFF",
+      "left_minus_right": {
+        "cumulative_bottom_exchange_error_cm": -0.008771463067813675,
+        "history_signed_bottom_flux_bias_cm_per_day": 0.001420764363496993,
+        "interval_bottom_flux_error_cm_per_day": -0.337526054110603,
+        "long_horizon_exchange_drift_cm": 0.00032881230279002693,
+        "total_storage_error_cm": -0.008771463067788043
+      },
+      "left_no_worse": false,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": true
+    },
+    "LR_G8_vs_LR_U8_event": {
+      "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+      "left_minus_right": {
+        "bottom_flux_sign_mismatch_count": -4.0,
+        "reversal_sequence_mismatch_count": -2.0,
+        "reversal_timing_error_steps": 0.0
+      },
+      "left_no_worse": true,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": false
+    },
+    "LR_U8_vs_G6_cont": {
+      "decision": "TRADEOFF",
+      "left_minus_right": {
+        "cumulative_bottom_exchange_error_cm": 0.006993355908423493,
+        "history_signed_bottom_flux_bias_cm_per_day": -0.0017925518014757819,
+        "interval_bottom_flux_error_cm_per_day": 0.1442962754310121,
+        "long_horizon_exchange_drift_cm": 0.000729981225402021,
+        "total_storage_error_cm": 0.006993355908480874
+      },
+      "left_no_worse": false,
+      "left_strict": true,
+      "right_no_worse": false,
+      "right_strict": true
+    },
+    "LR_U8_vs_G6_event": {
+      "decision": "EQUAL_WITHIN_TOLERANCE",
+      "left_minus_right": {
+        "bottom_flux_sign_mismatch_count": 0.0,
+        "reversal_sequence_mismatch_count": 0.0,
+        "reversal_timing_error_steps": 0.0
+      },
+      "left_no_worse": true,
+      "left_strict": false,
+      "right_no_worse": true,
+      "right_strict": false
+    }
+  },
+  "schema": "swap5.rom-practical.p2d-b05.result.v1",
+  "state_count_above_8_executed": false,
+  "status": "P2D_B05_EIGHT_STATE_ATTRIBUTION_COMPLETE",
+  "work_unit": "ROM-PRACTICAL-P2D-B05",
+  "workstream": "ROM-PRACTICAL"
+}
