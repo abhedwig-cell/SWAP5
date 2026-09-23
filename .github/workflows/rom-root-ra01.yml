@@ -77,7 +77,7 @@ jobs:
           assert q['decision']=='PREREGISTER_ROOT_ACTIVE_REFERENCE_ONLY_BEFORE_ANY_REDUCED_DYNAMIC_ROOT_FEEDBACK_RESPONSE'
           assert p['scientific_firewall']['reduced_candidate_response_generated'] is False
           import subprocess
-          blob=subprocess.check_output(['git','hash-object','.github/workflows/f-rom-rom-root-ra01.yml'],text=True).strip()
+          blob=subprocess.check_output(['git','hash-object','.github/workflows/f-rom-lare-bc2-c6r.yml'],text=True).strip()
           assert blob==p['implementation_binding']['workflow_blob']
           PY
 
@@ -208,7 +208,7 @@ jobs:
           assert p['implementation_binding']['execution_binding_complete'] is True
           assert p['implementation_binding']['response_based_design'] is False
           import subprocess
-          blob=subprocess.check_output(['git','hash-object','.github/workflows/f-rom-rom-root-ra01.yml'],text=True).strip()
+          blob=subprocess.check_output(['git','hash-object','.github/workflows/f-rom-lare-bc2-c6r.yml'],text=True).strip()
           assert blob==p['implementation_binding']['workflow_blob']
           assert p['scientific_firewall']['reduced_candidate_response_generated'] is False
           PY
