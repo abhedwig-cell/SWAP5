@@ -350,6 +350,7 @@ contains
     real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:)
     integer, intent(out) :: status
     real(real64) :: h, x(2), y(2), yp(2), sig(2), logk_value
+    real(real64) :: exact_theta, relsat, branch_fraction, alpha, npar, mpar
     integer :: i, klo, khi, ier, n, split, local_klo, local_khi
 
     status = F_TAB02_STATE_NOT_READY
@@ -401,31 +402,51 @@ contains
         end if
       end if
 
-      if (h > state%kbranch_head(i)) then
-        conductivity(i) = state%ksat(i)
-      else
-        split = state%ksatexm_split_index(i)
-        if (split > 0 .and. h > state%ksatexm_threshold_head(i)) then
-          call locate_interval(state%head(split:B110_GENERATED_MVG_TABLE_N-1,i), h, local_klo, local_khi)
-          klo = split + local_klo - 1
-          khi = split + local_khi - 1
-          x = state%head(klo:khi,i)
-          y = state%logk(klo:khi,i)
-          yp = state%logk_ext_slope(klo:khi,i)
-          sig = state%logk_ext_sigma(klo:khi,i)
-        else if (split > 0) then
+      split = state%ksatexm_split_index(i)
+      if (state%source_ksatexm_extension_enabled .and. &
+          state%source_cofgen(10,i) > state%source_cofgen(3,i)) then
+        ! Candidate C: retain generated default-MvG K below the admitted
+        ! threshold, but execute the already-admitted F-SI39 extension exactly.
+        if (h > H_CRIT) then
+          exact_theta = state%theta_crit(i) + state%wet_capacity(i) * (h-H_CRIT)
+          exact_theta = min(exact_theta,state%theta_saturated(i))
+        else
+          alpha = state%source_cofgen(4,i)
+          npar = state%source_cofgen(6,i)
+          mpar = state%source_cofgen(7,i)
+          exact_theta = state%source_cofgen(1,i) + &
+               (state%source_cofgen(2,i)-state%source_cofgen(1,i)) / &
+               (1.0_real64 + abs(alpha*h)**npar)**mpar
+        end if
+        relsat = (exact_theta-state%source_cofgen(1,i)) / &
+             (state%source_cofgen(2,i)-state%source_cofgen(1,i))
+
+        if (relsat > state%source_cofgen(11,i)) then
+          branch_fraction = (relsat-state%source_cofgen(11,i)) / &
+               (1.0_real64-state%source_cofgen(11,i))
+          conductivity(i) = branch_fraction*state%source_cofgen(10,i) + &
+               (1.0_real64-branch_fraction)*state%source_cofgen(12,i)
+        else
           call locate_interval(state%head(1:split,i), h, klo, khi)
           x = state%head(klo:khi,i)
           y = state%logk(klo:khi,i)
           yp = state%logk_slope(klo:khi,i)
           sig = state%logk_sigma(klo:khi,i)
-        else
-          call locate_interval(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), h, klo, khi)
-          x = state%head(klo:khi,i)
-          y = state%logk(klo:khi,i)
-          yp = state%logk_slope(klo:khi,i)
-          sig = state%logk_sigma(klo:khi,i)
+          logk_value = my_HVAL(h, x, y, yp, sig, ier)
+          if (ier /= 0) then
+            status = F_TAB02_STATE_EVALUATION_FAILED
+            return
+          end if
+          conductivity(i) = exp(logk_value)
         end if
+      else if (h > state%kbranch_head(i)) then
+        conductivity(i) = state%ksat(i)
+      else
+        call locate_interval(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), h, klo, khi)
+        x = state%head(klo:khi,i)
+        y = state%logk(klo:khi,i)
+        yp = state%logk_slope(klo:khi,i)
+        sig = state%logk_sigma(klo:khi,i)
         logk_value = my_HVAL(h, x, y, yp, sig, ier)
         if (ier /= 0) then
           status = F_TAB02_STATE_EVALUATION_FAILED
