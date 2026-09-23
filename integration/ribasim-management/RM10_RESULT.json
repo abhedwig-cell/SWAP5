@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.ribasim_management.origin_bound_realization_receipt.result.v1",
+  "work_unit": "RM10",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_TYPED_ORIGIN_BOUND_RIBASIM_REALIZATION_RECEIPT",
+  "qualification_head": "8f94a943231b849ca7e46eea1c4a04f0bddc08ea",
+  "workflow": "RM10 origin-bound Ribasim realization receipt",
+  "workflow_run": 35830204410,
+  "workflow_job": 107080797826,
+  "conclusion": "success",
+  "stable_output_sha256": "17039a2551bfa157b4ce0ba279240ac6a84544beb9f8a7dacceed307c42f892a",
+  "production_changes": [
+    "RM07 demand receipt now retains and exports an immutable copy of the complete TCS1/DCS2 request.",
+    "New src/runtime/mod_fmr_ribasim_management_binding.f90 defines the typed origin-bound realization receipt.",
+    "New typed forcing constructor consumes demand and realization receipts instead of detached allocation/supply scalars."
+  ],
+  "qualified_constants": {
+    "full_allocation_tolerance_cm": 1e-6,
+    "full_supply_tolerance_cm": 1e-4,
+    "required_level_margin_multiple": 3.0,
+    "low_storage_factor_tolerance": 1e-12
+  },
+  "passed": [
+    "complete RM07 TCS1/DCS2 request copy is reproduced bit-identically",
+    "realization receipt binds SWAP management lineage, revision, crop revision and interval",
+    "realization receipt binds an opaque coupler-owned Ribasim origin id and revision",
+    "same origin plus same values reproduces an identical typed receipt",
+    "the RM08 observed physical shortfall is rejected by the bounded full-realization receipt",
+    "insufficient Ribasim level margin is rejected",
+    "non-unity physical low-storage factor is rejected",
+    "partial allocation is rejected in the first bounded profile",
+    "typed forcing route is numerically identical to the already qualified scalar RM06 route",
+    "typed reject/replay is identical and exactly one management commit is published",
+    "lineage, crop-origin and interval mismatches are rejected",
+    "O0 and O2 stable outputs are identical"
+  ],
+  "authority": {
+    "request_authority": "RM07",
+    "real_ribasim_full_realization_authority": "RM09",
+    "partial_realization_counterexample": "RM08",
+    "management_transaction_authority": "RM06"
+  },
+  "governance": {
+    "rm08_automatic_ci": "RETIRED_AFTER_CLOSED_FALSIFICATION",
+    "active_admission_gates": [
+      "RM09 bounded full-realization real Ribasim fixture",
+      "RM10 origin-bound realization receipt",
+      "RM06 transactional management state"
+    ]
+  },
+  "nonclaims": [
+    "Opaque Ribasim origin metadata is coupler provenance, not a Ribasim product checkpoint API.",
+    "No partial-supply policy is admitted.",
+    "No noncommensurate management scheduler is qualified by RM10.",
+    "No full Richards hydrological state is composed.",
+    "No MODFLOW composition is qualified.",
+    "No canonical admission is claimed by RM10 alone."
+  ],
+  "next_required_boundary": "Implement and qualify the coupler-owned explicit management-boundary scheduler required by RM03/H10 so noncommensurate model advances cannot skip Ribasim allocation boundaries."
+}
