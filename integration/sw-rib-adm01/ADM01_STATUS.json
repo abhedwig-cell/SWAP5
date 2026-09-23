@@ -1,0 +1,13 @@
+{
+  "work_unit": "SW-RIB-ADM01",
+  "status": "ACTIVE_ADMISSION",
+  "base": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "source_port": "Q4A/Q4B research-qualified signed extended exchange candidate",
+  "completed": [
+    "ADM01-G1_IMPLEMENTED",
+    "ADM01-G2_HARNESS_PORTED"
+  ],
+  "qualified": [],
+  "next_action": "Run owner-XOR and canonical Q4B replay gates. If green, bind accepted external surface-water head into a production-facing application profile without introducing SWAP surface-water storage.",
+  "production_admission": false
+}
