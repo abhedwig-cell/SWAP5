@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-WU05-A3-FLUX-TRANSITION-BALANCE",
+  "baseline": "f1a76f3c648dc208517b0db2ab8b37e9ac4531d7",
+  "phase": "IMPLEMENTED_TEST_PENDING",
+  "source": "B1.11 MACROSTATE 1398-1421; domain-specific ICpTpWaSrDm use in MACRORATE",
+  "hypothesis": "Use per-domain stored-water transition instead of unassigned/shared icgwl",
+  "test": "tests/fapp/test_ppa_wu05a3_flux_transition_balance.f90",
+  "scope": "Manufactured two-domain cell-continuity fixture with distinct water fronts, fixed geometry, known top flux, matrix exchange and lower zero flux",
+  "expected": "Per-domain fronts close individual cells; shared main-domain front produces opposing internal cell residuals hidden by whole-domain balance",
+  "additional_probe": "Main-domain rapid drainage changes inventory but is absent from the source recurrence; demonstrate the residual in the uncorrected equation without claiming repaired physics",
+  "limitations": ["No uniqueness proof for the transition index", "No moving-geometry, saturation-crossing or SWMBF=2 kinematic-wave qualification", "No reference patch or production admission"],
+  "next_action": "Run O0/O2 and use the evidence to derive the complete source correction before admission"
+}
