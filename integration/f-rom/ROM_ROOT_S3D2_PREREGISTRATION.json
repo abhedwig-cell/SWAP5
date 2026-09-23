@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.rom_root.s3d2.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D2",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_S3D2_SUPPORT_SWEEP_RESPONSE",
+  "question": "Does dyadic refinement of the existing hydraulic vertical support, without adding any root-specific state, systematically reduce the independently diagnosed A and B components of the R16 Feddes functional error on the same qualified RA02R states, and what coarsest static support reaches the frozen numerical distinguishability guard?",
+  "authority": {
+    "s3d1_result": "integration/f-rom/ROM_ROOT_S3D1_RESULT.json",
+    "s3d1_closeout": "integration/f-rom/ROM_ROOT_S3D1_CLOSEOUT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "reference_target": "R2048_T32",
+    "frozen_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+  },
+  "support_sweep": {
+    "type": "DYADIC_UNIFORM_SUPPORT_DIAGNOSTIC",
+    "layer_thickness_cm": [
+      10,
+      5,
+      2.5,
+      1.25,
+      0.625,
+      0.3125,
+      0.15625,
+      0.078125
+    ],
+    "total_column_layer_counts": [
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "root_zone_layer_counts": [
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "justification": "Each support is an exact dyadic subdivision of the already tested R16 10 cm support and aligns exactly with the qualified 2048-node Reference grid. Values are fixed before D2 response.",
+    "dynamic_reduced_candidate": false,
+    "persistent_state_added": false
+  },
+  "domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "root_depth_cm": 80,
+    "horizon_day": 0.8192,
+    "transaction_dt_day": 0.000025,
+    "target_nodes": 2048,
+    "target_node_thickness_cm": 0.078125,
+    "optimization_level": 0
+  },
+  "functionals": {
+    "exact": "F_exact = sum_j w_j alpha(h_j)",
+    "root_head_for_support": "F_roothead(d) = sum_i DeltaF_i alpha(sum_{j in i} w_j h_j / DeltaF_i)",
+    "storage_head_for_support": "F_storage(d) = sum_i DeltaF_i alpha(h(theta_bar_i))",
+    "A": "A(d) = F_roothead(d) - F_exact",
+    "B": "B(d) = F_storage(d) - F_roothead(d)",
+    "total": "E(d) = F_storage(d) - F_exact = A(d)+B(d)"
+  },
+  "metrics_per_support": [
+    "transaction RMSE and max absolute E",
+    "transaction RMSE and max absolute A",
+    "transaction RMSE and max absolute B",
+    "signed mean E/A/B",
+    "fraction of transactions with h3/h4 crossing in at least one rooted retained layer",
+    "sum of absolute layerwise total error in crossing and non-crossing layers",
+    "exact A+B identity integrity"
+  ],
+  "numerical_distinguishability": {
+    "guard": 2.9103830456733704e-11,
+    "provenance": "Frozen RA02R 64*Nmax*binary64-epsilon guard, Nmax=2048.",
+    "frontier_definition": "For each case and component, the frontier is the coarsest preregistered support whose maximum absolute fractional functional error is <= guard. The all-case frontier is the coarsest support satisfying that condition in all eight cases.",
+    "boundary": "This is an arithmetic/reference distinguishability frontier, not an application tolerance."
+  },
+  "interpretation_rules": {
+    "refinement_collapses_A": "A max-absolute error decreases with support refinement and reaches the numerical guard at some preregistered support.",
+    "refinement_collapses_B": "B max-absolute error decreases with support refinement and reaches the numerical guard at some preregistered support.",
+    "pure_hydraulic_support_can_represent_static_functional": "Total E reaches the numerical guard in all eight cases without root-specific state.",
+    "root_specific_information_efficiency_question_remains": "Even if sufficiently fine hydraulic support reaches the guard, D2 does not establish that such a representation is dynamically useful or efficient."
+  },
+  "prohibited": [
+    "No dynamic Layer-ROM simulation.",
+    "No new root-specific state or memory variable.",
+    "No adaptive or response-selected layer boundaries.",
+    "No fitted coefficient or error correction.",
+    "No application tolerance.",
+    "No performance or production claim."
+  ],
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
