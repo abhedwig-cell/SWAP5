@@ -119,7 +119,7 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Inspect the existing B1.10 process checkpoint solute/ageml owner, accepted trial/restart coverage and B1.11 task dispatch contracts. Identify which AgeTracer persistent fields and reports already have a single owner before attempting lifecycle composition; continue safe source/report slices meanwhile.",
+  "next_safe_step": "Continue PPA-WU05-A3 against the exact B1.11 source: inventory untested bounded geometry/state routines (starting with DEFINECOMPART) and add isolated equation/branch oracles only where source ownership and deterministic expected results are explicit. A1 census is complete; A2 remains isolated; no production binding until accepted-step mass, retry and restart gates pass.",
   "recovery_point": "latest committed campaign checkpoint acc376e6eb5144128245a4d678ce41d1d8481f35 (PPA-SOL-AGE-INITIAL-STORAGE initial profile storage/samini oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",

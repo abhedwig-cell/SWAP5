@@ -1407,10 +1407,10 @@
   "closure_verdict": "SWAP4_TO_SWAP5_MIGRATION_CLOSED is NOT established. M0/M1/M2/M5/M6 remain partial, M8 open, and several M5 subfamilies are owner-blocked.",
   "blockers": [
     {
-      "id": "PPA-WU05-A1",
+      "id": "PPA-WU05-MACRO-RUNTIME",
       "scope": "M5 macropores",
-      "status": "BLOCKED",
-      "reason": "Exact B1.11 source materialization and complete mutable-field/mass census required before production implementation.",
+      "status": "OPEN",
+      "reason": "A1 exact source materialization/census is complete and A2 is qualified only as an isolated DTO harness. Production migration remains open pending A3 single-column equation/owner composition and A4 accepted-step whole-column mass, retry and restart equivalence.",
       "authority": "integration/audits/PPA_WU05A_STATUS.json"
     },
     {
@@ -1428,6 +1428,6 @@
       "authority": "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
     }
   ],
-  "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
+  "next_action": "Continue PPA-WU05-A3 with bounded exact-B1.11 source-equation composition after completed A1 census and isolated A2 DTO qualification; preserve A4 accepted-step whole-column mass, retry and restart gates before any production binding. Keep this evidence classified as source-oracle work, not production admission.",
   "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d (refreshed 2026-09-23); local branch checkpoint=dc296063143eb77535a219c7949435276db73461, 201 local commits ahead / 60 behind. Recent local checkpoints: 478952183 M8 B1.10 capsule field-group crosswalk; e617ac0fe PPA-OUTPUT-CANON-APP preregistration; dc2960631 O0/O2 stateless canonical-result text bootstrap binding. M1-04 is closed only for this admitted typed in-memory snapshot serialization; M1 and PPA-OUTPUT-LEGACY remain partial/open, and full PPA-WU01 physical runtime was not run by the focused binding gate. M7-03 remains partial for active snow/drainage and allocator/transient accounting; M7-04 remains partial for accepted field-profile/production-bootstrap memory; M7-05 awaits a representative large batch and executable qualified B12-like fixture; M7-06 awaits per-column fallback-tier batch observability/qualification; M8-01 remains partial pending generic application/file/calendar/management/reporting owner mapping; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; pre-existing user worktree changes/artifacts remain untouched."
 }

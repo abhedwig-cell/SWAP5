@@ -1014,8 +1014,8 @@
       },
       "swap5_implementation_authority": [],
       "typed_input_config_authority": "No production macropore types/runtime route found in current canonical.",
-      "state_ownership": "PPA-WU05-A partially freezes ownership: explicit optional macropore physical state is required; worker/rate scratch is not checkpoint/restart state; F-PE16's seven-field set is corroborated prior evidence only, not the final B1.11 field census until exact source bytes are materialized.",
-      "transaction_status": "PPA-WU05-A freezes atomic matrix+macropore checkpoint/candidate/rollback/commit invariants and exactly-once accepted mass ownership. Exact flux-name/sign mapping remains held for byte-exact B1.11 source trace.",
+      "state_ownership": "PPA-WU05-A1 exact B1.11 census is complete: explicit optional macropore physical state is required; trial continuation, accepted history, scratch and projections are classified in PPA_WU05A1_SOURCE_CENSUS.json. F-PE16's seven-field set is corroborating historical evidence, superseded by the exact source census for field membership.",
+      "transaction_status": "A1 maps exact internal/external transfers and incomplete legacy rollback. A2 provides only an isolated DTO rollback/restart harness; no Richards-owner candidate binding, accepted mass receipt or A4 whole-column reconciliation is admitted.",
       "qualification_evidence": [
         "B1.11 includes SWAP-001 macropore array-shape correction",
         "F-CI19/F-CI30 explicitly hold active macropore scope",
@@ -1027,15 +1027,15 @@
       "production_reachable": "NO",
       "restrictions": [
         "Corrected-reference preservation is not migration",
-        "Exact B1.11 macropore/macrorate source bytes are not retained in the current Git tree",
-        "F-PE16 seven-field state set is not final migration authority before exact source materialization",
+        "Exact B1.11 macropore/macrorate source is materialized at the recorded workspace path and verified by SHA-256; reference source bytes are not duplicated in the Git tree",
+        "A1 field/flux census is complete; F-PE16 seven-field state list remains corroboration, not final authority",
         "No production macropore implementation is authorized by PPA-WU05-A",
-        "PPA-WU05-A is review authority only; production remains blocked until A1 exact source materialization/census."
+        "A2 remains isolated; production stays blocked on A3 Richards-owner composition plus A4 exactly-once accepted whole-column mass and retry/restart qualification."
       ],
       "scientific_risk": "HIGH",
       "use_relevance": "HIGH for structured soils",
       "dependencies": [
-        "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
+        "PPA-WU05-A3 source composition and PPA-WU05-A4 accepted mass/transaction integration",
         "Explicit optional macropore restart-state topology",
         "Dynamic top-boundary/infiltration composition as proven by source trace",
         "Drainage interactions as proven by source trace",
@@ -1883,10 +1883,10 @@
       "id": "PPA-WU05-A",
       "title": "Macropore source/state/mass/transaction authority",
       "goal": "Freeze repository-authoritative macropore ownership, mass, restart and rollback invariants while distinguishing exact B1.11 identity from corroborated historical evidence.",
-      "status": "CANONICAL_ADMITTED_PARTIAL_AUTHORITY_CLOSED_SOURCE_MATERIALIZATION_REQUIRED",
+      "status": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_A1_COMPLETE_A2_ISOLATED_PRODUCTION_HELD",
       "production_admission": "NONE_REVIEW_ONLY",
-      "exit": "CLOSED AS REVIEW AUTHORITY: owner-level state/mass/restart/rollback invariants are canonical; exact field/flux census remains blocked until A1 byte-exact source materialization.",
-      "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
+      "exit": "CLOSED AS REVIEW AUTHORITY: canonical owner invariants plus exact A1 source/mutable-field/mass census; A2 DTO rollback/restart is isolated evidence only.",
+      "next_slice": "PPA-WU05-A3 source-equation composition and A4 accepted whole-column mass/retry/restart qualification; no production admission yet",
       "qualification": "Final admission: PPA-WU05-A 35399987601 PASS; parent WU05 35399987594 PASS; Documentation 35399987514 PASS; F-CI canonical 35399987540 PASS.",
       "canonical_merge_commit": "3736703b6a3b41941bfc7c57a336da3a4f3df999"
     }
@@ -1984,7 +1984,21 @@
       },
       "production_delta": "NONE",
       "reference_delta": "NONE",
-      "effect": "Macropore owner-level source/state/mass/transaction review authority is canonical. Production macropore remains blocked until PPA-WU05-A1 exact source materialization and complete census."
+      "effect": "Macropore owner-level source/state/mass/transaction review authority is canonical. This historical post-audit statement is superseded by the following A1/A2 reconciliations: A1 source census is complete and A2 is isolated only; production still awaits A3/A4."
+    },
+    {
+      "workunit": "PPA-WU05-A1",
+      "state": "SOURCE_MATERIALIZATION_AND_CENSUS_COMPLETE",
+      "evidence": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json at 5b648a7e2; workspace source SHA-256 reverified during campaign continuation",
+      "production_delta": "NONE",
+      "effect": "Exact B1.11 macropore/macrorate bytes and complete source-level mutable-state/mass-transfer census are available; this closes the A1 prerequisite only."
+    },
+    {
+      "workunit": "PPA-WU05-A2",
+      "state": "ISOLATED_TYPED_DTO_ROLLBACK_RESTART_QUALIFIED",
+      "evidence": "integration/audits/PPA_WU05A2_STATUS.json",
+      "production_delta": "NONE",
+      "effect": "State DTO is tested in isolation; accepted Richards-owner integration, external mass receipts, A4 reconciliation and production admission remain open."
     },
     {
       "workunit": "PPA-WU04-A",

@@ -4,7 +4,7 @@
   "title": "Macropore source/state/mass/transaction authority",
   "branch": "audit/ppa-wu05a-macropore-authority",
   "reconcile_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
-  "status": "CANONICAL_ADMITTED_PARTIAL_AUTHORITY_CLOSED_SOURCE_MATERIALIZATION_REQUIRED",
+  "status": "CANONICAL_ADMITTED_A1_SOURCE_CENSUS_COMPLETE_A2_ISOLATED_PRODUCTION_HELD",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "exact_authority": {
@@ -36,8 +36,8 @@
     "restart_rule": "Explicit optional macropore state layout required; scratch excluded; final schema held for exact source trace."
   },
   "blocker": {
-    "class": "EXACT_SOURCE_MATERIALIZATION_REQUIRED",
-    "description": "Current Git authority pins exact B1.11 identities but does not retain the complete macropore.f90/macrorate.f90 source bytes or original S12 patch payloads needed for a full cross-call mutable-field and mass-transfer census.",
+    "class": "RUNTIME_MASS_TRANSACTION_INTEGRATION_REQUIRED",
+    "description": "A1 exact source materialization and full cross-call mutable-field/mass-transfer census are complete; A2 typed continuation DTO/rollback/restart is qualified only in isolation. No Richards-owner candidate binding, accepted macropore mass receipt, A4 whole-column mass reconciliation, or retry/restart runtime integration is qualified.",
     "external_scientific_decision_required": false,
     "production_implementation_permitted": false
   },
@@ -64,8 +64,16 @@
     ]
   },
   "production_admission": "NONE_REVIEW_ONLY",
-  "verdict": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_SOURCE_MATERIALIZATION_REQUIRED",
-  "next_action": "PPA-WU05-A is closed as canonically admitted review authority. Production macropore remains forbidden. Continue only with PPA-WU05-A1 byte-exact B1.11 macropore/macrorate source materialization and complete mutable-field/mass-transfer census.",
+  "verdict": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_A1_COMPLETE_PRODUCTION_MIGRATION_HELD",
+  "next_action": "A1 source materialization/census is complete and A2 is qualified only as an isolated DTO harness. Continue the bounded A3 single-column source-equation composition; do not bind production runtime until A3 interval ownership and A4 single-owner whole-column mass reconciliation/retry/restart gates pass.",
+  "a1_reconciliation": {
+    "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+    "source_census_commit": "5b648a7e2d8534ded6536ef6f4afb4404da7946d",
+    "macropore_sha256_verified_against_materialized_workspace_source": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "macrorate_sha256_verified_against_materialized_workspace_source": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "mutable_field_and_mass_transfer_census": "PASS",
+    "production_admission": "NONE"
+  },
   "canonical_reconciliation": {
     "prior_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
     "governance_repair_pr": 345,
