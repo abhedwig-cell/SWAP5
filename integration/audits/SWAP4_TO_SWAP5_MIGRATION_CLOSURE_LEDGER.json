@@ -14,10 +14,10 @@
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "local_branch": "codex/ppa-swap431-functional-gap-register",
-    "local_head_before_ledger": "e8dc01f59fe7e015b613c0441f9dd96aa1f2140d",
-    "local_relation_to_previous_canonical_base": "195 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "local_head_before_ledger": "3339d19d68d937e1feb104c4dc19f5b702ba5e2f",
+    "local_relation_to_previous_canonical_base": "196 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
     "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
-    "last_reconciled_head": "e8dc01f59fe7e015b613c0441f9dd96aa1f2140d",
+    "last_reconciled_head": "3339d19d68d937e1feb104c4dc19f5b702ba5e2f",
     "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
     "reconciled_on": "2026-09-23"
   },
@@ -1252,15 +1252,27 @@
           "id": "M7-05",
           "text": "throughput and tail-cost behaviour are measured, including difficult columns",
           "status": "PARTIAL",
-          "gap": "No current canonical evidence was located for throughput and tail-cost across a representative batch including difficult columns. This is an evidence gap, not authorization for speculative optimization or concurrency.",
-          "next_bounded_action": "Measure the existing serialized path on a preregistered representative batch, including difficult cases; report throughput and tail-cost only, without changing physics or numerical policy."
+          "gap": "The controlled M7-04 dispatcher probe uses 256 columns and 32 nodes but is not an accepted field workload and has no difficult columns. The active MP measurement contract requires a large throughput batch relevant to hundreds of thousands of logical columns and a separate difficult-column family; it records that the inspected SWAP4.3.1 distribution has no dedicated executable B12 benchmark fixture. No throughput/tail-cost claim is qualified.",
+          "evidence": [
+            "integration/audits/M7_LARGE_BATCH_MEMORY_MEASUREMENT.json",
+            "docs/performance/multiswap-measurement-architecture.md#mp-b02-homogeneous-scaling",
+            "docs/performance/multiswap-measurement-architecture.md#mp-b04-difficult-column-tail"
+          ],
+          "next_bounded_action": "Proceed with unrelated M8 retirement inventory. Reopen M7-05 only when an accepted representative batch distribution and executable, owner-qualified difficult-column fixture (including B12-like regime) are available; do not synthesize qualification data."
         },
         {
           "id": "M7-06",
           "text": "fallback/relaxed routes are bounded, visible and mass conservative",
           "status": "PARTIAL",
-          "gap": "Fallback behavior is qualified for admitted capabilities but no single M7 evidence record covers every retained batch route and its mass accounting.",
-          "next_bounded_action": "Link each retained batch fallback to its owner-specific transaction/mass qualification; add only missing route coverage."
+          "gap": "Current owner evidence bounds and qualifies the explicit RossFast K2/K4/K8 internal ladder (216/216 route, temporal, mass/work/retry cases; no K16), while Reference remains the default and automatic model fallback/relaxed execution is not admitted. The batch result exposes solver_route, total linear solves, internal retries and mass, but not the RossFast selected fallback tier; mixed Reference/RossFast MultiSWAP and a tier-publishing per-column batch qualification remain excluded.",
+          "evidence": [
+            "integration/audits/M7_FALLBACK_ROUTE_MASS_EVIDENCE.json",
+            "integration/f-ross/F-ROSS12_STATUS.json",
+            "integration/f-ross/F-ROSS22_STATUS.json",
+            "integration/f-ci/F-CI94_STATUS.json",
+            "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+          ],
+          "next_bounded_action": "Do not widen mixed-model admission. Reassess only after separately authorized uniform selected-RossFast batch evidence exposes fallback tier and per-column hard mass; otherwise preserve current fail-closed exclusions and continue M8."
         },
         {
           "id": "M7-07",
@@ -1399,5 +1411,5 @@
     }
   ],
   "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
-  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=e8dc01f59fe7e015b613c0441f9dd96aa1f2140d (BASE/Black/Boesten O0/O2 resource matrix, pinned restricted soil-temperature resource probe, and 256-column/32-node public serialized-dispatch memory probe passed); M7-03 remains partial for active snow and drainage response, fixed descriptors, allocator overhead and transient peak memory; M7-04 remains partial because no accepted representative field-profile/production-bootstrap workload is recorded; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
+  "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=3339d19d68d937e1feb104c4dc19f5b702ba5e2f (M7 BASE/Black/Boesten O0/O2 resources, pinned soil-temperature resource, 256-column/32-node public-dispatch memory and current-canonical F-ROSS12/F-ROSS22 fallback-route audit persisted); M7-03 remains partial for active snow/drainage and allocator/transient accounting; M7-04 remains partial for accepted field-profile/production-bootstrap memory; M7-05 awaits a representative large batch and executable qualified B12-like fixture; M7-06 awaits per-column fallback-tier batch observability/qualification; M7-02 is closed only for sequential serialized-backend reuse, not parallel workers; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
 }
