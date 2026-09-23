@@ -40,6 +40,7 @@ module mod_b110_generated_mvg_table_state
     real(real64), allocatable :: ksat(:)
     real(real64), allocatable :: kbranch_head(:)
     real(real64), allocatable :: source_cofgen(:,:)
+    logical :: source_ksatexm_extension_enabled = .false.
   contains
     procedure :: ready => generated_state_ready
     procedure :: matches => generated_state_matches
@@ -75,10 +76,9 @@ contains
     if (any(parameters%cofgen(4,1:n) <= 0.0_real64)) return
     if (any(parameters%cofgen(6,1:n) <= 1.0_real64)) return
 
-    if (parameters%ksatexm_extension_enabled) then
-      status = F_TAB02_STATE_UNSUPPORTED_KSATEXM
-      return
-    end if
+    ! TAB-HYD KSATEXM research: the admitted F-SI39 extension is allowed
+    ! only as part of the analytical authority used to generate K(h).
+    ! H_ENPR remains outside this research candidate.
     if (any(parameters%cofgen(9,1:n) /= 0.0_real64)) then
       status = F_TAB02_STATE_UNSUPPORTED_HENPR
       return
@@ -92,6 +92,12 @@ contains
     lo = GENERATION_H_DRY
     hi = GENERATION_H_WET
     target = parameters%cofgen(3,1:n) * K_BRANCH_TARGET_FRACTION
+    if (parameters%ksatexm_extension_enabled) then
+      do i = 1, n
+        if (parameters%cofgen(10,i) > parameters%cofgen(3,i)) &
+          target(i) = parameters%cofgen(10,i) * K_BRANCH_TARGET_FRACTION
+      end do
+    end if
 
     do j = 1, 140
       mid = 0.5_real64 * (lo + hi)
@@ -122,6 +128,7 @@ contains
              state%ksat(n), state%kbranch_head(n))
     allocate(state%source_cofgen(size(parameters%cofgen,1),n))
     state%source_cofgen = parameters%cofgen
+    state%source_ksatexm_extension_enabled = parameters%ksatexm_extension_enabled
 
     u0 = log10(-GENERATION_H_DRY)
     do j = 1, B110_GENERATED_MVG_TABLE_N - 1
@@ -157,6 +164,11 @@ contains
 
     state%theta_saturated = parameters%cofgen(2,1:n)
     state%ksat = parameters%cofgen(3,1:n)
+    if (parameters%ksatexm_extension_enabled) then
+      do i = 1, n
+        if (parameters%cofgen(10,i) > parameters%cofgen(3,i)) state%ksat(i) = parameters%cofgen(10,i)
+      end do
+    end if
     state%kbranch_head = state%head(B110_GENERATED_MVG_TABLE_N-1,:)
 
     hvec = H_CRIT
@@ -378,7 +390,7 @@ contains
 
     matches = .false.
     if (.not. self%ready()) return
-    if (parameters%ksatexm_extension_enabled) return
+    if (parameters%ksatexm_extension_enabled .neqv. self%source_ksatexm_extension_enabled) return
     if (parameters%active_nodes /= self%active_nodes .or. .not. allocated(parameters%cofgen)) return
     if (size(parameters%cofgen,1) /= size(self%source_cofgen,1) .or. &
         size(parameters%cofgen,2) /= size(self%source_cofgen,2)) return
