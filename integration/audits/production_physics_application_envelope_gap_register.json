@@ -2078,6 +2078,13 @@
       "effect": "The local dynamic-volume shrinkage/subsidy equation and correction branch are tested without state publication; previous-state threshold choice and accepted-owner integration remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MPVOLUME-SURFACE-CANDIDATE",
+      "state": "ISOLATED_SURFACE_AREA_AND_CAPACITY_CANDIDATE_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MPVOLUME_SURFACE_STATUS.json; preregistered against B1.11 macropore.f90 MPVOLUME task 1 section C",
+      "production_delta": "NONE",
+      "effect": "Dynamic/static surface area, crack-width threshold, per-domain share and conductivity-cap equations pass isolated cases. No storage or flux is published; MPVOLUME owner integration remains open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,

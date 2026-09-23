@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_surface.status.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-SURFACE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@5daab24da296b7c092f936871c91a376e28d9948",
+  "preregistration": "integration/audits/PPA_WU05A3_MPVOLUME_SURFACE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_surface.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_surface_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_surface_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["crack-node dynamic area override", "static area", "minimum width cutoff", "0.6 cap", "domain allocation", "capacity clamp limits", "invalid denominator"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; candidate area/capacity equations only; no storage/flux state publication, mass, retries/restart or A4 admission",
+  "next_action": "Continue MPVOLUME task 1 by testing the candidate volume/domain aggregation and ICpBtDm bottom-limit equations without publishing state.",
+  "blockers": []
+}
