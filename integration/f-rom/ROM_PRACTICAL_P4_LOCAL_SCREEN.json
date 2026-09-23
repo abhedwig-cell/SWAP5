@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.rom-practical.p4.local-screen.v1",
+  "status": "LOCAL_EXECUTION_COMPLETE_CI_REFERENCE_COMPARISON_SEPARATE",
+  "date": "2026-09-23",
+  "source_blob": "5f8f96300523fb8a1534b3cc2f1c159921c95a05",
+  "source_sha256": "97b68dc0470bf010dd9b9181ed198e72d9e378662f3b28bb742e052cdce636d2",
+  "material_blob": "b2d8885a9bb01b078a3510086c70945207ab0882",
+  "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "compiler_flags": ["-O2", "-std=f2008", "-Wall", "-Wextra", "-fcheck=all", "-fbacktrace", "-ffpe-trap=invalid,zero,overflow"],
+  "candidate_physics_changed": false,
+  "forcing_changed": false,
+  "primary_dt_day": 0.01,
+  "comparator_dt_day": 0.005,
+  "primary_complete_cases": 7,
+  "comparator_complete_cases": 8,
+  "expected_observations_per_complete_case": 120,
+  "case_status": {
+    "SURF_P_B02": {"primary": "COMPLETE", "comparator": "COMPLETE"},
+    "SURF_P_B05": {"primary": "COMPLETE", "comparator": "COMPLETE"},
+    "SURF_P_B11": {"primary": "COMPLETE", "comparator": "COMPLETE"},
+    "SURF_P_B16": {"primary": "COMPLETE", "comparator": "COMPLETE"},
+    "GW_LB_B02": {"primary": "COMPLETE", "comparator": "COMPLETE"},
+    "GW_LB_B05": {"primary": "NUMERICAL_BLOCKED", "comparator": "COMPLETE"},
+    "GW_LB_B11": {"primary": "COMPLETE", "comparator": "COMPLETE"},
+    "GW_LB_B16": {"primary": "COMPLETE", "comparator": "COMPLETE"}
+  },
+  "primary_failure": {
+    "purpose": "GW_LB", "material": "B05", "history": "GD02",
+    "day": 1, "substep": 4, "RK4_stage": 4,
+    "rhs_evaluations_in_failed_history": 16,
+    "reason": "STAGE_DOMAIN",
+    "preceding_GD01_observations": 60,
+    "failed_case_is_not_qualified_from_partial_output": true
+  },
+  "maximum_water_ledger_cm_among_complete_runs": 3.200284481863491e-10,
+  "water_ledger_gate_cm": 1e-8,
+  "RHS_evaluations_per_completed_history": {"primary": 24000, "comparator": 48000},
+  "local_transcribed_equation_smoke": {
+    "status": "PASS", "cases": 8, "probes_per_case": 56,
+    "endpoint_rejection": true,
+    "authority_limit": "This local smoke uses transcribed Python expressions. The full pinned-repository-source conformance check is a separate CI requirement."
+  },
+  "local_initial_linearization_post_hoc": {
+    "state": "G8, GD02 initial state, first forcing phase",
+    "B02": {"most_negative_real_eigenvalue_per_day": -157.1787079549925, "dt_0_01_Heun_iteration_radius": 0.7858935397749625, "dt_0_01_RK4_amplification_max": 0.990095397738276},
+    "B05": {"most_negative_real_eigenvalue_per_day": -398.1347335286554, "dt_0_01_Heun_iteration_radius": 1.990673667643277, "dt_0_01_RK4_amplification_max": 4.895168131584541, "dt_0_005_RK4_amplification_max": 0.9818505943620517},
+    "interpretation": "The local linearization is consistent with the observed explicit RK4 instability in B05 at dt=0.01 and completion at dt=0.005. It is not a global nonlinear stability proof or a response-based timestep selection policy."
+  },
+  "conclusions_permitted": [
+    "The frozen reduced equations admit complete runs on this bounded panel at the preregistered half-step, with no new states or closure.",
+    "The primary RK4 dt=0.01 is not robust on the complete panel.",
+    "A half-step success does not retroactively pass the primary P4 target.",
+    "Numerical completion alone is not hydrological fidelity or application acceptance."
+  ],
+  "same_host_Richards_reference_run_locally": false,
+  "speed_ratio_vs_Richards": null,
+  "portable_speed_claim": false,
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "P_ROM_ET_opened": false
+}
