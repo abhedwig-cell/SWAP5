@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.rom_root.s3d3.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D3",
+  "date": "2026-09-23",
+  "status": "CLOSED_UJ_THRESHOLD_AWARE_SAME_STATE_INFORMATION_SUFFICIENT",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D3_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3D3_BINDING.json",
+    "blocker_resolution": "integration/f-rom/ROM_ROOT_S3D3_BLOCKER_RESOLUTION.json",
+    "result": "integration/f-rom/ROM_ROOT_S3D3_RESULT.json",
+    "workflow_run": 35864381308
+  },
+  "conclusions": [
+    "The exact drought-only piecewise-linear Feddes layer functional can be reconstructed from DeltaF_i, U_i and J_i on all tested qualified RA02R states and retained representations.",
+    "Within the preregistered non-tautological threshold-aware family, U_i and J_i are both necessary: omitting U or omitting the transition-regime hydraulic moment leaves the uptake functional non-unique.",
+    "Regime occupancy alone and root-weighted mean pressure head alone are insufficient.",
+    "S3-D3 identifies response-relevant same-state information content only. It does not establish that U_i and J_i are recoverable from existing reduced hydraulic state or that they form a dynamically closed propagated state."
+  ],
+  "decision": {
+    "threshold_aware_information_content_identified": true,
+    "same_state_UJ_sufficient": true,
+    "existing_storage_mean_rehabilitated": false,
+    "new_propagated_root_state_selected": false,
+    "dynamic_augmented_candidate_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "next": {
+    "work_unit": "ROM-ROOT-S3-D4",
+    "question": "Are U_i and J_i uniquely recoverable from the existing retained hydraulic state and its already-admitted local diagnostics, and if not, what is the minimum additional dynamical information required for a Markovian root-feedback closure?",
+    "first_gate": "Establish recoverability/non-uniqueness before designing any propagated root-specific state.",
+    "constraint": "No dynamic augmented candidate, no fitted reconstruction, no new partition, no application tolerance and no performance claim."
+  },
+  "model_changed": false
+}
