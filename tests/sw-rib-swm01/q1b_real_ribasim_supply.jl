@@ -35,17 +35,23 @@ function require(condition::Bool, message::AbstractString)
     condition || error(message)
 end
 
-function basin_level(model)
-    values = BMI.get_value_ptr(model, "basin.level")
-    require(length(values) == 1, "Q1B requires exactly one Basin")
+function only_value(values, label)
+    require(length(values) == 1, "Q1B requires exactly one $label")
     return Float64(values[1])
 end
+
+basin_level(model) = only_value(BMI.get_value_ptr(model, "basin.level"), "Basin level")
+basin_storage(model) = only_value(BMI.get_value_ptr(model, "basin.storage"), "Basin storage")
+pump_cumulative(model) = only_value(model.integrator.u.pump, "Pump cumulative-flow state")
 
 function run_case(root::AbstractString, case)
     path = joinpath(root, case.id, "ribasim.toml")
     model = BMI.initialize(Ribasim.Model, path)
     try
         initial_level = basin_level(model)
+        initial_storage = basin_storage(model)
+        initial_pump = pump_cumulative(model)
+
         require(
             isapprox(initial_level, case.initial_level; atol=INITIAL_TOL, rtol=0.0),
             "$(case.id) initial level drift: $initial_level",
@@ -58,39 +64,40 @@ function run_case(root::AbstractString, case)
         )
 
         final_level = basin_level(model)
-        # Constant 1 m2 Basin profile: Delta storage [m3] equals Delta level [m].
-        realized_supply = final_level - initial_level
-        expected_storage_change = case.expected_supply
-        mass_residual = (final_level - initial_level) - realized_supply
+        final_storage = basin_storage(model)
+        direct_supply = pump_cumulative(model) - initial_pump
+        storage_change = final_storage - initial_storage
+        direct_mass_residual = storage_change - direct_supply
 
         require(
             abs(final_level - case.expected_final_level) <= LEVEL_TOL,
             "$(case.id) final level mismatch ribasim=$final_level expected=$(case.expected_final_level)",
         )
         require(
-            abs(realized_supply - case.expected_supply) <= SUPPLY_TOL,
-            "$(case.id) realized supply mismatch ribasim=$realized_supply expected=$(case.expected_supply)",
+            abs(direct_supply - case.expected_supply) <= SUPPLY_TOL,
+            "$(case.id) direct supply mismatch ribasim=$direct_supply expected=$(case.expected_supply)",
         )
         require(
-            realized_supply <= case.max_supply + SUPPLY_TOL,
-            "$(case.id) exceeded supply capacity: $realized_supply > $(case.max_supply)",
+            direct_supply <= case.max_supply + SUPPLY_TOL,
+            "$(case.id) exceeded supply capacity: $direct_supply > $(case.max_supply)",
         )
         require(
-            abs((final_level - initial_level) - expected_storage_change) <= SUPPLY_TOL,
-            "$(case.id) storage change mismatch",
+            abs(storage_change - case.expected_supply) <= SUPPLY_TOL,
+            "$(case.id) storage change mismatch $storage_change",
         )
         require(
-            abs(mass_residual) <= MASS_TOL,
-            "$(case.id) mass residual $mass_residual",
+            abs(direct_mass_residual) <= MASS_TOL,
+            "$(case.id) direct mass residual $direct_mass_residual",
         )
 
         println("SW_RIB_SWM01_Q1B_CASE=$(case.id)")
         println("  INITIAL_LEVEL_M=$initial_level")
         println("  FINAL_LEVEL_M=$final_level")
-        println("  REALIZED_SUPPLY_M3=$realized_supply")
+        println("  STORAGE_CHANGE_M3=$storage_change")
+        println("  DIRECT_PUMP_SUPPLY_M3=$direct_supply")
         println("  MAX_SUPPLY_M3=$(case.max_supply)")
         println("  EXPECTED_SUPPLY_M3=$(case.expected_supply)")
-        println("  MASS_RESIDUAL_M3=$mass_residual")
+        println("  DIRECT_MASS_RESIDUAL_M3=$direct_mass_residual")
         println("SW_RIB_SWM01_Q1B_CASE_PASS=$(case.id)")
     finally
         BMI.finalize(model)
