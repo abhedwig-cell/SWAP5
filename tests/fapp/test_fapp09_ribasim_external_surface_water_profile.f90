@@ -2,7 +2,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
@@ -127,8 +127,9 @@ contains
     type(fmr_surface_water_trial_t) :: trial1,trial2
     type(fmr_serialized_reference_backend_t) :: backend
     type(fmr04_fixed_flux_top_provider_t), target :: top
+    class(transaction_state_t), allocatable :: snapshot
     real(real64) :: heads(1),expected
-    logical :: did_commit
+    logical :: did_commit, available
     integer :: status
 
     call initialize_case(committed,column,template,parameters,base,config,signed_rate)
@@ -162,6 +163,16 @@ contains
          did_commit,status)
     call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,'positive candidate committed')
     call require(committed%current_revision()==1_int64,'positive sole kernel commit')
+    call committed%snapshot(snapshot,available)
+    call require(available .and. allocated(snapshot),'committed base-state snapshot available')
+    select type (state => snapshot)
+    type is (fmr_b110_physical_state_t)
+      call require(.not. allocated(state%snow) .and. .not. allocated(state%soil_temperature), &
+           'external-owner commit adds no optional persistent state')
+    class default
+      call require(.false.,'external-owner committed carrier remains base physical state')
+    end select
+    write(*,'(A)') 'FAPP09_NO_PERSISTENT_SURFACE_WATER_STATE=PASS'
     write(*,'(A)') 'FAPP09_RECOMPOSITION_DISCARD_REPLAY=PASS'
     write(*,'(A)') 'FAPP09_POSITIVE_DRAINAGE_TRANSACTION=PASS'
   end subroutine verify_positive_recomposition_and_commit
