@@ -37,6 +37,7 @@ MODULE_SRC=(
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
