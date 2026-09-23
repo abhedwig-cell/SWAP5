@@ -12,7 +12,7 @@
   "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "implementation": {
     "workflow": ".github/workflows/rom-root-ra02.yml",
-    "workflow_blob": "c80756d04c48f93f06c4a1076986bb2a110c3d4a",
+    "workflow_blob": "4c8e4375b96f9ded70f42402c9c96df77447a3e8",
     "policy_materializer": "tests/rom/materialize_rom_root_ra02_reference_policy.py",
     "policy_materializer_blob": "9d4865ed27ba55a26383e14c4fe27b70222cb830",
     "stress_materializer": "tests/rom/materialize_rom_root_ra02_stress_panel.py",
@@ -101,6 +101,8 @@
     "authority": "integration/f-rom/ROM_ROOT_RA02_D1_CLOSEOUT.json",
     "scientific_semantics_changed": false,
     "reduced_candidate_response_generated": false,
-    "release_condition": "ROM_ROOT_RA02_D2_CLOSEOUT authorizes a Reference-only RA02 execution."
+    "release_condition": "ROM_ROOT_RA02_D2_CLOSEOUT authorizes a Reference-only RA02 execution.",
+    "workflow_hold_only": true,
+    "hold_workflow_blob": "4c8e4375b96f9ded70f42402c9c96df77447a3e8"
   }
 }
