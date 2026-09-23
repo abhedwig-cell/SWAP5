@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.rom_root.ra01.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_RA01_REFERENCE_RESPONSE",
+  "role": "NEW_RESEARCH_ONLY_ROOT_ACTIVE_REFERENCE_AUTHORITY_TRANSFER_QUALIFICATION",
+  "inherits": [
+    "integration/f-rom/ROM_ROOT_RNP03_CLOSEOUT.json",
+    "integration/f-rom/ROM_ROOT_REFERENCE_AUTHORITY_RECONCILIATION.json",
+    "integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json"
+  ],
+  "question": "Does the independently derived P2E20 representation-floor total-balance policy yield a qualified root-active high-resolution Reference on the frozen C6R physical and space-time matrix without changing local convergence, physics, hard mass closure, or iteration policy?",
+  "external_policy": {
+    "source": "PUB-P2E20",
+    "branch": "work/pub-p2e20-ref-high-floor-policy",
+    "head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+    "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+    "total_integrated_representation_bound_formula": "F_repr_cm = sum_i(dz_i * spacing(theta_s_i))",
+    "total_rate_formula": "max(1e-12 cm/day, F_repr_cm/dt_day)",
+    "safety_factor": 1,
+    "empirical_fit_to_C6R_or_RNP": false
+  },
+  "frozen_scientific_domain": {
+    "source_contract": "integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "root_depth_cm": 80,
+    "root_distributions": [
+      "SHALLOW",
+      "UNIFORM"
+    ],
+    "root_evaluation": "unchanged committed-state Feddes evaluation; prescribed sink fixed within trial",
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "target": "R2048_T32",
+    "horizon_day": 0.8192
+  },
+  "numerical_policy": {
+    "total_balance": "P2E20 representation-floor rate formula applied prospectively before each root-active Reference transaction",
+    "compartment_balance_tolerance_rate": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "root_active_second_attempt_or_legacy_fallback": false,
+    "hard_accepted_transaction_mass_cm": 1e-12,
+    "production_source_change": false
+  },
+  "qualification": {
+    "analyzer": "unchanged C6R three-level space-time uncertainty analyzer",
+    "convergence_metrics": [
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm",
+      "mapped_10cm_theta_rmse",
+      "interval_actual_root_uptake_rmse_cm_per_day",
+      "cumulative_actual_root_uptake_rmse_cm"
+    ],
+    "pass_rule": "All original C6R integrity, O0/O2 and five metrics qualify on both space and time axes for both materials.",
+    "policy_neutrality_probe": "Where the original strict 1e-12 total criterion accepts a transaction directly, RA01 must not introduce a different physics or root process; no endpoint equality to the failed C6R construction is required.",
+    "if_pass": "Persist RA01 as a new research-only Reference authority. Only then may a separately preregistered Stage-2 prescribed-sink reduced-harness equivalence be considered.",
+    "if_fail": "Keep ROM-ROOT blocked before reduced response. Do not change the formula, safety factor, routes, histories, metrics or local tolerances."
+  },
+  "prohibited": [
+    "No production Reference or HeadCalc modification.",
+    "No change to max_iterations/backtracking.",
+    "No local-balance tolerance relaxation.",
+    "No tolerance fitted to C6R/RNP residuals.",
+    "No legacy DYN0A fallback.",
+    "No U4/U8/R8/R16 reduced response.",
+    "No application acceptance or performance claim."
+  ],
+  "scientific_firewall": {
+    "c6r_reopened": false,
+    "reduced_candidate_response_generated": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
