@@ -219,6 +219,12 @@ the legacy final-step overshoot, and checks exact elapsed-time updates and
 continuation decisions at O0/O2. Invalid, non-progressing and overflowing
 advances fail closed; no transport-state or production-owner integration is
 implied.
+The B1.11 lateral-drainage source term is also independently checked over
+100,000 vectors: each signed level flux selects matrix concentration for
+strictly positive drainage and aquifer concentration otherwise, then adds in
+level order. Both the per-thickness sink rate and interval amount match the
+source bitwise at O0/O2. Invalid inputs fail closed; aquifer ownership and
+accepted mass publication remain unqualified.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
