@@ -1,0 +1,51 @@
+name: F-ROM Practical P1 evidence screen
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P1_PREREGISTRATION.json
+      - integration/f-rom/ROM_PRACTICAL_P1_EVIDENCE_SCREEN_INPUT.json
+      - tools/rom/analyze_rom_practical_p1.py
+      - .github/workflows/f-rom-practical-p1-evidence-screen.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate frozen authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/ROM_PRACTICAL_P1_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_P1_ANALYSIS'
+          assert p['baselines']['P-ROM-ET']['status']=='NOT_OPEN_IN_P1'
+          assert p['performance_method']['portable_speedup_claim'] is False
+          print('ROM_PRACTICAL_P1_AUTHORITY=PASS')
+          PY
+      - name: Analyze development evidence
+        run: |
+          set -euo pipefail
+          python3 tools/rom/analyze_rom_practical_p1.py             --input integration/f-rom/ROM_PRACTICAL_P1_EVIDENCE_SCREEN_INPUT.json             --prereg integration/f-rom/ROM_PRACTICAL_P1_PREREGISTRATION.json             --output integration/f-rom/ROM_PRACTICAL_P1_EVIDENCE_SCREEN_RESULT.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('integration/f-rom/ROM_PRACTICAL_P1_EVIDENCE_SCREEN_RESULT.json'))
+          assert r['development_regime_map']['GW_LB']['B01']['classification']=='EVENT_SENSITIVE'
+          assert r['development_regime_map']['GW_LB']['B14']['classification']=='ROBUST'
+          assert r['development_regime_map']['SURF_P']['B01']['classification']=='ROBUST'
+          assert r['development_regime_map']['SURF_P']['B14']['classification']=='ROBUST'
+          assert r['production_rom_authorized'] is False
+          print('ROM_PRACTICAL_P1=PASS')
+          PY
+      - name: Persist result
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PRACTICAL_P1_EVIDENCE_SCREEN_RESULT.json
+          git commit -m "ROM-PRACTICAL P1: persist evidence screen" || exit 0
+          git push origin HEAD:work/f-rom-practical
