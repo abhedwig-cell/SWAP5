@@ -1,0 +1,724 @@
+name: ROM-ROOT REF01 R1 repaired root-active Reference qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-ref01-r1-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  base:
+    name: base-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        material: [B01, B14]
+        route: [R512_T32, R1024_T32, R2048_T16, R2048_T8]
+        opt: [0, 2]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify bound REF01 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json'))
+          assert b['state']=='BOUND_BEFORE_REF01_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['candidate_response_generated'] is False
+          assert p['state']=='PREREGISTERED_BEFORE_REF01_ROOT_ACTIVE_RESPONSE'
+          assert p['transferred_policy']['safety_factor']==1.0
+          assert p['transferred_policy']['observed_c6r_retry_residuals_used_to_choose_policy'] is False
+          assert p['numerical_panel']['max_iterations']==16
+          assert p['numerical_panel']['max_abs_transaction_mass_cm']==1e-12
+          assert p['external_numerical_authority']['total_balance_floor']['result_blob']=='c06193ca08031f24f9f40a1b6713287b2599926d'
+          assert p['external_numerical_authority']['ref_high_policy']['result_blob']=='e6586623ec7c9d9f0d34fb741687deb8601f0615'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          c6r=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
+          assert c6r['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert c6r['scientific_firewall']['reduced_candidate_response_generated'] is False
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+      - name: Resolve route and source
+        id: cfg
+        run: |
+          case "${{ matrix.route }}" in
+            R512_T32)  echo "nodes=512" >> "$GITHUB_OUTPUT"; echo "dz=0.3125" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R1024_T32) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT"; echo "factor=32" >> "$GITHUB_OUTPUT" ;;
+            R2048_T16) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T8)  echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=8" >> "$GITHUB_OUTPUT" ;;
+            *) exit 2 ;;
+          esac
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize root-active Reference
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --temporal-factor "${{ steps.cfg.outputs.factor }}"             --output canonical/tests/rom/test_lare_bc2_c6r_reference.f90             --manifest /tmp/c6r_manifest.json
+
+      - name: Execute root-active Reference
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          mkdir -p route
+          n="${{ steps.cfg.outputs.nodes }}"; dz="${{ steps.cfg.outputs.dz }}"; factor="${{ steps.cfg.outputs.factor }}"
+          stub="canonical/c6r_${{ matrix.material }}_${{ matrix.route }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/c6r_${{ matrix.material }}_${{ matrix.route }}_o${{ matrix.opt }}_${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py \
+            --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            --manifest /tmp/c6r_reference_floor_repair.json
+          if [[ -f canonical/tests/rom/test_lare_bc2_c6r_reference.f90 ]]; then
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_reference.f90
+          else
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_segment.f90
+          fi
+          python3 tests/rom/materialize_rom_root_ref01_policy.py --path "$ref01_target"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_${{ matrix.material }}_${{ matrix.route }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_reference.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "${{ matrix.opt }}"
+          log="route/${{ matrix.material }}_${{ matrix.route }}_o${{ matrix.opt }}_${{ matrix.history }}.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            cat "$log"
+            exit "$rc"
+          fi
+          grep -Fq 'LAREDYN0R_C6R_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          expected_states=$((1024*factor))
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq "$expected_states"
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREDYN0R_ROOT|' "$log")" -eq 1024
+          test "$(grep -c '^LAREDYN0R_FALLBACK|' "$log")" -eq 0
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREDYN0R_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None and abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c6r_manifest.json route/
+          sha256sum route/* > route/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref01r1-base-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: route/
+          if-no-files-found: error
+
+  seg1:
+    name: seg1-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        opt: [0, 2]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify bound REF01 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json'))
+          assert b['state']=='BOUND_BEFORE_REF01_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['candidate_response_generated'] is False
+          assert p['state']=='PREREGISTERED_BEFORE_REF01_ROOT_ACTIVE_RESPONSE'
+          assert p['transferred_policy']['safety_factor']==1.0
+          assert p['transferred_policy']['observed_c6r_retry_residuals_used_to_choose_policy'] is False
+          assert p['numerical_panel']['max_iterations']==16
+          assert p['numerical_panel']['max_abs_transaction_mass_cm']==1e-12
+          assert p['external_numerical_authority']['total_balance_floor']['result_blob']=='c06193ca08031f24f9f40a1b6713287b2599926d'
+          assert p['external_numerical_authority']['ref_high_policy']['result_blob']=='e6586623ec7c9d9f0d34fb741687deb8601f0615'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          c6r=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
+          assert c6r['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert c6r['scientific_firewall']['reduced_candidate_response_generated'] is False
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize R2048 T32 segment 1
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 1 --segment-end 8192             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
+
+      - name: Execute R2048 T32 segment 1
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+          C6R_CHECKPOINT_OUT: /tmp/c6r_checkpoint.bin
+        run: |
+          set -euo pipefail
+          mkdir -p seg
+          stub="canonical/c6r_seg1_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 2048 --dz-cm 0.078125
+          build="/tmp/c6r_seg1_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py \
+            --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            --manifest /tmp/c6r_reference_floor_repair.json
+          if [[ -f canonical/tests/rom/test_lare_bc2_c6r_reference.f90 ]]; then
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_reference.f90
+          else
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_segment.f90
+          fi
+          python3 tests/rom/materialize_rom_root_ref01_policy.py --path "$ref01_target"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_seg1_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_segment.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "${{ matrix.opt }}"
+          log="seg/${{ matrix.material }}_R2048_T32_o${{ matrix.opt }}_${{ matrix.history }}_seg1.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            cat "$log"
+            exit "$rc"
+          fi
+          grep -Fq 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq 8192
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 4096
+          test "$(grep -c '^LAREDYN0R_ROOT|' "$log")" -eq 256
+          test "$(grep -c '^LAREDYN0R_FALLBACK|' "$log")" -eq 0
+          test -s /tmp/c6r_checkpoint.bin
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREDYN0R_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None and abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c6r_checkpoint.bin seg/checkpoint.bin
+          cp /tmp/c6r_manifest.json seg/
+          sha256sum seg/* > seg/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref01r1-seg1-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: seg/
+          if-no-files-found: error
+
+
+  seg2:
+    name: seg2-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: seg1
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        opt: [0, 2]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Download prior segment checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: ref01r1-seg1-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: /tmp/c6r_prev
+
+      - name: Verify bound REF01 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json'))
+          assert b['state']=='BOUND_BEFORE_REF01_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['candidate_response_generated'] is False
+          assert p['state']=='PREREGISTERED_BEFORE_REF01_ROOT_ACTIVE_RESPONSE'
+          assert p['transferred_policy']['safety_factor']==1.0
+          assert p['transferred_policy']['observed_c6r_retry_residuals_used_to_choose_policy'] is False
+          assert p['numerical_panel']['max_iterations']==16
+          assert p['numerical_panel']['max_abs_transaction_mass_cm']==1e-12
+          assert p['external_numerical_authority']['total_balance_floor']['result_blob']=='c06193ca08031f24f9f40a1b6713287b2599926d'
+          assert p['external_numerical_authority']['ref_high_policy']['result_blob']=='e6586623ec7c9d9f0d34fb741687deb8601f0615'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          c6r=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
+          assert c6r['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert c6r['scientific_firewall']['reduced_candidate_response_generated'] is False
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize R2048 T32 segment 2
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 8193 --segment-end 16384             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
+
+      - name: Execute R2048 T32 segment 2
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+          C6R_CHECKPOINT_IN: /tmp/c6r_prev/checkpoint.bin
+          C6R_CHECKPOINT_OUT: /tmp/c6r_checkpoint.bin
+        run: |
+          set -euo pipefail
+          mkdir -p seg
+          stub="canonical/c6r_seg2_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 2048 --dz-cm 0.078125
+          build="/tmp/c6r_seg2_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py \
+            --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            --manifest /tmp/c6r_reference_floor_repair.json
+          if [[ -f canonical/tests/rom/test_lare_bc2_c6r_reference.f90 ]]; then
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_reference.f90
+          else
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_segment.f90
+          fi
+          python3 tests/rom/materialize_rom_root_ref01_policy.py --path "$ref01_target"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_seg2_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_segment.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "${{ matrix.opt }}"
+          log="seg/${{ matrix.material }}_R2048_T32_o${{ matrix.opt }}_${{ matrix.history }}_seg2.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            cat "$log"
+            exit "$rc"
+          fi
+          grep -Fq 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq 8192
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 4096
+          test "$(grep -c '^LAREDYN0R_ROOT|' "$log")" -eq 256
+          test "$(grep -c '^LAREDYN0R_FALLBACK|' "$log")" -eq 0
+          test -s /tmp/c6r_checkpoint.bin
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREDYN0R_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None and abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c6r_checkpoint.bin seg/checkpoint.bin
+          cp /tmp/c6r_manifest.json seg/
+          sha256sum seg/* > seg/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref01r1-seg2-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: seg/
+          if-no-files-found: error
+
+
+  seg3:
+    name: seg3-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: seg2
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        opt: [0, 2]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Download prior segment checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: ref01r1-seg2-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: /tmp/c6r_prev
+
+      - name: Verify bound REF01 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json'))
+          assert b['state']=='BOUND_BEFORE_REF01_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['candidate_response_generated'] is False
+          assert p['state']=='PREREGISTERED_BEFORE_REF01_ROOT_ACTIVE_RESPONSE'
+          assert p['transferred_policy']['safety_factor']==1.0
+          assert p['transferred_policy']['observed_c6r_retry_residuals_used_to_choose_policy'] is False
+          assert p['numerical_panel']['max_iterations']==16
+          assert p['numerical_panel']['max_abs_transaction_mass_cm']==1e-12
+          assert p['external_numerical_authority']['total_balance_floor']['result_blob']=='c06193ca08031f24f9f40a1b6713287b2599926d'
+          assert p['external_numerical_authority']['ref_high_policy']['result_blob']=='e6586623ec7c9d9f0d34fb741687deb8601f0615'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          c6r=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
+          assert c6r['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert c6r['scientific_firewall']['reduced_candidate_response_generated'] is False
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize R2048 T32 segment 3
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 16385 --segment-end 24576             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
+
+      - name: Execute R2048 T32 segment 3
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+          C6R_CHECKPOINT_IN: /tmp/c6r_prev/checkpoint.bin
+          C6R_CHECKPOINT_OUT: /tmp/c6r_checkpoint.bin
+        run: |
+          set -euo pipefail
+          mkdir -p seg
+          stub="canonical/c6r_seg3_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 2048 --dz-cm 0.078125
+          build="/tmp/c6r_seg3_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py \
+            --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            --manifest /tmp/c6r_reference_floor_repair.json
+          if [[ -f canonical/tests/rom/test_lare_bc2_c6r_reference.f90 ]]; then
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_reference.f90
+          else
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_segment.f90
+          fi
+          python3 tests/rom/materialize_rom_root_ref01_policy.py --path "$ref01_target"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_seg3_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_segment.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "${{ matrix.opt }}"
+          log="seg/${{ matrix.material }}_R2048_T32_o${{ matrix.opt }}_${{ matrix.history }}_seg3.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            cat "$log"
+            exit "$rc"
+          fi
+          grep -Fq 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq 8192
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 4096
+          test "$(grep -c '^LAREDYN0R_ROOT|' "$log")" -eq 256
+          test "$(grep -c '^LAREDYN0R_FALLBACK|' "$log")" -eq 0
+          test -s /tmp/c6r_checkpoint.bin
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREDYN0R_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None and abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c6r_checkpoint.bin seg/checkpoint.bin
+          cp /tmp/c6r_manifest.json seg/
+          sha256sum seg/* > seg/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref01r1-seg3-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: seg/
+          if-no-files-found: error
+
+
+  seg4:
+    name: seg4-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: seg3
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        opt: [0, 2]
+        history: [V01, V02, V03, V04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Download prior segment checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: ref01r1-seg3-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: /tmp/c6r_prev
+
+      - name: Verify bound REF01 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json'))
+          assert b['state']=='BOUND_BEFORE_REF01_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['candidate_response_generated'] is False
+          assert p['state']=='PREREGISTERED_BEFORE_REF01_ROOT_ACTIVE_RESPONSE'
+          assert p['transferred_policy']['safety_factor']==1.0
+          assert p['transferred_policy']['observed_c6r_retry_residuals_used_to_choose_policy'] is False
+          assert p['numerical_panel']['max_iterations']==16
+          assert p['numerical_panel']['max_abs_transaction_mass_cm']==1e-12
+          assert p['external_numerical_authority']['total_balance_floor']['result_blob']=='c06193ca08031f24f9f40a1b6713287b2599926d'
+          assert p['external_numerical_authority']['ref_high_policy']['result_blob']=='e6586623ec7c9d9f0d34fb741687deb8601f0615'
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          c6r=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
+          assert c6r['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert c6r['scientific_firewall']['reduced_candidate_response_generated'] is False
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize R2048 T32 segment 4
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --segment-start 24577 --segment-end 32768             --output canonical/tests/rom/test_lare_bc2_c6r_segment.f90             --manifest /tmp/c6r_manifest.json
+
+      - name: Execute R2048 T32 segment 4
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+          C6R_CHECKPOINT_IN: /tmp/c6r_prev/checkpoint.bin
+          C6R_CHECKPOINT_OUT: /tmp/c6r_checkpoint.bin
+        run: |
+          set -euo pipefail
+          mkdir -p seg
+          stub="canonical/c6r_seg4_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 2048 --dz-cm 0.078125
+          build="/tmp/c6r_seg4_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py \
+            --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            --manifest /tmp/c6r_reference_floor_repair.json
+          if [[ -f canonical/tests/rom/test_lare_bc2_c6r_reference.f90 ]]; then
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_reference.f90
+          else
+            ref01_target=canonical/tests/rom/test_lare_bc2_c6r_segment.f90
+          fi
+          python3 tests/rom/materialize_rom_root_ref01_policy.py --path "$ref01_target"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c6r_seg4_${{ matrix.material }}_o${{ matrix.opt }}_${{ matrix.history }}_stubs.f90"             --target tests/rom/test_lare_bc2_c6r_segment.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "${{ matrix.opt }}"
+          log="seg/${{ matrix.material }}_R2048_T32_o${{ matrix.opt }}_${{ matrix.history }}_seg4.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            cat "$log"
+            exit "$rc"
+          fi
+          grep -Fq 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq 8192
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 4096
+          test "$(grep -c '^LAREDYN0R_ROOT|' "$log")" -eq 256
+          test "$(grep -c '^LAREDYN0R_FALLBACK|' "$log")" -eq 0
+          test -s /tmp/c6r_checkpoint.bin
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREDYN0R_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None and abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c6r_checkpoint.bin seg/checkpoint.bin
+          cp /tmp/c6r_manifest.json seg/
+          sha256sum seg/* > seg/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref01r1-seg4-${{ matrix.material }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: seg/
+          if-no-files-found: error
+
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [base, seg4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Download base routes
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ref01r1-base-*
+          path: /tmp/c6r/base
+          merge-multiple: false
+
+      - name: Download R2048 T32 segments
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ref01r1-seg*
+          path: /tmp/c6r/segments
+          merge-multiple: false
+
+      - name: Reconstruct all routes and require O0 O2 identity
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6r/routes REF01_EVIDENCE
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32 R2048_T16 R2048_T8; do
+              for opt in 0 2; do
+                full="/tmp/c6r/routes/${material}_${route}_o${opt}.txt"; : > "$full"
+                for history in V01 V02 V03 V04; do
+                  part="/tmp/c6r/base/ref01r1-base-${material}-${route}-o${opt}-${history}/${material}_${route}_o${opt}_${history}.txt"
+                  test -s "$part"; cat "$part" >> "$full"
+                done
+              done
+              cmp "/tmp/c6r/routes/${material}_${route}_o0.txt" "/tmp/c6r/routes/${material}_${route}_o2.txt"
+            done
+
+            for opt in 0 2; do
+              full="/tmp/c6r/routes/${material}_R2048_T32_o${opt}.txt"; : > "$full"
+              for history in V01 V02 V03 V04; do
+                for seg in 1 2 3 4; do
+                  part="/tmp/c6r/segments/ref01-seg${seg}-${material}-o${opt}-${history}/${material}_R2048_T32_o${opt}_${history}_seg${seg}.txt"
+                  test -s "$part"; cat "$part" >> "$full"
+                done
+              done
+            done
+            cmp "/tmp/c6r/routes/${material}_R2048_T32_o0.txt" "/tmp/c6r/routes/${material}_R2048_T32_o2.txt"
+
+            for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              cp "/tmp/c6r/routes/${material}_${route}_o0.txt" "REF01_EVIDENCE/${material}_${route}_o0.txt"
+            done
+          done
+          echo ROM_ROOT_REF01_O0_O2_IDENTITY=PASS
+
+      - name: Execute unchanged C6R numerical uncertainty metrics
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py)" = "bf17f616240d4830ea9ef7bed21b3f57ad9b404a"
+          python3 tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py             --prereg integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json             --b01-r512-t32 /tmp/c6r/routes/B01_R512_T32_o0.txt             --b01-r1024-t32 /tmp/c6r/routes/B01_R1024_T32_o0.txt             --b01-r2048-t32 /tmp/c6r/routes/B01_R2048_T32_o0.txt             --b01-r2048-t16 /tmp/c6r/routes/B01_R2048_T16_o0.txt             --b01-r2048-t8 /tmp/c6r/routes/B01_R2048_T8_o0.txt             --b14-r512-t32 /tmp/c6r/routes/B14_R512_T32_o0.txt             --b14-r1024-t32 /tmp/c6r/routes/B14_R1024_T32_o0.txt             --b14-r2048-t32 /tmp/c6r/routes/B14_R2048_T32_o0.txt             --b14-r2048-t16 /tmp/c6r/routes/B14_R2048_T16_o0.txt             --b14-r2048-t8 /tmp/c6r/routes/B14_R2048_T8_o0.txt             --output REF01_EVIDENCE/C6R_NUMERICAL_METRICS.json             | tee REF01_EVIDENCE/c6r_metrics_runner.txt
+          mapfile -t ref01_routes < <(find /tmp/c6r/routes -maxdepth 1 -type f -name '*_o0.txt' | sort)
+          test "${#ref01_routes[@]}" -eq 10
+          python3 tests/rom/analyze_rom_root_ref01.py \
+            --prereg integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json \
+            --metric-result REF01_EVIDENCE/C6R_NUMERICAL_METRICS.json \
+            --routes "${ref01_routes[@]}" \
+            --output REF01_EVIDENCE/ROM_ROOT_REF01_RESULT.json \
+            | tee REF01_EVIDENCE/ref01_runner.txt
+          cp integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json REF01_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_REF01_R1_REPAIR_BINDING.json REF01_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json REF01_EVIDENCE/
+
+      - name: Validate REF01 firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('REF01_EVIDENCE/ROM_ROOT_REF01_RESULT.json'))
+          assert r['status'] in (
+            'QUALIFIED_ROOT_ACTIVE_REFERENCE_UNDER_INDEPENDENT_REPRESENTATION_FLOOR_POLICY',
+            'REFERENCE_REMAINS_NOT_QUALIFIED_STOP_BEFORE_REDUCED_RESPONSE'
+          )
+          f=r['scientific_firewall']
+          assert f['reduced_candidate_response_generated'] is False
+          assert f['dynamic_root_feedback_executed'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('ROM_ROOT_REF01_R1_FIREWALL=PASS')
+          PY
+          sha256sum REF01_EVIDENCE/* > REF01_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-ref01-r1
+          path: REF01_EVIDENCE/
+          if-no-files-found: error
