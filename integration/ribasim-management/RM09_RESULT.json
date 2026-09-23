@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.ribasim_management.real_ribasim_full_realization.result.v1",
+  "work_unit": "RM09",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_BOUNDED_REAL_RIBASIM_FULL_REALIZATION_BRIDGE",
+  "qualification_head": "b9efbb633442844cb82167eb37c8e55c21987336",
+  "workflow": "RM09 bounded full-realization SWAP Ribasim fixture",
+  "workflow_run": 35828510689,
+  "workflow_job": 107075485289,
+  "conclusion": "success",
+  "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "precondition": {
+    "accepted_level_m": 1.000000000000058,
+    "user_demand_min_level_m": 0.9,
+    "level_difference_threshold_m": 0.02,
+    "level_margin_m": 0.10000000000005793,
+    "required_margin_m": 0.06,
+    "physical_low_storage_factor": 1.0,
+    "status": "PASS"
+  },
+  "swap_request": {
+    "requested_depth_cm": 2.0,
+    "origin_lineage": 9009,
+    "origin_revision": 0,
+    "o0_o2_identity": "PASS"
+  },
+  "real_ribasim": {
+    "candidate_a": {
+      "allocated_depth_cm": 2.0,
+      "physically_supplied_depth_cm": 1.9999999999999998,
+      "final_basin_level_m": 1.005
+    },
+    "candidate_b": {
+      "allocated_depth_cm": 2.0,
+      "physically_supplied_depth_cm": 1.9999999999999998,
+      "final_basin_level_m": 1.005
+    },
+    "storage_gain_m3": 4.99999999994194,
+    "accepted_origin_immutable_after_candidate_a_discard": true,
+    "same_origin_candidate_replay": "PASS",
+    "full_allocation": "PASS",
+    "full_physical_supply": "PASS"
+  },
+  "swap_consumption": {
+    "requested_depth_cm": 2.0,
+    "allocated_depth_cm": 2.0,
+    "supplied_depth_cm": 1.9999999999999998,
+    "net_surface_irrigation_cm": 1.8994444444444445,
+    "candidate_replay": "PASS",
+    "allocation_supply_bound_to_same_origin": "PASS",
+    "exactly_once_management_commit": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "qualified_claims": [
+    "Within the preregistered full-realization envelope, a read-only SWAP management request can be allocated and physically realized by real Ribasim and returned as distinct allocation and supply quantities to the same SWAP management origin.",
+    "Discarding an independent real Ribasim candidate leaves the accepted Ribasim origin unchanged in the fixture, and same-origin candidate replay reproduces allocation, physical supply and Basin endpoint.",
+    "When the UserDemand level-reduction and low-storage mechanisms are inactive by construction, full allocation is physically realized for the tested one-day topology.",
+    "The real Ribasim allocation and physical supply can be consumed by the qualified RM06 transaction with reject/replay identity and exactly one accepted management-state commit.",
+    "Gross physical supply remains distinct from net SWAP surface application after Rutter interception."
+  ],
+  "relationship_to_rm08": {
+    "RM08": "FALSIFIED_FULL_PHYSICAL_REALIZATION_ASSUMPTION",
+    "discriminator": "RM08 placed the accepted Basin level inside the UserDemand source-level reduction band; RM09 prospectively excludes that attenuation with a 0.10 m level margin and low_storage_factor=1.",
+    "meaning": "RM09 does not overwrite the RM08 falsification; it establishes the narrower profile in which full realization is valid."
+  },
+  "logging_note": {
+    "observation": "Finalizing the deliberately unadvanced accepted-origin BMI witness emits Ribasim retcode Default error-level log messages at model time t=0.",
+    "classification": "FIXTURE_LOGGING_ARTIFACT",
+    "qualification_effect": "NONE",
+    "basis": "Both advanced candidate simulations report successful completion and all preregistered numerical gates pass."
+  },
+  "authority_boundary": {
+    "canonical_admitted": false,
+    "partial_supply_policy": false,
+    "noncommensurate_clock_qualified": false,
+    "full_richards_hydrology_composed": false,
+    "modflow_composed": false,
+    "ribasim_checkpoint_api_claimed": false
+  },
+  "next_required_boundary": "Replace scalar allocation/supply plumbing with one typed origin-bound Ribasim realization receipt so the production-facing SWAP management forcing cannot consume values detached from the RM07 request origin."
+}
