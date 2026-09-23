@@ -5,17 +5,19 @@
   "date": "2026-09-23",
   "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
   "authority": {
-    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@fa7b2f0b3edba1bcc341ac826a2ef376717a4989",
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
     "representation_ladder": "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json@40e8067b21add9cf64549c60fbb13ce3c38bb894",
     "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
     "candidate_response_authorized": false,
     "authorization_dependency": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json must explicitly set candidate_response_authorized=true",
-    "pre_response_authority_repair": "integration/f-rom/ROM_PURPOSE_P3_PRE_RESPONSE_AUTHORITY_REPAIR.json@1d4e8537ab3c6aeaa82c1179ef558c5829bdaaf2"
+    "pre_response_authority_repair": "integration/f-rom/ROM_PURPOSE_P3_PRE_RESPONSE_AUTHORITY_REPAIR.json@1d4e8537ab3c6aeaa82c1179ef558c5829bdaaf2",
+    "reference_adjudication_dependency": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json must be persisted by the independently bound split-route Reference adjudication and set candidate_response_authorized=true",
+    "reference_route_binding": "Future candidate execution binding must freeze exact successful reference_runs.SURF_P and reference_runs.GW_LB used by Reference adjudication."
   },
   "implementation_blobs": {
     "tests/rom/run_rom_purpose_p3_candidate.py": "e9e249717cd9f402e282bd5a5e80ec6fcffbcd35",
     "tests/rom/analyze_rom_purpose_p3_candidates.py": "b695ac93444e3ab7ac2c747644abc92fe2ebfedb",
-    ".github/workflows/f-rom-purpose-p3-candidates.yml": "750b6dabcef6e5fd9f9db3caa90e62155d485377",
+    ".github/workflows/f-rom-purpose-p3-candidates.yml": "95144768ff861116ed3f1ea776a4d030c5f526a5",
     "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
     "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c"
   },
@@ -63,11 +65,13 @@
     "candidate_response_generated": false,
     "boundaries_changed": false,
     "closure_changed": false,
-    "pre_response_repairs_complete": true
+    "pre_response_repairs_complete": true,
+    "split_reference_routes_required": true,
+    "original_preregistration_authority_restored": true
   },
   "technical_repairs_before_candidate_response": [
-    "4f1a970fe78fc3be835acd3b808aede34cc6090d: repaired literal newline syntax and removed obsolete P1 candidate dependency.",
-    "88f95c1dd791413bc5f4be8c3a0fdba1020a9cdf: aligned fresh SURF_P parser globals with P3 S09-S12 histories.",
-    "e961d7fb54daff1be8073f44d5fca87cef6d36f5: candidate workflow aligned with repaired runner."
+    "Candidate runner syntax and obsolete P1 dependency repair completed before candidate response.",
+    "Fresh S09-S12 parsing repair completed before candidate response.",
+    "Candidate analysis consumes split SURF_P and GW_LB Reference route artifacts whose exact run IDs must be frozen in the future binding."
   ]
 }
