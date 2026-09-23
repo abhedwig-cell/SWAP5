@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_irr_tcs7_dcs2.status.v1",
+  "work_unit": "PPA-IRR-TCS7-DCS2",
+  "status": "IMPLEMENTED_SOURCE_ORACLE_PENDING",
+  "baseline": "codex/ppa-swap431-functional-gap-register@058d096ea",
+  "preregistration": "integration/audits/PPA_IRR_TCS7_DCS2_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_admission": "NONE; TCS7/DCS2 typed scheduled irrigation is not production-admitted",
+  "implementation": "src/process/mod_irrigation_process.f90",
+  "test": "tests/fapp/test_ppa_irr_tcs7_dcs2_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_tcs7_dcs2_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "afgen_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "b1_11_delta": "SWAP-011 targets neither source file"
+  },
+  "dependency_surface": [
+    "src/process/mod_irrigation_process.f90",
+    "tests/fapp/test_ppa_irr_tcs7_dcs2_source_oracle.f90",
+    "src/solver/mod_process_hydraulic_view.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "integration/audits/PPA_IRR_TCS7_DCS2_PREREGISTRATION.json"
+  ],
+  "test_result": null,
+  "qualification_status": "NOT_QUALIFIED; focused source-equation test only is planned",
+  "next_action": "Complete direct GNU Fortran O0/O2 source-oracle runs, persist results, then reconcile the PPA coverage register without claiming runtime admission.",
+  "recovery_point": "PPA-IRR-TCS7-DCS2 preregistration and this status record",
+  "blockers": []
+}

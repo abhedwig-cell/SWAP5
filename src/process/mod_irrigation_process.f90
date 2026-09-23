@@ -515,7 +515,6 @@ contains
       return
     end if
     if (x > knots(knot_count)) then
-      if (knot_count < IRRIGATION_MAX_SCHEDULED_KNOTS) return
       value = values(knot_count)
       ok = .true.
       return

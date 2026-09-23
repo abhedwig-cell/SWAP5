@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-TCS7-DCS2",
+  "title": "Source-bound scheduled irrigation TCS7/DCS2 table semantics",
+  "protocol": "PIN_B1_11_SOURCE -> RECONCILE_TYPED_EVALUATOR -> FIX_AFGEN_ENDPOINT_SEMANTICS -> SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_PRODUCTION_ADMISSION",
+  "parent_authorities": [
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json"
+  ],
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "archive": "SWAP_4.3.1.zip!/SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "files": {
+      "SWAP/irrigation.f90": "sha256:65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "SWAP/functions.f90": "sha256:b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+    },
+    "lineage": "The archive is the B0 distribution source; B1.11 adds SWAP-011, whose ordered patch does not target either file. Therefore these files are unchanged in the corrected B1.11 source tree."
+  },
+  "scope": [
+    "TCS=7 source trigger h(sensor) <= AFGEN(hcritab,14,DVS)",
+    "DCS=2 source amount 0.1 * AFGEN(fidtab,14,DVS) in cm",
+    "partial 14-entry table sentinel and last-value AFGEN clamp above the last populated knot",
+    "100,000 deterministic scheduled-event comparisons at O0 and O2"
+  ],
+  "non_goals": [
+    "generic management parser or event-calendar ingestion",
+    "full irrigation scheduling modes TCS1-8/DCS1-2",
+    "SSDI runtime admission, solute coupling or hydraulic source booking",
+    "changes to F-APP07 admitted Hupsel TCS1/DCS2 application",
+    "new persistent state owner, restart schema or production admission"
+  ],
+  "pass_conditions": [
+    "source AFGEN oracle preserves lower clamp, piecewise-linear source arithmetic and partial-table upper clamp",
+    "typed evaluator matches TCS7 trigger and DCS2 depth over 100,000 deterministic inputs",
+    "trigger equality and non-trigger sides are covered",
+    "triggered SSDI event amount and split duration are consistent with the selected depth",
+    "O0/O2 transcripts are identical",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}
