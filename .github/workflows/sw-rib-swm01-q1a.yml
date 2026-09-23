@@ -1,27 +1,13 @@
-name: SW-RIB-SWM01 Q1A real Ribasim external-owner equivalence
+name: SW-RIB-SWM01 Q1A-v1 archived mapping falsification
 
 on:
-  push:
-    branches:
-      - research/sw-rib-swm01-surfacewater-ownership
-    paths:
-      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
-      - 'tests/sw-rib-swm01/**'
-      - 'integration/research/SW_RIB_SWM01_Q1A_*'
-      - '.github/workflows/sw-rib-swm01-q1a.yml'
-  pull_request:
-    paths:
-      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
-      - 'tests/sw-rib-swm01/**'
-      - 'integration/research/SW_RIB_SWM01_Q1A_*'
-      - '.github/workflows/sw-rib-swm01-q1a.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  qualify:
+  reproduce-v1:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -42,5 +28,5 @@ jobs:
           working-directory: .ribasim-product-release
       - name: Compiler identity
         run: gfortran --version
-      - name: Q1A exact-release equivalence qualification
+      - name: Reproduce frozen Q1A-v1 mapping falsification
         run: bash tests/sw-rib-swm01/run_q1a_real_ribasim_equivalence.sh
