@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.f_vq128.activation.v1",
+  "work_unit": "F-VQ128",
+  "date": "2026-09-23",
+  "status": "ACTIVATED_AFTER_OWNER_GATE_PASS",
+  "subject_candidate": "work/f-app09-ribasim-external-surface-water-profile@ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "owner_gate": {
+    "run": 35884620992,
+    "job": 107261490688,
+    "conclusion": "PASS",
+    "persisted_result_commit": "bba793c21d5d6c1f747d4ddbe7979ddb73eac411"
+  },
+  "supporting_independent_evidence": {
+    "branch": "qualification/f-app09-ribasim-external-surface-water-profile-independent",
+    "head": "8a11744d4c0590d7d016cc04585cf1520c8dbcc7",
+    "run": 35885277281,
+    "job": 107263723634,
+    "conclusion": "PASS",
+    "checks": [
+      "source freeze",
+      "positive accepted-window ledger",
+      "last-half versus whole-window distinction",
+      "mismatch discard/replay",
+      "negative accepted-window ledger",
+      "O0/O2 exact identity"
+    ],
+    "role": "supporting evidence only; formal F-VQ128 remains authoritative for its broader frozen check set"
+  },
+  "source_postimages_unchanged": true,
+  "tolerances_unchanged": true
+}
