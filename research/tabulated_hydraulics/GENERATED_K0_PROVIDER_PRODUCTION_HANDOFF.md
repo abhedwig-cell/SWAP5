@@ -20,11 +20,11 @@ This work unit is an **acceleration representation** of already admitted default
 
 Reconcile from current canonical:
 
-- `integration/f-ci-canonical@b7d9c976e9b474545d54fa79b71ae134c25da156`.
+- `integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d`.
 
 Research evidence authority:
 
-- `research/tabulated-hydraulics-characterization@eb74b628bb277ce804b4a3ca2f066f531d5e23f3`;
+- `research/tabulated-hydraulics-characterization@f28cc15f1d26bf97c2e72d02dc716d8927068e8d`;
 - `TYPED_PROVIDER_RESEARCH_RESULT.md`;
 - `GENERIC_TEMPORAL_INDICATOR_RESULT.md`;
 - dynamic FMR44R characterization run `35818703618`;
@@ -403,3 +403,32 @@ new preregistration and qualification.
 
 For the final exact whole-Hupsel gate, the bounded F-SI39 sub-slice is the
 preferred research handoff candidate; KX03 remains the scientific oracle.
+
+## 17. Current-canonical reconciliation — 2026-09-23
+
+The handoff was reconciled once more against:
+
+`integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d`.
+
+Relative to the previously qualified canonical preimage `b7d9c976e9b474545d54fa79b71ae134c25da156`, the following controlling files are byte-identical:
+
+- `src/solver/mod_soil_water_solver_contract.f90`;
+- `src/solver/mod_b110_default_mvg_provider.f90`;
+- `src/solver/mod_reference_richards_temporal_indicator.f90`;
+- `src/runtime/mod_fmr_serialized_reference_backend.f90`;
+- `src/adapter/mod_b110_production_soil_water_task2.f90`.
+
+The 17 intervening canonical commits therefore do not invalidate the qualified constitutive-provider, temporal-indicator, serialized Reference, or Task-2 authority used by this handoff.
+
+The bounded F-SI39 extension evidence is also controlling at handoff time:
+
+- KX05 constitutive: `35863485123`;
+- KX06 solver/performance: `35863794528`, `35863919254`.
+
+Research head at this reconciliation:
+
+`research/tabulated-hydraulics-characterization@f28cc15f1d26bf97c2e72d02dc716d8927068e8d`.
+
+Disposition remains:
+
+**PRODUCTION WORK UNIT MAY START / PRODUCTION ADMISSION STILL REQUIRES G1-G9 / G8 EXTERNAL EXACT-ASSET BLOCKER REMAINS.**
