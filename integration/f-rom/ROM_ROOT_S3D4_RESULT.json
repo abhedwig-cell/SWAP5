@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.rom_root.s3d4.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D4",
+  "date": "2026-09-23",
+  "status": "FORCING_PORTABILITY_DERIVATION_COMPLETE",
+  "decision": "FIXED_H3_UJ_SUFFICIENT_BUT_NOT_FORCING_PORTABLE_EXISTING_STATE_NOT_EXACTLY_RECOVERABLE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D4_PREREGISTRATION.json",
+    "c6p": "integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json",
+    "s3d3": "integration/f-rom/ROM_ROOT_S3D3_RESULT.json"
+  },
+  "existing_state_recoverability": {
+    "existing_storage_state_exactly_recovers_UJ": false,
+    "storage_plus_geometric_first_moment_exactly_recovers_UJ": false,
+    "proof": "S3-D3 proves F_i is an exact function of DeltaF_i,U_i,J_i at fixed h3. C6P exhibits pairs with identical retained storage, and pairs with identical retained storage plus geometric first moment, but different fixed-h3 Feddes functional. Therefore U_i,J_i cannot both be uniquely determined by either tested retained-state information set in general.",
+    "new_response_generated": false
+  },
+  "moving_threshold_counterexample": {
+    "h4": -10,
+    "h3_a": -2,
+    "h3_b": -6,
+    "distribution_A": [
+      {
+        "w": 0.5,
+        "h": -4
+      },
+      {
+        "w": 0.5,
+        "h": -8
+      }
+    ],
+    "distribution_B": [
+      {
+        "w": 1,
+        "h": -6
+      }
+    ],
+    "at_h3_a": {
+      "DeltaF_A": 1,
+      "DeltaF_B": 1,
+      "U_A": 0,
+      "U_B": 0,
+      "J_A": 4,
+      "J_B": 4,
+      "F_A": 0.5,
+      "F_B": 0.5
+    },
+    "at_h3_b": {
+      "U_A": 0.5,
+      "U_B": 0,
+      "J_A": 1,
+      "J_B": 4,
+      "F_A": 0.75,
+      "F_B": 1
+    },
+    "fixed_h3_descriptor_portable": false
+  },
+  "forcing_portable_exact_contract": {
+    "measure": "mu_i = sum_j w_j delta(h-h_j)",
+    "query_functions": {
+      "U_i": "U_i(x)=mu_i(h>x)",
+      "J_i": "J_i(x)=integral_{h4<=h<=x}(h-h4) dmu_i"
+    },
+    "exact_identity": "F_i(x)=U_i(x)+J_i(x)/(x-h4)",
+    "sufficient_for_arbitrary_h3": true,
+    "response_scalar_stored": false,
+    "interpretation": "A threshold-queryable root-weighted pressure-head distribution is forcing-portable. The fixed-threshold scalar pair U_i,J_i is not."
+  },
+  "claim_boundary": {
+    "exact_low_dimensional_forcing_portable_state_demonstrated": false,
+    "universal_finite_moment_impossibility_claimed": false,
+    "fitted_parametric_distribution_tested": false,
+    "dynamic_closure_tested": false
+  },
+  "bounded_interpretation": [
+    "The compact U/J descriptor is an exact same-state response coordinate for a known current h3, not a forcing-independent hydrological state.",
+    "Existing Layer-ROM storage information cannot exactly recover U/J in general; adding the previously tested geometric first water-content moment does not remove that non-uniqueness.",
+    "Exact feedback for arbitrary demand-dependent h3 can be represented by the root-weighted within-layer pressure-head measure or an equivalent cumulative threshold-query object.",
+    "That exact forcing-portable object is distributional. S3-D4 therefore does not justify promoting U/J to a new propagated state.",
+    "Choosing a finite approximate surrogate now requires a purpose-dependent fidelity requirement or an independently frozen approximation experiment; observed S3 errors may not define its tolerance."
+  ],
+  "scientific_firewall": {
+    "dynamic_augmented_candidate_executed": false,
+    "new_propagated_root_state_selected": false,
+    "fitted_distribution_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
