@@ -1,0 +1,30 @@
+name: RM18 dynamic flux temporal certificate
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh'
+      - 'tests/ribasim-management/test_rm18_dynamic_flux_temporal_certificate.f90'
+      - 'tests/ribasim-management/run_rm18_dynamic_flux_temporal_certificate.sh'
+      - 'integration/ribasim-management/RM18_*'
+      - '.github/workflows/rm18-dynamic-flux-temporal-certificate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM18 certificate qualification
+        run: bash tests/ribasim-management/run_rm18_dynamic_flux_temporal_certificate.sh
