@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-reference-consolidation-v2-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-REFERENCE-CONSOLIDATION-V2",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_NON_R2048_SOURCE_AND_R2048_RECOVERY",
+  "source_run": 35876286853,
+  "source_run_conclusion": "failure",
+  "source_terminal_result": "integration/f-rom/ROM_PURPOSE_P3_GW_SOURCE_TERMINAL_RESULT.json@1bd074cc2188d13e83f670d883e8ec26d0ca7969",
+  "source_role": "authoritative 64 successful non-R2048_T32 history slices only",
+  "r2048_recovery_run": 35881413707,
+  "r2048_recovery_run_conclusion": "success",
+  "r2048_recovery_artifact": {
+    "name": "p3gw-r2048-t32-routes",
+    "artifact_id": 10763670558,
+    "size_in_bytes": 31978669
+  },
+  "r2048_recovery_binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json@5a9944edd7f91734eb3c9dac6689270a021a6d3c",
+  "missing_slice_repair_run": null,
+  "missing_slice_repair_run_conclusion": null,
+  "targeted_non_r2048_repair_required": false,
+  "output_artifact": "p3ref-gw-routes",
+  "route_authority": {
+    "R512_T32": "source_run successful slices",
+    "R1024_T32": "source_run successful slices",
+    "R2048_T16": "source_run successful slices",
+    "R2048_T8": "source_run successful slices",
+    "R2048_T32": "full authoritative v2 exact-state recovery"
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_GW_SOURCE_TERMINAL_RESULT.json": "1bd074cc2188d13e83f670d883e8ec26d0ca7969",
+    "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json": "5a9944edd7f91734eb3c9dac6689270a021a6d3c",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "tests/rom/consolidate_rom_purpose_p3_gw_reference_v2.py": "33b2f5e579bd728c4a827d13c0a1250151cf1bc2",
+    ".github/workflows/f-rom-purpose-p3-gw-reference-consolidate-v2.yml": "14ecf5ddb48f2eba27bab43f247004791d77450f",
+    "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_INFRASTRUCTURE.json": "d750c4e9c253a58bc440402af0067f96df536ffb"
+  },
+  "scientific_firewall": {
+    "source_r2048_t32_artifacts_used": false,
+    "successful_non_r2048_source_slices_replaced": false,
+    "targeted_non_r2048_repair_used": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "reference_response_adjudicated": false,
+    "candidate_response_generated": false
+  }
+}
