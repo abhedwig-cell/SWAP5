@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05a3.satflow_exchange.status.v1",
+  "work_unit": "PPA-WU05-A3-SATFLOW-EXCHANGE",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@d53dd03f9",
+  "preregistration": "integration/audits/PPA_WU05A3_SATFLOW_EXCHANGE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated SATFLOW potential-exchange equation only; no accepted mass receipt or runtime binding",
+  "implementation": "src/process/mod_ppa_wu05a3_satflow_exchange.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_satflow_exchange_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_satflow_exchange_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_SATFLOW_EXCHANGE_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_SATFLOW_HEAD_DIRECTION_AND_DEADBAND=PASS",
+      "PPA_WU05A3_SATFLOW_DARCY_AND_BOTH_SEEPAGE_ROUTES=PASS",
+      "PPA_WU05A3_SATFLOW_DEADBAND_AND_UNSATURATED_MATRIX_GUARDS=PASS",
+      "PPA_WU05A3_SATFLOW_EXCHANGE_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "affd21cdd533daa9cd429fb9a7820e46fdbb1248237dd33eff48e9fdb1721508"
+  },
+  "next_action": "Continue with task-2 signed-flow partition/aggregation as a separate source oracle; no runtime admission.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}
