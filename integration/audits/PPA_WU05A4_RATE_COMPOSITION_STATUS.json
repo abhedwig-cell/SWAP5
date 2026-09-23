@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-RATE-COMPOSITION",
   "baseline": "b9a71d828",
+  "recovery_point": "d626c7ed0",
+  "persisted_test_result": "PASS at d626c7ed0: composition and all three component gates at O0/O2 with identical transcripts, bounds checks and floating-point traps.",
   "scope": "Test composition of standard-domain inflow limiting, interdomain redistribution, final outflow limiting and applied trial transfer capture",
   "gate": "tests/fapp/run_ppa_wu05a4_rate_composition.ps1",
   "fixture": "Two domains: first overfills and rejects 0.375 cm top input; second initially has 0.25 cm outgoing excess. Redistribution transfers the rejected amount to the second domain and removes its outgoing deficit. Final domain stores are 1 and 0.125 cm. Matrix receives 0.5 cm; external top input is 0.625 cm.",
