@@ -1,0 +1,50 @@
+name: SW-RIB-ADM01 G5B exact Ribasim realization
+
+on:
+  push:
+    branches:
+      - work/sw-rib-adm01-external-surfacewater-admission
+    paths:
+      - 'src/runtime/mod_external_surface_water_transaction.f90'
+      - 'tests/sw-rib-adm01/generate_g5b_real_ribasim.py'
+      - 'tests/sw-rib-adm01/g5b_realization.jl'
+      - 'tests/sw-rib-adm01/g5b_transaction_bridge.f90'
+      - 'tests/sw-rib-adm01/verify_g5b_receipts.py'
+      - 'tests/sw-rib-adm01/run_g5b_realization.sh'
+      - 'integration/sw-rib-adm01/ADM01_G5B_*'
+      - '.github/workflows/sw-rib-adm01-g5b.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_external_surface_water_transaction.f90'
+      - 'tests/sw-rib-adm01/**g5b*'
+      - 'integration/sw-rib-adm01/ADM01_G5B_*'
+      - '.github/workflows/sw-rib-adm01-g5b.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout exact Ribasim product release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: G5B exact-release realization and production transaction
+        run: bash tests/sw-rib-adm01/run_g5b_realization.sh
