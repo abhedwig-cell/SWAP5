@@ -1,1 +1,39 @@
-name: F-CI109 F-APP09 canonical admission\n\non:\n  push:\n    branches:\n      - integration/f-ci109-fapp09-ribasim-external-surface-water-admission\n  pull_request:\n    paths:\n      - 'src/process/mod_drainage_extended_exchange.f90'\n      - 'src/runtime/mod_fmr_drainage_response_binding.f90'\n      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'\n      - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'\n      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'\n      - 'tests/fapp/**'\n      - 'tests/fvq/*fvq128*fapp09*'\n      - 'tests/fci/run_fci109_fapp09_admission.sh'\n      - 'integration/f-ci/F-CI109_*'\n      - '.github/workflows/f-ci109-fapp09-admission.yml'\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: f-ci109-fapp09-${{ github.event.pull_request.head.ref || github.ref_name }}\n  cancel-in-progress: true\n\njobs:\n  qualify:\n    runs-on: ubuntu-24.04\n    timeout-minutes: 35\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - name: Compiler identity\n        run: gfortran --version\n      - name: F-CI109 exact admission gate\n        run: bash tests/fci/run_fci109_fapp09_admission.sh\n
+name: F-CI109 F-APP09 canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci109-fapp09-ribasim-external-surface-water-admission
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
+      - 'tests/fapp/**'
+      - 'tests/fvq/*fvq128*fapp09*'
+      - 'tests/fci/run_fci109_fapp09_admission.sh'
+      - 'integration/f-ci/F-CI109_*'
+      - '.github/workflows/f-ci109-fapp09-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-ci109-fapp09-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI109 exact admission gate
+        run: bash tests/fci/run_fci109_fapp09_admission.sh
