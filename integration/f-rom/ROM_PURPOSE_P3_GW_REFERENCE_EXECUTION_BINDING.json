@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-reference-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE-GW",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P3_REFERENCE_RESPONSE",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "purpose": "GW_LB",
+  "histories": [
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+  ],
+  "routes": [
+    "R512_T32",
+    "R1024_T32",
+    "R2048_T32",
+    "R2048_T16",
+    "R2048_T8"
+  ],
+  "opts": [
+    0,
+    2
+  ],
+  "implementation_blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_BINDING.json": "054baa7a21a8d4cecd6eef9f17f39661218ab3a7",
+    "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json": "40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "tests/rom/materialize_rom_purpose_p3_gw_reference.py": "c78c7faf231c85642cb1e8774a4e17da7a307b60",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    ".github/workflows/f-rom-purpose-p3-gw-reference.yml": "f13113e363d4d4cbffd5d48ee98a08b93ffe6603"
+  },
+  "response_seen": false,
+  "candidate_response_authorized": false
+}
