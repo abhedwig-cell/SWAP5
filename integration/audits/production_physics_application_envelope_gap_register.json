@@ -2071,6 +2071,13 @@
       "effect": "The strict crack-threshold node walk, IcTopMp bypass and bounded fail-closed edge are checked. MACROINIT state composition and production integration remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MPVOLUME-SHRINKAGE-CANDIDATE",
+      "state": "ISOLATED_TASK1_SHRINKAGE_CANDIDATE_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MPVOLUME_CANDIDATE_STATUS.json; preregistered against B1.11 macropore.f90 MPVOLUME task 1",
+      "production_delta": "NONE",
+      "effect": "The local dynamic-volume shrinkage/subsidy equation and correction branch are tested without state publication; previous-state threshold choice and accepted-owner integration remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
