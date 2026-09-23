@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Compose sorptivity/history advancement into the isolated interval candidate under atomic failure semantics. See PPA_WU05A3_INTERVAL_CANDIDATE_STATUS.json; corrected-reference and Richards-owner runtime admission remain open.",
-  "recovery_point": "a7abc9a53d220f98c1c7947c26eabd5643faf9d8: balanced interval proposal bound to A2 isolated candidate lifecycle; reject/retry/commit/history/restart/stale/invalid gates PASS O0/O2. No production admission.",
+  "next_safe_step": "Derive explicit candidate mass-transfer accounting from A1 and test matrix/macropore cancellation and rejection before accepted receipt or Richards-owner binding. See PPA_WU05A3_INTERVAL_CANDIDATE_STATUS.json; corrected-reference and runtime admission remain open.",
+  "recovery_point": "ef998ab205cf1cf20ee542db1a48631a5611dd46: optional sorptivity advances atomically with the isolated balanced interval candidate; late rejection, retry, commit and restart gates PASS O0/O2. No production admission.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",

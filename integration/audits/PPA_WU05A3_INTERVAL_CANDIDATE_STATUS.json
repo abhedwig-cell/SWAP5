@@ -2,12 +2,12 @@
   "work_unit": "PPA-WU05-A3-INTERVAL-CANDIDATE",
   "baseline": "2b8c31b9d",
   "phase": "PERSISTED_ISOLATED_LIFECYCLE_TESTS_PASSED",
-  "recovery_point": "a7abc9a53d220f98c1c7947c26eabd5643faf9d8",
+  "recovery_point": "ef998ab205cf1cf20ee542db1a48631a5611dd46",
   "gate": "tests/fapp/run_ppa_wu05a3_interval_candidate.ps1",
-  "test_result": "Persisted O0/O2 gate PASS with identical transcripts, warnings-as-errors, bounds and floating checks; overdraw cannot commit, unchanged checkpoint retry, successful commit, history advancement, restart-equivalent continuation, stale rejection and NaN-time rejection",
+  "test_result": "Persisted ef998ab20 O0/O2 gate PASS with identical transcripts, warnings-as-errors, bounds/floating checks; prior water lifecycle tests plus late invalid diameter/geometry rejection, valid sorptivity retry/commit, event termination, refreshed wall and restart-equivalent continuation",
   "scope": "Isolated SWMBF=1/top-cell-1, unchanged domain bottoms, prescribed geometry and rates; compose storage/wetting/proposed conservative flux into existing A2 candidate",
   "ownership": "Checkpoint input immutable. Candidate created only after successful computations and lower-boundary closure. Commit remains the existing A2 owner operation.",
-  "history": "Copy old bottom, pore volume and pore water to previous-step fields; update current volume, water and storage; preserve other continuation fields",
+  "history": "Copy old bottom, pore volume and pore water to previous-step fields; update current volume, water and storage. Optional explicit sorptivity drivers advance absorption time/reference/sorptivity/event flags atomically. Refreshed wall is returned as a diagnostic driver, not added to restart state.",
   "sorptivity_extension_preregistration": "Optional explicit event flags, saturated-top index, domain proportions, pore diameters and prior wall factors. Advance event fields and refresh wall factors before exposing a valid candidate. Any late event/geometry failure leaves candidate invalid. Test late rejection, valid retry, event termination and restart replay.",
   "excluded": ["MPVOLUME geometry computation", "SWMBF=2", "Richards-owner transaction", "Reference correction admission"],
   "invariants": [3, 7, 13],
@@ -15,5 +15,5 @@
   "implementation": "src/adapter/mod_ppa_wu05a3_interval_candidate.f90",
   "test": "tests/fapp/test_ppa_wu05a3_interval_candidate.f90",
   "qualified": false,
-  "next_action": "Compose sorptivity/history advancement into the isolated candidate with explicit supplied drivers and atomic failure semantics; preserve the separate corrected-reference and Richards-owner admission gates"
+  "next_action": "Derive explicit candidate mass-transfer accounting from the existing A1 census, then test cancellation of matrix/macropore transfers and rejection before any accepted receipt or Richards-owner binding"
 }
