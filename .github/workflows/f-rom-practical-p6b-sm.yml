@@ -55,8 +55,8 @@ jobs:
           test "$(git hash-object tools/rom/prepare_rom_practical_p3_reference.py)" = 548505a02ed74b61f9cbee4fd63812d7f9356cc5
           test "$(git hash-object tools/rom/rom_practical_p4_rk4.f90)" = 5f8f96300523fb8a1534b3cc2f1c159921c95a05
           test "$(git hash-object integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json)" = 2c692a2c3ad37c8bfb911551ab918ea8090af07d
-          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_core.py)" = fb4dec41aca862e5537cb7c1d03c53fddb39f83d
-          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_reference.py)" = fcda43a5fea2ec454344678b71f85be496b727bd
+          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_core.py)" = 271cca478d7b4a726ff83a8078457d63e6c4a9ce
+          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_reference.py)" = 71f5f7c2ea93cfd713ee6445b85918d88b8b6adc
           test "$(git hash-object tools/rom/qualify_rom_practical_p6b_sm.py)" = ea4165e35c84979546adf977a66532609a74a8a2
           python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
       - name: Materialize realistic S4 candidate core
