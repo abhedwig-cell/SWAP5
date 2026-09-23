@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_irr_fixed_split.status.v1",
+  "work_unit": "PPA-IRR-FIXED-SPLIT",
+  "parent_work_unit": "PPA-IRR-ELIGIBILITY",
+  "status": "FIXED_EVENT_SPLIT_RETRY_CANDIDATE_IDENTITY_PASS_OWNER_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@9008df4e2",
+  "preregistration": "integration/audits/PPA_IRR_FIXED_SPLIT_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; validates existing typed fixed-event candidate behavior only; no solver transaction, external forcing, accepted mass, restart or production admission",
+  "implementation": "src/process/mod_irrigation_process.f90::evaluate_fixed_irrigation_interval",
+  "test": "tests/fapp/test_ppa_irr_fixed_split_retry.f90",
+  "gate": "tests/fapp/run_ppa_irr_fixed_split_retry.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_FIXED_OVERSIZED_INTERVAL_SPLIT_100000=PASS",
+      "PPA_IRR_FIXED_RETRY_EQUALS_DIRECT_EVENT_INTERVAL=PASS",
+      "PPA_IRR_FIXED_SPLIT_PRESERVES_CANDIDATE_ON_REQUEST=PASS",
+      "PPA_IRR_FIXED_SPLIT_RETRY=PASS",
+      "PPA_IRR_FIXED_SPLIT_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "e8a1ce76eb972594824d3c1c478737b295c50c3e73b57157c2603a9b29d2ce1d"
+  },
+  "qualification_status": "NOT_QUALIFIED; typed process split/retry identity only; solver-level acceptance and production source booking remain unproven",
+  "next_action": "Continue bounded typed lifecycle checks without inferring solver transaction or accepted-mass behavior.",
+  "recovery_point": "completed scheduled-eligibility checkpoint 9008df4e2",
+  "blockers": ["The harness does not execute the Richards solver transaction; a passing event candidate retry is not accepted-state or mass evidence."]
+}
