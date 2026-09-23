@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r2.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R2",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_NATIVE_TABULATED_RATING_CURVE_EXACT_EQUIVALENCE",
+  "tested_head": "d139af5d3ba4daa8840e67aefe4d6169956a6ab6",
+  "evidence_run": 35858432805,
+  "evidence_job": 107172440118,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "preregistered_source_prediction": {
+    "authority": "integration/research/SW_RIB_SWM01_Q1A_R2_INTERNAL_QH_AUGMENTATION_PREDICTION.json",
+    "prediction_commit": "d7684eb06c1e2dd8d3fc2ef7880fbd62f131843f",
+    "source_fact": "qh_interpolation prepends a zero-flow point one meter below the first supplied level before constructing PCHIP.",
+    "prediction": "R2 should reproduce the V1 above-crest PCHIP signature."
+  },
+  "observations": {
+    "C0_NO_DISCHARGE": {
+      "result": "PASS",
+      "final_level_ribasim_m": -0.19999199999999995,
+      "final_level_oracle_m": -0.19999200000000003,
+      "final_storage_ribasim_m3": 0.800008,
+      "final_storage_oracle_m3": 0.800008,
+      "discharge_ribasim_inferred_m3": 0,
+      "discharge_oracle_m3": 0,
+      "mass_residual_m3": 7.999379153869612e-18
+    },
+    "C1_MODERATE_DISCHARGE": {
+      "result": "FAIL_FROZEN_FINAL_LEVEL_TOLERANCE",
+      "final_level_ribasim_m": 0.30001392489015055,
+      "final_level_oracle_m": 0.30000499974994455,
+      "observed_difference_m": 0.000008925140206006432,
+      "v1_ribasim_final_level_m": 0.30001392489015055,
+      "exact_reproduction_of_v1_endpoint": true
+    },
+    "C2_HIGH_DISCHARGE": {
+      "result": "NOT_EXECUTED_AFTER_C1_FAIL"
+    }
+  },
+  "interpretation": [
+    "The native TabulatedRatingCurve route is not an exact representation of the legacy hard-kink linear SWQHR1 law in the tested release.",
+    "The two-point input does not remove the smoothing because Ribasim internally augments the knot set before PCHIP construction.",
+    "This is a representation-property falsification, not a falsification of Ribasim surface-water state ownership.",
+    "Do not fit additional rating-curve knots to the three frozen cases as a substitute for a physically explicit representation decision."
+  ],
+  "route_decision": {
+    "native_trc_exact_equivalence": "CLOSED_FOR_PINNED_RELEASE",
+    "native_trc_approximation": "MAY_BE_QUALIFIED_LATER_WITH_AN_EXPLICIT_APPROXIMATION_ENVELOPE",
+    "exact_functional_successor": "SW-RIB-SWM01-Q1A-R3 ContinuousControl + one-way connector"
+  },
+  "production_admission": false,
+  "retirement_authority": false
+}
