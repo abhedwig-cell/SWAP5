@@ -81,6 +81,10 @@ program test_ftab03_ksatexm_generated_state
   call require(status==F_TAB02_STATE_OK,'h=-1 generated evaluation')
   special_lower_table=kt(2)
   special_upper_abs=abs(kt(1)-ka(1))
+  write(*,'(a,es24.16)') 'F_TAB03_DIAG_LOWER_HM1_ANALYTIC_K=',special_lower_analytic
+  write(*,'(a,es24.16)') 'F_TAB03_DIAG_LOWER_HM1_TABLE_K=',special_lower_table
+  write(*,'(a,es24.16)') 'F_TAB03_DIAG_LOWER_HM1_ABS_K=',abs(special_lower_table-special_lower_analytic)
+  write(*,'(a,es24.16)') 'F_TAB03_DIAG_UPPER_HM1_ABS_K=',special_upper_abs
   call require(abs(special_lower_table-special_lower_analytic)<=SPECIAL_K_LIMIT, &
        'lower h=-1 preregistered generated K oracle')
   call require(special_upper_abs<=SPECIAL_K_LIMIT,'upper h=-1 preregistered generated K oracle')
