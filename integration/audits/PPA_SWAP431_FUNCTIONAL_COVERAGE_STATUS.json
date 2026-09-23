@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Continue MACROSTATE section D water-wall wetting fractions, saturated-storage profile and water-level equations as an isolated candidate; preserve all state/mass/retry/restart admission gates.",
-  "recovery_point": "30632c6d1c4c4e43971fa9dc7842770184fd1ff9 (PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE; local branch checkpoint only, not pushed or canonically admitted).",
+  "next_safe_step": "Continue MACROSTATE section D/E internal flux recurrence and SWAP/interface aggregate equations as isolated candidates; preserve all state/mass/retry/restart admission gates.",
+  "recovery_point": "latest committed campaign checkpoint pending PPA-WU05-A3-MACROSTATE-WETTING-CANDIDATE commit; local branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
@@ -136,6 +136,7 @@
     "PPA-WU05-A3-MPVOLUME-DOMAINS: minimum-width-filtered compartment volume, deepest active bottom and potential-bottom limits, per-domain cell/total volume in source loop order, dynamic nonnegative candidate clamp, inactive-above-top isolation and invalid/short-output fail-closed at O0/O2.",
     "PPA-WU05-A3-MPVOLUME-HYSTERESIS: task-2 storage-excess shrinkage relief, SWMBF domain gating, bottom-limited prior-volume recovery scan, source-order proportional redistribution, no-relief preservation, domain-total and dynamic-volume candidate aggregation at O0/O2.",
     "PPA-WU05-A3-MACROSTATE-STORAGE: section C water inventory candidates from top/matrix/drainage fluxes and SWMBF=2 domain-1 profile, including saturation-top selection, empty-domain, and zero-volume fail-closed checks at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-WETTING: section D compartment wet-wall fractions, route-dependent stored-water candidates, top wet node and water-level recurrence, including the 1e-8 small-volume branch at O0/O2.",
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
@@ -402,6 +403,22 @@
       "PPA_WU05A3_MACROSTATE_STORAGE_EMPTY_DOMAIN=PASS",
       "PPA_WU05A3_MACROSTATE_STORAGE_ZERO_VOLUME_FAIL_CLOSED=PASS",
       "PPA_WU05A3_MACROSTATE_STORAGE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_wetting_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-WETTING-CANDIDATE",
+    "source": "B1.11 macropore.f90 MACROSTATE section D wet-wall fraction, stored profile and water-level equations",
+    "test": "Partial/full cell storage, SWMBF=2 preservation, empty domain, small-volume threshold and O0/O2 transcript identity",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_WETTING_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_PARTIAL_LEVEL=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_FULL_BOTTOM_CELL=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_SWMBF2_PROFILE_PRESERVATION=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_EMPTY_DOMAIN=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_SMALL_VOLUME_UPPER_INTERFACE=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_INVALID_BOTTOM_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

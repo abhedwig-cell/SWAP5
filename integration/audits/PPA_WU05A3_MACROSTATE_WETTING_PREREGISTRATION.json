@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_wetting.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-WETTING-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@8577a3ad6550045156da8a3ae62d378178cf898d",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROSTATE",
+    "source_region": "section D water wall wetting fractions, top wet compartment, route-dependent WaUnMpDmCp updates and domain water-level accumulation"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_wetting_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_wetting_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_wetting_source_oracle.sh",
+  "in_scope": [
+    "water-wall wet fraction initialization from bottom compartment down toward storage level",
+    "route-specific reset/preservation and per-compartment water candidate",
+    "top wet compartment and depth-of-water-level recurrence",
+    "small-cell-volume threshold behavior"
+  ],
+  "out_of_scope": [
+    "zero-volume profile storage and undefined source water-level top index",
+    "mutating MacroState state or accepted fluxes",
+    "MACROSTATE section E aggregation aliases, internal flux recurrence, restart and A4 mass admission"
+  ],
+  "expected_tests": [
+    "partial/full storage with hand-calculated water-level depths",
+    "SWMBF=2 domain-1 profile preservation and internal-domain candidate update",
+    "empty domain and <=1e-8 cell-volume branch",
+    "invalid bottom geometry fail-closed",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated wetting and water-level candidates only; no state or flux is published"
+}
