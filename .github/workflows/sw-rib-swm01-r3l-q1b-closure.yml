@@ -1,0 +1,62 @@
+name: SW-RIB-SWM01 R3 direct-ledger and Q1B supply closure
+
+on:
+  push:
+    branches:
+      - research/sw-rib-swm01-surfacewater-ownership
+    paths:
+      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
+      - 'tests/sw-rib-swm01/emit_q1a_fixed_weir_oracle.f90'
+      - 'tests/sw-rib-swm01/generate_q1a_r3_real_ribasim.py'
+      - 'tests/sw-rib-swm01/q1a_r3_direct_ledger.jl'
+      - 'tests/sw-rib-swm01/run_q1a_r3_direct_ledger.sh'
+      - 'tests/sw-rib-swm01/generate_q1b_real_ribasim.py'
+      - 'tests/sw-rib-swm01/q1b_real_ribasim_supply.jl'
+      - 'tests/sw-rib-swm01/run_q1b_real_ribasim_supply.sh'
+      - 'integration/research/SW_RIB_SWM01_Q1A_R3_LEDGER_PREREGISTRATION.json'
+      - 'integration/research/SW_RIB_SWM01_Q1B_PREREGISTRATION.json'
+      - '.github/workflows/sw-rib-swm01-r3l-q1b-closure.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
+      - 'tests/sw-rib-swm01/emit_q1a_fixed_weir_oracle.f90'
+      - 'tests/sw-rib-swm01/generate_q1a_r3_real_ribasim.py'
+      - 'tests/sw-rib-swm01/q1a_r3_direct_ledger.jl'
+      - 'tests/sw-rib-swm01/run_q1a_r3_direct_ledger.sh'
+      - 'tests/sw-rib-swm01/generate_q1b_real_ribasim.py'
+      - 'tests/sw-rib-swm01/q1b_real_ribasim_supply.jl'
+      - 'tests/sw-rib-swm01/run_q1b_real_ribasim_supply.sh'
+      - 'integration/research/SW_RIB_SWM01_Q1A_R3_LEDGER_PREREGISTRATION.json'
+      - 'integration/research/SW_RIB_SWM01_Q1B_PREREGISTRATION.json'
+      - '.github/workflows/sw-rib-swm01-r3l-q1b-closure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact Ribasim product release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Compiler identity
+        run: gfortran --version
+      - name: R3 direct physical connector ledger
+        run: bash tests/sw-rib-swm01/run_q1a_r3_direct_ledger.sh
+      - name: Q1B Ribasim-owned bounded supply realization
+        run: bash tests/sw-rib-swm01/run_q1b_real_ribasim_supply.sh
