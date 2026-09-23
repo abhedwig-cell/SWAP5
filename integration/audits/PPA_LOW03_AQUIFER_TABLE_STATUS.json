@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low03.aquifer-table.status.v1",
+  "work_unit": "PPA-LOW03-AQUIFER-TABLE",
+  "parent_work_unit": "PPA-LOW03",
+  "status": "SW3_TABLE_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "cdec3fadd",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; raw time ingestion, clock, aquifer state, Cauchy application, accepted flux mass, restart and runtime routes unchanged",
+  "source_census": "integration/audits/PPA_LOW03_AQUIFER_TABLE_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW03_AQUIFER_TABLE_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low03_aquifer_table.f90",
+  "test": "tests/fapp/test_ppa_low03_aquifer_table.f90",
+  "gate": "tests/fapp/run_ppa_low03_aquifer_table.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW03_AQUIFER_DATE3_HAQUIF_AFGEN_ORACLE_100000=PASS",
+      "PPA_LOW03_AQUIFER_ENDPOINT_KNOT_AND_LINEAR=PASS",
+      "PPA_LOW03_AQUIFER_TABLE_STATELESS_A_B_A=PASS",
+      "PPA_LOW03_AQUIFER_INVALID_TABLE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "228c9a8e0b733c1e8e45742cf2ae5c3259d0ad5c24d2f3ad9b2b46184507f2fc",
+    "o2_executable_sha256": "8ce8972a7f77cfb1f5b91032ccce54b96a89af09c7b051912d81acaca28661bd",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Preserve date parsing and aquifer/time owners as open integration work; continue to the implicit HeadCalc contract next.",
+  "recovery_point": "this status and PPA_LOW03_AQUIFER_TABLE_SOURCE_CENSUS.json"
+}
