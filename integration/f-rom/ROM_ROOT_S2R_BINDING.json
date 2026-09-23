@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.rom_root.s2r.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2R",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_S2R_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json",
+  "predecessor_failure": "integration/f-rom/ROM_ROOT_S2_FAILURE_CLASSIFICATION.json",
+  "scientific_semantics_changed": false,
+  "dynamic_root_feedback_implemented": false,
+  "reduced_feedback_response_generated": false,
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s2r.yml": "c05750843c19c40430bcb4fa5a1ab1f4d854d8a2",
+    "tests/rom/run_rom_root_s2r_prescribed_sink.py": "3bba3a677a3532f6aca664ce5496fabee5de05f8",
+    "tests/rom/analyze_rom_root_s2r.py": "c432348de0d841eecfa34f3d52ff9257ca497b6a",
+    "tests/rom/run_lare_bc1_stage_b.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "integration/f-rom/ROM_ROOT_S2R_PREREGISTRATION.json": "78398672ffcd53060b56f94b5c9ac8ff35624f14"
+  },
+  "preserved_scientific_inputs": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "closure": "CURRENT_LAYER_FACE",
+    "dt_day": 0.0001,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "prescribed_sink": "FULL_POTENTIAL_TP_TIMES_EXACT_RETAINED_ROOT_FRACTION",
+    "water_ledger_gate_cm": 1e-10
+  },
+  "only_repair": "Replace the invalid fixed 64-epsilon cumulative-root check by the preregistered operation-count-aware binary64 forward-error check.",
+  "firewall": {
+    "s2_reclassified": false,
+    "feddes_evaluated": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
