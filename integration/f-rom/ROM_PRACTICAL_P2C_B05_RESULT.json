@@ -1,0 +1,146 @@
+{
+  "B05": {
+    "COR_G4": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.012717838868072023,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.004001844298158336,
+      "interval_bottom_flux_error_cm_per_day": 0.8532054698252841,
+      "long_horizon_exchange_drift_cm": 0.005661969293930369,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.012717838868069932
+    },
+    "COR_G6": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.004880636389430655,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.002963992489903107,
+      "interval_bottom_flux_error_cm_per_day": 0.7087956384311977,
+      "long_horizon_exchange_drift_cm": 0.003769078264653114,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.00488063638938388
+    },
+    "LR_G4": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.01282895334348871,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.00536726916942807,
+      "interval_bottom_flux_error_cm_per_day": 0.8532240634187181,
+      "long_horizon_exchange_drift_cm": 0.005739830693009207,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.01282895334347869
+    },
+    "LR_G6": {
+      "bottom_flux_sign_mismatch_count": 9,
+      "cumulative_bottom_exchange_error_cm": 0.005715738281234373,
+      "history_signed_bottom_flux_bias_cm_per_day": 0.005681819015884543,
+      "interval_bottom_flux_error_cm_per_day": 0.7088981454662463,
+      "long_horizon_exchange_drift_cm": 0.004841324387147239,
+      "reversal_sequence_mismatch_count": 4,
+      "reversal_timing_error_steps": 1024,
+      "total_storage_error_cm": 0.005715738281150991
+    },
+    "continuous_relations": {
+      "COR_G4_vs_LR_G4": {
+        "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+        "left_minus_right": {
+          "cumulative_bottom_exchange_error_cm": -0.00011111447541668762,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.001365424871269734,
+          "interval_bottom_flux_error_cm_per_day": -1.8593593434035327e-05,
+          "long_horizon_exchange_drift_cm": -7.786139907883793e-05,
+          "total_storage_error_cm": -0.0001111144754087582
+        },
+        "left_no_worse": true,
+        "left_strict": true,
+        "right_no_worse": false,
+        "right_strict": false
+      },
+      "COR_G6_vs_COR_G4": {
+        "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+        "left_minus_right": {
+          "cumulative_bottom_exchange_error_cm": -0.007837202478641368,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0010378518082552286,
+          "interval_bottom_flux_error_cm_per_day": -0.14440983139408636,
+          "long_horizon_exchange_drift_cm": -0.001892891029277255,
+          "total_storage_error_cm": -0.007837202478686052
+        },
+        "left_no_worse": true,
+        "left_strict": true,
+        "right_no_worse": false,
+        "right_strict": false
+      },
+      "COR_G6_vs_LR_G6": {
+        "decision": "LEFT_COMPONENTWISE_NO_WORSE",
+        "left_minus_right": {
+          "cumulative_bottom_exchange_error_cm": -0.0008351018918037181,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.002717826525981436,
+          "interval_bottom_flux_error_cm_per_day": -0.00010250703504854908,
+          "long_horizon_exchange_drift_cm": -0.0010722461224941249,
+          "total_storage_error_cm": -0.0008351018917671111
+        },
+        "left_no_worse": true,
+        "left_strict": true,
+        "right_no_worse": false,
+        "right_strict": false
+      }
+    },
+    "event_relations": {
+      "COR_G4_vs_LR_G4": {
+        "decision": "EQUAL_WITHIN_TOLERANCE",
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 0.0,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 0.0
+        },
+        "left_no_worse": true,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": false
+      },
+      "COR_G6_vs_COR_G4": {
+        "decision": "EQUAL_WITHIN_TOLERANCE",
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 0.0,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 0.0
+        },
+        "left_no_worse": true,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": false
+      },
+      "COR_G6_vs_LR_G6": {
+        "decision": "EQUAL_WITHIN_TOLERANCE",
+        "left_minus_right": {
+          "bottom_flux_sign_mismatch_count": 0.0,
+          "reversal_sequence_mismatch_count": 0.0,
+          "reversal_timing_error_steps": 0.0
+        },
+        "left_no_worse": true,
+        "left_strict": false,
+        "right_no_worse": true,
+        "right_strict": false
+      }
+    }
+  },
+  "G6_spatial_information_value": false,
+  "G8_executed": false,
+  "application_acceptance_adjudicated": false,
+  "attribution": "REPRESENTATION_PLACEMENT_DEFECT_SUPPORTED",
+  "closure_changed": false,
+  "production_rom_authorized": false,
+  "reference_numerical_comparator": {
+    "bottom_flux_sign_mismatch_count": 1,
+    "cumulative_bottom_exchange_error_cm": 0.00010786537866599146,
+    "history_signed_bottom_flux_bias_cm_per_day": 4.061147551929776e-05,
+    "interval_bottom_flux_error_cm_per_day": 0.08560211459908482,
+    "long_horizon_exchange_drift_cm": 8.422436022925694e-05,
+    "reversal_sequence_mismatch_count": 0,
+    "reversal_timing_error_steps": 1,
+    "total_storage_error_cm": 0.00010786537861565074
+  },
+  "schema": "swap5.rom-practical.p2c-b05.result.v1",
+  "status": "P2C_B05_ATTRIBUTION_COMPLETE",
+  "work_unit": "ROM-PRACTICAL-P2C-B05",
+  "workstream": "ROM-PRACTICAL"
+}
