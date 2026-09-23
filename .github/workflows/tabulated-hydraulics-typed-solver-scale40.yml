@@ -125,23 +125,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo -e "scenario\tdh_max\tdh_rms\tdtheta_max\tdtheta_rms\tdqtop\tdqbot\tdmass\tanalytic_iters\ttable_iters\tanalytic_median_s\ttable_median_s\ttable_delta_pct" > build/typed-solver/summary.tsv
+          echo -e "scenario\tdh_max\tdh_rms\tdtheta_max\tdtheta_rms\tdmass\tanalytic_iters\ttable_iters\tanalytic_median_s\ttable_median_s\ttable_delta_pct" > build/typed-solver/summary.tsv
           for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
             build/typed-solver/integration "build/typed-solver/$scenario.dat" | tee "build/typed-solver/$scenario.txt"
-            grep -Fq 'TABHYD_TYPED_SOLVER_INTEGRATION=PASS' "build/typed-solver/$scenario.txt"
+            grep -Fq 'TABHYD_TYPED_SOLVER_SCALE40=PASS' "build/typed-solver/$scenario.txt"
             python3 - "$scenario" "build/typed-solver/$scenario.txt" >> build/typed-solver/summary.tsv <<'PY'
           import sys
           name,path=sys.argv[1:]
           vals={}
           for line in open(path):
-              if line.startswith("TABHYD_SOLVER_") and "=" in line and "BLOCK" not in line:
+              if line.startswith("SCALE40_") and "=" in line and "BLOCK" not in line and "SCENARIO" not in line:
                   k,v=line.strip().split("=",1)
                   try: vals[k]=float(v)
                   except ValueError: pass
-          keys=["TABHYD_SOLVER_DH_MAX","TABHYD_SOLVER_DH_RMS","TABHYD_SOLVER_DTHETA_MAX","TABHYD_SOLVER_DTHETA_RMS",
-                "TABHYD_SOLVER_DQTOP","TABHYD_SOLVER_DQBOT","TABHYD_SOLVER_DMASS",
-                "TABHYD_SOLVER_ANALYTIC_NONLINEAR_ITERS","TABHYD_SOLVER_TABLE_NONLINEAR_ITERS",
-                "TABHYD_SOLVER_ANALYTIC_MEDIAN_S","TABHYD_SOLVER_TABLE_MEDIAN_S","TABHYD_SOLVER_TABLE_DELTA_PCT"]
+          keys=["SCALE40_HEAD_MAX_ABS","SCALE40_HEAD_RMS","SCALE40_THETA_MAX_ABS","SCALE40_THETA_RMS",
+                "SCALE40_DMASS","SCALE40_ANALYTIC_ITERS","SCALE40_TABLE_ITERS",
+                "SCALE40_ANALYTIC_MEDIAN_S","SCALE40_TABLE_MEDIAN_S","SCALE40_TABLE_DELTA_PCT"]
           miss=[k for k in keys if k not in vals]
           if miss: raise SystemExit(f"missing {miss}")
           print(name+"\t"+"\t".join(f"{vals[k]:.17g}" for k in keys))
