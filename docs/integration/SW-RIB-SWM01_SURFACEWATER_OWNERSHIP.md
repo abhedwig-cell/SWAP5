@@ -7,7 +7,29 @@
 
 ## Research question
 
-Can the legacy SWAP surface-water-management functionality be decomposed so that Ribasim owns surface-water state and management, SWAP retains soil-to-surface-water exchange physics, and the coupler owns soil-state-driven management policy, without loss of qualified SWAP functionality?
+Can the legacy SWAP surface-water-management functionality be decomposed so that Ribasim owns surface-water state and management in a Ribasim-coupled application, SWAP retains soil-to-surface-water exchange physics, and the coupler owns soil-state-driven management policy, without loss of qualified SWAP functionality?
+
+## Important mode-aware correction
+
+Current canonical SWAP5 already contains F-CI52/F-VQ59 qualified restricted fixed-weir surface-water physics. That capability is real current production physics, not merely legacy residue. It includes optional surface-water storage, storage/level mapping, bounded supply, positive secondary-drainage attribution and fixed-weir discharge with hard mass and transaction semantics.
+
+SW-RIB-SWM01 therefore does **not** propose deleting all SWAP5 surface-water functionality.
+
+The target distinction is:
+
+```text
+standalone SWAP5 profile:
+    SWAP5 F-CI52 may own the restricted fixed-weir surface-water state
+
+Ribasim-coupled profile:
+    Ribasim owns surface-water state/storage/level/network
+    SWAP owns soil-to-surface-water exchange physics
+    coupler owns cross-model management policy and transaction ordering
+```
+
+For one physical surface-water store, `SWAP_FIXED_WEIR` and `EXTERNAL_RIBASIM` must not be simultaneously authoritative.
+
+See [SW-RIB-SWM01 legacy surface-water responsibility inventory](SW-RIB-SWM01_LEGACY_INVENTORY.md) for the bounded decomposition and evidence limits.
 
 ## Why this work unit exists
 
@@ -17,11 +39,11 @@ The current migration map already classifies `surfacewater.f90` as `SPLIT_RETAIN
 
 ## Provisional ownership hypothesis
 
-This is a hypothesis to test, not current production authority.
+This is a hypothesis to test for the Ribasim-coupled profile, not current production authority.
 
 ### Ribasim candidate ownership
 
-Ribasim is the candidate owner for system-level surface-water state and management:
+Ribasim is the candidate owner for system-level surface-water state and management realization:
 
 - surface-water storage and level;
 - network connectivity and routing/composition;
@@ -44,7 +66,7 @@ Ribasim may receive or supply these exchanges, but does not become owner of the 
 
 ### Coupler / management-policy candidate ownership
 
-A separate coupling or management-policy layer is the candidate owner for rules that translate accepted SWAP state into a surface-water management target, for example:
+A separate coupling or management-policy layer is the candidate owner for rules that translate accepted SWAP state into a surface-water management target:
 
 ```text
 accepted SWAP soil state
@@ -59,52 +81,43 @@ This is especially relevant for legacy soil-moisture-controlled weir behaviour b
 
 A trial SWAP state must not become external management authority merely because it was computed. Any soil-state-driven management action must respect the accepted-state and coupling-window contract.
 
-## Required legacy inventory
+## Legacy inventory
 
-Before implementation or retirement, every relevant responsibility in `surfacewater.f90` and adjacent drainage/management code must be classified into one of these categories:
+The responsibility-level inventory is persisted in:
 
-- `MOVE_TO_RIBASIM`
-- `RETAIN_IN_SWAP`
-- `MOVE_TO_COUPLER`
-- `LEGACY_ONLY_CANDIDATE_RETIRE`
-- `UNRESOLVED`
+- `docs/integration/SW-RIB-SWM01_LEGACY_INVENTORY.md`;
+- `integration/research/SW_RIB_SWM01_INVENTORY.json`.
 
-The inventory must identify state ownership, flux ownership, input/configuration ownership, temporal semantics and any dependency on accepted versus trial state.
+The exact B0 identity of `surfacewater.f90` is known, and B1.11 leaves that source body unchanged. The current inventory deliberately distinguishes exact file identity from a line-complete raw-source reconstruction. Whole-file retirement remains blocked until the latter is unnecessary by accepted equivalence evidence or is explicitly reconstructed.
 
-## Minimum qualification case
+## Qualification sequence
 
-The first decisive regression/qualification case should reproduce a representative legacy SWAP surface-water-management case using:
+The work is split to avoid testing several ownership changes at once:
 
-```text
-SWAP5 soil/exchange physics + real Ribasim/RibaMod + explicit coupler
-```
+1. **Q1A:** real-Ribasim ownership of storage/level/fixed-weir discharge, with positive drainage forcing and no supply.
+2. **Q1B:** bounded level-triggered external supply.
+3. **Q2:** soil-state-driven automatic management policy with accepted-state rollback/replay.
+4. **Q3:** signed active drainage/infiltration exchange while Ribasim owns surface-water state.
+5. **Q4:** adjudicate which remaining legacy container/parser responsibilities can actually retire.
 
-The case should not be limited to a prescribed level. It should include dynamic surface-water state and, if the exact legacy authority can be reconstructed, a soil-moisture-controlled management rule so that loss of SWAP-specific management semantics is detectable.
-
-At minimum compare:
-
-- water balance across the SWAP/Ribasim interface;
-- surface-water level trajectory;
-- drainage and infiltration/subirrigation exchange;
-- runoff contribution where active;
-- management target and realized action;
-- accepted-state/retry behaviour at coupling-window boundaries.
+Q1A is preregistered at `integration/research/SW_RIB_SWM01_Q1A_PREREGISTRATION.json`.
 
 ## Closure criteria
 
 SW-RIB-SWM01 can close only when:
 
 1. the legacy responsibility inventory is complete enough to exclude hidden ownership;
-2. each retained behaviour has exactly one target owner;
-3. the real-Ribasim reconstruction has a preregistered comparator and passes its declared conservation and trajectory requirements, or any divergence is explicitly adjudicated;
+2. each retained behaviour has exactly one target owner per application profile;
+3. the real-Ribasim reconstructions pass their preregistered conservation and trajectory requirements, or divergences are explicitly adjudicated;
 4. rejected SWAP trials cannot leak into Ribasim management state or accepted allocation state;
 5. no physical behaviour is retired solely because Ribasim has a superficially similar component;
-6. the resulting ownership split is reflected in the current architecture/coupling contracts before production admission.
+6. coupled mode cannot activate two authoritative surface-water state owners for the same store;
+7. the resulting ownership split is reflected in current architecture/coupling contracts before production admission.
 
 ## Current decision boundary
 
-**Not authorized:** deleting or retiring `surfacewater.f90` behaviour as a whole.
+**Not authorized:** deleting or retiring `surfacewater.f90` behaviour as a whole, or removing the qualified F-CI52 standalone fixed-weir capability.
 
-**Authorized research direction:** test whether the legacy container can ultimately be retired after its responsibilities are separated into Ribasim-owned system state, SWAP-owned exchange physics and coupler-owned management policy.
+**Authorized research direction:** determine whether the legacy container can ultimately retire after responsibilities are separated into Ribasim-owned system state in coupled mode, SWAP-owned exchange physics and coupler-owned management policy, while standalone SWAP5 retains its separately qualified fixed-weir profile.
 
 This work unit is deliberately non-blocking for the minimal SWAP5 + MODFLOW6 + Ribasim triangle unless that triangle depends on a legacy surface-water-management behaviour covered here. It is blocking for any claim that the legacy SWAP surface-water subsystem is obsolete or safe to retire.
