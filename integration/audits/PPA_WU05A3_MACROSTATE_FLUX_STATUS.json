@@ -25,7 +25,7 @@
     "baseline": "ed743d618432535506b0d593cca34ea521300e4e",
     "changes": ["Validate the lower flux boundary before either descending recurrence", "Retain SWMBF exclusion and wholly unsaturated last-node routes"],
     "interfaces_changed": false,
-    "validation": "Pending persisted-postimage O0/O2 rerun",
+    "validation": "aae943b7d49842f78adb0a1e513ca1ad79bcd5b0: flux and composed tests PASS O0/O2 with identical transcripts; bounds checks, floating traps and warnings-as-errors enabled",
     "remaining_interface_gap": "Supporting a saturated domain ending at NumNod requires an explicit lower boundary flux slot"
   },
   "qualified": false,

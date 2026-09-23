@@ -26,7 +26,7 @@
     "changes": ["Preserve separate source storage and drainage rounding", "Validate profile cells above IcTopMP consumed by the source saturated fallback"],
     "invariants": [3, 7, 13, 21, 25],
     "interfaces_changed": false,
-    "validation": "Pending postimage O0/O2 rerun; earlier test_result describes the original checkpoint"
+    "validation": "aae943b7d49842f78adb0a1e513ca1ad79bcd5b0: storage and composed tests PASS O0/O2 with identical transcripts; bounds checks, floating traps and warnings-as-errors enabled"
   },
   "qualified": false,
   "production_admission": "NONE; isolated MACROSTATE inventory equations only; no mutation, accepted mass, retry/restart or A4 integration",

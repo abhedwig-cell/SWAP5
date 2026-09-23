@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Continue another independent B1.11 MACROSTATE/MACROFLOW source capability or extend only within a safe no-publication candidate boundary; preserve all A4 accepted-mass/retry/restart gates.",
-  "recovery_point": "095b0f7575fb4931c39cab607036edfb098a5811 (PPA-WU05-A3-MACROSTATE-CDE-COMPOSED-CANDIDATE; local branch checkpoint only, not pushed or canonically admitted).",
+  "next_safe_step": "Run the MACROINTEGRAL accumulation persisted gate, then continue independent source coverage. See PPA_WU05A3_MACROSTATE_COMPOSED_STATUS.json for the source icgwl issue that prevents full MACROSTATE equivalence claims.",
+  "recovery_point": "aae943b7d49842f78adb0a1e513ca1ad79bcd5b0 (storage rounding and flux bounds repairs; all three affected O0/O2 tests passed). Later MACROINTEGRAL work is tracked in PPA_WU05A3_MACROINTEGRAL_ACCUMULATION_STATUS.json.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
