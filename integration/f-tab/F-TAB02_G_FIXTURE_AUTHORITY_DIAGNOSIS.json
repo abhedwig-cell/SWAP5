@@ -43,9 +43,27 @@
     "complete_replay_head": "f4ef8f8607218db379b0729000b42b78f33beed1"
   },
   "reruns": {
-    "dedicated_G": 35877873722,
-    "sequential_A_through_G": 35877944838,
-    "state": "PENDING"
+    "dedicated_G": 35880260492,
+    "sequential_A_through_G": 35880260640,
+    "state": "PENDING_AFTER_TEMPORALLY_VALID_SERIALIZED_FIXTURE"
   },
-  "next_safe_step": "Read dedicated G rerun. If all constitutive/Reference-Richards/serialized-selection gates pass, bind F-TAB02-G qualification, require sequential A-E-G PASS, then implement preregistered F-TAB02-F0 standalone exact-Hupsel selection/lifetime seam. Do not change tolerances or production constitutive semantics for this diagnosis."
+  "next_safe_step": "Read run 35880260492. If constitutive, Reference-Richards and homogeneous-upper/lower serialized selection all pass, bind F-TAB02-G qualification and require sequential A-E-G run 35880260640 PASS before F0 implementation.",
+  "second_rerun": {
+    "run_id": 35877873722,
+    "conclusion": "failure",
+    "constitutive_gate": "PASS",
+    "reference_richards_three_regime_gate": "PASS",
+    "serialized_gate": "FAIL_ANALYTICAL_BASELINE_TEMPORAL_REJECTION",
+    "serialized_diagnostics": {
+      "attempts": 9,
+      "retries": 8,
+      "solver_rejections": 0,
+      "temporal_rejections": 9,
+      "admission_rejections": 0
+    },
+    "classification": "SERIALIZED_FIXTURE_NOT_TEMPORALLY_EQUILIBRATED",
+    "diagnosis": "The serialized fixture mixed Hupsel upper and lower materials in one constant-head column while deriving one top/bottom qref from node 1. Because K(h) differs across the material interface, the fixture contains a real internal transient and the strict external-full-half temporal gate correctly rejects even the analytical baseline.",
+    "repair": "Run serialized provider-selection/lifetime checks as two separate homogeneous equilibrium columns, one exact Hupsel upper material and one exact Hupsel lower material. Mixed stratigraphy remains covered by the passing dedicated Reference-Richards G4 gate. Temporal tolerance remains 1e-6 and transaction policy is unchanged.",
+    "repair_commit": "100b51cad90a5bb76de1cac914658d897e84a842"
+  }
 }
