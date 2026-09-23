@@ -2050,6 +2050,13 @@
       "effect": "All specified outputs above IcTopMp are cleared and FrArMtrx reset while the first active/deeper cells remain unchanged. Full section F/G handoff and production composition remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROGEOM-POLYGON-HANDOFF",
+      "state": "ISOLATED_SECTION_F_G_LOOP_HANDOFF_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROGEOM_POLYGON_HANDOFF_STATUS.json; uses the separately qualified DiamPolyg equation oracle",
+      "production_delta": "NONE",
+      "effect": "The IcTopMp first-pass and ICpBtDmPot(2)+1 final-pass loop bounds and DiamPolyg argument mapping are tested. Whole MACROGEOM and all production integration remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
