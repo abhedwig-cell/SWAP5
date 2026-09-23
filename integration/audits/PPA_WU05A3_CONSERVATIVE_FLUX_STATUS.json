@@ -1,7 +1,10 @@
 {
   "work_unit": "PPA-WU05-A3-CONSERVATIVE-FLUX-PROPOSAL",
   "baseline": "f22f45af8",
-  "phase": "PREREGISTERED",
+  "phase": "FOCUSED_TESTS_PASSED_EXTENDED_TEST_PENDING",
+  "focused_result": "351c21041fdba73fa737bf6a38b06a4c47488d6e O0/O2 PASS with identical transcripts, warnings-as-errors and runtime checks",
+  "extended_test": "512 manufactured face-flux cases with dyadic data, sign reversals, four time steps and exact zero-tolerance boundary/face comparisons; invalid time, tolerance and shape guards",
+  "gate": "tests/fapp/run_ppa_wu05a3_conservative_flux.ps1",
   "authority": "Core invariant 13 and PPA_WU05A3_FLUX_TRANSITION_STATUS.json cell-continuity findings",
   "equation": "q(i+1)=q(i)-matrix_exchange(i)-rapid_drainage(i)-(water_new(i)-water_old(i))/dt",
   "scope": "Diagnostic candidate flux reconstruction from explicit complete profiles and rates; n+1 faces; prescribed lower flux checked independently",

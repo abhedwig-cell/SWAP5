@@ -33,10 +33,46 @@ program test_ppa_wu05a3_conservative_flux
   new(1,1)=ieee_value(0.0_real64,ieee_quiet_nan)
   call invoke()
   call require(status==FLUX_INVALID .and. maxval(abs(q))<1.e-14_real64,10)
+  call manufactured_faces()
   print '(A)','PPA_WU05A3_CONSERVATIVE_FLUX_FRONT_AND_DRAIN=PASS'
   print '(A)','PPA_WU05A3_CONSERVATIVE_FLUX_REDISTRIBUTION=PASS'
   print '(A)','PPA_WU05A3_CONSERVATIVE_FLUX_BOUNDARY_GUARD=PASS'
+  print '(A)','PPA_WU05A3_CONSERVATIVE_FLUX_512_MANUFACTURED_CASES=PASS'
 contains
+  subroutine manufactured_faces()
+    real(real64) :: expected(2,4),step
+    integer :: sample,id,node
+    do sample=1,512
+      step=2.0_real64**(-mod(sample,4))
+      do id=1,2
+        do node=1,4
+          expected(id,node)=real(mod(sample*id+node*7,33)-16,real64)/16.0_real64
+        end do
+        do node=1,3
+          old(id,node)=2.0_real64
+          new(id,node)=2.0_real64+real(mod(sample+id*node,9)-4,real64)/16.0_real64
+          drain(id,node)=real(mod(sample+id+node,4),real64)/128.0_real64
+          exchange(id,node)=(expected(id,node)-expected(id,node+1))- &
+              (new(id,node)-old(id,node))/step-drain(id,node)
+        end do
+      end do
+      ! Dyadic inputs allow an exact independent face comparison with zero tolerance.
+      call reconstruct_conservative_flux(step,old,new,exchange,drain,expected(:,1),expected(:,4), &
+          0.0_real64,q,residual,status)
+      call require(status==FLUX_OK,11)
+      call require(maxval(abs(q-expected))<tiny(1.0_real64),12)
+    end do
+    call reconstruct_conservative_flux(0.0_real64,old,new,exchange,drain,top,bottom, &
+        0.0_real64,q,residual,status)
+    call require(status==FLUX_INVALID,13)
+    call reconstruct_conservative_flux(1.0_real64,old,new,exchange,drain,top,bottom, &
+        -1.0_real64,q,residual,status)
+    call require(status==FLUX_INVALID,14)
+    call reconstruct_conservative_flux(1.0_real64,old,new,exchange(:,1:2),drain,top,bottom, &
+        0.0_real64,q,residual,status)
+    call require(status==FLUX_INVALID,15)
+  end subroutine
+
   subroutine invoke()
     call reconstruct_conservative_flux(1.0_real64,old,new,exchange,drain,top,bottom,1.e-14_real64,q,residual,status)
   end subroutine
