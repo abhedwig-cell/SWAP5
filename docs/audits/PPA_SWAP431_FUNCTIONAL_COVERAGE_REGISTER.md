@@ -202,7 +202,11 @@ ABSORPTION Darcy branch is also bitwise tested for head gates, resistance and
 moisture factor. The diffusion candidate amount is also independently tested
 across its strict wet-matrix cutoff and wall-wetting factor. The SWABS=2
 diffusivity equation has its own 100,000-vector test for lambda flooring,
-pressure-envelope saturation clamping and Mualem terms. B1.11 assigns local `SorpFac` only inside that branch but
+pressure-envelope saturation clamping and Mualem terms. The SHRINK clay
+equation, continuous peat curve, and three-piece peat curve are each covered
+in a 100,000-vector bitwise O0/O2 source oracle. Non-finite inputs and the
+undefined rigid-soil (`SwSoilShr=0`) legacy branch fail closed; this is a pure
+equation evaluator, not a macropore runtime/state-owner migration. B1.11 assigns local `SorpFac` only inside that branch but
 later reads it unconditionally in arbitration; stale/undefined cases remain
 held out pending source-owner resolution. These remain bounded equations
 rather than a complete macropore process or runtime migration. The full B1.11 reconstruction helper still fails
