@@ -13,8 +13,35 @@ module mod_ppa_wu05a3_macrointegral_accumulation
     real(real64) :: cumulative_cell(4,2)=0.0_real64
     real(real64) :: rapid_total=0.0_real64, cumulative_rapid=0.0_real64
   end type
-  public :: accumulate_macrointegral
+  public :: accumulate_macrointegral, reset_macrointegral_counters
 contains
+  subroutine reset_macrointegral_counters(task,previous,candidate,status)
+    integer, intent(in) :: task
+    type(macrointegral_history), intent(in) :: previous
+    type(macrointegral_history), intent(out) :: candidate
+    integer, intent(out) :: status
+    status=1
+    if(task<0 .or. task>2) return
+    if(.not.allocated(previous%cell) .or. .not.allocated(previous%exchange) .or. &
+        .not.allocated(previous%rapid) .or. .not.allocated(previous%wet)) return
+    if(.not.finite_history(previous)) return
+    candidate=previous
+    if(task==0 .or. task==1) then
+      candidate%cell=0.0_real64
+      candidate%exchange=0.0_real64
+      candidate%rapid=0.0_real64
+      candidate%wet=0.0_real64
+      candidate%top=0.0_real64
+      candidate%rapid_total=0.0_real64
+    end if
+    if(task==0 .or. task==2) then
+      candidate%cumulative_cell=0.0_real64
+      candidate%cumulative_top=0.0_real64
+      candidate%cumulative_rapid=0.0_real64
+    end if
+    status=0
+  end subroutine
+
   subroutine accumulate_macrointegral(n,ic_top,dt,top_rate,cell_rate,rapid_rate,wet_rate,previous,candidate,status)
     integer, intent(in) :: n,ic_top
     real(real64), intent(in) :: dt,top_rate(:,:),cell_rate(:,:,:),rapid_rate(:),wet_rate(:,:)

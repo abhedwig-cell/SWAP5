@@ -41,10 +41,41 @@ program test_ppa_wu05a3_macrointegral_accumulation
   call require(status==1 .and. .not.allocated(bad%cell),16)
   call accumulate_macrointegral(3,3,0.5_real64,top,rates(:,:,1:2),rapid,wet,history,bad,status)
   call require(status==1 .and. .not.allocated(bad%cell),17)
+  call reset_macrointegral_counters(1,history,first,status)
+  call require(status==0,18)
+  call require(maxval(abs(first%cell))+maxval(abs(first%exchange))+ &
+      maxval(abs(first%rapid))+maxval(abs(first%wet))+maxval(abs(first%top))+ &
+      abs(first%rapid_total)<1.0e-14_real64,19)
+  call require(maxval(abs(first%cumulative_cell-6.0_real64))+ &
+      maxval(abs(first%cumulative_top-5.0_real64))+abs(first%cumulative_rapid-8.0_real64)<1.0e-14_real64,20)
+  call accumulate_macrointegral(3,3,0.5_real64,top,rates,rapid,wet,first,second,status)
+  call require(status==0,21)
+  call require(abs(second%rapid_total-0.5_real64)+abs(second%cumulative_rapid-8.5_real64)<1.0e-14_real64,22)
+  call reset_macrointegral_counters(2,history,first,status)
+  call require(status==0,23)
+  call require(maxval(abs(first%cell-1.0_real64))+abs(first%rapid_total-7.0_real64)<1.0e-14_real64,24)
+  call require(maxval(abs(first%cumulative_cell))+maxval(abs(first%cumulative_top))+ &
+      abs(first%cumulative_rapid)<1.0e-14_real64,25)
+  call reset_macrointegral_counters(0,history,first,status)
+  call require(status==0,26)
+  call require(maxval(abs(first%cell))+maxval(abs(first%cumulative_cell))+ &
+      abs(first%rapid_total)+abs(first%cumulative_rapid)<1.0e-14_real64,27)
+  call reset_macrointegral_counters(3,history,bad,status)
+  call require(status==1 .and. .not.allocated(bad%cell),28)
+  call require(maxval(abs(history%cell-1.0_real64))+abs(history%rapid_total-7.0_real64)+ &
+      abs(history%cumulative_rapid-8.0_real64)<1.0e-14_real64,29)
+  history%rapid_total=1.0_real64; history%cumulative_rapid=1.0_real64
+  rapid(2:3)=epsilon(1.0_real64)
+  call accumulate_macrointegral(3,3,0.5_real64,top,rates,rapid,wet,history,first,status)
+  call require(status==0,30)
+  ! Each half-ulp contribution rounds away; summing rates first would add an ulp.
+  call require(abs(first%rapid_total-1.0_real64)+abs(first%cumulative_rapid-1.0_real64)<tiny(1.0_real64),31)
   print '(A)','PPA_WU05A3_MACROINTEGRAL_ACCUMULATION=PASS'
   print '(A)','PPA_WU05A3_MACROINTEGRAL_EXCHANGE_SIGNS=PASS'
   print '(A)','PPA_WU05A3_MACROINTEGRAL_HISTORY_ISOLATION=PASS'
   print '(A)','PPA_WU05A3_MACROINTEGRAL_INVALID_INPUT=PASS'
+  print '(A)','PPA_WU05A3_MACRORESET_COUNTER_TASKS=PASS'
+  print '(A)','PPA_WU05A3_MACROINTEGRAL_CELL_ROUNDING_ORDER=PASS'
 contains
   subroutine require(ok,code)
     logical,intent(in) :: ok
