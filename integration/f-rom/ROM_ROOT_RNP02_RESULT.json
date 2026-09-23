@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.rom_root.rnp02.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP02",
+  "date": "2026-09-23",
+  "status": "TRACE_COMPLETE_NO_POLICY_DECISION",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RNP02_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RNP02_BINDING.json",
+    "workflow_run": 35818458614,
+    "workflow_head": "d2281d4deaf7c89555508e9c637356969db01fe9",
+    "analyzer_job": 107045066847,
+    "artifacts": {
+      "target": {
+        "id": 10732631468,
+        "digest": "sha256:e1dec3b820526739fd634ea6f3f184abd8f8fe40ede3b82618ff11bcef7b5ffc"
+      },
+      "control": {
+        "id": 10732711229,
+        "digest": "sha256:51c4b42fccce3dced2134535ed727d725072d3b5e389e51342df09867a7c919b"
+      },
+      "analyzed": {
+        "id": 10732053372,
+        "digest": "sha256:222d439dd23eb0fafc2f2c9794d0430eb9fc1dd77bc346a786c83f304aff94a1"
+      }
+    }
+  },
+  "target": {
+    "case": "B01 R1024_T32 V02",
+    "shadow128": {
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "nonlinear_iterations": 128,
+      "backtracking_attempts": 128,
+      "total_residual": 1.2645995361992846e-12,
+      "max_abs_local_residual": 3.426009476115155e-13,
+      "half_squared_l2": 4.623399777603255e-24
+    },
+    "trace_records": 128,
+    "terminal_iterations": 128,
+    "exact_terminal_recurrence": true,
+    "exact_recurrence_count": 79,
+    "first_exact_recurrence": {
+      "first_iteration": 26,
+      "repeat_iteration": 50,
+      "cycle_length": 24,
+      "tuple": {
+        "total_residual": 6.989187006922748e-12,
+        "max_abs_local_residual": 3.5438318946034997e-13,
+        "half_squared_l2": 3.91078449561722e-24
+      }
+    }
+  },
+  "control": {
+    "case": "B01 R2048_T32 V02",
+    "shadow128": {
+      "status": 1,
+      "route": "legacy-reference-bound",
+      "nonlinear_iterations": 17,
+      "backtracking_attempts": 17,
+      "total_residual": -9.038880754985712e-13,
+      "max_abs_local_residual": 1.9308166177012254e-13,
+      "half_squared_l2": 1.9831289678813984e-24
+    },
+    "trace_records": 17,
+    "exact_terminal_recurrence": false,
+    "exact_recurrence_count": 0
+  },
+  "classifications": {
+    "TARGET_CONVERGES_BY_128": false,
+    "TARGET_PERSISTS_TO_128": true,
+    "EXACT_TERMINAL_RECURRENCE": true,
+    "CONTROL_PRESERVATION": true
+  },
+  "bounded_interpretation": [
+    "The persistent B01 R1024_T32 V02 interval is not explained by an iteration ceiling up to 128 iterations.",
+    "The aggregate terminal residual tuple enters an exact recurring pattern; the first repeated tuple occurs between iterations 26 and 50, consistent with a 24-iteration recurrence in the observed diagnostics.",
+    "The matched B01 R2048_T32 V02 control converges at iteration 17 under the same tolerances and 128-iteration diagnostic ceiling.",
+    "RNP02 does not establish that the full pressure-head state or full residual vector is exactly periodic; that requires a separate full-state diagnostic."
+  ],
+  "decision": {
+    "numerical_policy_change_authorized": false,
+    "c6r_reopened": false,
+    "reference_qualified": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "next": "If pursued, diagnose whether the full solver state/residual vector repeats on the same target interval before any numerical-method policy proposal."
+  },
+  "policy_decision_authorized": false,
+  "c6r_reopened": false,
+  "reduced_candidate_response_generated": false,
+  "production_source_changed": false,
+  "model_changed": false
+}
