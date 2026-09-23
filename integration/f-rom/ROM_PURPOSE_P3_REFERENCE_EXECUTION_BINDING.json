@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.rom-purpose.p3.reference-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P3_REFERENCE_RESPONSE",
+  "branch_head_before_binding": "b56614ef5e6bcae2f2a2ecf6ace79b1cc22eccdc",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@fa7b2f0b3edba1bcc341ac826a2ef376717a4989",
+  "pre_response_authority_repair": "integration/f-rom/ROM_PURPOSE_P3_PRE_RESPONSE_AUTHORITY_REPAIR.json@1d4e8537ab3c6aeaa82c1179ef558c5829bdaaf2",
+  "workflow": ".github/workflows/f-rom-purpose-p3-reference.yml",
+  "workflow_blob": "d403a0af27efd05abb92ec6d631e234926d0d8b9",
+  "implementation_blobs": {
+    "tests/rom/materialize_rom_purpose_p3_surface_reference.py": "31060946d233ba80e88ca42e43c90f512dc890de",
+    "tests/rom/materialize_rom_purpose_p3_gw_reference.py": "757d6d8917bea9148fd9857786ad533b29d01aad",
+    "tests/rom/analyze_rom_purpose_p3_reference.py": "e29e481104d5bb1e25026d5dffcfc790b38d22ce",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py": "47bdce6fe2cee0a9172b1ba8721308a6aaf81668",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "fa7b2f0b3edba1bcc341ac826a2ef376717a4989",
+    "integration/f-rom/ROM_PURPOSE_P3_PRE_RESPONSE_AUTHORITY_REPAIR.json": "1d4e8537ab3c6aeaa82c1179ef558c5829bdaaf2"
+  },
+  "execution_contract": {
+    "histories": {
+      "SURF_P": [
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "GW_LB": [
+        "G06",
+        "G07",
+        "G08",
+        "G09"
+      ]
+    },
+    "spatial_routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_routes": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "R2048_checkpoint_topology": "Reuse previously qualified exact-physical-state segmented topology; checkpoint hydrological identity is re-proved on the fresh P3 materializers before scientific routes.",
+    "response_blind": true
+  },
+  "authorization": {
+    "candidate_response_before_reference_gate": false,
+    "candidate_response_after_reference_gate": "Only if P3 Reference result has candidate_response_authorized=true for both purposes and both materials.",
+    "closure_research_authorized": false,
+    "production_rom_authorized": false
+  }
+}
