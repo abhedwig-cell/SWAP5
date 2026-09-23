@@ -1,0 +1,328 @@
+name: F-ROM-PURPOSE P2 H4 CoRichards
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p2-h4-corichards
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  FROZEN_BACKEND: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Verify H4 authority and frozen implementation
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "$FROZEN_BACKEND"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p2_h4_corichards.py             tests/rom/materialize_rom_purpose_p1_coarse_output.py             tests/rom/rom_purpose_p1_variable_grid_stubs.py             tests/rom/analyze_rom_purpose_p2_h4_corichards.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_BINDING.json'))
+          c=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json'))
+          assert b['status']=='BOUND_AFTER_P2_PLACEMENT_H4_TRIGGER'
+          assert c['status']=='BOUND_OPERATIONAL_EXTENSION_OF_PRE_RESPONSE_H4_CONTRACT'
+          assert p['hypotheses']['H4_same_partition_corichards_diagnostic_required'] is True
+          assert len(c['trigger_cases'])==4
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  corichards:
+    needs: preflight
+    name: h4-${{ matrix.purpose }}-${{ matrix.material }}-T${{ matrix.factor }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B01, B14]
+        factor: [8, 16, 32]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Materialize exact same-partition four-cell Richards route
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"
+          material="${{ matrix.material }}"
+          factor="${{ matrix.factor }}"
+          generated=canonical/tests/rom/test_p2h4.f90
+          manifest=/tmp/h4_manifest.json
+          if [[ "$purpose" == SURF_P ]]; then
+            if [[ "$material" == B01 ]]; then
+              source=tests/rom/rom_purpose_p1_surface_b01_source.f90
+            else
+              source=tests/rom/rom_purpose_p1_surface_b14_source.f90
+            fi
+            python3 tests/rom/materialize_rom_purpose_p2_h4_corichards.py               --purpose "$purpose" --material "$material" --temporal-factor "$factor"               --source "$source"               --surface-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py               --coarse-output-adapter tests/rom/materialize_rom_purpose_p1_coarse_output.py               --output "$generated" --manifest "$manifest"
+          else
+            python3 tests/rom/materialize_rom_purpose_p2_h4_corichards.py               --purpose "$purpose" --material "$material" --temporal-factor "$factor"               --source tests/rom/rom_purpose_p1_gw_source.f90               --gw-materializer tests/rom/materialize_rom_purpose_p1_gw_reference.py               --c4z-materializer tests/rom/rom_purpose_p1_base_c4z_materializer.py               --c5a-materializer tests/rom/rom_purpose_p1_base_b14_materializer.py               --coarse-output-adapter tests/rom/materialize_rom_purpose_p1_coarse_output.py               --output "$generated" --manifest "$manifest"
+          fi
+          python3 - "$manifest" "$purpose" "$material" "$factor" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1]))
+          assert m['response_based'] is False
+          assert m['solver_or_physics_changed'] is False
+          assert m['numerical_policy_changed'] is False
+          assert m['nodes']==4
+          assert m['purpose']==sys.argv[2]
+          assert m['material']==sys.argv[3]
+          assert m['temporal_factor']==int(sys.argv[4])
+          PY
+      - name: Compile and execute O0/O2-identical CoRichards
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.purpose }}"
+          material="${{ matrix.material }}"
+          factor="${{ matrix.factor }}"
+          if [[ "$purpose" == SURF_P ]]; then
+            thickness="20,20,40,80"
+          else
+            thickness="80,40,20,20"
+          fi
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="p2h4_${purpose}_${material}_T${factor}_o${opt}_stubs.f90"
+            python3 tests/rom/rom_purpose_p1_variable_grid_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/${stub}"               --layer-thickness-cm "$thickness"
+            build="/tmp/p2h4_${purpose}_${material}_T${factor}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "$stub" --target tests/rom/test_p2h4.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt "$opt"
+            log="evidence/corichards_${purpose}_${material}_T${factor}_o${opt}.txt"
+            "$build/rom0_test" > "$log" 2>&1
+            if [[ "$purpose" == SURF_P ]]; then
+              grep -Fq 'LAREDYN0R_ROMPURP_P2_SURFACE_REFERENCE_GENERATED=TRUE' "$log"
+              grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+              test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq $((4*1024*factor))
+              test "$(grep -c '^ROMPURP_P1_COARSE_NODE|PURPOSE=surface|' "$log")" -eq $((4*1024*4))
+            else
+              grep -Fq 'LAREGW1_ROMPURP_P1_GW_REFERENCE_GENERATED=TRUE' "$log"
+              grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+              test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq $((4*1024*factor))
+              test "$(grep -c '^ROMPURP_P1_COARSE_NODE|PURPOSE=gw|' "$log")" -eq $((4*1024*4))
+            fi
+          done
+          cmp "evidence/corichards_${purpose}_${material}_T${factor}_o0.txt"               "evidence/corichards_${purpose}_${material}_T${factor}_o2.txt"
+          cp /tmp/h4_manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2h4-${{ matrix.purpose }}-${{ matrix.material }}-T${{ matrix.factor }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: corichards
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p2h4-*
+          path: /tmp/h4raw
+          merge-multiple: false
+      - name: Reconstruct O0/O2-identical H4 route set
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/h4routes
+          for purpose in SURF_P GW_LB; do
+            for material in B01 B14; do
+              for factor in 8 16 32; do
+                for opt in 0 2; do
+                  name="corichards_${purpose}_${material}_T${factor}_o${opt}.txt"
+                  src="$(find /tmp/h4raw -type f -name "$name" -print -quit)"
+                  test -n "$src"; cp "$src" "/tmp/h4routes/$name"
+                done
+                cmp "/tmp/h4routes/corichards_${purpose}_${material}_T${factor}_o0.txt"                     "/tmp/h4routes/corichards_${purpose}_${material}_T${factor}_o2.txt"
+              done
+            done
+          done
+      - name: Reconstruct P2 R2048 surface target
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p2src/s1 /tmp/p2src/s2 /tmp/p2src/s3 /tmp/p2src/s4 /tmp/surface_target
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg1-*' -D /tmp/p2src/s1
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg2-*' -D /tmp/p2src/s2
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg3-*' -D /tmp/p2src/s3
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg4-*' -D /tmp/p2src/s4
+          for material in B01 B14; do
+            out="/tmp/surface_target/surface_${material}_R2048_T32_o0.txt"; : > "$out"
+            for i in 1 2 3 4; do
+              for d in s1 s2 s3 s4; do
+                src="$(find /tmp/p2src/${d} -type f -path "*/p2seg${d#s}-${material}-R2048_T32-h${i}/segment.txt" -print -quit)"
+                test -n "$src"; cat "$src" >> "$out"
+              done
+            done
+          done
+      - name: Download inherited P1 GW target
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p1gw
+          gh run download 35751978638 --repo abhedwig-cell/SWAP5 -n p1ref-routes -D /tmp/p1gw
+          test -f /tmp/p1gw/gw_B01_R2048_T32_o0.txt
+          test -f /tmp/p1gw/gw_B14_R2048_T32_o0.txt
+      - name: Execute frozen H4 diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p2_h4_corichards.py             --contract integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --placement-result integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json             --route-root /tmp/h4routes             --surface-reference-root /tmp/surface_target             --gw-reference-root /tmp/p1gw             --output result/ROM_PURPOSE_P2_H4_RESULT.json             | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p2-h4-result
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_RUN: ${{ github.run_id }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p2-h4-result
+          path: /tmp/result
+      - name: Persist H4 diagnostic and purpose map
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P2_H4_RESULT.json integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          h=json.load(open('integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json'))
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P2_STATUS.json'))
+          dec=h['decisions']
+          all_closure=h['all_trigger_cases_support_closure_deficit']
+          if all_closure:
+              phase='P2_H4_CLOSURE_DEFICIT_SUPPORTED'
+              blockers=[]
+              next_action='CLOSE_P2_PURPOSE_MAP_NO_GENERAL_CLOSURE_SEARCH'
+          elif any(v=='CORICHARDS_DIAGNOSTIC_UNAVAILABLE' for v in dec.values()):
+              phase='P2_H4_DIAGNOSTIC_UNAVAILABLE'
+              blockers=['H4_CORICHARDS_DIAGNOSTIC_UNAVAILABLE']
+              next_action='STOP_H4_NUMERICAL_DIAGNOSTIC_BLOCKER'
+          else:
+              phase='P2_H4_INFORMATION_OR_RESOLUTION_UNRESOLVED'
+              blockers=['H4_FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED']
+              next_action='CLOSE_P2_WITH_REMAINING_REPRESENTATION_UNCERTAINTY'
+          s.update({
+              'phase':phase,
+              'H4_result':'integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json',
+              'H4_source_workflow_run':int(os.environ['SOURCE_RUN']),
+              'H4_execution_sha':os.environ['SOURCE_SHA'],
+              'blockers':blockers,
+              'next_action':next_action,
+              'recovery_point':'integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json'
+          })
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+
+          def closure_status(purpose,material):
+              d=dec[f'{purpose}/{material}']
+              if d=='CLOSURE_DEFICIT_SUPPORTED':
+                  return {
+                    'required_closure_class':'RICHARDS_EQUIVALENT_PROPAGATION_CLASS_NOT_CURRENT_LAYER_FACE',
+                    'remaining_fidelity_limit':'CURRENT_LAYER_FACE propagation is insufficient relative to same-partition four-cell Richards; no new reduced closure family is admitted.'
+                  }
+              if d=='FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED':
+                  return {
+                    'required_closure_class':'UNRESOLVED',
+                    'remaining_fidelity_limit':'Same-partition four-cell Richards also misses the frozen numerical comparator, so closure versus four-state information/resolution cannot be separated.'
+                  }
+              return {
+                'required_closure_class':'UNRESOLVED_DIAGNOSTIC_UNAVAILABLE',
+                'remaining_fidelity_limit':'Same-partition CoRichards failed numerical qualification, so no closure inference is authorized.'
+              }
+
+          purpose_map={
+            'schema':'swap5.rom-purpose.p2.purpose-map.v1',
+            'workstream':'ROM-PURPOSE',
+            'status':'P2_RESEARCH_MAP_PERSISTED',
+            'scope':'Minimum tested placement within the frozen equal-dimension four-state family; not a universal minimum state-count claim.',
+            'purposes':{},
+            'application_authority_status':'REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE',
+            'scientific_firewall':{
+              'application_acceptance_adjudicated':False,
+              'performance_claim_authorized':False,
+              'production_rom_authorized':False,
+              'general_closure_search_authorized':False
+            }
+          }
+          for purpose,placement_id,info in (
+              ('SURF_P','S4','Upper-column/surface-profile information at 0-20, 0-40 and 0-80 cm.'),
+              ('GW_LB','G4','Bottom-adjacent/lower-column information concentrated over 80-160 cm.')
+          ):
+              mats={}
+              for material in ('B01','B14'):
+                  c=closure_status(purpose,material)
+                  mats[material]={
+                    'placement_decision':p['placement'][purpose][material]['primary']['decision'],
+                    'H4_decision':dec[f'{purpose}/{material}'],
+                    **c
+                  }
+              purpose_map['purposes'][purpose]={
+                'required_vertical_information':info,
+                'minimum_tested_state_placement':{
+                  'id':placement_id,
+                  'boundaries_cm': [0,20,40,80,160] if purpose=='SURF_P' else [0,80,120,140,160],
+                  'dimension':4,
+                  'qualification':'PLACEMENT_SUPPORTED for B01 and B14 against U4 at equal dimension'
+                },
+                'materials':mats
+              }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json').write_text(json.dumps(purpose_map,indent=2,sort_keys=True)+'\n')
+
+          lines=[
+            '# ROM-PURPOSE P2 closeout','',
+            f"Placement H1: **{p['hypotheses']['H1_groundwater_aligned_placement_supported']}**.",
+            f"Placement H2: **{p['hypotheses']['H2_surface_aligned_placement_supported']}**.",
+            f"Placement H3: **{p['hypotheses']['H3_any_equal_dimension_purpose_aligned_information_value']}**.",
+            f"H4 status: **{h['status']}**.",'',
+            'The result supports purpose-dependent state placement within the frozen four-state family. It does not establish application acceptance, a universal minimum state count, performance authority, or production-ROM admission.','',
+            'No general closure-family search is authorized by this closeout.'
+          ]
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P2_CLOSEOUT.md').write_text('\n'.join(lines)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json                   integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json                   integration/f-rom/ROM_PURPOSE_P2_STATUS.json                   docs/science/F-ROM_PURPOSE_P2_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P2: persist H4 diagnostic and purpose map" || exit 0
+          git push origin HEAD:work/f-rom-purpose
