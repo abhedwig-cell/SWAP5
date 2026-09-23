@@ -17,7 +17,9 @@ required=[
     "b110_generated_mvg_ksatexm_profile_supported",
     "first_active_head",
     "nearest(ext_lo(i),1.0_real64)",
-    "state%ksatexm_extension_enabled .and. h >= state%first_active_head(i)",
+    "authority_theta",
+    "state%ksatexm_extension_enabled",
+    "h >= state%first_active_head(i)",
 ]
 for token in required:
     assert token in state, token
