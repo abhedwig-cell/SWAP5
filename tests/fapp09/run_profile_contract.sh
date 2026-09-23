@@ -44,7 +44,7 @@ visit(roots[1])
 Path(sys.argv[1]).write_text("\n".join(str(p) for p in order)+"\n")
 PY
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace)
 while read -r src; do
   gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$src" -o "$BUILD/$(basename "$src" .f90).o"
 done < "$BUILD/compile-order.txt"

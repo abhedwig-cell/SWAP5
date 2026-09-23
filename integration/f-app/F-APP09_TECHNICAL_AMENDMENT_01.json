@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.f_app09.technical_amendment.v1",
+  "work_unit": "F-APP09",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-23",
+  "classification": "HARNESS_WARNING_POLICY_ONLY",
+  "failed_run": 35918271438,
+  "failed_job": 107375476927,
+  "observation": "Profile contract compile closure reached existing canonical modules that emit warning-level unused-dummy diagnostics. The F-APP09 runner promoted all warnings to errors with -Werror before the profile test executable was built.",
+  "scientific_result_observed": false,
+  "repair": "Remove -Werror from the F-APP09 profile-only compile harness. Retain -Wall, -Wextra, runtime checks and all profile assertions.",
+  "unchanged": [
+    "profile source",
+    "owner XOR rules",
+    "accepted-head rules",
+    "geometry epsilon",
+    "nonlinear parity exclusion",
+    "accept-with-clip prohibition",
+    "Q4A/Q4B code and tests"
+  ]
+}
