@@ -4,7 +4,7 @@
   "work_unit": "ROM-PURPOSE-P2",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "phase": "P2_REFERENCE_REBOUND_AFTER_PRE_RESPONSE_REPAIR",
+  "phase": "P2_REFERENCE_TECHNICAL_RERUN_QUEUED",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -12,8 +12,8 @@
   "candidate_response_authorized": false,
   "candidate_response_generated": false,
   "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
-  "fresh_surface_reference_status": "PENDING",
-  "checkpoint_commit": "5f70d94585031d2e8340624e3d9a1cbd349efcaf",
+  "fresh_surface_reference_status": "TECHNICAL_RERUN_QUEUED",
+  "checkpoint_commit": "5863ee344d315847c4ead9d1c4ab4258f2211864",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "authority_paths": [
     "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json",
@@ -49,9 +49,27 @@
     "production_rom_authorized": false
   },
   "blockers": [
-    "P2_FRESH_SURFACE_REFERENCE_NOT_YET_EXECUTED_ON_REPAIRED_BINDING"
+    "P2_FRESH_SURFACE_REFERENCE_RERUN_PENDING"
   ],
-  "next_action": "UPDATE_EXECUTION_BINDING_AND_EXECUTE_P2_FRESH_SURFACE_REFERENCE",
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json",
-  "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json"
+  "next_action": "OBSERVE_AUTHORITATIVE_P2_REFERENCE_RERUN_35821534912",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json",
+  "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
+  "reference_workflow_runs": [
+    {
+      "run": 35821291555,
+      "head": "7e556d482b76b6e856cd541f0abb86bade719ef4",
+      "disposition": "TECHNICAL_FAILURE_BEFORE_REFERENCE_RESPONSE"
+    },
+    {
+      "run": 35821452344,
+      "head": "5c06d39f5e0cefbd5318d73f24e12c014cf10aa4",
+      "disposition": "SUPERSEDED_PARALLEL_REPAIR_RUN_QUEUED"
+    },
+    {
+      "run": 35821534912,
+      "head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+      "disposition": "AUTHORITATIVE_TECHNICAL_RERUN_QUEUED"
+    }
+  ],
+  "pre_response_technical_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_TECHNICAL_REPAIR.json"
 }
