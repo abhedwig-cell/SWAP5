@@ -1,0 +1,1373 @@
+{
+  "schema": "swap5.migration_closure_ledger.v1",
+  "workstream": "SWAP4_TO_SWAP5_MIGRATION_CLOSURE",
+  "ledger_role": "Navigation and recovery metadata only; not scientific authority, production admission, or qualification.",
+  "baseline": {
+    "reference": "SWAP 4.3.1",
+    "source_locator": "reference/swap-4.3.1/",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "status_a_scientific_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "status_a_authority_commit": "992a5c657bfe10a10100f92e0cb77c4825ae65b6"
+  },
+  "reconciled": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "local_branch": "codex/ppa-swap431-functional-gap-register",
+    "local_head_before_ledger": "c9afd7b678547cbf4de4b6101e8ded80c7cfcca4",
+    "local_relation_to_previous_canonical_base": "167 local commits ahead and 60 commits behind after fetching canonical; do not merge/rebase until full intersecting dependency reconciliation is reviewed",
+    "canonical_delta_relevance": "60 newer canonical commits were fetched. The relevant delta includes accepted F-GC fixed-interface closure and shared runtime/adapter changes. Current canonical Status-A, project-control/PPA and F-GC authorities were reread; local PPA/source-oracle additions remain branch-local and unadmitted.",
+    "last_reconciled_head": "c9afd7b678547cbf4de4b6101e8ded80c7cfcca4",
+    "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "reconciled_on": "2026-09-23"
+  },
+  "classification": {
+    "values": [
+      "CLOSED",
+      "PARTIAL",
+      "OPEN",
+      "BLOCKED",
+      "NOT_APPLICABLE"
+    ],
+    "rule": "A slice is CLOSED only when every applicable criterion has current scoped evidence. Status-A bounds are not expanded; existing SWAP4 capabilities are not relabelled future merely because absent from Status-A. Explicitly excluded new capabilities and speculative performance are not migration prerequisites."
+  },
+  "authority_paths": [
+    "docs/architecture/migration-slices.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "docs/status-a/FUTURE_SCOPE.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstreams.md",
+    "docs/development/workstream-execution-protocol.md",
+    "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+    "docs/capabilities/reference-preservation.md",
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+    "integration/f-gc/F-GC_FIXED_INTERFACE_CLOSEOUT_STATUS.json",
+    "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+    "docs/development/SWAP5_PROJECT_CONTROL.md",
+    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "integration/audits/PPA_WU05A_STATUS.json",
+    "integration/audits/PPA_WU05C_STATUS.json"
+  ],
+  "source_paths": [
+    "reference/swap-4.3.1/",
+    "src/legacy/",
+    "src/adapter/",
+    "src/runtime/",
+    "src/process/",
+    "src/crop/",
+    "src/solver/"
+  ],
+  "test_paths": [
+    "tests/qualification/",
+    "tests/transaction/",
+    "tests/fmr/",
+    "tests/fgc/",
+    "tests/fwof/",
+    "tests/fapp/",
+    "testbank/runners/"
+  ],
+  "dependency_surface": [
+    "SWAP4.3.1 source/archive hashes and qualified patches",
+    "SWAP5 Status-A/current post-Status-A contracts",
+    "source-selector/config and process semantics",
+    "committed/candidate/scratch state owner boundaries",
+    "rollback/retry/restart and exactly-once accepted mass",
+    "reference-vs-production observable/test fixtures",
+    "current canonical code and capability admission records"
+  ],
+  "reconciliation_findings": [
+    "Current canonical is a2d99ddd149ffaa422d9c422f96bd66e92c8555d; the local PPA campaign branch is divergent and is not canonical.",
+    "Status-A release readiness remains scoped to its frozen 2026-09-16 denominator and selected capabilities; it is not proof that all SWAP4.3.1 options are migrated.",
+    "F-GC fixed-interface coupling is now canonically closed on the latest canonical line; its explicit nonclaims and the separate iMOD Coupler product integration boundary remain intact.",
+    "Canonical PPA registry calls for source-owner selection of the next bounded migration slice; WU05-A macropore production remains held pending exact source materialization/census, WU05-B frost authority is blocked, and WU05-D uptake must rebind later root-hydraulic authority.",
+    "Local solute helpers/oracles on this branch establish source equations only; they are not canonical production, whole-process, state-owner, restart, or mass-closure admission."
+  ],
+  "slices": [
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M0 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "reference/swap-4.3.1/",
+        "src/legacy/"
+      ],
+      "test_paths": [
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+        "reference/swap-4.3.1/README.md",
+        "reference/swap-4.3.1/b1-manifest.yml",
+        "testbank/runners/run_ftb11_current_source_replays.sh",
+        "testbank/runners/run_ftb12p_postimage_reconciliation.sh"
+      ],
+      "evidence_paths": [
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+        "reference/swap-4.3.1/README.md",
+        "reference/swap-4.3.1/b1-manifest.yml",
+        "testbank/runners/run_ftb11_current_source_replays.sh",
+        "testbank/runners/run_ftb12p_postimage_reconciliation.sh"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M0",
+      "status": "PARTIAL",
+      "title": "Reference shield",
+      "criteria": [
+        {
+          "id": "M0-01",
+          "text": "the reference executable/path is reproducibly runnable",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M0-02",
+          "text": "reference inputs and expected outputs are version identified",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M0-03",
+          "text": "state and integrated-flux comparison is automated for the chosen qualification set",
+          "status": "PARTIAL",
+          "gap": "The admitted reference-preservation evidence closes checksum/closure for its chosen scope, but the M0 criterion is broader than that bounded scope or lacks one consolidated current evidence locator.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M0-04",
+          "text": "water balance is machine-checkable",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M0-05",
+          "text": "solver route/cost can be recorded where relevant",
+          "status": "PARTIAL",
+          "gap": "The admitted reference-preservation evidence closes checksum/closure for its chosen scope, but the M0 criterion is broader than that bounded scope or lacks one consolidated current evidence locator.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M0-06",
+          "text": "known qualified audit fixes are distinguishable from the untouched 4.3.1 baseline.",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        }
+      ],
+      "remaining_gap": "M0 evidence is strong for the admitted baseline, but the broader SWAP4.3.1 reference inputs/observables/route-cost matrix is not all traceable from one exact current locator.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M1 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/adapter/",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+      ],
+      "test_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+        "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+        "src/adapter/fmr_groundwater_application_runtime.py",
+        "tests/fgc"
+      ],
+      "evidence_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+        "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+        "src/adapter/fmr_groundwater_application_runtime.py",
+        "tests/fgc"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M1",
+      "status": "PARTIAL",
+      "title": "Typed external boundary",
+      "criteria": [
+        {
+          "id": "M1-01",
+          "text": "a non-file in-memory invocation path reaches the computational boundary",
+          "status": "PARTIAL",
+          "gap": "Current typed production seams are bounded; evidence does not establish the full SWAP4-compatible non-file/file-adapter surface described by this criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M1-02",
+          "text": "kernel-facing interfaces contain no path, file-unit or parser semantics",
+          "status": "PARTIAL",
+          "gap": "Current typed production seams are bounded; evidence does not establish the full SWAP4-compatible non-file/file-adapter surface described by this criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M1-03",
+          "text": "legacy file runs still reproduce reference results through adapters",
+          "status": "PARTIAL",
+          "gap": "Current typed production seams are bounded; evidence does not establish the full SWAP4-compatible non-file/file-adapter surface described by this criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M1-04",
+          "text": "output serialization does not mutate physical state",
+          "status": "PARTIAL",
+          "gap": "Current typed production seams are bounded; evidence does not establish the full SWAP4-compatible non-file/file-adapter surface described by this criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M1-05",
+          "text": "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files.",
+          "status": "PARTIAL",
+          "gap": "Current typed production seams are bounded; evidence does not establish the full SWAP4-compatible non-file/file-adapter surface described by this criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        }
+      ],
+      "remaining_gap": "Typed paths are proven for restricted application envelopes, not for every retained SWAP4 input/output mode.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M2 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/adapter/mod_b1_10_process_checkpoint.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "src/runtime/"
+      ],
+      "test_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "src/adapter/mod_b1_10_process_checkpoint.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "testbank/runners/run_ftb11_current_source_replays.sh"
+      ],
+      "evidence_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "src/adapter/mod_b1_10_process_checkpoint.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "testbank/runners/run_ftb11_current_source_replays.sh"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M2",
+      "status": "PARTIAL",
+      "title": "Data ownership split",
+      "criteria": [
+        {
+          "id": "M2-01",
+          "text": "a reviewed inventory exists for the fields needed by M3-M5",
+          "status": "PARTIAL",
+          "gap": "Ownership is explicit for admitted state/process contracts, but the all-fields M3–M5 inventory or complete cross-family ownership proof is not closed.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M2-02",
+          "text": "committed state contains only continuation-relevant physical quantities",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M2-03",
+          "text": "inactive optional modules do not force equivalent persistent state allocation",
+          "status": "PARTIAL",
+          "gap": "Ownership is explicit for admitted state/process contracts, but the all-fields M3–M5 inventory or complete cross-family ownership proof is not closed.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M2-04",
+          "text": "immutable parameter sets can be shared by reference/ID",
+          "status": "PARTIAL",
+          "gap": "Ownership is explicit for admitted state/process contracts, but the all-fields M3–M5 inventory or complete cross-family ownership proof is not closed.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M2-05",
+          "text": "solver scratch is absent from authoritative column state",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M2-06",
+          "text": "order-independent scratch reuse has a test plan and ownership contract",
+          "status": "PARTIAL",
+          "gap": "Ownership is explicit for admitted state/process contracts, but the all-fields M3–M5 inventory or complete cross-family ownership proof is not closed.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M2-07",
+          "text": "no migrated field has ambiguous ownership between two target components.",
+          "status": "PARTIAL",
+          "gap": "Ownership is explicit for admitted state/process contracts, but the all-fields M3–M5 inventory or complete cross-family ownership proof is not closed.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        }
+      ],
+      "remaining_gap": "Admitted state ownership is qualified; a complete reviewed M3-M5 field inventory and every optional process owner are not shown closed.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M3 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/runtime/",
+        "src/solver/",
+        "src/adapter/mod_b1_10_legacy_trial_capsule.f90"
+      ],
+      "test_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+        "tests/transaction",
+        "tests/fmr",
+        "tests/fgc"
+      ],
+      "evidence_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+        "tests/transaction",
+        "tests/fmr",
+        "tests/fgc"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M3",
+      "status": "CLOSED",
+      "title": "Transactional interval execution",
+      "criteria": [
+        {
+          "id": "M3-01",
+          "text": "rejected trials do not mutate committed state",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-02",
+          "text": "accepted endpoint is committed exactly once",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-03",
+          "text": "integrated fluxes are not double counted across retry paths",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-04",
+          "text": "rerunning from the same committed state is deterministic or tolerance-consistent",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-05",
+          "text": "changing only warm-start numerics does not change the accepted physical solution outside qualification tolerance",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-06",
+          "text": "retry/fallback route is visible in diagnostics",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-07",
+          "text": "execution works over generic `[t0,t1]`, including at least one non-midnight start and one non-day interval",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-08",
+          "text": "water balance closes for normal and retry paths",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M3-09",
+          "text": "no retry policy silently changes physical options.",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        }
+      ],
+      "remaining_gap": "Closed for current admitted transactional execution and fixed-interface windows; retain only within named scopes.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M4 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/legacy/b1_10_port/headcalc.f90",
+        "src/adapter/mod_b110_production_soil_water_task2.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/solver/mod_soil_water_solver_contract.f90"
+      ],
+      "test_paths": [
+        "docs/capabilities/reference-preservation.md",
+        "src/adapter/mod_b110_production_soil_water_task2.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "tests/qualification"
+      ],
+      "evidence_paths": [
+        "docs/capabilities/reference-preservation.md",
+        "src/adapter/mod_b110_production_soil_water_task2.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "tests/qualification"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M4",
+      "status": "CLOSED",
+      "title": "Soil-water solver boundary",
+      "criteria": [
+        {
+          "id": "M4-01",
+          "text": "the reference Richards implementation runs through the common soil-water interface",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-02",
+          "text": "crop/ET/drainage callers needed by the qualification set do not read `HeadCalc` internal arrays directly",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-03",
+          "text": "Newton/Jacobian/factorisation storage is worker/job scratch",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-04",
+          "text": "solver-attempt status is returned explicitly rather than inferred through legacy global control flags",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-05",
+          "text": "reference state/flux regressions pass for the chosen qualification suite",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-06",
+          "text": "difficult-soil cases retain bounded, diagnosable retry behaviour",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-07",
+          "text": "water balance closes across normal/retry/fallback cases used in qualification",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M4-08",
+          "text": "at least one interface sensitivity is checked against a finite-difference reference before production use if sensitivity output is enabled.",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        }
+      ],
+      "remaining_gap": "Closed for the admitted Full Richards/reference solver contract and chosen qualification set.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "id": "M5",
+      "status": "PARTIAL",
+      "title": "Process-contract extraction",
+      "implementation_authority": "docs/architecture/migration-slices.md#M5 plus current canonical PPA ownership/status in integration/audits/production_physics_application_envelope_gap_register.json and integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/TRACEABILITY.md",
+        "capability/work-unit records linked per family"
+      ],
+      "criterion_catalog": [
+        {
+          "id": "M5-E1",
+          "text": "reference physics is retained or intentional changes are separately qualified"
+        },
+        {
+          "id": "M5-E2",
+          "text": "inputs/outputs have physical semantics and documented units"
+        },
+        {
+          "id": "M5-E3",
+          "text": "no direct dependency on solver implementation arrays remains"
+        },
+        {
+          "id": "M5-E4",
+          "text": "optional state exists only for columns/templates where the process is active"
+        },
+        {
+          "id": "M5-E5",
+          "text": "process contribution to water balance is explicit"
+        },
+        {
+          "id": "M5-E6",
+          "text": "disabling/enabling numerical execution policy does not alter the physical configuration"
+        },
+        {
+          "id": "M5-E7",
+          "text": "family-specific regression cases pass against reference mode."
+        }
+      ],
+      "families": [
+        {
+          "name": "surface/atmospheric boundary physics",
+          "status": "PARTIAL",
+          "implementation_authority": "docs/architecture/migration-slices.md#M5; current production ownership is described by docs/status-a/CURRENT_ARCHITECTURE.md and integration/audits/production_physics_application_envelope_gap_register.json",
+          "source_paths": [
+            "src/process/mod_restricted_surface_evaporation.f90",
+            "src/process/mod_snow_process.f90",
+            "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90"
+          ],
+          "test_paths": [
+            "tests/qualification",
+            "tests/fwof",
+            "tests/fgc"
+          ],
+          "evidence_paths": [
+            "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+            "integration/f-app/F-APP05_ADMISSION_READY.json"
+          ],
+          "dependency_surface": [
+            "SWAP4.3.1 source identity and option selector",
+            "process parameter/forcing semantics and units",
+            "committed/candidate/scratch ownership",
+            "water and solute mass ledgers as applicable",
+            "retry/restart contracts",
+            "solver interface dependencies"
+          ],
+          "criteria": [
+            {
+              "id": "M5-E1",
+              "text": "reference physics is retained or intentional changes are separately qualified",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E2",
+              "text": "inputs/outputs have physical semantics and documented units",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E3",
+              "text": "no direct dependency on solver implementation arrays remains",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E4",
+              "text": "optional state exists only for columns/templates where the process is active",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E5",
+              "text": "process contribution to water balance is explicit",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E6",
+              "text": "disabling/enabling numerical execution policy does not alter the physical configuration",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E7",
+              "text": "family-specific regression cases pass against reference mode.",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            }
+          ]
+        },
+        {
+          "name": "drainage and irrigation",
+          "status": "PARTIAL",
+          "implementation_authority": "docs/architecture/migration-slices.md#M5; current production ownership is described by docs/status-a/CURRENT_ARCHITECTURE.md and integration/audits/production_physics_application_envelope_gap_register.json",
+          "source_paths": [
+            "src/process/mod_drainage_process.f90",
+            "src/process/mod_irrigation_process.f90",
+            "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+          ],
+          "test_paths": [
+            "tests/qualification",
+            "tests/fgc"
+          ],
+          "evidence_paths": [
+            "integration/audits/production_physics_application_envelope_gap_register.json",
+            "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+          ],
+          "dependency_surface": [
+            "SWAP4.3.1 source identity and option selector",
+            "process parameter/forcing semantics and units",
+            "committed/candidate/scratch ownership",
+            "water and solute mass ledgers as applicable",
+            "retry/restart contracts",
+            "solver interface dependencies"
+          ],
+          "criteria": [
+            {
+              "id": "M5-E1",
+              "text": "reference physics is retained or intentional changes are separately qualified",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E2",
+              "text": "inputs/outputs have physical semantics and documented units",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E3",
+              "text": "no direct dependency on solver implementation arrays remains",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E4",
+              "text": "optional state exists only for columns/templates where the process is active",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E5",
+              "text": "process contribution to water balance is explicit",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E6",
+              "text": "disabling/enabling numerical execution policy does not alter the physical configuration",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E7",
+              "text": "family-specific regression cases pass against reference mode.",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            }
+          ]
+        },
+        {
+          "name": "crop, ET and root uptake",
+          "status": "PARTIAL",
+          "implementation_authority": "docs/architecture/migration-slices.md#M5; current production ownership is described by docs/status-a/CURRENT_ARCHITECTURE.md and integration/audits/production_physics_application_envelope_gap_register.json",
+          "source_paths": [
+            "src/crop",
+            "src/process/mod_root_water_uptake_process.f90",
+            "src/runtime/mod_fmr_wofost81_crop_transaction.f90"
+          ],
+          "test_paths": [
+            "tests/fwof",
+            "tests/qualification"
+          ],
+          "evidence_paths": [
+            "docs/status-a/CURRENT_STATUS.md",
+            "integration/audits/production_physics_application_envelope_gap_register.json"
+          ],
+          "dependency_surface": [
+            "SWAP4.3.1 source identity and option selector",
+            "process parameter/forcing semantics and units",
+            "committed/candidate/scratch ownership",
+            "water and solute mass ledgers as applicable",
+            "retry/restart contracts",
+            "solver interface dependencies"
+          ],
+          "criteria": [
+            {
+              "id": "M5-E1",
+              "text": "reference physics is retained or intentional changes are separately qualified",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E2",
+              "text": "inputs/outputs have physical semantics and documented units",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E3",
+              "text": "no direct dependency on solver implementation arrays remains",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E4",
+              "text": "optional state exists only for columns/templates where the process is active",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E5",
+              "text": "process contribution to water balance is explicit",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E6",
+              "text": "disabling/enabling numerical execution policy does not alter the physical configuration",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E7",
+              "text": "family-specific regression cases pass against reference mode.",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            }
+          ]
+        },
+        {
+          "name": "macropores and optional flow physics",
+          "status": "BLOCKED",
+          "implementation_authority": "docs/architecture/migration-slices.md#M5; current production ownership is described by docs/status-a/CURRENT_ARCHITECTURE.md and integration/audits/production_physics_application_envelope_gap_register.json",
+          "source_paths": [
+            "reference/swap-4.3.1/snapshots/B1.11.yml",
+            "src/legacy/b1_10_port",
+            "src/adapter/mod_b1_10_process_checkpoint.f90"
+          ],
+          "test_paths": [
+            "tests/qualification",
+            "tests/fapp"
+          ],
+          "evidence_paths": [
+            "integration/audits/PPA_WU05A_STATUS.json",
+            "integration/audits/production_physics_application_envelope_gap_register.json"
+          ],
+          "dependency_surface": [
+            "SWAP4.3.1 source identity and option selector",
+            "process parameter/forcing semantics and units",
+            "committed/candidate/scratch ownership",
+            "water and solute mass ledgers as applicable",
+            "retry/restart contracts",
+            "solver interface dependencies"
+          ],
+          "criteria": [
+            {
+              "id": "M5-E1",
+              "text": "reference physics is retained or intentional changes are separately qualified",
+              "status": "BLOCKED",
+              "gap": "Owner authority explicitly holds production implementation pending exact source materialization and complete mutable-state/mass census.",
+              "next_bounded_action": "Preserve the blocker; continue another non-blocked M5 family. Resume only through the named PPA-WU05-A1 source/materialization authority."
+            },
+            {
+              "id": "M5-E2",
+              "text": "inputs/outputs have physical semantics and documented units",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E3",
+              "text": "no direct dependency on solver implementation arrays remains",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E4",
+              "text": "optional state exists only for columns/templates where the process is active",
+              "status": "BLOCKED",
+              "gap": "Owner authority explicitly holds production implementation pending exact source materialization and complete mutable-state/mass census.",
+              "next_bounded_action": "Preserve the blocker; continue another non-blocked M5 family. Resume only through the named PPA-WU05-A1 source/materialization authority."
+            },
+            {
+              "id": "M5-E5",
+              "text": "process contribution to water balance is explicit",
+              "status": "BLOCKED",
+              "gap": "Owner authority explicitly holds production implementation pending exact source materialization and complete mutable-state/mass census.",
+              "next_bounded_action": "Preserve the blocker; continue another non-blocked M5 family. Resume only through the named PPA-WU05-A1 source/materialization authority."
+            },
+            {
+              "id": "M5-E6",
+              "text": "disabling/enabling numerical execution policy does not alter the physical configuration",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E7",
+              "text": "family-specific regression cases pass against reference mode.",
+              "status": "BLOCKED",
+              "gap": "Owner authority explicitly holds production implementation pending exact source materialization and complete mutable-state/mass census.",
+              "next_bounded_action": "Preserve the blocker; continue another non-blocked M5 family. Resume only through the named PPA-WU05-A1 source/materialization authority."
+            }
+          ]
+        },
+        {
+          "name": "snow/frost/thermal processes",
+          "status": "PARTIAL",
+          "implementation_authority": "docs/architecture/migration-slices.md#M5; current production ownership is described by docs/status-a/CURRENT_ARCHITECTURE.md and integration/audits/production_physics_application_envelope_gap_register.json",
+          "source_paths": [
+            "src/process/mod_snow_process.f90",
+            "src/process/mod_external_liquid_water_temperature.f90",
+            "src/process/mod_liquid_water_sensible_enthalpy.f90"
+          ],
+          "test_paths": [
+            "tests/qualification",
+            "tests/fgc"
+          ],
+          "evidence_paths": [
+            "docs/status-a/CURRENT_STATUS.md",
+            "docs/status-a/FUTURE_SCOPE.md",
+            "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+          ],
+          "dependency_surface": [
+            "SWAP4.3.1 source identity and option selector",
+            "process parameter/forcing semantics and units",
+            "committed/candidate/scratch ownership",
+            "water and solute mass ledgers as applicable",
+            "retry/restart contracts",
+            "solver interface dependencies"
+          ],
+          "criteria": [
+            {
+              "id": "M5-E1",
+              "text": "reference physics is retained or intentional changes are separately qualified",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E2",
+              "text": "inputs/outputs have physical semantics and documented units",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E3",
+              "text": "no direct dependency on solver implementation arrays remains",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E4",
+              "text": "optional state exists only for columns/templates where the process is active",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E5",
+              "text": "process contribution to water balance is explicit",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E6",
+              "text": "disabling/enabling numerical execution policy does not alter the physical configuration",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E7",
+              "text": "family-specific regression cases pass against reference mode.",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            }
+          ]
+        },
+        {
+          "name": "solute/nutrient/WOFOST-soil interactions.",
+          "status": "PARTIAL",
+          "implementation_authority": "docs/architecture/migration-slices.md#M5; current production ownership is described by docs/status-a/CURRENT_ARCHITECTURE.md and integration/audits/production_physics_application_envelope_gap_register.json",
+          "source_paths": [
+            "reference/swap-4.3.1/snapshots/B1.11.yml",
+            "src/adapter/mod_b1_10_process_checkpoint.f90",
+            "src/crop/mod_wofost81_nitrogen.f90"
+          ],
+          "test_paths": [
+            "tests/qualification",
+            "tests/fwof",
+            "tests/fapp"
+          ],
+          "evidence_paths": [
+            "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
+            "integration/audits/production_physics_application_envelope_gap_register.json"
+          ],
+          "dependency_surface": [
+            "SWAP4.3.1 source identity and option selector",
+            "process parameter/forcing semantics and units",
+            "committed/candidate/scratch ownership",
+            "water and solute mass ledgers as applicable",
+            "retry/restart contracts",
+            "solver interface dependencies"
+          ],
+          "criteria": [
+            {
+              "id": "M5-E1",
+              "text": "reference physics is retained or intentional changes are separately qualified",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E2",
+              "text": "inputs/outputs have physical semantics and documented units",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E3",
+              "text": "no direct dependency on solver implementation arrays remains",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E4",
+              "text": "optional state exists only for columns/templates where the process is active",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E5",
+              "text": "process contribution to water balance is explicit",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            },
+            {
+              "id": "M5-E6",
+              "text": "disabling/enabling numerical execution policy does not alter the physical configuration",
+              "status": "CLOSED",
+              "gap": null,
+              "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+            },
+            {
+              "id": "M5-E7",
+              "text": "family-specific regression cases pass against reference mode.",
+              "status": "PARTIAL",
+              "gap": "The current admitted process contract covers only a bounded family/profile; additional retained SWAP4 behaviour and family-level evidence remain unqualified.",
+              "next_bounded_action": "Select the next non-blocked, source-authorized process sub-slice from the canonical PPA gap register; require typed-owner, rollback/restart and mass gates before production admission."
+            }
+          ]
+        }
+      ],
+      "remaining_gap": "No family-wide claim is inferred from isolated equations or a restricted Status-A process path. PPA-WU05-A remains owner-blocked for production; SWAP4 solute and other process behavior are only partially migrated/qualified.",
+      "next_bounded_action": "Use the canonical PPA gap register to select the next non-blocked SWAP4 process slice after preserving the WU05-A/B/D owner blocks."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M6 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/runtime/mod_groundwater_coupled_restart.f90",
+        "src/runtime/mod_groundwater_predictor_corrector_window.f90",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+        "src/adapter/fmr_groundwater_application_runtime.py",
+        "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+      ],
+      "test_paths": [
+        "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CLOSEOUT_STATUS.json",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+        "tests/fgc/run_fgc_fixed_interface_closeout.sh",
+        "tests/fgc",
+        "tests/fvq"
+      ],
+      "evidence_paths": [
+        "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CLOSEOUT_STATUS.json",
+        "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+        "tests/fgc/run_fgc_fixed_interface_closeout.sh",
+        "tests/fgc",
+        "tests/fvq"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M6",
+      "status": "PARTIAL",
+      "title": "Coupling kernel contract",
+      "criteria": [
+        {
+          "id": "M6-01",
+          "text": "predictor and corrector both start physically from the correct committed component state",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-02",
+          "text": "rejected coupled windows roll back every participating physical component consistently",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-03",
+          "text": "variable coupling windows work without a midnight/day assumption",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-04",
+          "text": "head residual and flux residual are separately diagnosed",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-05",
+          "text": "tile fractions and area-weighted aggregation are owned by the coupler, not SWAP",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-06",
+          "text": "interface mass accounting closes exactly within the defined numerical tolerance",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-07",
+          "text": "response tangents used in production are qualified against finite-difference references",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M6-08",
+          "text": "the normal production path demonstrates approximately predictor + corrector cost, with extra solves only where nonlinearity requires them",
+          "status": "PARTIAL",
+          "gap": "The fixed-interface coupling profile is canonically closed, but this criterion remains only partially evidenced for the full migration-slice envelope.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M6-09",
+          "text": "any deep-vadose component preserves storage during transition between coupling modes.",
+          "status": "PARTIAL",
+          "gap": "The fixed-interface profile does not establish whether any retained SWAP4 deep-vadose mode transition applies; no whole-migration source census was found to justify NOT_APPLICABLE.",
+          "next_bounded_action": "Check the exact SWAP4 deep-vadose modes and current owner contract before claiming closure; if a transition is present, preserve storage across the mode change and qualify it."
+        }
+      ],
+      "remaining_gap": "Canonical fixed-interface F-GC contract is closed; normal solve-cost evidence is not recorded as a complete exit-gate measure, and product driver integration is a separate externally blocked capability.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M7 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/runtime/mod_groundwater_multiswap_coupler.f90",
+        "src/runtime/mod_groundwater_multiswap_transaction.f90",
+        "src/runtime/mod_groundwater_multiswap_topology.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90"
+      ],
+      "test_paths": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "src/runtime/mod_groundwater_multiswap_coupler.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "tests/qualification/fvq87"
+      ],
+      "evidence_paths": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "src/runtime/mod_groundwater_multiswap_coupler.f90",
+        "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "tests/qualification/fvq87"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M7",
+      "status": "PARTIAL",
+      "title": "MultiSWAP runtime and scalable storage",
+      "criteria": [
+        {
+          "id": "M7-01",
+          "text": "batch results are order independent within qualification tolerance",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        },
+        {
+          "id": "M7-02",
+          "text": "worker scratch reuse shows no cross-column contamination",
+          "status": "PARTIAL",
+          "gap": "The admitted serialized execution and aggregate-mass evidence do not by themselves demonstrate reusable worker scratch across a representative cross-column order/reuse matrix.",
+          "next_bounded_action": "Add a bounded worker-reuse/cross-column contamination test if this criterion is needed for the M7 exit; preserve serial order and committed-state equivalence."
+        },
+        {
+          "id": "M7-03",
+          "text": "inactive optional functionality does not allocate equivalent persistent memory or compute on every column",
+          "status": "PARTIAL",
+          "gap": "Current evidence establishes the admitted serialized orchestration but not the option-by-option allocation/compute behavior of inactive optional modules across a batch.",
+          "next_bounded_action": "Inspect optional-state allocators and add a read-only active/inactive allocation census; do not introduce persistent state for inactive features."
+        },
+        {
+          "id": "M7-04",
+          "text": "representative large-batch memory footprint is measured",
+          "status": "PARTIAL",
+          "gap": "No current canonical evidence was located for representative large-batch memory on the admitted serialized path. Concurrent MultiSWAP remains future scope, but the migration-slice measurement criterion itself has not been explicitly superseded.",
+          "next_bounded_action": "Run a bounded representative serialized-batch memory measurement; record input size, optional modules, peak memory and evidence without adding a performance optimization."
+        },
+        {
+          "id": "M7-05",
+          "text": "throughput and tail-cost behaviour are measured, including difficult columns",
+          "status": "PARTIAL",
+          "gap": "No current canonical evidence was located for throughput and tail-cost across a representative batch including difficult columns. This is an evidence gap, not authorization for speculative optimization or concurrency.",
+          "next_bounded_action": "Measure the existing serialized path on a preregistered representative batch, including difficult cases; report throughput and tail-cost only, without changing physics or numerical policy."
+        },
+        {
+          "id": "M7-06",
+          "text": "fallback/relaxed routes are bounded, visible and mass conservative",
+          "status": "PARTIAL",
+          "gap": "Fallback behavior is qualified for admitted capabilities but no single M7 evidence record covers every retained batch route and its mass accounting.",
+          "next_bounded_action": "Link each retained batch fallback to its owner-specific transaction/mass qualification; add only missing route coverage."
+        },
+        {
+          "id": "M7-07",
+          "text": "standalone execution uses the same kernel contracts rather than a separate physics implementation.",
+          "status": "PARTIAL",
+          "gap": "Current admitted standalone execution evidence is bounded and does not yet establish every retained standalone profile uses the same typed/kernel contract as the transactional application route.",
+          "next_bounded_action": "Map each retained standalone profile to its kernel contract and preserve the existing restricted profile evidence; do not broaden the public API."
+        }
+      ],
+      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for worker reuse, inactive-option resource behavior, representative memory, throughput/tail cost, route coverage, and all standalone profiles. These are measurements/composition checks, not authorization for concurrent execution or speculative optimization.",
+      "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
+    },
+    {
+      "implementation_authority": "docs/architecture/migration-slices.md#M8 together with the current canonical architecture/owning source paths",
+      "qualification_authority": [
+        "docs/status-a/CURRENT_STATUS.md",
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md"
+      ],
+      "source_paths": [
+        "src/legacy/",
+        "src/runtime/",
+        "src/adapter/"
+      ],
+      "test_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "src/legacy/b1_10_port",
+        "src/runtime",
+        "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+      ],
+      "evidence_paths": [
+        "docs/status-a/CURRENT_ARCHITECTURE.md",
+        "docs/status-a/TRACEABILITY.md",
+        "src/legacy/b1_10_port",
+        "src/runtime",
+        "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+      ],
+      "dependency_surface": [
+        "reference/source identity and chosen qualification set",
+        "typed inputs and physical process contracts",
+        "committed/candidate/scratch state ownership",
+        "transaction, retry, restart and accepted mass publication",
+        "shared solver/coupling interfaces where applicable"
+      ],
+      "id": "M8",
+      "status": "OPEN",
+      "title": "Legacy retirement",
+      "criteria": [
+        {
+          "id": "M8-01",
+          "text": "every retained behaviour has an identified target owner",
+          "status": "PARTIAL",
+          "gap": "The authoritative evidence is capability-bounded and does not establish this complete migration criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M8-02",
+          "text": "all dependent qualification suites pass without using the legacy bypass",
+          "status": "OPEN",
+          "gap": "The authoritative evidence is capability-bounded and does not establish this complete migration criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M8-03",
+          "text": "water balance remains closed",
+          "status": "PARTIAL",
+          "gap": "The authoritative evidence is capability-bounded and does not establish this complete migration criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M8-04",
+          "text": "no required diagnostic or fallback path has been lost",
+          "status": "PARTIAL",
+          "gap": "The authoritative evidence is capability-bounded and does not establish this complete migration criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M8-05",
+          "text": "the implementation-status map reflects the new evidence",
+          "status": "PARTIAL",
+          "gap": "The authoritative evidence is capability-bounded and does not establish this complete migration criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M8-06",
+          "text": "the affected invariant review is recorded",
+          "status": "PARTIAL",
+          "gap": "The authoritative evidence is capability-bounded and does not establish this complete migration criterion.",
+          "next_bounded_action": "Derive a bounded successor against the owning authority and requalify only the affected dependency surface."
+        },
+        {
+          "id": "M8-07",
+          "text": "removal does not eliminate the reference mode required to qualify future work.",
+          "status": "CLOSED",
+          "gap": null,
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the named canonical evidence."
+        }
+      ],
+      "remaining_gap": "M8 cannot close while required SWAP4 behavior is unmigrated and legacy/global bypasses remain in the current route; maintain reference mode.",
+      "next_bounded_action": "Defer retirement until all applicable M5 process-family gates are qualified and owners are mapped."
+    }
+  ],
+  "aggregate_status": "OPEN",
+  "closure_verdict": "SWAP4_TO_SWAP5_MIGRATION_CLOSED is NOT established. M0/M1/M2/M5/M6 remain partial, M8 open, and several M5 subfamilies are owner-blocked.",
+  "blockers": [
+    {
+      "id": "PPA-WU05-A1",
+      "scope": "M5 macropores",
+      "status": "BLOCKED",
+      "reason": "Exact B1.11 source materialization and complete mutable-field/mass census required before production implementation.",
+      "authority": "integration/audits/PPA_WU05A_STATUS.json"
+    },
+    {
+      "id": "PPA-WU05-B",
+      "scope": "M5 frost",
+      "status": "BLOCKED",
+      "reason": "Owner authority remains blocked; see current project-control and PPA gap register.",
+      "authority": "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+    },
+    {
+      "id": "PPA-WU05-D",
+      "scope": "M5 compensated uptake",
+      "status": "BLOCKED",
+      "reason": "Must refresh against later root-hydraulic authority before implementation.",
+      "authority": "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+    }
+  ],
+  "next_action": "After ledger persistence, identify the highest-priority non-blocked PPA migration slice from the canonical PPA gap register, preregister its source, state owner, rollback/restart and mass gates, then implement and qualify it. Do not extend the local source-oracle chain as if it were production admission.",
+    "recovery_point": "canonical=a2d99ddd149ffaa422d9c422f96bd66e92c8555d; local branch checkpoint=c9afd7b678547cbf4de4b6101e8ded80c7cfcca4; untracked user artifacts mod_tcs1_dcs2_sprinkling_irrigation_process.mod and tools/vq/__pycache__/ are preserved."
+}
