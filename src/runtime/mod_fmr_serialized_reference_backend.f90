@@ -1371,8 +1371,7 @@ contains
         ! requested generated-provider capability from typed immutable inputs
         ! only; table materialization happens afterwards in configure_parameters.
         ! advance() remains fail-closed if materialization did not become ready.
-        ok = ok .and. .not. parameters%ksatexm_extension_active .and. &
-             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
+        ok = ok .and. (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%drainage_response_active .and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
