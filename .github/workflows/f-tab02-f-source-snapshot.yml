@@ -1,0 +1,32 @@
+name: F-TAB02-F source snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-tab02-generated-k0-provider
+    paths:
+      - '.github/workflows/f-tab02-f-source-snapshot.yml'
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record source authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ftab02-f-source
+          cp -a src ftab02-f-source/src
+          cp -a tests/m1 ftab02-f-source/tests-m1
+          cp -a integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json ftab02-f-source/
+          cp -a integration/f-tab/F-TAB02_F_PREREGISTRATION.json ftab02-f-source/
+          cp -a integration/f-tab/F-TAB02_F0_QUALIFICATION.json ftab02-f-source/
+          cp -a integration/f-tab/F-TAB02_G_QUALIFICATION.json ftab02-f-source/
+          git rev-parse HEAD > ftab02-f-source/PRODUCTION_HEAD.txt
+          find ftab02-f-source -type f -print0 | sort -z | xargs -0 sha256sum > ftab02-f-source/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-f-source-snapshot
+          path: ftab02-f-source
