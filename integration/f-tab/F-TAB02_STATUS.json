@@ -23,7 +23,7 @@
     "behind_by": 0,
     "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
   },
-  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__FINAL_APPLICATION_GATE_BLOCKED_EXTERNAL",
+  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__FINAL_APPLICATION_GATE_BLOCKED_SCOPE_KSATEXM",
   "slices": {
     "A": {
       "status": "PASS",
@@ -49,7 +49,7 @@
       "confirmation_replay_run": 35824244178
     },
     "F": {
-      "status": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE",
+      "status": "BLOCKED_SCOPE_EXACT_M1_PROFILE_REQUIRES_KSATEXM_OUTSIDE_FTAB02",
       "record": "integration/f-tab/F-TAB02_F_BLOCKER.json"
     }
   },
@@ -115,11 +115,16 @@
     "authority": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
     "required_archive_name": "SWAP_4.3.1.zip",
     "required_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "exact_materializable_bytes_available": false,
-    "latest_project_library_check": "2026-09-23",
-    "available_zip_search_result": "No exact SWAP_4.3.1.zip authority found; audit/evidence archives and generated TAB-HYD archives are not authorized substitutes.",
+    "exact_materializable_bytes_available": true,
+    "exact_asset_verified_date": "2026-09-23",
+    "exact_asset_size_bytes": 8959314,
+    "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "new_blocker": "The exact M1-C3 Hupsel profile declares KSATEXM=10*KSATFIT in both hydraulic layers and therefore enables F-SI39; F-TAB02-A intentionally rejects generated-state construction when KSATEXM is enabled.",
+    "executable_probe_status": 3,
+    "executable_probe_symbol": "F_TAB02_STATE_UNSUPPORTED_KSATEXM",
     "substitutions_authorized": false,
-    "resume_condition": "Exact authorized archive bytes become materializable, then execute F-TAB02-F."
+    "resume_condition": "Separate authority is required to research/qualify generated representation of F-SI39 KSATEXM or to establish another exact whole-application gate inside the already qualified non-KSATEXM envelope."
   },
   "nonclaims": [
     "canonical production admission",
@@ -127,6 +132,7 @@
     "generic SWSOPHY=1 production",
     "arbitrary user-supplied tabulated hydraulics",
     "SWKIMPL=1 production",
-    "portable whole-SWAP or MultiSWAP speedup"
+    "portable whole-SWAP or MultiSWAP speedup",
+    "generated-provider support for F-SI39 KSATEXM"
   ]
 }
