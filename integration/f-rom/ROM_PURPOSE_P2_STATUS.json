@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom-purpose.p2.status.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "phase": "P2_REFERENCE_IMPLEMENTED_NOT_YET_EXECUTED",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "candidate_response_authorized": false,
+  "candidate_response_generated": false,
+  "inherited_groundwater_reference_status": "P1_GW_LB_B01_B14_QUALIFIED_BUT_NOT_STANDALONE_CANDIDATE_AUTHORITY",
+  "fresh_surface_reference_status": "PENDING",
+  "checkpoint_commit": "7b2248eb798fb86fbf5813535f750e58562b7ded",
+  "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "authority_paths": [
+    "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json"
+  ],
+  "relevant_paths": [
+    "tests/rom/materialize_rom_purpose_p2_surface_reference.py",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py",
+    "tests/rom/analyze_rom_purpose_p2_reference.py",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90"
+  ],
+  "dependency_surface": [
+    "src/",
+    "reference/",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "tests/rom/compile_f_rom0_fortran_closure.py",
+    "tests/rom/materialize_f_rom0_headcalc_stubs.py",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90"
+  ],
+  "scientific_firewall": {
+    "P1_failure_overridden": false,
+    "P1_surface_histories_reused": false,
+    "any_P2_reference_response_seen": false,
+    "any_layer_rom_candidate_response_seen": false,
+    "representation_retuned": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "blockers": [
+    "P2_FRESH_SURFACE_REFERENCE_NOT_YET_EXECUTED"
+  ],
+  "next_action": "BIND_AND_EXECUTE_P2_FRESH_SURFACE_REFERENCE",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json"
+}
