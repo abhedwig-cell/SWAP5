@@ -35,7 +35,7 @@ def main():
           r"    real\(real64\) :: total,upper,lower\n    integer :: bin,lo_node,hi_node,nodes_per_bin\n    real\(real64\) :: bin_theta\n",
           "    real(real64) :: total,upper,lower\n    integer :: node\n","gw declarations")
         text=replace_one(text,
-          r"^      call require\(mod\(numnod,16\)==0,'LAREGW1 ROMPURP_P1_GW profile geometry divisible by 16'\)\n      if\(mod\(step,OUTPUT_FACTOR\)==0\)then.*?^      end if",
+          r"^      call require\(mod\(numnod,16\)==0,[^\n]*profile geometry divisible by 16[^\n]*\)\n      if\(mod\(step,OUTPUT_FACTOR\)==0\)then.*?^      end if",
           """      if(mod(step,OUTPUT_FACTOR)==0)then
         do node=1,numnod
           write(*,'(*(g0))') 'ROMPURP_P1_COARSE_NODE|PURPOSE=gw|HISTORY=',trim(history_label(ih)), &
