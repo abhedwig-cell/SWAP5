@@ -119,7 +119,7 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Continue PPA-WU05-A3 against exact B1.11 MACROGEOM: identify a bounded relative-volume integration case and compare compartment partition/storage results to the reconstructed source while keeping MACROGEOM separate from runtime state ownership. A1 census is complete; A2 remains isolated; no production binding until accepted-step mass, retry and restart gates pass.",
+  "next_safe_step": "Continue PPA-WU05-A3 with MACROGEOM's per-compartment aggregation of RelVlMb/RelVlIc into PpIcCp, static volume and matrix-area remainder. Keep it a pure aggregation oracle; domain partition/lumping and all production owner, mass, retry and restart gates remain separate.",
   "recovery_point": "latest committed campaign checkpoint acc376e6eb5144128245a4d678ce41d1d8481f35 (PPA-SOL-AGE-INITIAL-STORAGE initial profile storage/samini oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
@@ -139,6 +139,7 @@
     "PPA-WU05-A3-SHRINKPAR-TASK4: 100000 O0/O2 bitwise peat typical-point root iterations; guarded invalid domains checked.",
     "PPA-WU05-A3-POLYGON-DIAMETER: 100000 O0/O2 bitwise geometry vectors across all density paths and fixed-diameter fallback.",
     "PPA-WU05-A3-DEFINECOMPART: exact-source-ordered deterministic cases for interior breakpoint split/node mapping, near-depth merge, existing-grid alignment and undersized-input fail-closed at O0/O2; compiler warnings-as-errors, bounds/FPE traps, identical transcripts.",
+    "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT: hand-computable main-bypass, static cutoff, IC surface and both SPoint power-branch segment contributions plus invalid exponent; O0/O2 output identity with bounds/FPE traps.",
     "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked.",
     "PPA-IRR-SURFACE-SOLUTE-EXCHANGE: 100000 O0/O2 bitwise pond concentration, matrix top-flux, and residual-store comparisons; strict gate and overflow rejection checked.",
     "PPA-IRR-BOTTOM-SOLUTE-FLUX: 100000 O0/O2 bitwise bottom water-flux sign and selected-concentration comparisons; invalid/overflow rejection checked.",
@@ -182,6 +183,21 @@
       "PPA_WU05A3_DEFINECOMPART_O0_O2_IDENTITY=PASS"
     ],
     "compiler_gates": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow"],
+    "production_admission": "NONE"
+  },
+  "latest_macro_volume_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT",
+    "source": "B1.11 macropore.f90 MACROGEOM section B relative-volume Alfa/Beta and static cutoff equations",
+    "test": "Analytic deterministic segment cases at O0/O2; not full MACROGEOM composition",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_VOLUME_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_MB_DOMAIN_STATIC_CUTOFF=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_SURFACE_LINEAR_BRANCH=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_SPOINT_POWER_BRANCHES=PASS",
+      "PPA_WU05A3_MACROGEOM_BELOW_STATIC_DEPTH_ZERO=PASS",
+      "PPA_WU05A3_MACROGEOM_INVALID_EXPONENT_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_VOLUME_O0_O2_IDENTITY=PASS"
+    ],
     "production_admission": "NONE"
   }
 }

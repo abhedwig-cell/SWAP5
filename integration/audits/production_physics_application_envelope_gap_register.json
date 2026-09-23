@@ -2008,6 +2008,13 @@
       "effect": "Breakpoint merging, existing-grid alignment, temporary interval insertion and original-node mapping have deterministic isolated cases; this does not qualify MACROGEOM relative-volume integration, runtime ownership or accepted mass/retry/restart."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT",
+      "state": "ISOLATED_MACROGEOM_SEGMENT_EQUATION_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROGEOM_VOLUME_STATUS.json; preregistered against B1.11 macropore.f90 MACROGEOM source hash",
+      "production_delta": "NONE",
+      "effect": "Selected Alfa/Beta relative-volume segment equations and static-depth cutoffs have hand-computable tests. Full MACROGEOM aggregation, domain partition/lumping and production integration remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,

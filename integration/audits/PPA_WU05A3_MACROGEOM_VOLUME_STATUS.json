@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_volume.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SEGMENT_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@daf5ceeee47517954c48af3e539f7ab87911739a",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_VOLUME_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_volume.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_volume_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_volume_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["MB segment and static cutoff", "IC surface linear term", "upper/lower SPoint power branches", "below-static-depth zero", "invalid exponent fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; segment equation only; full MACROGEOM aggregation/domain partition and all runtime/mass/retry/restart integration remain open",
+  "next_action": "Continue A3 with the next bounded MACROGEOM calculation (PpIcCp aggregation or domain partition) only after tracing its dependencies and source branch boundaries.",
+  "blockers": []
+}
