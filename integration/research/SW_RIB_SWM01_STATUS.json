@@ -4,7 +4,7 @@
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "status": "RESEARCH_CLOSED__PRODUCTION_ADMISSION_PENDING",
-  "checkpoint_commit": "b2bea3efdf4221968cf09d7c22efa72502046608",
+  "checkpoint_commit": "7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
   "implementation_status": "Q1A_R3L_PASS__Q1B_PASS__Q2A_PASS__Q2B1_PASS__Q2B2_DECIDED__Q1G_CHARACTERIZED__Q1H_PASS__Q3A_PASS__Q3B_PASS__Q4A_PASS__Q4B_PASS",
   "implemented": true,
   "persisted": true,
@@ -12,7 +12,7 @@
   "qualified": true,
   "production_admission": false,
   "retirement_authority": false,
-  "last_reconciled_head": "b2bea3efdf4221968cf09d7c22efa72502046608",
+  "last_reconciled_head": "7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "owned_surface": [
     "legacy surfacewater.f90 responsibility decomposition",
@@ -168,12 +168,18 @@
     }
   },
   "next_action": "Open a separate production-admission work unit for the Ribasim-coupled application profile. Enforce owner XOR, bind accepted external surface-water heads to the Q4B-qualified signed exchange variant, freeze a storage-geometry representation/epsilon, and qualify end-to-end restart/retry/mass behavior. Do not reopen SW-RIB-SWM01 research unless the intended application requires exact nonlinear SWQHR1 or another excluded legacy seam.",
-  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@b2bea3efdf4221968cf09d7c22efa72502046608",
+  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
   "blockers": [
     "Production admission of the Ribasim-coupled application profile is not yet performed.",
     "Whole-file surfacewater.f90 deletion remains unauthorized until production mapping/admission proves no configured retained responsibility is lost.",
     "Exact nonlinear SWQHR1 numerical parity remains outside the qualified coupled profile unless separately required and qualified.",
     "Production must choose and freeze an accepted Q1H storage-geometry representation/epsilon rather than treating direct STTAB mapping as exact.",
     "Pinned Ribasim model-metadata/core-version warning remains a provenance issue to resolve before production admission."
+  ],
+  "closeout_commit": "7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
+  "closeout_pr": 588,
+  "notes": [
+    "Research closeout evidence is frozen independently of later redundant CI replays.",
+    "Latest branch CI replays do not broaden the qualified envelope; prior persisted result records remain the scientific authority."
   ]
 }
