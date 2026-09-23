@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.sw_rib_swm01.rating_representation_gap.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "status": "OPEN_REPRESENTATION_QUALIFICATION",
+  "legacy_authority": {
+    "SWQHR1": "Q(h) = ALPHAW * max(h-HBWEIR,0)^BETAW with admitted legacy parameter range including nonlinear BETAW values",
+    "SWQHR2": "direct tabular HHTAB/QHTAB relation with a separate legacy HBWEIR threshold seam already held by F-PM08D4/F-PM08D5"
+  },
+  "pinned_ribasim_authority": {
+    "sha": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "TabulatedRatingCurve": "lookup table from level to flow rate with linear interpolation between points",
+    "analytic_generic_alpha_beta_weir_found": false,
+    "note": "ManningResistance is analytical but represents a different hydraulic law and is not treated as an equivalent generic SWAP alpha/beta weir."
+  },
+  "consequence": {
+    "Q1A_scope": "BETAW=1 only; the three-point Ribasim table is exactly linear on the tested positive-head interval.",
+    "forbidden_generalization": "A Q1A pass does not establish general SWQHR1 replacement for nonlinear BETAW.",
+    "SWQHR2_mapping": "Direct tabular Q(h) is structurally closer to Ribasim TabulatedRatingCurve, but legacy HBWEIR threshold semantics must not override the direct Q(h) table without adjudication."
+  },
+  "next_required_test": {
+    "id": "SW-RIB-SWM01-Q1C",
+    "purpose": "Quantify representation error when nonlinear SWAP SWQHR1 power-law curves are converted to Ribasim tabulated rating curves.",
+    "candidate_exponents": [
+      0.5,
+      1.5,
+      2,
+      3
+    ],
+    "required_principle": "Freeze knot-generation rule and error envelope before product simulation; do not tune knots per observed trajectory.",
+    "acceptance_axes": [
+      "pointwise Q(h) representation error over declared head domain",
+      "integrated discharge error",
+      "surface-water level/storage trajectory error",
+      "mass closure"
+    ]
+  },
+  "retirement_effect": "General fixed-weir retirement in external-Ribasim mode remains blocked until this representation gap is qualified or the application contract explicitly excludes nonlinear SWQHR1 curves.",
+  "production_admission": false
+}
