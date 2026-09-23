@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.sw_rib_adm01.g5b.g6_migration_amendment.v1",
+  "work_unit": "SW-RIB-ADM01-G5B/G6",
+  "date": "2026-09-23",
+  "classification": "PRODUCT_PROVENANCE_MIGRATION_BEFORE_PHYSICAL_RESULT",
+  "superseded_pin": {
+    "tag": "v2026.1.1",
+    "sha": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "reason": "Official tag has Python 2026.1.0 while core/workspace report 2026.1.1.",
+    "attempted_run": 35891947290,
+    "physical_results_observed": false,
+    "last_marker": "SW_RIB_ADM01_G5B_RIBASIM_PIN=PASS only"
+  },
+  "new_pin": {
+    "tag": "v2026.1.2",
+    "sha": "eae77424a4078497d40d8197237cb83e3aba6a83",
+    "python_version": "2026.1.2",
+    "core_version": "2026.1.2",
+    "workspace_version": "2026.1.2"
+  },
+  "unchanged": [
+    "E1/E2/E3 cases",
+    "one-day duration",
+    "1 m2 represented area",
+    "requested transfer volumes",
+    "all physical and mass tolerances",
+    "G5A production transaction module",
+    "origin ids/revisions and recomposition logic"
+  ],
+  "additional_g6_checks": [
+    "Python ribasim.__version__ == 2026.1.2",
+    "Julia Ribasim.RIBASIM_VERSION == 2026.1.2",
+    "generated TOML ribasim_version == 2026.1.2",
+    "no runtime Version mismatch warning"
+  ],
+  "anti_tuning": "No scientific parameter or tolerance changes are authorized by this amendment."
+}
