@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-RICHARDS-SCRATCH",
   "baseline": "ad09ede4a",
+  "recovery_point": "0fcc042be",
+  "persisted_test_result": "Richards scratch and restricted evaluator gates PASS at 0fcc042be O0/O2 with identical transcripts, runtime checks and floating-point traps",
   "implementation": "src/adapter/mod_ppa_wu05a4_richards_scratch_binding.f90",
   "scope": "Opt-in adapter applies restricted saturated-domain trial contributions to actual reference_richards_workspace_t residual and dfdh_main arrays; existing workspace type and production HeadCalc are unchanged",
   "contract": "Caller identifies expected positive workspace generation. Reject poisoned, released, generation-mismatched, wrong-node-count or malformed workspaces before candidate assembly; invalidate prior output transfer. Reuse atomic residual/diagonal assembly. Do not initialize, reset or resize a caller workspace implicitly.",
