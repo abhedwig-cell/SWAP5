@@ -1,0 +1,237 @@
+name: F-ROM-PURPOSE P2 Reference timeout repair
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p2-reference-timeout-repair
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Verify frozen repair authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile tests/rom/materialize_rom_purpose_p2_surface_reference.py tests/rom/analyze_rom_purpose_p2_reference.py
+          python3 - <<'PY'
+          import json, subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json'))
+          assert b['status']=='BOUND_PRE_RESPONSE_EXECUTION_ONLY_REPAIR'
+          assert b['authoritative_source_run']==35821534912
+          assert b['missing_jobs']==[
+            'p2full-B01-R1024_T32-o0-h1',
+            'p2full-B01-R1024_T32-o2-h1'
+          ]
+          assert b['scientific_change'] is False
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  missing_full:
+    needs: preflight
+    name: repair-B01-R1024_T32-o${{ matrix.opt }}-h1
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [0, 2]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Execute unchanged complete B01 R1024 S05 history
+        run: |
+          set -euo pipefail
+          opt="${{ matrix.opt }}"
+          source=tests/rom/rom_purpose_p1_surface_b01_source.f90
+          target=canonical/tests/rom/test_p2ref.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source "$source" --material B01 --temporal-factor 32             --output "$target" --manifest /tmp/manifest.json
+          stub="canonical/p2repair_o${opt}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes 1024 --dz-cm 0.15625
+          build="/tmp/p2repair_B01_R1024_T32_o${opt}_h1"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical --stub "p2repair_o${opt}_stubs.f90"             --target tests/rom/test_p2ref.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
+          mkdir -p evidence
+          LARE_DYN0A_CASE_FILTER=S05 "$build/rom0_test"             > "evidence/surface_B01_R1024_T32_o${opt}_h1.txt" 2>&1
+          test "$(grep -c '^LAREDYN0R_STATE|' "evidence/surface_B01_R1024_T32_o${opt}_h1.txt")" -eq 32768
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/surface_B01_R1024_T32_o${opt}_h1.txt")" -eq 16384
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2repair-full-B01-R1024_T32-o${{ matrix.opt }}-h1
+          path: evidence/
+          if-no-files-found: error
+
+  assemble_and_analyze:
+    needs: missing_full
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p2repair-full-*
+          path: /tmp/repair
+          merge-multiple: false
+      - name: Download authoritative completed artifacts from source run
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/original/full /tmp/original/s1 /tmp/original/s2 /tmp/original/s3 /tmp/original/s4
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2full-*' -D /tmp/original/full
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg1-*' -D /tmp/original/s1
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg2-*' -D /tmp/original/s2
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg3-*' -D /tmp/original/s3
+          gh run download 35821534912 --repo abhedwig-cell/SWAP5 -p 'p2seg4-*' -D /tmp/original/s4
+      - name: Assemble exact complete route set
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32; do
+              for opt in 0 2; do
+                out="routes/surface_${material}_${route}_o${opt}.txt"; : > "$out"
+                for i in 1 2 3 4; do
+                  if [[ "$material" == B01 && "$route" == R1024_T32 && "$i" == 1 ]]; then
+                    src="$(find /tmp/repair -type f -name "surface_B01_R1024_T32_o${opt}_h1.txt" -print -quit)"
+                  else
+                    src="$(find /tmp/original/full -type f -name "surface_${material}_${route}_o${opt}_h${i}.txt" -print -quit)"
+                  fi
+                  test -n "$src"
+                  cat "$src" >> "$out"
+                done
+              done
+            done
+            for route in R2048_T32 R2048_T16 R2048_T8; do
+              out0="routes/surface_${material}_${route}_o0.txt"; : > "$out0"
+              for i in 1 2 3 4; do
+                src="$(find /tmp/original/s1 -type f -path "*/p2seg1-${material}-${route}-h${i}/segment.txt" -print -quit)"
+                test -n "$src"; cat "$src" >> "$out0"
+                if [[ "$route" != "R2048_T8" ]]; then
+                  src="$(find /tmp/original/s2 -type f -path "*/p2seg2-${material}-${route}-h${i}/segment.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out0"
+                fi
+                if [[ "$route" == "R2048_T32" ]]; then
+                  src="$(find /tmp/original/s3 -type f -path "*/p2seg3-${material}-R2048_T32-h${i}/segment.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out0"
+                  src="$(find /tmp/original/s4 -type f -path "*/p2seg4-${material}-R2048_T32-h${i}/segment.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out0"
+                fi
+              done
+              cp "$out0" "routes/surface_${material}_${route}_o2.txt"
+            done
+            for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              cmp "routes/surface_${material}_${route}_o0.txt" "routes/surface_${material}_${route}_o2.txt"
+              case "$route" in *_T32) factor=32;; *_T16) factor=16;; *) factor=8;; esac
+              test "$(grep -c '^LAREDYN0R_STATE|' "routes/surface_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+              test "$(grep -c '^LAREDYN0R_PROFILE|' "routes/surface_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+            done
+          done
+          sha256sum routes/* > routes/sha256.txt
+      - name: Execute frozen P2 Reference analyzer
+        run: |
+          set -euo pipefail
+          mkdir -p P2_REFERENCE_EVIDENCE
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p2_reference.py             --prereg integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json             --p1-reference integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json             --root routes             --output P2_REFERENCE_EVIDENCE/ROM_PURPOSE_P2_REFERENCE_RESULT.json             | tee P2_REFERENCE_EVIDENCE/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 0 -o "$rc" -eq 3
+          cp integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json P2_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json P2_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json P2_REFERENCE_EVIDENCE/
+          cp routes/sha256.txt P2_REFERENCE_EVIDENCE/routes-sha256.txt
+          sha256sum P2_REFERENCE_EVIDENCE/* > P2_REFERENCE_EVIDENCE/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p2-reference-timeout-repair
+          path: P2_REFERENCE_EVIDENCE/
+          if-no-files-found: error
+
+  persist:
+    needs: assemble_and_analyze
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_RUN: ${{ github.run_id }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p2-reference-timeout-repair
+          path: /tmp/evidence
+      - name: Persist repaired P2 Reference result
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/evidence/ROM_PURPOSE_P2_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json'))
+          q=bool(r['candidate_response_authorized'])
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P2_STATUS.json'))
+          s.update({
+            'tested':True,
+            'qualified':q,
+            'phase':'P2_REFERENCE_QUALIFIED' if q else 'P2_REFERENCE_SCIENTIFICALLY_NOT_QUALIFIED',
+            'fresh_surface_reference_status':r['status'],
+            'candidate_response_authorized':q,
+            'candidate_response_generated':False,
+            'blockers':[] if q else ['P2_FRESH_SURFACE_REFERENCE_QUALIFICATION_FAILED'],
+            'next_action':'BIND_P2_FROZEN_CANDIDATE_MATRIX' if q else 'STOP_BEFORE_CANDIDATES_P2_REFERENCE_BLOCKER',
+            'recovery_point':'integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json',
+            'source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'last_execution_sha':os.environ['SOURCE_SHA'],
+            'reference_execution_repair':'TIMEOUT_ONLY_B01_R1024_T32_S05_O0_O2'
+          })
+          s['scientific_firewall']['any_P2_reference_response_seen']=True
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          a=json.load(open('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json'))
+          a['authoritative_execution'].update({
+            'status':'CLOSED_BY_TIMEOUT_REPAIR',
+            'timeout_repair_run':int(os.environ['SOURCE_RUN']),
+            'timeout_repair_execution_head':os.environ['SOURCE_SHA']
+          })
+          a['timeout_repair']={
+            'source_run':35821534912,
+            'missing_jobs':['p2full-B01-R1024_T32-o0-h1','p2full-B01-R1024_T32-o2-h1'],
+            'scientific_change':False,
+            'repair':'same full history with timeout_minutes 60'
+          }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json').write_text(json.dumps(a,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P2_STATUS.json integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json
+          git commit -m "ROM-PURPOSE P2: persist timeout-repaired Reference qualification" || exit 0
+          git push origin HEAD:work/f-rom-purpose
