@@ -79,3 +79,17 @@ The same accepted origins, mapping and interval must reproduce the same receipt 
 6. Only then compose with the real Ribasim state publication path and pursue canonical admission.
 
 PA02 therefore strengthens provenance without reopening the closed SW-RIB-SWM01 physics research.
+
+
+## Dependency admission boundary
+
+RM10, RM11 and RM12 are qualified research authorities on `work/ribasim-management-coupling-closeout`, but their production modules are not present on the current canonical parent of PA01. PA02 must therefore not import those work-branch modules directly.
+
+The semantics are reusable, the source dependency is not yet admitted.
+
+Before PA02 production implementation, choose exactly one route:
+
+1. depend on an independently admitted RM10/RM11 provenance/scheduler component after it reaches canonical; or
+2. preregister and admit one generic accepted-external-state provenance component that both management realization and accepted surface-water heads can use.
+
+Creating a second PA02-specific lineage/revision system by copying RM10 behavior is explicitly forbidden. That would solve the local type problem while recreating ambiguous provenance ownership at the architecture level.
