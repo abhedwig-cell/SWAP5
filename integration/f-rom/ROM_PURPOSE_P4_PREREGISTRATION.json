@@ -1,0 +1,398 @@
+{
+  "schema": "swap5.rom-purpose.p4.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE",
+  "title": "Extended purpose-specific representation frontier and closure-identifiability",
+  "authority": {
+    "live_reconciliation": "integration/f-rom/ROM_PURPOSE_P4_LIVE_RECONCILIATION.json@b511cd3b7e0dc1f1356aa6ced35e33cdb81887ab",
+    "authority_binding": "integration/f-rom/ROM_PURPOSE_P4_AUTHORITY_BINDING.json",
+    "representation_ladder": "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json@ad5604fba2252e956015403d461d3df17ddec28c",
+    "p3_closeout": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT.json@6b5970289a12e609108cc6b450d68aa17840c4fc",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "live_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "central_question": "At what extended purpose-aligned vertical state count does the frozen numerical comparator become reachable, and when can residual Layer-ROM error be attributed to propagation/closure rather than same-partition spatial resolution?",
+  "hypotheses": {
+    "H1": "Increasing purpose-aligned state count from 8 to 12 or 16 can add response-relevant information on fresh blind histories.",
+    "H2": "The minimum comparator-reaching rung, if any, may differ between SURF_P and GW_LB and between B01 and B14.",
+    "H3": "A closure deficit is identifiable only at a rung where matched same-partition Richards is numerically qualified and reaches the frozen comparator while Layer-ROM at that exact partition does not.",
+    "H4": "If Layer-ROM and same-partition Richards both miss at a rung, the remaining limitation cannot be assigned to Layer-ROM closure.",
+    "H5": "If the terminal 16-state rung remains below the comparator for both Layer-ROM and same-partition Richards, P4 stops without adding states."
+  },
+  "frozen_representations": {
+    "source": "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json",
+    "SURF_P": {
+      "S8": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        80,
+        160
+      ],
+      "S12": [
+        0,
+        5,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        100,
+        120,
+        160
+      ],
+      "S16": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25,
+        30,
+        35,
+        40,
+        50,
+        60,
+        70,
+        80,
+        100,
+        120,
+        140,
+        160
+      ]
+    },
+    "GW_LB": {
+      "G8": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "G12": [
+        0,
+        40,
+        80,
+        100,
+        120,
+        130,
+        140,
+        145,
+        150,
+        152.5,
+        155,
+        157.5,
+        160
+      ],
+      "G16": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        110,
+        120,
+        130,
+        135,
+        140,
+        145,
+        150,
+        152.5,
+        155,
+        157.5,
+        160
+      ]
+    },
+    "terminal_dimension": 16,
+    "no_post_response_extension": true
+  },
+  "blind_validation_workload": {
+    "rationale": "P3 S09-S12 and G06-G09 are response-exposed and cannot serve as P4 primary evidence. P4 uses fresh initial states with the inherited forcing semantics so metric and process interpretation remain comparable without reusing candidate-response histories.",
+    "observation_count": 1024,
+    "observation_dt_day": 0.0008,
+    "SURF_P": {
+      "ids": [
+        "S17",
+        "S18",
+        "S19",
+        "S20"
+      ],
+      "phase_observations": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "top_flux_multipliers": {
+        "WET": 1.15,
+        "DRY": 0.85
+      },
+      "bottom_boundary": "fixed gravity-equilibrium flux",
+      "histories": {
+        "S17": {
+          "initial_effective_saturation": 0.73,
+          "phases": [
+            "WET",
+            "DRY",
+            "WET",
+            "DRY"
+          ]
+        },
+        "S18": {
+          "initial_effective_saturation": 0.81,
+          "phases": [
+            "DRY",
+            "WET",
+            "DRY",
+            "WET"
+          ]
+        },
+        "S19": {
+          "initial_effective_saturation": 0.87,
+          "phases": [
+            "WET",
+            "DRY",
+            "WET",
+            "DRY"
+          ]
+        },
+        "S20": {
+          "initial_effective_saturation": 0.93,
+          "phases": [
+            "DRY",
+            "WET",
+            "DRY",
+            "WET"
+          ]
+        }
+      },
+      "reversal_observations": [
+        256,
+        512,
+        768
+      ]
+    },
+    "GW_LB": {
+      "ids": [
+        "G17",
+        "G18",
+        "G19",
+        "G20"
+      ],
+      "top_boundary": "gravity-equilibrium flux",
+      "bottom_head_multipliers": {
+        "BOTTOM_HEAD_RISE": 0.9,
+        "BOTTOM_HEAD_FALL": 1.1,
+        "HOLD": null
+      },
+      "histories": {
+        "G17": {
+          "initial_effective_saturation": 0.72,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_RISE",
+              256
+            ],
+            [
+              "BOTTOM_HEAD_FALL",
+              640
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        },
+        "G18": {
+          "initial_effective_saturation": 0.8,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_FALL",
+              256
+            ],
+            [
+              "BOTTOM_HEAD_RISE",
+              640
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        },
+        "G19": {
+          "initial_effective_saturation": 0.85,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_RISE",
+              384
+            ],
+            [
+              "BOTTOM_HEAD_FALL",
+              768
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        },
+        "G20": {
+          "initial_effective_saturation": 0.9,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_FALL",
+              384
+            ],
+            [
+              "BOTTOM_HEAD_RISE",
+              768
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        }
+      }
+    },
+    "forbidden_for_primary_p4_decision": {
+      "SURF_P": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "GW_LB": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G06",
+        "G07",
+        "G08",
+        "G09"
+      ],
+      "rule": "Previously exposed histories remain diagnostic/regression evidence only."
+    }
+  },
+  "reference_and_comparator": {
+    "target": "R2048_T32",
+    "comparator": "R512_T32",
+    "spatial_ladder": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_ladder": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "numerical_policy": "Reuse the qualified P3 Reference mathematics and execution semantics on fresh P4 histories without tolerance relaxation.",
+    "candidate_gate": "No P4 Layer-ROM or matched same-partition Richards scientific response is authorized until both purposes and both materials have qualified fresh P4 Reference comparators.",
+    "numerical_uncertainty_is_application_tolerance": false
+  },
+  "metrics": {
+    "contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json",
+    "no_primary_scalar_score": true,
+    "materials_separate": true
+  },
+  "layer_rom_execution": {
+    "closure": "CURRENT_LAYER_FACE",
+    "candidate_dt_day": 0.0001,
+    "matrix": {
+      "SURF_P": [
+        "S8",
+        "S12",
+        "S16"
+      ],
+      "GW_LB": [
+        "G8",
+        "G12",
+        "G16"
+      ],
+      "materials": [
+        "B01",
+        "B14"
+      ]
+    }
+  },
+  "matched_richards_execution": {
+    "exact_same_partitions_as_layer_rom": true,
+    "rungs": {
+      "SURF_P": [
+        "S8",
+        "S12",
+        "S16"
+      ],
+      "GW_LB": [
+        "G8",
+        "G12",
+        "G16"
+      ]
+    },
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "post_response_relaxation_forbidden": true
+  },
+  "rung_decision_logic": {
+    "LAYER_AND_RICHARDS_MISS": "Representation/spatial resolution remains limiting at this rung; no closure claim.",
+    "RICHARDS_REACHES_LAYER_MISSES": "CLOSURE_DEFICIT_SUPPORTED_AT_RUNG.",
+    "LAYER_REACHES": "Layer-ROM representation reaches comparator; first such rung is minimum tested Layer-ROM representation if all lower frozen rungs miss.",
+    "BOTH_REACH": "Representation is sufficient for both methods within frozen comparator at this rung; compare lower rungs to determine first reach.",
+    "RICHARDS_UNAVAILABLE": "No closure attribution at this rung."
+  },
+  "terminal_rule": "If no Layer-ROM rung reaches by 16 states, report frontier not reached. If no matched Richards rung reaches by 16 states, representation/resolution remains limiting and no closure workstream is supported by P4.",
+  "application_boundary": {
+    "authority": "ROM-ACCEPT",
+    "application_acceptance_adjudicated": false,
+    "production_admission": false,
+    "performance_claim": false
+  },
+  "scientific_firewall": {
+    "p3_reopened": false,
+    "p4_reference_response_seen": false,
+    "p4_layer_rom_response_seen": false,
+    "p4_same_partition_richards_response_seen": false,
+    "boundaries_tuned_from_response": false,
+    "metrics_tuned_from_response": false,
+    "tolerances_tuned_from_response": false,
+    "closure_tuned_from_response": false,
+    "new_closure_family_authorized": false
+  }
+}
