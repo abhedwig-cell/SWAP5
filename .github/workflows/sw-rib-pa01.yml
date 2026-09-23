@@ -1,0 +1,42 @@
+name: SW-RIB-PA01 external surface-water admission
+
+on:
+  push:
+    branches:
+      - work/sw-rib-pa01-external-surfacewater-admission
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'tests/ribasim-management/**'
+      - 'integration/ribasim-management/SW_RIB_PA01_*'
+      - '.github/workflows/sw-rib-pa01.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'tests/ribasim-management/**'
+      - 'integration/ribasim-management/SW_RIB_PA01_*'
+      - '.github/workflows/sw-rib-pa01.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: PA01 external owner admission gate
+        run: bash tests/ribasim-management/run_sw_rib_pa01_external_owner_admission.sh
