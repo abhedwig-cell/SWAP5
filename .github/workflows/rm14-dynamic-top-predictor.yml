@@ -1,0 +1,31 @@
+name: RM14 dynamic-top predictor qualification
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/ribasim-management/test_rm14_dynamic_top_predictor.py'
+      - 'tests/ribasim-management/run_rm14_dynamic_top_predictor.sh'
+      - 'integration/ribasim-management/RM14_*'
+      - '.github/workflows/rm14-dynamic-top-predictor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM14 dynamic-top predictor qualification
+        run: bash tests/ribasim-management/run_rm14_dynamic_top_predictor.sh
