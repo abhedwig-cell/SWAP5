@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.rom-purpose.p3.closeout-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-CLOSEOUT",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P3_SCIENTIFIC_DECISIONS",
+  "state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json@73681c56e9d0347bdcd0288fea5b7509ed6b380b",
+  "same_partition_result": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_RESULT.json@24f59bc4795ce1a2236e6538bb0bcd401062c532",
+  "surface_failure_diagnosis": "integration/f-rom/ROM_PURPOSE_P3_SURFACE_SAME_PARTITION_FAILURE_DIAGNOSIS.json@fe83eb6b07f2f36c2e738c365a8f21b7669fd21c",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "scientific_decisions": {
+    "GW_LB/B01": "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+    "GW_LB/B14": "REPRESENTATION_OR_RESOLUTION_UNRESOLVED",
+    "SURF_P/B01": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE",
+    "SURF_P/B14": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE"
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json": "73681c56e9d0347bdcd0288fea5b7509ed6b380b",
+    "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_RESULT.json": "24f59bc4795ce1a2236e6538bb0bcd401062c532",
+    "integration/f-rom/ROM_PURPOSE_P3_SURFACE_SAME_PARTITION_FAILURE_DIAGNOSIS.json": "fe83eb6b07f2f36c2e738c365a8f21b7669fd21c",
+    "tests/rom/build_rom_purpose_p3_closeout.py": "11c0279465f4d5be92adb86f3f8030d6ab9d4005",
+    ".github/workflows/f-rom-purpose-p3-closeout.yml": "ff4ad8266672fb7065687c19b074110542e09e84"
+  },
+  "scientific_firewall": {
+    "p2_reopened": false,
+    "state_boundaries_retuned_after_response": false,
+    "closure_tuned": false,
+    "surface_numerical_tolerance_relaxed": false,
+    "weighted_general_score_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
