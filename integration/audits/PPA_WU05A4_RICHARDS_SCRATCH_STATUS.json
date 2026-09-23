@@ -15,7 +15,8 @@
     "interface_change": "PPA-local apply_saturated_reference_scratch now returns private reference_trial_transfer instead of raw macro_used_exchange. Only its test caller existed and was updated; frozen solver ABI unchanged.",
     "contract": "copy_reference_transfer checks current generation, active nodes, poison and allocated residual before extracting candidate amount. Workspace mismatch invalidates the record permanently; explicit discard is provided for same-generation reset boundaries.",
     "tests": "Read valid transfer, reject it after reinitialize without first reevaluating, reject on poison, prevent revival after subsequent reset, explicit discard, and release rejection.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "0ee6d55f3",
+    "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
   "next_action": "Specify residual/Jacobian callback ordering and candidate geometry ownership inside HeadCalc, including final-used evaluation capture and inactive-path preservation, before enabling any production route."
