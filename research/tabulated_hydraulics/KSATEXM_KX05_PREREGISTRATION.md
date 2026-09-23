@@ -38,7 +38,7 @@ Exact Hupsel upper/lower parameters and KX01-KX03 scans.
 Required:
 
 - zero global and local branch-classification mismatch against canonical analytical F-SI39;
-- report first-active head and number of ULP advances from -2 cm;
+- report first-active head and bounded search-iteration count;
 - theta max abs <=1e-4;
 - C max abs <=1e-4;
 - log10(K) max abs <=5e-4;
