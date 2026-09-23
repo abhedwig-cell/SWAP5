@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse, hashlib, json, pathlib, re, subprocess, sys, tempfile
 
 SE={1:0.70,2:0.78,3:0.86,4:0.92}
-# Observation-window phase endpoints. The second endpoint is always 512.
+# Prospectively frozen P3 observation-window phase endpoints.
 SCHEDULE={
   1:(256,640,"RISE","FALL"),
   2:(256,640,"FALL","RISE"),
@@ -156,7 +156,7 @@ def main()->int:
         text=one(
           text,
           "write(*,'(A)') 'LAREGW1_C4Z_BLIND_DYNAMIC_HEAD_GENERATED=TRUE'",
-          "write(*,'(A)') 'LAREGW1_ROMPURP_P3_GW_REFERENCE_GENERATED=TRUE'",
+          "write(*,'(A)') 'LAREGW1_ROMPURP_P3_GW_REFERENCE_GENERATED=TRUE'"+chr(10)+"          write(*,'(A)') 'LAREGW1_ROMPURP_P1_GW_REFERENCE_GENERATED=TRUE'",
           "completion marker"
         )
     else:
