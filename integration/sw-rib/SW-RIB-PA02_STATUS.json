@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA02",
+  "phase": "DESIGN_PREREGISTERED",
+  "status": "BLOCKED_ON_PA01_INDEPENDENT_QUALIFICATION_FOR_IMPLEMENTATION",
+  "base_candidate": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
+  "source_mutations": [],
+  "tested": false,
+  "production_admission": false,
+  "canonical_admission": false,
+  "next_action": "When PA01 independent qualification passes, freeze PA02 production source scope before implementation. Reuse RM10 provenance patterns and RM11/RM12 time authority; do not expose detached raw heads in the end-to-end route.",
+  "blockers": [
+    "PA01 independent qualification has not yet been observed green.",
+    "No PA02 production source surface has been frozen or implemented."
+  ]
+}
