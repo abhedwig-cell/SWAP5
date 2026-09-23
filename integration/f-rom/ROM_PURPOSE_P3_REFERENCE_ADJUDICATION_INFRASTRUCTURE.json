@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.rom-purpose.p3.reference-adjudication-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE-ADJUDICATION",
+  "date": "2026-09-23",
+  "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "purpose": "Adjudicate the complete fresh P3 Reference only after both repaired purpose-specific route sets exist; neither purpose alone can authorize candidate response.",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "technical_repair": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json@769dc39df6f68302f80cb5f1efc02d0da0c224e4",
+    "analyzer": "tests/rom/analyze_rom_purpose_p3_reference.py@e29e481104d5bb1e25026d5dffcfc790b38d22ce"
+  },
+  "required_inputs": {
+    "SURF_P": {
+      "artifact_name": "p3ref-surface-routes",
+      "source_run_status_required": "success",
+      "exact_run_id_to_be_frozen_in_execution_binding": true
+    },
+    "GW_LB": {
+      "artifact_name": "p3ref-gw-routes",
+      "source_run_status_required": "success",
+      "exact_run_id_to_be_frozen_in_execution_binding": true
+    }
+  },
+  "implementation_blobs": {
+    ".github/workflows/f-rom-purpose-p3-reference-adjudicate.yml": "74512cb8dde954e7dc4c99e35e961a343a173a2b",
+    "tests/rom/analyze_rom_purpose_p3_reference.py": "e29e481104d5bb1e25026d5dffcfc790b38d22ce",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json": "769dc39df6f68302f80cb5f1efc02d0da0c224e4"
+  },
+  "decision_gate": {
+    "all_four_purpose_material_cases_must_qualify": true,
+    "qualified_status": "P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+    "failed_status": "P3_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES",
+    "no_partial_candidate_authorization": true
+  },
+  "future_execution_binding_requirements": [
+    "Both repaired route-producing workflows must have completed successfully.",
+    "Binding must freeze exact SURF_P and GW_LB workflow run IDs.",
+    "Binding must freeze all implementation blobs above.",
+    "No Reference metrics may be used to change the preregistration, histories, tolerances, state ladder or closure before adjudication."
+  ],
+  "scientific_firewall": {
+    "execution_binding_created": false,
+    "reference_adjudication_executed": false,
+    "candidate_response_authorized": false,
+    "candidate_response_generated": false,
+    "scientific_parameters_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
