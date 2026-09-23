@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a.technical_amendment.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A",
+  "amendment": "TECHNICAL_AMENDMENT_02",
+  "date": "2026-09-23",
+  "classification": "HARNESS_SERIALIZATION_PREFLIGHT_REPAIR_NOT_SCIENTIFIC_RETUNING",
+  "superseded_execution": {
+    "run_id": 35855729061,
+    "job_id": 107163617981,
+    "head_sha": "3e617c768aed933c5dc662a12c3bf6dd7dc728f3",
+    "observations": [
+      "C0_NO_DISCHARGE executed and passed all frozen physical comparators.",
+      "C1 model initialization returned 0.30000000000161164 m for a requested 0.3 m initial level.",
+      "The harness aborted on its auxiliary initial-state check before C1 BMI.update_until.",
+      "No C1 or C2 physical endpoint result was observed."
+    ],
+    "failure": "Auxiliary initial-level preflight used atol=1e-12 m and rejected a 1.61164e-12 m model-write/read roundoff."
+  },
+  "repair": {
+    "field": "auxiliary initial-level serialization preflight tolerance",
+    "old_value_m": 1e-12,
+    "new_value_m": 1e-10,
+    "reason": "Allow sub-nanometric model serialization/readback noise while remaining 100x tighter than the frozen Q1A final-level comparator tolerance.",
+    "unchanged": [
+      "all Q1A physical cases",
+      "duration 8.64 s",
+      "storage-level geometry",
+      "rating curve",
+      "drainage forcings",
+      "zero-supply condition",
+      "final_level_m_abs tolerance 1e-8",
+      "final_storage_m3_abs tolerance 1e-8",
+      "integrated_discharge_m3_abs tolerance 1e-8",
+      "mass residual tolerances",
+      "pass/fail interpretation"
+    ]
+  },
+  "partial_evidence": {
+    "C0_NO_DISCHARGE": {
+      "final_level_ribasim_m": -0.19999199999999995,
+      "final_level_oracle_m": -0.19999200000000003,
+      "final_storage_ribasim_m3": 0.800008,
+      "final_storage_oracle_m3": 0.800008,
+      "discharge_ribasim_inferred_m3": 0,
+      "discharge_oracle_m3": 0,
+      "ribasim_mass_residual_m3": 7.999379153869612e-18,
+      "result": "PASS"
+    }
+  },
+  "anti_retuning_rule": "No frozen scientific comparator or physical input changes in this amendment."
+}
