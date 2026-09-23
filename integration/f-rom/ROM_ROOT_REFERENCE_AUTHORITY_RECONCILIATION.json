@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom_root.reference_authority_reconciliation.v1",
+  "workstream": "ROM-ROOT",
+  "date": "2026-09-23",
+  "state": "CLOSED_TRANSFER_QUALIFICATION_REQUIRED",
+  "canonical_reconciled_head": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+  "rom_root_head_before_transfer": "40041d9fe328f5325b17c3dcf6b40f09883f76e9",
+  "blocker": "ROM_ROOT_RNP03_FULL_VECTOR_REFERENCE_RICHARDS_CYCLE",
+  "external_authorities": {
+    "P2E18D3": {
+      "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+      "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+      "preregistration_blob": "44420d872bd13c761db98f8598bf2cf596ddcbcd",
+      "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+      "verdict": "TOTAL_BALANCE_RETRIES_NOT_NUMERICALLY_DISTINGUISHABLE_UNDER_PREREGISTERED_DOMAIN_SUMMED_FLOOR_MODEL",
+      "role": "methodological numerical-distinguishability authority only"
+    },
+    "P2E20": {
+      "branch": "work/pub-p2e20-ref-high-floor-policy",
+      "head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+      "preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+      "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+      "verdict": "QUALIFIED_REF_HIGH_36_OF_36_USING_PROSPECTIVE_REPRESENTATION_FLOOR_POLICY",
+      "qualified_formula": "F_repr_cm = sum_i(dz_i * spacing(theta_s_i)); total rate tolerance = max(existing integrated allowance, F_repr_cm)/dt",
+      "safety_factor": 1,
+      "production_change": false
+    }
+  },
+  "scope_mismatch": {
+    "P2E20_scope": "16 homogeneous cells, zero source/sink, 36 fixed short-horizon solver-seam cases",
+    "ROM_ROOT_scope": "512/1024/2048-node root-active prescribed-sink histories, B01/B14, 0.8192 day horizon",
+    "direct_transfer_authorized": false,
+    "reason": "P2E20 qualifies the formula and bounded solver-seam population, not this root-active high-resolution trajectory domain."
+  },
+  "transfer_decision": {
+    "new_work_unit": "ROM-ROOT-RA01",
+    "purpose": "Prospectively qualify the externally derived representation-floor total-balance policy on the untouched root-active C6R physical and space-time matrix.",
+    "c6r_reopened": false,
+    "c6r_relaxed": false,
+    "candidate_response_authorized": false
+  },
+  "unchanged": [
+    "Reference Richards equations and production HeadCalc",
+    "Feddes root-water-uptake process",
+    "prescribed b110 root-sink provider",
+    "max_iterations=16 and max_backtracking=8",
+    "compartment balance tolerance=1e-12 rate",
+    "head and ponding tolerances=1e-12",
+    "hard accepted transaction mass gate=1e-12 cm",
+    "B01/B14, V01-V04, root profiles, potential transpiration and forcing",
+    "R512_T32/R1024_T32/R2048_T32/R2048_T16/R2048_T8",
+    "three-level space-time qualification metrics and O0/O2 identity"
+  ],
+  "model_changed": false
+}
