@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_sol_age_face_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-FACE",
+  "parent_work_unit": "PPA-SOL-AGE-CELL",
+  "title": "B1.11 age-tracer internal-face transport amount",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "441de6e97189afeed30f3ae353f340ccc949a506",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "B1.11 SWAP/solute.f90 AgeTracer task 2 internal-face Agefluxb equation"
+  },
+  "scope": {
+    "equation": "(water_flux * mobile_face_age + volumetric_water_content * age_dispersion * (age_right - age_left) / face_distance) * interval_days",
+    "inputs_are_already_derived": ["mobile_face_age", "age_dispersion", "volumetric_water_content", "age_left", "age_right"],
+    "state_owner": "None; isolated scalar face equation only",
+    "file_or_parser_runtime_restart_mass_publication": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "100000 deterministic vectors match the direct B1.11 operation order bitwise at O0 and O2",
+    "nonfinite inputs, nonpositive water content, negative dispersion, nonpositive distance and nonpositive interval reject",
+    "O0 and O2 transcripts are identical",
+    "no coupled age-tracer solver/runtime admission is claimed"
+  ],
+  "decision_rule": "Do not bind the face term or the parent cell equation to production; preserve the age-tracer state/transport/restart gap as open."
+}
