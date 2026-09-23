@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.diagnostic_checkpoint.v1",
+  "workunit": "F-TAB02-G",
+  "date": "2026-09-23",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "canonical_authority": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "production_postimage": "398b3300fad97f485bfbefe7fa87ef9202fc0871",
+  "failing_run": {
+    "run_id": 35876775705,
+    "conclusion": "failure",
+    "stage": "bounded constitutive generated-state initialization",
+    "marker": "F_TAB02_G_GATE_FAIL bounded Hupsel KSATEXM generated-state init"
+  },
+  "diagnosis": {
+    "classification": "QUALIFICATION_FIXTURE_AUTHORITY_DRIFT",
+    "physics_failure": false,
+    "production_source_failure_not_established": true,
+    "cause": "The three G fixtures algebraically re-derived F-SI39 cofgen(11:12) using (1+x)^(-m). KX05/F-SI39 branch authority is the exact admitted cofgen threshold combined with authority_theta at h=-2 cm. The algebraically equivalent formulation differs by one ULP for the Hupsel lower layer and changes the strict Se>threshold classification at the exact source head.",
+    "strict_predicate": "Se_authority > cofgen(11)",
+    "tolerance_change": "NONE"
+  },
+  "exact_hupsel_fsi39_authority": {
+    "upper": {
+      "se_threshold": 0.9962891879895562,
+      "k_threshold": 36.02551344088929
+    },
+    "lower": {
+      "se_threshold": 0.9981816467911503,
+      "k_threshold": 15.814441314772257
+    },
+    "lower_existing_fsi39_test": "tests/fsi/test_fsi39_b110_ksatexm.f90"
+  },
+  "repair": {
+    "production_mutation": "NONE",
+    "fixture_files": [
+      "tests/fsi/test_ftab02g_bounded_ksatexm_generated_provider.f90",
+      "tests/fsi/test_ftab02g_reference_richards_ksatexm.f90",
+      "tests/fsi/test_ftab02g_serialized_ksatexm_selection.f90"
+    ],
+    "static_gate_file": "tests/fsi/run_ftab02g_bounded_ksatexm_generated_provider.sh",
+    "sequential_workflow": ".github/workflows/f-tab02-generated-k0-provider.yml",
+    "fixture_head": "51fd2200be90fc2194d02c3be7be60056174b8e3",
+    "complete_replay_head": "f4ef8f8607218db379b0729000b42b78f33beed1"
+  },
+  "reruns": {
+    "dedicated_G": 35877873722,
+    "sequential_A_through_G": 35877944838,
+    "state": "PENDING"
+  },
+  "next_safe_step": "Read dedicated G rerun. If all constitutive/Reference-Richards/serialized-selection gates pass, bind F-TAB02-G qualification, require sequential A-E-G PASS, then implement preregistered F-TAB02-F0 standalone exact-Hupsel selection/lifetime seam. Do not change tolerances or production constitutive semantics for this diagnosis."
+}
