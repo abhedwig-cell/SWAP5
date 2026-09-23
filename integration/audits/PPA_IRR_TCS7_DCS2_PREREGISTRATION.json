@@ -19,8 +19,8 @@
   "scope": [
     "TCS=7 source trigger h(sensor) <= AFGEN(hcritab,14,DVS)",
     "DCS=2 source amount 0.1 * AFGEN(fidtab,14,DVS) in cm",
-    "partial 14-entry table sentinel and last-value AFGEN clamp above the last populated knot",
-    "100,000 deterministic scheduled-event comparisons at O0 and O2"
+    "partial 14-entry table sentinel, first-value lower clamp and last-value upper clamp",
+    "piecewise-linear interpolation and 100,000 deterministic scheduled-event comparisons at O0 and O2"
   ],
   "non_goals": [
     "generic management parser or event-calendar ingestion",
@@ -31,6 +31,7 @@
   ],
   "pass_conditions": [
     "source AFGEN oracle preserves lower clamp, piecewise-linear source arithmetic and partial-table upper clamp",
+    "vectors exercise interpolation within the active table range and clamping above/below it",
     "typed evaluator matches TCS7 trigger and DCS2 depth over 100,000 deterministic inputs",
     "trigger equality and non-trigger sides are covered",
     "triggered SSDI event amount and split duration are consistent with the selected depth",

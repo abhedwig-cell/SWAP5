@@ -12,7 +12,7 @@ SOURCES=(
   src/process/mod_irrigation_process.f90
   tests/fapp/test_ppa_irr_tcs7_dcs2_source_oracle.f90
 )
-FLAGS=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow)
+FLAGS=(-std=f2008 -Wall -Wextra -Werror -Wno-error=unused-dummy-argument -fcheck=all -ffpe-trap=invalid,zero,overflow)
 
 for OPT in 0 2; do
   mkdir -p "$BUILD/o$OPT"

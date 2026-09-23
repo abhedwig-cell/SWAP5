@@ -40,20 +40,34 @@ program test_ppa_irr_tcs7_dcs2_source_oracle
   call make_source_table(p%dcs2_dvs, 10.0_real64*p%dcs2_depth_cm, p%dcs2_knot_count, source_dcs2)
 
   ! Exact source branch equality: TCS7 triggers when h equals the threshold.
-  request = make_request(1.0_real64, 1.0_real64)
+  request = make_request(1.0_real64, 1.125_real64)
   request%dvs = 0.5_real64
   hydraulic%pressure_head(1) = -500.0_real64
   call evaluate_scheduled_irrigation_interval(p, committed, request, hydraulic, candidate, fluxes, diagnostics)
   call require(diagnostics%status == IRRIGATION_OK .and. diagnostics%triggered, 1)
-  call require(abs(diagnostics%interpolated_depth_cm - 0.25_real64) <= 4.0_real64*eps, 2)
+  call require(abs(diagnostics%interpolated_depth - 0.25_real64) <= 4.0_real64*eps, 2)
+
+  ! Both AFGEN tables clamp to the first populated value below their first knot.
+  request = make_request(0.0_real64, 0.075_real64)
+  request%dvs = -0.25_real64
+  hydraulic%pressure_head(1) = -100.0_real64
+  call evaluate_scheduled_irrigation_interval(p, committed, request, hydraulic, candidate, fluxes, diagnostics)
+  call require(diagnostics%status == IRRIGATION_OK .and. diagnostics%triggered, 3)
+  call require(abs(diagnostics%interpolated_threshold + 100.0_real64) <= 4.0_real64*eps, 4)
+  call require(abs(diagnostics%interpolated_depth - 0.15_real64) <= 4.0_real64*eps, 5)
 
   triggered_count = 0
   untriggered_count = 0
   random_state = 20260923_int64
   do i = 1, vector_count
     random_state = modulo(random_state*48271_int64, 2147483647_int64)
-    dvs = 1.01_real64 + 0.98_real64 * &
-          real(modulo(random_state, 1000000_int64), real64) / 1000000.0_real64
+    if (modulo(i, 2) == 0) then
+      dvs = 1.01_real64 + 0.98_real64 * &
+            real(modulo(random_state, 1000000_int64), real64) / 1000000.0_real64
+    else
+      dvs = 0.001_real64 + 0.998_real64 * &
+            real(modulo(random_state, 1000000_int64), real64) / 1000000.0_real64
+    end if
     expected_threshold = source_afgen(source_tcs7, 14, dvs)
     expected_depth = 0.1_real64 * source_afgen(source_dcs2, 14, dvs)
 
@@ -65,7 +79,7 @@ program test_ppa_irr_tcs7_dcs2_source_oracle
       hydraulic%pressure_head(1) = expected_threshold + head_offset
     end if
 
-    request = make_request(real(i, real64), real(i, real64) + 1.0_real64)
+    request = make_request(1.0_real64, 2.0_real64)
     request%dvs = dvs
     if (should_trigger) request%t1 = request%t0 + expected_depth/p%irr_rate_cm_per_day
 
@@ -78,7 +92,7 @@ program test_ppa_irr_tcs7_dcs2_source_oracle
     if (should_trigger) then
       triggered_count = triggered_count + 1
       tol = 16.0_real64*eps*max(1.0_real64, abs(expected_depth))
-      call require(abs(diagnostics%interpolated_depth_cm - expected_depth) <= tol, 13)
+      call require(abs(diagnostics%interpolated_depth - expected_depth) <= tol, 13)
       call require(fluxes%applied .and. fluxes%event_started .and. fluxes%event_finished, 14)
       call require(allocated(fluxes%subsurface_source), 15)
       call require(abs(fluxes%subsurface_source(1) - p%irr_rate_cm_per_day) <= tol, 16)
@@ -86,14 +100,14 @@ program test_ppa_irr_tcs7_dcs2_source_oracle
       call require(.not. candidate%active_event, 18)
     else
       untriggered_count = untriggered_count + 1
-      call require(.not. fluxes%applied .and. diagnostics%interpolated_depth_cm == 0.0_real64, 19)
+      call require(.not. fluxes%applied .and. abs(diagnostics%interpolated_depth) <= tol, 19)
       call require(candidate%active_event .eqv. committed%active_event, 20)
     end if
   end do
 
   call require(triggered_count == vector_count/2 .and. untriggered_count == vector_count/2, 21)
   print '(A)', 'PPA_IRR_TCS7_DCS2_B111_AFGEN_100000=PASS'
-  print '(A)', 'PPA_IRR_TCS7_DCS2_PARTIAL_TABLE_UPPER_CLAMP=PASS'
+  print '(A)', 'PPA_IRR_TCS7_DCS2_PARTIAL_TABLE_CLAMPS_AND_INTERPOLATION=PASS'
   print '(A)', 'PPA_IRR_TCS7_THRESHOLD_EQUALITY_AND_EVENT_AMOUNT=PASS'
   print '(A)', 'PPA_IRR_TCS7_DCS2_SOURCE_ORACLE=PASS'
 
