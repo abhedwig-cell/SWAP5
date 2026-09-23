@@ -1,7 +1,11 @@
 {
   "work_unit": "PPA-WU05-A3-FLUX-TRANSITION-BALANCE",
   "baseline": "f1a76f3c648dc208517b0db2ab8b37e9ac4531d7",
-  "phase": "IMPLEMENTED_TEST_PENDING",
+  "phase": "PERSISTED_DIAGNOSTIC_TEST_PASSED",
+  "recovery_point": "668f2aee91bd154d97f391ea9859adf1ad1dd3cb",
+  "gate": "tests/fapp/run_ppa_wu05a3_flux_transition_balance.ps1",
+  "test_result": "PASS O0/O2 with identical transcripts, warnings-as-errors, bounds checks and floating traps",
+  "observations": "Distinct fronts close each cell to 1e-14 in the manufactured no-drainage case. A shared front gives +0.2/-0.2 residuals in internal cells. A rapid sink of 0.2 in saturated main-domain cell 2 likewise yields +0.2/-0.2 local residuals after explicitly accounting for the sink. Whole-domain residuals cancel in both failing cases.",
   "source": "B1.11 MACROSTATE 1398-1421; domain-specific ICpTpWaSrDm use in MACRORATE",
   "hypothesis": "Use per-domain stored-water transition instead of unassigned/shared icgwl",
   "test": "tests/fapp/test_ppa_wu05a3_flux_transition_balance.f90",
@@ -9,5 +13,5 @@
   "expected": "Per-domain fronts close individual cells; shared main-domain front produces opposing internal cell residuals hidden by whole-domain balance",
   "additional_probe": "Main-domain rapid drainage changes inventory but is absent from the source recurrence; demonstrate the residual in the uncorrected equation without claiming repaired physics",
   "limitations": ["No uniqueness proof for the transition index", "No moving-geometry, saturation-crossing or SWMBF=2 kinematic-wave qualification", "No reference patch or production admission"],
-  "next_action": "Run O0/O2 and use the evidence to derive the complete source correction before admission"
+  "next_action": "Derive a proposed corrected flux recurrence from q_top-q_bottom-exchange-drainage=storage_change/dt, with explicit lower boundary and cellwise checks; preserve original source-oracle behavior until corrected-reference qualification"
 }
