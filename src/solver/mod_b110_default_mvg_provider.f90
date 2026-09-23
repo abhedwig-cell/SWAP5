@@ -20,6 +20,7 @@ module mod_b110_default_mvg_provider
      real(real64) :: step_duration = 0.0_real64
    contains
      procedure :: evaluate => b110_default_mvg_evaluate
+     procedure :: context_compatible => b110_default_mvg_context_compatible
   end type b110_default_mvg_provider_t
 
   public :: initialize_b110_default_mvg_parameters
@@ -139,6 +140,19 @@ contains
     end if
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity
+
+  logical function b110_default_mvg_context_compatible(self, step_duration) result(compatible)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    real(real64), intent(in) :: step_duration
+    real(real64) :: scale
+
+    compatible = .false.
+    if (.not. associated(self%parameters)) return
+    if (.not. ieee_is_finite(step_duration) .or. step_duration <= 0.0_real64) return
+    if (.not. ieee_is_finite(self%step_duration) .or. self%step_duration <= 0.0_real64) return
+    scale = max(1.0_real64, abs(self%step_duration), abs(step_duration))
+    compatible = abs(self%step_duration-step_duration) <= 16.0_real64*epsilon(1.0_real64)*scale
+  end function b110_default_mvg_context_compatible
 
   subroutine b110_default_mvg_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
     class(b110_default_mvg_provider_t), intent(in) :: self
