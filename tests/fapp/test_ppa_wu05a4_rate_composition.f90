@@ -8,6 +8,7 @@ program test_rate_composition
   use mod_ppa_wu05a3_satflow_derivative
   use mod_ppa_wu05a4_storage_bounds
   use mod_ppa_wu05a4_exchange_aggregate
+  use mod_ppa_wu05a3_absorption_derivative
   implicit none
   type(redistribution_candidate)::redistributed
   type(macro_exchange_evaluation)::evaluation
@@ -63,7 +64,55 @@ program test_rate_composition
   call check_generated_satflow()
   call check_geometry_bounds()
   call check_domain_aggregation()
+  call check_derivative_aggregation()
 contains
+  subroutine check_derivative_aggregation()
+    real(real64)::sat(2,3),uns(2,3),incoming(2,3),heads(3),differences(3)
+    real(real64)::derivatives(3),next_derivatives(3),next_heads(3),value,total,rapid_total,diagonal(3),equation(3)
+    real(real64),allocatable::domain(:,:),matrix(:)
+    type(macro_exchange_evaluation)::e
+    type(macro_used_exchange)::slot
+    logical::valid
+    integer::id,ic,status
+    sat=0; uns=0; incoming=0; heads=0.5_real64
+    sat(1,2)=0.25_real64; sat(2,3)=0.125_real64
+    uns(1,3)=0.125_real64; uns(2,3)=0.0625_real64
+    incoming(:,1)=[0.125_real64,0.25_real64]
+    differences=[0.0_real64,0.5_real64,0.25_real64]
+    derivatives=0
+    ! Source section D: all ABSORPTION domains, then all SATFLOW domains.
+    ! Accumulate into the same vector, never sum independently reset tangents.
+    do id=1,2
+      do ic=2,3
+        call ppa_wu05a3_absorption_derivative(.true.,uns(id,ic),.false.,.false., &
+            1.0_real64,1.0_real64,0.25_real64,0.125_real64,0.5_real64,0.5_real64, &
+            derivatives(ic),value,status)
+        call check(status==PPA_WU05A3_ABSORPTION_DERIVATIVE_OK,50)
+        derivatives(ic)=value
+      end do
+    end do
+    call check(abs(derivatives(3)+0.375_real64)<tiny(1.0_real64),51)
+    do id=1,2
+      call ppa_wu05a3_satflow_derivative(2,3,2,heads,differences,incoming(id,:),sat(id,:), &
+          derivatives,next_heads,next_derivatives,status)
+      call check(status==PPA_WU05A3_SATFLOW_DERIVATIVE_OK,52)
+      derivatives=next_derivatives
+    end do
+    call check(maxval(abs(derivatives-[-0.75_real64,-0.5_real64,-0.875_real64]))<tiny(1.0_real64),53)
+    call aggregate_matrix_exchange(2,[3,3],sat,uns,0.0_real64*incoming,incoming,incoming(:,1), &
+        [0.0_real64,0.0_real64,0.0_real64],domain,matrix,total,rapid_total,valid)
+    call check(valid,54)
+    call check(maxval(abs(matrix-[-0.375_real64,0.25_real64,0.3125_real64]))<tiny(total),55)
+    e%key=macro_trial_key(4_int64,0_int64,1_int64,1_int64)
+    e%head=heads; e%rate=matrix; e%derivative=derivatives; e%dt=0.5_real64
+    equation=0; diagonal=1
+    call apply_macro_residual(e,e%key,heads,equation,slot,valid)
+    call check(valid,56)
+    call apply_macro_diagonal(slot,e%key,.true.,diagonal,valid)
+    call check(valid,57)
+    call check(maxval(abs(diagonal-[1.75_real64,1.5_real64,1.875_real64]))<tiny(total),58)
+    print '(a)','PPA_WU05A4_ABSORPTION_SATFLOW_TANGENT_ORDER=PASS'
+  end subroutine
   subroutine check_domain_aggregation()
     real(real64)::sat(2,3),uns(2,3),inter(2,3),mat(2,3),total,rapid_total
     real(real64),allocatable::domain(:,:),matrix(:),amounts(:)
