@@ -41,14 +41,13 @@ module mod_b110_generated_mvg_provider
     procedure :: ready => b110_generated_mvg_ready
   end type b110_generated_mvg_provider_t
 
-  public :: initialize_b110_generated_mvg_provider
+  public :: initialize_b110_generated_mvg_provider, bind_b110_generated_mvg_step_duration
 
 contains
 
-  subroutine initialize_b110_generated_mvg_provider(provider, cofgen, step_duration, status)
+  subroutine initialize_b110_generated_mvg_provider(provider, cofgen, status)
     type(b110_generated_mvg_provider_t), intent(out) :: provider
     real(real64), intent(in) :: cofgen(:,:)
-    real(real64), intent(in) :: step_duration
     integer, intent(out) :: status
 
     type(b110_default_mvg_parameters_t), target :: analytic_parameters
@@ -65,7 +64,6 @@ contains
     if (size(cofgen,1) < 24) return
     n = size(cofgen,2)
     if (n <= 0) return
-    if (.not. ieee_is_finite(step_duration) .or. step_duration <= 0.0_real64) return
     if (any(.not. ieee_is_finite(cofgen(1:12,1:n)))) return
     if (any(cofgen(2,1:n) <= cofgen(1,1:n))) return
     if (any(cofgen(3,1:n) <= 0.0_real64)) return
@@ -77,7 +75,7 @@ contains
     if (any(cofgen(10,1:n) > cofgen(3,1:n))) return
 
     call initialize_b110_default_mvg_parameters(analytic_parameters, cofgen)
-    call bind_b110_default_mvg_provider(analytic, analytic_parameters, step_duration)
+    call bind_b110_default_mvg_provider(analytic, analytic_parameters, 1.0_real64)
 
     allocate(head_table(B110_GENERATED_MVG_TABLE_N,n), theta_table(B110_GENERATED_MVG_TABLE_N,n), &
              conductivity_table(B110_GENERATED_MVG_TABLE_N,n))
@@ -139,7 +137,7 @@ contains
     end if
 
     provider%active_nodes = n
-    provider%step_duration = step_duration
+    provider%step_duration = 0.0_real64
     allocate(provider%head(B110_GENERATED_MVG_TABLE_N,n), provider%theta(B110_GENERATED_MVG_TABLE_N,n), &
              provider%logk(B110_GENERATED_MVG_TABLE_N,n), provider%theta_slope(B110_GENERATED_MVG_TABLE_N,n), &
              provider%theta_sigma(B110_GENERATED_MVG_TABLE_N,n), provider%logk_slope(B110_GENERATED_MVG_TABLE_N,n), &
@@ -192,6 +190,18 @@ contains
     provider%initialized = .true.
     status = B110_GENERATED_MVG_OK
   end subroutine initialize_b110_generated_mvg_provider
+
+  subroutine bind_b110_generated_mvg_step_duration(provider, step_duration, status)
+    type(b110_generated_mvg_provider_t), intent(inout) :: provider
+    real(real64), intent(in) :: step_duration
+    integer, intent(out) :: status
+
+    status = B110_GENERATED_MVG_INVALID_INPUT
+    if (.not. provider%initialized) return
+    if (.not. ieee_is_finite(step_duration) .or. step_duration <= 0.0_real64) return
+    provider%step_duration = step_duration
+    status = B110_GENERATED_MVG_OK
+  end subroutine bind_b110_generated_mvg_step_duration
 
   subroutine preprocess_tspack(flag, x, y, dydx, sigma, status)
     integer, intent(in) :: flag
