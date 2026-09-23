@@ -1,0 +1,14 @@
+{
+  "work_unit": "PPA-WU05-A3-CANDIDATE-MASS",
+  "baseline": "15d5a28ee",
+  "phase": "PREREGISTERED",
+  "authority": "PPA_WU05A1_SOURCE_CENSUS.json mass_transfer_trace",
+  "scope": "Candidate-only mass accounting from matching checkpoint/candidate and explicit rates; independently supplied matrix-side cell amounts must equal macropore exchange amounts",
+  "signs": "Positive matrix exchange leaves macropores. External input is top vertical plus lateral; rapid drainage is external outflow; bottom is impermeable in this bounded route.",
+  "contract": "No accepted receipt is published. Invalid candidate, foreign lineage, stale origin, per-cell transfer mismatch or macropore storage-budget mismatch prevents valid candidate accounting.",
+  "tests_planned": ["Opposing internal amounts cancel", "External-only whole-column accounting", "Compensating local transfer errors rejected", "Rejected/stale candidate rejected", "Storage mismatch rejected"],
+  "implementation": "src/adapter/mod_ppa_wu05a3_candidate_mass.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_candidate_mass.f90",
+  "qualified": false,
+  "next_action": "Implement and test accounting without accepted-state publication"
+}
