@@ -1,0 +1,524 @@
+name: F-ROM-PURPOSE P2 R1024 segment repair
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p2-r1024-segment-repair
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  SOURCE_RUN: 35821534912
+  FROZEN_BACKEND: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Verify frozen R1024 repair authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "$FROZEN_BACKEND"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p2_surface_reference.py             tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             tests/rom/verify_rom_purpose_p2_r1024_segment_equivalence.py             tests/rom/analyze_rom_purpose_p2_reference.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_BEFORE_SEGMENTED_S05_RESPONSE'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_SEGMENTED_S05_RESPONSE'
+          assert b['authoritative_source_run']==35821534912
+          assert b['scientific_change'] is False
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  witness_s1:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute S06 segment 1
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 1 --segment-end 8192             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_w1_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_w1_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_w1_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S06 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-witness-s1, path: evidence/, if-no-files-found: error}
+
+  witness_s2:
+    needs: witness_s1
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s1, path: previous}
+      - name: Execute S06 segment 2
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 8193 --segment-end 16384             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_w2_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_w2_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_w2_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin               ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S06 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-witness-s2, path: evidence/, if-no-files-found: error}
+
+  witness_s3:
+    needs: witness_s2
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s2, path: previous}
+      - name: Execute S06 segment 3
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 16385 --segment-end 24576             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_w3_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_w3_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_w3_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin               ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S06 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-witness-s3, path: evidence/, if-no-files-found: error}
+
+  witness_s4:
+    needs: witness_s3
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s3, path: previous}
+      - name: Execute S06 segment 4
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 24577 --segment-end 32768             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_w4_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_w4_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_w4_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin               ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S06 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-witness-s4, path: evidence/, if-no-files-found: error}
+
+  verify_witness:
+    needs: witness_s4
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s1, path: /tmp/w1}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s2, path: /tmp/w2}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s3, path: /tmp/w3}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-witness-s4, path: /tmp/w4}
+      - name: Fetch full S06 witness and prove exact scientific equivalence
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/full-o0 /tmp/full-o2 evidence
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5             -n p2full-B01-R1024_T32-o0-h2 -D /tmp/full-o0
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5             -n p2full-B01-R1024_T32-o2-h2 -D /tmp/full-o2
+          python3 tests/rom/verify_rom_purpose_p2_r1024_segment_equivalence.py             --full-o0 /tmp/full-o0/surface_B01_R1024_T32_o0_h2.txt             --full-o2 /tmp/full-o2/surface_B01_R1024_T32_o2_h2.txt             --segments /tmp/w1/segment.txt /tmp/w2/segment.txt /tmp/w3/segment.txt /tmp/w4/segment.txt             --output evidence/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('evidence/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json'))
+          assert r['qualified'] is True
+          assert r['segmented_matches_full_scientific_output_exactly'] is True
+          assert r['full_O0_O2_raw_byte_identity'] is True
+          PY
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-equivalence-witness, path: evidence/, if-no-files-found: error}
+
+  target_s1:
+    needs: verify_witness
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute S05 segment 1 after witness PASS
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 1 --segment-end 8192             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_t1_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_t1_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_t1_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S05 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-target-s1, path: evidence/, if-no-files-found: error}
+
+  target_s2:
+    needs: target_s1
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s1, path: previous}
+      - name: Execute S05 segment 2
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 8193 --segment-end 16384             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_t2_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_t2_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_t2_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin               ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S05 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-target-s2, path: evidence/, if-no-files-found: error}
+
+  target_s3:
+    needs: target_s2
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s2, path: previous}
+      - name: Execute S05 segment 3
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 16385 --segment-end 24576             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_t3_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_t3_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_t3_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin               ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S05 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-target-s3, path: evidence/, if-no-files-found: error}
+
+  target_s4:
+    needs: target_s3
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s3, path: previous}
+      - name: Execute S05 segment 4
+        run: |
+          set -euo pipefail
+          target=canonical/tests/rom/test_p2seg.f90
+          python3 tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py             --base-materializer tests/rom/materialize_rom_purpose_p2_surface_reference.py             --source tests/rom/rom_purpose_p1_surface_b01_source.f90             --material B01 --temporal-factor 32 --segment-start 24577 --segment-end 32768             --output "$target" --manifest /tmp/manifest.json
+          mkdir -p evidence
+          for opt in 0 2; do
+            stub="canonical/p2r1024_t4_o${opt}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes 1024 --dz-cm 0.15625
+            build="/tmp/p2r1024_t4_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "p2r1024_t4_o${opt}_stubs.f90"               --target tests/rom/test_p2seg.f90               --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+            ROMPURP_P2_CHECKPOINT_IN=previous/checkpoint.bin               ROMPURP_P2_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"               LARE_DYN0A_CASE_FILTER=S05 "$build/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/segment_o0.txt evidence/segment.txt
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/segment_o2.txt evidence/checkpoint_o2.bin
+          cp /tmp/manifest.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: p2-r1024-target-s4, path: evidence/, if-no-files-found: error}
+
+  analyze:
+    needs: target_s4
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-equivalence-witness, path: /tmp/witness}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s1, path: /tmp/t1}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s2, path: /tmp/t2}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s3, path: /tmp/t3}
+      - uses: actions/download-artifact@v4
+        with: {name: p2-r1024-target-s4, path: /tmp/t4}
+      - name: Download completed authoritative source-run artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/original/full /tmp/original/s1 /tmp/original/s2 /tmp/original/s3 /tmp/original/s4
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5 -p 'p2full-*' -D /tmp/original/full
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5 -p 'p2seg1-*' -D /tmp/original/s1
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5 -p 'p2seg2-*' -D /tmp/original/s2
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5 -p 'p2seg3-*' -D /tmp/original/s3
+          gh run download "$SOURCE_RUN" --repo abhedwig-cell/SWAP5 -p 'p2seg4-*' -D /tmp/original/s4
+      - name: Assemble complete P2 route set with qualified R1024 repair
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          w=json.load(open('/tmp/witness/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json'))
+          assert w['qualified'] is True
+          assert w['segmented_matches_full_scientific_output_exactly'] is True
+          PY
+          mkdir -p routes
+          cat /tmp/t1/segment.txt /tmp/t2/segment.txt /tmp/t3/segment.txt /tmp/t4/segment.txt > /tmp/repaired_s05.txt
+          test "$(grep -c '^LAREDYN0R_STATE|' /tmp/repaired_s05.txt)" -eq 32768
+          test "$(grep -c '^LAREDYN0R_PROFILE|' /tmp/repaired_s05.txt)" -eq 16384
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32; do
+              for opt in 0 2; do
+                out="routes/surface_${material}_${route}_o${opt}.txt"; : > "$out"
+                for i in 1 2 3 4; do
+                  if [[ "$material" == B01 && "$route" == R1024_T32 && "$i" == 1 ]]; then
+                    cat /tmp/repaired_s05.txt >> "$out"
+                  else
+                    src="$(find /tmp/original/full -type f -name "surface_${material}_${route}_o${opt}_h${i}.txt" -print -quit)"
+                    test -n "$src"; cat "$src" >> "$out"
+                  fi
+                done
+              done
+            done
+            for route in R2048_T32 R2048_T16 R2048_T8; do
+              out0="routes/surface_${material}_${route}_o0.txt"; : > "$out0"
+              for i in 1 2 3 4; do
+                src="$(find /tmp/original/s1 -type f -path "*/p2seg1-${material}-${route}-h${i}/segment.txt" -print -quit)"
+                test -n "$src"; cat "$src" >> "$out0"
+                if [[ "$route" != R2048_T8 ]]; then
+                  src="$(find /tmp/original/s2 -type f -path "*/p2seg2-${material}-${route}-h${i}/segment.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out0"
+                fi
+                if [[ "$route" == R2048_T32 ]]; then
+                  src="$(find /tmp/original/s3 -type f -path "*/p2seg3-${material}-R2048_T32-h${i}/segment.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out0"
+                  src="$(find /tmp/original/s4 -type f -path "*/p2seg4-${material}-R2048_T32-h${i}/segment.txt" -print -quit)"
+                  test -n "$src"; cat "$src" >> "$out0"
+                fi
+              done
+              cp "$out0" "routes/surface_${material}_${route}_o2.txt"
+            done
+            for route in R512_T32 R1024_T32 R2048_T32 R2048_T16 R2048_T8; do
+              cmp "routes/surface_${material}_${route}_o0.txt" "routes/surface_${material}_${route}_o2.txt"
+              case "$route" in *_T32) factor=32;; *_T16) factor=16;; *) factor=8;; esac
+              test "$(grep -c '^LAREDYN0R_STATE|' "routes/surface_${material}_${route}_o0.txt")" -eq $((4*1024*factor))
+              test "$(grep -c '^LAREDYN0R_PROFILE|' "routes/surface_${material}_${route}_o0.txt")" -eq $((4*1024*16))
+            done
+          done
+          sha256sum routes/* > routes/sha256.txt
+      - name: Apply unchanged frozen P2 Reference analyzer
+        run: |
+          set -euo pipefail
+          mkdir -p P2_REFERENCE_EVIDENCE
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p2_reference.py             --prereg integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json             --p1-reference integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json             --root routes             --output P2_REFERENCE_EVIDENCE/ROM_PURPOSE_P2_REFERENCE_RESULT.json             | tee P2_REFERENCE_EVIDENCE/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 0 -o "$rc" -eq 3
+          cp /tmp/witness/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json P2_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_PREREGISTRATION.json P2_REFERENCE_EVIDENCE/
+          cp integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_REPAIR_BINDING.json P2_REFERENCE_EVIDENCE/
+          cp routes/sha256.txt P2_REFERENCE_EVIDENCE/routes-sha256.txt
+          sha256sum P2_REFERENCE_EVIDENCE/* > P2_REFERENCE_EVIDENCE/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p2-reference-r1024-repair
+          path: P2_REFERENCE_EVIDENCE/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    env:
+      REPAIR_RUN: ${{ github.run_id }}
+      REPAIR_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p2-reference-r1024-repair, path: /tmp/evidence}
+      - name: Persist P2 Reference decision
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/evidence/ROM_PURPOSE_P2_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json
+          cp /tmp/evidence/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json'))
+          e=json.load(open('integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json'))
+          assert e['qualified'] is True
+          q=bool(r['candidate_response_authorized'])
+          s=json.load(open('integration/f-rom/ROM_PURPOSE_P2_STATUS.json'))
+          s.update({
+            'tested':True,
+            'qualified':q,
+            'phase':'P2_REFERENCE_QUALIFIED' if q else 'P2_REFERENCE_SCIENTIFICALLY_NOT_QUALIFIED',
+            'fresh_surface_reference_status':r['status'],
+            'candidate_response_authorized':q,
+            'candidate_response_generated':False,
+            'blockers':[] if q else ['P2_FRESH_SURFACE_REFERENCE_QUALIFICATION_FAILED'],
+            'next_action':'BIND_P2_FROZEN_CANDIDATE_MATRIX' if q else 'STOP_BEFORE_CANDIDATES_P2_REFERENCE_BLOCKER',
+            'recovery_point':'integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json',
+            'source_workflow_run':int(os.environ['REPAIR_RUN']),
+            'last_execution_sha':os.environ['REPAIR_SHA'],
+            'reference_execution_repair':'R1024_SEGMENT_EQUIVALENCE_WITNESS_THEN_S05_SEGMENT_REPAIR'
+          })
+          s['scientific_firewall']['any_P2_reference_response_seen']=True
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          a=json.load(open('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json'))
+          a['authoritative_execution'].update({
+            'status':'CLOSED_BY_QUALIFIED_R1024_SEGMENT_REPAIR',
+            'segment_repair_run':int(os.environ['REPAIR_RUN']),
+            'segment_repair_execution_head':os.environ['REPAIR_SHA']
+          })
+          a['r1024_segment_repair']={
+            'source_run':35821534912,
+            'witness_case':'B01/R1024_T32/S06',
+            'target_case':'B01/R1024_T32/S05',
+            'equivalence_qualified':True,
+            'scientific_change':False,
+            'equivalence_record':'integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json'
+          }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json').write_text(json.dumps(a,indent=2,sort_keys=True)+'\n')
+          lines=[
+            '# ROM-PURPOSE P2 Reference closeout','',
+            'P1 remains fail-closed and is not reclassified.','',
+            f"**{r['status']}**",'',
+            f"Candidate response authorized: **{str(q).lower()}**.",'',
+            'The blocked B01/R1024_T32/S05 monolithic route was recovered only after an independent S06 witness proved exact hydrologic equivalence between full and four-segment R1024 execution. Only local REV bookkeeping was excluded from the equality comparison.','',
+            'The frozen P2 observability analyzer was not changed by the repair.'
+          ]
+          pathlib.Path('docs/science/F-ROM_PURPOSE_P2_REFERENCE_CLOSEOUT.md').write_text('\n'.join(lines)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json                   integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json                   integration/f-rom/ROM_PURPOSE_P2_STATUS.json                   integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json                   docs/science/F-ROM_PURPOSE_P2_REFERENCE_CLOSEOUT.md
+          git commit -m "ROM-PURPOSE P2: persist R1024-repaired Reference qualification" || exit 0
+          git push origin HEAD:work/f-rom-purpose
