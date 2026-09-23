@@ -438,8 +438,8 @@ contains
         rutter_input = self%forcing%rutter_template
         rutter_input%surface_irrigation_cm_per_day = irrigation_result%gross_surface_rate_cm_per_day
         rutter_input%surface_irrigation_is_intercepted = .true.
-        rutter_input%interval_days = irrigation_result%event_duration_day
-        call evaluate_rutter_interval(typed%rutter, rutter_input, rutter_result, rutter_diagnostics)
+        call advance_rutter_event(typed%rutter, rutter_input, irrigation_result%event_duration_day, &
+             rutter_result, self%last_observation%net_surface_irrigation_amount_cm, rutter_diagnostics)
         if (rutter_diagnostics%status /= RUTTER_OK .or. .not. rutter_diagnostics%result_produced) then
           self%last_status = FMR_RM_RUTTER_FAILED
           return
@@ -448,8 +448,6 @@ contains
         typed%irrigation = irrigation_candidate
         typed%rutter = rutter_result%candidate_state
         self%last_observation%gross_surface_rate_cm_per_day = irrigation_result%gross_surface_rate_cm_per_day
-        self%last_observation%net_surface_irrigation_amount_cm = &
-             rutter_result%net_surface_irrigation_cm_per_day * irrigation_result%event_duration_day
         self%last_status = FMR_RM_OK
       end if
 
@@ -510,6 +508,72 @@ contains
     type(fmr_hupsel_management_observation_t), intent(out) :: observation
     observation = self%last_observation
   end subroutine fmr_hupsel_management_observation
+
+  pure subroutine advance_rutter_event(initial_state, input_template, event_duration, final_result, &
+       net_irrigation_amount, diagnostics)
+    type(rutter_state_t), intent(in) :: initial_state
+    type(rutter_interval_input_t), intent(in) :: input_template
+    real(real64), intent(in) :: event_duration
+    type(rutter_interval_result_t), intent(out) :: final_result
+    real(real64), intent(out) :: net_irrigation_amount
+    type(rutter_diagnostics_t), intent(out) :: diagnostics
+    type(rutter_state_t) :: state
+    type(rutter_interval_input_t) :: input
+    type(rutter_interval_result_t) :: trial
+    type(rutter_diagnostics_t) :: trial_diagnostics
+    real(real64) :: remaining, dt_step, tol
+    integer :: steps
+
+    final_result = rutter_interval_result_t()
+    diagnostics = rutter_diagnostics_t()
+    net_irrigation_amount = 0.0_real64
+    if (.not. ieee_is_finite(event_duration) .or. event_duration <= 0.0_real64) then
+      diagnostics%status = FMR_RM_RUTTER_FAILED
+      return
+    end if
+
+    state = initial_state
+    remaining = event_duration
+    steps = 0
+    do while (remaining > quantity_tolerance(event_duration, remaining))
+      steps = steps + 1
+      if (steps > 32) then
+        diagnostics%status = FMR_RM_RUTTER_FAILED
+        diagnostics%result_produced = .false.
+        return
+      end if
+
+      input = input_template
+      input%interval_days = remaining
+      call evaluate_rutter_interval(state, input, trial, trial_diagnostics)
+      if (trial_diagnostics%status /= RUTTER_OK .or. .not. trial_diagnostics%result_produced) then
+        diagnostics = trial_diagnostics
+        return
+      end if
+
+      tol = quantity_tolerance(remaining, trial%maximum_event_timestep_days)
+      dt_step = remaining
+      if (trial%maximum_event_timestep_days > tol .and. &
+          trial%maximum_event_timestep_days < remaining-tol) then
+        dt_step = trial%maximum_event_timestep_days
+        input%interval_days = dt_step
+        call evaluate_rutter_interval(state, input, trial, trial_diagnostics)
+        if (trial_diagnostics%status /= RUTTER_OK .or. .not. trial_diagnostics%result_produced) then
+          diagnostics = trial_diagnostics
+          return
+        end if
+      end if
+
+      net_irrigation_amount = net_irrigation_amount + trial%net_surface_irrigation_cm_per_day * dt_step
+      state = trial%candidate_state
+      remaining = max(0.0_real64, remaining-dt_step)
+      final_result = trial
+    end do
+
+    final_result%candidate_state = state
+    diagnostics%status = RUTTER_OK
+    diagnostics%result_produced = .true.
+  end subroutine advance_rutter_event
 
   pure real(real64) function quantity_tolerance(a, b) result(tol)
     real(real64), intent(in) :: a, b
