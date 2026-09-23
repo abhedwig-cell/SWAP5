@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.rom-purpose.p4.reference-adjudication-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-REFERENCE-ADJUDICATION",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_COMPLETE_P4_REFERENCE_ROUTE_SETS",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "reference_runs": {
+    "SURF_P": 35900590109,
+    "GW_BASE": 35901466303,
+    "GW_R2048_T32": 35900642592
+  },
+  "selection_authority": "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RUN_EQUIVALENCE.json@0b30f382b69727ae45645eef83f80571d9e722ce",
+  "selection_rule": "For each scientifically equivalent duplicate route set, use the first run to reach complete terminal success; do not mix artifacts across equivalent runs.",
+  "excluded_runs": {
+    "35900612668": "superseded monolithic GW topology",
+    "35901901370": "later complete duplicate surface run",
+    "35901909951": "later complete duplicate segmented GW base run",
+    "35901832096": "later complete duplicate GW R2048/T32 run"
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab",
+    "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RUN_EQUIVALENCE.json": "0b30f382b69727ae45645eef83f80571d9e722ce",
+    "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ANALYZER_TECHNICAL_REPAIR.json": "6f5ed85fb5a3bf523b619b9ecebe587bfe20c81d",
+    "integration/f-rom/ROM_PURPOSE_P4_PRE_RESPONSE_CONTRACT_AUDIT.json": "cab253038d454da74520a1cd39484038c7384cb1",
+    "tests/rom/analyze_rom_purpose_p4_reference.py": "9c7c7a8a504e47470a4aa4c1c06217bfda7c8e54",
+    "tests/rom/test_rom_purpose_p4_reference_wiring.py": "340188452003170a459e6031809a3d7f3531a036",
+    ".github/workflows/f-rom-purpose-p4-reference-adjudicate.yml": "98ee4967d5fdcd90389e2a13d34fad39db5c251c"
+  },
+  "scientific_firewall": {
+    "all_three_route_sets_terminal_success": true,
+    "hydrological_metrics_used_for_run_selection": false,
+    "candidate_response_generated": false,
+    "matched_richards_response_generated": false,
+    "forcing_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
