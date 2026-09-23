@@ -1,0 +1,16 @@
+{
+  "work_unit": "PPA-WU05-A3-RESET-INVENTORY",
+  "baseline": "a32795db8",
+  "phase": "PREREGISTERED",
+  "source": "B1.11 macropore.f90 MACRORESET lines 1620-1626 and 1645-1646",
+  "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+  "scope": "Candidate beginning-period storage and profile snapshots, task 0/1/2",
+  "source_caveat": "Internal-domain beginning profile is incremented without zeroing; repeated resets therefore accumulate. Preserve this exact isolated source behavior and do not treat it as an approved production balance contract.",
+  "invariants": [3, 7, 13, 21, 25],
+  "implementation": "src/process/mod_ppa_wu05a3_reset_inventory.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_reset_inventory.f90",
+  "tests_planned": ["All task branches", "Repeated reset additive source behavior", "Single-domain unchanged internal profile", "Input isolation", "Invalid shape/task", "O0/O2 runtime-checked identity"],
+  "qualified": false,
+  "production_admission": "NONE",
+  "next_action": "Implement and test the isolated source contract"
+}
