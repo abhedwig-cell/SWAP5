@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_flux_certificate_equivalence.result.v1",
+  "work_unit": "RM17",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_EXACT_DYNAMIC_FLUX_REGIME_EQUIVALENCE_FOR_FROZEN_RM14_TRAJECTORY",
+  "workflow": "RM17 dynamic fixed-flux equivalence",
+  "workflow_run": 35892701184,
+  "workflow_job": 107288849592,
+  "authority_head": "b3a3916420da436ef1acc7bb958f487c6af8fb90",
+  "observations": {
+    "dynamic_raw_status": "SW_SOLVE_CONVERGED",
+    "fixed_raw_status": "SW_SOLVE_CONVERGED",
+    "max_pressure_head_difference_cm": 0.0,
+    "max_water_content_difference": 0.0,
+    "ponding_difference_cm": 0.0,
+    "top_flux_difference_cm_per_day": 0.0,
+    "bottom_flux_difference_cm_per_day": 0.0,
+    "endpoint_dynamic_provider_status": "AVAILABLE",
+    "endpoint_dynamic_provider_regime": "FLUX",
+    "endpoint_dynamic_provider_top_flux_cm_per_day": -36.0,
+    "endpoint_dynamic_provider_runoff_cm": 0.0,
+    "endpoint_dynamic_provider_ponding_cm": 0.0
+  },
+  "interpretation": [
+    "For the exact frozen 8.64-second RM14 trajectory, the dynamic-top FLUX-regime raw solve is bit-identical to the existing explicit fixed-flux qtop=-36 cm/day raw solve.",
+    "The dynamic provider remains in FLUX regime at the converged candidate endpoint with zero ponding and zero runoff.",
+    "Therefore the existing temporal-indicator exclusion of all dynamic-top boundaries is broader than necessary for this verified restricted regime.",
+    "A temporal-certificate extension is scientifically permissible only if the indicator itself independently verifies the restricted dynamic FLUX equivalence conditions and fails closed otherwise."
+  ],
+  "nonclaims": [
+    "No dynamic HEAD-regime equivalence.",
+    "No ponding or runoff equivalence.",
+    "No precipitation, evaporation, snowmelt or runon extension.",
+    "No production admission by RM17 itself."
+  ],
+  "next_required_boundary": "Preregister and qualify a narrowly guarded Reference temporal-indicator extension for b110 dynamic-top provider requests that remain explicit-flux equivalent at both base and candidate endpoints."
+}
