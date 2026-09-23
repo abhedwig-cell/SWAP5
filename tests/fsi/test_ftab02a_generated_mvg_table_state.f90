@@ -1,5 +1,5 @@
 program test_ftab02a_generated_mvg_table_state
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: error_unit, int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_generated_mvg_table_state, only: b110_generated_mvg_table_state_t, &
@@ -104,7 +104,7 @@ contains
     logical, intent(in) :: condition
     character(len=*), intent(in) :: label
     if (.not. condition) then
-      write(*,'(a,1x,a)') 'F_TAB02_A_GATE_FAIL', trim(label)
+      write(error_unit,'(a,1x,a)') 'F_TAB02_A_GATE_FAIL', trim(label)
       error stop 1
     end if
   end subroutine require
