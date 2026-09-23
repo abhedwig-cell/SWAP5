@@ -23,7 +23,7 @@
     "behind_by": 0,
     "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
   },
-  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__FINAL_APPLICATION_GATE_BLOCKED_SCOPE_KSATEXM",
+  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_E__G_REQUALIFICATION_PENDING",
   "slices": {
     "A": {
       "status": "PASS",
@@ -49,8 +49,19 @@
       "confirmation_replay_run": 35824244178
     },
     "F": {
-      "status": "BLOCKED_SCOPE_EXACT_M1_PROFILE_REQUIRES_KSATEXM_OUTSIDE_FTAB02",
-      "record": "integration/f-tab/F-TAB02_F_BLOCKER.json"
+      "status": "HELD_PENDING_G_AND_F0",
+      "record": "integration/f-tab/F-TAB02_F_BLOCKER.json",
+      "prerequisite": "F-TAB02-G PASS followed by preregistered F-TAB02-F0 standalone exact-Hupsel selection/lifetime seam"
+    },
+    "G": {
+      "status": "REQUALIFICATION_PENDING_FIXTURE_AUTHORITY_REPAIR",
+      "preregistration": "integration/f-tab/F-TAB02_G_PREREGISTRATION.json",
+      "diagnosis": "integration/f-tab/F-TAB02_G_FIXTURE_AUTHORITY_DIAGNOSIS.json",
+      "production_postimage": "398b3300fad97f485bfbefe7fa87ef9202fc0871",
+      "production_mutation_since_postimage": "NONE",
+      "dedicated_rerun": 35877873722,
+      "sequential_a_through_g_rerun": 35877944838,
+      "note": "Prior G failure was traced to one-ULP re-derivation drift in qualification fixtures at the strict F-SI39 h=-2 cm threshold. Fixtures now bind exact admitted cofgen(11:12); no tolerance, solver, physics, or production-source change was made."
     }
   },
   "production_scope": {
@@ -120,11 +131,11 @@
     "exact_asset_size_bytes": 8959314,
     "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
     "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
-    "new_blocker": "The exact M1-C3 Hupsel profile declares KSATEXM=10*KSATFIT in both hydraulic layers and therefore enables F-SI39; F-TAB02-A intentionally rejects generated-state construction when KSATEXM is enabled.",
+    "new_blocker": "F-TAB02-G bounded exact-Hupsel F-SI39 qualification and F-TAB02-F0 standalone selection/lifetime seam must pass before exact whole-Hupsel execution.",
     "executable_probe_status": 3,
     "executable_probe_symbol": "F_TAB02_STATE_UNSUPPORTED_KSATEXM",
     "substitutions_authorized": false,
-    "resume_condition": "Separate authority is required to research/qualify generated representation of F-SI39 KSATEXM or to establish another exact whole-application gate inside the already qualified non-KSATEXM envelope."
+    "resume_condition": "Dedicated F-TAB02-G and sequential A->E->G must pass on the unchanged production postimage; then implement and qualify F-TAB02-F0 before executing the exact M1-C3 whole-Hupsel gate."
   },
   "nonclaims": [
     "canonical production admission",
@@ -133,6 +144,8 @@
     "arbitrary user-supplied tabulated hydraulics",
     "SWKIMPL=1 production",
     "portable whole-SWAP or MultiSWAP speedup",
-    "generated-provider support for F-SI39 KSATEXM"
+    "generated-provider support for F-SI39 KSATEXM",
+    "F-TAB02-G PASS before controlling reruns complete",
+    "F-TAB02-F0 implementation before G PASS"
   ]
 }
