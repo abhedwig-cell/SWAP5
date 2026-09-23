@@ -57,6 +57,13 @@ PROFILES = {
 }
 
 
+def source_modules(path: Path) -> tuple[set[str], set[str]]:
+    source = path.read_text(encoding="utf-8").lower()
+    provided = set(re.findall(r"(?m)^\s*module\s+(?!procedure\b)([a-z_]\w*)", source))
+    used = set(re.findall(r"(?m)^\s*use(?:\s*,\s*non_intrinsic\s*)?(?:\s*::\s*|\s+)([a-z_]\w*)", source))
+    return provided, used
+
+
 def module_sources(runner: Path) -> list[Path]:
     text = runner.read_text(encoding="utf-8")
     match = re.search(r"MODULE_SRC=\(\s*(.*?)\s*\)", text, re.S)
@@ -64,23 +71,52 @@ def module_sources(runner: Path) -> list[Path]:
         raise RuntimeError(f"could not locate MODULE_SRC array in {runner}")
     names = re.findall(r"(?m)^\s*([^\s]+\.f90)\s*$", match.group(1))
     if len(names) < 60:
-        raise RuntimeError(f"unexpectedly short source list in {runner}: {len(names)}")
+        raise RuntimeError(f"unexpectedly short source list: {len(names)}")
     paths = [ROOT / name for name in names]
     missing = [path for path in paths if not path.is_file()]
     if missing:
         raise RuntimeError(f"missing module source: {missing[0]}")
+
+    # Some legacy runners rely on .mod files already present in the checkout.
+    # Complete their source list from the tracked production tree so this replay
+    # is independent of ignored compiler artefacts and the current directory.
+    available: dict[str, list[Path]] = {}
+    for path in (ROOT / "src").rglob("*.f90"):
+        provided, _ = source_modules(path)
+        for name in provided:
+            available.setdefault(name, []).append(path)
+    included = {path.resolve() for path in paths}
+    while True:
+        provided_now = {
+            name
+            for path in paths
+            for name in source_modules(path)[0]
+        }
+        additions: list[Path] = []
+        for path in paths:
+            _, used = source_modules(path)
+            for name in used - provided_now:
+                candidates = [candidate for candidate in available.get(name, []) if candidate.resolve() not in included]
+                if len(candidates) > 1:
+                    raise RuntimeError(f"ambiguous source providers for omitted module {name}: {candidates}")
+                if candidates:
+                    additions.append(candidates[0])
+        if not additions:
+            break
+        for path in additions:
+            if path.resolve() not in included:
+                print(f"M7_PROFILE_ADDED_SOURCE_DEPENDENCY={path.relative_to(ROOT).as_posix()}")
+                paths.append(path)
+                included.add(path.resolve())
+
     providers: dict[str, int] = {}
-    provided_by_source: list[set[str]] = []
     used_by_source: list[set[str]] = []
     for index, path in enumerate(paths):
-        source = path.read_text(encoding="utf-8").lower()
-        provided = set(re.findall(r"(?m)^\s*module\s+(?!procedure\b)([a-z_]\w*)", source))
-        used = set(re.findall(r"(?m)^\s*use(?:\s*,\s*non_intrinsic\s*)?(?:\s*::\s*|\s+)([a-z_]\w*)", source))
+        provided, used = source_modules(path)
         for name in provided:
             if name in providers:
                 raise RuntimeError(f"duplicate module provider {name}: {paths[providers[name]]} and {path}")
             providers[name] = index
-        provided_by_source.append(provided)
         used_by_source.append(used)
 
     dependencies = {
