@@ -17,6 +17,7 @@ program test_ppa_irr_interception_solute_mass
   real(real64) :: surface_flux, expected_surface_flux
   real(real64) :: q_bottom, seepage_concentration, matrix_concentration, bottom_solute_flux
   real(real64) :: expected_bottom_solute_flux, source_bottom_concentration
+  real(real64) :: previous_bottom_amount, accumulated_bottom_amount, expected_bottom_amount
   logical :: selected_seepage, expected_selected_seepage
   integer(int64) :: random_state
   integer :: i, status
@@ -104,6 +105,13 @@ program test_ppa_irr_interception_solute_mass
     call require(status==IRR_SURFACE_SOLUTE_OK,12)
     call require(selected_seepage.eqv.expected_selected_seepage,13)
     call require(same_real(bottom_solute_flux,expected_bottom_solute_flux),14)
+    previous_bottom_amount=10.0_real64*unit_value
+    expected_bottom_amount=previous_bottom_amount+expected_bottom_solute_flux*interval_days
+    call accumulate_bottom_solute_amount(previous_bottom_amount,q_bottom,seepage_concentration, &
+         matrix_concentration,interval_days,accumulated_bottom_amount,selected_seepage,status)
+    call require(status==IRR_SURFACE_SOLUTE_OK,15)
+    call require(selected_seepage.eqv.expected_selected_seepage,16)
+    call require(same_real(accumulated_bottom_amount,expected_bottom_amount),17)
   end do
 
   call check_invalid(-1.0_real64, 1.0_real64, 1.0_real64, 10)
@@ -136,6 +144,7 @@ program test_ppa_irr_interception_solute_mass
   print '(A)', 'PPA_IRR_SURFACE_RAIN_AND_IRRIGATION_STORAGE_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_POND_EXCHANGE_100000=PASS'
   print '(A)', 'PPA_IRR_BOTTOM_SOLUTE_FLUX_SOURCE_ORACLE_100000=PASS'
+  print '(A)', 'PPA_IRR_BOTTOM_SOLUTE_CUMULATIVE_MASS_SOURCE_ORACLE_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_INVALID_INPUT_FAIL_CLOSED=PASS'
 
 contains

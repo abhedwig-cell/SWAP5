@@ -186,7 +186,9 @@ store are also bitwise checked over 100,000 cases, including the strict
 `qtop < -1e-6` gate; invalid and overflow domains fail closed. The bottom
 solute flux uses the source's strict positive-water-flux seepage concentration
 selection, otherwise the last matrix concentration, bitwise checked over
-100,000 cases.
+100,000 cases. Its cumulative `sqbot`/`imsqbot` increment is also checked over
+100,000 cases using the pre-update matrix concentration and source operation
+order; cumulative booking remains an isolated oracle, not a production route.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

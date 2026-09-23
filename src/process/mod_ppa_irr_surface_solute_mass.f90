@@ -10,6 +10,7 @@ module mod_ppa_irr_surface_solute_mass
   public :: calculate_surface_irrigation_solute_mass, accumulate_surface_solute_amount
   public :: ppa_irr_surface_solute_exchange
   public :: ppa_irr_bottom_solute_flux
+  public :: accumulate_bottom_solute_amount
 
 contains
 
@@ -202,5 +203,49 @@ contains
     end if
     status = IRR_SURFACE_SOLUTE_OK
   end subroutine ppa_irr_bottom_solute_flux
+
+  pure subroutine accumulate_bottom_solute_amount(previous_amount, bottom_water_flux, seepage_concentration, &
+      matrix_concentration, interval_days, accumulated_amount, concentration_selected, status)
+    real(real64), intent(in) :: previous_amount, bottom_water_flux, seepage_concentration
+    real(real64), intent(in) :: matrix_concentration, interval_days
+    real(real64), intent(out) :: accumulated_amount
+    logical, intent(out) :: concentration_selected
+    integer, intent(out) :: status
+    real(real64) :: bottom_flux, interval_amount
+
+    ! Source: B1.11 solute.f90 task 2 cumulative bottom mass, before the matrix concentration update.
+    accumulated_amount = 0.0_real64
+    concentration_selected = .false.
+    status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+    if (.not. ieee_is_finite(previous_amount) .or. .not. ieee_is_finite(interval_days)) return
+    if (previous_amount < 0.0_real64 .or. interval_days <= 0.0_real64) return
+    call ppa_irr_bottom_solute_flux(bottom_water_flux,seepage_concentration,matrix_concentration, &
+         bottom_flux,concentration_selected,status)
+    if (status /= IRR_SURFACE_SOLUTE_OK) then
+      concentration_selected = .false.
+      return
+    end if
+    if (interval_days > 1.0_real64) then
+      if (abs(bottom_flux) > huge(1.0_real64)/interval_days) then
+        concentration_selected = .false.
+        status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+        return
+      end if
+    end if
+    interval_amount = bottom_flux*interval_days
+    if (interval_amount > 0.0_real64) then
+      if (previous_amount > huge(1.0_real64)-interval_amount) then
+        concentration_selected = .false.
+        status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+        return
+      end if
+    end if
+    accumulated_amount = previous_amount+interval_amount
+    if (.not. ieee_is_finite(accumulated_amount)) then
+      accumulated_amount = 0.0_real64
+      concentration_selected = .false.
+      status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+    end if
+  end subroutine accumulate_bottom_solute_amount
 
 end module mod_ppa_irr_surface_solute_mass
