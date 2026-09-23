@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.rom_root.ra01.pre_scientific_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "state": "CLOSED_TECHNICAL_AUTHORITY_VERIFICATION_REPAIR",
+  "failed_run": {
+    "run_id": 35819683599,
+    "head": "584ad1b8b2842b0fdfefcba29ba46523941c3a46",
+    "failure_stage": "Verify frozen RA01 authority / Verify RA01 segmented binding",
+    "scientific_execution_started": false,
+    "candidate_response_generated": false
+  },
+  "failure": {
+    "class": "INHERITED_PROVENANCE_PATH_REWRITE",
+    "detail": "Two inherited checks of the original C6R preregistration workflow blob referenced a non-existent globally rewritten path .github/workflows/f-rom-rom-root-ra01.yml.",
+    "consequence": "Jobs failed before route materialization and Reference execution."
+  },
+  "repair": {
+    "changed_file": ".github/workflows/rom-root-ra01.yml",
+    "old_workflow_blob": "dc93964b8497389fa7e59d09c8c8ce9e8e48b209",
+    "new_workflow_blob": "4b7583ed9f7a86312cf9b135c8cc22d1bd3568f4",
+    "change": "Restore the two inherited C6R provenance checks to .github/workflows/f-rom-lare-bc2-c6r.yml.",
+    "scientific_semantics_changed": false,
+    "external_policy_changed": false,
+    "cases_changed": false,
+    "routes_changed": false,
+    "thresholds_changed": false,
+    "numerical_controls_changed": false,
+    "physics_changed": false
+  },
+  "rerun_rule": "Update only the RA01 binding workflow blob and retrigger the already-preregistered matrix."
+}
