@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.rom-purpose.p3.closeout-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-CLOSEOUT",
+  "date": "2026-09-23",
+  "status": "PREPARED_RESPONSE_BLIND_NOT_AUTHORIZED_NOT_EXECUTED",
+  "purpose": "Deterministically map final P3 state-count and, only when triggered, same-partition evidence into a purpose map and formal closeout.",
+  "outputs": [
+    "integration/f-rom/ROM_PURPOSE_P3_PURPOSE_MAP.json",
+    "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT.json",
+    "docs/science/F-ROM_PURPOSE_P3_CLOSEOUT.md"
+  ],
+  "implementation_blobs": {
+    "tests/rom/build_rom_purpose_p3_closeout.py": "11c0279465f4d5be92adb86f3f8030d6ab9d4005",
+    ".github/workflows/f-rom-purpose-p3-closeout.yml": "ff4ad8266672fb7065687c19b074110542e09e84"
+  },
+  "deterministic_mapping": {
+    "comparator_reached": "Minimum tested state count and placement are copied from the state-count result; CURRENT_LAYER_FACE is reported sufficient only within the frozen numerical-comparator envelope.",
+    "closure_deficit_supported": "Report CURRENT_LAYER_FACE insufficient relative to same-partition Richards for that tested case; do not admit a replacement closure.",
+    "representation_or_resolution_unresolved": "Report representation/coarse-resolution attribution unresolved.",
+    "diagnostic_unavailable": "Report no closure inference authorized.",
+    "application_authority": "NOT_ADJUDICATED_IN_ROM_PURPOSE_P3"
+  },
+  "future_execution_binding_requirements": [
+    "Persisted P3 state-count result is mandatory.",
+    "If same_partition_richards_triggers is non-empty, persisted P3 same-partition result is mandatory.",
+    "If no trigger exists, closeout must not require or invent a same-partition result.",
+    "Binding must freeze exact evidence and builder/workflow blobs.",
+    "Closeout may recommend a separate closure workstream only for cases already classified CLOSURE_DEFICIT_SUPPORTED."
+  ],
+  "response_firewall": {
+    "execution_binding_created": false,
+    "purpose_map_generated": false,
+    "closeout_generated": false,
+    "scientific_result_invented": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
