@@ -1,0 +1,12 @@
+{
+  "schema": "swap5.sw_rib_adm01.g7.technical_amendment.v1",
+  "work_unit": "SW-RIB-ADM01-G7",
+  "amendment": "TECHNICAL_AMENDMENT_02",
+  "date": "2026-09-23",
+  "classification": "HARNESS_SCOPE_REPAIR_NOT_SCIENTIFIC_RETUNING",
+  "observation": "Static review found physical_run diagnostics referenced case.id although case was not in function scope.",
+  "repair": "Pass case_id explicitly into physical_run and use it only in diagnostic/assertion messages.",
+  "physical_semantics_changed": false,
+  "tolerances_changed": false,
+  "cases_changed": false
+}
