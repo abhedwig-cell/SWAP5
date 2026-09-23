@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.f_app09_vq.preregistration.v1",
+  "work_unit": "F-APP09-VQ",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_AGAINST_FROZEN_CANDIDATE",
+  "candidate": {
+    "branch": "work/f-app09-ribasim-external-surface-water-profile",
+    "head": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+    "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "purpose": "Independently qualify accepted-window signed exchange publication, mismatch rollback/replay and sole commit semantics without modifying production source.",
+  "source_locks": [
+    "src/process/mod_drainage_extended_exchange.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90"
+  ],
+  "decisive_cases": [
+    {
+      "id": "VQ1_POSITIVE_ACCEPTED_WINDOW",
+      "expected_rate_cm_per_day": 0.01,
+      "duration_day": 0.25,
+      "expected_window_exchange_cm": 0.0025,
+      "expected_last_half_step_exchange_cm": 0.00125,
+      "checks": [
+        "participant publishes whole-window exchange",
+        "backend per-advance observation remains final half-step amount",
+        "window observation equals sum of accepted half steps",
+        "no SWAP commit before external feasibility"
+      ]
+    },
+    {
+      "id": "VQ2_MISMATCH_DISCARD_REPLAY",
+      "checks": [
+        "external realized-transfer mismatch blocks commit",
+        "committed revision remains unchanged",
+        "discard retains captured accepted origin",
+        "same-origin replay reproduces identical whole-window transfer"
+      ]
+    },
+    {
+      "id": "VQ3_MATCHED_COMMIT",
+      "checks": [
+        "exact matched realized transfer permits one commit only",
+        "revision advances 0 to 1"
+      ]
+    },
+    {
+      "id": "VQ4_NEGATIVE_SIGN",
+      "expected_rate_cm_per_day": -0.01,
+      "expected_window_exchange_cm": -0.0025,
+      "expected_last_half_step_exchange_cm": -0.00125,
+      "checks": [
+        "signed infiltration direction survives window publication and commit"
+      ]
+    }
+  ],
+  "tolerances": {
+    "exchange_cm_abs": 1e-12
+  },
+  "independence_rules": [
+    "qualification branch may not change src/ or reference/",
+    "candidate test program is not used as the decisive VQ oracle",
+    "no scientific or numerical tolerance may be widened",
+    "owner-gate PASS remains a prerequisite for production interpretation even if independent VQ executes first"
+  ],
+  "pass_meaning": "The frozen F-APP09 candidate independently preserves accepted-window signed transfer semantics and mismatch recomposition safety for the one-level V1 profile.",
+  "nonclaims": [
+    "No live Ribasim network execution.",
+    "No multilevel admission.",
+    "No automatic management policy.",
+    "No nonlinear legacy weir parity.",
+    "No canonical admission by this qualification branch alone."
+  ]
+}
