@@ -1,0 +1,111 @@
+{
+  "schema": "swap5.rom_root.ra02.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_RA02_REFERENCE_RESPONSE",
+  "question": "Can the root-active high-resolution Reference be numerically qualified on a prospectively stress-activating synthetic drought panel before any reduced Layer-ROM root-feedback response is generated?",
+  "starting_authority": {
+    "ra01_closeout": "integration/f-rom/ROM_ROOT_RA01_CLOSEOUT.json",
+    "ra01_root_response_diagnostic": "integration/f-rom/ROM_ROOT_RA01_ROOT_RESPONSE_DIAGNOSTIC.json",
+    "numerical_policy": "ROM-ROOT-RA01 transferred P2E20 total representation-bound discriminator, with C6R local/head/iteration controls and hard transaction mass gate retained",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "canonical_reconciled_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "stress_activation_design": {
+    "response_based": false,
+    "feddes_Se_anchors": {
+      "h3H": 0.55,
+      "h3L": 0.35,
+      "h4": 0.08
+    },
+    "initial_offset_above_h3_Se": 0.001,
+    "histories": {
+      "V01": {
+        "root": "SHALLOW",
+        "potential_transpiration_cm_per_day": 0.6,
+        "initial_Se": 0.551
+      },
+      "V02": {
+        "root": "SHALLOW",
+        "potential_transpiration_cm_per_day": 0.3,
+        "initial_Se": 0.351
+      },
+      "V03": {
+        "root": "UNIFORM",
+        "potential_transpiration_cm_per_day": 0.6,
+        "initial_Se": 0.551
+      },
+      "V04": {
+        "root": "UNIFORM",
+        "potential_transpiration_cm_per_day": 0.3,
+        "initial_Se": 0.351
+      }
+    },
+    "root_depth_cm": 80,
+    "column_depth_cm": 160,
+    "observation_horizon_day": 0.8192,
+    "top_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "bottom_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "rationale": {
+      "B01_whole_column_initial_excess_above_h3_cm": 0.06519904,
+      "B14_whole_column_initial_excess_above_h3_cm": 0.06508384,
+      "no_stress_cumulative_uptake_high_cm": 0.49152,
+      "no_stress_cumulative_uptake_low_cm": 0.24576,
+      "minimum_no_stress_uptake_to_whole_column_excess_ratio": 3.7693806534574743,
+      "interpretation": "The stress panel is chosen algebraically from the frozen Feddes h3 anchors and water-storage scale, not from reduced-candidate response or RA01 route-error magnitude. The no-stress uptake demand over the unchanged horizon exceeds the entire column's initial storage excess above the relevant h3 threshold by at least 3.76x."
+    }
+  },
+  "activation_gate": {
+    "derivation": "64 * Nmax * IEEE754 binary64 epsilon with Nmax=2048",
+    "absolute_fraction_roundoff_guard": 2.9103830456733704e-11,
+    "required_per_material_and_history": [
+      "First observation actual transpiration fraction differs from 1 by no more than the roundoff guard.",
+      "At least one later observation has actual transpiration fraction below 1 minus the roundoff guard.",
+      "The first beyond-guard stress observation occurs after observation 1."
+    ],
+    "meaning": "Mechanism-activation gate only; not an application tolerance or drought-damage threshold."
+  },
+  "numerical_qualification": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_levels": [
+      0,
+      2
+    ],
+    "target": "R2048_T32",
+    "uncertainty_method": "Unchanged tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py",
+    "required_metrics": [
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm",
+      "mapped_10cm_theta_rmse",
+      "interval_actual_root_uptake_rmse_cm_per_day",
+      "cumulative_actual_root_uptake_rmse_cm"
+    ],
+    "all_metrics_must_qualify": true,
+    "o0_o2_identity_required": true,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "fallback_forbidden": true
+  },
+  "pass_rule": "RA02 qualifies only if all execution/integrity gates pass, every material/history satisfies the prospectively bound stress-activation gate, O0/O2 identity passes, and all five frozen three-level uncertainty metrics qualify for both B01 and B14.",
+  "fail_rule": "Any failure stops before Stage 2 and before any reduced U4/U8/R8/R16 dynamic root-feedback response. Do not adjust initial Se, horizon, Feddes parameters, numerical thresholds or the uncertainty estimator from observed RA02 output.",
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "stage2_executed": false,
+    "stage3_executed": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
