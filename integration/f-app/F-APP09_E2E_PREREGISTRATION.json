@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.f_app09.e2e_preregistration.v1",
+  "work_unit": "F-APP09-E",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Qualify restart/replay semantics with the production-candidate external Ribasim profile: accepted external heads are rebound after restart, never persisted as SWAP physical state, while signed exchange and mass continuation remain identical.",
+  "cases": [
+    "First accepted window uses external head -12.25 cm and +0.01 cm/d signed drainage.",
+    "Export and restore committed SWAP state at midpoint.",
+    "Unaccepted external head view is rejected before runtime and cannot mutate committed state.",
+    "Second accepted window uses a fresh external head +7.75 cm and -0.01 cm/d signed infiltration on continuous and restored routes.",
+    "Final committed state and mass results are bit-identical between continuous and restarted routes under O0 and O2."
+  ],
+  "hard_rules": [
+    "Ribasim head/revision are interface inputs and are not included in SWAP restart payload.",
+    "Exactly-once mass remains owned by the existing transaction ledger.",
+    "Restart restore must preserve lineage/revision/time before rebinding the external head.",
+    "No accept-with-clip path exists."
+  ],
+  "pass_criteria": [
+    "midpoint restored SWAP state identity",
+    "trial external head fail-closed",
+    "post-restart result and state identity",
+    "revision continuation to 2",
+    "hard mass closure both routes",
+    "O0/O2 exact text identity"
+  ],
+  "production_admission": false
+}
