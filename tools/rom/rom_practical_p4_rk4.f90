@@ -1,157 +1,236 @@
+! Research only: frozen P3 S4/G8 equations, classical RK4, no state clipping.
 program rom_practical_p4
-  use iso_fortran_env, only: real64
+  use iso_fortran_env, only: real64, int64
+  use ieee_arithmetic, only: ieee_is_finite
   implicit none
-  integer, parameter :: MAXN=8, NDAYS=60, SUB=100
-  real(real64), parameter :: DT=0.01_real64, TOL=1.0e-12_real64
-  character(len=16) :: purpose, material, history
-  real(real64) :: tr,ts,alpha,nvg,mvg,ks,lambda
-  integer :: n,i,hidx
-  real(real64) :: dz(MAXN),theta(MAXN),theta0(MAXN),cumtop,cumbot,k0,psi0,maxledger
-  real(real64) :: storage0, ledger
-  if(command_argument_count()/=2) error stop 2
-  call get_command_argument(1,purpose); call get_command_argument(2,material)
-  call material_params(trim(material),tr,ts,alpha,nvg,ks,lambda)
+  integer, parameter :: MAXN=8, NDAYS=60
+  real(real64), parameter :: LEDGER_GATE=1.0e-8_real64
+  character(len=256) :: purpose, material, paramfile, arg, mode, history
+  real(real64) :: tr,ts,alpha,nvg,mvg,ks,lambda,dt
+  namelist /material_parameters/ tr,ts,alpha,nvg,ks,lambda
+  integer :: n,day,hidx,sub,s,ios,u,stage,j,argc
+  integer(int64) :: rhs_evals
+  real(real64) :: dz(MAXN),theta(MAXN),cumtop,cumbot,k0,psi0,maxledger
+  real(real64) :: storage0,ledger,prevbot,initial_theta,theta_probe(MAXN)
+  real(real64) :: dprobe(MAXN),qtprobe,qbprobe,psiprobe(MAXN),kprobe(MAXN)
+  real(real64) :: c0,c1,wall_s
+  integer(int64) :: tick0,tick1,tickrate
+  logical :: ok
+  argc=command_argument_count()
+  if(argc<4.or.argc>5) error stop 'usage: purpose material parameters.nml dt [probe]'
+  call get_command_argument(1,purpose)
+  call get_command_argument(2,material)
+  call get_command_argument(3,paramfile)
+  call get_command_argument(4,arg)
+  read(arg,*,iostat=ios) dt
+  if(ios/=0) error stop 'invalid dt'
+  if (.not.ieee_is_finite(dt)) error stop 'nonfinite dt'
+  if(abs(dt-0.01_real64)>1.0e-15_real64.and.abs(dt-0.005_real64)>1.0e-15_real64) &
+    error stop 'P4 only authorizes 0.01 and 0.005 day'
+  sub=nint(1.0_real64/dt)
+  mode='run'
+  if(argc==5)call get_command_argument(5,mode)
+  if(trim(mode)/='run'.and.trim(mode)/='probe')error stop 'invalid mode'
+  open(newunit=u,file=trim(paramfile),status='old',action='read',iostat=ios)
+  if(ios/=0) error stop 'missing material namelist'
+  read(u,nml=material_parameters,iostat=ios)
+  close(u)
+  if(ios/=0) error stop 'invalid material namelist'
+  if(.not.all(ieee_is_finite([tr,ts,alpha,nvg,ks,lambda])))error stop 'nonfinite parameters'
+  if(ts<=tr.or.alpha<=0.0_real64.or.nvg<=1.0_real64.or.ks<=0.0_real64)error stop 'invalid parameters'
   mvg=1.0_real64-1.0_real64/nvg
-  if(trim(purpose)=='SURF_P')then
-    n=4; dz=0.0_real64; dz(1:4)=[20.0_real64,20.0_real64,40.0_real64,80.0_real64]
-  else if(trim(purpose)=='GW_LB')then
-    n=8; dz=[80.0_real64,20.0_real64,20.0_real64,10.0_real64,10.0_real64,10.0_real64,5.0_real64,5.0_real64]
-  else
-    error stop 3
-  endif
-  do hidx=1,2
-    if(trim(purpose)=='SURF_P')then
-      history=merge('SD01','SD02',hidx==1)
-      call init_se(merge(0.72_real64,0.86_real64,hidx==1))
-    else
-      history=merge('GD01','GD02',hidx==1)
-      call init_se(merge(0.72_real64,0.88_real64,hidx==1))
-    endif
-    theta0=theta; storage0=sum(theta(1:n)*dz(1:n)); cumtop=0.;cumbot=0.;maxledger=0.
-    call psi_k_scalar(theta(1),psi0,k0)
-    do i=1,NDAYS
-      call advance_day(i,trim(history))
-      ledger=sum(theta(1:n)*dz(1:n))-storage0-(cumtop-cumbot)
-      maxledger=max(maxledger,abs(ledger))
-      call emit(i,trim(history))
+  dz=0.0_real64
+  select case(trim(purpose))
+  case('SURF_P')
+    n=4; dz(1:n)=[20.0_real64,20.0_real64,40.0_real64,80.0_real64]
+  case('GW_LB')
+    n=8
+    dz=[80.0_real64,20.0_real64,20.0_real64,10.0_real64,10.0_real64,10.0_real64,5.0_real64,5.0_real64]
+  case default
+    error stop 'invalid purpose'
+  end select
+  rhs_evals=0;day=0;s=0;stage=0
+  if(trim(mode)=='probe')then
+    read(*,*,iostat=ios)hidx,day
+    if(ios/=0.or.hidx<1.or.hidx>2.or.day<1.or.day>60)error stop 'invalid probe index'
+    call initialize(hidx)
+    theta_probe=0.0_real64
+    read(*,*,iostat=ios)theta_probe(1:n)
+    if(ios/=0)error stop 'invalid probe state'
+    call deriv(theta_probe,day,dprobe,qtprobe,qbprobe,ok)
+    if(.not.ok)call fail('PROBE_DOMAIN')
+    do j=1,n
+      call psi_k_scalar(theta_probe(j),psiprobe(j),kprobe(j),ok)
+      if(.not.ok)call fail('PROBE_CONSTITUTIVE')
+      write(*,'(a,i0,3(a,es25.17))') &
+        'P4_PROBE|LAYER=',j,'|PSI=',psiprobe(j),'|K=',kprobe(j),'|DTH=',dprobe(j)
     enddo
-    write(*,'(a,a,a,es24.16,a,i0)') 'P4_HISTORY_PASS|HISTORY=',trim(history),'|MAX_LEDGER=',maxledger,'|RHS_EVALS=',NDAYS*SUB*4
+    write(*,'(a,es25.17,a,es25.17)')'P4_PROBE_BOUNDARY|QT=',qtprobe,'|QB=',qbprobe
+    stop
+  endif
+  call cpu_time(c0)
+  call system_clock(tick0,tickrate)
+  do hidx=1,2
+    call initialize(hidx)
+    do day=1,NDAYS
+      do s=1,sub
+        call rk4_step()
+        ledger=sum(theta(1:n)*dz(1:n))-storage0-(cumtop-cumbot)
+        if(.not.ieee_is_finite(ledger))call fail('NONFINITE_LEDGER')
+        maxledger=max(maxledger,abs(ledger))
+        if(maxledger>LEDGER_GATE)call fail('WATER_LEDGER')
+      enddo
+      call emit()
+    enddo
+    write(*,'(a,a,a,es25.17,a,i0)') &
+      'P4_HISTORY_PASS|HISTORY=',trim(history),'|MAX_LEDGER=',maxledger,'|RHS_EVALS=',rhs_evals
   enddo
+  call cpu_time(c1)
+  call system_clock(tick1)
+  wall_s=real(tick1-tick0,real64)/real(tickrate,real64)
+  write(*,'(a,es25.17,a,es25.17)')'P4_TIMING|CPU_S=',c1-c0,'|WALL_S=',wall_s
+  write(*,'(a)')'P4_EXECUTION_COMPLETE=PASS'
 contains
-  subroutine init_se(se)
-    real(real64),intent(in)::se
-    theta=0.; theta(1:n)=tr+se*(ts-tr)
+  subroutine initialize(ih)
+    integer,intent(in)::ih
+    real(real64)::se
+    if(trim(purpose)=='SURF_P')then
+      history=merge('SD01','SD02',ih==1)
+      se=merge(0.72_real64,0.86_real64,ih==1)
+    else
+      history=merge('GD01','GD02',ih==1)
+      se=merge(0.72_real64,0.88_real64,ih==1)
+    endif
+    initial_theta=tr+se*(ts-tr)
+    theta=0.0_real64;theta(1:n)=initial_theta
+    call psi_k_scalar(initial_theta,psi0,k0,ok)
+    if(.not.ok)call fail('INITIAL_DOMAIN')
+    storage0=sum(theta(1:n)*dz(1:n))
+    cumtop=0.0_real64;cumbot=0.0_real64;prevbot=0.0_real64;maxledger=0.0_real64
+    rhs_evals=0
   end subroutine
-  subroutine psi_k_scalar(th,psi,k)
+  subroutine psi_k_scalar(th,psi,k,valid)
     real(real64),intent(in)::th
     real(real64),intent(out)::psi,k
+    logical,intent(out)::valid
     real(real64)::se,term
+    valid=.false.;psi=0.0_real64;k=0.0_real64
+    if(.not.ieee_is_finite(th))return
     se=(th-tr)/(ts-tr)
-    if(.not.(se>0._real64.and.se<1._real64)) error stop 11
-    psi=(se**(-1._real64/mvg)-1._real64)**(1._real64/nvg)/alpha
-    term=1._real64-(1._real64-se**(1._real64/mvg))**mvg
+    if(se<=0.0_real64.or.se>=1.0_real64)return
+    psi=(se**(-1.0_real64/mvg)-1.0_real64)**(1.0_real64/nvg)/alpha
+    term=1.0_real64-(1.0_real64-se**(1.0_real64/mvg))**mvg
     k=ks*se**lambda*term*term
-    if(.not.(psi>0.01_real64.and.k>=0._real64)) error stop 12
+    valid=ieee_is_finite(psi).and.ieee_is_finite(k).and.psi>0.01_real64.and.k>=0.0_real64
   end subroutine
-  subroutine deriv(th,day,hist,dth,qt,qb)
+  subroutine deriv(th,iday,dth,qt,qb,valid)
     real(real64),intent(in)::th(MAXN)
-    integer,intent(in)::day
-    character(len=*),intent(in)::hist
+    integer,intent(in)::iday
     real(real64),intent(out)::dth(MAXN),qt,qb
+    logical,intent(out)::valid
     real(real64)::psi(MAXN),kk(MAXN),qint(MAXN),kij,psib,grad
-    integer::j
-    dth=0.;qint=0.
-    do j=1,n; call psi_k_scalar(th(j),psi(j),kk(j)); enddo
-    do j=1,n-1
-      kij=(dz(j+1)*kk(j)+dz(j)*kk(j+1))/(dz(j)+dz(j+1))
-      qint(j)=kij*(1._real64+2._real64*(psi(j+1)-psi(j))/(dz(j)+dz(j+1)))
+    integer::l
+    logical::v
+    rhs_evals=rhs_evals+1
+    valid=.false.;dth=0.0_real64;qint=0.0_real64;qt=0.0_real64;qb=0.0_real64
+    do l=1,n
+      call psi_k_scalar(th(l),psi(l),kk(l),v)
+      if(.not.v)return
+    enddo
+    do l=1,n-1
+      kij=(dz(l+1)*kk(l)+dz(l)*kk(l+1))/(dz(l)+dz(l+1))
+      qint(l)=kij*(1.0_real64+2.0_real64*(psi(l+1)-psi(l))/(dz(l)+dz(l+1)))
     enddo
     qt=k0
     if(trim(purpose)=='SURF_P')then
-      if(hist=='SD01')then
-        if(day<=15) qt=k0+0.12_real64
-        if(day>15.and.day<=30) qt=k0-0.08_real64
-        if(day>30.and.day<=45) qt=k0+0.06_real64
-        if(day>45) qt=k0-0.04_real64
+      if(history=='SD01')then
+        if(iday<=15)then;qt=k0+0.12_real64
+        else if(iday<=30)then;qt=k0-0.08_real64
+        else if(iday<=45)then;qt=k0+0.06_real64
+        else;qt=k0-0.04_real64;endif
       else
-        if(day<=20) qt=k0-0.06_real64
-        if(day>20.and.day<=30) qt=k0+0.10_real64
-        if(day>30.and.day<=50) qt=k0-0.03_real64
-        if(day>50) qt=k0+0.08_real64
+        if(iday<=20)then;qt=k0-0.06_real64
+        else if(iday<=30)then;qt=k0+0.10_real64
+        else if(iday<=50)then;qt=k0-0.03_real64
+        else;qt=k0+0.08_real64;endif
       endif
       qb=k0
     else
-      psib=psi0
-      if(hist=='GD01')then
-        if(day<=20) psib=0.97_real64*psi0
-        if(day>20.and.day<=40) psib=1.03_real64*psi0
-      else
-        if(day<=15) psib=1.03_real64*psi0
-        if(day>15.and.day<=45) psib=0.97_real64*psi0
-      endif
-      if((hist=='GD01'.and.day>40).or.(hist=='GD02'.and.day>45))then
+      ! P3 HOLD means prescribed flux k0, NOT prescribed head psi0.
+      if((history=='GD01'.and.iday>40).or.(history=='GD02'.and.iday>45))then
         qb=k0
       else
-        grad=1._real64+2._real64*(psib-psi(n))/dz(n)
+        if(history=='GD01')then
+          psib=merge(0.97_real64,1.03_real64,iday<=20)*psi0
+        else
+          psib=merge(1.03_real64,0.97_real64,iday<=15)*psi0
+        endif
+        grad=1.0_real64+2.0_real64*(psib-psi(n))/dz(n)
         qb=kk(n)*grad
       endif
     endif
-    do j=1,n
-      if(j==1)then; dth(j)=(qt-qint(j))/dz(j)
-      else if(j==n)then; dth(j)=(qint(j-1)-qb)/dz(j)
-      else; dth(j)=(qint(j-1)-qint(j))/dz(j); endif
+    dth(1)=(qt-qint(1))/dz(1)
+    do l=2,n-1
+      dth(l)=(qint(l-1)-qint(l))/dz(l)
     enddo
+    dth(n)=(qint(n-1)-qb)/dz(n)
+    valid=all(ieee_is_finite(dth(1:n))).and.ieee_is_finite(qt).and.ieee_is_finite(qb)
   end subroutine
-  subroutine advance_day(day,hist)
-    integer,intent(in)::day
-    character(len=*),intent(in)::hist
-    integer::s
-    real(real64)::k1(MAXN),k2(MAXN),k3(MAXN),k4(MAXN),tmp(MAXN),qt1,qb1,qt2,qb2,qt3,qb3,qt4,qb4
-    do s=1,SUB
-      call deriv(theta,day,hist,k1,qt1,qb1)
-      tmp=theta+0.5_real64*DT*k1; call deriv(tmp,day,hist,k2,qt2,qb2)
-      tmp=theta+0.5_real64*DT*k2; call deriv(tmp,day,hist,k3,qt3,qb3)
-      tmp=theta+DT*k3; call deriv(tmp,day,hist,k4,qt4,qb4)
-      theta=theta+DT*(k1+2*k2+2*k3+k4)/6._real64
-      cumtop=cumtop+DT*(qt1+2*qt2+2*qt3+qt4)/6._real64
-      cumbot=cumbot+DT*(qb1+2*qb2+2*qb3+qb4)/6._real64
+  subroutine rk4_step()
+    real(real64)::k1(MAXN),k2(MAXN),k3(MAXN),k4(MAXN),tmp(MAXN),next(MAXN)
+    real(real64)::qt1,qb1,qt2,qb2,qt3,qb3,qt4,qb4,pp,kp,newtop,newbot
+    integer::l
+    stage=1;call deriv(theta,day,k1,qt1,qb1,ok)
+    if(.not.ok)call fail('STAGE_DOMAIN')
+    tmp=theta+0.5_real64*dt*k1
+    stage=2;call deriv(tmp,day,k2,qt2,qb2,ok)
+    if(.not.ok)call fail('STAGE_DOMAIN')
+    tmp=theta+0.5_real64*dt*k2
+    stage=3;call deriv(tmp,day,k3,qt3,qb3,ok)
+    if(.not.ok)call fail('STAGE_DOMAIN')
+    tmp=theta+dt*k3
+    stage=4;call deriv(tmp,day,k4,qt4,qb4,ok)
+    if(.not.ok)call fail('STAGE_DOMAIN')
+    next=theta+dt*(k1+2.0_real64*k2+2.0_real64*k3+k4)/6.0_real64
+    stage=5
+    do l=1,n
+      call psi_k_scalar(next(l),pp,kp,ok)
+      if(.not.ok)call fail('ACCEPTED_STATE_DOMAIN')
     enddo
+    newtop=cumtop+dt*(qt1+2.0_real64*qt2+2.0_real64*qt3+qt4)/6.0_real64
+    newbot=cumbot+dt*(qb1+2.0_real64*qb2+2.0_real64*qb3+qb4)/6.0_real64
+    ledger=sum(next(1:n)*dz(1:n))-storage0-(newtop-newbot)
+    if(.not.ieee_is_finite(ledger))call fail('NONFINITE_LEDGER')
+    if(abs(ledger)>LEDGER_GATE)call fail('WATER_LEDGER')
+    theta=next;cumtop=newtop;cumbot=newbot
   end subroutine
-  subroutine emit(day,hist)
-    integer,intent(in)::day
-    character(len=*),intent(in)::hist
-    integer::j
-    real(real64)::tot,s20,s40,s80,qday
-    real(real64),save::prevbot=0._real64
-    if(day==1) prevbot=0._real64
-    tot=sum(theta(1:n)*dz(1:n)); s20=integral(20._real64);s40=integral(40._real64);s80=integral(80._real64)
+  subroutine fail(reason)
+    character(len=*),intent(in)::reason
+    write(*,'(a,a,a,a,3(a,i0),a,i0)')'P4_FAILURE|REASON=',reason,'|HISTORY=',trim(history), &
+      '|DAY=',day,'|SUBSTEP=',s,'|STAGE=',stage,'|RHS_EVALS=',rhs_evals
+    error stop 11
+  end subroutine
+  subroutine emit()
+    integer::l
+    real(real64)::qday
     qday=cumbot-prevbot;prevbot=cumbot
-    write(*,'(a,a,a,i0,a,es24.16,a,es24.16,a,es24.16,a,es24.16,a,es24.16,a,es24.16)') &
-      'P4_STATE|HISTORY=',hist,'|DAY=',day,'|TOTAL=',tot,'|S20=',s20,'|S40=',s40,'|S80=',s80,'|CUMBOT=',cumbot,'|QBOT=',qday
-    do j=1,n
-      write(*,'(a,a,a,i0,a,i0,a,es24.16)') 'P4_LAYER|HISTORY=',hist,'|DAY=',day,'|LAYER=',j,'|THETA=',theta(j)
+    write(*,'(a,a,a,i0,6(a,es25.17))')'P4_STATE|HISTORY=',trim(history),'|DAY=',day, &
+      '|TOTAL=',sum(theta(1:n)*dz(1:n)),'|S20=',integral(20.0_real64), &
+      '|S40=',integral(40.0_real64),'|S80=',integral(80.0_real64),'|CUMBOT=',cumbot,'|QBOT=',qday
+    do l=1,n
+      write(*,'(a,a,a,i0,a,i0,a,es25.17)') &
+        'P4_LAYER|HISTORY=',trim(history),'|DAY=',day,'|LAYER=',l,'|THETA=',theta(l)
     enddo
   end subroutine
   real(real64) function integral(depth) result(v)
     real(real64),intent(in)::depth
     real(real64)::z,w
-    integer::j
-    v=0.;z=0.
-    do j=1,n
-      w=max(0._real64,min(depth,z+dz(j))-z)
-      v=v+theta(j)*w;z=z+dz(j)
+    integer::l
+    v=0.0_real64;z=0.0_real64
+    do l=1,n
+      w=max(0.0_real64,min(depth,z+dz(l))-z)
+      v=v+theta(l)*w;z=z+dz(l)
       if(z>=depth)exit
     enddo
   end function
-  subroutine material_params(id,a,b,c,d,e,f)
-    character(len=*),intent(in)::id
-    real(real64),intent(out)::a,b,c,d,e,f
-    select case(id)
-    case('B02'); a=0.02;b=0.433878;c=0.021645;d=1.34877;e=83.241635;f=7.202077
-    case('B05'); a=0.01;b=0.380881;c=0.042807;d=1.8078;e=63.650403;f=0.024227
-    case('B11'); a=0.01;b=0.591286;c=0.02162;d=1.106695;e=6.30532;f=-5.549216
-    case('B16'); a=0.01;b=0.786061;c=0.021072;d=1.278798;e=12.357246;f=-1.220936
-    case default; error stop 20
-    end select
-  end subroutine
 end program
