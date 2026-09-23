@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.rom_root.s3d3.runner_blocker.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D3",
+  "date": "2026-09-23",
+  "status": "BLOCKED_FORMAL_ANALYZER_BY_EXTERNAL_ACTIONS_RUNNER_QUEUE",
+  "workflow_run": 35864381308,
+  "workflow_head": "88133dd26670d4111c1d71acc381ad5c2da3a52a",
+  "analyzer_job_id": 107194832789,
+  "analyzer_state": "queued",
+  "repository_queued_run_count_observed": 76,
+  "execution_evidence": {
+    "all_eight_case_jobs_completed_successfully": true,
+    "raw_artifact_replay": "integration/f-rom/ROM_ROOT_S3D3_ARTIFACT_REPLAY.json",
+    "replay_supports_preregistered_UJ_sufficiency": true,
+    "max_layer_UJ_error": 4.6074255521943996e-14,
+    "max_total_UJ_error": 4.6074255521943996e-14,
+    "numerical_guard": 2.9103830456733704e-11
+  },
+  "classification": {
+    "technical_failure": false,
+    "scientific_falsification": false,
+    "external_infrastructure_blocker": true,
+    "response_based_repair_required": false
+  },
+  "governance": {
+    "s3d3_closeout_authorized": false,
+    "dynamic_augmented_candidate_authorized": false,
+    "new_propagated_root_state_selected": false,
+    "required_resume_condition": "Bound analyzer job 107194832789 completes, or an independently bound analyzer replay is formally admitted.",
+    "queued_job_should_remain_active": true
+  },
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_propagated_root_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
