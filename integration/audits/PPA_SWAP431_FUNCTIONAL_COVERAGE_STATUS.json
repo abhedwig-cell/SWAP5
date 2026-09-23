@@ -116,16 +116,17 @@
     "PPA-LOW03/04/05: source oracles complete for listed equations; continue through ingestion/state-owner and ordinary-adapter composition without aliasing groundwater ownership",
     "PPA-WU05-A3: continue remaining independent exact-source macropore equations; keep undefined SorpFac cases and production/mass route held",
     "PPA-IRR-OTHER: continue remaining source-bound solute and scheduling/interception equations; the new surface nird*cirr*dt candidate does not establish SSDI solute transport, event parser/calendar ownership, solver-accepted source-mass booking or production route",
-    "PPA-SOL-AGE-TRANSPORT: PPA-SOL-AGE-CELL, PPA-SOL-AGE-FACE, PPA-SOL-AGE-VERTICAL and one-explicit-substep source sweep pass bounded exact-source O0/O2 oracles; timestep selection, surface pond boundary, daily loop, state owner and production binding remain absent"
+    "PPA-SOL-AGE-TRANSPORT: PPA-SOL-AGE-CELL, PPA-SOL-AGE-FACE, PPA-SOL-AGE-VERTICAL, one-explicit-substep sweep and stable timestep/remaining-interval source oracles pass bounded exact-source O0/O2 checks; surface pond boundary, full daily loop, state owner and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Source-test the B1.11 AgeTracer stable substep candidate and remaining-interval/minimum-step schedule as separate stateless time controls, then continue toward the missing top pond boundary; do not add a parallel time/state owner.",
-  "recovery_point": "latest committed campaign checkpoint 7e9fbfaea5fea119b8132a7c52739dbcf81c5bb7 (PPA-SOL-AGE-SUBSTEP one-explicit-substep B1.11 source sweep); local campaign branch only, not pushed or canonically admitted.",
+  "next_safe_step": "Source-test the B1.11 AgeTracer surface pond precipitation/irrigation age concentration and top age amount branches without moving pond or water state ownership; next continue output accumulation and the full multi-substep loop as source-only components.",
+  "recovery_point": "latest committed campaign checkpoint 994bc282cbb1708eabb8a485c7e738359ea027ae (PPA-SOL-AGE-DT stable substep and remaining-interval oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
     "PPA-SOL-AGE-VERTICAL: 100000 six-compartment source-ordered candidate profiles at O0/O2; face-vector dimension, NaN and nonpositive geometry rejection verified.",
     "PPA-SOL-AGE-SUBSTEP: 100000 five-compartment, three-drain-level source-ordered explicit substeps at O0/O2; updated-upper face, bottom sign, root/lateral and age-production branches bitwise match B1.11.",
+    "PPA-SOL-AGE-DT: 100000 four-compartment exact B1.11 AgeTracer stable-step candidates at O0/O2; strict 1e-8 remainder and dtmin clipping order verified, including source-preserving interval overrun.",
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
