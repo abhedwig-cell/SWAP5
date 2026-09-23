@@ -95,7 +95,8 @@ def main():
              '|THETA_HALF1=',theta_half1,'|THETA_HALF2=',theta_half2, &
              '|H_SLOPE_BOTTOM=',h_slope,'|H_FINE_BOTTOM=',h_fine_bottom, &
              '|THETA_FINE_BOTTOM=',theta_fine_bottom,'|FACE_DISTANCE_CM=',face_distance_cm, &
-             '|BOTTOM_FLUX=',bflux,'|BOTTOM_HEAD=',forcing%bottom_head
+             '|BOTTOM_FLUX=',bflux,'|BOTTOM_HEAD=',forcing%bottom_head, &
+             '|BOTTOM_MODE=',merge(5,2,is_head_symbol(symbol))
       end if"""
     text=one(text,old,new,"P5C interface diagnostic block")
     text=one(text,
