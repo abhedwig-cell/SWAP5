@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.rom-purpose.p3.surface-reference-repair-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE-SURFACE-REPAIR",
+  "date": "2026-09-23",
+  "status": "BOUND_TECHNICAL_MARKER_REPAIR_AFTER_FAILED_RUN",
+  "supersedes_failed_run": 35867575880,
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "repair_record": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json@769dc39df6f68302f80cb5f1efc02d0da0c224e4",
+  "purpose": "SURF_P",
+  "histories": [
+    "S09",
+    "S10",
+    "S11",
+    "S12"
+  ],
+  "routes": [
+    "R512_T32",
+    "R1024_T32",
+    "R2048_T32",
+    "R2048_T16",
+    "R2048_T8"
+  ],
+  "opts": [
+    0,
+    2
+  ],
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json": "769dc39df6f68302f80cb5f1efc02d0da0c224e4",
+    "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json": "40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "tests/rom/materialize_rom_purpose_p3_surface_reference.py": "31060946d233ba80e88ca42e43c90f512dc890de",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py": "716d41a88954a7e67f21bcc988102a4a1cf7add0",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    ".github/workflows/f-rom-purpose-p3-surface-reference-repair.yml": "460381200188b90ed4fa3683d3b36ef996daf7c9"
+  },
+  "repair_semantics": {
+    "scientific_effect": "NONE",
+    "marker_contract_only": true,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "metric_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false
+  },
+  "candidate_response_authorized": false
+}
