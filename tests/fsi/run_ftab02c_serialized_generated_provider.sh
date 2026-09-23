@@ -15,13 +15,18 @@ assert ".not. parameters%tabulated_hydraulics_active" in s
 assert "self%generated_mvg_state%matches(self%hydraulic_parameters)" in s
 assert s.count("initialize_b110_generated_mvg_table_state(self%generated_mvg_state") == 1
 configure=s[s.index("subroutine fmr_serialized_configure_parameters"):s.index("end subroutine fmr_serialized_configure_parameters")]
+admit=s[s.index("logical function fmr_serialized_execution_admitted"):s.index("end function fmr_serialized_execution_admitted")]
 advance=s[s.index("subroutine fmr_serialized_advance"):s.index("end subroutine fmr_serialized_advance")]
 assert "initialize_b110_generated_mvg_table_state" in configure
 assert "initialize_b110_generated_mvg_table_state" not in advance
 assert "bind_b110_generated_mvg_provider" in advance
+assert "generated_mvg_provider_ready" not in admit
+assert "associated(self%generated_mvg_state)" not in admit
+assert "associated(self%generated_constitutive)" not in admit
 print("F_TAB02_C_GENERATION_OUTSIDE_TRIAL_HOTLOOP=PASS")
 print("F_TAB02_C_EXACT_PARAMETER_AUTHORITY_CACHE=PASS")
 print("F_TAB02_C_EXPLICIT_PROVIDER_SELECTION_STATIC=PASS")
+print("F_TAB02_C_ADMISSION_BEFORE_MATERIALIZATION_SAFE=PASS")
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -O2 -fopenmp -fcheck=all -fbacktrace)
@@ -109,6 +114,7 @@ cat "$BUILD/output.txt"
 grep -Fq 'F-TAB02-C SERIALIZED PROVIDER SELECTION GATE PASS' "$BUILD/output.txt"
 grep -Fq 'F_TAB02_C_GENERIC_TABULATED_FAIL_CLOSED=PASS' "$BUILD/output.txt"
 grep -Fq 'F_TAB02_C_REPEATED_GENERATED_IDENTITY=PASS' "$BUILD/output.txt"
+grep -Fq 'F_TAB02_C_UNSUPPORTED_HENPR_FAIL_CLOSED_NO_FALLBACK=PASS' "$BUILD/output.txt"
 
 git diff --check --   src/runtime/mod_fmr_serialized_reference_backend.f90   tests/fsi/test_ftab02c_serialized_generated_provider.f90   tests/fsi/run_ftab02c_serialized_generated_provider.sh
 
