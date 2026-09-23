@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "work_unit": "SW-RIB-PA02",
+  "title": "Typed accepted Ribasim surface-water head provenance",
+  "phase": "DESIGN_PREREGISTRATION",
+  "date": "2026-09-23",
+  "parent_candidate": {
+    "branch": "work/sw-rib-pa01-coupled-profile-production-admission",
+    "frozen_head": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
+    "status": "PA01 candidate gate PASS; independent VQ pending at preregistration time"
+  },
+  "authorities": {
+    "surface_water_research": "SW-RIB-SWM01 research closeout",
+    "pa01": "RIBASIM_COUPLED_SURFACE_WATER_V1 raw accepted-head boundary",
+    "provenance_pattern": "RM10 typed origin-bound Ribasim realization receipt",
+    "scheduling": "RM11/RM12 coupler-owned allocation-boundary scheduler and exact-release trajectory",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+  },
+  "problem": "PA01 deliberately accepts detached numeric head values as already-accepted application-boundary inputs. That is sufficient for the bounded SWAP-side profile but insufficient for an end-to-end SWAP5+Ribasim production claim because stale, trial, wrong-origin, wrong-revision, wrong-window or wrong-node head vectors are not type-detectable.",
+  "admission_target": {
+    "profile_id": "RIBASIM_ACCEPTED_SURFACE_WATER_HEAD_RECEIPT_V1",
+    "purpose": "Bind each surface-water head vector consumed by PA01 to one coupler-owned accepted Ribasim origin and coupling boundary, without making SWAP owner of Ribasim state.",
+    "intended_composition": "typed receipt -> validated PA02 binding -> existing PA01 profile wrapper -> Q4B-qualified signed exchange transaction"
+  },
+  "frozen_ownership": {
+    "physical_surface_water_state": "RIBASIM",
+    "receipt_and_cross_model_provenance": "COUPLER",
+    "soil_exchange_process": "SWAP5",
+    "receipt_is_not_surface_water_state": true,
+    "receipt_is_not_ribasim_checkpoint_api": true
+  },
+  "receipt_contract": {
+    "required_fields": [
+      "coupler lineage id",
+      "Ribasim origin id",
+      "Ribasim accepted revision",
+      "accepted state time or exact coupling-boundary time",
+      "coupling interval t0,t1",
+      "surface-water mapping id",
+      "ordered external water-body/node ids",
+      "ordered accepted head vector",
+      "unit identity",
+      "exact Ribasim git provenance identity"
+    ],
+    "head_unit": "cm at the PA01/SWAP boundary; any Ribasim SI conversion occurs before receipt construction and is independently checked",
+    "cardinality": "one head per configured PA01 drainage-response level after explicit mapping; no implicit broadcasting",
+    "persistence": "receipt may be retained as accepted provenance metadata; it does not duplicate Basin storage or hydraulic state evolution"
+  },
+  "construction_rules": [
+    "Construct only from an accepted Ribasim/coupler state, never directly from a trial candidate.",
+    "Ribasim origin id must be positive and accepted revision nonnegative.",
+    "Coupling interval must be finite with t1>t0.",
+    "Accepted state time must equal the boundary time required by the declared coupling contract within the existing generic time comparison rule.",
+    "Mapping id and ordered node ids must be explicit and stable; node-order permutation is a provenance mismatch, not a harmless reshape.",
+    "Every head must be finite.",
+    "Git SHA must match the admitted Ribasim release for the profile.",
+    "Construction is deterministic for identical accepted origin, mapping and head values."
+  ],
+  "consumption_rules": [
+    "PA02 may call PA01 only if receipt lineage, Ribasim origin/revision, interval, mapping and configured level count match the active coupled window.",
+    "The PA01 raw-head API remains a lower-level bounded boundary, but the full end-to-end route must not expose detached raw heads to orchestration.",
+    "A stale or future Ribasim revision fails before SWAP physical solve.",
+    "A wrong interval or skipped RM11/RM12 allocation boundary fails before SWAP physical solve.",
+    "A mapping or node-order mismatch fails before SWAP physical solve.",
+    "A rejected coupled attempt does not mutate the accepted receipt or accepted Ribasim revision.",
+    "Same accepted origins and same window must reproduce the same receipt and PA01 input vector."
+  ],
+  "minimum_tests": [
+    "valid accepted receipt binds one-level and multi-level head vectors exactly",
+    "trial/unaccepted receipt construction rejected",
+    "stale Ribasim revision rejected",
+    "wrong Ribasim origin id rejected",
+    "wrong interval start/end rejected",
+    "wrong accepted-state time rejected",
+    "mapping id mismatch rejected",
+    "node-id order permutation rejected",
+    "shape mismatch rejected",
+    "nonfinite head rejected",
+    "wrong Ribasim git provenance rejected",
+    "same-origin deterministic replay",
+    "rejected PA01 process leaves receipt and both accepted revisions unchanged",
+    "restart reconstructs accepted receipt metadata and cannot replay a superseded revision"
+  ],
+  "relationship_to_rm10": "Reuse RM10's typed provenance pattern and fail-closed matching logic. Do not reuse irrigation-depth fields or claim RM10 receipt itself represents surface-water state.",
+  "relationship_to_rm11_rm12": "The receipt time/window must be compatible with the coupler-owned accepted boundary sequence. PA02 does not create another scheduler.",
+  "nonclaims": [
+    "No native Ribasim checkpoint API.",
+    "No change to Ribasim allocation semantics.",
+    "No new surface-water storage in SWAP.",
+    "No automatic SWMAN=2 implementation inside SWAP.",
+    "No nonlinear SWQHR1 parity.",
+    "No canonical admission until PA01 independent qualification is green and PA02 has separate candidate plus independent qualification."
+  ],
+  "production_admission": false,
+  "canonical_admission": false
+}
