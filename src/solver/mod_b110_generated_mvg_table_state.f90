@@ -39,8 +39,10 @@ module mod_b110_generated_mvg_table_state
     real(real64), allocatable :: wet_capacity(:)
     real(real64), allocatable :: ksat(:)
     real(real64), allocatable :: kbranch_head(:)
+    real(real64), allocatable :: source_cofgen(:,:)
   contains
     procedure :: ready => generated_state_ready
+    procedure :: matches => generated_state_matches
     procedure :: node_count => generated_state_node_count
     procedure :: estimated_bytes => generated_state_estimated_bytes
   end type b110_generated_mvg_table_state_t
@@ -118,6 +120,8 @@ contains
              state%logk_slope(B110_GENERATED_MVG_TABLE_N,n), state%logk_sigma(B110_GENERATED_MVG_TABLE_N,n))
     allocate(state%theta_saturated(n), state%theta_crit(n), state%wet_capacity(n), &
              state%ksat(n), state%kbranch_head(n))
+    allocate(state%source_cofgen(size(parameters%cofgen,1),n))
+    state%source_cofgen = parameters%cofgen
 
     u0 = log10(-GENERATION_H_DRY)
     do j = 1, B110_GENERATED_MVG_TABLE_N - 1
@@ -364,8 +368,22 @@ contains
          allocated(self%theta_slope) .and. allocated(self%theta_sigma) .and. &
          allocated(self%logk_slope) .and. allocated(self%logk_sigma) .and. &
          allocated(self%theta_saturated) .and. allocated(self%theta_crit) .and. &
-         allocated(self%wet_capacity) .and. allocated(self%ksat) .and. allocated(self%kbranch_head)
+         allocated(self%wet_capacity) .and. allocated(self%ksat) .and. allocated(self%kbranch_head) .and. &
+         allocated(self%source_cofgen)
   end function generated_state_ready
+
+  logical function generated_state_matches(self, parameters) result(matches)
+    class(b110_generated_mvg_table_state_t), intent(in) :: self
+    type(b110_default_mvg_parameters_t), intent(in) :: parameters
+
+    matches = .false.
+    if (.not. self%ready()) return
+    if (parameters%ksatexm_extension_enabled) return
+    if (parameters%active_nodes /= self%active_nodes .or. .not. allocated(parameters%cofgen)) return
+    if (size(parameters%cofgen,1) /= size(self%source_cofgen,1) .or. &
+        size(parameters%cofgen,2) /= size(self%source_cofgen,2)) return
+    matches = all(parameters%cofgen == self%source_cofgen)
+  end function generated_state_matches
 
   integer function generated_state_node_count(self) result(n)
     class(b110_generated_mvg_table_state_t), intent(in) :: self
@@ -378,7 +396,7 @@ contains
     bytes = 0_int64
     if (.not. self%ready()) return
     bytes = int(7 * B110_GENERATED_MVG_TABLE_N * self%active_nodes, int64) * 8_int64 + &
-         int(5 * self%active_nodes, int64) * 8_int64
+         int((5 + size(self%source_cofgen,1)) * self%active_nodes, int64) * 8_int64
   end function generated_state_estimated_bytes
 
 end module mod_b110_generated_mvg_table_state
