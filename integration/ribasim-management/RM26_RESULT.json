@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_temporal_localization.result.v1",
+  "work_unit": "RM26",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_SURFACE_LOCALIZED_TEMPORAL_DISCREPANCY_WITH_ZERO_COLUMN_STORAGE_DIFFERENCE",
+  "workflow": "RM26 temporal discrepancy localization",
+  "workflow_run": 35904485352,
+  "workflow_job": 107328613445,
+  "conclusion": "success",
+  "observations": {
+    "node_count": 4,
+    "global_max_head_node": 1,
+    "global_max_head_node_z_cm": -0.25,
+    "global_max_head_difference_cm": 0.0463838022838558572,
+    "bottom_node_head_difference_cm": 0.0000435876321063233263,
+    "upper20_max_head_difference_cm": 0.0463838022838558572,
+    "lower20_max_head_difference_cm": 0.0000435876321063233263,
+    "global_max_water_content_difference": 0.000046720584927051334,
+    "column_storage_difference_signed_cm": 0.0,
+    "column_storage_difference_abs_cm": 0.0,
+    "ponding_difference_cm": 0.0,
+    "top_flux_difference_cm_per_day": 0.0,
+    "bottom_flux_difference_cm_per_day": 0.0
+  },
+  "qualified_claims": [
+    "The RM23 one-step versus two-half temporal discrepancy is strongly localized at the surface node in the frozen four-node column.",
+    "The lower-interface node head discrepancy is more than three orders of magnitude smaller than the global maximum.",
+    "Total column water storage is identical at reported precision.",
+    "Surface ponding and the realized top and bottom transfer rates are identical.",
+    "The global maximum pressure-head discrepancy is therefore not representative of conservation or lower-interface state for the current single-window coupling purpose."
+  ],
+  "nonclaims": [
+    "No replacement temporal tolerance is defined.",
+    "Lower-interface similarity alone is not asserted sufficient for later multi-window hydrological-memory fidelity.",
+    "RM26 does not admit the three-model triangle."
+  ],
+  "next_required_boundary": "Test the same endpoints through the admitted fixed-interface q_swap(H) response, then characterize any induced coupled endpoint/transfer effect without inventing an application tolerance."
+}
