@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom-purpose.p3.same-partition-gw-repair-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SAME-PARTITION-GW-REPAIR",
+  "date": "2026-09-23",
+  "status": "BOUND_TARGETED_GW_RECOVERY_AFTER_PRE_SOLVE_FAILURE",
+  "preserved_surface_source_run": 35891150093,
+  "failed_groundwater_source_run": 35891150093,
+  "reference_runs": {
+    "SURF_P": 35876282704,
+    "GW_LB": 35887290359
+  },
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+  "state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json@73681c56e9d0347bdcd0288fea5b7509ed6b380b",
+  "recovery_matrix": {
+    "purpose": "GW_LB",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "route_count": 6
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p3-same-partition-gw-recovery.yml": "07cc9d3b6a7836bddc9c5152fbb3de90ffe9323f",
+    "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_TECHNICAL_REPAIR.json": "7d39ce2f2cfef56ca364a8f15b19e9eb650fa3e0",
+    "tests/rom/materialize_rom_purpose_p3_same_partition_richards.py": "2107c09473d0cfed9f733f3a4bc7d95ee1ad5754",
+    "tests/rom/run_rom_purpose_p3_same_partition_route.py": "ffa2dba8b9634e3a721a0b534eb24b815c135fc4",
+    "tests/rom/analyze_rom_purpose_p3_same_partition_richards.py": "e6b18344a9c02a87c6f14aaab333ca6390e7550c",
+    "tests/rom/materialize_rom_purpose_p1_coarse_output.py": "991c896fcdd3b580d72ab5a262fdf0c0f86412ef",
+    "tests/rom/rom_purpose_p1_variable_grid_stubs.py": "261583a0b4b05ac5598572ac6e2630cfa75fa0a1",
+    "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json": "40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json": "73681c56e9d0347bdcd0288fea5b7509ed6b380b"
+  },
+  "scientific_firewall": {
+    "successful_surface_routes_preserved": true,
+    "surface_routes_rerun": false,
+    "failed_gw_routes_had_no_scientific_response": true,
+    "forcing_changed": false,
+    "partition_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
