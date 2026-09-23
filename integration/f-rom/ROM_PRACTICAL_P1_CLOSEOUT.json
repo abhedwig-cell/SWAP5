@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.rom-practical.p1.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P1",
+  "date": "2026-09-23",
+  "status": "CLOSED_FIRST_PRACTICAL_DEVELOPMENT_BENCHMARK",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "evidence_screen_result": "integration/f-rom/ROM_PRACTICAL_P1_EVIDENCE_SCREEN_RESULT.json",
+  "baseline_freeze": {
+    "GW": "G4 [0,80,120,140,160] cm",
+    "SM": "S4 [0,20,40,80,160] cm",
+    "ET": "not opened"
+  },
+  "decisions": {
+    "GW": "Retain G4 as the minimal practical GW baseline, but classify groundwater event/reversal fidelity as unresolved because B01 is EVENT_SENSITIVE while B14 is relatively robust.",
+    "SM": "Retain S4 as the minimal practical SM baseline. It is relatively robust against U4 on both exposed development materials with no storage-extremum timing mismatch.",
+    "performance": "Retain 4/6/8-state Layer-ROM cost evidence as a strong shared-host reduction signal only. Direct purpose-specific S4/G4 timing remains required.",
+    "targeted_repair": "Do not repair yet. First execute a fresh practical dynamic panel spanning recharge, capillary rise, shallow/deep groundwater and forcing reversals. Repair only if the same dominant GW event defect recurs.",
+    "ET": "Remain closed until GW and SM fresh-panel characterization."
+  },
+  "next_work_unit": {
+    "id": "ROM-PRACTICAL-P2",
+    "purpose": "Fresh dynamic practical panel and direct purpose-specific timing",
+    "requirements": [
+      "Freeze development and blind histories before candidate response.",
+      "Use at least four hydraulically contrasting materials beyond the P2 two-material panel.",
+      "Include daily forcing, shallow/deep groundwater, recharge/capillary-rise/reversal regimes and seasonal windows.",
+      "Run S4/G4 first; add S6/S8 or G6/G8 only under the frozen ladder, not by case tuning.",
+      "Measure direct wall-clock and CPU time for S4/G4 and Reference in identical CI context.",
+      "Keep P-ROM-ET closed.",
+      "Attempt MetaSWAP only if executable/data provenance is reproducible."
+    ]
+  },
+  "application_authority_status": "NOT_ADJUDICATED",
+  "production_rom_authorized": false
+}
