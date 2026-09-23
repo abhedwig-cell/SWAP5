@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.rom-practical.p2b-gw1.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2B-GW1",
+  "date": "2026-09-23",
+  "status": "CLOSED_PARTIAL_G6_EVENT_REPAIR_NO_GENERALIZED_REVALIDATION",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P2B_GW1_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P2B_GW1_RESULT.json@f7706981379d5f78f0e72a3dd6d82d5d089e5df1",
+    "workflow_run": 35893735749
+  },
+  "findings": {
+    "event_repair_supported_materials": [
+      "B02",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "event_repair_not_supported_materials": [
+      "B05"
+    ],
+    "event_relation_B05": "G4 and G6 are equal on sign mismatch, reversal-sequence mismatch and reversal-timing error.",
+    "continuous_relation": {
+      "B02": "G6_COMPONENTWISE_NO_WORSE",
+      "B05": "TRADEOFF",
+      "B06": "G6_COMPONENTWISE_NO_WORSE",
+      "B11": "G6_COMPONENTWISE_NO_WORSE",
+      "B12": "G6_COMPONENTWISE_NO_WORSE",
+      "B16": "G6_COMPONENTWISE_NO_WORSE"
+    },
+    "representative_changes": {
+      "B11": {
+        "G4_sign_mismatch": 384,
+        "G6_sign_mismatch": 0,
+        "G4_reversal_sequence_mismatch": 1,
+        "G6_reversal_sequence_mismatch": 0,
+        "G4_reversal_timing_steps": 1024,
+        "G6_reversal_timing_steps": 0
+      },
+      "B12": {
+        "G4_sign_mismatch": 73,
+        "G6_sign_mismatch": 0,
+        "G4_reversal_timing_steps": 73,
+        "G6_reversal_timing_steps": 0
+      },
+      "B06": {
+        "G4_sign_mismatch": 82,
+        "G6_sign_mismatch": 59,
+        "G4_reversal_sequence_mismatch": 2,
+        "G6_reversal_sequence_mismatch": 0,
+        "G4_reversal_timing_steps": 1024,
+        "G6_reversal_timing_steps": 30
+      },
+      "B05": {
+        "G4_sign_mismatch": 9,
+        "G6_sign_mismatch": 9,
+        "G4_reversal_sequence_mismatch": 4,
+        "G6_reversal_sequence_mismatch": 4,
+        "G4_reversal_timing_steps": 1024,
+        "G6_reversal_timing_steps": 1024
+      }
+    },
+    "attribution": "Insufficient lower-zone state information is a substantial contributor to G4 groundwater event error across most tested materials, but state-count increase from 4 to 6 is not a general repair. B05 demonstrates an unresolved material-dependent mechanism.",
+    "comparator_status": "G6 does not reach the R128-vs-R256 numerical comparator for any tested material."
+  },
+  "performance": {
+    "same_runner_G6_over_R256_wall_ratio": {
+      "min": 0.10654188738962042,
+      "median": 0.30019345680530063,
+      "max": 0.33831719216395395
+    },
+    "comparison_to_G4": "G6 remains substantially cheaper than the tested R256 Reference, but it is not admitted as a replacement for G4 because event repair is not generalized.",
+    "portable_speedup_claim": false
+  },
+  "decision": {
+    "blind_G4_vs_G6_revalidation_authorized": false,
+    "G8_auto_escalation_authorized": false,
+    "closure_change_authorized": false,
+    "P_ROM_ET_opened": false,
+    "recommended_next_question": "Why is B05 insensitive to the G4→G6 lower-zone state enrichment while five other materials improve, and does that reflect placement mismatch, constitutive nonlinearity, or propagation/closure error?"
+  },
+  "candidate_family_status": {
+    "P-ROM-SM": "S4 retained as practical baseline pending longer fresh daily/seasonal validation and B05 timing diagnosis.",
+    "P-ROM-GW": "G4 remains baseline for provenance; G6 is a promising but non-general development variant. No practical GW family member is yet qualified for a blind operating-envelope study."
+  },
+  "application_authority_status": "NOT_ADJUDICATED",
+  "production_rom_authorized": false
+}
