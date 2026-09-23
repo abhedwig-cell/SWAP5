@@ -50,7 +50,7 @@
   },
   "verification": {
     "test": "tests/fmr/test_m7_standalone_kernel_route_census.py",
-    "result": "PASS_SOURCE_STRUCTURE_ONLY",
+    "result": "PASS_SOURCE_STRUCTURE_AND_BOUNDED_PROFILE_RUNTIME_EXAMPLES",
     "markers": [
       "M7_STANDALONE_BASE_DELEGATES_TO_FORCING_ROUTE=PASS",
       "M7_STANDALONE_FORCING_HAS_ONE_SERIALIZED_DISPATCH=PASS",
@@ -61,9 +61,27 @@
       "M7_SERIALIZED_ROUTE_USES_KERNEL_REJECT_CONTRACT=PASS",
       "M7_STANDALONE_KERNEL_ROUTE_CENSUS=PASS_SOURCE_STRUCTURE_ONLY"
     ],
-    "runtime_qualification": "Not established by this census. Existing capability-specific application tests remain bounded to their own tested examples; the known held WU04C transaction is not counted as passing evidence."
+    "runtime_test_runner": "tests/fmr/run_m7_standalone_profile_examples.py",
+    "runtime_profile_examples": {
+      "prescribed_qbot": {
+        "source_test": "tests/fapp/test_ppa_wu02_prescribed_qbot_application_admission.f90",
+        "result": "PASS_O0_O2_IDENTICAL",
+        "claims": ["standalone Reference Richards reached", "prescribed qbot reached", "hard mass", "committed state is Fortran-owned"]
+      },
+      "black_evaporation": {
+        "source_test": "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+        "result": "PASS_O0_O2_IDENTICAL",
+        "claims": ["production application reachable", "hard mass", "rejected-trial immutability", "changed-dt retry", "restart roundtrip", "fail-closed option layout"]
+      },
+      "boesten_evaporation": {
+        "source_test": "tests/fapp/test_ppa_wu04b_boesten_runtime.f90",
+        "result": "PASS_O0_O2_IDENTICAL",
+        "claims": ["production application reachable", "hard mass", "rejected-trial immutability", "changed-dt retry", "restart roundtrip", "fail-closed option layout"]
+      }
+    },
+    "runtime_qualification_scope": "The named bounded application tests executed successfully on O0 and O2 with identical transcripts. This evidence, together with the source call graph, closes only M7-07's shared-kernel-route claim. It does not qualify every profile combination, the WU04C production-owner transaction, or any unrelated physics/production admission claim."
   },
-  "criterion_status": "PARTIAL",
-  "remaining_gap": "The current source call graph establishes one kernel/transaction route for every public standalone API and records the fail-closed admission bounds. The qualification set does not yet demonstrate successful execution and accepted-state/mass behavior for every retained admitted profile on the same current postimage.",
-  "next_action": "Reconcile the named profile-specific executable qualification evidence against this exact route and current dependency surface; leave profiles without passing evidence partial and do not broaden admission."
+  "criterion_status": "CLOSED",
+  "remaining_gap": null,
+  "next_action": "No action while the recorded dependency surface remains unchanged; preserve the named source-route census and bounded O0/O2 application evidence."
 }

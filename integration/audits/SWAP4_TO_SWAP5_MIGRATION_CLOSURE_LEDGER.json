@@ -1248,16 +1248,20 @@
         {
           "id": "M7-07",
           "text": "standalone execution uses the same kernel contracts rather than a separate physics implementation.",
-          "status": "PARTIAL",
-          "gap": "A current-source census and test establish that all three public production-application standalone entry points converge on the same serialized typed-backend/kernel transaction route, and record the fail-closed profile bounds. The executable qualification set does not yet demonstrate successful accepted-state and mass behavior for every retained admitted profile on this exact route/postimage.",
+          "status": "CLOSED",
+          "gap": null,
           "evidence": [
             "integration/audits/M7_STANDALONE_KERNEL_ROUTE_CENSUS.json",
-            "tests/fmr/test_m7_standalone_kernel_route_census.py"
+            "tests/fmr/test_m7_standalone_kernel_route_census.py",
+            "tests/fmr/run_m7_standalone_profile_examples.py",
+            "tests/fapp/test_ppa_wu02_prescribed_qbot_application_admission.f90",
+            "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+            "tests/fapp/test_ppa_wu04b_boesten_runtime.f90"
           ],
-          "next_bounded_action": "Reconcile the profile-specific executable qualification evidence against the census and exact source postimage; retain PARTIAL for profiles without passing accepted-state/mass evidence, and do not broaden the public API."
+          "next_bounded_action": "No action while the recorded dependency surface remains unchanged; preserve the source-route census and its bounded O0/O2 application evidence."
         }
       ],
-      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for worker reuse, inactive-option resource behavior, representative memory, throughput/tail cost, route coverage, and executable qualification across every retained standalone profile. A source-route census confirms one shared kernel/transaction call graph for all public standalone application APIs; that structural evidence is not a substitute for profile execution and mass qualification. These are measurements/composition checks, not authorization for concurrent execution or speculative optimization.",
+      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for worker reuse, inactive-option resource behavior, representative memory, throughput/tail cost, and fallback route coverage. M7-07 is closed for the shared standalone kernel/transaction route with three bounded current-postimage O0/O2 profile examples; this is not an all-profile physics or production admission claim. Remaining M7 work is measurement/composition, not authorization for concurrent execution or speculative optimization.",
       "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
     },
     {
