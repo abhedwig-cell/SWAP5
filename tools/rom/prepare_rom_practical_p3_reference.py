@@ -97,8 +97,6 @@ def main():
               "integer, parameter :: NHIST=2, NSTEPS=1920\n  integer, parameter :: OUTPUT_FACTOR=32","time grid")
         t=one(t,"real(real64), parameter :: step_dt=0.0001_real64",
               "real(real64), parameter :: step_dt=0.03125_real64","step dt")
-        t=one(t,"call require(any(numnod==[128,256]),'LAREGW1 ROMPRACT P2A geometry is R128/R256')",
-              "call require(any(numnod==[64,128]),'LAREGW1 ROMPRACT P3 geometry is R64/R128')","gw geometry")
         t=block(t,r"^  pure real\(real64\) function initial_se\(ih\) result\(value\).*?^  end function initial_se\n",
 """  pure real(real64) function initial_se(ih) result(value)
     integer,intent(in) :: ih
