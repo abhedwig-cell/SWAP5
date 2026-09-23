@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.sw_rib_swm01.q4a.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q4A",
+  "date": "2026-09-23",
+  "status": "CANDIDATE_IMPLEMENTATION_FROZEN_BEFORE_REPOSITORY_QUALIFICATION",
+  "title": "Stateless signed extended drainage exchange production-path candidate",
+  "purpose": "Move the retained SWAP extended drainage/infiltration constitutive law out of the legacy surface-water container without moving surface-water storage, availability or management ownership back into SWAP.",
+  "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "source_authority": {
+    "fpm08d2_closeout": "work/f-pm08d2-restricted-extended-drainage-exchange-readiness@a0b11f68884f7593f000af1c34aa42de8956ecfd",
+    "frozen_source_location": "SWAP/surfacewater.f90:468-589",
+    "frozen_surfacewater_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "readiness_value_cases": 1170,
+    "readiness_derivative_checks": 3510
+  },
+  "current_canonical_gap": {
+    "simple_linear_provider": "src/process/mod_drainage_process.f90 is positive-only and returns zero for negative head difference",
+    "signed_aggregator": "src/process/mod_drainage_multilevel_aggregation.f90 already accepts signed per-level transfers",
+    "missing_component": "no canonical production provider implements the restricted signed extended exchange law"
+  },
+  "candidate": {
+    "path": "src/process/mod_drainage_extended_exchange.f90",
+    "role": "stateless per-level constitutive evaluator",
+    "input": "process_hydraulic_view_t groundwater level and ponding depth plus an explicit resolved external surface-water control head",
+    "output": "one authoritative signed soil-to-surface transfer, resolved drain level, effective head difference, branch metadata and analytic partial derivatives",
+    "persistent_state": false
+  },
+  "admitted_candidate_domain": {
+    "legacy_surface_routes": [
+      2,
+      3
+    ],
+    "swsrf1": false,
+    "negative_power_interflow": false,
+    "reader_normalized_parameter_domain": true,
+    "explicit_resolved_control_head": true
+  },
+  "explicitly_excluded_ownership": [
+    "SWST or WLS surface-water storage/state",
+    "Ribasim availability or WSCAP feasibility",
+    "multilevel aggregation",
+    "DIVDRA spatial distribution",
+    "runoff or rapid-drainage generation",
+    "WLSTAR, DROPR or management calendar/event state",
+    "coupling acceptance or commit/rollback"
+  ],
+  "qualification_population": {
+    "seed": 2026092321,
+    "smooth_and_cap_cases": 1500,
+    "explicit_source_seam_or_hold_cases": 7,
+    "compiler_optimizations": [
+      0,
+      2
+    ]
+  },
+  "pass_criteria": [
+    "All 1507 candidate cases match an independently coded source-derived oracle for status, branch and signed flux.",
+    "Smooth-branch analytic partial derivatives with respect to groundwater level, external control head and ponding depth match the oracle within 5e-11 scaled absolute tolerance.",
+    "The seven explicit seam/hold cases preserve branch-boundary metadata or fail closed for negative power interflow.",
+    "O0 and O2 textual result streams are identical.",
+    "No SAVE state, storage state, availability limiter, management state or Ribasim API dependency occurs in the candidate."
+  ],
+  "handoff_if_pass": "Q4B may bind this provider as a new drainage-response variant and qualify signed runtime booking/rollback. Q4A alone is not runtime or production admission.",
+  "production_admission": false,
+  "retirement_authority": false
+}

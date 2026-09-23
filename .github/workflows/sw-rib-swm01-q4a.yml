@@ -1,0 +1,40 @@
+name: SW-RIB-SWM01 Q4A signed extended drainage candidate
+
+on:
+  push:
+    branches:
+      - research/sw-rib-swm01-surfacewater-ownership
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'tests/sw-rib-swm01/q4a_extended_exchange_driver.f90'
+      - 'tests/sw-rib-swm01/test_q4a_extended_exchange_candidate.py'
+      - 'tests/sw-rib-swm01/run_q4a_extended_exchange_candidate.sh'
+      - 'integration/research/SW_RIB_SWM01_Q4A_*'
+      - '.github/workflows/sw-rib-swm01-q4a.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'tests/sw-rib-swm01/q4a_extended_exchange_driver.f90'
+      - 'tests/sw-rib-swm01/test_q4a_extended_exchange_candidate.py'
+      - 'tests/sw-rib-swm01/run_q4a_extended_exchange_candidate.sh'
+      - 'integration/research/SW_RIB_SWM01_Q4A_*'
+      - '.github/workflows/sw-rib-swm01-q4a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Q4A source-bound signed extended exchange candidate
+        run: bash tests/sw-rib-swm01/run_q4a_extended_exchange_candidate.sh
