@@ -22,8 +22,12 @@ mkdir -p "$REL"
 unzip -q "$ZIP" -d "$REL"
 LIB="$REL/ribasim/lib/libribasim.so"
 test -f "$LIB" || fail "missing libribasim"
+test -d "$REL/ribasim/lib/julia" || fail "missing bundled Julia runtime"
+RIBASIM_LD_PATH="$REL/ribasim/lib:$REL/ribasim/lib/julia"
 
 (
  cd "$RIBASIM_ROOT"
- RM13_RIBASIM_ROOT="$RIBASIM_ROOT" RM13_RIBASIM_MODEL="$MODEL_DIR/ribasim.toml" RM13_LIBRIBASIM="$LIB"  pixi run python "$ROOT/tests/ribasim-management/test_rm13_ribasim_release_loader.py"
+ LD_LIBRARY_PATH="$RIBASIM_LD_PATH:${LD_LIBRARY_PATH:-}" \
+ RM13_RIBASIM_ROOT="$RIBASIM_ROOT" RM13_RIBASIM_MODEL="$MODEL_DIR/ribasim.toml" RM13_LIBRIBASIM="$LIB" \
+ pixi run python "$ROOT/tests/ribasim-management/test_rm13_ribasim_release_loader.py"
 )
