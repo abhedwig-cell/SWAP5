@@ -144,6 +144,10 @@ Path(sys.argv[3]).write_text("\n".join(lines)+"\n")
 print(Path(sys.argv[3]).read_text(),end="")
 PY
 
+cp "$BUILD/provider-richards.txt" F-TAB02-E_PROVIDER_RICHARDS.log
+cp "$BUILD/serialized.txt" F-TAB02-E_SERIALIZED.log
+cp "$BUILD/F-TAB02-E_SUMMARY.tsv" F-TAB02-E_SUMMARY.tsv
+
 git diff --check --   tests/fsi/test_ftab02e_provider_richards_performance.f90   tests/fsi/test_ftab02e_serialized_runtime_performance.f90   tests/fsi/run_ftab02e_generated_provider_performance.sh
 
 echo "F_TAB02_E_CORRECTNESS_BEFORE_TIMING=PASS"
