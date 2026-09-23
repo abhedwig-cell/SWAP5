@@ -1,0 +1,699 @@
+{
+  "P_ROM_ET_opened": false,
+  "application_acceptance_adjudicated": false,
+  "cases": [
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 4.4408920985006264e-17,
+          "K": 8.714556871920403e-17,
+          "PSI": 0.0,
+          "QB": 1.4035634382136846e-16,
+          "QT": 8.714556871920403e-17
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B02",
+      "max_water_ledger_cm": 8.44124770082999e-12,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.0012479910947036199,
+        "daily_bottom_flux_rmse_cm_per_day": 0.0002834201830757964,
+        "final_exchange_drift_cm": 0.001627060735103214,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.0012479910934331934
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.1594243544764512,
+      "purpose": "GW_LB",
+      "python_heun": {
+        "failed_elapsed_s": 1.4645428550000048,
+        "failure": "iterative Heun corrector did not converge",
+        "status": "NUMERICAL_BLOCKED"
+      },
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 1.304814472016261e-05,
+        "daily_bottom_flux_rmse_cm_per_day": 8.007866397526168e-06,
+        "final_exchange_drift_cm": 1.6937527597349344e-05,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 1.3048144682516657e-05
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 4.231444954802066e-16,
+          "K": 7.716532631367533e-16,
+          "PSI": 2.6223702675266384e-16,
+          "QB": 2.672936901626301e-16,
+          "QT": 1.7614523529907182e-16
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": {
+        "DAY": "1",
+        "HISTORY": "GD02",
+        "REASON": "STAGE_DOMAIN",
+        "RHS_EVALS": "16",
+        "STAGE": "4",
+        "SUBSTEP": "4"
+      },
+      "fixed_0_01_status": "NUMERICAL_BLOCKED",
+      "material": "B05",
+      "max_water_ledger_cm": 3.148414862153004e-11,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.002299200641805673,
+        "daily_bottom_flux_rmse_cm_per_day": 0.0006440427139519499,
+        "final_exchange_drift_cm": 0.0028024826769694755,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.0022992006298912155
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.274536659681448,
+      "purpose": "GW_LB",
+      "python_heun": {
+        "failed_elapsed_s": 0.0028092080000021724,
+        "failure": "iterative Heun corrector did not converge",
+        "status": "NUMERICAL_BLOCKED"
+      },
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 7.619958830296918e-06,
+        "daily_bottom_flux_rmse_cm_per_day": 1.1993354516867424e-06,
+        "final_exchange_drift_cm": 9.961729688257037e-06,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 7.619958852102581e-06
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 2.2085748943934308e-16,
+          "K": 1.1390020404034472e-16,
+          "PSI": 0.0,
+          "QB": 2.3392001458990904e-16,
+          "QT": 0.0
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": {
+        "DAY": "1",
+        "HISTORY": "GD02",
+        "REASON": "ACCEPTED_STATE_DOMAIN",
+        "RHS_EVALS": "16",
+        "STAGE": "5",
+        "SUBSTEP": "4"
+      },
+      "fixed_0_01_status": "NUMERICAL_BLOCKED",
+      "material": "B06",
+      "max_water_ledger_cm": 7.567280135845067e-12,
+      "panel_role": "extension",
+      "primary_metrics_vs_R128": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.005748156567426163,
+        "daily_bottom_flux_rmse_cm_per_day": 0.0006920864713509179,
+        "final_exchange_drift_cm": 0.007748845174820218,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.0057481565669757154
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.15930786220446916,
+      "purpose": "GW_LB",
+      "python_heun": {
+        "failed_elapsed_s": 1.5187785389999817,
+        "failure": "OUTSIDE_QUALIFIED_DOMAIN theta endpoint",
+        "status": "NUMERICAL_BLOCKED"
+      },
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 2.2184882226964532e-06,
+        "daily_bottom_flux_rmse_cm_per_day": 2.004239024888237e-06,
+        "final_exchange_drift_cm": 1.6370494648754175e-06,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 2.2184881870554244e-06
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 1.7254851154030995e-18,
+          "K": 8.622337286631512e-19,
+          "PSI": 0.0,
+          "QB": 0.0,
+          "QT": 0.0
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B11",
+      "max_water_ledger_cm": 3.9102054927298013e-13,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.00041601820720718456,
+        "daily_bottom_flux_rmse_cm_per_day": 0.00019456240166540313,
+        "final_exchange_drift_cm": 0.00043940785604161536,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.0004160182072203545
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.13182332098074143,
+      "purpose": "GW_LB",
+      "python_heun": {
+        "cpu_s_median": 2.8845403570000006,
+        "max_corrector_iterations": 6,
+        "max_water_ledger_cm": 2.5041080320420406e-13,
+        "metrics_vs_R128": {
+          "bottom_flux_sign_mismatch_days": 0,
+          "cumulative_bottom_exchange_rmse_cm": 0.00041601587441210294,
+          "daily_bottom_flux_rmse_cm_per_day": 0.00019455739950341534,
+          "final_exchange_drift_cm": 0.0004394072307195296,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_days": 0,
+          "total_storage_rmse_cm": 0.0004160158743259713
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 2.8850271800000087
+      },
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 5.00307346489818e-05,
+        "daily_bottom_flux_rmse_cm_per_day": 3.555222765382997e-05,
+        "final_exchange_drift_cm": 2.6289680434388174e-05,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 5.003073464884301e-05
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 2.459599383902813e-15,
+          "K": 4.325340334042156e-19,
+          "PSI": 0.0,
+          "QB": 5.41884989384068e-15,
+          "QT": 2.1649808730139414e-19
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B12",
+      "max_water_ledger_cm": 8.81463305124619e-13,
+      "panel_role": "extension",
+      "primary_metrics_vs_R128": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.00047244603767876165,
+        "daily_bottom_flux_rmse_cm_per_day": 0.00020802540249502903,
+        "final_exchange_drift_cm": 0.00035202616445358104,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.000472446037448705
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.1319426932237155,
+      "purpose": "GW_LB",
+      "python_heun": {
+        "cpu_s_median": 2.8688547090000003,
+        "max_corrector_iterations": 4,
+        "max_water_ledger_cm": 2.904013834958974e-13,
+        "metrics_vs_R128": {
+          "bottom_flux_sign_mismatch_days": 0,
+          "cumulative_bottom_exchange_rmse_cm": 0.0004724453148990788,
+          "daily_bottom_flux_rmse_cm_per_day": 0.00020802430204401487,
+          "final_exchange_drift_cm": 0.00035202629107485006,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_days": 0,
+          "total_storage_rmse_cm": 0.0004724453148344415
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 2.869551170999955
+      },
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.00010223935599943927,
+        "daily_bottom_flux_rmse_cm_per_day": 6.841170616911723e-05,
+        "final_exchange_drift_cm": 5.454833871709752e-05,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.00010223935595686916
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 6.695578859280243e-18,
+          "K": 4.0200642014135435e-17,
+          "PSI": 0.0,
+          "QB": 7.105197058658523e-17,
+          "QT": 4.0200642014135435e-17
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B16",
+      "max_water_ledger_cm": 1.538325022920617e-12,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.0026831532629469856,
+        "daily_bottom_flux_rmse_cm_per_day": 0.0002993649904049138,
+        "final_exchange_drift_cm": 0.005865255137283754,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.002683153262566853
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.2012704696663462,
+      "purpose": "GW_LB",
+      "python_heun": {
+        "cpu_s_median": 2.882409325,
+        "max_corrector_iterations": 11,
+        "max_water_ledger_cm": 1.4601653219870059e-12,
+        "metrics_vs_R128": {
+          "bottom_flux_sign_mismatch_days": 0,
+          "cumulative_bottom_exchange_rmse_cm": 0.0026831499326372033,
+          "daily_bottom_flux_rmse_cm_per_day": 0.00029934417402545035,
+          "final_exchange_drift_cm": 0.0058652532667693436,
+          "reversal_sequence_mismatch_count": 0,
+          "reversal_timing_error_days": 0,
+          "total_storage_rmse_cm": 0.002683149932405594
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 2.883009419000018
+      },
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 3.351744293311482e-05,
+        "daily_bottom_flux_rmse_cm_per_day": 2.698471516660775e-05,
+        "final_exchange_drift_cm": 3.6884762835143192e-06,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 3.3517442933030956e-05
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 0.0,
+          "K": 2.3032408428975482e-17,
+          "PSI": 3.029651865237363e-16,
+          "QB": 0.0,
+          "QT": 0.0
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B02",
+      "max_water_ledger_cm": 1.4701129202876473e-11,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "daily_storage_extremum_timing_error_days": 16,
+        "final_total_storage_bias_cm": 2.2026824808563106e-13,
+        "mapped_10cm_theta_rmse": 0.007548955327588609,
+        "root_zone_0_40_storage_rmse_cm": 0.005828131828771711,
+        "surface_0_20_storage_rmse_cm": 0.007735799506731451,
+        "total_storage_rmse_cm": 6.367192445742333e-14,
+        "upper_0_80_storage_rmse_cm": 0.023246154260698353
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.177159742859471,
+      "purpose": "SURF_P",
+      "python_heun": {
+        "cpu_s_median": 1.146051274,
+        "max_corrector_iterations": 6,
+        "max_water_ledger_cm": 9.258371846954105e-12,
+        "metrics_vs_R128": {
+          "daily_storage_extremum_timing_error_days": 16,
+          "final_total_storage_bias_cm": 1.6342482922482304e-13,
+          "mapped_10cm_theta_rmse": 0.007548955302658646,
+          "root_zone_0_40_storage_rmse_cm": 0.0058280637009297705,
+          "surface_0_20_storage_rmse_cm": 0.0077357345895109775,
+          "total_storage_rmse_cm": 7.86426696961181e-14,
+          "upper_0_80_storage_rmse_cm": 0.023246137328996625
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 1.1461576800000017
+      },
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 1.0658141036401503e-13,
+        "mapped_10cm_theta_rmse": 0.00022762215722499043,
+        "root_zone_0_40_storage_rmse_cm": 0.00016083462978281902,
+        "surface_0_20_storage_rmse_cm": 0.00013642562944185595,
+        "total_storage_rmse_cm": 2.836985171327991e-14,
+        "upper_0_80_storage_rmse_cm": 0.00017078813938974368
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 7.196725198960133e-17,
+          "K": 2.0895548939353278e-16,
+          "PSI": 0.0,
+          "QB": 1.7614523529907182e-16,
+          "QT": 1.7898496644590653e-16
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B05",
+      "max_water_ledger_cm": 3.200284481863491e-10,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "daily_storage_extremum_timing_error_days": 19,
+        "final_total_storage_bias_cm": 1.3500311979441904e-13,
+        "mapped_10cm_theta_rmse": 0.012566918181049661,
+        "root_zone_0_40_storage_rmse_cm": 0.0019720551422695433,
+        "surface_0_20_storage_rmse_cm": 7.164008184179897e-05,
+        "total_storage_rmse_cm": 9.492905906743584e-14,
+        "upper_0_80_storage_rmse_cm": 0.13055900698669948
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.13176751560985067,
+      "purpose": "SURF_P",
+      "python_heun": {
+        "cpu_s_median": 2.270751142,
+        "max_corrector_iterations": 8,
+        "max_water_ledger_cm": 6.235723049030639e-11,
+        "metrics_vs_R128": {
+          "daily_storage_extremum_timing_error_days": 19,
+          "final_total_storage_bias_cm": 4.973799150320701e-14,
+          "mapped_10cm_theta_rmse": 0.01256691829241655,
+          "root_zone_0_40_storage_rmse_cm": 0.0019720811397629643,
+          "surface_0_20_storage_rmse_cm": 7.165890011804211e-05,
+          "total_storage_rmse_cm": 6.240383124445992e-14,
+          "upper_0_80_storage_rmse_cm": 0.13055907280857615
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 2.2712296610000067
+      },
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 2.842170943040401e-14,
+        "mapped_10cm_theta_rmse": 6.889128038400826e-05,
+        "root_zone_0_40_storage_rmse_cm": 1.5531457388262719e-06,
+        "surface_0_20_storage_rmse_cm": 7.207212313782172e-07,
+        "total_storage_rmse_cm": 2.1581090761184554e-14,
+        "upper_0_80_storage_rmse_cm": 1.65852171990549e-05
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 7.835350645188599e-17,
+          "K": 1.1390020404034472e-16,
+          "PSI": 0.0,
+          "QB": 0.0,
+          "QT": 0.0
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B06",
+      "max_water_ledger_cm": 1.8566481685411418e-11,
+      "panel_role": "extension",
+      "primary_metrics_vs_R128": {
+        "daily_storage_extremum_timing_error_days": 30,
+        "final_total_storage_bias_cm": 1.0658141036401503e-13,
+        "mapped_10cm_theta_rmse": 0.0027814309037709913,
+        "root_zone_0_40_storage_rmse_cm": 0.007212605012718293,
+        "surface_0_20_storage_rmse_cm": 0.002818148623776336,
+        "total_storage_rmse_cm": 5.45122595316002e-14,
+        "upper_0_80_storage_rmse_cm": 0.020868490728348666
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.13169299596431558,
+      "purpose": "SURF_P",
+      "python_heun": {
+        "cpu_s_median": 2.1355185450000005,
+        "max_corrector_iterations": 8,
+        "max_water_ledger_cm": 6.387779194483301e-12,
+        "metrics_vs_R128": {
+          "daily_storage_extremum_timing_error_days": 30,
+          "final_total_storage_bias_cm": 2.2026824808563106e-13,
+          "mapped_10cm_theta_rmse": 0.0027814308616151647,
+          "root_zone_0_40_storage_rmse_cm": 0.007212570352912956,
+          "surface_0_20_storage_rmse_cm": 0.0028181260659584026,
+          "total_storage_rmse_cm": 8.101952963990259e-14,
+          "upper_0_80_storage_rmse_cm": 0.020868447584619514
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 2.135906480999992
+      },
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 5.684341886080802e-14,
+        "mapped_10cm_theta_rmse": 5.242391769938375e-07,
+        "root_zone_0_40_storage_rmse_cm": 1.0673909118500163e-05,
+        "surface_0_20_storage_rmse_cm": 5.244731032446109e-06,
+        "total_storage_rmse_cm": 4.0889661202465683e-14,
+        "upper_0_80_storage_rmse_cm": 2.176811769431609e-05
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 1.907475767130344e-18,
+          "K": 0.0,
+          "PSI": 0.0,
+          "QB": 0.0,
+          "QT": 0.0
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B11",
+      "max_water_ledger_cm": 1.5787371410169726e-13,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 2.842170943040401e-14,
+        "mapped_10cm_theta_rmse": 0.0038815019584511013,
+        "root_zone_0_40_storage_rmse_cm": 0.012187855122459224,
+        "surface_0_20_storage_rmse_cm": 0.03459297043854002,
+        "total_storage_rmse_cm": 7.254266681065947e-14,
+        "upper_0_80_storage_rmse_cm": 0.005974220903209567
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.11235348754600877,
+      "purpose": "SURF_P",
+      "python_heun": {
+        "cpu_s_median": 1.91096808,
+        "max_corrector_iterations": 3,
+        "max_water_ledger_cm": 2.495781359357352e-13,
+        "metrics_vs_R128": {
+          "daily_storage_extremum_timing_error_days": 0,
+          "final_total_storage_bias_cm": 3.126388037344441e-13,
+          "mapped_10cm_theta_rmse": 0.0038815019722989543,
+          "root_zone_0_40_storage_rmse_cm": 0.012187859834485011,
+          "surface_0_20_storage_rmse_cm": 0.03459297804997116,
+          "total_storage_rmse_cm": 1.3518997541297357e-13,
+          "upper_0_80_storage_rmse_cm": 0.005974222718770598
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 1.911252563000005
+      },
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 2.842170943040401e-14,
+        "mapped_10cm_theta_rmse": 3.5113702810428785e-05,
+        "root_zone_0_40_storage_rmse_cm": 0.0004950738632641674,
+        "surface_0_20_storage_rmse_cm": 0.0009292456542647707,
+        "total_storage_rmse_cm": 6.534160682110728e-14,
+        "upper_0_80_storage_rmse_cm": 0.00011166954288149054
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 1.6180388524433858e-17,
+          "K": 4.325340334042156e-19,
+          "PSI": 0.0,
+          "QB": 0.0,
+          "QT": 0.0
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B12",
+      "max_water_ledger_cm": 2.8910207561239076e-13,
+      "panel_role": "extension",
+      "primary_metrics_vs_R128": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 2.0605739337042905e-13,
+        "mapped_10cm_theta_rmse": 0.0070035977664623566,
+        "root_zone_0_40_storage_rmse_cm": 0.01799270076561149,
+        "surface_0_20_storage_rmse_cm": 0.0807405042637613,
+        "total_storage_rmse_cm": 2.060788310447102e-13,
+        "upper_0_80_storage_rmse_cm": 0.0018096254405164348
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.11227983422764516,
+      "purpose": "SURF_P",
+      "python_heun": {
+        "cpu_s_median": 1.9248444050000004,
+        "max_corrector_iterations": 3,
+        "max_water_ledger_cm": 1.4810375148499588e-13,
+        "metrics_vs_R128": {
+          "daily_storage_extremum_timing_error_days": 0,
+          "final_total_storage_bias_cm": 1.4921397450962104e-13,
+          "mapped_10cm_theta_rmse": 0.007003598027858365,
+          "root_zone_0_40_storage_rmse_cm": 0.017992708460170644,
+          "surface_0_20_storage_rmse_cm": 0.08074054650651007,
+          "total_storage_rmse_cm": 1.4144530651051384e-13,
+          "upper_0_80_storage_rmse_cm": 0.0018096255140889208
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 1.9250106419999895
+      },
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 1.7763568394002505e-13,
+        "mapped_10cm_theta_rmse": 0.0003352617287584188,
+        "root_zone_0_40_storage_rmse_cm": 0.0014283485404910313,
+        "surface_0_20_storage_rmse_cm": 0.006337784591938646,
+        "total_storage_rmse_cm": 1.624785609978996e-13,
+        "upper_0_80_storage_rmse_cm": 4.463727644703118e-05
+      }
+    },
+    {
+      "equation_conformance": {
+        "endpoint_rejection": true,
+        "max_scaled_errors": {
+          "DTH": 6.808774411763091e-18,
+          "K": 4.292271863693613e-17,
+          "PSI": 0.0,
+          "QB": 4.292271863693613e-17,
+          "QT": 4.5010938921388667e-17
+        },
+        "probe_count": 56,
+        "status": "PASS"
+      },
+      "fixed_0_01_failure": null,
+      "fixed_0_01_status": "QUALIFIED",
+      "material": "B16",
+      "max_water_ledger_cm": 3.9115377603593515e-12,
+      "panel_role": "established",
+      "primary_metrics_vs_R128": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 8.242295734817162e-13,
+        "mapped_10cm_theta_rmse": 0.002398323042891813,
+        "root_zone_0_40_storage_rmse_cm": 0.006602332766531099,
+        "surface_0_20_storage_rmse_cm": 0.009487934578444122,
+        "total_storage_rmse_cm": 4.18772373110716e-13,
+        "upper_0_80_storage_rmse_cm": 0.01424024664419001
+      },
+      "primary_status": "QUALIFIED",
+      "primary_wall_ratio_vs_R128": 0.1317154743153032,
+      "purpose": "SURF_P",
+      "python_heun": {
+        "cpu_s_median": 2.067115517,
+        "max_corrector_iterations": 4,
+        "max_water_ledger_cm": 3.5065284009760944e-12,
+        "metrics_vs_R128": {
+          "daily_storage_extremum_timing_error_days": 0,
+          "final_total_storage_bias_cm": 1.9895196601282805e-13,
+          "mapped_10cm_theta_rmse": 0.0023983229911134552,
+          "root_zone_0_40_storage_rmse_cm": 0.0066023330162859216,
+          "surface_0_20_storage_rmse_cm": 0.009487896063303126,
+          "total_storage_rmse_cm": 1.7815126343831486e-13,
+          "upper_0_80_storage_rmse_cm": 0.014240247158827062
+        },
+        "status": "QUALIFIED",
+        "wall_s_median": 2.067560928000006
+      },
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 8.526512829121202e-14,
+        "mapped_10cm_theta_rmse": 3.612494306164641e-06,
+        "root_zone_0_40_storage_rmse_cm": 0.0001150102857317398,
+        "surface_0_20_storage_rmse_cm": 0.00010778877849600465,
+        "total_storage_rmse_cm": 5.950486088083913e-14,
+        "upper_0_80_storage_rmse_cm": 8.127902480639607e-05
+      }
+    }
+  ],
+  "gates": {
+    "equation_conformance": true,
+    "extension_speed": true,
+    "practical_research_viability": true,
+    "robustness": true,
+    "speed_all_cases": true
+  },
+  "interpretation": [
+    "The primary P5 numerical policy is compiled RK4 dt=0.005 day; P4 dt=0.01 remains a rejected prior policy.",
+    "Qualification here is numerical/practical research viability, not application acceptance.",
+    "Hydrological representation errors are retained explicitly and are not converted into a scalar overall score.",
+    "Same-runner process speed ratios are workload-specific and non-portable."
+  ],
+  "production_rom_authorized": false,
+  "schema": "swap5.rom-practical.p5.result.v1",
+  "status": "P5_ROBUST_FAST_RESEARCH_POLICY_QUALIFIED",
+  "summary": {
+    "completed_cases": 12,
+    "total_cases": 12,
+    "wall_ratio_vs_R128": {
+      "GW_LB": {
+        "B02": 0.1594243544764512,
+        "B05": 0.274536659681448,
+        "B06": 0.15930786220446916,
+        "B11": 0.13182332098074143,
+        "B12": 0.1319426932237155,
+        "B16": 0.2012704696663462
+      },
+      "SURF_P": {
+        "B02": 0.177159742859471,
+        "B05": 0.13176751560985067,
+        "B06": 0.13169299596431558,
+        "B11": 0.11235348754600877,
+        "B12": 0.11227983422764516,
+        "B16": 0.1317154743153032
+      }
+    }
+  },
+  "work_unit": "ROM-PRACTICAL-P5",
+  "workstream": "ROM-PRACTICAL"
+}
