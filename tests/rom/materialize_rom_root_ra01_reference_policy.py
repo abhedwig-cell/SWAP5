@@ -84,13 +84,24 @@ def main()->int:
 """
     text=one(text,"  subroutine prospective_bound(state,p,bound,ok)\n",helper+"  subroutine prospective_bound(state,p,bound,ok)\n","RA01 bound helper")
 
-    text=one(
-        text,
-        "  write(*,'(A)') 'LAREDYN0R_C6R_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\n",
-        "  write(*,'(A)') 'LAREDYN0R_C6R_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\n"
-        "  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\n",
-        "RA01 completion marker"
-    )
+    base_marker="  write(*,'(A)') 'LAREDYN0R_C6R_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\\n"
+    segmented_marker="  write(*,'(A)') 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\\n"
+    if base_marker in text:
+        text=one(
+            text,
+            base_marker,
+            base_marker+"  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\\n",
+            "RA01 base completion marker"
+        )
+    elif segmented_marker in text:
+        text=one(
+            text,
+            segmented_marker,
+            segmented_marker+"  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\\n",
+            "RA01 segmented completion marker"
+        )
+    else:
+        raise SystemExit("RA01 completion marker source not found")
 
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(text)
