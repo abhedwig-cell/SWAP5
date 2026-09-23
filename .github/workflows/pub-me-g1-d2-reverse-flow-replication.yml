@@ -1,0 +1,33 @@
+name: PUB-ME G1 D2 reverse-flow replication
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_G1_D2_REPLICATION_CHECKPOINT.md'
+      - 'docs/publications/PUB-ME_G1_D2_REPLICATION_PREREGISTRATION.md'
+      - 'docs/publications/PUB-ME_G1_D2_REPLICATION_RESULT.md'
+      - 'tests/publication/test_pub_me_g1_d2_reverse_flow_replication.f90'
+      - 'tests/publication/run_pub_me_g1_d2_reverse_flow_replication.sh'
+      - 'tests/publication/pub_me_g1_d2_fortran_closure.py'
+      - '.github/workflows/pub-me-g1-d2-reverse-flow-replication.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  g1-d2-reverse-flow:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered G1 D2 replication
+        run: bash tests/publication/run_pub_me_g1_d2_reverse_flow_replication.sh
