@@ -34,7 +34,7 @@ def main()->int:
     a=ap.parse_args()
 
     pre=json.loads(a.prereg.read_text())
-    assert pre["phase"]=="PREREGISTERED_BEFORE_ANY_NEW_P4_REFERENCE_OR_CANDIDATE_RESPONSE"
+    assert pre["phase"]=="PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE"
     assert tuple(pre["blind_validation_workload"]["SURF_P"]["ids"])==SURF_H
     assert tuple(pre["blind_validation_workload"]["GW_LB"]["ids"])==GW_H
     assert pre["reference_and_comparator"]["target"]=="R2048_T32"
