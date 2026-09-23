@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.rom_root.ra01.authority_adjudication.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "state": "CLOSED_EXECUTION_SEMANTICS_UNCHANGED_INTERPRETATION_NARROWED",
+  "reason": "The RA01 preregistration labels its total-balance expression as the P2E20 representation-floor policy, while P2E20 formally uses an integrated 1.6e-15 cm baseline and also scales the compartment tolerance. This adjudication corrects authority interpretation only; the running RA01 execution is not changed.",
+  "external_authority": {
+    "p2e20_head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+    "preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+    "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+    "formal_total_formula": "max(1.6e-15 cm, F_repr_cm) / dt_day",
+    "formal_compartment_formula": "1.6e-15 cm / dt_day",
+    "F_repr_formula": "sum_i(dz_i * spacing(theta_s_i))",
+    "safety_factor": 1
+  },
+  "ra01_execution_semantics": {
+    "total_formula": "max(1e-12 cm/day, F_repr_cm/dt_day)",
+    "compartment_rate_tolerance_cm_per_day": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "fallback": false
+  },
+  "frozen_domain_equivalence": {
+    "total_depth_cm": 160,
+    "materials": {
+      "B01": {
+        "theta_s": 0.427494,
+        "spacing_theta_s": 5.551115123125783e-17,
+        "F_repr_cm": 8.881784197001252e-15
+      },
+      "B14": {
+        "theta_s": 0.416774,
+        "spacing_theta_s": 5.551115123125783e-17,
+        "F_repr_cm": 8.881784197001252e-15
+      }
+    },
+    "routes": {
+      "T32": {
+        "dt_day": 0.000025,
+        "F_repr_rate_cm_per_day": 3.552713678800501e-10,
+        "p2e20_integrated_baseline_rate": 6.4e-11,
+        "ra01_rate_baseline": 1e-12,
+        "total_formula_identity": true
+      },
+      "T16": {
+        "dt_day": 0.00005,
+        "F_repr_rate_cm_per_day": 1.7763568394002505e-10,
+        "p2e20_integrated_baseline_rate": 3.2e-11,
+        "ra01_rate_baseline": 1e-12,
+        "total_formula_identity": true
+      },
+      "T8": {
+        "dt_day": 0.0001,
+        "F_repr_rate_cm_per_day": 8.881784197001252e-11,
+        "p2e20_integrated_baseline_rate": 1.6e-11,
+        "ra01_rate_baseline": 1e-12,
+        "total_formula_identity": true
+      }
+    },
+    "conclusion": "For every frozen B01/B14 RA01 route, F_repr/dt dominates both baseline terms. Therefore the executed RA01 total-balance tolerance is numerically identical to the P2E20 total representation-floor tolerance on this domain."
+  },
+  "scope_interpretation": {
+    "valid_claim": "RA01 prospectively transfers the P2E20 total representation-bound discriminator to the frozen root-active domain while intentionally retaining the stricter C6R compartment/head/iteration controls.",
+    "invalid_claim": "RA01 is not a full transfer or root-active validation of the complete P2E20 numerical policy, because the P2E20 compartment integrated allowance is not transferred.",
+    "qualification_if_green": "A green RA01 qualifies this conservative hybrid research-only Reference authority on the frozen B01/B14 root-active matrix.",
+    "qualification_if_red": "A red RA01 leaves ROM-ROOT blocked; no policy component may be loosened from observed RA01 failures."
+  },
+  "response_based_change": false,
+  "execution_changed": false,
+  "thresholds_changed": false,
+  "candidate_response_generated": false,
+  "model_changed": false
+}
