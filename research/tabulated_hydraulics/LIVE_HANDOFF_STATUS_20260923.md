@@ -9,7 +9,7 @@ This note records live delta after the research closeout. It does not modify pro
 - current canonical: `integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d`;
 - research branch: `research/tabulated-hydraulics-characterization`;
 - production implementation branch: `work/f-tab02-generated-k0-provider`;
-- production branch observed head: `9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf`.
+- production branch observed head: `f607f97cb85c845fee8293721c64a9a8666ce477`.
 
 ## Research disposition remains unchanged
 
@@ -218,3 +218,23 @@ production workstream.
 Research action: none unless F0 or the exact M1-C3 whole-Hupsel gate reports a
 new scientific discrepancy attributable to the generated constitutive
 representation.
+
+
+## Live delta — F0 qualification scaffold present
+
+Latest observed production head:
+
+`f607f97cb85c845fee8293721c64a9a8666ce477`
+
+Commit:
+
+`F-TAB02-F0: add standalone selection lifetime qualification`
+
+Observed production state:
+
+- the standalone generated-provider lifetime seam exists;
+- `tests/fsi/test_ftab02f0_standalone_generated_selection.f90` now exercises the preregistered default-off, explicit-opt-in, single-generation reuse, parameter-authority invalidation/rebuild, worker-path isolation, reset/release and unsupported-neighbor fail-closed semantics;
+- no dedicated `run_ftab02f0...` runner was present at the observed head, and the main F-TAB02 workflow had not yet been extended to execute this F0 test;
+- therefore F0 implementation is active, but F0_1..F0_5 are **not yet qualified** by a controlling production workflow run at this observed state.
+
+This creates no research reopening condition. The next action remains production-owned: wire and execute the F0 qualification gate, then proceed to the exact M1-C3 whole-Hupsel F gate only if F0 passes.
