@@ -4,7 +4,7 @@ module mod_ribasim_surface_water_profile_contract
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+       FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_serialized_reference_backend_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
@@ -20,6 +20,7 @@ module mod_ribasim_surface_water_profile_contract
   integer, parameter, public :: RIBASIM_SW_PROFILE_SHAPE_MISMATCH = 3
   integer, parameter, public :: RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT = 4
   integer, parameter, public :: RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD = 5
+  integer, parameter, public :: RIBASIM_SW_PROFILE_UNSUPPORTED_OPTIONAL_STATE_LAYOUT = 6
 
   real(real64), parameter, public :: RIBASIM_SW_STTAB_EPSILON_M = 1.0e-5_real64
   character(len=*), parameter, public :: RIBASIM_SW_GIT_SHA = &
@@ -45,6 +46,10 @@ contains
 
     if (optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER) then
       status = RIBASIM_SW_PROFILE_OWNER_CONFLICT
+      return
+    end if
+    if (optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) then
+      status = RIBASIM_SW_PROFILE_UNSUPPORTED_OPTIONAL_STATE_LAYOUT
       return
     end if
     if (controls_already_supplied) then
