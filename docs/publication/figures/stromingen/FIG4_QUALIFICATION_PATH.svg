@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#52606d"/>
+    </marker>
+    <style>
+      .title{font:700 38px Arial,sans-serif;fill:#1f2933}
+      .head{font:700 26px Arial,sans-serif;fill:#102a43}
+      .small{font:400 20px Arial,sans-serif;fill:#39424e}
+      .note{font:italic 19px Arial,sans-serif;fill:#52606d}
+      .arrow{stroke:#52606d;stroke-width:4;fill:none;marker-end:url(#arrow4)}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="70" y="70" class="title">Van technische implementatie naar gekwalificeerd gebruik</text>
+
+  <rect x="90" y="260" width="290" height="180" rx="24" fill="#f5f6f7" stroke="#aab4be" stroke-width="2"/>
+  <text x="145" y="315" class="head">1. Geïmplementeerd</text>
+  <text x="135" y="360" class="small">Functionaliteit bestaat</text>
+  <text x="153" y="390" class="small">technisch in de code.</text>
+
+  <rect x="455" y="260" width="290" height="180" rx="24" fill="#f3f6f8" stroke="#9fb1bf" stroke-width="2"/>
+  <text x="520" y="315" class="head">2. In kwalificatie</text>
+  <text x="493" y="360" class="small">Controles, referentiecases</text>
+  <text x="515" y="390" class="small">en bewijs worden opgebouwd.</text>
+
+  <rect x="820" y="260" width="320" height="180" rx="24" fill="#edf4ed" stroke="#93ab91" stroke-width="2"/>
+  <text x="860" y="315" class="head">3. Gekwalificeerd</text>
+  <text x="855" y="350" class="head">voor omschreven gebruik</text>
+  <text x="875" y="397" class="small">Geldt binnen een expliciete</text>
+  <text x="900" y="425" class="small">toepassingsgrens.</text>
+
+  <rect x="1215" y="260" width="290" height="180" rx="24" fill="#eef3f7" stroke="#90a6b8" stroke-width="2"/>
+  <text x="1258" y="315" class="head">4. Toegepast / beheerd</text>
+  <text x="1260" y="360" class="small">Onderdeel van een concrete</text>
+  <text x="1270" y="390" class="small">modelworkflow of product.</text>
+
+  <line x1="380" y1="350" x2="455" y2="350" class="arrow"/>
+  <line x1="745" y1="350" x2="820" y2="350" class="arrow"/>
+  <line x1="1140" y1="350" x2="1215" y2="350" class="arrow"/>
+
+  <rect x="455" y="560" width="685" height="150" rx="24" fill="#fbf7ef" stroke="#c4b38d" stroke-width="2" stroke-dasharray="8,8"/>
+  <text x="650" y="615" class="head">Onderzoek / toekomstige optie</text>
+  <text x="525" y="660" class="small">Wetenschappelijk of technisch onderzoek stroomt niet automatisch door naar productie.</text>
+
+  <text x="100" y="810" class="note">De actuele positie van een SWAP5-capability moet steeds uit de geldende qualification authority worden afgeleid.</text>
+</svg>
