@@ -34,6 +34,11 @@
     "signed_lower_exchange": {
       "status": "Q3A1_EXECUTION_PENDING_AND_Q3A2_RECOMPOSITION_REQUIRED",
       "representation": "SWAP signed request -> Ribasim drainage/infiltration realization -> joint transaction"
+    },
+    "surface_water_storage_geometry": {
+      "status": "Q1G_CHARACTERIZATION_RUNNING",
+      "mapping": "Legacy STTAB knot storage can be supplied to Ribasim Basin/Profile, but inter-knot storage semantics are not assumed exact.",
+      "decision_needed": "Either qualify an approximation/densification envelope for migrated legacy geometries or define a new Ribasim-native geometry as an intentional model change."
     }
   },
   "explicitly_excluded_until_separately_qualified": [
@@ -51,9 +56,11 @@
     "Ribasim-resolved WLP/WLS values are read-only hydraulic inputs to SWAP exchange physics.",
     "No private SWAP copy of Ribasim storage or supply capacity may constrain infiltration in external-owner mode.",
     "Every cross-model transfer must have one candidate identity and exactly-once opposite-sign accepted booking.",
-    "An excluded feature causes configuration rejection rather than fallback to an unqualified legacy branch."
+    "An excluded feature causes configuration rejection rather than fallback to an unqualified legacy branch.",
+    "A legacy STTAB->Ribasim Basin conversion may not be labeled exact merely because supplied storage knots are reproduced."
   ],
   "admission_blockers": [
+    "Q1G storage-level geometry representation envelope for migrated legacy STTAB cases, or an explicit application contract using independently defined Ribasim-native geometry.",
     "Q3A1 signed exchange availability result",
     "Q3A2 same-origin transactional recomposition",
     "Q3B for any top/rapid/macropore transfer enabled by the application profile",
