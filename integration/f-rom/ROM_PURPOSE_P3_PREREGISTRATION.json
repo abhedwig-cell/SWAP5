@@ -1,0 +1,424 @@
+{
+  "schema": "swap5.rom-purpose.p3.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_NEW_P3_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "title": "Purpose-specific state-count sufficiency before closure attribution",
+  "authority": {
+    "live_reconciliation": "integration/f-rom/ROM_PURPOSE_P3_LIVE_RECONCILIATION.json@6ec7757af2af84ad66228d58cd7eb3449301e106",
+    "authority_binding": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_BINDING.json@054baa7a21a8d4cecd6eef9f17f39661218ab3a7",
+    "representation_ladder": "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json@40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "p2_closeout": "integration/f-rom/ROM_PURPOSE_P2_CLOSEOUT.json@c1cac2a0b6a89a932d7729dd21d8412a677eb3ec",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "frozen_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "live_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "hypotheses": {
+    "main": "Once state placement is aligned with hydrological purpose, a finite tested representation frontier may exist beyond which additional vertical states provide no numerically resolvable information gain; only at or beyond adequate representation may residual failure be attributed to reduced propagation or closure.",
+    "SURF_P": "Additional states concentrated along the surface-to-80-cm propagation path can reduce the complete SURF_P metric vector without changing closure.",
+    "GW_LB": "Additional states with progressively finer support toward the lower boundary can reduce the complete GW_LB metric vector without changing closure.",
+    "closure": "A closure deficit is supported only if a prospectively triggered same-partition conventional Richards diagnostic is numerically qualified and reaches the frozen comparator while the corresponding Layer-ROM representation does not."
+  },
+  "frozen_representations": {
+    "closure": "CURRENT_LAYER_FACE",
+    "SURF_P": {
+      "S4": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "S6": [
+        0,
+        10,
+        20,
+        40,
+        60,
+        80,
+        160
+      ],
+      "S8": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        80,
+        160
+      ]
+    },
+    "GW_LB": {
+      "G4": [
+        0,
+        80,
+        120,
+        140,
+        160
+      ],
+      "G6": [
+        0,
+        80,
+        100,
+        120,
+        140,
+        150,
+        160
+      ],
+      "G8": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ]
+    },
+    "uniform": {
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "U6": [
+        0,
+        26.6666666666667,
+        53.3333333333333,
+        80,
+        106.666666666667,
+        133.333333333333,
+        160
+      ],
+      "U8": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ]
+    },
+    "terminal_dimension": 8,
+    "no_post_response_extension": true
+  },
+  "blind_validation_workload": {
+    "rationale": "P2 S05-S08 and G01-G04 have candidate-response exposure and are development/diagnostic evidence only in P3. P3 admission uses prospectively fixed histories not previously evaluated by the P3 candidates.",
+    "SURF_P": {
+      "ids": [
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "observation_count": 1024,
+      "observation_dt_day": 0.0008,
+      "phase_observations": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "top_flux_multipliers": {
+        "WET": 1.15,
+        "DRY": 0.85
+      },
+      "bottom_boundary": "fixed gravity-equilibrium flux",
+      "root_sink": false,
+      "histories": {
+        "S09": {
+          "initial_effective_saturation": 0.7,
+          "phases": [
+            "WET",
+            "DRY",
+            "WET",
+            "DRY"
+          ]
+        },
+        "S10": {
+          "initial_effective_saturation": 0.79,
+          "phases": [
+            "DRY",
+            "WET",
+            "DRY",
+            "WET"
+          ]
+        },
+        "S11": {
+          "initial_effective_saturation": 0.88,
+          "phases": [
+            "WET",
+            "DRY",
+            "WET",
+            "DRY"
+          ]
+        },
+        "S12": {
+          "initial_effective_saturation": 0.91,
+          "phases": [
+            "DRY",
+            "WET",
+            "DRY",
+            "WET"
+          ]
+        }
+      },
+      "event_observability": "Retain the P2 frozen reversal-event windows and ambiguity semantics because reversal indices remain 256, 512 and 768."
+    },
+    "GW_LB": {
+      "ids": [
+        "G06",
+        "G07",
+        "G08",
+        "G09"
+      ],
+      "observation_count": 1024,
+      "observation_dt_day": 0.0008,
+      "top_boundary": "gravity-equilibrium flux",
+      "bottom_head_multipliers": {
+        "BOTTOM_HEAD_RISE": 0.9,
+        "BOTTOM_HEAD_FALL": 1.1,
+        "HOLD": null
+      },
+      "histories": {
+        "G06": {
+          "initial_effective_saturation": 0.7,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_RISE",
+              256
+            ],
+            [
+              "BOTTOM_HEAD_FALL",
+              640
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        },
+        "G07": {
+          "initial_effective_saturation": 0.78,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_FALL",
+              256
+            ],
+            [
+              "BOTTOM_HEAD_RISE",
+              640
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        },
+        "G08": {
+          "initial_effective_saturation": 0.86,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_RISE",
+              384
+            ],
+            [
+              "BOTTOM_HEAD_FALL",
+              768
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        },
+        "G09": {
+          "initial_effective_saturation": 0.92,
+          "sequence": [
+            [
+              "BOTTOM_HEAD_FALL",
+              384
+            ],
+            [
+              "BOTTOM_HEAD_RISE",
+              768
+            ],
+            [
+              "HOLD",
+              1024
+            ]
+          ]
+        }
+      }
+    },
+    "forbidden_for_admission": {
+      "SURF_P": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08"
+      ],
+      "GW_LB": [
+        "G01",
+        "G02",
+        "G03",
+        "G04"
+      ],
+      "rule": "Previously exposed histories may be used only for development regression or diagnostics, never for the P3 primary state-count decision."
+    }
+  },
+  "reference_and_comparator": {
+    "target": "R2048_T32",
+    "comparator": "R512_T32",
+    "spatial_ladder": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_ladder": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "continuous_reference_qualification": "Reuse P2 numerical-observability mathematics, not P2 response values.",
+    "candidate_gate": "No P3 Layer-ROM response is authorized until both materials qualify on the fresh P3 Reference workload for both purposes.",
+    "application_tolerance": false
+  },
+  "primary_metrics": {
+    "SURF_P": [
+      "surface_0_20_storage_error_cm",
+      "root_zone_0_40_storage_error_cm",
+      "upper_0_80_storage_error_cm",
+      "mapped_10cm_theta_error",
+      "total_storage_error_cm",
+      "storage_extremum_timing_error_steps",
+      "history_signed_storage_bias_cm"
+    ],
+    "GW_LB": [
+      "cumulative_bottom_exchange_error_cm",
+      "interval_bottom_flux_error_cm_per_day",
+      "bottom_flux_sign_mismatch_count",
+      "reversal_sequence_mismatch_count",
+      "reversal_timing_error_steps",
+      "total_storage_error_cm",
+      "history_signed_bottom_flux_bias_cm_per_day",
+      "long_horizon_exchange_drift_cm"
+    ],
+    "weighted_general_score": false,
+    "material_aggregation_for_primary_decision": false
+  },
+  "candidate_execution": {
+    "candidate_dt_day": 0.0001,
+    "closure": "CURRENT_LAYER_FACE",
+    "purpose_order_independent": true,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "candidate_matrix": {
+      "SURF_P": [
+        "S4",
+        "S6",
+        "S8",
+        "U4",
+        "U6",
+        "U8"
+      ],
+      "GW_LB": [
+        "G4",
+        "G6",
+        "G8",
+        "U4",
+        "U6",
+        "U8"
+      ]
+    },
+    "response_blind_boundary_changes_forbidden": true
+  },
+  "representation_sufficiency": {
+    "equality_tolerance": 1e-12,
+    "BELOW_NUMERICAL_COMPARATOR": "Aligned candidate is qualified but is not componentwise no worse than R512_T32 against R2048_T32 on the complete frozen purpose vector.",
+    "REPRESENTATION_COMPARATOR_REACHED": "Aligned candidate is qualified and componentwise no worse than R512_T32 against R2048_T32 on the complete frozen purpose vector.",
+    "MINIMUM_TESTED_REPRESENTATION": "First aligned rung in the frozen purpose ladder that reaches the comparator, provided all lower tested aligned rungs fail that gate and the claim is made separately for B01 and B14. A purpose-level minimum-tested statement additionally requires both materials to reach at the same or lower rung.",
+    "terminal_failure": "If the aligned eight-state rung remains below the comparator, P3 records REPRESENTATION_FRONTIER_NOT_REACHED and does not add a ninth or higher state.",
+    "no_mathematical_minimum_claim": true,
+    "no_universal_minimum_claim": true
+  },
+  "frontier_stability": {
+    "trigger": "Evaluate only when an aligned rung reaches the comparator and a higher frozen aligned rung exists.",
+    "continuous_metric_rule": "Two adjacent comparator-reaching rungs are stable only when every continuous primary metric differs by no more than the larger of 1e-12 and the independently qualified R2048_T32 combined reference uncertainty for that metric.",
+    "discrete_metric_rule": "All discrete sign, sequence and timing metrics must be identical between the two rungs.",
+    "classification": "REPRESENTATION_FRONTIER_STABLE",
+    "note": "Reference uncertainty is used only as a numerical distinguishability bound for incremental information gain, never as an application tolerance."
+  },
+  "same_partition_richards_diagnostic": {
+    "prospective_trigger": [
+      "If the terminal aligned S8 or G8 Layer-ROM rung is numerically qualified but remains BELOW_NUMERICAL_COMPARATOR, execute same-partition conventional Richards at exactly that terminal partition.",
+      "If an earlier aligned rung reaches the comparator, no closure-deficit diagnostic is required for representation sufficiency; optional same-partition results remain non-admission diagnostics."
+    ],
+    "fixed_numerical_policy": "Use the existing P2 same-partition Richards numerical qualification policy without post-response tolerance relaxation.",
+    "decisions": {
+      "CLOSURE_DEFICIT_SUPPORTED": "Terminal Layer-ROM misses comparator; same-partition Richards is numerically qualified and reaches the same comparator.",
+      "REPRESENTATION_OR_RESOLUTION_UNRESOLVED": "Terminal Layer-ROM misses comparator; same-partition Richards is numerically qualified and also misses comparator.",
+      "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE": "Same-partition Richards leaves the frozen numerical qualification domain or cannot produce a complete qualified metric vector.",
+      "NO_CLOSURE_DIAGNOSTIC_REQUIRED": "An aligned Layer-ROM rung reaches the comparator before the terminal-failure trigger is invoked."
+    },
+    "new_closure_family_authorized": false,
+    "handoff_rule": "Only CLOSURE_DEFICIT_SUPPORTED may recommend a separate prospectively governed closure workstream."
+  },
+  "decision_outputs": {
+    "per_case_key": "purpose/material/state-count",
+    "final_map_fields": [
+      "HYDROLOGICAL PURPOSE",
+      "REQUIRED VERTICAL INFORMATION",
+      "MINIMUM TESTED STATE COUNT",
+      "MINIMUM TESTED STATE PLACEMENT",
+      "REPRESENTATION SUFFICIENCY STATUS",
+      "REQUIRED CLOSURE CLASS",
+      "REMAINING FIDELITY LIMIT",
+      "APPLICATION AUTHORITY STATUS"
+    ],
+    "allowed_scientific_outcomes": [
+      "PURPOSE_SPECIFIC_FINITE_REPRESENTATION_FRONTIER_SUPPORTED",
+      "REPRESENTATION_DIMENSION_REMAINS_LIMITING",
+      "CLOSURE_DEFICIT_BECOMES_IDENTIFIABLE",
+      "DIAGNOSTIC_REMAINS_UNAVAILABLE"
+    ]
+  },
+  "stop_rules": [
+    "No P3 candidate response before fresh Reference/comparator qualification.",
+    "No reuse of exposed P2 histories for P3 admission.",
+    "No boundary, state-count or closure changes after candidate response.",
+    "No relaxation of numerical qualification after same-partition failure.",
+    "No state count above eight inside P3.",
+    "No production, application-acceptance or performance claim."
+  ],
+  "scientific_firewall": {
+    "any_new_p3_reference_response_seen": false,
+    "any_new_p3_candidate_response_seen": false,
+    "representation_tuned_from_response": false,
+    "histories_tuned_from_response": false,
+    "metric_selected_from_response": false,
+    "tolerance_selected_from_response": false,
+    "closure_tuned": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
