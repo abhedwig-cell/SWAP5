@@ -50,10 +50,11 @@
     },
     "F": {
       "status": "READY_TO_EXECUTE",
-      "record": "integration/f-tab/F-TAB02_F_BLOCKER.json",
+      "record": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json",
       "prerequisite": "F-TAB02-G PASS and F-TAB02-F0 PASS",
       "prerequisite_result": "PASS",
-      "next": "Execute exact M1-C3 whole-Hupsel generated-provider gate using exact SWAP_4.3.1.zip authority."
+      "next": "Execute preregistered exact M1-C3 whole-Hupsel generated-provider gate using verified SWAP_4.3.1.zip authority.",
+      "blocker_record": "integration/f-tab/F-TAB02_F_BLOCKER.json"
     },
     "G": {
       "status": "PASS",
@@ -147,10 +148,11 @@
     "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
     "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "new_blocker": null,
-    "executable_probe_status": 3,
-    "executable_probe_symbol": "F_TAB02_STATE_UNSUPPORTED_KSATEXM",
+    "executable_probe_status": "SUPERSEDED_BY_F_TAB02_G_AND_F0",
+    "executable_probe_symbol": null,
     "substitutions_authorized": false,
-    "resume_condition": "Execute exact M1-C3 whole-Hupsel generated-provider gate and compare accepted-interval/retry/route/mass/result.bal/result.blc evidence."
+    "resume_condition": "Execute exact M1-C3 whole-Hupsel generated-provider gate and compare accepted-interval/retry/route/mass/result.bal/result.blc evidence.",
+    "preregistration": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json"
   },
   "nonclaims": [
     "canonical production admission",
@@ -159,7 +161,7 @@
     "arbitrary user-supplied tabulated hydraulics",
     "SWKIMPL=1 production",
     "portable whole-SWAP or MultiSWAP speedup",
-    "generated-provider support for F-SI39 KSATEXM",
-    "F-TAB02-F0 implementation before G PASS"
+    "F-TAB02-F0 implementation before G PASS",
+    "generic generated-provider support for KSATEXM outside the bounded exact-Hupsel F-SI39 profile"
   ]
 }
