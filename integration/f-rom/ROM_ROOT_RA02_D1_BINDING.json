@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.rom_root.ra02_d1.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D1",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_RA02_D1_ANALYSIS",
+  "preregistration": "integration/f-rom/ROM_ROOT_RA02_D1_PREREGISTRATION.json",
+  "preregistration_blob": "8d5c558a65e4095671478a94cc5666bd0fc0eb2a",
+  "ra01_workflow_run": 35819870854,
+  "ra01_evidence_artifact_id": 10733930641,
+  "new_simulation_authorized": false,
+  "reduced_candidate_response_generated": false,
+  "implementation_blobs": {
+    ".github/workflows/rom-root-ra02-d1.yml": "20a5a46a3d606d4e38c4ec97ebae5d1fe283282a",
+    "tests/rom/analyze_rom_root_ra02_d1.py": "07f0bbea4263d56584b85705a1bc71165e4b475f"
+  },
+  "scientific_semantics": {
+    "reads_existing_ra01_evidence_only": true,
+    "root_response_fields": [
+      "ACTUAL_RATE",
+      "ACTUAL_FRACTION",
+      "CUMULATIVE_ROOT"
+    ],
+    "profile_proxy": "10-cm mean theta converted to effective saturation; no node-level regime inference",
+    "arithmetic_reference": "gamma-based non-fitted aggregation roundoff reference",
+    "uncertainty_gate_changed": false,
+    "tolerance_changed": false
+  },
+  "firewall": {
+    "reference_qualified": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "new_root_state_selected": false,
+    "production_change_authorized": false
+  }
+}
