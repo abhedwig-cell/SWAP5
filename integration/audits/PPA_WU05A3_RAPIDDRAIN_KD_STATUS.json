@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.ppa_wu05a3.rapiddrain_kd.status.v1",
+  "work_unit": "PPA-WU05-A3-RAPIDDRAIN-KD",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "IMPLEMENTED_SOURCE_ORACLE_PENDING",
+  "baseline": "codex/ppa-swap431-functional-gap-register@838845b61",
+  "preregistration": "integration/audits/PPA_WU05A3_RAPIDDRAIN_KD_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_admission": "NONE; isolated transmissivity term only; RAPIDDRAIN and Richards routes unchanged",
+  "implementation": "src/process/mod_ppa_wu05a3_rapid_drain_kd.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_rapid_drain_kd_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_rapid_drain_kd_source_oracle.sh",
+  "test_result": null,
+  "next_action": "Run direct GNU Fortran O0/O2 source-oracle validation and persist its bounded result.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}
