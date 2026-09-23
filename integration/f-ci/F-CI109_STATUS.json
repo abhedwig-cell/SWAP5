@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI109",
+  "title": "F-APP09 external Ribasim surface-water owner canonical admission",
+  "phase": "QUALIFY",
+  "status": "IMPLEMENTED_PENDING_ADMISSION_GATE",
+  "branch": "integration/f-ci109-fapp09-ribasim-external-surface-water-admission",
+  "canonical_source": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "frozen_subject": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "owner_gate": "PASS",
+  "independent_qualification": "F-VQ128 PASS",
+  "production_source_files": 5,
+  "canonical_admission": false,
+  "next_action": "Execute F-CI109 admission gate and open canonical PR if exact source delta and both replays remain green."
+}\n
