@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.ribasim_management.qualification_result.v1",
+  "work_unit": "RM06",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_BOUNDED_TRANSACTIONAL_MANAGEMENT_STATE",
+  "qualification_head": "12c4636f39c1bfef0c126e3239f2d60fda78a22e",
+  "workflow": "RM06 Ribasim management transaction qualification",
+  "workflow_run": 35823111398,
+  "workflow_job": 107059003201,
+  "conclusion": "success",
+  "stable_output_sha256": "fc76627c333718fc146cedc370ece02f0a80e85951f15c230458523ab605ce39",
+  "passed": [
+    "candidate management state is nonmutating before commit",
+    "rollback followed by same-origin retry reproduces irrigation continuation bit-identically",
+    "rollback followed by same-origin retry reproduces Rutter continuation bit-identically",
+    "rollback followed by same-origin retry reproduces management observation bit-identically",
+    "request, allocation and physically supplied gross depth remain separate quantities",
+    "Rutter net application remains distinct from gross physical supply",
+    "successful publication advances the accepted kernel revision exactly once",
+    "accepted persistence export/reconstruction reproduces irrigation and Rutter continuation",
+    "physical supply is bounded by allocation at forcing construction",
+    "partial allocation/supply is rejected under the bounded profile instead of inventing a new partial-irrigation policy",
+    "O0 and O2 stable qualification outputs are identical"
+  ],
+  "technical_failures_before_qualification": [
+    {
+      "run": 35822853856,
+      "job": 107058220229,
+      "classification": "TECHNICAL_TEST_COMPILER_POLICY",
+      "cause": "Inherited canonical exact-REAL comparisons were promoted to errors by the new gate's global -Werror.",
+      "repair": "Allow inherited compare-real warnings without changing production source or scientific expectations."
+    },
+    {
+      "run": 35823013467,
+      "job": 107058704333,
+      "classification": "TECHNICAL_TEST_ASSERTION_FORM",
+      "cause": "At O2 gfortran warned that impure readiness functions in compound logical assertions might be eliminated.",
+      "repair": "Evaluate readiness methods explicitly before assertions; no production or expected-result change."
+    }
+  ],
+  "authority_boundary": {
+    "production_candidate": "src/runtime/mod_fmr_hupsel_management_transaction.f90 on work/ribasim-management-coupling-closeout",
+    "canonical_admitted": false,
+    "real_ribasim_executed": false,
+    "real_swap_richards_application_composed": false,
+    "modflow_composed": false
+  },
+  "nonclaims": [
+    "No partial-irrigation realization policy is admitted.",
+    "No real Ribasim/RibaMod execution is claimed by RM06.",
+    "No full real-SWAP Richards-state application is claimed by RM06.",
+    "No SWAP-MODFLOW-Ribasim three-model result is claimed by RM06."
+  ],
+  "next_required_boundary": "Derive a read-only management-demand receipt from one accepted SWAP management origin before invoking real Ribasim allocation, then bind allocation and physical supply back to the same origin."
+}
