@@ -1,0 +1,122 @@
+name: F-ROM Practical P3 daily validation
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P3_PREREGISTRATION.json
+      - tools/rom/run_rom_practical_p3_candidate.py
+      - tools/rom/prepare_rom_practical_p3_reference.py
+      - tools/rom/analyze_rom_practical_p3.py
+      - tools/rom/aggregate_rom_practical_p3.py
+      - .github/workflows/f-rom-practical-p3.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: f-rom-practical-p3-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  case:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        purpose: [SURF_P, GW_LB]
+        material: [B02, B05, B11, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Recover frozen purpose harnesses
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext evidence
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_surface_b01_source.f90 > ext/rom_purpose_p1_surface_b01_source.f90
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_gw_source.f90 > ext/rom_purpose_p1_gw_source.f90
+          git show FETCH_HEAD:tests/rom/materialize_rom_purpose_p3_surface_reference.py > ext/materialize_rom_purpose_p3_surface_reference.py
+          git show FETCH_HEAD:tests/rom/materialize_rom_purpose_p3_gw_reference.py > ext/materialize_rom_purpose_p3_gw_reference.py
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_base_b14_materializer.py > ext/rom_purpose_p1_base_b14_materializer.py
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_base_c4z_materializer.py > ext/rom_purpose_p1_base_c4z_materializer.py
+          git show FETCH_HEAD:tests/rom/rom_purpose_p1_layer_base.py > ext/rom_purpose_p1_layer_base.py
+          test "$(git hash-object ext/rom_purpose_p1_layer_base.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          python3 -m pip install --disable-pip-version-check numpy
+      - name: Determine split
+        id: split
+        run: |
+          case "${{ matrix.material }}" in
+            B02|B11) echo "name=development" >> "$GITHUB_OUTPUT" ;;
+            B05|B16) echo "name=validation" >> "$GITHUB_OUTPUT" ;;
+            *) exit 1 ;;
+          esac
+      - name: Run frozen S4 or G8 candidate
+        run: |
+          python3 tools/rom/run_rom_practical_p3_candidate.py             --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}"             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --base ext/rom_purpose_p1_layer_base.py             --output evidence/candidate.json
+      - name: Materialize base Reference source
+        run: |
+          set -euo pipefail
+          if [ "${{ matrix.purpose }}" = "SURF_P" ]; then
+            python3 tools/rom/materialize_rom_practical_p2a_reference.py               --purpose SURF_P --material "${{ matrix.material }}"               --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json               --surface-source ext/rom_purpose_p1_surface_b01_source.f90               --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py               --output /tmp/p3_base.f90 --manifest evidence/base_materialization.json
+          else
+            python3 tools/rom/materialize_rom_practical_p2a_reference.py               --purpose GW_LB --material "${{ matrix.material }}"               --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json               --gw-source ext/rom_purpose_p1_gw_source.f90               --gw-materializer ext/materialize_rom_purpose_p3_gw_reference.py               --c5a-materializer ext/rom_purpose_p1_base_b14_materializer.py               --c4z-materializer ext/rom_purpose_p1_base_c4z_materializer.py               --output /tmp/p3_base.f90 --manifest evidence/base_materialization.json
+          fi
+          python3 tools/rom/prepare_rom_practical_p3_reference.py             --purpose "${{ matrix.purpose }}" --source /tmp/p3_base.f90             --output canonical/tests/rom/test_p3_practical.f90
+      - name: Build R64 and R128 Reference routes
+        run: |
+          set -euo pipefail
+          for nodes in 64 128; do
+            dz="$(python3 -c "print(160.0/$nodes)")"
+            stub="p3_r${nodes}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/$stub" --nodes "$nodes" --dz-cm "$dz"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "$stub" --target tests/rom/test_p3_practical.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/p3_r${nodes}" --opt 2
+          done
+      - name: Execute Reference routes
+        run: |
+          set -euo pipefail
+          /tmp/p3_r64/rom0_test > evidence/r64.txt 2>&1
+          /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o evidence/r128_timing.json             /tmp/p3_r128/rom0_test > evidence/r128.txt 2>&1
+          if [ "${{ matrix.purpose }}" = "SURF_P" ]; then
+            test "$(grep -c '^LAREDYN0R_STATE|' evidence/r128.txt)" -eq 3840
+            test "$(grep -c '^LAREDYN0R_PROFILE|' evidence/r128.txt)" -eq 1920
+          else
+            test "$(grep -c '^LAREGW1_STATE|' evidence/r128.txt)" -eq 3840
+            test "$(grep -c '^LAREGW1_PROFILE|' evidence/r128.txt)" -eq 1920
+          fi
+      - name: Analyze daily practical case
+        run: |
+          python3 tools/rom/analyze_rom_practical_p3.py             --purpose "${{ matrix.purpose }}" --material "${{ matrix.material }}"             --candidate evidence/candidate.json --r64 evidence/r64.txt --r128 evidence/r128.txt             --r128-timing evidence/r128_timing.json --split "${{ steps.split.outputs.name }}"             --output evidence/result.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-practical-p3-${{ matrix.purpose }}-${{ matrix.material }}
+          path: evidence/result.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: case
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p3-*
+          path: /tmp/p3
+          merge-multiple: false
+      - name: Aggregate frozen split
+        run: |
+          python3 tools/rom/aggregate_rom_practical_p3.py             --input-dir /tmp/p3 --output integration/f-rom/ROM_PRACTICAL_P3_RESULT.json
+      - name: Persist aggregate
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PRACTICAL_P3_RESULT.json
+          git commit -m "ROM-PRACTICAL P3: persist 60-day daily validation" || exit 0
+          git push origin HEAD:work/f-rom-practical
