@@ -1,0 +1,11 @@
+{
+  "work_unit": "PPA-WU05-A4-RATE-COMPOSITION",
+  "baseline": "b9a71d828",
+  "scope": "Test composition of standard-domain inflow limiting, interdomain redistribution, final outflow limiting and applied trial transfer capture",
+  "gate": "tests/fapp/run_ppa_wu05a4_rate_composition.ps1",
+  "fixture": "Two domains: first overfills and rejects 0.375 cm top input; second initially has 0.25 cm outgoing excess. Redistribution transfers the rejected amount to the second domain and removes its outgoing deficit. Final domain stores are 1 and 0.125 cm. Matrix receives 0.5 cm; external top input is 0.625 cm.",
+  "checks": "Repeat at dt 0.25, 0.5, 0.75 and 1 day. Candidate macro storage change plus applied-vector matrix transfer equals external top input within 1e-14 cm. The same supplied interval potentials give dt-scaled rates and invariant amounts.",
+  "qualification_boundary": "No actual Richards solve, matrix storage state, nonlinear derivative, accepted mass receipt, restart or production binding is exercised. This is analytic component composition, not whole-column qualification or full B1.11 MACRORATE replay. Surface geometry and potentials are supplied fixture data.",
+  "production_admitted": false,
+  "next_action": "Extend standard-domain composition to generated source potentials, domain exchange aggregation and corresponding SATFLOW/ABSORPTION derivatives before production-owner wiring."
+}
