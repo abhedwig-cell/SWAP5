@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.rom-purpose.p3.candidate-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-CANDIDATES",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P3_REFERENCE_QUALIFICATION",
+  "trigger_head_before_binding": "d17b6bf0b1d682cd60154e39a4e0f1ae96f91077",
+  "p3_reference_authority": {
+    "result": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json",
+    "result_blob": "272dec868b44f0528f1640804d6bcc1c2329c94b",
+    "status": "P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+    "candidate_response_authorized": true,
+    "adjudication_binding": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json",
+    "adjudication_binding_blob": "a89d36dd4668c4be0308317dfa139abd0a4d98da"
+  },
+  "reference_runs": {
+    "SURF_P": 35876282704,
+    "GW_LB": 35887290359
+  },
+  "frozen_design": {
+    "purposes": [
+      "SURF_P",
+      "GW_LB"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "candidate_matrix": {
+      "SURF_P": [
+        "S4",
+        "S6",
+        "S8",
+        "U4",
+        "U6",
+        "U8"
+      ],
+      "GW_LB": [
+        "G4",
+        "G6",
+        "G8",
+        "U4",
+        "U6",
+        "U8"
+      ]
+    },
+    "candidate_dt_day": 0.0001,
+    "closure": "CURRENT_LAYER_FACE",
+    "terminal_dimension": 8,
+    "post_response_extension_forbidden": true
+  },
+  "numerical_comparator": {
+    "target": "R2048_T32",
+    "comparator": "R512_T32",
+    "componentwise_equality_tolerance": 1e-12
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p3-candidates.yml": "95144768ff861116ed3f1ea776a4d030c5f526a5",
+    "tests/rom/run_rom_purpose_p3_candidate.py": "e9e249717cd9f402e282bd5a5e80ec6fcffbcd35",
+    "tests/rom/analyze_rom_purpose_p3_candidates.py": "b695ac93444e3ab7ac2c747644abc92fe2ebfedb",
+    "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json": "491030690ced67a5b0da270c412e3bc591912a73",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json": "272dec868b44f0528f1640804d6bcc1c2329c94b",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json": "a89d36dd4668c4be0308317dfa139abd0a4d98da"
+  },
+  "scientific_firewall": {
+    "candidate_response_seen_before_binding": false,
+    "representation_changed_after_reference": false,
+    "state_boundaries_changed_after_reference": false,
+    "closure_changed_after_reference": false,
+    "metric_changed_after_reference": false,
+    "tolerance_changed_after_reference": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
