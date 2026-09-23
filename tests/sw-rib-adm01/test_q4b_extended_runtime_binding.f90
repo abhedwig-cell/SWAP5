@@ -11,7 +11,13 @@ program test_q4b_extended_runtime_binding
        fmr_new_b110_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, fmr_serialized_batch_diagnostics_t, &
        fmr_execute_serialized_resolved_physical_column
-  use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK
+  use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
+       fmr_drainage_response_level_control_t, FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_BIND_OK
+  use mod_surface_water_ownership_profile, only: surface_water_ownership_profile_t, &
+       SURFACE_WATER_OWNER_EXTERNAL_RIBASIM
+  use mod_fmr_external_surface_water_head_adapter, only: external_surface_water_head_snapshot_t, &
+       bind_external_surface_water_heads, EXT_SW_HEAD_BIND_OK, EXT_SW_HEAD_BIND_INVALID_OWNER, &
+       EXT_SW_HEAD_BIND_UNACCEPTED_SNAPSHOT
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -29,6 +35,8 @@ program test_q4b_extended_runtime_binding
   call verify_signed_commit(-12.25_real64, signed_rate, .true.)
   call verify_signed_commit(7.75_real64, -signed_rate, .false.)
   call verify_invalid_process_rolls_back()
+  call verify_external_head_adapter()
+  write(*,'(A)') 'SW_RIB_ADM01_G3_EXTERNAL_HEAD_BINDING=PASS'
   write(*,'(A)') 'SW_RIB_SWM01_Q4B_TRANSACTIONAL_RUNTIME=PASS'
 
 contains
@@ -128,6 +136,40 @@ contains
     call require(active_calls == 0, 'invalid extended process call counter restored')
     write(*,'(A)') 'SW_RIB_SWM01_Q4B_INVALID_PROCESS_ROLLBACK=PASS'
   end subroutine verify_invalid_process_rolls_back
+
+  subroutine verify_external_head_adapter()
+    type(surface_water_ownership_profile_t) :: profile
+    type(external_surface_water_head_snapshot_t) :: snapshot
+    type(fmr_drainage_response_level_parameters_t) :: p(2)
+    type(fmr_drainage_response_level_control_t), allocatable :: controls(:)
+    integer :: status
+
+    profile%owner = SURFACE_WATER_OWNER_EXTERNAL_RIBASIM
+    profile%internal_fixed_weir_state_active = .false.
+    profile%external_surface_water_head_available = .true.
+    p(1)%variant = FMR_DRAIN_VARIANT_EXTENDED_SIGNED
+    p(2)%variant = FMR_DRAIN_VARIANT_LINEAR
+    allocate(snapshot%head_cm_by_level(2))
+    snapshot%head_cm_by_level = [-35.0_real64, -20.0_real64]
+    snapshot%accepted_revision = 4
+
+    snapshot%accepted = .false.
+    call bind_external_surface_water_heads(profile, snapshot, p, controls, status)
+    call require(status == EXT_SW_HEAD_BIND_UNACCEPTED_SNAPSHOT, 'unaccepted external snapshot rejected')
+
+    snapshot%accepted = .true.
+    call bind_external_surface_water_heads(profile, snapshot, p, controls, status)
+    call require(status == EXT_SW_HEAD_BIND_OK, 'accepted external snapshot bound')
+    call require(allocated(controls) .and. size(controls) == 2, 'external controls allocated')
+    call require(controls(1)%resolved_surface_water_head_supplied, 'extended head supplied')
+    call require(same_bits(controls(1)%resolved_surface_water_head_cm, -35.0_real64), 'extended head exact')
+    call require(.not. controls(2)%resolved_surface_water_head_supplied, 'nonextended head not injected')
+    deallocate(controls)
+
+    profile%internal_fixed_weir_state_active = .true.
+    call bind_external_surface_water_heads(profile, snapshot, p, controls, status)
+    call require(status == EXT_SW_HEAD_BIND_INVALID_OWNER, 'duplicate owner rejected')
+  end subroutine verify_external_head_adapter
 
   subroutine initialize_case(committed, column, template, parameters, forcing, config, control_head, balancing_qssdi)
     type(kernel_committed_state_t), intent(out) :: committed
