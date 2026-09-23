@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.rom-purpose.p4.closeout-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-CLOSEOUT",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P4_FRONTIER_RESULTS",
+  "layer_result": "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json@834c3993e4a01f048f9b6e34897ace61b0502f79",
+  "matched_richards_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json@2c4ea4d1e6aedec7869628cdef1a97d379532d31",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "frontier_source_runs": {
+    "layer_rom": 35918240728,
+    "matched_richards_routes": 35918266166,
+    "matched_richards_analysis_recovery": 35919489247
+  },
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab",
+    "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json": "834c3993e4a01f048f9b6e34897ace61b0502f79",
+    "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json": "2c4ea4d1e6aedec7869628cdef1a97d379532d31",
+    "integration/f-rom/ROM_PURPOSE_P4_PRE_RESPONSE_CONTRACT_AUDIT.json": "cab253038d454da74520a1cd39484038c7384cb1",
+    "tests/rom/build_rom_purpose_p4_closeout.py": "b942bbadbc88858b64103990db98f674c9371b58",
+    "tests/rom/rom_purpose_p4_decision_policy.py": "09e137a0b6c86b4f5cbd29c5c6d915cc62ac4a32",
+    ".github/workflows/f-rom-purpose-p4-closeout.yml": "ff6367d0b4fd736ef36fa69623bd3fbcd2a0af36"
+  },
+  "scientific_firewall": {
+    "layer_and_matched_results_persisted": true,
+    "state_boundaries_retuned_after_response": false,
+    "closure_tuned": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false,
+    "p3_reopened": false
+  }
+}
