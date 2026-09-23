@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_groundwater_functional_equivalence.result.v1",
+  "work_unit": "RM27",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_FUNCTIONAL_IDENTITY_AT_FGC44_NUMERICAL_RESOLUTION",
+  "scientific_classification": "COUPLING_RESPONSE_DIFFERENCE_DETECTED",
+  "workflow": "RM27 groundwater functional equivalence",
+  "workflow_run": 35905191019,
+  "workflow_job": 107331000218,
+  "conclusion": "failure_by_preregistered_scientific_gate",
+  "observations": {
+    "all_six_probe_solves_converged": true,
+    "max_abs_qswap_difference_m_per_s": 3.46816556953720273e-12,
+    "FGC44_flux_residual_resolution_m_per_s": 1e-15,
+    "difference_over_FGC44_resolution": 3468.165569537203,
+    "origin_bottom_node_head_difference_cm": 4.35876321063233263e-5,
+    "origin_column_storage_difference_cm": 0.0,
+    "response_slope_one_step_per_s": -3.9384852118302654e-6,
+    "response_slope_two_half_per_s": -3.9384805859054078e-6
+  },
+  "probe_values_m_per_s": {
+    "minus_2e_6_m": {
+      "one_step": 1.37866996161697225e-7,
+      "two_half": 1.37863527996127688e-7,
+      "difference": 3.46816556953720273e-12
+    },
+    "reference": {
+      "one_step": 1.37859119191273564e-7,
+      "two_half": 1.37855651034698882e-7,
+      "difference": 3.46815657468257760e-12
+    },
+    "plus_2e_6_m": {
+      "one_step": 1.37851242220849904e-7,
+      "two_half": 1.37847774073784066e-7,
+      "difference": 3.46814706583777216e-12
+    }
+  },
+  "interpretation": [
+    "The two RM23 endpoints are distinguishable in the next-window fixed-interface SWAP response.",
+    "The difference is approximately a constant offset over the F-GC44 head bracket; slopes are nearly identical.",
+    "The preregistered claim of functional identity at the existing F-GC44 nonlinear closure resolution is falsified.",
+    "The F-GC44 1e-15 m/s residual is a coupled-solve closure criterion, not an independently justified active-irrigation application-accuracy threshold."
+  ],
+  "nonclaims": [
+    "RM27 does not establish hydrological materiality of the response difference.",
+    "RM27 does not define a replacement temporal tolerance.",
+    "RM27 does not by itself reject or admit the triangle at application level."
+  ],
+  "next_required_boundary": "Quantify the induced coupled head and integrated-transfer effect against the already admitted one-cell groundwater oracle."
+}
