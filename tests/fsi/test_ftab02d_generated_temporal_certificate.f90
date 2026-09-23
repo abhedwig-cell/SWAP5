@@ -104,8 +104,7 @@ contains
     observation = backend%observation()
 
     call require(diagnostic%retries == 0, 'no transaction retry')
-    call require(diagnostic%mass_rejections == 0, 'no mass rejection')
-    call require(diagnostic%admission_rejections == 0, 'no admission rejection')
+    call require(diagnostic%rejected == 0, 'no rejected external attempt')
   end subroutine execute_case
 
   subroutine initialize_parameters(parameters, generated)
