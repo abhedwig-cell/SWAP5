@@ -1,0 +1,144 @@
+name: F-ROM-PURPOSE P4 Layer-ROM frontier
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_CANDIDATE_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p4-layer-frontier
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify P4 candidate authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/run_rom_purpose_p4_candidate.py tests/rom/analyze_rom_purpose_p4_candidates.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P4_CANDIDATE_EXECUTION_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_AFTER_P4_REFERENCE_QUALIFICATION'
+          assert r['status']=='P4_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED'
+          assert r['candidate_response_authorized'] is True
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  candidate:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        material: [B01, B14]
+        case:
+          - 'SURF_P:S8'
+          - 'SURF_P:S12'
+          - 'SURF_P:S16'
+          - 'GW_LB:G8'
+          - 'GW_LB:G12'
+          - 'GW_LB:G16'
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Run frozen P4 Layer-ROM candidate
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.case }}"; purpose="${purpose%%:*}"
+          member="${{ matrix.case }}"; member="${member##*:}"
+          mkdir -p candidate
+          python3 tests/rom/run_rom_purpose_p4_candidate.py             --purpose "$purpose" --material "${{ matrix.material }}" --member "$member"             --p4-prereg integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json             --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json             --p4-reference-result integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json             --output "candidate/${purpose}_${{ matrix.material }}_${member}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p4candidate-${{ matrix.material }}-${{ strategy.job-index }}
+          path: candidate/
+          if-no-files-found: error
+
+  analyze:
+    needs: candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'p4candidate-*', path: /tmp/candidates, merge-multiple: true}
+      - name: Download exact P4 Reference route sets
+        run: |
+          set -euo pipefail
+          sr="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gb="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['GW_BASE'])")"
+          gt="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['GW_R2048_T32'])")"
+          mkdir -p /tmp/s /tmp/gb /tmp/gt /tmp/reference
+          gh run download "$sr" --repo abhedwig-cell/SWAP5 -n p4ref-surface-routes -D /tmp/s
+          gh run download "$gb" --repo abhedwig-cell/SWAP5 -n p4ref-gw-non-r2048-t32-routes -D /tmp/gb
+          gh run download "$gt" --repo abhedwig-cell/SWAP5 -n p4gw-r2048-t32-routes -D /tmp/gt
+          cp /tmp/s/surface_* /tmp/reference/
+          cp /tmp/gb/gw_* /tmp/reference/
+          cp /tmp/gt/gw_* /tmp/reference/
+      - name: Analyze frozen P4 Layer-ROM frontier
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p4_candidates.py             --prereg integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json             --reference-result integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json             --reference-root /tmp/reference --candidate-root /tmp/candidates             --output result/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P4_CANDIDATE_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p4-layer-frontier
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p4-layer-frontier, path: /tmp/result}
+      - name: Persist P4 Layer-ROM frontier
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_STATUS.json')
+          s=json.load(open(p))
+          s.update({
+            'layer_frontier_result':'integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json',
+            'layer_frontier_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'layer_frontier_execution_sha':os.environ['SOURCE_SHA']
+          })
+          s['scientific_firewall']['any_p4_layer_rom_response_seen']=True
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json integration/f-rom/ROM_PURPOSE_P4_STATUS.json
+          git commit -m "ROM-PURPOSE P4: persist Layer-ROM frontier" || exit 0
+          git push origin HEAD:work/f-rom-purpose
