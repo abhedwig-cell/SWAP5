@@ -238,3 +238,55 @@ Observed production state:
 - therefore F0 implementation is active, but F0_1..F0_5 are **not yet qualified** by a controlling production workflow run at this observed state.
 
 This creates no research reopening condition. The next action remains production-owned: wire and execute the F0 qualification gate, then proceed to the exact M1-C3 whole-Hupsel F gate only if F0 passes.
+
+
+## Live delta — F0 qualified; exact whole-Hupsel F gate opened
+
+Latest reconciled production branch:
+
+`work/f-tab02-generated-k0-provider@99df9d1256a93fbb4afcc69fd629e188fae3948d`
+
+Latest production commit:
+
+`F-TAB02: close F0 and open exact Hupsel final gate`
+
+F0 qualification authority:
+
+- qualification record: `integration/f-tab/F-TAB02_F0_QUALIFICATION.json`;
+- production source postimage: `9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf`;
+- owner qualification run: `35884404981`;
+- verdict: PASS.
+
+Qualified F0 semantics include:
+
+- analytical route remains default;
+- generated provider requires explicit standalone opt-in;
+- generated immutable state is constructed once and reused;
+- exact parameter-authority mismatch invalidates/rebuilds;
+- unsupported neighboring profile fails closed;
+- no generated numerical state is stored in committed/transaction physical state;
+- current timestep is rebound without regenerating immutable table state;
+- O0/O2 output identity and F-SI35 default preservation pass.
+
+Current F-TAB02 status therefore classifies slice F as:
+
+`READY_TO_EXECUTE`
+
+The exact authorized whole-Hupsel asset is available and verified:
+
+- `SWAP_4.3.1.zip`;
+- SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
+- size `8,959,314 bytes`.
+
+The earlier KSATEXM scope blocker has been superseded operationally by the
+qualified bounded F-TAB02-G/F0 path. The next production-owned action is the
+exact M1-C3 whole-Hupsel generated-provider gate.
+
+Research disposition remains:
+
+**K0 RESEARCH CLOSED / DO NOT REOPEN WITHOUT A NEW SCIENTIFIC DISCREPANCY**
+
+No further TAB-HYD representation or performance tuning is justified from this
+research branch. If the exact whole-Hupsel F gate fails specifically because of
+generated constitutive fidelity, branch ownership returns here for diagnosis.
+Otherwise closure and admission remain production-owned.
