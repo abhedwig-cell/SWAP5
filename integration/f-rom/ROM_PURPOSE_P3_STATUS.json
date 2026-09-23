@@ -17,7 +17,9 @@
     "BLIND_VALIDATION_WORKLOAD_FREEZE",
     "P3_PREREGISTRATION",
     "REFERENCE_EXECUTION_BINDING",
-    "CANDIDATE_INFRASTRUCTURE_PREPARED_NOT_EXECUTED"
+    "CANDIDATE_INFRASTRUCTURE_PREPARED_NOT_EXECUTED",
+    "SAME_PARTITION_INFRASTRUCTURE_PREPARED_NOT_EXECUTED",
+    "CLOSEOUT_INFRASTRUCTURE_PREPARED_NOT_EXECUTED"
   ],
   "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
   "candidate_response_authorized": false,
@@ -34,7 +36,11 @@
     "application_acceptance_adjudicated": false,
     "production_rom_authorized": false,
     "reference_execution_started": true,
-    "reference_response_adjudicated": false
+    "reference_response_adjudicated": false,
+    "same_partition_execution_binding_created": false,
+    "closeout_execution_binding_created": false,
+    "same_partition_response_generated": false,
+    "closeout_generated": false
   },
   "reference_execution": {
     "SURF_P": {
@@ -61,5 +67,7 @@
   "reference_workflow_runs_launched": [
     35868454256,
     35868990868
-  ]
+  ],
+  "same_partition_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_INFRASTRUCTURE.json",
+  "closeout_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT_INFRASTRUCTURE.json"
 }
