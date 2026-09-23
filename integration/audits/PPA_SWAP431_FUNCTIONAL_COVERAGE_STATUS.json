@@ -120,7 +120,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Inspect remaining MPVOLUME task-2 equations and their MacroState owner call; keep all outputs candidate-only and do not publish state or claim A4 mass/retry/restart admission.",
-  "recovery_point": "latest committed campaign checkpoint pending PPA-WU05-A3-MPVOLUME-HYSTERESIS-CANDIDATE commit; local branch only, not pushed or canonically admitted.",
+  "recovery_point": "f15e2d6c9a9fb66e7135d8d605a7c53e781c920f (PPA-WU05-A3-MPVOLUME-HYSTERESIS-CANDIDATE; local branch checkpoint only, not pushed or canonically admitted).",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
