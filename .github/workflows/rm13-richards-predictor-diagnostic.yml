@@ -1,0 +1,29 @@
+name: RM13 Richards predictor diagnostic
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/ribasim-management/test_rm13_richards_predictor_diagnostic.py'
+      - 'tests/ribasim-management/run_rm13_richards_predictor_diagnostic.sh'
+      - '.github/workflows/rm13-richards-predictor-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM13 Richards predictor diagnostic
+        run: bash tests/ribasim-management/run_rm13_richards_predictor_diagnostic.sh
