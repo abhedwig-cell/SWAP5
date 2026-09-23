@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-EXCHANGE-AGGREGATE",
   "baseline": "b5f6d285b",
+  "recovery_point": "cafc6d220",
+  "persisted_test_result": "PASS at cafc6d220, complete rate-composition harness O0/O2 identical transcripts with runtime checks and floating-point traps",
   "source": "B1.11 MACRORATE section C, lines 1410-1429; SHA256 537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
   "implementation": "src/process/mod_ppa_wu05a4_exchange_aggregate.f90",
   "contract": "Aggregate final nonnegative saturated/unsaturated outgoing and internal/matrix incoming domain rates, preserving source parentheses and compartment sum order. Below-surface top entry overwrites the covering-cell exchange with negative vertical entry. Rapid drainage is reported separately and never included in matrix exchange. Outputs are candidate diagnostics; original inputs remain immutable.",
