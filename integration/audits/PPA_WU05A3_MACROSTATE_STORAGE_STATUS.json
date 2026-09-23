@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_storage.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f8dd636ef1d2031eaea2400bb5b130d7ad4bb944",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROSTATE_STORAGE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_storage_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_storage_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": [
+      "flux-owned storage with incoming vertical/lateral flow, matrix exchange, drainage and zero clamp",
+      "SWMBF=2 profile storage for domain 1 and flux route for internal domains",
+      "source-ordered partly saturated top-node selection",
+      "empty domain storage",
+      "invalid zero-volume profile rejected"
+    ],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated MACROSTATE inventory equations only; no mutation, accepted mass, retry/restart or A4 integration",
+  "next_action": "Continue MACROSTATE section D water-wall wetting and water-level equations as a candidate; do not publish state or join accepted fluxes.",
+  "blockers": []
+}

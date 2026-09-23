@@ -2099,6 +2099,13 @@
       "effect": "Storage-excess test, SWMBF-gated bounded shrinkage relief and source-order proportional domain-cell update pass isolated cases. No MacroState ownership, mutable state, accepted flux, mass, retry or restart behavior is admitted."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE",
+      "state": "ISOLATED_SECTION_C_DOMAIN_INVENTORY_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROSTATE_STORAGE_STATUS.json; preregistered against B1.11 macropore.f90 MACROSTATE section C",
+      "production_delta": "NONE",
+      "effect": "Flux-owned storage, SWMBF=2 main-domain profile inventory and saturated-top selection pass isolated cases. Zero-volume states rejected here because the legacy division is undefined; no mutable owner or A4 mass/retry/restart is admitted."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,

@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Inspect remaining MPVOLUME task-2 equations and their MacroState owner call; keep all outputs candidate-only and do not publish state or claim A4 mass/retry/restart admission.",
-  "recovery_point": "f15e2d6c9a9fb66e7135d8d605a7c53e781c920f (PPA-WU05-A3-MPVOLUME-HYSTERESIS-CANDIDATE; local branch checkpoint only, not pushed or canonically admitted).",
+  "next_safe_step": "Continue MACROSTATE section D water-wall wetting fractions, saturated-storage profile and water-level equations as an isolated candidate; preserve all state/mass/retry/restart admission gates.",
+  "recovery_point": "latest committed campaign checkpoint pending PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE commit; local branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
@@ -135,6 +135,7 @@
     "PPA-SOL-AGE-INITIAL-STORAGE: 100000 nine-compartment B1.11 task-1 storage/samini initializations at O0/O2; storage and ascending-index total are bitwise verified.",
     "PPA-WU05-A3-MPVOLUME-DOMAINS: minimum-width-filtered compartment volume, deepest active bottom and potential-bottom limits, per-domain cell/total volume in source loop order, dynamic nonnegative candidate clamp, inactive-above-top isolation and invalid/short-output fail-closed at O0/O2.",
     "PPA-WU05-A3-MPVOLUME-HYSTERESIS: task-2 storage-excess shrinkage relief, SWMBF domain gating, bottom-limited prior-volume recovery scan, source-order proportional redistribution, no-relief preservation, domain-total and dynamic-volume candidate aggregation at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-STORAGE: section C water inventory candidates from top/matrix/drainage fluxes and SWMBF=2 domain-1 profile, including saturation-top selection, empty-domain, and zero-volume fail-closed checks at O0/O2.",
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
@@ -386,6 +387,21 @@
       "PPA_WU05A3_MPVOLUME_HYSTERESIS_POTENTIAL_BOTTOM_SCAN_LIMIT=PASS",
       "PPA_WU05A3_MPVOLUME_HYSTERESIS_INVALID_MODE_FAIL_CLOSED=PASS",
       "PPA_WU05A3_MPVOLUME_HYSTERESIS_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_storage_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE",
+    "source": "B1.11 macropore.f90 MACROSTATE section C domain inventory and saturated-top scan",
+    "test": "Flux/storage equation, SWMBF=2 profile route, partial saturation scan, empty domain and zero-volume rejection at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_STORAGE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_FLUX_AND_DRAINAGE=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_SWMBF2_PROFILE=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_PARTIAL_SATURATION_SCAN=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_EMPTY_DOMAIN=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_ZERO_VOLUME_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

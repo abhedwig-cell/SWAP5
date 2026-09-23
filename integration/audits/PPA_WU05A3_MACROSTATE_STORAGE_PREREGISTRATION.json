@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_storage.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f8dd636ef1d2031eaea2400bb5b130d7ad4bb944",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROSTATE",
+    "source_region": "section C domain storage update from top fluxes, matrix exchange and rapid drainage for SWMBF modes; SWMBF=2 main-domain profile storage and saturated/unsaturated transition-node scan"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_storage_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_storage_source_oracle.sh",
+  "in_scope": [
+    "flux-based storage with matrix exchange and main-domain rapid drainage",
+    "nonnegative storage clamp and equal saturated/unsaturated totals in flux-owned domains",
+    "SWMBF=2 domain-1 profile inventory and source-ordered saturated-top scan",
+    "domain storage summation and empty-domain candidate"
+  ],
+  "out_of_scope": [
+    "mutating MacroState global variables or invoking MPVOLUME task 2",
+    "zero-volume saturated-fraction division, which is source-undefined and rejected by this isolated oracle",
+    "water-wall wetting fractions, internal flux recurrence and output aliases",
+    "accepted Richards interval, whole-column mass, retry/restart and A4 admission"
+  ],
+  "expected_tests": [
+    "top inflow, matrix exchange, rapid-drainage and lower-zero clamp",
+    "SWMBF mode selection for main and internal domains",
+    "profile-derived total inventory and legacy saturated-top selection",
+    "empty domain and nonpositive profile volume fail-closed",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated inventory candidates only; no state or flux is published"
+}
