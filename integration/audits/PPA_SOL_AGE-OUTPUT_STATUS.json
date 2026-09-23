@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa_sol_age_output_status.v1",
+  "work_unit": "PPA-SOL-AGE-OUTPUT",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE-OUTPUT_PREREGISTRATION.json",
+  "implementation_commit": "9a91ae7428d407e8848c3ad1ee8ebcca17bb2eb9",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation": "AgeTracer task-2 topup/root/lateral/bottom effluent age increments"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_output.f90",
+    "test": "tests/fapp/test_ppa_sol_age_output_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_output_source_oracle.sh",
+    "scope": "Pure one-explicit-substep age-effluent increment candidates. Root and each lateral level traverse cells in source order; no output accumulator state is owned."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_profiles_per_build": 100000,
+    "compartments_per_profile": 5,
+    "lateral_levels_per_profile": 3,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_OUTPUT_B1_11_INCREMENT_100000x5x3=PASS",
+      "PPA_SOL_AGE_OUTPUT_TOP_ROOT_LATERAL_BOTTOM_SIGN_BRANCHES=PASS",
+      "PPA_SOL_AGE_OUTPUT_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ]
+  },
+  "scope_boundary": {
+    "persistent_output_interval_accumulator_owner": "NONE",
+    "restart_mass_reporting_and_production_binding": "NONE",
+    "complete_AgeTracer_or_SOLUTE_admission": "NOT CLAIMED"
+  },
+  "next_action": "Reconcile all isolated AgeTracer source slices against the full task-2 order and identify remaining omitted source terms before considering any production owner."
+}
