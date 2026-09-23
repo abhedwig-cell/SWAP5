@@ -2064,6 +2064,13 @@
       "effect": "The CDarcy source coefficient and inverse-square diameter sensitivity are tested independently; surrounding MACROINIT state composition and production exchange remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROINIT-CRACK-NODE",
+      "state": "ISOLATED_NNCRAR_NODE_SELECTION_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROINIT_CRACK_NODE_STATUS.json; preregistered against B1.11 macropore.f90 MACROINIT section B",
+      "production_delta": "NONE",
+      "effect": "The strict crack-threshold node walk, IcTopMp bypass and bounded fail-closed edge are checked. MACROINIT state composition and production integration remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
