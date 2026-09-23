@@ -166,6 +166,7 @@ jobs:
             echo "tree=$(git rev-parse HEAD^{tree})"
             echo "compiler=$(gfortran --version | head -n1 || true)"
             grep -E '^F_TAB02_D_|^F-TAB02-D ' F-TAB02-D_GATE.log || true
+            grep -E '^F_TAB02_D_|^F-TAB02-D |^FMR44R_POSITIVE_QBOT_|^FMR44R_.*PASS' F-TAB02-D_DYNAMIC_GATE.log || true
           } > F-TAB02-D_EVIDENCE.txt
       - name: Upload evidence
         if: always()
@@ -175,4 +176,5 @@ jobs:
           path: |
             F-TAB02-D_EVIDENCE.txt
             F-TAB02-D_GATE.log
+            F-TAB02-D_DYNAMIC_GATE.log
           if-no-files-found: error
