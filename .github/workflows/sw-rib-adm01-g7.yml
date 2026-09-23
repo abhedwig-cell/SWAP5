@@ -1,0 +1,44 @@
+name: SW-RIB-ADM01 G7 live Ribasim application qualification
+
+on:
+  push:
+    branches:
+      - qualification/sw-rib-adm01-g7-live-ribasim-application
+  pull_request:
+    paths:
+      - 'tests/sw-rib-adm01-g7/**'
+      - 'integration/sw-rib-adm01/ADM01_G7_*'
+      - '.github/workflows/sw-rib-adm01-g7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sw-rib-adm01-g7-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact Ribasim v2026.1.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: eae77424a4078497d40d8197237cb83e3aba6a83
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent live Ribasim application gate
+        run: bash tests/sw-rib-adm01-g7/run_adm01_g7.sh
