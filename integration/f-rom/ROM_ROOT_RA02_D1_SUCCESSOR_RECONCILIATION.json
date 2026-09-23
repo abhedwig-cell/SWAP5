@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.rom_root.ra02_d1.successor_reconciliation.v1",
+  "workstream": "ROM-ROOT",
+  "date": "2026-09-23",
+  "state": "CLOSED_SUCCESSOR_CORRECTED_TO_PREEXISTING_RA02_AUTHORITY",
+  "d1_closeout": "integration/f-rom/ROM_ROOT_RA02_D1_CLOSEOUT.json",
+  "overlooked_preexisting_authority": {
+    "diagnostic": "integration/f-rom/ROM_ROOT_RA01_ROOT_RESPONSE_DIAGNOSTIC.json",
+    "diagnostic_status": "CLOSED_ROOT_RESPONSE_ON_UNSTRESSED_FEDDES_PLATEAU_NUMERICAL_NOISE_ONLY",
+    "ra02_preregistration": "integration/f-rom/ROM_ROOT_RA02_PREREGISTRATION.json",
+    "ra02_binding": "integration/f-rom/ROM_ROOT_RA02_BINDING.json",
+    "ra02_binding_state": "BOUND_BEFORE_RA02_EXECUTION",
+    "ra02_workflow_run": 35821853204,
+    "ra02_workflow_head": "59f2335916623f02413e35f9333bd4dd716ec6fd"
+  },
+  "reconciliation": {
+    "d1_findings_retained": true,
+    "d1_available_output_numerical_floor_support_retained": true,
+    "d1_node_level_nonclaim_retained": true,
+    "d2_node_level_diagnostic_required_for_next_decision": false,
+    "reason": "Before D1 was created, the repository already contained a stronger post-RA01 aggregate diagnosis showing actual uptake remained within about 1e-13 of potential and B01/B14 root-response traces were exactly material-invariant, plus a prospectively designed and bound RA02 stress-active Reference panel. The governing next question is therefore whether RA02 activates drought stress and qualifies numerically, not further adjudication of the non-discriminating RA01 plateau."
+  },
+  "ra02_design_authority": {
+    "response_based": false,
+    "initial_offset_above_h3_Se": 0.001,
+    "analytical_water_budget_bound": true,
+    "candidate_response_used": false,
+    "reduced_candidate_generated": false
+  },
+  "firewall": {
+    "ra01_reclassified": false,
+    "d1_reclassified": false,
+    "reference_qualified": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "production_change_authorized": false
+  },
+  "decision": "DO_NOT_EXECUTE_RA02_D2; CONTINUE_ALREADY_BOUND_ROM_ROOT_RA02_REFERENCE_QUALIFICATION"
+}
