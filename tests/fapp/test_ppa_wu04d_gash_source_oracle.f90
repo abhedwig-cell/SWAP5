@@ -1,5 +1,6 @@
 program test_ppa_wu04d_gash_source_oracle
   use, intrinsic :: iso_fortran_env, only: real64, int64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan, ieee_positive_inf
   use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t, VONHHBRADEN_AVAILABLE
   use mod_gash_interception, only: gash_parameters_t, evaluate_gash_source_window
   implicit none
@@ -40,8 +41,28 @@ program test_ppa_wu04d_gash_source_oracle
     call require(abs(actual-expected) <= tolerance, 2)
   end do
 
+  parameters%free_throughfall = 0.2_real64
+  parameters%stemflow = 0.1_real64
+  parameters%canopy_storage_cm = 0.07_real64
+  parameters%average_evaporation = 0.15_real64
+  parameters%average_precipitation = 0.5_real64
+  source%gross_rain_cm_per_day = 0.4_real64
+  source%sprinkling_irrigation_cm_per_day = 0.1_real64
+  source%leaf_area_index = ieee_value(0.0_real64,ieee_quiet_nan)
+  call evaluate_gash_source_window(parameters, source, actual, status)
+  call require(status /= VONHHBRADEN_AVAILABLE .and. actual <= 0.0_real64, 3)
+  source%leaf_area_index = 2.0_real64
+  source%gross_rain_cm_per_day = ieee_value(0.0_real64,ieee_positive_inf)
+  call evaluate_gash_source_window(parameters, source, actual, status)
+  call require(status /= VONHHBRADEN_AVAILABLE .and. actual <= 0.0_real64, 4)
+  source%gross_rain_cm_per_day = 0.4_real64
+  source%sprinkling_irrigation_cm_per_day = ieee_value(0.0_real64,ieee_positive_inf)
+  call evaluate_gash_source_window(parameters, source, actual, status)
+  call require(status /= VONHHBRADEN_AVAILABLE .and. actual <= 0.0_real64, 5)
+
   print '(A)', 'PPA_WU04D_GASH_SOURCE_ORACLE_100000=PASS'
   print '(A)', 'PPA_WU04D_GASH_GATES_AND_PIECEWISE_BRANCHES=PASS'
+  print '(A)', 'PPA_WU04D_GASH_NONFINITE_SOURCE_FAIL_CLOSED=PASS'
 
 contains
 

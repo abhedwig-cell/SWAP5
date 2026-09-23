@@ -42,9 +42,23 @@ contains
   end subroutine
   pure logical function valid(p,s) result(ok)
     type(gash_parameters_t),intent(in)::p; type(vonhhbraden_source_window_t),intent(in)::s
-    ok=ieee_is_finite(p%free_throughfall).and.ieee_is_finite(p%stemflow).and.ieee_is_finite(p%canopy_storage_cm).and.&
-      ieee_is_finite(p%average_evaporation).and.ieee_is_finite(p%average_precipitation).and.p%free_throughfall>=0.and.p%stemflow>=0.and.&
-      p%free_throughfall+p%stemflow<1.and.p%canopy_storage_cm>=0.and.p%average_evaporation>0.and.p%average_precipitation>0.and.&
-      s%gross_rain_cm_per_day>=0.and.s%sprinkling_irrigation_cm_per_day>=0
+    ok=.false.
+    if (.not.ieee_is_finite(p%free_throughfall).or..not.ieee_is_finite(p%stemflow).or.&
+        .not.ieee_is_finite(p%canopy_storage_cm).or..not.ieee_is_finite(p%average_evaporation).or.&
+        .not.ieee_is_finite(p%average_precipitation).or..not.ieee_is_finite(s%gross_rain_cm_per_day).or.&
+        .not.ieee_is_finite(s%sprinkling_irrigation_cm_per_day).or..not.ieee_is_finite(s%leaf_area_index)) return
+    if (p%free_throughfall<0.0_real64.or.p%free_throughfall>1.0_real64.or.&
+        p%stemflow<0.0_real64.or.p%stemflow>1.0_real64) return
+    if (p%free_throughfall>=1.0_real64.or.p%stemflow>=1.0_real64) return
+    if (p%free_throughfall>=1.0_real64-p%stemflow) return
+    if (p%canopy_storage_cm<0.0_real64.or.p%canopy_storage_cm>10.0_real64.or.&
+        p%average_evaporation<=0.0_real64.or.p%average_evaporation>10.0_real64.or.&
+        p%average_precipitation<=0.0_real64.or.p%average_precipitation>100.0_real64) return
+    if (s%gross_rain_cm_per_day<0.0_real64.or.s%sprinkling_irrigation_cm_per_day<0.0_real64.or.&
+        s%leaf_area_index<0.0_real64) return
+    if (s%sprinkling_is_intercepted) then
+      if (s%gross_rain_cm_per_day>huge(1.0_real64)-s%sprinkling_irrigation_cm_per_day) return
+    end if
+    ok=.true.
   end function
 end module
