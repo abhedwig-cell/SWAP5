@@ -5,6 +5,7 @@ $sources = @('src/adapter/mod_ppa_wu05a2_macropore_state.f90',
     'src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90',
     'src/process/mod_ppa_wu05a3_macrostate_wetting_candidate.f90',
     'src/process/mod_ppa_wu05a3_conservative_flux.f90',
+    'src/process/mod_ppa_wu05a3_sorptivity_events.f90',
     'src/adapter/mod_ppa_wu05a3_interval_candidate.f90',
     'tests/fapp/test_ppa_wu05a3_interval_candidate.f90')
 $outputs = @()
