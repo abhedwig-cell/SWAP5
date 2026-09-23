@@ -1,0 +1,65 @@
+name: F-TAB02-F exact Hupsel asset binding
+
+on:
+  push:
+    branches:
+      - work/f-tab02-generated-k0-provider
+    paths:
+      - '.github/workflows/f-tab02-f-exact-hupsel-assets.yml'
+      - 'integration/f-tab/F-TAB02_F_ASSET_BINDING.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-assets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch and verify immutable Hupsel input authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_repo='SWAP-model/swap-testcases'
+          source_commit='a1b15843e9e9732713bed1ee41d09c16c3136593'
+          base="https://raw.githubusercontent.com/${source_repo}/${source_commit}/cases/hupselbrook/legacy"
+          mkdir -p F-TAB02-F-HUPSEL
+          curl -fsSL --retry 3 "$base/283.met" -o F-TAB02-F-HUPSEL/283.met
+          curl -fsSL --retry 3 "$base/grassd.crp" -o F-TAB02-F-HUPSEL/grassd.crp
+          curl -fsSL --retry 3 "$base/maizes.crp" -o F-TAB02-F-HUPSEL/maizes.crp
+          curl -fsSL --retry 3 "$base/potatod.crp" -o F-TAB02-F-HUPSEL/potatod.crp
+          curl -fsSL --retry 3 "$base/swap.dra" -o F-TAB02-F-HUPSEL/swap.dra
+          curl -fsSL --retry 3 "$base/swap_linux.swp.template" -o F-TAB02-F-HUPSEL/swap.swp
+
+          cat > F-TAB02-F-HUPSEL/SHA256SUMS.expected <<'EOF'
+          1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6  283.met
+          8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882  grassd.crp
+          2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33  maizes.crp
+          96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707  potatod.crp
+          070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17  swap.dra
+          a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b  swap.swp
+          EOF
+          (cd F-TAB02-F-HUPSEL && sha256sum --check SHA256SUMS.expected)
+
+          {
+            echo 'workunit=F-TAB02-F'
+            echo 'gate=F1_HUPSEL_INPUT_ASSET_BINDING'
+            echo "source_repo=$source_repo"
+            echo "source_commit=$source_commit"
+            echo 'F_TAB02_F_EXACT_283_MET=PASS'
+            echo 'F_TAB02_F_EXACT_SWAP_SWP=PASS'
+            echo 'F_TAB02_F_EXACT_CROP_INPUTS=PASS'
+            echo 'F_TAB02_F_EXACT_DRAINAGE_INPUT=PASS'
+            echo 'F_TAB02_F_HUPSEL_INPUT_ASSET_BINDING=PASS'
+            echo 'archive_authority=inherited from exact M1-C3 qualification; this gate does not reconstruct or replace B1.11 source authority'
+          } | tee F-TAB02-F-ASSET-EVIDENCE.txt
+      - name: Upload exact input evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-f-exact-hupsel-input-assets
+          path: |
+            F-TAB02-F-ASSET-EVIDENCE.txt
+            F-TAB02-F-HUPSEL/SHA256SUMS.expected
+          if-no-files-found: error
