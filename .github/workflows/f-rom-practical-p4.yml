@@ -63,7 +63,7 @@ jobs:
           BLOBS
           verify integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json b2d8885a9bb01b078a3510086c70945207ab0882
           verify tools/rom/run_rom_practical_p3_candidate.py 0021329e9aae426720adf87a1461311d764efab8
-          verify tools/rom/prepare_rom_practical_p3_reference.py 184f9a81e0970900df47d3406387e2c74748f00b
+          verify tools/rom/prepare_rom_practical_p3_reference.py 548505a02ed74b61f9cbee4fd63812d7f9356cc5
           python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
           python3 -m py_compile tools/rom/qualify_rom_practical_p4.py
       - name: Build frozen reduced implementation
