@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.technical_amendment.v1",
+  "work_unit": "RM13B-TA02",
+  "date": "2026-09-23",
+  "parent_preregistration": "integration/ribasim-management/RM13B_PREREGISTRATION.json",
+  "classification": "TECHNICAL_TRANSACTION_HOST_AMENDMENT",
+  "trigger_evidence": {
+    "workflow_run": 35884574334,
+    "workflow_job": 107261327743,
+    "observation": "The first exact Ribasim v2026.1.1 instance initializes and starts correctly, but initializing a second copied JuliaC libribasim.so inside the same Python process aborts in Julia jl_init_threadtls/jl_adopt_thread.",
+    "exit_code": 134
+  },
+  "interpretation": "JuliaC runtime initialization is process-global. Copying libribasim.so files does not create independent Julia runtimes inside one process. This is a transaction-host limitation, not a Ribasim hydrology, allocation, mass-balance, SWAP or MODFLOW result.",
+  "amendment": {
+    "old_host_pattern": "three isolated libribasim.so copies loaded into one Python process",
+    "new_host_pattern": "three isolated OS worker processes, each loading exactly one official v2026.1.1 libribasim and one serialized copy of the same Ribasim input origin",
+    "accepted_witness": "one initialized unadvanced worker process",
+    "candidate_A": "one worker process advanced to 8.64 s, finalized and discarded after its observations are captured",
+    "candidate_B": "one worker process advanced to 8.64 s and kept alive/provisional until outer preflights complete; finalized only after outer acceptance",
+    "communication": "coupler-owned request/response IPC carrying only model time, Basin level and physical UserDemand cumulative inflow; allocation remains read from exact-release allocation output after candidate finalization"
+  },
+  "unchanged": {
+    "all_RM13B_physical_quantities": "UNCHANGED",
+    "all_model_pins": "UNCHANGED",
+    "allocation_dt_seconds": 8.64,
+    "solver_saveat": "Inf",
+    "all_scientific_hypotheses": "UNCHANGED",
+    "all_tolerances": "UNCHANGED",
+    "publication_order": "UNCHANGED",
+    "request_allocation_supply_semantics": "UNCHANGED"
+  },
+  "strengthening": [
+    "Each candidate now has a genuinely process-isolated Julia runtime.",
+    "Accepted witness, candidate A and candidate B use byte-identical serialized input origins but separate result directories.",
+    "A failed or discarded candidate cannot mutate another Ribasim process address space."
+  ],
+  "nonclaims": [
+    "No native Ribasim checkpoint API is claimed.",
+    "OS-process isolation is a qualification transaction host, not yet a production iMOD Coupler implementation.",
+    "This amendment does not qualify new Ribasim physics or management semantics."
+  ]
+}
