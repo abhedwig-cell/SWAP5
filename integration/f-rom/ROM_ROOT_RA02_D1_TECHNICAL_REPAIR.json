@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.rom_root.ra02_d1.technical_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D1",
+  "date": "2026-09-23",
+  "failed_run": 35821785014,
+  "failure_class": "TECHNICAL_ARTIFACT_SCHEMA_IDENTITY_CHECK_ONLY",
+  "scientific_response_exposed": false,
+  "root_cause": "The downloaded rom-root-ra01 artifact contains the runtime-produced RA01 result schema. workflow_run and evidence_artifact.id were added later to the repository-persisted result and therefore are not fields in the artifact copy.",
+  "preserved_identity": {
+    "source_run_id": 35819870854,
+    "artifact_name": "rom-root-ra01",
+    "artifact_id": 10733930641,
+    "artifact_digest": "sha256:77a4fe8d5ea1a210533e30b3a87a22ef7b42c8759cbc583763a3ce018debdb0b",
+    "download_action_verifies_digest": true
+  },
+  "permitted_change": "Remove only assertions for repository-enrichment fields workflow_run and evidence_artifact.id from the downloaded artifact JSON. Retain pinned run download, status check, firewall check and all ten route-file existence checks.",
+  "scientific_semantics_changed": false,
+  "analyzer_changed": false,
+  "thresholds_changed": false,
+  "new_simulation_authorized": false,
+  "reduced_candidate_response_generated": false
+}
