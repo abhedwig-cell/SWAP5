@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low08.lysimeter.status.v1",
+  "work_unit": "PPA-LOW08-LYSIMETER",
+  "parent_work_unit": "PPA-LOW08",
+  "status": "LYSIMETER_ACTIVE_SET_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "98e1c511e",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no HeadCalc/Newton active-set lifecycle, transaction, retry, restart, mass or bottom boundary route changed",
+  "source_census": "integration/audits/PPA_LOW08_LYSIMETER_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW08_LYSIMETER_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low08_lysimeter_active_set.f90",
+  "test": "tests/fapp/test_ppa_low08_lysimeter_active_set.f90",
+  "gate": "tests/fapp/run_ppa_low08_lysimeter_active_set.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW08_LYSIMETER_ACTIVE_SET_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW08_LYSIMETER_STRICT_THRESHOLD_AND_TASK_REPLAY=PASS",
+      "PPA_LOW08_LYSIMETER_GRADIENT_RESIDUAL_JACOBIAN=PASS",
+      "PPA_LOW08_LYSIMETER_STATELESS_A_B_A_AND_INVALID=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "dd5f266893d033311a7b1ac6b0414ab64f02ab6520ef26a3dfe0e3967c542888",
+    "o2_executable_sha256": "a2db126f6d2c75f6522408c5be48be43c81bd3326a8fd3f6b01f2b323dfa873a",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Keep this as a pure oracle; require owner-scoped task/iteration/retry/restart transaction before production activation.",
+  "recovery_point": "this status and PPA_LOW08_LYSIMETER_SOURCE_CENSUS.json"
+}

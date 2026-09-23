@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW08-LYSIMETER",
+  "title": "Pure B1.11 SWBOTB=8 lysimeter active-set and bottom-row terms",
+  "protocol": "PIN_STRICT_TASK1_THRESHOLD_AND_TASK2_REPLAY -> IMPLEMENT_TYPED_TRANSITION_ORACLE -> 100000_SOURCE_REPLAYS -> O0_O2_REPLAY -> HOLD_NEWTON_AND_TIME_STEP_OWNERS",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW08_LYSIMETER_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "integration/audits/PPA_WU02_STATUS.json"
+  ],
+  "scope": [
+    "task-1 strict FLBOTH activation threshold and task-2 reuse",
+    "bottom head-gradient, HPLATE assignment, residual and base/SwKimpl diagonal terms",
+    "inactive qbot=0 branch"
+  ],
+  "non_goals": [
+    "HeadCalc active-set storage lifecycle or acceptance across nonlinear iterations",
+    "Trial/retry rollback, timestep changes, restart or lysimeter mass ledger",
+    "Production bottom_mode=8 application route"
+  ],
+  "pass_conditions": [
+    "100000 deterministic vectors bitwise match source active-set and row equations",
+    "strict threshold, task sequencing, hydraulic derivative, A/B/A and invalid inputs pass",
+    "O0/O2 transcripts match",
+    "no persistent solver state or production route is changed"
+  ]
+}
