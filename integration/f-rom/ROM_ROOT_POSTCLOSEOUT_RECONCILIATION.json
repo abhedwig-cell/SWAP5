@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.rom_root.postcloseout_reconciliation.v1",
+  "workstream": "ROM-ROOT",
+  "date": "2026-09-23",
+  "state": "CLOSED_HELD_AT_EXTERNAL_PURPOSE_AUTHORITY_BOUNDARY",
+  "rom_root_authority": {
+    "branch": "work/f-rom-lare-rs1",
+    "closeout_head": "64f6614579c041e8b03c072a4f3ef13dddafae65",
+    "closeout": "integration/f-rom/ROM_ROOT_CLOSEOUT.json",
+    "exactness_track": "CLOSED",
+    "new_root_specific_state_selected": false
+  },
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "reconciled_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "external_authority_reconciliation": {
+    "rom_accept": {
+      "branch": "work/f-rom-accept",
+      "head": "41799780d068fd2952aab82d799af28198a64526",
+      "closeout": "integration/f-rom/ROM_ACCEPT_01_CLOSEOUT.json",
+      "decision": "ROM_ACCEPT_01_CLOSED__NO_CURRENT_LAYER_ROM_ACCEPTANCE_RUN_AUTHORIZED",
+      "root_relevant_boundary": [
+        "quantitative reduced-model application tolerance remains unresolved unless an independently matching authority is bound",
+        "root-feedback candidate response may not be used to create its own acceptance envelope"
+      ],
+      "matching_root_feedback_structural_error_budget_available": false
+    },
+    "rom_purpose": {
+      "branch": "work/f-rom-purpose",
+      "observed_head": "451bbb2f13fcf231cc2c3f56145614440e37cd0e",
+      "observed_state": "P3_IN_PROGRESS",
+      "matching_closed_root_feedback_purpose_acceptance_authority_available": false
+    }
+  },
+  "decision": {
+    "reopen_exactness_track": false,
+    "start_dynamic_augmented_candidate": false,
+    "select_finite_distribution_descriptor_dimension": false,
+    "derive_acceptance_threshold_from_stage3_errors": false,
+    "production_or_performance_claim": false,
+    "hold_rom_root_closed": true
+  },
+  "rationale": [
+    "ROM-ROOT has already identified the exact fixed-threshold information coordinate and the forcing-portable distributional boundary.",
+    "No independent purpose-dependent structural-error tolerance currently exists that would make selection of an approximate finite descriptor scientifically adjudicable.",
+    "A candidate-independent approximation frontier is technically permissible, but it would not answer an acceptance or minimum-state question at the current authority state and is therefore not opened automatically."
+  ],
+  "reopen_conditions": [
+    "ROM-ACCEPT or another independent purpose owner freezes a matching root-feedback/profile structural-error budget with temporal and spatial semantics.",
+    "ROM-PURPOSE closes a purpose contract that explicitly requires a root-feedback approximation frontier independent of application acceptance.",
+    "A new research question is explicitly scoped to approximation-theory characterization rather than state sufficiency or application admission."
+  ],
+  "scientific_firewall": {
+    "new_response_generated": false,
+    "new_propagated_state_selected": false,
+    "fitted_surrogate_used": false,
+    "acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
