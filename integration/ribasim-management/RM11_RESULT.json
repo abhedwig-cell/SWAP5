@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.ribasim_management.explicit_boundary_scheduler.result.v1",
+  "work_unit": "RM11",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_COUPLER_OWNED_FIXED_ALLOCATION_BOUNDARY_SCHEDULER",
+  "qualification_head": "eebe7171f3317ba9ac7644ee52be9bde21c4c72b",
+  "workflow": "RM11 management boundary scheduler",
+  "workflow_run": 35830868618,
+  "workflow_job": 107082896874,
+  "conclusion": "success",
+  "stable_output_sha256": "c93f7ae30c9e593d420653230f74ab964047a0d217900fc9a1dbfb6e0ff3e687",
+  "technical_failures_before_qualification": [
+    {
+      "run": 35830830820,
+      "job": 107082775513,
+      "classification": "TECHNICAL_FORTRAN_NAMESPACE_COLLISION",
+      "cause": "The internal procedure name fmr_rms_boundary_pending collided case-insensitively with the public status constant FMR_RMS_BOUNDARY_PENDING.",
+      "repair": "Rename only the internal procedure implementation; no state-machine, expected sequence or tolerance changed."
+    }
+  ],
+  "passed": [
+    "A5 5-hour allocation clock splits 6-hour product targets at 5, 10, 15 and 20 hours",
+    "A5 accepted physical targets are exactly 5, 6, 10, 12, 15, 18, 20 and 24 hours",
+    "A5 solved allocation boundaries are exactly 0, 5, 10, 15 and 20 hours",
+    "A5 24-hour endpoint remains between allocation boundaries with the next boundary at 25 hours",
+    "A6 aligned clock introduces no extra physical targets",
+    "A6 solved allocation boundaries are exactly 0, 6, 12 and 18 hours before the 24-hour horizon",
+    "same accepted scheduler state plus same requested target reproduces the same plan",
+    "accepting a target different from the outstanding plan fails closed",
+    "an outstanding provisional plan cannot be exported as restart state",
+    "restart on a pending boundary blocks physical advance until the boundary solve is marked",
+    "restart after a solved boundary cannot repeat that solve",
+    "O0 and O2 stable outputs are identical"
+  ],
+  "authority": {
+    "clock_contract": "RM03",
+    "runtime_aliasing_evidence": "RIBASIM-DUMMY-20H10",
+    "production_module": "src/runtime/mod_fmr_ribasim_management_scheduler.f90"
+  },
+  "nonclaims": [
+    "No adaptive Ribasim allocation mode.",
+    "No later Ribasim release semantics.",
+    "No real-Ribasim scheduler trajectory equivalence is claimed by RM11 alone.",
+    "No universal timestep recommendation.",
+    "No canonical admission by RM11 alone."
+  ],
+  "next_required_boundary": "Drive exact Ribasim v2026.1.1 through the RM11-generated noncommensurate A5 target sequence and compare its accepted management/physical trajectory with an independently frozen explicit boundary-aligned reference route."
+}
