@@ -3,8 +3,8 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P3-GW-REFERENCE-MISSING-SLICE-REPAIR",
   "date": "2026-09-23",
-  "status": "PREPARED_NOT_BOUND_NOT_EXECUTED",
-  "trigger": "Only slices from the already-bound GW Reference repair run that completed with a verified technical runner interruption exit 143.",
+  "status": "PREPARED_NON_R2048_ONLY_NOT_BOUND_NOT_EXECUTED",
+  "trigger": "Only non-R2048_T32 slices from the bound GW source run that completed with a verified technical runner interruption exit 143.",
   "source_run": 35876286853,
   "method": {
     "partition": "each missing 1024-observation history is split into two exact-state halves of 512 observations",
@@ -25,7 +25,9 @@
       "failure_classification"
     ],
     "allowed_failure_classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
-    "successful_source_slices_must_not_be_repaired": true
+    "successful_source_slices_must_not_be_repaired": true,
+    "forbidden_route": "R2048_T32",
+    "route_authority_note": "R2048_T32 is wholly superseded by the full-stratum v2 exact-state recovery and may never be repaired case-by-case."
   },
   "blobs": {
     "tests/rom/materialize_rom_purpose_p3_gw_reference.py": "83dbec28cd92b76bc1e2a4ac704103622a5cab28",
@@ -50,6 +52,7 @@
     "solver_or_physics_changed": false,
     "representation_changed": false,
     "closure_changed": false,
-    "candidate_response_generated": false
+    "candidate_response_generated": false,
+    "r2048_t32_casewise_repair_forbidden": true
   }
 }
