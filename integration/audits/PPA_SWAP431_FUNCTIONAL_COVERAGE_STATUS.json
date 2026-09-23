@@ -101,7 +101,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint fb9045a09 (solute dispersion source oracle); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 06cb0fc0c (solute timestep stability source oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
@@ -118,15 +118,16 @@
     "PPA-SOLUTE-ROOT-UPTAKE: 100000 O0/O2 bitwise layer uptake-rate and cumulative amount comparisons using B1.11 operation order.",
     "PPA-SOLUTE-DECOMPOSITION: 100000 O0/O2 bitwise temperature, dryness, Freundlich adsorption and decomposition-rate comparisons.",
     "PPA-SOLUTE-DISPERSION: 100000 O0/O2 bitwise moisture-dependent molecular diffusion, pore velocity, longitudinal dispersion and timestep correction comparisons.",
-    "PPA-SOLUTE-TIMESTEP: 100000 O0/O2 bitwise eight-layer stability minima, dispersion floors, remaining interval caps and dtmin floors."
+    "PPA-SOLUTE-TIMESTEP: 100000 O0/O2 bitwise eight-layer stability minima, dispersion floors, remaining interval caps and dtmin floors.",
+    "PPA-SOLUTE-TRANSPORT-SUBSTEP: 100000 O0/O2 bitwise composed six-layer dispersion-to-stability-to-substep comparisons."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-SOLUTE-TIMESTEP",
-    "source": "B1.11 solute.f90 task 2 min dz^2/(2*dispr), remaining interval and dtmin clamp",
-    "test": "100000 bitwise eight-layer timestep selection comparisons at O0/O2",
+    "work_unit": "PPA-SOLUTE-TRANSPORT-SUBSTEP",
+    "source": "B1.11 solute.f90 task 2 composed per-layer diffusivity/dispersion, global stability minimum, and substep clamps",
+    "test": "100000 bitwise six-layer dispersion-to-timestep composition comparisons at O0/O2",
     "test_markers": [
-      "PPA_SOLUTE_TIMESTEP_SOURCE_ORACLE_100000=PASS",
-      "PPA_SOLUTE_TIMESTEP_O0_O2_IDENTITY=PASS"
+      "PPA_SOLUTE_TRANSPORT_SUBSTEP_COMPOSITION_100000=PASS",
+      "PPA_SOLUTE_TRANSPORT_SUBSTEP_COMPOSITION_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

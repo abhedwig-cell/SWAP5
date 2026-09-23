@@ -209,7 +209,9 @@ correction feeding the internal-face flux are independently source-checked
 over 100,000 vectors. The source's per-compartment `dz²/(2*dispr)` stability
 limit, `1e-8` dispersion floor, remaining-interval cap and `dtmin` floor are
 also compared over 100,000 eight-layer cases; this is not a complete transport
-subcycling or accepted-state integration.
+subcycling or accepted-state integration. A separate composed regression
+feeds per-layer dispersion into the global stability minimum and timestep
+clamps for 100,000 six-layer cases at O0/O2.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
