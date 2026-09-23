@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-WINDOW",
+  "parent_workunit": "PPA-IRR-FIXED-APPLICATION",
+  "title": "Source-bound scheduled-irrigation date-window predicate",
+  "protocol": "PIN_B1_11_SOURCE -> REPLAY_BOTH_CALENDAR_BRANCHES -> TEST_EXACT_TOLERANCE_EDGES -> 100000_DETERMINISTIC_VECTORS_PER_BRANCH -> O0_O2_REPLAY -> HOLD_CALENDAR_OWNERSHIP_AND_RUNTIME_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "438-449",
+    "equations": [
+      "When yearendcrp>yearstacrp, scheduled irrigation is allowed iff (t1900-tstairryrx)>1e-3 and (t1900-tendirryrx)<=1e-3.",
+      "Otherwise scheduled irrigation is allowed iff (t-tstairrig)>=-1e-3 and (t-tendirrig)<=1e-3.",
+      "The crop-relative and absolute-calendar lower-bound operators differ strictly as in B1.11."
+    ]
+  },
+  "scope": [
+    "isolated pure predicate with both source calendar branches",
+    "exact lower and upper tolerance-boundary checks",
+    "100000 deterministic source comparisons for each branch"
+  ],
+  "non_goals": [
+    "crop-year rollover, calendar construction or date decoding",
+    "schedule selection eligibility, crop emergence or fixed-event precedence",
+    "event creation/application, accepted mass, solute, restart or production admission"
+  ],
+  "pass_conditions": [
+    "each branch preserves B1.11 comparison direction and strictness exactly",
+    "100000 deterministic comparisons per branch pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}
