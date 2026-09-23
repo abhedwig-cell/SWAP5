@@ -101,20 +101,19 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint a7cdd8457 (PPA-IRR scheduled solute-concentration carrier); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 4e15d8a27 (PPA-IRR scheduled solute overirrigation); local campaign branch only, not pushed or canonically admitted.",
   "latest_source_oracle": {
-    "work_unit": "PPA-IRR-SCHEDULED-SOLUTE-OVERIRRIGATION",
-    "source": "B1.11 irrigation.f90 lines 296-299 and 585-599",
-    "test": "100000 scheduled DCS2 events at O0/O2 with transcript identity; strict dual-switch threshold/bump verified before rate-duration materialization",
+    "work_unit": "PPA-IRR-SCHEDULED-RATE-FALLBACK",
+    "source": "B1.11 irrigation.f90 lines 161-165 and 597-619",
+    "test": "100000 scheduled DCS2 events at O0/O2 with transcript identity; zero/too-low rate fallback is retained across partial interval and retry",
     "test_markers": [
-      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_100000=PASS",
-      "PPA_IRR_SCHEDULED_SOLUTE_SWITCH_AND_STRICT_THRESHOLD=PASS",
-      "PPA_IRR_SCHEDULED_SOLUTE_BUMP_BEFORE_RATE_DURATION=PASS",
-      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_BOUNDS=PASS",
-      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_SOURCE_ORACLE=PASS",
-      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_O0_O2_IDENTITY=PASS"
+      "PPA_IRR_SCHEDULED_RATE_ZERO_AND_OVER_ONE_DAY_FALLBACK_100000=PASS",
+      "PPA_IRR_SCHEDULED_RATE_EQUAL_AND_UNDER_ONE_DAY_PRESERVED=PASS",
+      "PPA_IRR_SCHEDULED_NORMALIZED_RATE_SPLIT_RETRY_PERSISTENCE=PASS",
+      "PPA_IRR_SCHEDULED_RATE_FALLBACK_AMOUNT_CONSERVATION=PASS",
+      "PPA_IRR_SCHEDULED_RATE_FALLBACK_O0_O2_IDENTITY=PASS"
     ],
-    "transcript_sha256": "e86710dd91be6966b9cc260f187ae4080b66b3715bb923a79aade42806e26472",
+    "transcript_sha256": "7b2b5ec0a7ea2a80833d070ef9fbbfb30169ba95774c60a11329577f4811c9b9",
     "production_admission": "NONE"
   }
 }

@@ -162,6 +162,12 @@ PPA-IRR-SCHEDULED-SOLUTE-OVERIRRIGATION composes the strict dual-switch
 rate/duration materialization. It preserves the one-node SSDI water vector and
 tests both switches, equality and one-switch-disabled branches over 100,000
 events. DCS1 integration and solute mass booking remain unqualified.
+PPA-IRR-SCHEDULED-RATE-FALLBACK preserves B1.11's zero-rate and duration-over-
+one-day behavior by using the event depth as a one-day source rate. The
+normalized rate remains in the existing transactional irrigation candidate
+state across a partial interval and retry. All 11 direct consumers of the
+irrigation module pass O0/O2; parser, production restart and accepted-mass
+integration remain unqualified.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
