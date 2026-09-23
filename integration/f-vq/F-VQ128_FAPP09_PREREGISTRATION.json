@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.independent_qualification_preregistration.v1",
+  "workunit": "F-VQ128",
+  "subject": "F-APP09 Ribasim external secondary surface-water owner profile V1",
+  "qualification_branch": "qualification/f-vq128-fapp09-ribasim-external-surface-water-independent",
+  "subject_candidate": "work/f-app09-ribasim-external-surface-water-profile@ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "status": "BLOCKED_ON_FAPP09_OWNER_GATE",
+  "source_postimages": {
+    "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "0cdf05c1fc066f80aad7807c35a4e718fdecdb09",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "1029cd4658a28f4aaf21db3cd480872c2d17722a",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "5fd5007cf8e523d3b2cd4236114e887d0c383f0a"
+  },
+  "independence_rules": [
+    "Qualification branch may not modify src/**.",
+    "Do not reuse the F-APP09 owner test program as the qualification executable.",
+    "Use the public materializer and participant APIs only.",
+    "Keep the one-level V1 application scope and exact owner-XOR contract.",
+    "Do not widen exchange, mass or transaction tolerances."
+  ],
+  "frozen_checks": [
+    "single-level external-head materializer admits one EXTENDED_SIGNED level and rejects a two-level profile",
+    "external-owner profile rejects fixed-weir optional-state layout",
+    "positive drainage candidate reports the full accepted coupling-window transfer, not the terminal half-step amount",
+    "realized-transfer mismatch blocks commit, discard preserves accepted origin, same-origin replay is deterministic",
+    "matched positive transfer commits exactly once without adding SWAP surface-water state",
+    "negative infiltration candidate reports the full accepted coupling-window transfer and commits exactly once",
+    "O0/O2 stable output identity",
+    "qualification source postimages equal the frozen owner candidate and qualification mutates no production source"
+  ],
+  "owner_gate_dependency": "Do not execute/admit F-VQ128 until the exact subject candidate passes the F-APP09 owner gate. If owner source changes, rebind all subject postimages before execution.",
+  "production_admission": false,
+  "canonical_admission": false
+}
