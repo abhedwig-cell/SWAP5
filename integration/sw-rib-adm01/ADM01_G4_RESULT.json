@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.sw_rib_adm01.g4.result.v1",
+  "work_unit": "SW-RIB-ADM01-G4",
+  "date": "2026-09-23",
+  "tested_head": "ac1ff395d8aac0af440cb2ed58f93a039d14b23e",
+  "evidence_run": 35891333005,
+  "evidence_job": 107284253053,
+  "decision": "PASS_FAIL_CLOSED_GEOMETRY_POLICY_GUARD",
+  "checks": {
+    "G1_owner_xor": "PASS",
+    "G2_q4b_replay": "PASS",
+    "G3_external_head_binding": "PASS",
+    "G4_geometry_policy_guard": "PASS"
+  },
+  "interpretation": [
+    "External-owner production configuration cannot omit a geometry policy.",
+    "Legacy STTAB epsilon mode cannot be enabled without an explicit epsilon and declared storage-error budget.",
+    "Ribasim-native geometry requires an explicit contract identifier.",
+    "This result does not select an application acceptance epsilon and therefore does not complete production admission."
+  ],
+  "application_error_envelope_frozen": false,
+  "production_admission": false
+}
