@@ -1,0 +1,27 @@
+name: SW-RIB-PA01 coupled profile candidate qualification
+
+on:
+  push:
+    branches:
+      - work/sw-rib-pa01-coupled-profile-production-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Candidate profile qualification
+        run: bash tests/sw-rib-pa01/run_pa01_candidate.sh
