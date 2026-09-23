@@ -61,4 +61,6 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install             git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902             git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb             netCDF4
       - name: RM13 real three-model qualification
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash tests/ribasim-management/run_rm13_real_three_model_transaction.sh
