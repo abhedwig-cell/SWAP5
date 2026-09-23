@@ -101,21 +101,22 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint 1df4b9454 (clay typical-point shrink calibration); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 10c251c3e (zero-threshold clay shrinkage compatibility); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK4: 100000 O0/O2 bitwise peat typical-point root iterations; guarded invalid domains checked.",
     "PPA-WU05-A3-POLYGON-DIAMETER: 100000 O0/O2 bitwise geometry vectors across all density paths and fixed-diameter fallback.",
-    "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked."
+    "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked.",
+    "PPA-IRR-SURFACE-SOLUTE-EXCHANGE: 100000 O0/O2 bitwise pond concentration, matrix top-flux, and residual-store comparisons; strict gate and overflow rejection checked."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-IRR-SURFACE-SOLUTE-STORE",
-    "source": "B1.11 solute.f90 task 2: csurf=(nird*cirr+nraidt*cpre)*dtsolu+csurf",
-    "test": "100000 deterministic source comparisons with accumulated prior surface store at O0/O2; invalid and overflow input fail-closed cases",
+    "work_unit": "PPA-IRR-SURFACE-SOLUTE-EXCHANGE",
+    "source": "B1.11 solute.f90 task 2 pond mixing and matrix-only surface exchange under qtop < -1e-6",
+    "test": "100000 bitwise comparisons of pond concentration, surface exchange and residual store at O0/O2; invalid and overflow inputs fail closed",
     "test_markers": [
-      "PPA_IRR_SURFACE_RAIN_AND_IRRIGATION_STORAGE_100000=PASS",
+      "PPA_IRR_SURFACE_SOLUTE_POND_EXCHANGE_100000=PASS",
       "PPA_IRR_INTERCEPTION_SOLUTE_MASS_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"

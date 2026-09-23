@@ -12,6 +12,9 @@ program test_ppa_irr_interception_solute_mass
   real(real64) :: source_mass, expected_mass, interval_rate, source_rate, unit_value, tolerance
   real(real64) :: rain_concentration, previous_surface_amount, accumulated_surface_amount
   real(real64) :: expected_surface_amount
+  real(real64) :: pond_depth, top_flux, macro_area, pond_concentration, expected_pond_concentration
+  real(real64) :: surface_flux_mass, expected_surface_flux_mass, updated_surface_mass, expected_updated_surface
+  real(real64) :: surface_flux, expected_surface_flux
   integer(int64) :: random_state
   integer :: i, status
 
@@ -64,6 +67,27 @@ program test_ppa_irr_interception_solute_mass
     call require(status==IRR_SURFACE_SOLUTE_OK,5)
     tolerance = 64.0_real64*epsilon(expected_surface_amount)*max(1.0_real64,abs(expected_surface_amount))
     call require(abs(accumulated_surface_amount-expected_surface_amount)<=tolerance,6)
+
+    pond_depth=10.0_real64*unit_value
+    macro_area=0.9_real64*unit_value
+    interval_days=0.001_real64+0.2_real64*unit_value
+    select case(modulo(i,3))
+    case(0)
+      top_flux=-0.5e-6_real64
+    case(1)
+      top_flux=-0.1_real64-10.0_real64*unit_value
+    case default
+      top_flux=2.0_real64*unit_value
+    end select
+    call source_pond_exchange(source_mass,pond_depth,top_flux,macro_area,interval_days, &
+         expected_pond_concentration,expected_surface_flux_mass,expected_updated_surface,expected_surface_flux)
+    call ppa_irr_surface_solute_exchange(source_mass,pond_depth,top_flux,macro_area,interval_days, &
+         pond_concentration,surface_flux_mass,updated_surface_mass,surface_flux,status)
+    call require(status==IRR_SURFACE_SOLUTE_OK,7)
+    call require(same_real(pond_concentration,expected_pond_concentration),8)
+    call require(same_real(surface_flux_mass,expected_surface_flux_mass),9)
+    call require(same_real(updated_surface_mass,expected_updated_surface),10)
+    call require(same_real(surface_flux,expected_surface_flux),11)
   end do
 
   call check_invalid(-1.0_real64, 1.0_real64, 1.0_real64, 10)
@@ -79,9 +103,16 @@ program test_ppa_irr_interception_solute_mass
   call accumulate_surface_solute_amount(1.0_real64,1.0_real64,1.0_real64,1.0_real64, &
        huge(1.0_real64),huge(1.0_real64),accumulated_surface_amount,status)
   call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,18)
+  call ppa_irr_surface_solute_exchange(1.0_real64,1.0_real64,-huge(1.0_real64),0.0_real64, &
+       2.0_real64,pond_concentration,surface_flux_mass,updated_surface_mass,surface_flux,status)
+  call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,19)
+  call ppa_irr_surface_solute_exchange(1.0_real64,1.0_real64,-1.0_real64,1.1_real64, &
+       0.1_real64,pond_concentration,surface_flux_mass,updated_surface_mass,surface_flux,status)
+  call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,20)
   print '(A)', 'PPA_IRR_INTERCEPTION_TO_SURFACE_SOLUTE_MASS_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_AMOUNT_SOURCE_ORACLE=PASS'
   print '(A)', 'PPA_IRR_SURFACE_RAIN_AND_IRRIGATION_STORAGE_100000=PASS'
+  print '(A)', 'PPA_IRR_SURFACE_SOLUTE_POND_EXCHANGE_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_INVALID_INPUT_FAIL_CLOSED=PASS'
 
 contains
@@ -100,6 +131,29 @@ contains
     call require(status == IRR_SURFACE_SOLUTE_INVALID_INPUT .and. &
       source_mass <= 0.0_real64, code)
   end subroutine check_invalid
+
+  subroutine source_pond_exchange(mass,pond,qtop,area,dt,cpond,cflux,updated,flux)
+    real(real64),intent(in)::mass,pond,qtop,area,dt
+    real(real64),intent(out)::cpond,cflux,updated,flux
+    updated=mass
+    if(qtop < -1.0e-6_real64)then
+      cpond=mass/(pond-qtop*dt)
+      cflux=qtop*(1.0_real64-area)*cpond*dt
+      updated=mass+cflux
+      flux=qtop*(1.0_real64-area)*cpond
+    else
+      cpond=0.0_real64
+      cflux=0.0_real64
+      flux=0.0_real64
+    end if
+  end subroutine source_pond_exchange
+
+  logical function same_real(a,b)
+    real(real64),intent(in)::a,b
+    integer(int64)::ab,bb
+    ab=transfer(a,ab);bb=transfer(b,bb)
+    same_real=ab==bb
+  end function same_real
 
   subroutine require(condition, code)
     logical, intent(in) :: condition

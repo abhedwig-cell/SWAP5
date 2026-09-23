@@ -8,6 +8,7 @@ module mod_ppa_irr_surface_solute_mass
   integer, parameter, public :: IRR_SURFACE_SOLUTE_INVALID_INPUT = 1
 
   public :: calculate_surface_irrigation_solute_mass, accumulate_surface_solute_amount
+  public :: ppa_irr_surface_solute_exchange
 
 contains
 
@@ -86,5 +87,84 @@ contains
     end if
     status = IRR_SURFACE_SOLUTE_OK
   end subroutine accumulate_surface_solute_amount
+
+  pure subroutine ppa_irr_surface_solute_exchange(surface_mass, pond_depth, top_flux, &
+      macropore_area_fraction, interval_days, pond_concentration, surface_flux_mass, &
+      updated_surface_mass, surface_flux, status)
+    real(real64), intent(in) :: surface_mass, pond_depth, top_flux, macropore_area_fraction, interval_days
+    real(real64), intent(out) :: pond_concentration, surface_flux_mass, updated_surface_mass, surface_flux
+    integer, intent(out) :: status
+    real(real64) :: denominator, matrix_flux, top_step_depth
+
+    ! Source: B1.11 solute.f90 task 2 soil-surface pond exchange.
+    pond_concentration = 0.0_real64
+    surface_flux_mass = 0.0_real64
+    updated_surface_mass = 0.0_real64
+    surface_flux = 0.0_real64
+    status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+    if (.not. all(ieee_is_finite([surface_mass,pond_depth,top_flux,macropore_area_fraction,interval_days]))) return
+    if (surface_mass < 0.0_real64 .or. pond_depth < 0.0_real64 .or. &
+        macropore_area_fraction < 0.0_real64 .or. macropore_area_fraction > 1.0_real64 .or. &
+        interval_days <= 0.0_real64) return
+    updated_surface_mass = surface_mass
+    status = IRR_SURFACE_SOLUTE_OK
+    if (top_flux >= -1.0e-6_real64) return
+
+    if (interval_days > 1.0_real64) then
+      if (abs(top_flux) > huge(1.0_real64)/interval_days) then
+        status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+        updated_surface_mass = 0.0_real64
+        return
+      end if
+    end if
+    top_step_depth = top_flux*interval_days
+    if (pond_depth > huge(1.0_real64)+top_step_depth) then
+      status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+      updated_surface_mass = 0.0_real64
+      return
+    end if
+    denominator = pond_depth-top_step_depth
+    if (denominator <= 0.0_real64 .or. .not. ieee_is_finite(denominator)) then
+      status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+      updated_surface_mass = 0.0_real64
+      return
+    end if
+    if (denominator < 1.0_real64) then
+      if (surface_mass > huge(1.0_real64)*denominator) then
+        status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+        updated_surface_mass = 0.0_real64
+        return
+      end if
+    end if
+    pond_concentration = surface_mass/denominator
+    matrix_flux = top_flux*(1.0_real64-macropore_area_fraction)
+    if (pond_concentration > 1.0_real64 .and. abs(matrix_flux) > 1.0_real64) then
+      if (abs(matrix_flux) > huge(1.0_real64)/pond_concentration) then
+        status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+        pond_concentration = 0.0_real64
+        updated_surface_mass = 0.0_real64
+        return
+      end if
+    end if
+    surface_flux = matrix_flux*pond_concentration
+    if (abs(surface_flux) > 1.0_real64 .and. interval_days > 1.0_real64) then
+      if (interval_days > huge(1.0_real64)/abs(surface_flux)) then
+        status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+        pond_concentration = 0.0_real64
+        surface_flux = 0.0_real64
+        updated_surface_mass = 0.0_real64
+        return
+      end if
+    end if
+    surface_flux_mass = surface_flux*interval_days
+    updated_surface_mass = surface_mass+surface_flux_mass
+    if (.not. all(ieee_is_finite([pond_concentration,surface_flux_mass,updated_surface_mass,surface_flux]))) then
+      pond_concentration = 0.0_real64
+      surface_flux_mass = 0.0_real64
+      updated_surface_mass = 0.0_real64
+      surface_flux = 0.0_real64
+      status = IRR_SURFACE_SOLUTE_INVALID_INPUT
+    end if
+  end subroutine ppa_irr_surface_solute_exchange
 
 end module mod_ppa_irr_surface_solute_mass
