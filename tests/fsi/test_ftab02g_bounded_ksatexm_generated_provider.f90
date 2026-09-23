@@ -10,7 +10,7 @@ program test_ftab02g_bounded_ksatexm_generated_provider
 
   integer, parameter :: N=2, NSAMPLE=1801
   real(real64), parameter :: STEP=4.0e-2_real64
-  real(real64) :: cof(24,N), bad(24,N), h(N)
+  real(real64) :: cof(42,N), bad(42,N), h(N)
   real(real64) :: ta(N),ka(N),ca(N),da(N), tb(N),kb(N),cb(N),db(N)
   real(real64) :: tt(N),kt(N),ct(N),dt(N)
   real(real64) :: frac, exponent, theta_err, c_err, logk_err, krel_err
