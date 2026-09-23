@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.rom-purpose.p4.frontier-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4",
+  "date": "2026-09-23",
+  "status": "PREPARED_RESPONSE_BLIND_NOT_AUTHORIZED_NOT_EXECUTED",
+  "layer_rom": {
+    "workflow": ".github/workflows/f-rom-purpose-p4-candidates.yml",
+    "runner": "tests/rom/run_rom_purpose_p4_candidate.py",
+    "analyzer": "tests/rom/analyze_rom_purpose_p4_candidates.py",
+    "frozen_matrix": {
+      "SURF_P": [
+        "S8",
+        "S12",
+        "S16"
+      ],
+      "GW_LB": [
+        "G8",
+        "G12",
+        "G16"
+      ],
+      "materials": [
+        "B01",
+        "B14"
+      ]
+    },
+    "authorization_dependency": "P4 Reference result must explicitly authorize responses."
+  },
+  "matched_richards": {
+    "workflow": ".github/workflows/f-rom-purpose-p4-matched-richards.yml",
+    "materializer": "tests/rom/materialize_rom_purpose_p4_matched_richards.py",
+    "runner": "tests/rom/run_rom_purpose_p4_matched_richards.py",
+    "analyzer": "tests/rom/analyze_rom_purpose_p4_matched_richards.py",
+    "frozen_matrix": {
+      "SURF_P": [
+        "S8",
+        "S12",
+        "S16"
+      ],
+      "GW_LB": [
+        "G8",
+        "G12",
+        "G16"
+      ],
+      "materials": [
+        "B01",
+        "B14"
+      ],
+      "temporal_factors": [
+        8,
+        16,
+        32
+      ],
+      "optimization_modes": [
+        0,
+        2
+      ]
+    },
+    "authorization_dependency": "Same qualified P4 Reference gate as Layer-ROM."
+  },
+  "closeout": {
+    "workflow": ".github/workflows/f-rom-purpose-p4-closeout.yml",
+    "builder": "tests/rom/build_rom_purpose_p4_closeout.py",
+    "authorization_dependency": "Both persisted P4 frontier results required."
+  },
+  "scientific_firewall": {
+    "p4_reference_qualified": false,
+    "layer_rom_execution_binding_created": false,
+    "matched_richards_execution_binding_created": false,
+    "closeout_execution_binding_created": false,
+    "p4_layer_rom_response_seen": false,
+    "p4_matched_richards_response_seen": false,
+    "state_boundaries_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
