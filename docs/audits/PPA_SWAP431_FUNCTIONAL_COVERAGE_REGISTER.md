@@ -209,7 +209,9 @@ undefined rigid-soil (`SwSoilShr=0`) legacy branch fail closed; this is a pure
 equation evaluator, not a macropore runtime/state-owner migration. The clay
 SHRINKPAR task-1 reference-moisture reconstruction is separately bitwise
 checked over 100,000 vectors, including the source-defined upper-bound error
-and invalid logarithm domain. B1.11 assigns local `SorpFac` only inside that branch but
+and invalid logarithm domain. The standalone `DiamPolyg` geometry equation is
+also bitwise tested over 100,000 vectors across each of its three density
+paths and fixed-diameter fallback. B1.11 assigns local `SorpFac` only inside that branch but
 later reads it unconditionally in arbitration; stale/undefined cases remain
 held out pending source-owner resolution. These remain bounded equations
 rather than a complete macropore process or runtime migration. The full B1.11 reconstruction helper still fails
