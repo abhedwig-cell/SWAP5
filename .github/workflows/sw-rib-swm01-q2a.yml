@@ -1,0 +1,32 @@
+name: SW-RIB-SWM01 Q2A accepted-state management policy
+
+on:
+  push:
+    branches:
+      - research/sw-rib-swm01-surfacewater-ownership
+    paths:
+      - 'tests/sw-rib-swm01/q2a_policy.py'
+      - 'tests/sw-rib-swm01/test_q2a_policy.py'
+      - 'tests/sw-rib-swm01/run_q2a_policy.sh'
+      - 'integration/research/SW_RIB_SWM01_Q2A_*'
+      - '.github/workflows/sw-rib-swm01-q2a.yml'
+  pull_request:
+    paths:
+      - 'tests/sw-rib-swm01/q2a_policy.py'
+      - 'tests/sw-rib-swm01/test_q2a_policy.py'
+      - 'tests/sw-rib-swm01/run_q2a_policy.sh'
+      - 'integration/research/SW_RIB_SWM01_Q2A_*'
+      - '.github/workflows/sw-rib-swm01-q2a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Q2A accepted-state policy qualification
+        run: bash tests/sw-rib-swm01/run_q2a_policy.sh
