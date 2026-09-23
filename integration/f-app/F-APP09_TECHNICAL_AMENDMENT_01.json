@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.f_app09.technical_amendment.v1",
+  "work_unit": "F-APP09",
+  "amendment": "TECHNICAL_TEST_REPAIR_01",
+  "date": "2026-09-23",
+  "classification": "TEST_FIXTURE_DRIFT_NOT_PRODUCTION_FAILURE",
+  "failed_evidence": {
+    "run_id": 35882846713,
+    "job_id": 107255412341,
+    "tested_head": "4a9ac81b3f4795771c20e97ddd076e51bf2df008",
+    "passed_before_failure": [
+      "typed external-head materializer guards",
+      "surface-water owner XOR"
+    ],
+    "failure": "positive candidate trial rejected before any commit"
+  },
+  "diagnosis": {
+    "q4b_authority": "tests/sw-rib-swm01/test_q4b_extended_runtime_binding.f90",
+    "q4b_initial_pressure_head": "uniform initial_head on every node",
+    "f_app09_drift": "test fixture constructed heads(i)=heads(i-1)+disnod(i), broadening the hydraulic state beyond Q4B evidence",
+    "interpretation": "The failed run did not test the frozen production candidate on its qualified Q4B state fixture."
+  },
+  "repair": {
+    "change": "Restore uniform pressure_head = initial_head in the F-APP09 candidate harness.",
+    "production_source_changed": false,
+    "preregistered_owner_contract_changed": false,
+    "exchange_tolerance_changed": false,
+    "transaction_configuration_changed": false,
+    "coupling_window_changed": false,
+    "reason": "Reconcile candidate qualification with the exact source-bound Q4B runtime fixture."
+  },
+  "anti_retuning_rule": "Any failure after this repair is evaluated on its merits; do not widen exchange or transaction tolerances to obtain a pass."
+}

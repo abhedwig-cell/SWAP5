@@ -360,11 +360,8 @@ contains
 
   subroutine build_heads(heads)
     real(real64), intent(out) :: heads(numnod)
-    integer :: i
-    heads(1)=initial_head
-    do i=2,numnod
-      heads(i)=heads(i-1)+disnod(i)
-    end do
+    ! Exact Q4B qualified fixture: uniform initial pressure head.
+    heads = initial_head
   end subroutine build_heads
 
   subroutine require(condition,label)
