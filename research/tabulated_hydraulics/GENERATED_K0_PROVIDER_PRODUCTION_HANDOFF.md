@@ -85,48 +85,56 @@ No new Richards residual ABI is required for this K0 slice.
 
 Production selection, however, currently binds the analytical provider directly. The production work unit therefore needs an explicit and fail-closed provider-selection owner outside solver mathematics.
 
-## 6. Required contract decision: timestep context
+## 6. Timestep-context contract decision — CLOSED
+
+Research experiment TAB-HYD-CTX01, run `35819421154`, qualified **Option B**:
+
+`context_compatible(step_duration) -> logical`
+
+as the minimal generic provider capability.
+
+The complete hot `constitutive_evaluate_ifc` abstract interface remained
+textually unchanged. Default capability semantics fail closed. Analytical MvG
+and generated raw-head providers both rejected a deliberately mismatched
+provider/request timestep, while all five bounded temporal-indicator profiles
+retained analytical identity and generated-provider availability.
+
+Balanced analytical provider benchmarking showed no material regression
+(observed delta `-0.442%`).
+
+Controlling evidence:
+
+- `TIMESTEP_CONTEXT_CAPABILITY_PREREGISTRATION.md`;
+- `TIMESTEP_CONTEXT_CAPABILITY_RESULT.md`;
+- workflow run `35819421154`.
+
+Production semantics should therefore use the generic capability design unless
+the production owner finds a new conflict not represented in the research
+contract.
+
+## 6A. Superseded alternative
+
+Option A — adding timestep to every constitutive `evaluate(...)` call — remains
+conceptually valid but is superseded for this work unit because the smaller
+Option B satisfies the required invariant without hot-ABI migration.
+
+## 6B. Qualified capability semantics
 
 Research TAB-HYD-005 showed that the temporal-indicator mathematics is provider-agnostic, but the common provider contract cannot currently verify the existing invariant:
 
 `provider timestep context == request%step_duration`.
 
-Before production binding, the solver-contract owner must admit one of two minimal designs:
+The qualified capability semantics are:
 
-### Option A — explicit evaluation context
-
-Pass the relevant timestep context explicitly to constitutive evaluation.
-
-Properties:
-
-- provider remains stateless with respect to timestep;
-- temporal-indicator owner can evaluate the same provider under explicit context;
-- no hidden rebind operation between trials.
-
-### Option B — minimal context validation capability
-
-Retain the current evaluation signature and add a generic capability such as:
-
-`validate_context(step_duration)`
-
-or equivalent immutable/bound-context query.
-
-Properties:
-
-- smaller ABI change;
-- preserves the current bound-provider pattern;
-- temporal-indicator owner can fail closed generically rather than concrete-type dispatch.
-
-### Decision rule
-
-Choose the smallest design that:
-
-- reproduces the analytical provider route bit-/tolerance-equivalently;
-- supports the generated provider without TAB-HYD-specific type checks;
-- adds no measurable material overhead to the analytical reference route;
-- makes invalid/mismatched timestep context fail closed.
-
-This contract decision must be preregistered and independently reviewed before provider production binding.
+- the common constitutive provider exposes a generic context-compatibility query;
+- the base/default implementation returns incompatible;
+- providers override only when they can prove compatibility;
+- analytical MvG and generated table providers compare their bound timestep to
+  the request timestep using the existing canonical scale/tolerance semantics;
+- the temporal-indicator owner performs this generic check before constitutive
+  evaluation;
+- mismatch fails closed;
+- the hot vector `evaluate(...)` signature is unchanged.
 
 ## 7. Provider lifecycle and ownership
 
@@ -319,6 +327,6 @@ Stop and return to research if:
 
 ## 15. Current disposition
 
-**RESEARCH_HANDOFF_READY / PRODUCTION_IMPLEMENTATION_HELD_PENDING_CONTRACT_PREREGISTRATION_AND_FINAL_ASSET_GATE**
+**RESEARCH_HANDOFF_READY / TIMESTEP_CONTRACT_CLOSED / PRODUCTION_ADMISSION_BLOCKED_ON_FINAL_EXACT_ASSET_GATE**
 
 No canonical production mutation is made by this handoff.
