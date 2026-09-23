@@ -142,7 +142,9 @@ def main()->int:
         "ra01_reclassified":False,
         "reference_qualified":False,
         "reduced_candidate_response_generated":False,
-        "ra02_reference_only_execution_release_supported":classification=="NODE_LEVEL_FULL_POTENTIAL_IDENTITY"
+        "d1_numerical_floor_interpretation_node_level_supported":classification=="NODE_LEVEL_FULL_POTENTIAL_IDENTITY",
+        "original_ra02_release_supported":False,
+        "ra02r_dependency_on_d2":False
       },
       "model_changed":False
     }
