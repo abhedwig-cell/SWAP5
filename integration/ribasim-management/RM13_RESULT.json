@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.result.v1",
+  "work_unit": "RM13",
+  "date": "2026-09-23",
+  "decision": "INVALID_FIXTURE_CONTRACT_NO_COMPOSITION_VERDICT",
+  "classification": "TECHNICAL_PRODUCT_CONSTRAINT_DISCOVERED_BEFORE_MODEL_ADVANCE",
+  "authoritative_failed_run": 35883609570,
+  "workflow_job": 107257999206,
+  "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "observed_failure": {
+    "component": "Ribasim v2026.1.1 configuration validation",
+    "message": "A finite saveat must be an integer number of seconds.",
+    "configured_saveat_seconds": 8.64,
+    "model_advance_started": false,
+    "three_model_candidate_created": false
+  },
+  "disposition": "The frozen RM13 fixture is invalid because its solver output cadence is not representable by the exact Ribasim release. This is not a physical or numerical falsification of the SWAP-MODFLOW-Ribasim composition.",
+  "preserved_claims": [
+    "The physical coupling window remains 8.64 seconds.",
+    "The irrigation request remains 0.0036 cm at 36 cm/day.",
+    "The management init seam is independently qualified by the RM13 smoke gate after fixing a Fortran dummy-argument shadowing bug.",
+    "Ribasim allocation clock ownership remains governed by RM03/RM11/RM12 and is not assigned to solver.saveat."
+  ],
+  "technical_history": [
+    "Initial local JuliaC build was cancelled by the GitHub runner before execution.",
+    "Official v2026.1.1 release binary was adopted with published SHA256 verification.",
+    "MODFLOW release download was authenticated after an external GitHub API rate-limit failure.",
+    "Fortran request output dummy shadowed REQUEST_DEPTH_CM case-insensitively and was corrected; independent smoke then returned exactly 0.0036 cm.",
+    "Official Ribasim release runtime directories were added to the dynamic loader path."
+  ],
+  "nonclaims": [
+    "No three-model composition result is inferred from RM13.",
+    "No tolerance or physical parameter is relaxed.",
+    "No claim is made that 8.64-second finite saveat is supported."
+  ],
+  "required_successor": "RM13B with the same physical window and coupling contract, but a valid non-owning Ribasim solver output cadence preregistered before execution."
+}
