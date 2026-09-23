@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.publication.pub-me-cross-defect.v1",
+  "publication_owner": "PUB-ME",
+  "doctoral_mapping": "RQ1/PRESERVE",
+  "design_authority": {
+    "branch": "work/pub-me-literature-pass2",
+    "head": "b2ebe5825b3c54d9d4eaefe44c33f4c859fa20aa",
+    "design_blob": "61f7133f19cc900971aa454b7bdb16a254468eda"
+  },
+  "adjudication_base": "d517088cdc1cd82904b37648d6556dc79d57a641",
+  "rule": "Defect-family labels are bounded mechanism results, not statistically independent replicates or empirical defect-frequency estimates.",
+  "defects": [
+    {
+      "id": "D1",
+      "channel": "committed physical state",
+      "fault": "rejected candidate mutates committed physical state",
+      "classification": "STRUCTURAL_PREVENTION",
+      "b2_effect": "authoritative physical storage is private and public snapshots are detached clones",
+      "b1_relationship": "no executable public-API contamination mutant exists for the frozen direct write-through fault",
+      "scientific_fixture": "real Reference post-solver rejection control plus public-API structural probes",
+      "mechanism_cluster": "STATE_OWNERSHIP",
+      "primary_limit": "does not establish earlier or unique detection against B1"
+    },
+    {
+      "id": "D2",
+      "channel": "accepted scientific accounting",
+      "fault": "rejected attempt is counted in an accepted side ledger before successful re-execution",
+      "classification": "EARLIER_DETECTION",
+      "b2_effect": "detects nonzero accepted accounting at retry entry",
+      "b1_relationship": "detects accepted-total mismatch only after the accepted retry; net mass closure can remain green",
+      "scientific_fixture": "real Reference Richards rejected long trial and accepted short re-execution",
+      "mechanism_cluster": "ACCEPTED_ONLY_ACCOUNTING",
+      "primary_limit": "one bounded flux/regime fixture; not unique detection"
+    },
+    {
+      "id": "D3",
+      "channel": "candidate provenance and commit authority",
+      "fault": "wrong-lineage, stale-revision or wrong-time-origin candidate is committed",
+      "classification": "STRUCTURAL_PREVENTION",
+      "b2_effect": "public commit contract rejects invalid provenance before committed mutation",
+      "b1_relationship": "invalid commit is prevented rather than diagnosed downstream",
+      "scientific_fixture": "public kernel transaction contract with valid and invalid-origin candidates",
+      "mechanism_cluster": "PROVENANCE_AUTHORITY",
+      "primary_limit": "contract-level evidence; not a hydrologic-regime replication"
+    },
+    {
+      "id": "D4",
+      "channel": "restart persistence",
+      "fault": "speculative candidate physical state is serialized as accepted continuation state",
+      "classification": "EARLIER_DETECTION",
+      "b2_effect": "detects candidate-derived restart payload before publication",
+      "b1_relationship": "strong restart round-trip detects mismatch after faulty artifact restore; downstream continuation can diverge while local mass remains green",
+      "scientific_fixture": "bounded kernel persistence/restart model",
+      "mechanism_cluster": "ACCEPTED_ONLY_PERSISTENCE",
+      "primary_limit": "synthetic bounded physical state rather than a full SWAP hydrologic trajectory"
+    },
+    {
+      "id": "D5",
+      "channel": "numerical workspace versus physical retry origin",
+      "fault": "rejected-trial Newton workspace old_head is promoted to physical retry state",
+      "classification": "EARLIER_DETECTION",
+      "b2_effect": "detects workspace-derived retry origin before the retry solve",
+      "b1_relationship": "detects endpoint/storage divergence after the retry solve",
+      "scientific_fixture": "real B01 Reference Richards solver with full-step versus half-step rejection context",
+      "mechanism_cluster": "NUMERICAL_STATE_OWNERSHIP",
+      "primary_limit": "single material/state/forcing fixture; not unique detection"
+    },
+    {
+      "id": "D6",
+      "channel": "external accepted publication",
+      "fault": "candidate-side directional result is externally emitted as accepted while outer transaction is rejected",
+      "classification": "EARLIER_DETECTION",
+      "b2_effect": "rejects publication before irreversible observer emission because outer transaction is not accepted with one commit",
+      "b1_relationship": "detects nonzero accepted-publication count after the rejected operation, after external contamination already occurred",
+      "scientific_fixture": "admitted accepted-trajectory publication stack with deterministic candidate-side direction scratch",
+      "mechanism_cluster": "ACCEPTED_ONLY_EXTERNAL_PUBLICATION",
+      "primary_limit": "publication lifecycle fixture, not hydrologic sensitivity-accuracy evidence"
+    }
+  ],
+  "negative_evidence": [
+    {
+      "id": "D1-B",
+      "verdict": "BLOCKED_CONTINUATION_CONFIGURATION",
+      "meaning": "clean continuation did not accept under the frozen configuration; settings were not tuned post-result"
+    },
+    {
+      "id": "D2-first-attempt",
+      "verdict": "BLOCKED_REFERENCE_RETRY_AUTHORITY",
+      "meaning": "selected historical retry harness could not be reproduced on current dependencies; the harness was not rebuilt until positive"
+    },
+    {
+      "id": "D6-parallel-PR216",
+      "verdict": "SUPERSEDED_PARALLEL_EVIDENCE",
+      "meaning": "later parallel publication surface closed after earlier D6 authority PR215 was admitted; no post-result surface selection"
+    }
+  ],
+  "cross_defect_conclusion": {
+    "preregistered_minimum_signal": "MET",
+    "ultimate_detection_advantage_over_strong_B1": "NOT_DEMONSTRATED",
+    "structural_prevention": ["D1", "D3"],
+    "earlier_causal_boundary_detection": ["D2", "D4", "D5", "D6"],
+    "unique_detection": [],
+    "mechanistically_distinct_positive_channels": [
+      "accepted scientific accounting",
+      "restart persistence",
+      "numerical workspace origin",
+      "external accepted publication"
+    ],
+    "interpretation": "Explicit transition authority shows bounded prevention/localization value across multiple consequence channels. It has not shown that strong conventional qualification ultimately misses the executable seeded faults."
+  },
+  "publication_status": "GO_NARROWED_CLAIM__NOT_MANUSCRIPT_READY"
+}
