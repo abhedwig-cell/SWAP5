@@ -83,6 +83,7 @@ contains
     if (parameters%drainage_qbot_smooth_freatic_projection) return
     if (parameters%bottom_mode /= 7) return
     if (.not. allocated(parameters%drainage_response_levels)) return
+    if (size(parameters%drainage_response_levels) /= 1) return
     if (size(parameters%drainage_response_levels) /= materializer%level_count()) return
     if (any(parameters%drainage_response_levels%variant /= FMR_DRAIN_VARIANT_EXTENDED_SIGNED)) return
     if (parameters%macropore_active .or. parameters%snow_active .or. parameters%hysteresis_active .or. &
