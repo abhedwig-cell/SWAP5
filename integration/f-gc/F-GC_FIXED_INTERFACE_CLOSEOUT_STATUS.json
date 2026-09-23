@@ -1,11 +1,10 @@
 {
   "schema": "swap5.fgc.fixed_interface.closeout.status.v1",
-  "date": "2026-09-22",
-  "state": "CANONICAL_AUTHORITY_CLOSED",
+  "date": "2026-09-23",
+  "state": "CANONICAL_ADMITTED_CLOSED",
   "base_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-fixed-interface-closeout",
   "canonical_merge": "148bca0dbe65d75a64694e5d481b2073419df009",
-  "canonical_pr": 582,
   "authority": {
     "interface_head": "FIXED_LOWER_COUPLING_PLANE_HYDRAULIC_HEAD",
     "swap_flux": "Q_SWAP_POSITIVE_OUTWARD_FROM_SWAP",
@@ -51,7 +50,7 @@
   ],
   "authoritative_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
   "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
-  "next_bounded_unit": "CLOSED_NO_NEW_GROUNDWATER_RESEARCH_DIMENSION_IN_THIS_LINE",
+  "next_bounded_unit": "CLOSED_NEW_GROUNDWATER_CAPABILITIES_REQUIRE_SEPARATE_EXPLICIT_WORKSTREAM",
   "qualification": {
     "tested_head": "0244570849e799d35a88abed36dc655e029d7c36",
     "workflow_run": 35785634895,
@@ -71,5 +70,26 @@
     "original_finding": "ONE_CELL_PRODUCTION_AFFINE_RESIDUAL_CLOSES_BUT_INDEPENDENT_PHYSICAL_RESIDUAL_AND_NATIVE_MODFLOW_BALANCE_DO_NOT",
     "resolution": "PREREGISTERED_STOPPING_COMPATIBILITY_CONFIGURATION_QUALIFIED_WITHOUT_RELAXING_FROZEN_1E_15_PHYSICAL_RESIDUAL_GATE",
     "preregistration": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
+  },
+  "historical_integration": {
+    "merge_commit": "148bca0dbe65d75a64694e5d481b2073419df009",
+    "pull_request": 582,
+    "authority_note": "historical merge provenance only; not final admission authority"
+  },
+  "final_admission_record": "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+  "canonical_postimage_qualification": {
+    "verified_head": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "workflow_run": 35819258906,
+    "workflow_job": 107047399058,
+    "conclusion": "SUCCESS",
+    "independent_endpoint_head_error_m": 3.297362383136715e-14,
+    "independent_physical_residual_m_per_s": -7.075006056961875e-16,
+    "production_external_residual_m_per_s": -6.092081208031304e-23,
+    "modflow_component_balance_residual_m3_per_day": -3.647099915365763e-14,
+    "accepted_interface_exchange_m": -1.0206812345027175e-12,
+    "accepted_swap_mass_residual_native": 0,
+    "fresh_process_e2e_replay": "PASS",
+    "fgc24_split_process_restart_replay_o0": "PASS",
+    "fgc24_split_process_restart_replay_o2": "PASS"
   }
 }

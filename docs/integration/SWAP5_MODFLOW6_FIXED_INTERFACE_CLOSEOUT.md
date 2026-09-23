@@ -1,6 +1,6 @@
 # SWAP5–MODFLOW6 fixed-interface groundwater coupling closeout
 
-Status: **canonical production authority for the bounded profile described here**. PR #582 was merged into `integration/f-ci-canonical` as `148bca0dbe65d75a64694e5d481b2073419df009`. The composed closeout gate also passed on the final pre-merge head `0244570849e799d35a88abed36dc655e029d7c36` (workflow run 35785634895).
+Status: **canonical admitted and closed for the bounded profile described here**. The qualified candidate `0244570849e799d35a88abed36dc655e029d7c36` entered canonical historically through merge commit `148bca0dbe65d75a64694e5d481b2073419df009`; PR #582 is retained only as historical merge provenance and is not admission authority. The exact canonical postimage `79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e` passed the unchanged composed closeout gate in workflow run `35819258906`, job `107047399058`. Final admission provenance is recorded in `integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json`.
 
 ## Scope
 
@@ -94,7 +94,7 @@ G23 tested the previously qualified analytical envelope by external physical end
 
 The production repair does not attempt to recreate the old internal trajectory. It removes the proven response-semantics mixing by carrying the real-SWAP physical tangent into response relinearization.
 
-Canonical closeout evidence includes:
+Canonical postimage closeout evidence includes:
 
 The composed closeout qualification on 2026-09-22 reported an independent endpoint head error of `3.30e-14 m`, an independent physical residual of `-7.08e-16 m/s`, a production external residual of `-6.09e-23 m/s`, and a native MODFLOW component-balance residual of `-3.65e-14 m3/day`. The accepted interface transfer was `-1.0206812345e-12 m`. The full real end-to-end fixture replayed identically in a fresh process, and the F-GC24 split-process restart signature remained identical at `-O0` and `-O2`.
 

@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-FIXED-INTERFACE-CLOSEOUT",
+  "title": "SWAP5-MODFLOW6 Fixed-Interface Groundwater Coupling — Final Canonical Admission",
+  "protocol": "RECONCILE -> RECOMPOSE -> QUALIFY -> REVIEW -> ADMIT -> POSTIMAGE VERIFY -> CLOSE",
+  "phase": "ADMIT",
+  "verdict": "CANONICAL_ADMITTED_CLOSED",
+  "date": "2026-09-23",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "b7d9c976e9b474545d54fa79b71ae134c25da156"
+  },
+  "source_candidate": {
+    "branch": "work/f-gc-fixed-interface-closeout",
+    "head": "0244570849e799d35a88abed36dc655e029d7c36",
+    "qualification_head": "9b135ec63c142449e88c0d0b2a745b726f3a69ed",
+    "final_candidate_gate_run": 35785634895,
+    "final_candidate_gate_job": 106941629937,
+    "final_candidate_gate_conclusion": "success"
+  },
+  "historical_integration": {
+    "integration_commit": "148bca0dbe65d75a64694e5d481b2073419df009",
+    "historical_pr": 582,
+    "authority_note": "PR 582 is historical merge provenance only and is not canonical admission authority for this closeout."
+  },
+  "canonical_postimage_qualification": {
+    "verified_head": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "workflow": "F-GC fixed-interface groundwater closeout",
+    "workflow_run": 35819258906,
+    "workflow_job": 107047399058,
+    "conclusion": "success",
+    "independent_endpoint_head_error_m": 3.297362383136715e-14,
+    "independent_physical_residual_m_per_s": -7.075006056961875e-16,
+    "production_external_residual_m_per_s": -6.092081208031304e-23,
+    "modflow_component_balance_residual_m3_per_day": -3.647099915365763e-14,
+    "accepted_interface_exchange_m": -1.0206812345027175e-12,
+    "accepted_swap_mass_residual_native": 0,
+    "fresh_process_e2e_replay": "PASS",
+    "fgc24_split_process_restart_replay_o0": "PASS",
+    "fgc24_split_process_restart_replay_o2": "PASS"
+  },
+  "admitted_contract": {
+    "hydraulic_state": "HYDRAULIC_HEAD_AT_FIXED_LOWER_COUPLING_PLANE_NOT_PHREATIC_BY_DEFINITION",
+    "swap_flux": "Q_SWAP_POSITIVE_OUTWARD_FROM_SWAP_AND_Q_SWAP_EQUALS_MINUS_NATIVE_Q_BOT_AFTER_UNIT_CONVERSION",
+    "modflow_source": "POSITIVE_INTO_GROUNDWATER_AND_EQUALS_Q_SWAP",
+    "external_residual": "R_EQUALS_Q_SWAP_MINUS_Q_MODFLOW_SOURCE",
+    "corrector_response": "ACCEPTED_TRAJECTORY_PHYSICAL_OUTWARD_DQ_SWAP_DH",
+    "relinearization": "HCOF=A*86400*dq_dH; RHS=HCOF*H_STAR-A*86400*q_STAR",
+    "storage_role": "HEAD_STATE_CAPACITANCE",
+    "swap_storage_owner": "SWAP",
+    "drainage_owner": "GW_DRAINAGE_OWNER_NONE",
+    "response_origin": "EXACT_COMMITTED_SWAP_LINEAGE_REVISION_AND_COUPLING_WINDOW",
+    "rejected_trials": "ZERO_COMMITTED_STATE_AND_ZERO_ACCEPTED_MASS_AUTHORITY",
+    "publication_order": [
+      "ALL_PREFLIGHTS",
+      "FINALIZE_MODFLOW_TIMESTEP_EXACTLY_ONCE",
+      "COMMIT_SWAP_EXACTLY_ONCE",
+      "COMMIT_INTERFACE_LEDGER_EXACTLY_ONCE"
+    ],
+    "restart": "FGC24_COMMITTED_ONLY_RESTART_AUTHORITY"
+  },
+  "preserved_scientific_dispositions": {
+    "g21_exact_path": "FALSIFIED",
+    "g23": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
+    "g23_transaction_handoff": "19_OF_19_PHYSICALLY_CONVERGED_ARMS_PASS",
+    "g24": "CAUSAL_TOLERANCE_DIAGNOSTIC_ONLY",
+    "pb01": "PHYSICAL_OUTWARD_TANGENT_NEGATIVE",
+    "analytical_dummy": "FROZEN_REGRESSION_ORACLE_NOT_PRODUCTION_MODEL"
+  },
+  "explicit_nonclaims": [
+    "exact internal solver-path equivalence",
+    "active coupled drainage",
+    "coupled root extraction",
+    "physical-independent or mixed MODFLOW storage authority",
+    "universal or field-calibrated Sy/Ss authority",
+    "native MODFLOW checkpoint format",
+    "mid-iteration restart",
+    "field-scale heterogeneous transferability",
+    "finite-resistance q-link semantics",
+    "fixed-interface head equals phreatic elevation"
+  ],
+  "independent_review": {
+    "qbot_qswap_semantics": "PASS",
+    "historical_u_over_dt_not_physical_corrector_tangent": "PASS",
+    "reanchor_distinct_from_relinearize": "PASS",
+    "u_and_u_dt_not_storage": "PASS",
+    "modflow_sto_not_independently_additive_physical_storage": "PASS",
+    "drainage_ownership_not_implicit": "PASS",
+    "stale_swap_revision_reuse_fail_closed": "PASS",
+    "rejected_trials_no_ledger_or_state_authority": "PASS",
+    "restart_boundary_committed_only": "PASS",
+    "historical_falsifications_preserved": "PASS"
+  },
+  "unrelated_canonical_ci_debt": {
+    "classification": "PREEXISTING_NOT_INTRODUCED_BY_FIXED_INTERFACE_INTEGRATION",
+    "base_head": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "base_fci_run": 35501435274,
+    "failing_job": "current-restricted-canonical-preservation",
+    "diagnostic": "admitted dependency drift: src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+    "fixed_interface_disposition": "OUT_OF_SCOPE_NO_CHANGE"
+  },
+  "authoritative_files": {
+    "contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+    "status": "integration/f-gc/F-GC_FIXED_INTERFACE_CLOSEOUT_STATUS.json",
+    "architecture_note": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+    "drainage_ownership": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+    "analytical_freeze": "integration/f-gc/F-GC_FIXED_INTERFACE_ANALYTICAL_TESTBANK_FREEZE.json",
+    "stopping_preregistration": "integration/f-gc/F-GC_FIXED_INTERFACE_STOPPING_COMPAT_PREREGISTRATION.json"
+  },
+  "next_permitted_action": "NONE_IN_THIS_WORKSTREAM_NEW_GROUNDWATER_CAPABILITIES_REQUIRE_A_SEPARATE_EXPLICIT_WORKSTREAM"
+}
