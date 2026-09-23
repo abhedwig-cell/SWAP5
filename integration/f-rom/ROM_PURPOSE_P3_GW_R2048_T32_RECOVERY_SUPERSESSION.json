@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-r2048-t32-recovery-supersession.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-R2048-T32-RECOVERY",
+  "date": "2026-09-23",
+  "status": "V1_PERMANENTLY_SUPERSEDED_V2_SOLE_AUTHORITY",
+  "superseded": {
+    "workflow_run": 35880655075,
+    "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json",
+    "topology": "2 x 16384-step exact-state halves",
+    "authority": false,
+    "artifact_admissibility": "NONE",
+    "rule": "Any v1 job or artifact produced after this supersession remains technically diagnostic only and may not enter Reference consolidation, adjudication, candidate authorization, same-partition attribution or closeout."
+  },
+  "authoritative": {
+    "workflow_run": 35881413707,
+    "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
+    "topology": "4 x 8192-step exact-state checkpoint segments per history",
+    "prior_qualified_topology_run": 35751978638,
+    "authority": true
+  },
+  "reason": "V2 adopted the previously qualified 8192-step segmented recovery topology before any v1 segment execution response. The choice was based on execution-topology qualification and runner-preemption evidence, not hydrological response values.",
+  "consolidation_contract": {
+    "R2048_T32_source": "ONLY authoritative v2 workflow artifact p3gw-r2048-t32-routes",
+    "v1_artifacts_forbidden": true,
+    "original_full_history_R2048_T32_source_artifacts_forbidden": true
+  },
+  "scientific_firewall": {
+    "hydrological_response_used_for_supersession": false,
+    "forcing_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "candidate_response_generated": false
+  }
+}
