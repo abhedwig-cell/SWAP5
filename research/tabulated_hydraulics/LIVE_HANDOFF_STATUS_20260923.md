@@ -34,8 +34,9 @@ Live status at the observed production head:
 - D: PASS;
 - E: PASS;
 - G dedicated qualification: PASS;
-- G final closure: waiting on same-postimage sequential A→E→G replay;
-- F/F0 remains held until G closure.
+- G same-postimage sequential A→E→G preservation replay: PASS (run `35882579159`);
+- F-TAB02-G is therefore ready to be formally bound by the production owner;
+- preregistered F0 provider-selection/lifetime qualification is the next permitted production step.
 
 Research must not duplicate or bypass those production gates.
 
@@ -51,7 +52,7 @@ The production work unit reports that the exact authorized asset has been materi
 - SHA-256: `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
 - size: `8,959,314 bytes`.
 
-The final whole-Hupsel gate is therefore no longer externally blocked on asset availability. Its current blocker is production-internal sequencing: close F-TAB02-G, then qualify the preregistered F-TAB02-F0 provider-selection/lifetime seam, then execute the exact M1-C3 whole-Hupsel gate.
+The final whole-Hupsel gate is therefore no longer externally blocked on asset availability. The required same-postimage A→E→G preservation replay has now passed. The next production-internal prerequisite is the preregistered F-TAB02-F0 provider-selection/lifetime seam; after that, the exact M1-C3 whole-Hupsel gate becomes the legitimate final application qualification.
 
 ## Production performance versus research performance
 
