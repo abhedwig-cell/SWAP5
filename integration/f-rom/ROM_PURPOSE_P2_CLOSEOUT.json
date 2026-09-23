@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.rom-purpose.p2.closeout.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2",
+  "date": "2026-09-23",
+  "status": "P2_CLOSED_PURPOSE_PLACEMENT_SUPPORTED_H4_PARTIALLY_UNRESOLVED",
+  "repository_authority": {
+    "branch": "work/f-rom-purpose",
+    "head_before_closeout": "3b9a3e462b63cbee942fc558caa747e45db5fe78",
+    "current_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "frozen_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "canonical_changed_since_last_reconcile": false
+  },
+  "authorities": {
+    "reference_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
+      "blob": "f701aee1d612e6af509a639bc8505b1d90be716c",
+      "status": "P2_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED"
+    },
+    "placement_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
+      "blob": "e49f2414423538e4ecae4d4af35d599e46bc5273"
+    },
+    "h4_result": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json",
+      "blob": "dcb9918f53cf595673dd0f470f8e71a9cfb4eff8",
+      "status": "P2_H4_DIAGNOSTIC_PARTLY_OR_FULLY_UNAVAILABLE"
+    },
+    "purpose_map": {
+      "path": "integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json",
+      "blob": "5d074f5eff2c4410b7a35f42ae76f6e7c053c625",
+      "status": "P2_RESEARCH_MAP_PERSISTED"
+    }
+  },
+  "hypotheses": {
+    "H1_groundwater_aligned_placement_supported": true,
+    "H2_surface_aligned_placement_supported": true,
+    "H3_any_equal_dimension_purpose_aligned_information_value": true,
+    "H4_closure_deficit_supported": false,
+    "H4_note": "H4 did not support a pure closure-deficit attribution in any trigger case."
+  },
+  "purpose_map_summary": {
+    "SURF_P": {
+      "required_vertical_information": "Upper-column/surface-profile information at 0-20, 0-40 and 0-80 cm.",
+      "minimum_tested_state_placement": {
+        "id": "S4",
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          80,
+          160
+        ],
+        "dimension": 4,
+        "evidence": "PLACEMENT_SUPPORTED against U4 for B01 and B14 at equal dimension and fixed CURRENT_LAYER_FACE closure."
+      },
+      "H4": {
+        "B01": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE",
+        "B14": "CORICHARDS_DIAGNOSTIC_UNAVAILABLE"
+      },
+      "required_closure_class": "UNRESOLVED_DIAGNOSTIC_UNAVAILABLE",
+      "remaining_fidelity_limit": "Same-partition four-cell Richards leaves the frozen qualified numerical domain under the prospectively fixed fallback policy, so closure versus representation cannot be adjudicated."
+    },
+    "GW_LB": {
+      "required_vertical_information": "Bottom-adjacent/lower-column information concentrated over 80-160 cm.",
+      "minimum_tested_state_placement": {
+        "id": "G4",
+        "boundaries_cm": [
+          0,
+          80,
+          120,
+          140,
+          160
+        ],
+        "dimension": 4,
+        "evidence": "PLACEMENT_SUPPORTED against U4 for B01 and B14 at equal dimension and fixed CURRENT_LAYER_FACE closure."
+      },
+      "H4": {
+        "B01": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED",
+        "B14": "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED"
+      },
+      "required_closure_class": "UNRESOLVED",
+      "remaining_fidelity_limit": "Numerically qualified same-partition four-cell Richards also misses the frozen R512_T32 comparator, so closure versus four-state information/spatial resolution cannot be separated."
+    }
+  },
+  "admitted_conclusions": [
+    "Hydrologically useful vertical state placement is purpose-dependent within the frozen equal-dimension four-state family.",
+    "Surface/profile response benefits from upper-column-aligned S4 placement relative to U4 for both qualified materials.",
+    "Groundwater/lower-boundary response benefits from bottom-adjacent G4 placement relative to U4 for both qualified materials.",
+    "Equal state count and fixed CURRENT_LAYER_FACE closure do not erase the information value of where the four states are placed."
+  ],
+  "explicitly_not_admitted": [
+    "Four states are a universal or absolute minimum representation.",
+    "Four states are sufficient for either application purpose.",
+    "CURRENT_LAYER_FACE is proven to be the sole remaining fidelity limitation.",
+    "A specific replacement closure family is required or admitted.",
+    "Application acceptance or tolerance compliance.",
+    "Performance or speedup authority.",
+    "Production-ROM admission."
+  ],
+  "unresolved_scientific_boundaries": [
+    "SURF_P: same-partition four-cell Richards is outside the frozen qualified numerical domain, preventing closure-versus-representation attribution.",
+    "GW_LB: same-partition four-cell Richards is numerically qualified but still below the frozen R512_T32 comparator, leaving four-state information versus spatial-resolution insufficiency unresolved."
+  ],
+  "next_authority_rule": "Any further study that changes state count, introduces a new closure family, changes the surface CoRichards numerical policy, or seeks application acceptance requires a new prospective authority/preregistration. P2 itself is closed.",
+  "application_authority_status": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE",
+  "scientific_firewall": {
+    "P1_failure_overridden": false,
+    "universal_minimum_claim": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false,
+    "general_closure_search_authorized": false
+  }
+}
