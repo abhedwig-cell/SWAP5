@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_temporal_localization.preregistration.v1",
+  "work_unit": "RM26",
+  "date": "2026-09-23",
+  "title": "Localization of same-horizon active-irrigation temporal discrepancy",
+  "depends_on": {
+    "RM23": "same-horizon one-step versus two-half endpoint difference available",
+    "RM24": "inherited global 1e-5 cm head budget not transferable",
+    "RM25": "active-irrigation temporal acceptance contract defined but quantitative authority blocked"
+  },
+  "question": "Where in the SWAP column does the independently observed one-step versus two-half temporal discrepancy live, and how large is the discrepancy in coupling-relevant lower-interface state and total column storage?",
+  "frozen_case": {
+    "horizon_seconds": 8.64,
+    "sequences_seconds": [[8.64],[4.32,4.32]],
+    "irrigation_rate_cm_per_day": 36.0,
+    "bottom_flux_cm_per_day": 1e-6,
+    "initial_profile": "identical RM23 -75 cm top-origin hydrostatic profile",
+    "solver_and_boundary_settings": "unchanged RM23"
+  },
+  "required_outputs": [
+    "global max endpoint pressure-head difference and node/depth where it occurs",
+    "bottom-node pressure-head difference",
+    "maximum pressure-head difference over the lowest 20 percent of nodes",
+    "maximum pressure-head difference over the upper 20 percent of nodes",
+    "global max water-content difference",
+    "signed and absolute total-column storage difference in cm water",
+    "ponding, top-flux and bottom-flux differences"
+  ],
+  "hypotheses": [
+    "The global max pressure-head discrepancy is spatially localized and need not represent the fixed-interface state discrepancy.",
+    "The same-horizon trajectories preserve the imposed surface and bottom transfer identities even when internal pressure-head profiles differ.",
+    "Column-storage discrepancy is a more directly conservation-relevant measure than global max pressure head for the current one-window coupling purpose."
+  ],
+  "failure_rule": "Do not introduce an acceptance threshold in RM26. Do not alter the solver, forcing, boundary conditions, horizon or sequence after seeing the result. RM26 is localization evidence only.",
+  "nonclaims": [
+    "RM26 does not admit the triangle.",
+    "RM26 does not define a replacement temporal tolerance.",
+    "RM26 does not claim that lower-interface similarity is sufficient for long-term hydrological-memory fidelity.",
+    "RM26 does not override RM25."
+  ]
+}
