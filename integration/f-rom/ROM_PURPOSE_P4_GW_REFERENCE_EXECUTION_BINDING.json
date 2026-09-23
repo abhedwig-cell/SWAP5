@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.rom-purpose.p4.gw-reference-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-GW-REFERENCE",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P4_REFERENCE_RESPONSE",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json@d55c584b901febd04f62953b8f639ac31645eaab",
+  "route_set": [
+    "R512_T32",
+    "R1024_T32",
+    "R2048_T16",
+    "R2048_T8"
+  ],
+  "excluded_route": "R2048_T32 is executed prospectively through the separately bound proven 8192-step exact-state topology.",
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "histories": [
+    "G17",
+    "G18",
+    "G19",
+    "G20"
+  ],
+  "implementation_blobs": {
+    ".github/workflows/f-rom-purpose-p4-gw-reference.yml": "5251279da0894d7edc89c165b23c9e0ce9a7ae44",
+    "tests/rom/materialize_rom_purpose_p4_gw_reference.py": "cb38351335713372938405a189f4385d07a64b90",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab"
+  },
+  "scientific_firewall": {
+    "response_seen_before_binding": false,
+    "monolithic_r2048_t32_reintroduced": false,
+    "forcing_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false
+  }
+}
