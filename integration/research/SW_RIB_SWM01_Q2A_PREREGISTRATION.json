@@ -1,0 +1,176 @@
+{
+  "schema": "swap5.sw_rib_swm01.q2a.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q2A",
+  "date": "2026-09-23",
+  "title": "Accepted-state automatic surface-water management policy",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Qualify the legacy SWMAN=2 target-selection and WLSTAR memory semantics as an explicit coupler policy, independent of Ribasim hydraulic realization.",
+  "source_authority": {
+    "exact_source": "F-PM08D5 automatic-control source inventory",
+    "phase_selection": "SWAP/surfacewater.f90:194-213",
+    "between_events": "SWAP/surfacewater.f90:214-218",
+    "drop_rate": "SWAP/surfacewater.f90:220-227",
+    "previous_target": "SWAP/surfacewater.f90:160-162"
+  },
+  "frozen_policy": {
+    "units": "legacy-compatible centimetres and days for this policy test",
+    "nphase": 3,
+    "wlsman_cm": [
+      -60,
+      -40,
+      -20
+    ],
+    "gwlcrit_cm": [
+      0,
+      -50,
+      -100
+    ],
+    "vcrit_cm": [
+      0,
+      20,
+      40
+    ],
+    "hcrit_cm": [
+      0,
+      -50,
+      -100
+    ],
+    "dropr_cm_per_day": 5,
+    "dropr_activation_threshold_cm_per_day": 0.001,
+    "algorithm": [
+      "start at phase 3",
+      "while phase>1 and GWL > GWLCRIT(phase): decrement",
+      "while phase>1 and VTAIR < VCRIT(phase): decrement",
+      "while phase>1 and HSEL > HCRIT(phase): decrement",
+      "requested target = WLSMAN(phase)",
+      "if requested < accepted WLSTAR and DROPR>0.001, candidate target=max(requested, accepted WLSTAR-DROPR*dt)",
+      "upward target changes are immediate",
+      "between explicit adjustment events requested target is accepted WLSTAR exactly"
+    ]
+  },
+  "cases": [
+    {
+      "id": "P0_HIGH_PHASE",
+      "event": true,
+      "gwl_cm": -150,
+      "vair_cm": 50,
+      "hsel_cm": -150,
+      "accepted_wlstar_cm": -20,
+      "dt_day": 1,
+      "expected_phase": 3,
+      "expected_target_cm": -20
+    },
+    {
+      "id": "P1_GWL_TO_PHASE2",
+      "event": true,
+      "gwl_cm": -80,
+      "vair_cm": 50,
+      "hsel_cm": -150,
+      "accepted_wlstar_cm": -20,
+      "dt_day": 1,
+      "expected_phase": 2,
+      "expected_requested_cm": -40,
+      "expected_target_cm": -25
+    },
+    {
+      "id": "P2_AIR_TO_PHASE2",
+      "event": true,
+      "gwl_cm": -150,
+      "vair_cm": 30,
+      "hsel_cm": -150,
+      "accepted_wlstar_cm": -20,
+      "dt_day": 1,
+      "expected_phase": 2,
+      "expected_requested_cm": -40,
+      "expected_target_cm": -25
+    },
+    {
+      "id": "P3_HEAD_TO_PHASE2",
+      "event": true,
+      "gwl_cm": -150,
+      "vair_cm": 50,
+      "hsel_cm": -80,
+      "accepted_wlstar_cm": -20,
+      "dt_day": 1,
+      "expected_phase": 2,
+      "expected_requested_cm": -40,
+      "expected_target_cm": -25
+    },
+    {
+      "id": "P4_COMBINED_TO_PHASE1",
+      "event": true,
+      "gwl_cm": -80,
+      "vair_cm": 10,
+      "hsel_cm": 10,
+      "accepted_wlstar_cm": -20,
+      "dt_day": 2,
+      "expected_phase": 1,
+      "expected_requested_cm": -60,
+      "expected_target_cm": -30
+    },
+    {
+      "id": "P5_EQUALITY_SEAMS_STAY_PHASE3",
+      "event": true,
+      "gwl_cm": -100,
+      "vair_cm": 40,
+      "hsel_cm": -100,
+      "accepted_wlstar_cm": -20,
+      "dt_day": 1,
+      "expected_phase": 3,
+      "expected_target_cm": -20
+    },
+    {
+      "id": "P6_BETWEEN_EVENT_MEMORY",
+      "event": false,
+      "gwl_cm": 10,
+      "vair_cm": -1,
+      "hsel_cm": 10,
+      "accepted_wlstar_cm": -35,
+      "dt_day": 9,
+      "expected_phase": null,
+      "expected_requested_cm": -35,
+      "expected_target_cm": -35
+    },
+    {
+      "id": "P7_UPWARD_IMMEDIATE",
+      "event": true,
+      "gwl_cm": -150,
+      "vair_cm": 50,
+      "hsel_cm": -150,
+      "accepted_wlstar_cm": -60,
+      "dt_day": 0.25,
+      "expected_phase": 3,
+      "expected_requested_cm": -20,
+      "expected_target_cm": -20
+    }
+  ],
+  "transaction_cases": [
+    "Evaluate a downward candidate from accepted WLSTAR=-20 with dt=2 d; discard it and prove accepted state remains -20.",
+    "Replay from the same accepted origin and forcing and require bitwise-identical candidate fields.",
+    "Commit once and require accepted WLSTAR equals candidate target.",
+    "Evaluate a retry from the original accepted origin with dt=1 d and require target=-25, proving dt-sensitive candidate computation does not leak across rejected trials."
+  ],
+  "seam_case": {
+    "id": "DROPR_THRESHOLD",
+    "accepted_wlstar_cm": -20,
+    "requested_cm": -60,
+    "dt_day": 1,
+    "dropr_cm_per_day": 0.001,
+    "expected_target_cm": -60,
+    "rationale": "legacy condition is DROPR>0.001; equality disables limiting"
+  },
+  "pass_criteria": [
+    "All frozen phase selections exactly match expected phase.",
+    "All requested and rate-limited candidate targets match to 1e-12 cm.",
+    "No evaluation mutates accepted policy state.",
+    "Rejected candidate leaves accepted WLSTAR unchanged.",
+    "Same-origin replay is deterministic.",
+    "Commit is explicit and singular.",
+    "DROPR equality seam and upward-change asymmetry are preserved."
+  ],
+  "nonclaims": [
+    "No claim that the legacy automatic hydraulic capacity branch should be copied.",
+    "No Ribasim level-band realization yet; that is Q2B.",
+    "No production admission."
+  ]
+}
