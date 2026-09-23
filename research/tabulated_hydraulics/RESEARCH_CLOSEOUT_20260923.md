@@ -4,9 +4,9 @@ Date: 2026-09-23
 
 Status: **RESEARCH CLOSED FOR K0 REPRESENTATION / PRODUCTION HANDOFF READY**
 
-Canonical authority at closeout:
+Canonical authority at latest reconciliation:
 
-`integration/f-ci-canonical@b7d9c976e9b474545d54fa79b71ae134c25da156`
+`integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d`
 
 Research branch:
 
@@ -245,3 +245,35 @@ from current canonical, under the preregistered handoff.
 
 Production **admission** remains blocked until the exact whole-Hupsel authority
 asset can be executed.
+
+
+## 12. F-SI39 / KSATEXM addendum
+
+After the original K0 closeout, the exact Hupsel F-SI39 extension was examined
+because the eventual M1-C3 whole-Hupsel gate requires that admitted extension.
+
+Research sequence:
+
+- KX01: generated-theta strict branch ownership falsified;
+- KX02: source-head/floating equivalence shortcut falsified;
+- KX03: explicit analytical authority-state sub-branch PASS;
+- KX04: typed Reference-Richards scientific PASS, but active-extension
+  performance degraded;
+- KX05: immutable first-active floating pressure-head metadata PASS;
+- KX06: KX05 reproduces KX03 solver fidelity while removing the material
+  active-branch overhead.
+
+Controlling KX05 constitutive run: `35863485123`.
+
+Independent KX06 solver/performance runs:
+
+- `35863794528`;
+- `35863919254`.
+
+KX05 is therefore the preferred research handoff pattern for the bounded exact
+Hupsel F-SI39 sub-slice. It does not reopen generic KSATEXM or K1 scope.
+
+Updated disposition:
+
+**K0_RESEARCH_CLOSED / BOUNDED_HUPSEL_FSI39_EXTENSION_RESEARCH_CLOSED /
+PRODUCTION_HANDOFF_READY / FINAL_WHOLE_HUPSEL_ADMISSION_GATE_EXTERNAL_ASSET_BLOCKED**.
