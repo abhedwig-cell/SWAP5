@@ -4,13 +4,13 @@
   "work_unit": "ROM-PURPOSE-P2-REFERENCE",
   "status": "BOUND_BEFORE_ANY_P2_REFERENCE_RESPONSE",
   "date": "2026-09-23",
-  "execution_head_before_trigger": "7f8aa19163f0af2601a013e9873436fb6c44c0e3",
+  "execution_head_before_trigger": "537175a5ed74f26ca680e2e50f8d4f7e690b79be",
   "frozen_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-rom-purpose",
   "trigger_path": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_EXECUTION_BINDING.json",
   "blobs": {
     "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json": "2e566b35d16a4655b4f9e33c353f57652f5741b1",
-    "tests/rom/materialize_rom_purpose_p2_surface_reference.py": "a3c3b6db260f58e787b63eececbf98a5b30e650c",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference.py": "d0361bd03cd624cda51336ed8655c3d2ed8cc2cf",
     "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py": "716d41a88954a7e67f21bcc988102a4a1cf7add0",
     "tests/rom/analyze_rom_purpose_p2_reference.py": "235a6f0efbadaeff182c7fd5450c20f3d7920795",
     ".github/workflows/f-rom-purpose-p2-reference.yml": "25d46dd1228a1c890345fe38f2d5abb2b328c990",
@@ -18,7 +18,8 @@
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json": "517eae5c765679d2c96a82f2cb4d16d3d05a2446",
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json": "278be1eb14713ca07b769ce5984a27a2b4828f54",
     "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
-    "tests/rom/rom_purpose_p1_surface_b14_source.f90": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8"
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json": "94ecc87b3f3fb181f1ba432826a9bcf4454bae2f"
   },
   "inherited_checkpoint_topology": {
     "source_workflow_run": 35751978638,
@@ -70,5 +71,7 @@
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
     "production_rom_authorized": false
-  }
+  },
+  "supersedes_trigger_commit": "7e556d482b76b6e856cd541f0abb86bade719ef4",
+  "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json@94ecc87b3f3fb181f1ba432826a9bcf4454bae2f"
 }
