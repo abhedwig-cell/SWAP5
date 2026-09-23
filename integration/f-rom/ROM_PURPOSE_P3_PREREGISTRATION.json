@@ -296,11 +296,7 @@
     ],
     "O0_O2_scientific_identity_required": true,
     "max_abs_transaction_mass_cm": 1e-12,
-    "continuous_reference_qualification": {
-      "SURF_P": "Reuse the P2 frozen numerical-observability mathematics, including the independently computed floating-point indistinguishability floor and extremum observability policy, on fresh S09-S12.",
-      "GW_LB": "Reuse the groundwater Reference qualification policy inherited through P2 from the qualified P1 GW authority: three-level spatial/temporal monotonic qualification plus exact discrete sign/reversal guards, on fresh G06-G09.",
-      "rationale": "P2 introduced the floating-point observability repair for the surface Reference failure while explicitly inheriting already-qualified P1 groundwater Reference evidence. P3 preserves that purpose-specific authority split prospectively."
-    },
+    "continuous_reference_qualification": "Reuse P2 numerical-observability mathematics, not P2 response values.",
     "candidate_gate": "No P3 Layer-ROM response is authorized until both materials qualify on the fresh P3 Reference workload for both purposes.",
     "application_tolerance": false
   },
@@ -423,7 +419,6 @@
     "closure_tuned": false,
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
-    "production_rom_authorized": false,
-    "reference_policy_tuned_from_response": false
+    "production_rom_authorized": false
   }
 }
