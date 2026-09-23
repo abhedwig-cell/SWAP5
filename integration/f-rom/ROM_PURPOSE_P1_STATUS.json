@@ -1,7 +1,9 @@
 {
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "blockers": [
-    "P1_REFERENCE_QUALIFICATION_FAILED"
+    "P1_REFERENCE_QUALIFICATION_FAILED",
+    "SURF_P_REFERENCE_NUMERICAL_OBSERVABILITY_BLOCKER",
+    "NEW_PROSPECTIVE_REFERENCE_AUTHORITY_REQUIRED"
   ],
   "candidate_implementation_staged": true,
   "candidate_response_authorized": false,
@@ -23,15 +25,15 @@
   "history_sharded_disposition": "SUPERSEDED_AFTER_R2048_T32_EXIT_143; R512/R1024 POSITIVE TECHNICAL CONTROL ONLY",
   "history_sharded_reference_workflow_run": 35749982543,
   "implemented": true,
-  "last_reconciled_head": "cb3d491bc768f290cf387e458b679bcf0066d2a1",
-  "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "next_action": "STOP_BEFORE_CANDIDATES_REFERENCE_QUALITY_BLOCKER",
+  "last_reconciled_head": "f5622210f2873e96baf26e18de07a54bef5e2eab",
+  "last_reconciled_upstream": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+  "next_action": "DEFINE_PROSPECTIVE_REFERENCE_OBSERVABILITY_OR_FRESH_SURFACE_EVENT_AUTHORITY",
   "original_reference_execution_disposition": "TECHNICALLY_INVALID_INCOMPLETE_EXIT_143",
   "original_reference_workflow_run": 35748342021,
   "persisted": true,
-  "phase": "REFERENCE_SCIENTIFICALLY_NOT_QUALIFIED",
+  "phase": "P1_CLOSED_FAIL_CLOSED_NEW_REFERENCE_AUTHORITY_REQUIRED",
   "qualified": false,
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json",
   "reference_binding_commit": "51234e62ef07c4828b974302388412703b0a6689",
   "reference_execution_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json",
   "reference_execution_repair": "R2048_EXACT_STATE_SEGMENTED_R512_R1024_FULL_HISTORY",
@@ -59,18 +61,22 @@
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_SEGMENTED_RECONCILIATION.json",
     "tests/rom/materialize_rom_purpose_p1_surface_reference_segment.py",
     "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py",
-    ".github/workflows/f-rom-purpose-p1-reference-segmented.yml"
+    ".github/workflows/f-rom-purpose-p1-reference-segmented.yml",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json",
+    "docs/science/F-ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.md"
   ],
   "schema": "swap5.rom-purpose.p1.status.v1",
   "scientific_firewall": {
-    "application_acceptance_adjudicated": false,
-    "candidate_response_generated": false,
-    "performance_comparison_authorized": false,
-    "production_rom_authorized": false,
-    "reference_metric_values_used_to_design_execution_repair": false,
     "reference_qualification_result_generated": true,
+    "usable_reference_evidence_persisted": true,
+    "candidate_response_generated": false,
+    "candidate_response_authorized": false,
     "representation_retuned": false,
-    "usable_reference_evidence_persisted": true
+    "reference_gate_relaxed_post_hoc": false,
+    "reference_metric_values_used_to_design_execution_repair": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
   },
   "source_workflow_run": 35751978638,
   "stale_duplicate_response_capable": false,
@@ -84,5 +90,15 @@
   ],
   "tested": true,
   "work_unit": "ROM-PURPOSE-P1",
-  "workstream": "ROM-PURPOSE"
+  "workstream": "ROM-PURPOSE",
+  "reference_workflow_attempt": 2,
+  "reference_workflow_conclusion": "SUCCESS_WITH_SCIENTIFIC_FAIL_CLOSED_RESULT",
+  "reference_failure_diagnosis": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json",
+  "reference_failure_diagnosis_doc": "docs/science/F-ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.md",
+  "current_canonical_reconciliation": {
+    "observed_head": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+    "commits_after_frozen_baseline": 43,
+    "P1_baseline_rebound": false,
+    "rationale": "P1 evidence remains historical and internally comparable on its prospectively bound bcef9deb baseline. Current canonical drift was inspected after P1 execution and is not introduced into the failed gate."
+  }
 }
