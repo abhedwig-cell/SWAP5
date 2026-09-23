@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP01",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_AFTER_REFERENCE_FAILURE_BEFORE_REFERENCE_REPAIR_RESPONSE",
+  "purpose": "Independently qualify a Reference Richards temporal policy for the frozen realistic Hupsel atmospheric workload without using candidate error to select the policy.",
+  "observed_blocker": {
+    "policy": "R128_T32",
+    "material": "B02",
+    "history": "HR72",
+    "approx_day": 20.7,
+    "failure": "LAREDYN0R total residual within pre-solve bound",
+    "candidate_use_in_decision": false
+  },
+  "frozen": {
+    "workload": "ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json",
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "geometry_target_nodes": 128,
+    "forcing_and_physics_unchanged": true
+  },
+  "temporal_ladder": [
+    {
+      "id": "T32",
+      "substeps_per_day": 32,
+      "dt_day": 0.03125,
+      "role": "failed existing policy"
+    },
+    {
+      "id": "T64",
+      "substeps_per_day": 64,
+      "dt_day": 0.015625,
+      "role": "first prospective repair"
+    },
+    {
+      "id": "T128",
+      "substeps_per_day": 128,
+      "dt_day": 0.0078125,
+      "role": "refinement authority"
+    }
+  ],
+  "selection_rule": "Select T64 as P6B target only if it completes all six materials and daily T64-vs-T128 metrics are finite. Otherwise T128 may become target only if it completes all six; no further ladder is authorized here.",
+  "comparator_rule": "If T64 is selected, T128 is the temporal comparator and R64 with the same selected temporal factor remains the spatial comparator.",
+  "forbidden": [
+    "candidate changes",
+    "forcing changes",
+    "tolerance relaxation",
+    "reference fallback-policy changes",
+    "material-specific reference policy"
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
