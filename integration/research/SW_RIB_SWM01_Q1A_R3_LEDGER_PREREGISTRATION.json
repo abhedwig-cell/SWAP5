@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1a_r3_ledger.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1A-R3L",
+  "date": "2026-09-23",
+  "title": "Direct Ribasim connector-ledger hardening of R3 external-owner equivalence",
+  "prerequisite": {
+    "R3_trajectory_run": 35859378070,
+    "result": "PASS",
+    "authority": "integration/research/SW_RIB_SWM01_Q1A_R3_TRAJECTORY_RESULT.json"
+  },
+  "purpose": "Replace inferred discharge closure with the actual cumulative Pump state from Ribasim's ODE state vector and verify exactly-once mass closure against Basin storage.",
+  "pinned_authority": {
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "docs": "docs/dev/numerics.qmd states that Pump contributes one cumulative horizontal flow state.",
+    "source": "core/src/solve.jl sets du.pump to physical Pump flow; integrator.u.pump therefore integrates physical volume."
+  },
+  "unchanged": [
+    "R3 physical mapping",
+    "three frozen cases",
+    "8.64 s duration",
+    "canonical F-CI52 oracle",
+    "all scientific tolerances"
+  ],
+  "direct_ledger": {
+    "initial_storage": "BMI basin.storage",
+    "final_storage": "BMI basin.storage",
+    "drainage_input": "known frozen FlowBoundary integral",
+    "discharge_output": "delta of model.integrator.u.pump cumulative physical flow",
+    "residual": "S1-S0-V_drain+V_pump"
+  },
+  "tolerances": {
+    "final_level_m_abs": 1e-8,
+    "final_storage_m3_abs": 1e-8,
+    "integrated_discharge_m3_abs": 1e-8,
+    "direct_mass_residual_m3_abs": 1e-8,
+    "initial_serialization_abs": 1e-10
+  },
+  "pass_meaning": "R3 has direct physical connector evidence that Ribasim owns and conserves the tested fixed-weir surface-water mass without a SWAP surface-water store.",
+  "execution_dependency": "Q1B may execute only after this direct-ledger gate passes.",
+  "production_admission": false
+}
