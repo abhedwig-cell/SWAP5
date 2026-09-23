@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1b.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q1B",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BLOCKED_ON_Q1A_PASS",
+  "title": "Ribasim-owned level-triggered supply with explicit capacity",
+  "purpose": "Test the legacy fixed-weir supply concept without retaining a private SWAP surface-water store: the target basin level is Ribasim-owned, LevelDemand expresses the lower-level requirement, and an allocation-controlled supply route carries the capacity corresponding to WSCAP.",
+  "prerequisite": "SW-RIB-SWM01-Q1A must pass or be explicitly adjudicated before Q1B execution.",
+  "source_semantics": {
+    "legacy_authority": [
+      "F-PM08D3 mass/availability inventory",
+      "F-PM08D4 fixed-weir balance inventory"
+    ],
+    "legacy_supply_target": "S_supply = S(HBWEIR - WLDIP)",
+    "legacy_capacity": "WSCAP is a maximum supply capacity, not the actual supply flux",
+    "coupled_mapping": {
+      "HBWEIR-WLDIP": "Ribasim LevelDemand minimum level for the receiving Basin",
+      "WSCAP": "maximum flow rate on the Ribasim supply route",
+      "actual q_supply": "Ribasim realized physical inflow, never inferred as WSCAP by SWAP",
+      "surface-water storage": "Ribasim Basin state only"
+    }
+  },
+  "pinned_ribasim": {
+    "sha": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "verified_product_features": [
+      "LevelDemand Static min_level/max_level with demand_priority",
+      "allocation-controlled Pump/Outlet with max_flow_rate",
+      "LevelBoundary participation in allocation network"
+    ]
+  },
+  "frozen_model": {
+    "represented_area_m2": 1,
+    "basin_profile_level_m": [
+      -1,
+      1
+    ],
+    "basin_profile_area_m2": [
+      1,
+      1
+    ],
+    "supply_target_level_m": -0.2,
+    "level_demand_max_level_m": 1,
+    "allocation_dt_s": 86400,
+    "physical_duration_s": 86400,
+    "upstream_source": "LevelBoundary with sufficient hydraulic availability",
+    "supply_route": "allocation-controlled Pump with flow_rate=0 and case-specific max_flow_rate",
+    "drainage": 0,
+    "weir_discharge": "disabled in Q1B to isolate supply semantics",
+    "runoff_and_rapid_drainage": 0
+  },
+  "cases": [
+    {
+      "id": "B1_ALREADY_ABOVE_SUPPLY_TARGET",
+      "initial_level_m": -0.1,
+      "max_supply_m3_per_day": 0.3,
+      "expected_supply_m3": 0,
+      "expected_final_level_m": -0.1
+    },
+    {
+      "id": "B2_CAPACITY_SUFFICIENT",
+      "initial_level_m": -0.4,
+      "max_supply_m3_per_day": 0.3,
+      "expected_supply_m3": 0.2,
+      "expected_final_level_m": -0.2
+    },
+    {
+      "id": "B3_CAPACITY_LIMITED",
+      "initial_level_m": -0.4,
+      "max_supply_m3_per_day": 0.1,
+      "expected_supply_m3": 0.1,
+      "expected_final_level_m": -0.3
+    }
+  ],
+  "comparators": [
+    "Ribasim final Basin level",
+    "Ribasim storage increase as realized supply volume",
+    "maximum-capacity compliance",
+    "zero supply when already above the legacy-equivalent supply target",
+    "mass closure"
+  ],
+  "tolerances": {
+    "final_level_m_abs": 0.000001,
+    "realized_supply_m3_abs": 0.000001,
+    "mass_residual_m3_abs": 1e-8
+  },
+  "anti_equivalence_warning": "LevelDemand is not declared byte-for-byte equivalent to legacy WLEVBAL. Q1B tests the physically intended fixed-weir supply envelope only. Allocation forecast and timing semantics remain Ribasim semantics and must be reported explicitly.",
+  "pass_meaning": "Bounded evidence that the fixed-weir WLDIP/WSCAP supply envelope can be externalized into Ribasim-owned demand and capacity without a duplicate SWAP surface-water state or hidden actual-supply flux.",
+  "fail_meaning": "The simple mapping WLDIP -> lower level demand and WSCAP -> route capacity is insufficient under the tested Ribasim allocation semantics.",
+  "nonclaims": [
+    "No scarcity competition between multiple users.",
+    "No automatic SWMAN=2 target policy.",
+    "No fixed-weir discharge in the same test.",
+    "No negative SWAP infiltration exchange.",
+    "No production admission."
+  ]
+}
