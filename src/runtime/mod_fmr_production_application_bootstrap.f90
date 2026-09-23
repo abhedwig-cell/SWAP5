@@ -6,7 +6,12 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  use mod_fmr_surface_water_owner_contract, only: FMR_SURFACE_OWNER_NONE, FMR_SURFACE_OWNER_EXTERNAL_RIBASIM, &
+       FMR_SURFACE_OWNER_OK, fmr_surface_water_owner_status
+  use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK, &
+       fmr_drainage_response_configuration_status
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
@@ -49,6 +54,7 @@ module mod_fmr_production_application_bootstrap
   ! WU03 may supply already-resolved effective forcing without changing lower-boundary ownership.
   type, public :: fmr_production_application_tile_config_t
     integer(int64) :: tile_id = 0_int64
+    integer :: surface_water_owner_mode = FMR_SURFACE_OWNER_NONE
     integer(int64) :: ledger_id = 0_int64
     integer :: execution_class = FMR_EXECUTION_EASY
     type(fmr_template_t) :: template
@@ -83,6 +89,7 @@ module mod_fmr_production_application_bootstrap
     type(fmr_serialized_reference_backend_t), pointer :: backend => null()
     type(fixed_flux_top_boundary_provider_t), pointer :: top_boundary => null()
     integer(int64), allocatable :: participant_handles(:)
+    integer, allocatable :: surface_water_owner_mode(:)
     type(groundwater_application_plan_t), pointer :: active_plan => null()
     type(fmr_groundwater_application_context_t), pointer :: active_context => null()
     integer(int64) :: active_context_handle = 0_int64
@@ -97,6 +104,8 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
     procedure, public :: close => production_application_close
   end type fmr_production_application_bootstrap_t
+
+  public :: fmr_external_ribasim_surface_tile_profile_valid
 
 contains
 
@@ -152,7 +161,7 @@ contains
       end do
     end if
 
-    allocate(self%columns(n), self%templates(n))
+    allocate(self%columns(n), self%templates(n), self%surface_water_owner_mode(n))
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
     self%numerical = config%numerical
@@ -181,6 +190,7 @@ contains
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
       self%base_forcing(i) = config%tiles(i)%base_forcing
+      self%surface_water_owner_mode(i) = config%tiles(i)%surface_water_owner_mode
       if (groundwater_profile) call self%materializers(i)%initialize(self%base_forcing(i))
 
       select case (self%templates(i)%numerical_continuation_layout_id)
@@ -243,12 +253,13 @@ contains
 
     ready = self%initialized
     if (.not. ready) return
-    ready = allocated(self%columns) .and. allocated(self%templates)
+    ready = allocated(self%columns) .and. allocated(self%templates) .and. allocated(self%surface_water_owner_mode)
     if (.not. ready) return
     ready = associated(self%parameters) .and. associated(self%base_forcing) .and. associated(self%committed) .and. &
          associated(self%backend) .and. associated(self%top_boundary)
     if (.not. ready) return
     ready = size(self%columns) > 0 .and. size(self%templates) == size(self%columns) .and. &
+         size(self%surface_water_owner_mode) == size(self%columns) .and. &
          size(self%parameters) == size(self%columns) .and. size(self%base_forcing) == size(self%columns) .and. &
          size(self%committed) == size(self%columns)
   end function production_application_ready
@@ -510,6 +521,35 @@ contains
     self%active_context_handle = 0_int64
   end subroutine retire_active_context
 
+
+  logical function fmr_external_ribasim_surface_tile_profile_valid(tile) result(valid)
+    type(fmr_production_application_tile_config_t), intent(in) :: tile
+    integer :: i
+
+    valid = .false.
+    if (tile%surface_water_owner_mode /= FMR_SURFACE_OWNER_EXTERNAL_RIBASIM) return
+    if (fmr_surface_water_owner_status(tile%surface_water_owner_mode, &
+         tile%template%optional_state_layout_id) /= FMR_SURFACE_OWNER_OK) return
+
+    ! PA01 deliberately admits only the base physical-state layout. Other
+    ! optional-state combinations require independent composition evidence.
+    if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+    if (.not. tile%parameters%drainage_response_active) return
+    if (.not. allocated(tile%parameters%drainage_response_levels)) return
+    if (.not. allocated(tile%base_forcing%drainage_response_controls)) return
+    if (size(tile%parameters%drainage_response_levels) <= 0) return
+    if (size(tile%base_forcing%drainage_response_controls) /= &
+         size(tile%parameters%drainage_response_levels)) return
+
+    do i = 1, size(tile%parameters%drainage_response_levels)
+      if (tile%parameters%drainage_response_levels(i)%variant /= FMR_DRAIN_VARIANT_EXTENDED_SIGNED) return
+    end do
+    if (fmr_drainage_response_configuration_status(tile%parameters%drainage_response_levels, &
+         tile%base_forcing%drainage_response_controls, tile%parameters%active_nodes) /= FMR_DRAIN_BIND_OK) return
+
+    valid = .true.
+  end function fmr_external_ribasim_surface_tile_profile_valid
+
   logical function tile_config_valid(tile, ntiles, slot) result(valid)
     type(fmr_production_application_tile_config_t), intent(in) :: tile
     integer, intent(in) :: ntiles, slot
@@ -535,8 +575,15 @@ contains
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. tile%parameters%elasticity_active .or. &
         tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
-        tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
-        tile%parameters%tabulated_hydraulics_active) return
+        tile%parameters%root_extraction_active .or. tile%parameters%tabulated_hydraulics_active) return
+
+    if (tile%surface_water_owner_mode == FMR_SURFACE_OWNER_EXTERNAL_RIBASIM) then
+      if (.not. fmr_external_ribasim_surface_tile_profile_valid(tile)) return
+    else
+      if (fmr_surface_water_owner_status(tile%surface_water_owner_mode, &
+           tile%template%optional_state_layout_id) /= FMR_SURFACE_OWNER_OK) return
+      if (tile%parameters%drainage_response_active) return
+    end if
 
     if (tile%parameters%black_evaporation_active) then
       if (tile%parameters%boesten_evaporation_active) return
@@ -613,6 +660,7 @@ contains
     nullify(self%top_boundary)
 
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
+    if (allocated(self%surface_water_owner_mode)) deallocate(self%surface_water_owner_mode)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)
     self%initialized = .false.
