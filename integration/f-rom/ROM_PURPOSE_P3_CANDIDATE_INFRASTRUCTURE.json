@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.rom-purpose.p3.candidate-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-CANDIDATE",
+  "date": "2026-09-23",
+  "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "representation_ladder": "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json@40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "candidate_response_authorized": false,
+    "authorization_dependency": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json must explicitly set candidate_response_authorized=true"
+  },
+  "implementation_blobs": {
+    "tests/rom/run_rom_purpose_p3_candidate.py": "c6f3f15b2cdbcd4633daeb44505606df307cdcd9",
+    "tests/rom/analyze_rom_purpose_p3_candidates.py": "3f2b526a4529ed9276e80538048187564f464a88",
+    ".github/workflows/f-rom-purpose-p3-candidates.yml": "6a8d0a420a2c425d06e19433ad40bcd49ec1f6b8",
+    "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c"
+  },
+  "frozen_candidate_matrix": {
+    "SURF_P": [
+      "S4",
+      "S6",
+      "S8",
+      "U4",
+      "U6",
+      "U8"
+    ],
+    "GW_LB": [
+      "G4",
+      "G6",
+      "G8",
+      "U4",
+      "U6",
+      "U8"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "candidate_dt_day": 0.0001,
+    "closure": "CURRENT_LAYER_FACE"
+  },
+  "inherited_mass_semantics": {
+    "reference_transaction_mass_gate_cm": 1e-12,
+    "reduced_candidate_water_ledger_gate_cm": 1e-10,
+    "changed_from_p2": false,
+    "note": "These are distinct inherited gates. The 1e-12 value in P3 Reference authority applies to accepted Reference transaction mass; the reduced Layer-ROM candidate retains the P2 1e-10 water-ledger qualification gate."
+  },
+  "analysis_policy": {
+    "comparator": "R512_T32 against R2048_T32",
+    "componentwise_equality_tolerance": 1e-12,
+    "weighted_score": false,
+    "primary_material_aggregation": false,
+    "terminal_state_count": 8,
+    "same_partition_trigger": "Only a numerically qualified terminal aligned S8/G8 that remains below the comparator triggers same-partition Richards."
+  },
+  "response_firewall": {
+    "reference_result_available": false,
+    "candidate_execution_binding_created": false,
+    "candidate_response_generated": false,
+    "boundaries_changed": false,
+    "closure_changed": false
+  }
+}
