@@ -8,11 +8,14 @@ on:
       - 'src/solver/mod_b110_generated_mvg_tspack.f90'
       - 'src/solver/mod_b110_generated_mvg_table_state.f90'
       - 'src/solver/mod_b110_generated_mvg_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fsi/test_ftab02a_generated_mvg_table_state.f90'
       - 'tests/fsi/run_ftab02a_generated_mvg_table_state.sh'
       - 'tests/fsi/test_ftab02b_generated_mvg_provider.f90'
       - 'tests/fsi/run_ftab02b_generated_mvg_provider.sh'
       - 'tests/fsi/fixtures/ftab02_staring1994_mvg.dat'
+      - 'tests/fsi/test_ftab02c_serialized_generated_provider.f90'
+      - 'tests/fsi/run_ftab02c_serialized_generated_provider.sh'
       - 'integration/f-tab/F-TAB02_PREREGISTRATION.json'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
@@ -90,4 +93,40 @@ jobs:
           path: |
             F-TAB02-B_EVIDENCE.txt
             F-TAB02-B_GATE.log
+          if-no-files-found: error
+
+  slice-c:
+    needs: slice-b
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-TAB02-C qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02c_serialized_generated_provider.sh | tee F-TAB02-C_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-C"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_C_|^F-TAB02-C ' F-TAB02-C_GATE.log || true
+          } > F-TAB02-C_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-c-evidence
+          path: |
+            F-TAB02-C_EVIDENCE.txt
+            F-TAB02-C_GATE.log
           if-no-files-found: error
