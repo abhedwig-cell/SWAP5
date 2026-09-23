@@ -4,52 +4,81 @@
   "title": "Legacy SWAP surface-water ownership decomposition",
   "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "status": "OPEN_QUALIFICATION",
-  "checkpoint_commit": "f0ba1e4688e83bdd9ab1de4bc926766455cc71af",
-  "implemented": false,
+  "checkpoint_commit": "3e617c768aed933c5dc662a12c3bf6dd7dc728f3",
+  "implementation_status": "Q1A_HARNESS_IMPLEMENTED__QUALIFICATION_IN_PROGRESS",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_admission": false,
   "retirement_authority": false,
-  "last_reconciled_head": "f0ba1e4688e83bdd9ab1de4bc926766455cc71af",
+  "last_reconciled_head": "3e617c768aed933c5dc662a12c3bf6dd7dc728f3",
   "last_reconciled_upstream": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "owned_surface": [
     "legacy surfacewater.f90 responsibility decomposition",
-    "SWAP5/Ribasim/coupler ownership hypothesis",
-    "surface-water-management equivalence qualification design"
+    "mode-dependent SWAP5/Ribasim/coupler ownership contract",
+    "surface-water-management equivalence qualification design and harness"
   ],
   "held_fixed": [
     "current admitted drainage physics",
+    "current F-CI52 standalone restricted fixed-weir production capability",
     "current accepted-state transaction semantics",
     "current groundwater coupling authority",
-    "current Ribasim research evidence"
+    "current Ribasim management research evidence"
   ],
   "authority_paths": [
     "docs/status-a/CURRENT_STATUS.md",
     "docs/status-a/CURRENT_ARCHITECTURE.md",
-    "docs/architecture/legacy-migration-processes.md"
+    "docs/architecture/legacy-migration-processes.md",
+    "integration/research/SW_RIB_SWM01_FPM08D_RECONCILIATION.json",
+    "integration/research/SW_RIB_SWM01_MODE_OWNERSHIP_CONTRACT.json"
   ],
   "relevant_paths": [
     "docs/integration/SW-RIB-SWM01_SURFACEWATER_OWNERSHIP.md",
+    "docs/integration/SW-RIB-SWM01_LEGACY_INVENTORY.md",
     "integration/research/SW_RIB_SWM01_STATUS.json",
-    "docs/architecture/legacy-migration-processes.md",
-    "src/legacy/**/surfacewater.f90",
-    "legacy drainage and management dependencies"
+    "integration/research/SW_RIB_SWM01_INVENTORY.json",
+    "integration/research/SW_RIB_SWM01_Q1A_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q1A_TECHNICAL_AMENDMENT_01.json",
+    "integration/research/SW_RIB_SWM01_FPM08D_RECONCILIATION.json",
+    "integration/research/SW_RIB_SWM01_MODE_OWNERSHIP_CONTRACT.json",
+    "src/process/mod_restricted_fixed_weir_surface_water.f90",
+    "docs/architecture/legacy-migration-processes.md"
   ],
-  "test_paths": [],
-  "evidence_paths": [],
+  "test_paths": [
+    "tests/sw-rib-swm01/emit_q1a_fixed_weir_oracle.f90",
+    "tests/sw-rib-swm01/generate_q1a_real_ribasim.py",
+    "tests/sw-rib-swm01/q1a_real_ribasim_equivalence.jl",
+    "tests/sw-rib-swm01/run_q1a_real_ribasim_equivalence.sh",
+    ".github/workflows/sw-rib-swm01-q1a.yml"
+  ],
+  "evidence_paths": [
+    "integration/research/SW_RIB_SWM01_Q1A_PREREGISTRATION.json",
+    "integration/research/SW_RIB_SWM01_Q1A_TECHNICAL_AMENDMENT_01.json"
+  ],
   "dependency_surface": [
     "surface-water state/storage ownership",
     "drainage and infiltration/subirrigation exchange physics",
+    "surface-water exchange availability/feasibility limiting",
     "runoff/macropore delivery to surface water",
-    "management/control policy",
+    "management/control policy and target memory",
     "accepted-state publication and coupling-window semantics",
-    "Ribasim management/allocation interfaces"
+    "Ribasim management/allocation interfaces",
+    "F-CI52 standalone fixed-weir authority"
   ],
-  "next_action": "Reconstruct the exact SWAP 4.3.1 surfacewater.f90 responsibility inventory and preregister the first real-Ribasim equivalence case, prioritizing dynamic level control and soil-state-driven weir logic.",
-  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership",
+  "current_execution": {
+    "q1a_run_id": 35855729061,
+    "q1a_head_sha": "3e617c768aed933c5dc662a12c3bf6dd7dc728f3",
+    "state": "IN_PROGRESS",
+    "prior_technical_run_id": 35854443198,
+    "prior_technical_job_id": 107159484116,
+    "prior_failure_classification": "HARNESS_COMPATIBILITY_ONLY__NO_PHYSICAL_RESULT_OBSERVED"
+  },
+  "next_action": "Complete Q1A exact-release real-Ribasim qualification. If it passes, persist the result and preregister Q1B supply realization. If it fails, classify technical versus physical mismatch without changing frozen physical cases or tolerances.",
+  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership@3e617c768aed933c5dc662a12c3bf6dd7dc728f3",
   "blockers": [
-    "Exact legacy functional inventory not yet completed.",
-    "No real-Ribasim equivalence test has yet been preregistered or executed."
+    "Q1A real-Ribasim qualification is not yet complete.",
+    "Q1B/Q2/Q3 remain unexecuted.",
+    "No retirement authority exists."
   ]
 }
