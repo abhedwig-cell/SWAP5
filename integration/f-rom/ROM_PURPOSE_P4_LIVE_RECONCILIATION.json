@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.rom-purpose.p4.live-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4",
+  "date": "2026-09-23",
+  "phase": "RECONCILED_BEFORE_ANY_P4_REFERENCE_OR_CANDIDATE_RESPONSE",
+  "repository": {
+    "branch": "work/f-rom-purpose",
+    "branch_head": "ebcf89b8186b135d0d9deea62c397518c4d1551b",
+    "live_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "merge_base_with_live_canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "inherited_authority": {
+    "p3_closeout": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT.json@6b5970289a12e609108cc6b450d68aa17840c4fc",
+    "p3_purpose_map": "integration/f-rom/ROM_PURPOSE_P3_PURPOSE_MAP.json@775904d4cc57e007f24b57bc66bb897e53fb5ca2",
+    "p3_state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json@73681c56e9d0347bdcd0288fea5b7509ed6b380b",
+    "p3_same_partition_result": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_RESULT.json@24f59bc4795ce1a2236e6538bb0bcd401062c532",
+    "p3_representation_ladder": "integration/f-rom/ROM_PURPOSE_P3_REPRESENTATION_LADDER.json@40e8067b21add9cf64549c60fbb13ce3c38bb894",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5"
+  },
+  "inherited_facts": [
+    "P3 is closed and must not be reopened.",
+    "Purpose-aligned placement outperformed equal-dimension uniform placement in P2/P3 evidence.",
+    "Neither S8 nor G8 reached the frozen numerical comparator for B01 or B14.",
+    "Same-partition Richards at G8 was numerically qualified but also missed the comparator for B01 and B14.",
+    "Surface same-partition Richards at S8 was outside the frozen qualified numerical domain.",
+    "P3 supports no new closure family."
+  ],
+  "p4_scope": "Prospective extension of the purpose-aligned representation frontier beyond eight states, with matched same-partition Richards to locate representation/resolution sufficiency before closure attribution.",
+  "firewall": {
+    "p3_reopened": false,
+    "any_p4_reference_response_seen": false,
+    "any_p4_layer_rom_response_seen": false,
+    "any_p4_same_partition_richards_response_seen": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false,
+    "new_closure_family_authorized": false
+  }
+}
