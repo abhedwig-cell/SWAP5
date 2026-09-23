@@ -30,7 +30,7 @@ for name,(top,sub,h0,flux_factor,bmode,bhead) in cases.items():
     k0=prep.k_policy(h0,series[top])
     qtop=flux_factor*k0
     with (root/f"{name}.dat").open("w") as fh:
-        fh.write(f"{nodes} 400 4.0e-2 {h0:.17e} {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
+        fh.write(f"{name} {nodes} 400 4.0e-2 {h0:.17e} {qtop:.17e} 0.0 {bmode} {bhead:.17e}\n")
         for soil in mats:
             par=series[soil]
             if par["h_enpr"] != 0.0:
