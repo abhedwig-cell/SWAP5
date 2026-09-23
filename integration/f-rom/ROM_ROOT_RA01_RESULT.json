@@ -1,0 +1,172 @@
+{
+  "schema": "swap5.rom_root.ra01.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01",
+  "date": "2026-09-23",
+  "status": "RA01_ROOT_ACTIVE_REFERENCE_TRANSFER_NOT_QUALIFIED",
+  "decision": "STOP_BEFORE_REDUCED_RESPONSE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RA01_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RA01_BINDING.json",
+    "authority_adjudication": "integration/f-rom/ROM_ROOT_RA01_AUTHORITY_ADJUDICATION.json",
+    "workflow_run": 35819870854,
+    "workflow_head": "2fe5b9fbfaf915b09e756df8a8686f019ad200a1",
+    "analyzer_job": 107052606468,
+    "evidence_artifact": {
+      "id": 10733930641,
+      "name": "rom-root-ra01",
+      "digest": "sha256:77a4fe8d5ea1a210533e30b3a87a22ef7b42c8759cbc583763a3ce018debdb0b"
+    },
+    "frozen_uncertainty_analyzer": "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py",
+    "frozen_uncertainty_analyzer_blob": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a"
+  },
+  "execution": {
+    "workflow_conclusion": "success",
+    "execution_jobs_success": 128,
+    "execution_jobs_failure": 0,
+    "o0_o2_identity": "PASS",
+    "integrity_pass": true,
+    "reference_target": "R2048_T32",
+    "policy": {
+      "total_balance": "P2E20 total representation-bound discriminator on frozen RA01 domain",
+      "compartment_balance_tolerance_rate": 1e-12,
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "hard_transaction_mass_gate_cm": 1e-12,
+      "fallback": false,
+      "production_source_change": false
+    }
+  },
+  "materials": {
+    "B01": {
+      "reference_uncertainty_pass": false,
+      "max_abs_transaction_mass_cm": 8.336081797717318e-13,
+      "max_profile_state_total_difference_cm": 9.237055564881302e-13,
+      "metrics": {
+        "root_zone_0_40_storage_rmse_cm": {
+          "qualified": true,
+          "U_combined": 2.8382724975020463e-7,
+          "p_space": 1.9999757006929104,
+          "p_time": 0.9999877020505824
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "qualified": true,
+          "U_combined": 1.7855759185636635e-7,
+          "p_space": 1.999737188735428,
+          "p_time": 0.9999477823557916
+        },
+        "mapped_10cm_theta_rmse": {
+          "qualified": true,
+          "U_combined": 1.3155001403527412e-8,
+          "p_space": 1.9997451176119154,
+          "p_time": 0.9999828166155671
+        },
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "qualified": false,
+          "U_combined": null,
+          "space": {
+            "coarse_to_medium_norm": 1.99024178771585e-15,
+            "medium_to_fine_norm": 6.113660907210209e-15,
+            "reason": "NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED"
+          },
+          "time": {
+            "coarse_to_medium_norm": 1.3369755905155498e-16,
+            "medium_to_fine_norm": 2.086721647378494e-16,
+            "reason": "NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED"
+          }
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "qualified": false,
+          "U_combined": null,
+          "space": {
+            "coarse_to_medium_norm": 1.7691073664358404e-16,
+            "medium_to_fine_norm": 3.670150237255131e-15,
+            "reason": "NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED"
+          },
+          "time": {
+            "coarse_to_medium_norm": 2.1775681525461644e-17,
+            "medium_to_fine_norm": 4.432095343653109e-19,
+            "observed_order": 5.618585145011607,
+            "qualified": true
+          }
+        }
+      }
+    },
+    "B14": {
+      "reference_uncertainty_pass": false,
+      "max_abs_transaction_mass_cm": 8.549219546270109e-13,
+      "max_profile_state_total_difference_cm": 1.1297629498585593e-12,
+      "metrics": {
+        "root_zone_0_40_storage_rmse_cm": {
+          "qualified": true,
+          "U_combined": 7.344843729195962e-9,
+          "p_space": 1.9231276987488473,
+          "p_time": 1.0000323153614725
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "qualified": true,
+          "U_combined": 5.865456481460935e-7,
+          "p_space": 1.9937151089614402,
+          "p_time": 0.9999197519436751
+        },
+        "mapped_10cm_theta_rmse": {
+          "qualified": true,
+          "U_combined": 2.0777232244253808e-8,
+          "p_space": 1.9937316723773173,
+          "p_time": 0.9999625815052006
+        },
+        "interval_actual_root_uptake_rmse_cm_per_day": {
+          "qualified": false,
+          "U_combined": null,
+          "space": {
+            "coarse_to_medium_norm": 1.99024178771585e-15,
+            "medium_to_fine_norm": 6.113660907210209e-15,
+            "reason": "NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED"
+          },
+          "time": {
+            "coarse_to_medium_norm": 1.3369755905155498e-16,
+            "medium_to_fine_norm": 2.086721647378494e-16,
+            "reason": "NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED"
+          }
+        },
+        "cumulative_actual_root_uptake_rmse_cm": {
+          "qualified": false,
+          "U_combined": null,
+          "space": {
+            "coarse_to_medium_norm": 1.7691073664358404e-16,
+            "medium_to_fine_norm": 3.670150237255131e-15,
+            "reason": "NONCONVERGENT_OR_NUMERICALLY_UNRESOLVED"
+          },
+          "time": {
+            "coarse_to_medium_norm": 2.1775681525461644e-17,
+            "medium_to_fine_norm": 4.432095343653109e-19,
+            "observed_order": 5.618585145011607,
+            "qualified": true
+          }
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "hydraulic_state_uncertainty_qualified": true,
+    "root_uptake_uncertainty_qualified": false,
+    "root_uptake_failure_scale": "O(1e-16 to 1e-15) pairwise RMSE",
+    "current_analyzer_requires_strict_positive_monotone_three_level_differences": true,
+    "no_posthoc_reclassification": true,
+    "root_feedback_hypothesis_tested": false,
+    "reduced_candidate_response_generated": false,
+    "bounded_conclusion": "RA01 removes the earlier total-residual execution blocker and yields a numerically coherent root-active hydraulic trajectory, but the frozen all-metrics pass rule is not satisfied because root-uptake route differences are not strictly monotone under the frozen uncertainty estimator. This does not provide evidence for or against the reduced Layer-ROM root-feedback approximation."
+  },
+  "scientific_firewall": {
+    "c6r_reopened": false,
+    "c6r_reclassified": false,
+    "reduced_candidate_response_generated": false,
+    "stage2_executed": false,
+    "stage3_executed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "next": "Diagnose whether the root-uptake uncertainty failure is a physical threshold/regime effect or numerical-resolution-floor behavior before proposing any new Reference authority.",
+  "model_changed": false
+}
