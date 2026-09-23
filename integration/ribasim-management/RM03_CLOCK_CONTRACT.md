@@ -44,3 +44,15 @@ Restart metadata must preserve enough scheduling state to identify the next mana
 ## Nonclaims
 
 No universal timestep recommendation, Ribasim saveat prescription, or generic sub-hour management cadence is established here.
+
+
+## Qualification status
+
+This contract is now **qualified for the first fixed-allocation management profile**.
+
+- RM11 implements the coupler-owned state machine in `src/runtime/mod_fmr_ribasim_management_scheduler.f90`. It qualifies pending-boundary blocking, explicit split planning, acceptance of only the current plan, exact restart persistence, and no-repeat/no-skip restart semantics.
+- The RM11 frozen noncommensurate case with `allocation.dt = 5 h` and requested 6-hour product targets emits physical targets at 5, 6, 10, 12, 15, 18, 20 and 24 hours, with management solves at 0, 5, 10, 15 and 20 hours.
+- RM12 executes that compiled scheduler against exact Ribasim v2026.1.1 at commit `e7fc8ade52a4bedeec10e508d2065577f33eb76a`. The scheduler route records allocations at 0, 5, 10, 15 and 20 hours and is trajectory-equivalent to an independently frozen explicit boundary-aligned route.
+- The RM12 naive 6-hour control records only the initial t=0 allocation, reproducing the H10 aliasing signature. In the frozen topology the scheduler changes day-end physical UserDemand delivery by 9.411178067627684 m3, so the clock correction is hydrologically material.
+
+The current clock authority is therefore `QUALIFIED_COUPLER_OWNED_FIXED_ALLOCATION_SCHEDULING` for this exact-release, fixed-allocation profile. Adaptive allocation mode, later Ribasim releases and general clock-lattice claims remain outside the contract.
