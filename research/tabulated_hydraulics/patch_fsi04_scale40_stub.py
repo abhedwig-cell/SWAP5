@@ -21,6 +21,7 @@ text,n2=re.subn(
     r"module MOD_grid.*?end module MOD_grid",
     """module MOD_grid
   implicit none
+  integer :: i
   integer, parameter :: numnod = 40
   real(8), parameter :: z(numnod) = [(-2.5d0-5.0d0*(i-1), i=1,numnod)]
   real(8), parameter :: dz(numnod) = 5.0d0
