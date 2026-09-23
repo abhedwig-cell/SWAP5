@@ -79,6 +79,8 @@ jobs:
           gfortran $F -J "$M" -I "$M" -c research/tabulated_hydraulics/array_dimensions_stub.f90 -o build/typed-richards/arrays.o
           gfortran $F -J "$M" -I "$M" -c legacy-src/src/soil/sptabulated.f90 -o build/typed-richards/sptabulated.o
           gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_soil_water_solver_contract.f90 -o build/typed-richards/contract.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90 -o build/typed-richards/stepdir.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 -o build/typed-richards/trajdir.o
           gfortran $F -J "$M" -I "$M" -c canonical-src/src/runtime/mod_a23bu_worker_execution_context.f90 -o build/typed-richards/worker.o
           gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_reference_linear_solver.f90 -o build/typed-richards/linear.o
           gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_reference_richards_workspace.f90 -o build/typed-richards/workspace.o
@@ -92,7 +94,7 @@ jobs:
           gfortran $F -J "$M" -I "$M" -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90 -o build/typed-richards/table-provider.o
           gfortran $F -J "$M" -I "$M" -c research/tabulated_hydraulics/tabhyd_typed_reference_richards_benchmark.f90 -o build/typed-richards/bench.o
 
-          gfortran $F             build/typed-richards/stubs.o build/typed-richards/arrays.o build/typed-richards/sptabulated.o             build/typed-richards/contract.o build/typed-richards/worker.o build/typed-richards/linear.o             build/typed-richards/workspace.o build/typed-richards/state.o build/typed-richards/mvg.o             build/typed-richards/source.o build/typed-richards/top.o build/typed-richards/temporal.o             build/typed-richards/headcalc.o build/typed-richards/binding.o build/typed-richards/table-provider.o             build/typed-richards/bench.o -o build/typed-richards/bench
+          gfortran $F             build/typed-richards/stubs.o build/typed-richards/arrays.o build/typed-richards/sptabulated.o             build/typed-richards/contract.o build/typed-richards/stepdir.o build/typed-richards/trajdir.o build/typed-richards/worker.o build/typed-richards/linear.o             build/typed-richards/workspace.o build/typed-richards/state.o build/typed-richards/mvg.o             build/typed-richards/source.o build/typed-richards/top.o build/typed-richards/temporal.o             build/typed-richards/headcalc.o build/typed-richards/binding.o build/typed-richards/table-provider.o             build/typed-richards/bench.o -o build/typed-richards/bench
 
       - name: Run material matrix
         shell: bash
