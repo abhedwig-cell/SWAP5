@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_triangle.preregistration.v1",
+  "work_unit": "RM14",
+  "date": "2026-09-23",
+  "title": "Admitted dynamic-top irrigation composition for the minimal real SWAP5 + MODFLOW6 + Ribasim triangle",
+  "depends_on": {
+    "RM13B": "FALSIFIED_DIRECT_FIXED_TOP_FLUX_WITHIN_INHERITED_FGC44_NUMERICAL_ENVELOPE",
+    "F_APP07": "scheduled gross irrigation -> Rutter -> net irrigation -> existing dynamic-top irrigation",
+    "F_APP08": "Rutter net surface irrigation -> dynamic-top irrigation field identity",
+    "RM10": "typed origin-bound real Ribasim realization receipt",
+    "F_GC44": "closed real SWAP + live MODFLOW fixed-interface authority without irrigation"
+  },
+  "scientific_question": "Does the same qualified real Ribasim irrigation delivery compose with real Richards SWAP and live MODFLOW6 when it enters SWAP through the already admitted dynamic-top application semantics, allowing the surface boundary to partition delivered water into infiltration and ponding instead of forcing the complete delivery as an explicit Richards flux?",
+  "frozen_case": {
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "requested_and_full_realized_depth_cm": 0.0036,
+    "gross_and_net_irrigation_rate_cm_per_day": 36.0,
+    "represented_area_m2": 1.0,
+    "surface_transfer_volume_m3": 0.000036,
+    "rutter_vegetation_cover_fraction": 0.0,
+    "precipitation_rate_cm_per_day": 0.0,
+    "snowmelt_rate_cm_per_day": 0.0,
+    "runon_rate_cm_per_day": 0.0,
+    "potential_bare_soil_evaporation_cm_per_day": 0.0,
+    "potential_pond_evaporation_cm_per_day": 0.0,
+    "ponding_max_cm": 1.0,
+    "runoff_resistance_day": 1.0,
+    "runoff_exponent": 1.0,
+    "expected_runoff_depth_cm": 0.0,
+    "root_uptake": "off",
+    "drainage": "off"
+  },
+  "production_delta": {
+    "purpose": "add one generic opt-in dynamic-top runtime forcing carrier to the existing serialized Reference Richards backend",
+    "must_reuse": [
+      "b110_dynamic_top_boundary_solver_provider_t",
+      "F-APP07/F-APP08 net-irrigation field semantics",
+      "existing Richards solver dynamic top-boundary mode",
+      "existing physical ponding_depth accepted state"
+    ],
+    "must_not_change": [
+      "Richards solver equations",
+      "dynamic-top physics",
+      "F-GC44 groundwater ownership or ledger",
+      "transaction retry limits",
+      "temporal budget",
+      "mass tolerances",
+      "irrigation quantity or rate",
+      "Ribasim allocation or supply"
+    ],
+    "ownership_rule": "generic dynamic-top forcing and explicit fixed top_flux are mutually exclusive; dual top-boundary ownership fails closed"
+  },
+  "hypotheses": [
+    "The generic dynamic-top carrier is opt-in and leaves all existing fixed-flux, Black and Boesten routes byte/behavior compatible outside the new profile.",
+    "The frozen 36 cm/day net irrigation is bound as dynamic-top irrigation_rate, not as an explicit top_flux.",
+    "The dynamic-top provider returns an available flux/head regime without runoff for the frozen 0.0036 cm event and 1 cm ponding limit.",
+    "The real Richards predictor produces at least one accepted substep under the unchanged F-GC44 retry and temporal policy.",
+    "Surface-water mass is booked exactly once as 0.0036 cm external SWAP surface input, then internally partitioned into soil infiltration and ponding change with zero runoff and zero evaporation.",
+    "The real Richards + MODFLOW fixed-interface solve converges and the groundwater action/reaction ledger closes under the existing F-GC44 contract.",
+    "Rejected candidates leave the accepted Richards, management, Ribasim witness and groundwater ledger unchanged; replay from the same origins reproduces the same accepted endpoint.",
+    "Outer publication advances Richards SWAP and management SWAP exactly once and designates candidate B as accepted Ribasim surface-water state only after all preflights."
+  ],
+  "falsification_conditions": [
+    "The generic dynamic-top route cannot represent the admitted F-APP07/F-APP08 irrigation field without changing dynamic-top physics.",
+    "The predictor still exhausts the unchanged F-GC44 retry/temporal envelope with zero accepted substeps.",
+    "Surface delivery cannot be reconciled as infiltration plus ponding/storage plus permitted surface losses.",
+    "Groundwater action/reaction or component mass balance fails.",
+    "Rollback/replay or exactly-once publication fails."
+  ],
+  "nonclaims": [
+    "RM13B is not reinterpreted as a pass; its direct fixed-top-flux hypothesis remains falsified.",
+    "No root uptake.",
+    "No drainage.",
+    "No scarcity or partial supply.",
+    "No active runoff in the first RM14 profile.",
+    "No generic arbitrary dynamic-top policy beyond the existing B1.10/B1.11 restricted provider.",
+    "No production iMOD Coupler driver admission by RM14 alone."
+  ]
+}
