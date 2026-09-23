@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.rom_root.ra01.root_response_diagnostic.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA01-D1",
+  "date": "2026-09-23",
+  "status": "CLOSED_ROOT_RESPONSE_ON_UNSTRESSED_FEDDES_PLATEAU_NUMERICAL_NOISE_ONLY",
+  "role": "POST_RA01_DIAGNOSTIC_OF_EXISTING_REFERENCE_OUTPUT_ONLY",
+  "authority": {
+    "ra01_result": "integration/f-rom/ROM_ROOT_RA01_RESULT.json",
+    "ra01_closeout": "integration/f-rom/ROM_ROOT_RA01_CLOSEOUT.json",
+    "workflow_run": 35819870854,
+    "workflow_head": "2fe5b9fbfaf915b09e756df8a8686f019ad200a1",
+    "artifact_id": 10733930641,
+    "artifact_digest": "sha256:77a4fe8d5ea1a210533e30b3a87a22ef7b42c8759cbc583763a3ce018debdb0b",
+    "analyzed_routes": [
+      "B01_R512_T32",
+      "B01_R1024_T32",
+      "B01_R2048_T32",
+      "B01_R2048_T16",
+      "B01_R2048_T8",
+      "B14_R512_T32",
+      "B14_R1024_T32",
+      "B14_R2048_T32",
+      "B14_R2048_T16",
+      "B14_R2048_T8"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "observations_per_history": 1024,
+    "new_model_execution": false
+  },
+  "findings": {
+    "actual_fraction": {
+      "maximum_abs_deviation_from_one": 1.149080830487037e-13,
+      "count_below_one_minus_1e_12": 0,
+      "count_above_one_plus_1e_12": 0,
+      "interpretation": "No hydrologically meaningful drought stress is activated anywhere in the observed RA01 root-response panel."
+    },
+    "actual_rate": {
+      "maximum_abs_difference_from_potential_rate_cm_per_day": 6.894484982922222e-14,
+      "interpretation": "Actual root uptake equals prescribed potential transpiration to floating-point aggregation precision."
+    },
+    "material_invariance": {
+      "B01_vs_B14_max_abs_actual_rate_difference": 0,
+      "B01_vs_B14_max_abs_actual_fraction_difference": 0,
+      "exact_for_all_routes_histories_observations": true,
+      "interpretation": "The root-response trace is material-independent because the tested trajectories remain on the unstressed Feddes plateau."
+    },
+    "route_difference_scale": {
+      "R512_T32_vs_R1024_T32_actual_rate_rmse": 1.99024178771585e-15,
+      "R1024_T32_vs_R2048_T32_actual_rate_rmse": 6.113660907210209e-15,
+      "R2048_T8_vs_R2048_T16_actual_rate_rmse": 1.3369755905155498e-16,
+      "R2048_T16_vs_R2048_T32_actual_rate_rmse": 2.086721647378494e-16,
+      "interpretation": "The non-monotone root-uptake uncertainty norms are floating-point aggregation differences around an effectively constant plateau response, not observed differences in drought-stress dynamics."
+    }
+  },
+  "adjudication": {
+    "ra01_reclassified": false,
+    "ra01_reference_qualified": false,
+    "uncertainty_estimator_changed": false,
+    "root_feedback_hypothesis_tested": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reason": "RA01's frozen all-metrics pass rule remains failed. Independently, the panel is scientifically non-discriminating for drought-limited root feedback because alpha-weighted uptake never departs meaningfully from potential transpiration."
+  },
+  "missing_information_classification": {
+    "A_threshold_crossing_information": "NOT_TESTED_BY_RA01_BECAUSE_NO_THRESHOLD_CROSSING_OCCURRED",
+    "B_root_weighted_pressure_head_distribution": "NOT_TESTED",
+    "C_upper_zone_spatial_placement": "NOT_TESTED_FOR_STRESS_FEEDBACK",
+    "D_hydraulic_propagation_error": "HYDRAULIC_REFERENCE_UNCERTAINTY_QUALIFIED_WITHIN_RA01_METRICS",
+    "E_prior_stress_memory": "NOT_TESTED_BECAUSE_NO_STRESS_EPISODE_OCCURRED"
+  },
+  "next": {
+    "target": "ROM-ROOT-RA02",
+    "requirement": "Design a new root-active Reference panel prospectively from the frozen Feddes thresholds and an analytical water-budget/stress-activation bound so that at least one case must enter drought stress without choosing stress levels from reduced-candidate response.",
+    "prohibited": [
+      "Do not tune a reduced candidate.",
+      "Do not reuse RA01 route errors to choose a candidate partition or feedback correction.",
+      "Do not declare RA01 qualified.",
+      "Do not change production root-water-uptake physics."
+    ]
+  },
+  "model_changed": false
+}
