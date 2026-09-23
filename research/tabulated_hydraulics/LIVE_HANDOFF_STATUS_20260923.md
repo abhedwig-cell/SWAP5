@@ -199,3 +199,22 @@ Therefore the production work unit is no longer waiting on research or G closure
 
 Research remains evidence-only. The next production-owned sequence is unchanged:
 F0_1..F0_5 → exact whole-Hupsel F gate.
+
+
+## Production handoff state after scale closure
+
+Latest observed production status:
+
+`IMPLEMENTATION_QUALIFIED_A_THROUGH_G__F0_READY`
+
+Production branch head observed:
+
+`9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf`
+
+The branch now contains the F-TAB02-F0 standalone generated-provider
+selection/lifetime seam implementation. Its qualification remains owned by the
+production workstream.
+
+Research action: none unless F0 or the exact M1-C3 whole-Hupsel gate reports a
+new scientific discrepancy attributable to the generated constitutive
+representation.
