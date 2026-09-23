@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_REALISTIC_DAILY_RESPONSE",
+  "title": "Realistic Hupsel daily atmospheric workload for S4",
+  "central_question": "Does the P5-qualified S4 research implementation retain useful profile/storage behaviour and computational advantage under a real 60-day Hupsel meteorological sequence when atmospheric demand is imposed as an explicit top-boundary proxy?",
+  "authority": {
+    "p6a_closeout": "integration/f-rom/ROM_PRACTICAL_P6A_CLOSEOUT.json",
+    "workload": "integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json",
+    "public_meteo_source": "moritzshore/rswap@c30f40227004191ca729f25cc35f500301cb4bab:inst/extdata/rswap_example_input/283.met"
+  },
+  "workload": {
+    "period": [
+      "2002-05-01",
+      "2002-06-29"
+    ],
+    "days": 60,
+    "histories": [
+      {
+        "id": "HR72",
+        "initial_Se": 0.72
+      },
+      {
+        "id": "HR86",
+        "initial_Se": 0.86
+      }
+    ],
+    "top_boundary": "q_top = K(initial) + (Rain - ETref)/10 cm/day",
+    "bottom_boundary": "fixed gravity-equilibrium flux K(initial)",
+    "total_rain_mm": 101.8,
+    "total_etref_mm": 172.8,
+    "net_atmospheric_proxy_cm": -7.1
+  },
+  "representation": {
+    "id": "S4",
+    "boundaries_cm": [
+      0,
+      20,
+      40,
+      80,
+      160
+    ],
+    "closure": "CURRENT_LAYER_FACE"
+  },
+  "numerical_policy": {
+    "integrator": "compiled RK4",
+    "dt_day": 0.005
+  },
+  "reference": {
+    "target": "R128_T32",
+    "comparator": "R64_T32",
+    "same_daily_forcing": true
+  },
+  "metrics": [
+    "0-20 cm storage RMSE",
+    "0-40 cm storage RMSE",
+    "0-80 cm storage RMSE",
+    "mapped 10-cm theta RMSE",
+    "total storage RMSE",
+    "final total storage bias",
+    "daily storage extrema timing error",
+    "max water ledger",
+    "same-runner wall ratio versus R128"
+  ],
+  "prospective_classification": {
+    "REALISTIC_DAILY_APPROXIMATE": "candidate completes and timing error is zero, while continuous errors remain explicit",
+    "REALISTIC_DAILY_TIMING_SENSITIVE": "candidate completes and Reference-observable extrema timing error is nonzero",
+    "REALISTIC_DAILY_NUMERICAL_BLOCKED": "candidate does not complete under the frozen P5 policy"
+  },
+  "gates": {
+    "equation_binding": "compiled candidate and Richards reference receive byte-identical frozen daily delta series",
+    "numerical": "candidate ledger <=1e-8 cm and complete 60-day output for both initial states",
+    "speed": "same-runner candidate/R128 median process wall ratio reported; <1 supports workload-specific speed advantage",
+    "no_application_threshold": "No absolute hydrological acceptance threshold is introduced."
+  },
+  "interpretation_limits": [
+    "Rain and ETref are authentic daily Hupsel meteorological values from a pinned public copy.",
+    "ETref is used only as an imposed top-boundary extraction proxy. It is not actual evaporation, transpiration or root uptake.",
+    "This is therefore realistic atmospheric forcing, not a whole-Hupsel simulation or application validation.",
+    "The public copy supports workload provenance but is not substituted for the exact official Hupsel raw-file authority."
+  ],
+  "firewalls": [
+    "No S4 placement change",
+    "No closure change",
+    "No timestep change",
+    "No material tuning",
+    "No root uptake",
+    "No P-ROM-ET",
+    "No application acceptance",
+    "No production admission"
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
