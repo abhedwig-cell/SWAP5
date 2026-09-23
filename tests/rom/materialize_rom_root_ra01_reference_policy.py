@@ -84,20 +84,20 @@ def main()->int:
 """
     text=one(text,"  subroutine prospective_bound(state,p,bound,ok)\n",helper+"  subroutine prospective_bound(state,p,bound,ok)\n","RA01 bound helper")
 
-    base_marker="  write(*,'(A)') 'LAREDYN0R_C6R_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\\n"
-    segmented_marker="  write(*,'(A)') 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\\n"
+    base_marker="  write(*,'(A)') 'LAREDYN0R_C6R_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\n"
+    segmented_marker="  write(*,'(A)') 'LAREDYN0R_C6R_SEGMENTED_ROOT_ACTIVE_REFERENCE_GENERATED=TRUE'\n"
     if base_marker in text:
         text=one(
             text,
             base_marker,
-            base_marker+"  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\\n",
+            base_marker+"  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\n",
             "RA01 base completion marker"
         )
     elif segmented_marker in text:
         text=one(
             text,
             segmented_marker,
-            segmented_marker+"  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\\n",
+            segmented_marker+"  write(*,'(A)') 'ROM_ROOT_RA01_P2E20_REPRESENTATION_FLOOR=TRUE'\n",
             "RA01 segmented completion marker"
         )
     else:
