@@ -3,7 +3,7 @@
   "workstream": "ROM-ROOT",
   "work_unit": "ROM-ROOT-RA02",
   "date": "2026-09-23",
-  "state": "BOUND_BEFORE_RA02_EXECUTION",
+  "state": "HELD_PENDING_RA02_D2_ADJUDICATION",
   "preregistration": "integration/f-rom/ROM_ROOT_RA02_PREREGISTRATION.json",
   "predecessor": "integration/f-rom/ROM_ROOT_RA01_CLOSEOUT.json",
   "c6r_reopened": false,
@@ -95,5 +95,12 @@
     "reduced_candidate_response_generated": false,
     "stage2_executed": false,
     "stage3_executed": false
+  },
+  "execution_hold": {
+    "reason": "RA02-D1 closeout requires node-level RA02-D2 Feddes-regime adjudication before any new Reference authority execution.",
+    "authority": "integration/f-rom/ROM_ROOT_RA02_D1_CLOSEOUT.json",
+    "scientific_semantics_changed": false,
+    "reduced_candidate_response_generated": false,
+    "release_condition": "ROM_ROOT_RA02_D2_CLOSEOUT authorizes a Reference-only RA02 execution."
   }
 }
