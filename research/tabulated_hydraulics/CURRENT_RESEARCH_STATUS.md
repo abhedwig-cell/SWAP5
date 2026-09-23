@@ -77,7 +77,7 @@ See:
 
 `LIVE_HANDOFF_STATUS_20260923.md`
 
-The separately owned F-TAB02 production branch has already qualified A–E and a dedicated G gate. Sequential A→E→G preservation remains the current production sequencing boundary at the latest observed state.
+The separately owned F-TAB02 production branch has qualified A–E and G, including same-postimage sequential A→E→G preservation. F0 provider-selection/lifetime implementation has started on the production branch; research does not own its qualification.
 
 The historical external blocker about unavailable exact SWAP 4.3.1 archive bytes is obsolete for live handoff: the production work unit has materialized and verified the exact authorized archive.
 
@@ -171,6 +171,4 @@ Research should remain closed unless the separately owned production F-TAB02
 workstream exposes a new concrete scientific discrepancy or dependency that
 falls within TAB-HYD research ownership.
 
-Production status has advanced to `IMPLEMENTATION_QUALIFIED_A_THROUGH_G__F0_READY`.
-F0 provider selection/lifetime qualification and the subsequent exact whole-Hupsel
-gate remain production-workstream responsibilities.
+Production status has advanced beyond G closure into F0 implementation. Latest observed production head: `9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf` (`F-TAB02-F0: add standalone generated-provider lifetime seam`). F0 qualification and the subsequent exact whole-Hupsel gate remain production-workstream responsibilities.
