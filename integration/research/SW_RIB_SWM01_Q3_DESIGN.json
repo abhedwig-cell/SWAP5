@@ -2,7 +2,7 @@
   "schema": "swap5.sw_rib_swm01.q3.design.v1",
   "work_unit": "SW-RIB-SWM01-Q3",
   "date": "2026-09-23",
-  "status": "DESIGN_FROZEN_NOT_YET_PREREGISTERED_FOR_EXECUTION",
+  "status": "Q3A_EXECUTION_PENDING__Q3A2_RECOMPOSITION_REQUIRED_ON_LIMITED_CASE",
   "purpose": "Qualify the remaining physical SWAP-to-Ribasim exchange responsibilities after external surface-water state ownership is established.",
   "authorities": {
     "lower_exchange": "F-PM08D2 exact-source extended drainage exchange inventory",
@@ -26,8 +26,27 @@
       "same accepted origins replay",
       "rejected coupled window leaves both accepted states unchanged"
     ],
-    "hard_rule": "Never clip a negative exchange after SWAP has already accepted it. If external availability changes the realized exchange, SWAP and Ribasim must be recomposed from the same accepted origins so both accept the same realized transfer.",
-    "later_hold": "mixed-sign multilevel legacy proportional scaling remains a separate scientific disposition"
+    "hard_rule": "Never clip a negative exchange after SWAP has already accepted it. Q3A1 may detect the feasibility mismatch; Q3A2 must prove same-origin recomposition and atomic joint acceptance.",
+    "later_hold": "mixed-sign multilevel legacy proportional scaling remains a separate scientific disposition",
+    "substages": {
+      "Q3A1_EXTERNAL_REALIZATION": {
+        "status": "PREREGISTERED_AND_IMPLEMENTED",
+        "authority": "integration/research/SW_RIB_SWM01_Q3A_PREREGISTRATION.json",
+        "purpose": "measure direct Ribasim drainage/infiltration realization and detect availability-limited requested-versus-realized mismatch"
+      },
+      "Q3A2_TRANSACTIONAL_RECOMPOSITION": {
+        "status": "REQUIRED_AFTER_Q3A1_LIMITED_CASE",
+        "purpose": "prove a limited negative exchange causes discard of the unconstrained coupled trial, replay from unchanged accepted SWAP and Ribasim origins using the feasible transfer contract, and one atomic joint commit",
+        "required_checks": [
+          "unconstrained SWAP request is never entered into accepted mass if Ribasim realizes a different volume",
+          "accepted SWAP state and accepted Ribasim storage remain byte/number identical after rejected candidate",
+          "same accepted origins reproduce the same unconstrained request and same external feasibility result",
+          "feasible realized transfer is applied consistently to both models before commit",
+          "joint accepted interface ledgers are equal magnitude and opposite sign",
+          "stale or duplicate commit fails closed"
+        ]
+      }
+    }
   },
   "Q3B_TOP_AND_RAPID_EXCHANGE": {
     "QRapDra": "SWAP-generated rapid/macropore inflow to surface water; publish as separately identified SWAP->Ribasim transfer",
