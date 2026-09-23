@@ -52,8 +52,9 @@ contains
     class(transaction_state_t), allocatable :: initial
     logical :: ok,available
     integer :: status
+    real(real64) :: committed_time
 
-    rm13_management_initialize_c=1_c_int
+    rm13_management_initialize_c=10_c_int
     request_depth_cm=0.0_c_double
     initialized=.false.; candidate_live=.false.
     parameters=fmr_hupsel_management_parameters_t()
@@ -63,32 +64,62 @@ contains
 
     call setup_irrigation(irrigation_parameters)
     call construct_fmr_hupsel_management_parameters(irrigation_parameters,parameters,status)
-    if(status/=FMR_RM_OK)return
+    if(status/=FMR_RM_OK)then
+      rm13_management_initialize_c=100_c_int+int(status,c_int)
+      return
+    end if
 
     irrigation0=tcs1_dcs2_sprinkling_state_t()
     irrigation0%dayfix=12
     rutter0=rutter_state_t()
     rutter0%canopy_storage_cm=0.0_real64
     call initialize_fmr_hupsel_management_state(irrigation0,rutter0,management0,status)
-    if(status/=FMR_RM_OK)return
+    if(status/=FMR_RM_OK)then
+      rm13_management_initialize_c=200_c_int+int(status,c_int)
+      return
+    end if
 
     call management0%clone(initial)
     call committed%initialize(LINEAGE_ID,initial,ok,initial_time=T0)
-    if(.not.ok)return
+    if(.not.ok)then
+      rm13_management_initialize_c=301_c_int
+      return
+    end if
     call committed%capture_checkpoint(checkpoint,ok)
-    if(.not.ok)return
+    if(.not.ok)then
+      rm13_management_initialize_c=302_c_int
+      return
+    end if
 
     call setup_request(request)
     call derive_fmr_hupsel_management_demand_receipt(checkpoint,parameters,request,CROP_REVISION,demand,status)
-    if(status/=FMR_RM_OK .or. .not.demand%ready())return
-    if(abs(demand%requested_depth_cm()-REQUEST_DEPTH_CM)>1.0e-12_real64)return
+    if(status/=FMR_RM_OK)then
+      rm13_management_initialize_c=400_c_int+int(status,c_int)
+      return
+    end if
+    available=demand%ready()
+    if(.not.available)then
+      rm13_management_initialize_c=401_c_int
+      return
+    end if
+    if(abs(demand%requested_depth_cm()-REQUEST_DEPTH_CM)>1.0e-12_real64)then
+      rm13_management_initialize_c=402_c_int
+      return
+    end if
 
     call setup_rutter(rutter_template)
     call setup_config(config)
     call executor%bind_model(model)
 
-    call committed%current_time(request_depth_cm,available)
-    if(.not.available)return
+    call committed%current_time(committed_time,available)
+    if(.not.available)then
+      rm13_management_initialize_c=501_c_int
+      return
+    end if
+    if(abs(committed_time-T0)>1.0e-12_real64)then
+      rm13_management_initialize_c=502_c_int
+      return
+    end if
     request_depth_cm=demand%requested_depth_cm()
     initialized=.true.
     rm13_management_initialize_c=0_c_int
