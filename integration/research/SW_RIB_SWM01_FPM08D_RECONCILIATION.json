@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.sw_rib_swm01.fpm08d_reconciliation.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "purpose": "Bind prior exact-source F-PM08D surface-water reconstruction into the SWAP5-Ribasim ownership decomposition.",
+  "source_authority": {
+    "frozen_swap_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "prior_records": [
+      "work/f-pm08d-surface-water-control-readiness@4fc92f14baa5ae289839826032f9aa66776e2192:integration/f-pm/F-PM08D_SURFACE_WATER_SOURCE_INVENTORY.json",
+      "work/f-pm08d1-surface-water-storage-compact-state-readiness@dc523f6510e4fb14cdd09ce2ec26f0b3f613f499:integration/f-pm/F-PM08D1_STORAGE_SOURCE_INVENTORY.json",
+      "work/f-pm08d4-fixed-weir-secondary-balance-readiness@d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e:integration/f-pm/F-PM08D4_FIXED_WEIR_SOURCE_INVENTORY.json",
+      "work/f-pm08d5-automatic-weir-event-hydraulic-control-readiness@90f8aee150df928b2cc98938c98766f037658114:integration/f-pm/F-PM08D5_AUTOMATIC_CONTROL_SOURCE_INVENTORY.json",
+      "work/f-pm08d6-transactional-surface-water-runtime-readiness@c6dfa29edd4b7dff6d89c06a83b9b449c20f67e9:integration/f-pm/F-PM08D6_RUNTIME_SOURCE_INVENTORY.json"
+    ]
+  },
+  "exact_source_findings": {
+    "legacy_execution_order": [
+      "SurfaceWater task 2 computes drainage/exchange before SoilWater.",
+      "SoilWater consumes the distributed drainage source/sink and can alter runoff/rapid-drainage terms.",
+      "SurfaceWater task 3 resolves prescribed levels or advances simulated secondary storage after SoilWater."
+    ],
+    "state_classes": {
+      "SWST": "authoritative conserved secondary surface-water storage for SWSEC=2",
+      "WLS": "derived from SWST in simulated mode; forcing in prescribed mode",
+      "WLSTAR": "continuation-critical automatic-control target memory for SWMAN=2",
+      "WLSBAK": "numerical oscillation history, not physical state",
+      "NUMADJ": "diagnostic counter, not continuation-critical physical state"
+    },
+    "exchange_law": "Extended drainage/infiltration law is stateless process physics using resolved surface-water head and drainage geometry/resistances.",
+    "availability_limiter": "State-dependent physical coupling limiter that scales secondary drainage/infiltration based on projected SWST plus maximum supply; it is not part of the constitutive drainage law.",
+    "secondary_balance": "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange",
+    "fixed_weir": "SWMAN=1 uses storage targets derived from HBWEIR/WLDIP, explicit supply need and Q(h) discharge balance.",
+    "automatic_weir": "SWMAN=2 selects target from groundwater level, total air volume and selected pressure head; WLSTAR persists between explicit adjustment events.",
+    "swqhr2_hold": "Tabular rating has a legacy HBWEIR threshold seam; direct Q(h) table is stronger physical authority than inferred crest semantics.",
+    "automatic_capacity_hold": "Legacy SWQHR1 and SWQHR2 automatic capacity checks sample different heads and contain a documented source discrepancy."
+  },
+  "ownership_refinement": {
+    "SWAP_UNCONSTRAINED_EXCHANGE_PHYSICS": [
+      "extended drainage/infiltration constitutive law",
+      "drainage geometry/resistance response",
+      "rapid drainage/interflow generation where separately qualified",
+      "runoff/macropore generation where separately qualified"
+    ],
+    "RIBASIM_SURFACE_STATE_AND_HYDRAULICS": [
+      "surface-water storage and level",
+      "fixed/tabular discharge hydraulic realization",
+      "network routing",
+      "available external supply and allocation"
+    ],
+    "COUPLER_EXCHANGE_FEASIBILITY": [
+      "combine SWAP requested signed exchange with Ribasim-owned available water/state",
+      "produce exactly one authoritative limited signed transfer",
+      "prevent state-dependent legacy SWST/WSCAP limiter from remaining hidden inside SWAP when Ribasim owns those quantities"
+    ],
+    "COUPLER_MANAGEMENT_POLICY": [
+      "automatic target selection from accepted SWAP hydraulic state",
+      "explicit event schedule replacing legacy calendar arithmetic",
+      "WLSTAR target-memory ownership",
+      "DROPR target-change policy"
+    ],
+    "LEGACY_NUMERICAL_POLICY_NOT_PHYSICAL": [
+      "WLSBAK oscillation history",
+      "OSSWLM timestep-reduction policy",
+      "legacy 0.001 cm bisection stopping rule"
+    ]
+  },
+  "design_consequence": "In Ribasim-coupled mode SWAP may compute an unconstrained infiltration/drainage response, but it may not independently limit that response using a private duplicate of Ribasim surface-water storage/supply state. The final signed exchange must be resolved once across the coupling boundary.",
+  "q2_consequence": "Automatic-weir target selection can be preserved as management policy, while hydraulic capacity realization belongs to Ribasim. The documented legacy SWQHR1/SWQHR2 capacity asymmetry must be adjudicated, not silently reproduced.",
+  "retirement_authority": false
+}
