@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.research_candidate_result.v1",
+  "workunit": "F-TAB03",
+  "candidate": "B_EXACT_FSI39_OVERLAY_USING_GENERATED_THETA",
+  "date": "2026-09-23",
+  "status": "FALSIFIED",
+  "source_commit": "b64580a310f94222f4a6a923c3dfb4bc29fbb2b2",
+  "workflow_run": 35853147779,
+  "frozen_gate": {
+    "special_fsi39_k_abs_max": 1e-8
+  },
+  "evidence": {
+    "lower_h_minus_1_analytic_k": 153.8197596494848,
+    "lower_h_minus_1_generated_k": 153.8197599949751,
+    "lower_h_minus_1_abs_k": 3.4549029237496143e-7,
+    "upper_h_minus_1_abs_k": 0.0000015216571682685753
+  },
+  "interpretation": "Exact F-SI39 branch algebra driven by approximate generated theta still inherits enough theta error to violate the exact special-point K gate.",
+  "next_candidate": "Drive only the F-SI39 branch relative saturation from the exact admitted H_ENPR=0 MvG theta(h) relation; keep reported theta/C and default K on the F-TAB02 generated representation."
+}
