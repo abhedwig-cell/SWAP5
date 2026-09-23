@@ -2430,10 +2430,10 @@ contains
     if (.not. appended) self%top_sensible_boundary_carrier_valid = .false.
   end subroutine record_top_sensible_boundary_sample
 
-  subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
-                                     total_in, total_out)
+  subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, dynamic_top_runoff_depth, &
+                                     snow_event_applied, total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
-    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux
+    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux, dynamic_top_runoff_depth
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
