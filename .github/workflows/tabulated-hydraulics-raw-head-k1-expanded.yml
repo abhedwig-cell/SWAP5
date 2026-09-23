@@ -97,7 +97,7 @@ jobs:
             timeout 180 "$bin" >/dev/null 2>&1; rc=$?;
             echo "K1_ROUTE_END work=$work rc=$rc" set -e
             popd >/dev/null
-            test "$rc" -eq 100
+            if [ "$rc" -ne 100 ]; then echo "K1_CASE_FAIL work=$work rc=$rc"; tail -80 "$work/run-k1.log" || true; return 1; fi
           }
           mkdir -p build/k1-results
           for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
@@ -125,46 +125,6 @@ jobs:
           if failed: raise SystemExit(1)
           PY
 
-      - name: Repeated performance
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import csv,statistics,subprocess,time
-          root=Path("build/k1").resolve()
-          scenarios=["coarse_dry_free","loam_mid_free","clay_wet_free","coarse_dry_pulse","loam_capillary"]
-          bins={"analytic":Path("swap-analytic").resolve(),"raw":Path("swap-table-raw").resolve(),"rawcap":Path("swap-table-rawcap").resolve()}
-          def one(route,scenario):
-              work=root/f"{scenario}__{route}"
-              for fn in ("result_output.csv","swap.log"):
-                  p=work/fn
-                  if p.exists(): p.unlink()
-              t=time.perf_counter()
-              proc=subprocess.run([str(bins[route])],cwd=work,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=180)
-              dt=time.perf_counter()-t
-              if proc.returncode!=100: raise RuntimeError((route,scenario,proc.returncode))
-              return dt
-          rows=[]; summary=[]
-          for scenario in scenarios:
-              for route in bins: one(route,scenario)
-              vals={r:[] for r in bins}
-              for rnd in range(8):
-                  order=list(bins)
-                  order=order[rnd%3:]+order[:rnd%3]
-                  if rnd%2: order=list(reversed(order))
-                  for route in order:
-                      dt=one(route,scenario); vals[route].append(dt); rows.append((scenario,rnd,route,dt))
-              med={r:statistics.median(v) for r,v in vals.items()}
-              summary.append((scenario,med["analytic"],med["raw"],med["rawcap"],100*(med["raw"]/med["analytic"]-1),100*(med["rawcap"]/med["analytic"]-1),100*(med["rawcap"]/med["raw"]-1)))
-          with Path("build/k1-results/performance.csv").open("w",newline="") as fh:
-              w=csv.writer(fh); w.writerow(["scenario","round","route","seconds"]); w.writerows(rows)
-          lines=["scenario\tanalytic_median_s\traw_median_s\trawcap_median_s\traw_delta_pct\trawcap_delta_pct\trawcap_vs_raw_pct"]
-          for x in summary: lines.append("\t".join(str(v) for v in x))
-          Path("build/k1-results/performance-summary.tsv").write_text("\n".join(lines)+"\n")
-          print(Path("build/k1-results/performance-summary.tsv").read_text(),end="")
-          PY
-
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -172,6 +132,4 @@ jobs:
           name: tab-hyd-raw-head-k1-expanded
           path: |
             build/k1-results/fidelity.tsv
-            build/k1-results/performance.csv
-            build/k1-results/performance-summary.tsv
             build/k1-results/*.json
