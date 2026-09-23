@@ -4,7 +4,7 @@
   "work_unit": "ROM-PURPOSE-P2",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "current_canonical_observed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "phase": "P2_REFERENCE_INFRASTRUCTURE_REPAIR_ACTIVE",
+  "phase": "P2_REFERENCE_R1024_SEGMENTED_WITNESS_ACTIVE",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -49,10 +49,10 @@
     "production_rom_authorized": false
   },
   "blockers": [
-    "HOSTED_RUNNER_SHUTDOWN_EXIT_143_RETRY_ACTIVE"
+    "R1024_SEGMENTED_EQUIVALENCE_WITNESS_PENDING"
   ],
-  "next_action": "RESUME_FROM_REPAIR_RUN_35852014797_AND_APPLY_FROZEN_P2_ANALYZER",
-  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json",
+  "next_action": "RESUME_FROM_SEGMENTED_RECOVERY_RUN_35853331143",
+  "recovery_point": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json",
   "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_PRE_RESPONSE_REPAIR.json",
   "reference_workflow_runs": [
     {
@@ -84,17 +84,15 @@
   "reference_infrastructure_failure": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json",
   "reference_timeout_repair_binding": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_TIMEOUT_REPAIR_BINDING.json",
   "active_reference_repair_run": {
-    "run": 35852014797,
-    "trigger_head": "509bd6c8d43d191a30b4572d4d9a508e0250f063",
+    "run": 35853331143,
+    "trigger_head": "4f6c29be554ca254575e8e8a67270f6741acc1b4",
     "preflight": "PASS",
-    "scope": [
-      "B01/R1024_T32/S05/O0",
-      "B01/R1024_T32/S05/O2"
-    ],
+    "scope": "QUALIFY_B01_R1024_T32_S06_SEGMENT_EQUIVALENCE_THEN_RECOVER_S05",
     "scientific_change": false
   },
   "candidate_infrastructure": {
     "record": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_INFRASTRUCTURE.json",
     "status": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED"
-  }
+  },
+  "reference_segmented_recovery_binding": "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENTED_RECOVERY_BINDING.json"
 }
