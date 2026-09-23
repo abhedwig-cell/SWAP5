@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_provider_raw_richards.result.v1",
+  "work_unit": "RM16",
+  "date": "2026-09-23",
+  "decision": "PROVIDER_VALID_RAW_RICHARDS_CONVERGES_AT_FULL_WINDOW_TEMPORAL_LAYER_REMAINS_BLOCKER",
+  "workflow": "RM16 provider raw Richards isolation",
+  "workflow_run": 35892179492,
+  "workflow_job": 107287087356,
+  "authority_head": "387eaa8d3c5504c4d7eddafa6b2ad5abf483d2e5",
+  "provider": {
+    "all_tested_windows_status": "AVAILABLE",
+    "regime": "FLUX",
+    "actual_top_flux_cm_per_day": -36.0,
+    "net_potential_surface_flux_cm_per_day": 36.0,
+    "candidate_ponding_cm": 0.0,
+    "runoff_cm": 0.0,
+    "surface_head_cm": 0.0,
+    "surface_face_k_cm_per_day": 0.0
+  },
+  "raw_richards": [
+    {
+      "window_seconds": 8.64,
+      "status": "SW_SOLVE_CONVERGED",
+      "nonlinear_iterations": 5,
+      "backtracking_attempts": 5,
+      "internal_retries": 0,
+      "top_flux_cm_per_day": -36.0,
+      "candidate_ponding_cm": 0.0
+    },
+    {
+      "window_seconds": 1.08,
+      "status": "SW_SOLVE_RETRY_ADVISED",
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 93,
+      "internal_retries": 1
+    },
+    {
+      "window_seconds": 0.0084375,
+      "status": "SW_SOLVE_RETRY_ADVISED",
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 101,
+      "internal_retries": 1
+    }
+  ],
+  "interpretation": [
+    "Dynamic-top boundary construction is not the RM14 blocker: the provider is available, finite and physically interpretable at all tested origins/windows.",
+    "The exact frozen 8.64-second raw Reference-Richards solve converges before any transaction temporal gate is applied.",
+    "Therefore RM14's first 8.64-second transaction rejection occurs after a converged raw solve, in temporal-certificate construction/evaluation.",
+    "The transaction retry mechanism then halves the attempt duration; those shorter attempts enter a different regime in which the raw nonlinear solve itself fails. This explains the mixed RM14/RM15 pattern of temporal and solver rejections.",
+    "A smaller coupling timestep is not a remedy: RM15 and RM16 show the full 8.64-second raw solve succeeds while shorter raw solves fail."
+  ],
+  "excluded_hypotheses": [
+    "invalid dynamic-top sign convention at the accepted origin",
+    "dynamic-top provider unavailable",
+    "missing SWKIMPL=0 frozen top conductivity",
+    "runoff/ponding activation causing the first failure",
+    "mass-accounting rejection",
+    "outer physical window simply being too large"
+  ],
+  "next_required_boundary": "Isolate temporal-certificate construction on the converged 8.64-second dynamic-top solve. Determine why the Reference temporal indicator is unavailable for that valid solve and whether the missing authority is predecessor/right-derivative state, dynamic boundary derivative support, or another certificate input. Do not change the solve, retry policy or temporal budget."
+}
