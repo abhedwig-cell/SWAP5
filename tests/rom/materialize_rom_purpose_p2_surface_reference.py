@@ -151,7 +151,7 @@ def main():
     text=a.source.read_text()
 
     text=one(text,"integer, parameter :: NHIST=24, NSTEPS=1024",
-             f"integer, parameter :: NHIST=4, NSTEPS={1024*factor}\\n  integer, parameter :: OUTPUT_FACTOR={factor}","time grid")
+             f"integer, parameter :: NHIST=4, NSTEPS={1024*factor}\n  integer, parameter :: OUTPUT_FACTOR={factor}","time grid")
     text=one(text,"real(real64), parameter :: step_dt=0.0008_real64",
              f"real(real64), parameter :: step_dt={0.0008/factor:.12g}_real64","dt")
     text=block(text,r"^  pure integer function bottom_kind\(ih\) result\(value\).*?^  end function bottom_kind\n",bottom_block(),"bottom kind")
