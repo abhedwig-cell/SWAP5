@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.rom-purpose.p2.h4-pre-response-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-H4",
+  "date": "2026-09-23",
+  "status": "PRE_H4_DECISION_TECHNICAL_REPAIR",
+  "superseded_run": 35857635910,
+  "failure": {
+    "job": "h4-SURF_P-B01-T32",
+    "stage": "materialization before compile or hydrologic execution",
+    "terminal_error": "surface observation output: expected one block, found 0",
+    "cause": "The established P1 coarse-output adapter matches the P1 diagnostic geometry-guard label; the P2 surface materializer emits the same guard semantics under the ROMPURP_P2_SURFACE label.",
+    "hydrological_response_generated_by_failed_job": false,
+    "H4_decision_generated": false
+  },
+  "repair": {
+    "commit": "7fa44e414b413542de7552c8405d835e2645cb9c",
+    "repaired_materializer_blob": "967120f425f41b6f2ec533bd0770db7499d2eade",
+    "change": "Before invoking the established coarse-output adapter, replace only the diagnostic guard message label ROMPURP_P2_SURFACE with ROMPURP_P1_SURFACE so the frozen adapter pattern matches.",
+    "executable_guard_semantics_changed": false,
+    "forcing_changed": false,
+    "grid_changed": false,
+    "solver_or_physics_changed": false,
+    "temporal_policy_changed": false,
+    "metric_changed": false,
+    "H4_decision_rule_changed": false
+  },
+  "scientific_firewall": {
+    "response_based_repair": false,
+    "placement_result_changed": false,
+    "representation_changed": false,
+    "closure_tuned": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
