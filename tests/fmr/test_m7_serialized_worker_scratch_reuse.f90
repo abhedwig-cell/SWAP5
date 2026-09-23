@@ -63,7 +63,7 @@ program test_m7_serialized_worker_scratch_reuse
     columns(i)%state_handle = int(i, int64)
     columns(i)%forcing_handle = int(i, int64)
     columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
-    call configure_forcing(forcings(i), -conductivity0, conductivity0, &
+    call configure_forcing(forcings(i), -conductivity0, -conductivity0, &
          merge(1.013_real64, 1.026_real64, i /= 2))
     if (i == 2) forcings(i)%top_flux = -0.75_real64 * conductivity0
     call fmr_new_b110_committed_state(states(i), columns(i)%column_id, initial_state, T0, ok)
