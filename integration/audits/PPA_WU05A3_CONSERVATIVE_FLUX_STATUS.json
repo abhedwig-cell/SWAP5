@@ -1,0 +1,16 @@
+{
+  "work_unit": "PPA-WU05-A3-CONSERVATIVE-FLUX-PROPOSAL",
+  "baseline": "f22f45af8",
+  "phase": "PREREGISTERED",
+  "authority": "Core invariant 13 and PPA_WU05A3_FLUX_TRANSITION_STATUS.json cell-continuity findings",
+  "equation": "q(i+1)=q(i)-matrix_exchange(i)-rapid_drainage(i)-(water_new(i)-water_old(i))/dt",
+  "scope": "Diagnostic candidate flux reconstruction from explicit complete profiles and rates; n+1 faces; prescribed lower flux checked independently",
+  "status_contract": "0 consistent; 1 invalid input; 2 lower-boundary mismatch. Mismatch retains diagnostic flux/residual but must not be accepted. No input or committed state is modified.",
+  "tolerance": "Caller-supplied nonnegative absolute flux tolerance; this is not a production acceptance policy",
+  "excluded": ["Computing water profiles or physical rates", "Changing B1.11", "SWMBF mode policy", "Production acceptance or A4 admission"],
+  "tests_planned": ["Distinct water fronts", "Localized rapid drainage", "Redistribution and net storage loss", "Inconsistent prescribed lower flux", "Invalid input", "O0/O2 equality and bounds/floating checks"],
+  "implementation": "src/process/mod_ppa_wu05a3_conservative_flux.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_conservative_flux.f90",
+  "qualified": false,
+  "next_action": "Implement and test the proposed continuity reconstruction"
+}
