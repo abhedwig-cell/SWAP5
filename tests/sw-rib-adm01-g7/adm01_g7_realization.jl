@@ -61,7 +61,8 @@ function physical_run(path, case_id; override_infiltration=nothing)
 end
 
 function run_case(root, case)
-    path = joinpath(root, case.id, "ribasim.toml")
+    case_id = case.id
+    path = joinpath(root, case_id, "ribasim.toml")
     first = physical_run(path, case.id)
     require(abs(first.residual) <= MASS_TOL, "$(case_id) first mass residual")
     require(first.final_storage >= -STORAGE_TOL, "$(case_id) first negative storage")
