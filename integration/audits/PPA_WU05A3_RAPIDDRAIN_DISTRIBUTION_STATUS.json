@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.ppa_wu05a3.rapid_drain_distribution.status.v1",
+  "work_unit": "PPA-WU05-A3-RAPIDDRAIN-DISTRIBUTION",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@9a90bcd57",
+  "preregistration": "integration/audits/PPA_WU05A3_RAPIDDRAIN_DISTRIBUTION_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; compartment distribution math only; no external or accepted mass receipt",
+  "implementation": "src/process/mod_ppa_wu05a3_rapid_drain_distribution.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_rapid_drain_distribution_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_rapid_drain_distribution_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_RAPIDDRAIN_DISTRIBUTION_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_KD_DISTRIBUTION_THRESHOLD_AND_ZERO_ROUTE=PASS",
+      "PPA_WU05A3_RAPIDDRAIN_DISTRIBUTION_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "f63feafbb930e68f669f01ac9589060bf8890828cda6e46368ce02a446dfe1db"
+  },
+  "next_action": "Continue with an isolated source oracle for the full RAPIDDRAIN interval-selection/control flow; no runtime admission.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}
