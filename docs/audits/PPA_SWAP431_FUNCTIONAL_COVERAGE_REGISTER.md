@@ -203,7 +203,10 @@ per layer and its cumulative amount are separately bitwise checked over
 100,000 vectors using the source's `tscf*qrot*cml` operation order. The
 soluble/adsorbed decomposition rate also matches the B1.11 temperature-factor
 cutoff, moisture limitation, and Freundlich term over 100,000 vectors; cases
-outside the guarded equation domain remain held.
+outside the guarded equation domain remain held. Water-content molecular
+diffusion, pore-water velocity, longitudinal dispersion and timestep
+correction feeding the internal-face flux are independently source-checked
+over 100,000 vectors.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

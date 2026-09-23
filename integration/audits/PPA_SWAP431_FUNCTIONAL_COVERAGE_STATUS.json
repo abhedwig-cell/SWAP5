@@ -101,7 +101,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint c4a34a176 (solute root uptake source oracle); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 591451d29 (solute decomposition source oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
@@ -116,15 +116,16 @@
     "PPA-SOLUTE-CELL-BALANCE: 100000 O0/O2 bitwise cmsy update from net face amounts, thickness, and decomposition/root/lateral sink terms.",
     "PPA-SOLUTE-LINEAR-INVERSION: 100000 O0/O2 bitwise Freundlich-exponent-near-one storage-to-concentration conversions plus source roundoff handling.",
     "PPA-SOLUTE-ROOT-UPTAKE: 100000 O0/O2 bitwise layer uptake-rate and cumulative amount comparisons using B1.11 operation order.",
-    "PPA-SOLUTE-DECOMPOSITION: 100000 O0/O2 bitwise temperature, dryness, Freundlich adsorption and decomposition-rate comparisons."
+    "PPA-SOLUTE-DECOMPOSITION: 100000 O0/O2 bitwise temperature, dryness, Freundlich adsorption and decomposition-rate comparisons.",
+    "PPA-SOLUTE-DISPERSION: 100000 O0/O2 bitwise moisture-dependent molecular diffusion, pore velocity, longitudinal dispersion and timestep correction comparisons."
   ],
   "latest_source_oracle": {
-    "work_unit": "PPA-SOLUTE-DECOMPOSITION",
-    "source": "B1.11 solute.f90 task 2 temperature/moisture decomposition activity and Freundlich dissolved-plus-sorbed decomposition rate",
-    "test": "100000 bitwise decomposition rate comparisons at O0/O2 across heat, temperature, moisture, and concentration cases",
+    "work_unit": "PPA-SOLUTE-DISPERSION",
+    "source": "B1.11 solute.f90 task 2 diffus, vpore, dispr1 and dtsolu dispersion correction equations",
+    "test": "100000 bitwise molecular diffusion, pore velocity and effective dispersion comparisons at O0/O2",
     "test_markers": [
-      "PPA_SOLUTE_DECOMPOSITION_SOURCE_ORACLE_100000=PASS",
-      "PPA_SOLUTE_DECOMPOSITION_O0_O2_IDENTITY=PASS"
+      "PPA_SOLUTE_DISPERSION_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOLUTE_DISPERSION_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }
