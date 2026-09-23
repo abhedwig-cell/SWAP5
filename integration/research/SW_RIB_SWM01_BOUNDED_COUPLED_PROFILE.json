@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.sw_rib_swm01.bounded_coupled_profile.v1",
+  "work_unit": "SW-RIB-SWM01",
+  "date": "2026-09-23",
+  "status": "CANDIDATE_PROFILE_PENDING_Q3_TRANSACTION_CLOSEOUT",
+  "name": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+  "purpose": "Define the smallest evidence-backed SWAP5+Ribasim application profile for which legacy secondary surface-water state ownership can eventually be disabled in SWAP.",
+  "ownership": {
+    "secondary_surface_water_storage_and_level": "RIBASIM_ONLY",
+    "primary_surface_water_level": "RIBASIM_RESOLVED_EXTERNAL_HYDRAULIC_FORCING_TO_SWAP",
+    "soil_drainage_exchange_physics": "SWAP",
+    "automatic_soil_state_target_policy": "COUPLER",
+    "wlstar_policy_memory": "COUPLER_ACCEPTED_STATE",
+    "supply_and_discharge_realization": "RIBASIM",
+    "cross_model_exchange_feasibility": "COUPLER_TRANSACTION"
+  },
+  "included_evidence_backed_features": {
+    "fixed_weir_linear_beta_1": {
+      "status": "Q1A_R3_R3L_PASS",
+      "representation": "Ribasim Basin + ContinuousControl + one-way Pump"
+    },
+    "fixed_level_supply": {
+      "status": "Q1B_PASS",
+      "representation": "LevelDemand lower target + bounded allocation-controlled supply route"
+    },
+    "automatic_target_selection": {
+      "status": "Q2A_PASS",
+      "representation": "transaction-safe coupler policy over accepted SWAP hydraulic scalars"
+    },
+    "automatic_target_band_realization": {
+      "status": "Q2B1_PASS",
+      "representation": "Ribasim LevelDemand band + bounded allocation-controlled supply/discharge routes"
+    },
+    "signed_lower_exchange": {
+      "status": "Q3A1_EXECUTION_PENDING_AND_Q3A2_RECOMPOSITION_REQUIRED",
+      "representation": "SWAP signed request -> Ribasim drainage/infiltration realization -> joint transaction"
+    }
+  },
+  "explicitly_excluded_until_separately_qualified": [
+    "nonlinear SWQHR1 exact parity for BETAW != 1",
+    "SWQHR2 exact legacy table/interpolation plus HBWEIR threshold parity",
+    "SWSRF=1 extended route with undefined/stale legacy WL dependency",
+    "negative fractional power-interflow route",
+    "legacy WLSBAK/OSSWLM oscillation timestep policy",
+    "full legacy automatic capacity asymmetry",
+    "any runoff/macropore/top-surface transfer class not explicitly mapped by Q3B when active"
+  ],
+  "hard_configuration_guards": [
+    "Internal F-CI52 surface-water state and EXTERNAL_RIBASIM may not own the same store.",
+    "No SWST committed state is allocated for the represented external-owned secondary store.",
+    "Ribasim-resolved WLP/WLS values are read-only hydraulic inputs to SWAP exchange physics.",
+    "No private SWAP copy of Ribasim storage or supply capacity may constrain infiltration in external-owner mode.",
+    "Every cross-model transfer must have one candidate identity and exactly-once opposite-sign accepted booking.",
+    "An excluded feature causes configuration rejection rather than fallback to an unqualified legacy branch."
+  ],
+  "admission_blockers": [
+    "Q3A1 signed exchange availability result",
+    "Q3A2 same-origin transactional recomposition",
+    "Q3B for any top/rapid/macropore transfer enabled by the application profile",
+    "production implementation of the state-owner XOR guard",
+    "Ribasim model/core version provenance warning resolution",
+    "independent qualification/admission on the eventual production integration tree"
+  ],
+  "relation_to_retirement": "If the admission blockers close, this bounded profile can support retirement of legacy SWST/WLS ownership in external-Ribasim mode without claiming full legacy surface-water functional parity or deleting standalone SWAP5 F-CI52.",
+  "production_admission": false
+}
