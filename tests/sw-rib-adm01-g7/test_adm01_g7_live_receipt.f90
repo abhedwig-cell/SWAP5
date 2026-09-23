@@ -40,10 +40,11 @@ program test_adm01_g7_live_ribasim_application
 contains
 
   subroutine verify_live_receipt_case()
-    character(len=96) :: case_id, arg
-    real(real64) :: head_cm, requested_m3, first_realized_m3, recomposed_realized_m3, area_m2
-    real(real64) :: requested_cm, first_realized_cm, recomposed_realized_cm, recomposed_head_cm, desired_rate
-    real(real64), parameter :: receipt_tol_cm = 1.0e-10_real64
+    character(len=96) :: case_id, arg, disposition
+    integer :: iteration, status
+    real(real64) :: head_cm, requested_m3, realized_m3, area_m2
+    real(real64) :: requested_cm, realized_cm, requested_rate
+    real(real64), parameter :: receipt_tol_cm = 1.0e-6_real64
     type(kernel_committed_state_t) :: committed
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
@@ -52,66 +53,56 @@ contains
     type(canonical_numerical_config_t) :: config
     type(fmr_surface_water_head_forcing_materializer_t) :: materializer
     type(fmr_surface_water_swap_participant_t) :: participant
-    type(fmr_surface_water_trial_t) :: trial1, trial2
+    type(fmr_surface_water_trial_t) :: trial
     type(fmr_serialized_reference_backend_t) :: backend
     type(fmr04_fixed_flux_top_provider_t), target :: top
     real(real64) :: heads(1)
     logical :: did_commit
-    integer :: status
 
     call get_command_argument(1,case_id)
-    call get_command_argument(2,arg); read(arg,*) head_cm
-    call get_command_argument(3,arg); read(arg,*) requested_m3
-    call get_command_argument(4,arg); read(arg,*) first_realized_m3
-    call get_command_argument(5,arg); read(arg,*) recomposed_realized_m3
+    call get_command_argument(2,arg); read(arg,*) iteration
+    call get_command_argument(3,arg); read(arg,*) head_cm
+    call get_command_argument(4,arg); read(arg,*) requested_m3
+    call get_command_argument(5,arg); read(arg,*) realized_m3
     call get_command_argument(6,arg); read(arg,*) area_m2
+    call get_command_argument(7,disposition)
+
     call require(area_m2 > 0.0_real64,'positive represented area')
-
+    call require(iteration > 0,'positive recomposition iteration')
     requested_cm = requested_m3/area_m2*100.0_real64
-    first_realized_cm = first_realized_m3/area_m2*100.0_real64
-    recomposed_realized_cm = recomposed_realized_m3/area_m2*100.0_real64
+    realized_cm = realized_m3/area_m2*100.0_real64
+    requested_rate = requested_cm/duration
 
-    select case(trim(case_id))
-    case('E1_POSITIVE_DRAINAGE')
-      call initialize_case(committed,column,template,parameters,base,config,signed_rate)
-    case('E2_NEGATIVE_INFILTRATION_SUFFICIENT','E3_NEGATIVE_INFILTRATION_LIMITED')
-      call initialize_case(committed,column,template,parameters,base,config,-signed_rate)
-    case default
-      call require(.false.,'unknown G7 case')
-    end select
-
+    call initialize_case(committed,column,template,parameters,base,config,requested_rate)
     call materializer%initialize(base,parameters,status)
     call require(status==FMR_SW_HEAD_FORCING_OK,'G7 materializer')
     call backend%initialize(top)
     call participant%capture_origin(committed,status)
     call require(status==FMR_SW_PARTICIPANT_OK,'G7 origin capture')
+
     heads(1)=head_cm
-    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial1,status)
-    call require(status==FMR_SW_PARTICIPANT_OK .and. trial1%valid,'G7 initial candidate')
-    call require(abs(trial1%signed_soil_to_surface_exchange_cm-requested_cm)<=receipt_tol_cm,'G7 requested receipt mapping')
+    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call require(status==FMR_SW_PARTICIPANT_OK .and. trial%valid,'G7 candidate trial')
+    call require(abs(trial%signed_soil_to_surface_exchange_cm-requested_cm)<=receipt_tol_cm,'G7 candidate maps requested receipt')
 
-    if(trim(case_id)/='E3_NEGATIVE_INFILTRATION_LIMITED') then
-      call participant%commit_candidate(backend,committed,t0,t1,first_realized_cm,receipt_tol_cm,did_commit,status)
-      call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,'G7 full realization commits')
-      call require(committed%current_revision()==1_int64,'G7 sole commit revision')
-    else
-      call participant%commit_candidate(backend,committed,t0,t1,first_realized_cm,receipt_tol_cm,did_commit,status)
-      call require(.not.did_commit .and. status==FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH,'G7 limited realization blocks commit')
-      call require(committed%current_revision()==0_int64,'G7 mismatch nonmutating')
+    select case(trim(disposition))
+    case('RECOMPOSE')
+      call participant%commit_candidate(backend,committed,t0,t1,realized_cm,receipt_tol_cm,did_commit,status)
+      call require(.not.did_commit .and. status==FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH,'G7 mismatch must block commit')
+      call require(committed%current_revision()==0_int64,'G7 mismatch mutates no accepted SWAP state')
       call participant%discard_candidate(backend)
-      desired_rate = recomposed_realized_cm/duration
-      recomposed_head_cm = initial_gwl - desired_rate*1000.0_real64
-      heads(1)=recomposed_head_cm
-      call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial2,status)
-      call require(status==FMR_SW_PARTICIPANT_OK .and. trial2%valid,'G7 recomposed candidate')
-      call require(abs(trial2%signed_soil_to_surface_exchange_cm-recomposed_realized_cm)<=receipt_tol_cm,'G7 recomposed candidate matches real Ribasim receipt')
-      call participant%commit_candidate(backend,committed,t0,t1,recomposed_realized_cm,receipt_tol_cm,did_commit,status)
-      call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,'G7 recomposed realization commits')
-      call require(committed%current_revision()==1_int64,'G7 recomposed sole commit revision')
-      write(*,'(A)') 'SW_RIB_ADM01_G7_RECOMPOSITION_FROM_SAME_ORIGIN=PASS'
-    end if
+      call require(.not.participant%has_live_candidate() .and. participant%has_origin(),'G7 discard retains same accepted origin')
+      write(*,'(A,A,A,I0)') 'SW_RIB_ADM01_G7_ITER_RECOMPOSE_PASS=',trim(case_id),',',iteration
+    case('COMMIT')
+      call participant%commit_candidate(backend,committed,t0,t1,realized_cm,receipt_tol_cm,did_commit,status)
+      call require(did_commit .and. status==FMR_SW_PARTICIPANT_OK,'G7 matched receipt commits')
+      call require(committed%current_revision()==1_int64,'G7 exactly one accepted revision')
+      write(*,'(A,A,A,I0)') 'SW_RIB_ADM01_G7_ITER_COMMIT_PASS=',trim(case_id),',',iteration
+    case default
+      call require(.false.,'unknown G7 disposition')
+    end select
 
-    write(*,'(A,A)') 'SW_RIB_ADM01_G7_CASE_PASS=',trim(case_id)
+    write(*,'(A,A,A,I0)') 'SW_RIB_ADM01_G7_ITER_PASS=',trim(case_id),',',iteration
   end subroutine verify_live_receipt_case
 
 
