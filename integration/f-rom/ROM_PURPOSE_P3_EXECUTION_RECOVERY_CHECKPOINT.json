@@ -11,22 +11,22 @@
   "surface_reference": {
     "run_id": 35876282704,
     "role": "authoritative repaired SURF_P route producer",
-    "observed_successful_jobs": 71,
+    "observed_successful_jobs": 80,
     "observed_failures": 0,
     "terminal": false,
-    "state": "EXECUTING_FINAL_ROUTE_JOBS_NO_FAILURE"
+    "state": "SEGMENT3_7_OF_8_GREEN_FINAL_CASE_EXECUTING"
   },
   "groundwater_source": {
     "run_id": 35876286853,
     "role": "authoritative source for non-R2048_T32 GW routes only",
-    "observed_successful_jobs": 37,
-    "observed_failures": 8,
+    "observed_successful_jobs": 49,
+    "observed_failures": 9,
     "observed_non_r2048_failures": 0,
     "all_observed_failures_route": "R2048_T32",
     "all_observed_failures_classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
     "r2048_t32_source_authority": false,
     "terminal": false,
-    "state": "EXECUTING_NON_R2048_SOURCE_ROUTES_NO_NON_R2048_FAILURE"
+    "state": "R512_R1024_SOURCE_QUALIFYING_T16_T8_BEGINNING_NO_NON_R2048_FAILURE"
   },
   "groundwater_r2048_t32": {
     "authoritative_recovery": {
@@ -34,10 +34,13 @@
       "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
       "execution_topology": "4 x 8192-step exact-state checkpoint segments per history",
       "prior_qualification_run": 35751978638,
-      "state": "EXECUTING",
-      "observed_successful_jobs": 3,
+      "state": "SEGMENT1_COMPLETE_16_OF_16_GREEN_SEGMENT2_QUEUED",
+      "observed_successful_jobs": 17,
       "observed_failures": 0,
-      "first_segment_execution_pass_observed": true
+      "first_segment_execution_pass_observed": true,
+      "segment1_complete": true,
+      "segment1_case_count": 16,
+      "segment1_failures": 0
     },
     "superseded_recovery": {
       "run_id": 35880655075,
@@ -70,5 +73,5 @@
     "performance_claim_authorized": false,
     "production_rom_authorized": false
   },
-  "observation_note": "Execution-only checkpoint. Counts are observational and do not adjudicate numerical Reference qualification."
+  "observation_note": "Execution-only checkpoint. Counts are observational and do not adjudicate numerical Reference qualification. V2 segment1 completion establishes operational execution-topology viability only."
 }
