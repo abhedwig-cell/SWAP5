@@ -27,6 +27,12 @@ on:
       - 'tests/fsi/test_ftab02e_serialized_runtime_performance.f90'
       - 'tests/fsi/run_ftab02e_generated_provider_performance.sh'
       - 'integration/f-tab/F-TAB02_PREREGISTRATION.json'
+      - 'integration/f-tab/F-TAB02_A_QUALIFICATION.json'
+      - 'integration/f-tab/F-TAB02_B_QUALIFICATION.json'
+      - 'integration/f-tab/F-TAB02_C_QUALIFICATION.json'
+      - 'integration/f-tab/F-TAB02_D_QUALIFICATION.json'
+      - 'integration/f-tab/F-TAB02_E_QUALIFICATION.json'
+      - 'integration/f-tab/F-TAB02_F_BLOCKER.json'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
 
