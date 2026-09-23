@@ -16,7 +16,7 @@ def main():
     # Force SURF_P only for this dedicated workload executable.
     t=t.replace("  if(argc<4.or.argc>5) error stop 'usage: purpose material parameters.nml dt [probe]'",
                 "  if(argc<4.or.argc>5) error stop 'usage: purpose material parameters.nml dt [probe]'")
-    arr=", &\n       ".join(f"{v:.17g}_real64" for v in vals)
+    arr=", &\n       ".join(f"{v:.17e}_real64" for v in vals)
     decl=f"  real(real64), parameter :: P6B_DELTA(60)=[ &\n       {arr} ]\n"
     anchor="  real(real64) :: c0,c1,wall_s\n"
     if anchor not in t: raise SystemExit("declaration anchor missing")
