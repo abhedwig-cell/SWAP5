@@ -1,0 +1,133 @@
+{
+  "schema": "swap5.rom-purpose.p2.h4-execution-contract.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-H4",
+  "date": "2026-09-23",
+  "status": "BOUND_OPERATIONAL_EXTENSION_OF_PRE_RESPONSE_H4_CONTRACT",
+  "authority": {
+    "frozen_h4_contract": "integration/f-rom/ROM_PURPOSE_P1_H4_DIAGNOSTIC_CONTRACT.json@7e33245279fa5a965c713f3f4f1a5053d248540c",
+    "p2_preregistration": "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json@2e566b35d16a4655b4f9e33c353f57652f5741b1",
+    "placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json@e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5"
+  },
+  "trigger_cases": [
+    {
+      "purpose": "SURF_P",
+      "material": "B01",
+      "partition": "S4"
+    },
+    {
+      "purpose": "SURF_P",
+      "material": "B14",
+      "partition": "S4"
+    },
+    {
+      "purpose": "GW_LB",
+      "material": "B01",
+      "partition": "G4"
+    },
+    {
+      "purpose": "GW_LB",
+      "material": "B14",
+      "partition": "G4"
+    }
+  ],
+  "representation": {
+    "solver": "conventional Reference-Richards",
+    "new_solver": false,
+    "dimension": 4,
+    "partitions": {
+      "S4": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "G4": [
+        0,
+        80,
+        120,
+        140,
+        160
+      ]
+    },
+    "surface_layer_thickness_cm": [
+      20,
+      20,
+      40,
+      80
+    ],
+    "groundwater_layer_thickness_cm": [
+      80,
+      40,
+      20,
+      20
+    ]
+  },
+  "workloads": {
+    "SURF_P": {
+      "source": "P2 preregistered fresh surface workload",
+      "histories": [
+        "S05",
+        "S06",
+        "S07",
+        "S08"
+      ],
+      "observation_dt_day": 0.0008,
+      "bottom_boundary": "fixed gravity-equilibrium flux"
+    },
+    "GW_LB": {
+      "source": "P1 inherited qualified groundwater workload",
+      "histories": [
+        "G01",
+        "G02",
+        "G03",
+        "G04"
+      ],
+      "observation_dt_day": 0.0008
+    }
+  },
+  "numerical_qualification": {
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "internal_dt_day": [
+      0.0001,
+      0.00005,
+      0.000025
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_trace_identity_required": true,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "rule": "T8, T16 and T32 must all execute in the qualified domain; complete frozen purpose-vector differences T8-vs-T16 and T16-vs-T32 must be finite and componentwise non-increasing toward T32. Exact fine-pair identity qualifies.",
+    "no_tolerance_relaxation": true,
+    "no_grid_retuning": true,
+    "no_fallback_change": true
+  },
+  "comparison": {
+    "target": "R2048_T32",
+    "numerical_comparator": "R512_T32 relative to R2048_T32",
+    "componentwise_equality_tolerance": 1e-12,
+    "weighted_score": false,
+    "material_aggregation": false
+  },
+  "decision_rules": {
+    "CLOSURE_DEFICIT_SUPPORTED": "Aligned Layer-ROM fails the frozen R512_T32 comparator; same-partition CoRichards is numerically qualified and crosses it.",
+    "FOUR_STATE_INFORMATION_OR_RESOLUTION_UNRESOLVED": "Aligned Layer-ROM and numerically qualified same-partition CoRichards both fail to cross the comparator.",
+    "CORICHARDS_DIAGNOSTIC_UNAVAILABLE": "Same-partition CoRichards fails the frozen numerical qualification.",
+    "NO_H4_DIAGNOSTIC_REQUIRED": "Aligned Layer-ROM already crosses the comparator."
+  },
+  "interpretation_boundary": {
+    "closure_family_search_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false,
+    "H4_is_diagnostic_not_candidate_tuning": true
+  }
+}
