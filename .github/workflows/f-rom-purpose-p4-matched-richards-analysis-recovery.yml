@@ -1,0 +1,114 @@
+name: F-ROM-PURPOSE P4 matched-Richards analysis recovery
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p4-matched-richards-analysis-recovery
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify analysis-recovery authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            tests/rom/analyze_rom_purpose_p4_matched_richards.py \
+            tests/rom/test_rom_purpose_p4_matched_richards_wiring.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_TECHNICAL_REPAIR.json'))
+          assert b['status']=='BOUND_ANALYSIS_ONLY_AFTER_COMPLETE_ROUTE_SUCCESS'
+          assert b['source_route_run']==35918266166
+          assert r['source_run_accounting']['route_jobs_success']==36
+          assert r['source_run_accounting']['route_jobs_failure']==0
+          assert r['failure']['scientific_response_classified_before_failure'] is False
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+          python3 tests/rom/test_rom_purpose_p4_matched_richards_wiring.py
+      - name: Recover exact completed route artifacts
+        run: |
+          set -euo pipefail
+          source_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json'))['source_route_run'])")"
+          mkdir -p /tmp/source /tmp/matched
+          gh run download "$source_run" --repo abhedwig-cell/SWAP5 -p 'p4matched-*' -D /tmp/source
+          find /tmp/source -type f -name 'execution_*.json' -exec cp {} /tmp/matched/ \;
+          find /tmp/source -type f -name 'richards_*_o0.txt' -exec cp {} /tmp/matched/ \;
+          find /tmp/source -type f -name 'richards_*_o2.txt' -exec cp {} /tmp/matched/ \;
+          test "$(find /tmp/matched -maxdepth 1 -name 'execution_*.json' | wc -l)" -eq 36
+          test "$(find /tmp/matched -maxdepth 1 -name 'richards_*_o0.txt' | wc -l)" -eq 36
+          test "$(find /tmp/matched -maxdepth 1 -name 'richards_*_o2.txt' | wc -l)" -eq 36
+      - name: Download exact frozen P4 Reference route sets
+        run: |
+          set -euo pipefail
+          sr="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gb="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json'))['reference_runs']['GW_BASE'])")"
+          gt="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json'))['reference_runs']['GW_R2048_T32'])")"
+          mkdir -p /tmp/s /tmp/gb /tmp/gt /tmp/reference
+          gh run download "$sr" --repo abhedwig-cell/SWAP5 -n p4ref-surface-routes -D /tmp/s
+          gh run download "$gb" --repo abhedwig-cell/SWAP5 -n p4ref-gw-segmented-routes -D /tmp/gb
+          gh run download "$gt" --repo abhedwig-cell/SWAP5 -n p4gw-r2048-t32-routes -D /tmp/gt
+          cp /tmp/s/surface_* /tmp/reference/
+          cp /tmp/gb/gw_* /tmp/reference/
+          cp /tmp/gt/gw_* /tmp/reference/
+      - name: Analyze frozen matched-Richards frontier
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p4_matched_richards.py \
+            --prereg integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json \
+            --reference-result integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json \
+            --representation-ladder integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json \
+            --route-root /tmp/matched --reference-root /tmp/reference \
+            --output result/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_ANALYSIS_RECOVERY_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p4-matched-richards-recovered
+          path: result/
+          if-no-files-found: error
+      - name: Persist recovered matched-Richards frontier
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_STATUS.json')
+          s=json.load(open(p))
+          s.update({
+            'matched_richards_result':'integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json',
+            'matched_richards_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'matched_richards_execution_sha':os.environ['SOURCE_SHA'],
+            'matched_richards_route_source_run':35918266166
+          })
+          s['scientific_firewall']['any_p4_same_partition_richards_response_seen']=True
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json integration/f-rom/ROM_PURPOSE_P4_STATUS.json
+          git commit -m "ROM-PURPOSE P4: persist recovered matched-Richards frontier" || exit 0
+          git push origin HEAD:work/f-rom-purpose
