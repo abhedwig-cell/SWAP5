@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import ctypes
 import math
 import os
 import shutil
 import sys
+from contextlib import ExitStack
 import tempfile
 from pathlib import Path
 
@@ -28,10 +28,9 @@ from fgc44_real_swap_ctypes import Fgc44RealSwap  # noqa: E402
 from modflow6_fgc34_ctypes_publisher import Fgc34CtypesPublisher  # noqa: E402
 from modflow6_prepared_solve_session import Modflow6PreparedSolveSession, PreparedSolveStatus  # noqa: E402
 from rm13_management_ctypes import Rm13Management  # noqa: E402
+from rm13_ribasim_process import RibasimWorker  # noqa: E402
 
 RIBASIM_ROOT=Path(os.environ["RM13_RIBASIM_ROOT"]).resolve()
-sys.path.insert(0,str(RIBASIM_ROOT/"python"/"ribasim_api"))
-from ribasim_api import RibasimApi  # noqa: E402
 
 WINDOW_DAY=1.0e-4
 WINDOW_S=8.64
@@ -47,36 +46,6 @@ HEAD_REPLAY_TOL=1.0e-10
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
-
-
-def preload_ribasim_julia_runtime(bundle_root: Path) -> Path:
-    candidates=sorted(bundle_root.rglob("libjulia.so.1.12"))
-    require(len(candidates)==1,f"expected one bundled libjulia.so.1.12, found {candidates}")
-    ctypes.CDLL(str(candidates[0]),mode=ctypes.RTLD_GLOBAL)
-    return candidates[0]
-
-
-def make_ribasim_api_copy(source_lib: Path, dep_dir: Path, tag: str, workdir: Path) -> RibasimApi:
-    # JuliaC's release library may resolve sibling runtime files relative to
-    # $ORIGIN. Give each candidate a distinct main-library inode/global state
-    # while preserving the exact official release dependency tree.
-    candidate_dir=workdir/tag
-    candidate_dir.mkdir(parents=True)
-    for entry in dep_dir.iterdir():
-        target=candidate_dir/entry.name
-        if entry.resolve()==source_lib.resolve():
-            shutil.copy2(entry,target)
-        else:
-            target.symlink_to(entry)
-    target=candidate_dir/source_lib.name
-    return RibasimApi(target,candidate_dir)
-
-
-def ribasim_snapshot(api: RibasimApi) -> tuple[float,float,float]:
-    t=float(api.get_current_time())
-    level=float(np.asarray(api.get_value_ptr("basin.level"),dtype=float)[0])
-    supply=float(np.asarray(api.get_value_ptr("user_demand.cumulative_inflow"),dtype=float)[0])
-    return t,level,supply
 
 
 def read_allocation_depth(model_dir: Path) -> tuple[float,float]:
@@ -183,133 +152,162 @@ def run_groundwater_candidate(
                     pass
 
 
+def same_surface_snapshot(a: dict[str,float],b: dict[str,float]) -> bool:
+    return (
+        abs(float(a["time_s"])-float(b["time_s"]))<=1.0e-12
+        and abs(float(a["basin_level_m"])-float(b["basin_level_m"]))<=HEAD_REPLAY_TOL
+        and abs(
+            float(a["user_demand_cumulative_inflow_m3"])
+            -float(b["user_demand_cumulative_inflow_m3"])
+        )<=VOLUME_TOL
+    )
+
+
 def main()->None:
     libmf6=Path(os.environ["LIBMF6"]).resolve()
     swaplib=Path(os.environ["RM13_SWAP_LIB"]).resolve()
     ribasim_model=Path(os.environ["RM13_RIBASIM_MODEL"]).resolve()
     ribasim_lib=Path(os.environ["RM13_LIBRIBASIM"]).resolve()
-    ribasim_dep=ribasim_lib.parent
     require(libmf6.is_file(),"missing MODFLOW shared library")
     require(swaplib.is_file(),"missing SWAP shared library")
     require(ribasim_model.is_file(),"missing Ribasim model")
     require(ribasim_lib.is_file(),"missing exact-release libribasim")
-    bundled_julia=preload_ribasim_julia_runtime(ribasim_lib.parent.parent)
-    print(f"RM13_RIBASIM_BUNDLED_JULIA_RUNTIME={bundled_julia}")
 
     management=Rm13Management(swaplib)
     requested=management.initialize()
     require(abs(requested-REQUEST_DEPTH_CM)<=DEPTH_TOL,"SWAP management request changed")
     require(management.state()[0]==0,"management origin revision not zero")
 
-    with tempfile.TemporaryDirectory(prefix="rm13-ribasim-libs-") as libtmp:
-        libtmp_path=Path(libtmp)
-        accepted=make_ribasim_api_copy(ribasim_lib,ribasim_dep,"accepted",libtmp_path)
-        candidate_a=make_ribasim_api_copy(ribasim_lib,ribasim_dep,"candidate_a",libtmp_path)
-        candidate_b=make_ribasim_api_copy(ribasim_lib,ribasim_dep,"candidate_b",libtmp_path)
+    source_model_dir=ribasim_model.parent
+    with tempfile.TemporaryDirectory(prefix="rm13-ribasim-processes-") as tmp:
+        process_root=Path(tmp)
+        model_dirs: dict[str,Path]={}
+        for tag in ("accepted","candidate_a","candidate_b"):
+            target=process_root/tag/"model"
+            target.parent.mkdir(parents=True)
+            shutil.copytree(source_model_dir,target)
+            model_dirs[tag]=target
 
-        accepted.initialize(str(ribasim_model))
-        origin_snapshot=ribasim_snapshot(accepted)
-        require(abs(origin_snapshot[0])<=1e-12,"Ribasim accepted origin not t0")
-        require(abs(origin_snapshot[1]-1.0)<=1e-10,"Ribasim accepted level changed")
-        require(abs(origin_snapshot[2])<=VOLUME_TOL,"Ribasim accepted supply ledger nonzero")
+        with ExitStack() as stack:
+            accepted=stack.enter_context(RibasimWorker(
+                model_path=model_dirs["accepted"]/ribasim_model.name,
+                lib_path=ribasim_lib,
+                ribasim_root=RIBASIM_ROOT,
+                log_path=process_root/"accepted.log",
+            ))
+            candidate_a=stack.enter_context(RibasimWorker(
+                model_path=model_dirs["candidate_a"]/ribasim_model.name,
+                lib_path=ribasim_lib,
+                ribasim_root=RIBASIM_ROOT,
+                log_path=process_root/"candidate_a.log",
+            ))
+            candidate_b=stack.enter_context(RibasimWorker(
+                model_path=model_dirs["candidate_b"]/ribasim_model.name,
+                lib_path=ribasim_lib,
+                ribasim_root=RIBASIM_ROOT,
+                log_path=process_root/"candidate_b.log",
+            ))
 
-        # Candidate A is explicitly rejected after full real execution.
-        candidate_a.initialize(str(ribasim_model))
-        candidate_a.update_until(WINDOW_S)
-        a_snapshot=ribasim_snapshot(candidate_a)
-        require(abs(a_snapshot[0]-WINDOW_S)<=1e-9,"candidate A endpoint")
-        a_depth=a_snapshot[2]/AREA_M2*100.0
-        require(abs(a_depth-REQUEST_DEPTH_CM)<=DEPTH_TOL,"candidate A physical supply")
-        candidate_a.finalize()
-        alloc_a,output_supply_a=read_allocation_depth(ribasim_model.parent)
-        require(abs(alloc_a-REQUEST_DEPTH_CM)<=DEPTH_TOL,"candidate A allocation")
-        require(abs(output_supply_a-REQUEST_DEPTH_CM)<=DEPTH_TOL,"candidate A allocation output supplied")
-        require(ribasim_snapshot(accepted)==origin_snapshot,"discarded Ribasim candidate changed accepted witness")
+            origin_snapshot=accepted.ready["snapshot"]
+            require(abs(float(origin_snapshot["time_s"]))<=1e-12,"Ribasim accepted origin not t0")
+            require(abs(float(origin_snapshot["basin_level_m"])-1.0)<=1e-10,"Ribasim accepted level changed")
+            require(abs(float(origin_snapshot["user_demand_cumulative_inflow_m3"]))<=VOLUME_TOL,
+                    "Ribasim accepted supply ledger nonzero")
 
-        # Candidate B remains live and provisional through all other model preflights.
-        candidate_b.initialize(str(ribasim_model))
-        candidate_b.update_until(WINDOW_S)
-        b_snapshot=ribasim_snapshot(candidate_b)
-        b_depth=b_snapshot[2]/AREA_M2*100.0
-        require(abs(b_depth-a_depth)<=DEPTH_TOL,"same-origin Ribasim physical replay")
-        require(abs(b_snapshot[1]-a_snapshot[1])<=HEAD_REPLAY_TOL,"same-origin Ribasim level replay")
-        require(ribasim_snapshot(accepted)==origin_snapshot,"candidate B changed accepted Ribasim witness")
+            # Candidate A is executed and then rejected in its own OS process.
+            a_snapshot=candidate_a.update_until(WINDOW_S)
+            require(abs(float(a_snapshot["time_s"])-WINDOW_S)<=1e-9,"candidate A endpoint")
+            a_depth=float(a_snapshot["user_demand_cumulative_inflow_m3"])/AREA_M2*100.0
+            require(abs(a_depth-REQUEST_DEPTH_CM)<=DEPTH_TOL,"candidate A physical supply")
+            candidate_a.finalize()
+            alloc_a,output_supply_a=read_allocation_depth(model_dirs["candidate_a"])
+            require(abs(alloc_a-REQUEST_DEPTH_CM)<=DEPTH_TOL,"candidate A allocation")
+            require(abs(output_supply_a-REQUEST_DEPTH_CM)<=DEPTH_TOL,"candidate A allocation output supplied")
+            require(same_surface_snapshot(accepted.snapshot(),origin_snapshot),
+                    "discarded Ribasim candidate changed accepted witness")
 
-        net_a,rate_a=management.prepare_candidate(
-            ribasim_origin_id=RIBASIM_ORIGIN_ID,
-            ribasim_origin_revision=0,
-            allocated_depth_cm=alloc_a,
-            supplied_depth_cm=b_depth,
-            source_level_margin_m=0.1,
-            level_difference_threshold_m=0.02,
-            low_storage_factor=1.0,
-        )
-        require(management.preflight(),"management candidate A preflight")
-        require(abs(net_a-b_depth)<=DEPTH_TOL,"zero-cover Rutter gross/net identity")
-        require(abs(rate_a-IRRIGATION_RATE_CM_DAY)<=1e-10,"management gross rate")
-        management.discard()
-        require(management.state()[0]==0,"discarded management candidate mutated origin")
+            # Candidate B is replayed from the same serialized origin and remains
+            # live/provisional until all other coupled preflights have succeeded.
+            b_snapshot=candidate_b.update_until(WINDOW_S)
+            b_depth=float(b_snapshot["user_demand_cumulative_inflow_m3"])/AREA_M2*100.0
+            require(abs(b_depth-a_depth)<=DEPTH_TOL,"same-origin Ribasim physical replay")
+            require(abs(float(b_snapshot["basin_level_m"])-float(a_snapshot["basin_level_m"]))<=HEAD_REPLAY_TOL,
+                    "same-origin Ribasim level replay")
+            require(same_surface_snapshot(accepted.snapshot(),origin_snapshot),
+                    "candidate B changed accepted Ribasim witness")
 
-        net_b,rate_b=management.prepare_candidate(
-            ribasim_origin_id=RIBASIM_ORIGIN_ID,
-            ribasim_origin_revision=0,
-            allocated_depth_cm=alloc_a,
-            supplied_depth_cm=b_depth,
-            source_level_margin_m=0.1,
-            level_difference_threshold_m=0.02,
-            low_storage_factor=1.0,
-        )
-        require(management.preflight(),"management replay candidate preflight")
-        require(abs(net_b-net_a)<=DEPTH_TOL and abs(rate_b-rate_a)<=1e-12,
-                "management same-origin replay drift")
+            net_a,rate_a=management.prepare_candidate(
+                ribasim_origin_id=RIBASIM_ORIGIN_ID,
+                ribasim_origin_revision=0,
+                allocated_depth_cm=alloc_a,
+                supplied_depth_cm=b_depth,
+                source_level_margin_m=0.1,
+                level_difference_threshold_m=0.02,
+                low_storage_factor=1.0,
+            )
+            require(management.preflight(),"management candidate A preflight")
+            require(abs(net_a-b_depth)<=DEPTH_TOL,"zero-cover Rutter gross/net identity")
+            require(abs(rate_a-IRRIGATION_RATE_CM_DAY)<=1e-10,"management gross rate")
+            management.discard()
+            require(management.state()[0]==0,"discarded management candidate mutated origin")
 
-        top_flux=-net_b/WINDOW_DAY
-        require(abs(top_flux+IRRIGATION_RATE_CM_DAY)<=1e-10,"Richards top irrigation flux")
+            net_b,rate_b=management.prepare_candidate(
+                ribasim_origin_id=RIBASIM_ORIGIN_ID,
+                ribasim_origin_revision=0,
+                allocated_depth_cm=alloc_a,
+                supplied_depth_cm=b_depth,
+                source_level_margin_m=0.1,
+                level_difference_threshold_m=0.02,
+                low_storage_factor=1.0,
+            )
+            require(management.preflight(),"management replay candidate preflight")
+            require(abs(net_b-net_a)<=DEPTH_TOL and abs(rate_b-rate_a)<=1e-12,
+                    "management same-origin replay drift")
 
-        swap=Fgc44RealSwap(swaplib)
-        hcof,rhs,href=swap.initialize_forced(WINDOW_DAY,1.0e-6,top_flux)
-        swap_origin=swap.state()
-        require(swap_origin==(0,0.0,0,0.0),"Richards/GW origin changed before coupling")
+            top_flux=-net_b/WINDOW_DAY
+            require(abs(top_flux+IRRIGATION_RATE_CM_DAY)<=1e-10,"Richards top irrigation flux")
 
-        e1=swap.e1_diagnostics()
-        require(bool(e1["mass_complete"]),"irrigated predictor mass accounting incomplete")
-        expected_predictor_in=(IRRIGATION_RATE_CM_DAY+1.0e-6)*WINDOW_DAY
-        require(abs(float(e1["total_in_native"])-expected_predictor_in)<=1e-10,
-                "real Richards predictor did not book irrigation top inflow exactly once")
+            swap=Fgc44RealSwap(swaplib)
+            hcof,rhs,href=swap.initialize_forced(WINDOW_DAY,1.0e-6,top_flux)
+            swap_origin=swap.state()
+            require(swap_origin==(0,0.0,0,0.0),"Richards/GW origin changed before coupling")
 
-        first=run_groundwater_candidate(
-            libmf6=libmf6,swaplib=swaplib,swap=swap,hcof=hcof,rhs=rhs,href=href,publish=False
-        )
-        require(swap.state()==swap_origin,"rejected Richards+MODFLOW candidate mutated accepted state")
+            e1=swap.e1_diagnostics()
+            require(bool(e1["mass_complete"]),"irrigated predictor mass accounting incomplete")
+            expected_predictor_in=(IRRIGATION_RATE_CM_DAY+1.0e-6)*WINDOW_DAY
+            require(abs(float(e1["total_in_native"])-expected_predictor_in)<=1e-10,
+                    "real Richards predictor did not book irrigation top inflow exactly once")
 
-        second=run_groundwater_candidate(
-            libmf6=libmf6,swaplib=swaplib,swap=swap,hcof=hcof,rhs=rhs,href=href,publish=True
-        )
-        require(abs(float(first["head"])-float(second["head"]))<=HEAD_REPLAY_TOL,
-                "groundwater endpoint replay drift")
-        require(abs(float(first["q_swap"])-float(second["q_swap"]))<=FLUX_TOL,
-                "groundwater transfer replay drift")
+            first=run_groundwater_candidate(
+                libmf6=libmf6,swaplib=swaplib,swap=swap,hcof=hcof,rhs=rhs,href=href,publish=False
+            )
+            require(swap.state()==swap_origin,"rejected Richards+MODFLOW candidate mutated accepted state")
 
-        # At this point MODFLOW, Richards SWAP and groundwater ledger are published.
-        # Management and surface-water state were still provisional until all those
-        # preflights and the coupled solve succeeded.
-        require(management.preflight(),"management preflight lost before publication")
-        management.commit()
-        management_state=management.state()
-        require(management_state[0]==1,"management commit revision")
-        require(abs(management_state[3]-b_depth)<=DEPTH_TOL,"management accepted supplied depth")
-        require(abs(management_state[4]-net_b)<=DEPTH_TOL,"management accepted net irrigation")
+            second=run_groundwater_candidate(
+                libmf6=libmf6,swaplib=swaplib,swap=swap,hcof=hcof,rhs=rhs,href=href,publish=True
+            )
+            require(abs(float(first["head"])-float(second["head"]))<=HEAD_REPLAY_TOL,
+                    "groundwater endpoint replay drift")
+            require(abs(float(first["q_swap"])-float(second["q_swap"]))<=FLUX_TOL,
+                    "groundwater transfer replay drift")
 
-        # Candidate B is now the accepted Ribasim state. Finalize only after the
-        # outer publication point, then verify its allocation output as a
-        # post-publication consistency check.
-        accepted_surface_snapshot=b_snapshot
-        candidate_b.finalize()
-        alloc_b,output_supply_b=read_allocation_depth(ribasim_model.parent)
-        require(abs(alloc_b-alloc_a)<=DEPTH_TOL,"candidate B allocation replay drift")
-        require(abs(output_supply_b-b_depth)<=DEPTH_TOL,"candidate B output physical supply drift")
-        require(ribasim_snapshot(accepted)==origin_snapshot,"original Ribasim witness mutated")
-        accepted.finalize()
+            # Surface-water and management state remain provisional until the
+            # groundwater preflights and coupled solve have been published.
+            require(management.preflight(),"management preflight lost before publication")
+            management.commit()
+            management_state=management.state()
+            require(management_state[0]==1,"management commit revision")
+            require(abs(management_state[3]-b_depth)<=DEPTH_TOL,"management accepted supplied depth")
+            require(abs(management_state[4]-net_b)<=DEPTH_TOL,"management accepted net irrigation")
+
+            accepted_surface_snapshot=b_snapshot
+            candidate_b.finalize()
+            alloc_b,output_supply_b=read_allocation_depth(model_dirs["candidate_b"])
+            require(abs(alloc_b-alloc_a)<=DEPTH_TOL,"candidate B allocation replay drift")
+            require(abs(output_supply_b-b_depth)<=DEPTH_TOL,"candidate B output physical supply drift")
+            require(same_surface_snapshot(accepted.snapshot(),origin_snapshot),
+                    "original Ribasim witness mutated")
+            accepted.finalize()
 
     richards_state=swap.state()
     require(richards_state[0]==1 and richards_state[2]==1,
@@ -330,7 +328,7 @@ def main()->None:
     print(f"RM13_GROUNDWATER_Q_SWAP_M_PER_S={float(second['q_swap']):.17g}")
     print(f"RM13_GROUNDWATER_Q_GW_M_PER_S={float(second['q_gw']):.17g}")
     print(f"RM13_GROUNDWATER_LEDGER_EXCHANGE_M={richards_state[3]:.17g}")
-    print(f"RM13_RIBASIM_ACCEPTED_LEVEL_M={accepted_surface_snapshot[1]:.17g}")
+    print(f"RM13_RIBASIM_ACCEPTED_LEVEL_M={float(accepted_surface_snapshot['basin_level_m']):.17g}")
     print("RM13_RIBASIM_REJECT_REPLAY=PASS")
     print("RM13_MANAGEMENT_REJECT_REPLAY=PASS")
     print("RM13_RICHARDS_MODFLOW_REJECT_REPLAY=PASS")
