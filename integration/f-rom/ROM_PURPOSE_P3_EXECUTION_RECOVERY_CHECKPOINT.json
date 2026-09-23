@@ -11,20 +11,22 @@
   "surface_reference": {
     "run_id": 35876282704,
     "role": "authoritative repaired SURF_P route producer",
-    "observed_successful_jobs": 56,
+    "observed_successful_jobs": 71,
     "observed_failures": 0,
-    "terminal": false
+    "terminal": false,
+    "state": "EXECUTING_FINAL_ROUTE_JOBS_NO_FAILURE"
   },
   "groundwater_source": {
     "run_id": 35876286853,
     "role": "authoritative source for non-R2048_T32 GW routes only",
-    "observed_successful_jobs": 25,
+    "observed_successful_jobs": 37,
     "observed_failures": 8,
     "observed_non_r2048_failures": 0,
     "all_observed_failures_route": "R2048_T32",
     "all_observed_failures_classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
     "r2048_t32_source_authority": false,
-    "terminal": false
+    "terminal": false,
+    "state": "EXECUTING_NON_R2048_SOURCE_ROUTES_NO_NON_R2048_FAILURE"
   },
   "groundwater_r2048_t32": {
     "authoritative_recovery": {
@@ -32,7 +34,10 @@
       "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
       "execution_topology": "4 x 8192-step exact-state checkpoint segments per history",
       "prior_qualification_run": 35751978638,
-      "state": "QUEUED"
+      "state": "EXECUTING",
+      "observed_successful_jobs": 3,
+      "observed_failures": 0,
+      "first_segment_execution_pass_observed": true
     },
     "superseded_recovery": {
       "run_id": 35880655075,
@@ -64,5 +69,6 @@
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
     "production_rom_authorized": false
-  }
+  },
+  "observation_note": "Execution-only checkpoint. Counts are observational and do not adjudicate numerical Reference qualification."
 }
