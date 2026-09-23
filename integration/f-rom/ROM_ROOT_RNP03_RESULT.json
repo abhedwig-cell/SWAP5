@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.rom_root.rnp03.result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP03",
+  "date": "2026-09-23",
+  "status": "FULL_VECTOR_TRACE_COMPLETE_NO_POLICY_DECISION",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RNP03_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RNP03_BINDING.json",
+    "workflow_run": 35818763760,
+    "workflow_head": "85ec3c4c7f481b8ea0c843e02c8d41b9d3d4848a",
+    "analyzer_job": 107045980592,
+    "artifacts": {
+      "target": {
+        "id": 10732039056,
+        "digest": "sha256:5ffb6fa124e990bd3cdb8fd7d3a48b9aecec0c92c4d96b9d05a6ae4ad97cc9c3"
+      },
+      "control": {
+        "id": 10731914286,
+        "digest": "sha256:cac04f288bd3d71137c3c9f76842ffcf7e4a9633b1a63adc53564c55b0db9edf"
+      },
+      "analyzed": {
+        "id": 10732552203,
+        "digest": "sha256:eaa17c40e923dbe4223c661d77c41b18d448e9bea5f992a02103335aff9a13f5"
+      }
+    }
+  },
+  "target": {
+    "case": "B01 R1024_T32 V02",
+    "shadow128": {
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "nonlinear_iterations": 128,
+      "backtracking_attempts": 128
+    },
+    "snapshot_node_count": 1024,
+    "preregistered_pair_results": [
+      {
+        "pair": [
+          26,
+          50
+        ],
+        "nodes": 1024,
+        "pressure_head_bit_differences": 0,
+        "residual_bit_differences": 0,
+        "max_abs_pressure_head_difference": 0,
+        "max_abs_residual_difference": 0,
+        "full_vector_bit_identity": true
+      },
+      {
+        "pair": [
+          27,
+          51
+        ],
+        "nodes": 1024,
+        "pressure_head_bit_differences": 0,
+        "residual_bit_differences": 0,
+        "max_abs_pressure_head_difference": 0,
+        "max_abs_residual_difference": 0,
+        "full_vector_bit_identity": true
+      },
+      {
+        "pair": [
+          32,
+          56
+        ],
+        "nodes": 1024,
+        "pressure_head_bit_differences": 0,
+        "residual_bit_differences": 0,
+        "max_abs_pressure_head_difference": 0,
+        "max_abs_residual_difference": 0,
+        "full_vector_bit_identity": true
+      }
+    ]
+  },
+  "control": {
+    "case": "B01 R2048_T32 V02",
+    "shadow128": {
+      "status": 1,
+      "route": "legacy-reference-bound",
+      "nonlinear_iterations": 17,
+      "backtracking_attempts": 17
+    },
+    "iteration17_snapshot_nodes": 2048
+  },
+  "classifications": {
+    "MULTIPAIR_FULL_VECTOR_RECURRENCE": true,
+    "AGGREGATE_ONLY_RECURRENCE": false,
+    "CONTROL_PRESERVATION": true,
+    "CONTROL_SNAPSHOT_PRESENT": true
+  },
+  "bounded_interpretation": [
+    "The persistent B01 R1024_T32 V02 diagnostic is an exact full-vector recurrence, not merely a recurrence of aggregate residual statistics.",
+    "At each of the three preregistered 24-iteration-separated pairs, every active-node pressure-head bit pattern and every active-node residual bit pattern is identical.",
+    "The matched R2048 control converges at iteration 17 under unchanged tolerances and the same diagnostic ceiling.",
+    "RNP03 identifies a Reference-Richards numerical-method cycle at the tested interval. It does not authorize a solver-policy change and does not provide evidence for or against the reduced root-feedback approximation."
+  ],
+  "decision": {
+    "numerical_policy_change_authorized": false,
+    "c6r_reopened": false,
+    "reference_qualified": false,
+    "stage2_authorized": false,
+    "stage3_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "handoff": "Further resolution belongs to an independent Reference-Richards numerical-method authority. ROM-ROOT candidate evaluation remains blocked until such authority supplies an admitted Reference construction."
+  },
+  "policy_decision_authorized": false,
+  "c6r_reopened": false,
+  "reduced_candidate_response_generated": false,
+  "production_source_changed": false,
+  "model_changed": false
+}
