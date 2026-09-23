@@ -1,0 +1,38 @@
+name: SW-RIB-ADM01 G5A origin-bound transaction
+
+on:
+  push:
+    branches:
+      - work/sw-rib-adm01-external-surfacewater-admission
+    paths:
+      - 'src/runtime/mod_external_surface_water_transaction.f90'
+      - 'tests/sw-rib-adm01/test_g5a_transaction.f90'
+      - 'integration/sw-rib-adm01/ADM01_G5_*'
+      - '.github/workflows/sw-rib-adm01-g5a.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_external_surface_water_transaction.f90'
+      - 'tests/sw-rib-adm01/test_g5a_transaction.f90'
+      - 'integration/sw-rib-adm01/ADM01_G5_*'
+      - '.github/workflows/sw-rib-adm01-g5a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and qualify G5A
+        run: |
+          mkdir -p /tmp/sw-rib-adm01-g5a
+          gfortran -std=f2008 -Wall -Wextra -Werror -J /tmp/sw-rib-adm01-g5a -I /tmp/sw-rib-adm01-g5a             src/runtime/mod_external_surface_water_transaction.f90             tests/sw-rib-adm01/test_g5a_transaction.f90             -o /tmp/sw-rib-adm01-g5a/test
+          /tmp/sw-rib-adm01-g5a/test | tee /tmp/sw-rib-adm01-g5a/output.txt
+          grep -Fq 'SW_RIB_ADM01_G5A_ORIGIN_BOUND_TRANSACTION=PASS' /tmp/sw-rib-adm01-g5a/output.txt
