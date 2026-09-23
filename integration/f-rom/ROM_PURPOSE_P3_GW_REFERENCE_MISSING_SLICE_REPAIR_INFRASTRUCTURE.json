@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-missing-slice-repair-infrastructure.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-REFERENCE-MISSING-SLICE-REPAIR",
+  "date": "2026-09-23",
+  "status": "PREPARED_NOT_BOUND_NOT_EXECUTED",
+  "trigger": "Only slices from the already-bound GW Reference repair run that completed with a verified technical runner interruption exit 143.",
+  "source_run": 35876286853,
+  "method": {
+    "partition": "each missing 1024-observation history is split into two exact-state halves of 512 observations",
+    "checkpoint": "exact physical state and committed time, using the previously qualified GW segment checkpoint wrapper",
+    "first_half": "observations 1-512",
+    "second_half": "observations 513-1024",
+    "scientific_effect": "NONE"
+  },
+  "case_binding_policy": {
+    "no_prospective_case_list": true,
+    "bind_only_after_source_run_terminal": true,
+    "every_case_must_include": [
+      "material",
+      "route",
+      "opt",
+      "history",
+      "failed_job_id",
+      "failure_classification"
+    ],
+    "allowed_failure_classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
+    "successful_source_slices_must_not_be_repaired": true
+  },
+  "blobs": {
+    "tests/rom/materialize_rom_purpose_p3_gw_reference.py": "83dbec28cd92b76bc1e2a4ac704103622a5cab28",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_slice.py": "92bc572e57a4cffaf2a6a50aed53dc9e3f81bcab",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py": "ad46211b49b71dcf46101e95d3def66069630e87",
+    "tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py": "9aa6440e22deec1a93ff3ec75a77aa2c61dba573",
+    "tests/rom/assemble_rom_purpose_p3_gw_missing_slices.py": "4f7ddb861de3a2477f80dca66b3fc83e7499584b",
+    ".github/workflows/f-rom-purpose-p3-gw-missing-slice-repair.yml": "06c0e50880569b0c8ce4523cfcb8d37a089d7dd0",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json": "769dc39df6f68302f80cb5f1efc02d0da0c224e4"
+  },
+  "scientific_firewall": {
+    "execution_binding_created": false,
+    "repair_response_generated": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "metric_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "candidate_response_generated": false
+  }
+}
