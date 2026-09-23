@@ -18,7 +18,8 @@
     "Any non-R2048 missing slice must be a verified source-run exit-143 interruption and must be repaired through the separately bound exact-state half-segment path.",
     "No successful non-R2048 source slice may be replaced.",
     "R2048_T32 source artifacts are ignored in favor of the uniform full-stratum recovery.",
-    "Every complete route must pass O0/O2 exact trace identity."
+    "Every complete route must pass O0/O2 exact trace identity.",
+    "The binding must reject all artifacts from superseded v1 run 35880655075 and all original full-history R2048_T32 source artifacts."
   ],
   "blobs": {
     "tests/rom/consolidate_rom_purpose_p3_gw_reference_v2.py": "33b2f5e579bd728c4a827d13c0a1250151cf1bc2",
@@ -35,6 +36,10 @@
     "solver_or_physics_changed": false,
     "metric_changed": false,
     "tolerance_changed": false,
-    "candidate_response_generated": false
+    "candidate_response_generated": false,
+    "v1_r2048_t32_artifacts_forbidden": true
+  },
+  "authority": {
+    "r2048_t32_supersession": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_SUPERSESSION.json"
   }
 }
