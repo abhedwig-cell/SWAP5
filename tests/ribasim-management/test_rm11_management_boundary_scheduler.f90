@@ -26,9 +26,9 @@ program test_rm11_management_boundary_scheduler
   call execute_sequence(a5,a5_targets,advances,solves)
   call require(same_array(advances,a5_expected_advances),'A5 accepted target sequence')
   call require(same_array(solves,a5_expected_solves),'A5 allocation solve sequence')
-  call require(a5%boundary_is_pending(),'A5 final 24 h boundary pending')
+  call require(.not.a5%boundary_is_pending(),'A5 final 24 h lies between management boundaries')
   call a5%next_boundary_time(boundary,available)
-  call require(available .and. same_time(boundary,90000.0_real64),'A5 next pending boundary 25 h')
+  call require(available .and. same_time(boundary,90000.0_real64),'A5 next allocation boundary 25 h')
   deallocate(advances,solves)
 
   call initialize_fmr_ribasim_management_clock(0.0_real64,21600.0_real64,a6,status)
@@ -132,6 +132,7 @@ contains
         end if
         call clock%plan_advance(target,planned,reaches,status_local)
         call require(status_local==FMR_RMS_OK,'sequence plan')
+        call require(reaches .eqv. same_time(planned,next_boundary(clock)),'sequence boundary flag')
         n_accept=n_accept+1
         accepted_work(n_accept)=planned
         call clock%accept_planned_advance(planned,status_local)
@@ -144,6 +145,13 @@ contains
     if(n_solve>0) solved_boundaries=solved_work(1:n_solve)
     deallocate(accepted_work,solved_work)
   end subroutine execute_sequence
+
+  real(real64) function next_boundary(clock) result(value)
+    type(fmr_ribasim_management_clock_t), intent(in) :: clock
+    logical :: got
+    call clock%next_boundary_time(value,got)
+    call require(got,'next boundary available')
+  end function next_boundary
 
   logical function same_array(a,b)
     real(real64), intent(in) :: a(:),b(:)
