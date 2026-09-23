@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-TAB03-SERIAL",
+  "title": "Serialized Reference composition of generated K0 provider with admitted F-SI39 KSATEXM",
+  "date": "2026-09-23",
+  "branch": "research/f-tab03-ksatexm-generated-provider",
+  "authority": {
+    "provider_qualification": "integration/f-tab/F-TAB03_PROVIDER_QUALIFICATION.json",
+    "ftab02_serialized_gate": "tests/fsi/run_ftab02c_serialized_generated_provider.sh",
+    "fsi39": "integration/f-si/F-SI39_QUALIFICATION.json",
+    "exact_m1_parameters": "integration/f-tab/F-TAB02_F_BLOCKER.json"
+  },
+  "permitted_production_delta": [
+    "In the existing generated_mvg_acceleration_active branch of fmr_serialized_execution_admitted, stop rejecting ksatexm_extension_active."
+  ],
+  "frozen_preservation": [
+    "SWKIMPL remains 0",
+    "SWSOPHY remains 0",
+    "bottom_mode remains restricted to 2 or 7",
+    "root extraction remains excluded",
+    "snow remains excluded",
+    "soil temperature remains excluded",
+    "drainage response remains excluded",
+    "black/Boesten evaporation remain excluded",
+    "fixed-weir surface water remains excluded",
+    "Reference solver remains required",
+    "H_ENPR remains exactly zero",
+    "generic tabulated_hydraulics_active remains fail-closed",
+    "generated table materialization remains outside trial hot loop",
+    "transaction, retry, temporal and mass tolerances unchanged"
+  ],
+  "exact_profile": {
+    "nodes": "four-node serialized qualification fixture: two upper-layer authority nodes + two lower-layer authority nodes",
+    "upper": {
+      "ores": 0.02,
+      "osat": 0.433878,
+      "alpha": 0.021645,
+      "n": 1.34877,
+      "lexp": 7.202077,
+      "ksatfit": 83.24164,
+      "ksatexm": 832.4163,
+      "relsatthr": 0.9962891879895563,
+      "ksatthr": 36.025513440889625
+    },
+    "lower": {
+      "ores": 0.02,
+      "osat": 0.387064,
+      "alpha": 0.016083,
+      "n": 1.524418,
+      "lexp": 2.439662,
+      "ksatfit": 22.76176,
+      "ksatexm": 227.6176,
+      "relsatthr": 0.9981816467911503,
+      "ksatthr": 15.814441314772257
+    }
+  },
+  "gates": [
+    "analytical KSATEXM and generated+KSATEXM routes both complete in serialized Reference backend",
+    "hard mass gate <= 1e-12 on both",
+    "generated-vs-analytical final head max abs <= 0.05 cm",
+    "generated-vs-analytical final theta max abs <= 0.005",
+    "same nonlinear iteration count and retry count for the bounded equilibrium-style trial",
+    "repeat generated route bit-identical in final head/theta and solver counts",
+    "existing generic table and unsupported H_ENPR fail-closed behavior preserved",
+    "unchanged F-TAB02-B default provider regression remains PASS"
+  ],
+  "nonclaims": [
+    "whole 2002-2004 Hupsel reproduction",
+    "production admission",
+    "SWKIMPL=1",
+    "generic user-supplied tables",
+    "portable runtime speedup"
+  ],
+  "stop_conditions": [
+    "any admission guard besides KSATEXM exclusion must be relaxed",
+    "solver/residual/tolerance/transaction code must change",
+    "bounded serialized fidelity or hard-mass gate fails"
+  ]
+}
