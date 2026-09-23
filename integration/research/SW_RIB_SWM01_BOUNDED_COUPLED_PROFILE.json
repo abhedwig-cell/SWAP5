@@ -2,7 +2,7 @@
   "schema": "swap5.sw_rib_swm01.bounded_coupled_profile.v1",
   "work_unit": "SW-RIB-SWM01",
   "date": "2026-09-23",
-  "status": "CANDIDATE_PROFILE_PENDING_Q3_TRANSACTION_CLOSEOUT",
+  "status": "RESEARCH_QUALIFIED_PROFILE__PRODUCTION_ADMISSION_PENDING",
   "name": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
   "purpose": "Define the smallest evidence-backed SWAP5+Ribasim application profile for which legacy secondary surface-water state ownership can eventually be disabled in SWAP.",
   "ownership": {
@@ -32,13 +32,21 @@
       "representation": "Ribasim LevelDemand band + bounded allocation-controlled supply/discharge routes"
     },
     "signed_lower_exchange": {
-      "status": "Q3A1_EXECUTION_PENDING_AND_Q3A2_RECOMPOSITION_REQUIRED",
-      "representation": "SWAP signed request -> Ribasim drainage/infiltration realization -> joint transaction"
+      "status": "Q3A_PASS",
+      "representation": "SWAP signed request -> Ribasim drainage/infiltration realization -> joint recomposition when availability changes realized transfer"
     },
     "surface_water_storage_geometry": {
-      "status": "Q1G_CHARACTERIZATION_RUNNING",
-      "mapping": "Legacy STTAB knot storage can be supplied to Ribasim Basin/Profile, but inter-knot storage semantics are not assumed exact.",
-      "decision_needed": "Either qualify an approximation/densification envelope for migrated legacy geometries or define a new Ribasim-native geometry as an intentional model change."
+      "status": "Q1G_DIRECT_MAPPING_FALSIFIED__Q1H_CONTROLLED_EPSILON_REPRESENTATION_PASS",
+      "mapping": "Direct legacy STTAB storage-knot relabelling is structurally nonexact between knots. Q1H provides an epsilon-controlled continuous-area representation.",
+      "decision_needed": "Production admission must freeze an accepted Q1H epsilon/error envelope or declare independently defined Ribasim-native geometry."
+    },
+    "transfer_identities": {
+      "status": "Q3B_PASS",
+      "representation": "Coupler ledger preserves lower drainage, rapid drainage, top runoff, lower infiltration and top inundation identities across Ribasim aggregate balance endpoints."
+    },
+    "extracted_signed_exchange": {
+      "status": "Q4A_Q4B_PASS",
+      "representation": "Stateless signed extended drainage/infiltration candidate bound through serialized transaction runtime with exactly-once mass booking and rollback."
     }
   },
   "explicitly_excluded_until_separately_qualified": [
@@ -60,14 +68,13 @@
     "A legacy STTAB->Ribasim Basin conversion may not be labeled exact merely because supplied storage knots are reproduced."
   ],
   "admission_blockers": [
-    "Q1G storage-level geometry representation envelope for migrated legacy STTAB cases, or an explicit application contract using independently defined Ribasim-native geometry.",
-    "Q3A1 signed exchange availability result",
-    "Q3A2 same-origin transactional recomposition",
-    "Q3B for any top/rapid/macropore transfer enabled by the application profile",
-    "production implementation of the state-owner XOR guard",
+    "production implementation and qualification of state-owner XOR",
+    "production binding of accepted external Ribasim water levels to the Q4B-qualified signed exchange variant",
+    "production freeze of Q1H storage-geometry epsilon/error envelope or explicit Ribasim-native geometry contract",
+    "end-to-end restart/retry/recomposition/mass qualification on current canonical",
     "Ribasim model/core version provenance warning resolution",
-    "independent qualification/admission on the eventual production integration tree"
+    "independent production qualification/admission on the eventual integration tree"
   ],
-  "relation_to_retirement": "If the admission blockers close, this bounded profile can support retirement of legacy SWST/WLS ownership in external-Ribasim mode without claiming full legacy surface-water functional parity or deleting standalone SWAP5 F-CI52.",
+  "relation_to_retirement": "Research now supports coupled-state-ownership retirement for this bounded profile, but no production retirement authority exists until the separate admission gate closes.",
   "production_admission": false
 }
