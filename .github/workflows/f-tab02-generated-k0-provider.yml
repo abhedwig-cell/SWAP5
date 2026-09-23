@@ -23,6 +23,9 @@ on:
       - 'tests/fsi/run_ftab02d_constitutive_context_capability.sh'
       - 'tests/fsi/test_ftab02d_generated_temporal_certificate.f90'
       - 'tests/fsi/run_ftab02d_generated_temporal_certificate.sh'
+      - 'tests/fsi/test_ftab02e_provider_richards_performance.f90'
+      - 'tests/fsi/test_ftab02e_serialized_runtime_performance.f90'
+      - 'tests/fsi/run_ftab02e_generated_provider_performance.sh'
       - 'integration/f-tab/F-TAB02_PREREGISTRATION.json'
       - '.github/workflows/f-tab02-generated-k0-provider.yml'
   workflow_dispatch:
@@ -181,3 +184,43 @@ jobs:
             F-TAB02-D_GATE.log
             F-TAB02-D_DYNAMIC_GATE.log
           if-no-files-found: error
+
+
+  slice-e:
+    needs: slice-d
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-TAB02-E performance qualification
+        shell: bash
+        run: bash tests/fsi/run_ftab02e_generated_provider_performance.sh | tee F-TAB02-E_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-TAB02-E"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E '^F_TAB02_E_|^F-TAB02-E ' F-TAB02-E_GATE.log || true
+          } > F-TAB02-E_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-e-evidence
+          path: |
+            F-TAB02-E_EVIDENCE.txt
+            F-TAB02-E_GATE.log
+            F-TAB02-E_SUMMARY.tsv
+            F-TAB02-E_PROVIDER_RICHARDS.log
+            F-TAB02-E_SERIALIZED.log
+          if-no-files-found: warn
