@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.rom_root.s2r.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2R",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_S2R_EXECUTION",
+  "role": "TECHNICAL_REQUALIFICATION_OF_STAGE2_ARITHMETIC_INTEGRITY_GUARD",
+  "predecessor": {
+    "s2_preregistration": "integration/f-rom/ROM_ROOT_S2_PREREGISTRATION.json",
+    "s2_failure": "integration/f-rom/ROM_ROOT_S2_FAILURE_CLASSIFICATION.json",
+    "preserved_failure": "ROM-ROOT-S2 remains formally not qualified"
+  },
+  "scientific_contract": "All S2 materials, histories, representations, sink schedule, root fractions, closure, dt, horizon, identity checks and 1e-10 cm water-ledger gate remain unchanged.",
+  "only_changed_validation_rule": {
+    "removed": "abs(cumulative_root - Tp*horizon) <= 64*epsilon*scale after 8192 floating-point updates",
+    "reason": "That fixed O(epsilon) check ignores the forward error of repeated accumulation and was not an operation-count-aware arithmetic integrity test.",
+    "replacement": "Validate the actual binary64 root accumulator against the exact prescribed binary64 Heun increment using a standard gamma_N forward-error bound derived before execution."
+  },
+  "arithmetic_derivation": {
+    "binary64_epsilon": "2^-52",
+    "transactions": 8192,
+    "gamma_definition": "gamma(k)=k*epsilon/(1-k*epsilon), provided k*epsilon<1",
+    "route_rate": "r_route = numpy sum of the frozen retained-layer sink vector",
+    "route_rate_reference": "r_fsum = math.fsum of the same frozen retained-layer sink vector",
+    "route_rate_bound": "abs(r_route-r_fsum) <= gamma(m-1)*sum(abs(q_i)), where m is retained-layer count",
+    "existing_prescribed_rate_check": "abs(r_fsum-Tp) <= 64*epsilon*max(1,abs(Tp)) remains unchanged",
+    "heun_root_increment": "x = fl(0.5*dt*(r_route+r_route)); because the prescribed sink is constant and independent of state, the root-ledger component receives the same binary64 x at every transaction",
+    "cumulative_reference": "math.fsum of N copies of x",
+    "cumulative_bound": "gamma(N)*N*abs(x) + 2*epsilon*max(1,abs(cumulative_reference))",
+    "interpretation": "This is an arithmetic forward-error bound, not a hydrological tolerance and not selected from the failed S2 magnitude."
+  },
+  "frozen_execution": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "representations": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "candidate_transaction_dt_day": 0.0001,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "transactions": 8192,
+    "closure": "CURRENT_LAYER_FACE",
+    "prescribed_sink": "FULL_POTENTIAL_TP_TIMES_EXACT_RETAINED_ROOT_FRACTION",
+    "ledger_gate_cm": 1e-10
+  },
+  "pass_rules": [
+    "root fractions nonnegative",
+    "root fractions sum to one within unchanged 64-epsilon arithmetic guard",
+    "math.fsum prescribed layer sink equals Tp within unchanged 64-epsilon arithmetic guard",
+    "numpy route sink sum differs from math.fsum only within gamma(m-1) layer-summation bound",
+    "final cumulative root ledger differs from math.fsum(N copies of binary64 Heun root increment) only within the preregistered gamma(N) cumulative bound",
+    "PRESCRIBED_ROOT and GENERIC_SINK observation trajectories are bit-identical",
+    "zero PRESCRIBED_ROOT and legacy no-sink trajectories are bit-identical",
+    "all four route water ledgers remain <= 1e-10 cm",
+    "all 32 material/history/representation cases pass"
+  ],
+  "decision_rule": {
+    "pass": "S2R_PRESCRIBED_SINK_HARNESS_EQUIVALENCE_QUALIFIED; Stage 3 may be preregistered.",
+    "fail": "STOP_BEFORE_DYNAMIC_FEEDBACK; classify without modifying scientific inputs or arithmetic derivation."
+  },
+  "scientific_firewall": {
+    "s2_reclassified": false,
+    "reference_changed": false,
+    "feddes_evaluated": false,
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
