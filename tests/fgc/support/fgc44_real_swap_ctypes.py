@@ -19,6 +19,11 @@ class Fgc44RealSwap:
             ctypes.c_double, ctypes.c_double, ctypes.c_double,
             ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_swap_initialize_dynamic_irrigation_c.restype = ctypes.c_int
+        self.lib.fgc44_swap_initialize_dynamic_irrigation_c.argtypes = [
+            ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
+        ]
         self.lib.fgc44_swap_trial_c.restype = ctypes.c_int
         self.lib.fgc44_swap_trial_c.argtypes = [ctypes.c_double, ctypes.POINTER(ctypes.c_double)]
         for name in [
@@ -96,6 +101,38 @@ class Fgc44RealSwap:
         )
         if status:
             raise RuntimeError(f"forced SWAP initialize failed: {status}")
+        return hcof,rhs,href
+
+    def try_initialize_dynamic_irrigation(
+        self,
+        duration_day: float,
+        predictor_qbot_cm_per_day: float,
+        irrigation_rate_cm_per_day: float,
+        ponding_max_cm: float,
+    ) -> tuple[int,float,float,float]:
+        hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
+        status=self.lib.fgc44_swap_initialize_dynamic_irrigation_c(
+            float(duration_day),float(predictor_qbot_cm_per_day),
+            float(irrigation_rate_cm_per_day),float(ponding_max_cm),
+            ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href)
+        )
+        return int(status),hcof.value,rhs.value,href.value
+
+    def initialize_dynamic_irrigation(
+        self,
+        duration_day: float,
+        predictor_qbot_cm_per_day: float,
+        irrigation_rate_cm_per_day: float,
+        ponding_max_cm: float,
+    ) -> tuple[float,float,float]:
+        status,hcof,rhs,href=self.try_initialize_dynamic_irrigation(
+            duration_day,predictor_qbot_cm_per_day,irrigation_rate_cm_per_day,ponding_max_cm
+        )
+        if status:
+            raise RuntimeError(
+                f"dynamic-irrigation SWAP initialize failed: {status}; "
+                f"predictor_diagnostics={self.predictor_run_diagnostics()}"
+            )
         return hcof,rhs,href
 
     def trial(self, head_m: float) -> float:
