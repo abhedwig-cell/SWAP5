@@ -125,14 +125,31 @@
       },
       "reconstruction": "F_i = U_i + (h4*T_i-H_T_i)/(h4-h3)",
       "interpretation": "root-weighted regime occupancy plus the first pressure-head moment inside the active transition regime"
+    },
+    "exact_compact_interpretable": {
+      "id": "UJ",
+      "values": [
+        "DeltaF_i",
+        "U_i",
+        "J_i"
+      ],
+      "definitions": {
+        "U_i": "sum of root weights with h>h3",
+        "J_i": "sum of w_j*(h_j-h4) over h4<=h_j<=h3"
+      },
+      "reconstruction": "F_i = U_i + J_i/(h3-h4)",
+      "relation_to_UTH": "J_i = H_T_i - h4*T_i",
+      "interpretation": "unstressed root occupancy plus root-weighted hydraulic margin above h4 inside the active transition regime",
+      "preregistered_expectation": "exactly sufficient for the frozen drought-only piecewise-linear Feddes functional"
     }
   },
   "minimality_scope": {
-    "claim_boundary": "Minimality is tested only within the preregistered physically interpretable primitive family {U,T,H_T} with DeltaF known. No universal information-theoretic minimality is claimed.",
+    "claim_boundary": "Minimality is tested among the preregistered non-tautological threshold-aware primitive families. UJ is algebraically smaller than UTH. No universal information-theoretic minimality is claimed because F_i itself is a one-scalar tautological encoding and is explicitly inadmissible as state.",
     "necessity_counterexamples": [
-      "Without U, fixed DeltaF,T,H_T can move root mass between dry and unstressed regimes and change F_i.",
-      "Without T, fixed DeltaF,U,H_T can alter transition occupancy and compensate transition head values while changing F_i.",
-      "Without H_T, fixed DeltaF,U,T can change transition pressure heads and change F_i."
+      "Without U, fixed DeltaF and J can move root mass between dry and unstressed regimes and change F_i.",
+      "Without J, fixed DeltaF and U can change transition pressure-head distribution and change F_i.",
+      "OCC without a transition pressure-head moment remains insufficient.",
+      "Root-weighted mean head without regime localization remains insufficient."
     ],
     "tautological_encodings_excluded": [
       "storing F_i itself",
@@ -158,9 +175,9 @@
       "transaction_dt_day": 0.000025
     },
     "tests": [
-      "For every transaction and each U4/U8/R8/R16 rooted retained layer, reconstruct the exact fine-node Feddes layer functional from U,T,H_T.",
-      "Require layer and total reconstruction identity within the frozen 2.9103830456733704e-11 numerical guard.",
-      "Record whether OCC is observationally ambiguous by detecting equal/near-equal occupancy tuples with differing exact layer functional where available; analytic counterexamples remain the authority for insufficiency.",
+      "For every transaction and each U4/U8/R8/R16 rooted retained layer, reconstruct the exact fine-node Feddes layer functional independently from UTH and from UJ.",
+      "Require layer and total reconstruction identity for both UTH and UJ within the frozen 2.9103830456733704e-11 numerical guard.",
+      "Record exact UJ versus UTH algebraic identity.",
       "Preserve exact process uptake and Reference hydraulic trajectory; diagnostics may not alter forcing."
     ],
     "guard": 2.9103830456733704e-11
@@ -168,8 +185,9 @@
   "interpretation_rules": {
     "UTH_SUFFICIENT": "All layer and total UTH reconstruction errors are within the frozen guard in all eight cases and all four retained representations.",
     "UTH_NOT_SUFFICIENT": "Any verified layer or total UTH reconstruction error exceeds the frozen guard.",
-    "ROOT_INFORMATION_CONTENT_IDENTIFIED": "UTH_SUFFICIENT plus the preregistered analytic necessity counterexamples. This identifies information content only, not a propagated state or closure.",
-    "DYNAMIC_STATE_NOT_AUTHORIZED": "Even if UTH is sufficient on same-state snapshots, no dynamic augmented ROM may be run until a separate work unit defines how U,T,H_T are represented and propagated from accepted reduced state."
+    "ROOT_INFORMATION_CONTENT_IDENTIFIED": "UJ_SUFFICIENT plus the preregistered analytic necessity counterexamples. This identifies threshold-aware information content only, not a propagated state or closure.",
+    "DYNAMIC_STATE_NOT_AUTHORIZED": "Even if UTH is sufficient on same-state snapshots, no dynamic augmented ROM may be run until a separate work unit defines how U,T,H_T are represented and propagated from accepted reduced state.",
+    "UJ_SUFFICIENT": "All layer and total UJ reconstruction errors are within the frozen guard in all eight cases and all four retained representations."
   },
   "prohibited": [
     "No dynamic reduced candidate.",
