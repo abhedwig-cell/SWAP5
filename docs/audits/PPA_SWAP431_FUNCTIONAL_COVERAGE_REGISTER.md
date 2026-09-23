@@ -26,7 +26,7 @@ confirmed B0 defects are not migration targets.
 | Boesten `COFRED=0` | B1 / PPA-WU04-B | CONFIRMED_LEGACY_DEFECT | Exact branch can form `0/0` | Classify and qualify a B1 correction before SWAP5 work |
 | Root uptake / basic Feddes route | Status-A; PPA root-hydraulic authorities | CANONICALLY_ADMITTED | Admitted bounded chain | Preserve |
 | Oxygen, salinity, frost, compensated and advanced root stress | PPA-WU05-C and PPA-WU05 | PARTIAL_ORACLES_PRODUCTION_HELD | Pure oxygen factors/cache guard, compensation, salinity and macro-frost factors plus micro Campbell response have exact-source tests; source/state, thermal/coupling and single root-sink composition dependencies remain | Continue independent source-bound oracles; do not claim runtime admission |
-| Macropore flow | PPA-WU05-A/A1/A2/A3 | PARTIAL_ORACLES_PRODUCTION_HELD | Exact B1.11 source/state/mass census (A1), isolated typed rollback/restart DTO and harness (A2), plus bitwise VOLUNDR volume-under-level and the RAPIDDRAIN transmissivity, drainable-storage, scalar head/flux and compartment-distribution equations (A3) are source-tested; full RAPIDDRAIN control flow, accepted Richards-owner mass receipt, restart/retry and runtime route remain absent | Continue exact-source A3 control-flow equations in isolation; do not admit production macropore flow until one owner closes state and whole-column mass |
+| Macropore flow | PPA-WU05-A/A1/A2/A3 | PARTIAL_ORACLES_PRODUCTION_HELD | Exact B1.11 source/state/mass census (A1), isolated typed rollback/restart DTO and harness (A2), plus bitwise VOLUNDR volume-under-level and RAPIDDRAIN transmissivity, drainable-storage, scalar head/flux, proportional compartment distribution and eligibility/control-flow composition (A3) are source-tested; accepted Richards-owner mass receipt, restart/retry and runtime route remain absent | Continue other exact-source A3 equations in isolation; do not admit production macropore flow until one owner closes state and whole-column mass |
 | Lower boundary mode 2, constant typed qbot | PPA-WU02-A | CANONICALLY_ADMITTED | Owner, independent, hard-mass and preservation gates | Preserve |
 | Lower boundary mode 2 sine/table and dry continuation | PPA-LOW02-TIME | CANONICALLY_ADMITTED | Typed B1.11 time law and state-derived dry continuation qualified | Preserve restricted profile |
 | Lower boundary mode 1 prescribed GWL / hybrid state | PPA-WU02-D / PPA-LOW01 | PARTIAL_ORACLES_PRODUCTION_HELD | DATE1/GWLEVEL guards, AFGEN, top/profile/below regime, in-profile flux/head reconstruction, surface q0→qv→profile→qbot composition are source-tested; pondrunoff/top ingestion, low-GWL transitions and accepted-owner route remain absent | Reuse a proven sole owner or define its transactional contract before production admission; do not alias to mode 5 |
@@ -77,10 +77,11 @@ or alter the restricted F-APP07 admission.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
-volume-under-level equation, `RAPIDDRAIN` compartment transmissivity,
-drain-base-gated drainable storage, scalar head/resistance/flux and proportional
-compartment distribution. Each was bitwise compared against B1.11 over 100,000
-deterministic O0/O2 vectors. These remain bounded equations rather than a
-complete macropore process or runtime migration. The full B1.11 reconstruction helper still fails
+volume-under-level equation, and `RAPIDDRAIN` compartment transmissivity,
+drain-base-gated drainable storage, scalar head/resistance/flux, proportional
+compartment distribution and complete eligibility/control-flow composition.
+Each was bitwise compared against B1.11 over 100,000 deterministic O0/O2
+vectors. These remain bounded equations rather than a complete macropore
+process or runtime migration. The full B1.11 reconstruction helper still fails
 closed on an unrelated SWAP-009 patch-hash mismatch; the exact A1 macropore and
 macrorate member hashes nevertheless match the isolated materialized files.
