@@ -83,7 +83,6 @@
       "class": "RIBASIM_COUPLED_MODE_OWNER",
       "examples": [
         "surface-water storage",
-        "surface-water level",
         "WLACT",
         "DATEPRI/WLP",
         "DATESEC/WLS",
@@ -95,7 +94,9 @@
         "HHTAB",
         "QHTAB",
         "WSCAP",
-        "system-level discharge/supply routing"
+        "system-level discharge/supply routing",
+        "secondary SWST/WLS storage-state pair in SWSEC=2",
+        "primary WLP and prescribed secondary WLS become Ribasim-resolved forcings in coupled mode"
       ]
     },
     {
@@ -142,8 +143,8 @@
     {
       "class": "UNRESOLVED",
       "examples": [
-        "SWSRF",
-        "any legacy branch not bound by exact-source or accepted equivalent authority"
+        "any legacy branch not bound by exact-source or accepted equivalent authority",
+        "SWSRF=1 undefined-WL extended-exchange legacy route remains held from direct migration"
       ]
     }
   ],
@@ -162,5 +163,24 @@
     "COUPLER_MANAGEMENT_POLICY": "automatic target selection, explicit events, WLSTAR memory and DROPR policy",
     "LEGACY_NUMERICAL_POLICY": "WLSBAK/OSSWLM and legacy fixed-weir stopping policy are not physical state"
   },
-  "legacy_discrepancy_hold": "SWMAN=2 automatic capacity logic has SWQHR1 current-WLS versus SWQHR2 target-WLSTAR asymmetry; do not silently reproduce."
+  "legacy_discrepancy_hold": "SWMAN=2 automatic capacity logic has SWQHR1 current-WLS versus SWQHR2 target-WLSTAR asymmetry; do not silently reproduce.",
+  "topology_semantics": {
+    "source_authority": "F-PM08D exact-source inventory",
+    "primary_system": {
+      "legacy_level": "WLP",
+      "classification": "PRESCRIBED_FORCING_CONTROL",
+      "storage_state_in_surfacewater_f90": false,
+      "exchange_use": "primary drainage levels use WLP when SWSRF>=2",
+      "ribasim_mapping": "resolved external Ribasim network level supplied to SWAP exchange physics"
+    },
+    "secondary_system": {
+      "legacy_level": "WLS",
+      "legacy_storage": "SWST",
+      "swsec_1": "WLS is prescribed forcing",
+      "swsec_2": "SWST is authoritative conserved storage and WLS is derived from SWST",
+      "exchange_use": "secondary drainage levels use WLS when SWSRF>=2",
+      "ribasim_mapping": "in external-owner mode Ribasim owns both accepted secondary storage and level; SWAP receives level only as exchange input"
+    },
+    "consequence": "The legacy internal 'surface-water box' is specifically the simulated secondary SWST/WLS system, not all legacy surface-water levels. Primary WLP was already external forcing-like."
+  }
 }
