@@ -119,7 +119,7 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Reconcile corrected-reference defect workflow for MACROSTATE icgwl and MACRORESET accumulated beginning-profile behavior. Counter/inventory and sorptivity candidate composition gates passed; whole-routine runtime admission remains open.",
+  "next_safe_step": "Trace MACRORESET beginning-inventory balance consumers and qualify a proposed zero-before-sum correction. Exact B1.11 fragments reproduce both recorded source gaps; see PPA_WU05A3_REFERENCE_GAPS_STATUS.json. Derive intended icgwl semantics separately before whole-routine admission.",
   "recovery_point": "e3bfc84cedf60850b30468302d31bc5d9c3f25da: MACRORESET beginning inventories and counter composition PASS O0/O2. See PPA_WU05A3_RESET_INVENTORY_STATUS.json. Prior sorptivity and MACROINTEGRAL evidence unchanged; local candidate evidence only.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",

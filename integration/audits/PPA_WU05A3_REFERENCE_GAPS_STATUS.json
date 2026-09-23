@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05a3_reference_gaps.v1",
+  "baseline": "1d8279776",
+  "phase": "SOURCE_FRAGMENT_REPRODUCTION_PASSED",
+  "source_authority": "reference/swap-4.3.1/snapshots/B1.11.yml",
+  "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+  "policy": "docs/verification/reference-baselines.md admission rule: reproduce, intended rule, classify, minimal patch, focused qualification, exact provenance, expected-difference ledger, immutable snapshot",
+  "policy_reconciliation": "The overview still names B1.10; the later immutable B1.11 snapshot pins this work's exact source. Neither the snapshot nor existing source-gap records admit corrections for these findings.",
+  "gate": "tests/fapp/reproduce_ppa_wu05a3_reference_gaps.py",
+  "invocation": "python tests/fapp/reproduce_ppa_wu05a3_reference_gaps.py <materialized-B1.11-macropore.f90>",
+  "test_result": "PASS: exact source hash; source fragments compiled at O0/O2 under bounds and floating-point checks; two integer initialization sentinels; matching observations",
+  "findings": [
+    {
+      "id": "WU05-MACROSTATE-ICGWL",
+      "source_lines": "1319-1352; later consumption at 1401-1416",
+      "observation": "SWMBF=1 leaves icgwl equal to either compiler sentinel (-777 or -991); SWMBF=2 assigns 3 for the partially saturated fixture",
+      "classification": "Unassigned local index on SWMBF=1 path, independently reproduced using source storage block",
+      "limitation": "Compiler sentinel initialization is diagnostic instrumentation, not a claimed physical reference value. Full MACROSTATE and downstream flux execution are not reproduced by this fixture.",
+      "next_action": "Derive and qualify intended domain-specific transition index against physical flux and storage contracts before proposing a reference patch"
+    },
+    {
+      "id": "WU05-MACRORESET-BEGIN-PROFILE",
+      "source_lines": "1620-1626",
+      "observation": "With unchanged internal water profile 2, successive beginning-period captures produce 2 then 4",
+      "classification": "Accumulation rather than replacement of a beginning-period profile snapshot",
+      "candidate_correction": "Initialize IWaUnDm2CpBeg(1:NumNod)=0.d0 immediately before summing domains 2..NumDm",
+      "next_action": "Trace downstream balance consumers and qualify first/repeated-period differences before reference-patch admission"
+    }
+  ],
+  "source_changed": false,
+  "production_admission": "NONE",
+  "next_action": "Trace beginning-inventory balance consumers and test a proposed reset correction; continue independent A3 work without claiming full MACROSTATE equivalence"
+}
