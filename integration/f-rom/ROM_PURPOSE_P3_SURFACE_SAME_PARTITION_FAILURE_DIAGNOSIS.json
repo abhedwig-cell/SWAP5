@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom-purpose.p3.surface-same-partition-failure-diagnosis.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SURFACE-SAME-PARTITION-DIAGNOSIS",
+  "date": "2026-09-23",
+  "status": "NUMERICAL_QUALIFICATION_FAIL_CLOSED_NO_P3_REPAIR_AUTHORIZED",
+  "source_response_run": 35891150093,
+  "read_only_diagnostic_run": 35892196256,
+  "affected_cases": [
+    "SURF_P/B01/S8/T8",
+    "SURF_P/B01/S8/T16",
+    "SURF_P/B01/S8/T32",
+    "SURF_P/B14/S8/T8",
+    "SURF_P/B14/S8/T16",
+    "SURF_P/B14/S8/T32"
+  ],
+  "observed_execution": {
+    "workflow_route_jobs_success": 6,
+    "recorded_o0_return_code": 1,
+    "recorded_o2_return_code": 1,
+    "trace_complete": false,
+    "representative_failure_marker": "LAREDYN0R_FAIL LAREDYN0R local residual within prior integrated allowance",
+    "representative_backtrace_location": "strict_first_sample",
+    "pre_failure_evidence": "The executable advances through the frozen histories with accepted fallback transactions and native eight-cell observation output before the fail-closed require terminates execution."
+  },
+  "frozen_contract": {
+    "local_integrated_allowance_cm": 1.6e-15,
+    "source": "tests/rom/rom_purpose_p1_surface_b01_source.f90 and B14 analogue, strict_first_sample RETRY_LOCAL_BALANCE branch",
+    "changing_allowance_in_p3": false,
+    "changing_compartment_balance_tolerance_in_p3": false,
+    "changing_fallback_policy_in_p3": false
+  },
+  "classification": {
+    "technical_runner_failure": false,
+    "output_serialization_failure": false,
+    "solver_execution_reached": true,
+    "numerical_qualification_failure": true,
+    "p3_disposition": "SAME_PARTITION_RICHARDS_DIAGNOSTIC_UNAVAILABLE",
+    "closure_inference_authorized": false,
+    "state_count_inference_from_same_partition_authorized": false
+  },
+  "rationale": "The failure occurs inside the frozen fail-closed numerical acceptance policy after real solver execution. Repairing it by relaxing the local integrated allowance, compartment balance tolerance, or fallback policy would change the preregistered numerical contract. P3 therefore preserves the failure as numerical uncertainty and makes no closure attribution for SURF_P.",
+  "scientific_firewall": {
+    "response_rerun_after_diagnosis": false,
+    "tolerance_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "partition_changed": false,
+    "metric_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
