@@ -156,6 +156,9 @@ jobs:
           set -euo pipefail
           bash tests/fsi/run_ftab02d_constitutive_context_capability.sh | tee F-TAB02-D_GATE.log
           bash tests/fsi/run_ftab02d_generated_temporal_certificate.sh | tee -a F-TAB02-D_GATE.log
+      - name: Run F-TAB02-D FMR44R authority cross-check
+        shell: bash
+        run: bash tests/fsi/run_ftab02d_dynamic_transaction.sh | tee F-TAB02-D_DYNAMIC_GATE.log
       - name: Record evidence
         if: always()
         shell: bash
