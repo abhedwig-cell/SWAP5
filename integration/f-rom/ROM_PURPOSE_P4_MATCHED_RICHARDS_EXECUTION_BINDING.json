@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.rom-purpose.p4.matched-richards-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-MATCHED-RICHARDS",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P4_REFERENCE_QUALIFICATION",
+  "reference_authority": {
+    "result": "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json",
+    "result_blob": "dd287e8f0e5879c96855bc98b4ea2ca9b5cdcd44",
+    "status": "P4_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+    "candidate_response_authorized": true,
+    "adjudication_run": 35918064570
+  },
+  "reference_runs": {
+    "SURF_P": 35900590109,
+    "GW_BASE": 35901466303,
+    "GW_R2048_T32": 35900642592
+  },
+  "frozen_matrix": {
+    "SURF_P": [
+      "S8",
+      "S12",
+      "S16"
+    ],
+    "GW_LB": [
+      "G8",
+      "G12",
+      "G16"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ]
+  },
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p4-matched-richards.yml": "5e66f8dec2a0dbf27ebe7d64d56d556d79aa1e90",
+    "tests/rom/materialize_rom_purpose_p4_matched_richards.py": "819f316da026bfe072e69185dd9773f021600bc5",
+    "tests/rom/run_rom_purpose_p4_matched_richards.py": "fd203eb0b56cd26ca2644abcf8f37c0aa60cb75c",
+    "tests/rom/analyze_rom_purpose_p4_matched_richards.py": "41bfd5f5c4851c719315d1e48b1ad60155a1432e",
+    "tests/rom/rom_purpose_p4_decision_policy.py": "09e137a0b6c86b4f5cbd29c5c6d915cc62ac4a32",
+    "tests/rom/materialize_rom_purpose_p1_coarse_output.py": "991c896fcdd3b580d72ab5a262fdf0c0f86412ef",
+    "tests/rom/rom_purpose_p1_variable_grid_stubs.py": "261583a0b4b05ac5598572ac6e2630cfa75fa0a1",
+    "tests/rom/materialize_rom_purpose_p4_surface_reference.py": "ff04a5a38c84b2d4d290cdb1933a4ea2f701b93a",
+    "tests/rom/materialize_rom_purpose_p4_gw_reference.py": "cb38351335713372938405a189f4385d07a64b90",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json": "dd287e8f0e5879c96855bc98b4ea2ca9b5cdcd44",
+    "integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json": "d55c584b901febd04f62953b8f639ac31645eaab",
+    "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json": "ad5604fba2252e956015403d461d3df17ddec28c",
+    "integration/f-rom/ROM_PURPOSE_P4_PRE_RESPONSE_CONTRACT_AUDIT.json": "cab253038d454da74520a1cd39484038c7384cb1"
+  },
+  "scientific_firewall": {
+    "reference_qualified": true,
+    "exact_same_partitions_as_layer_rom": true,
+    "partition_changed": false,
+    "forcing_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
