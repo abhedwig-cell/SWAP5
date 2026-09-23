@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom-practical.p0.evidence-binding.v1",
+  "workstream": "ROM-PRACTICAL",
+  "date": "2026-09-23",
+  "status": "EVIDENCE_BOUND",
+  "canonical": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "scientific_firewall": {
+    "production_admission": false,
+    "application_acceptance": false,
+    "p2_reopened": false,
+    "p3_result_consumed": false,
+    "exact_root_feedback_claim": false
+  },
+  "bound_evidence": {
+    "rom_purpose_p2_closeout": {
+      "branch": "work/f-rom-purpose",
+      "path": "integration/f-rom/ROM_PURPOSE_P2_CLOSEOUT.json",
+      "blob": "c1cac2a0b6a89a932d7729dd21d8412a677eb3ec"
+    },
+    "rom_purpose_p2_placement": {
+      "branch": "work/f-rom-purpose",
+      "path": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
+      "blob": "e49f2414423538e4ecae4d4af35d599e46bc5273"
+    },
+    "rom_purpose_p3_preregistration": {
+      "branch": "work/f-rom-purpose",
+      "path": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json",
+      "blob": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+      "use": "candidate ladder definition only; no P3 response/result authority"
+    },
+    "layer_rom_a3_closeout": {
+      "branch": "work/f-rom-layer-a",
+      "path": "integration/f-rom/LAYER_ROM_A3_CLOSEOUT.json",
+      "blob": "cb4013bf85b3f8bc1c4dccfa1609ff6fedea80c6"
+    },
+    "layer_rom_b1hcp": {
+      "branch": "work/f-rom-layer-a",
+      "path": "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json",
+      "blob": "result authority from workflow run 35506606866"
+    },
+    "layer_rom_cost1": {
+      "branch": "work/f-rom-layer-a",
+      "path": "integration/f-rom/LAYER_ROM_COST1_RESULT.json",
+      "blob": "647a5d4b085ead0a29ed5f4b2d62cb7a47d38c7a"
+    }
+  },
+  "admitted_practical_starting_points": [
+    "Vertical state placement is purpose-dependent.",
+    "S4 is the frozen four-state surface/profile-aligned baseline and G4 the frozen four-state groundwater/lower-boundary-aligned baseline.",
+    "Neither four states nor CURRENT_LAYER_FACE closure are admitted as universally sufficient.",
+    "L4/L6/R8 shared-host timing evidence shows a strong implementation-cost reduction signal relative to R16, but is not a portable speedup claim.",
+    "Root-feedback exactness limitations remain binding; P-ROM-ET is not opened in P1."
+  ]
+}
