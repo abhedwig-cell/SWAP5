@@ -1,4 +1,4 @@
-name: TAB-HYD typed Reference Richards scale40 scaffold
+name: TAB-HYD typed Reference Richards scale40
 
 on:
   workflow_dispatch:
@@ -8,6 +8,8 @@ on:
     paths:
       - '.github/workflows/tabulated-hydraulics-typed-solver-scale40.yml'
       - 'research/tabulated_hydraulics/tabhyd_typed_solver_integration.f90'
+      - 'research/tabulated_hydraulics/patch_fsi04_scale40_stub.py'
+      - 'research/tabulated_hydraulics/prepare_typed_solver_scale40_cases.py'
       - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
 
 jobs:
@@ -44,46 +46,17 @@ jobs:
           test "$(git -C canonical-src rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55
           echo TABHYD_TYPED_SOLVER_CURRENT_CANONICAL_RECONCILE=PASS
 
-      - name: Generate five bounded solver-seam cases
+      - name: Prepare 40-node fixture and cases
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/typed-solver
-          python3 - <<'PY'
-          from pathlib import Path
-          import importlib.util
-
-          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
-          sp=importlib.util.spec_from_file_location("logprep",p)
-          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
-          prep=mod.prep
-          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
-          cases={
-            "coarse_dry_free":("b4","o5",-180.0,0.10,2,-999999.0),
-            "loam_mid_free":("b9","o9",-75.0,0.10,2,-999999.0),
-            "clay_wet_free":("b12","o13",-40.0,0.10,2,-999999.0),
-            "coarse_dry_pulse":("b4","o5",-180.0,0.80,2,-999999.0),
-            "loam_capillary":("b9","o9",-120.0,0.10,5,-120.0),
-          }
-          root=Path("build/typed-solver")
-          for name,(top,sub,h0,flux_factor,bmode,bhead) in cases.items():
-              mats=[top,top,sub,sub]
-              k0=prep.k_policy(h0,series[top])
-              qtop=flux_factor*k0
-              qbot=0.0
-              with (root/f"{name}.dat").open("w") as fh:
-                  fh.write(f"4 400 4.0e-2 {h0:.17e} {qtop:.17e} {qbot:.17e} {bmode} {bhead:.17e}\n")
-                  for soil in mats:
-                      par=series[soil]
-                      rows=mod.loghead_rows(par,400)
-                      fh.write(
-                          f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} "
-                          f"{par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n"
-                      )
-                      for h,t,k in rows:
-                          fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
-              print(name,"h0",h0,"qtop",qtop,"bottom_mode",bmode)
-          PY
+          python3 research/tabulated_hydraulics/patch_fsi04_scale40_stub.py \
+            canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            build/typed-solver/fsi04_scale40_stubs.f90
+          python3 research/tabulated_hydraulics/prepare_typed_solver_scale40_cases.py \
+            staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv \
+            build/typed-solver
 
       - name: Compile canonical Reference Richards with both providers
         shell: bash
@@ -100,7 +73,7 @@ jobs:
 
           compile research/tabulated_hydraulics/array_dimensions_stub.f90
           compile legacy-src/src/soil/sptabulated.f90
-          compile canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90
+          compile build/typed-solver/fsi04_scale40_stubs.f90
           compile canonical-src/src/transaction/mod_transaction_reference.f90
           compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
           compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
@@ -180,7 +153,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tab-hyd-typed-solver-integration
+          name: tab-hyd-typed-solver-scale40
           path: |
             build/typed-solver/summary.tsv
             build/typed-solver/*.txt
