@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import argparse,json,pathlib
+from rom_purpose_p4_decision_policy import attribution, frontier
 
 RUNGS={"SURF_P":("S8","S12","S16"),"GW_LB":("G8","G12","G16")}
 
@@ -16,6 +17,7 @@ def main()->int:
     pre=json.loads(a.prereg.read_text()); layer=json.loads(a.layer_result.read_text()); rich=json.loads(a.matched_result.read_text())
     assert pre["phase"]=="PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE"
     case_map={}; purposes={}; any_closure=False; any_unavailable=False; any_layer_missing=False
+    any_numerical_gaps=False
     for purpose in ("SURF_P","GW_LB"):
       materials={}
       for material in ("B01","B14"):
@@ -23,39 +25,57 @@ def main()->int:
         for member in RUNGS[purpose]:
           l=layer["cases"][purpose][material][member]
           r=rich["cases"][purpose][material][member]
+          expected=pre["frozen_representations"][purpose][member]
+          if l["boundaries_cm"]!=expected or r["boundaries_cm"]!=expected:
+            raise ValueError(f"Same-partition contract drift: {purpose}/{material}/{member}")
+          lq=l["status"]=="QUALIFIED"
           lreach=l["representation_sufficiency"]=="REPRESENTATION_COMPARATOR_REACHED"
           rq=r["numerical_qualification"]["qualified"]
-          rreach=bool(r["comparator_reached"]) if rq else False
-          if not rq:
-            cls="MATCHED_RICHARDS_UNAVAILABLE"; any_unavailable=True
-          elif rreach and not lreach:
-            cls="CLOSURE_DEFICIT_SUPPORTED_AT_RUNG"; any_closure=True
+          rreach=r["comparator_reached"]
+          cls=attribution(lq,lreach,rq,rreach)
+          if not lq or not rq: any_unavailable=True
+          if cls=="CLOSURE_DEFICIT_SUPPORTED_AT_RUNG":
+            any_closure=True
             if first_closure is None: first_closure=member
-          elif rreach and lreach:
-            cls="BOTH_REACH_COMPARATOR"
-          elif (not rreach) and (not lreach):
-            cls="REPRESENTATION_OR_RESOLUTION_LIMITING"
-          else:
-            cls="LAYER_REACHES_WITHOUT_MATCHED_RICHARDS_REACH"
           rung_out.append({"member":member,"dimension":int(member[1:]),"layer_rom_reaches":lreach,
+                           "layer_rom_numerically_qualified":lq,
                            "matched_richards_numerically_qualified":rq,"matched_richards_reaches":rreach,
                            "attribution":cls})
-        lmin=layer["decisions"][purpose][material]["minimum_tested_state_count"]
-        rmin=rich["decisions"][purpose][material]["minimum_tested_matched_richards_state_count"]
+        lf=frontier([(x["member"],x["layer_rom_numerically_qualified"],x["layer_rom_reaches"]) for x in rung_out])
+        rf=frontier([(x["member"],x["matched_richards_numerically_qualified"],x["matched_richards_reaches"]) for x in rung_out])
+        lmin=lf["minimum_tested_state_count"]
+        rmin=rf["minimum_tested_state_count"]
+        if lmin!=layer["decisions"][purpose][material]["minimum_tested_state_count"]:
+            raise ValueError("Layer-ROM minimum does not match qualified lower-rung evidence")
+        if rmin!=rich["decisions"][purpose][material]["minimum_tested_matched_richards_state_count"]:
+            raise ValueError("Richards minimum does not match qualified lower-rung evidence")
+        if lf["unqualified_members"] or rf["unqualified_members"]: any_numerical_gaps=True
         if lmin is None: any_layer_missing=True
         if lmin is not None:
             state_limit=f"Comparator reached by Layer-ROM at minimum tested {lmin}-state rung."
+        elif lf["first_comparator_reaching_member"] is not None:
+            state_limit=("Layer-ROM reaches the comparator at "+lf["first_comparator_reaching_member"]+
+                         ", but an unqualified lower rung prevents a minimum-state-count claim.")
+        elif lf["unqualified_members"]:
+            state_limit="Layer-ROM frontier is unresolved because numerical qualification is incomplete."
         else:
             state_limit="Layer-ROM comparator frontier not reached within the frozen 16-state P4 ladder."
         if rmin is not None:
             resolution_limit=f"Matched conventional Richards first reaches the comparator at tested {rmin}-cell rung."
+        elif rf["first_comparator_reaching_member"] is not None:
+            resolution_limit=("Matched Richards reaches the comparator at "+rf["first_comparator_reaching_member"]+
+                              ", but an unqualified lower rung prevents a minimum-cell-count claim.")
+        elif rf["unqualified_members"]:
+            resolution_limit="Matched Richards frontier is unresolved because numerical qualification is incomplete."
         else:
-            resolution_limit="Matched conventional Richards comparator frontier not reached within the frozen 16-cell P4 ladder, or numerical qualification prevents a complete claim."
-        closure_limit=("Propagation/closure deficit is supported beginning at "+first_closure+" for this tested case."
+            resolution_limit="Matched conventional Richards comparator frontier not reached within the frozen 16-cell P4 ladder."
+        closure_limit=("The first tested rung supporting a propagation/closure deficit is "+first_closure+" for this tested case."
                        if first_closure else "No propagation/closure deficit is identified by the frozen P4 rung comparisons.")
         materials[material]={
           "minimum_tested_layer_rom_state_count":lmin,
           "minimum_tested_matched_richards_state_count":rmin,
+          "layer_frontier_evidence":lf,
+          "matched_richards_frontier_evidence":rf,
           "state_information_limit":state_limit,
           "spatial_resolution_limit":resolution_limit,
           "propagation_closure_limit":closure_limit,
@@ -65,12 +85,15 @@ def main()->int:
         }
         case_map[f"{purpose}/{material}"]={
           "layer_minimum":lmin,"richards_minimum":rmin,"first_closure_deficit_rung":first_closure,
+          "layer_frontier_status":lf["frontier_status"],"richards_frontier_status":rf["frontier_status"],
           "terminal_attribution":rung_out[-1]["attribution"]
         }
       purposes[purpose]={"materials":materials,
                          "physical_support_region":("surface through 80 cm plus profile propagation" if purpose=="SURF_P"
                                                     else "lower-column transmission, storage memory and lower-boundary response")}
-    if any_layer_missing and any_unavailable:
+    if any_numerical_gaps:
+        status="P4_CLOSED_FRONTIER_EVIDENCE_INCOMPLETE_NUMERICAL_GAPS"
+    elif any_layer_missing and any_unavailable:
         status="P4_CLOSED_LAYER_FRONTIER_PARTLY_NOT_REACHED_ATTRIBUTION_PARTLY_UNAVAILABLE"
     elif any_layer_missing and any_closure:
         status="P4_CLOSED_LAYER_FRONTIER_PARTLY_NOT_REACHED_CLOSURE_DEFICIT_IDENTIFIED"
@@ -106,7 +129,7 @@ def main()->int:
     for purpose in ("SURF_P","GW_LB"):
       for material in ("B01","B14"):
         x=case_map[f"{purpose}/{material}"]
-        lines.append(f"| {purpose} | {material} | {x['layer_minimum'] if x['layer_minimum'] is not None else 'not reached'} | {x['richards_minimum'] if x['richards_minimum'] is not None else 'not reached'} | {x['first_closure_deficit_rung'] or 'none'} | {x['terminal_attribution']} |")
+        lines.append(f"| {purpose} | {material} | {x['layer_minimum'] if x['layer_minimum'] is not None else 'not established'} | {x['richards_minimum'] if x['richards_minimum'] is not None else 'not established'} | {x['first_closure_deficit_rung'] or 'none'} | {x['terminal_attribution']} |")
     lines += ["","This remains a research qualification result. Application acceptance belongs to ROM-ACCEPT; P4 does not admit a production ROM or a new closure family."]
     for path,obj in ((a.purpose_map_output,purpose_map),(a.closeout_output,closeout)):
       path.parent.mkdir(parents=True,exist_ok=True); path.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
