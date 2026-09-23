@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.m8.legacy_global_state_boundary_inventory.v1",
+  "criterion": "M8-01",
+  "inspection_head": "4ca8b046cd5e07d8b3b5dc4eb085cb70c92c9a72",
+  "method": "read-only git grep of committed HEAD across Fortran source/include fragments; exact legacy module USE names and direct HeadCalc call sites; no source mutation or retirement",
+  "source_surface": {
+    "legacy_global_module_import_lines": 136,
+    "legacy_global_module_import_files": 27,
+    "fortran_module_import_lines": 58,
+    "fortran_module_import_files": 10,
+    "direct_headcalc_call_sites": 2,
+    "direct_headcalc_call_files": [
+      "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "direct_imports_in_process_crop_kernel": 0,
+    "historical_qualification_ports": [
+      "src/legacy/b1_10_fci11_port/",
+      "src/legacy/b1_10_fci13_port/"
+    ]
+  },
+  "bounded_owner_crosswalk": [
+    {
+      "retained_behavior": "SWAP4.3.1 file/program orchestration and legacy run grammar",
+      "current_owner": "src/legacy/b1_10_port/swap_main.f90 and swap.f90",
+      "bounded_target_owner": "src/runtime/mod_fmr_production_application_bootstrap.f90 for the already typed/admitted application surface",
+      "unmapped_scope": "generic full SWAP4 parser, arbitrary option grammar and whole-Hupsel composition are not replaced by this bounded bootstrap"
+    },
+    {
+      "retained_behavior": "Reference Richards solve and legacy HeadCalc execution context",
+      "current_owner": "src/legacy/b1_10_port/headcalc.f90, called only at the two listed adapter call sites",
+      "bounded_target_owner": "src/adapter/mod_reference_richards_legacy_binding.f90 plus typed Reference solver/workspace contracts under src/solver/",
+      "unmapped_scope": "HeadCalc remains the admitted scientific Reference implementation; it is not obsolete merely because its global access is adapter-confined"
+    },
+    {
+      "retained_behavior": "serialized physical state, forcing/parameter materialization, trial, retry, commit and mass publication",
+      "current_owner": "src/runtime/mod_fmr_serialized_reference_backend.f90 and src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "bounded_target_owner": "typed FMR model/backend state plus kernel transaction and checkpoint contracts",
+      "unmapped_scope": "the legacy adapters still bridge portions of B1.10 state; not every SWAP4 process/state field has a completed owner crosswalk"
+    },
+    {
+      "retained_behavior": "legacy crop/solute/irrigation/thermal trial snapshot and rollback",
+      "current_owner": "src/adapter/mod_b1_10_legacy_trial_capsule.f90, mod_b1_10_process_checkpoint.f90, mod_b1_10_water_checkpoint.f90 and mod_b1_10_mass_seam.f90",
+      "bounded_target_owner": "process-specific candidate/state owners plus kernel transaction/checkpoint interfaces",
+      "unmapped_scope": "capsule field-by-field migration/retirement is not closed by the presence of typed owners for selected scopes"
+    },
+    {
+      "retained behavior": "F-CI11/F-CI13 call-order and terminal-status source evidence",
+      "current_owner": "src/legacy/b1_10_fci11_port/ and src/legacy/b1_10_fci13_port/",
+      "bounded_target_owner": "qualification/source-lineage evidence only; these are historical authority inputs, not an admitted second production runtime",
+      "unmapped_scope": "retirement requires replacing every dependent gate/authority reference, not deleting these directories opportunistically"
+    }
+  ],
+  "verification": {
+    "direct_headcalc_call_sites_are_adapter_confined": true,
+    "process_crop_kernel_have_no_direct_legacy_global_use_statements": true,
+    "b1_10_legacy_trial_capsule_and_checkpoint_adapters_remain_global_state_bridges": true,
+    "legacy_file_entry_and_reference_solver_retained_for_reference_authority": true
+  },
+  "criterion_status": "PARTIAL",
+  "remaining_gap": "The scan bounds the main legacy-global and HeadCalc seam, but it is not a complete SWAP4 retained-behaviour inventory. The generic file-driven application/parser path and capsule fields are not all assigned a separately qualified SWAP5 owner, and dependent qualifications still use the retained Reference/legacy implementation by design.",
+  "next_action": "Extend the owner crosswalk by joining the SWAP4 behaviour/function inventory to the M0-M5 ledger and accepted current owner evidence, beginning with process/state fields in the legacy trial capsule. Do not remove the Reference solver or qualification source ports."
+}
