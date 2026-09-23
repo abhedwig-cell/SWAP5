@@ -31,6 +31,15 @@ PROFILES: dict[str, dict[str, object]] = {
             "PPA-WU04-A BLACK RUNTIME TEST PASS",
         ],
     },
+    "boesten_active": {
+        "runner": "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh",
+        "test": "tests/fapp/test_ppa_wu04b_boesten_runtime.f90",
+        "markers": [
+            "M7_RESOURCE_BOESTEN",
+            "M7_RESOURCE_BOESTEN_OPTION_INPUT_BYTES",
+            "PPA-WU04-B BOESTEN RUNTIME TEST PASS",
+        ],
+    },
 }
 
 
