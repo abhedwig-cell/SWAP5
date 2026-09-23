@@ -2,7 +2,7 @@
   "schema": "swap5.sw_rib_adm01.g4.contract.v1",
   "work_unit": "SW-RIB-ADM01-G4",
   "date": "2026-09-23",
-  "status": "FAIL_CLOSED_POLICY_IMPLEMENTED__APPLICATION_ERROR_ENVELOPE_NOT_YET_FROZEN",
+  "status": "APPLICATION_PROFILE_FROZEN",
   "research_authority": {
     "q1g": "FALSIFIED_EXACT_DIRECT_STTAB_MAPPING",
     "q1h": "PASS_CONTROLLED_EPSILON_AREA_REPRESENTATION"
@@ -29,5 +29,19 @@
     "epsilon mode without declared application error budget"
   ],
   "admission_effect": "G4 configuration guard can qualify before a specific application envelope is chosen; final production admission cannot.",
-  "production_admission": false
+  "production_admission": false,
+  "selected_production_mode": {
+    "profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+    "geometry_mode": "RIBASIM_NATIVE_GEOMETRY",
+    "contract_id": "RIBASIM_NATIVE_GEOMETRY_V1",
+    "rationale": "Ribasim is the sole surface-water storage/level owner in the production profile. Legacy STTAB interpolation is not imposed as the physical default of the new coupled architecture.",
+    "legacy_q1h_emulation": {
+      "status": "SEPARATE_MIGRATION_PROFILE_ONLY",
+      "reference_profile": "PA01/Q1H epsilon-controlled legacy geometry emulation",
+      "epsilon_m": 0.00001,
+      "not_alias_of_production_profile": true
+    }
+  },
+  "application_error_envelope_frozen": true,
+  "note": "No legacy-STTAB approximation tolerance is needed for the primary Ribasim-native profile because geometry is intentionally Ribasim-owned rather than a claim of legacy numerical parity."
 }
