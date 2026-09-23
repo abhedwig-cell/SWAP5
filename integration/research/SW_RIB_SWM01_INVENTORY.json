@@ -11,7 +11,14 @@
       "b1_11_patch_status": "UNCHANGED_FROM_B0"
     },
     "raw_source_text_materialized_in_this_work_unit": false,
-    "inventory_strength": "RESPONSIBILITY_LEVEL_NOT_LINE_COMPLETE"
+    "inventory_strength": "SOURCE_LOCATION_BOUND_RESPONSIBILITY_INVENTORY",
+    "prior_exact_source_reconstruction": [
+      "F-PM08D@4fc92f14baa5ae289839826032f9aa66776e2192",
+      "F-PM08D1@dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+      "F-PM08D4@d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
+      "F-PM08D5@90f8aee150df928b2cc98938c98766f037658114",
+      "F-PM08D6@c6dfa29edd4b7dff6d89c06a83b9b449c20f67e9"
+    ]
   },
   "current_canonical_fact": {
     "capability": "F-CI52 restricted fixed-weir surface-water physics",
@@ -147,5 +154,13 @@
     "Q3_SIGNED_DRAINAGE_INFILTRATION_EXCHANGE",
     "Q4_RETIREMENT_DECISION"
   ],
-  "retirement_authority": false
+  "retirement_authority": false,
+  "refined_ownership": {
+    "SWAP_UNCONSTRAINED_EXCHANGE_PHYSICS": "extended drainage/infiltration constitutive response remains SWAP-owned",
+    "COUPLER_EXCHANGE_FEASIBILITY": "legacy SWST/WSCAP availability limiter becomes cross-model feasibility because Ribasim owns storage and available supply",
+    "RIBASIM_REALIZATION": "surface-water state, supply availability and hydraulic discharge capacity",
+    "COUPLER_MANAGEMENT_POLICY": "automatic target selection, explicit events, WLSTAR memory and DROPR policy",
+    "LEGACY_NUMERICAL_POLICY": "WLSBAK/OSSWLM and legacy fixed-weir stopping policy are not physical state"
+  },
+  "legacy_discrepancy_hold": "SWMAN=2 automatic capacity logic has SWQHR1 current-WLS versus SWQHR2 target-WLSTAR asymmetry; do not silently reproduce."
 }
