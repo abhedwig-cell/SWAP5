@@ -1,4 +1,5 @@
 module mod_b110_generated_mvg_provider
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
   use mod_b110_generated_mvg_table_state, only: b110_generated_mvg_table_state_t, &
@@ -16,6 +17,7 @@ module mod_b110_generated_mvg_provider
     real(real64) :: step_duration = 0.0_real64
   contains
     procedure :: evaluate => b110_generated_mvg_evaluate
+    procedure :: context_compatible => generated_provider_context_compatible
     procedure :: ready => generated_provider_ready
   end type b110_generated_mvg_provider_t
 
@@ -42,6 +44,19 @@ contains
     provider%step_duration = step_duration
     status = F_TAB02_PROVIDER_OK
   end subroutine bind_b110_generated_mvg_provider
+
+  logical function generated_provider_context_compatible(self, step_duration) result(compatible)
+    class(b110_generated_mvg_provider_t), intent(in) :: self
+    real(real64), intent(in) :: step_duration
+    real(real64) :: scale
+
+    compatible = .false.
+    if (.not. self%ready()) return
+    if (.not. ieee_is_finite(step_duration) .or. step_duration <= 0.0_real64) return
+    if (.not. ieee_is_finite(self%step_duration) .or. self%step_duration <= 0.0_real64) return
+    scale = max(1.0_real64, abs(self%step_duration), abs(step_duration))
+    compatible = abs(self%step_duration-step_duration) <= 16.0_real64*epsilon(1.0_real64)*scale
+  end function generated_provider_context_compatible
 
   subroutine b110_generated_mvg_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
     class(b110_generated_mvg_provider_t), intent(in) :: self
