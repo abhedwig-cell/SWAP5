@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.rom-purpose.p5b.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5B-GW-INFORMATION-CARRIER-SCREEN",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_P5B_DIAGNOSTIC_RESPONSE",
+  "title": "Fixed-budget groundwater information-carrier screening",
+  "authority": {
+    "derivation": "integration/f-rom/ROM_PURPOSE_P5B_REPRESENTATION_DERIVATION.json",
+    "p4_closeout": "integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json",
+    "p4_reference_result": "integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "scope": "Mechanistic screening only. P5B does not establish dynamic state sufficiency, application acceptance, or a new closure.",
+  "characterization_workload": {
+    "histories": [
+      "G17",
+      "G18",
+      "G19",
+      "G20"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "route": "R512_T8",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "note": "Histories are response-exposed from P4 and therefore may only support carrier screening, not blind validation or sufficiency claims."
+  },
+  "representations": {
+    "BASE16": {
+      "scalar_count": 16,
+      "bottom_inputs": [
+        "mean theta 155-157.5 cm",
+        "mean theta 157.5-160 cm"
+      ],
+      "gradient_estimator": "retention-inverted pressure-head difference between cell centers divided by 2.5 cm",
+      "conductivity": "K from mean theta 157.5-160 cm"
+    },
+    "SPLIT17": {
+      "scalar_count": 17,
+      "extra_scalar": "split 157.5-160 cm storage at 158.75 cm",
+      "bottom_inputs": [
+        "mean theta 157.5-158.75 cm",
+        "mean theta 158.75-160 cm"
+      ],
+      "gradient_estimator": "retention-inverted pressure-head difference between half-cell centers divided by 1.25 cm",
+      "conductivity": "K from mean theta 158.75-160 cm"
+    },
+    "HM17": {
+      "scalar_count": 17,
+      "extra_scalar": "pressure-head first moment within 157.5-160 cm",
+      "gradient_estimator": "least-squares pressure-head slope within 157.5-160 cm",
+      "conductivity": "K from mean theta 157.5-160 cm"
+    }
+  },
+  "flux_reconstruction": {
+    "depth_coordinate": "positive downward",
+    "formula": "q_down_hat = K_rep * (1 - dh/dd)",
+    "target": "Reference BOTTOM_FLUX at observation windows"
+  },
+  "metrics": [
+    "pooled instantaneous bottom-flux RMSE cm/day",
+    "bottom-flux sign mismatch count",
+    "mean absolute per-history signed bottom-flux bias cm/day"
+  ],
+  "decision_policy": {
+    "componentwise_noninferior": "Candidate metric <= BASE16 for all three metrics separately for each material.",
+    "strict_gain": "At least one metric strictly lower for each material.",
+    "HYDRAULIC_SHAPE_SIGNAL": "HM17 componentwise noninferior to BASE16 with strict gain for B01 and B14.",
+    "STORAGE_SPLIT_SIGNAL": "SPLIT17 componentwise noninferior to BASE16 with strict gain for B01 and B14.",
+    "BOTH_SIGNAL": "Both candidate types satisfy their signal rule.",
+    "NO_ROBUST_SIGNAL": "Neither satisfies its signal rule.",
+    "MIXED_SIGNAL": "Material-specific or metric-specific gains without the preregistered cross-material componentwise rule."
+  },
+  "execution_firewall": {
+    "O0_O2_byte_identity_required": true,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "forcing_changed": false,
+    "p4_histories_changed": false
+  },
+  "claims_not_allowed": [
+    "minimum state count",
+    "dynamic moment-state sufficiency",
+    "closure deficit",
+    "application acceptance",
+    "production-ROM admission",
+    "performance or speedup"
+  ]
+}
