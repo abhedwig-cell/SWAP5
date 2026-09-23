@@ -1,17 +1,8 @@
 {
-  "schema": "swap5.rom-purpose.p3.status.v1",
-  "workstream": "ROM-PURPOSE",
-  "work_unit": "ROM-PURPOSE-P3",
-  "date": "2026-09-23",
-  "status": "P3_REFERENCE_TECHNICAL_REPAIR_EXECUTING",
-  "repository": {
-    "branch": "work/f-rom-purpose",
-    "preregistration_commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
-    "live_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-    "preregistration_blob": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
-    "preregistration_authority": "ORIGINAL_BOUND_PREREGISTRATION_RESTORED"
-  },
+  "authority_drift_record": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json",
+  "candidate_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json",
+  "candidate_response_authorized": true,
+  "closeout_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT_INFRASTRUCTURE.json",
   "completed": [
     "RECONCILE",
     "P3_AUTHORITY_BINDING",
@@ -28,126 +19,133 @@
     "GW_R2048_T32_ROUTE_RECOVERY_BOUND",
     "GW_REFERENCE_CONSOLIDATION_V2_PREPARED_NOT_EXECUTED"
   ],
-  "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
-  "candidate_response_authorized": false,
-  "next_actions": [
-    "Complete surface Reference route set.",
-    "Complete authoritative v2 GW R2048_T32 recovery using 8192-step exact-state segments.",
-    "Complete non-R2048 GW source slices and classify any non-R2048 technical failures if they occur.",
-    "Consolidate authoritative recovered R2048_T32 routes with successful non-R2048 GW source slices, plus only verified targeted repairs if needed.",
-    "Bind exact surface and consolidated GW run IDs into Reference adjudication.",
-    "Execute candidates only if complete Reference adjudication authorizes them."
-  ],
-  "scientific_firewall": {
-    "any_new_p3_reference_response_seen": false,
-    "any_new_p3_candidate_response_seen": false,
-    "closure_research_open": false,
-    "new_closure_family_authorized": false,
-    "application_acceptance_adjudicated": false,
-    "production_rom_authorized": false,
-    "reference_execution_started": true,
-    "reference_response_adjudicated": false,
-    "same_partition_execution_binding_created": false,
-    "closeout_execution_binding_created": false,
-    "same_partition_response_generated": false,
-    "closeout_generated": false,
-    "candidate_execution_binding_created": false,
-    "gw_missing_slice_repair_binding_created": false,
-    "gw_reference_consolidation_binding_created": false,
-    "gw_r2048_t32_recovery_bound": true,
-    "gw_reference_consolidation_v2_binding_created": false
-  },
-  "reference_execution": {
-    "SURF_P": {
-      "run_id": 35867575880,
-      "trigger_commit": "0bad7082b711d29abb3accc084bb296ed3c2fecd",
-      "state": "ACTIVE_OR_QUEUED",
-      "preflight": "PASS"
+  "current_gate": "BLIND_CANDIDATE_VALIDATION",
+  "date": "2026-09-23",
+  "gw_missing_slice_repair_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json",
+  "gw_r2048_t32_recovery": {
+    "authoritative": {
+      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
+      "prior_qualified_topology_run": 35751978638,
+      "run_id": 35881413707,
+      "segment_steps": 8192,
+      "segments_per_history": 4,
+      "state": "QUEUED"
     },
-    "GW_LB": {
-      "run_id": 35867586225,
-      "trigger_commit": "f6a91839b8a26394b4aec26a8cc155ce77107ae6",
-      "state": "ACTIVE_WITH_ONE_TECHNICAL_INTERRUPTION",
-      "technical_interruption": {
-        "job_id": 107203017109,
-        "case": "B14_R2048_T16_O0",
-        "exit_code": 143,
-        "classification": "TECHNICAL_RUNNER_INTERRUPTION_NOT_SCIENTIFIC_FAILURE"
-      }
+    "source_run_observation": {
+      "B01_R2048_T32_exit143_count": 8,
+      "interpretation": "systematic route-level infrastructure failure, not scientific failure",
+      "non_R2048_failure_count": 0,
+      "source_run": 35876286853
+    },
+    "superseded": {
+      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json",
+      "disposition": "SUPERSEDED_BEFORE_ANY_V1_EXECUTION_RESPONSE",
+      "run_id": 35880655075,
+      "usable_as_scientific_authority": false
     }
   },
-  "authority_drift_record": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json",
-  "candidate_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json",
+  "gw_reference_consolidation_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json",
+  "gw_reference_consolidation_v2_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_INFRASTRUCTURE.json",
+  "next_actions": [
+    "Create candidate execution binding for the already-frozen state-count matrix."
+  ],
+  "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
+  "reference_adjudication_sha": "4e6b0dc26f18379b3be5e9b26e93f5b9a0a34b1a",
+  "reference_adjudication_source_workflow_run": 35887508008,
+  "reference_execution": {
+    "GW_LB": {
+      "run_id": 35867586225,
+      "state": "ACTIVE_WITH_ONE_TECHNICAL_INTERRUPTION",
+      "technical_interruption": {
+        "case": "B14_R2048_T16_O0",
+        "classification": "TECHNICAL_RUNNER_INTERRUPTION_NOT_SCIENTIFIC_FAILURE",
+        "exit_code": 143,
+        "job_id": 107203017109
+      },
+      "trigger_commit": "f6a91839b8a26394b4aec26a8cc155ce77107ae6"
+    },
+    "SURF_P": {
+      "preflight": "PASS",
+      "run_id": 35867575880,
+      "state": "ACTIVE_OR_QUEUED",
+      "trigger_commit": "0bad7082b711d29abb3accc084bb296ed3c2fecd"
+    }
+  },
   "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_EXECUTION_BINDING.json",
+  "reference_original_runs": {
+    "GW_LB": {
+      "classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
+      "conclusion": "failure",
+      "run_id": 35867586225
+    },
+    "SURF_P": {
+      "classification": "TECHNICAL_MARKER_CONTRACT_MISMATCH",
+      "conclusion": "failure",
+      "run_id": 35867575880
+    }
+  },
+  "reference_repair_runs": {
+    "GW_LB": {
+      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_REPAIR_BINDING.json",
+      "run_id": 35876286853,
+      "state": "EXECUTING_WITH_TECHNICAL_EXIT143_SLICES",
+      "technical_exit143_observed_jobs": [
+        {
+          "case": "B01/R2048_T32/O0/history2",
+          "job_id": 107234972632
+        },
+        {
+          "case": "B01/R2048_T32/O0/history1",
+          "job_id": 107234972634
+        },
+        {
+          "case": "B01/R2048_T32/O0/history4",
+          "job_id": 107234972643
+        }
+      ]
+    },
+    "SURF_P": {
+      "binding": "integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_REPAIR_BINDING.json",
+      "run_id": 35876282704,
+      "state": "EXECUTING_ALL_OBSERVED_JOBS_SUCCESS"
+    }
+  },
+  "reference_result": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json",
+  "reference_technical_repair": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json",
   "reference_workflow_runs_launched": [
     35868454256,
     35868990868
   ],
+  "repository": {
+    "branch": "work/f-rom-purpose",
+    "live_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "preregistration_authority": "ORIGINAL_BOUND_PREREGISTRATION_RESTORED",
+    "preregistration_blob": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "preregistration_commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
   "same_partition_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_INFRASTRUCTURE.json",
-  "closeout_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT_INFRASTRUCTURE.json",
-  "reference_original_runs": {
-    "SURF_P": {
-      "run_id": 35867575880,
-      "conclusion": "failure",
-      "classification": "TECHNICAL_MARKER_CONTRACT_MISMATCH"
-    },
-    "GW_LB": {
-      "run_id": 35867586225,
-      "conclusion": "failure",
-      "classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143"
-    }
+  "schema": "swap5.rom-purpose.p3.status.v1",
+  "scientific_firewall": {
+    "any_new_p3_candidate_response_seen": false,
+    "any_new_p3_reference_response_seen": false,
+    "application_acceptance_adjudicated": false,
+    "candidate_execution_binding_created": false,
+    "closeout_execution_binding_created": false,
+    "closeout_generated": false,
+    "closure_research_open": false,
+    "gw_missing_slice_repair_binding_created": false,
+    "gw_r2048_t32_recovery_bound": true,
+    "gw_reference_consolidation_binding_created": false,
+    "gw_reference_consolidation_v2_binding_created": false,
+    "new_closure_family_authorized": false,
+    "production_rom_authorized": false,
+    "reference_execution_started": true,
+    "reference_response_adjudicated": true,
+    "same_partition_execution_binding_created": false,
+    "same_partition_response_generated": false
   },
-  "reference_repair_runs": {
-    "SURF_P": {
-      "run_id": 35876282704,
-      "state": "EXECUTING_ALL_OBSERVED_JOBS_SUCCESS",
-      "binding": "integration/f-rom/ROM_PURPOSE_P3_SURFACE_REFERENCE_REPAIR_BINDING.json"
-    },
-    "GW_LB": {
-      "run_id": 35876286853,
-      "state": "EXECUTING_WITH_TECHNICAL_EXIT143_SLICES",
-      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_REPAIR_BINDING.json",
-      "technical_exit143_observed_jobs": [
-        {
-          "job_id": 107234972632,
-          "case": "B01/R2048_T32/O0/history2"
-        },
-        {
-          "job_id": 107234972634,
-          "case": "B01/R2048_T32/O0/history1"
-        },
-        {
-          "job_id": 107234972643,
-          "case": "B01/R2048_T32/O0/history4"
-        }
-      ]
-    }
-  },
-  "reference_technical_repair": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_TECHNICAL_REPAIR.json",
-  "reference_adjudication_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
-  "gw_missing_slice_repair_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json",
-  "gw_reference_consolidation_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json",
-  "gw_r2048_t32_recovery": {
-    "authoritative": {
-      "run_id": 35881413707,
-      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
-      "state": "QUEUED",
-      "segment_steps": 8192,
-      "segments_per_history": 4,
-      "prior_qualified_topology_run": 35751978638
-    },
-    "superseded": {
-      "run_id": 35880655075,
-      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json",
-      "disposition": "SUPERSEDED_BEFORE_ANY_V1_EXECUTION_RESPONSE",
-      "usable_as_scientific_authority": false
-    },
-    "source_run_observation": {
-      "source_run": 35876286853,
-      "B01_R2048_T32_exit143_count": 8,
-      "non_R2048_failure_count": 0,
-      "interpretation": "systematic route-level infrastructure failure, not scientific failure"
-    }
-  },
-  "gw_reference_consolidation_v2_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_INFRASTRUCTURE.json"
+  "status": "P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+  "work_unit": "ROM-PURPOSE-P3",
+  "workstream": "ROM-PURPOSE"
 }

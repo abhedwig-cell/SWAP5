@@ -1,0 +1,2141 @@
+{
+  "candidate_response_authorized": true,
+  "fresh_reference": {
+    "GW_LB": {
+      "B01": {
+        "discrete_guard": {
+          "spatial_bottom_flux_sign_mismatch_count": 0,
+          "spatial_max_reversal_timing_difference_steps": 0,
+          "spatial_reversal_sequence_mismatch_history_count": 0,
+          "temporal_bottom_flux_sign_mismatch_count": 0,
+          "temporal_max_reversal_timing_difference_steps": 0,
+          "temporal_reversal_sequence_mismatch_history_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 3.836930773104541e-13,
+        "metrics": {
+          "cumulative_bottom_rmse_cm": {
+            "combined_reference_uncertainty": 1.5856517426787955e-05,
+            "qualified": true,
+            "space": {
+              "coarse": 1.2512575669061182e-05,
+              "fine": 3.277315951650354e-06,
+              "fine_uncertainty": 1.4537760950421227e-06,
+              "observed_order": 1.9327921251041058,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.8087080757416716e-05,
+              "fine": 9.782167916427054e-06,
+              "fine_uncertainty": 1.4402741331745833e-05,
+              "observed_order": 0.8867334420710339,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "interval_bottom_flux_rmse_cm_per_day": {
+            "combined_reference_uncertainty": 0.0073121006940155536,
+            "qualified": true,
+            "space": {
+              "coarse": 0.005941319728444341,
+              "fine": 0.001445370813293007,
+              "fine_uncertainty": 0.0005808275481286715,
+              "observed_order": 2.03934376133715,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 0.008322607251349302,
+              "fine": 0.00452323742942073,
+              "fine_uncertainty": 0.006731273145886882,
+              "observed_order": 0.8796798306190794,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 3.3892400497981996e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 2.6271253115522665e-07,
+              "fine": 6.779304219731913e-08,
+              "fine_uncertainty": 2.9473044197237547e-08,
+              "observed_order": 1.9542758994243137,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.9455164869786715e-07,
+              "fine": 2.1237001796994465e-07,
+              "fine_uncertainty": 3.094509607825824e-07,
+              "observed_order": 0.8936340649422885,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.5856517755890027e-05,
+            "qualified": true,
+            "space": {
+              "coarse": 1.2512575767505133e-05,
+              "fine": 3.277316257011333e-06,
+              "fine_uncertainty": 1.4537763985227298e-06,
+              "observed_order": 1.9327920020328424,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.808708075709957e-05,
+              "fine": 9.78216792178542e-06,
+              "fine_uncertainty": 1.4402741357367296e-05,
+              "observed_order": 0.8867334412554737,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32"
+      },
+      "B14": {
+        "discrete_guard": {
+          "spatial_bottom_flux_sign_mismatch_count": 0,
+          "spatial_max_reversal_timing_difference_steps": 0,
+          "spatial_reversal_sequence_mismatch_history_count": 0,
+          "temporal_bottom_flux_sign_mismatch_count": 0,
+          "temporal_max_reversal_timing_difference_steps": 0,
+          "temporal_reversal_sequence_mismatch_history_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 3.907985046680551e-13,
+        "metrics": {
+          "cumulative_bottom_rmse_cm": {
+            "combined_reference_uncertainty": 6.249017970636031e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.375545433680673e-05,
+              "fine": 8.792946384409971e-06,
+              "fine_uncertainty": 3.871601476629923e-06,
+              "observed_order": 1.9407020602847196,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.3402732157557973e-06,
+              "fine": 1.7429736355607371e-06,
+              "fine_uncertainty": 2.3774164940061073e-06,
+              "observed_order": 0.9384153647080788,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "interval_bottom_flux_rmse_cm_per_day": {
+            "combined_reference_uncertainty": 0.003159158910600292,
+            "qualified": true,
+            "space": {
+              "coarse": 0.01748032403671751,
+              "fine": 0.004809726096645492,
+              "fine_uncertainty": 0.0022821994307378746,
+              "observed_order": 1.8617052855222602,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 0.001242464076711568,
+              "fine": 0.0006465736109251687,
+              "fine_uncertainty": 0.0008769594798624171,
+              "observed_order": 0.9423176078108206,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 1.5069483789843486e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 8.310335243119697e-07,
+              "fine": 2.1542080278699737e-07,
+              "fine_uncertainty": 9.422750832381871e-08,
+              "observed_order": 1.9477491022247706,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 7.996007003297969e-08,
+              "fine": 4.16180118378763e-08,
+              "fine_uncertainty": 5.6467329574616134e-08,
+              "observed_order": 0.9420716889054824,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 6.249017936939774e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.375545467609919e-05,
+              "fine": 8.792946332144301e-06,
+              "fine_uncertainty": 3.8716013698746205e-06,
+              "observed_order": 1.9407020833613922,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.3402732092289616e-06,
+              "fine": 1.7429736505841107e-06,
+              "fine_uncertainty": 2.377416567065154e-06,
+              "observed_order": 0.9384153494539234,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32"
+      }
+    },
+    "SURF_P": {
+      "B01": {
+        "discrete_guard": {
+          "spatial_max_storage_extremum_timing_difference_steps": 0,
+          "spatial_max_timing_ambiguity_width_steps": 0,
+          "spatial_unobservable_event_count": 0,
+          "temporal_max_storage_extremum_timing_difference_steps": 0,
+          "temporal_max_timing_ambiguity_width_steps": 0,
+          "temporal_unobservable_event_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 4.313129172393848e-13,
+        "metrics": {
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 1.0775093805907594e-07,
+            "qualified": true,
+            "space": {
+              "coarse": 3.077141055691806e-08,
+              "coarse_indistinguishability_floor": 7.952117324236585e-15,
+              "fine": 7.693450883871068e-09,
+              "fine_indistinguishability_floor": 1.5533092117508e-14,
+              "fine_uncertainty": 3.2059369275430486e-09,
+              "observed_order": 1.9998878113152068,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 1.6733395261243713e-07,
+              "coarse_indistinguishability_floor": 2.058707565864143e-14,
+              "fine": 8.365664947327285e-08,
+              "fine_indistinguishability_floor": 2.0587075655078956e-14,
+              "fine_uncertainty": 1.0454500113153289e-07,
+              "observed_order": 1.000178079701876,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "root_0_40_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.6393795458683383e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 6.553198800436607e-07,
+              "coarse_indistinguishability_floor": 1.2525976076991352e-12,
+              "fine": 1.6383575920010882e-07,
+              "fine_indistinguishability_floor": 2.4655227595620473e-12,
+              "fine_uncertainty": 6.826811603446586e-08,
+              "observed_order": 1.9999490210064912,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 4.11667194556294e-06,
+              "coarse_indistinguishability_floor": 3.2741396074376302e-12,
+              "fine": 2.0578535457521417e-06,
+              "fine_indistinguishability_floor": 3.274139549470555e-12,
+              "fine_uncertainty": 2.5711114298338723e-06,
+              "observed_order": 1.0003381744610427,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "surface_0_20_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.473996460819961e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 7.173762242487547e-07,
+              "coarse_indistinguishability_floor": 3.1675186512270225e-13,
+              "fine": 1.7935164557060908e-07,
+              "fine_indistinguishability_floor": 6.199847457777375e-13,
+              "fine_uncertainty": 7.473406895256398e-08,
+              "observed_order": 1.9999389491086028,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.840500878904091e-06,
+              "coarse_indistinguishability_floor": 8.221400482242084e-13,
+              "fine": 1.9199702096138753e-06,
+              "fine_indistinguishability_floor": 8.221400134667987e-13,
+              "fine_uncertainty": 2.399262391867397e-06,
+              "observed_order": 1.0002105536298562,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 9.068235877767723e-11,
+            "qualified": true,
+            "space": {
+              "coarse": 3.931560268114377e-13,
+              "coarse_indistinguishability_floor": 1.9464856183191908e-11,
+              "fine": 4.401160307754225e-13,
+              "fine_indistinguishability_floor": 3.887209858653637e-11,
+              "fine_uncertainty": 3.887209858653637e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            },
+            "time": {
+              "coarse": 1.0691897340718108e-13,
+              "coarse_indistinguishability_floor": 5.1810260191140884e-11,
+              "fine": 1.5685388686115702e-13,
+              "fine_indistinguishability_floor": 5.181026019114087e-11,
+              "fine_uncertainty": 5.181026019114087e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            }
+          },
+          "upper_0_80_storage_rmse_cm": {
+            "combined_reference_uncertainty": 1.9984061716224657e-06,
+            "qualified": true,
+            "space": {
+              "coarse": 3.975492736719516e-07,
+              "coarse_indistinguishability_floor": 4.9816628903260796e-12,
+              "fine": 9.93915324736061e-08,
+              "fine_indistinguishability_floor": 9.833440346389326e-12,
+              "fine_uncertainty": 4.14154798050348e-08,
+              "observed_order": 1.99993883054343,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.133061396811405e-06,
+              "coarse_indistinguishability_floor": 1.306795872261134e-11,
+              "fine": 1.5662179001607623e-06,
+              "fine_indistinguishability_floor": 1.3067958671067118e-11,
+              "fine_uncertainty": 1.956990691817431e-06,
+              "observed_order": 1.0002881000272288,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32",
+        "timing_event_diagnostics": {
+          "spatial": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ],
+          "temporal": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ]
+        }
+      },
+      "B14": {
+        "discrete_guard": {
+          "spatial_max_storage_extremum_timing_difference_steps": 0,
+          "spatial_max_timing_ambiguity_width_steps": 0,
+          "spatial_unobservable_event_count": 0,
+          "temporal_max_storage_extremum_timing_difference_steps": 0,
+          "temporal_max_timing_ambiguity_width_steps": 0,
+          "temporal_unobservable_event_count": 0
+        },
+        "discrete_guard_pass": true,
+        "max_abs_transaction_mass_cm": 1.4937027919344377e-13,
+        "metrics": {
+          "mapped_10cm_theta_rmse": {
+            "combined_reference_uncertainty": 4.483512804622179e-10,
+            "qualified": true,
+            "space": {
+              "coarse": 1.11811236877882e-09,
+              "coarse_indistinguishability_floor": 7.719693235990902e-15,
+              "fine": 2.797160797299993e-10,
+              "fine_indistinguishability_floor": 1.5077555682055275e-14,
+              "fine_uncertainty": 1.166528977428526e-10,
+              "observed_order": 1.9990300884345398,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 5.30071075190406e-10,
+              "coarse_indistinguishability_floor": 1.9982797686285642e-14,
+              "fine": 2.651432021166578e-10,
+              "fine_indistinguishability_floor": 1.9982797686286014e-14,
+              "fine_uncertainty": 3.316983827193653e-10,
+              "observed_order": 0.999414057706644,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "root_0_40_storage_rmse_cm": {
+            "combined_reference_uncertainty": 4.661242417337901e-10,
+            "qualified": true,
+            "space": {
+              "coarse": 1.1524803641305546e-09,
+              "coarse_indistinguishability_floor": 1.2158091023537862e-12,
+              "fine": 2.8816808671308396e-10,
+              "fine_indistinguishability_floor": 2.393061050283553e-12,
+              "fine_uncertainty": 1.2009670632008444e-10,
+              "observed_order": 1.9997596926919672,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 5.535288451820157e-10,
+              "coarse_indistinguishability_floor": 3.177895684740094e-12,
+              "fine": 2.767836227282273e-10,
+              "fine_indistinguishability_floor": 3.1778956847120507e-12,
+              "fine_uncertainty": 3.460275354137056e-10,
+              "observed_order": 0.9998999185599289,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "surface_0_20_storage_rmse_cm": {
+            "combined_reference_uncertainty": 3.387632658538593e-09,
+            "qualified": true,
+            "space": {
+              "coarse": 8.733665228346895e-09,
+              "coarse_indistinguishability_floor": 3.074583282294263e-13,
+              "fine": 2.1843499783558467e-09,
+              "fine_indistinguishability_floor": 6.017696592559874e-13,
+              "fine_uncertainty": 9.106648263628989e-10,
+              "observed_order": 1.9993832074143756,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            },
+            "time": {
+              "coarse": 3.9595357114442824e-09,
+              "coarse_indistinguishability_floor": 7.979772157729301e-13,
+              "fine": 1.980369748336101e-09,
+              "fine_indistinguishability_floor": 7.979772157108483e-13,
+              "fine_uncertainty": 2.4769678321756943e-09,
+              "observed_order": 0.9995614558973384,
+              "qualified": true,
+              "reason": "QUALIFIED_MONOTONE_THREE_LEVEL"
+            }
+          },
+          "total_storage_rmse_cm": {
+            "combined_reference_uncertainty": 8.801418984025669e-11,
+            "qualified": true,
+            "space": {
+              "coarse": 1.0292240619541055e-12,
+              "coarse_indistinguishability_floor": 1.889225467264527e-11,
+              "fine": 1.5939165735845839e-12,
+              "fine_indistinguishability_floor": 3.7728384857281055e-11,
+              "fine_uncertainty": 3.7728384857281055e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            },
+            "time": {
+              "coarse": 2.3915193543788802e-14,
+              "coarse_indistinguishability_floor": 5.028580498297564e-11,
+              "fine": 2.0475414361375827e-14,
+              "fine_indistinguishability_floor": 5.028580498297564e-11,
+              "fine_uncertainty": 5.028580498297564e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            }
+          },
+          "upper_0_80_storage_rmse_cm": {
+            "combined_reference_uncertainty": 2.2227780353337348e-11,
+            "qualified": true,
+            "space": {
+              "coarse": 1.581808152415638e-13,
+              "coarse_indistinguishability_floor": 4.835191151084755e-12,
+              "fine": 4.448171970220655e-14,
+              "fine_indistinguishability_floor": 9.544215419338856e-12,
+              "fine_uncertainty": 9.544215419338856e-12,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            },
+            "time": {
+              "coarse": 4.256293765003185e-14,
+              "coarse_indistinguishability_floor": 1.2683564933998498e-11,
+              "fine": 1.895289231952377e-14,
+              "fine_indistinguishability_floor": 1.2683564933998493e-11,
+              "fine_uncertainty": 1.2683564933998493e-11,
+              "observed_order": null,
+              "qualified": true,
+              "reason": "QUALIFIED_NUMERICALLY_INDISTINGUISHABLE"
+            }
+          }
+        },
+        "qualified": true,
+        "reference_target": "R2048_T32",
+        "timing_event_diagnostics": {
+          "spatial": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ],
+          "temporal": [
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S09",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S09",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S10",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S10",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S11",
+              "kind": "MIN",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S11",
+              "kind": "MAX",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "root",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 1,
+              "forcing_reversal_observation": 256,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                256
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                256
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 2,
+              "forcing_reversal_observation": 512,
+              "history": "S12",
+              "kind": "MAX",
+              "left_admissible": [
+                512
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                512
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            },
+            {
+              "event": 3,
+              "forcing_reversal_observation": 768,
+              "history": "S12",
+              "kind": "MIN",
+              "left_admissible": [
+                768
+              ],
+              "left_width_steps": 0,
+              "observable": true,
+              "right_admissible": [
+                768
+              ],
+              "right_width_steps": 0,
+              "storage": "upper",
+              "timing_distance_steps": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "candidate_response_generated": false,
+    "numerical_uncertainty_is_application_tolerance": false,
+    "representation_or_closure_adjudicated": false
+  },
+  "reference_policy": {
+    "GW_LB": "P1/P2 inherited three-level numerical and discrete reversal qualification policy, applied to fresh G06-G09.",
+    "SURF_P": "P2 frozen numerical-observability and extremum-observability policy, applied to fresh S09-S12.",
+    "comparator": "R512_T32",
+    "target": "R2048_T32"
+  },
+  "schema": "swap5.rom-purpose.p3.reference-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": false,
+    "p2_admission_histories_reused": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "reference_policy_tuned_from_response": false,
+    "representation_tuned_from_response": false
+  },
+  "status": "P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED",
+  "work_unit": "ROM-PURPOSE-P3-REFERENCE",
+  "workstream": "ROM-PURPOSE"
+}
