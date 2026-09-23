@@ -7,7 +7,7 @@ on:
       - research/tabulated-hydraulics-characterization
     paths:
       - '.github/workflows/tabulated-hydraulics-typed-solver-scale40.yml'
-      - 'research/tabulated_hydraulics/tabhyd_typed_solver_integration.f90'
+      - 'research/tabulated_hydraulics/tabhyd_typed_solver_scale40.f90'
       - 'research/tabulated_hydraulics/patch_fsi04_scale40_stub.py'
       - 'research/tabulated_hydraulics/prepare_typed_solver_scale40_cases.py'
       - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
@@ -117,7 +117,7 @@ jobs:
           compile canonical-src/src/legacy/b1_10_port/headcalc.f90
           compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90
 
-          gfortran $F -J build/typed-solver/mod -I build/typed-solver/mod             -c research/tabulated_hydraulics/tabhyd_typed_solver_integration.f90             -o build/typed-solver/obj/integration_program.o
+          gfortran $F -J build/typed-solver/mod -I build/typed-solver/mod             -c research/tabulated_hydraulics/tabhyd_typed_solver_scale40.f90             -o build/typed-solver/obj/scale40_program.o
 
           gfortran -O3 -fopenmp build/typed-solver/obj/*.o -o build/typed-solver/integration
 
