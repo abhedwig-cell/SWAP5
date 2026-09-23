@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.rom_root.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "date": "2026-09-23",
+  "status": "CLOSED_MINIMAL_DYNAMIC_FEEDBACK_FALSIFIED_EXACT_INFORMATION_BOUNDARY_IDENTIFIED",
+  "repository_state": {
+    "research_branch": "work/f-rom-lare-rs1",
+    "research_head": "dba037e60ac2f6950823b8f62163edd120be36aa",
+    "canonical_reconciled_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d"
+  },
+  "central_question": "Can a reduced vertical hydraulic state reproduce the hydrologically relevant feedback between soil-water redistribution and drought-limited root uptake, despite the fine-scale Feddes functional not being uniquely determined by layer storage alone?",
+  "authority_chain": [
+    "LARE_BC2_C6P_CLOSEOUT.json: retained storage and storage plus geometric first moment are not exactly sufficient for general Feddes feedback.",
+    "ROM_ROOT_RA02R_CLOSEOUT.json: stress-active high-resolution Reference qualified.",
+    "ROM_ROOT_S2R_CLOSEOUT.json: prescribed-sink reduced harness equivalence qualified.",
+    "ROM_ROOT_S3_CLOSEOUT.json: minimal layer-mean-head dynamic feedback falsified in U4, U8, R8 and R16.",
+    "ROM_ROOT_S3D1_CLOSEOUT.json: same-state missing-information classes A and B independently confirmed.",
+    "ROM_ROOT_S3D2_CLOSEOUT.json: pure hydraulic refinement reaches the numerical guard only at the 2048-node Reference support.",
+    "ROM_ROOT_S3D3_CLOSEOUT.json: fixed-h3 exact threshold-aware information content U_i,J_i identified.",
+    "ROM_ROOT_S3D4_CLOSEOUT.json: U_i,J_i are not forcing-portable when h3 changes; exact arbitrary-h3 information is distributional."
+  ],
+  "principal_findings": {
+    "reference_and_harness": {
+      "qualified_reference": "ROM-ROOT-RA02R",
+      "prescribed_sink_harness_qualified": true,
+      "reference_or_harness_confounder_remaining": false
+    },
+    "minimal_feedback": {
+      "candidate": "theta_bar_i -> h(theta_bar_i) -> alpha(h_bar_i) with exact retained root fraction",
+      "tested_representations": [
+        "U4",
+        "U8",
+        "R8",
+        "R16"
+      ],
+      "result": "FALSIFIED_ON_NUMERICALLY_DISTINGUISHABLE_ROOT_FEEDBACK_COMPONENTS_IN_EVERY_REPRESENTATION",
+      "R16_success": false
+    },
+    "missing_information": {
+      "A_threshold_crossing": "CONFIRMED",
+      "B_root_weighted_head_distribution": "CONFIRMED",
+      "C_upper_zone_placement": "IMPORTANT_BUT_NOT_SUFFICIENT",
+      "D_hydraulic_propagation": "NOT_REQUIRED_TO_EXPLAIN_STATIC_R16_ERROR",
+      "E_prior_stress_memory": "NOT_JUSTIFIED_BY_CURRENT_EVIDENCE"
+    },
+    "exact_information": {
+      "fixed_current_h3": {
+        "compact_descriptor": [
+          "DeltaF_i",
+          "U_i",
+          "J_i"
+        ],
+        "response_relevant_additional_information": [
+          "U_i",
+          "J_i"
+        ],
+        "formula": "F_i = U_i + J_i/(h3-h4)",
+        "exact_same_state_verified": true
+      },
+      "arbitrary_demand_dependent_h3": {
+        "fixed_h3_UJ_portable": false,
+        "exact_non_tautological_object": "root-weighted within-layer pressure-head measure or equivalent threshold-queryable cumulative distribution information",
+        "useful_exact_low_dimensional_state_demonstrated": false
+      }
+    }
+  },
+  "answers": {
+    "existing_layer_storage_state_sufficient": false,
+    "storage_plus_tested_geometric_first_moment_sufficient": false,
+    "minimal_layer_mean_head_feedback_sufficient": false,
+    "pure_hydraulic_refinement_gives_useful_exact_reduction": false,
+    "compact_fixed_threshold_response_information_exists": true,
+    "compact_fixed_threshold_information_is_forcing_independent_state": false,
+    "exact_low_dimensional_forcing_portable_root_state_identified": false,
+    "new_root_specific_propagated_state_selected": false
+  },
+  "bounded_scientific_conclusion": "On the tested mechanistic drought-only Feddes domain, the existing Layer-ROM hydraulic state does not preserve enough within-layer root-weighted pressure-head information for exact dynamic drought-stress feedback. The minimal mean-head approximation is falsified even at R16. Exact same-state uptake at a fixed current stress threshold can be compressed to threshold-aware U/J information, but that compression moves with the demand-dependent h3 threshold and therefore is not a forcing-independent state. Exact arbitrary-h3 feedback returns to distributional within-layer information. The workstream therefore does not justify a new low-dimensional propagated root state.",
+  "application_boundary": {
+    "numerical_distinguishability_is_not_application_failure": true,
+    "crop_model_validation": false,
+    "drought_damage_validation": false,
+    "operational_ET_suitability": false,
+    "application_acceptance": false,
+    "production_rom_admission": false,
+    "performance_claim": false
+  },
+  "handoff": {
+    "exactness_track": "CLOSED",
+    "next_if_application_tolerance_available": "Preregister a forcing-portable approximate root-information family and assess it componentwise against the qualified Reference under an independently frozen purpose-dependent error budget.",
+    "next_if_no_application_tolerance": "At most characterize candidate-independent approximation error frontiers. Do not select a state dimension, descriptor count or operationally sufficient representation from observed errors.",
+    "relevant_external_authority": [
+      "ROM-ACCEPT purpose-dependent fidelity requirements",
+      "ROM-PURPOSE purpose-specific vertical information requirements"
+    ],
+    "prohibited": [
+      "Do not promote U_i,J_i directly to a universal state.",
+      "Do not fit a distribution surrogate to the Stage-3 errors.",
+      "Do not choose descriptor dimension from observed candidate errors without prior acceptance authority.",
+      "Do not make production or performance claims."
+    ]
+  },
+  "scientific_firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "production_root_uptake_changed": false,
+    "new_root_specific_state_selected": false,
+    "fitted_correction_used": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
