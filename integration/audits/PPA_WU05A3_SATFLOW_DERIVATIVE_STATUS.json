@@ -26,7 +26,15 @@
     ],
     "transcript_sha256": "9dee91b63d24273542204f0121d1718cb1a6682c7e26aafb23f9261dd775d9d9"
   },
-  "next_action": "Continue with another independent source-bound macropore equation; no runtime admission.",
+  "shape_guard_followup": {
+    "baseline": "9a2831f32",
+    "failure_reproduced": "New short-output test aborts at O0 with bounds checking: head_difference_out array bound mismatch (2/3) at module line 23, before INVALID_INPUT can return.",
+    "fix": "Initialize outputs independently, validate all dimensions, then copy input histories. Valid-shape arithmetic and existing scalar-validation behavior are unchanged. Shape failures return INVALID_INPUT with zeroed supplied output sections.",
+    "gate": "tests/fapp/run_ppa_wu05a3_satflow_derivative_source_oracle.ps1",
+    "coverage": "Short head output, short derivative output, short head-difference input, short derivative input and oversized outputs; untouched array sections checked. Existing 100000 bitwise source-formula cases retained.",
+    "test_result": "Working-tree O0/O2 PASS with identical transcripts; persisted replay pending. Earlier test_result transcript hash above remains historical evidence, not the new transcript hash."
+  },
+  "next_action": "Continue source-derived exchange/derivative composition under PPA_WU05A4_RICHARDS_TRIAL_CONTRACT.json; no runtime admission.",
   "recovery_point": "this preregistration, source module, and test",
   "blockers": []
 }

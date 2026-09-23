@@ -20,13 +20,16 @@ contains
     real(real64) :: critical_head, reference_head
     integer :: ic, n
 
-    head_difference_out = signed_head_difference
-    derivative_out = derivative_in
+    ! Do not copy nonconformable arrays before checking the caller's shapes.
+    head_difference_out = 0.0_real64
+    derivative_out = 0.0_real64
     status = PPA_WU05A3_SATFLOW_DERIVATIVE_INVALID_INPUT
     n = size(matrix_head)
     if (n <= 0 .or. size(signed_head_difference) /= n .or. size(inflow) /= n .or. &
         size(outflow) /= n .or. size(derivative_in) /= n .or. size(head_difference_out) /= n .or. &
         size(derivative_out) /= n) return
+    head_difference_out = signed_head_difference
+    derivative_out = derivative_in
     if (top_compartment < 1 .or. bottom_compartment < top_compartment .or. bottom_compartment > n) return
     if (top_macropore_compartment < 0 .or. top_macropore_compartment > n+1) return
     if (.not. all(ieee_is_finite(matrix_head)) .or. .not. all(ieee_is_finite(signed_head_difference)) .or. &

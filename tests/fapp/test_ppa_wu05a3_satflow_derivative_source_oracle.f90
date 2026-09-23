@@ -26,6 +26,30 @@ program test_ppa_wu05a3_satflow_derivative_source_oracle
     call require(all(transfer(expected_df(1:n),[0_int64],n) == transfer(actual_df(1:n),[0_int64],n)),3)
   end do
 
+  ! Nonconformable explicit-shape outputs must be rejected before any array copy.
+  h=1.0_real64; delh=2.0_real64; qin=0.25_real64; qout=0.5_real64; initial=3.0_real64
+  actual_h=-99.0_real64; actual_df=-99.0_real64
+  call ppa_wu05a3_satflow_derivative(1,3,1,h(1:3),delh(1:3),qin(1:3),qout(1:3), &
+       initial(1:3),actual_h(1:2),actual_df(1:3),status)
+  call require(status==PPA_WU05A3_SATFLOW_DERIVATIVE_INVALID_INPUT,4)
+  call require(all(abs(actual_h(1:2))<tiny(1.0_real64)),5)
+  call require(all(abs(actual_df(1:3))<tiny(1.0_real64)),6)
+  call require(all(abs(actual_h(3:8)+99.0_real64)<tiny(1.0_real64)),7)
+  call ppa_wu05a3_satflow_derivative(1,3,1,h(1:3),delh(1:3),qin(1:3),qout(1:3), &
+       initial(1:3),actual_h(1:3),actual_df(1:2),status)
+  call require(status==PPA_WU05A3_SATFLOW_DERIVATIVE_INVALID_INPUT,8)
+  call require(all(abs(actual_df(1:2))<tiny(1.0_real64)),9)
+  call ppa_wu05a3_satflow_derivative(1,3,1,h(1:3),delh(1:2),qin(1:3),qout(1:3), &
+       initial(1:3),actual_h(1:3),actual_df(1:3),status)
+  call require(status==PPA_WU05A3_SATFLOW_DERIVATIVE_INVALID_INPUT,10)
+  call ppa_wu05a3_satflow_derivative(1,3,1,h(1:3),delh(1:3),qin(1:3),qout(1:3), &
+       initial(1:2),actual_h(1:3),actual_df(1:3),status)
+  call require(status==PPA_WU05A3_SATFLOW_DERIVATIVE_INVALID_INPUT,11)
+  call ppa_wu05a3_satflow_derivative(1,3,1,h(1:3),delh(1:3),qin(1:3),qout(1:3), &
+       initial(1:3),actual_h,actual_df,status)
+  call require(status==PPA_WU05A3_SATFLOW_DERIVATIVE_INVALID_INPUT,12)
+  call require(all(abs(actual_h)+abs(actual_df)<tiny(1.0_real64)),13)
+  print '(A)','PPA_WU05A3_SATFLOW_DERIVATIVE_SHAPE_GUARDS=PASS'
   print '(A)','PPA_WU05A3_SATFLOW_DERIVATIVE_SOURCE_ORACLE_100000=PASS'
   print '(A)','PPA_WU05A3_SATFLOW_DERIVATIVE_STRICT_HEAD_THRESHOLD=PASS'
   print '(A)','PPA_WU05A3_SATFLOW_COVERING_TOP_COMPARTMENT_CORRECTION=PASS'
