@@ -28,6 +28,7 @@ jobs:
           set +e
           /usr/bin/time -f '{"wall":"%e","user":"%U","sys":"%S"}' -o timing.json             /tmp/p4_rk4 "${{ matrix.purpose }}" "${{ matrix.material }}" > output.txt 2>&1
           status=$?
+          export STATUS="$status"
           python3 - <<'PY'
           import json,os
           status=int(os.environ["STATUS"])
@@ -42,7 +43,6 @@ jobs:
           open("result.json","w").write(json.dumps(obj,indent=2)+"\n")
           PY
         env:
-          STATUS: "$?"
           PURPOSE: "${{ matrix.purpose }}"
           MATERIAL: "${{ matrix.material }}"
       - uses: actions/upload-artifact@v4
