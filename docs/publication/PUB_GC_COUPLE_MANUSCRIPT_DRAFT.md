@@ -8,6 +8,19 @@
 
 **Consolidated through E1–E7; E7 closed as a preregistered realistic component-domain limit, 2026-09-18.**
 
+### Editorial handoff — fixed-interface theory (2026-09-23)
+
+The closed SWAP5–MODFLOW6 fixed-interface theory has been transferred explicitly into
+this publication line in
+`docs/publication/PUB_GC_COUPLE_FIXED_INTERFACE_THEORY_HANDOFF.md`.
+The next substantive manuscript revision should present the complete current method as
+the primary formulation: finite-window predictor/corrector coupling, physical
+accepted-trajectory tangent, corrector relinearization, explicit storage/process
+ownership and transaction-safe state authority. The earlier SWAP4–MODFLOW6 process
+report is treated as development history rather than as the prior scientific
+publication that constrains this paper's novelty framing. External novelty claims
+remain subject to literature review.
+
 The scientific text below is written as a manuscript rather than as a workplan. E7 is reported as a bounded negative realistic-transferability result rather than as an unexecuted future experiment. Repository evidence pointers and readiness notes are retained after the references and are not intended for journal submission.
 
 ---
