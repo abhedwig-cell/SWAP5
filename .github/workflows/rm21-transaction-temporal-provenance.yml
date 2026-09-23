@@ -1,0 +1,28 @@
+name: RM21 transaction temporal provenance
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/ribasim-management/test_rm21_transaction_temporal_provenance.f90'
+      - 'tests/ribasim-management/run_rm21_transaction_temporal_provenance.sh'
+      - 'integration/ribasim-management/RM21_*'
+      - '.github/workflows/rm21-transaction-temporal-provenance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM21 retry-attempt temporal provenance
+        run: bash tests/ribasim-management/run_rm21_transaction_temporal_provenance.sh
