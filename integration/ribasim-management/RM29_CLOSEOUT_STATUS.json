@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.ribasim_management.closeout.status.v1",
+  "work_unit": "RM29",
+  "date": "2026-09-23",
+  "title": "SWAP5-Ribasim management coupling and first three-model composition closeout",
+  "state": "BOUNDED_CLOSEOUT_PRODUCTION_TRIANGLE_BLOCKED_BY_INDEPENDENT_TEMPORAL_REQUIREMENT",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "branch": "work/ribasim-management-coupling-closeout",
+  "canonical_relation_at_closeout": {
+    "behind_by": 0,
+    "note": "No canonical drift was present when closeout was written."
+  },
+  "central_question_disposition": {
+    "real_SWAP_management_in_Ribasim_allocation": "YES_WITHIN_BOUNDED_FULL_REALIZATION_PROFILE",
+    "transactional_hydrological_memory": "MANAGEMENT_CONTINUATION_AND_RIBUTTER_STATE_QUALIFIED; FULL_RICHARDS_ACTIVE_IRRIGATION_TEMPORAL_ADMISSION_BLOCKED",
+    "allocation_clock_semantics": "QUALIFIED_FIXED_ALLOCATION_V2026_1_1",
+    "composition_with_closed_SWAP_MODFLOW_groundwater": "ARCHITECTURE_AND_EFFECTS_CHARACTERIZED; ACTIVE_IRRIGATION_PRODUCTION_ADMISSION_NOT_ESTABLISHED"
+  },
+  "qualified_authorities": {
+    "RM01": "real Ribasim/RibaMod product semantics frozen; no further generic characterization required",
+    "RM02": "explicit management contract and transfer semantics",
+    "RM03_RM11_RM12": "coupler-owned fixed-allocation clock, restart and exact-release noncommensurate scheduling qualified",
+    "RM05": "legacy nirri ownership gate closed for typed management owner",
+    "RM06": "transactional SWAP irrigation plus Rutter management state reject/replay/restart/exactly-once commit",
+    "RM07": "read-only origin-bound SWAP demand receipt",
+    "RM09": "real Ribasim bounded full allocation and full physical realization",
+    "RM10": "typed origin-bound Ribasim realization receipt; cross-origin and partial-realization fail closed",
+    "RM13B_TA02": "process-isolated real Ribasim candidate transaction host",
+    "F_GC_FIXED_INTERFACE": "canonical admitted closed SWAP5-MODFLOW6 fixed-interface groundwater coupling, drainage owner NONE",
+    "RM18": "guarded dynamic-FLUX temporal certificate for the verified active-irrigation FLUX regime",
+    "RM26": "same-horizon active-irrigation temporal discrepancy localized at surface; zero column-storage difference and identical external transfers",
+    "RM28": "coupled groundwater effect size of the temporal endpoint difference quantified"
+  },
+  "preserved_falsifications": {
+    "RM08": "full allocation does not imply full physical realization when Ribasim physical reduction mechanisms are active",
+    "RM13B": "direct fixed-top-flux active irrigation does not fit inside inherited F-GC44 temporal transaction envelope",
+    "RM14_RM19": "dynamic-top application semantics do not make the inherited F-GC44 active-irrigation temporal budget admissible",
+    "RM15_RM16": "smaller attempted timesteps are not a remedy; shorter raw solves can be less numerically robust",
+    "RM23": "four-quarter same-horizon refinement loses nonlinear solvability; no asymptotic convergence-order claim",
+    "RM24": "F-GC44 1e-5 cm head budget has no authority for transfer to active irrigation",
+    "RM27": "one-step and two-half active-irrigation endpoints are distinguishable in q_swap(H) at the F-GC44 numerical closure resolution"
+  },
+  "temporal_effect_characterization": {
+    "same_horizon_global_max_head_difference_cm": 0.0463838022838558572,
+    "same_horizon_bottom_node_head_difference_cm": 0.0000435876321063233263,
+    "same_horizon_column_storage_difference_cm": 0.0,
+    "same_horizon_top_flux_difference_cm_per_day": 0.0,
+    "same_horizon_bottom_flux_difference_cm_per_day": 0.0,
+    "qswap_response_difference_m_per_s": 3.46816556953720273e-12,
+    "coupled_head_shift_m": 1.7051093870179557e-10,
+    "coupled_groundwater_transfer_shift_m3_over_8_64s_1m2": 2.9958798482770209e-11,
+    "transfer_shift_over_surface_irrigation_volume": 8.3218884674361693e-7,
+    "transfer_shift_over_mean_groundwater_transfer": 2.5157361371284574e-5,
+    "interpretation": "Effect magnitudes are characterized evidence only and are not converted into post-hoc acceptance thresholds."
+  },
+  "required_end_products": {
+    "management_contract": "integration/ribasim-management/RM02_MANAGEMENT_CONTRACT.md",
+    "clock_contract": "integration/ribasim-management/RM03_CLOCK_CONTRACT.md",
+    "transactional_irrigation_state_contract": "integration/ribasim-management/RM04_SWAPP_IRRIGATION_TRANSACTION_STATE_CONTRACT.md",
+    "real_SWAP_Ribasim_fixture": "RM09 plus RM10 bounded real-Ribasim realization route; note that full Richards hydrology is not admitted by this fixture",
+    "three_model_fixture": "RM13B research/qualification composition and follow-up RM14-RM28 evidence; not production admitted",
+    "transfer_ownership_matrix": "integration/ribasim-management/RM29_TRANSFER_OWNERSHIP_MATRIX.md"
+  },
+  "single_remaining_scientific_blocker": {
+    "name": "ACTIVE_IRRIGATION_TEMPORAL_FIDELITY_REQUIREMENT",
+    "contract": "integration/ribasim-management/RM25_ACTIVE_IRRIGATION_TEMPORAL_ACCEPTANCE_CONTRACT.json",
+    "evidence_update": "integration/ribasim-management/RM25_EVIDENCE_UPDATE_01.json",
+    "status": "EXTERNAL_OR_INDEPENDENT_QUANTITATIVE_REQUIREMENT_NOT_AVAILABLE",
+    "why_it_matters": "Production admission requires an independently justified tolerance on a named hydrological/application output. Repository evidence now characterizes the numerical effect but cannot legitimately decide that the observed effect is acceptable.",
+    "valid_next_input": [
+      "application-owner requirement for allowable temporal error in named outputs",
+      "independent validation authority with such a criterion",
+      "separately preregistered numerical-accuracy requirement justified independently of RM23-RM28 outcomes"
+    ]
+  },
+  "stop_decision": {
+    "continue_generic_Ribasim_characterization": false,
+    "continue_dummy_SWAPP_expansion": false,
+    "continue_smaller_timestep_search": false,
+    "tune_temporal_tolerance_to_current_case": false,
+    "rerun_three_model_triangle_without_new_requirement": false,
+    "workstream_research_closeout": true,
+    "production_admission": false
+  },
+  "nonclaims": [
+    "No production-admitted active-irrigation SWAP5-MODFLOW6-Ribasim triangle.",
+    "No arbitrary Ribasim topology or competing-demand authority.",
+    "No partial-supply irrigation policy.",
+    "No active drainage in the triangle.",
+    "No active root uptake in the triangle.",
+    "No groundwater-to-surface-water transfer route.",
+    "No universal active-irrigation temporal tolerance.",
+    "No claim that RM28's small effect size is automatically negligible for every intended application.",
+    "No claim that the finest converged RM23 trajectory is exact.",
+    "No native Ribasim checkpoint API or production process-host architecture is admitted."
+  ],
+  "reopen_condition": "Reopen only when an independent active-irrigation temporal-fidelity requirement is supplied, or when the intended application changes enough to require a newly preregistered fidelity contract. Do not reopen merely to add more numerical combinations."
+}
