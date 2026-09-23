@@ -268,7 +268,18 @@ def main()->None:
             require(abs(top_flux+IRRIGATION_RATE_CM_DAY)<=1e-10,"Richards top irrigation flux")
 
             swap=Fgc44RealSwap(swaplib)
-            hcof,rhs,href=swap.initialize_forced(WINDOW_DAY,1.0e-6,top_flux)
+            forced_status,hcof,rhs,href=swap.try_initialize_forced(WINDOW_DAY,1.0e-6,top_flux)
+            if forced_status != 0:
+                predictor_diag=swap.predictor_run_diagnostics()
+                print(f"RM13_RICHARDS_FORCED_INIT_STATUS={forced_status}")
+                print(
+                    "RM13_RICHARDS_PREDICTOR_DIAGNOSTICS="
+                    + repr(predictor_diag)
+                )
+                raise RuntimeError(
+                    f"forced SWAP initialize failed: {forced_status}; "
+                    f"predictor_diagnostics={predictor_diag}"
+                )
             swap_origin=swap.state()
             require(swap_origin==(0,0.0,0,0.0),"Richards/GW origin changed before coupling")
 
