@@ -3,7 +3,7 @@
   "workstream": "ROM-PURPOSE",
   "work_unit": "ROM-PURPOSE-P3",
   "date": "2026-09-23",
-  "status": "P3_REFERENCE_EXECUTION_ACTIVE_CANDIDATES_BLOCKED",
+  "status": "P3_REFERENCE_EXECUTION_BOUND_AWAITING_RUNNER",
   "repository": {
     "branch": "work/f-rom-purpose",
     "preregistration_commit": "de389dfedf1f0c1fa058d4c8c2448b930f5a0321",
@@ -22,10 +22,9 @@
   "current_gate": "REFERENCE_COMPARATOR_QUALIFICATION",
   "candidate_response_authorized": false,
   "next_actions": [
-    "Complete both frozen P3 Reference route sets.",
-    "Rerun only technically interrupted Reference jobs after the containing run is eligible for rerun; do not change scientific policy.",
-    "Finalize and persist P3 Reference qualification from the bound route artifacts.",
-    "Only if the persisted P3 Reference result authorizes candidates, create the candidate execution binding and run the frozen state-count ladder."
+    "Complete the already-bound fresh P3 Reference qualification.",
+    "Persist P3 Reference result.",
+    "Only if all four purpose/material Reference cases qualify, create the candidate execution binding for the already-frozen state-count matrix."
   ],
   "scientific_firewall": {
     "any_new_p3_reference_response_seen": false,
@@ -57,5 +56,10 @@
     }
   },
   "authority_drift_record": "integration/f-rom/ROM_PURPOSE_P3_AUTHORITY_DRIFT.json",
-  "candidate_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json"
+  "candidate_infrastructure": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json",
+  "reference_execution_binding": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_EXECUTION_BINDING.json",
+  "reference_workflow_runs_launched": [
+    35868454256,
+    35868990868
+  ]
 }
