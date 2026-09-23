@@ -31,6 +31,7 @@ program test_ftab02a_generated_mvg_table_state
   call bind_b110_default_mvg_provider(analytic, p, 1.0e-6_real64)
 
   call initialize_b110_generated_mvg_table_state(state, p, status)
+  if (status /= F_TAB02_STATE_OK) write(error_unit,'(a,i0)') 'F_TAB02_A_INIT_STATUS=', status
   call require(status == F_TAB02_STATE_OK, 'generated state init')
   call require(state%ready(), 'generated state ready')
   call require(state%node_count() == N, 'generated node count')
