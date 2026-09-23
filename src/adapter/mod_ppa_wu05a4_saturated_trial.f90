@@ -10,7 +10,7 @@ module mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_inflow_limit
   use mod_ppa_wu05a4_outflow_limit
   use mod_ppa_wu05a4_trial_exchange,only:macro_trial_key,macro_exchange_evaluation, &
-      macro_used_exchange,discard_macro_exchange,apply_macro_residual
+      macro_used_exchange,discard_macro_exchange,apply_macro_residual,apply_macro_diagonal
   implicit none
   private
   type,public::saturated_domain_inputs
@@ -18,8 +18,34 @@ module mod_ppa_wu05a4_saturated_trial
     real(real64)::bottom=0,pore_level=0,matrix_level=0,storage=0,saturated_fraction=0
     real(real64),allocatable::z(:),dz(:),volume(:),resistance_inverse(:)
   end type
-  public::prepare_saturated_trial,evaluate_saturated_residual
+  public::prepare_saturated_trial,evaluate_saturated_residual,evaluate_saturated_system
 contains
+  ! Candidate-only assembly: residual and diagonal must belong to one evaluation.
+  ! If either application fails, neither caller vector is changed.
+  subroutine evaluate_saturated_system(input,head,dt,key,derivative_enabled,residual,diagonal, &
+      used,storage_candidate,ok)
+    type(saturated_domain_inputs),intent(in)::input
+    real(real64),intent(in)::head(:),dt
+    type(macro_trial_key),intent(in)::key
+    logical,intent(in)::derivative_enabled
+    real(real64),intent(inout)::residual(:),diagonal(:)
+    type(macro_used_exchange),intent(out)::used
+    real(real64),intent(out)::storage_candidate
+    logical,intent(out)::ok
+    type(macro_used_exchange)::trial_used
+    real(real64),allocatable::trial_residual(:),trial_diagonal(:)
+    real(real64)::trial_storage
+    call discard_macro_exchange(used)
+    storage_candidate=0
+    trial_residual=residual; trial_diagonal=diagonal
+    call evaluate_saturated_residual(input,head,dt,key,trial_residual,trial_used,trial_storage,ok)
+    if(.not.ok)return
+    call apply_macro_diagonal(trial_used,key,derivative_enabled,trial_diagonal,ok)
+    if(.not.ok)return
+    residual=trial_residual; diagonal=trial_diagonal
+    used=trial_used; storage_candidate=trial_storage
+  end subroutine
+
   ! This restricted evaluator admits fixed contiguous midpoint geometry only.
   ! The tolerance checks representation consistency; it is not a mass tolerance.
   logical function consistent_pore_geometry(input) result(valid)

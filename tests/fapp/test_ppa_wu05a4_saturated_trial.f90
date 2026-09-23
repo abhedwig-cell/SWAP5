@@ -81,6 +81,24 @@ program test_saturated_trial
   input%volume(1)=0.25_real64
   call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
   call check(ok.and.abs(storage-0.25_real64)<1.e-14_real64,29)
+  key%attempt=4; key%evaluation=1; residual=0; diagonal=1
+  call evaluate_saturated_system(input,[-0.5_real64,0.5_real64],1.0_real64,key,.true., &
+      residual,diagonal,slot,storage,ok)
+  call check(ok,30)
+  call check(abs(residual(2)+0.125_real64)+abs(diagonal(2)-1.25_real64)<1.e-14_real64,31)
+  key%evaluation=2; residual=7; diagonal=3
+  call evaluate_saturated_system(input,[-0.5_real64,0.5_real64],1.0_real64,key,.true., &
+      residual,diagonal(1:1),slot,storage,ok)
+  call check(.not.ok.and.maxval(abs(residual-7))+maxval(abs(diagonal-3))<1.e-14_real64,32)
+  call check(abs(storage)<tiny(storage),33)
+  key%evaluation=1
+  call copy_matrix_transfer(slot,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),34)
+  key%evaluation=3; residual=0; diagonal=1
+  call evaluate_saturated_system(input,[-0.5_real64,0.5_real64],1.0_real64,key,.false., &
+      residual,diagonal,slot,storage,ok)
+  call check(ok.and.maxval(abs(diagonal-1))<1.e-14_real64,35)
+  call check(abs(residual(2)+0.125_real64)<1.e-14_real64,36)
   input%pore_level=-2
   call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
   call check(.not.ok.and..not.allocated(e%rate),11)
@@ -88,6 +106,7 @@ program test_saturated_trial
   print '(a)','PPA_WU05A4_SATURATED_TRIAL_RETRY_FAIL_CLOSED=PASS'
   print '(a)','PPA_WU05A4_SATURATED_RESIDUAL_REEVALUATION=PASS'
   print '(a)','PPA_WU05A4_SATURATED_GEOMETRY_CONSISTENCY=PASS'
+  print '(a)','PPA_WU05A4_SATURATED_SYSTEM_ATOMIC=PASS'
 contains
   subroutine check(condition,code)
     logical,intent(in)::condition

@@ -11,6 +11,13 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "system_wrapper_extension": {
+    "baseline": "46919a73e",
+    "interface": "evaluate_saturated_system applies residual and source diagonal contributions to local scratch copies and exposes both caller vectors, used transfer and scalar candidate storage only after both operations succeed.",
+    "tests": "Valid paired assembly, short-diagonal failure after successful residual preparation with both caller vectors unchanged and old transfer unavailable, plus derivative-disabled branch preserving the diagonal while applying the residual.",
+    "ownership": "Atomic numerical scratch assembly only, not a physical state commit or canonical transaction. Additional allocations are unbenchmarked; production callbacks remain unwired.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "geometry_consistency_extension": {
     "baseline": "f3e43aa74",
     "contract": "Restricted fixed contiguous midpoint grid: positive finite dz, pore volume between zero and dz, domain bottom equals bottom face, adjacent cell faces match, pore level inside domain, and supplied initial storage equals source VOLUNDR at that level. Reject before rate evaluation when inconsistent.",
