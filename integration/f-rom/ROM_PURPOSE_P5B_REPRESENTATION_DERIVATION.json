@@ -68,11 +68,12 @@
   },
   "common_flux_reconstruction": {
     "depth_coordinate": "positive downward",
-    "formula": "q_down_hat = K_rep * (1 - dh/dd)",
+    "formula": "q_native_hat = -K_rep * (1 - dh/dd)",
     "BASE16_K_rep": "K evaluated from mean water content of 157.5-160 cm.",
     "SPLIT17_K_rep": "K evaluated from mean water content of 158.75-160 cm.",
     "HM17_K_rep": "K evaluated from mean water content of 157.5-160 cm.",
-    "purpose": "Compare information content, not create or admit a production flux closure."
+    "purpose": "Compare information content, not create or admit a production flux closure.",
+    "target_sign_convention": "Native SWAP/Reference bottom-outward flux. Gravity-equilibrium fixed bottom flux is qeq=-K."
   },
   "decision_logic": {
     "STORAGE_SPLIT_SUPPORTED": "SPLIT17 improves frozen flux metrics beyond numerical Reference uncertainty while HM17 does not materially outperform SPLIT17.",
