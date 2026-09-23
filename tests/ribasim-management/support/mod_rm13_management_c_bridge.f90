@@ -43,8 +43,8 @@ module mod_rm13_management_c_bridge
 
 contains
 
-  integer(c_int) function rm13_management_initialize_c(request_depth_cm) bind(C,name="rm13_management_initialize_c")
-    real(c_double), intent(out) :: request_depth_cm
+  integer(c_int) function rm13_management_initialize_c(request_depth_out_cm) bind(C,name="rm13_management_initialize_c")
+    real(c_double), intent(out) :: request_depth_out_cm
     type(tcs1_dcs2_sprinkling_parameters_t) :: irrigation_parameters
     type(tcs1_dcs2_sprinkling_state_t) :: irrigation0
     type(rutter_state_t) :: rutter0
@@ -60,7 +60,7 @@ contains
     real(real64) :: committed_time
 
     rm13_management_initialize_c=10_c_int
-    request_depth_cm=0.0_c_double
+    request_depth_out_cm=0.0_c_double
     initialized=.false.; candidate_live=.false.
     parameters=fmr_hupsel_management_parameters_t()
     demand=fmr_hupsel_management_demand_receipt_t()
@@ -107,8 +107,8 @@ contains
       rm13_management_initialize_c=401_c_int
       return
     end if
-    request_depth_cm=demand%requested_depth_cm()
-    if(abs(real(request_depth_cm,real64)-REQUEST_DEPTH_CM)>1.0e-12_real64)then
+    request_depth_out_cm=demand%requested_depth_cm()
+    if(abs(real(request_depth_out_cm,real64)-REQUEST_DEPTH_CM)>1.0e-12_real64)then
       call evaluate_tcs1_dcs2_sprinkling_interval(irrigation_parameters,irrigation0,request, &
            direct_candidate,direct_result,direct_diagnostics)
       write(*,'(A,ES26.17E3)') 'RM13_DIRECT_REQUEST_DEPTH_CM=',direct_result%event_depth_cm
@@ -137,7 +137,7 @@ contains
       rm13_management_initialize_c=502_c_int
       return
     end if
-    request_depth_cm=demand%requested_depth_cm()
+    request_depth_out_cm=demand%requested_depth_cm()
     initialized=.true.
     rm13_management_initialize_c=0_c_int
   end function rm13_management_initialize_c
