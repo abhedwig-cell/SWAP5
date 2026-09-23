@@ -5,9 +5,9 @@
   "date": "2026-09-23",
   "status": "PREPARED_NOT_BOUND_PENDING_TERMINAL_ROUTE_SETS",
   "required_authoritative_runs": {
-    "SURF_P": 35900590109,
-    "GW_SEGMENTED_NON_R2048_T32": 35901466303,
-    "GW_SEGMENTED_R2048_T32": 35900642592
+    "SURF_P": 35901901370,
+    "GW_SEGMENTED_NON_R2048_T32": 35901909951,
+    "GW_SEGMENTED_R2048_T32": 35901832096
   },
   "explicitly_excluded_runs": {
     "35900612668": "superseded monolithic GW execution topology; no scientific authority"
@@ -23,5 +23,10 @@
     "monolithic_gw_artifacts_usable": false,
     "application_acceptance_adjudicated": false,
     "production_rom_authorized": false
+  },
+  "metadata_reconciliation": {
+    "date": "2026-09-23",
+    "reason": "Align prepared adjudication infrastructure with the latest explicitly persisted P4 Reference run authority in ROM_PURPOSE_P4_STATUS.json.",
+    "scientific_change": false
   }
 }
