@@ -17,7 +17,8 @@
     "tolerance": "32 machine epsilons times the relevant representation scale for coordinate/storage consistency only. No mass acceptance tolerance or solver convergence gate is changed.",
     "tests": "Mismatched initial store, disconnected cell geometry, mismatched bottom and excessive pore volume return no usable evaluation. Restoring valid data reproduces original storage/rates. Existing head/retry and invalidation tests retained.",
     "limits": "This adds a restricted adapter precondition, not a general B1 reference behavior change. It does not establish consistency of all supplied saturation-zone metadata with arbitrary nonlinear heads or enable moving geometry.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "9da66b54d",
+    "test_result": "Persisted 9da66b54d evaluator and rate-composition gates PASS O0/O2 with identical transcripts, runtime checks and floating-point traps"
   },
   "residual_wrapper_extension": {
     "baseline": "02efba42f",
