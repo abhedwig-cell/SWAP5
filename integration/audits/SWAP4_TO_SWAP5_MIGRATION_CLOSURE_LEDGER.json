@@ -1249,11 +1249,15 @@
           "id": "M7-07",
           "text": "standalone execution uses the same kernel contracts rather than a separate physics implementation.",
           "status": "PARTIAL",
-          "gap": "Current admitted standalone execution evidence is bounded and does not yet establish every retained standalone profile uses the same typed/kernel contract as the transactional application route.",
-          "next_bounded_action": "Map each retained standalone profile to its kernel contract and preserve the existing restricted profile evidence; do not broaden the public API."
+          "gap": "A current-source census and test establish that all three public production-application standalone entry points converge on the same serialized typed-backend/kernel transaction route, and record the fail-closed profile bounds. The executable qualification set does not yet demonstrate successful accepted-state and mass behavior for every retained admitted profile on this exact route/postimage.",
+          "evidence": [
+            "integration/audits/M7_STANDALONE_KERNEL_ROUTE_CENSUS.json",
+            "tests/fmr/test_m7_standalone_kernel_route_census.py"
+          ],
+          "next_bounded_action": "Reconcile the profile-specific executable qualification evidence against the census and exact source postimage; retain PARTIAL for profiles without passing accepted-state/mass evidence, and do not broaden the public API."
         }
       ],
-      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for worker reuse, inactive-option resource behavior, representative memory, throughput/tail cost, route coverage, and all standalone profiles. These are measurements/composition checks, not authorization for concurrent execution or speculative optimization.",
+      "remaining_gap": "The current accepted baseline admits serialized MultiSWAP and stable physics, but does not yet close the M7 batch evidence for worker reuse, inactive-option resource behavior, representative memory, throughput/tail cost, route coverage, and executable qualification across every retained standalone profile. A source-route census confirms one shared kernel/transaction call graph for all public standalone application APIs; that structural evidence is not a substitute for profile execution and mass qualification. These are measurements/composition checks, not authorization for concurrent execution or speculative optimization.",
       "next_bounded_action": "Preserve the bounded current admission; act only on its specific partial criterion when it is a migration prerequisite."
     },
     {
