@@ -28,8 +28,9 @@
   "candidate_response_authorized": false,
   "reference_response_adjudicated": false,
   "next_actions": [
-    "Execute fresh P4 surface and groundwater Reference routes.",
-    "Adjudicate the complete frozen Reference comparator before any Layer-ROM or matched same-partition Richards response."
+    "Complete authoritative segmented P4 Reference route sets.",
+    "Bind exact terminal surface and segmented groundwater run IDs for Reference adjudication.",
+    "Keep Layer-ROM and matched-Richards response firewall closed until Reference qualification passes."
   ],
   "scientific_firewall": {
     "any_p4_reference_response_seen": false,
@@ -40,6 +41,27 @@
     "new_closure_family_authorized": false,
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
-    "production_rom_authorized": false
-  }
+    "production_rom_authorized": false,
+    "gw_monolithic_reference_superseded": true
+  },
+  "reference_runs": {
+    "SURF_P": {
+      "run_id": 35900590109,
+      "authority": "PENDING_TERMINAL_ROUTE_SET"
+    },
+    "GW_MONOLITHIC_SUPERSEDED": {
+      "run_id": 35900612668,
+      "authority": "NOT_SCIENTIFIC_AUTHORITY",
+      "reason": "systematic runner shutdown exit 143"
+    },
+    "GW_SEGMENTED_NON_R2048_T32": {
+      "run_id": 35901466303,
+      "authority": "PENDING_TERMINAL_ROUTE_SET"
+    },
+    "GW_SEGMENTED_R2048_T32": {
+      "run_id": 35900642592,
+      "authority": "PENDING_TERMINAL_ROUTE_SET"
+    }
+  },
+  "gw_reference_topology_supersession": "integration/f-rom/ROM_PURPOSE_P4_GW_REFERENCE_TOPOLOGY_SUPERSESSION.json"
 }
