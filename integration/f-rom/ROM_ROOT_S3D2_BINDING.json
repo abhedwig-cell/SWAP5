@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.rom_root.s3d2.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D2",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_S3D2_SUPPORT_SWEEP_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_ROOT_S3D2_PREREGISTRATION.json",
+  "authority": {
+    "s3d1_result": "integration/f-rom/ROM_ROOT_S3D1_RESULT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "target": "R2048_T32",
+    "optimization": 0
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-s3d2.yml": "9314114b0771995bc11f3a416d0ce60c16dcf56b",
+    "tests/rom/materialize_rom_root_s3d2_support_sweep.py": "170dc8e98c1522d1d90a5034c95ad08af8b189db",
+    "tests/rom/analyze_rom_root_s3d2_support_sweep.py": "6f5a51c1905b0e9a21b22b3d8af533d56de36f82",
+    "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/materialize_rom_root_ra02r_stress_panel.py": "640e23373e2df7c8073f8102e863e802d2711c74",
+    "tests/rom/materialize_rom_root_ra02r_reference_policy.py": "954d459102c4e5427c9912b43fbacd5f15ab777c",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "integration/f-rom/ROM_ROOT_S3D2_PREREGISTRATION.json": "fa67a63227c51cd4257288d0c41af4a5bb5a2b36",
+    "integration/f-rom/ROM_ROOT_S3D1_RESULT.json": "0f0de9877764982b63f287623a274b430270ad48",
+    "integration/f-rom/ROM_ROOT_RA02R_RESULT.json": "bbff44cd15b98cdbf535096a87d4f5041637bda2"
+  },
+  "supports_cm": [
+    10,
+    5,
+    2.5,
+    1.25,
+    0.625,
+    0.3125,
+    0.15625,
+    0.078125
+  ],
+  "scientific_semantics_changed": false,
+  "reduced_candidate_response_generated": false,
+  "response_based_design": false,
+  "scientific_firewall": {
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
