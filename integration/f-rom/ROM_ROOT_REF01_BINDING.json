@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.rom_root.ref01.binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-REF01",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_REF01_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json",
+  "scientific_semantics_changed": false,
+  "candidate_response_generated": false,
+  "c6r_reopened": false,
+  "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "external_authority": {
+    "p2e18d3": {
+      "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+      "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d"
+    },
+    "p2e20": {
+      "head": "341b383c3e1872e9b5421c4f8742749259d9def4",
+      "preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+      "result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615"
+    }
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-ref01.yml": "da55f6fb2387ed3925fb235874ff471b4c4141e8",
+    "tests/rom/materialize_rom_root_ref01_policy.py": "1dd567250276ec74244fb3f19abe51cff32f9ba9",
+    "tests/rom/analyze_rom_root_ref01.py": "80f3a26a28b45350a24dd8fe07267d69c70b226b",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a",
+    ".github/workflows/f-rom-lare-bc2-c6r.yml": "4cc15507c8b88f8350e70096ceb8e5ee9c492377"
+  },
+  "transferred_policy": {
+    "total_floor_formula": "max(1.6e-15 cm, sum_i(dz_i*spacing(theta_s_i))) / actual_trial_dt_day",
+    "safety_factor": 1,
+    "local_balance_rate_unchanged": 1e-12,
+    "max_iterations_unchanged": 16,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "seed_strict": true,
+    "observed_retry_residual_fit": false
+  },
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "candidate_response_generated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
