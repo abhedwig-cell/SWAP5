@@ -1,0 +1,169 @@
+{
+  "schema": "swap5.rom_root.ra02r.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02R",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_RA02R_REFERENCE_RESPONSE",
+  "role": "CORRECTED_PROSPECTIVE_STRESS_ACTIVE_REFERENCE_PANEL_AFTER_RA02_DESIGN_DEFECT",
+  "inherits": [
+    "integration/f-rom/ROM_ROOT_RA02_DESIGN_DEFECT.json",
+    "integration/f-rom/ROM_ROOT_RA01_CLOSEOUT.json",
+    "integration/f-rom/ROM_ROOT_RA01_ROOT_RESPONSE_DIAGNOSTIC.json",
+    "integration/f-rom/ROM_ROOT_REFERENCE_AUTHORITY_RECONCILIATION.json"
+  ],
+  "question": "Can the root-active high-resolution Reference be numerically qualified on a prospectively stress-activating panel whose initial states are correctly derived from the demand-specific frozen Feddes h3 relation, before any reduced Layer-ROM root-feedback response is generated?",
+  "design_provenance": {
+    "response_based": false,
+    "ra02_scientific_output_used": false,
+    "reduced_candidate_output_used": false,
+    "source_of_values": [
+      "frozen mod_root_water_uptake_process::critical_hlim3",
+      "frozen homogeneous B01/B14 van Genuchten retention relation",
+      "fixed +0.001 effective-saturation offset above demand-specific critical h3",
+      "unchanged 0.8192-day drought-only horizon and potential transpiration levels"
+    ]
+  },
+  "feddes_contract": {
+    "h3L_Se_anchor": 0.35,
+    "h3H_Se_anchor": 0.55,
+    "h4_Se_anchor": 0.08,
+    "ADCRL_cm_per_day": 0.1,
+    "ADCRH_cm_per_day": 0.5,
+    "interpolation": "critical h3 is linear in pressure-head space for ADCRL <= Tp <= ADCRH",
+    "initial_offset_above_demand_specific_h3_Se": 0.001
+  },
+  "stress_panel": {
+    "materials": {
+      "B01": {
+        "hydraulic_parameters": {
+          "theta_r": 0.02,
+          "theta_s": 0.427494,
+          "alpha_per_cm": 0.021659,
+          "n": 1.734737
+        },
+        "h3_Se_at_Tp_0p60": 0.55,
+        "h3_Se_at_Tp_0p30": 0.42571759600680326,
+        "initial_Se_high": 0.551,
+        "initial_Se_low": 0.42671759600680326,
+        "whole_column_storage_excess_above_h3_cm": 0.06519904,
+        "root_zone_storage_excess_above_h3_cm": 0.03259952
+      },
+      "B14": {
+        "hydraulic_parameters": {
+          "theta_r": 0.01,
+          "theta_s": 0.416774,
+          "alpha_per_cm": 0.00541,
+          "n": 1.301528
+        },
+        "h3_Se_at_Tp_0p60": 0.55,
+        "h3_Se_at_Tp_0p30": 0.40613288830832667,
+        "initial_Se_high": 0.551,
+        "initial_Se_low": 0.40713288830832667,
+        "whole_column_storage_excess_above_h3_cm": 0.06508384,
+        "root_zone_storage_excess_above_h3_cm": 0.03254192
+      }
+    },
+    "histories": {
+      "V01": {
+        "root": "SHALLOW",
+        "potential_transpiration_cm_per_day": 0.6,
+        "initial_state_class": "HIGH_DEMAND_MATERIAL_SPECIFIC_H3_PLUS_0P001"
+      },
+      "V02": {
+        "root": "SHALLOW",
+        "potential_transpiration_cm_per_day": 0.3,
+        "initial_state_class": "LOW_DEMAND_MATERIAL_SPECIFIC_H3_PLUS_0P001"
+      },
+      "V03": {
+        "root": "UNIFORM",
+        "potential_transpiration_cm_per_day": 0.6,
+        "initial_state_class": "HIGH_DEMAND_MATERIAL_SPECIFIC_H3_PLUS_0P001"
+      },
+      "V04": {
+        "root": "UNIFORM",
+        "potential_transpiration_cm_per_day": 0.3,
+        "initial_state_class": "LOW_DEMAND_MATERIAL_SPECIFIC_H3_PLUS_0P001"
+      }
+    },
+    "root_depth_cm": 80,
+    "column_depth_cm": 160,
+    "horizon_day": 0.8192,
+    "observation_interval_day": 0.0008,
+    "top_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "bottom_boundary": "FIXED_GRAVITY_EQUILIBRIUM_FLUX",
+    "first_observation_potential_uptake_cm": {
+      "high": 0.00048,
+      "low": 0.00024
+    },
+    "horizon_no_stress_potential_uptake_cm": {
+      "high": 0.49152,
+      "low": 0.24576
+    },
+    "minimum_horizon_uptake_to_whole_column_excess_ratio": 3.7693806534574743,
+    "first_observation_to_root_zone_excess_ratio_max": 0.01475020527369006
+  },
+  "activation_gate": {
+    "absolute_fraction_roundoff_guard": 2.9103830456733704e-11,
+    "derivation": "64 * Nmax * IEEE754 binary64 epsilon with Nmax=2048",
+    "required_per_material_and_history": [
+      "First observation actual transpiration fraction differs from 1 by no more than the roundoff guard.",
+      "At least one later observation has actual transpiration fraction below 1 minus the roundoff guard.",
+      "The first beyond-guard stress observation occurs after observation 1."
+    ],
+    "meaning": "Mechanism activation only; not an application acceptance threshold."
+  },
+  "numerical_policy": {
+    "source": "RA01 transferred PUB-P2E20 representation-floor total-balance discriminator",
+    "total_balance_formula": "max(1e-12 cm/day, sum_i(dz_i*spacing(theta_s_i))/dt_day)",
+    "safety_factor": 1,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_rate": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "legacy_fallback": false,
+    "second_attempt_rescue": false,
+    "production_source_change": false
+  },
+  "numerical_qualification": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "optimization_levels": [
+      0,
+      2
+    ],
+    "target": "R2048_T32",
+    "uncertainty_analyzer": "unchanged tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py",
+    "metrics": [
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm",
+      "mapped_10cm_theta_rmse",
+      "interval_actual_root_uptake_rmse_cm_per_day",
+      "cumulative_actual_root_uptake_rmse_cm"
+    ],
+    "pass_rule": "All integrity, stress activation, O0/O2 identity and five frozen three-level uncertainty metrics must qualify for both materials."
+  },
+  "fail_rule": "Any failure stops before Stage 2. Do not change initial states, horizon, Feddes parameters, numerical policy, uncertainty metrics or candidate definition from RA02R response.",
+  "scientific_firewall": {
+    "reference_qualified": false,
+    "stage2_executed": false,
+    "stage3_executed": false,
+    "reduced_candidate_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
