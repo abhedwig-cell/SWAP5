@@ -28,12 +28,15 @@ def main():
     ap.add_argument("--cor-g4",required=True,type=pathlib.Path)
     ap.add_argument("--cor-g6",required=True,type=pathlib.Path)
     ap.add_argument("--fine-reference",required=True,type=pathlib.Path)
+    ap.add_argument("--r128",required=True,type=pathlib.Path)
     ap.add_argument("--p2a-result",required=True,type=pathlib.Path)
     ap.add_argument("--p2b-result",required=True,type=pathlib.Path)
     ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
     m=load_module(a.p2a_analyzer)
     ref=m.parse_gw(a.fine_reference)
+    r128=m.parse_gw(a.r128)
+    numerical_comparator=m.gw_metrics(m.pseudo_gw(r128),ref)
     cor4=m.gw_metrics(m.pseudo_gw(m.parse_gw(a.cor_g4)),ref)
     cor6=m.gw_metrics(m.pseudo_gw(m.parse_gw(a.cor_g6)),ref)
     p2a=json.loads(a.p2a_result.read_text())
@@ -83,6 +86,7 @@ def main():
         }
       },
       "attribution":attribution,
+      "reference_numerical_comparator":numerical_comparator,
       "G6_spatial_information_value":bool(cor6_vs_cor4_event["left_no_worse"] and cor6_vs_cor4_event["left_strict"]),
       "G8_executed":False,"closure_changed":False,
       "production_rom_authorized":False,"application_acceptance_adjudicated":False
