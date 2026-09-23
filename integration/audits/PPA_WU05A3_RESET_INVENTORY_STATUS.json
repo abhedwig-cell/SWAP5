@@ -1,7 +1,10 @@
 {
   "work_unit": "PPA-WU05-A3-RESET-INVENTORY",
   "baseline": "a32795db8",
-  "phase": "PREREGISTERED",
+  "phase": "SOURCE_TEST_PASSED_COMPOSITION_PENDING",
+  "source_test_result": "143fa32ea70a7e76a2ce1ce802d253ac5bfb8a20 PASS O0/O2, identical transcripts with bounds checks and floating traps",
+  "composition_scope": "Pair counter resets and inventory updates under each source task; verify the intermediate and cumulative groups select matching periods",
+  "gate": "tests/fapp/run_ppa_wu05a3_reset_inventory.ps1",
   "source": "B1.11 macropore.f90 MACRORESET lines 1620-1626 and 1645-1646",
   "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
   "scope": "Candidate beginning-period storage and profile snapshots, task 0/1/2",
