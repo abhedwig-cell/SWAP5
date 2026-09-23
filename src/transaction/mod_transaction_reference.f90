@@ -495,7 +495,8 @@ contains
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
       result%temporal_indicator = outcome%temporal_indicator
-      if (ieee_is_finite(outcome%temporal_indicator) .and. outcome%temporal_indicator >= 0.0_real64) then
+      if (outcome%temporal_certificate_available .and. ieee_is_finite(outcome%temporal_indicator) .and. &
+          outcome%temporal_indicator >= 0.0_real64) then
         result%max_temporal_indicator = max(result%max_temporal_indicator,outcome%temporal_indicator)
       end if
 
