@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_same_horizon_refinement.result.v1",
+  "work_unit": "RM23",
+  "date": "2026-09-23",
+  "decision": "INDEPENDENT_TEMPORAL_SCALE_OBSERVED_BUT_ASYMPTOTIC_REFINEMENT_NOT_AVAILABLE",
+  "workflow": "RM23 same-horizon irrigation refinement",
+  "workflow_run": 35903200356,
+  "conclusion": "success",
+  "frozen_horizon_seconds": 8.64,
+  "sequences": {
+    "one_step_8_64_s": {
+      "complete": true,
+      "substep_statuses": [1],
+      "max_head_response_cm": 7.087553873369558
+    },
+    "two_steps_4_32_s": {
+      "complete": true,
+      "substep_statuses": [1,1]
+    },
+    "four_steps_2_16_s": {
+      "complete": false,
+      "substep_statuses": [1,2],
+      "failure": "second sequential 2.16 s raw Richards solve fails nonlinearly"
+    }
+  },
+  "same_horizon_endpoint_difference": {
+    "one_step_vs_two_half_max_head_cm": 0.04638380228385586,
+    "one_step_vs_two_half_max_water_content": 0.000046720584927051334,
+    "ponding_difference_cm": 0.0,
+    "top_flux_difference_cm_per_day": 0.0,
+    "bottom_flux_difference_cm_per_day": 0.0
+  },
+  "comparison_to_inherited_budget": {
+    "head_budget_cm": 1e-5,
+    "observed_one_vs_two_half_head_difference_over_budget": 4638.380228385586,
+    "interpretation": "The independently observed same-horizon discretization difference is thousands of times larger than the inherited F-GC44 head budget. This does not calibrate a replacement budget, but it independently confirms that 1e-5 cm is not representative of the active-irrigation temporal scale in this frozen case."
+  },
+  "qualified_claims": [
+    "A conventional same-horizon one-step versus two-half-step comparison is numerically available for the frozen active-irrigation case.",
+    "The endpoint head difference is about 0.0464 cm and is independent of the production temporal-certificate operator and acceptance budget.",
+    "The four-quarter sequence cannot provide a finer reference because its second 2.16 s substep fails nonlinearly.",
+    "No asymptotic convergence order or exact temporal error can therefore be inferred.",
+    "The failure pattern is path dependent: a 2.16 s solve from the original origin converges, but the second sequential 2.16 s solve from the evolved state does not."
+  ],
+  "nonclaims": [
+    "0.0463838 cm is not asserted to be the exact truncation error of either trajectory.",
+    "RM23 does not define a new production temporal tolerance.",
+    "RM23 does not make smaller timesteps generally preferable.",
+    "RM23 does not admit the three-model triangle."
+  ],
+  "next_required_boundary": "Audit the scientific provenance of the inherited F-GC44 1e-5 cm temporal budget. If it has no independent active-irrigation basis, define a separate application-specific temporal acceptance requirement before any production-policy change; do not tune that requirement to make RM23 pass."
+}
