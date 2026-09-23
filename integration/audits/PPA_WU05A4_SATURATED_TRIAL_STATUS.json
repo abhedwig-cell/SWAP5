@@ -16,7 +16,8 @@
     "interface": "evaluate_saturated_residual composes preparation and residual application, invalidates previous used-vector scratch before any preparation, and exposes candidate scalar storage only after successful application.",
     "tests": "Head 0.5 -> 0.75 -> rejected geometry -> 0.5 gives expected rates 0.125 -> 0.0625 -> unavailable -> 0.125 from unchanged input storage. Old evaluation identity is rejected. Short residual rejects after preparation without modifying residual or retaining old used transfer.",
     "limitation": "Matrix-zone metadata is fixed during this prescribed head sequence; it tests callback lifecycle, not dynamically derived groundwater state or a nonlinear solve. No production HeadCalc wiring or committed owner change.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "22ae68c14",
+    "test_result": "Persisted 22ae68c14 restricted evaluator and rate-composition gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "next_action": "Design and implement opt-in Richards callback wiring for the restricted trial contract, including geometry/state consistency and final-used evaluation identity, without enabling unsupported physics or introducing a separate commit owner."
 }
