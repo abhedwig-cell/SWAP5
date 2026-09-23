@@ -5,6 +5,7 @@ program test_ppa_wu05a3_interval_candidate
   use mod_ppa_wu05a3_interval_candidate
   use mod_ppa_wu05a3_conservative_flux
   use mod_ppa_wu05a3_candidate_mass
+  use mod_ppa_wu05a4_trial_exchange
   implicit none
   type(ppa_wu05a2_macropore_committed_t) :: state,restored
   type(ppa_wu05a2_macropore_checkpoint_t) :: cp,cp2
@@ -75,7 +76,10 @@ contains
     type(ppa_wu05a2_macropore_checkpoint_t) :: checkpoint
     type(ppa_wu05a2_macropore_candidate_t) :: candidate
     type(candidate_mass_account) :: account
-    real(real64) :: local_volume(1,3),local_exchange(1,3),local_drain(3),matrix(3)
+    type(macro_exchange_evaluation) :: evaluation
+    type(macro_used_exchange) :: used_exchange
+    real(real64) :: local_volume(1,3),local_exchange(1,3),local_drain(3),matrix_residual(3)
+    real(real64),allocatable :: matrix(:)
     real(real64),allocatable :: local_faces(:,:),local_residual(:)
     integer :: attempt,local_status
     logical :: accepted
@@ -94,8 +98,21 @@ contains
           [0.25_real64],[0.0_real64],local_exchange,local_drain,[1.0_real64,1.0_real64,1.0_real64], &
           [-3.0_real64],0.0_real64,candidate,local_faces,local_residual,local_status)
       call require(local_status==FLUX_OK .and. candidate%valid,42)
-      matrix=local_exchange(1,:)
-      if(attempt==1) matrix=[0.0625_real64,0.0_real64,0.0_real64]
+      ! Test-only composition: use the amount captured by residual application,
+      ! not a separate rate-to-amount calculation in the mass-account caller.
+      ! This still does not execute HeadCalc or solve a whole matrix column.
+      evaluation%key=macro_trial_key(checkpoint%lineage_id,checkpoint%revision,int(attempt,int64),1_int64)
+      evaluation%dt=1.0_real64
+      evaluation%head=[-3.0_real64,-2.0_real64,-1.0_real64]
+      evaluation%rate=local_exchange(1,:)
+      evaluation%derivative=[0.0_real64,0.0_real64,0.0_real64]
+      if(attempt==1) evaluation%rate=[0.0625_real64,0.0_real64,0.0_real64]
+      matrix_residual=0.0_real64
+      call apply_macro_residual(evaluation,evaluation%key,evaluation%head,matrix_residual,used_exchange,accepted)
+      call require(accepted,47)
+      call copy_matrix_transfer(used_exchange,evaluation%key,matrix,accepted)
+      call require(accepted,48)
+      call require(maxval(abs(matrix+matrix_residual))<tiny(1.0_real64),49)
       call commit_accounted_candidate(local_state,candidate,1.0_real64,[0.25_real64],local_exchange, &
           local_drain,matrix,0.0_real64,account,accepted,local_status)
       if(attempt==1) then
@@ -107,6 +124,10 @@ contains
         call require(abs(local_state%payload%domain_water_storage(1)-0.875_real64)<tiny(1.0_real64),46)
       end if
     end do
+    call discard_macro_exchange(used_exchange)
+    call copy_matrix_transfer(used_exchange,evaluation%key,matrix,accepted)
+    call require(.not.accepted .and. .not.allocated(matrix),50)
+    print '(a)', 'PPA_WU05A4_USED_TRANSFER_CANDIDATE_MASS=PASS'
   end subroutine
 
   subroutine check_sorptivity_transaction()

@@ -1,0 +1,22 @@
+{
+  "work_unit": "PPA-WU05-A4-TRIAL-EXCHANGE",
+  "baseline": "bd968e2aa",
+  "status": "IMPLEMENTED_ISOLATED_PENDING_PERSISTED_REPLAY",
+  "contract": "integration/audits/PPA_WU05A4_RICHARDS_TRIAL_CONTRACT.json",
+  "implementation": "src/solver/mod_ppa_wu05a4_trial_exchange.f90",
+  "scope": "Opt-in candidate residual/diagonal exchange application and private deep-copy capture of the actual applied vector. Existing provider ABI and production HeadCalc are unchanged.",
+  "identity": "Lineage, committed revision, trial attempt and residual evaluation identify the captured vector. Exact finite head identity is checked before application. The owner must issue unique attempt/evaluation identifiers; this helper is not an authority that allocates identifiers.",
+  "units": "Positive rate enters matrix in cm/day; candidate amount is captured rate times captured dt in days. Derivative is subtracted from the matrix diagonal only when caller enables the source branch.",
+  "failure_semantics": "Invalid residual evaluation leaves residual unchanged and invalidates previous scratch. Wrong identity returns no integrated amount. Explicit discard clears scratch. Nonfinite, shape and arithmetic-overflow guards reject before the corresponding operation.",
+  "tests": [
+    "512 dyadic source-sign residual and diagonal subtractions; captured rate-to-amount identity",
+    "Deep copy protects used vector from later input mutation; derivative-disabled branch preserves diagonal",
+    "Foreign lineage/revision/attempt/evaluation, head mismatch, NaN, shape mismatch, subtraction/integration overflow",
+    "Retry with changed dt uses new integrated amount; discard prevents transfer extraction",
+    "Actual A3 interval candidate mass gate consumes applied-vector amount: wrong-cell same-total exchange rejects, corrected retry commits isolated DTO"
+  ],
+  "gates": ["tests/fapp/run_ppa_wu05a4_trial_exchange.ps1", "tests/fapp/run_ppa_wu05a3_interval_candidate.ps1", "tests/fapp/run_ppa_wu05a3_candidate_mass.ps1"],
+  "limitations": "This helper is not wired into HeadCalc. Tests supply exchange/derivative and identity; they do not solve Richards, compute macrorate physics, establish matrix geometry or surface partition, or commit a whole column. Amount extraction is a candidate diagnostic, not an accepted receipt. A3 proposed reference corrections remain unadmitted.",
+  "next_action": "Bind a source-derived nonlinear exchange evaluator and explicit geometry/surface trial inputs to the Richards owner; preserve exact final-used evaluation through backtracking and whole-column acceptance. Do not enable production by removing guards alone.",
+  "qualified_production": false
+}
