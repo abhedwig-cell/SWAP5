@@ -500,3 +500,27 @@ See:
 Disposition:
 
 **K0_RESEARCH_CLOSED / PRODUCTION_HANDOFF_READY / FINAL_WHOLE_HUPSEL_ADMISSION_GATE_EXTERNAL_ASSET_BLOCKED**.
+
+
+### 2026-09-23 — F-SI39/KSATEXM bounded closeout
+
+The final exact Hupsel gate requires the admitted F-SI39 KSATEXM extension.
+That subproblem is now closed in research for the exact Hupsel material envelope.
+
+- KX05 constitutive PASS: run `35863485123`;
+- zero strict branch-classification mismatches;
+- KX06 typed Reference-Richards PASS: runs `35863794528` and
+  `35863919254`;
+- KX05 preserves KX03 fidelity and solver effort;
+- KX05 removes roughly 20-24% of KX03 runtime in the compact fixture;
+- active KSATEXM regime returns to slight acceleration versus analytical
+  (about 3% in both independent KX06 runs).
+
+Preferred bounded extension handoff: precompute the first floating-active
+F-SI39 pressure head from canonical authority at immutable provider
+initialization; use generated theta only for the active interpolation fraction.
+
+Generic KSATEXM remains out of scope.
+
+Current canonical at latest reconciliation:
+`a2d99ddd149ffaa422d9c422f96bd66e92c8555d`.
