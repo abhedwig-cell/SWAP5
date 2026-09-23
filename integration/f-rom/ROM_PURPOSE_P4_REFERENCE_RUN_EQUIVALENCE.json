@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.rom-purpose.p4.reference-run-equivalence.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-REFERENCE",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_COMPLETE_P4_REFERENCE_ROUTE_SET",
+  "rationale": "Duplicate executions were triggered from bindings whose scientific blobs, preregistration, forcing, numerical policy and solver are identical and whose differences are execution-trigger bookkeeping only. Authority must therefore be determined independently of hydrological response.",
+  "route_sets": {
+    "SURF_P": {
+      "eligible_runs": [
+        35900590109,
+        35901901370
+      ],
+      "rule": "Use the first run to reach complete terminal success for the entire frozen surface route set. Do not mix slices across runs."
+    },
+    "GW_R2048_T32": {
+      "eligible_runs": [
+        35900642592,
+        35901832096
+      ],
+      "rule": "Use the first run to reach complete terminal success for the entire frozen segmented R2048_T32 route set. Do not mix segments across runs."
+    },
+    "GW_SEGMENTED_BASE": {
+      "eligible_runs": [
+        35901466303,
+        35901909951
+      ],
+      "rule": "Use the first run to reach complete terminal success for the entire frozen segmented non-R2048_T32 route set. Do not mix segments across runs."
+    }
+  },
+  "excluded_runs": {
+    "35900612668": "Monolithic GW topology superseded independently after systematic runner exit-143 interruptions."
+  },
+  "selection_forbidden": [
+    "hydrological metric values",
+    "candidate response",
+    "matched-Richards response",
+    "which successful run gives a preferred scientific conclusion"
+  ],
+  "scientific_firewall": {
+    "any_complete_route_set_seen_before_rule": false,
+    "hydrological_response_used_for_authority": false,
+    "forcing_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "candidate_response_generated": false
+  }
+}
