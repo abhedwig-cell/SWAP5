@@ -1556,6 +1556,8 @@ contains
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
+    self%dynamic_top_irrigation_active = .false.
+    self%dynamic_top_irrigation_forcing = fmr_dynamic_top_irrigation_forcing_t()
     self%trajectory_direction_requested = config%accepted_trajectory_direction%requested
     self%trajectory_control_coordinate = config%accepted_trajectory_direction%control_coordinate
     self%trajectory_requested_t0 = interval%t0
@@ -1630,8 +1632,25 @@ contains
         if (allocated(forcing%soil_temperature)) return
       end if
 
+      if (allocated(forcing%dynamic_top_irrigation)) then
+        if (.not. forcing%dynamic_top_irrigation%ready()) return
+        if (forcing%top_flux /= 0.0_real64) return
+        if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. self%snow_active .or. &
+            self%soil_temperature_active .or. self%fixed_weir_surface_water_active .or. self%drainage_response_active .or. &
+            self%root_extraction_active) return
+        if (allocated(forcing%black_evaporation) .or. allocated(forcing%boesten_evaporation)) return
+        self%dynamic_top_irrigation_forcing = forcing%dynamic_top_irrigation
+        self%dynamic_top_irrigation_active = .true.
+      end if
+      self%last_observation%dynamic_top_irrigation_active = self%dynamic_top_irrigation_active
+      if (self%dynamic_top_irrigation_active) then
+        self%last_observation%dynamic_top_irrigation_rate_cm_per_day = &
+             self%dynamic_top_irrigation_forcing%irrigation_rate_cm_per_day
+      end if
+
       self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
       if (self%black_evaporation_active) then
+        if (allocated(forcing%dynamic_top_irrigation)) return
         if (.not. allocated(forcing%black_evaporation)) return
         if (forcing%top_flux /= 0.0_real64) return
         black_values = [forcing%black_evaporation%precipitation_rate_cm_per_day, &
@@ -1658,6 +1677,7 @@ contains
 
       self%boesten_evaporation_forcing = fmr_boesten_evaporation_runtime_forcing_t()
       if (self%boesten_evaporation_active) then
+        if (allocated(forcing%dynamic_top_irrigation)) return
         if (.not. allocated(forcing%boesten_evaporation)) return
         if (allocated(forcing%black_evaporation)) return
         if (forcing%top_flux /= 0.0_real64) return
@@ -1864,11 +1884,12 @@ contains
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: generic_top_provider, black_top_provider, boesten_top_provider
     real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
+    real(real64) :: dynamic_top_runoff_depth, dynamic_top_runoff_tolerance
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
@@ -1881,6 +1902,8 @@ contains
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
+    dynamic_top_runoff_depth = 0.0_real64
+    dynamic_top_runoff_tolerance = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
@@ -1945,7 +1968,7 @@ contains
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
+    if (self%dynamic_top_irrigation_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active) then
       request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
     else
       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -1986,6 +2009,20 @@ contains
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
       request%base_state%groundwater_level = physical%groundwater_level
+
+      if (self%dynamic_top_irrigation_active) then
+        call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters, 1, &
+             physical%pressure_head(1), fixed_top_conductivity, fixed_top_conductivity_ok)
+        if (.not. fixed_top_conductivity_ok) return
+        call bind_b110_dynamic_top_boundary_solver_provider(generic_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, physical%ponding_depth, step_duration, &
+             0.0_real64, self%dynamic_top_irrigation_forcing%irrigation_rate_cm_per_day, &
+             0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, &
+             self%dynamic_top_irrigation_forcing%ponding_max_cm, &
+             self%dynamic_top_irrigation_forcing%runoff_resistance_day, &
+             self%dynamic_top_irrigation_forcing%runoff_exponent, fixed_top_conductivity)
+        request%evaluation%dynamic_top_boundary => generic_top_provider
+      end if
 
       if (self%black_evaporation_active) then
         select type (black_physical => state)
@@ -2200,6 +2237,17 @@ contains
       outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
+    if (self%dynamic_top_irrigation_active) then
+      dynamic_top_runoff_depth = self%dynamic_top_irrigation_forcing%irrigation_rate_cm_per_day * step_duration - &
+           (solve_result%candidate_state%ponding_depth-request%base_state%ponding_depth) + solve_result%top_flux*step_duration
+      dynamic_top_runoff_tolerance = 128.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+           abs(self%dynamic_top_irrigation_forcing%irrigation_rate_cm_per_day*step_duration), &
+           abs(solve_result%candidate_state%ponding_depth-request%base_state%ponding_depth), &
+           abs(solve_result%top_flux*step_duration))
+      if (.not. ieee_is_finite(dynamic_top_runoff_depth) .or. dynamic_top_runoff_depth < -dynamic_top_runoff_tolerance) return
+      if (abs(dynamic_top_runoff_depth) <= dynamic_top_runoff_tolerance) dynamic_top_runoff_depth = 0.0_real64
+      self%last_observation%dynamic_top_runoff_depth_cm = dynamic_top_runoff_depth
+    end if
     if (self%drainage_qbot_smooth_freatic_projection) then
       call project_fmr_qbot_smooth_groundwater_level(self%soil_parameters, solve_result%candidate_state, &
            candidate_projected_groundwater_level, candidate_projection_status, projection_diagnostics)
@@ -2296,7 +2344,7 @@ contains
       end select
     end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
-         snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
+         dynamic_top_runoff_depth, snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       self%last_observation%drainage_response_signed_exchange_native = &
@@ -2392,8 +2440,17 @@ contains
     real(real64) :: value, external_top_flux
     external_top_flux = solver_top_flux
     if (self%snow_active) external_top_flux = self%base_top_flux
-    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
-    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
+    if (self%dynamic_top_irrigation_active) then
+      ! RM14 external owner is the delivered surface irrigation. Richards
+      ! qtop and ponding are internal partition terms; runoff is the only
+      ! external surface-water output in this restricted no-evaporation route.
+      total_in = self%dynamic_top_irrigation_forcing%irrigation_rate_cm_per_day * step_duration + &
+           max(0.0_real64, bottom_flux) * step_duration
+      total_out = dynamic_top_runoff_depth + max(0.0_real64, -bottom_flux) * step_duration
+    else
+      total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
+      total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
+    end if
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration
       if (value >= 0.0_real64) then
