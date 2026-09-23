@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.rom_root.s3d3.artifact_replay.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D3",
+  "date": "2026-09-23",
+  "status": "INDEPENDENT_ARTIFACT_REPLAY_COMPLETE_AWAITING_BOUND_WORKFLOW_ANALYZER",
+  "workflow_run": 35864381308,
+  "workflow_head": "88133dd26670d4111c1d71acc381ad5c2da3a52a",
+  "analyzer_job_id": 107194832789,
+  "analyzer_job_state_when_recorded": "queued",
+  "raw_case_jobs": {
+    "B01_V01": 107192153160,
+    "B01_V02": 107192153344,
+    "B01_V03": 107192153109,
+    "B01_V04": 107192153440,
+    "B14_V01": 107192153102,
+    "B14_V02": 107192152974,
+    "B14_V03": 107192153122,
+    "B14_V04": 107192153243
+  },
+  "raw_case_artifacts": {
+    "B01_V01": 10751576086,
+    "B01_V02": 10751801431,
+    "B01_V03": 10751476558,
+    "B01_V04": 10752586507,
+    "B14_V01": 10752425974,
+    "B14_V02": 10751901080,
+    "B14_V03": 10752231183,
+    "B14_V04": 10751471839
+  },
+  "replay_contract": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D3_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3D3_BINDING.json",
+    "analyzer_blob": "8f2e826c7e3b64774f2d69cc17049b770ae73a50",
+    "numerical_guard": 2.9103830456733704e-11,
+    "response_based_change": false
+  },
+  "observed": {
+    "eight_case_execution_jobs_green": true,
+    "uth_sufficient_all_cases_representations": true,
+    "uj_sufficient_all_cases_representations": true,
+    "uth_uj_identity_within_guard": true,
+    "occupancy_identity_exact": true,
+    "analytic_necessity_counterexamples_pass": true,
+    "max_layer_uj_error": 4.6074255521943996e-14,
+    "max_total_uj_error": 4.6074255521943996e-14,
+    "max_uth_uj_identity_error": 2.3314683517128287e-14,
+    "transition_regime_layer_occurrences": 3515371,
+    "mixed_regime_layer_occurrences": 496527
+  },
+  "preregistered_counterexamples": {
+    "without_U": {
+      "same_J": true,
+      "F_a": 0.30000000000000004,
+      "F_b": 0.7
+    },
+    "without_J_occupancy_only": {
+      "same_U_T_D": true,
+      "F_a": 0.30000000000000004,
+      "F_b": 0.5
+    },
+    "root_weighted_mean_only": {
+      "mean_a": -6,
+      "mean_b": -6,
+      "F_a": 0.5,
+      "F_b": 0.625
+    }
+  },
+  "provisional_interpretation": "The raw artifacts support the preregistered UJ sufficient-information result on the same-state drought-only Feddes domain. This replay is not the authoritative S3-D3 closeout until the bound workflow analyzer completes successfully or is separately adjudicated as an external runner blocker.",
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_propagated_root_state_selected": false,
+    "dynamic_closure_defined": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
