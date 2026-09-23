@@ -123,10 +123,17 @@ MODEL_DIR="$RIBASIM_ROOT/generated_testmodels/swap5_rm13"
 (
   cd "$RIBASIM_ROOT"
   pixi run python "$ROOT/tests/ribasim-management/generate_rm13_real_ribasim.py" "$MODEL_DIR"
-  pixi run build
 )
-LIBRIBASIM="$RIBASIM_ROOT/build/ribasim/lib/libribasim.so"
-test -f "$LIBRIBASIM" || fail "exact-release libribasim missing after build"
+
+RIBASIM_RELEASE_ZIP="$BUILD/ribasim_linux.zip"
+RIBASIM_RELEASE_DIR="$BUILD/ribasim-release"
+curl -L --fail --retry 3   https://github.com/Deltares/Ribasim/releases/download/v2026.1.1/ribasim_linux.zip   -o "$RIBASIM_RELEASE_ZIP"
+echo "2ebff0f4ed600660640b5828bffee861380a7f41468bff75124ef7a831815139  $RIBASIM_RELEASE_ZIP" |   sha256sum -c - || fail "Ribasim v2026.1.1 release asset hash"
+mkdir -p "$RIBASIM_RELEASE_DIR"
+unzip -q "$RIBASIM_RELEASE_ZIP" -d "$RIBASIM_RELEASE_DIR"
+LIBRIBASIM="$RIBASIM_RELEASE_DIR/ribasim/lib/libribasim.so"
+test -f "$LIBRIBASIM" || fail "official v2026.1.1 libribasim missing from release asset"
+echo "RM13_RIBASIM_RELEASE_BINARY=PASS sha256=2ebff0f4ed600660640b5828bffee861380a7f41468bff75124ef7a831815139"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 RM13_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
