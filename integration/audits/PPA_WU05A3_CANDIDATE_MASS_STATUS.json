@@ -1,7 +1,11 @@
 {
   "work_unit": "PPA-WU05-A3-CANDIDATE-MASS",
   "baseline": "15d5a28ee",
-  "phase": "PREREGISTERED",
+  "phase": "PERSISTED_ISOLATED_ACCOUNTING_TESTS_PASSED",
+  "recovery_point": "4382fb91808419f6775b96f7cb233199dcb8c9c3",
+  "gate": "tests/fapp/run_ppa_wu05a3_candidate_mass.ps1",
+  "test_result": "Persisted O0/O2 gate PASS with identical transcripts, warnings-as-errors, bounds/floating checks; signed exchange cancellation, external-only column accounting, compensating cell/domain mismatch rejection, stale/discarded candidate rejection and unchanged committed state",
+  "limitation": "Matrix-side amounts are explicit test inputs, not an executed Richards result. Account validity does not commit state or authorize external publication; the current generic A2 commit is not yet bound to this accounting gate.",
   "authority": "PPA_WU05A1_SOURCE_CENSUS.json mass_transfer_trace",
   "scope": "Candidate-only mass accounting from matching checkpoint/candidate and explicit rates; independently supplied matrix-side cell amounts must equal macropore exchange amounts",
   "signs": "Positive matrix exchange leaves macropores. External input is top vertical plus lateral; rapid drainage is external outflow; bottom is impermeable in this bounded route.",
@@ -10,5 +14,5 @@
   "implementation": "src/adapter/mod_ppa_wu05a3_candidate_mass.f90",
   "test": "tests/fapp/test_ppa_wu05a3_candidate_mass.f90",
   "qualified": false,
-  "next_action": "Implement and test accounting without accepted-state publication"
+  "next_action": "Bind candidate accounting as a mandatory guard in a bounded commit coordinator; invalidate on accounting failure and test no state/revision change, successful single commit and duplicate/stale rejection, without claiming Richards-owner integration"
 }
