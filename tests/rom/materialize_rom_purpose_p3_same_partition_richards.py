@@ -86,6 +86,12 @@ def main()->int:
                 "call require(numnod==8,'LAREGW1 ROMPURP_P3_SAME_PARTITION geometry is exact terminal eight-cell partition')",
                 "terminal eight-cell GW geometry guard"
             )
+            text=replace_one(
+                text,
+                "call require(mod(numnod,16)==0,'LAREGW1 ROMPURP_P3_GW profile geometry divisible by 16')",
+                "call require(mod(numnod,16)==0,'LAREGW1 ROMPURP_P1_GW profile geometry divisible by 16')",
+                "GW coarse-output adapter guard-label bridge"
+            )
             base.write_text(text)
             purpose_arg="gw"
 
