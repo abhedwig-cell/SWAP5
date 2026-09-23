@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.rom-practical.p2a.observability-adjudication.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2A",
+  "date": "2026-09-23",
+  "source_result": "integration/f-rom/ROM_PRACTICAL_P2A_RESULT.json@66c4a8ceefa5e6c411005e1cfac0215bed73f7fd",
+  "status": "P2A_PRIMARY_LABELS_RETAINED_WITH_REFERENCE_OBSERVABILITY_QUALIFICATION",
+  "rule": "Do not rewrite preregistered primary classifications after response. Add a separate observability qualification where the R128-vs-R256 Reference comparator exhibits the same discrete timing defect.",
+  "SURF_P": {
+    "B02": {
+      "primary": "TIMING_SENSITIVE",
+      "candidate_timing_steps": 512,
+      "reference_comparator_timing_steps": 512,
+      "adjudication": "REFERENCE_TIMING_CONFOUNDED"
+    },
+    "B05": {
+      "primary": "TIMING_SENSITIVE",
+      "candidate_timing_steps": 512,
+      "reference_comparator_timing_steps": 0,
+      "adjudication": "CANDIDATE_SPECIFIC_TIMING_DEFECT_SUPPORTED"
+    },
+    "B06": {
+      "primary": "APPROXIMATE_TRANSFER",
+      "candidate_timing_steps": 0,
+      "reference_comparator_timing_steps": 0,
+      "adjudication": "NO_DISCRETE_TIMING_DEFECT"
+    },
+    "B11": {
+      "primary": "TIMING_SENSITIVE",
+      "candidate_timing_steps": 512,
+      "reference_comparator_timing_steps": 512,
+      "adjudication": "REFERENCE_TIMING_CONFOUNDED"
+    },
+    "B12": {
+      "primary": "TIMING_SENSITIVE",
+      "candidate_timing_steps": 512,
+      "reference_comparator_timing_steps": 512,
+      "adjudication": "REFERENCE_TIMING_CONFOUNDED"
+    },
+    "B16": {
+      "primary": "TIMING_SENSITIVE",
+      "candidate_timing_steps": 512,
+      "reference_comparator_timing_steps": 512,
+      "adjudication": "REFERENCE_TIMING_CONFOUNDED"
+    }
+  },
+  "GW_LB": {
+    "conclusion": "G4 EVENT_SENSITIVE is not explained by the R128-vs-R256 comparator. All six materials show materially larger candidate event errors than the corresponding Reference comparator.",
+    "candidate_sign_mismatch_range": [
+      9,
+      469
+    ],
+    "candidate_reversal_sequence_mismatch_range": [
+      0,
+      4
+    ],
+    "candidate_reversal_timing_steps_range": [
+      73,
+      1024
+    ],
+    "comparator_sign_mismatch_range": [
+      0,
+      2
+    ],
+    "comparator_reversal_sequence_mismatch_range": [
+      0,
+      0
+    ],
+    "comparator_reversal_timing_steps_range": [
+      0,
+      2
+    ],
+    "attribution": "PURPOSE_SPECIFIC_REDUCED_REPRESENTATION_EVENT_DEFECT_SUPPORTED; closure versus state-count/placement remains unseparated."
+  },
+  "performance": {
+    "GW_LB_candidate_over_R256_wall_ratio": {
+      "min": 0.0849044322163541,
+      "median": 0.2805909511028125,
+      "max": 0.30185546852737927
+    },
+    "SURF_P_candidate_over_R256_wall_ratio": {
+      "min": 0.05779202965034964,
+      "median": 0.2026043795156997,
+      "max": 0.2105214861767917
+    },
+    "interpretation": "Same-job GitHub Actions implementation ratios only. They are direct purpose-specific timing evidence for the tested P2A implementation, not portable speedups."
+  },
+  "decisions": [
+    "Authorize one targeted groundwater representation challenge using the already frozen G6 placement before any closure change.",
+    "Do not repair SURF_P yet. Track B05 as a candidate-specific timing defect and treat B02/B11/B12/B16 timing as reference-observability-confounded.",
+    "Keep P-ROM-ET closed.",
+    "Do not infer application acceptance."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
