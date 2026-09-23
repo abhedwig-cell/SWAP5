@@ -1,0 +1,44 @@
+name: F-APP09 Ribasim external surface-water owner qualification
+
+on:
+  push:
+    branches:
+      - work/f-app09-ribasim-external-surface-water-profile
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
+      - 'tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90'
+      - 'tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh'
+      - 'integration/f-app/F-APP09_*'
+      - '.github/workflows/f-app09-ribasim-external-surface-water-profile.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
+      - 'tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90'
+      - 'tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh'
+      - 'integration/f-app/F-APP09_*'
+      - '.github/workflows/f-app09-ribasim-external-surface-water-profile.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-APP09 owner qualification
+        run: bash tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh
