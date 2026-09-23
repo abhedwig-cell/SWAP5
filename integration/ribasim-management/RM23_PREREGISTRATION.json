@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_same_horizon_refinement.preregistration.v1",
+  "work_unit": "RM23",
+  "date": "2026-09-23",
+  "title": "Independent same-horizon temporal refinement for the frozen irrigation pulse",
+  "depends_on": {
+    "RM20": "production temporal certificate remains far above inherited budget even after forcing-switch decomposition",
+    "RM21": "single raw solves from the frozen origin converge at 8.64, 4.32 and 2.16 s but fail at 1.08 s"
+  },
+  "question": "What endpoint difference is obtained when the same 8.64 s physical irrigation horizon is integrated as one 8.64 s Richards step, two sequential 4.32 s steps, and four sequential 2.16 s steps, without using the production temporal certificate or HEAD_BUDGET in the solve?",
+  "frozen_case": {
+    "horizon_seconds": 8.64,
+    "irrigation_rate_cm_per_day": 36.0,
+    "bottom_flux_cm_per_day": 1e-6,
+    "initial_state": "same -75 cm top-origin profile as RM20/RM21",
+    "sequences_seconds": [[8.64],[4.32,4.32],[2.16,2.16,2.16,2.16]],
+    "solver_tolerances": "unchanged RM20/RM21 raw Richards settings"
+  },
+  "required_outputs": [
+    "convergence status of every sequential substep",
+    "final pressure-head profile for every complete sequence",
+    "max absolute endpoint head difference one-step versus two-half",
+    "max absolute endpoint head difference two-half versus four-quarter",
+    "max absolute endpoint water-content difference for the same comparisons",
+    "ponding and top/bottom flux endpoint differences",
+    "an observed refinement ratio if both refined sequences complete"
+  ],
+  "hypotheses": [
+    "The two-half sequence completes because the first 4.32 s solve is known to converge and its accepted endpoint may move the second half away from the frozen-origin nonlinear failure regime.",
+    "The four-quarter sequence may or may not complete; its outcome is scientific evidence and must not be forced.",
+    "If both refined sequences complete, their same-horizon endpoint differences provide an independent temporal-discretization scale that does not depend on the production temporal certificate or inherited 1e-5 cm budget.",
+    "If four-quarter fails, the one-versus-two-half difference remains evidence but no asymptotic convergence-order claim is allowed."
+  ],
+  "failure_rule": "Do not alter solver tolerances, forcing, horizon, state, boundary modes or use HEAD_BUDGET to influence the raw solves. A failed sequential substep is a scientific numerical result.",
+  "nonclaims": [
+    "RM23 does not set or calibrate a production temporal tolerance.",
+    "RM23 does not imply that the finest tested sequence is exact.",
+    "RM23 does not admit the three-model triangle.",
+    "RM23 does not authorize temporal-history reseeding."
+  ]
+}
