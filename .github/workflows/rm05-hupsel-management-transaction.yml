@@ -6,8 +6,10 @@ on:
       - work/ribasim-management-coupling-closeout
     paths:
       - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
-      - 'tests/ribasim-management/**'
-      - 'integration/ribasim-management/**'
+      - 'tests/ribasim-management/test_rm05_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/run_rm05_hupsel_management_transaction.sh'
+      - 'integration/ribasim-management/RM04_*'
+      - 'integration/ribasim-management/RM05_*'
       - '.github/workflows/rm05-hupsel-management-transaction.yml'
   workflow_dispatch:
 
