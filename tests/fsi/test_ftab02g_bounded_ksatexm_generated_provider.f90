@@ -119,7 +119,9 @@ contains
     cof(8,node)=0.021645_real64
     cof(9,node)=0.0_real64
     cof(10,node)=832.4163_real64
-    call derive_fsi39_threshold(node)
+    ! Exact admitted F-SI39 Hupsel threshold authority; do not rederive algebraically.
+    cof(11,node)=0.99628918798955624_real64
+    cof(12,node)=36.025513440889291_real64
   end subroutine set_hupsel_upper
 
   subroutine set_hupsel_lower(node)
@@ -134,7 +136,9 @@ contains
     cof(8,node)=0.016083_real64
     cof(9,node)=0.0_real64
     cof(10,node)=227.61759999999998_real64
-    call derive_fsi39_threshold(node)
+    ! Exact admitted F-SI39 Hupsel threshold authority; do not rederive algebraically.
+    cof(11,node)=0.9981816467911503_real64
+    cof(12,node)=15.814441314772257_real64
   end subroutine set_hupsel_lower
 
   subroutine derive_fsi39_threshold(node)
