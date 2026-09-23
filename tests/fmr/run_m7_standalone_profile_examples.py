@@ -139,7 +139,8 @@ def compile_run(name: str, spec: dict[str, object], opt: str, temp: Path, compil
 
 def main() -> int:
     compiler = os.environ.get("FC", "gfortran")
-    with tempfile.TemporaryDirectory(prefix="swap5-m7-standalone-profiles-") as raw_temp:
+    temp_root = os.environ.get("SWAP5_M7_TEMP_ROOT")
+    with tempfile.TemporaryDirectory(prefix="swap5-m7-standalone-profiles-", dir=temp_root) as raw_temp:
         temp = Path(raw_temp)
         for name, spec in PROFILES.items():
             outputs = [compile_run(name, spec, opt, temp, compiler) for opt in ("0", "2")]
