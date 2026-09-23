@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.rom-practical.p2a.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2A",
+  "date": "2026-09-23",
+  "status": "CLOSED_CROSS_MATERIAL_G4_EVENT_DEFECT_GENERALIZED_G6_CHALLENGE_AUTHORIZED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P2A_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P2A_RESULT.json",
+    "observability_adjudication": "integration/f-rom/ROM_PRACTICAL_P2A_OBSERVABILITY_ADJUDICATION.json",
+    "workflow_run": 35892241147
+  },
+  "scientific_conclusions": [
+    "The G4 lower-boundary event/reversal defect generalizes across B02, B05, B06, B11, B12 and B16 under the frozen short-horizon dynamic panel.",
+    "G4 remains substantially cheaper than the tested R256 Reference implementation on the same runner, with material-dependent cost ratios.",
+    "S4 transfers with small-to-moderate continuous profile/storage errors, but it does not reach the R128-vs-R256 numerical comparator in any of the six materials.",
+    "SURF_P extrema timing is not interpretable as a candidate-only defect in B02, B11, B12 and B16 because the Reference ladder itself differs by 512 observation steps.",
+    "B05 is the only P2A SURF_P material with a candidate-specific 512-step extrema-timing defect against a comparator with zero timing error."
+  ],
+  "targeted_repair": {
+    "authorized": true,
+    "next": "ROM-PRACTICAL-P2B-GW1",
+    "change": "G4 -> frozen G6 placement only",
+    "forbidden": [
+      "new closure family",
+      "empirical bias correction",
+      "per-material tuning",
+      "G8 before G6 response is adjudicated",
+      "ET opening"
+    ]
+  },
+  "longer_panel_status": "STILL_REQUIRED_AFTER_TARGETED_GW_DEVELOPMENT_CHALLENGE",
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
