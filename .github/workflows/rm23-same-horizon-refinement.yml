@@ -1,0 +1,28 @@
+name: RM23 same-horizon irrigation refinement
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/solver/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/ribasim-management/test_rm23_same_horizon_refinement.f90'
+      - 'tests/ribasim-management/run_rm23_same_horizon_refinement.sh'
+      - 'integration/ribasim-management/RM23_*'
+      - '.github/workflows/rm23-same-horizon-refinement.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM23 same-horizon refinement
+        run: bash tests/ribasim-management/run_rm23_same_horizon_refinement.sh
