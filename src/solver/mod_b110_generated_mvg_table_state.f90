@@ -284,7 +284,7 @@ contains
         cycle
       end if
 
-      if (h < state%head(1,i)) then
+      if (h <= state%head(1,i)) then
         water_content(i) = state%theta(1,i)
         conductivity(i) = exp(state%logk(1,i))
         capacity(i) = 0.0_real64
