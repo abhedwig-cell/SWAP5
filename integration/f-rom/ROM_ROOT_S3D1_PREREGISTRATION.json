@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.rom_root.s3d1.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D1",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_S3D1_FINE_NODE_DIAGNOSTIC_RESPONSE",
+  "question": "On the same qualified RA02R fine-node hydraulic states, is the remaining R16 root-uptake discrepancy already present in the static Feddes functional, and how much of that functional discrepancy is attributable to within-layer Feddes threshold nonlinearity versus the mismatch between a storage-derived representative head and the root-weighted pressure-head distribution?",
+  "authority": {
+    "stage3_result": "integration/f-rom/ROM_ROOT_S3_RESULT.json",
+    "stage3_closeout": "integration/f-rom/ROM_ROOT_S3_CLOSEOUT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "ra02r_workflow_run": 35822918094,
+    "ra02r_head": "b32d9a0ae8226cb5794ef88f39519dddef5dce67",
+    "reference_target": "R2048_T32",
+    "frozen_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+  },
+  "domain": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "representation": "R16",
+    "r16_bounds_cm": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160
+    ],
+    "root_depth_cm": 80,
+    "diagnostic_hydraulic_state": "qualified RA02R fine-node committed state immediately before each prescribed root-sink evaluation",
+    "transaction_dt_day": 0.000025,
+    "horizon_day": 0.8192,
+    "target_nodes": 2048,
+    "target_node_thickness_cm": 0.078125,
+    "optimization_level": 0
+  },
+  "exact_decomposition": {
+    "notation": {
+      "w_j": "exact fine-node root fraction over node j",
+      "DeltaF_i": "sum of exact w_j in retained R16 layer i",
+      "alpha_j": "unchanged Feddes drought alpha at fine-node pressure head h_j",
+      "theta_bar_i": "water-volume mean theta in retained R16 layer i",
+      "h_storage_i": "inverse retention evaluated at theta_bar_i",
+      "h_root_i": "root-fraction-weighted mean pressure head in retained R16 layer i"
+    },
+    "fine_exact": "F_exact = sum_j w_j * alpha(h_j)",
+    "root_weighted_head_surrogate": "F_roothead = sum_i DeltaF_i * alpha(h_root_i)",
+    "r16_storage_mean": "F_R16 = sum_i DeltaF_i * alpha(h_storage_i)",
+    "A_threshold_nonlinearity": "A = F_roothead - F_exact",
+    "B_representative_head_distribution": "B = F_R16 - F_roothead",
+    "identity": "F_R16 - F_exact = A + B",
+    "crossing_diagnostic": "A retained layer is h3- or h4-crossing when the corresponding threshold lies between the minimum and maximum fine-node pressure head in that layer.",
+    "interpretation": [
+      "A isolates the nonlinearity of alpha across a within-layer threshold after replacing the fine distribution by its exact root-weighted mean pressure head.",
+      "B isolates the information lost when the candidate uses a storage-derived representative head instead of root-weighted pressure-head information.",
+      "Because all three functionals are evaluated on the same fine-node Reference state, reduced hydraulic propagation D is absent from this diagnostic."
+    ]
+  },
+  "metrics": [
+    "per-transaction F_exact, F_roothead and F_R16",
+    "per-transaction total error F_R16-F_exact",
+    "per-transaction A and B with exact A+B identity check",
+    "per-layer exact, root-head and storage-mean contributions",
+    "per-layer min/max fine-node pressure head",
+    "per-layer h3/h4 crossing flags",
+    "per-layer exact root fraction",
+    "per-layer storage-mean theta and h_storage",
+    "per-layer root-weighted h_root",
+    "per-history RMSE and max absolute total/A/B fractional functional errors",
+    "fraction of absolute layerwise functional error occurring in threshold-crossing layers",
+    "fraction of transactions containing an h3 or h4 crossing in root support"
+  ],
+  "numerical_distinguishability": {
+    "guard": 2.9103830456733704e-11,
+    "provenance": "Reuse the already frozen RA02R 64*Nmax*binary64-epsilon roundoff guard with Nmax=2048.",
+    "use": "Only classify a static functional contribution as numerically distinguishable when its absolute magnitude exceeds this guard. This is not an application tolerance."
+  },
+  "interpretation_rules": {
+    "static_functional_missing_information_supported": "R16 fine-state F_R16-F_exact is numerically distinguishable on at least one qualified material/history trajectory.",
+    "A_supported": "A exceeds the frozen numerical guard; threshold-crossing information contributes independently on the same Reference state.",
+    "B_supported": "B exceeds the frozen numerical guard; root-weighted pressure-head information contributes independently on the same Reference state.",
+    "A_and_B_mixed": "Both A and B are numerically distinguishable. Report magnitudes and cancellation without selecting a state.",
+    "neither_static_component_explains_stage3": "Neither A nor B is numerically distinguishable despite the Stage3 dynamic R16 failure; only then may a later diagnostic revisit D or E."
+  },
+  "decision_constraints": [
+    "No new reduced state, root-specific state, moment, partition or hydraulic closure.",
+    "No fitted coefficient, correction, relaxation or memory variable.",
+    "No reduced dynamic candidate rerun.",
+    "No application tolerance derived from the diagnostic response.",
+    "No production or performance claim.",
+    "Do not label A or B dominant using a response-derived cutoff; report exact decomposition and numerical distinguishability only."
+  ],
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
