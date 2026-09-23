@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-TAB02",
+  "title": "Generated default-MvG K0 constitutive acceleration provider",
+  "protocol": "RECONCILE -> PREREGISTER -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
+  "base": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+  "source_authority": {
+    "canonical": "integration/f-ci-canonical@79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "research_handoff": "research/tabulated-hydraulics-characterization@a01a0a44bb6cde43c4ab857f389142ad4d1f982f",
+    "research_state": "RESEARCH_CLOSED_READY_FOR_SEPARATE_PRODUCTION_PREREGISTRATION",
+    "whole_hupsel_authority_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
+  },
+  "capability_contract": {
+    "admitted_physics": "existing default Mualem-van Genuchten constitutive relation only",
+    "numerical_regime": "SWKIMPL=0 only",
+    "representation": "deterministically generated immutable raw-head400 table provider",
+    "interface": "constitutive_hydraulics_provider_t",
+    "default_route": "analytical b110_default_mvg_provider_t remains default and reference",
+    "explicit_selection_required": true,
+    "legacy_swsophy1_revival": false,
+    "arbitrary_user_tables": false,
+    "swkimpl1": false
+  },
+  "qualified_research_input": {
+    "table_rows": 400,
+    "pressure_head_coordinate": "raw physical h at runtime; knots uniform in log10(-h) on the continuous branch",
+    "conductivity_ordinate": "ln(K)",
+    "preprocessing": "TSPACK, outside trial/nonlinear hot loop",
+    "explicit_branches": [
+      "wet theta/C branch",
+      "Ksat plateau"
+    ],
+    "bounds_safe": true,
+    "provider_only_delta_pct_approx": -19,
+    "reference_richards_delta_pct_range": [
+      -31.4,
+      -26.8
+    ],
+    "serialized_reference_delta_pct_range": [
+      -31.37,
+      -28.24
+    ],
+    "preprocessing_break_even_vector_evaluations_30_nodes": 8860,
+    "dynamic_certificate_run": 35818703618
+  },
+  "implementation_slices": [
+    {
+      "id": "F-TAB02-A",
+      "title": "Immutable generated-provider state",
+      "owns": [
+        "deterministic table generation from typed MvG parameters",
+        "immutable table and interpolation metadata",
+        "validation and initialization failure semantics"
+      ],
+      "excludes": [
+        "provider selection",
+        "application wiring",
+        "legacy table input"
+      ]
+    },
+    {
+      "id": "F-TAB02-B",
+      "title": "Typed provider implementation",
+      "owns": [
+        "production-facing constitutive provider behind constitutive_hydraulics_provider_t",
+        "theta/C/K evaluation",
+        "K0-compatible derivative-slot semantics"
+      ],
+      "excludes": [
+        "SWKIMPL=1 admission"
+      ]
+    },
+    {
+      "id": "F-TAB02-C",
+      "title": "Provider selection and lifetime ownership",
+      "owns": [
+        "explicit opt-in provider selection",
+        "persistent provider lifetime across retries/trials",
+        "MultiSWAP ownership without globals"
+      ],
+      "excludes": [
+        "silent fallback",
+        "legacy SWSOPHY=1 reachability"
+      ]
+    },
+    {
+      "id": "F-TAB02-D",
+      "title": "Transaction and temporal qualification",
+      "owns": [
+        "current-canonical dynamic transaction/certificate qualification",
+        "rollback/retry preservation",
+        "fail-closed neighboring profiles"
+      ]
+    },
+    {
+      "id": "F-TAB02-E",
+      "title": "Performance qualification",
+      "owns": [
+        "provider-only",
+        "Reference-Richards",
+        "serialized runtime",
+        "construction cost",
+        "break-even"
+      ]
+    },
+    {
+      "id": "F-TAB02-F",
+      "title": "Whole-application gate",
+      "owns": [
+        "exact M1-C3 whole-Hupsel generated-provider qualification"
+      ],
+      "blocker": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE"
+    }
+  ],
+  "invariants": [
+    "analytical provider remains available and unchanged",
+    "generated tables are immutable numerical representation state, not committed hydrological state",
+    "preprocessing is not repeated per nonlinear evaluation, trial, or retry",
+    "existing constitutive_hydraulics_provider_t seam is used",
+    "selection is explicit and fail-closed",
+    "production scope remains SWKIMPL=0",
+    "generic user-supplied SWSOPHY=1 remains out of scope",
+    "no silent fallback between generated and analytical providers inside an active trial"
+  ],
+  "pass_conditions": [
+    "F-TAB02-A deterministic generation is O0/O2 stable and validates monotonicity/finiteness/branch metadata",
+    "F-TAB02-B matches analytical default-MvG within preregistered constitutive limits over the declared parameter envelope",
+    "analytical default provider postimages remain unchanged",
+    "provider lifetime is persistent across retries/trials and carries no committed physical state",
+    "dynamic prescribed-qbot transaction/certificate gate passes with production-facing provider",
+    "unsupported selection and neighboring profiles fail closed",
+    "performance qualification reports absolute and paired timings plus preprocessing break-even",
+    "final whole-Hupsel admission remains blocked until exact authorized archive bytes are available"
+  ],
+  "stop_conditions": [
+    "common constitutive provider contract proves insufficient and a new solver ABI would be required",
+    "generated provider changes accepted K0 hydrological trajectory beyond preregistered limits",
+    "provider state must become mutable committed physical state",
+    "preprocessing cannot be amortized under real application ownership",
+    "scope would require generic external tables or SWKIMPL=1"
+  ],
+  "nonclaims": [
+    "generic production SWSOPHY=1",
+    "arbitrary user-supplied hydraulic tables",
+    "production SWKIMPL=1",
+    "portable whole-model 20-30 percent speedup",
+    "byte-exact historical B0 runtime equivalence"
+  ]
+}
