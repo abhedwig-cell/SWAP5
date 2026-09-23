@@ -21,6 +21,10 @@
   "layer_frontier_execution_sha": "396ff259ab5d84604d7f4e28943fc287cba7adf6",
   "layer_frontier_result": "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json",
   "layer_frontier_source_workflow_run": 35918240728,
+  "matched_richards_execution_sha": "e9a501ba66bf260c663dce5001a26208310229f1",
+  "matched_richards_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json",
+  "matched_richards_route_source_run": 35918266166,
+  "matched_richards_source_workflow_run": 35919489247,
   "next_actions": [
     "Bind the already-frozen Layer-ROM and matched same-partition Richards frontier executions."
   ],
@@ -42,7 +46,7 @@
   "scientific_firewall": {
     "any_p4_layer_rom_response_seen": true,
     "any_p4_reference_response_seen": true,
-    "any_p4_same_partition_richards_response_seen": false,
+    "any_p4_same_partition_richards_response_seen": true,
     "application_acceptance_adjudicated": false,
     "candidate_execution_binding_created": false,
     "gw_monolithic_reference_superseded": true,

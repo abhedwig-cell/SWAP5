@@ -1,0 +1,1775 @@
+{
+  "cases": {
+    "GW_LB": {
+      "B01": {
+        "G12": {
+          "boundaries_cm": [
+            0.0,
+            40.0,
+            80.0,
+            100.0,
+            120.0,
+            130.0,
+            140.0,
+            145.0,
+            150.0,
+            152.5,
+            155.0,
+            157.5,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": {
+            "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+            "equality_tolerance": 1e-12,
+            "left_minus_right": {
+              "bottom_flux_sign_mismatch_count": 6.0,
+              "cumulative_bottom_exchange_error_cm": 0.0009705801522238302,
+              "history_signed_bottom_flux_bias_cm_per_day": 0.0008203902038522029,
+              "interval_bottom_flux_error_cm_per_day": 0.3272516926562444,
+              "long_horizon_exchange_drift_cm": 0.0012403051296487888,
+              "reversal_sequence_mismatch_count": 0.0,
+              "reversal_timing_error_steps": 3.0,
+              "total_storage_error_cm": 0.0009705801519931629
+            },
+            "left_no_worse": false,
+            "left_strict": false,
+            "right_no_worse": true,
+            "right_strict": true
+          },
+          "dimension": 12,
+          "metrics_against_R2048_T32": {
+            "bottom_flux_sign_mismatch_count": 6,
+            "cumulative_bottom_exchange_error_cm": 0.0009841897372336872,
+            "history_signed_bottom_flux_bias_cm_per_day": 0.0008272936757392235,
+            "interval_bottom_flux_error_cm_per_day": 0.33377821362663057,
+            "long_horizon_exchange_drift_cm": 0.0012539481337441316,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 3,
+            "total_storage_error_cm": 0.000984189737599147
+          },
+          "numerical_qualification": {
+            "T16_vs_T32": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 5.906702580932587e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 3.2076356218888128e-06,
+              "interval_bottom_flux_error_cm_per_day": 0.0020218548817763538,
+              "long_horizon_exchange_drift_cm": 4.2727040892032164e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 5.906702549077189e-06
+            },
+            "T8_vs_T16": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 1.173866403516484e-05,
+              "history_signed_bottom_flux_bias_cm_per_day": 6.408342053631317e-06,
+              "interval_bottom_flux_error_cm_per_day": 0.003923216026896727,
+              "long_horizon_exchange_drift_cm": 8.537247275341997e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 1.1738664053900298e-05
+            },
+            "componentwise_nonincreasing": true,
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  40.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G12",
+                "nodes": 12,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  40.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G12",
+                "nodes": 12,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  40.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G12",
+                "nodes": 12,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 8,
+                "trace_complete": true
+              }
+            },
+            "finite_complete_vector": true,
+            "mass_gate_cm": 1e-12,
+            "mass_gate_pass": true,
+            "max_abs_transaction_mass_cm": {
+              "T16": 3.552713678800501e-14,
+              "T32": 3.552713678800501e-14,
+              "T8": 4.263256414560601e-14
+            },
+            "qualified": true,
+            "reason": "QUALIFIED"
+          }
+        },
+        "G16": {
+          "boundaries_cm": [
+            0.0,
+            20.0,
+            40.0,
+            60.0,
+            80.0,
+            100.0,
+            110.0,
+            120.0,
+            130.0,
+            135.0,
+            140.0,
+            145.0,
+            150.0,
+            152.5,
+            155.0,
+            157.5,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": {
+            "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+            "equality_tolerance": 1e-12,
+            "left_minus_right": {
+              "bottom_flux_sign_mismatch_count": 6.0,
+              "cumulative_bottom_exchange_error_cm": 0.0007953291208288798,
+              "history_signed_bottom_flux_bias_cm_per_day": 0.00046332551529573723,
+              "interval_bottom_flux_error_cm_per_day": 0.3272422458166342,
+              "long_horizon_exchange_drift_cm": 0.000807925496978612,
+              "reversal_sequence_mismatch_count": 0.0,
+              "reversal_timing_error_steps": 3.0,
+              "total_storage_error_cm": 0.000795329120694061
+            },
+            "left_no_worse": false,
+            "left_strict": false,
+            "right_no_worse": true,
+            "right_strict": true
+          },
+          "dimension": 16,
+          "metrics_against_R2048_T32": {
+            "bottom_flux_sign_mismatch_count": 6,
+            "cumulative_bottom_exchange_error_cm": 0.0008089387058387368,
+            "history_signed_bottom_flux_bias_cm_per_day": 0.00047022898718275785,
+            "interval_bottom_flux_error_cm_per_day": 0.3337687667870204,
+            "long_horizon_exchange_drift_cm": 0.0008215685010739548,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 3,
+            "total_storage_error_cm": 0.0008089387063000451
+          },
+          "numerical_qualification": {
+            "T16_vs_T32": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 5.919004121230703e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 3.26083833539014e-06,
+              "interval_bottom_flux_error_cm_per_day": 0.0020218668344996428,
+              "long_horizon_exchange_drift_cm": 4.342746763086325e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 5.919004107021921e-06
+            },
+            "T8_vs_T16": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 1.1763307012048509e-05,
+              "history_signed_bottom_flux_bias_cm_per_day": 6.514622977362302e-06,
+              "interval_bottom_flux_error_cm_per_day": 0.003923238788952336,
+              "long_horizon_exchange_drift_cm": 8.677181291716352e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 1.1763306997266515e-05
+            },
+            "componentwise_nonincreasing": true,
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  20.0,
+                  40.0,
+                  60.0,
+                  80.0,
+                  100.0,
+                  110.0,
+                  120.0,
+                  130.0,
+                  135.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G16",
+                "nodes": 16,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  20.0,
+                  40.0,
+                  60.0,
+                  80.0,
+                  100.0,
+                  110.0,
+                  120.0,
+                  130.0,
+                  135.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G16",
+                "nodes": 16,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  20.0,
+                  40.0,
+                  60.0,
+                  80.0,
+                  100.0,
+                  110.0,
+                  120.0,
+                  130.0,
+                  135.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G16",
+                "nodes": 16,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 8,
+                "trace_complete": true
+              }
+            },
+            "finite_complete_vector": true,
+            "mass_gate_cm": 1e-12,
+            "mass_gate_pass": true,
+            "max_abs_transaction_mass_cm": {
+              "T16": 3.552713678800501e-14,
+              "T32": 4.263256414560601e-14,
+              "T8": 4.263256414560601e-14
+            },
+            "qualified": true,
+            "reason": "QUALIFIED"
+          }
+        },
+        "G8": {
+          "boundaries_cm": [
+            0.0,
+            80.0,
+            100.0,
+            120.0,
+            130.0,
+            140.0,
+            150.0,
+            155.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": {
+            "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+            "equality_tolerance": 1e-12,
+            "left_minus_right": {
+              "bottom_flux_sign_mismatch_count": 15.0,
+              "cumulative_bottom_exchange_error_cm": 0.0026338064439603522,
+              "history_signed_bottom_flux_bias_cm_per_day": 0.0018314227613462077,
+              "interval_bottom_flux_error_cm_per_day": 0.5320696834358797,
+              "long_horizon_exchange_drift_cm": 0.00313019955479632,
+              "reversal_sequence_mismatch_count": 0.0,
+              "reversal_timing_error_steps": 8.0,
+              "total_storage_error_cm": 0.0026338064438339963
+            },
+            "left_no_worse": false,
+            "left_strict": false,
+            "right_no_worse": true,
+            "right_strict": true
+          },
+          "dimension": 8,
+          "metrics_against_R2048_T32": {
+            "bottom_flux_sign_mismatch_count": 15,
+            "cumulative_bottom_exchange_error_cm": 0.002647416028970209,
+            "history_signed_bottom_flux_bias_cm_per_day": 0.0018383262332332282,
+            "interval_bottom_flux_error_cm_per_day": 0.5385962044062659,
+            "long_horizon_exchange_drift_cm": 0.003143842558891663,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 8,
+            "total_storage_error_cm": 0.0026474160294399805
+          },
+          "numerical_qualification": {
+            "T16_vs_T32": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 4.451077446276797e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 3.0945338434261425e-06,
+              "interval_bottom_flux_error_cm_per_day": 0.0005100893920464023,
+              "long_horizon_exchange_drift_cm": 3.853658881780575e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 4.4510774383740524e-06
+            },
+            "T8_vs_T16": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 8.88581097472664e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 6.190433706013738e-06,
+              "interval_bottom_flux_error_cm_per_day": 0.0010104741888882324,
+              "long_horizon_exchange_drift_cm": 7.70669953453762e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 8.885810968626581e-06
+            },
+            "componentwise_nonincreasing": true,
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  150.0,
+                  155.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G8",
+                "nodes": 8,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  150.0,
+                  155.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G8",
+                "nodes": 8,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  150.0,
+                  155.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "G8",
+                "nodes": 8,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 8,
+                "trace_complete": true
+              }
+            },
+            "finite_complete_vector": true,
+            "mass_gate_cm": 1e-12,
+            "mass_gate_pass": true,
+            "max_abs_transaction_mass_cm": {
+              "T16": 2.842170943040401e-14,
+              "T32": 3.552713678800501e-14,
+              "T8": 2.842170943040401e-14
+            },
+            "qualified": true,
+            "reason": "QUALIFIED"
+          }
+        }
+      },
+      "B14": {
+        "G12": {
+          "boundaries_cm": [
+            0.0,
+            40.0,
+            80.0,
+            100.0,
+            120.0,
+            130.0,
+            140.0,
+            145.0,
+            150.0,
+            152.5,
+            155.0,
+            157.5,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": {
+            "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+            "equality_tolerance": 1e-12,
+            "left_minus_right": {
+              "bottom_flux_sign_mismatch_count": 0.0,
+              "cumulative_bottom_exchange_error_cm": 0.0015854559250195446,
+              "history_signed_bottom_flux_bias_cm_per_day": 0.0007684017409425455,
+              "interval_bottom_flux_error_cm_per_day": 0.08415170596871915,
+              "long_horizon_exchange_drift_cm": 0.0015799757765648653,
+              "reversal_sequence_mismatch_count": 0.0,
+              "reversal_timing_error_steps": 0.0,
+              "total_storage_error_cm": 0.0015854559246407272
+            },
+            "left_no_worse": false,
+            "left_strict": false,
+            "right_no_worse": true,
+            "right_strict": true
+          },
+          "dimension": 12,
+          "metrics_against_R2048_T32": {
+            "bottom_flux_sign_mismatch_count": 0,
+            "cumulative_bottom_exchange_error_cm": 0.0016247603332207657,
+            "history_signed_bottom_flux_bias_cm_per_day": 0.00078947596538273,
+            "interval_bottom_flux_error_cm_per_day": 0.10579739163148237,
+            "long_horizon_exchange_drift_cm": 0.0016128552753258262,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 0,
+            "total_storage_error_cm": 0.0016247603323085939
+          },
+          "numerical_qualification": {
+            "T16_vs_T32": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 7.751372050373387e-07,
+              "history_signed_bottom_flux_bias_cm_per_day": 5.224987825213579e-07,
+              "interval_bottom_flux_error_cm_per_day": 1.9006496309372937e-05,
+              "long_horizon_exchange_drift_cm": 8.062071543690763e-07,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 7.751374511018841e-07
+            },
+            "T8_vs_T16": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 1.5494729561554948e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 1.04474445587754e-06,
+              "interval_bottom_flux_error_cm_per_day": 3.7940910435479617e-05,
+              "long_horizon_exchange_drift_cm": 1.6121968258175912e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 1.5494730239382976e-06
+            },
+            "componentwise_nonincreasing": true,
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  40.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G12",
+                "nodes": 12,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  40.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G12",
+                "nodes": 12,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  40.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G12",
+                "nodes": 12,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 8,
+                "trace_complete": true
+              }
+            },
+            "finite_complete_vector": true,
+            "mass_gate_cm": 1e-12,
+            "mass_gate_pass": true,
+            "max_abs_transaction_mass_cm": {
+              "T16": 4.263256414560601e-14,
+              "T32": 4.263256414560601e-14,
+              "T8": 3.552713678800501e-14
+            },
+            "qualified": true,
+            "reason": "QUALIFIED"
+          }
+        },
+        "G16": {
+          "boundaries_cm": [
+            0.0,
+            20.0,
+            40.0,
+            60.0,
+            80.0,
+            100.0,
+            110.0,
+            120.0,
+            130.0,
+            135.0,
+            140.0,
+            145.0,
+            150.0,
+            152.5,
+            155.0,
+            157.5,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": {
+            "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+            "equality_tolerance": 1e-12,
+            "left_minus_right": {
+              "bottom_flux_sign_mismatch_count": 0.0,
+              "cumulative_bottom_exchange_error_cm": 0.0015856878144557753,
+              "history_signed_bottom_flux_bias_cm_per_day": 0.0007705488433928066,
+              "interval_bottom_flux_error_cm_per_day": 0.08415165201222838,
+              "long_horizon_exchange_drift_cm": 0.00157997987322743,
+              "reversal_sequence_mismatch_count": 0.0,
+              "reversal_timing_error_steps": 0.0,
+              "total_storage_error_cm": 0.0015856878142406518
+            },
+            "left_no_worse": false,
+            "left_strict": false,
+            "right_no_worse": true,
+            "right_strict": true
+          },
+          "dimension": 16,
+          "metrics_against_R2048_T32": {
+            "bottom_flux_sign_mismatch_count": 0,
+            "cumulative_bottom_exchange_error_cm": 0.0016249922226569964,
+            "history_signed_bottom_flux_bias_cm_per_day": 0.000791623067832991,
+            "interval_bottom_flux_error_cm_per_day": 0.1057973376749916,
+            "long_horizon_exchange_drift_cm": 0.001612859371988391,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 0,
+            "total_storage_error_cm": 0.0016249922219085185
+          },
+          "numerical_qualification": {
+            "T16_vs_T32": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 7.753846900989304e-07,
+              "history_signed_bottom_flux_bias_cm_per_day": 5.229732337288217e-07,
+              "interval_bottom_flux_error_cm_per_day": 1.9006421279843168e-05,
+              "long_horizon_exchange_drift_cm": 8.062139471576302e-07,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 7.753847951176224e-07
+            },
+            "T8_vs_T16": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 1.5499679597978647e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 1.045693056884339e-06,
+              "interval_bottom_flux_error_cm_per_day": 3.794075991919384e-05,
+              "long_horizon_exchange_drift_cm": 1.6122101627047414e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 1.5499680002439075e-06
+            },
+            "componentwise_nonincreasing": true,
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  20.0,
+                  40.0,
+                  60.0,
+                  80.0,
+                  100.0,
+                  110.0,
+                  120.0,
+                  130.0,
+                  135.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G16",
+                "nodes": 16,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  20.0,
+                  40.0,
+                  60.0,
+                  80.0,
+                  100.0,
+                  110.0,
+                  120.0,
+                  130.0,
+                  135.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G16",
+                "nodes": 16,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  20.0,
+                  40.0,
+                  60.0,
+                  80.0,
+                  100.0,
+                  110.0,
+                  120.0,
+                  130.0,
+                  135.0,
+                  140.0,
+                  145.0,
+                  150.0,
+                  152.5,
+                  155.0,
+                  157.5,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G16",
+                "nodes": 16,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 8,
+                "trace_complete": true
+              }
+            },
+            "finite_complete_vector": true,
+            "mass_gate_cm": 1e-12,
+            "mass_gate_pass": true,
+            "max_abs_transaction_mass_cm": {
+              "T16": 4.263256414560601e-14,
+              "T32": 4.263256414560601e-14,
+              "T8": 4.263256414560601e-14
+            },
+            "qualified": true,
+            "reason": "QUALIFIED"
+          }
+        },
+        "G8": {
+          "boundaries_cm": [
+            0.0,
+            80.0,
+            100.0,
+            120.0,
+            130.0,
+            140.0,
+            150.0,
+            155.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": {
+            "decision": "RIGHT_COMPONENTWISE_NONINFERIOR",
+            "equality_tolerance": 1e-12,
+            "left_minus_right": {
+              "bottom_flux_sign_mismatch_count": 0.0,
+              "cumulative_bottom_exchange_error_cm": 0.004554237208881426,
+              "history_signed_bottom_flux_bias_cm_per_day": 0.004144709983126306,
+              "interval_bottom_flux_error_cm_per_day": 0.10430506781894007,
+              "long_horizon_exchange_drift_cm": 0.0061167164656764465,
+              "reversal_sequence_mismatch_count": 0.0,
+              "reversal_timing_error_steps": 0.0,
+              "total_storage_error_cm": 0.004554237206842666
+            },
+            "left_no_worse": false,
+            "left_strict": false,
+            "right_no_worse": true,
+            "right_strict": true
+          },
+          "dimension": 8,
+          "metrics_against_R2048_T32": {
+            "bottom_flux_sign_mismatch_count": 0,
+            "cumulative_bottom_exchange_error_cm": 0.004593541617082647,
+            "history_signed_bottom_flux_bias_cm_per_day": 0.0041657842075664905,
+            "interval_bottom_flux_error_cm_per_day": 0.1259507534817033,
+            "long_horizon_exchange_drift_cm": 0.006149595964437407,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 0,
+            "total_storage_error_cm": 0.004593541614510533
+          },
+          "numerical_qualification": {
+            "T16_vs_T32": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 5.17783387387157e-07,
+              "history_signed_bottom_flux_bias_cm_per_day": 5.222007743753961e-07,
+              "interval_bottom_flux_error_cm_per_day": 4.701068701644297e-06,
+              "long_horizon_exchange_drift_cm": 7.563411585920221e-07,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 5.17785050646875e-07
+            },
+            "T8_vs_T16": {
+              "bottom_flux_sign_mismatch_count": 0,
+              "cumulative_bottom_exchange_error_cm": 1.0353475543742007e-06,
+              "history_signed_bottom_flux_bias_cm_per_day": 1.0443152657737088e-06,
+              "interval_bottom_flux_error_cm_per_day": 9.397632627491962e-06,
+              "long_horizon_exchange_drift_cm": 1.5125798498161203e-06,
+              "reversal_sequence_mismatch_count": 0,
+              "reversal_timing_error_steps": 0,
+              "total_storage_error_cm": 1.0353476534930829e-06
+            },
+            "componentwise_nonincreasing": true,
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  150.0,
+                  155.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G8",
+                "nodes": 8,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  150.0,
+                  155.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G8",
+                "nodes": 8,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  130.0,
+                  140.0,
+                  150.0,
+                  155.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "G8",
+                "nodes": 8,
+                "purpose": "GW_LB",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 8,
+                "trace_complete": true
+              }
+            },
+            "finite_complete_vector": true,
+            "mass_gate_cm": 1e-12,
+            "mass_gate_pass": true,
+            "max_abs_transaction_mass_cm": {
+              "T16": 3.552713678800501e-14,
+              "T32": 4.263256414560601e-14,
+              "T8": 2.842170943040401e-14
+            },
+            "qualified": true,
+            "reason": "QUALIFIED"
+          }
+        }
+      }
+    },
+    "SURF_P": {
+      "B01": {
+        "S12": {
+          "boundaries_cm": [
+            0.0,
+            5.0,
+            10.0,
+            20.0,
+            30.0,
+            40.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            100.0,
+            120.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": null,
+          "dimension": 12,
+          "metrics_against_R2048_T32": null,
+          "numerical_qualification": {
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S12",
+                "nodes": 12,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 16,
+                "trace_complete": false
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S12",
+                "nodes": 12,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 32,
+                "trace_complete": false
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S12",
+                "nodes": 12,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 8,
+                "trace_complete": false
+              }
+            },
+            "qualified": false,
+            "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+          }
+        },
+        "S16": {
+          "boundaries_cm": [
+            0.0,
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0,
+            30.0,
+            35.0,
+            40.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            100.0,
+            120.0,
+            140.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": null,
+          "dimension": 16,
+          "metrics_against_R2048_T32": null,
+          "numerical_qualification": {
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  25.0,
+                  30.0,
+                  35.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  140.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S16",
+                "nodes": 16,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 16,
+                "trace_complete": false
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  25.0,
+                  30.0,
+                  35.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  140.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S16",
+                "nodes": 16,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 32,
+                "trace_complete": false
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  25.0,
+                  30.0,
+                  35.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  140.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S16",
+                "nodes": 16,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 8,
+                "trace_complete": false
+              }
+            },
+            "qualified": false,
+            "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+          }
+        },
+        "S8": {
+          "boundaries_cm": [
+            0.0,
+            10.0,
+            20.0,
+            30.0,
+            40.0,
+            50.0,
+            60.0,
+            80.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": null,
+          "dimension": 8,
+          "metrics_against_R2048_T32": null,
+          "numerical_qualification": {
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  80.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S8",
+                "nodes": 8,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 16,
+                "trace_complete": false
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  80.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S8",
+                "nodes": 8,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 32,
+                "trace_complete": false
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  80.0,
+                  160.0
+                ],
+                "material": "B01",
+                "member": "S8",
+                "nodes": 8,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 8,
+                "trace_complete": false
+              }
+            },
+            "qualified": false,
+            "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+          }
+        }
+      },
+      "B14": {
+        "S12": {
+          "boundaries_cm": [
+            0.0,
+            5.0,
+            10.0,
+            20.0,
+            30.0,
+            40.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            100.0,
+            120.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": null,
+          "dimension": 12,
+          "metrics_against_R2048_T32": null,
+          "numerical_qualification": {
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S12",
+                "nodes": 12,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 16,
+                "trace_complete": false
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S12",
+                "nodes": 12,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 32,
+                "trace_complete": false
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S12",
+                "nodes": 12,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 8,
+                "trace_complete": false
+              }
+            },
+            "qualified": false,
+            "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+          }
+        },
+        "S16": {
+          "boundaries_cm": [
+            0.0,
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0,
+            30.0,
+            35.0,
+            40.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            100.0,
+            120.0,
+            140.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": null,
+          "dimension": 16,
+          "metrics_against_R2048_T32": null,
+          "numerical_qualification": {
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  25.0,
+                  30.0,
+                  35.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  140.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S16",
+                "nodes": 16,
+                "purpose": "SURF_P",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 16,
+                "trace_complete": true
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  25.0,
+                  30.0,
+                  35.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  140.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S16",
+                "nodes": 16,
+                "purpose": "SURF_P",
+                "return_code_o0": 0,
+                "return_code_o2": 0,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": true,
+                "temporal_factor": 32,
+                "trace_complete": true
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  25.0,
+                  30.0,
+                  35.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  70.0,
+                  80.0,
+                  100.0,
+                  120.0,
+                  140.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S16",
+                "nodes": 16,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 8,
+                "trace_complete": false
+              }
+            },
+            "qualified": false,
+            "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+          }
+        },
+        "S8": {
+          "boundaries_cm": [
+            0.0,
+            10.0,
+            20.0,
+            30.0,
+            40.0,
+            50.0,
+            60.0,
+            80.0,
+            160.0
+          ],
+          "comparator_reached": false,
+          "comparator_relation": null,
+          "dimension": 8,
+          "metrics_against_R2048_T32": null,
+          "numerical_qualification": {
+            "execution_status": {
+              "T16": {
+                "boundaries_cm": [
+                  0.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  80.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S8",
+                "nodes": 8,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 16,
+                "trace_complete": false
+              },
+              "T32": {
+                "boundaries_cm": [
+                  0.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  80.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S8",
+                "nodes": 8,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 32,
+                "trace_complete": false
+              },
+              "T8": {
+                "boundaries_cm": [
+                  0.0,
+                  10.0,
+                  20.0,
+                  30.0,
+                  40.0,
+                  50.0,
+                  60.0,
+                  80.0,
+                  160.0
+                ],
+                "material": "B14",
+                "member": "S8",
+                "nodes": 8,
+                "purpose": "SURF_P",
+                "return_code_o0": 1,
+                "return_code_o2": 1,
+                "schema": "swap5.rom-purpose.p4.matched-richards-route-execution.v1",
+                "scientific_change": false,
+                "scientific_trace_identity": false,
+                "temporal_factor": 8,
+                "trace_complete": false
+              }
+            },
+            "qualified": false,
+            "reason": "EXECUTION_OUTSIDE_FROZEN_QUALIFIED_DOMAIN"
+          }
+        }
+      }
+    }
+  },
+  "decisions": {
+    "GW_LB": {
+      "B01": {
+        "frontier_evidence": {
+          "first_comparator_reaching_member": null,
+          "first_comparator_reaching_state_count": null,
+          "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+          "minimum_tested_member": null,
+          "minimum_tested_state_count": null,
+          "unqualified_lower_members": [],
+          "unqualified_members": []
+        },
+        "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+        "minimum_tested_matched_richards_member": null,
+        "minimum_tested_matched_richards_state_count": null
+      },
+      "B14": {
+        "frontier_evidence": {
+          "first_comparator_reaching_member": null,
+          "first_comparator_reaching_state_count": null,
+          "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+          "minimum_tested_member": null,
+          "minimum_tested_state_count": null,
+          "unqualified_lower_members": [],
+          "unqualified_members": []
+        },
+        "frontier_status": "REPRESENTATION_FRONTIER_NOT_REACHED",
+        "minimum_tested_matched_richards_member": null,
+        "minimum_tested_matched_richards_state_count": null
+      }
+    },
+    "SURF_P": {
+      "B01": {
+        "frontier_evidence": {
+          "first_comparator_reaching_member": null,
+          "first_comparator_reaching_state_count": null,
+          "frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+          "minimum_tested_member": null,
+          "minimum_tested_state_count": null,
+          "unqualified_lower_members": [],
+          "unqualified_members": [
+            "S8",
+            "S12",
+            "S16"
+          ]
+        },
+        "frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+        "minimum_tested_matched_richards_member": null,
+        "minimum_tested_matched_richards_state_count": null
+      },
+      "B14": {
+        "frontier_evidence": {
+          "first_comparator_reaching_member": null,
+          "first_comparator_reaching_state_count": null,
+          "frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+          "minimum_tested_member": null,
+          "minimum_tested_state_count": null,
+          "unqualified_lower_members": [],
+          "unqualified_members": [
+            "S8",
+            "S12",
+            "S16"
+          ]
+        },
+        "frontier_status": "FRONTIER_UNRESOLVED_NUMERICAL_GAPS",
+        "minimum_tested_matched_richards_member": null,
+        "minimum_tested_matched_richards_state_count": null
+      }
+    }
+  },
+  "purpose_summary": {
+    "GW_LB": {
+      "both_material_minima_identified": false,
+      "both_materials_reach_comparator": false,
+      "material_minima": {
+        "B01": null,
+        "B14": null
+      }
+    },
+    "SURF_P": {
+      "both_material_minima_identified": false,
+      "both_materials_reach_comparator": false,
+      "material_minima": {
+        "B01": null,
+        "B14": null
+      }
+    }
+  },
+  "schema": "swap5.rom-purpose.p4.matched-richards-frontier-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "numerical_policy_relaxed": false,
+    "only_frozen_rungs_analyzed": true,
+    "production_rom_authorized": false
+  },
+  "work_unit": "ROM-PURPOSE-P4-MATCHED-RICHARDS",
+  "workstream": "ROM-PURPOSE"
+}
