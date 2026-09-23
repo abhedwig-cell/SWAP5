@@ -34,11 +34,15 @@ module mod_b110_generated_mvg_table_state
     real(real64), allocatable :: theta_sigma(:,:)
     real(real64), allocatable :: logk_slope(:,:)
     real(real64), allocatable :: logk_sigma(:,:)
+    real(real64), allocatable :: logk_ext_slope(:,:)
+    real(real64), allocatable :: logk_ext_sigma(:,:)
     real(real64), allocatable :: theta_saturated(:)
     real(real64), allocatable :: theta_crit(:)
     real(real64), allocatable :: wet_capacity(:)
     real(real64), allocatable :: ksat(:)
     real(real64), allocatable :: kbranch_head(:)
+    real(real64), allocatable :: ksatexm_threshold_head(:)
+    integer, allocatable :: ksatexm_split_index(:)
     real(real64), allocatable :: source_cofgen(:,:)
     logical :: source_ksatexm_extension_enabled = .false.
   contains
@@ -59,8 +63,9 @@ contains
     integer, intent(out) :: status
     type(b110_default_mvg_provider_t) :: analytic
     real(real64), allocatable :: lo(:), hi(:), mid(:), target(:)
+    real(real64), allocatable :: tlo(:), thi(:), tmid(:), threshold_head(:)
     real(real64), allocatable :: hvec(:), theta(:), conductivity(:), capacity(:), dkdh(:)
-    real(real64) :: frac, u0
+    real(real64) :: frac, u0, threshold_frac, relsat
     integer :: i, j, n
     logical :: ok
 
@@ -85,6 +90,7 @@ contains
     end if
 
     allocate(lo(n), hi(n), mid(n), target(n), hvec(n))
+    allocate(tlo(n), thi(n), tmid(n), threshold_head(n))
     allocate(theta(n), conductivity(n), capacity(n), dkdh(n))
 
     call bind_b110_default_mvg_provider(analytic, parameters, 1.0_real64)
@@ -119,18 +125,62 @@ contains
       status = F_TAB02_STATE_GENERATION_FAILED
       return
     end if
+
+    ! Candidate B: locate the admitted F-SI39 relative-saturation threshold
+    ! from the analytical theta authority. This creates a true interpolation
+    ! segment boundary instead of forcing derivative continuity across it.
+    threshold_head = 0.0_real64
+    if (parameters%ksatexm_extension_enabled) then
+      tlo = GENERATION_H_DRY
+      thi = GENERATION_H_WET
+      do j = 1, 140
+        tmid = 0.5_real64 * (tlo + thi)
+        call analytic%evaluate(tmid, theta, conductivity, capacity, dkdh)
+        do i = 1, n
+          if (parameters%cofgen(10,i) <= parameters%cofgen(3,i)) cycle
+          relsat = (theta(i)-parameters%cofgen(1,i)) / &
+               (parameters%cofgen(2,i)-parameters%cofgen(1,i))
+          if (relsat <= parameters%cofgen(11,i)) then
+            tlo(i) = tmid(i)
+          else
+            thi(i) = tmid(i)
+          end if
+        end do
+      end do
+      do i = 1, n
+        if (parameters%cofgen(10,i) > parameters%cofgen(3,i)) then
+          threshold_head(i) = 0.5_real64 * (tlo(i)+thi(i))
+          if (.not. ieee_is_finite(threshold_head(i)) .or. threshold_head(i) >= 0.0_real64 .or. &
+              threshold_head(i) <= GENERATION_H_DRY) then
+            status = F_TAB02_STATE_GENERATION_FAILED
+            return
+          end if
+        end if
+      end do
+    end if
+
     state%active_nodes = n
     allocate(state%head(B110_GENERATED_MVG_TABLE_N,n), state%theta(B110_GENERATED_MVG_TABLE_N,n), &
              state%logk(B110_GENERATED_MVG_TABLE_N,n), &
              state%theta_slope(B110_GENERATED_MVG_TABLE_N,n), state%theta_sigma(B110_GENERATED_MVG_TABLE_N,n), &
-             state%logk_slope(B110_GENERATED_MVG_TABLE_N,n), state%logk_sigma(B110_GENERATED_MVG_TABLE_N,n))
+             state%logk_slope(B110_GENERATED_MVG_TABLE_N,n), state%logk_sigma(B110_GENERATED_MVG_TABLE_N,n), &
+             state%logk_ext_slope(B110_GENERATED_MVG_TABLE_N,n), state%logk_ext_sigma(B110_GENERATED_MVG_TABLE_N,n))
     allocate(state%theta_saturated(n), state%theta_crit(n), state%wet_capacity(n), &
-             state%ksat(n), state%kbranch_head(n))
+             state%ksat(n), state%kbranch_head(n), state%ksatexm_threshold_head(n), state%ksatexm_split_index(n))
     allocate(state%source_cofgen(size(parameters%cofgen,1),n))
     state%source_cofgen = parameters%cofgen
     state%source_ksatexm_extension_enabled = parameters%ksatexm_extension_enabled
+    state%ksatexm_threshold_head = threshold_head
+    state%ksatexm_split_index = 0
 
     u0 = log10(-GENERATION_H_DRY)
+    do i = 1, n
+      if (threshold_head(i) < 0.0_real64) then
+        threshold_frac = (log10(-threshold_head(i))-u0) / (log10(-lo(i))-u0)
+        state%ksatexm_split_index(i) = 1 + floor(threshold_frac * real(B110_GENERATED_MVG_TABLE_N-2,real64))
+        state%ksatexm_split_index(i) = max(2,min(B110_GENERATED_MVG_TABLE_N-2,state%ksatexm_split_index(i)))
+      end if
+    end do
     do j = 1, B110_GENERATED_MVG_TABLE_N - 1
       frac = real(j-1,real64) / real(B110_GENERATED_MVG_TABLE_N-2,real64)
       do i = 1, n
@@ -138,6 +188,7 @@ contains
           hvec(i) = lo(i)
         else
           hvec(i) = -10.0_real64**(u0 + frac * (log10(-lo(i)) - u0))
+          if (state%ksatexm_split_index(i) == j) hvec(i) = state%ksatexm_threshold_head(i)
         end if
       end do
       call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
@@ -206,10 +257,26 @@ contains
 
       state%logk_slope(:,i) = 0.0_real64
       state%logk_sigma(:,i) = 0.0_real64
-      call preprocess_curve(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), &
-           state%logk(1:B110_GENERATED_MVG_TABLE_N-1,i), 2, &
-           state%logk_slope(1:B110_GENERATED_MVG_TABLE_N-1,i), &
-           state%logk_sigma(1:B110_GENERATED_MVG_TABLE_N-1,i), ok)
+      state%logk_ext_slope(:,i) = 0.0_real64
+      state%logk_ext_sigma(:,i) = 0.0_real64
+      if (state%ksatexm_split_index(i) > 0) then
+        j = state%ksatexm_split_index(i)
+        call preprocess_curve(state%head(1:j,i), state%logk(1:j,i), 2, &
+             state%logk_slope(1:j,i), state%logk_sigma(1:j,i), ok)
+        if (.not. ok) then
+          status = F_TAB02_STATE_SPLINE_FAILED
+          return
+        end if
+        call preprocess_curve(state%head(j:B110_GENERATED_MVG_TABLE_N-1,i), &
+             state%logk(j:B110_GENERATED_MVG_TABLE_N-1,i), 2, &
+             state%logk_ext_slope(j:B110_GENERATED_MVG_TABLE_N-1,i), &
+             state%logk_ext_sigma(j:B110_GENERATED_MVG_TABLE_N-1,i), ok)
+      else
+        call preprocess_curve(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), &
+             state%logk(1:B110_GENERATED_MVG_TABLE_N-1,i), 2, &
+             state%logk_slope(1:B110_GENERATED_MVG_TABLE_N-1,i), &
+             state%logk_sigma(1:B110_GENERATED_MVG_TABLE_N-1,i), ok)
+      end if
       if (.not. ok) then
         status = F_TAB02_STATE_SPLINE_FAILED
         return
@@ -278,7 +345,7 @@ contains
     real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:)
     integer, intent(out) :: status
     real(real64) :: h, x(2), y(2), yp(2), sig(2), logk_value
-    integer :: i, klo, khi, ier, n
+    integer :: i, klo, khi, ier, n, split, local_klo, local_khi
 
     status = F_TAB02_STATE_NOT_READY
     if (.not. state%ready()) return
@@ -332,11 +399,28 @@ contains
       if (h > state%kbranch_head(i)) then
         conductivity(i) = state%ksat(i)
       else
-        call locate_interval(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), h, klo, khi)
-        x = state%head(klo:khi,i)
-        y = state%logk(klo:khi,i)
-        yp = state%logk_slope(klo:khi,i)
-        sig = state%logk_sigma(klo:khi,i)
+        split = state%ksatexm_split_index(i)
+        if (split > 0 .and. h > state%ksatexm_threshold_head(i)) then
+          call locate_interval(state%head(split:B110_GENERATED_MVG_TABLE_N-1,i), h, local_klo, local_khi)
+          klo = split + local_klo - 1
+          khi = split + local_khi - 1
+          x = state%head(klo:khi,i)
+          y = state%logk(klo:khi,i)
+          yp = state%logk_ext_slope(klo:khi,i)
+          sig = state%logk_ext_sigma(klo:khi,i)
+        else if (split > 0) then
+          call locate_interval(state%head(1:split,i), h, klo, khi)
+          x = state%head(klo:khi,i)
+          y = state%logk(klo:khi,i)
+          yp = state%logk_slope(klo:khi,i)
+          sig = state%logk_sigma(klo:khi,i)
+        else
+          call locate_interval(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), h, klo, khi)
+          x = state%head(klo:khi,i)
+          y = state%logk(klo:khi,i)
+          yp = state%logk_slope(klo:khi,i)
+          sig = state%logk_sigma(klo:khi,i)
+        end if
         logk_value = my_HVAL(h, x, y, yp, sig, ier)
         if (ier /= 0) then
           status = F_TAB02_STATE_EVALUATION_FAILED
@@ -379,8 +463,10 @@ contains
     ready = allocated(self%head) .and. allocated(self%theta) .and. allocated(self%logk) .and. &
          allocated(self%theta_slope) .and. allocated(self%theta_sigma) .and. &
          allocated(self%logk_slope) .and. allocated(self%logk_sigma) .and. &
+         allocated(self%logk_ext_slope) .and. allocated(self%logk_ext_sigma) .and. &
          allocated(self%theta_saturated) .and. allocated(self%theta_crit) .and. &
          allocated(self%wet_capacity) .and. allocated(self%ksat) .and. allocated(self%kbranch_head) .and. &
+         allocated(self%ksatexm_threshold_head) .and. allocated(self%ksatexm_split_index) .and. &
          allocated(self%source_cofgen)
   end function generated_state_ready
 
@@ -407,8 +493,9 @@ contains
     class(b110_generated_mvg_table_state_t), intent(in) :: self
     bytes = 0_int64
     if (.not. self%ready()) return
-    bytes = int(7 * B110_GENERATED_MVG_TABLE_N * self%active_nodes, int64) * 8_int64 + &
-         int((5 + size(self%source_cofgen,1)) * self%active_nodes, int64) * 8_int64
+    bytes = int(9 * B110_GENERATED_MVG_TABLE_N * self%active_nodes, int64) * 8_int64 + &
+         int((6 + size(self%source_cofgen,1)) * self%active_nodes, int64) * 8_int64 + &
+         int(self%active_nodes, int64) * 4_int64
   end function generated_state_estimated_bytes
 
 end module mod_b110_generated_mvg_table_state
