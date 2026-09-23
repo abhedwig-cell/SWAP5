@@ -1,0 +1,110 @@
+{
+  "schema": "swap5.ribasim_management.authority_freeze.v1",
+  "work_unit": "RM01",
+  "date": "2026-09-23",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "scope": "Freeze existing real-Ribasim/RibaMod product semantics needed by the SWAP5 management coupling. No further general Ribasim characterization is authorized by this work unit.",
+  "groundwater_dependency": {
+    "state": "CANONICAL_CLOSED_BOUNDED_FIXED_INTERFACE",
+    "canonical_witness": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "application_envelope": [
+      "fixed lower coupling plane head/flux interface",
+      "one accepted interface transfer with opposite-sign counterpart",
+      "MODFLOW STO role HEAD_STATE_CAPACITANCE",
+      "drainage owner NONE",
+      "restart/replay qualified"
+    ]
+  },
+  "qualified_product_semantics": [
+    {
+      "authority": "RIBASIM-DUMMY-20D",
+      "head": "f717de8128886b317737a8829f18808766c24aff",
+      "run": 35723571953,
+      "meaning": "allocation.dt owns UserDemand management cadence in the tested actual RibaMod route; saveat does not define a competing allocation cadence."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20E3",
+      "head": "64813e01f3817794f457f467be2f0724797a72c5",
+      "run": 35728008237,
+      "meaning": "Post-allocation groundwater transfer can be physically realized while the current fixed allocation remains unchanged."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20F2",
+      "head": "80f242625ccf3f5714bb521707f1136a1e4f779d",
+      "run": 35729300651,
+      "meaning": "Realized groundwater transfer changes accepted Ribasim state and becomes management-visible at the next allocation boundary, without retroactive reallocation."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20G",
+      "head": "929c0db26d61d3da285d28d8f2dcf746d5d210d7",
+      "run": 35730262593,
+      "meaning": "Accepted surface-water stage can drive MF6 River exchange with reciprocal physical feedback to Ribasim."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H2",
+      "head": "8e25378f25b7ea409e39db1b39c36702f9032c56",
+      "run": 35734439031,
+      "meaning": "Current-boundary negative infiltration forcing can be physically active but is not necessarily visible to the fixed allocation solved at that same boundary."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H4",
+      "head": "e8d08860289629d5491bf2a6780727cea9d9c4cd",
+      "run": 35737697708,
+      "meaning": "Physical realization and allocation forecast have distinct low-storage semantics."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H5",
+      "head": "5ebb329990877c591254f045ee46921b589a62c4",
+      "run": 35741211340,
+      "meaning": "Implicit negative forecast forcing can be attenuated by the allocation storage constraint independently of LevelDemand bookkeeping."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H7",
+      "head": "84f05671bafcd0cd8fe22d115980889bc5491a00",
+      "run": 35745915889,
+      "meaning": "Accepted Basin memory and newly computed current forcing are distinct next-boundary allocation inputs."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H8",
+      "head": "b860a5b13a09ef40bd33056f65617b8bb3491237",
+      "run": 35747089993,
+      "meaning": "Positive drainage forecast and negative infiltration forecast are direction-sensitive and not algebraically interchangeable in the tested release."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H9",
+      "head": "ad833c879493764f5f087efcbff5edb8203f674a",
+      "run": 35749109620,
+      "meaning": "Current positive groundwater drainage can be admitted as forecast supply in addition to accepted storage memory."
+    },
+    {
+      "authority": "RIBASIM-DUMMY-20H10",
+      "head": "fd66d678f242941cbcffec251931418fa5c80ecd",
+      "run": 35750549610,
+      "meaning": "A noncommensurate allocation boundary crossed inside one BMI update_until can be skipped; correct coupling must therefore schedule explicit management boundaries."
+    }
+  ],
+  "falsified_or_superseded_assumptions": [
+    "saveat defines UserDemand allocation cadence",
+    "sub-saveat BMI UserDemand application is automatically effective",
+    "current-boundary active River/infiltration must alter the allocation solved at the same boundary",
+    "allocated water is identical to physically supplied water",
+    "positive and negative current groundwater/surface-water forcing are symmetric allocation inputs",
+    "crossing an allocation boundary inside update_until guarantees an allocation solve"
+  ],
+  "actual_coupling_requirements": [
+    "SWAP physical demand, Ribasim request, allocation and physical supply are distinct objects.",
+    "Only accepted physical supply may become SWAP irrigation input and accepted water mass.",
+    "Rejected SWAP/coupler trials may not mutate accepted SWAP or Ribasim state.",
+    "Management solve occurs at an explicit coupler-owned Ribasim allocation boundary.",
+    "Accepted state memory and current forecast forcing remain separate.",
+    "The coupler must split advances at relevant noncommensurate management boundaries.",
+    "Groundwater exchange uses the already closed fixed-interface authority and must not reopen drainage or storage ownership."
+  ],
+  "frozen_characterization": true,
+  "forbidden_extension_without_contract_need": [
+    "RIBASIM-DUMMY-20H11",
+    "RIBASIM-DUMMY-20H12",
+    "new clock-lattice sweeps",
+    "new generic Ribasim allocation-internals characterization"
+  ]
+}
