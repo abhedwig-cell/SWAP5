@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.ribasim_management.temporal_indicator_decomposition.preregistration.v1",
+  "work_unit": "RM20",
+  "date": "2026-09-23",
+  "title": "Temporal-indicator decomposition across the irrigation forcing discontinuity",
+  "depends_on": {
+    "RM16": "the frozen 8.64 s raw dynamic-top solve converges",
+    "RM17": "dynamic FLUX and explicit qtop=-36 raw trajectories are bit-identical",
+    "RM18": "dynamic FLUX temporal certificate is available and equals the explicit-flux certificate",
+    "RM19": "the unchanged transaction is rejected by the inherited temporal budget with no unavailable-certificate rejection"
+  },
+  "question": "Is the large RM19 temporal indicator primarily a local truncation defect within the new irrigation regime, or is it dominated by comparing the post-irrigation trajectory with a predecessor right derivative that belongs to the pre-irrigation forcing regime?",
+  "frozen_case": {
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "initial_pressure_head_top_cm": -75.0,
+    "bottom_flux_cm_per_day": 1e-6,
+    "irrigation_top_flux_cm_per_day": -36.0,
+    "no_irrigation_top_flux_cm_per_day": 1e-6,
+    "head_budget_cm": 1e-5
+  },
+  "comparisons": [
+    "No-irrigation full-window raw solve and temporal indicator with its same-regime predecessor derivative.",
+    "Irrigation full-window raw solve with the historical predecessor derivative used by the F-GC44 fixture.",
+    "Irrigation full-window raw solve with a post-switch origin derivative computed from the same Richards residual/operator at the accepted state under the new irrigation forcing.",
+    "Dynamic-FLUX and explicit-flux routes must remain numerically identical for every common predecessor derivative.",
+    "Direct full-window normalized indicator is compared with RM19 transaction max_temporal_indicator to determine whether the transaction diagnostic is the first-attempt value or a maximum over later retry attempts."
+  ],
+  "required_outputs": [
+    "previous derivative infinity and mass-weighted norms",
+    "post-switch origin derivative infinity and mass-weighted norms",
+    "current secant derivative infinity and mass-weighted norms",
+    "raw_m_norm",
+    "defect_m_norm",
+    "bounded_m_norm",
+    "min_mass_weight",
+    "head_inf_bound",
+    "head_inf_bound / 1e-5",
+    "route"
+  ],
+  "hypotheses": [
+    "The no-irrigation equilibrium-like trajectory has a temporal bound orders of magnitude below the irrigation-onset case.",
+    "Using the historical pre-irrigation predecessor reproduces the large RM18/RM19 onset defect.",
+    "Using the post-switch origin right derivative materially reduces the irrigation temporal bound if the dominant term is the forcing discontinuity rather than within-regime truncation.",
+    "Dynamic and explicit qtop=-36 certificates remain identical under the same predecessor.",
+    "No acceptance threshold or solver setting is needed to answer these diagnostic questions."
+  ],
+  "failure_rule": "Do not alter HEAD_BUDGET, temporal tolerance, retry policy, irrigation forcing, raw solver tolerances or the temporal defect operator. A failure to reduce the bound with the post-switch derivative falsifies the forcing-discontinuity explanation.",
+  "nonclaims": [
+    "RM20 does not authorize temporal-history reseeding.",
+    "RM20 does not alter accepted-state semantics.",
+    "RM20 does not admit a new temporal budget.",
+    "RM20 does not admit the three-model triangle.",
+    "A post-switch derivative may only become production state after a separate prospective contract and rollback/restart qualification."
+  ]
+}
