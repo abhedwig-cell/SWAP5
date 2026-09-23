@@ -1,0 +1,163 @@
+name: TAB-HYD typed dynamic Reference Richards
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/tabulated-hydraulics-characterization]
+    paths:
+      - '.github/workflows/tabulated-hydraulics-typed-reference-richards-dynamic.yml'
+      - 'research/tabulated_hydraulics/tabhyd_typed_reference_richards_dynamic.f90'
+      - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          fetch-depth: 0
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Materialize canonical test stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C canonical-src show 48336cb7f14e9246b03c23e549fe7354a93f9e6b:tests/fkt/fkt15_production_task2_stubs.f90 > build-stubs.f90
+
+      - name: Generate four raw-head400 typed inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/typed-richards
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          for soil in ("b4","b9","b12","o13"):
+              par=series[soil]
+              rows=mod.loghead_rows(par,400)
+              out=Path("build/typed-richards")/f"{soil}.dat"
+              with out.open("w") as fh:
+                  fh.write("4 400 1.25e-1\n")
+                  for node in range(4):
+                      fh.write(f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} {par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n")
+                      for h,t,k in rows:
+                          fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+          PY
+
+      - name: Compile dynamic canonical Reference Richards gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/typed-richards/mod
+          F="-O3 -std=f2008 -ffree-line-length-none"
+          M="build/typed-richards/mod"
+          compile () { gfortran $F -J "$M" -I "$M" -c "$1" -o "build/typed-richards/$(basename "${1%.*}").o"; }
+
+          gfortran $F -J "$M" -I "$M" -c build-stubs.f90 -o build/typed-richards/stubs.o
+          gfortran $F -J "$M" -I "$M" -c research/tabulated_hydraulics/array_dimensions_stub.f90 -o build/typed-richards/arrays.o
+          gfortran $F -J "$M" -I "$M" -c legacy-src/src/soil/sptabulated.f90 -o build/typed-richards/sptabulated.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_soil_water_solver_contract.f90 -o build/typed-richards/contract.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90 -o build/typed-richards/stepdir.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 -o build/typed-richards/trajdir.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/runtime/mod_a23bu_worker_execution_context.f90 -o build/typed-richards/worker.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_reference_linear_solver.f90 -o build/typed-richards/linear.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_reference_richards_workspace.f90 -o build/typed-richards/workspace.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_reference_richards_state_binding.f90 -o build/typed-richards/state.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_b110_default_mvg_provider.f90 -o build/typed-richards/mvg.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_b110_source_sink_provider.f90 -o build/typed-richards/source.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_b110_root_sink_provider.f90 -o build/typed-richards/root.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_fixed_flux_top_boundary_provider.f90 -o build/typed-richards/top.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90 -o build/typed-richards/temporal.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/legacy/b1_10_port/headcalc.f90 -o build/typed-richards/headcalc.o
+          gfortran $F -J "$M" -I "$M" -c canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90 -o build/typed-richards/binding.o
+          gfortran $F -J "$M" -I "$M" -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90 -o build/typed-richards/table-provider.o
+          gfortran $F -J "$M" -I "$M" -c research/tabulated_hydraulics/tabhyd_typed_reference_richards_dynamic.f90 -o build/typed-richards/bench.o
+
+          gfortran $F             build/typed-richards/stubs.o build/typed-richards/arrays.o build/typed-richards/sptabulated.o             build/typed-richards/contract.o build/typed-richards/stepdir.o build/typed-richards/trajdir.o build/typed-richards/worker.o build/typed-richards/linear.o             build/typed-richards/workspace.o build/typed-richards/state.o build/typed-richards/mvg.o             build/typed-richards/source.o build/typed-richards/root.o build/typed-richards/top.o build/typed-richards/temporal.o             build/typed-richards/headcalc.o build/typed-richards/binding.o build/typed-richards/table-provider.o             build/typed-richards/bench.o -o build/typed-richards/bench
+
+      - name: Run dynamic material matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/typed-richards/results.txt
+          for soil in b4 b9 b12 o13; do
+            echo "SOIL=$soil" | tee -a build/typed-richards/results.txt
+            build/typed-richards/bench "build/typed-richards/$soil.dat" | tee -a build/typed-richards/results.txt
+          done
+
+      - name: Parse dynamic result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          lines=Path("build/typed-richards/results.txt").read_text().splitlines()
+          soil=None; rows=[]; vals={}
+          for line in lines:
+              if line.startswith("SOIL="):
+                  if soil and vals: rows.append((soil,vals))
+                  soil=line.split("=",1)[1].strip(); vals={}
+              elif "=" in line and line.startswith("DYNAMIC_") and "BLOCK" not in line:
+                  k,v=line.split("=",1)
+                  try: vals[k]=float(v)
+                  except ValueError: pass
+          if soil and vals: rows.append((soil,vals))
+          required=[
+            "DYNAMIC_HEAD_MAX","DYNAMIC_HEAD_RMSE","DYNAMIC_THETA_MAX","DYNAMIC_THETA_RMSE",
+            "DYNAMIC_NATIVE_MASS_DIFF_MAX","DYNAMIC_INTEGRATED_MASS_DIFF_MAX",
+            "DYNAMIC_ANALYTIC_NONLINEAR_TOTAL","DYNAMIC_TABLE_NONLINEAR_TOTAL",
+            "DYNAMIC_ANALYTIC_LINEAR_TOTAL","DYNAMIC_TABLE_LINEAR_TOTAL",
+            "DYNAMIC_ANALYTIC_MEDIAN_S","DYNAMIC_TABLE_MEDIAN_S","DYNAMIC_TABLE_DELTA_PCT"]
+          out=["soil\thead_max\thead_rmse\ttheta_max\ttheta_rmse\tnative_mass_diff\tintegrated_mass_diff\tanalytic_nl\ttable_nl\tanalytic_lin\ttable_lin\tanalytic_median_s\ttable_median_s\ttable_delta_pct"]
+          for soil,v in rows:
+              miss=[k for k in required if k not in v]
+              if miss: raise SystemExit((soil,miss))
+              if v["DYNAMIC_HEAD_MAX"] > 0.05 or v["DYNAMIC_HEAD_RMSE"] > 0.01:
+                  raise SystemExit(f"{soil}: head fidelity gate")
+              if v["DYNAMIC_THETA_MAX"] > 1.0e-4:
+                  raise SystemExit(f"{soil}: theta fidelity gate")
+              if v["DYNAMIC_NATIVE_MASS_DIFF_MAX"] > 1.0e-8:
+                  raise SystemExit(f"{soil}: native mass difference")
+              if v["DYNAMIC_INTEGRATED_MASS_DIFF_MAX"] > 1.0e-8:
+                  raise SystemExit(f"{soil}: integrated mass difference")
+              out.append("\t".join([
+                soil,str(v["DYNAMIC_HEAD_MAX"]),str(v["DYNAMIC_HEAD_RMSE"]),str(v["DYNAMIC_THETA_MAX"]),
+                str(v["DYNAMIC_THETA_RMSE"]),str(v["DYNAMIC_NATIVE_MASS_DIFF_MAX"]),
+                str(v["DYNAMIC_INTEGRATED_MASS_DIFF_MAX"]),str(int(v["DYNAMIC_ANALYTIC_NONLINEAR_TOTAL"])),
+                str(int(v["DYNAMIC_TABLE_NONLINEAR_TOTAL"])),str(int(v["DYNAMIC_ANALYTIC_LINEAR_TOTAL"])),
+                str(int(v["DYNAMIC_TABLE_LINEAR_TOTAL"])),str(v["DYNAMIC_ANALYTIC_MEDIAN_S"]),
+                str(v["DYNAMIC_TABLE_MEDIAN_S"]),str(v["DYNAMIC_TABLE_DELTA_PCT"])]))
+          Path("build/typed-richards/dynamic-summary.tsv").write_text("\n".join(out)+"\n")
+          print(Path("build/typed-richards/dynamic-summary.tsv").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-typed-reference-richards-dynamic
+          path: |
+            build/typed-richards/results.txt
+            build/typed-richards/dynamic-summary.tsv
