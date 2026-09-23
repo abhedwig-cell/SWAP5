@@ -2,11 +2,12 @@
   "schema": "swap5.m7.optional_resource_runtime_measurement.v1",
   "criterion": "M7-03",
   "method": "O0/O2 direct GNU Fortran runtime measurement with per-run process-evaluation counters and payload sizes from allocated array extents; production physics and solver tolerances unchanged",
-  "scope": "same-node-count serialized BASE inactive-option replay versus admitted PPA-WU04A Black and PPA-WU04B Boesten runtime profiles; external common parameter/state/forcing arrays, runtime common solver/work arrays, option input payloads, and exact process-call counts",
+  "scope": "same-node-count serialized BASE inactive-option replay versus admitted PPA-WU04A Black, PPA-WU04B Boesten, and the restricted F-MR39 soil-temperature runtime fixture; external common parameter/state/forcing arrays, runtime common solver/work arrays, option input payloads, and exact process-call counts",
   "workload": {
     "base": "three-column serialized A-B-A batch with BASE state/parameter/forcing layouts; Black, Boesten, snow and restricted soil-temperature allocatable payloads are asserted absent",
     "black": "admitted WU04A Black production-application profile plus one direct full/half backend trial used to inspect exact option evaluation-call count",
     "boesten": "admitted WU04B Boesten production-application profile plus one direct full/half backend trial used to inspect exact option evaluation-call count",
+    "soil_temperature": "pinned F-MR39 enabled water/thermal runtime fixture, replayed against the measured source postimage with temporary test-only batch-counter output; no change to the pinned donor test source or feature qualification claim",
     "active_nodes": 4,
     "hard_mass_tolerance": 1e-12
   },
@@ -35,19 +36,29 @@
       "soil_temperature_optional_parameter_and_workspace_arrays": 0,
       "boesten_parameter_forcing_and_continuation_scalar_payload": 96
     },
+    "restricted_soil_temperature": {
+      "common_solver_and_work_arrays": 1352,
+      "soil_temperature_active_calls": 3,
+      "soil_temperature_optional_parameter_and_workspace_arrays": 640,
+      "source_fixture_commit": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+      "source_fixture_test_blob": "00a0d30fd4f1f3ef3888dbc03cf71d41770c4fab"
+    },
     "accounting_note": "Byte totals use element storage_size multiplied by actual allocated array extents, plus existing Richards and A23BU workspace payload counters. They exclude Fortran allocation descriptors, allocator metadata/alignment, fixed backend record storage, automatic stack temporaries and transient high-water buffers cleared before observation."
   },
   "option_process_evaluation_calls_per_run_trial": {
     "base_a_b_a_columns": [0, 0, 0],
     "black_full_half_trial": 3,
     "boesten_full_half_trial": 3,
-    "boesten_snow_soil_temperature_drainage_response_in_measured_profiles": 0
+    "restricted_soil_temperature_fixture": 3,
+    "snow_and_drainage_response_active_profiles_measured": false
   },
   "verification": {
     "runner": "tests/fmr/run_m7_optional_resource_measurement.py",
+    "restricted_soil_temperature_runner": "tests/fmr/run_m7_soil_temperature_resource_probe.py",
     "tests": [
       "tests/fmr/test_m7_serialized_worker_scratch_reuse.f90",
-      "tests/fapp/test_ppa_wu04a_black_runtime.f90"
+      "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+      "pinned F-MR39 runtime donor test, instrumented only in a temporary generated copy for measurement"
     ],
     "result": "PASS_O0_O2_IDENTICAL_TRANSCRIPTS_FOR_BASE_BLACK_AND_BOESTEN",
     "additional_checks": [
@@ -55,10 +66,12 @@
       "BASE option-specific process-call counters remain zero across all three columns",
       "BASE and Black common parameter/state/forcing payloads and serialized common workspace bytes match",
       "Black and Boesten each evaluated exactly three times for their direct full/half trial",
+      "restricted soil-temperature fixture evaluated three times and used 640 bytes of optional parameter/workspace array payload",
+      "soil-temperature probe was deterministic across repeated runs and O0/O2; original pinned donor source was not modified",
       "the WU04A production application retains its existing hard-mass, retry, restart and layout-guard gates"
     ]
   },
   "criterion_status": "PARTIAL",
-  "remaining_gap": "Runtime active/inactive measurement covers BASE versus Black and Boesten only. Runtime option calls and payloads for snow, restricted soil temperature and drainage response, other optional-state compositions, fixed descriptors, allocator overhead and transient peak memory are not measured by this checkpoint.",
-  "next_action": "Extend the same counters and payload census to admitted active snow, restricted soil-temperature and drainage-response cases where their qualification prerequisites permit; do not treat zero counters in inactive profiles as qualification of the active option."
+  "remaining_gap": "Runtime active/inactive measurement covers BASE versus Black and Boesten, plus one restricted soil-temperature runtime fixture. Runtime option calls and payloads for active snow and drainage response, other optional-state compositions, fixed descriptors, allocator overhead and transient peak memory are not measured by this checkpoint.",
+  "next_action": "Extend the same counters and payload census to active snow and drainage-response cases only where their qualification prerequisites permit; otherwise record the precise upstream admission limitation and proceed to another open M7 criterion. Do not treat zero counters in inactive profiles as qualification of an active option."
 }
