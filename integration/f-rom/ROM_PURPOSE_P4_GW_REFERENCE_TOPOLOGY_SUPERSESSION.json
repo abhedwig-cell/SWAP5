@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.rom-purpose.p4.gw-reference-topology-supersession.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4-GW-REFERENCE",
+  "date": "2026-09-23",
+  "status": "MONOLITHIC_NON_R2048_ROUTESET_SUPERSEDED_BEFORE_REFERENCE_ADJUDICATION",
+  "superseded_run": 35900612668,
+  "failure_classification": "SYSTEMATIC_RUNNER_SHUTDOWN_EXIT_143_AFTER_SUCCESSFUL_MATERIALIZATION_AND_COMPILE",
+  "observed_failed_examples": [
+    "B01/R1024_T32/O2",
+    "B14/R1024_T32/O0",
+    "B01/R2048_T8/O2",
+    "B14/R2048_T16/O0",
+    "B14/R2048_T16/O2",
+    "B01/R2048_T16/O2"
+  ],
+  "authority_reason": "The interruption spans multiple spatial resolutions and temporal factors and occurs as runner shutdown, not as a hydrological or solver-convergence failure. P4 therefore uses the already-qualified 8192-step exact-state segmentation uniformly for all groundwater Reference routes before any Reference metric adjudication.",
+  "successful_monolithic_outputs_usable_as_authority": false,
+  "replacement_topology": {
+    "segment_steps": 8192,
+    "R512_T32": 4,
+    "R1024_T32": 4,
+    "R2048_T16": 2,
+    "R2048_T8": 1,
+    "R2048_T32": "separately bound four-segment workflow"
+  },
+  "scientific_firewall": {
+    "hydrological_metrics_inspected_for_topology_choice": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "spatial_resolution_changed": false,
+    "temporal_factor_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "candidate_response_generated": false
+  }
+}
