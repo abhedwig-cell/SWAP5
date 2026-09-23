@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_flux_certificate_equivalence.preregistration.v1",
+  "work_unit": "RM17",
+  "date": "2026-09-23",
+  "title": "Prospective flux-regime equivalence test for dynamic-top temporal certification",
+  "depends_on": {
+    "RM16": "provider valid; 8.64 s raw dynamic-top Reference-Richards solve converges",
+    "Reference_temporal_indicator": "currently admitted only for explicit fixed-flux top boundary"
+  },
+  "source_observation": "At the frozen RM14 origin the dynamic-top provider is in FLUX regime with qtop=-36 cm/day, zero ponding and zero runoff. The raw 8.64-second solve converges.",
+  "question": "For the exact converged 8.64-second RM14 trajectory, is the dynamic-top flux-regime solve physically and numerically equivalent to the already-supported explicit fixed-flux qtop=-36 cm/day solve strongly enough to justify a narrowly bounded temporal-certificate extension?",
+  "frozen_case": {
+    "window_seconds": 8.64,
+    "window_day": 0.0001,
+    "irrigation_rate_cm_per_day": 36.0,
+    "explicit_reference_top_flux_cm_per_day": -36.0,
+    "bottom_flux_cm_per_day": 1e-6,
+    "accepted_origin": "same F-GC44 hydrostatic one-column state",
+    "swkimpl": 0,
+    "swkmean": 1,
+    "root_uptake": "off",
+    "drainage": "off"
+  },
+  "tests": [
+    "Solve one raw Reference-Richards attempt with the dynamic-top provider and one independent raw attempt with the existing explicit fixed-flux provider from the identical accepted origin.",
+    "Use identical numerical settings and independent solver workspaces.",
+    "Compare solver status, top flux, bottom flux, candidate pressure heads, water contents and ponding state.",
+    "Evaluate the dynamic-top provider again at the converged candidate endpoint and require FLUX regime, qtop=-36 cm/day, zero runoff and zero candidate ponding.",
+    "Record bit identity where possible and strict absolute maxima for state differences."
+  ],
+  "prospective_equivalence_criteria": {
+    "both_solvers_converged": true,
+    "top_flux_abs_difference_cm_per_day": 1e-12,
+    "bottom_flux_abs_difference_cm_per_day": 1e-12,
+    "max_pressure_head_difference_cm": 1e-12,
+    "max_water_content_difference": 1e-14,
+    "ponding_difference_cm": 1e-12,
+    "dynamic_endpoint_provider_regime": "FLUX",
+    "dynamic_endpoint_runoff_cm": 0.0
+  },
+  "decision_rules": [
+    "If all equivalence criteria pass, permit a separate RM18 preregistration for a narrowly guarded temporal-indicator extension that treats only this verified dynamic FLUX regime as explicit-flux equivalent.",
+    "If state or flux equivalence fails, do not extend the temporal certificate; investigate the dynamic boundary derivative/state dependence instead.",
+    "RM17 itself changes no temporal-indicator code and admits no production behavior."
+  ],
+  "prohibitions": [
+    "Do not modify temporal indicator code in RM17.",
+    "Do not relax solver or equivalence tolerances after execution.",
+    "Do not generalize to dynamic HEAD regime, ponding, runoff, evaporation, precipitation or snowmelt.",
+    "Do not rerun the three-model triangle from RM17 alone."
+  ]
+}
