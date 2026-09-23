@@ -201,3 +201,17 @@ That distinction prevents both double storage and double limiting.
 The automatic target-selection policy can move to the coupler while preserving its accepted-state inputs and target memory. The **hydraulic realization and capacity** of that target belongs to Ribasim. This is intentionally not defined as byte-for-byte reproduction of the legacy capacity branch, because F-PM08D5 already identified a source discrepancy there. Any behavioural change must be qualified explicitly rather than hidden as an implementation detail.
 
 The bound prior authority is recorded in `integration/research/SW_RIB_SWM01_FPM08D_RECONCILIATION.json`.
+
+
+## Primary versus secondary surface-water semantics
+
+The exact F-PM08D source reconstruction also sharpens what the legacy SWAP "surface-water box" actually is.
+
+- `SWSEC=1`: the secondary water level is prescribed forcing. There is no conserved `SWST` surface-water state.
+- `SWSEC=2`: the **secondary** surface-water system owns conserved storage `SWST`; `WLS` is derived from that storage.
+- where a primary system is configured, `WLP` is a prescribed primary-water-level forcing used by the drainage/exchange calculation. It is not part of `SWST`.
+- the prepared storage relation `STTAB` aggregates secondary open-channel geometry only.
+
+The Ribasim-coupled target should therefore not expose one undifferentiated "surface-water level" to SWAP. It needs an explicit mapping from Ribasim network entities to the water-level view required by each SWAP exchange level/order. A primary watercourse and the simulated secondary store can both be Ribasim-owned, but their SWAP-side roles remain distinct.
+
+This also narrows the retirement question: the candidate for removal in external-owner mode is specifically legacy ownership of the **secondary storage/control subsystem**, not every surface-water-related input to the drainage law.
