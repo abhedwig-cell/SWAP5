@@ -39,7 +39,7 @@ These state classes must be checkpointed, cloned for trials, discarded on reject
   1. its future-decision semantics are represented by the typed event state for the admitted Hupsel route, or
   2. an additional typed persistent field is required.
 
-Until that check closes, the state contract is `DEFINED_WITH_NIRRI_EQUIVALENCE_GATE_OPEN`.
+RM05 closes this gate for the first admitted typed Hupsel management route by ownership exclusion: the typed TCS1/DCS2 selector is the sole management-event owner and the legacy selector is disabled/bypassed for that decision. In that bounded route, `nirri` remains legacy-route state and is not duplicated into the typed state. The resulting classification is `LEGACY_ROUTE_STATE_NOT_APPLICABLE_TO_TYPED_OWNER`. This does not change the F-CI08 legacy classification.
 
 ## Explicit non-state
 
@@ -80,4 +80,12 @@ A restart record at an accepted boundary must reconstruct the accepted irrigatio
 
 ## Current decision
 
-The typed process primitives are adequate for local trial semantics. Production composition is not yet admitted until the `nirri` equivalence gate and one shared outer transaction owner are implemented and qualified.
+The legacy `nirri` equivalence gate is **closed for the bounded typed-owner route** by RM05.
+
+RM06 has qualified the shared management transaction semantics for typed irrigation plus Rutter state, including reject/replay identity, exactly-once commit, restart persistence and explicit separation of requested, allocated, physically supplied and net-applied irrigation.
+
+RM07 has qualified read-only demand derivation from an immutable accepted management origin. RM10 has additionally bound the Ribasim realization receipt to that exact SWAP management lineage/revision/crop-origin/interval and fails closed on cross-origin or partial-realization values outside the bounded RM09 envelope.
+
+Therefore the management-state contract is now `QUALIFIED_FOR_BOUNDED_TYPED_MANAGEMENT_TRANSACTION`.
+
+Remaining composition boundary: the management-state commit must still be qualified atomically with the real Richards hydrological candidate that consumes the same supplied irrigation water. That is the RM13 three-model composition workunit; it is not retroactively claimed by RM04.
