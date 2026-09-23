@@ -1,0 +1,82 @@
+name: F-TAB02 A-E-G sequential preservation
+
+on:
+  push:
+    branches:
+      - work/f-tab02-generated-k0-provider
+    paths:
+      - '.github/workflows/f-tab02-aeg-sequential-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sequential-a-e-g:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Sequential A through G preservation replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "F_TAB02_AEG_HEAD=$(git rev-parse HEAD)"
+            echo "F_TAB02_AEG_TREE=$(git rev-parse HEAD^{tree})"
+            echo "F_TAB02_AEG_COMPILER=$(gfortran --version | head -n1)"
+          } | tee F-TAB02-AEG_EVIDENCE.txt
+
+          bash tests/fsi/run_ftab02a_generated_mvg_table_state.sh             | tee F-TAB02-A_GATE.log
+          echo "F_TAB02_AEG_A=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+
+          bash tests/fsi/run_ftab02b_generated_mvg_provider.sh             | tee F-TAB02-B_GATE.log
+          echo "F_TAB02_AEG_B=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+
+          bash tests/fsi/run_ftab02c_serialized_generated_provider.sh             | tee F-TAB02-C_GATE.log
+          echo "F_TAB02_AEG_C=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+
+          bash tests/fsi/run_ftab02d_constitutive_context_capability.sh             | tee F-TAB02-D_GATE.log
+          bash tests/fsi/run_ftab02d_generated_temporal_certificate.sh             | tee -a F-TAB02-D_GATE.log
+          bash tests/fsi/run_ftab02d_dynamic_transaction.sh             | tee F-TAB02-D_DYNAMIC_GATE.log
+          echo "F_TAB02_AEG_D=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+
+          bash tests/fsi/run_ftab02e_generated_provider_performance.sh             | tee F-TAB02-E_GATE.log
+          echo "F_TAB02_AEG_E=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+
+          bash tests/fsi/run_ftab02g_bounded_ksatexm_generated_provider.sh             | tee F-TAB02-G_GATE.log
+          bash tests/fsi/run_ftab02g_reference_richards_ksatexm.sh             | tee F-TAB02-G_RICHARDS_GATE.log
+          bash tests/fsi/run_ftab02g_serialized_ksatexm_selection.sh             | tee F-TAB02-G_SERIALIZED_GATE.log
+          echo "F_TAB02_AEG_G=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+          echo "F_TAB02_AEG_SEQUENTIAL_PRESERVATION=PASS" | tee -a F-TAB02-AEG_EVIDENCE.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab02-aeg-sequential-preservation
+          path: |
+            F-TAB02-AEG_EVIDENCE.txt
+            F-TAB02-A_GATE.log
+            F-TAB02-B_GATE.log
+            F-TAB02-C_GATE.log
+            F-TAB02-D_GATE.log
+            F-TAB02-D_DYNAMIC_GATE.log
+            F-TAB02-E_GATE.log
+            F-TAB02-E_SUMMARY.tsv
+            F-TAB02-E_PROVIDER_RICHARDS.log
+            F-TAB02-E_SERIALIZED.log
+            F-TAB02-G_GATE.log
+            F-TAB02-G_RICHARDS_GATE.log
+            F-TAB02-G_SERIALIZED_GATE.log
+          if-no-files-found: warn
