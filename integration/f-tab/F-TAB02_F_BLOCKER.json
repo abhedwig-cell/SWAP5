@@ -3,32 +3,86 @@
   "workunit": "F-TAB02-F",
   "title": "Whole-Hupsel generated-provider application gate",
   "date": "2026-09-23",
-  "status": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE",
+  "status": "BLOCKED_SCOPE_EXACT_M1_PROFILE_REQUIRES_KSATEXM_OUTSIDE_FTAB02",
   "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "required_authority": {
     "gate": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
     "archive_name": "SWAP_4.3.1.zip",
     "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
   },
-  "current_check": {
-    "project_and_library_search_date": "2026-09-23",
-    "exact_materializable_archive_found": false,
-    "derived_audit_archives_are_substitutes": false,
-    "public_reconstruction_authorized": false,
-    "alternate_parser_fixture_authorized": false,
-    "synthetic_fixture_authorized": false
+  "asset_resolution": {
+    "exact_materializable_archive_found": true,
+    "materialization_date": "2026-09-23",
+    "archive_size_bytes": 8959314,
+    "observed_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "exact_hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "exact_b111_member_count": 63,
+    "exact_b111_source_bytes": 1886519,
+    "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "exact_m1_profile": {
+    "swsophy": 0,
+    "swkimpl": 0,
+    "soil_layers": [
+      {
+        "ores": 0.02,
+        "osat": 0.433878,
+        "alfa": 0.021645,
+        "alfaw": 0.04329,
+        "npar": 1.34877,
+        "lexp": 7.202077,
+        "ksatfit": 83.24164,
+        "ksatexm": 832.4163,
+        "h_enpr": 0
+      },
+      {
+        "ores": 0.02,
+        "osat": 0.387064,
+        "alfa": 0.016083,
+        "alfaw": 0.032166,
+        "npar": 1.524418,
+        "lexp": 2.439662,
+        "ksatfit": 22.76176,
+        "ksatexm": 227.6176,
+        "h_enpr": 0
+      }
+    ],
+    "ksatexm_declared": true,
+    "ksatexm_ratio_to_ksatfit": [
+      10,
+      10
+    ],
+    "m1_c3_semantics": "The admitted M1-C3 Task2 profile enables the already-qualified F-SI39 KSATEXM extension when cofgen(10)>cofgen(3)."
+  },
+  "ftab02_scope_conflict": {
+    "frozen_scope": "generated default-MvG acceleration, SWKIMPL=0, no parameter extensions beyond the qualified envelope",
+    "generated_state_behavior": "initialize_b110_generated_mvg_table_state returns F_TAB02_STATE_UNSUPPORTED_KSATEXM when ksatexm_extension_enabled is true",
+    "existing_owner_gate": "F-TAB02-A explicitly qualifies KSATEXM fail-closed behavior",
+    "executable_exact_hupsel_parameter_probe": {
+      "generated_state_status": 3,
+      "expected_symbol": "F_TAB02_STATE_UNSUPPORTED_KSATEXM",
+      "result": "PASS"
+    },
+    "interpretation": "The exact whole-Hupsel authority is now available, but the admitted M1-C3 constitutive profile lies outside the frozen F-TAB02 generated-provider parameter envelope. Executing a generated-provider whole-Hupsel comparison would require widening F-TAB02 to represent the F-SI39 KSATEXM extension, which is not authorized by the current preregistration."
   },
   "internal_prerequisite": {
-    "slice_e": "PASS",
-    "qualification_record": "integration/f-tab/F-TAB02_E_QUALIFICATION.json",
-    "qualified_head": "6bcf2b5852d59b4bf628f34eb1ac7bca8bfa12ac",
-    "workflow_run": 35824004715,
-    "note": "A-E internal production qualification is complete. F remains blocked exclusively on exact authorized whole-Hupsel archive bytes."
+    "slices_a_through_e": "PASS",
+    "qualified_postimage": "f22a301ed647b2d6e57fd6a04412fdd89608f226",
+    "workflow_run": 35824244178,
+    "current_branch_source_delta_after_qualified_postimage": "metadata/source-snapshot workflow only; no production source or qualification test change"
+  },
+  "stop_condition_binding": {
+    "handoff_rule": "Stop and return to research if a supported application profile cannot generate a valid table without widening the qualified provider scope.",
+    "action": "Do not add KSATEXM support inside F-TAB02-F. Open a separately preregistered research/qualification slice if KSATEXM-equivalent generated acceleration is desired."
   },
   "nonclaims": [
     "F-TAB02 production admission",
     "whole-Hupsel generated-provider equivalence",
+    "generated-provider support for F-SI39 KSATEXM",
+    "generic SWSOPHY=1 production",
+    "SWKIMPL=1 production",
     "portable whole-SWAP speedup"
   ],
-  "resume_condition": "Exact archive bytes with the frozen SHA-256 become available through an authorized materializable source; then execute the canonical M1-C3 whole-Hupsel generated-provider gate without substituting a reconstructed/public/synthetic authority."
+  "resume_condition": "A separately authorized KSATEXM-equivalent generated-provider representation is researched and qualified, or an independently authorized exact whole-application gate inside the existing non-KSATEXM F-TAB02 parameter envelope is established. The exact archive asset is no longer the blocker."
 }
