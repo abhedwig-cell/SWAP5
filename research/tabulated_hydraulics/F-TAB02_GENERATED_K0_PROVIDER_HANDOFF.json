@@ -1,0 +1,54 @@
+{
+  "workstream": "TAB-HYD",
+  "state": "RESEARCH_CLOSED_READY_FOR_SEPARATE_PRODUCTION_PREREGISTRATION",
+  "handoff_work_unit": "F-TAB02",
+  "handoff_capability": "generated default-MvG K0 constitutive acceleration provider",
+  "research_branch": "research/tabulated-hydraulics-characterization",
+  "research_head": "67790e155a79ea78cf4c250803856173a38eee4c",
+  "canonical_at_handoff": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+  "production_scope": {
+    "swkimpl": 0,
+    "generated_tables_only": true,
+    "generic_swsophy1": false,
+    "user_supplied_tables": false,
+    "k1": false
+  },
+  "controlling_evidence": {
+    "typed_provider_reproduced_runs": [
+      35535155474,
+      35538295603
+    ],
+    "reference_richards_run": 35538295638,
+    "serialized_reference_run": 35538295619,
+    "dynamic_certificate_run": 35818703618,
+    "bounds_safe_constitutive_run": 35534127461
+  },
+  "performance_characterization": {
+    "typed_provider_delta_pct_approx": -19,
+    "reference_richards_delta_pct_range": [
+      -31.4,
+      -26.8
+    ],
+    "serialized_reference_delta_pct_range": [
+      -31.37,
+      -28.24
+    ],
+    "preprocessing_break_even_vector_evals_30_nodes": 8860
+  },
+  "blockers": [
+    {
+      "id": "WHOLE_HUPSEL_EXACT_ASSET",
+      "state": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE",
+      "required_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
+    }
+  ],
+  "nonclaims": [
+    "generic production SWSOPHY=1",
+    "arbitrary user-supplied hydraulic tables",
+    "production SWKIMPL=1",
+    "portable whole-model 20-30 percent speedup",
+    "byte-exact historical B0 execution equivalence"
+  ],
+  "recommended_branch": "work/f-tab02-generated-k0-provider",
+  "instruction": "Start from live integration/f-ci-canonical; do not merge the research branch wholesale."
+}
