@@ -3,7 +3,7 @@
   "workstream": "ROM-ROOT",
   "work_unit": "ROM-ROOT-S3",
   "date": "2026-09-23",
-  "state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION",
+  "state": "BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE",
   "preregistration": "integration/f-rom/ROM_ROOT_S3_PREREGISTRATION.json",
   "pre_scientific_repair": "integration/f-rom/ROM_ROOT_S3_PRE_SCIENTIFIC_REPAIR.json",
   "authorities": {
@@ -50,5 +50,6 @@
   },
   "model_changed": false,
   "technical_repair": "integration/f-rom/ROM_ROOT_S3_TECHNICAL_REPAIR.json",
-  "failed_technical_run": 35856502212
+  "failed_technical_run": 35856502212,
+  "repair_state": "BOUND_BEFORE_REPAIRED_STAGE3_EXECUTION"
 }
