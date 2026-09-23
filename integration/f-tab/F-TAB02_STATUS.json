@@ -23,7 +23,7 @@
     "behind_by": 0,
     "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
   },
-  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_G__F0_READY",
+  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_G_AND_F0__F_READY",
   "slices": {
     "A": {
       "status": "PASS",
@@ -49,10 +49,11 @@
       "confirmation_replay_run": 35824244178
     },
     "F": {
-      "status": "HELD_PENDING_F0",
+      "status": "READY_TO_EXECUTE",
       "record": "integration/f-tab/F-TAB02_F_BLOCKER.json",
-      "preregistration": "integration/f-tab/F-TAB02_F0_PREREGISTRATION.json",
-      "prerequisite": "Implement and qualify F-TAB02-F0 standalone exact-Hupsel selection/lifetime seam, then execute final exact M1-C3 whole-Hupsel gate."
+      "prerequisite": "F-TAB02-G PASS and F-TAB02-F0 PASS",
+      "prerequisite_result": "PASS",
+      "next": "Execute exact M1-C3 whole-Hupsel generated-provider gate using exact SWAP_4.3.1.zip authority."
     },
     "G": {
       "status": "PASS",
@@ -68,6 +69,14 @@
       "sequential_head": "43c63185fb0455e59292c9839e46668d67424794",
       "sequential_state": "PASS",
       "note": "Dedicated G and same-postimage single-runner A->B->C->D->E->G preservation are green. G is formally qualified."
+    },
+    "F0": {
+      "status": "PASS",
+      "preregistration": "integration/f-tab/F-TAB02_F0_PREREGISTRATION.json",
+      "qualification": "integration/f-tab/F-TAB02_F0_QUALIFICATION.json",
+      "production_source_postimage": "9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf",
+      "owner_qualification_run": 35884404981,
+      "result": "PASS"
     }
   },
   "production_scope": {
@@ -137,11 +146,11 @@
     "exact_asset_size_bytes": 8959314,
     "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
     "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
-    "new_blocker": "F-TAB02-F0 standalone exact-Hupsel generated-provider selection/lifetime seam must pass before exact whole-Hupsel execution.",
+    "new_blocker": null,
     "executable_probe_status": 3,
     "executable_probe_symbol": "F_TAB02_STATE_UNSUPPORTED_KSATEXM",
     "substitutions_authorized": false,
-    "resume_condition": "Implement and qualify F-TAB02-F0 gates F0_1..F0_5, then execute the exact M1-C3 whole-Hupsel generated-provider gate."
+    "resume_condition": "Execute exact M1-C3 whole-Hupsel generated-provider gate and compare accepted-interval/retry/route/mass/result.bal/result.blc evidence."
   },
   "nonclaims": [
     "canonical production admission",
