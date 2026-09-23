@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.workunit_blocker.v1",
+  "workunit": "F-TAB02-F",
+  "title": "Whole-Hupsel generated-provider application gate",
+  "date": "2026-09-23",
+  "status": "BLOCKED_EXTERNAL_EXACT_ASSET_BYTES_UNAVAILABLE",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "required_authority": {
+    "gate": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
+    "archive_name": "SWAP_4.3.1.zip",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
+  },
+  "current_check": {
+    "project_and_library_search_date": "2026-09-23",
+    "exact_materializable_archive_found": false,
+    "derived_audit_archives_are_substitutes": false,
+    "public_reconstruction_authorized": false,
+    "alternate_parser_fixture_authorized": false,
+    "synthetic_fixture_authorized": false
+  },
+  "internal_prerequisite": {
+    "slice_e": "PENDING_CONTROLLING_PERFORMANCE_QUALIFICATION",
+    "note": "This blocker exists independently of slice E. F cannot execute even after E passes until the exact authorized archive bytes are materializable."
+  },
+  "nonclaims": [
+    "F-TAB02 production admission",
+    "whole-Hupsel generated-provider equivalence",
+    "portable whole-SWAP speedup"
+  ],
+  "resume_condition": "Exact archive bytes with the frozen SHA-256 become available through an authorized materializable source."
+}
