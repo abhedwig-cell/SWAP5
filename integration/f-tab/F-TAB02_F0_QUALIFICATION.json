@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-F0",
+  "title": "Standalone exact-Hupsel generated-provider selection and lifetime seam",
+  "date": "2026-09-23",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "preregistration": "integration/f-tab/F-TAB02_F0_PREREGISTRATION.json",
+  "prerequisite": {
+    "F_TAB02_G": "PASS",
+    "qualification": "integration/f-tab/F-TAB02_G_QUALIFICATION.json"
+  },
+  "production_source_postimage": "9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf",
+  "fixture_authority_head": "64d194a10ea021dca69b90f5254e7eab4825607c",
+  "owner_qualification": {
+    "run_id": 35884404981,
+    "job_id": 107260747875,
+    "conclusion": "success",
+    "artifact_id": 10762826046,
+    "artifact_sha256": "e90646818838875a2ae3a6248a9683359d3ed561d6ffe95d2dd49dd4c88c3444",
+    "markers": {
+      "F0_1_default_analytical_no_generation": "PASS",
+      "F0_1_worker_path_analytical": "PASS",
+      "F0_2_exact_hupsel_generated_bind": "PASS",
+      "F0_3_single_generation_reuse": "PASS",
+      "F0_4_exact_parameter_invalidation_rebuild": "PASS",
+      "F0_4_unsupported_neighbor_fail_closed": "PASS",
+      "F0_5_no_transaction_physical_state_ownership": "PASS",
+      "reset_releases_numerical_state": "PASS",
+      "o0_o2_output_identity": "PASS",
+      "fsi35_default_preservation": "PASS"
+    }
+  },
+  "design_binding": {
+    "selection": "explicit standalone-only opt-in; default false",
+    "worker_multiswap": "explicit-worker path always calls core with generated selection false",
+    "cache_identity": "exact generated-state matches(parameters); no tolerance identity",
+    "generation_lifetime": "module-owned numerical cache attached only to existing standalone Task2 application seam",
+    "parameter_change": "exact mismatch invalidates and rebuilds; unsupported neighbor fails closed",
+    "timestep": "provider is rebound to current dt on each Task2 call; generated table state is not regenerated",
+    "physical_state_ownership": "none",
+    "transaction_state_ownership": "none",
+    "legacy_input_grammar_changed": false
+  },
+  "qualified_scope": {
+    "exact_m1_hupsel_profile": true,
+    "swsophy": 0,
+    "swkimpl": 0,
+    "bounded_fsi39_ksatexm": true,
+    "generic_tables": false,
+    "generic_ksatexm": false,
+    "worker_multiswap_selection": false,
+    "k1": false
+  },
+  "verdict": "PASS",
+  "next_authorized_step": "F-TAB02-F exact whole-Hupsel generated-provider application gate"
+}
