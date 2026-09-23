@@ -29,7 +29,11 @@ confirmed B0 defects are not migration targets.
 | Macropore flow | PPA-WU05-A | BLOCKED | Requires B1.11 mutable-state/mass census | Complete PPA-WU05-A1 |
 | Lower boundary mode 2, constant typed qbot | PPA-WU02-A | CANONICALLY_ADMITTED | Owner, independent, hard-mass and preservation gates | Preserve |
 | Lower boundary mode 2 sine/table and dry continuation | PPA-LOW02-TIME | CANONICALLY_ADMITTED | Typed B1.11 time law and state-derived dry continuation qualified | Preserve restricted profile |
-| Lower boundaries modes 1, 3, 4, 5 standalone, 8 | PPA-WU02 C--G | ABSENT | Exact selector classification exists | Dependency-order after WU02-B; mode 5 must respect groundwater ownership |
+| Lower boundary mode 1 prescribed GWL / hybrid state | PPA-WU02-D / PPA-LOW01 | ABSENT | GWL interpolation is source-reconstructable; state transition, predictor/corrector and accepted-head owner are not migrated | Continue as a distinct state-owner contract; do not alias to mode 5 |
+| Lower boundary mode 3 Cauchy/deep aquifer | PPA-WU02-E / PPA-LOW03 | PARTIAL_ORACLES_PRODUCTION_HELD | Explicit/implicit qbot terms, explicit profile C-value and SW3 sine/table forcing have O0/O2 source oracles; HeadCalc/Newton, state and mass routes remain untouched | Reconcile typed components only behind the actual single solver/groundwater owner and qualify retries, restart and accepted mass |
+| Lower boundary mode 4 q(GWL)/q(h) | PPA-WU02-F / PPA-LOW04 | PARTIAL_ORACLES_PRODUCTION_HELD | Exponential q(GWL) and absolute-head q(h) AFGEN laws each pass O0/O2 source oracles; no groundwater-state timing or qbot application route | Continue to source-window/state binding without adding a competing GWL owner |
+| Lower boundary mode 5 prescribed head | PPA-WU02-C / PPA-LOW05 | PARTIAL_ORACLES_PRODUCTION_HELD | DATE5/HBOT5 AFGEN law is source-tested; ordinary non-groundwater mode-5 semantics remain distinct from groundwater-owned bottom_mode=5 | Define ordinary adapter/ownership and mass-publication contract before production binding |
+| Lower boundary mode 8 lysimeter | PPA-WU02-G / PPA-LOW08 | ABSENT | Exact source classification exists; active-set continuation is not migrated | Preserve transactional active-set behavior before any admission |
 | WOFOST bounded runtime | Status-A traceability | CANONICALLY_ADMITTED | Capability-specific qualified runtime | Preserve bounded runtime; no broad API claim |
 | Management: full irrigation, tillage and parser grammar | B1; PPA audit | ABSENT | Tillage has unresolved SWAP-003/004 policy | Recover source and decide B1 defects first |
 | Snow restricted daily path | Status-A | CANONICALLY_ADMITTED | Exact-head preservation | Preserve; advanced Snow is future scope |
@@ -44,7 +48,8 @@ confirmed B0 defects are not migration targets.
 1. **PPA-WU04-C/D** have source, receipt and restart layers implemented, but
    their typed production ingress and hard-mass closure remain open.
 2. **PPA-LOW05-APP** is blocked pending an ownership/mass-publication contract.
-3. **PPA-WU05 remaining root family** has small exact-equation oracles but no qualified multi-stressor or MICRO stateful runtime owner.
+3. **PPA-LOW01 / PPA-LOW08** remain available as distinct stateful lower-boundary slices; do not fold them into the completed LOW03/04/05 numerical oracles.
+4. **PPA-WU05 remaining root family** has exact-equation oracles but no qualified multi-stressor or MICRO stateful runtime owner.
 
 No production-admission candidate is currently `READY`: PPA-ATM-02 reached the pure typed-ingress and PMdirect/SWINTER=0 composition boundary, but accepted production publication requires an explicit transaction/mass/restart contract. PPA-WU04-C/D required the exact B1.11
 `MOD_meteo.f90` equation oracle has been reconstructed and verified from the
@@ -53,7 +58,10 @@ byte-exact distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
 campaign checkpoints cover additional pure WU05 equations and the shared F-KT
 retry/restart contract. No new production-admission candidate is `READY`; keep
 working independent source-bound slices while the full-SWAP owner/coupling
-contracts remain open.
+contracts remain open. LOW03, LOW04 and LOW05 each now have several 100,000-vector
+O0/O2 source-oracle checkpoints, but those tests do not bind SWAP state, source
+time, the Richards/HeadCalc owner, accepted flux publication, retry or restart.
+They are partial mathematical coverage only, not migrated lower-boundary modes.
 
 No item above authorizes a change to Reference Richards, mass accounting,
 transaction ownership, restart ownership, or shared groundwater interfaces.
