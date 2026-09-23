@@ -1367,9 +1367,11 @@ contains
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
       if (parameters%generated_mvg_acceleration_active) then
-        ok = ok .and. self%generated_mvg_acceleration_active .and. self%generated_mvg_provider_ready .and. &
-             associated(self%generated_mvg_state) .and. associated(self%generated_constitutive) .and. &
-             .not. parameters%ksatexm_extension_active .and. &
+        ! Admission precedes configure_parameters() in the kernel. Validate the
+        ! requested generated-provider capability from typed immutable inputs
+        ! only; table materialization happens afterwards in configure_parameters.
+        ! advance() remains fail-closed if materialization did not become ready.
+        ok = ok .and. .not. parameters%ksatexm_extension_active .and. &
              (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%drainage_response_active .and. &
