@@ -1,0 +1,34 @@
+name: RM11 management boundary scheduler
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_ribasim_management_scheduler.f90'
+      - 'tests/ribasim-management/test_rm11_management_boundary_scheduler.f90'
+      - 'tests/ribasim-management/run_rm11_management_boundary_scheduler.sh'
+      - 'integration/ribasim-management/RM11_*'
+      - '.github/workflows/rm11-management-boundary-scheduler.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_ribasim_management_scheduler.f90'
+      - 'tests/ribasim-management/test_rm11_management_boundary_scheduler.f90'
+      - 'tests/ribasim-management/run_rm11_management_boundary_scheduler.sh'
+      - 'integration/ribasim-management/RM11_*'
+      - '.github/workflows/rm11-management-boundary-scheduler.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM11 scheduler qualification
+        run: bash tests/ribasim-management/run_rm11_management_boundary_scheduler.sh
