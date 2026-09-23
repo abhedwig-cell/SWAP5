@@ -51,7 +51,10 @@ Required:
 - theta max abs <=1e-4;
 - C max abs <=1e-4;
 - log10(K) max abs <=5e-4;
-- active F-SI39 K max abs reported;
+- authority-theta max abs difference versus canonical <=1e-14;
+- authority-Se max abs difference versus canonical <=1e-14;
+- active F-SI39 K max abs <=1e-9 cm/d;
+- active interpolation fraction finite and within [0,1];
 - local continuity jump <=1e-5 cm/d.
 
 Because the active branch uses the canonical authority Se, its conductivity should reproduce canonical F-SI39 to roundoff. Any material active-branch error falsifies the implementation.
