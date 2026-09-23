@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.sw_rib_swm01.q4b.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q4B",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "title": "Bind stateless signed extended exchange into the admitted F-PM14 transactional drainage-response runtime",
+  "purpose": "Qualify that the Q4A stateless extended drainage/infiltration law can be selected as a normal F-PM14 drainage-response variant and inherits the existing trial, rollback, exactly-once mass booking and no-extra-state semantics.",
+  "authorities": {
+    "canonical": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "q4a": "SW_RIB_SWM01_Q4A_RESULT.json PASS_STATELESS_SIGNED_EXTENDED_EXCHANGE_CANDIDATE",
+    "fpm14_owner": "52c1a9aebddc435ef3792378f958305a96308ed0",
+    "fpm14_runtime": "src/runtime/mod_fmr_drainage_response_binding.f90 + existing serialized transactional runtime"
+  },
+  "frozen_design": {
+    "new_variant_id": 9,
+    "new_variant_name": "FMR_DRAIN_VARIANT_EXTENDED_SIGNED",
+    "immutable_parameters": "extended_drainage_parameters_t embedded in fmr_drainage_response_level_parameters_t",
+    "interval_control": "explicit resolved external surface-water head, distinct from the legacy generic drain_head control",
+    "persistent_state_added": false,
+    "mass_booking": "unchanged existing F-PM14 trial ledger; response binding itself must keep transfer_booked_here=false",
+    "surface_water_storage_owner": "external Ribasim/coupler context only; no SWST/WLS state added to SWAP runtime"
+  },
+  "runtime_cases": [
+    {
+      "id": "R1_POSITIVE_DRAINAGE_COMMIT",
+      "groundwater_level_cm": -2.25,
+      "external_surface_water_head_cm": -12.25,
+      "rdrain_day": 1000,
+      "expected_signed_rate_cm_per_day": 0.01,
+      "balancing_qssdi_cm_per_day": 0.01,
+      "expected": "one accepted transaction, revision 0->1, hard mass closure, extended drainage booked once as external out"
+    },
+    {
+      "id": "R2_NEGATIVE_INFILTRATION_COMMIT",
+      "groundwater_level_cm": -2.25,
+      "external_surface_water_head_cm": 7.75,
+      "rinfi_day": 1000,
+      "expected_signed_rate_cm_per_day": -0.01,
+      "balancing_qssdi_cm_per_day": -0.01,
+      "expected": "one accepted transaction, revision 0->1, hard mass closure, extended infiltration booked once as external in"
+    },
+    {
+      "id": "R3_INVALID_OR_HELD_ROUTE_ROLLBACK",
+      "expected": "no commit, revision and committed hydraulic state bit-identical to origin"
+    }
+  ],
+  "binding_checks": [
+    "configuration rejects extended variant unless exactly one finite resolved external surface-water head is supplied",
+    "positive and negative signed values propagate through per-level bottom-lumped qdra without clipping",
+    "existing aggregate remains derived view only and is not booked as a second transfer",
+    "O0 and O2 outputs are identical",
+    "no new SAVE/process state or surface-water storage is introduced"
+  ],
+  "nonclaims": [
+    "Q4B does not make Ribasim availability part of the SWAP constitutive law.",
+    "Q4B does not accept a Ribasim-limited negative request by clipping an already accepted SWAP trial; Q3A recomposition semantics remain authoritative.",
+    "Q4B does not provide production admission or whole surfacewater.f90 retirement authority."
+  ],
+  "production_admission": false,
+  "retirement_authority": false
+}
