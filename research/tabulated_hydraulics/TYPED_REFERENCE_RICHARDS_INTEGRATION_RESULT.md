@@ -2,86 +2,91 @@
 
 Date: 2026-09-23
 
-Status: **qualified research evidence; no production admission**
+Status: **qualified research integration evidence; no production admission**
 
-## Research question
+## Question
 
-Does the bounds-safe raw-head400 table representation retain its provider-level performance advantage after it is injected through SWAP5's existing typed `constitutive_hydraulics_provider_t` seam into the current Reference Richards solver, while leaving solver equations, tolerances, state ownership and execution policy unchanged?
+Does the provider-level raw-head400 speed reduction survive when the provider is called by the
+actual canonical Reference-Richards solver through the existing
+`constitutive_hydraulics_provider_t` request seam?
 
-## Current-canonical authority
+## Authority and implementation boundary
 
-The integration workflow was rebound to:
-
-- `integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d`.
-
-The workflow explicitly checked that the relevant current-canonical blobs remained the same as in the preregistered provider experiment:
-
-- analytical MvG provider: `90183cbe0f3f0b349e40fa6b0c65b2223ca8a739`;
-- solver contract: `40a1ddc05fb8e2c1822763de645fd07a094568a3`;
-- Reference Richards typed binding: `4b545c6fb260e81cd6c8f4d2d65f2beee7281e53`;
-- HeadCalc: `3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55`.
-
-No production Task-2 selection was changed. The research provider was supplied only through the existing request-level constitutive-provider pointer.
-
-## Evidence
+- canonical solver/reference source: `bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5`;
+- canonical Reference-Richards solver and headcalc;
+- canonical analytical MvG provider;
+- unchanged solver residual, tolerances, state ownership and retry semantics;
+- research-only raw-head provider behind the same request-level constitutive seam;
+- no production Task-2 provider selection change;
+- no legacy `SWSOPHY=1` input path.
 
 Workflow:
 
 - `TAB-HYD typed Reference Richards integration`;
-- run `35879637410`;
-- job `107244454185`;
-- conclusion: **success**.
+- successful run `35900662982`.
 
-Five bounded hydraulic cases were run through the current Reference Richards solver:
+## Integrated fidelity result
 
-| scenario | max |Δh| (cm) | max |Δtheta| | analytical / table nonlinear iters | analytical median (s) | table median (s) | table delta |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| coarse_dry_free | 5.1524e-6 | 4.2787e-9 | 4 / 4 | 0.0021235 | 0.0014330 | **-32.52%** |
-| loam_mid_free | 1.5237e-7 | 4.7539e-10 | 3 / 3 | 0.0017190 | 0.0012280 | **-28.56%** |
-| clay_wet_free | 1.1611e-6 | 8.7980e-10 | 4 / 4 | 0.0021220 | 0.0014605 | **-31.17%** |
-| coarse_dry_pulse | 7.8383e-6 | 5.3096e-9 | 4 / 4 | 0.0026850 | 0.0016280 | **-39.37%** |
-| loam_capillary | 2.2837e-7 | 7.4690e-10 | 3 / 3 | 0.0017605 | 0.0012085 | **-31.35%** |
+Four contrasting Staring materials were evaluated:
 
-Additional observations:
+- B4 coarse sand;
+- B9 loam;
+- B12 heavy clay;
+- O13 clay subsoil.
 
-- linear-solve counts were identical between analytical and table routes in every case;
-- top-flux differences were zero at reported precision;
-- prescribed-head bottom-flux difference in the capillary case was only `2.92e-9 cm/d`;
-- integrated mass-residual differences were at approximately `1e-17 cm`;
-- no solver-policy or convergence-tolerance change was introduced.
+For twelve uniform equilibrium heads from -2 to -10000 cm:
+
+- maximum accepted-head drift from the supplied equilibrium state: **0** for every material;
+- maximum analytical/table input theta difference:
+  - B4: `1.0514e-8`;
+  - B9: `8.9205e-9`;
+  - B12: `6.0738e-9`;
+  - O13: `6.1807e-9`.
+
+Both providers therefore completed the same canonical Reference-Richards equilibrium solve
+without a state change at this written numerical resolution.
+
+## Integrated performance result
+
+Ten balanced timing rounds, each repeatedly exercising the full canonical solver call:
+
+| material | analytical median (s) | raw-head table median (s) | delta |
+| --- | ---: | ---: | ---: |
+| B4 | 0.0394075 | 0.0277785 | **-29.51%** |
+| B9 | 0.0398815 | 0.0285430 | **-28.43%** |
+| B12 | 0.0386775 | 0.0276165 | **-28.60%** |
+| O13 | 0.0398805 | 0.0282075 | **-29.27%** |
+
+The direction and magnitude are consistent across all four materials.
 
 ## Interpretation
 
-This is substantially stronger than the legacy scalar-wrapper timing result.
+The earlier legacy-wrapper K0 whole-Hupsel parity was not representative of the current SWAP5
+provider architecture.
 
-The earlier legacy Hupsel K0 route reached only practical parity because it evaluated constitutive functions through separate scalar wrappers. Current SWAP5 already evaluates the constitutive relation through one vector-valued provider operation. Behind that seam:
+At the vector-valued provider boundary, raw-head400 was about 19.3% cheaper than analytical MvG.
+When exercised inside the canonical Reference-Richards solver on equilibrium solves, that advantage
+survives and becomes a roughly 28-29% reduction for this bounded solver workload.
 
-1. provider-only evaluation was about **19.34% cheaper** than analytical MvG over the 30-material changing-head benchmark;
-2. the four-node current-canonical Reference Richards fixture shows **28-39% lower repeated solve time** across all five bounded cases while preserving iteration counts and producing only microscopic state/mass differences.
+This result is stronger than a provider microbenchmark but is still not a full application-speed claim.
+The tested solves are equilibrium/low-iteration cases, so constitutive evaluation represents a large
+fraction of total solve cost.
 
-The solver-level reduction being larger than the provider-only reduction is plausible for this small fixture because constitutive evaluation forms a large fraction of total solve cost and compiler/inlining/cache effects can differ between the two concrete providers. It must **not** be extrapolated directly to a full-size SWAP application.
+## Next required gate
 
-## Scale limitation
+Before any production-provider work unit is opened, run a preregistered **non-equilibrium multi-step
+Reference-Richards trajectory** with:
 
-The current integrated fixture has four soil nodes. Therefore the defensible current claim is:
+- identical forcing for analytical and raw-head providers;
+- changing pressure-head states;
+- multiple nonlinear iterations where naturally required;
+- accepted-state head/theta comparison;
+- native/integrated mass residual comparison;
+- nonlinear-iteration and linear-solve counts;
+- balanced repeated runtime.
 
-> A raw-head400 table provider can materially accelerate the current typed K0 Reference Richards solver path in a small current-canonical fixture without changing the nonlinear trajectory class or accepted state within the tested envelope.
+The candidate must remain fixed. No knot, tolerance or solver-policy changes may be made in response
+to the trajectory benchmark.
 
-It is **not yet justified** to state a 28-39% production-wide, full-column or full-application speedup.
-
-A 40-node repeat of the same provider swap has been preregistered/executed as the next scaling gate. That gate controls whether the acceleration survives when tridiagonal solve and other per-node solver costs become a larger fraction of total runtime.
-
-## Production boundary remains unchanged
-
-This result does not admit a new production provider.
-
-A future production work unit would still need:
-
-- deterministic typed table generation/ownership;
-- explicit provider selection with analytical MvG retained as reference;
-- current-application trajectory and preservation qualification;
-- failure-closed table validation;
-- transaction/restart proof that the provider carries no hidden physical state;
-- independent performance evidence at application scale.
-
-Generic user-supplied tabulated hydraulics remains a separate capability from a generated MvG-equivalent acceleration provider.
+Only after that gate may the workstream decide whether the K0 acceleration case is strong enough to
+justify a separately governed production-provider implementation slice.
