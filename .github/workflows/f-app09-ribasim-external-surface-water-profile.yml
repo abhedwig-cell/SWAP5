@@ -9,8 +9,8 @@ on:
       - 'src/runtime/mod_fmr_drainage_response_binding.f90'
       - 'src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90'
       - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
-      - 'tests/fapp/*fapp09*surface_water_profile*'
-      - 'tests/fapp/*fapp09*external_surface_water_profile*'
+      - 'tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90'
+      - 'tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh'
       - 'integration/f-app/F-APP09_*'
       - '.github/workflows/f-app09-ribasim-external-surface-water-profile.yml'
   pull_request:
@@ -41,4 +41,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-APP09 owner qualification
-        run: bash tests/fapp/run_fapp09_external_surface_water_profile.sh
+        run: bash tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh
