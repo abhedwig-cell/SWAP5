@@ -4,7 +4,7 @@
   "work_unit": "ROM-PURPOSE-P2-CANDIDATES",
   "date": "2026-09-23",
   "status": "BOUND_AFTER_P2_REFERENCE_QUALIFICATION",
-  "trigger_head_before_binding": "f22f5c483cf3000dc34c0618d1965ddfceb7a1bf",
+  "trigger_head_before_binding": "0f40c6bf47b1990a7dbcf31ff164cb3d242ace56",
   "p2_reference_authority": {
     "result": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json",
     "result_blob": "f701aee1d612e6af509a639bc8505b1d90be716c",
@@ -89,7 +89,7 @@
     "GW_LB_source_run": 35751978638
   },
   "blobs": {
-    ".github/workflows/f-rom-purpose-p2-candidates.yml": "c1bdebceeb095a8ad3baf7a8ca2cc00ee81f2a37",
+    ".github/workflows/f-rom-purpose-p2-candidates.yml": "e3dccb221a4105d0e137fb7a7d417e3356560abe",
     "tests/rom/run_rom_purpose_p2_candidate.py": "1ac1d181f9ad411f36092e9740f2990669068999",
     "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c",
     "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
@@ -98,7 +98,8 @@
     "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
     "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json": "f701aee1d612e6af509a639bc8505b1d90be716c",
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json": "041c8be484f47363c0f545ac28f5490559969072",
-    "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json": "7e4c8735a047a28117751f3a4d4efea07ff73a80"
+    "integration/f-rom/ROM_PURPOSE_P2_R1024_SEGMENT_EQUIVALENCE.json": "7e4c8735a047a28117751f3a4d4efea07ff73a80",
+    "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_PRE_RESPONSE_REPAIR.json": "ea40f1b0d770e9f4681d9e258b6c834c1bb0f04d"
   },
   "hypotheses": {
     "H1": "GW_LB: G4 componentwise no worse than U4 with at least one strict improvement per qualified material.",
@@ -115,5 +116,7 @@
     "application_acceptance_adjudicated": false,
     "performance_claim_authorized": false,
     "production_rom_authorized": false
-  }
+  },
+  "supersedes_candidate_run": 35856310738,
+  "pre_response_repair": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_PRE_RESPONSE_REPAIR.json@ea40f1b0d770e9f4681d9e258b6c834c1bb0f04d"
 }
