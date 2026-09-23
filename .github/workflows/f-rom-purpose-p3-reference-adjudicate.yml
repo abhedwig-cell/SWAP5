@@ -1,0 +1,101 @@
+name: F-ROM-PURPOSE P3 Reference adjudication
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-reference-adjudication
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  adjudicate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p3_reference.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_AFTER_BOTH_REPAIRED_REFERENCE_ROUTE_SETS'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_NEW_P3_REFERENCE_OR_CANDIDATE_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Download exact repaired route sets
+        run: |
+          set -euo pipefail
+          surface_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gw_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json'))['reference_runs']['GW_LB'])")"
+          mkdir -p /tmp/surface /tmp/gw /tmp/reference
+          gh run download "$surface_run" --repo abhedwig-cell/SWAP5 -n p3ref-surface-routes -D /tmp/surface
+          gh run download "$gw_run" --repo abhedwig-cell/SWAP5 -n p3ref-gw-routes -D /tmp/gw
+          cp /tmp/surface/surface_* /tmp/reference/
+          cp /tmp/gw/gw_* /tmp/reference/
+      - name: Execute frozen P3 Reference qualification
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p3_reference.py             --prereg integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json             --root /tmp/reference             --output result/ROM_PURPOSE_P3_REFERENCE_RESULT.json             | tee result/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 0 -o "$rc" -eq 3
+          cp integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p3-reference-adjudication
+          path: result/
+          if-no-files-found: error
+      - name: Persist Reference decision
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P3_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P3_STATUS.json')
+          s=json.load(open(p))
+          q=bool(r['candidate_response_authorized'])
+          s.update({
+            'status':'P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED' if q else 'P3_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_CANDIDATES',
+            'current_gate':'BLIND_CANDIDATE_VALIDATION' if q else 'REFERENCE_QUALIFICATION_FAILED',
+            'candidate_response_authorized':q,
+            'reference_result':'integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json',
+            'reference_adjudication_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'reference_adjudication_sha':os.environ['SOURCE_SHA'],
+            'next_actions':(
+              ['Create candidate execution binding for the already-frozen state-count matrix.']
+              if q else
+              ['Stop before candidate response. Any new Reference design requires new prospective authority.'])
+          })
+          s['scientific_firewall']['reference_response_adjudicated']=True
+          s['scientific_firewall']['any_new_p3_candidate_response_seen']=False
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P3_STATUS.json
+          git commit -m "ROM-PURPOSE P3: persist repaired Reference adjudication" || exit 0
+          git push origin HEAD:work/f-rom-purpose
