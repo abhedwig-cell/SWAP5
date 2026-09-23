@@ -23,7 +23,7 @@ program tabhyd_ksatexm_constitutive_gate
   real(real64) :: max_theta,max_c,max_logk,max_branch_abs,max_branch_rel
   real(real64) :: max_transition_abs, continuity_jump, below_kdiff
   real(real64) :: kleft,kright,keq
-  integer :: iu,ios,i,j,q,mismatch,active_count
+  integer :: iu,ios,i,j,q,mismatch,mismatch_local,active_count
   character(len=512) :: path
   character(len=32) :: label(NODES)
 
@@ -76,6 +76,7 @@ program tabhyd_ksatexm_constitutive_gate
   max_branch_rel=0.0_real64
   max_transition_abs=0.0_real64
   mismatch=0
+  mismatch_local=0
   active_count=0
 
   do q=1,NSCAN
@@ -104,6 +105,24 @@ program tabhyd_ksatexm_constitutive_gate
         max_branch_rel=max(max_branch_rel,relerr)
       end if
       if(abs(h(i)-HTHR)<0.1_real64) max_transition_abs=max(max_transition_abs,abs(kc(i)-ka(i)))
+    end do
+  end do
+
+  ! High-resolution branch-classification scan around the exact h=-2 cm transition.
+  do q=1,10001
+    h = HTHR - 5.0e-2_real64 + real(q-1,real64)*1.0e-5_real64
+    call analytic_on%evaluate(h,ta,ka,ca,da)
+    call table%evaluate(h,tt,kt,ct,dt)
+    kc=kt
+    do i=1,NODES
+      relsa=(ta(i)-cof(1,i))/(cof(2,i)-cof(1,i))
+      relst=(tt(i)-cof(1,i))/(cof(2,i)-cof(1,i))
+      if ((relsa>cof(11,i)) .neqv. (relst>cof(11,i))) mismatch_local=mismatch_local+1
+      if (relst>cof(11,i)) then
+        f=(relst-cof(11,i))/(1.0_real64-cof(11,i))
+        kc(i)=f*cof(10,i)+(1.0_real64-f)*cof(12,i)
+      end if
+      max_transition_abs=max(max_transition_abs,abs(kc(i)-ka(i)))
     end do
   end do
 
@@ -175,6 +194,7 @@ program tabhyd_ksatexm_constitutive_gate
   write(*,'(a,es24.16)') 'KX01_BRANCH_K_MAX_REL=',max_branch_rel
   write(*,'(a,es24.16)') 'KX01_TRANSITION_K_MAX_ABS=',max_transition_abs
   write(*,'(a,i0)') 'KX01_BRANCH_CLASS_MISMATCH=',mismatch
+  write(*,'(a,i0)') 'KX01_BRANCH_CLASS_MISMATCH_LOCAL=',mismatch_local
   write(*,'(a,i0)') 'KX01_ACTIVE_SAMPLES=',active_count
   write(*,'(a,es24.16)') 'KX01_CONTINUITY_LOCAL_JUMP=',continuity_jump
   write(*,'(a,2(1x,es24.16))') 'KX01_THRESHOLDS',cof(11,1),cof(11,2)
