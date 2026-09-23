@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.rom-practical.p1.evidence-screen-input.v1",
+  "source_authorities": {
+    "placement_blob": "e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "cost_blob": "647a5d4b085ead0a29ed5f4b2d62cb7a47d38c7a"
+  },
+  "cases": {
+    "GW_LB": {
+      "B01": {
+        "G4": {
+          "qualified": true,
+          "aligned_vs_U4_componentwise_no_worse": true,
+          "metrics": {
+            "bottom_flux_sign_mismatch_count": 62,
+            "reversal_sequence_mismatch_count": 4,
+            "reversal_timing_error_steps": 1024,
+            "cumulative_bottom_exchange_error_cm": 0.022572031251425408,
+            "interval_bottom_flux_error_cm_per_day": 0.8184322467988059,
+            "long_horizon_exchange_drift_cm": 0.027886523154588172,
+            "total_storage_error_cm": 0.022572031251445412
+          }
+        }
+      },
+      "B14": {
+        "G4": {
+          "qualified": true,
+          "aligned_vs_U4_componentwise_no_worse": true,
+          "metrics": {
+            "bottom_flux_sign_mismatch_count": 0,
+            "reversal_sequence_mismatch_count": 0,
+            "reversal_timing_error_steps": 0,
+            "cumulative_bottom_exchange_error_cm": 0.010754287959983448,
+            "interval_bottom_flux_error_cm_per_day": 0.14274773936223312,
+            "long_horizon_exchange_drift_cm": 0.01690814068319683,
+            "total_storage_error_cm": 0.010754287959906576
+          }
+        }
+      }
+    },
+    "SURF_P": {
+      "B01": {
+        "S4": {
+          "qualified": true,
+          "aligned_vs_U4_componentwise_no_worse": true,
+          "metrics": {
+            "storage_extremum_timing_error_steps": 0,
+            "surface_0_20_storage_error_cm": 0.00394596662999855,
+            "root_zone_0_40_storage_error_cm": 0.00335205731856923,
+            "upper_0_80_storage_error_cm": 0.005293911854851403,
+            "mapped_10cm_theta_error": 0.0005638107415465316,
+            "total_storage_error_cm": 1.1729474204196e-12
+          }
+        }
+      },
+      "B14": {
+        "S4": {
+          "qualified": true,
+          "aligned_vs_U4_componentwise_no_worse": true,
+          "metrics": {
+            "storage_extremum_timing_error_steps": 0,
+            "surface_0_20_storage_error_cm": 0.00004345705561572374,
+            "root_zone_0_40_storage_error_cm": 0.000008816637282257205,
+            "upper_0_80_storage_error_cm": 3.620193898290173e-7,
+            "mapped_10cm_theta_error": 0.000009949285399479351,
+            "total_storage_error_cm": 1.9047757837375087e-12
+          }
+        }
+      }
+    }
+  },
+  "cost_screen": {
+    "dimensions": {
+      "4": {
+        "BASE_over_R16_median": 0.003467305631707144,
+        "FINE_over_R16_median": 0.011717570274604131,
+        "materials_cheaper_BASE": 6,
+        "materials_cheaper_FINE": 6,
+        "total_materials": 6
+      },
+      "6": {
+        "BASE_over_R16_median": 0.005082690304035121,
+        "FINE_over_R16_median": 0.016784248922343967,
+        "materials_cheaper_BASE": 6,
+        "materials_cheaper_FINE": 6,
+        "total_materials": 6
+      },
+      "8": {
+        "BASE_over_R16_median": 0.006572798038083772,
+        "FINE_over_R16_median": 0.021808678443785305,
+        "materials_cheaper_BASE": 6,
+        "materials_cheaper_FINE": 6,
+        "total_materials": 6
+      }
+    },
+    "semantics": "shared-host implementation screening only; not direct timing for S4/G4 and not portable speedup"
+  }
+}
