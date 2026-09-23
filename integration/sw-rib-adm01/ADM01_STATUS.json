@@ -6,16 +6,18 @@
   "completed": [
     "ADM01-G1_OWNER_XOR",
     "ADM01-G2_CANONICAL_Q4B_REPLAY",
-    "ADM01-G3_ACCEPTED_EXTERNAL_HEAD_BINDING"
+    "ADM01-G3_ACCEPTED_EXTERNAL_HEAD_BINDING",
+    "ADM01-G4_GEOMETRY_POLICY_GUARD"
   ],
   "qualified": [
     "ADM01-G1",
     "ADM01-G2",
-    "ADM01-G3"
+    "ADM01-G3",
+    "ADM01-G4_GUARD"
   ],
-  "next_action": "Implement G4 fail-closed geometry-policy contract. Production admission remains blocked until a specific Q1H epsilon/error envelope or Ribasim-native geometry contract is frozen, followed by G5 end-to-end restart/retry/recomposition/mass qualification.",
+  "next_action": "Execute preregistered G5A origin-bound transaction semantics, then G5B exact-release Ribasim realization. Final admission remains blocked on an explicit G4 application geometry error envelope or native geometry contract.",
   "production_admission": false,
-  "current_head": "b322ad859227cbbd81c990f1197c3716e1b5cf54",
+  "current_head": "ac1ff395d8aac0af440cb2ed58f93a039d14b23e",
   "evidence": {
     "G1_G2": {
       "run": 35890507429,
@@ -26,6 +28,17 @@
       "run": 35890790845,
       "job": 107282567279,
       "decision": "PASS"
+    },
+    "G4": {
+      "run": 35891333005,
+      "job": 107284253053,
+      "decision": "PASS_FAIL_CLOSED_GUARD"
     }
-  }
+  },
+  "open": [
+    "G4_APPLICATION_ERROR_ENVELOPE",
+    "G5_END_TO_END_TRANSACTION",
+    "G6_RIBASIM_PROVENANCE",
+    "G7_INDEPENDENT_ADMISSION"
+  ]
 }
