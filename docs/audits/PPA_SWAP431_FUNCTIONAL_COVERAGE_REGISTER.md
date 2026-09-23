@@ -206,7 +206,10 @@ cutoff, moisture limitation, and Freundlich term over 100,000 vectors; cases
 outside the guarded equation domain remain held. Water-content molecular
 diffusion, pore-water velocity, longitudinal dispersion and timestep
 correction feeding the internal-face flux are independently source-checked
-over 100,000 vectors.
+over 100,000 vectors. The source's per-compartment `dz²/(2*dispr)` stability
+limit, `1e-8` dispersion floor, remaining-interval cap and `dtmin` floor are
+also compared over 100,000 eight-layer cases; this is not a complete transport
+subcycling or accepted-state integration.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`
