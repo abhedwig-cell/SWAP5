@@ -2057,6 +2057,13 @@
       "effect": "The IcTopMp first-pass and ICpBtDmPot(2)+1 final-pass loop bounds and DiamPolyg argument mapping are tested. Whole MACROGEOM and all production integration remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROINIT-DARCY",
+      "state": "ISOLATED_C_DARCY_COEFFICIENT_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROINIT_DARCY_STATUS.json; preregistered against B1.11 macropore.f90 MACROINIT section F",
+      "production_delta": "NONE",
+      "effect": "The CDarcy source coefficient and inverse-square diameter sensitivity are tested independently; surrounding MACROINIT state composition and production exchange remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,

@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05a3_macroinit_darcy.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROINIT-DARCY",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f227d27012eaf97196f41e94251eec6be02e80d0",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROINIT",
+    "source_region": "section F CDarcy assignment at macropore.f90:900-903"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macroinit_darcy.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macroinit_darcy_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macroinit_darcy_source_oracle.sh",
+  "in_scope": [
+    "ShapeFacMp * 8 * PpDmCp * DZ * Ksat / DiPoCp**2",
+    "zero domain share and inverse-square polygon-diameter scaling",
+    "invalid nonpositive diameter fail-closed"
+  ],
+  "out_of_scope": [
+    "MACROINIT state mutation, interval loops and owner integration",
+    "accepted Richards mass, retry, restart, parallel and A4 admission"
+  ],
+  "expected_tests": [
+    "hand-computable coefficient and zero-share result",
+    "doubling polygon diameter quarters CDarcy",
+    "O0/O2 output identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated initialization coefficient only"
+}
