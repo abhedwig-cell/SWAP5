@@ -65,15 +65,24 @@ contains
     type(macro_used_exchange)::captured
     real(real64)::head,difference,potential,step,inpot,outpot,frac,tmp,mx,top_excess
     real(real64)::toprates(2),qin(1),qinternal(1),qout(1),quns(1),qrapid(1),hout(1),derivative(1)
-    real(real64)::equation(1),diagonal(1),store,expected_rate
+    real(real64)::equation(1),diagonal(1),store,expected_rate,initial_store,expected_derivative,out_excess
     real(real64),allocatable::transfer_amount(:)
-    integer::sign_case,k,status
+    integer::sign_case,k,status,limited
     logical::valid
+    do limited=0,1
     do sign_case=1,2
       head=real(sign_case,real64)-0.5_real64
       expected_rate=(1.0_real64-head)*0.25_real64
       do k=1,4
         step=real(k,real64)/4
+        initial_store=0.5_real64
+        expected_rate=(1.0_real64-head)*0.25_real64
+        if(limited==1) then
+          initial_store=0.015625_real64
+          if(sign_case==2) initial_store=1.0_real64-0.015625_real64
+          expected_rate=sign(0.015625_real64/step,1.0_real64-head)
+        end if
+        expected_derivative=-expected_rate/(1.0_real64-head)
         ! Saturated pore head = reference_level-node_elevation = 1 cm.
         ! Fixed geometry/conductance; no partial saturation or seepage branch.
         call ppa_wu05a3_satflow_exchange(head,0.0_real64,-1.0_real64,1.0_real64, &
@@ -81,31 +90,40 @@ contains
             0.5_real64,1.0_real64,acos(-1.0_real64),1.0_real64,step,difference,potential,status)
         call check(status==PPA_WU05A3_SATFLOW_OK,10)
         inpot=max(potential,0.0_real64); outpot=max(-potential,0.0_real64)
-        call limit_domain_inflow(0.5_real64,1.0_real64,1.0_real64,step,0.0_real64,0.0_real64, &
+        call limit_domain_inflow(initial_store,1.0_real64,real(sign_case-1,real64),step,0.0_real64,0.0_real64, &
             0.0_real64,inpot,outpot,[0.0_real64],[inpot],frac,tmp,mx,top_excess,toprates,qinternal,qin,valid)
         call check(valid,11)
-        call limit_domain_outflow(step,outpot,0.0_real64,[outpot],[0.0_real64],[0.0_real64], &
+        ! Source minimum = min(VOLUNDR groundwater volume, initial storage).
+        ! Groundwater volume is supplied as 0 (outgoing) or 1 (incoming).
+        out_excess=max(0.0_real64,min(real(sign_case-1,real64),initial_store)-tmp)
+        call limit_domain_outflow(step,outpot,out_excess,[outpot],[0.0_real64],[0.0_real64], &
             frac,qout,quns,qrapid,valid)
         call check(valid,12)
         call ppa_wu05a3_satflow_derivative(1,1,1,[head],[difference],qin,qout,[0.0_real64], &
             hout,derivative,status)
         call check(status==PPA_WU05A3_SATFLOW_DERIVATIVE_OK,13)
-        call check(abs(derivative(1)+0.25_real64)<tiny(head),14)
-        e%key=macro_trial_key(2_int64,0_int64,int(sign_case,int64),int(k,int64))
+        call check(abs(derivative(1)-expected_derivative)<1.e-14_real64,14)
+        e%key=macro_trial_key(2_int64,0_int64,int(sign_case+2*limited,int64),int(k,int64))
         e%dt=step; e%head=[head]; e%rate=qout-qin; e%derivative=derivative
-        call check(abs(e%rate(1)-expected_rate)<tiny(head),15)
+        call check(abs(e%rate(1)-expected_rate)<1.e-14_real64,15)
         equation=0; diagonal=1
         call apply_macro_residual(e,e%key,e%head,equation,captured,valid)
         call check(valid,16)
         call apply_macro_diagonal(captured,e%key,.true.,diagonal,valid)
-        call check(valid.and.abs(diagonal(1)-1.25_real64)<tiny(head),17)
+        call check(valid.and.abs(diagonal(1)-(1.0_real64-expected_derivative))<1.e-14_real64,17)
         call copy_matrix_transfer(captured,e%key,transfer_amount,valid)
         call check(valid,18)
-        store=0.5_real64+(qin(1)-qout(1))*step
-        call check(abs(store-0.5_real64+transfer_amount(1))<tiny(head),19)
+        store=initial_store+(qin(1)-qout(1))*step
+        call check(abs(store-initial_store+transfer_amount(1))<1.e-14_real64,19)
+        if(limited==1) then
+          call check(abs(store-real(sign_case-1,real64))<1.e-14_real64,20)
+          call check(abs(abs(transfer_amount(1))-0.015625_real64)<1.e-14_real64,21)
+        end if
       end do
     end do
+    end do
     print '(a)','PPA_WU05A4_GENERATED_SATFLOW_RATE_DERIVATIVE=PASS'
+    print '(a)','PPA_WU05A4_LIMITED_SATFLOW_SOURCE_DERIVATIVE=PASS'
   end subroutine
   subroutine check(condition,code)
     logical,intent(in)::condition

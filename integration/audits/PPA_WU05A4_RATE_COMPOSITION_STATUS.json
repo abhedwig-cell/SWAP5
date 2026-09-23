@@ -9,6 +9,12 @@
   "checks": "Repeat at dt 0.25, 0.5, 0.75 and 1 day. Candidate macro storage change plus applied-vector matrix transfer equals external top input within 1e-14 cm. The same supplied interval potentials give dt-scaled rates and invariant amounts.",
   "qualification_boundary": "No actual Richards solve, matrix storage state, nonlinear derivative, accepted mass receipt, restart or production binding is exercised. This is analytic component composition, not whole-column qualification or full B1.11 MACRORATE replay. Surface geometry and potentials are supplied fixture data.",
   "production_admitted": false,
+  "active_limit_extension": {
+    "scope": "Repeat both generated SATFLOW directions at four dt values with only 0.015625 cm available to leave or enter storage. Source minimum storage is min(supplied groundwater volume,initial storage); groundwater volumes are supplied as zero for outgoing and one for incoming.",
+    "expectation": "Outgoing candidate storage reaches zero; incoming reaches one. Integrated transfer magnitude is 0.015625 cm at each dt. Source SATFLOW derivative is minus the limited rate divided by the evaluated head difference; residual and diagonal consume that same paired evaluation.",
+    "important_distinction": "This checks the source quasi-Newton derivative, not a finite-difference derivative of the capped composite law. No claim of exact Jacobian or nonlinear convergence is made. Groundwater volume remains supplied fixture data, not geometry-derived VOLUNDR output.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "generated_satflow_extension": {
     "scope": "Single saturated cell, fixed pore head 1 cm and reciprocal resistance 0.25/day, matrix heads 0.5 and 1.5 cm. SATFLOW generates integrated potentials; standard-domain limiters produce actual rates; SATFLOW derivative uses those rates; trial residual/diagonal capture consumes both.",
     "analytic_expectation": "Matrix input rates +0.125 and -0.125 cm/day, derivative -0.25/day, diagonal increment +0.25/day and opposite macro storage transfer; tested at four dt values.",
