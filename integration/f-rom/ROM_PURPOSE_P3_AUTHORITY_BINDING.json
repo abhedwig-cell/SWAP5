@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.rom-purpose.p3.authority-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "status": "P3_AUTHORITY_BOUND_BEFORE_RESPONSE",
+  "live_reconciliation": {
+    "path": "integration/f-rom/ROM_PURPOSE_P3_LIVE_RECONCILIATION.json",
+    "blob": "6ec7757af2af84ad66228d58cd7eb3449301e106",
+    "commit": "dbe42a5ba735a066622aa6560e096a582e550f43"
+  },
+  "repository_authority": {
+    "live_canonical": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "p3_branch": "work/f-rom-purpose",
+    "branch_start": "044b9fe0aacc96799a59ec898071fbe308a8fce2",
+    "rebased": false,
+    "rationale": "Canonical changes since the shared scientific backend do not intersect the ROM-PURPOSE scientific dependency surface. P3 therefore binds the live canonical governance state while retaining the exact qualified ROM backend rather than silently rebasing."
+  },
+  "inherited_authorities": {
+    "p2_closeout": "integration/f-rom/ROM_PURPOSE_P2_CLOSEOUT.json@c1cac2a0b6a89a932d7729dd21d8412a677eb3ec",
+    "p2_purpose_map": "integration/f-rom/ROM_PURPOSE_P2_PURPOSE_MAP.json@5d074f5eff2c4410b7a35f42ae76f6e7c053c625",
+    "p2_placement_result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json@e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "p2_h4_result": "integration/f-rom/ROM_PURPOSE_P2_H4_RESULT.json@dcb9918f53cf595673dd0f470f8e71a9cfb4eff8",
+    "p1_metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "p1_reference_result": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json@041c8be484f47363c0f545ac28f5490559969072",
+    "p2_reference_result": "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json@f701aee1d612e6af509a639bc8505b1d90be716c"
+  },
+  "scientific_question": "How much purpose-aligned vertical state information is required before remaining hydrological error can legitimately be attributed to propagation or closure rather than insufficient vertical representation?",
+  "order_of_adjudication": [
+    "STATE_COUNT_SUFFICIENCY",
+    "ONLY_IF_PROSPECTIVE_TRIGGER_ALLOWS: SAME_PARTITION_RICHARDS_DIAGNOSTIC",
+    "CLOSURE_ATTRIBUTION"
+  ],
+  "fixed_scope": {
+    "purposes": [
+      "SURF_P",
+      "GW_LB"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "reduced_closure": "CURRENT_LAYER_FACE",
+    "reference_target": "R2048_T32",
+    "numerical_comparator": "R512_T32",
+    "metric_contract": "P1 purpose-specific complete metric vectors",
+    "equality_tolerance": 1e-12,
+    "transaction_mass_gate_cm": 1e-12,
+    "O0_O2_scientific_identity_required": true
+  },
+  "forbidden_without_new_authority": [
+    "post-response state-boundary changes",
+    "closure tuning or a new closure family",
+    "application tolerance or acceptance claims",
+    "production-ROM admission",
+    "Reference Richards replacement",
+    "RossFast changes",
+    "production groundwater-coupling changes",
+    "performance or speedup claims"
+  ]
+}
