@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.rom_root.s2.technical_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S2-R1",
+  "date": "2026-09-23",
+  "status": "BOUND_TECHNICAL_SERIALIZATION_REPAIR",
+  "failed_run": {
+    "run_id": 35852700443,
+    "head": "859bd85796ca18f664b927a34cd395ae87dcd5ef",
+    "observed_job": 107153870709,
+    "case": "B14-V01",
+    "failure": "Python json encoder rejected a NumPy scalar boolean while writing the completed case result."
+  },
+  "classification": "TECHNICAL_OUTPUT_SERIALIZATION_ONLY",
+  "scientific_response_available_to_repair_design": false,
+  "repair": {
+    "change": "Add a JSON default converter that maps numpy scalar objects to their Python scalar value.",
+    "numerical_algorithm_changed": false,
+    "sink_schedule_changed": false,
+    "root_fraction_changed": false,
+    "material_or_history_changed": false,
+    "representation_changed": false,
+    "dt_changed": false,
+    "closure_changed": false,
+    "ledger_gate_changed": false,
+    "identity_checks_changed": false,
+    "pass_rule_changed": false
+  },
+  "scientific_firewall": {
+    "dynamic_root_feedback_implemented": false,
+    "reduced_feedback_response_generated": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
