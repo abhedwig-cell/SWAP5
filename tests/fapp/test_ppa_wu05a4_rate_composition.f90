@@ -7,6 +7,7 @@ program test_rate_composition
   use mod_ppa_wu05a3_satflow_exchange
   use mod_ppa_wu05a3_satflow_derivative
   use mod_ppa_wu05a4_storage_bounds
+  use mod_ppa_wu05a4_exchange_aggregate
   implicit none
   type(redistribution_candidate)::redistributed
   type(macro_exchange_evaluation)::evaluation
@@ -61,7 +62,42 @@ program test_rate_composition
   print '(a)','PPA_WU05A4_RATE_COMPOSITION_INTERNAL_TRANSFER=PASS'
   call check_generated_satflow()
   call check_geometry_bounds()
+  call check_domain_aggregation()
 contains
+  subroutine check_domain_aggregation()
+    real(real64)::sat(2,3),uns(2,3),inter(2,3),mat(2,3),total,rapid_total
+    real(real64),allocatable::domain(:,:),matrix(:),amounts(:)
+    type(macro_exchange_evaluation)::e
+    type(macro_used_exchange)::slot
+    real(real64)::equation(3)
+    logical::valid
+    sat=0; uns=0; inter=0; mat=0
+    sat(1,2)=0.5_real64; mat(2,2)=0.25_real64
+    uns(1,3)=0.125_real64; inter(2,3)=0.0625_real64
+    call aggregate_matrix_exchange(2,[3,3],sat,uns,inter,mat,[0.125_real64,0.25_real64], &
+        [0.0_real64,0.0_real64,0.5_real64],domain,matrix,total,rapid_total,valid)
+    call check(valid,40)
+    call check(maxval(abs(matrix-[-0.375_real64,0.25_real64,0.0625_real64]))<tiny(total),41)
+    call check(abs(total+0.0625_real64)+abs(rapid_total-0.5_real64)<tiny(total),42)
+    ! Rapid drainage stays external; domain-to-matrix exchange is internal.
+    e%key=macro_trial_key(3_int64,0_int64,1_int64,1_int64)
+    e%dt=0.5_real64; e%head=[1.0_real64,1.0_real64,1.0_real64]
+    e%rate=matrix; e%derivative=[0.0_real64,0.0_real64,0.0_real64]
+    equation=0
+    call apply_macro_residual(e,e%key,e%head,equation,slot,valid)
+    call check(valid,43)
+    call copy_matrix_transfer(slot,e%key,amounts,valid)
+    call check(valid,44)
+    call check(maxval(abs(amounts-sum(domain,dim=1)*0.5_real64))<tiny(total),45)
+    call aggregate_matrix_exchange(1,[2,3],sat,uns,inter,mat,[0.125_real64,0.25_real64], &
+        [0.0_real64,0.0_real64,0.5_real64],domain,matrix,total,rapid_total,valid)
+    call check(valid,46)
+    call check(abs(matrix(1))+abs(matrix(3)+0.0625_real64)<tiny(total),47)
+    call aggregate_matrix_exchange(2,[1,3],sat,uns,inter,mat,[0.125_real64,0.25_real64], &
+        [0.0_real64,0.0_real64,0.5_real64],domain,matrix,total,rapid_total,valid)
+    call check(.not.valid.and..not.allocated(domain).and..not.allocated(matrix),48)
+    print '(a)','PPA_WU05A4_DOMAIN_MATRIX_AGGREGATION=PASS'
+  end subroutine
   subroutine check_geometry_bounds()
     real(real64)::ground,minimum,limit,tmp,mx,rejected_top,toprate(2),qi(2),qm(2),sr(2),ur(2),rr(2)
     logical::valid
