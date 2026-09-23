@@ -7,6 +7,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
       - 'src/runtime/mod_fmr_ribasim_management_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
       - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
       - 'tests/ribasim-management/support/mod_rm13_management_c_bridge.f90'
@@ -24,6 +25,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
       - 'src/runtime/mod_fmr_ribasim_management_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
       - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
       - 'tests/ribasim-management/support/mod_rm13_management_c_bridge.f90'
