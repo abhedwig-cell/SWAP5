@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.rom-purpose.p4.authority-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P4",
+  "date": "2026-09-23",
+  "status": "BOUND_BEFORE_ANY_P4_RESPONSE",
+  "live_reconciliation": "integration/f-rom/ROM_PURPOSE_P4_LIVE_RECONCILIATION.json@b511cd3b7e0dc1f1356aa6ced35e33cdb81887ab",
+  "representation_ladder": "integration/f-rom/ROM_PURPOSE_P4_REPRESENTATION_LADDER.json@ad5604fba2252e956015403d461d3df17ddec28c",
+  "inherited_scientific_authority": {
+    "p3_closeout": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT.json@6b5970289a12e609108cc6b450d68aa17840c4fc",
+    "p3_same_partition_result": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_RESULT.json@24f59bc4795ce1a2236e6538bb0bcd401062c532",
+    "metric_contract": "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json@383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "scientific_question": "At what prospectively extended purpose-aligned vertical resolution does the hydrological comparator become reachable, and at what rung can residual Layer-ROM error first be cleanly distinguished from same-partition spatial-resolution error?",
+  "prohibited": [
+    "reopen P3",
+    "retune boundaries after P4 response",
+    "introduce a new closure family",
+    "relax numerical qualification from response",
+    "make application or production acceptance claims",
+    "make performance claims before hydrological qualification"
+  ],
+  "firewall": {
+    "any_p4_response_seen": false,
+    "closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
