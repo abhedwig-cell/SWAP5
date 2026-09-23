@@ -23,6 +23,13 @@ assert "bind_b110_generated_mvg_provider" in advance
 assert "generated_mvg_provider_ready" not in admit
 assert "associated(self%generated_mvg_state)" not in admit
 assert "associated(self%generated_constitutive)" not in admit
+
+fixture=Path("tests/fsi/test_ftab02c_serialized_generated_provider.f90").read_text()
+assert "c%transaction%temporal_tolerance=1.0e-6_real64" in fixture
+assert "call route_initial_conductivity(parameters,generated .and. .not. unsupported_henpr,qref)" in fixture
+assert "subroutine analytical_initial_conductivity" not in fixture
+print("F_TAB02_C_STRICT_TEMPORAL_GATE_PRESERVED=PASS")
+print("F_TAB02_C_PROVIDER_CONSISTENT_EQUILIBRIUM=PASS")
 print("F_TAB02_C_GENERATION_OUTSIDE_TRIAL_HOTLOOP=PASS")
 print("F_TAB02_C_EXACT_PARAMETER_AUTHORITY_CACHE=PASS")
 print("F_TAB02_C_EXPLICIT_PROVIDER_SELECTION_STATIC=PASS")
