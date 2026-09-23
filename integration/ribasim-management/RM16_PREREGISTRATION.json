@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_provider_raw_richards.preregistration.v1",
+  "work_unit": "RM16",
+  "date": "2026-09-23",
+  "title": "Dynamic-top provider versus raw Richards failure isolation",
+  "depends_on": {
+    "RM14": "FALSIFIED_DYNAMIC_TOP_WITHIN_INHERITED_FGC44_NUMERICAL_ENVELOPE",
+    "RM15": "STRUCTURAL_FAILURE_ACROSS_CENSUS",
+    "F_APP07_F_APP08": "admitted irrigation-to-dynamic-top field semantics"
+  },
+  "reconciled_fact": "The serialized Reference backend already evaluates the accepted-origin top-node conductivity and passes it as fixed_top_node_conductivity_cm_per_day to the dynamic-top provider. Therefore missing SWKIMPL=0 conductivity freezing is not an open hypothesis.",
+  "question": "At the frozen RM14 accepted origin, does the dynamic-top provider itself return a valid physically interpretable boundary, and if so is the failure introduced only when that boundary is consumed by the raw Richards nonlinear solve?",
+  "fixed_origin": {
+    "same_FGC44_geometry_hydraulics_state": true,
+    "pressure_profile": "same hydrostatic one-column accepted origin",
+    "ponding_depth_cm": 0.0,
+    "groundwater_level_m": -2.0,
+    "swkimpl": 0,
+    "swkmean": 1,
+    "predictor_bottom_flux_cm_per_day": 1e-6
+  },
+  "fixed_dynamic_top": {
+    "irrigation_rate_cm_per_day": 36.0,
+    "precipitation_rate_cm_per_day": 0.0,
+    "snowmelt_rate_cm_per_day": 0.0,
+    "runon_rate_cm_per_day": 0.0,
+    "bare_soil_evaporation_cm_per_day": 0.0,
+    "pond_evaporation_cm_per_day": 0.0,
+    "ponding_max_cm": 1.0,
+    "runoff_resistance_day": 1.0,
+    "runoff_exponent": 1.0
+  },
+  "diagnostic_windows_seconds": [8.64, 1.08, 0.0084375],
+  "tests": [
+    "Evaluate b110_dynamic_top_boundary_provider directly at the accepted origin, using the exact fixed top-node conductivity already bound by the serialized backend.",
+    "Record provider status, regime, actual top flux, surface head, candidate ponding, runoff depth, face conductivity, net potential surface flux and evaporation capacity.",
+    "Require provider output to be finite and mass-interpretable before invoking the raw solver.",
+    "For the same origin and provider binding, execute exactly one raw Richards solve attempt outside the outer transaction retry loop and record solver status and low-level diagnostics.",
+    "Do not alter max iterations, backtracking, tolerances, temporal budget, conductivity mode, irrigation rate or ponding policy."
+  ],
+  "decision_rules": [
+    "If the provider is unavailable or nonphysical at the accepted origin, classify RM14/RM15 as boundary-construction failure.",
+    "If the provider is valid but the raw solve fails at all diagnostic windows, classify the blocker as raw Richards nonlinear-path incompatibility with the tested dynamic-top boundary.",
+    "If the raw solve converges but the outer transaction rejects it, classify the remaining blocker as temporal-certificate or transaction-policy construction.",
+    "Mass-accounting failure remains a separate blocker."
+  ],
+  "prohibitions": [
+    "Do not tune solver iteration ceilings or tolerances in RM16.",
+    "Do not change the 36 cm/day irrigation rate.",
+    "Do not change conductivity mean or implicitness modes.",
+    "Do not reopen RM14 or RM15 based on component diagnostics."
+  ],
+  "nonclaims": [
+    "RM16 is diagnostic only.",
+    "No three-model admission.",
+    "No new production timestep authority.",
+    "No new irrigation physics."
+  ]
+}
