@@ -120,7 +120,7 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Trace MPVOLUME task-1 shrinkage/current-previous ownership and bridge the separate shrinkage, surface-area and compartment/domain-volume candidates while preserving the no-state-publication boundary; next inspect task-2 hysteresis as its own source oracle.",
-  "recovery_point": "latest committed campaign checkpoint pending PPA-WU05-A3-MPVOLUME-DOMAINS-CANDIDATE commit; local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "d6f1002b6e4727a08e9757c05a8c6bb530c02dc4 (PPA-WU05-A3-MPVOLUME-DOMAINS-CANDIDATE; local branch checkpoint only, not pushed or canonically admitted).",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
