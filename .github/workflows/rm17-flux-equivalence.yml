@@ -1,0 +1,29 @@
+name: RM17 dynamic fixed-flux equivalence
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/ribasim-management/test_rm17_flux_equivalence.py'
+      - 'tests/ribasim-management/run_rm17_flux_equivalence.sh'
+      - 'integration/ribasim-management/RM17_*'
+      - '.github/workflows/rm17-flux-equivalence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: RM17 dynamic fixed-flux equivalence
+        run: bash tests/ribasim-management/run_rm17_flux_equivalence.sh
