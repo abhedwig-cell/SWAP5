@@ -61,22 +61,30 @@ contains
     call initialize_case(committed, column, template, parameters, forcing, config, -12.25_real64, signed_rate)
     call backend%initialize(top)
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
+    output%completed = .true.
+    output%committed = .true.
     template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
     call fmr_execute_serialized_ribasim_surface_water_resolved_column(backend, tx_control, column, template, &
          parameters, forcing, committed, config, [-12.25_real64], t0, t1, output, diagnostic, runtime, &
          active_calls, context_status)
     call require(context_status == RIBASIM_SW_PROFILE_OWNER_CONFLICT, 'wrapper owner conflict status')
-    call require(.not. output%committed .and. committed%current_revision() == 0_int64, &
+    call require(.not. output%completed .and. .not. output%committed .and. .not. output%admitted, &
+         'wrapper owner conflict clears stale acceptance')
+    call require(output%admission_assessed .and. committed%current_revision() == 0_int64, &
          'wrapper owner conflict no commit')
 
     template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_BASE
     allocate(forcing%drainage_response_controls(1))
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
+    output%completed = .true.
+    output%committed = .true.
     call fmr_execute_serialized_ribasim_surface_water_resolved_column(backend, tx_control, column, template, &
          parameters, forcing, committed, config, [-12.25_real64], t0, t1, output, diagnostic, runtime, &
          active_calls, context_status)
     call require(context_status == RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, 'wrapper duplicate control status')
-    call require(.not. output%committed .and. committed%current_revision() == 0_int64, &
+    call require(.not. output%completed .and. .not. output%committed .and. .not. output%admitted, &
+         'wrapper duplicate control clears stale acceptance')
+    call require(output%admission_assessed .and. committed%current_revision() == 0_int64, &
          'wrapper duplicate control no commit')
 
     write(*,'(A)') 'SW_RIB_PA01_WRAPPER_OWNER_XOR=PASS'
