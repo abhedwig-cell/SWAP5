@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.ribasim_management.qualification.v1",
+  "work_unit": "RM06",
+  "date": "2026-09-23",
+  "title": "Transactional Hupsel management-state qualification before real Ribasim binding",
+  "branch": "work/ribasim-management-coupling-closeout",
+  "qualified_head": "12c4636f39c1bfef0c126e3239f2d60fda78a22e",
+  "workflow": "RM06 Ribasim management transaction qualification",
+  "workflow_run": 35823111398,
+  "workflow_job": 107059003201,
+  "conclusion": "PASS",
+  "output_sha256": "fc76627c333718fc146cedc370ece02f0a80e85951f15c230458523ab605ce39",
+  "gates": {
+    "candidate_nonmutating": "PASS",
+    "reject_retry_irrigation_identity": "PASS",
+    "reject_retry_rutter_identity": "PASS",
+    "reject_retry_observation_identity": "PASS",
+    "request_allocation_supply_distinct": "PASS",
+    "gross_net_application_distinct": "PASS",
+    "exactly_once_commit": "PASS",
+    "restart_persistence_identity": "PASS",
+    "supply_not_above_allocation": "PASS",
+    "partial_supply_fail_closed": "PASS",
+    "o0_o2_output_identity": "PASS"
+  },
+  "technical_failure_history": [
+    {
+      "run": 35822853856,
+      "classification": "TECHNICAL",
+      "cause": "qualification compiler promoted pre-existing compare-real warnings in protected dependencies to errors"
+    },
+    {
+      "run": 35823013467,
+      "classification": "TECHNICAL",
+      "cause": "optimized test assertions combined impure ready() calls inside short-circuitable boolean expressions"
+    }
+  ],
+  "scientific_disposition": "QUALIFIED_FOR_BINDING_TO_REAL_RIBASIM_WITHIN_BOUNDED_FULL_REALIZATION_PROFILE",
+  "nonclaims": [
+    "No real Ribasim execution is qualified by RM06.",
+    "No partial-irrigation response policy is admitted.",
+    "No real SWAP Richards hydrological state is yet atomically committed with this management state.",
+    "No MODFLOW composition is qualified by RM06."
+  ],
+  "next_action": "BIND_REAL_RIBASIM_ALLOCATION_TO_REQUEST_ALLOCATED_SUPPLIED_CONTRACT"
+}
