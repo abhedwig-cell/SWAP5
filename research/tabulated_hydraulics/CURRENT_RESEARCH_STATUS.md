@@ -171,4 +171,4 @@ Research should remain closed unless the separately owned production F-TAB02
 workstream exposes a new concrete scientific discrepancy or dependency that
 falls within TAB-HYD research ownership.
 
-Production status has advanced beyond G closure into F0 implementation. Latest observed production head: `9ad311f09e8f97fe3c8a5054ec89e34f3ade87cf` (`F-TAB02-F0: add standalone generated-provider lifetime seam`). F0 qualification and the subsequent exact whole-Hupsel gate remain production-workstream responsibilities.
+Production status has advanced beyond G closure into F0 implementation. Latest observed production head: `f607f97cb85c845fee8293721c64a9a8666ce477` (`F-TAB02-F0: add standalone selection lifetime qualification`). The F0 test scaffold is present, but no dedicated controlling F0 runner/workflow was present at that observed head; F0 qualification and the subsequent exact whole-Hupsel gate remain production-workstream responsibilities.
