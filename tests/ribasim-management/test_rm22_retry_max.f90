@@ -55,7 +55,8 @@ contains
     class(transaction_state_t),intent(in)::full_state,half_state
     real(real64)::value
     if(self%calls<0) error stop 'unreachable'
-    value=0.0_real64
+    select type(full_state); type is(rm22_state_t); value=0.0_real64*full_state%storage_value; class default; value=0.0_real64; end select
+    select type(half_state); type is(rm22_state_t); value=value+0.0_real64*half_state%storage_value; class default; end select
   end function
 end module
 
