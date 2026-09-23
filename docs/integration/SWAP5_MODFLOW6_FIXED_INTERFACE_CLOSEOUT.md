@@ -1,6 +1,6 @@
 # SWAP5–MODFLOW6 fixed-interface groundwater coupling closeout
 
-Status: **canonical admitted and closed for the bounded profile described here**. The qualified candidate `0244570849e799d35a88abed36dc655e029d7c36` entered canonical historically through merge commit `148bca0dbe65d75a64694e5d481b2073419df009`; PR #582 is retained only as historical merge provenance and is not admission authority. The exact canonical postimage `79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e` passed the unchanged composed closeout gate in workflow run `35819258906`, job `107047399058`. Final admission provenance is recorded in `integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json`.
+Status: **canonical admitted and closed for the bounded profile described here**. The qualified candidate `0244570849e799d35a88abed36dc655e029d7c36` entered canonical historically through merge commit `148bca0dbe65d75a64694e5d481b2073419df009`; PR #582 is retained only as historical merge provenance and is not admission authority. The final admission commit is `b70173f315ab1b174001aeb7e67e56edfef95b0d` with canonical parent `79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e`. That exact admitted postimage passed the unchanged composed closeout gate in workflow run `35819763656`, job `107048912789`. Final admission provenance is recorded in `integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json`.
 
 ## Scope
 

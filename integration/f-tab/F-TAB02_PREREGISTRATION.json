@@ -3,7 +3,7 @@
   "workunit": "F-TAB02",
   "title": "Generated default-MvG K0 constitutive acceleration provider",
   "protocol": "RECONCILE -> PREREGISTER -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
-  "base": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+  "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "source_authority": {
     "canonical": "integration/f-ci-canonical@b70173f315ab1b174001aeb7e67e56edfef95b0d",
     "research_handoff": "research/tabulated-hydraulics-characterization@f402259b33b99e418a25d7f8f3dc2ff1c479ef31",
@@ -148,9 +148,10 @@
   ],
   "reconciliation": {
     "date": "2026-09-23",
-    "previous_base": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
-    "current_canonical": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
-    "live_delta": "groundwater fixed-interface closeout only; constitutive/solver/provider authority unchanged",
-    "branch_merge": "fa20a7dd50e5b32849e6ee05258cc7efb4778e08"
+    "previous_base": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "current_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "live_delta": "nine canonical commits; only MODFLOW6 fixed-interface closeout documentation/status/contract records changed; F-TAB02 constitutive, solver-contract and runtime composition dependency surface unchanged",
+    "branch_recovery_head": "e43a8021644a977f2e52fabf0e438feb61e90cb5",
+    "action": "canonical delta copied into work branch before F-TAB02-C"
   }
 }

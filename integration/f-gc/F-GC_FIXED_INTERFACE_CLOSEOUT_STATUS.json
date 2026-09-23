@@ -78,9 +78,11 @@
   },
   "final_admission_record": "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
   "canonical_postimage_qualification": {
-    "verified_head": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
-    "workflow_run": 35819258906,
-    "workflow_job": 107047399058,
+    "verified_head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "canonical_parent": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "integration_commit": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "workflow_run": 35819763656,
+    "workflow_job": 107048912789,
     "conclusion": "SUCCESS",
     "independent_endpoint_head_error_m": 3.297362383136715e-14,
     "independent_physical_residual_m_per_s": -7.075006056961875e-16,
@@ -91,5 +93,6 @@
     "fresh_process_e2e_replay": "PASS",
     "fgc24_split_process_restart_replay_o0": "PASS",
     "fgc24_split_process_restart_replay_o2": "PASS"
-  }
+  },
+  "canonical_parent_for_closure_witness": "b70173f315ab1b174001aeb7e67e56edfef95b0d"
 }
