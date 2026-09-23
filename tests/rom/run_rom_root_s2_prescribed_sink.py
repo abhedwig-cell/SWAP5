@@ -199,10 +199,18 @@ def solve_route(material: str, history: str, member: str, route: str, sink: np.n
     cumulative_root = []
     max_ledger = 0.0
     max_corrector = 0
+    root_ledger_rate = 0.0 if route == "LEGACY_NO_SINK" else math.fsum(float(v) for v in sink)
+    ledger_substep_count = 0
 
     for _obs in range(1, STEPS + 1):
         for _ in range(substeps):
             y, iterations = heun_step(y, DT, dz, k0, psi0, route, sink)
+            ledger_substep_count += 1
+            # Auxiliary accounting coordinate only.  The prescribed withdrawal
+            # is constant and is not part of the hydraulic state, so materialize
+            # its cumulative ledger from the exact transaction count instead of
+            # carrying repeated binary64 addition error across 8192 substeps.
+            y[n + 2] = float(ledger_substep_count) * DT * root_ledger_rate
             max_corrector = max(max_corrector, iterations)
         theta = y[:n] / dz
         bc.psi_k(theta)
