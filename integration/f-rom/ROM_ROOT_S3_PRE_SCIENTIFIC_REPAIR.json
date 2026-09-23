@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.rom_root.s3.pre_scientific_repair.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_STAGE3_DYNAMIC_RESPONSE",
+  "purpose": "Repair Stage 3 authority plumbing after C0R requalified the immutable C0 physics artifact without changing the preregistered Stage 3 scientific comparison.",
+  "predecessor_authority": "integration/f-rom/ROM_ROOT_S3_AUTHORITY_RECONCILIATION.json",
+  "corrected_authority": {
+    "dynamic_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "prescribed_sink_harness": "integration/f-rom/ROM_ROOT_S2R_RESULT.json",
+    "full_potential_uncertainty": "integration/f-rom/ROM_ROOT_S3C0R_RESULT.json",
+    "full_potential_raw_physics": {
+      "source": "immutable original C0 artifact reused by C0R",
+      "workflow_run": 35854345998,
+      "artifact_id": 10747053751,
+      "digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920"
+    }
+  },
+  "repair": {
+    "runner_change": "Accept the qualified S3C0R authority status instead of the superseded C0 qualification status.",
+    "analyzer_change": "Use S3C0R metric uncertainty while retaining the immutable original C0 route files as the full-potential physical response.",
+    "workflow_change": "Verify S2R and C0R, download the C0 raw physics artifact via C0R source_physics_run, and persist C0R authority with Stage 3 evidence.",
+    "response_based": false
+  },
+  "scientific_semantics_changed": false,
+  "unchanged": [
+    "U4, U8, R8 and R16 partitions",
+    "CURRENT_LAYER_FACE hydraulic closure",
+    "layer-mean water content to inverse-retention representative head",
+    "unchanged Feddes alpha",
+    "exact retained root fractions",
+    "committed-state feedback timing",
+    "candidate dt and observation interval",
+    "componentwise metrics",
+    "feedback-effect definition",
+    "Reference numerical distinguishability rules",
+    "missing-information classes A through E",
+    "no application tolerance",
+    "candidate firewall"
+  ],
+  "scientific_firewall": {
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
