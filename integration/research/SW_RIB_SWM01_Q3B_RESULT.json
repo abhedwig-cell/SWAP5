@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3b.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q3B",
+  "date": "2026-09-23",
+  "decision": "PASS_TRANSFER_IDENTITIES_OVER_RIBASIM_OWNED_STORE",
+  "tested_head": "f47470d3e76eb43f998003b039a8c2db219d197c",
+  "evidence_run": 35870771049,
+  "evidence_job": 107213959004,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "ledger_precheck": "PASS",
+  "cases": {
+    "T1_INCOMING_SPLIT": {
+      "realized_drainage_aggregate_m3": 0.005,
+      "realized_surface_runoff_m3": 0.004,
+      "realized_lower_infiltration_m3": 0,
+      "realized_top_inundation_m3": 0,
+      "final_level_m": -0.491,
+      "final_storage_m3": 0.509,
+      "direct_mass_residual_m3": -1.0413111345419779e-13,
+      "disposition": "TRANSFER_IDENTITIES_REALIZED"
+    },
+    "T2_OUTGOING_SPLIT": {
+      "realized_drainage_aggregate_m3": 0,
+      "realized_surface_runoff_m3": 0,
+      "realized_lower_infiltration_m3": 0.004,
+      "realized_top_inundation_m3": 0.0029999999252665476,
+      "final_level_m": -0.5069999999252666,
+      "final_storage_m3": 0.49300000007473344,
+      "direct_mass_residual_m3": 8.09738560925144e-14,
+      "disposition": "TRANSFER_IDENTITIES_REALIZED"
+    },
+    "T3_MIXED_IDENTITIES": {
+      "realized_drainage_aggregate_m3": 0.005,
+      "realized_surface_runoff_m3": 0.002,
+      "realized_lower_infiltration_m3": 0.003,
+      "realized_top_inundation_m3": 0.000999999975088849,
+      "final_level_m": -0.4969999999750889,
+      "final_storage_m3": 0.5030000000249112,
+      "direct_mass_residual_m3": -3.471420199907538e-14,
+      "disposition": "TRANSFER_IDENTITIES_REALIZED"
+    },
+    "T4_TOP_INUNDATION_AVAILABILITY_LIMITED": {
+      "realized_drainage_aggregate_m3": 0,
+      "realized_surface_runoff_m3": 0,
+      "realized_lower_infiltration_m3": 0,
+      "realized_top_inundation_m3": 1.6903250107075795e-7,
+      "final_level_m": -0.9980001690325011,
+      "final_storage_m3": 0.001999830967498931,
+      "direct_mass_residual_m3": 2.1308701974958027e-18,
+      "disposition": "RECOMPOSITION_REQUIRED"
+    }
+  },
+  "interpretation": [
+    "LOWER_DRAINAGE and RAPID_DRAINAGE can remain separate coupler-ledger identities even when aggregated into the Ribasim drainage endpoint.",
+    "TOP_RUNOFF remains separately auditable through the Ribasim surface-runoff endpoint.",
+    "LOWER_INFILTRATION and TOP_INUNDATION remain distinct outward transfers despite drawing from the same Ribasim store.",
+    "Availability-limited top inundation requires transaction recomposition rather than one-sided clipping."
+  ],
+  "qualification_state": "BOUNDED_RESEARCH_PASS",
+  "production_admission": false,
+  "retirement_authority": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.sw_rib_swm01.q4a.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q4A",
+  "date": "2026-09-23",
+  "decision": "PASS_STATELESS_SIGNED_EXTENDED_EXCHANGE_CANDIDATE",
+  "tested_head": "f47470d3e76eb43f998003b039a8c2db219d197c",
+  "evidence_run": 35870771077,
+  "evidence_job": 107213959581,
+  "cases": {
+    "o0": 1507,
+    "o2": 1507
+  },
+  "checks": {
+    "o0_o2_text_identity": "PASS",
+    "source_bound_value_and_tangent": "PASS",
+    "negative_power_interflow_held": "PASS",
+    "extended_exchange_candidate": "PASS"
+  },
+  "interpretation": [
+    "The retained restricted signed extended drainage/infiltration law has been isolated as a stateless process candidate outside the legacy surface-water container.",
+    "The candidate matches the independently coded source-derived oracle for the preregistered value and tangent population under O0 and O2.",
+    "The candidate owns no surface-water storage, availability, management state or coupling transaction.",
+    "Q4A qualifies the process candidate only; runtime binding, transaction-safe booking and production admission remain open."
+  ],
+  "qualification_state": "CANDIDATE_QUALIFIED_FOR_Q4B_BINDING",
+  "production_admission": false,
+  "retirement_authority": false
+}

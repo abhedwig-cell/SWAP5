@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1g.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q1G",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_EXACT_DIRECT_STTAB_MAPPING__CHARACTERIZATION_PASS",
+  "tested_head": "f47470d3e76eb43f998003b039a8c2db219d197c",
+  "evidence_run": 35870770982,
+  "evidence_job": 107213959271,
+  "population": {
+    "cases": 1200,
+    "exact_intervals": 6596,
+    "nonexact_intervals": 18604,
+    "invalid_negative_area_cases": 0
+  },
+  "metrics": {
+    "max_knot_error_m3": 2.220446049250313e-16,
+    "max_abs_storage_error_m3": 0.17944461025415492,
+    "max_below_surface_error_m3": 0.04554803617556047,
+    "max_rel_total": 0.1407274792752263,
+    "max_bottom_offset_cm": 1.6658385268924745e-14,
+    "worst": {
+      "case_id": 538,
+      "interval": 20,
+      "fraction": 0.5,
+      "level_m": 0.5,
+      "swap_storage_m3": 8.397558753678885,
+      "ribasim_storage_m3": 8.21811414342473,
+      "abs_error_m3": 0.17944461025415492,
+      "relative_total": 0.01727754554721772
+    }
+  },
+  "interpretation": [
+    "Directly supplying normalized SWAP STTAB storage knots to the pinned Ribasim Basin semantics reproduces the supplied knots to floating-point precision but is generally not exact between knots.",
+    "The structural cause is different interpolation semantics: SWAP uses piecewise-linear storage while Ribasim reconstructs/interpolates area and integrates it.",
+    "No generated profile required negative reconstructed area in the tested population.",
+    "Q1G is a representation falsification, not a failure of Ribasim surface-water ownership."
+  ],
+  "qualification_state": "CHARACTERIZED_STRUCTURAL_NONPARITY",
+  "production_admission": false,
+  "retirement_authority": false
+}

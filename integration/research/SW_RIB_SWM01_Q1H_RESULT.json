@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.sw_rib_swm01.q1h.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q1H",
+  "date": "2026-09-23",
+  "decision": "PASS_CONTROLLED_EPSILON_AREA_REPRESENTATION",
+  "tested_head": "f47470d3e76eb43f998003b039a8c2db219d197c",
+  "evidence_run": 35870771050,
+  "evidence_job": 107213958102,
+  "population": {
+    "cases": 2000,
+    "seed": 2026092317
+  },
+  "results": [
+    {
+      "epsilon_m": 0.0001,
+      "max_error_m3": 0.00003342027508482573,
+      "max_theorem_bound_m3": 0.000033420275084829226
+    },
+    {
+      "epsilon_m": 0.00001,
+      "max_error_m3": 0.000003342027508469389,
+      "max_theorem_bound_m3": 0.0000033420275084829225
+    },
+    {
+      "epsilon_m": 0.000001,
+      "max_error_m3": 3.342027508589085e-7,
+      "max_theorem_bound_m3": 3.342027508482922e-7
+    }
+  ],
+  "checks": {
+    "outside_transition_exact": "PASS",
+    "theorem_bound": "PASS",
+    "linear_error_control": "PASS"
+  },
+  "interpretation": [
+    "Legacy piecewise-linear STTAB storage can be represented by a Ribasim-compatible continuous area profile with an explicitly controllable transition error.",
+    "Observed maximum error scales linearly with epsilon and remains within the preregistered theorem-derived bound.",
+    "This provides a controlled migration route without retaining SWAP-owned surface-water state.",
+    "Q1H does not define an application acceptance epsilon; that remains an application-specific choice."
+  ],
+  "qualification_state": "CONFIRMATORY_BOUNDED_RESEARCH_PASS",
+  "production_admission": false,
+  "retirement_authority": false
+}

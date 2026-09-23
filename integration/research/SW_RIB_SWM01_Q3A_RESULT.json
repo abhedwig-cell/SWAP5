@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3a.result.v1",
+  "work_unit": "SW-RIB-SWM01-Q3A",
+  "date": "2026-09-23",
+  "decision": "PASS_SIGNED_LOWER_EXCHANGE_WITH_RIBASIM_AVAILABILITY",
+  "tested_head": "f47470d3e76eb43f998003b039a8c2db219d197c",
+  "evidence_run": 35870771087,
+  "evidence_job": 107213957327,
+  "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "technical_amendment": "SW_RIB_SWM01_Q3A_TECHNICAL_AMENDMENT_01.json",
+  "cases": {
+    "X1_POSITIVE_DRAINAGE": {
+      "q_swap_request_cm_per_day": 0.9999999999988433,
+      "requested_transfer_m3": 0.01,
+      "realized_drainage_m3": 0.01,
+      "realized_infiltration_m3": 0,
+      "initial_storage_m3": 0.5000000000001157,
+      "final_storage_m3": 0.51,
+      "final_level_m": -0.49,
+      "direct_mass_residual_m3": -1.1567656554856143e-13,
+      "disposition": "TRANSFER_MATCHES_REQUEST"
+    },
+    "X2_NEGATIVE_INFILTRATION_SUFFICIENT": {
+      "q_swap_request_cm_per_day": -0.4999999999997108,
+      "requested_transfer_m3": 0.005,
+      "realized_drainage_m3": 0,
+      "realized_infiltration_m3": 0.005,
+      "initial_storage_m3": 0.49999999999994216,
+      "final_storage_m3": 0.495,
+      "final_level_m": -0.505,
+      "direct_mass_residual_m3": 5.783828277428071e-14,
+      "disposition": "TRANSFER_MATCHES_REQUEST"
+    },
+    "X3_NEGATIVE_INFILTRATION_AVAILABILITY_LIMITED": {
+      "q_swap_request_cm_per_day": -0.5099999999999995,
+      "requested_transfer_m3": 0.0051,
+      "realized_drainage_m3": 0,
+      "realized_infiltration_m3": 0.000006010919266526315,
+      "initial_storage_m3": 0.001999999999999932,
+      "final_storage_m3": 0.0019939890807334753,
+      "final_level_m": -0.9980060109192666,
+      "direct_mass_residual_m3": 6.965236628566837e-17,
+      "disposition": "RECOMPOSITION_REQUIRED"
+    }
+  },
+  "interpretation": [
+    "Positive SWAP lower drainage can be booked into a Ribasim-owned surface-water store with direct mass closure.",
+    "Negative lower exchange is realized as Ribasim infiltration when surface-water availability is sufficient.",
+    "When Ribasim availability reduces the requested withdrawal, the result is a coupled feasibility outcome requiring recomposition from accepted origins; accept-with-clip is forbidden.",
+    "Surface-water storage remains Ribasim-owned while the signed constitutive soil exchange remains SWAP-owned."
+  ],
+  "qualification_state": "BOUNDED_RESEARCH_PASS",
+  "production_admission": false,
+  "retirement_authority": false
+}
