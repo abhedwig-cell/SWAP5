@@ -44,7 +44,7 @@ contains
     integer :: iteration, status
     real(real64) :: head_cm, requested_m3, realized_m3, area_m2
     real(real64) :: requested_cm, realized_cm, requested_rate
-    real(real64), parameter :: receipt_tol_cm = 1.0e-6_real64
+    real(real64), parameter :: receipt_tol_cm = 1.0e-8_real64
     type(kernel_committed_state_t) :: committed
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
