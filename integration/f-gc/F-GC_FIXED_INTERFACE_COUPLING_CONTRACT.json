@@ -1,7 +1,7 @@
 {
   "schema": "swap5.fgc.fixed_interface.coupling_contract.v1",
-  "date": "2026-09-22",
-  "state": "CANONICAL_AUTHORITY",
+  "date": "2026-09-23",
+  "state": "CANONICAL_ADMITTED_CLOSED",
   "scope": "fixed-interface SWAP5-MODFLOW6 production profile",
   "hydraulic_state": {
     "exchange_state": "hydraulic head at the fixed lower coupling plane",
@@ -66,10 +66,16 @@
     "fixed-interface hydraulic head equals phreatic elevation"
   ],
   "qualification_authority": {
-    "tested_head": "0244570849e799d35a88abed36dc655e029d7c36",
-    "workflow_run": 35785634895,
-    "result": "PASS",
-    "canonical_authority": true,
-    "canonical_merge": "148bca0dbe65d75a64694e5d481b2073419df009"
+    "candidate_head": "0244570849e799d35a88abed36dc655e029d7c36",
+    "candidate_workflow_run": 35785634895,
+    "candidate_workflow_job": 106941629937,
+    "candidate_result": "PASS",
+    "historical_integration_commit": "148bca0dbe65d75a64694e5d481b2073419df009",
+    "canonical_postimage_verified_head": "79e84c1d2378c86b1d4e0e79b818cce9ffdf1d6e",
+    "canonical_postimage_workflow_run": 35819258906,
+    "canonical_postimage_workflow_job": 107047399058,
+    "canonical_postimage_result": "PASS",
+    "final_admission_record": "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json",
+    "canonical_authority": true
   }
 }
