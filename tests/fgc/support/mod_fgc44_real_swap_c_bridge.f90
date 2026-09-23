@@ -519,7 +519,7 @@ contains
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
     real(real64), target, allocatable :: qdra(:,:),qssdi(:),qrot_zero(:)
-    real(real64), allocatable :: heads(:),water(:)
+    real(real64), allocatable :: heads(:),water(:),conductivity(:),capacity(:),dkdh(:)
     real(real64) :: fixed_top_k
     logical :: ok
     integer :: i
@@ -541,12 +541,12 @@ contains
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
     call bind_b110_default_mvg_provider(constitutive,hp,real(duration_day,real64))
 
-    allocate(heads(numnod),water(numnod))
+    allocate(heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
     heads(1)=H0_CM
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call constitutive%evaluate(heads,water)
+    call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
     call evaluate_b110_default_mvg_conductivity(hp,1,heads(1),fixed_top_k,ok)
     if(.not.ok)return
 
