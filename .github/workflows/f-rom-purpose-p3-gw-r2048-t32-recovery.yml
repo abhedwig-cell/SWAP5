@@ -1,0 +1,138 @@
+name: F-ROM-PURPOSE P3 GW R2048 T32 recovery
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-gw-r2048-t32-recovery
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Verify technical recovery authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py             tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py             tests/rom/assemble_rom_purpose_p3_gw_r2048_t32_recovery.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_EXECUTION_REPAIR.json'))
+          assert b['status']=='BOUND_AFTER_SYSTEMATIC_R2048_T32_EXIT143'
+          assert r['status']=='TECHNICAL_STRATUM_REPAIR_BOUND_RESPONSE_BLIND'
+          assert r['repaired_stratum']['route']=='R2048_T32'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  segment1:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - name: Execute exact-state first half
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py             --material "${{ matrix.material }}" --route R2048_T32             --opt "${{ matrix.opt }}" --history "${{ matrix.history }}"             --segment 1 --canonical-root canonical --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3gwr2048seg1-${{ matrix.material }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment2:
+    needs: segment1
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: p3gwr2048seg1-${{ matrix.material }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: previous
+      - name: Execute exact-state second half
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p3_gw_reference_half_segment.py             --material "${{ matrix.material }}" --route R2048_T32             --opt "${{ matrix.opt }}" --history "${{ matrix.history }}"             --segment 2 --checkpoint-in previous/checkpoint.bin             --canonical-root canonical --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3gwr2048seg2-${{ matrix.material }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  assemble:
+    needs: segment2
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3gwr2048seg1-*
+          path: /tmp/seg1
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3gwr2048seg2-*
+          path: /tmp/seg2
+          merge-multiple: false
+      - name: Assemble complete recovered R2048 T32 routes
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          python3 tests/rom/assemble_rom_purpose_p3_gw_r2048_t32_recovery.py             --segment1-root /tmp/seg1             --segment2-root /tmp/seg2             --output-dir routes
+          sha256sum routes/* > routes/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3gw-r2048-t32-routes
+          path: routes/
+          if-no-files-found: error
