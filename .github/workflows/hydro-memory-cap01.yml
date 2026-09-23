@@ -1,0 +1,27 @@
+name: HYDRO-MEMORY CAP01 root-active response
+
+on:
+  push:
+    branches:
+      - research/hydro-memory-cap01
+    paths:
+      - 'tests/research/test_hydro_memory_cap01_root_active_response.f90'
+      - 'tests/research/run_hydro_memory_cap01_root_active_response.sh'
+      - '.github/workflows/hydro-memory-cap01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run CAP01 Phase-A root-active response gate
+        run: bash tests/research/run_hydro_memory_cap01_root_active_response.sh

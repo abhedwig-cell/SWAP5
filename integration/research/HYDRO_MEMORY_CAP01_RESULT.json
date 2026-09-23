@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.hydro_memory.cap01.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-CAP01",
+  "authority_base": "187e30153c890151768e929170d14bb22af1d86d",
+  "branch": "research/hydro-memory-cap01",
+  "decision": "CLOSED_BLOCKED_NET_ROOT_EXTRACTION_HYDRAULIC_EXECUTION",
+  "scientific_stage0_authorized": false,
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "decisive_run": {
+    "run_id": 35427908820,
+    "job_id": 105856982576,
+    "head": "6080f6f7bc95d16de78589969df922f6931f9a8a",
+    "workflow_conclusion": "failure_expected_from_qualification_gate",
+    "reason": "preregistered unbalanced root-extraction qualification target did not complete"
+  },
+  "controls": {
+    "Z": {
+      "root_total_cm_per_day": 0,
+      "subsurface_source_cm_per_day": 0,
+      "completed": true,
+      "status": 0,
+      "retries": 0,
+      "solver_rejections": 0,
+      "temporal_rejections": 0,
+      "mass_residual_cm": 0
+    },
+    "B": {
+      "root_total_cm_per_day": 0.02,
+      "subsurface_source": "equal_by_node",
+      "completed": true,
+      "status": 0,
+      "retries": 0,
+      "solver_rejections": 0,
+      "temporal_rejections": 0,
+      "mass_residual_cm": 0
+    }
+  },
+  "unbalanced_cases": {
+    "U1": {
+      "root_total_cm_per_day": 0.0002,
+      "completed": false,
+      "status": 2,
+      "retries": 8,
+      "solver_rejections": 9,
+      "temporal_rejections": 0,
+      "mass_residual_reported_cm": 0
+    },
+    "U2": {
+      "root_total_cm_per_day": 0.002,
+      "completed": false,
+      "status": 2,
+      "retries": 8,
+      "solver_rejections": 9,
+      "temporal_rejections": 0,
+      "mass_residual_reported_cm": 0
+    },
+    "U3": {
+      "root_total_cm_per_day": 0.02,
+      "completed": false,
+      "status": 2,
+      "retries": 8,
+      "solver_rejections": 9,
+      "temporal_rejections": 0,
+      "mass_residual_reported_cm": 0
+    }
+  },
+  "interpretation": [
+    "Root-active binding itself is operational because zero-sink control completes.",
+    "Root sink accounting/binding with exact compensating source is operational because balanced control completes with exact zero mass residual.",
+    "Net root extraction is not currently qualified as a hydraulically state-changing production trajectory in this CAP01 route.",
+    "Failure is solver-class, not temporal-policy or post-solve mass rejection.",
+    "Existing FMR09/F-CI34/F-CI37 evidence cannot fill this gap because those decisive root-active hydraulic oracles deliberately compensate root extraction with an equal subsurface source."
+  ],
+  "scope_boundary": {
+    "proven": "Failure of the frozen CAP01 production trial for unbalanced precomputed root sinks across 0.0002 to 0.02 cm/day at the preregistered equilibrium fixture.",
+    "not_proven": [
+      "that all possible SWAP5 numerical configurations fail for net root extraction",
+      "the root cause inside HeadCalc/Newton",
+      "that corrected legacy B1.11 fails",
+      "that a solver or physics code change is necessarily required"
+    ]
+  },
+  "next_work_unit": {
+    "id": "PPA-ROOT-HYD01",
+    "title": "Net root-extraction hydraulic execution authority and solver diagnosis",
+    "objective": "Establish a source-bound, legacy-referenced explanation and qualified execution route for nonzero unbalanced root extraction before returning to groundwater coupling.",
+    "sequence": [
+      "reproduce corrected B1.11/legacy behavior for the same net sink",
+      "compare typed Reference-Richards numerical controls with existing FMR09 defaults",
+      "localize retry request to convergence/balance/head/backtracking path",
+      "repair only if evidence identifies a local implementation/composition defect",
+      "qualify unbalanced root sink with hard mass and state response",
+      "then rerun CAP01 centered-FD groundwater response without changing CAP01 scientific criteria"
+    ]
+  }
+}
