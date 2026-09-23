@@ -1,0 +1,85 @@
+name: F-ROM-PURPOSE P3 GW Reference consolidation v2
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-gw-reference-consolidation-v2
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify consolidation authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/consolidate_rom_purpose_p3_gw_reference_v2.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json'))
+          assert b['status']=='BOUND_AFTER_NON_R2048_SOURCE_AND_R2048_RECOVERY'
+          assert b['source_run_conclusion']=='failure'
+          assert b['r2048_recovery_run_conclusion']=='success'
+          if b.get('missing_slice_repair_run') is not None:
+              assert b['missing_slice_repair_run_conclusion']=='success'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Download successful original source slices
+        run: |
+          set -euo pipefail
+          source_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json'))['source_run'])")"
+          mkdir -p /tmp/source
+          gh run download "$source_run" --repo abhedwig-cell/SWAP5 -p 'p3gwfix-*' -D /tmp/source
+      - name: Download authoritative recovered R2048 T32 routes
+        run: |
+          set -euo pipefail
+          r2048_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json'))['r2048_recovery_run'])")"
+          mkdir -p /tmp/r2048
+          gh run download "$r2048_run" --repo abhedwig-cell/SWAP5 -n p3gw-r2048-t32-routes -D /tmp/r2048
+      - name: Download optional targeted non-R2048 repairs
+        run: |
+          set -euo pipefail
+          repair_run="$(python3 -c "import json;b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json'));print('' if b.get('missing_slice_repair_run') is None else b['missing_slice_repair_run'])")"
+          mkdir -p /tmp/missing
+          if [[ -n "$repair_run" ]]; then
+            gh run download "$repair_run" --repo abhedwig-cell/SWAP5 -n p3gw-repaired-missing-slices -D /tmp/missing
+          fi
+      - name: Consolidate complete groundwater Reference
+        run: |
+          set -euo pipefail
+          mkdir -p routes
+          args=(
+            --source-root /tmp/source
+            --r2048-root /tmp/r2048
+            --output-dir routes
+          )
+          if python3 - <<'PY'
+          import json,sys
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_BINDING.json'))
+          sys.exit(0 if b.get('missing_slice_repair_run') is not None else 1)
+          PY
+          then
+            args+=(--missing-root /tmp/missing --missing-binding integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_BINDING.json)
+          fi
+          python3 tests/rom/consolidate_rom_purpose_p3_gw_reference_v2.py "${args[@]}"
+          sha256sum routes/* > routes/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3ref-gw-routes
+          path: routes/
+          if-no-files-found: error
