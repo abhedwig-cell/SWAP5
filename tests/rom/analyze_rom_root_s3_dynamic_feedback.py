@@ -139,7 +139,7 @@ def threshold_diagnostic(ref_history:dict,material:str,history:str,member:str)->
                 continue
             i0=int(round(lo/10.0)); i1=int(round(hi/10.0))
             vals_full=theta[obs,i0:i1]
-            root_hi=min(hi,ROOT_DEPTH if hasattr(candmod,"ROOT_DEPTH") else 80.0)
+            root_hi=min(hi,candmod.ROOT_DEPTH if hasattr(candmod,"ROOT_DEPTH") else 80.0)
             ir1=int(round(root_hi/10.0))
             hs_root=h10[i0:ir1]
             if len(hs_root)>1 and float(np.min(hs_root)) <= h3 <= float(np.max(hs_root)):
