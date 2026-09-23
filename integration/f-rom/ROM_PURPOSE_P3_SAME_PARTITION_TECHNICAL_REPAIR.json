@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.rom-purpose.p3.same-partition-technical-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SAME-PARTITION-GW-REPAIR",
+  "date": "2026-09-23",
+  "status": "TECHNICAL_PRE_SOLVE_GW_OUTPUT_CONTRACT_REPAIR",
+  "source_run": 35891150093,
+  "source_binding": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_EXECUTION_BINDING.json",
+  "state_count_result": "integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json@73681c56e9d0347bdcd0288fea5b7509ed6b380b",
+  "source_run_accounting": {
+    "surface_routes": {
+      "expected": 6,
+      "success": 6,
+      "failure": 0,
+      "authority": "PRESERVE_DO_NOT_RERUN"
+    },
+    "groundwater_routes": {
+      "expected": 6,
+      "success": 0,
+      "failure": 6,
+      "authority": "NO_SCIENTIFIC_RESPONSE_PRODUCED"
+    }
+  },
+  "failure": {
+    "stage": "MATERIALIZATION_BEFORE_COMPILE_OR_SOLVE",
+    "message": "gw observation output: expected one block, found 0",
+    "cause": "P3 GW reference materializer emits the ROMPURP_P3_GW profile guard label while the inherited coarse-output adapter matches the equivalent ROMPURP_P1_GW profile guard label.",
+    "classification": "TECHNICAL_OUTPUT_SERIALIZATION_CONTRACT_MISMATCH"
+  },
+  "repair": {
+    "file": "tests/rom/materialize_rom_purpose_p3_same_partition_richards.py",
+    "prior_blob": "68a2807069ef7683db0cfea48e6eabf635718ad3",
+    "repaired_blob": "2107c09473d0cfed9f733f3a4bc7d95ee1ad5754",
+    "change": "Add a GW guard-label bridge before invoking the inherited coarse-output adapter, exactly analogous to the already-existing SURF_P guard-label bridge.",
+    "output_serialization_only": true
+  },
+  "recovery_policy": {
+    "rerun_surface_routes": false,
+    "rerun_groundwater_routes": true,
+    "groundwater_cases": [
+      "GW_LB/B01/T8",
+      "GW_LB/B01/T16",
+      "GW_LB/B01/T32",
+      "GW_LB/B14/T8",
+      "GW_LB/B14/T16",
+      "GW_LB/B14/T32"
+    ],
+    "analysis_must_combine": "six preserved SURF_P artifacts from source run with six repaired GW_LB artifacts",
+    "comparator_or_metric_change": false
+  },
+  "scientific_firewall": {
+    "failed_gw_scientific_response_seen": false,
+    "successful_surface_response_used_to_tune_repair": false,
+    "forcing_changed": false,
+    "partition_changed": false,
+    "solver_or_physics_changed": false,
+    "temporal_policy_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "closure_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
