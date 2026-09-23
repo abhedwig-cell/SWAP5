@@ -4,9 +4,10 @@
   "title": "Generated K0 provider representation of admitted F-SI39 KSATEXM",
   "date": "2026-09-23",
   "branch": "research/f-tab03-ksatexm-generated-provider",
-  "state": "CANDIDATES_A_B_FALSIFIED__CANDIDATE_C_PREREGISTERED",
+  "state": "CANDIDATE_C_CONSTITUTIVE_PASS__PROVIDER_AND_COMPOSITION_GATES_OPEN",
   "candidate_a": "FALSIFIED",
   "candidate_b": "FALSIFIED",
-  "candidate_c": "PREREGISTERED",
-  "next_safe_step": "Implement exact head-derived relative saturation only inside F-SI39 overlay and rerun unchanged F-TAB03 constitutive gate."
+  "candidate_c": "CONSTITUTIVE_PASS",
+  "controlling_run": 35853372124,
+  "next_safe_step": "Run unchanged F-TAB02 typed-provider regression and exact Hupsel F-SI39 typed-provider gate; only then consider opening the serialized generated+KSATEXM composition guard."
 }
