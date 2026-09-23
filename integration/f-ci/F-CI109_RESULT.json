@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.f-ci109.result.v1",
+  "workunit": "F-CI109",
+  "date": "2026-09-23",
+  "tested_head": "f1b872b1dd922013014f9ff5a87008b458ab4981",
+  "canonical_parent": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "evidence_run": 35886939076,
+  "evidence_job": 107269371162,
+  "decision": "PASS_READY_CANONICAL_PR",
+  "checks": {
+    "exact_five_file_production_delta": "PASS",
+    "frozen_postimages": "PASS",
+    "owner_gate_replay": "PASS",
+    "independent_FVQ128_replay": "PASS",
+    "O0_O2_identity": "PASS",
+    "surface_water_owner_xor": "PASS",
+    "recomposition_discard_replay": "PASS",
+    "positive_drainage_transaction": "PASS",
+    "negative_infiltration_transaction": "PASS",
+    "stale_origin_fail_closed": "PASS"
+  },
+  "scope": "F-APP09 RIBASIM_EXTERNAL_SECONDARY_STATE_V1, single EXTENDED_SIGNED drainage-response level, Ribasim-native geometry, one accepted SWAP substep per coupling window.",
+  "production_admission_candidate": true,
+  "canonical_admission": false
+}
