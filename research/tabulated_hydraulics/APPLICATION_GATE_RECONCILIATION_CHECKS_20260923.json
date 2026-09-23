@@ -1,0 +1,31 @@
+{
+  "work_unit": "TAB-HYD-APPLICATION-GATE-RECONCILIATION-20260923",
+  "classification": "SOURCE_PAYLOAD_VERIFIED__MANIFEST_SELF_ENTRY_DEFECT__NOT_HYDROLOGICAL_QUALIFICATION",
+  "production_source": "52a455d45fabc6499ad54b89b7e930b02b66ff51",
+  "snapshot_run_id": 35902072731,
+  "snapshot_artifact_id": 10768899841,
+  "archive_sha256": "14ec4a441e21c9c1cafa950f8509e8c7a5cc4f618f16430ce12158a6f48ef7ca",
+  "archive_size_bytes": 599504,
+  "archive_digest_matches_github": true,
+  "manifest_entries": 265,
+  "manifest_duplicate_paths": false,
+  "manifest_covers_all_extracted_files": true,
+  "payload_files": 264,
+  "payload_files_matching": 264,
+  "mismatches": [
+    {
+      "path": "SHA256SUMS.txt",
+      "expected": "d3e8725ec6d84208888b3ca9d888b245d315ae7356bd26721c5144a1eb07cb6b",
+      "actual": "a3b9414be06dbae022b2be226d09f2c7871c0937affc109439f6b0c6f2b6f50e",
+      "match": false
+    }
+  ],
+  "packaging_correction_executed_on_separate_local_copy": true,
+  "corrected_manifest_check_count": 264,
+  "corrected_manifest_check_exit_code": 0,
+  "payload_unchanged_after_local_packaging_correction": true,
+  "production_repository_modified": false,
+  "new_hydrological_simulation_executed": false,
+  "production_F_admission_claim": false,
+  "tested_manifest_command": "find ftab02-f-source -type f ! -path 'ftab02-f-source/SHA256SUMS.txt' -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > ftab02-f-source/SHA256SUMS.txt"
+}
