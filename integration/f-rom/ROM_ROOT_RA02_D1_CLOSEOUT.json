@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.rom_root.ra02_d1.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RA02-D1",
+  "date": "2026-09-23",
+  "status": "CLOSED_AVAILABLE_OUTPUT_NUMERICAL_FLOOR_SUPPORTED_NODE_LEVEL_REGIME_UNRESOLVED",
+  "question": "Do the already persisted RA01 root-response differences show evidence of physical Feddes threshold/regime divergence, or are they compatible with deterministic floating-point aggregation noise at the available output resolution?",
+  "answer": "AVAILABLE_OUTPUT_SUPPORTS_NUMERICAL_FLOOR; NODE_LEVEL_ADJUDICATION_REMAINS_UNAVAILABLE",
+  "authority": {
+    "result": "integration/f-rom/ROM_ROOT_RA02_D1_RESULT.json",
+    "final_run": 35822094381,
+    "final_artifact_id": 10733646926
+  },
+  "findings": [
+    "Frozen RA01 actual-root-uptake and reconstructed cumulative-root RMSEs are reproduced exactly.",
+    "No compared rooted 10-cm mean profile straddles the demand-specific h3 or h4 threshold.",
+    "No ACTUAL_RATE difference exceeds the preregistered non-fitted aggregation-roundoff reference.",
+    "The largest ACTUAL_RATE difference uses only about 5.36% of that arithmetic reference.",
+    "The available evidence therefore supports a numerical-resolution/aggregation-floor interpretation at the persisted output scale.",
+    "Node-level Feddes regime identity is not proven because node-level pressure heads and drought-reduction factors were not persisted."
+  ],
+  "decision": {
+    "reference_qualified": false,
+    "stage2_prescribed_sink_equivalence_authorized": false,
+    "stage3_dynamic_feedback_authorized": false,
+    "reduced_candidate_response_generated": false,
+    "uncertainty_gate_change_authorized": false,
+    "new_root_specific_state_selected": false,
+    "d2_diagnostic_authorized_to_preregister": true
+  },
+  "nonclaims": [
+    "No claim that physical threshold crossings are impossible at node scale.",
+    "No reclassification of the frozen RA01 all-metrics qualification rule.",
+    "No evidence yet for or against the minimal Layer-ROM dynamic root-feedback approximation.",
+    "No crop-model, drought-damage, ET-application, production or performance claim."
+  ],
+  "next": "ROM-ROOT-RA02-D2: preregister a narrow Reference-only diagnostic that emits node-level pressure-head and Feddes drought-reduction regime evidence on the frozen RA01 domain. Keep the Reference blocker and candidate firewall closed until D2 is adjudicated."
+}
