@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.ribasim_management.dynamic_top_transaction_requalification.result.v1",
+  "work_unit": "RM19",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_UNCHANGED_FGC44_TEMPORAL_BUDGET_FOR_ACTIVE_IRRIGATION",
+  "scientific_classification": "NUMERICAL_COMPOSITION_ENVELOPE_FALSIFICATION",
+  "workflow": "RM19 dynamic-top transaction requalification",
+  "workflow_run": 35900842366,
+  "workflow_job": 107316355222,
+  "authority_head": "dd4a0963cf46a5ea21f0bceb6bee39dd1d011b59",
+  "frozen_case": {
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "irrigation_depth_cm": 0.0036,
+    "dynamic_top_irrigation_rate_cm_per_day": 36.0,
+    "ponding_max_cm": 1.0,
+    "predictor_bottom_flux_cm_per_day": 1e-6,
+    "retry_count": 8,
+    "physical_and_numerical_settings": "UNCHANGED_FROM_RM14"
+  },
+  "observations": {
+    "initialize_status": 104,
+    "kernel_result_status": 2,
+    "completed": false,
+    "accepted_substeps": 0,
+    "attempts": 9,
+    "retries": 8,
+    "trial_rollbacks": 9,
+    "solver_rejections": 6,
+    "temporal_rejections": 3,
+    "temporal_unavailable_rejections": 0,
+    "mass_rejections": 0,
+    "internal_retries": 6,
+    "max_temporal_indicator": 92569.71928978531,
+    "min_accepted_substep_duration": "DBL_MAX",
+    "max_accepted_substep_duration": 0.0
+  },
+  "interpretation": [
+    "RM18 successfully closes the previous missing-authority gap: temporal_unavailable_rejections falls from the RM14 value 3 to 0.",
+    "The unchanged full-window dynamic-top transaction nevertheless remains unaccepted because the available temporal certificate exceeds the inherited F-GC44 temporal acceptance budget.",
+    "After temporal rejection causes timestep halving, the shorter retries enter the independently characterized RM15/RM16 nonlinear-failure regime.",
+    "Mass accounting is not the rejecting gate.",
+    "Therefore the inherited F-GC44 temporal budget/policy is not an admissible numerical authority for the frozen active-irrigation trajectory, even after the dynamic FLUX certificate itself is scientifically qualified."
+  ],
+  "relationship_to_prior_work": {
+    "RM14": "missing dynamic temporal authority plus mixed temporal/solver failures",
+    "RM16": "full 8.64 s raw dynamic solve converges, shorter raw solves fail",
+    "RM17": "dynamic FLUX raw trajectory equals explicit qtop=-36 trajectory",
+    "RM18": "dynamic FLUX temporal certificate equals explicit-flux certificate and is available",
+    "RM19": "certificate availability is insufficient; the inherited temporal acceptance budget still rejects the valid full-window trajectory"
+  },
+  "prohibitions": [
+    "Do not reinterpret RM14 as a pass.",
+    "Do not relax the temporal tolerance, retry count, retry scale, irrigation quantity or solver tolerances post hoc.",
+    "Do not rerun the full three-model triangle under the unchanged F-GC44 temporal policy.",
+    "Do not infer that smaller timesteps are safer; RM15/RM16 show the opposite for this frozen origin."
+  ],
+  "nonclaims": [
+    "This does not falsify the RM18 dynamic FLUX certificate.",
+    "This does not falsify the raw Richards solution.",
+    "This does not falsify Ribasim allocation/supply or groundwater ownership.",
+    "This does not show that active-irrigation coupling is impossible.",
+    "No alternative temporal policy is admitted by RM19."
+  ],
+  "next_required_boundary": "Independently decompose the full-window temporal indicator under the frozen active-irrigation trajectory. Determine which part comes from the predecessor right derivative, forcing discontinuity, state defect, or normalization/budget mapping, and compare it to the no-irrigation F-GC44 authority and explicit fixed-flux equivalent trajectory without changing any acceptance threshold."
+}
