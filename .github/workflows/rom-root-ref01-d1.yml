@@ -1,0 +1,100 @@
+name: ROM-ROOT REF01-D1 failure classification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_REF01_D1_BINDING.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  classify:
+    name: ${{ matrix.material }}-${{ matrix.route }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - material: B01
+            route: R1024_T32
+            history: V02
+            nodes: 1024
+            dz: 0.15625
+            source: tests/rom/test_lare_dyn0a_reference.f90
+          - material: B14
+            route: R512_T32
+            history: V01
+            nodes: 512
+            dz: 0.3125
+            source: tests/rom/test_lare_dyn0a_b14_reference.f90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify D1 binding
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_REF01_D1_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_REF01_D1_BINDING.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_REF01_D1_REPLAY'
+          assert b['state']=='BOUND_BEFORE_REF01_D1_EXECUTION'
+          assert b['policy_changed'] is False
+          assert b['candidate_response_generated'] is False
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+
+      - name: Materialize exact REF01 diagnostic
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ matrix.source }}"             --material "${{ matrix.material }}"             --temporal-factor 32             --output /tmp/ref01_root.f90             --manifest /tmp/root_manifest.json
+          python3 tests/rom/diagnose_lare_bc2_c6r_root_active_failure.py             --input /tmp/ref01_root.f90             --output canonical/tests/rom/test_rom_root_ref01_d1.f90
+          python3 tests/rom/materialize_rom_root_ref01_policy.py             --path canonical/tests/rom/test_rom_root_ref01_d1.f90
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py             --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90             --manifest /tmp/reference_floor_repair.json
+
+      - name: Execute diagnostic replay
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          stub="canonical/ref01_d1_${{ matrix.material }}_${{ matrix.route }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "${{ matrix.nodes }}" --dz-cm "${{ matrix.dz }}"
+          build="/tmp/ref01_d1_${{ matrix.material }}_${{ matrix.route }}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "ref01_d1_${{ matrix.material }}_${{ matrix.route }}_stubs.f90"             --target tests/rom/test_rom_root_ref01_d1.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt 0
+          log="evidence/${{ matrix.material }}_${{ matrix.route }}_${{ matrix.history }}.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          cat "$log"
+          test "$rc" -ne 0
+          grep -Fq 'ROM_ROOT_REF01_POLICY|' "$log"
+          grep -Fq 'C6R_DIAG_ROOT_FIRST_FAILURE|' "$log"
+          grep -Fq 'C6R_DIAG_ROOT_FAILURE_CLASS|' "$log"
+          cp /tmp/root_manifest.json evidence/
+          cp /tmp/reference_floor_repair.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref01-d1-${{ matrix.material }}-${{ matrix.route }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
