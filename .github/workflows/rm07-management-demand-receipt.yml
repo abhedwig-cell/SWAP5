@@ -1,0 +1,34 @@
+name: RM07 management demand receipt
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/test_rm07_management_demand_receipt.f90'
+      - 'tests/ribasim-management/run_rm07_management_demand_receipt.sh'
+      - 'integration/ribasim-management/RM07_*'
+      - '.github/workflows/rm07-management-demand-receipt.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/test_rm07_management_demand_receipt.f90'
+      - 'tests/ribasim-management/run_rm07_management_demand_receipt.sh'
+      - 'integration/ribasim-management/RM07_*'
+      - '.github/workflows/rm07-management-demand-receipt.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM07 read-only demand receipt qualification
+        run: bash tests/ribasim-management/run_rm07_management_demand_receipt.sh
