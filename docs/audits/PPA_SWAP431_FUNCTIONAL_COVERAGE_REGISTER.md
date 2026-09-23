@@ -177,8 +177,10 @@ integration remain unqualified.
 PPA-IRR-INTERCEPTION-SOLUTE-MASS composes the B1.11 Von-Höhe/Braden net surface
 irrigation partition with the source amount `nird*cirr*dt` over 100,000
 deterministic O0/O2 cases. The pure amount helper fails closed on invalid and
-overflowing inputs. This covers only the surface irrigation input term: SSDI
-solute transport and cumulative accepted solute balance remain unqualified.
+overflowing inputs. A companion oracle covers the source's combined
+irrigation-plus-precipitation surface-solute storage increment and prior-store
+addition over 100,000 cases. These pure source terms do not qualify SSDI solute
+transport, cumulative accepted solute balance or production mass booking.
 
 PPA-WU05-A1 source hashes and A2 state DTO/rollback authority are now in the
 repository. A3 has independently tested source terms: the pure `VOLUNDR`

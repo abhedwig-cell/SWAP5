@@ -101,18 +101,22 @@
   ],
   "ready_queue": [],
   "next_safe_step": "Continue another independent source-bound capability from the updated queue; keep source-oracle test results separate from production admission and do not stop the campaign at per-capability owner holds.",
-  "recovery_point": "latest committed campaign checkpoint 4f78ec886 (Gash source equation coverage); local campaign branch only, not pushed or canonically admitted.",
+  "recovery_point": "latest committed campaign checkpoint 1df4b9454 (clay typical-point shrink calibration); local campaign branch only, not pushed or canonically admitted.",
+  "recent_checkpoint_tests": [
+    "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
+    "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
+    "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
+    "PPA-WU05-A3-POLYGON-DIAMETER: 100000 O0/O2 bitwise geometry vectors across all density paths and fixed-diameter fallback.",
+    "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked."
+  ],
   "latest_source_oracle": {
-    "work_unit": "PPA-IRR-INTERCEPTION-SOLUTE-MASS",
-    "source": "B1.11 MOD_meteo.f90 net irrigation apportionment after canopy interception plus solute.f90 surface source nird*cirr*dt",
-    "test": "100000 deterministic interception-to-net-irrigation-to-surface-solute amount comparisons at O0/O2; invalid and overflow input fail-closed cases",
+    "work_unit": "PPA-IRR-SURFACE-SOLUTE-STORE",
+    "source": "B1.11 solute.f90 task 2: csurf=(nird*cirr+nraidt*cpre)*dtsolu+csurf",
+    "test": "100000 deterministic source comparisons with accumulated prior surface store at O0/O2; invalid and overflow input fail-closed cases",
     "test_markers": [
-      "PPA_IRR_INTERCEPTION_TO_SURFACE_SOLUTE_MASS_100000=PASS",
-      "PPA_IRR_SURFACE_SOLUTE_AMOUNT_SOURCE_ORACLE=PASS",
-      "PPA_IRR_SURFACE_SOLUTE_INVALID_INPUT_FAIL_CLOSED=PASS",
+      "PPA_IRR_SURFACE_RAIN_AND_IRRIGATION_STORAGE_100000=PASS",
       "PPA_IRR_INTERCEPTION_SOLUTE_MASS_O0_O2_IDENTITY=PASS"
     ],
-    "transcript_sha256": "00e15c9aacd50c3a297197d99baccc538c9ccad9b370e3b3d6559dc8297829b6",
     "production_admission": "NONE"
   }
 }

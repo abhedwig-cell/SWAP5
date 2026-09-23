@@ -10,6 +10,8 @@ program test_ppa_irr_interception_solute_mass
   real(real64) :: aggregate, rain_rate, irrigation_rate, concentration, interval_days
   real(real64) :: interception, net_rain, net_irrigation, expected_net_irrigation
   real(real64) :: source_mass, expected_mass, interval_rate, source_rate, unit_value, tolerance
+  real(real64) :: rain_concentration, previous_surface_amount, accumulated_surface_amount
+  real(real64) :: expected_surface_amount
   integer(int64) :: random_state
   integer :: i, status
 
@@ -30,6 +32,10 @@ program test_ppa_irr_interception_solute_mass
     concentration = 100.0_real64*unit_value
     call random_unit(random_state, unit_value)
     interval_days = unit_value
+    call random_unit(random_state, unit_value)
+    rain_concentration = 100.0_real64*unit_value
+    call random_unit(random_state, unit_value)
+    previous_surface_amount = 10.0_real64*unit_value
 
     call apportion_vonhhbraden_interception(source, aggregate, rain_rate, irrigation_rate, &
       interception, net_rain, net_irrigation, status)
@@ -50,6 +56,14 @@ program test_ppa_irr_interception_solute_mass
     call require(status == IRR_SURFACE_SOLUTE_OK, 3)
     tolerance = 64.0_real64*epsilon(expected_mass)*max(1.0_real64,abs(expected_mass))
     call require(abs(source_mass-expected_mass) <= tolerance, 4)
+
+    expected_surface_amount = previous_surface_amount + &
+         (net_irrigation*concentration+net_rain*rain_concentration)*interval_days
+    call accumulate_surface_solute_amount(net_irrigation,concentration,net_rain,rain_concentration, &
+         interval_days,previous_surface_amount,accumulated_surface_amount,status)
+    call require(status==IRR_SURFACE_SOLUTE_OK,5)
+    tolerance = 64.0_real64*epsilon(expected_surface_amount)*max(1.0_real64,abs(expected_surface_amount))
+    call require(abs(accumulated_surface_amount-expected_surface_amount)<=tolerance,6)
   end do
 
   call check_invalid(-1.0_real64, 1.0_real64, 1.0_real64, 10)
@@ -59,8 +73,15 @@ program test_ppa_irr_interception_solute_mass
   call check_invalid(huge(1.0_real64), 1.0_real64, huge(1.0_real64), 14)
   call check_invalid(1.0_real64, ieee_value(0.0_real64,ieee_quiet_nan), 1.0_real64, 15)
   call check_invalid(1.0_real64, 1.0_real64, ieee_value(0.0_real64,ieee_positive_inf), 16)
+  call accumulate_surface_solute_amount(huge(1.0_real64),100.0_real64,0.0_real64,0.0_real64, &
+       1.0_real64,0.0_real64,accumulated_surface_amount,status)
+  call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,17)
+  call accumulate_surface_solute_amount(1.0_real64,1.0_real64,1.0_real64,1.0_real64, &
+       huge(1.0_real64),huge(1.0_real64),accumulated_surface_amount,status)
+  call require(status==IRR_SURFACE_SOLUTE_INVALID_INPUT,18)
   print '(A)', 'PPA_IRR_INTERCEPTION_TO_SURFACE_SOLUTE_MASS_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_AMOUNT_SOURCE_ORACLE=PASS'
+  print '(A)', 'PPA_IRR_SURFACE_RAIN_AND_IRRIGATION_STORAGE_100000=PASS'
   print '(A)', 'PPA_IRR_SURFACE_SOLUTE_INVALID_INPUT_FAIL_CLOSED=PASS'
 
 contains
