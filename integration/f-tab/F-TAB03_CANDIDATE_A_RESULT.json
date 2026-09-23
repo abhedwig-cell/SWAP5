@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.research_candidate_result.v1",
+  "workunit": "F-TAB03",
+  "candidate": "A_UNIFORM_RAW_HEAD400_SPLINE_THROUGH_FSI39_BRANCH",
+  "date": "2026-09-23",
+  "status": "FALSIFIED",
+  "source_commit": "2b35d0701b414a532e1dfe3190ec86b1db4615bc",
+  "workflow_run": 35852854195,
+  "frozen_gate": {
+    "special_fsi39_k_abs_max": 1e-8
+  },
+  "evidence": {
+    "lower_h_minus_1_analytic_k": 153.8197596494848,
+    "lower_h_minus_1_generated_k": 153.81974080197762,
+    "lower_h_minus_1_abs_k": 0.00001884750719227668,
+    "upper_h_minus_1_abs_k": 0.0005746509912114561
+  },
+  "interpretation": "A single smooth raw-head400 ln(K) spline across the admitted F-SI39 threshold cannot reproduce the exact near-saturated branch to the preregistered special-point tolerance. Do not relax the tolerance.",
+  "next_candidate": "Keep the already-qualified F-TAB02 table for the default-MvG branch and apply the already-admitted F-SI39 linear KSATEXM branch exactly above its relative-saturation threshold."
+}
