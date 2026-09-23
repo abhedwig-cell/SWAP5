@@ -17,16 +17,18 @@
     "tests/rom/materialize_f_rom0_headcalc_stubs.py"
   ],
   "external_scheduler_snapshot": {
-    "checkpoint_gw_status": "QUEUED",
-    "checkpoint_jobs_materialized": 2,
-    "checkpoint_surface_status": "QUEUED",
-    "segmented_run": 35751978638
+    "checkpoint_gw_status": "COMPLETED_SUCCESS",
+    "checkpoint_surface_status": "COMPLETED_SUCCESS",
+    "segmented_run": 35751978638,
+    "reference_workflow_attempt": 2,
+    "visible_jobs": 30,
+    "visible_jobs_success": 30
   },
   "history_sharded_disposition": "SUPERSEDED_AFTER_R2048_T32_EXIT_143; R512/R1024 POSITIVE TECHNICAL CONTROL ONLY",
   "history_sharded_reference_workflow_run": 35749982543,
   "implemented": true,
-  "last_reconciled_head": "f5622210f2873e96baf26e18de07a54bef5e2eab",
-  "last_reconciled_upstream": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+  "last_reconciled_head": "f8250bf13010f417951ca12efcb8b8edb0743f8d",
+  "last_reconciled_upstream": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
   "next_action": "DEFINE_PROSPECTIVE_REFERENCE_OBSERVABILITY_OR_FRESH_SURFACE_EVENT_AUTHORITY",
   "original_reference_execution_disposition": "TECHNICALLY_INVALID_INCOMPLETE_EXIT_143",
   "original_reference_workflow_run": 35748342021,
@@ -63,7 +65,8 @@
     "tests/rom/materialize_rom_purpose_p1_gw_reference_segment.py",
     ".github/workflows/f-rom-purpose-p1-reference-segmented.yml",
     "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json",
-    "docs/science/F-ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.md"
+    "docs/science/F-ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.md",
+    "integration/f-rom/ROM_PURPOSE_P1_LIVE_RECONCILIATION.json"
   ],
   "schema": "swap5.rom-purpose.p1.status.v1",
   "scientific_firewall": {
@@ -95,10 +98,16 @@
   "reference_workflow_conclusion": "SUCCESS_WITH_SCIENTIFIC_FAIL_CLOSED_RESULT",
   "reference_failure_diagnosis": "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.json",
   "reference_failure_diagnosis_doc": "docs/science/F-ROM_PURPOSE_P1_REFERENCE_FAILURE_DIAGNOSIS.md",
+  "live_reconciliation": "integration/f-rom/ROM_PURPOSE_P1_LIVE_RECONCILIATION.json",
+  "live_reconciliation_commit": "f8250bf13010f417951ca12efcb8b8edb0743f8d",
+  "research_head_observed_before_live_reconcile": "4aea206151dc7cd4ac2cd571eb09e51f4e69c5a9",
   "current_canonical_reconciliation": {
-    "observed_head": "b7d9c976e9b474545d54fa79b71ae134c25da156",
-    "commits_after_frozen_baseline": 43,
+    "observed_head": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "commits_after_frozen_baseline": 51,
+    "commits_since_previous_reconciliation": 8,
+    "previous_reconciled_head": "b7d9c976e9b474545d54fa79b71ae134c25da156",
+    "new_delta_dependency_surface_intersection": [],
     "P1_baseline_rebound": false,
-    "rationale": "P1 evidence remains historical and internally comparable on its prospectively bound bcef9deb baseline. Current canonical drift was inspected after P1 execution and is not introduced into the failed gate."
+    "rationale": "P1 evidence remains historical and internally comparable on its prospectively bound bcef9deb baseline. The new canonical delta since b7d9c976 contains only F-GC closeout workflow/documentation/integration records and does not intersect the recorded P1 dependency surface. It is not introduced into the failed P1 gate."
   }
 }
