@@ -1,0 +1,50 @@
+{
+  "workstream": "SWAP5-Ribasim management coupling",
+  "work_unit": "SW-RIB-SWM01",
+  "title": "Legacy SWAP surface-water ownership decomposition",
+  "baseline": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "status": "OPEN_QUALIFICATION",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admission": false,
+  "retirement_authority": false,
+  "owned_surface": [
+    "legacy surfacewater.f90 responsibility decomposition",
+    "SWAP5/Ribasim/coupler ownership hypothesis",
+    "surface-water-management equivalence qualification design"
+  ],
+  "held_fixed": [
+    "current admitted drainage physics",
+    "current accepted-state transaction semantics",
+    "current groundwater coupling authority",
+    "current Ribasim research evidence"
+  ],
+  "authority_paths": [
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/architecture/legacy-migration-processes.md"
+  ],
+  "relevant_paths": [
+    "docs/integration/SW-RIB-SWM01_SURFACEWATER_OWNERSHIP.md",
+    "integration/research/SW_RIB_SWM01_STATUS.json",
+    "docs/architecture/legacy-migration-processes.md",
+    "src/legacy/**/surfacewater.f90",
+    "legacy drainage and management dependencies"
+  ],
+  "dependency_surface": [
+    "surface-water state/storage ownership",
+    "drainage and infiltration/subirrigation exchange physics",
+    "runoff/macropore delivery to surface water",
+    "management/control policy",
+    "accepted-state publication and coupling-window semantics",
+    "Ribasim management/allocation interfaces"
+  ],
+  "next_action": "Reconstruct the exact SWAP 4.3.1 surfacewater.f90 responsibility inventory and preregister the first real-Ribasim equivalence case, prioritizing dynamic level control and soil-state-driven weir logic.",
+  "recovery_point": "research/sw-rib-swm01-surfacewater-ownership",
+  "blockers": [
+    "Exact legacy functional inventory not yet completed.",
+    "No real-Ribasim equivalence test has yet been preregistered or executed."
+  ]
+}
