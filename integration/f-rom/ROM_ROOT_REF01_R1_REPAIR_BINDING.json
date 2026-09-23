@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom_root.ref01.r1-repair-binding.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-REF01-R1",
+  "date": "2026-09-23",
+  "state": "BOUND_BEFORE_REF01_EXECUTION",
+  "preregistration": "integration/f-rom/ROM_ROOT_REF01_PREREGISTRATION.json",
+  "original_binding": "integration/f-rom/ROM_ROOT_REF01_BINDING.json",
+  "failure_classification": "integration/f-rom/ROM_ROOT_REF01_FAILURE_CLASSIFICATION.json",
+  "scientific_semantics_changed": false,
+  "candidate_response_generated": false,
+  "c6r_reopened": false,
+  "repair": {
+    "class": "HARNESS_POLICY_PROPAGATION_ONLY",
+    "previous_defect": "strict_first_sample overwrote the preregistered caller-supplied REF01 total balance rate with original_total_tol before sample_fresh.",
+    "change": "The generated REF01 research harness now preserves the caller-supplied total_balance_tolerance inside strict_first_sample.",
+    "seed_semantics_changed": false,
+    "reason_seed_unchanged": "seed_steady calls sample_fresh directly and never enters strict_first_sample.",
+    "representation_floor_formula_changed": false,
+    "safety_factor_changed": false,
+    "max_iterations_changed": false,
+    "local_balance_tolerance_changed": false,
+    "hard_mass_gate_changed": false,
+    "fallback_policy_changed": false,
+    "physics_changed": false,
+    "production_source_persisted": false
+  },
+  "implementation_blobs": {
+    ".github/workflows/rom-root-ref01-r1.yml": "9a38ef6d33fea9632de7ce43449b81dac4323cfd",
+    "tests/rom/materialize_rom_root_ref01_policy.py": "76ae08ae62aabd17516fff738df6d6956dd04857",
+    "tests/rom/analyze_rom_root_ref01.py": "80f3a26a28b45350a24dd8fe07267d69c70b226b",
+    "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a",
+    ".github/workflows/f-rom-lare-bc2-c6r.yml": "4cc15507c8b88f8350e70096ceb8e5ee9c492377"
+  },
+  "preserved_authority": {
+    "p2e18d3_result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+    "p2e20_preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+    "p2e20_result_blob": "e6586623ec7c9d9f0d34fb741687deb8601f0615",
+    "total_floor_formula": "max(1.6e-15 cm, sum_i(dz_i*spacing(theta_s_i))) / actual_trial_dt_day",
+    "safety_factor": 1,
+    "local_balance_rate": 1e-12,
+    "max_iterations": 16,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "root_active_fallback": "FAIL_CLOSED_NO_DYN0A_FALLBACK"
+  },
+  "qualification_rule": "Rerun the complete preregistered REF01 Reference-only matrix and unchanged C6R numerical uncertainty analyzer. Any execution or uncertainty failure closes REF01 before reduced response.",
+  "firewall": {
+    "production_source_changed": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_changed": false,
+    "root_sink_provider_changed": false,
+    "candidate_response_generated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
