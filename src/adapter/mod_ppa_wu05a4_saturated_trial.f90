@@ -8,7 +8,8 @@ module mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_storage_bounds
   use mod_ppa_wu05a4_inflow_limit
   use mod_ppa_wu05a4_outflow_limit
-  use mod_ppa_wu05a4_trial_exchange,only:macro_trial_key,macro_exchange_evaluation
+  use mod_ppa_wu05a4_trial_exchange,only:macro_trial_key,macro_exchange_evaluation, &
+      macro_used_exchange,discard_macro_exchange,apply_macro_residual
   implicit none
   private
   type,public::saturated_domain_inputs
@@ -16,8 +17,29 @@ module mod_ppa_wu05a4_saturated_trial
     real(real64)::bottom=0,pore_level=0,matrix_level=0,storage=0,saturated_fraction=0
     real(real64),allocatable::z(:),dz(:),volume(:),resistance_inverse(:)
   end type
-  public::prepare_saturated_trial
+  public::prepare_saturated_trial,evaluate_saturated_residual
 contains
+  ! A failed preparation must not leave the previous residual's transfer usable.
+  ! Scalar candidate storage is exposed only after successful residual application.
+  subroutine evaluate_saturated_residual(input,head,dt,key,residual,used,storage_candidate,ok)
+    type(saturated_domain_inputs),intent(in)::input
+    real(real64),intent(in)::head(:),dt
+    type(macro_trial_key),intent(in)::key
+    real(real64),intent(inout)::residual(:)
+    type(macro_used_exchange),intent(out)::used
+    real(real64),intent(out)::storage_candidate
+    logical,intent(out)::ok
+    type(macro_exchange_evaluation)::evaluation
+    real(real64)::trial_storage
+    call discard_macro_exchange(used)
+    storage_candidate=0
+    call prepare_saturated_trial(input,head,dt,key,evaluation,trial_storage,ok)
+    if(.not.ok)return
+    call apply_macro_residual(evaluation,key,head,residual,used,ok)
+    if(.not.ok)return
+    storage_candidate=trial_storage
+  end subroutine
+
   subroutine prepare_saturated_trial(input,head,dt,key,evaluation,storage_candidate,ok)
     type(saturated_domain_inputs),intent(in)::input
     real(real64),intent(in)::head(:),dt
