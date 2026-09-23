@@ -10,7 +10,8 @@
     "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c",
     "tests/rom/rom_purpose_p1_layer_base.py": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
     "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
-    "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json": "2e566b35d16a4655b4f9e33c353f57652f5741b1"
+    "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json": "2e566b35d16a4655b4f9e33c353f57652f5741b1",
+    ".github/workflows/f-rom-purpose-p2-candidates.yml": "c1bdebceeb095a8ad3baf7a8ca2cc00ee81f2a37"
   },
   "frozen_candidate_design": {
     "representations": {
@@ -116,5 +117,7 @@
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
   },
-  "next_action": "IF_AND_ONLY_IF_P2_REFERENCE_QUALIFIES_BIND_CANDIDATE_EXECUTION; OTHERWISE_LEAVE_INFRASTRUCTURE_DORMANT"
+  "next_action": "IF_AND_ONLY_IF_P2_REFERENCE_QUALIFIES_BIND_CANDIDATE_EXECUTION; OTHERWISE_LEAVE_INFRASTRUCTURE_DORMANT",
+  "candidate_workflow_trigger_path": "integration/f-rom/ROM_PURPOSE_P2_CANDIDATE_EXECUTION_BINDING.json",
+  "candidate_workflow_trigger_exists": false
 }
