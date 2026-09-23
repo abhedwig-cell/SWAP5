@@ -119,7 +119,7 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Continue PPA-WU05-A3 with MACROGEOM section E's top-layer-without-macropores suppression. Keep the IcTopMp boundary and affected output fields exact; section F/G polygon geometry is separately oracle-tested, while full MACROGEOM and runtime/mass/retry/restart remain open.",
+  "next_safe_step": "Compare MACROGEOM section F/G per-cell DiamPolyg handoffs with the separate polygon-diameter source oracle, including IcTopMp and IC-bottom loop boundaries; then inventory MACROINIT/STATE routines without claiming production admission.",
   "recovery_point": "latest committed campaign checkpoint acc376e6eb5144128245a4d678ce41d1d8481f35 (PPA-SOL-AGE-INITIAL-STORAGE initial profile storage/samini oracle); local campaign branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
@@ -144,6 +144,7 @@
     "PPA-WU05-A3-MACROGEOM-PARTITION: exact-source compartment domain-share allocation for full/partial subdivisions, residual, truncation/cap, strict thresholds, saturated and no-IC routes; sum-to-one and O0/O2 checks.",
     "PPA-WU05-A3-MACROGEOM-LUMPING: exact-source ICpBtDmPot first-zero bottoms, chained same-bottom row shifts, strict Rzah branch and Ah > 2x neighbor gate; active domains checked at O0/O2.",
     "PPA-WU05-A3-MACROGEOM-STATIC-DOMAINS: exact section-H main-bypass and summed IC static volume allocation for one/two/three domains; conservation, invalid extent and O0/O2 identity.",
+    "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION: section-E zeroing for cells above IcTopMp, full matrix-area reset, untouched first active/deeper cells, top-active no-op and invalid bound; O0/O2 identity.",
     "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked.",
     "PPA-IRR-SURFACE-SOLUTE-EXCHANGE: 100000 O0/O2 bitwise pond concentration, matrix top-flux, and residual-store comparisons; strict gate and overflow rejection checked.",
     "PPA-IRR-BOTTOM-SOLUTE-FLUX: 100000 O0/O2 bitwise bottom water-flux sign and selected-concentration comparisons; invalid/overflow rejection checked.",
@@ -260,6 +261,20 @@
       "PPA_WU05A3_MACROGEOM_STATIC_DOMAIN_SCALE=PASS",
       "PPA_WU05A3_MACROGEOM_STATIC_DOMAIN_INVALID_FAIL_CLOSED=PASS",
       "PPA_WU05A3_MACROGEOM_STATIC_DOMAINS_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_top_suppression_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION",
+    "source": "B1.11 macropore.f90 MACROGEOM section E IcTopMp top-layer suppression",
+    "test": "Two-cell suppression, first active/deeper preservation, no-op and invalid-bound cases at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_FREE_CELLS_ZEROED=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_FREE_MATRIX_AREA_ONE=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_TOP_AND_DEEPER_CELLS_PRESERVED=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_INVALID_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }

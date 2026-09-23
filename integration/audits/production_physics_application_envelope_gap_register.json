@@ -2043,6 +2043,13 @@
       "effect": "Section H static storage split between the main bypass and all IC subdomains is tested with conservation checks; top-layer suppression and whole-routine/production integration remain open."
     },
     {
+      "workunit": "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION",
+      "state": "ISOLATED_SECTION_E_SUPPRESSION_ORACLE_PASSED_O0_O2",
+      "evidence": "integration/audits/PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_STATUS.json; preregistered against B1.11 macropore.f90 MACROGEOM source hash",
+      "production_delta": "NONE",
+      "effect": "All specified outputs above IcTopMp are cleared and FrArMtrx reset while the first active/deeper cells remain unchanged. Full section F/G handoff and production composition remain open."
+    },
+    {
       "workunit": "PPA-WU04-A",
       "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "pull_request": 395,
