@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.ribasim_management.active_irrigation_temporal_acceptance_contract.v1",
+  "work_unit": "RM25",
+  "date": "2026-09-23",
+  "title": "Prospective active-irrigation temporal acceptance contract",
+  "status": "DEFINED_REQUIREMENTS_AUTHORITY_BLOCKED",
+  "evidence_base": {
+    "RM20": "certificate decomposition shows forcing discontinuity is dominant but not sufficient to explain the inherited-budget failure",
+    "RM21": "retry-level provenance repaired the misleading max diagnostic interpretation",
+    "RM23": "independent same-horizon one-step versus two-half endpoint difference is 0.04638380228385586 cm; four-quarter refinement is unavailable because the second 2.16 s substep fails",
+    "RM24": "the inherited F-GC44 1e-5 cm budget has no authority for transfer to active irrigation"
+  },
+  "purpose": "Define what must be independently justified before an active-irrigation SWAP transaction can be admitted. This contract deliberately does not choose thresholds from the RM13/RM23 outcomes.",
+  "required_fidelity_dimensions": [
+    {
+      "quantity": "soil-water state",
+      "metrics": ["pressure-head profile", "water-content profile", "ponding"],
+      "reference": "same-horizon independently refined or independently solved trajectory",
+      "reason": "accepted SWAP state is hydrological memory for later management and groundwater response"
+    },
+    {
+      "quantity": "surface-water realization",
+      "metrics": ["gross supplied depth", "net infiltrated depth", "surface storage/runoff where active"],
+      "reference": "exact transfer ledger plus hydrological state response",
+      "reason": "Ribasim allocation is not identical to physical realization"
+    },
+    {
+      "quantity": "groundwater coupling response",
+      "metrics": ["lower-interface head", "bottom exchange", "accepted-trajectory tangent where required"],
+      "reference": "qualified SWAP-MODFLOW interface contract",
+      "reason": "the triangle must preserve the already admitted groundwater action/reaction semantics"
+    },
+    {
+      "quantity": "conservation",
+      "metrics": ["component water balance", "surface-water transfer ledger", "groundwater interface ledger"],
+      "reference": "exact accounting contracts",
+      "reason": "conservation remains a hard gate independent of temporal fidelity"
+    }
+  ],
+  "reference_rules": [
+    "A refinement reference must cover the same physical horizon; shorter solves from the same origin are not by themselves an error reference.",
+    "If refinement loses nonlinear solvability before an asymptotic regime is demonstrated, the finest converged trajectory may be reported but must not be called exact.",
+    "A production threshold must come from an application requirement, independent validation authority, or a separately preregistered numerical-accuracy requirement. It may not be selected after observing RM23 to make RM13B pass.",
+    "Forcing discontinuities may have separate history semantics only after rollback/restart-safe qualification; RM20 alone does not authorize reseeding."
+  ],
+  "current_authority": {
+    "inherited_FGC44_head_budget_for_irrigation": "NOT_AUTHORIZED",
+    "replacement_quantitative_threshold": "NOT_YET_AVAILABLE",
+    "raw_active_irrigation_Richards_solution": "RESEARCH_EVIDENCE_ONLY",
+    "three_model_production_admission": "BLOCKED"
+  },
+  "permitted_next_actions": [
+    "Obtain or derive an independent quantitative temporal-fidelity requirement for the intended hydrological application.",
+    "Develop a more robust independent same-horizon reference integration only if it does not change the production solver merely to manufacture a pass.",
+    "Continue non-admission architectural composition tests only when clearly labelled research/diagnostic and without weakening the production temporal gate."
+  ],
+  "prohibited_actions": [
+    "Set the new head tolerance just above 0.04638380228385586 cm.",
+    "Use the RM23 one-versus-two-half difference itself as the acceptance threshold.",
+    "Disable the production temporal gate and call the resulting triangle qualified.",
+    "Infer that smaller timesteps are safer despite the four-quarter nonlinear failure."
+  ]
+}
