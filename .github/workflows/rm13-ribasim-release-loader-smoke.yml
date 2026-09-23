@@ -6,6 +6,7 @@ on:
       - work/ribasim-management-coupling-closeout
     paths:
       - 'tests/ribasim-management/test_rm13_ribasim_release_loader.py'
+      - 'tests/ribasim-management/generate_rm13_real_ribasim.py'
       - 'tests/ribasim-management/run_rm13_ribasim_release_loader.sh'
       - '.github/workflows/rm13-ribasim-release-loader-smoke.yml'
   workflow_dispatch:
