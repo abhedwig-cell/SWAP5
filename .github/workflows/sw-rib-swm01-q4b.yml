@@ -1,0 +1,40 @@
+name: SW-RIB-SWM01 Q4B extended transactional binding
+
+on:
+  push:
+    branches:
+      - research/sw-rib-swm01-surfacewater-ownership
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'tests/sw-rib-swm01/test_q4b_extended_runtime_binding.f90'
+      - 'tests/sw-rib-swm01/run_q4b_extended_runtime_binding.sh'
+      - 'integration/research/SW_RIB_SWM01_Q4B_*'
+      - '.github/workflows/sw-rib-swm01-q4b.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'tests/sw-rib-swm01/test_q4b_extended_runtime_binding.f90'
+      - 'tests/sw-rib-swm01/run_q4b_extended_runtime_binding.sh'
+      - 'integration/research/SW_RIB_SWM01_Q4B_*'
+      - '.github/workflows/sw-rib-swm01-q4b.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Q4B signed extended transactional runtime binding
+        run: bash tests/sw-rib-swm01/run_q4b_extended_runtime_binding.sh
