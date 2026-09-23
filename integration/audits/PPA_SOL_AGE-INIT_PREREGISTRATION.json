@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_sol_age_init_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-INIT",
+  "parent_work_units": ["PPA-SOL-AGE-CELL"],
+  "title": "B1.11 AgeTracer task-1 initial profile table interpolation",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "dfa3a3bf3c159cf3d1de8221a0c3140c1db14335",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "interpolator_member": "SWAP/functions.f90",
+    "interpolator_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "source_equation": "AgeTracer task-1 afgen_2(agemltb,nconc,abs(z(i)),ageml(i),ipos) and exact afgen_2 search/clamp/interpolation semantics"
+  },
+  "scope": {
+    "input_table": "B1.11 alternating x/y values, odd-length active table, monotone full pairs followed by optional descending-x partial terminator",
+    "input_depth": "absolute node depth, nonnegative",
+    "cursor": "Historical ipos hint, zero or odd on entry; updated to source-selected segment position",
+    "state_owner_ingestion_validation_and_file_errors": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "Compare deterministic table/depth/cursor vectors to direct B1.11 afgen_2 source order at O0/O2",
+    "Exercise before-first, interior, exact-knot, after-last and partial-table terminator paths",
+    "Reject invalid even cursor/table shape/nonfinite input fail-closed",
+    "No parser, profile state owner or production admission"
+  ],
+  "decision_rule": "Preserve B1.11 cursor semantics and partial-table sentinel behavior; input legality/parser validation remains a separate migration obligation."
+}
