@@ -97,7 +97,10 @@ program test_ftab03_ksatexm_generated_state
   call evaluate_b110_generated_mvg_table_state(s_ext,h,tt,kt,ct,status)
   call require(status==F_TAB02_STATE_OK,'below-threshold generated evaluation')
   call a_ext%evaluate(h,ta,ka,ca,da)
-  call require(maxval(abs(kt-ka))<=SPECIAL_K_LIMIT,'generated below-threshold K oracle')
+  do i=1,N
+    call require(abs(log10(kt(i))-log10(ka(i)))<=LOGK_LIMIT, &
+         'generated below-threshold K within frozen table fidelity')
+  end do
 
   call require(theta_max<=THETA_LIMIT,'theta dense qualification')
   call require(c_max<=CAPACITY_LIMIT,'capacity dense qualification')

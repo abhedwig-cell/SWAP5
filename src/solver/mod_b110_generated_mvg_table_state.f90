@@ -2,7 +2,7 @@ module mod_b110_generated_mvg_table_state
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
-       bind_b110_default_mvg_provider
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_generated_mvg_tspack, only: TSPBI, my_HVAL, my_HPVAL
   implicit none
   private
@@ -58,6 +58,7 @@ contains
     type(b110_default_mvg_parameters_t), target, intent(in) :: parameters
     integer, intent(out) :: status
     type(b110_default_mvg_provider_t) :: analytic
+    type(b110_default_mvg_parameters_t), target :: generation_parameters
     real(real64), allocatable :: lo(:), hi(:), mid(:), target(:)
     real(real64), allocatable :: hvec(:), theta(:), conductivity(:), capacity(:), dkdh(:)
     real(real64) :: frac, u0
@@ -84,22 +85,15 @@ contains
     allocate(lo(n), hi(n), mid(n), target(n), hvec(n))
     allocate(theta(n), conductivity(n), capacity(n), dkdh(n))
 
-    call bind_b110_default_mvg_provider(analytic, parameters, 1.0_real64)
-
-    ! F-TAB03 research candidate: locate the terminal branch against the
-    ! admitted analytical provider's actual K(h=0).  This is KSATFIT on the
-    ! default route and KSATEXM on nodes where the qualified F-SI39 extension
-    ! is active.
-    hvec = 0.0_real64
-    call analytic%evaluate(hvec, theta, conductivity, capacity, dkdh)
-    if (.not. all(ieee_is_finite(conductivity)) .or. any(conductivity <= 0.0_real64)) then
-      status = F_TAB02_STATE_GENERATION_FAILED
-      return
-    end if
+    ! Candidate B keeps the F-TAB02 table itself on the ordinary MvG
+    ! relation.  The already-admitted F-SI39 branch is overlaid exactly at
+    ! evaluation time, so the spline never spans the F-SI39 constitutive kink.
+    call initialize_b110_default_mvg_parameters(generation_parameters, parameters%cofgen)
+    call bind_b110_default_mvg_provider(analytic, generation_parameters, 1.0_real64)
 
     lo = GENERATION_H_DRY
     hi = GENERATION_H_WET
-    target = conductivity * K_BRANCH_TARGET_FRACTION
+    target = parameters%cofgen(3,1:n) * K_BRANCH_TARGET_FRACTION
 
     do j = 1, 140
       mid = 0.5_real64 * (lo + hi)
@@ -165,7 +159,7 @@ contains
     state%logk(B110_GENERATED_MVG_TABLE_N,:) = log(conductivity)
 
     state%theta_saturated = parameters%cofgen(2,1:n)
-    state%terminal_conductivity = conductivity
+    state%terminal_conductivity = parameters%cofgen(3,1:n)
     state%kbranch_head = state%head(B110_GENERATED_MVG_TABLE_N-1,:)
 
     hvec = H_CRIT
@@ -274,8 +268,9 @@ contains
     real(real64), intent(in) :: pressure_head(:)
     real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:)
     integer, intent(out) :: status
-    real(real64) :: h, x(2), y(2), yp(2), sig(2), logk_value
+    real(real64) :: h, x(2), y(2), yp(2), sig(2), logk_value, ksatexm_value
     integer :: i, klo, khi, ier, n
+    logical :: ksatexm_applied
 
     status = F_TAB02_STATE_NOT_READY
     if (.not. state%ready()) return
@@ -292,8 +287,13 @@ contains
       h = pressure_head(i)
       if (h >= 0.0_real64) then
         water_content(i) = state%theta_saturated(i)
-        conductivity(i) = state%terminal_conductivity(i)
         capacity(i) = 0.0_real64
+        call evaluate_fsi39_overlay(state, i, water_content(i), ksatexm_value, ksatexm_applied)
+        if (ksatexm_applied) then
+          conductivity(i) = ksatexm_value
+        else
+          conductivity(i) = state%terminal_conductivity(i)
+        end if
         cycle
       end if
 
@@ -326,7 +326,10 @@ contains
         end if
       end if
 
-      if (h > state%kbranch_head(i)) then
+      call evaluate_fsi39_overlay(state, i, water_content(i), ksatexm_value, ksatexm_applied)
+      if (ksatexm_applied) then
+        conductivity(i) = ksatexm_value
+      else if (h > state%kbranch_head(i)) then
         conductivity(i) = state%terminal_conductivity(i)
       else
         call locate_interval(state%head(1:B110_GENERATED_MVG_TABLE_N-1,i), h, klo, khi)
@@ -351,6 +354,27 @@ contains
 
     status = F_TAB02_STATE_OK
   end subroutine evaluate_b110_generated_mvg_table_state
+
+  pure subroutine evaluate_fsi39_overlay(state, node, theta, conductivity, applied)
+    type(b110_generated_mvg_table_state_t), intent(in) :: state
+    integer, intent(in) :: node
+    real(real64), intent(in) :: theta
+    real(real64), intent(out) :: conductivity
+    logical, intent(out) :: applied
+    real(real64) :: relsat, term
+
+    conductivity = 0.0_real64
+    applied = .false.
+    if (.not. state%ksatexm_extension_enabled) return
+    if (state%source_cofgen(10,node) <= state%source_cofgen(3,node)) return
+
+    relsat = (theta-state%source_cofgen(1,node))/state%source_cofgen(25,node)
+    if (relsat <= state%source_cofgen(11,node)) return
+
+    term = (relsat-state%source_cofgen(11,node))/(1.0_real64-state%source_cofgen(11,node))
+    conductivity = term*state%source_cofgen(10,node) + (1.0_real64-term)*state%source_cofgen(12,node)
+    applied = .true.
+  end subroutine evaluate_fsi39_overlay
 
   pure subroutine locate_interval(head, h, klo, khi)
     real(real64), intent(in) :: head(:), h
