@@ -43,9 +43,15 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin work/f-rom-purpose
           mkdir -p ext evidence
+          echo "SOURCE_COMMIT=$(git rev-parse FETCH_HEAD)" | tee evidence/source_binding.txt
+          verify() {
+            actual="$(git hash-object "$1")"
+            echo "SOURCE $1 expected=$2 actual=$actual" | tee -a evidence/source_binding.txt
+            test "$actual" = "$2"
+          }
           while read -r blob name; do
-            git cat-file blob "$blob" > "ext/$name"
-            test "$(git hash-object "ext/$name")" = "$blob"
+            git show "FETCH_HEAD:tests/rom/$name" > "ext/$name"
+            verify "ext/$name" "$blob"
           done <<'BLOBS'
           b2df7793d3f56f5d8d1d121636d2eb1a0952e271 rom_purpose_p1_surface_b01_source.f90
           98b05fcf13fc470689295d511766f2393a712e46 rom_purpose_p1_gw_source.f90
@@ -55,9 +61,9 @@ jobs:
           105e75b93425780f565c714de1be1cb7ae0ee767 rom_purpose_p1_base_c4z_materializer.py
           33a68fc51d5c1905b9f377e2d14626aeebe27f98 rom_purpose_p1_layer_base.py
           BLOBS
-          test "$(git hash-object integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json)" = b2d8885a9bb01b078a3510086c70945207ab0882
-          test "$(git hash-object tools/rom/run_rom_practical_p3_candidate.py)" = 0021329e9aae426720adf87a1461311d764efab8
-          test "$(git hash-object tools/rom/prepare_rom_practical_p3_reference.py)" = 4fc808e1512c99057c54e85e5da48bd651bbb52a
+          verify integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json b2d8885a9bb01b078a3510086c70945207ab0882
+          verify tools/rom/run_rom_practical_p3_candidate.py 0021329e9aae426720adf87a1461311d764efab8
+          verify tools/rom/prepare_rom_practical_p3_reference.py 4fc808e1512c99057c54e85e5da48bd651bbb52a
           python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
           python3 -m py_compile tools/rom/qualify_rom_practical_p4.py
       - name: Build frozen reduced implementation
