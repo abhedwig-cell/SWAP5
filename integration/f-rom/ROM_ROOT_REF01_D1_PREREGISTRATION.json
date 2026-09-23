@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.rom_root.ref01.d1.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-REF01-D1",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_REF01_D1_REPLAY",
+  "parent_run": 35819380793,
+  "parent_head": "69698941e50b739e5582485d6519d011f4a0a297",
+  "purpose": "Classify the first fail-closed REF01 solver rejection after the externally bound total representation-floor policy is active. Diagnostic only.",
+  "cases": [
+    {
+      "material": "B01",
+      "route": "R1024_T32",
+      "history": "V02",
+      "nodes": 1024,
+      "dz_cm": 0.15625,
+      "temporal_factor": 32
+    },
+    {
+      "material": "B14",
+      "route": "R512_T32",
+      "history": "V01",
+      "nodes": 512,
+      "dz_cm": 0.3125,
+      "temporal_factor": 32
+    }
+  ],
+  "fixed_policy": {
+    "total_policy": "ROM-ROOT-REF01 representation floor unchanged",
+    "local_balance_rate": 1e-12,
+    "max_iterations": 16,
+    "hard_transaction_mass_cm": 1e-12,
+    "fallback": "FORBIDDEN"
+  },
+  "diagnostics": [
+    "solver status and route",
+    "nonlinear iterations, internal retries and backtracking",
+    "local balance flag count",
+    "head flag count",
+    "max absolute local residual",
+    "summed residual",
+    "failed interval dt"
+  ],
+  "prohibited": [
+    "No tolerance change.",
+    "No max-iteration change.",
+    "No fallback.",
+    "No case replacement.",
+    "No reduced candidate execution.",
+    "No production/reference physics change."
+  ]
+}
