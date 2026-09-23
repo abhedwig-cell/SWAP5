@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.diagnostic_checkpoint.v1",
+  "workunit": "F-TAB02-G",
+  "date": "2026-09-23",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "state": "DEDICATED_REQUALIFICATION_PASS__SEQUENTIAL_A_E_G_PENDING",
+  "canonical_authority": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "production_postimage": "398b3300fad97f485bfbefe7fa87ef9202fc0871",
+  "production_mutation_since_postimage": "NONE",
+  "fixture_repair_head": "100b51cad90a5bb76de1cac914658d897e84a842",
+  "dedicated_run": {
+    "run_id": 35880260492,
+    "conclusion": "success",
+    "constitutive": {
+      "theta_max_abs": 0.000005663988226437683,
+      "capacity_max_abs": 0.00002536713770437025,
+      "log10k_max_abs": 0.0003115310231969204,
+      "k_max_rel": 0.00005822715301919934,
+      "floating_threshold_neighborhood": "PASS",
+      "neighboring_profile_fail_closed": "PASS",
+      "o0_o2_identity": "PASS"
+    },
+    "reference_richards": {
+      "below_threshold": {
+        "head_max_abs_cm": 2.862784231894011e-9,
+        "theta_max_abs": 4.184613766611278e-11,
+        "analytic_iters": 4,
+        "generated_iters": 4
+      },
+      "transition": {
+        "head_max_abs_cm": 7.199202123331361e-9,
+        "theta_max_abs": 3.357564226647014e-11,
+        "analytic_iters": 5,
+        "generated_iters": 5
+      },
+      "active_extension": {
+        "head_max_abs_cm": 4.584734369927901e-9,
+        "theta_max_abs": 7.025491299827991e-12,
+        "analytic_iters": 5,
+        "generated_iters": 5
+      },
+      "three_regimes": "PASS"
+    },
+    "serialized": {
+      "upper": {
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 2.9344859875379825e-12,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_retries": 0,
+        "generated_retries": 0
+      },
+      "lower": {
+        "head_max_abs_cm": 0,
+        "theta_max_abs": 1.0887402090986598e-12,
+        "analytic_iters": 3,
+        "generated_iters": 3,
+        "analytic_retries": 0,
+        "generated_retries": 0
+      },
+      "neighboring_profile_fail_closed": "PASS",
+      "result": "PASS"
+    }
+  },
+  "sequential_replay": {
+    "run_id": 35880260640,
+    "state": "QUEUED"
+  },
+  "interpretation": "Dedicated F-TAB02-G owner qualification is green after exact-threshold and temporally equilibrated fixture repairs. Final G closure remains held until the sequential A->B->C->D->E->G replay passes on the same repaired source/fixture postimage.",
+  "next_safe_step": "Read run 35880260640. If PASS, bind F-TAB02-G qualification and then unlock preregistered F-TAB02-F0. Do not implement F0 before that replay passes."
+}
