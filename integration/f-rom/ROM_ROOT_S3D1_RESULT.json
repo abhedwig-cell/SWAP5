@@ -1,0 +1,180 @@
+{
+  "schema": "swap5.rom_root.s3d1.persisted_result.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3-D1",
+  "date": "2026-09-23",
+  "status": "S3D1_FINE_NODE_STATIC_FEDDES_DECOMPOSITION_COMPLETE",
+  "decision": "A_AND_B_STATIC_MISSING_INFORMATION_SUPPORTED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_S3D1_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_S3D1_BINDING.json",
+    "stage3_result": "integration/f-rom/ROM_ROOT_S3_RESULT.json",
+    "qualified_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json",
+    "workflow_run": 35858603308,
+    "head": "c70c3438161baa2256a42ca7f4ffef0b23d6d0ab",
+    "analyzer_job": 107174452257,
+    "result_artifact": {
+      "id": 10749235566,
+      "name": "rom-root-s3d1",
+      "digest": "sha256:a4001fbeb0a7cdfbf550bd8bb59b863f667362843b8727d13f5dea5c059688ae"
+    }
+  },
+  "numerical_guard": 2.9103830456733704e-11,
+  "integrity": {
+    "pass": true,
+    "max_abs_A_plus_B_identity_error_across_cases": 5.290906601729262e-16,
+    "max_abs_exact_process_observation_fraction_error_across_cases": 1.13464793116691e-13
+  },
+  "summary": {
+    "cases": 8,
+    "static_functional_error_distinguishable_cases": 8,
+    "A_threshold_nonlinearity_distinguishable_cases": 8,
+    "B_representative_head_distribution_distinguishable_cases": 8,
+    "h4_crossing_cases": 0,
+    "interpretation": "The remaining R16 error is already present on the same qualified fine-node hydraulic state. Both within-layer h3 threshold nonlinearity and loss of root-weighted pressure-head information contribute independently. Reduced hydraulic propagation is not required to produce the discrepancy."
+  },
+  "cases": {
+    "B01_V01": {
+      "total_rmse": 0.000006660274867515525,
+      "total_max_abs": 0.000010828772818327614,
+      "A_rmse": 1.809076286659127e-7,
+      "A_max_abs": 8.358038733891071e-7,
+      "B_rmse": 0.0000066225952403457855,
+      "B_max_abs": 0.000010828772818251287,
+      "crossing_transaction_fraction": 0.595428466796875,
+      "crossing_share_absolute_layerwise_error": 0.04743346621248932,
+      "A_noncross_max_abs": 2.498001805406602e-16,
+      "B_noncross_max_abs": 0.000002246947341438821
+    },
+    "B01_V02": {
+      "total_rmse": 0.00000724396334169941,
+      "total_max_abs": 0.000012649904417627589,
+      "A_rmse": 4.846306834165714e-7,
+      "A_max_abs": 0.0000014987699839819069,
+      "B_rmse": 0.000006953428595621972,
+      "B_max_abs": 0.000012520430569056343,
+      "crossing_transaction_fraction": 0.925628662109375,
+      "crossing_share_absolute_layerwise_error": 0.13060251097534015,
+      "A_noncross_max_abs": 2.498001805406602e-16,
+      "B_noncross_max_abs": 0.0000020206752196216815
+    },
+    "B01_V03": {
+      "total_rmse": 1.695415041696605e-7,
+      "total_max_abs": 0.0000015378856565995136,
+      "A_rmse": 1.549820378939332e-7,
+      "A_max_abs": 0.0000015372292875154292,
+      "B_rmse": 6.828429741267531e-8,
+      "B_max_abs": 1.4725287827976885e-7,
+      "crossing_transaction_fraction": 0.057952880859375,
+      "crossing_share_absolute_layerwise_error": 0.3459933464320073,
+      "A_noncross_max_abs": 3.885780586188048e-16,
+      "B_noncross_max_abs": 9.712058571254012e-8
+    },
+    "B01_V04": {
+      "total_rmse": 3.808341391471641e-7,
+      "total_max_abs": 0.000002636205027051197,
+      "A_rmse": 3.766219073290277e-7,
+      "A_max_abs": 0.0000026358342821303227,
+      "B_rmse": 5.1442727040718146e-8,
+      "B_max_abs": 1.1126130913807764e-7,
+      "crossing_transaction_fraction": 0.12060546875,
+      "crossing_share_absolute_layerwise_error": 0.714387483889873,
+      "A_noncross_max_abs": 4.996003610813204e-16,
+      "B_noncross_max_abs": 1.0107143839921395e-7
+    },
+    "B14_V01": {
+      "total_rmse": 5.209334145270592e-7,
+      "total_max_abs": 9.387648497449774e-7,
+      "A_rmse": 1.1997234643792183e-8,
+      "A_max_abs": 3.972951531650004e-8,
+      "B_rmse": 5.146107128595165e-7,
+      "B_max_abs": 9.364414097056545e-7,
+      "crossing_transaction_fraction": 0.963623046875,
+      "crossing_share_absolute_layerwise_error": 0.11379478385103015,
+      "A_noncross_max_abs": 2.220446049250313e-16,
+      "B_noncross_max_abs": 1.3375693874717598e-7
+    },
+    "B14_V02": {
+      "total_rmse": 8.805476801041782e-7,
+      "total_max_abs": 0.0000016691416641068102,
+      "A_rmse": 5.6291290375028454e-8,
+      "A_max_abs": 1.4642830081790237e-7,
+      "B_rmse": 8.387003498464754e-7,
+      "B_max_abs": 0.0000016149481960932993,
+      "crossing_transaction_fraction": 0.927337646484375,
+      "crossing_share_absolute_layerwise_error": 0.10542324330635058,
+      "A_noncross_max_abs": 2.498001805406602e-16,
+      "B_noncross_max_abs": 2.2287570086709785e-7
+    },
+    "B14_V03": {
+      "total_rmse": 8.929089677431673e-9,
+      "total_max_abs": 2.6169848732493506e-8,
+      "A_rmse": 2.450636402124951e-9,
+      "A_max_abs": 2.6139706843508748e-8,
+      "B_rmse": 8.583835334770462e-9,
+      "B_max_abs": 2.062657233903309e-8,
+      "crossing_transaction_fraction": 0.059844970703125,
+      "crossing_share_absolute_layerwise_error": 0.06716801040027857,
+      "A_noncross_max_abs": 4.579669976578771e-16,
+      "B_noncross_max_abs": 2.062570556016219e-8
+    },
+    "B14_V04": {
+      "total_rmse": 1.1813931774315794e-8,
+      "total_max_abs": 7.430950788034352e-8,
+      "A_rmse": 9.683873053846649e-9,
+      "A_max_abs": 7.419510547612695e-8,
+      "B_rmse": 6.70184504898732e-9,
+      "B_max_abs": 1.6345350031810035e-8,
+      "crossing_transaction_fraction": 0.11578369140625,
+      "crossing_share_absolute_layerwise_error": 0.3431074805711507,
+      "A_noncross_max_abs": 4.440892098500626e-16,
+      "B_noncross_max_abs": 1.6345324718725074e-8
+    }
+  },
+  "missing_information": {
+    "A": {
+      "status": "SUPPORTED",
+      "statement": "Within-layer Feddes threshold nonlinearity is independently measurable in all eight cases. The A residual outside threshold-crossing layers remains at binary64 arithmetic scale, validating the decomposition."
+    },
+    "B": {
+      "status": "SUPPORTED",
+      "statement": "Storage-derived representative head differs functionally from root-weighted pressure-head information in all eight cases, including non-crossing layers."
+    },
+    "C": {
+      "status": "PREVIOUSLY_SUPPORTED",
+      "statement": "Stage 3 already showed strong sensitivity to upper-zone state placement; D1 holds R16 placement fixed and therefore does not re-adjudicate C."
+    },
+    "D": {
+      "status": "NOT_REQUIRED_TO_EXPLAIN_R16_STATIC_ERROR",
+      "statement": "A and B are computed on the identical qualified Reference hydraulic state before any reduced propagation."
+    },
+    "E": {
+      "status": "NOT_SUPPORTED_BY_THIS_DIAGNOSTIC",
+      "statement": "The static A/B discrepancy is sufficient to establish missing vertical functional information; no memory variable is justified from D1."
+    }
+  },
+  "state_sufficiency_interpretation": {
+    "existing_R16_layer_mean_head_sufficient": false,
+    "root_specific_state_selected": false,
+    "conclusion": "The missing information is not one-dimensional in a general sense: threshold-crossing nonlinearity and root-weighted pressure-head information are both independently present, with their relative importance changing across root profiles and materials.",
+    "next_required_test": "Before introducing root-specific state, test whether pure refinement of existing hydraulic support can jointly reduce A and B on the same Reference states."
+  },
+  "application_boundary": {
+    "application_acceptance": false,
+    "crop_model_validation": false,
+    "drought_damage_validation": false,
+    "operational_ET_suitability": false,
+    "production_rom_admission": false,
+    "performance_claim": false
+  },
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "new_partition_selected": false,
+    "new_hydraulic_closure_selected": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
