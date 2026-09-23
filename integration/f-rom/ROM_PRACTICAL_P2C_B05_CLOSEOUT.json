@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.rom-practical.p2c-b05.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P2C-B05",
+  "date": "2026-09-23",
+  "status": "CLOSED_B05_EVENT_DEFECT_ATTRIBUTED_TO_REPRESENTATION_PLACEMENT_NOT_REDUCED_CLOSURE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P2C_B05_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P2C_B05_RESULT.json@9ad41a4e72858988da0435f76c51bf0a18904c00",
+    "workflow_run": 35896950061
+  },
+  "conclusions": [
+    "At B05 G4, conventional Richards and Layer-ROM have identical event errors: 9 bottom-flux sign mismatches, 4 reversal-sequence mismatches and 1024-step reversal-timing error.",
+    "At B05 G6, conventional Richards and Layer-ROM again have identical event errors: 9 sign mismatches, 4 sequence mismatches and 1024-step timing error.",
+    "Therefore the persistent B05 reversal failure is not attributable to the reduced CURRENT_LAYER_FACE propagation/closure used by Layer-ROM.",
+    "G4→G6 materially improves all continuous same-partition Richards groundwater metrics, but provides zero improvement on the discrete event vector.",
+    "Reduced propagation/closure contributes modest additional continuous error because COR_G4 and COR_G6 are componentwise better than LR_G4 and LR_G6 on the continuous vector, but this does not explain the event failure.",
+    "The remaining B05 event defect is attributable to insufficient or misplaced vertical representation at G4/G6, or to a material-specific nonlinear response that those partitions cannot resolve."
+  ],
+  "reference_numerical_comparator": {
+    "sign_mismatch_count": 1,
+    "reversal_sequence_mismatch_count": 0,
+    "reversal_timing_error_steps": 1
+  },
+  "decision": {
+    "closure_work_authorized": false,
+    "G8_auto_admission": false,
+    "next_work_unit": "ROM-PRACTICAL-P2D-B05",
+    "next_question": "Does eight-state lower-focused G8 resolve the B05 event defect, and is lower-focused G8 better or worse than equal-dimension U8?",
+    "rationale": "This directly separates state-count/lower-zone support from placement mismatch before any new closure family or empirical repair."
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
