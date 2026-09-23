@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.rom_root.s3c0_d1.preregistration.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-S3C0-D1",
+  "date": "2026-09-23",
+  "state": "PREREGISTERED_BEFORE_S3C0_D1_ROUTE_LEVEL_RESPONSE_INSPECTION",
+  "purpose": "Independently determine whether the two formally unqualified full-potential root-uptake metrics are structural invariants whose observed route differences are only binary64 arithmetic noise. This does not reclassify S3-C0 and does not authorize reduced dynamic feedback.",
+  "starting_authority": {
+    "c0_result": "integration/f-rom/ROM_ROOT_S3C0_RESULT.json",
+    "c0_status": "S3C0_FULL_POTENTIAL_REFERENCE_NOT_QUALIFIED",
+    "c0_workflow_run": 35854345998,
+    "c0_artifact_id": 10747053751,
+    "c0_artifact_digest": "sha256:cc1b578741ff03048c7f1cd22bbbfb878ad493916c4fc4068aa344abaa355920",
+    "dynamic_reference": "integration/f-rom/ROM_ROOT_RA02R_RESULT.json"
+  },
+  "frozen_scope": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "target_route": "R2048_T32",
+    "metrics": [
+      "interval_actual_root_uptake_cm_per_day",
+      "actual_over_potential_fraction",
+      "cumulative_actual_root_uptake_cm"
+    ],
+    "no_new_physics_run": true
+  },
+  "arithmetic_identity_contract": {
+    "floating_type": "IEEE binary64",
+    "criterion": "abs(a-b) <= 64 * epsilon_binary64 * max(1,abs(a),abs(b))",
+    "epsilon_binary64": 2.220446049250313e-16,
+    "scale": 64,
+    "rationale": "Fixed arithmetic identity criterion already used in independent prescribed-root qualification; it is not selected from the C0 route differences.",
+    "full_potential_identity": [
+      "For every route/material/history/observation, actual_over_potential_fraction is arithmetic-identical to 1.",
+      "For every route/material/history/observation, interval_actual_root_uptake is arithmetic-identical to PTRA.",
+      "For every material/history/observation, each route is arithmetic-identical to R2048_T32 for interval uptake, fraction and cumulative uptake."
+    ]
+  },
+  "decision_rule": {
+    "invariant_pass": "All full-potential identity and route-to-target comparisons pass the fixed 64-epsilon criterion for all three quantities.",
+    "classification_if_pass": "STRUCTURAL_FULL_POTENTIAL_ROOT_UPTAKE_INVARIANT_AT_BINARY64_FLOOR",
+    "classification_if_fail": "ROOT_UPTAKE_ROUTE_DEPENDENCE_EXCEEDS_PREDECLARED_ARITHMETIC_IDENTITY_FLOOR",
+    "arithmetic_floor_if_pass": {
+      "interval_actual_root_uptake_rmse_cm_per_day": "64*eps*max(1,abs(PTRA)); because PTRA<=0.6 this is 64*eps",
+      "cumulative_actual_root_uptake_rmse_cm": "64*eps*max(1,max_abs_cumulative); because full-potential cumulative uptake remains <1 cm on the frozen horizon this is 64*eps",
+      "actual_fraction": "64*eps"
+    },
+    "authority_implication_if_pass": "May support a separate prospectively bound S3C0R requalification in which the two structural-invariant root metrics use the fixed arithmetic floor while the three hydraulic metrics retain their already qualified C0 Richardson uncertainties.",
+    "authority_implication_if_fail": "C0 remains unqualified and Stage 3 dynamic response remains blocked."
+  },
+  "prohibited": [
+    "Do not alter or overwrite ROM_ROOT_S3C0_RESULT.json.",
+    "Do not generate U4/U8/R8/R16 dynamic-feedback response.",
+    "Do not derive a tolerance from observed D1 differences.",
+    "Do not change full-potential control physics, root distribution, Reference solver, numerical policy, routes or observations.",
+    "Do not treat this arithmetic identity bound as an application tolerance.",
+    "Do not authorize production or performance claims."
+  ],
+  "scientific_firewall": {
+    "original_c0_reclassified": false,
+    "reduced_dynamic_feedback_response_generated": false,
+    "new_root_specific_state_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
