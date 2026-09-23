@@ -111,13 +111,6 @@ contains
       status = F_TAB02_STATE_GENERATION_FAILED
       return
     end if
-    if (any(lo <= H_CRIT)) then
-      ! F-TAB02 K0 scope requires the explicit Ksat branch to start wetter
-      ! than the explicit wet theta/C branch.
-      status = F_TAB02_STATE_GENERATION_FAILED
-      return
-    end if
-
     state%active_nodes = n
     allocate(state%head(B110_GENERATED_MVG_TABLE_N,n), state%theta(B110_GENERATED_MVG_TABLE_N,n), &
              state%logk(B110_GENERATED_MVG_TABLE_N,n), &
