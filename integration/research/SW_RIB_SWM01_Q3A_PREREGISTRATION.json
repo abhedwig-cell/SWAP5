@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3a.preregistration.v1",
+  "work_unit": "SW-RIB-SWM01-Q3A",
+  "date": "2026-09-23",
+  "title": "Signed SWAP lower exchange with Ribasim-owned surface-water availability",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Qualify the ownership seam for signed lower exchange: SWAP computes the unconstrained constitutive drainage/infiltration request from accepted hydraulic state, Ribasim owns the surface-water store and may constrain withdrawals, and the coupler must treat any difference between requested and realized exchange as a coupled-trial feasibility result rather than clipping an already accepted SWAP transfer.",
+  "authorities": {
+    "legacy_exchange": "F-PM08D2 exact-source restricted extended drainage exchange readiness",
+    "legacy_availability": "F-PM08D3 availability/mass authority",
+    "ribasim_release": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "ribasim_bmi": [
+      "basin.storage",
+      "basin.level",
+      "basin.drainage",
+      "basin.infiltration",
+      "basin.cumulative_drainage",
+      "basin.cumulative_infiltration"
+    ]
+  },
+  "frozen_swap_exchange_branch": {
+    "surface_route": "resolved external secondary water level, SWSRF=2 semantics",
+    "drain_type": "tube drain",
+    "zbot_cm": -150,
+    "gwlinf_cm": -200,
+    "pond_cm": 0,
+    "pondmx_cm": 1000,
+    "rdrain_day": 10,
+    "rinfi_day": 20,
+    "rentry_day": 0,
+    "rexit_day": 0,
+    "formula": [
+      "resolved drain level = external Ribasim water level because WL > ZBOTDR+0.001 in all cases",
+      "effective head difference = GWL-WL; no ponding or GWLINF cap is active",
+      "positive difference: q_swap = difference/RDRAIN",
+      "negative difference: q_swap = difference/RINFI"
+    ],
+    "sign": "q_swap > 0 soil->surface water; q_swap < 0 surface water->soil"
+  },
+  "frozen_ribasim_mapping": {
+    "represented_area_m2": 1,
+    "basin_profile_level_m": [
+      -1,
+      1
+    ],
+    "basin_profile_area_m2": [
+      1,
+      1
+    ],
+    "duration_s": 86400,
+    "positive_q": "basin.Static drainage = q_swap depth/day * represented area / day",
+    "negative_q": "basin.Static infiltration = abs(q_swap) depth/day * represented area / day",
+    "no_other_forcings": true
+  },
+  "cases": [
+    {
+      "id": "X1_POSITIVE_DRAINAGE",
+      "initial_ribasim_level_m": -0.5,
+      "groundwater_level_cm": -40,
+      "control_level_cm": -50,
+      "expected_q_swap_cm_per_day": 1,
+      "requested_transfer_m3": 0.01,
+      "expected_realized_direction": "SWAP_TO_RIBASIM",
+      "expected_final_level_m": -0.49
+    },
+    {
+      "id": "X2_NEGATIVE_INFILTRATION_SUFFICIENT",
+      "initial_ribasim_level_m": -0.5,
+      "groundwater_level_cm": -60,
+      "control_level_cm": -50,
+      "expected_q_swap_cm_per_day": -0.5,
+      "requested_transfer_m3": 0.005,
+      "expected_realized_direction": "RIBASIM_TO_SWAP",
+      "expected_final_level_m": -0.505
+    },
+    {
+      "id": "X3_NEGATIVE_INFILTRATION_AVAILABILITY_LIMITED",
+      "initial_ribasim_level_m": -0.998,
+      "groundwater_level_cm": -110,
+      "control_level_cm": -99.8,
+      "expected_q_swap_cm_per_day": -0.51,
+      "requested_transfer_m3": 0.0051,
+      "initial_surface_storage_m3": 0.002,
+      "expectation": "Ribasim realized cumulative infiltration is nonnegative, strictly below requested transfer, cannot exceed available surface-water storage within tolerance, and final storage remains nonnegative. No exact realized value is preregistered because the pinned Ribasim low-storage reduction policy is part of the external feasibility realization being measured."
+    }
+  ],
+  "tolerances": {
+    "swap_oracle_rate_cm_per_day_abs": 1e-12,
+    "unrestricted_realized_transfer_m3_abs": 0.000001,
+    "unrestricted_final_level_m_abs": 0.000001,
+    "direct_mass_residual_m3_abs": 1e-8,
+    "storage_nonnegative_m3": 1e-10,
+    "availability_strict_difference_m3": 0.000001
+  },
+  "coupling_decision_rule": {
+    "if_realized_equals_requested": "candidate transfer may proceed to joint acceptance, subject to the normal coupled transaction.",
+    "if_realized_differs_from_requested": "candidate is not an accepted SWAP transfer. Coupler must expose the realized feasible transfer and recompose/re-evaluate SWAP and Ribasim from the same accepted origins before commit.",
+    "forbidden": "accept SWAP with requested infiltration and then clip only the Ribasim side."
+  },
+  "pass_criteria": [
+    "X1 source-derived q=+1 cm/day and direct Ribasim cumulative drainage=0.01 m3 within tolerance; storage and level increase consistently.",
+    "X2 source-derived q=-0.5 cm/day and direct Ribasim cumulative infiltration=0.005 m3 within tolerance; storage and level decrease consistently.",
+    "X3 source-derived request is -0.51 cm/day, but Ribasim limits the physical withdrawal before storage becomes negative.",
+    "All three direct Ribasim mass ledgers close within the frozen residual tolerance.",
+    "The harness marks X3 as RECOMPOSITION_REQUIRED rather than ACCEPT_WITH_CLIP."
+  ],
+  "nonclaims": [
+    "No full real-SWAP runtime composition yet.",
+    "No multilevel mixed-sign proportional legacy limiter qualification.",
+    "No SWSRF=1 route.",
+    "No negative power-interflow route.",
+    "No production admission."
+  ]
+}
