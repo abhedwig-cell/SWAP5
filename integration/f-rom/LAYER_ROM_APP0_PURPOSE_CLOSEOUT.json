@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.layer-rom.application-purpose.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "status": "CLOSED_AT_APPLICATION_TOLERANCE_AUTHORITY_BLOCKER",
+  "decision": "NO_PURPOSE_VALIDATION_ROUTE_SELECTED",
+  "purpose_decisions": {
+    "GW-R": {
+      "L4": "UNRESOLVED",
+      "L6": "UNRESOLVED",
+      "R8": "UNRESOLVED",
+      "reason": "No independent absolute recharge/water-balance tolerance with sufficient temporal semantics."
+    },
+    "GW-D": {
+      "L4": "UNRESOLVED",
+      "L6": "UNRESOLVED",
+      "R8": "UNRESOLVED",
+      "reason": "No independent exchange/reversal/head-consequence tolerance and no portable flux-to-head mapping."
+    },
+    "SCI-P": {
+      "L4": "UNRESOLVED",
+      "L6": "UNRESOLVED",
+      "R8": "UNRESOLVED",
+      "reason": "Available soil-moisture requirements are measurement/product or empirical model-performance criteria, not process-research fidelity authority."
+    }
+  },
+  "first_validation_route": null,
+  "frozen_frontier_unchanged": true,
+  "cost_interpretation": "COST1 shared-host screening remains preserved but cannot be promoted to computational value for any purpose because no candidate is purpose-admissible yet.",
+  "allowed_next": [
+    "Obtain a purpose-owner requirement that defines acceptable prediction consequence and temporal scale before candidate exposure.",
+    "Or obtain an external standard or decision rule that directly defines the missing purpose-specific tolerance.",
+    "For GW-R/GW-D, an authorized groundwater response mapping may convert a decision-specific head/flow consequence into a recharge/exchange envelope if the mapping is independently defined before Layer-ROM response exposure."
+  ],
+  "prohibited_next": [
+    "Do not infer thresholds from current L4/L6/R8 errors.",
+    "Do not use generic numerical water-balance closure as GW-R tolerance.",
+    "Do not use sensor or satellite soil-moisture accuracy as SCI-P tolerance without an independently justified application mapping.",
+    "Do not run blind validation merely to see what threshold would be convenient."
+  ]
+}

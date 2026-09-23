@@ -1,0 +1,164 @@
+{
+  "schema": "swap5.layer-rom.application-source-provenance.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "search_boundary": {
+    "purposes": [
+      "GW-R",
+      "GW-D",
+      "SCI-P"
+    ],
+    "rule": "Only sources independent of Layer-ROM candidate performance are eligible. Measurement/product requirements, numerical closure criteria, case-specific achieved errors, and generic goodness-of-fit thresholds are not automatically application tolerances.",
+    "candidate_responses_exposed": false
+  },
+  "sources": [
+    {
+      "id": "BARNETT2012",
+      "citation": "Barnett B, Townley LR, Post V, Evans RE, Hunt RJ, Peeters L, Richardson S, Werner AD, Knapton A, Boronkay A (2012). Australian groundwater modelling guidelines. Waterlines Report Series No. 82. National Water Commission, Canberra.",
+      "locator": "https://researchnow.flinders.edu.au/en/publications/australian-groundwater-modelling-guidelines/",
+      "relevance": [
+        "GW-R",
+        "GW-D"
+      ],
+      "extracted_authority": [
+        "Model objectives and intended use should be defined early and should drive design, calibration, prediction and uncertainty analysis.",
+        "Performance measures should be agreed prior to calibration.",
+        "Generic SRMS targets such as 5% or 10% are meaningful only when achievability is known for the specific problem, environment and data density.",
+        "Model water-balance error below 1% is a numerical/accounting quality criterion, not an allowed recharge-representation error."
+      ],
+      "tolerance_eligibility": "METHODOLOGICAL_AUTHORITY_ONLY"
+    },
+    {
+      "id": "JYRKAMA2006",
+      "citation": "Jyrkama MI, Sykes JF (2006). Sensitivity and uncertainty analysis of the recharge boundary condition. Water Resources Research 42. doi:10.1029/2005WR004408.",
+      "locator": "https://doi.org/10.1029/2005WR004408",
+      "relevance": [
+        "GW-R",
+        "GW-D"
+      ],
+      "extracted_authority": [
+        "Recharge uncertainty can be propagated to prediction-specific groundwater head or pumping-well flow consequences using a groundwater-model sensitivity/reliability formulation.",
+        "The sensitivity is spatially dependent and tied to a specified prediction target."
+      ],
+      "tolerance_eligibility": "MAPPING_METHOD_AUTHORITY_NOT_UNIVERSAL_THRESHOLD"
+    },
+    {
+      "id": "KNOWLING_WERNER2016",
+      "citation": "Knowling MJ, Werner AD (2016). Estimability of recharge through groundwater model calibration: Insights from a field-scale steady-state example. Journal of Hydrology 540, 973-987. doi:10.1016/j.jhydrol.2016.07.003.",
+      "locator": "https://doi.org/10.1016/j.jhydrol.2016.07.003",
+      "relevance": [
+        "GW-R"
+      ],
+      "extracted_authority": [
+        "In the specific synthetic regional example, average recharge error below 10% required extensive hydraulic-property information.",
+        "The study presents a benchmark for recharge estimability, not a normative application acceptance threshold."
+      ],
+      "tolerance_eligibility": "CASE_SPECIFIC_BENCHMARK_NOT_TOLERANCE"
+    },
+    {
+      "id": "FAN2023",
+      "citation": "Fan et al. (2023). Groundwater Sensitivity to Climate Variations Across Australia. Water Resources Research. doi:10.1029/2023WR035036.",
+      "locator": "https://doi.org/10.1029/2023WR035036",
+      "relevance": [
+        "GW-R",
+        "GW-D"
+      ],
+      "extracted_authority": [
+        "Groundwater-head sensitivity to precipitation and recharge-related forcing varies substantially across sites.",
+        "A single recharge-to-head error conversion is therefore not portable across groundwater systems."
+      ],
+      "tolerance_eligibility": "SITE_DEPENDENCE_EVIDENCE"
+    },
+    {
+      "id": "CROSBIE2005",
+      "citation": "Crosbie RS et al. (2005). A time series approach to inferring groundwater recharge using the water table fluctuation method. Water Resources Research. doi:10.1029/2004WR003077.",
+      "locator": "https://doi.org/10.1029/2004WR003077",
+      "relevance": [
+        "GW-R",
+        "GW-D"
+      ],
+      "extracted_authority": [
+        "Recharge estimates in the demonstrated method are materially sensitive to time step and specific yield assumptions.",
+        "The result supports explicit temporal semantics but does not define an acceptable Layer-ROM recharge error."
+      ],
+      "tolerance_eligibility": "TEMPORAL_SENSITIVITY_EVIDENCE_NOT_TOLERANCE"
+    },
+    {
+      "id": "TEMPORAL_GW_2026",
+      "citation": "Effects of temporal resolution on modelled regional groundwater salinity and salt fluxes to surface water (2026). Computers & Geosciences / linked ScienceDirect record.",
+      "locator": "https://www.sciencedirect.com/science/article/pii/S0309170826001983",
+      "relevance": [
+        "GW-R",
+        "GW-D"
+      ],
+      "extracted_authority": [
+        "In the studied low-lying coastal groundwater system, yearly recharge aggregation failed to preserve important seasonal groundwater-surface-water flux behavior; monthly forcing retained the relevant seasonal patterns better.",
+        "This is application- and system-specific evidence for the importance of temporal allocation, not a universal monthly acceptance rule."
+      ],
+      "tolerance_eligibility": "CASE_SPECIFIC_TEMPORAL_AUTHORITY"
+    },
+    {
+      "id": "BICKNELL_INTENDED_USE_REVIEW2014",
+      "citation": "Evaluating, interpreting, and communicating performance of hydrologic/water quality models considering intended use: A review and recommendations (2014). Environmental Modelling & Software. doi:10.1016/j.envsoft.2014.02.013.",
+      "locator": "https://doi.org/10.1016/j.envsoft.2014.02.013",
+      "relevance": [
+        "GW-R",
+        "GW-D",
+        "SCI-P"
+      ],
+      "extracted_authority": [
+        "Model-performance interpretation should depend on intended use rather than a context-free universal score."
+      ],
+      "tolerance_eligibility": "METHODOLOGICAL_AUTHORITY_ONLY"
+    },
+    {
+      "id": "BEVEN_FIT_FOR_PURPOSE2022",
+      "citation": "Hydrological Processes discussion of model plausibility, invalidation and fitness-for-purpose (2022), doi represented by source record 10.1002/hyp.14704.",
+      "locator": "https://doi.org/10.1002/hyp.14704",
+      "relevance": [
+        "GW-R",
+        "GW-D",
+        "SCI-P"
+      ],
+      "extracted_authority": [
+        "Fitness criteria should be agreed for the project purpose before evaluation.",
+        "Observation uncertainty should be assessed independently rather than silently equated with model-fidelity requirements."
+      ],
+      "tolerance_eligibility": "METHODOLOGICAL_AUTHORITY_ONLY"
+    },
+    {
+      "id": "NASA_SMAP_VALIDATION",
+      "citation": "Validation of Soil Moisture Data Products from the NASA SMAP Mission (NASA NTRS, 2021 record).",
+      "locator": "https://ntrs.nasa.gov/citations/20210016750",
+      "relevance": [
+        "SCI-P"
+      ],
+      "extracted_authority": [
+        "SMAP defines an unbiased RMSE requirement below 0.04 m3/m3 for its soil-moisture product validation."
+      ],
+      "tolerance_eligibility": "REMOTE_SENSING_PRODUCT_REQUIREMENT_NOT_PROCESS_MODEL_TOLERANCE"
+    },
+    {
+      "id": "WALKER2026",
+      "citation": "Walker et al. (2026). Modeling soil moisture from rainfall: An evaluation of the diagnostic soil moisture equation. Vadose Zone Journal. doi:10.1002/vzj2.70085.",
+      "locator": "https://doi.org/10.1002/vzj2.70085",
+      "relevance": [
+        "SCI-P"
+      ],
+      "extracted_authority": [
+        "Independent station validation reports depth-specific soil-moisture RMSE magnitudes and stronger errors at wet/dry extremes.",
+        "Reported performance is empirical and model-specific; it does not prescribe acceptable process-profile error for scientific Layer-ROM use."
+      ],
+      "tolerance_eligibility": "EMPIRICAL_BENCHMARK_NOT_TOLERANCE"
+    }
+  ],
+  "provenance_decision": "No source in the reviewed set provides a directly transferable absolute Layer-ROM acceptance tolerance with purpose-matched temporal semantics for GW-R, GW-D or SCI-P.",
+  "prohibited_reuse": [
+    "Do not use groundwater-model numerical water-balance closure as recharge-representation tolerance.",
+    "Do not use SMAP 0.04 m3/m3 as a process-model profile tolerance.",
+    "Do not use the Knowling and Werner <10% case result as a universal recharge acceptance threshold.",
+    "Do not derive a portable recharge-to-head tolerance from site-specific sensitivities.",
+    "Do not choose a threshold by inspecting L4/L6/R8 outcomes."
+  ]
+}

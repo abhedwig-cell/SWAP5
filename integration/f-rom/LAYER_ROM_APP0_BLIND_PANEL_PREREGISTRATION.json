@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.layer-rom.blind-panel.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "status": "DESIGN_SHELL_ONLY_NOT_EXECUTABLE",
+  "reason": "No purpose-specific acceptance envelope can yet be frozen.",
+  "invariants": [
+    "Do not use exposed development cases as primary confirmation.",
+    "Use unused forcing histories and unused initial states.",
+    "Include multiple materials and multiple fixed-head/groundwater regimes already within authority.",
+    "Include at least one difficult regime.",
+    "Keep L4/L6/R8 partitions and closures frozen.",
+    "Include same-partition CoRichards and fine R16 Reference.",
+    "Use FMC only where exact existing FMC authority supports the regime.",
+    "Freeze purpose, panel, metrics and thresholds before any candidate response is viewed."
+  ],
+  "purpose_selected": null,
+  "panel_members": null,
+  "new_reference_runs_authorized": false,
+  "candidate_runs_authorized": false,
+  "candidate_responses_exposed": false
+}

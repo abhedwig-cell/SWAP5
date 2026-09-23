@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.layer-rom.application-authority.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "status": "CLOSED_SCIENTIFIC_BLOCKER",
+  "decision": "APPLICATION_TOLERANCE_AUTHORITY_NOT_ESTABLISHED",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "frozen_core_evidence": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+  "evidence": {
+    "source_provenance": "integration/f-rom/LAYER_ROM_APP0_SOURCE_PROVENANCE.json",
+    "authority_review": "integration/f-rom/LAYER_ROM_APP0_EXTERNAL_AUTHORITY_REVIEW.json",
+    "acceptance_record": "integration/f-rom/LAYER_ROM_APP0_ACCEPTANCE_ENVELOPE_PREREGISTRATION.json",
+    "blind_panel_record": "integration/f-rom/LAYER_ROM_APP0_BLIND_PANEL_PREREGISTRATION.json",
+    "validation_record": "integration/f-rom/LAYER_ROM_APP0_VALIDATION_RESULT.json",
+    "purpose_closeout": "integration/f-rom/LAYER_ROM_APP0_PURPOSE_CLOSEOUT.json",
+    "admissibility_map": "integration/f-rom/LAYER_ROM_APPLICATION_ADMISSIBILITY_MAP.json"
+  },
+  "findings": [
+    "External literature strongly supports purpose-specific, predeclared model evaluation rather than a universal hydrological fidelity threshold.",
+    "GW-R has useful authority for recharge sensitivity, uncertainty propagation and temporal-scale importance, but no transferable absolute recharge-error tolerance was found.",
+    "GW-D has useful authority showing system-specific recharge-to-head response and temporal sensitivity, but no independently authorized exchange/reversal tolerance or portable flux-to-head mapping was found.",
+    "SCI-P has measurement/product accuracy requirements and empirical profile errors, but these do not constitute independent process-model fidelity requirements.",
+    "Numerical water-balance closure, observation error and achieved model error are different concepts and were not substituted for application tolerance.",
+    "No new L4/L6/R8 or Reference validation response was exposed."
+  ],
+  "blocker": {
+    "id": "APPLICATION_TOLERANCE_AUTHORITY",
+    "class": "SCIENTIFIC_APPLICATION_AUTHORITY_REQUIRED",
+    "applies_to": [
+      "GW-R",
+      "GW-D",
+      "SCI-P"
+    ],
+    "resolution_requires": "A purpose-specific prediction requirement with threshold and temporal semantics established independently of Layer-ROM candidate performance. For GW-R/GW-D this may be an application decision endpoint plus an independently authorized groundwater response mapping.",
+    "cannot_be_resolved_by": "Choosing a threshold from the frozen Layer-ROM error distribution or from generic hydrological goodness-of-fit conventions."
+  },
+  "preserved": {
+    "core_frontier": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "same_partition_CoRichards_role": "ERROR_ATTRIBUTION_ONLY",
+    "cost1": "SHARED_HOST_SCREENING_ONLY",
+    "production_rom_authorized": false,
+    "application_acceptance_authorized": false
+  },
+  "stop_criterion": "1. no defensible independent application tolerance authority",
+  "next_safe_step": "Return only when independent purpose-owner/application authority supplies the missing tolerance semantics. Then freeze one purpose envelope and blind panel before any new response exposure."
+}
