@@ -53,7 +53,8 @@ jobs:
           assert b['candidate_response_generated'] is False
           checks={
             'tests/rom/materialize_rom_root_ra01_reference_policy.py':b['implementation']['policy_materializer_blob'],
-            '.github/workflows/f-rom-rom-root-ra01-r1.yml':b['implementation']['workflow_blob'],
+            'tests/rom/analyze_rom_root_ra01_reference_transfer.py':b['implementation']['wrapper_analyzer_blob'],
+            '.github/workflows/rom-root-ra01.yml':b['implementation']['workflow_blob'],
           }
           for path,expected in checks.items():
             got=subprocess.check_output(['git','hash-object',path],text=True).strip()
@@ -185,7 +186,8 @@ jobs:
           assert b['candidate_response_generated'] is False
           checks={
             'tests/rom/materialize_rom_root_ra01_reference_policy.py':b['implementation']['policy_materializer_blob'],
-            '.github/workflows/f-rom-rom-root-ra01-r1.yml':b['implementation']['workflow_blob'],
+            'tests/rom/analyze_rom_root_ra01_reference_transfer.py':b['implementation']['wrapper_analyzer_blob'],
+            '.github/workflows/rom-root-ra01.yml':b['implementation']['workflow_blob'],
           }
           for path,expected in checks.items():
             got=subprocess.check_output(['git','hash-object',path],text=True).strip()
@@ -317,7 +319,8 @@ jobs:
           assert b['candidate_response_generated'] is False
           checks={
             'tests/rom/materialize_rom_root_ra01_reference_policy.py':b['implementation']['policy_materializer_blob'],
-            '.github/workflows/f-rom-rom-root-ra01-r1.yml':b['implementation']['workflow_blob'],
+            'tests/rom/analyze_rom_root_ra01_reference_transfer.py':b['implementation']['wrapper_analyzer_blob'],
+            '.github/workflows/rom-root-ra01.yml':b['implementation']['workflow_blob'],
           }
           for path,expected in checks.items():
             got=subprocess.check_output(['git','hash-object',path],text=True).strip()
@@ -445,7 +448,8 @@ jobs:
           assert b['candidate_response_generated'] is False
           checks={
             'tests/rom/materialize_rom_root_ra01_reference_policy.py':b['implementation']['policy_materializer_blob'],
-            '.github/workflows/f-rom-rom-root-ra01-r1.yml':b['implementation']['workflow_blob'],
+            'tests/rom/analyze_rom_root_ra01_reference_transfer.py':b['implementation']['wrapper_analyzer_blob'],
+            '.github/workflows/rom-root-ra01.yml':b['implementation']['workflow_blob'],
           }
           for path,expected in checks.items():
             got=subprocess.check_output(['git','hash-object',path],text=True).strip()
@@ -573,7 +577,8 @@ jobs:
           assert b['candidate_response_generated'] is False
           checks={
             'tests/rom/materialize_rom_root_ra01_reference_policy.py':b['implementation']['policy_materializer_blob'],
-            '.github/workflows/f-rom-rom-root-ra01-r1.yml':b['implementation']['workflow_blob'],
+            'tests/rom/analyze_rom_root_ra01_reference_transfer.py':b['implementation']['wrapper_analyzer_blob'],
+            '.github/workflows/rom-root-ra01.yml':b['implementation']['workflow_blob'],
           }
           for path,expected in checks.items():
             got=subprocess.check_output(['git','hash-object',path],text=True).strip()
@@ -722,6 +727,7 @@ jobs:
           test "$(git hash-object tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py)" = "bf17f616240d4830ea9ef7bed21b3f57ad9b404a"
           python3 tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py             --prereg integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json             --b01-r512-t32 /tmp/ra01/routes/B01_R512_T32_o0.txt             --b01-r1024-t32 /tmp/ra01/routes/B01_R1024_T32_o0.txt             --b01-r2048-t32 /tmp/ra01/routes/B01_R2048_T32_o0.txt             --b01-r2048-t16 /tmp/ra01/routes/B01_R2048_T16_o0.txt             --b01-r2048-t8 /tmp/ra01/routes/B01_R2048_T8_o0.txt             --b14-r512-t32 /tmp/ra01/routes/B14_R512_T32_o0.txt             --b14-r1024-t32 /tmp/ra01/routes/B14_R1024_T32_o0.txt             --b14-r2048-t32 /tmp/ra01/routes/B14_R2048_T32_o0.txt             --b14-r2048-t16 /tmp/ra01/routes/B14_R2048_T16_o0.txt             --b14-r2048-t8 /tmp/ra01/routes/B14_R2048_T8_o0.txt             --output RA01_EVIDENCE/RAW_C6R_UNCERTAINTY_RESULT.json             | tee RA01_EVIDENCE/frozen_analyzer_runner.txt
           python3 tests/rom/analyze_rom_root_ra01_reference_transfer.py --raw RA01_EVIDENCE/RAW_C6R_UNCERTAINTY_RESULT.json --prereg integration/f-rom/ROM_ROOT_RA01_PREREGISTRATION.json --output RA01_EVIDENCE/ROM_ROOT_RA01_RESULT.json | tee RA01_EVIDENCE/ra01_runner.txt
+          cat RA01_EVIDENCE/ROM_ROOT_RA01_RESULT.json
           cp integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json RA01_EVIDENCE/
           cp integration/f-rom/ROM_ROOT_RA01_PREREGISTRATION.json RA01_EVIDENCE/
           cp integration/f-rom/ROM_ROOT_RA01_BINDING.json RA01_EVIDENCE/
