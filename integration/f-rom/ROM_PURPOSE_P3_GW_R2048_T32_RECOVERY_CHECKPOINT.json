@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-r2048-t32-recovery-checkpoint.v2",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-R2048-T32-RECOVERY-V2",
+  "date": "2026-09-23",
+  "status": "SEGMENT1_COMPLETE_SEGMENT2_RELEASED",
+  "workflow_run": 35881413707,
+  "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "prior_qualified_topology_run": 35751978638,
+    "segment_steps": 8192,
+    "segments_per_history": 4
+  },
+  "segment1": {
+    "expected_cases": 16,
+    "successful_cases": 16,
+    "failed_cases": 0,
+    "artifact_count": 16,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "histories": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "checkpoint_artifacts_complete": true
+  },
+  "segment2": {
+    "released": true,
+    "expected_cases": 16,
+    "successful_cases": 0,
+    "failed_cases": 0
+  },
+  "scientific_interpretation": "Execution-topology qualification only. No hydrological Reference metric has been adjudicated.",
+  "scientific_firewall": {
+    "scientific_response_adjudicated": false,
+    "candidate_response_generated": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "temporal_factor_changed": false,
+    "spatial_resolution_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "representation_changed": false,
+    "closure_changed": false
+  }
+}
