@@ -30,6 +30,10 @@ if s.count(old) != 1:
     raise SystemExit(f"use anchor mismatch: {s.count(old)}")
 s=s.replace(old,new,1)
 
+start=s.index("  subroutine initialize_physical_state")
+end=s.index("  end subroutine initialize_physical_state",start)
+block=s[start:end]
+
 old="""    type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
@@ -37,9 +41,9 @@ old="""    type(b110_default_mvg_parameters_t), target :: hp
 new="""    type(tabhyd_raw_provider_t) :: provider
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
 """
-if s.count(old) != 1:
-    raise SystemExit(f"state provider declaration mismatch: {s.count(old)}")
-s=s.replace(old,new,1)
+if block.count(old) != 1:
+    raise SystemExit(f"state provider declaration mismatch: {block.count(old)}")
+block=block.replace(old,new,1)
 
 old="""    call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
     call bind_b110_default_mvg_provider(provider, hp, merge(upward_dt,equilibrium_dt,hydrostatic))
@@ -47,9 +51,10 @@ old="""    call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
 new="""    call initialize_tabhyd_raw_provider_from_mvg(provider, parameters%cofgen, &
          merge(upward_dt,equilibrium_dt,hydrostatic))
 """
-if s.count(old) != 1:
-    raise SystemExit(f"state provider init mismatch: {s.count(old)}")
-s=s.replace(old,new,1)
+if block.count(old) != 1:
+    raise SystemExit(f"state provider init mismatch: {block.count(old)}")
+block=block.replace(old,new,1)
+s=s[:start]+block+s[end:]
 
 old="""    call require(abs(observation%temporal_head_inf_bound-expected_upward_binf) <= &
          65536.0_real64*epsilon(1.0_real64)*scale, 'serialized Binf matches F-SI38 production oracle')
