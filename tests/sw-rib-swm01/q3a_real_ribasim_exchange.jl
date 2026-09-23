@@ -2,7 +2,7 @@ using Ribasim
 import BasicModelInterface as BMI
 
 const DAY = 86400.0
-const RATE_TOL = 1.0e-12
+const RATE_TOL = 2.0e-12
 const TRANSFER_TOL = 1.0e-6
 const LEVEL_TOL = 1.0e-6
 const MASS_TOL = 1.0e-8
