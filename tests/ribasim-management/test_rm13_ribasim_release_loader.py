@@ -1,81 +1,90 @@
 from __future__ import annotations
 
-import ctypes
 import os
 import shutil
 import sys
 import tempfile
+from contextlib import ExitStack
 from pathlib import Path
 
-import numpy as np
-
 ROOT=Path(__file__).resolve().parents[2]
-RIBASIM_ROOT=Path(os.environ["RM13_RIBASIM_ROOT"]).resolve()
-sys.path.insert(0,str(RIBASIM_ROOT/"python"/"ribasim_api"))
-from ribasim_api import RibasimApi
+SUPPORT=ROOT/"tests"/"ribasim-management"/"support"
+sys.path.insert(0,str(SUPPORT))
+from rm13_ribasim_process import RibasimWorker  # noqa: E402
 
+RIBASIM_ROOT=Path(os.environ["RM13_RIBASIM_ROOT"]).resolve()
 MODEL=Path(os.environ["RM13_RIBASIM_MODEL"]).resolve()
 LIB=Path(os.environ["RM13_LIBRIBASIM"]).resolve()
 WINDOW_S=8.64
 TOL=1e-12
 
-def require(x:bool,msg:str)->None:
-    if not x:
-        raise AssertionError(msg)
 
-def preload_runtime()->Path:
-    candidates=sorted(LIB.parent.parent.rglob("libjulia.so.1.12"))
-    require(len(candidates)==1,f"expected one libjulia.so.1.12, got {candidates}")
-    ctypes.CDLL(str(candidates[0]),mode=ctypes.RTLD_GLOBAL)
-    return candidates[0]
+def require(condition: bool,message: str)->None:
+    if not condition:
+        raise AssertionError(message)
 
-def api_copy(tag:str,root:Path)->RibasimApi:
-    d=root/tag
-    d.mkdir()
-    for entry in LIB.parent.iterdir():
-        dst=d/entry.name
-        if entry.resolve()==LIB.resolve():
-            shutil.copy2(entry,dst)
-        else:
-            dst.symlink_to(entry)
-    return RibasimApi(d/LIB.name,d)
 
-def snap(api:RibasimApi):
+def same_snapshot(a: dict,b: dict)->bool:
     return (
-        float(api.get_current_time()),
-        float(np.asarray(api.get_value_ptr("basin.level"),dtype=float)[0]),
-        float(np.asarray(api.get_value_ptr("user_demand.cumulative_inflow"),dtype=float)[0]),
+        abs(float(a["time_s"])-float(b["time_s"]))<=TOL
+        and abs(float(a["basin_level_m"])-float(b["basin_level_m"]))<=TOL
+        and abs(
+            float(a["user_demand_cumulative_inflow_m3"])
+            -float(b["user_demand_cumulative_inflow_m3"])
+        )<=TOL
     )
 
-runtime=preload_runtime()
-print(f"RM13_RIBASIM_SMOKE_RUNTIME={runtime}")
 
-with tempfile.TemporaryDirectory(prefix="rm13-ribasim-smoke-") as tmp:
+source_dir=MODEL.parent
+with tempfile.TemporaryDirectory(prefix="rm13-ribasim-process-smoke-") as tmp:
     root=Path(tmp)
-    accepted=api_copy("accepted",root)
-    a=api_copy("a",root)
-    b=api_copy("b",root)
+    dirs={}
+    for tag in ("accepted","a","b"):
+        target=root/tag/"model"
+        target.parent.mkdir(parents=True)
+        shutil.copytree(source_dir,target)
+        dirs[tag]=target
 
-    accepted.initialize(str(MODEL))
-    origin=snap(accepted)
+    with ExitStack() as stack:
+        accepted=stack.enter_context(RibasimWorker(
+            model_path=dirs["accepted"]/MODEL.name,
+            lib_path=LIB,
+            ribasim_root=RIBASIM_ROOT,
+            log_path=root/"accepted.log",
+        ))
+        a=stack.enter_context(RibasimWorker(
+            model_path=dirs["a"]/MODEL.name,
+            lib_path=LIB,
+            ribasim_root=RIBASIM_ROOT,
+            log_path=root/"a.log",
+        ))
+        b=stack.enter_context(RibasimWorker(
+            model_path=dirs["b"]/MODEL.name,
+            lib_path=LIB,
+            ribasim_root=RIBASIM_ROOT,
+            log_path=root/"b.log",
+        ))
 
-    a.initialize(str(MODEL))
-    a.update_until(WINDOW_S)
-    sa=snap(a)
-    a.finalize()
-    require(snap(accepted)==origin,"candidate A mutated accepted witness")
+        origin=accepted.ready["snapshot"]
+        sa=a.update_until(WINDOW_S)
+        a.finalize()
+        require(same_snapshot(accepted.snapshot(),origin),"candidate A mutated accepted witness")
 
-    b.initialize(str(MODEL))
-    b.update_until(WINDOW_S)
-    sb=snap(b)
-    require(abs(sa[0]-sb[0])<=TOL,"time replay")
-    require(abs(sa[1]-sb[1])<=TOL,"level replay")
-    require(abs(sa[2]-sb[2])<=TOL,"supply replay")
-    require(snap(accepted)==origin,"candidate B mutated accepted witness")
-    b.finalize()
-    accepted.finalize()
+        sb=b.update_until(WINDOW_S)
+        require(abs(float(sa["time_s"])-float(sb["time_s"]))<=TOL,"time replay")
+        require(abs(float(sa["basin_level_m"])-float(sb["basin_level_m"]))<=TOL,"level replay")
+        require(
+            abs(
+                float(sa["user_demand_cumulative_inflow_m3"])
+                -float(sb["user_demand_cumulative_inflow_m3"])
+            )<=TOL,
+            "supply replay",
+        )
+        require(same_snapshot(accepted.snapshot(),origin),"candidate B mutated accepted witness")
+        b.finalize()
+        accepted.finalize()
 
 print(f"RM13_RIBASIM_SMOKE_ORIGIN={origin}")
 print(f"RM13_RIBASIM_SMOKE_CANDIDATE={sa}")
 print("RM13_RIBASIM_RELEASE_LOADER=PASS")
-print("RM13_RIBASIM_THREE_INSTANCE_ISOLATION=PASS")
+print("RM13_RIBASIM_THREE_PROCESS_ISOLATION=PASS")
