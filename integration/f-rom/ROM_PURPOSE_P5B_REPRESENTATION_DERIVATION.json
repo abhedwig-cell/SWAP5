@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.rom-purpose.p5b.representation-derivation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5B-GW-INFORMATION-CARRIER",
+  "date": "2026-09-23",
+  "status": "DERIVED_BEFORE_ANY_P5B_RESPONSE",
+  "p4_evidence": {
+    "observation": "G12 to G16 refinement changed the 140-160 cm bottom partition not at all; added resolution was in 0-80 and 100-140 cm.",
+    "B01": {
+      "layer_interval_flux_error_G12": 0.33233655285166597,
+      "layer_interval_flux_error_G16": 0.3322875356140182,
+      "richards_interval_flux_error_G12": 0.33377821362663057,
+      "richards_interval_flux_error_G16": 0.3337687667870204,
+      "interpretation": "Instantaneous flux error and reversal timing plateau while cumulative/storage errors continue to improve."
+    },
+    "B14": {
+      "layer_cumulative_error_G12": 0.0016235397228299706,
+      "layer_cumulative_error_G16": 0.0016237775731013202,
+      "richards_cumulative_error_G12": 0.0016247603332207657,
+      "richards_cumulative_error_G16": 0.0016249922226569964,
+      "layer_interval_flux_error_G12": 0.10578846583797129,
+      "layer_interval_flux_error_G16": 0.10578840959681222,
+      "interpretation": "The G12 to G16 additions are effectively neutral for both Layer-ROM and same-partition Richards."
+    },
+    "inference_boundary": "Because the same plateau occurs in conventional Richards, it cannot be assigned to CURRENT_LAYER_FACE. A minimal next test should target unresolved boundary-adjacent hydraulic shape rather than adding more upper-column storage states."
+  },
+  "fixed_base_partition": {
+    "id": "G16",
+    "boundaries_cm": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      110,
+      120,
+      130,
+      135,
+      140,
+      145,
+      150,
+      152.5,
+      155,
+      157.5,
+      160
+    ]
+  },
+  "candidate_information_carriers": {
+    "BASE16": {
+      "scalar_count": 16,
+      "description": "Existing G16 layer storages only.",
+      "bottom_gradient_estimator": "Use retention-inverted mean heads of the final two G16 cells."
+    },
+    "SPLIT17": {
+      "scalar_count": 17,
+      "description": "Add one storage scalar by splitting only the bottom-most 157.5-160 cm cell at 158.75 cm.",
+      "information_type": "additional local storage resolution",
+      "bottom_gradient_estimator": "Use retention-inverted mean heads of the two 1.25-cm half cells."
+    },
+    "HM17": {
+      "scalar_count": 17,
+      "description": "Keep G16 storages and add one pressure-head first-moment scalar within 157.5-160 cm.",
+      "information_type": "subcell hydraulic-shape information",
+      "moment_definition": "Least-squares linear pressure-head slope g_h = integral((d-c) h(d) dd) / integral((d-c)^2 dd), c=158.75 cm.",
+      "bottom_gradient_estimator": "Use g_h directly as the within-bottom-cell pressure-head gradient."
+    }
+  },
+  "common_flux_reconstruction": {
+    "depth_coordinate": "positive downward",
+    "formula": "q_down_hat = K_rep * (1 - dh/dd)",
+    "BASE16_K_rep": "K evaluated from mean water content of 157.5-160 cm.",
+    "SPLIT17_K_rep": "K evaluated from mean water content of 158.75-160 cm.",
+    "HM17_K_rep": "K evaluated from mean water content of 157.5-160 cm.",
+    "purpose": "Compare information content, not create or admit a production flux closure."
+  },
+  "decision_logic": {
+    "STORAGE_SPLIT_SUPPORTED": "SPLIT17 improves frozen flux metrics beyond numerical Reference uncertainty while HM17 does not materially outperform SPLIT17.",
+    "HYDRAULIC_SHAPE_SUPPORTED": "HM17 improves frozen flux metrics beyond numerical Reference uncertainty and is componentwise better than BASE16; if it also outperforms SPLIT17, distinct hydraulic-shape information is supported.",
+    "BOTH_HELP": "Both one-scalar augmentations improve beyond Reference uncertainty without componentwise dominance.",
+    "NEITHER_HELP": "Neither augmentation improves beyond Reference uncertainty.",
+    "MIXED": "No componentwise conclusion."
+  },
+  "scientific_firewall": {
+    "dynamic_moment_evolution_not_tested": true,
+    "new_closure_family_not_admitted": true,
+    "p4_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
