@@ -1,0 +1,354 @@
+{
+  "P_ROM_ET_opened": false,
+  "application_acceptance_adjudicated": false,
+  "cases": [
+    {
+      "candidate_failure": "iterative Heun corrector did not converge",
+      "candidate_metrics": null,
+      "candidate_status": "NUMERICAL_BLOCKED",
+      "classification": "STRUCTURALLY_UNRELIABLE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B02",
+      "performance": {
+        "candidate_over_reference_wall_ratio": null,
+        "candidate_wall_s": null,
+        "reference_R128_wall_s": 0.68
+      },
+      "purpose": "GW_LB",
+      "reference_comparator": null,
+      "reference_observable_for_primary_discrete_claim": false,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "development"
+    },
+    {
+      "candidate_failure": "iterative Heun corrector did not converge",
+      "candidate_metrics": null,
+      "candidate_status": "NUMERICAL_BLOCKED",
+      "classification": "STRUCTURALLY_UNRELIABLE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B05",
+      "performance": {
+        "candidate_over_reference_wall_ratio": null,
+        "candidate_wall_s": null,
+        "reference_R128_wall_s": 0.51
+      },
+      "purpose": "GW_LB",
+      "reference_comparator": null,
+      "reference_observable_for_primary_discrete_claim": false,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "validation"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.0004160158744121884,
+        "daily_bottom_flux_rmse_cm_per_day": 0.00019455739950340788,
+        "final_exchange_drift_cm": 0.0004394072307198904,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.0004160158743259713
+      },
+      "classification": "DAILY_APPROXIMATE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B11",
+      "performance": {
+        "candidate_over_reference_wall_ratio": 3.044528327451004,
+        "candidate_wall_s": 1.5527094470000122,
+        "reference_R128_wall_s": 0.51
+      },
+      "purpose": "GW_LB",
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 5.00307346489818e-05,
+        "daily_bottom_flux_rmse_cm_per_day": 3.555222765382997e-05,
+        "final_exchange_drift_cm": 2.6289680434388174e-05,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 5.003073464884301e-05
+      },
+      "reference_observable_for_primary_discrete_claim": false,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "development"
+    },
+    {
+      "candidate_metrics": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 0.002683149932638524,
+        "daily_bottom_flux_rmse_cm_per_day": 0.0002993441740254362,
+        "final_exchange_drift_cm": 0.005865253266772896,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 0.002683149932409213
+      },
+      "classification": "DAILY_APPROXIMATE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B16",
+      "performance": {
+        "candidate_over_reference_wall_ratio": 3.2850107500000036,
+        "candidate_wall_s": 2.3652077400000024,
+        "reference_R128_wall_s": 0.72
+      },
+      "purpose": "GW_LB",
+      "reference_comparator": {
+        "bottom_flux_sign_mismatch_days": 0,
+        "cumulative_bottom_exchange_rmse_cm": 3.351744293311482e-05,
+        "daily_bottom_flux_rmse_cm_per_day": 2.698471516660775e-05,
+        "final_exchange_drift_cm": 3.6884762835143192e-06,
+        "reversal_sequence_mismatch_count": 0,
+        "reversal_timing_error_days": 0,
+        "total_storage_rmse_cm": 3.3517442933030956e-05
+      },
+      "reference_observable_for_primary_discrete_claim": false,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "validation"
+    },
+    {
+      "candidate_metrics": {
+        "daily_storage_extremum_timing_error_days": 16,
+        "final_total_storage_bias_cm": 1.6342482922482304e-13,
+        "mapped_10cm_theta_rmse": 0.007548955302658646,
+        "root_zone_0_40_storage_rmse_cm": 0.0058280637009297705,
+        "surface_0_20_storage_rmse_cm": 0.0077357345895109775,
+        "total_storage_rmse_cm": 7.86426696961181e-14,
+        "upper_0_80_storage_rmse_cm": 0.023246137328996625
+      },
+      "classification": "DAILY_TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B02",
+      "performance": {
+        "candidate_over_reference_wall_ratio": 2.1873257627450973,
+        "candidate_wall_s": 1.1155361389999996,
+        "reference_R128_wall_s": 0.51
+      },
+      "purpose": "SURF_P",
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 1.0658141036401503e-13,
+        "mapped_10cm_theta_rmse": 0.00022762215722499043,
+        "root_zone_0_40_storage_rmse_cm": 0.00016083462978281902,
+        "surface_0_20_storage_rmse_cm": 0.00013642562944185595,
+        "total_storage_rmse_cm": 2.836985171327991e-14,
+        "upper_0_80_storage_rmse_cm": 0.00017078813938974368
+      },
+      "reference_observable_for_primary_discrete_claim": true,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "development"
+    },
+    {
+      "candidate_metrics": {
+        "daily_storage_extremum_timing_error_days": 19,
+        "final_total_storage_bias_cm": 4.973799150320701e-14,
+        "mapped_10cm_theta_rmse": 0.01256691829241655,
+        "root_zone_0_40_storage_rmse_cm": 0.0019720811397629643,
+        "surface_0_20_storage_rmse_cm": 7.165890011804211e-05,
+        "total_storage_rmse_cm": 6.240383124445992e-14,
+        "upper_0_80_storage_rmse_cm": 0.13055907280857615
+      },
+      "classification": "DAILY_TIMING_SENSITIVE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B05",
+      "performance": {
+        "candidate_over_reference_wall_ratio": 2.6630687035294147,
+        "candidate_wall_s": 2.2636083980000024,
+        "reference_R128_wall_s": 0.85
+      },
+      "purpose": "SURF_P",
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 2.842170943040401e-14,
+        "mapped_10cm_theta_rmse": 6.889128038400826e-05,
+        "root_zone_0_40_storage_rmse_cm": 1.5531457388262719e-06,
+        "surface_0_20_storage_rmse_cm": 7.207212313782172e-07,
+        "total_storage_rmse_cm": 2.1581090761184554e-14,
+        "upper_0_80_storage_rmse_cm": 1.65852171990549e-05
+      },
+      "reference_observable_for_primary_discrete_claim": true,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "validation"
+    },
+    {
+      "candidate_metrics": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 3.126388037344441e-13,
+        "mapped_10cm_theta_rmse": 0.0038815019722989543,
+        "root_zone_0_40_storage_rmse_cm": 0.012187859834485011,
+        "surface_0_20_storage_rmse_cm": 0.03459297804997116,
+        "total_storage_rmse_cm": 1.3518997541297357e-13,
+        "upper_0_80_storage_rmse_cm": 0.005974222718770598
+      },
+      "classification": "DAILY_APPROXIMATE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B11",
+      "performance": {
+        "candidate_over_reference_wall_ratio": 2.017591569072167,
+        "candidate_wall_s": 1.957063822000002,
+        "reference_R128_wall_s": 0.97
+      },
+      "purpose": "SURF_P",
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 2.842170943040401e-14,
+        "mapped_10cm_theta_rmse": 3.5113702810428785e-05,
+        "root_zone_0_40_storage_rmse_cm": 0.0004950738632641674,
+        "surface_0_20_storage_rmse_cm": 0.0009292456542647707,
+        "total_storage_rmse_cm": 6.534160682110728e-14,
+        "upper_0_80_storage_rmse_cm": 0.00011166954288149054
+      },
+      "reference_observable_for_primary_discrete_claim": true,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "development"
+    },
+    {
+      "candidate_metrics": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 1.9895196601282805e-13,
+        "mapped_10cm_theta_rmse": 0.0023983229911134552,
+        "root_zone_0_40_storage_rmse_cm": 0.0066023330162859216,
+        "surface_0_20_storage_rmse_cm": 0.009487896063303126,
+        "total_storage_rmse_cm": 1.7815126343831486e-13,
+        "upper_0_80_storage_rmse_cm": 0.014240247158827062
+      },
+      "classification": "DAILY_APPROXIMATE",
+      "firewall": {
+        "application_acceptance": false,
+        "production_admission": false,
+        "seasonal_claim": false
+      },
+      "material": "B16",
+      "performance": {
+        "candidate_over_reference_wall_ratio": 2.4446042541176345,
+        "candidate_wall_s": 2.0779136159999894,
+        "reference_R128_wall_s": 0.85
+      },
+      "purpose": "SURF_P",
+      "reference_comparator": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 8.526512829121202e-14,
+        "mapped_10cm_theta_rmse": 3.612494306164641e-06,
+        "root_zone_0_40_storage_rmse_cm": 0.0001150102857317398,
+        "surface_0_20_storage_rmse_cm": 0.00010778877849600465,
+        "total_storage_rmse_cm": 5.950486088083913e-14,
+        "upper_0_80_storage_rmse_cm": 8.127902480639607e-05
+      },
+      "reference_observable_for_primary_discrete_claim": true,
+      "schema": "swap5.rom-practical.p3.case-result.v1",
+      "split": "validation"
+    }
+  ],
+  "closure_changed": false,
+  "decision": "P3_DAILY_VALIDATION_COMPLETE_PURPOSE_FAMILY_RETAINED_WITH_ERROR_REGIMES",
+  "interpretation": [
+    "This is a 60-day daily validation, not a seasonal validation.",
+    "S4 and G8 were frozen before response and were not tuned per material.",
+    "Discrete timing/event claims are qualified against R64-vs-R128 reference observability.",
+    "Runtime ratios are same-job GitHub Actions implementation measurements only."
+  ],
+  "production_rom_authorized": false,
+  "schema": "swap5.rom-practical.p3.aggregate-result.v1",
+  "state_count_escalated": false,
+  "status": "P3_60_DAY_DAILY_VALIDATION_COMPLETE",
+  "summary": {
+    "GW_LB": {
+      "development": {
+        "classification_counts": {
+          "DAILY_APPROXIMATE": 1,
+          "STRUCTURALLY_UNRELIABLE": 1
+        },
+        "materials": {
+          "B02": "STRUCTURALLY_UNRELIABLE",
+          "B11": "DAILY_APPROXIMATE"
+        },
+        "observable_primary_discrete_claim_count": 0,
+        "wall_ratio": {
+          "max": 3.044528327451004,
+          "median": 3.044528327451004,
+          "min": 3.044528327451004
+        }
+      },
+      "validation": {
+        "classification_counts": {
+          "DAILY_APPROXIMATE": 1,
+          "STRUCTURALLY_UNRELIABLE": 1
+        },
+        "materials": {
+          "B05": "STRUCTURALLY_UNRELIABLE",
+          "B16": "DAILY_APPROXIMATE"
+        },
+        "observable_primary_discrete_claim_count": 0,
+        "wall_ratio": {
+          "max": 3.2850107500000036,
+          "median": 3.2850107500000036,
+          "min": 3.2850107500000036
+        }
+      }
+    },
+    "SURF_P": {
+      "development": {
+        "classification_counts": {
+          "DAILY_APPROXIMATE": 1,
+          "DAILY_TIMING_SENSITIVE": 1
+        },
+        "materials": {
+          "B02": "DAILY_TIMING_SENSITIVE",
+          "B11": "DAILY_APPROXIMATE"
+        },
+        "observable_primary_discrete_claim_count": 2,
+        "wall_ratio": {
+          "max": 2.1873257627450973,
+          "median": 2.102458665908632,
+          "min": 2.017591569072167
+        }
+      },
+      "validation": {
+        "classification_counts": {
+          "DAILY_APPROXIMATE": 1,
+          "DAILY_TIMING_SENSITIVE": 1
+        },
+        "materials": {
+          "B05": "DAILY_TIMING_SENSITIVE",
+          "B16": "DAILY_APPROXIMATE"
+        },
+        "observable_primary_discrete_claim_count": 2,
+        "wall_ratio": {
+          "max": 2.6630687035294147,
+          "median": 2.5538364788235244,
+          "min": 2.4446042541176345
+        }
+      }
+    }
+  },
+  "validation_materials": [
+    "B05",
+    "B16"
+  ],
+  "work_unit": "ROM-PRACTICAL-P3",
+  "workstream": "ROM-PRACTICAL"
+}
