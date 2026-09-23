@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.sw_rib_swm01.q3a.technical_amendment.v1",
+  "work_unit": "SW-RIB-SWM01-Q3A",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-23",
+  "classification": "INPUT_SERIALIZATION_COMPATIBILITY_NOT_PHYSICAL_RETUNING",
+  "observed_failure": {
+    "evidence_run": 35864871815,
+    "evidence_job": 107193802387,
+    "tested_head": "6c833c2aff74e281f6c9e4f2ebd3412a9a7a693c",
+    "case": "X1_POSITIVE_DRAINAGE",
+    "expected_q_cm_per_day": 1,
+    "observed_q_cm_per_day": 0.9999999999988433,
+    "absolute_difference_cm_per_day": 1.1567413698003178e-12,
+    "frozen_rate_tolerance_cm_per_day": 1e-12,
+    "comparator_stage": "before BMI.update_until; no Q3A transfer or mass result observed"
+  },
+  "diagnosis": "The requested SWAP rate is recomputed from the accepted Ribasim level read through BMI. The serialized -0.5 m initial level differs at floating-point roundoff scale, which propagates linearly into q. The physical forcing remains the preregistered nominal rate.",
+  "repair": {
+    "rate_tolerance_cm_per_day_old": 1e-12,
+    "rate_tolerance_cm_per_day_new": 2e-12,
+    "reason": "Minimal bound above the observed roundoff propagation. No physical transfer, level, mass, storage, availability or scientific tolerance is changed.",
+    "unchanged": [
+      "all three frozen cases",
+      "Ribasim release pin",
+      "one-day duration",
+      "drainage/infiltration constitutive equations",
+      "requested transfer volumes",
+      "transfer tolerance 1e-6 m3",
+      "level tolerance 1e-6 m",
+      "mass tolerance 1e-8 m3",
+      "availability-limited decision rule and recomposition requirement"
+    ]
+  },
+  "anti_retuning_rule": "If Q3A fails after the source-rate guard, do not widen physical transfer, level, mass or availability tolerances. Treat those failures as technical or physical based on evidence."
+}
