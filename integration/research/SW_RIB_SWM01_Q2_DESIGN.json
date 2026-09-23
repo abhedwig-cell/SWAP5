@@ -2,7 +2,7 @@
   "schema": "swap5.sw_rib_swm01.q2.design.v1",
   "work_unit": "SW-RIB-SWM01-Q2",
   "date": "2026-09-23",
-  "status": "DESIGN_FROZEN_NOT_YET_PREREGISTERED_FOR_EXECUTION",
+  "status": "Q2A_QUALIFIED__Q2B1_PREREGISTERED_AND_IMPLEMENTED__Q2B2_OPEN",
   "purpose": "Preserve the hydrologically meaningful SWMAN=2 soil-state-driven surface-water management policy while moving surface-water state and hydraulic realization to Ribasim.",
   "authorities": {
     "legacy_policy": "F-PM08D5 exact-source automatic-control inventory",
@@ -43,30 +43,45 @@
         "rejected candidate rollback",
         "same-origin deterministic replay",
         "noncommensurate event scheduling through RM11/RM12 scheduler"
-      ]
+      ],
+      "qualification": {
+        "decision": "PASS_ACCEPTED_STATE_AUTOMATIC_MANAGEMENT_POLICY",
+        "evidence_run": 35863579741,
+        "evidence_path": "integration/research/SW_RIB_SWM01_Q2A_RESULT.json"
+      }
     },
-    "Q2B_RIBASIM_REALIZATION": {
+    "Q2B1_MANAGED_BAND": {
       "owner": "RIBASIM",
+      "status": "PREREGISTERED_AND_IMPLEMENTED_AWAITING_CI",
       "level_band": {
         "min": "WLSTAR-WLDIP",
         "max": "WLSTAR"
       },
-      "supply": "allocation-controlled finite-capacity route representing available WSCAP-like supply",
-      "discharge": "allocation-controlled TabulatedRatingCurve with physical Q(h) as hard capacity",
-      "route_policy": "positive discharge route priority so surplus is removed only as needed after higher-priority level objectives",
+      "supply": "allocation-controlled finite-capacity Pump from LevelBoundary",
+      "discharge": "allocation-controlled finite-capacity Pump to Terminal",
+      "purpose": "isolate managed-band realization and capacity shortfall before composing dynamic Q(h)",
       "cases": [
-        "below lower band with adequate supply",
-        "below lower band with insufficient supply",
-        "inside band with no management transfer",
-        "above upper band with sufficient discharge capacity",
-        "above upper band with insufficient physical Q(h) capacity"
-      ]
+        "below band adequate supply",
+        "below band limited supply",
+        "inside band zero management transfer",
+        "above band adequate discharge",
+        "above band limited discharge"
+      ],
+      "preregistration": "integration/research/SW_RIB_SWM01_Q2B1_PREREGISTRATION.json"
+    },
+    "Q2B2_DYNAMIC_QH_COMPOSITION": {
+      "owner": "RIBASIM hydraulic realization + coupling configuration",
+      "status": "OPEN_DESIGN",
+      "purpose": "compose accepted WLSTAR band allocation with a separately qualified dynamic Q(h) discharge capacity",
+      "hold": "Do not use native TabulatedRatingCurve as exact SWQHR1 representation for the pinned release; Q1A-V1/R2 falsified that exactness.",
+      "candidate": "Combine allocation demand with an explicit physical capacity representation or accept an explicit approximation envelope."
     }
   },
   "discrepancy_policy": [
     "Do not reproduce the documented legacy SWQHR1-current-WLS versus SWQHR2-target-WLSTAR automatic-capacity asymmetry as a hidden compatibility rule.",
     "Use one explicit Ribasim physical-capacity definition and report the behavior change against the legacy discrepancy.",
-    "Do not allow uncommitted SWAP trial hydraulic state to select a management phase."
+    "Do not allow uncommitted SWAP trial hydraulic state to select a management phase.",
+    "Q2B1 deliberately uses constant route capacities. Dynamic Q(h) composition is Q2B2 and cannot inherit a native TabulatedRatingCurve exactness claim."
   ],
   "nonclaims": [
     "No production implementation yet.",
