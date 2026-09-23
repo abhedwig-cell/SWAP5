@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.rom-practical.p5.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P5",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_P5_RESPONSE",
+  "title": "Prospective qualification of robust fast RK4 0.005-day policy",
+  "central_question": "Does the prospectively promoted compiled RK4 dt=0.005 day policy provide robust, fidelity-preserving and computationally advantageous execution for frozen S4/G8 across an expanded six-material panel?",
+  "authority": {
+    "p4_closeout": "integration/f-rom/ROM_PRACTICAL_P4_CLOSEOUT.json",
+    "p4_result": "integration/f-rom/ROM_PRACTICAL_P4_RESULT.json",
+    "representation_authority": "ROM-PRACTICAL first benchmark and P3 closeout"
+  },
+  "frozen_model": {
+    "SURF_P": {
+      "id": "S4",
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        80,
+        160
+      ],
+      "closure": "CURRENT_LAYER_FACE"
+    },
+    "GW_LB": {
+      "id": "G8",
+      "boundaries_cm": [
+        0,
+        80,
+        100,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "closure": "CURRENT_LAYER_FACE"
+    },
+    "forcing": "P3 SD01/SD02/GD01/GD02 unchanged",
+    "horizon_days": 60
+  },
+  "primary_numerical_policy": {
+    "integrator": "compiled classical RK4",
+    "dt_day": 0.005,
+    "fixed_step": true,
+    "state_clipping": false,
+    "material_specific_tuning": false
+  },
+  "panel": {
+    "established": [
+      "B02",
+      "B05",
+      "B11",
+      "B16"
+    ],
+    "extension": [
+      "B06",
+      "B12"
+    ],
+    "all": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "note": "B06/B12 are fresh for the 60-day P3/P4 workload but not globally blind because they appeared in earlier short-horizon ROM work."
+  },
+  "references": {
+    "target": "R128_T32",
+    "comparator": "R64_T32",
+    "same_job_timing": true
+  },
+  "gates": {
+    "robustness": "All 12 purpose/material cases complete with finite qualified-domain states and max water ledger <=1e-8 cm.",
+    "equation_conformance": "Independent compiled/Python probes pass the existing 5e-12 scaled absolute gate.",
+    "fidelity_preservation": "Report the same P3 purpose metrics versus R128 and R64-vs-R128; no new application threshold.",
+    "speed": "RK4_0.005/R128 median wall ratio <1 for every one of the 12 cases.",
+    "extension_speed": "Both B06 and B12 must satisfy the speed gate for both purposes.",
+    "practical_research_viability": "robustness AND speed AND equation conformance; this is not application acceptance."
+  },
+  "interpretation": [
+    "P5 may establish a practical research numerical implementation, not equivalence to full SWAP.",
+    "Hydrological errors from S4/G8 representation remain explicit and are not repaired by the numerical policy.",
+    "Same-runner process timings are workload-specific and non-portable.",
+    "B06/B12 extend numerical/material coverage; they do not make this a fresh application validation."
+  ],
+  "firewalls": [
+    "No state-count change",
+    "No closure change",
+    "No forcing change",
+    "No material calibration",
+    "No P-ROM-ET",
+    "No application acceptance",
+    "No production admission"
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
