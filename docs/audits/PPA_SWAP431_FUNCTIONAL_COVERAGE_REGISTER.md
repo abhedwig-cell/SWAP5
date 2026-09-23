@@ -26,7 +26,7 @@ confirmed B0 defects are not migration targets.
 | Boesten `COFRED=0` | B1 / PPA-WU04-B | CONFIRMED_LEGACY_DEFECT | Exact branch can form `0/0` | Classify and qualify a B1 correction before SWAP5 work |
 | Root uptake / basic Feddes route | Status-A; PPA root-hydraulic authorities | CANONICALLY_ADMITTED | Admitted bounded chain | Preserve |
 | Oxygen, salinity, frost, compensated and advanced root stress | PPA-WU05-C and PPA-WU05 | PARTIAL_ORACLES_PRODUCTION_HELD | Pure oxygen factors/cache guard, compensation, salinity and macro-frost factors plus micro Campbell response have exact-source tests; source/state, thermal/coupling and single root-sink composition dependencies remain | Continue independent source-bound oracles; do not claim runtime admission |
-| Macropore flow | PPA-WU05-A/A1/A2/A3 | PARTIAL_ORACLES_PRODUCTION_HELD | Exact B1.11 source/state/mass census (A1), isolated typed rollback/restart DTO and harness (A2), plus bitwise VOLUNDR, complete RAPIDDRAIN composition, SATFLOW task-1 interval/incoming composition, task-2 negative-flux partition, task-4 derivative update, ABSORPTION sorptivity event/amount and sorptivity-vs-Darcy arbitration (A3) are source-tested; accepted Richards-owner mass receipt, restart/retry and runtime route remain absent | Continue other exact-source A3 equations in isolation; do not admit production macropore flow until one owner closes state and whole-column mass |
+| Macropore flow | PPA-WU05-A/A1/A2/A3 | PARTIAL_ORACLES_PRODUCTION_HELD | Exact B1.11 source/state/mass census (A1), isolated typed rollback/restart DTO and harness (A2), plus bitwise VOLUNDR, complete RAPIDDRAIN composition, SATFLOW task-1 interval/incoming composition, task-2 negative-flux partition, task-4 derivative update, ABSORPTION sorptivity event/amount, sorptivity-vs-Darcy arbitration and the defined Darcy-candidate branch (A3) are source-tested; accepted Richards-owner mass receipt, restart/retry and runtime route remain absent | Continue other exact-source A3 equations in isolation; do not admit production macropore flow until state/mass ownership closes and stale SorpFac source behavior is resolved |
 | Lower boundary mode 2, constant typed qbot | PPA-WU02-A | CANONICALLY_ADMITTED | Owner, independent, hard-mass and preservation gates | Preserve |
 | Lower boundary mode 2 sine/table and dry continuation | PPA-LOW02-TIME | CANONICALLY_ADMITTED | Typed B1.11 time law and state-derived dry continuation qualified | Preserve restricted profile |
 | Lower boundary mode 1 prescribed GWL / hybrid state | PPA-WU02-D / PPA-LOW01 | PARTIAL_ORACLES_PRODUCTION_HELD | DATE1/GWLEVEL guards, AFGEN, top/profile/below regime, in-profile flux/head reconstruction, surface q0→qv→profile→qbot composition are source-tested; pondrunoff/top ingestion, low-GWL transitions and accepted-owner route remain absent | Reuse a proven sole owner or define its transactional contract before production admission; do not alias to mode 5 |
@@ -90,9 +90,13 @@ sign-partition and ordered aggregation oracle. Task 4 has a pure
 derivative-state-transform oracle with strict head-difference threshold and
 covering-top-layer correction. Each SATFLOW task was replayed over 100,000 vectors.
 The `ABSORPTION` sorptivity branch separately tests event start/continue/end,
-wall-wetting scaling and its peak amount cap over 100,000 vectors; the
+wall-wetting scaling and its peak amount cap over 100,000 vectors. The
 sorptivity-vs-Darcy arbitration has a further 100,000-vector test for strict
-selection, equality, residual and event-closure semantics. These remain bounded equations rather than a complete macropore
-process or runtime migration. The full B1.11 reconstruction helper still fails
+selection, equality, residual and event-closure semantics. The defined active
+ABSORPTION Darcy branch is also bitwise tested for head gates, resistance and
+moisture factor. B1.11 assigns local `SorpFac` only inside that branch but
+later reads it unconditionally in arbitration; stale/undefined cases remain
+held out pending source-owner resolution. These remain bounded equations
+rather than a complete macropore process or runtime migration. The full B1.11 reconstruction helper still fails
 closed on an unrelated SWAP-009 patch-hash mismatch; the exact A1 macropore and
 macrorate member hashes nevertheless match the isolated materialized files.

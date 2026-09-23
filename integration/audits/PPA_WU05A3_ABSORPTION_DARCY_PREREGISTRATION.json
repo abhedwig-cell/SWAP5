@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-ABSORPTION-DARCY",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure ABSORPTION Darcy candidate and sorptivity factor on the defined source branch",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_DEFINED_DARCY_BRANCH -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:ABSORPTION Darcy candidate and SorpFac",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1764-1787",
+    "behavior": "When SwDarcy>0 and ic>ICpTpWaSrDm, clamp macropore head, apply H/H_enpr and 1e-8 head gates, compute shape/domain/DZ/K/diameter-squared Darcy candidate and SorpFacParl moisture response. The literal source's later SorpFac use outside this assignment branch is not modeled."
+  },
+  "scope": ["defined active Darcy branch only", "100000 deterministic bitwise comparisons at O0/O2"],
+  "non_goals": ["undefined/stale SorpFac behavior when Darcy disabled or compartment outside the assignment branch", "arbitration integration, accepted mass, rollback/restart or runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}
