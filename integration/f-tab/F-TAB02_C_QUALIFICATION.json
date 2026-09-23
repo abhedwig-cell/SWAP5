@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-C",
+  "title": "Explicit generated-provider selection and persistent lifetime ownership",
+  "result": "PASS",
+  "base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "qualified_head": "bdba7d3b1ca1fa264f63134edf33abccddabbcf6",
+  "workflow_run": 35822040701,
+  "scope": {
+    "generated_default_mvg": true,
+    "swkimpl": 0,
+    "generic_user_tables": false,
+    "legacy_swsophy1": false,
+    "explicit_opt_in": true
+  },
+  "evidence": {
+    "strict_external_full_half_temporal_tolerance": 0.000001,
+    "provider_consistent_equilibrium": "PASS",
+    "generation_outside_trial_hotloop": "PASS",
+    "exact_parameter_authority_cache": "PASS",
+    "explicit_provider_selection": "PASS",
+    "admission_before_materialization_safe": "PASS",
+    "head_max_abs": 0,
+    "theta_max_abs": 4.4297171486462616e-10,
+    "analytical_nonlinear_iterations": 3,
+    "generated_nonlinear_iterations": 3,
+    "analytical_retries": 0,
+    "generated_retries": 0,
+    "repeated_generated_identity": "PASS",
+    "generic_tabulated_fail_closed": "PASS",
+    "unsupported_henpr_fail_closed_no_fallback": "PASS"
+  },
+  "ownership": {
+    "immutable_generated_state": "persistent serialized backend parameter/provider state",
+    "generation_phase": "configure_parameters",
+    "generation_in_trial_hotloop": false,
+    "committed_physical_state": false,
+    "fallback_inside_active_generated_trial": false
+  },
+  "notes": [
+    "The earlier C fixture variant with a relaxed temporal tolerance was superseded and is not qualification authority.",
+    "The controlling C fixture preserves the strict 1e-6 external full/half gate and derives equilibrium conductivity from the active constitutive provider."
+  ]
+}
