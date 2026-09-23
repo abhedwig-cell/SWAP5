@@ -8,7 +8,9 @@ on:
     paths:
       - 'src/process/mod_surface_water_ownership_profile.f90'
       - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/process/mod_surface_water_ownership_profile.f90'
       - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_external_surface_water_head_adapter.f90'
       - 'tests/sw-rib-adm01/**'
       - 'integration/sw-rib-adm01/**'
       - '.github/workflows/sw-rib-adm01-initial.yml'
