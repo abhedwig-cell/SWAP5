@@ -49,7 +49,7 @@ Required:
 - no timestep-policy or retry-policy change;
 - no tolerance retuning.
 
-Parameter extensions that change the admitted constitutive relation, including unsupported `H_ENPR` or `KSATEXM` combinations, must fail closed unless separately qualified and admitted.
+Parameter extensions that change the admitted constitutive relation must fail closed unless separately qualified and admitted. `H_ENPR` remains outside this work unit. A bounded F-SI39/KSATEXM Hupsel sub-slice has now been separately qualified in TAB-HYD-KX05/KX06 and may be carried only under the additional constraints below.
 
 ## 4. Frozen representation candidate
 
@@ -330,3 +330,76 @@ Stop and return to research if:
 **RESEARCH_HANDOFF_READY / TIMESTEP_CONTRACT_CLOSED / PRODUCTION_ADMISSION_BLOCKED_ON_FINAL_EXACT_ASSET_GATE**
 
 No canonical production mutation is made by this handoff.
+
+
+## 16. Bounded F-SI39 / KSATEXM sub-slice — research-qualified
+
+The exact Hupsel M1-C3 application authority uses the admitted F-SI39 KSATEXM
+extension. The generated-provider work unit therefore needs a bounded extension
+path if it is to reach the final whole-Hupsel gate.
+
+TAB-HYD-KX03/KX04 first closed scientific correctness by recomputing the
+canonical analytical authority state inside the active extension branch.
+That route is the scientific oracle but removes the acceleration benefit in the
+active branch.
+
+TAB-HYD-KX05/KX06 then qualified a cheaper equivalent branch-ownership
+representation for the exact Hupsel materials.
+
+### Qualified KX05 semantics
+
+At immutable provider initialization, for each material:
+
+1. start at the exact F-SI39 source threshold `h=-2 cm`;
+2. evaluate the canonical authority-state ordering;
+3. locate by bounded floating-point bisection the first representable pressure
+   head for which the strict canonical predicate `Se_authority > Se_threshold`
+   becomes true;
+4. store that first-active pressure head as immutable numerical metadata.
+
+At runtime:
+
+- evaluate theta/C/base-K using the qualified raw-head400 provider;
+- activate F-SI39 iff `h >= first_active_head`;
+- derive the extension interpolation fraction from generated theta/Se;
+- apply the admitted K-threshold to KSATEXM linear relation;
+- do not recompute analytical theta/Se in the hot path;
+- use no branch tolerance.
+
+### Controlling research evidence
+
+KX05 constitutive run `35863485123`:
+
+- branch mismatches: 0;
+- local branch mismatches: 0;
+- theta max abs: `6.69e-6`;
+- C max abs: `2.54e-5`;
+- log10(K) max abs: `3.09e-4`;
+- active-branch K max relative: `5.82e-5`;
+- transition continuity jump: `1.77e-6 cm/d`.
+
+KX06 Reference-Richards runs `35863794528` and `35863919254`:
+
+- KX05 reproduces KX03 head/theta/mass differences to reported precision;
+- nonlinear and linear solve counts are unchanged;
+- KX05 is about 20-24% faster than KX03 in all three four-node regimes;
+- active-extension KX05 is approximately 3% faster than analytical in both
+  independent runs, whereas KX03 is approximately 22-24% slower.
+
+These percentages characterize the compact KX fixture only.
+
+### Production scope rule
+
+This evidence does **not** admit arbitrary KSATEXM parameterizations.
+
+The first F-TAB02 production slice may either:
+
+1. keep KSATEXM fail-closed and defer whole-Hupsel Gate G8; or
+2. add a separately owned bounded F-SI39 sub-slice using the KX05 semantics,
+   with the exact Hupsel upper/lower materials as the minimum qualified envelope.
+
+Any widening beyond the explicitly qualified F-SI39/Hupsel envelope requires
+new preregistration and qualification.
+
+For the final exact whole-Hupsel gate, the bounded F-SI39 sub-slice is the
+preferred research handoff candidate; KX03 remains the scientific oracle.
