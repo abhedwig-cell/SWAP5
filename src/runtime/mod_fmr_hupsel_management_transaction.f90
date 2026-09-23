@@ -4,7 +4,7 @@ module mod_fmr_hupsel_management_transaction
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE, &
        TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t
+  use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_checkpoint_t
   use mod_tcs1_dcs2_sprinkling_irrigation_process, only: tcs1_dcs2_sprinkling_parameters_t, &
        tcs1_dcs2_sprinkling_state_t, tcs1_dcs2_sprinkling_request_t, tcs1_dcs2_sprinkling_result_t, &
        tcs1_dcs2_sprinkling_diagnostics_t, evaluate_tcs1_dcs2_sprinkling_interval, &
@@ -25,6 +25,30 @@ module mod_fmr_hupsel_management_transaction
   integer, parameter, public :: FMR_RM_ACTIVE_EVENT_ORIGIN_NOT_ADMITTED = 8
   integer, parameter, public :: FMR_RM_RUTTER_FAILED = 9
   integer, parameter, public :: FMR_RM_INVALID_TRANSACTION_STATE = 10
+  integer, parameter, public :: FMR_RM_DEMAND_INVALID_CHECKPOINT = 20
+  integer, parameter, public :: FMR_RM_DEMAND_INVALID_REQUEST = 21
+  integer, parameter, public :: FMR_RM_DEMAND_ORIGIN_TIME_MISMATCH = 22
+  integer, parameter, public :: FMR_RM_DEMAND_STATE_TYPE_MISMATCH = 23
+
+  type, public :: fmr_hupsel_management_demand_receipt_t
+    private
+    logical :: initialized = .false.
+    integer(int64) :: lineage_id_value = 0_int64
+    integer(int64) :: revision_value = -1_int64
+    integer(int64) :: crop_revision_value = -1_int64
+    real(real64) :: t0_value = 0.0_real64
+    real(real64) :: t1_value = 0.0_real64
+    real(real64) :: application_t1_value = 0.0_real64
+    real(real64) :: requested_depth_cm_value = 0.0_real64
+  contains
+    procedure, public :: ready => fmr_hupsel_demand_receipt_ready
+    procedure, public :: origin_lineage_id => fmr_hupsel_demand_receipt_lineage
+    procedure, public :: origin_revision => fmr_hupsel_demand_receipt_revision
+    procedure, public :: crop_origin_revision => fmr_hupsel_demand_receipt_crop_revision
+    procedure, public :: interval => fmr_hupsel_demand_receipt_interval
+    procedure, public :: application_t1 => fmr_hupsel_demand_receipt_application_t1
+    procedure, public :: requested_depth_cm => fmr_hupsel_demand_receipt_requested_depth
+  end type fmr_hupsel_management_demand_receipt_t
 
   type, public :: fmr_hupsel_management_persistence_t
     logical :: valid = .false.
@@ -103,6 +127,7 @@ module mod_fmr_hupsel_management_transaction
   public :: prepare_fmr_hupsel_management_forcing
   public :: export_fmr_hupsel_management_persistence
   public :: reconstruct_fmr_hupsel_management_from_persistence
+  public :: derive_fmr_hupsel_management_demand_receipt
 
 contains
 
@@ -123,6 +148,157 @@ contains
     type(rutter_state_t), intent(in) :: state
     ok = ieee_is_finite(state%canopy_storage_cm) .and. state%canopy_storage_cm >= 0.0_real64
   end function valid_rutter_state
+
+  logical function fmr_hupsel_demand_receipt_ready(self) result(ready)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    ready = self%initialized .and. self%lineage_id_value > 0_int64 .and. self%revision_value >= 0_int64 .and. &
+         self%crop_revision_value >= 0_int64 .and. ieee_is_finite(self%t0_value) .and. &
+         ieee_is_finite(self%t1_value) .and. self%t1_value > self%t0_value .and. &
+         ieee_is_finite(self%application_t1_value) .and. self%application_t1_value > self%t0_value .and. &
+         self%application_t1_value <= self%t1_value + quantity_tolerance(self%application_t1_value,self%t1_value) .and. &
+         ieee_is_finite(self%requested_depth_cm_value) .and. self%requested_depth_cm_value >= 0.0_real64
+  end function fmr_hupsel_demand_receipt_ready
+
+  integer(int64) function fmr_hupsel_demand_receipt_lineage(self) result(value)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    value = self%lineage_id_value
+  end function fmr_hupsel_demand_receipt_lineage
+
+  integer(int64) function fmr_hupsel_demand_receipt_revision(self) result(value)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    value = self%revision_value
+  end function fmr_hupsel_demand_receipt_revision
+
+  integer(int64) function fmr_hupsel_demand_receipt_crop_revision(self) result(value)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    value = self%crop_revision_value
+  end function fmr_hupsel_demand_receipt_crop_revision
+
+  subroutine fmr_hupsel_demand_receipt_interval(self,t0,t1,available)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    real(real64), intent(out) :: t0,t1
+    logical, intent(out) :: available
+    available = self%ready()
+    if (available) then
+      t0=self%t0_value
+      t1=self%t1_value
+    else
+      t0=0.0_real64
+      t1=0.0_real64
+    end if
+  end subroutine fmr_hupsel_demand_receipt_interval
+
+  real(real64) function fmr_hupsel_demand_receipt_application_t1(self) result(value)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    if (self%ready()) then
+      value=self%application_t1_value
+    else
+      value=0.0_real64
+    end if
+  end function fmr_hupsel_demand_receipt_application_t1
+
+  real(real64) function fmr_hupsel_demand_receipt_requested_depth(self) result(value)
+    class(fmr_hupsel_management_demand_receipt_t), intent(in) :: self
+    if (self%ready()) then
+      value=self%requested_depth_cm_value
+    else
+      value=0.0_real64
+    end if
+  end function fmr_hupsel_demand_receipt_requested_depth
+
+  subroutine derive_fmr_hupsel_management_demand_receipt(checkpoint, parameters, request, crop_origin_revision, &
+       receipt, status)
+    type(kernel_checkpoint_t), intent(in) :: checkpoint
+    type(fmr_hupsel_management_parameters_t), intent(in) :: parameters
+    type(tcs1_dcs2_sprinkling_request_t), intent(in) :: request
+    integer(int64), intent(in) :: crop_origin_revision
+    type(fmr_hupsel_management_demand_receipt_t), intent(out) :: receipt
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: snapshot
+    type(tcs1_dcs2_sprinkling_request_t) :: local_request
+    type(tcs1_dcs2_sprinkling_state_t) :: irrigation_candidate
+    type(tcs1_dcs2_sprinkling_result_t) :: irrigation_result
+    type(tcs1_dcs2_sprinkling_diagnostics_t) :: irrigation_diagnostics
+    real(real64) :: checkpoint_time, application_t1
+    logical :: available
+
+    receipt = fmr_hupsel_management_demand_receipt_t()
+    status = FMR_RM_DEMAND_INVALID_CHECKPOINT
+    if (.not. checkpoint%ready()) return
+    if (.not. parameters%ready()) then
+      status = FMR_RM_INVALID_PARAMETERS
+      return
+    end if
+
+    status = FMR_RM_DEMAND_INVALID_REQUEST
+    if (crop_origin_revision < 0_int64) return
+    if (.not. ieee_is_finite(request%t0) .or. .not. ieee_is_finite(request%t1) .or. request%t1 <= request%t0) return
+
+    if (checkpoint%time_is_bound()) then
+      call checkpoint%current_time(checkpoint_time,available)
+      if (.not. available) then
+        status = FMR_RM_DEMAND_INVALID_CHECKPOINT
+        return
+      end if
+      if (.not. same_time(checkpoint_time,request%t0)) then
+        status = FMR_RM_DEMAND_ORIGIN_TIME_MISMATCH
+        return
+      end if
+    end if
+
+    call checkpoint%snapshot(snapshot,available)
+    if (.not. available .or. .not. allocated(snapshot)) then
+      status = FMR_RM_DEMAND_INVALID_CHECKPOINT
+      return
+    end if
+
+    select type (typed => snapshot)
+    type is (fmr_hupsel_management_state_t)
+      if (.not. typed%ready()) then
+        status = FMR_RM_INVALID_STATE
+        return
+      end if
+      if (typed%irrigation%active_event) then
+        status = FMR_RM_ACTIVE_EVENT_ORIGIN_NOT_ADMITTED
+        return
+      end if
+
+      local_request = request
+      call evaluate_tcs1_dcs2_sprinkling_interval(parameters%irrigation,typed%irrigation,local_request, &
+           irrigation_candidate,irrigation_result,irrigation_diagnostics)
+      if (irrigation_diagnostics%status == TCS1_DCS2_SPLIT_REQUIRED) then
+        local_request%t1 = irrigation_diagnostics%split_time
+        call evaluate_tcs1_dcs2_sprinkling_interval(parameters%irrigation,typed%irrigation,local_request, &
+             irrigation_candidate,irrigation_result,irrigation_diagnostics)
+      end if
+      if (irrigation_diagnostics%status /= TCS1_DCS2_OK) then
+        status = FMR_RM_IRRIGATION_DECISION_FAILED
+        return
+      end if
+
+      application_t1 = request%t1
+      if (irrigation_result%event_started) application_t1 = local_request%t1
+
+      receipt%lineage_id_value = checkpoint%current_lineage_id()
+      receipt%revision_value = checkpoint%origin_revision()
+      receipt%crop_revision_value = crop_origin_revision
+      receipt%t0_value = request%t0
+      receipt%t1_value = request%t1
+      receipt%application_t1_value = application_t1
+      receipt%requested_depth_cm_value = 0.0_real64
+      if (irrigation_result%event_started) receipt%requested_depth_cm_value = irrigation_result%event_depth_cm
+      receipt%initialized = .true.
+      if (.not. receipt%ready()) then
+        receipt = fmr_hupsel_management_demand_receipt_t()
+        status = FMR_RM_DEMAND_INVALID_REQUEST
+        return
+      end if
+      status = FMR_RM_OK
+    class default
+      status = FMR_RM_DEMAND_STATE_TYPE_MISMATCH
+      return
+    end select
+  end subroutine derive_fmr_hupsel_management_demand_receipt
 
   logical function fmr_hupsel_management_persistence_ready(self) result(ready)
     class(fmr_hupsel_management_persistence_t), intent(in) :: self
