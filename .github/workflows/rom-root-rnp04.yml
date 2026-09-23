@@ -1,0 +1,148 @@
+name: ROM-ROOT RNP04 root-active Reference floor policy
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/ROM_ROOT_RNP04_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: rom-root-rnp04-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify:
+    name: ${{ matrix.material }}-${{ matrix.route }}-${{ matrix.history }}-O${{ matrix.opt }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B01, history: V02, route: R512_T32, nodes: 512, dz: 0.3125, opt: 0}
+          - {material: B01, history: V02, route: R1024_T32, nodes: 1024, dz: 0.15625, opt: 0}
+          - {material: B01, history: V02, route: R2048_T32, nodes: 2048, dz: 0.078125, opt: 0}
+          - {material: B14, history: V01, route: R512_T32, nodes: 512, dz: 0.3125, opt: 0}
+          - {material: B14, history: V01, route: R1024_T32, nodes: 1024, dz: 0.15625, opt: 0}
+          - {material: B14, history: V01, route: R2048_T32, nodes: 2048, dz: 0.078125, opt: 0}
+          - {material: B01, history: V02, route: R1024_T32, nodes: 1024, dz: 0.15625, opt: 2}
+          - {material: B14, history: V01, route: R512_T32, nodes: 512, dz: 0.3125, opt: 2}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify bound RNP04 authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - <<'PY'
+          import json,subprocess
+          p=json.load(open('integration/f-rom/ROM_ROOT_RNP04_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/ROM_ROOT_RNP04_BINDING.json'))
+          assert p['state']=='PREREGISTERED_BEFORE_ROOT_ACTIVE_POLICY_RESPONSE'
+          assert b['state']=='BOUND_BEFORE_RNP04_EXECUTION'
+          assert b['scientific_semantics_changed'] is False
+          assert b['c6r_reopened'] is False
+          for path,expected in b['implementation_blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+          test "$(git hash-object canonical/src/process/mod_root_water_uptake_process.f90)" = "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+          test "$(git hash-object canonical/src/solver/mod_b110_root_sink_provider.f90)" = "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+
+      - name: Resolve material source
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize root-active policy harness
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6r_root_active_reference.py             --source "${{ steps.cfg.outputs.source }}"             --material "${{ matrix.material }}"             --temporal-factor 32             --output /tmp/rnp04_c6r.f90             --manifest /tmp/root_manifest.json
+          python3 tests/rom/materialize_rom_root_rnp04_policy.py             --input /tmp/rnp04_c6r.f90             --output canonical/tests/rom/test_rom_root_rnp04.f90
+          python3 tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py             --path canonical/src/runtime/mod_fmr_serialized_reference_backend.f90             --manifest /tmp/reference_floor_repair.json
+
+      - name: Execute policy qualification
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          stub="canonical/rnp04_${{ matrix.material }}_${{ matrix.route }}_O${{ matrix.opt }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "${{ matrix.nodes }}" --dz-cm "${{ matrix.dz }}"
+          build="/tmp/rnp04_${{ matrix.material }}_${{ matrix.route }}_O${{ matrix.opt }}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "rnp04_${{ matrix.material }}_${{ matrix.route }}_O${{ matrix.opt }}_stubs.f90"             --target tests/rom/test_rom_root_rnp04.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "${{ matrix.opt }}"
+          stem="${{ matrix.material }}_${{ matrix.route }}_${{ matrix.history }}_O${{ matrix.opt }}"
+          log="evidence/${stem}.txt"
+          set +e
+          "$build/rom0_test" > "$log" 2>&1
+          rc=$?
+          set -e
+          echo "$rc" > "evidence/${stem}_rc.txt"
+          cat "$log"
+          cp /tmp/root_manifest.json evidence/
+          cp /tmp/reference_floor_repair.json evidence/
+          sha256sum evidence/* > evidence/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rnp04-${{ matrix.material }}-${{ matrix.route }}-${{ matrix.history }}-O${{ matrix.opt }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: qualify
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rnp04-*
+          path: /tmp/rnp04
+          merge-multiple: true
+      - name: Analyze frozen RNP04 policy
+        run: |
+          set -euo pipefail
+          mkdir -p RNP04_EVIDENCE
+          python3 tests/rom/analyze_rom_root_rnp04.py             --dir /tmp/rnp04             --output RNP04_EVIDENCE/ROM_ROOT_RNP04_RESULT.json             | tee RNP04_EVIDENCE/runner.txt
+          cp integration/f-rom/ROM_ROOT_RNP04_PREREGISTRATION.json RNP04_EVIDENCE/
+          cp integration/f-rom/ROM_ROOT_RNP04_BINDING.json RNP04_EVIDENCE/
+          sha256sum RNP04_EVIDENCE/* > RNP04_EVIDENCE/sha256.txt
+      - name: Enforce firewall
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('RNP04_EVIDENCE/ROM_ROOT_RNP04_RESULT.json'))
+          assert r['status']=='POLICY_QUALIFICATION_COMPLETE'
+          assert r['c6r_reopened'] is False
+          assert r['reduced_candidate_response_generated'] is False
+          assert r['production_source_changed'] is False
+          print('ROM_ROOT_RNP04_FIREWALL=PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-root-rnp04
+          path: RNP04_EVIDENCE/
+          if-no-files-found: error
