@@ -115,7 +115,15 @@ jobs:
             build="/tmp/p2h4_${purpose}_${material}_T${factor}_o${opt}"
             python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "$stub" --target tests/rom/test_p2h4.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt "$opt"
             log="evidence/corichards_${purpose}_${material}_T${factor}_o${opt}.txt"
+            set +e
             "$build/rom0_test" > "$log" 2>&1
+            rc=$?
+            set -e
+            if [[ "$rc" -ne 0 ]]; then
+              echo "ROM_PURPOSE_P2_H4_EXECUTION_FAILURE|purpose=$purpose|material=$material|factor=$factor|opt=$opt|rc=$rc"
+              cat "$log"
+              exit "$rc"
+            fi
             if [[ "$purpose" == SURF_P ]]; then
               grep -Fq 'LAREDYN0R_ROMPURP_P2_SURFACE_REFERENCE_GENERATED=TRUE' "$log"
               grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
