@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.f_app09.preregistration.v1",
+  "work_unit": "F-APP09",
+  "date": "2026-09-23",
+  "title": "Ribasim external surface-water production profile",
+  "base": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "status": "PREREGISTERED_BEFORE_PRODUCTION_IMPLEMENTATION",
+  "research_authority": {
+    "branch": "research/sw-rib-swm01-surfacewater-ownership",
+    "head": "48df989b098d73208eed2496005b656f588ebffd",
+    "closeout": "integration/research/SW_RIB_SWM01_CLOSEOUT.json",
+    "q4b": "PASS_TRANSACTIONAL_SIGNED_EXTENDED_EXCHANGE_BINDING"
+  },
+  "profile_name": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+  "scope": {
+    "surface_water_state_owner": "EXTERNAL_RIBASIM_ONLY",
+    "swap_owner": "SIGNED_EXTENDED_DRAINAGE_INFILTRATION_PHYSICS_ONLY",
+    "coupler_owner": "TRANSACTION_FEASIBILITY_AND_ACCEPTANCE",
+    "geometry_owner": "RIBASIM_NATIVE_PROFILE",
+    "bottom_mode": 7,
+    "numerical_continuation": "NONE",
+    "max_accepted_swap_substeps_per_coupling_window": 1
+  },
+  "production_changes": [
+    "Port the Q4A stateless extended drainage/infiltration process.",
+    "Port the Q4B FMR drainage-response variant 9 binding.",
+    "Add a typed materializer from accepted external surface-water heads to drainage-response controls.",
+    "Add a transaction participant using canonical checkpoint/candidate/commit authority.",
+    "Reject any profile that also owns the same surface-water store through F-CI52 fixed-weir optional state."
+  ],
+  "hard_invariants": [
+    "No SWST or other surface-water storage is added to SWAP committed state.",
+    "Template optional_state_layout_id must be BASE, never FIXED_WEIR_SURFACE_WATER.",
+    "Committed state must be the base physical state for this first profile, not a fixed-weir state.",
+    "Every active drainage response level must use FMR_DRAIN_VARIANT_EXTENDED_SIGNED.",
+    "The only surface-water hydraulic input to SWAP is a finite resolved external head per active drainage level.",
+    "Trial evaluation never mutates committed SWAP state.",
+    "If externally realized signed transfer differs from the SWAP candidate beyond frozen tolerance, commit is forbidden and the candidate must be discarded before retrial from the same accepted origin.",
+    "Mass remains booked exactly once by the canonical SWAP trial ledger.",
+    "A coupling window is admitted only when the SWAP candidate completes in exactly one accepted substep; whole-window multi-substep transfer publication is deferred."
+  ],
+  "geometry_decision": {
+    "mode": "RIBASIM_NATIVE",
+    "legacy_sttab_direct_mapping": false,
+    "q1h_epsilon_required": false,
+    "rationale": "Avoid inventing an application acceptance epsilon. Ribasim surface-water geometry is authoritative for this first production profile; Q1H remains a separate legacy-geometry migration option."
+  },
+  "initial_tests": [
+    "owner XOR rejects fixed-weir optional-state template",
+    "owner XOR rejects fixed-weir committed-state carrier",
+    "positive drainage trial/discard/replay/commit",
+    "negative infiltration trial/discard/replay/commit",
+    "external transfer mismatch blocks commit and supports discard/retrial from the same accepted origin",
+    "stale origin fails closed",
+    "forcing materializer rejects wrong head vector, nonfinite head and preexisting competing drainage forcing/control",
+    "O0/O2 stable marker identity",
+    "no new persistent surface-water state"
+  ],
+  "explicit_exclusions": [
+    "live Ribasim network execution",
+    "MODFLOW6 simultaneous triangle composition",
+    "nonlinear SWQHR1 exact parity",
+    "SWQHR2 exact legacy parity",
+    "automatic management policy runtime",
+    "top runoff/rapid drainage production binding",
+    "multi-substep coupling-window exchange publication"
+  ],
+  "production_admission": false,
+  "canonical_admission": false
+}
