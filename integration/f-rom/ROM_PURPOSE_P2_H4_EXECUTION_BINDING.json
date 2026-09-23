@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.rom-purpose.p2.h4-execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-H4",
+  "date": "2026-09-23",
+  "status": "BOUND_AFTER_P2_PLACEMENT_H4_TRIGGER",
+  "trigger_head_before_binding": "208a5ab3e503c7cda167a599dbeb2054cd85e8c6",
+  "frozen_scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "placement_authority": {
+    "result": "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json",
+    "blob": "e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "H1": true,
+    "H2": true,
+    "H3": true,
+    "H4_required": true
+  },
+  "cases": [
+    "SURF_P/B01/S4",
+    "SURF_P/B14/S4",
+    "GW_LB/B01/G4",
+    "GW_LB/B14/G4"
+  ],
+  "execution_matrix": {
+    "temporal_factors": [
+      8,
+      16,
+      32
+    ],
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "job_count": 12,
+    "solver": "conventional Reference-Richards on exact four-cell aligned partition"
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p2-h4-corichards.yml": "2b213270642602d7858911aea663d29c74da0a5b",
+    "tests/rom/materialize_rom_purpose_p2_h4_corichards.py": "ffd0050958aeb0c8058e49c6297ceb8d64f5c07d",
+    "tests/rom/analyze_rom_purpose_p2_h4_corichards.py": "2548f67786f48c8a26993c7ba1beb32d9bfc1e2e",
+    "tests/rom/materialize_rom_purpose_p1_coarse_output.py": "991c896fcdd3b580d72ab5a262fdf0c0f86412ef",
+    "tests/rom/rom_purpose_p1_variable_grid_stubs.py": "261583a0b4b05ac5598572ac6e2630cfa75fa0a1",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference.py": "f05de4a54d84c921793d53960f495145921b04e2",
+    "tests/rom/materialize_rom_purpose_p1_gw_reference.py": "b7832852a2023a776ae2212ebe5713ec294ff1e0",
+    "tests/rom/rom_purpose_p1_base_c4z_materializer.py": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "tests/rom/rom_purpose_p1_base_b14_materializer.py": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "tests/rom/rom_purpose_p1_surface_b14_source.f90": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    "tests/rom/rom_purpose_p1_gw_source.f90": "98b05fcf13fc470689295d511766f2393a712e46",
+    "tests/rom/analyze_rom_purpose_p2_candidates.py": "e7990ad210e31be50c97824d327ffc292635b78c",
+    "tests/rom/analyze_rom_purpose_p2_reference.py": "235a6f0efbadaeff182c7fd5450c20f3d7920795",
+    "tests/rom/analyze_rom_purpose_p1_reference.py": "a5df3c1157bf291de0baa7f32c94efb3ef4c278f",
+    "integration/f-rom/ROM_PURPOSE_P2_H4_EXECUTION_CONTRACT.json": "7a93e58e7cc1191a38568be80d8dc6a56ffdc2d9",
+    "integration/f-rom/ROM_PURPOSE_P2_PLACEMENT_RESULT.json": "e49f2414423538e4ecae4d4af35d599e46bc5273",
+    "integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json": "383ae1c81dd65ceca4353ace7ce435613d0ef0c5",
+    "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RESULT.json": "f701aee1d612e6af509a639bc8505b1d90be716c"
+  },
+  "scientific_firewall": {
+    "representation_retuned": false,
+    "partition_retuned": false,
+    "closure_tuned": false,
+    "H4_result_seen": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
