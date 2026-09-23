@@ -1,0 +1,192 @@
+name: F-ROM-PURPOSE P3 state-count candidates
+
+on:
+  push:
+    branches:
+      - work/f-rom-purpose
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p3-candidates
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify P3 candidate authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            tests/rom/run_rom_purpose_p3_candidate.py \
+            tests/rom/analyze_rom_purpose_p3_candidates.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json'))
+          i=json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_AFTER_P3_REFERENCE_QUALIFICATION'
+          assert r['status']=='P3_REFERENCE_QUALIFIED_CANDIDATES_AUTHORIZED'
+          assert r['candidate_response_authorized'] is True
+          assert i['status']=='PREPARED_NOT_AUTHORIZED_NOT_EXECUTED'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_NEW_P3_REFERENCE_OR_CANDIDATE_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  candidate:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        material: [B01, B14]
+        case:
+          - 'SURF_P:S4'
+          - 'SURF_P:S6'
+          - 'SURF_P:S8'
+          - 'SURF_P:U4'
+          - 'SURF_P:U6'
+          - 'SURF_P:U8'
+          - 'GW_LB:G4'
+          - 'GW_LB:G6'
+          - 'GW_LB:G8'
+          - 'GW_LB:U4'
+          - 'GW_LB:U6'
+          - 'GW_LB:U8'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Run frozen P3 candidate
+        run: |
+          set -euo pipefail
+          purpose="${{ matrix.case }}"; purpose="${purpose%%:*}"
+          member="${{ matrix.case }}"; member="${member##*:}"
+          mkdir -p candidate
+          python3 tests/rom/run_rom_purpose_p3_candidate.py \
+            --purpose "$purpose" \
+            --material "${{ matrix.material }}" \
+            --member "$member" \
+            --p3-prereg integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json \
+            --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json \
+            --p3-reference-result integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json \
+            --p1-reference-result integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json \
+            --output "candidate/${purpose}_${{ matrix.material }}_${member}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p3candidate-${{ matrix.material }}-${{ strategy.job-index }}
+          path: candidate/
+          if-no-files-found: error
+
+  analyze:
+    needs: candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p3candidate-*
+          path: /tmp/candidates
+          merge-multiple: true
+      - name: Download frozen P3 Reference route artifacts
+        run: |
+          set -euo pipefail
+          surface_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gw_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json'))['reference_runs']['GW_LB'])")"
+          mkdir -p /tmp/surface /tmp/gw /tmp/reference
+          gh run download "$surface_run" --repo abhedwig-cell/SWAP5 -n p3ref-surface-routes -D /tmp/surface
+          gh run download "$gw_run" --repo abhedwig-cell/SWAP5 -n p3ref-gw-routes -D /tmp/gw
+          cp /tmp/surface/surface_* /tmp/reference/
+          cp /tmp/gw/gw_* /tmp/reference/
+      - name: Analyze frozen state-count ladder
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p3_candidates.py \
+            --p3-prereg integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json \
+            --metric-contract integration/f-rom/ROM_PURPOSE_P1_METRIC_CONTRACT.json \
+            --p3-reference-result integration/f-rom/ROM_PURPOSE_P3_REFERENCE_RESULT.json \
+            --reference-root /tmp/reference \
+            --candidate-root /tmp/candidates \
+            --output result/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json \
+            | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_EXECUTION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p3-state-count
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_RUN: ${{ github.run_id }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-purpose
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: rom-purpose-p3-state-count
+          path: /tmp/result
+      - name: Persist P3 state-count result
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P3_STATUS.json')
+          s=json.load(open(p))
+          triggers=r['same_partition_richards_triggers']
+          if triggers:
+              status='P3_STATE_COUNT_COMPLETE_SAME_PARTITION_DIAGNOSTIC_REQUIRED'
+              gate='SAME_PARTITION_RICHARDS_DIAGNOSTIC'
+              next_actions=['Execute only the preregistered same-partition Richards diagnostics for terminal unresolved cases.']
+          else:
+              status='P3_STATE_COUNT_COMPLETE_NO_CLOSURE_DIAGNOSTIC_REQUIRED'
+              gate='P3_CLOSEOUT'
+              next_actions=['Build final purpose map and P3 closeout without opening a new closure family.']
+          s.update({
+            'status':status,
+            'current_gate':gate,
+            'candidate_response_authorized':True,
+            'candidate_response_generated':True,
+            'state_count_result':'integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json',
+            'candidate_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'candidate_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':next_actions
+          })
+          s['scientific_firewall']['any_new_p3_candidate_response_seen']=True
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P3_STATE_COUNT_RESULT.json integration/f-rom/ROM_PURPOSE_P3_STATUS.json
+          git commit -m "ROM-PURPOSE P3: persist state-count result" || exit 0
+          git push origin HEAD:work/f-rom-purpose
