@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.ribasim_management.real_three_model_transaction.result.v1",
+  "work_unit": "RM13B",
+  "date": "2026-09-23",
+  "decision": "FALSIFIED_DIRECT_FIXED_TOP_FLUX_WITHIN_INHERITED_FGC44_NUMERICAL_ENVELOPE",
+  "scientific_classification": "COMPOSITION_ENVELOPE_FALSIFICATION",
+  "authorities_that_pass_before_falsification": {
+    "management_request": "RM07",
+    "real_ribasim_full_realization": "RM09",
+    "typed_ribasim_return": "RM10",
+    "clock_contract": "RM11/RM12",
+    "ribasim_transaction_host": "RM13B-TA02",
+    "groundwater_fixed_interface": "CANONICAL_ADMITTED_CLOSED"
+  },
+  "frozen_composition": {
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "management_request_depth_cm": 0.0036,
+    "real_ribasim_physical_supply_depth_cm": 0.003600000000000001,
+    "richards_top_flux_cm_per_day": -36.0,
+    "predictor_bottom_flux_cm_per_day": 0.000001,
+    "drainage": "off",
+    "root_uptake": "off",
+    "rutter_cover": 0.0
+  },
+  "falsification_evidence": {
+    "full_triangle_run": {
+      "workflow_run": 35886343932,
+      "workflow_job": 107267342897,
+      "failure_stage": "fgc44_swap_initialize_forced_c",
+      "bridge_status": 104,
+      "meaning": "real Richards predictor run_trial returned completed=false before MODFLOW publication"
+    },
+    "independent_predictor_diagnostic": {
+      "workflow_run": 35887766209,
+      "workflow_job": 107272196316,
+      "bridge_status": 104,
+      "canonical_result_status": 2,
+      "canonical_status_meaning": "CANONICAL_STATUS_TRANSACTION_FAILED",
+      "completed": false,
+      "direction_available": false,
+      "transaction_calls": 1,
+      "accepted_substeps": 0,
+      "attempts": 9,
+      "retries": 8,
+      "trial_rollbacks": 9,
+      "solver_rejections": 6,
+      "temporal_rejections": 3,
+      "temporal_unavailable_rejections": 0,
+      "mass_rejections": 0,
+      "internal_retries": 6,
+      "max_temporal_indicator": 92569.71928978531,
+      "min_accepted_substep_duration": 1.7976931348623157e+308,
+      "max_accepted_substep_duration": 0.0
+    }
+  },
+  "interpretation": [
+    "The failure is not a surface-water allocation, physical-delivery, provenance or Ribasim transaction-host failure.",
+    "The failure is not a mass-accounting rejection: mass_rejections=0.",
+    "The temporal certificate is available, so the failure is not caused by missing temporal authority.",
+    "The direct -36 cm/day fixed top-flux forcing produces no accepted Richards substep under the inherited F-GC44 predictor policy; six attempts fail in the solver and three fail the temporal criterion before the retry budget is exhausted.",
+    "Therefore the preregistered claim that this irrigation pulse would compose inside the inherited F-GC44 transaction envelope is falsified."
+  ],
+  "passed_supporting_evidence": {
+    "management_init_smoke": {
+      "computed_request_depth_cm": 0.0036,
+      "status": "PASS"
+    },
+    "process_isolated_ribasim_host": {
+      "workflow_run": 35886343836,
+      "workflow_job": 107267343652,
+      "origin_time_s": 0.0,
+      "origin_level_m": 1.0,
+      "origin_supply_m3": 0.0,
+      "candidate_time_s": 8.64,
+      "candidate_level_m": 1.0,
+      "candidate_supply_m3": 0.00003600000000000001,
+      "status": "PASS"
+    }
+  },
+  "nonclaims": [
+    "This does not show that real SWAP cannot accept irrigation.",
+    "This does not show that SWAP-MODFLOW-Ribasim composition is impossible.",
+    "This does not justify reducing the irrigation pulse, widening the F-GC44 temporal budget, increasing retry limits or relaxing tolerances post hoc.",
+    "This does not invalidate the closed no-irrigation F-GC44 groundwater authority.",
+    "This does not qualify a partial-supply policy."
+  ],
+  "next_required_boundary": "Derive and preregister a real-SWAP irrigation-application composition that uses the existing admitted SWAP application semantics rather than treating the complete management delivery as an abrupt fixed top-flux perturbation inside the inherited F-GC44 predictor fixture. RM13B remains permanently falsified."
+}
