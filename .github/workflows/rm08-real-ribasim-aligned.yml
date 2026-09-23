@@ -1,0 +1,52 @@
+name: RM08 real SWAP Ribasim aligned fixture
+
+on:
+  push:
+    branches:
+      - work/ribasim-management-coupling-closeout
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/generate_rm08_real_ribasim.py'
+      - 'tests/ribasim-management/rm08_real_ribasim_bridge.jl'
+      - 'tests/ribasim-management/test_rm08_swap_ribasim_bridge.f90'
+      - 'tests/ribasim-management/run_rm08_real_ribasim_aligned.sh'
+      - 'integration/ribasim-management/RM08_*'
+      - '.github/workflows/rm08-real-ribasim-aligned.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_hupsel_management_transaction.f90'
+      - 'tests/ribasim-management/generate_rm08_real_ribasim.py'
+      - 'tests/ribasim-management/rm08_real_ribasim_bridge.jl'
+      - 'tests/ribasim-management/test_rm08_swap_ribasim_bridge.f90'
+      - 'tests/ribasim-management/run_rm08_real_ribasim_aligned.sh'
+      - 'integration/ribasim-management/RM08_*'
+      - '.github/workflows/rm08-real-ribasim-aligned.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact Ribasim product release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Compiler identity
+        run: gfortran --version
+      - name: RM08 real SWAP to real Ribasim aligned qualification
+        run: bash tests/ribasim-management/run_rm08_real_ribasim_aligned.sh
