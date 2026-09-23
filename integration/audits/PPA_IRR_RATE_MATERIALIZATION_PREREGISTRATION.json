@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-RATE-MATERIALIZATION",
+  "parent_workunit": "PPA-IRR-TCSFIX-FILTER",
+  "title": "Source-bound irrigation rate adaptation and duration",
+  "protocol": "PIN_B1_11_SOURCE -> ISOLATE_RATE_DURATION_BRANCHES -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_SOURCE_BOOKING_AND_PRODUCTION_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "596-624",
+    "units": "irr_depth in cm; irr_rate in cm/day after read-time conversion; dt_irr_event in days.",
+    "equation": "If rate>0 and depth/rate>1, use rate=depth and duration=1; otherwise if rate>0 use rate unchanged and duration=depth/rate; if rate<=0 use rate=depth and duration=1. The selected rate is assigned to gird for isua<2 or uniformly to each selected SSDI node when isua>=2."
+  },
+  "scope": [
+    "pure legacy rate adaptation and event-duration materialization",
+    "surface rate or per-node SSDI rate assignment and summed selected rate",
+    "zero-rate spread, exact one-day equality and over-one-day adaptation boundaries",
+    "100000 deterministic equation comparisons at O0/O2 with identical transcripts"
+  ],
+  "non_goals": [
+    "irrigation depth or selector derivation, event calendar, interval splitting or process invocation",
+    "claim that summing SSDI node source rates is the whole-column external water amount",
+    "accepted source booking, solute, transaction, restart or production admission"
+  ],
+  "pass_conditions": [
+    "selected rate and duration follow exact B1.11 branch ordering and strict >1 day test",
+    "surface scalar and SSDI repeated-node assignment match the source branch",
+    "each deterministic vector matches the independent source-form oracle",
+    "O0/O2 output transcripts are identical",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}
