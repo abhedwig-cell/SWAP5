@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-INFLOW-LIMIT",
   "baseline": "c3bf2750e",
+  "recovery_point": "2f784e7d6",
+  "persisted_test_result": "PASS O0/O2 against 2f784e7d6: 100000 formula comparisons and invalid-input tests, identical transcripts. Trial-exchange regression also PASS O0/O2.",
   "scope": "Isolated standard-domain MACRORATE inflow reduction and potential-to-rate conversion; no final exchange or production binding",
   "source": "Hash-pinned B1.11 macrorate.f90 lines 209-244; SHA256 537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
   "contract": "Supplied source-loop inflow/outflow totals and VOLUNDR groundwater volume are immutable inputs. Preserve arithmetic order and strict 1e-7 thresholds. Return reduced incoming rates and rejected top amount, without committing storage. Supplied compartment potentials must correspond to their source-loop totals; this bounded helper does not validate that upstream provenance.",
