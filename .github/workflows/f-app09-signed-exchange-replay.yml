@@ -42,3 +42,5 @@ jobs:
         run: bash tests/fapp09/run_extended_runtime_binding.sh
       - name: Qualify external Ribasim owner profile
         run: bash tests/fapp09/run_profile_contract.sh
+      - name: Qualify frozen Q1H storage geometry epsilon
+        run: bash tests/fapp09/run_storage_geometry_epsilon.sh
