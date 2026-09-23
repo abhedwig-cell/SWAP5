@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.ribasim_management.real_ribasim_scheduler_trajectory.result.v1",
+  "work_unit": "RM12",
+  "date": "2026-09-23",
+  "decision": "QUALIFIED_EXACT_RELEASE_NONCOMMENSURATE_SCHEDULER_TRAJECTORY",
+  "qualification_head": "effdd3f017696260bca14b98b2dec8fbf79a61ed",
+  "workflow": "RM12 real Ribasim scheduler trajectory",
+  "workflow_run": 35831184808,
+  "workflow_job": 107083914884,
+  "conclusion": "success",
+  "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+  "compiled_scheduler": {
+    "update_until_targets_seconds": [18000,21600,36000,43200,54000,64800,72000,86400],
+    "solved_allocation_boundaries_seconds": [0,18000,36000,54000,72000],
+    "status": "PASS"
+  },
+  "exact_release_observations": {
+    "scheduler_allocation_record_seconds": [0,18000,36000,54000,72000],
+    "naive_allocation_record_seconds": [0],
+    "scheduler_final_root_m3": 19.180701877022177,
+    "scheduler_final_external_m3": 6.249734580059922,
+    "scheduler_final_total_m3": 25.4304364570821,
+    "scheduler_final_basin_level_m": 1.000006569563543,
+    "scheduler_storage_gain_m3": 6.569563542946355,
+    "naive_final_total_m3": 16.019258389454414,
+    "scheduler_minus_naive_total_m3": 9.411178067627684
+  },
+  "passed": [
+    "compiled RM11 production scheduler emits the preregistered noncommensurate targets and solve boundaries",
+    "exact Ribasim executes allocations at 0, 5, 10, 15 and 20 hours under the scheduler route",
+    "scheduler route is trajectory-equivalent to an independently frozen explicit boundary-aligned route at every emitted accepted target",
+    "naive 6-hour route reproduces the H10 call-start aliasing signature with only the t=0 allocation record",
+    "scheduler correction changes day-end physical UserDemand delivery by 9.4111780676 m3 in the frozen topology",
+    "scheduler and naive route component ledgers each close against the 32 m3 source supply within the frozen 0.05 m3 tolerance"
+  ],
+  "qualified_claims": [
+    "For the tested Ribasim v2026.1.1 fixed-allocation BMI route, the coupler-owned RM11 scheduler prevents silent skipping of noncommensurate allocation boundaries.",
+    "The scheduler correction is hydrologically material, not bookkeeping-only, in the frozen H10 topology.",
+    "The production scheduler route is equivalent to an independently specified explicit boundary-aligned reference route for the tested one-day noncommensurate case.",
+    "Allocation-clock ownership is therefore explicit and qualified for the first SWAP-Ribasim management coupling profile."
+  ],
+  "authority": {
+    "scheduler_state_machine": "RM11",
+    "clock_contract": "RM03",
+    "aliasing_counterexample": "RIBASIM-DUMMY-20H10",
+    "real_ribasim_execution": "RM12"
+  },
+  "nonclaims": [
+    "No adaptive Ribasim allocation mode.",
+    "No generic clock-lattice characterization.",
+    "No later Ribasim release semantics.",
+    "No MODFLOW composition.",
+    "No canonical admission by RM12 alone."
+  ],
+  "next_required_boundary": "Reconcile current fixed-interface SWAP-MODFLOW authority and admit only a storage/drainage-resolved profile before building the minimal real SWAP + MODFLOW6 + Ribasim three-model fixture."
+}
