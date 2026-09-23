@@ -1,0 +1,106 @@
+name: F-ROM-PURPOSE P4 Reference adjudication
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p4-reference-adjudication
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  adjudicate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify P4 Reference authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p4_reference.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_AFTER_COMPLETE_P4_REFERENCE_ROUTE_SETS'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P4_REFERENCE_LAYER_ROM_OR_MATCHED_RICHARDS_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Download exact P4 route sets
+        run: |
+          set -euo pipefail
+          surface_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json'))['reference_runs']['SURF_P'])")"
+          gw_base_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json'))['reference_runs']['GW_BASE'])")"
+          gw_t32_run="$(python3 -c "import json;print(json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json'))['reference_runs']['GW_R2048_T32'])")"
+          mkdir -p /tmp/surface /tmp/gwbase /tmp/gwt32 /tmp/reference
+          gh run download "$surface_run" --repo abhedwig-cell/SWAP5 -n p4ref-surface-routes -D /tmp/surface
+          gh run download "$gw_base_run" --repo abhedwig-cell/SWAP5 -n p4ref-gw-non-r2048-t32-routes -D /tmp/gwbase
+          gh run download "$gw_t32_run" --repo abhedwig-cell/SWAP5 -n p4gw-r2048-t32-routes -D /tmp/gwt32
+          cp /tmp/surface/surface_* /tmp/reference/
+          cp /tmp/gwbase/gw_* /tmp/reference/
+          cp /tmp/gwt32/gw_* /tmp/reference/
+          test "$(find /tmp/reference -maxdepth 1 -name 'surface_*_o0.txt' | wc -l)" -eq 10
+          test "$(find /tmp/reference -maxdepth 1 -name 'gw_*_o0.txt' | wc -l)" -eq 10
+      - name: Execute frozen P4 Reference qualification
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          set +e
+          python3 tests/rom/analyze_rom_purpose_p4_reference.py             --prereg integration/f-rom/ROM_PURPOSE_P4_PREREGISTRATION.json             --root /tmp/reference             --output result/ROM_PURPOSE_P4_REFERENCE_RESULT.json             | tee result/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 0 -o "$rc" -eq 3
+          cp integration/f-rom/ROM_PURPOSE_P4_REFERENCE_ADJUDICATION_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p4-reference-adjudication
+          path: result/
+          if-no-files-found: error
+      - name: Persist P4 Reference decision
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P4_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P4_STATUS.json')
+          s=json.load(open(p))
+          q=bool(r['candidate_response_authorized'])
+          s.update({
+            'status':'P4_REFERENCE_QUALIFIED_RESPONSES_AUTHORIZED' if q else 'P4_REFERENCE_NOT_QUALIFIED_STOP_BEFORE_RESPONSES',
+            'current_gate':'BLIND_FRONTIER_EXECUTION' if q else 'REFERENCE_QUALIFICATION_FAILED',
+            'candidate_response_authorized':q,
+            'reference_response_adjudicated':True,
+            'reference_result':'integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json',
+            'reference_adjudication_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'reference_adjudication_sha':os.environ['SOURCE_SHA'],
+            'next_actions':(
+              ['Bind the already-frozen Layer-ROM and matched same-partition Richards frontier executions.']
+              if q else
+              ['Stop before P4 Layer-ROM or matched-Richards response. Any redesign requires new prospective authority.'])
+          })
+          s['scientific_firewall']['any_p4_reference_response_seen']=True
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P4_REFERENCE_RESULT.json integration/f-rom/ROM_PURPOSE_P4_STATUS.json
+          git commit -m "ROM-PURPOSE P4: persist Reference adjudication" || exit 0
+          git push origin HEAD:work/f-rom-purpose
