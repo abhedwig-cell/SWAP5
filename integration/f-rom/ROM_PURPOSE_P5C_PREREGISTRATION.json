@@ -1,0 +1,207 @@
+{
+  "schema": "swap5.rom-purpose.p5c.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5C-GW-BOUNDARY-INTERFACE-CARRIER",
+  "date": "2026-09-23",
+  "phase": "PREREGISTERED_BEFORE_ANY_P5C_RESPONSE",
+  "title": "Fresh blind groundwater boundary-interface information-carrier test",
+  "authority": {
+    "p5_reconciliation": "integration/f-rom/ROM_PURPOSE_P5_LIVE_RECONCILIATION.json",
+    "p5b_supersession": "integration/f-rom/ROM_PURPOSE_P5B_ESTIMATOR_AUTHORITY_RECONCILIATION.json",
+    "p4_closeout": "integration/f-rom/ROM_PURPOSE_P4_CLOSEOUT.json",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "boundary_operator_source": "src/legacy/b1_10_port/headcalc.f90"
+  },
+  "central_question": "At equal one-scalar augmentation beyond G16 storage, does boundary-adjacent storage refinement or an explicit bottom-cell pressure-head shape moment better preserve the SWBOTB=5 prescribed-head boundary flux?",
+  "fresh_blind_workload": {
+    "histories": {
+      "G21": {
+        "initial_effective_saturation": 0.74,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_RISE",
+            320
+          ],
+          [
+            "BOTTOM_HEAD_FALL",
+            704
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      },
+      "G22": {
+        "initial_effective_saturation": 0.82,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_FALL",
+            320
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            704
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      },
+      "G23": {
+        "initial_effective_saturation": 0.88,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_RISE",
+            448
+          ],
+          [
+            "BOTTOM_HEAD_FALL",
+            832
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      },
+      "G24": {
+        "initial_effective_saturation": 0.94,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_FALL",
+            448
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            832
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      }
+    },
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "bottom_head_multipliers": {
+      "BOTTOM_HEAD_RISE": 0.9,
+      "BOTTOM_HEAD_FALL": 1.1
+    },
+    "top_boundary": "gravity-equilibrium flux",
+    "route": "R512_T8",
+    "optimization_modes": [
+      0,
+      2
+    ]
+  },
+  "base_partition": {
+    "id": "G16",
+    "boundaries_cm": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      110,
+      120,
+      130,
+      135,
+      140,
+      145,
+      150,
+      152.5,
+      155,
+      157.5,
+      160
+    ]
+  },
+  "operator_contract": {
+    "swbotb": 5,
+    "native_gradient": "g_face = (h_bottom_state - hbot) / delta_face + 1",
+    "native_flux": "qbot_hat = -K_bottom * g_face",
+    "depth_coordinate": "positive downward",
+    "sign": "native SWAP bottom flux; free drainage equilibrium is negative"
+  },
+  "estimators": {
+    "BASE16": {
+      "scalar_count": 16,
+      "h_state": "Retention-inverted pressure head from mean theta over 157.5-160 cm.",
+      "K_state": "K at that inferred head.",
+      "delta_face_cm": 1.25,
+      "formula": "-K(h_bar) * ((h_bar-hbot)/1.25 + 1)"
+    },
+    "SPLIT17": {
+      "scalar_count": 17,
+      "extra_scalar": "Storage split of 157.5-160 cm at 158.75 cm.",
+      "h_state": "Retention-inverted pressure head from mean theta over 158.75-160 cm.",
+      "K_state": "K at that inferred lower-half head.",
+      "delta_face_cm": 0.625,
+      "formula": "-K(h_half2) * ((h_half2-hbot)/0.625 + 1)"
+    },
+    "HM17": {
+      "scalar_count": 17,
+      "extra_scalar": "Pressure-head first moment / linear slope within 157.5-160 cm.",
+      "h_state": "h_bar from mean theta over 157.5-160 cm plus 0.625*g_h to estimate pressure head at 159.375 cm.",
+      "K_state": "K evaluated at the estimated 159.375-cm pressure head.",
+      "delta_face_cm": 0.625,
+      "formula": "-K(h_near) * ((h_near-hbot)/0.625 + 1)"
+    },
+    "FINE_ORACLE": {
+      "role": "operator sanity check only, not a reduced information candidate",
+      "h_state": "Accepted Reference pressure head at bottom fine node.",
+      "K_state": "K evaluated at accepted bottom fine-node head.",
+      "delta_face_cm": 0.15625,
+      "formula": "-K(h_N) * ((h_N-hbot)/0.15625 + 1)"
+    }
+  },
+  "oracle_gate": {
+    "metrics": [
+      "pooled RMSE cm/day",
+      "maximum absolute error cm/day",
+      "sign mismatch count"
+    ],
+    "requirement": "Fine oracle must agree with Reference BOTTOM_FLUX to numerical roundoff/serialization scale and have zero sign mismatches before reduced-carrier results are interpretable.",
+    "rmse_gate_cm_per_day": 1e-10,
+    "max_abs_gate_cm_per_day": 1e-8
+  },
+  "candidate_metrics": [
+    "pooled instantaneous bottom-flux RMSE cm/day",
+    "bottom-flux sign mismatch count",
+    "mean absolute per-history signed bottom-flux bias cm/day"
+  ],
+  "decision_policy": {
+    "per_material_componentwise_noninferior": "Candidate <= BASE16 for all three candidate metrics.",
+    "strict_gain": "At least one candidate metric strictly lower than BASE16.",
+    "HYDRAULIC_SHAPE_SIGNAL": "HM17 satisfies componentwise noninferior + strict gain separately for B01 and B14; SPLIT17 does not.",
+    "STORAGE_SPLIT_SIGNAL": "SPLIT17 satisfies the rule separately for B01 and B14; HM17 does not.",
+    "BOTH_SIGNAL": "Both satisfy the rule for both materials.",
+    "NO_ROBUST_SIGNAL": "Neither satisfies the rule for both materials.",
+    "MIXED_SIGNAL": "Any other result.",
+    "downstream_authority": "A positive screen authorizes only a separately preregistered dynamic blind-validation phase for the selected carrier(s)."
+  },
+  "prohibited": [
+    "reuse G17-G20 for the primary P5C decision",
+    "change SWBOTB=5 solver mathematics",
+    "change tolerance or numerical policy",
+    "claim minimum state count",
+    "claim dynamic reduced-state sufficiency",
+    "claim closure deficit",
+    "application acceptance or production admission"
+  ],
+  "scientific_firewall": {
+    "p4_reopened": false,
+    "p5b_result_used_to_tune_estimator": false,
+    "boundary_operator_derived_from_source_contract": true,
+    "any_p5c_response_seen": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
