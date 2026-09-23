@@ -1,0 +1,175 @@
+name: TAB-HYD KX05 floating-boundary KSATEXM constitutive gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-kx05-ksatexm.yml'
+      - 'research/tabulated_hydraulics/KSATEXM_KX05_PREREGISTRATION.md'
+      - 'research/tabulated_hydraulics/tabhyd_kx05_ksatexm_constitutive_gate.f90'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: a2d99ddd149ffaa422d9c422f96bd66e92c8555d
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - name: Generate exact-Hupsel base raw-head400 input
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/kx05
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          spec=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+
+          mats=[
+            dict(comment="hupsel_upper",ores=0.02,osat=0.433878,alpha=0.021645,
+                 n=1.34877,ksat=83.24164,lexp=7.202077,alfaw=0.04329,h_enpr=0.0,
+                 ksatexm=832.4163),
+            dict(comment="hupsel_lower",ores=0.02,osat=0.387064,alpha=0.016083,
+                 n=1.524418,ksat=22.76176,lexp=2.439662,alfaw=0.032166,h_enpr=0.0,
+                 ksatexm=227.6176),
+          ]
+          out=Path("build/kx05/input.dat")
+          with out.open("w") as fh:
+              for m in mats:
+                  rows=mod.loghead_rows(m,400)
+                  fh.write(
+                      f"{m['comment']} {m['ores']:.17e} {m['osat']:.17e} "
+                      f"{m['alpha']:.17e} {m['n']:.17e} {m['ksat']:.17e} "
+                      f"{m['lexp']:.17e} {m['ksatexm']:.17e}\n"
+                  )
+                  for h,t,k in rows:
+                      fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+          print("KX05_INPUT_MATERIALS=2")
+          print("KX05_INPUT_ROWS_PER_MATERIAL=400")
+          PY
+
+      - name: Compile canonical oracle and research candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/kx05/mod
+          F="-O2 -std=f2018 -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow"
+          gfortran $F -J build/kx05/mod             -c research/tabulated_hydraulics/array_dimensions_stub.f90             -o build/kx05/arrays.o
+          gfortran $F -I build/kx05/mod -J build/kx05/mod             -c legacy-src/src/soil/sptabulated.f90             -o build/kx05/sptabulated.o
+          gfortran $F -I build/kx05/mod -J build/kx05/mod             -c canonical-src/src/solver/mod_soil_water_solver_contract.f90             -o build/kx05/contract.o
+          gfortran $F -I build/kx05/mod -J build/kx05/mod             -c canonical-src/src/solver/mod_b110_default_mvg_provider.f90             -o build/kx05/mvg.o
+          gfortran $F -I build/kx05/mod -J build/kx05/mod             -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90             -o build/kx05/table.o
+          gfortran $F -I build/kx05/mod -J build/kx05/mod             research/tabulated_hydraulics/tabhyd_kx05_ksatexm_constitutive_gate.f90             build/kx05/arrays.o build/kx05/sptabulated.o build/kx05/contract.o             build/kx05/mvg.o build/kx05/table.o             -o build/kx05/gate
+
+      - name: Run preregistered constitutive gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/kx05/gate build/kx05/input.dat | tee build/kx05/result.txt
+
+      - name: Classify result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import math,re
+
+          lines=Path("build/kx05/result.txt").read_text().splitlines()
+          scalar={}
+          vectors={}
+          for line in lines:
+              if not line.startswith("KX05_"):
+                  continue
+              if "=" in line:
+                  k,v=line.split("=",1)
+                  try: scalar[k]=float(v)
+                  except ValueError: pass
+              else:
+                  p=line.split()
+                  if len(p)>=2:
+                      try: vectors[p[0]]=[float(x) for x in p[1:]]
+                      except ValueError: pass
+
+          required=[
+              "KX05_THETA_MAX_ABS","KX05_C_MAX_ABS","KX05_LOG10K_MAX_ABS",
+              "KX05_BRANCH_K_MAX_ABS","KX05_BRANCH_K_MAX_REL",
+              "KX05_TRANSITION_K_MAX_ABS","KX05_BRANCH_CLASS_MISMATCH",
+              "KX05_BRANCH_CLASS_MISMATCH_LOCAL","KX05_CONTINUITY_LOCAL_JUMP",
+              "KX05_BELOW_THRESHOLD_ANALYTIC_ON_OFF_MAX","KX05_ACTIVE_F_MIN",
+              "KX05_ACTIVE_F_MAX","KX05_ACTIVE_F_NONFINITE"
+          ]
+          missing=[k for k in required if k not in scalar]
+          for k in ["KX05_SAT_ANALYTIC","KX05_SAT_CANDIDATE","KX05_HM1_ANALYTIC","KX05_HM1_CANDIDATE",
+                    "KX05_FIRST_ACTIVE_HEAD","KX05_FIRST_ACTIVE_ULP_STEPS"]:
+              if k not in vectors: missing.append(k)
+          if missing:
+              raise SystemExit(f"missing metrics: {missing}")
+
+          failures=[]
+          def gate(ok,msg):
+              if not ok: failures.append(msg)
+
+          gate(scalar["KX05_THETA_MAX_ABS"] <= 1.0e-4, "theta error")
+          gate(scalar["KX05_C_MAX_ABS"] <= 1.0e-4, "capacity error")
+          gate(scalar["KX05_LOG10K_MAX_ABS"] <= 5.0e-4, "log10K error")
+          gate(int(scalar["KX05_BRANCH_CLASS_MISMATCH"]) == 0, "global branch classification mismatch")
+          gate(int(scalar["KX05_BRANCH_CLASS_MISMATCH_LOCAL"]) == 0, "local branch classification mismatch")
+          gate(scalar["KX05_CONTINUITY_LOCAL_JUMP"] <= 1.0e-5, "transition discontinuity")
+          gate(scalar["KX05_BELOW_THRESHOLD_ANALYTIC_ON_OFF_MAX"] <= 1.0e-12, "below-threshold no-op")
+          gate(int(scalar["KX05_ACTIVE_F_NONFINITE"]) == 0, "non-finite active interpolation fraction")
+          gate(scalar["KX05_ACTIVE_F_MIN"] >= 0.0, "active interpolation fraction below zero")
+          gate(scalar["KX05_ACTIVE_F_MAX"] <= 1.0, "active interpolation fraction above one")
+          gate(scalar["KX05_BRANCH_K_MAX_REL"] <= 1.0e-4, "active branch relative conductivity error")
+
+          sat_a=vectors["KX05_SAT_ANALYTIC"]
+          sat_t=vectors["KX05_SAT_CANDIDATE"]
+          gate(max(abs(a-b) for a,b in zip(sat_a,sat_t)) <= 1.0e-9, "saturated KSATEXM oracle")
+          gate(abs(sat_a[0]-832.4163) <= 1.0e-9 and abs(sat_a[1]-227.6176) <= 1.0e-9,
+               "canonical saturated values")
+
+          hm1_a=vectors["KX05_HM1_ANALYTIC"]
+          gate(abs(hm1_a[1]-153.81975964948478) <= 2.0e-10, "canonical lower h=-1 oracle")
+
+          summary=[
+              "metric\tvalue",
+              *[f"{k}\t{scalar[k]:.17g}" for k in required],
+              f"KX05_SAT_MAX_ABS\t{max(abs(a-b) for a,b in zip(sat_a,sat_t)):.17g}",
+              f"KX05_HM1_LOWER_ANALYTIC\t{hm1_a[1]:.17g}",
+              f"KX05_GATE_FAILURES\t{len(failures)}",
+              f"KX05_GATE\t{'PASS' if not failures else 'FAIL'}",
+          ]
+          Path("build/kx05/summary.tsv").write_text("\n".join(summary)+"\n")
+          print("\n".join(summary))
+          if failures:
+              print("KX05_FAILURE_DETAIL="+"; ".join(failures))
+              raise SystemExit(1)
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-kx05-ksatexm
+          path: |
+            build/kx05/input.dat
+            build/kx05/result.txt
+            build/kx05/summary.tsv
