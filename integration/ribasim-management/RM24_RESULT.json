@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.ribasim_management.temporal_budget_provenance_audit.result.v1",
+  "work_unit": "RM24",
+  "date": "2026-09-23",
+  "decision": "INHERITED_FGC44_HEAD_BUDGET_NOT_TRANSFERABLE_AS_ACTIVE_IRRIGATION_ACCEPTANCE_AUTHORITY",
+  "repository_evidence": {
+    "budget_introduction": {
+      "commit": "56360a34dd0ca02e720330465ad73f16607b78db",
+      "message": "F-GC44: align end-to-end SWAP bridge with qualified F-GC30 numerical envelope",
+      "changes": [
+        "DURATION_DAY changed from 0.25 to 1e-4 day",
+        "PREDICTOR_QBOT fixed at 1e-6 cm/day",
+        "HEAD_BUDGET=1e-5 cm introduced",
+        "temporal mode changed to Richards model certificate",
+        "accepted predecessor right derivative initialized to zero"
+      ],
+      "interpretation": "The budget entered as part of a qualification-fixture numerical-envelope alignment."
+    },
+    "fgc30_authority": {
+      "documents": [
+        "integration/f-gc/F-GC30_CLOSEOUT.json",
+        "integration/f-gc/F-GC30_CANONICAL_ADMISSION.json"
+      ],
+      "finding": "The admitted F-GC30 capability is a drainage-free predictor/tangent response. Its preserved limits explicitly exclude irrigation. The authority records do not establish an active-irrigation head-error requirement of 1e-5 cm."
+    },
+    "fgc44_authority": {
+      "documents": [
+        "integration/f-gc/F-GC44_STATUS.json",
+        "docs/integration/F-GC44_REAL_SWAP_MODFLOW6_END_TO_END.md"
+      ],
+      "finding": "F-GC44 admits a deliberately narrow short near-equilibrium one-column/one-cell route and explicitly excludes irrigation and Ribasim."
+    },
+    "active_irrigation_counterevidence": {
+      "RM19": "the unchanged inherited budget rejects all solver-successful active-irrigation retries",
+      "RM20": "forcing-switch correction reduces the certificate strongly but leaves a 0.23587665 cm bound",
+      "RM23": "independent same-horizon one-step versus two-half endpoint head difference is 0.04638380228385586 cm"
+    }
+  },
+  "conclusion": [
+    "The repository supports HEAD_BUDGET=1e-5 cm as part of the admitted F-GC44 near-equilibrium qualification envelope.",
+    "The repository does not support transferring that numerical budget as a scientifically independent acceptance requirement for active irrigation.",
+    "Using the inherited budget to reject RM13B active irrigation is therefore fail-closed and conservative, but it is not a scientifically qualified application decision.",
+    "The 0.0464 cm RM23 refinement difference independently confirms a different temporal scale, but RM24 does not convert that observation into a replacement tolerance."
+  ],
+  "authority_effect": {
+    "F-GC44_near_equilibrium": "UNCHANGED_AND_ADMITTED",
+    "RM13B_active_irrigation": "TEMPORAL_ACCEPTANCE_REQUIREMENT_UNRESOLVED",
+    "three_model_triangle": "DO_NOT_ADMIT_YET"
+  },
+  "nonclaims": [
+    "No replacement temporal threshold is proposed.",
+    "No existing F-GC44 canonical admission is revoked.",
+    "No active-irrigation transaction is admitted.",
+    "No claim is made that 0.0463838 cm is exact temporal error."
+  ],
+  "next_required_boundary": "Define a prospective active-irrigation temporal acceptance contract independently of the RM13B pass/fail outcome. The contract should specify which hydrological outputs require temporal fidelity, how the error reference is constructed when fine-step refinement becomes nonlinear, and what quantitative application requirement justifies acceptance."
+}
