@@ -49,9 +49,19 @@ def require(condition: bool, message: str) -> None:
 
 
 def make_ribasim_api_copy(source_lib: Path, dep_dir: Path, tag: str, workdir: Path) -> RibasimApi:
-    target=workdir/f"libribasim_{tag}.so"
-    shutil.copy2(source_lib,target)
-    return RibasimApi(target,dep_dir)
+    # JuliaC's release library may resolve sibling runtime files relative to
+    # $ORIGIN. Give each candidate a distinct main-library inode/global state
+    # while preserving the exact official release dependency tree.
+    candidate_dir=workdir/tag)
+    candidate_dir.mkdir(parents=True)
+    for entry in dep_dir.iterdir():
+        target=candidate_dir/entry.name
+        if entry.resolve()==source_lib.resolve():
+            shutil.copy2(entry,target)
+        else:
+            target.symlink_to(entry)
+    target=candidate_dir/source_lib.name
+    return RibasimApi(target,candidate_dir)
 
 
 def ribasim_snapshot(api: RibasimApi) -> tuple[float,float,float]:
