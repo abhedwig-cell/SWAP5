@@ -2,14 +2,18 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI109R1",
   "title": "F-APP09 current-canonical admission reconciliation",
-  "phase": "QUALIFY",
-  "status": "CURRENT_CANONICAL_REPLAY_PENDING",
+  "phase": "CLOSE",
+  "status": "PASS_CURRENT_CANONICAL_RECONCILIATION",
   "branch": "integration/f-ci109r1-fapp09-current-canonical-admission",
   "canonical_source": "43577e083ae1e315d86cafd55f971d80279db27c",
   "frozen_subject": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "owner_gate": "PASS",
   "independent_qualification": "F-VQ128 PASS",
   "production_source_files": 5,
   "production_blobs_changed_from_frozen_subject": false,
+  "evidence_run": 35919344950,
+  "evidence_job": 107379000224,
+  "tested_head": "36e02dbd5da582649b6711b93ee31cae3934197b",
   "canonical_admission": false,
-  "next_action": "Run exact owner and independent replay against current canonical-derived branch. If green, open canonical PR for the unchanged five-file postimage."
+  "next_action": "Attach current-canonical reconciliation to PR #593 and classify remaining red PR checks as baseline, preservation-infrastructure, or true regression before merge."
 }
