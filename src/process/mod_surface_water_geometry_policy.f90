@@ -1,5 +1,5 @@
 module mod_surface_water_geometry_policy
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   implicit none
   private
@@ -24,6 +24,11 @@ module mod_surface_water_geometry_policy
   public :: validate_surface_water_geometry_policy
 
 contains
+
+  pure logical function same_real_bits(a, b) result(same)
+    real(real64), intent(in) :: a, b
+    same = transfer(a, 0_int64) == transfer(b, 0_int64)
+  end function same_real_bits
 
   integer function validate_surface_water_geometry_policy(policy) result(status)
     type(surface_water_geometry_policy_t), intent(in) :: policy
@@ -50,8 +55,8 @@ contains
         status = SW_GEOMETRY_POLICY_NATIVE_ID_MISSING
         return
       end if
-      if (policy%transition_epsilon_m /= 0.0_real64 .or. &
-          policy%declared_max_storage_error_m3_per_m2 /= 0.0_real64) then
+      if (.not. same_real_bits(policy%transition_epsilon_m, 0.0_real64) .or. &
+          .not. same_real_bits(policy%declared_max_storage_error_m3_per_m2, 0.0_real64)) then
         status = SW_GEOMETRY_POLICY_INVALID_ERROR_BUDGET
         return
       end if
