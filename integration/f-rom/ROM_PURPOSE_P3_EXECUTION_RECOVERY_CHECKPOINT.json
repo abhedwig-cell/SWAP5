@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.rom-purpose.p3.execution-recovery-checkpoint.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3",
+  "date": "2026-09-23",
+  "status": "REFERENCE_RECOVERY_EXECUTING_NO_SCIENTIFIC_ADJUDICATION_YET",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json@c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "surface_reference": {
+    "run_id": 35876282704,
+    "role": "authoritative repaired SURF_P route producer",
+    "observed_successful_jobs": 56,
+    "observed_failures": 0,
+    "terminal": false
+  },
+  "groundwater_source": {
+    "run_id": 35876286853,
+    "role": "authoritative source for non-R2048_T32 GW routes only",
+    "observed_successful_jobs": 25,
+    "observed_failures": 8,
+    "observed_non_r2048_failures": 0,
+    "all_observed_failures_route": "R2048_T32",
+    "all_observed_failures_classification": "TECHNICAL_RUNNER_INTERRUPTION_EXIT_143",
+    "r2048_t32_source_authority": false,
+    "terminal": false
+  },
+  "groundwater_r2048_t32": {
+    "authoritative_recovery": {
+      "run_id": 35881413707,
+      "binding": "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_RECOVERY_V2_BINDING.json",
+      "execution_topology": "4 x 8192-step exact-state checkpoint segments per history",
+      "prior_qualification_run": 35751978638,
+      "state": "QUEUED"
+    },
+    "superseded_recovery": {
+      "run_id": 35880655075,
+      "authority": false,
+      "reason": "v1 superseded before execution response by prior-qualified 8192-step topology"
+    }
+  },
+  "prepared_downstream": {
+    "targeted_non_r2048_repair": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_MISSING_SLICE_REPAIR_INFRASTRUCTURE.json",
+    "gw_consolidation_v2": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_V2_INFRASTRUCTURE.json",
+    "reference_adjudication": "integration/f-rom/ROM_PURPOSE_P3_REFERENCE_ADJUDICATION_INFRASTRUCTURE.json",
+    "candidate_matrix": "integration/f-rom/ROM_PURPOSE_P3_CANDIDATE_INFRASTRUCTURE.json",
+    "same_partition_diagnostic": "integration/f-rom/ROM_PURPOSE_P3_SAME_PARTITION_INFRASTRUCTURE.json",
+    "closeout": "integration/f-rom/ROM_PURPOSE_P3_CLOSEOUT_INFRASTRUCTURE.json"
+  },
+  "next_gate": [
+    "Surface route producer reaches terminal success.",
+    "Non-R2048 GW source jobs reach terminal state; only verified non-R2048 exit-143 gaps, if any, may be targeted for repair.",
+    "Authoritative R2048_T32 v2 recovery reaches terminal success.",
+    "Consolidate complete GW route set.",
+    "Bind split SURF_P/GW_LB route run IDs into Reference adjudication.",
+    "Candidates remain forbidden until complete Reference adjudication explicitly authorizes them."
+  ],
+  "scientific_firewall": {
+    "reference_response_adjudicated": false,
+    "candidate_response_generated": false,
+    "representation_changed": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_claim_authorized": false,
+    "production_rom_authorized": false
+  }
+}
