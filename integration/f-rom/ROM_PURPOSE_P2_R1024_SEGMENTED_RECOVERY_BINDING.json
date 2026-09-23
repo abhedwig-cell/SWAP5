@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.rom-purpose.p2.r1024-segmented-recovery-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P2-REFERENCE",
+  "status": "BOUND_BEFORE_SEGMENTED_WITNESS_RESPONSE",
+  "date": "2026-09-23",
+  "source_run": 35821534912,
+  "source_execution_head": "5863ee344d315847c4ead9d1c4ab4258f2211864",
+  "source_run_failure": {
+    "attempt1": [
+      "B01/R1024_T32/S05/O0 exit143",
+      "B01/R1024_T32/S05/O2 exit143"
+    ],
+    "attempt2": [
+      "B01/R1024_T32/S05/O0 exit143",
+      "B01/R1024_T32/S05/O2 exit143"
+    ],
+    "all_other_reference_execution_required_for_assembly": "COMPLETE",
+    "scientific_response_for_missing_case": false
+  },
+  "prior_full_history_repair": {
+    "run": 35852014797,
+    "disposition": "SUPERSEDED_FOR_AUTHORITY_BY_SEGMENTED_RECOVERY_REGARDLESS_OF_EVENTUAL_O0_RESULT",
+    "reason": "O2 already repeated hosted-runner shutdown exit143 under the fresh full-history retry.",
+    "scientific_response_used": false
+  },
+  "preregistered_topology_exception": {
+    "original_rule": "R512_R1024 complete independent histories",
+    "exception_scope": "B01/R1024_T32/S05 only, execution topology only",
+    "admission_rule": "No S05 segmented output may enter Reference analysis unless the identical 4x8192-step exact-state segmented topology first reproduces already-complete B01/R1024_T32/S06 scientific output exactly.",
+    "witness_history": "S06",
+    "target_history": "S05",
+    "response_blind": true,
+    "rationale": "S06 was complete before this fallback was selected and is used solely to qualify restart topology. S05 missing-response values remain unseen."
+  },
+  "witness_history": "S06",
+  "target_history": "S05",
+  "segment_model_steps": 8192,
+  "segment_bounds": [
+    [
+      1,
+      8192
+    ],
+    [
+      8193,
+      16384
+    ],
+    [
+      16385,
+      24576
+    ],
+    [
+      24577,
+      32768
+    ]
+  ],
+  "witness_requirements": {
+    "source_full_O0_O2_raw_byte_identity": true,
+    "each_segment_O0_O2_raw_byte_identity": true,
+    "each_segment_checkpoint_O0_O2_raw_byte_identity": true,
+    "segmented_vs_full_STATE_exact_except": [
+      "REV"
+    ],
+    "segmented_vs_full_PROFILE_exact": true,
+    "REV_disposition": "nonhydrologic local restart bookkeeping already excluded from checkpoint authority",
+    "fail_closed": true
+  },
+  "target_requirements": {
+    "same_material": "B01",
+    "same_nodes": 1024,
+    "same_temporal_factor": 32,
+    "same_segment_bounds_as_witness": true,
+    "each_segment_O0_O2_raw_byte_identity": true,
+    "each_segment_checkpoint_O0_O2_raw_byte_identity": true,
+    "frozen_analyzer_unchanged": true
+  },
+  "scientific_change": false,
+  "workload_changed": false,
+  "forcing_changed": false,
+  "solver_or_physics_changed": false,
+  "metric_or_observability_changed": false,
+  "candidate_response_generated": false,
+  "P1_failure_overridden": false,
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p2-r1024-segmented-recovery.yml": "daf719c66e800d43ebdf13adf512b6d2abd0308a",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference.py": "f05de4a54d84c921793d53960f495145921b04e2",
+    "tests/rom/materialize_rom_purpose_p2_surface_reference_segment.py": "716d41a88954a7e67f21bcc988102a4a1cf7add0",
+    "tests/rom/verify_rom_purpose_p2_r1024_segment_equivalence.py": "6012a9252817f01390dceaec447a48a76bd41f43",
+    "tests/rom/analyze_rom_purpose_p2_reference.py": "235a6f0efbadaeff182c7fd5450c20f3d7920795",
+    "integration/f-rom/ROM_PURPOSE_P2_PREREGISTRATION.json": "2e566b35d16a4655b4f9e33c353f57652f5741b1",
+    "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_RUN_AUTHORITY.json": "283783057855bb8f2f055b4fe3014df403a793f7",
+    "integration/f-rom/ROM_PURPOSE_P2_REFERENCE_INFRASTRUCTURE_FAILURE.json": "5ef681266d9b276d826b1ced64b489c24b60c9e8",
+    "integration/f-rom/ROM_PURPOSE_P1_REFERENCE_RESULT.json": "041c8be484f47363c0f545ac28f5490559969072",
+    "tests/rom/rom_purpose_p1_surface_b01_source.f90": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271"
+  },
+  "scientific_firewall": {
+    "witness_selected_without_S05_response": true,
+    "no_candidate_response": true,
+    "no_reference_threshold_change": true,
+    "no_metric_change": true,
+    "no_representation_change": true,
+    "no_closure_change": true,
+    "no_application_acceptance": true,
+    "no_performance_claim": true,
+    "no_production_rom": true
+  }
+}
