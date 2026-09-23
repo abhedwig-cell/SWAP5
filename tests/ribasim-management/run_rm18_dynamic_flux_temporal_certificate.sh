@@ -14,6 +14,9 @@ grep -Fq 'FSI38_QUALIFICATION_GATE=PASS' "$BUILD/fsi38.txt" || fail "FSI38 prese
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace)
 SRC=(
  tests/fsi/fsi04_real_headcalc_stubs.f90
+ src/solver/mod_soil_water_accepted_step_direction_contract.f90
+ src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+ src/transaction/mod_accepted_trajectory_directional_publication.f90
  src/runtime/mod_a23bu_worker_execution_context.f90
  src/solver/mod_soil_water_solver_contract.f90
  src/solver/mod_reference_richards_workspace.f90
