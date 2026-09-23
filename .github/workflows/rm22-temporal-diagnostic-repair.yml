@@ -10,6 +10,7 @@ on:
       - 'tests/transaction/test_transaction_reference.f90'
       - 'tests/ribasim-management/test_rm21_temporal_attempt_provenance.f90'
       - 'tests/ribasim-management/run_rm21_temporal_attempt_provenance.sh'
+      - 'tests/ribasim-management/test_rm22_retry_max.f90'
       - 'tests/ribasim-management/run_rm22_temporal_diagnostic_repair.sh'
       - 'integration/ribasim-management/RM22_*'
       - '.github/workflows/rm22-temporal-diagnostic-repair.yml'
