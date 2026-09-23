@@ -261,14 +261,14 @@ contains
       state%logk_ext_sigma(:,i) = 0.0_real64
       if (state%ksatexm_split_index(i) > 0) then
         j = state%ksatexm_split_index(i)
-        call preprocess_curve(state%head(1:j,i), state%logk(1:j,i), 2, &
+        call preprocess_curve(state%head(1:j,i), state%logk(1:j,i), 3, &
              state%logk_slope(1:j,i), state%logk_sigma(1:j,i), ok)
         if (.not. ok) then
           status = F_TAB02_STATE_SPLINE_FAILED
           return
         end if
         call preprocess_curve(state%head(j:B110_GENERATED_MVG_TABLE_N-1,i), &
-             state%logk(j:B110_GENERATED_MVG_TABLE_N-1,i), 2, &
+             state%logk(j:B110_GENERATED_MVG_TABLE_N-1,i), 3, &
              state%logk_ext_slope(j:B110_GENERATED_MVG_TABLE_N-1,i), &
              state%logk_ext_sigma(j:B110_GENERATED_MVG_TABLE_N-1,i), ok)
       else
@@ -325,6 +325,11 @@ contains
       iendc = 2
       dydx(1) = 0.0_real64
       dydx(n) = 0.0_real64
+    case(3)
+      ! Candidate B internal KSATEXM segment: both endpoint slopes are
+      ! computed from the local branch data (TSPACK IENDC=0).  Do not impose
+      ! the global dry/plateau end conditions on an internal derivative kink.
+      iendc = 0
     case default
       return
     end select
