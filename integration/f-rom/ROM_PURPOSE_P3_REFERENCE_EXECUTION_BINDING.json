@@ -60,5 +60,11 @@
     "candidate_response_after_reference_gate": "Only if P3 Reference result has candidate_response_authorized=true for both purposes and both materials.",
     "closure_research_authorized": false,
     "production_rom_authorized": false
+  },
+  "retrigger_after_preflight_branch_race": {
+    "reason": "Preregistration content was transiently overwritten during response-blind candidate-infrastructure preparation after the initial binding push.",
+    "preregistration_blob_restored": "fa7b2f0b3edba1bcc341ac826a2ef376717a4989",
+    "scientific_change": false,
+    "any_reference_response_seen": false
   }
 }
