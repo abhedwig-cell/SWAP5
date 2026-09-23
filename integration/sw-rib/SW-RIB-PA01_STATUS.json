@@ -1,15 +1,29 @@
 {
   "schema_version": 1,
   "work_unit": "SW-RIB-PA01",
-  "phase": "PREREGISTER",
-  "status": "PREREGISTERED_READY_FOR_CANDIDATE_IMPLEMENTATION",
+  "phase": "CANDIDATE_QUALIFIED",
+  "status": "CANDIDATE_GATE_PASS__INDEPENDENT_VQ_IN_PROGRESS",
   "canonical_base": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
-  "research_closeout": "7ce7d8f388747e87f4e60c19d46d1505e1c0db4c",
+  "research_closeout": "48df989b098d73208eed2496005b656f588ebffd",
   "candidate_branch": "work/sw-rib-pa01-coupled-profile-production-admission",
-  "production_mutations": [],
-  "tested": false,
+  "production_mutations": [
+    "src/process/mod_drainage_extended_exchange.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/runtime/mod_ribasim_surface_water_profile_contract.f90"
+  ],
+  "tested": true,
   "independently_qualified": false,
   "canonical_admitted": false,
-  "next_action": "Implement only the preregistered candidate production surface and run the candidate qualification without changing frozen profile semantics.",
-  "blockers": []
+  "next_action": "Complete SW-RIB-PA01-VQ on the frozen candidate postimage. If it passes, freeze the independent evidence and open the separate canonical-promotion gate. Keep accepted external-head lineage/revision provenance as an explicit later end-to-end coupler admission requirement.",
+  "blockers": [
+    "Independent qualification is still in progress.",
+    "Accepted external-head lineage/revision provenance is not part of PA01 and remains required before a full SWAP5+Ribasim end-to-end production claim."
+  ],
+  "candidate_source_postimage": "0a33c6d96e1f8f76c1794e3ac690e6b641de369a",
+  "candidate_qualified": true,
+  "candidate_workflow_run": 35882130175,
+  "candidate_workflow_job": 107252984139,
+  "candidate_output_sha256": "a6c4eebbd53b7b15d4cab4540cca94bbbd420ed5df12dccd1932d3f5bdd99df1",
+  "independent_qualification_branch": "qualification/sw-rib-pa01-coupled-profile-independent",
+  "independent_qualified": false
 }
