@@ -1,0 +1,31 @@
+name: F-APP09 independent accepted-window qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-app09-ribasim-external-surface-water-profile-independent
+    paths:
+      - 'tests/fapp-qualification/**'
+      - 'integration/f-app/qualification/F-APP09-VQ_*'
+      - '.github/workflows/f-app09-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-app09-independent-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent accepted-window transaction qualification
+        run: bash tests/fapp-qualification/run_fapp09_independent.sh
