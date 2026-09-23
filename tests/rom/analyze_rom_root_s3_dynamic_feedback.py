@@ -122,10 +122,12 @@ def threshold_diagnostic(ref_history:dict,material:str,history:str,member:str)->
     tp=float(candmod.HISTORIES[history]["tp"])
     profile=str(candmod.HISTORIES[history]["root"])
     h3=candmod.critical_h3(tp)
+    h4=candmod.h_from_se(0.08)
     bins=np.arange(0.0,161.0,10.0)
     root10=candmod.s2.layer_root_fractions(bins.tolist(),profile)
     retained_root=candmod.s2.layer_root_fractions(bounds,profile)
-    span_count=0
+    h3_span_count=0
+    h4_span_count=0
     proxy=[]
     for obs in range(theta.shape[0]):
         psi,_=candmod.s2.bc.psi_k(theta[obs])
@@ -136,20 +138,26 @@ def threshold_diagnostic(ref_history:dict,material:str,history:str,member:str)->
             if retained_root[li]<=0.0:
                 continue
             i0=int(round(lo/10.0)); i1=int(round(hi/10.0))
-            vals=theta[obs,i0:i1]
-            hs=h10[i0:i1]
-            if len(hs)>1 and float(np.min(hs)) <= h3 <= float(np.max(hs)):
-                span_count+=1
-            width=hi-lo
-            theta_bar=float(np.mean(vals)) if width>0 else float("nan")
+            vals_full=theta[obs,i0:i1]
+            root_hi=min(hi,ROOT_DEPTH if hasattr(candmod,"ROOT_DEPTH") else 80.0)
+            ir1=int(round(root_hi/10.0))
+            hs_root=h10[i0:ir1]
+            if len(hs_root)>1 and float(np.min(hs_root)) <= h3 <= float(np.max(hs_root)):
+                h3_span_count+=1
+            if len(hs_root)>1 and float(np.min(hs_root)) <= h4 <= float(np.max(hs_root)):
+                h4_span_count+=1
+            theta_bar=float(np.mean(vals_full))
             psi_bar,_=candmod.s2.bc.psi_k(np.asarray([theta_bar]))
             retained_effect += float(retained_root[li])*float(alpha_from_h(np.asarray([-psi_bar[0]]),tp)[0])
         proxy.append(retained_effect-fine_effect)
     p=np.asarray(proxy)
     return {
-        "retained_layer_h3_threshold_span_count":int(span_count),
+        "retained_layer_h3_threshold_span_count_root_support":int(h3_span_count),
+        "retained_layer_h4_threshold_span_count_root_support":int(h4_span_count),
         "ten_cm_root_weighted_vs_retained_mean_alpha_proxy_rmse":float(np.sqrt(np.mean(p*p))),
         "ten_cm_root_weighted_vs_retained_mean_alpha_proxy_max_abs":float(np.max(np.abs(p))),
+        "representative_head_uses_full_retained_layer_mean":True,
+        "threshold_span_is_restricted_to_root_support":True,
         "proxy_is_not_fine_node_exact":True,
     }
 
@@ -294,7 +302,10 @@ def main()->int:
                     "threshold_distribution_diagnostic":thresh,
                     "missing_information":{
                         "D_hydraulic_propagation_supported":bool(any(hydraulic_d)),
-                        "A_threshold_crossing_proxy_present":bool(thresh["retained_layer_h3_threshold_span_count"]>0),
+                        "A_threshold_crossing_proxy_present":bool(
+                            thresh["retained_layer_h3_threshold_span_count_root_support"]>0 or
+                            thresh["retained_layer_h4_threshold_span_count_root_support"]>0
+                        ),
                         "B_root_weighted_distribution_proxy_nonzero":bool(thresh["ten_cm_root_weighted_vs_retained_mean_alpha_proxy_max_abs"]>0.0),
                         "C_upper_zone_placement_requires_cross_representation_synthesis":True,
                         "E_memory_not_adjudicated":True,
