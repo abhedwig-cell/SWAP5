@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.rom-purpose.p3.gw-reference-consolidation-infrastructure.v2",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-GW-REFERENCE-CONSOLIDATION-V2",
+  "date": "2026-09-23",
+  "status": "PREPARED_NOT_BOUND_NOT_EXECUTED",
+  "supersedes": "integration/f-rom/ROM_PURPOSE_P3_GW_REFERENCE_CONSOLIDATION_INFRASTRUCTURE.json",
+  "route_authority": {
+    "R2048_T32": "complete authoritative exact-state stratum recovery",
+    "R512_T32": "successful source history slices except explicitly repaired exit-143 gaps",
+    "R1024_T32": "successful source history slices except explicitly repaired exit-143 gaps",
+    "R2048_T16": "successful source history slices except explicitly repaired exit-143 gaps",
+    "R2048_T8": "successful source history slices except explicitly repaired exit-143 gaps"
+  },
+  "binding_requirements": [
+    "Original GW repair source run must be terminal.",
+    "Full R2048_T32 recovery run must complete successfully.",
+    "Any non-R2048 missing slice must be a verified source-run exit-143 interruption and must be repaired through the separately bound exact-state half-segment path.",
+    "No successful non-R2048 source slice may be replaced.",
+    "R2048_T32 source artifacts are ignored in favor of the uniform full-stratum recovery.",
+    "Every complete route must pass O0/O2 exact trace identity."
+  ],
+  "blobs": {
+    "tests/rom/consolidate_rom_purpose_p3_gw_reference_v2.py": "33b2f5e579bd728c4a827d13c0a1250151cf1bc2",
+    ".github/workflows/f-rom-purpose-p3-gw-reference-consolidate-v2.yml": "14ecf5ddb48f2eba27bab43f247004791d77450f",
+    "integration/f-rom/ROM_PURPOSE_P3_GW_R2048_T32_EXECUTION_REPAIR.json": "e5c15fa0fdf48b57b9aeee6821ab79819bfda983",
+    "integration/f-rom/ROM_PURPOSE_P3_PREREGISTRATION.json": "c1e0aec8ed65f740e0722b0c7c3888cb43d5c37e"
+  },
+  "scientific_firewall": {
+    "consolidation_binding_created": false,
+    "scientific_change": false,
+    "forcing_changed": false,
+    "histories_changed": false,
+    "numerical_policy_changed": false,
+    "solver_or_physics_changed": false,
+    "metric_changed": false,
+    "tolerance_changed": false,
+    "candidate_response_generated": false
+  }
+}
