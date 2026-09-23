@@ -81,14 +81,19 @@ if s.count(needle) != 1:
 s=s.replace(needle,replacement)
 
 # Current canonical has added accepted-trajectory directional sensitivity to
-# the fixed-weir runtime dependency graph after the historical F-PM14 runner
-# was frozen. Add those compile-only dependencies to the ephemeral runner
-# augmentation, without changing any historical test source or assertion.
-extra_anchor="extra='''  src/process/mod_drainage_process.f90"
-extra_replacement="extra='''  src/solver/mod_soil_water_accepted_step_direction_contract.f90\\n  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\\n  src/process/mod_drainage_process.f90"
-if s.count(extra_anchor) != 1:
-    raise SystemExit(f"expected one F-PM14 augmentation block, got {s.count(extra_anchor)}")
-s=s.replace(extra_anchor,extra_replacement)
+# mod_a23bu_worker_execution_context. The frozen child runtime compile runner
+# places mod_a23bu before the later fixed-weir augmentation point, so patch the
+# generated child runner immediately before that module.
+child_write='dst.write_text(s.replace(needle, needle+extra))'
+child_replacement='''s=s.replace(needle, needle+extra)
+early="  src/runtime/mod_a23bu_worker_execution_context.f90\\n"
+deps="  src/solver/mod_soil_water_accepted_step_direction_contract.f90\\n  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\\n"
+if early in s:
+    s=s.replace(early,deps+early,1)
+dst.write_text(s)'''
+if s.count(child_write) != 1:
+    raise SystemExit(f"expected one child write anchor, got {s.count(child_write)}")
+s=s.replace(child_write,child_replacement)
 p.write_text(s)
 PY
 chmod +x "$PRESERVE"
