@@ -119,8 +119,8 @@
     "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
   ],
   "ready_queue": [],
-  "next_safe_step": "Continue remaining exact-source MACROSTATE/MACROFLOW composition as isolated candidates; preserve the no-production-publication boundary and all A4 accepted-mass/retry/restart gates.",
-  "recovery_point": "ea95b5743f2fa98efcda025edfc784ac9a434afe (PPA-WU05-A3-MACROSTATE-AGGREGATE-CANDIDATE; local branch checkpoint only, not pushed or canonically admitted).",
+  "next_safe_step": "Continue another independent B1.11 MACROSTATE/MACROFLOW source capability or extend only within a safe no-publication candidate boundary; preserve all A4 accepted-mass/retry/restart gates.",
+  "recovery_point": "latest committed campaign checkpoint pending PPA-WU05-A3-MACROSTATE-CDE-COMPOSED-CANDIDATE commit; local branch only, not pushed or canonically admitted.",
   "recent_checkpoint_tests": [
     "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
     "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
@@ -139,6 +139,7 @@
     "PPA-WU05-A3-MACROSTATE-WETTING: section D compartment wet-wall fractions, route-dependent stored-water candidates, top wet node and water-level recurrence, including the 1e-8 small-volume branch at O0/O2.",
     "PPA-WU05-A3-MACROSTATE-FLUX: section D source-ordered unsaturated/saturated internal flux recurrences, bottom shallowing correction and SWMBF route gate at O0/O2.",
     "PPA-WU05-A3-MACROSTATE-AGGREGATE: section E main-bypass aliases and ordered domain-2+ volume/storage/profile aggregates, including the single-domain empty range at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-CDE-COMPOSED: isolated two-domain storage-to-wetting-to-flux-to-interface handoff with O0/O2 identity; this is equation composition only, not production/runtime qualification.",
     "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
     "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
     "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
@@ -450,6 +451,19 @@
       "PPA_WU05A3_MACROSTATE_AGGREGATE_SINGLE_DOMAIN_EMPTY_RANGE=PASS",
       "PPA_WU05A3_MACROSTATE_AGGREGATE_INVALID_INPUT_FAIL_CLOSED=PASS",
       "PPA_WU05A3_MACROSTATE_AGGREGATE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_composed_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-CDE-COMPOSED-CANDIDATE",
+    "source": "B1.11 MACROSTATE sections C/D/E candidate composition",
+    "test": "Two-domain sequential storage, wetting/water level, internal flux and SWAP aggregate handoff at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_COMPOSED_CDE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_STORAGE_TO_WETTING=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_WETTING_TO_FLUX=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_INTERFACE_AGGREGATES=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_O0_O2_IDENTITY=PASS"
     ],
     "production_admission": "NONE"
   }
