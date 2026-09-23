@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_aggregate.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-AGGREGATE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@6d333174945d5cc29d4e1ce8d00b27c7fb464ea5",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROSTATE",
+    "source_region": "section E main-bypass aliases and internal-catchment sums for domain volume, water storage and per-compartment volume"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_aggregate_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_aggregate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_aggregate_source_oracle.sh",
+  "in_scope": [
+    "domain 1 values copied to main-bypass interface candidates",
+    "domain 2 through NumDm sequential aggregate of volume and water storage",
+    "source-order per-compartment sum for internal-domain volume",
+    "NumDm=1 empty 2:NumDm range"
+  ],
+  "out_of_scope": [
+    "state mutation or output-file publication",
+    "solute-interface interpretation beyond the named numeric aliases",
+    "accepted Richards interval, mass, retry/restart and A4 admission"
+  ],
+  "expected_tests": [
+    "three-domain hand-summed aliases and per-cell aggregate",
+    "single-domain zero internal aggregate",
+    "invalid negative cell volume rejected",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; numeric interface candidates only; no state or output is published"
+}
