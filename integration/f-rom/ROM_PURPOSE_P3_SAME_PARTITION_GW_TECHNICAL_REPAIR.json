@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.rom-purpose.p3.same-partition-gw-technical-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P3-SAME-PARTITION-RICHARDS",
+  "date": "2026-09-23",
+  "failed_source_run": 35891150093,
+  "failure_scope": "GW_LB same-partition route materialization only; all six GW routes failed before solver execution; SURF_P routes completed successfully.",
+  "failure_signature": "materialize_rom_purpose_p1_coarse_output.py reported 'gw observation output: expected one block, found 0'.",
+  "diagnosis": "The inherited coarse-output adapter matched an exact P1 16-bin profile guard. P3 same-partition GW first converts the frozen Reference harness to the terminal eight-cell G8 partition, so the output-only rewrite must accept the already-authorized P3/P1 profile-label variant and remove the obsolete 16-bin serialization guard.",
+  "repair": "Broaden only the GW output-serialization block matcher. No forcing, state partition, solver, tolerances, temporal factors, metrics, comparator, or closure are changed.",
+  "response_firewall": {
+    "gw_same_partition_response_generated_before_repair": false,
+    "surface_same_partition_response_generated_before_repair": true,
+    "successful_surface_routes_replaced": false,
+    "hydrological_response_used_to_choose_repair": false,
+    "repair_derived_from_pre_solver_exception": true,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "metric_changed": false,
+    "partition_changed": false,
+    "closure_changed": false
+  },
+  "disposition": "Rerun only the six failed GW routes; retain the six successful SURF_P routes from source run 35891150093 for final joint analysis."
+}
