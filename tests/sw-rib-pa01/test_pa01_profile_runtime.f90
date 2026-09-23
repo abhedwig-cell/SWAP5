@@ -1,16 +1,24 @@
 program test_sw_rib_pa01_profile_runtime
-  use, intrinsic :: iso_fortran_env, only: int64, real64\n  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &\n       FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
+       FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, fmr_serialized_batch_diagnostics_t
-  use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &\n       fmr_drainage_response_level_control_t, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK\n  use mod_ribasim_surface_water_profile_contract, only: RIBASIM_SW_PROFILE_OK, RIBASIM_SW_PROFILE_OWNER_CONFLICT, &\n       RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, &\n       RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, RIBASIM_SW_STTAB_EPSILON_M, RIBASIM_SW_GIT_SHA, &\n       RIBASIM_SW_CORE_VERSION, RIBASIM_SW_PYTHON_VERSION_AT_PIN, ribasim_surface_water_profile_status, &\n       bind_ribasim_surface_water_controls, fmr_execute_serialized_ribasim_surface_water_resolved_column
+  use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
+       fmr_drainage_response_level_control_t, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK
+  use mod_ribasim_surface_water_profile_contract, only: RIBASIM_SW_PROFILE_OK, RIBASIM_SW_PROFILE_OWNER_CONFLICT, &
+       RIBASIM_SW_PROFILE_DUPLICATE_CONTROL, RIBASIM_SW_PROFILE_UNSUPPORTED_VARIANT, &
+       RIBASIM_SW_PROFILE_INVALID_ACCEPTED_HEAD, RIBASIM_SW_STTAB_EPSILON_M, RIBASIM_SW_GIT_SHA, &
+       RIBASIM_SW_CORE_VERSION, RIBASIM_SW_PYTHON_VERSION_AT_PIN, ribasim_surface_water_profile_status, &
+       bind_ribasim_surface_water_controls, fmr_execute_serialized_ribasim_surface_water_resolved_column
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -25,10 +33,13 @@ program test_sw_rib_pa01_profile_runtime
   real(real64), parameter :: mass_gate = 1.0e-10_real64
   integer(int64), parameter :: column_id = 44001_int64
 
-  call verify_profile_contract()\n  call verify_wrapper_owner_conflicts()\n  call verify_signed_commit(-12.25_real64, signed_rate, .true.)
+  call verify_profile_contract()
+  call verify_wrapper_owner_conflicts()
+  call verify_signed_commit(-12.25_real64, signed_rate, .true.)
   call verify_signed_commit(7.75_real64, -signed_rate, .false.)
   call verify_invalid_process_rolls_back()
-  write(*,'(A)') 'SW_RIB_SWM01_Q4B_TRANSACTIONAL_RUNTIME=PASS'\n  write(*,'(A)') 'SW_RIB_PA01_CANDIDATE_RUNTIME=PASS'
+  write(*,'(A)') 'SW_RIB_SWM01_Q4B_TRANSACTIONAL_RUNTIME=PASS'
+  write(*,'(A)') 'SW_RIB_PA01_CANDIDATE_RUNTIME=PASS'
 
 contains
 
@@ -109,7 +120,8 @@ contains
          'signed extended response mass complete')
     call require(abs(output%mass%residual) <= mass_gate, 'signed extended response hard mass closure')
     call require(output%accepted_substeps == 1, 'signed extended response one accepted transaction')
-    call require(.not. observation%fixed_weir_surface_water_active, 'internal fixed-weir state inactive')\n    call require(observation%drainage_response_active, 'signed extended response observation active')
+    call require(.not. observation%fixed_weir_surface_water_active, 'internal fixed-weir state inactive')
+    call require(observation%drainage_response_active, 'signed extended response observation active')
     call require(observation%drainage_response%status == FMR_DRAIN_BIND_OK, 'signed extended response diagnostics')
     call require(size(observation%drainage_response%level) == 1, 'signed extended response one level')
     call require(observation%drainage_response%level(1)%variant == FMR_DRAIN_VARIANT_EXTENDED_SIGNED, &
