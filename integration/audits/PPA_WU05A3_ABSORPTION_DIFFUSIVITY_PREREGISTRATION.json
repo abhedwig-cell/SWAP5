@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-ABSORPTION-DIFFUSIVITY",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure Campbell/Mualem-style matrix diffusivity equation for ABSORPTION",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_DIFFUSIVITY_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:ABSORPTION task-1 diffusivity setup",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1691-1708",
+    "behavior": "Floor lambda at -1/m, compute relative saturation from theta/theta_r and capacity range, clamp only above at the pressure-envelope saturation, then evaluate the source Mualem-style diffusivity expression."
+  },
+  "scope": ["explicit hydraulic/MvG coefficient and moisture inputs", "100000 deterministic bitwise comparisons at O0/O2 with physical domain checks"],
+  "non_goals": ["SWABS=2 domain-1 storage/mutable saved diffusivity workspace", "singular/out-of-domain coefficients, accepted mass, rollback/restart or production runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}
