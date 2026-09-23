@@ -20,7 +20,7 @@ assert "procedure :: context_compatible => constitutive_context_incompatible" in
 assert "request%evaluation%constitutive%context_compatible(dt)" in temporal
 assert "select type (constitutive => request%evaluation%constitutive)" not in temporal
 assert "b110_default_mvg_provider_t" not in temporal
-assert "procedure :: context_compatible => b110_generated_mvg_context_compatible" in generated
+assert "procedure :: context_compatible => generated_provider_context_compatible" in generated
 assert "TX_TEMPORAL_MODEL_CERTIFICATE" in test
 assert "qualification_head_budget = 2.5e-11_real64" in test
 assert "parameters%generated_mvg_acceleration_active = generated" in test
