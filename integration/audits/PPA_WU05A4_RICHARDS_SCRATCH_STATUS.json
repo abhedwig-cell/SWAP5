@@ -19,6 +19,15 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "static_matrix_fraction_component": {
+    "baseline": "a614afcf8",
+    "source": "Exact B1.11 macropore.f90 line 386: FrArMtrx = 1 - VlMpStCp / Dz",
+    "implementation": "src/process/mod_ppa_wu05a4_matrix_fraction.f90",
+    "contract": "Explicit static pore volume input; do not substitute total volume including dynamic cracks. Positive finite layer thickness, static volume in [0,dz], matching nonempty shapes. Failed evaluation returns no fraction array.",
+    "scope": "Source-equation component for future typed HeadCalc geometry input, not yet wired into HeadCalc or inferred from the restricted domain's total-volume field. No shared ABI change or physical admission.",
+    "tests": "Zero, partial and full static volume; excess/negative volume, zero thickness, shape mismatch and NaN rejection.",
+    "test_result": "Pending persisted replay"
+  },
   "candidate_rejection_verification": {
     "baseline": "77aff4b39",
     "checks": "Wrong lineage, changed beginning storage, changed pore volume, shortened domain bottom, missing water-profile allocation, negative tolerance and NaN tolerance all reject. Outputs are seeded with valid prior candidate/account to verify failure clears their validity. Existing successful bridge and restart continuation remain in the gate.",

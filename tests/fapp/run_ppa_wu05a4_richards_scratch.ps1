@@ -10,6 +10,7 @@ foreach ($opt in @('O0','O2')) {
     # The existing abstract solver default has intentionally unused dummy arguments.
     $arguments = @('-J',$dir,'-I',$dir,'-std=f2008','-Wall','-Wextra','-Werror','-Wno-unused-dummy-argument','-fcheck=all','-ffpe-trap=invalid,zero,overflow',"-$opt")
     $arguments += $matrixLevelSource
+    $arguments += (Join-Path $repo 'src/process/mod_ppa_wu05a4_matrix_fraction.f90')
     foreach ($source in @('src/adapter/mod_ppa_wu05a2_macropore_state.f90',
         'src/adapter/mod_ppa_wu05a3_candidate_mass.f90',
         'src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90',

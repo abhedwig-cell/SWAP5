@@ -5,6 +5,7 @@ program test_scratch_binding
   use mod_ppa_wu05a4_richards_scratch_binding
   use mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_trial_exchange
+  use mod_ppa_wu05a4_matrix_fraction
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
   use mod_ppa_wu05a3_candidate_mass
@@ -157,9 +158,30 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_REFERENCE_SPLIT_CALLBACKS=PASS'
   call nonlinear_callback_sequence()
   call interval_handoff()
+  call check_matrix_fraction()
+  print '(a)','PPA_WU05A4_STATIC_MATRIX_FRACTION=PASS'
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine check_matrix_fraction()
+    real(real64),allocatable::fraction(:)
+    logical::valid
+    call static_matrix_fraction([0.0_real64,0.5_real64,1.0_real64], &
+        [1.0_real64,2.0_real64,1.0_real64],fraction,valid)
+    call check(valid,180)
+    call check(maxval(abs(fraction-[1.0_real64,0.75_real64,0.0_real64]))<tiny(1.0_real64),181)
+    call static_matrix_fraction([1.1_real64],[1.0_real64],fraction,valid)
+    call check(.not.valid.and..not.allocated(fraction),182)
+    call static_matrix_fraction([0.0_real64],[0.0_real64],fraction,valid)
+    call check(.not.valid.and..not.allocated(fraction),183)
+    call static_matrix_fraction([-0.1_real64],[1.0_real64],fraction,valid)
+    call check(.not.valid.and..not.allocated(fraction),184)
+    call static_matrix_fraction([0.1_real64],[1.0_real64,1.0_real64],fraction,valid)
+    call check(.not.valid.and..not.allocated(fraction),185)
+    call static_matrix_fraction([ieee_value(0.0_real64,ieee_quiet_nan)],[1.0_real64],fraction,valid)
+    call check(.not.valid.and..not.allocated(fraction),186)
+  end subroutine
+
   subroutine interval_handoff()
     type(ppa_wu05a2_macropore_committed_t)::initial,continued,restored
     type(ppa_wu05a2_macropore_restart_t)::restart
