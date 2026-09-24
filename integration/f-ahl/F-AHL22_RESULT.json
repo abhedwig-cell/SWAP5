@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL22",
+  "phase": "SOLVER_FACING_FALLBACK_INDICATOR_DIAGNOSIS_COMPLETE",
+  "status": "CANDIDATE_INDICATOR_FOUND_NOT_QUALIFIED",
+  "workflow_run": 36048517408,
+  "workflow_job": 107797941644,
+  "known_path_failures": {
+    "O05:dry:qfactor0.99:dt0.0625": {
+      "abs_logC_error": 8.873533438347181e-5,
+      "max_storage_jacobian_perturbation_per_day": 1.0348658616268812e-8
+    },
+    "B01:wet:qbot1e-6:dt0.01": {
+      "abs_logC_error": 6.497874949218385e-8,
+      "max_storage_jacobian_perturbation_per_day": 1.2430189993625773e-8
+    }
+  },
+  "known_pass_set": {
+    "count": 11,
+    "largest_max_storage_jacobian_perturbation_per_day": 9.668142158386628e-9,
+    "case_at_largest_value": "B01:dry:qfactor0.99:dt0.0625"
+  },
+  "diagnostic_finding": "Raw pointwise retention metrics do not generally identify both known path failures. The solver-scaled storage-Jacobian perturbation |Delta C|*dz/dt is the only preregistered diagnostic that separates both known failures from the known pass set in this diagnostic sample.",
+  "candidate_threshold_for_future_validation": 1e-8,
+  "separation_margin_note": "The observed separation is narrow: the largest known pass is about 9.67e-9 and the smaller known failure is about 1.035e-8. This is insufficient for qualification and is deliberately treated as a fragile hypothesis.",
+  "interpretation": "The result supports expressing a fallback trigger in solver units rather than material identity or raw interpolation error. It does not establish that the 1e-8 threshold generalizes.",
+  "next_action": "Freeze 1e-8 before generating new near-threshold qbot cases and falsify it prospectively in F-AHL23.",
+  "nonclaims": ["NO_TRIGGER_QUALIFICATION","NO_PRODUCTION_ADMISSION","NO_POSTHOC_GENERALIZATION"]
+}
