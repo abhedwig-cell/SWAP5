@@ -1,0 +1,49 @@
+name: F-AHL adaptive hydraulic preflight
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/**'
+      - 'integration/f-ahl/**'
+      - '.github/workflows/f-ahl01-adaptive-hydraulic-preflight.yml'
+  workflow_dispatch:
+
+jobs:
+  analytical-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run F-AHL01 direct-theta adaptive preflight
+        run: |
+          python3 research/ahl/ahl01_adaptive_lookup.py > /tmp/ahl01.json
+          cat /tmp/ahl01.json
+          python3 - <<'PY'
+          import json
+          data = json.load(open('/tmp/ahl01.json'))
+          failed = [k for k,v in data['materials'].items() if not v['adaptive_pass']]
+          if failed:
+              raise SystemExit(f'F-AHL01 adaptive screen failed: {failed}')
+          PY
+
+      - name: Run F-AHL02 transformed-retention preflight
+        run: |
+          python3 research/ahl/ahl02_representation_transform.py > /tmp/ahl02.json
+          cat /tmp/ahl02.json
+          python3 - <<'PY'
+          import json
+          data = json.load(open('/tmp/ahl02.json'))
+          failed = [k for k,v in data['materials'].items() if not v['pass']]
+          if failed:
+              raise SystemExit(f'F-AHL02 transformed screen failed: {failed}')
+          PY
+
+      - name: Preserve preflight outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl-preflight-${{ github.run_id }}
+          path: |
+            /tmp/ahl01.json
+            /tmp/ahl02.json
