@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04D",
+  "title": "Exact-retention split runtime screen",
+  "parent": "F-AHL04C",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Is exact analytical theta plus lookup C/K cheaper than the full analytical B1.10 smooth-core evaluation once lookup overhead is included?",
+  "candidates": [
+    "full analytical theta+C+K",
+    "full 178-point lookup theta+C+K",
+    "exact analytical theta plus 178-point lookup C+K"
+  ],
+  "benchmark_policy": {
+    "compiler_optimization": "-O3",
+    "lookup_search_included": true,
+    "log10_and_exp_included": true,
+    "theta_analytic_power_evaluation_included": true,
+    "build_and_io_excluded": true,
+    "minimum_repetitions": 3
+  },
+  "decision_rule": "Advance the split representation to an optimized Richards provider only if it is measurably cheaper than full analytical evaluation. Do not infer whole-model speedup from this screen.",
+  "hard_exclusions": [
+    "NO_END_TO_END_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
