@@ -3,7 +3,7 @@
   "workstream": "F-AHL",
   "work_unit": "F-AHL09R",
   "phase": "PAIRED_END_TO_END_TIMING_COMPLETE",
-  "status": "PASS_ADVANCE",
+  "status": "PASS_END_TO_END_SPEED_CANDIDATE",
   "workflow_run": 36042658877,
   "workflow_job": 107778389583,
   "paired_candidate_over_analytical_ratios": [
@@ -16,7 +16,7 @@
     0.715243
   ],
   "median_paired_ratio": 0.720814,
-  "median_cpu_reduction_fraction": 0.279186,
+  "median_reduction_fraction": 0.279186,
   "fidelity": {
     "max_abs_pressure_head_delta_cm": 8.225771e-6,
     "max_abs_water_content_delta": 2.836443e-8,
@@ -32,13 +32,13 @@
     "equivocal_interval": [0.98,1.02],
     "reject_above_ratio": 1.02
   },
-  "decision": "ADVANCE_DERIVATIVE_CONSISTENT_REPRESENTATION",
-  "finding": "The derivative-consistent adaptive representation is consistently faster than the analytical provider in the long paired complete-Richards benchmark while preserving the analytical nonlinear path and frozen fidelity gates.",
-  "interpretation": "The main numerical lesson of F-AHL04 through F-AHL09 is that constitutive approximation must preserve the theta-C derivative relationship. Once that relationship is enforced through a shared interpolant, the table can be both compact and computationally beneficial.",
-  "next_action": "Cross-material and cross-regime falsification before any production-oriented work.",
+  "decision": "ADVANCE_DERIVATIVE_CONSISTENT_REPRESENTATION_TO_MULTI_MATERIAL_MULTI_REGIME_QUALIFICATION",
+  "finding": "The derivative-consistent adaptive representation preserves the analytical nonlinear path and reduces median paired complete Richards solve CPU by about 27.9% on the frozen nonlinear fixture.",
+  "scientific_interpretation": "A compact shared interpolant for theta and C=dtheta/dh avoids the Newton-path penalty observed when theta and C are approximated independently, while retaining the computational benefit of avoiding repeated analytical constitutive power evaluations.",
   "nonclaims": [
-    "This is one controlled nonlinear Richards fixture.",
-    "This is not a whole-SWAP speedup claim.",
-    "This is not production admission."
-  ]
+    "This is not yet a whole-SWAP speedup claim.",
+    "This result is one controlled nonlinear fixture.",
+    "No production admission is implied."
+  ],
+  "next_action": "Qualify the same representation prospectively across multiple hydraulic materials, pressure-state regimes, and boundary-condition classes before any production design decision."
 }
