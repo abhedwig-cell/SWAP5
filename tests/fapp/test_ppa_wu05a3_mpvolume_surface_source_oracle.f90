@@ -37,6 +37,13 @@ program test_ppa_wu05a3_mpvolume_surface_source_oracle
   call ppa_wu05a3_mpvolume_surface(3_int32,1_int32,2_int32,1_int32,dz,subsidy, &
       dynamic,static,diam,[1.0_real64],ad,as,at,areas,asurface,capacity,status)
   call require(status==PPA_WU05A3_MPVOLUME_SURFACE_INVALID,13)
+  subsidy=0; areas=7
+  call ppa_wu05a3_mpvolume_surface(3_int32,2_int32,1_int32,1_int32,dz,subsidy, &
+      dynamic,static,diam,[0.5_real64,0.5_real64],ad,as,at,areas(1:1),asurface,capacity,status)
+  call require(status==PPA_WU05A3_MPVOLUME_SURFACE_INVALID,14)
+  call require(abs(areas(1))+abs(ad)+abs(as)+abs(at)+abs(asurface)+abs(capacity)<tiny(1.0_real64),15)
+  call require(all(abs(areas(2:3)-7)<tiny(1.0_real64)),16)
+  print '(A)','PPA_WU05A3_MPVOLUME_SURFACE_SHORT_OUTPUT=PASS'
 
   print '(A)','PPA_WU05A3_MPVOLUME_SURFACE_SOURCE_ORACLE=PASS'
   print '(A)','PPA_WU05A3_MPVOLUME_SURFACE_CRACK_NODE_OVERRIDE=PASS'

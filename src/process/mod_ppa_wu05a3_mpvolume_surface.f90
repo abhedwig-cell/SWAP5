@@ -33,6 +33,7 @@ contains
     area_surface = 0.0_real64
     capacity = 0.0_real64
     if (num_nodes < 1 .or. num_domains < 1 .or. num_domains > size(pp_domain)) return
+    if (num_domains > size(area_domains)) return
     if (ic_top_mp < 1 .or. ic_top_mp > num_nodes .or. crack_node < 1 .or. crack_node > num_nodes) return
     if (num_nodes > min(size(dz),size(subsidy),size(dynamic_volume),size(static_volume),size(diameter))) return
     if (.not. all(ieee_is_finite(dz(1:num_nodes))) .or. &

@@ -19,6 +19,14 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "surface_dependency_guard": {
+    "baseline": "f34c97f3c",
+    "finding": "MPVOLUME surface helper checked domain proportions length but not the output area_domains extent before writing 1:num_domains. A short output could trigger a bounds violation.",
+    "fix": "Reject short output before branch arithmetic. Existing supplied output extent is zeroed and neighboring caller elements remain untouched. Valid source formulas are unchanged.",
+    "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_surface.ps1",
+    "scope": "Dependency robustness for future surface integration; no production scope expansion.",
+    "test_result": "Pending persisted replay"
+  },
   "bounded_regression_bundle": {
     "baseline": "945ae1585",
     "runner": "tests/fapp/run_ppa_wu05a4_regression.ps1",
