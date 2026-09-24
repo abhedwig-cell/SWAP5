@@ -156,6 +156,10 @@ program test_ppa_irr_dcs1_scheduled
     call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
     call require(d%status==IRRIGATION_OK.and..not.d%selection_evaluated.and..not.f%applied.and. &
          .not.candidate%active_event,'DCS1 eligibility suppresses invalid demand and candidate event')
+    call evaluate_profile_scheduled_irrigation(p,base,r,h,0,[0],[0.0_real64],[nan], &
+         nan,[nan],[nan],[nan],candidate,f,d)
+    call require(d%status==IRRIGATION_OK.and..not.d%selection_evaluated.and..not.f%applied.and. &
+         .not.candidate%active_event,'profile composition preserves every eligibility gate')
   end do
   r%fixed_event_already_selected=.false.
   write(*,'(a)') 'PPA_IRR_DCS1_ELIGIBILITY_FIXED_PRECEDENCE=PASS'
@@ -190,6 +194,10 @@ program test_ppa_irr_dcs1_scheduled
   call require(d%status==IRRIGATION_OK.and.abs(f%external_inflow_amount-0.5_real64)<epsilon(1.0_real64), &
        'DCS2 ignores inactive DCS1 fields')
   write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_GUARDS_DCS2_PRESERVATION=PASS'
+  call evaluate_profile_scheduled_irrigation(p,base,r,h,0,[0],[0.0_real64],[nan], &
+       nan,[nan],[nan],[nan],candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and.abs(f%external_inflow_amount-0.5_real64)<epsilon(1.0_real64), &
+       'profile composition DCS2 ignores invalid unused profile')
   p=saved
   call evaluate_profile_scheduled_irrigation(p,base,r,h,0,[1],[1.0_real64],[0.0_real64], &
        0.5_real64,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
@@ -206,6 +214,24 @@ program test_ppa_irr_dcs1_scheduled
        nan,[nan],[nan],[nan],candidate,f,d)
   call require(d%status==IRRIGATION_OK.and.f%event_finished,'active composition ignores unused invalid profile')
   call require(abs(f%external_inflow_amount-0.75_real64)<epsilon(1.0_real64),'active composition stored gift')
+  r%t0=0.0_real64; r%t1=1.0_real64
+  deallocate(h%water_content)
+  call evaluate_profile_scheduled_irrigation(p,base,r,h,1,[1],[1.0_real64],[0.0_real64], &
+       0.5_real64,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
+  call require(d%status==IRRIGATION_INVALID_HYDRAULIC_VIEW.and..not.f%applied, &
+       'profile composition rejects missing water content without indexing')
+  allocate(h%water_content(1)); h%water_content=0.2_real64
+  call evaluate_profile_scheduled_irrigation(p,base,r,h,1,[1],[1.0_real64],[0.0_real64], &
+       0.5_real64,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
+  call require(d%status==IRRIGATION_INVALID_HYDRAULIC_VIEW.and..not.f%applied, &
+       'profile composition rejects short water-content array')
+  deallocate(h%water_content)
+  allocate(h%water_content(2)); h%water_content=0.2_real64
+  call evaluate_profile_scheduled_irrigation(p,base,r,h,3,[1],[1.0_real64],[0.0_real64], &
+       0.5_real64,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
+  call require(d%status==IRRIGATION_INVALID_PARAMETERS.and..not.f%applied, &
+       'profile composition rejects rooted-node count beyond hydraulic view')
+  write(*,'(a)') 'PPA_IRR_PROFILE_BYPASS_AND_ARRAY_GUARDS=PASS'
   write(*,'(a)') 'PPA_IRR_PROFILE_COMPOSITION_GUARDS_CONTINUATION=PASS'
 contains
   subroutine require(ok,message)
