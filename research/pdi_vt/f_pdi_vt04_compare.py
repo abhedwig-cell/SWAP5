@@ -13,7 +13,7 @@ def normalized_text(p):
     s=p.read_text(errors='replace')
     return '\n'.join(
         line for line in s.splitlines()
-        if 'date and time of simulation' not in line.lower()
+        if 'date and time of simulation' not in line.lower() and 'generated at:' not in line.lower()
     )
 
 def finite_file(p):
