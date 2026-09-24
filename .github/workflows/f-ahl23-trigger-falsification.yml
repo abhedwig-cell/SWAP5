@@ -1,0 +1,23 @@
+name: F-AHL23 trigger falsification
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl23_trigger_metric.py'
+      - 'research/ahl/run_ahl23_trigger_falsification.sh'
+      - 'integration/f-ahl/F-AHL23_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl23-trigger-falsification.yml'
+  workflow_dispatch:
+jobs:
+  falsify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run trigger falsification
+        run: bash research/ahl/run_ahl23_trigger_falsification.sh /tmp/ahl23_result.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl23-${{ github.run_id }}
+          path: /tmp/ahl23_result.txt
