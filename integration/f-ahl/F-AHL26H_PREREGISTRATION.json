@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26H",
+  "title": "PDI10 component-specific tightening and NoVap matrix closure",
+  "parent": "F-AHL26G",
+  "phase": "PREREGISTERED_REPAIR",
+  "wet_K_variants_abs_logK": [0.0003,0.0001],
+  "mid_retention_variants": [
+    {"theta_over_theta_s_abs":3e-6,"abs_logC":0.003},
+    {"theta_over_theta_s_abs":1e-6,"abs_logC":0.001}
+  ],
+  "selection_rules": {
+    "K": "Select the loosest K variant closing PDI10 wet frozen F-AHL26F gates.",
+    "retention": "Select the loosest retention variant closing PDI10 mid frozen F-AHL26F gates."
+  },
+  "combined_matrix": {
+    "PDI8_dt_day":0.25,
+    "PDI10_wet_mid_dt_day":0.25,
+    "PDI10_dry_dt_day":0.125,
+    "require":"6/6 unchanged state/flux/mass and nonlinear-path gates"
+  },
+  "hard_exclusions": ["NO_GATE_RETUNING","NO_VAPOR_ENABLED_ROUTE","NO_TIMING_BEFORE_6_OF_6","NO_PRODUCTION_ADMISSION"]
+}
