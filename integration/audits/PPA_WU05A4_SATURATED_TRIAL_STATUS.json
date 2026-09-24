@@ -16,7 +16,9 @@
     "interface": "prepare_saturated_from_heads copies input and derives matrix_level/matrix_top from current heads and pond at each call before preparation. Caller matrix metadata is ignored by this entry point, but never overwritten.",
     "branch_reconciliation": "At an exact layer boundary CALCGWL chooses the upper containing cell even if its center is unsaturated. Wet-pore guard now skips negative-head centers, matching SATFLOW's zero difference there; nonnegative-head dry-pore branches remain rejected.",
     "tests": "Stale caller metadata is replaced in trial copy. Head change moves water level from -1 to -7/6 cm, changes minimum inventory to 5/24 cm, final rate to 1/6 cm/day and source tangent to -2/9 per day. Original metadata unchanged. Fully unsaturated/perched cases return no evaluation.",
-    "limits": "New preparation entry point only. Existing residual/system/scratch wrappers still use explicit metadata until deliberately rebound; no HeadCalc call site, full nonlinear solve or complete mixed-physics admission.",
+    "limits": "Residual/system/reference scratch routes now accept optional pond to select derived metadata. No HeadCalc call site, full nonlinear solve or complete mixed-physics admission.",
+    "scratch_recovery_point": "bc642cb75",
+    "scratch_test_result": "Persisted bc642cb75 saturated trial and Richards scratch gates PASS O0/O2 with identical transcripts, runtime checks and floating-point traps. Head-derived residual/diagonal, transfer balance, immutable input metadata, failed-evaluation vector preservation and transfer invalidation checked.",
     "test_result": "Persisted d6347044c saturated trial and Richards scratch gates PASS O0/O2",
     "scratch_binding_contract": "Optional trailing pond argument on residual/system/reference scratch routes selects head-derived matrix metadata at every evaluation; absent pond preserves explicit-metadata component behavior. Atomic scratch publication and failed-transfer invalidation remain unchanged. This is opt-in assembly, not a production HeadCalc call site."
   },
