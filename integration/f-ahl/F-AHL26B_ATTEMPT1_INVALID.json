@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26B",
+  "record": "TECHNICAL_ATTEMPT_FAILURE",
+  "workflow_run": 36051750893,
+  "workflow_job": 107808754357,
+  "classification": "INVALID_TEST_DOMAIN_GENERATOR",
+  "error": "The logarithmic head generator used exponent (i/1000*7) for i=0..7000, unintentionally spanning 10^0..10^49 instead of the preregistered 10^0..10^7 cm domain.",
+  "consequence": "Values beyond |h|=1e7 cm extrapolated the PDI adsorption relation outside the preregistered domain and produced nonphysical negative theta. The reported LEGACY_TRANSFORM_REJECTED status from this run is void.",
+  "repair": "Change only the grid exponent to i/1000 for i=0..7000, preserving the exact preregistered -1..-1e7 cm domain and all diagnostic rules.",
+  "scientific_status": "NO_RESULT_FROM_THIS_ATTEMPT"
+}
