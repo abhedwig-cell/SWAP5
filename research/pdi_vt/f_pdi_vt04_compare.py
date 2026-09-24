@@ -42,16 +42,25 @@ def compare_pair(control,candidate):
             evidence[ext]={"produced":False}
             continue
         produced+=1
-        evidence[ext]={
+        ctext=normalized_text(cp)
+        dtext=normalized_text(dp)
+        different=ctext!=dtext
+        detail={
             "produced":True,
             "control_name":cp.name,
             "candidate_name":dp.name,
             "control_sha":sha(cp),
             "candidate_sha":sha(dp),
-            "different":normalized_text(cp)!=normalized_text(dp),
+            "different":different,
             "control_finite":finite_file(cp),
             "candidate_finite":finite_file(dp)
         }
+        if different:
+            detail["first_diff_lines"]=list(difflib.unified_diff(
+                ctext.splitlines(), dtext.splitlines(),
+                fromfile="control", tofile="candidate", n=2
+            ))[:40]
+        evidence[ext]=detail
     return evidence,produced
 
 def main():
