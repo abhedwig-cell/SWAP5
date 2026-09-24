@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06B",
+  "status": "PASS",
+  "workflow_run": 36062095475,
+  "qualification": {
+    "all_four_runs_normal_completion": true,
+    "control_vapor_finite": true,
+    "candidate_vapor_finite": true,
+    "vapor_control_candidate_numerically_different": true,
+    "novap_control_candidate_numerically_identical_after_metadata_normalization": true,
+    "CRITDEVMASBAL": 1e-6
+  },
+  "hashes": {
+    "control_vapor_bfo": "55aad1d8fbb719ac56838284fb91ccce74dbdf45ae71f5b4c1aef436ba4cd74b",
+    "candidate_vapor_bfo": "59baf697f8f19e0583b23d14e6094c4cb48c89ae118e530c5902de63a462d3d2",
+    "control_novap_bfo": "55aad1d8fbb719ac56838284fb91ccce74dbdf45ae71f5b4c1aef436ba4cd74b",
+    "candidate_novap_bfo": "55aad1d8fbb719ac56838284fb91ccce74dbdf45ae71f5b4c1aef436ba4cd74b"
+  },
+  "interpretation": "The moderately colder representative full-model case activates the repaired PDI vapor-temperature term, both Vapor-on paths remain finite, and the NoVap route remains numerically unchanged. This closes the explicit colder-temperature full-model requirement without retuning the failed VT06A gate.",
+  "gate_history": {
+    "VT06A": "preserved negative result: finite 5 C case but no observable Vapor-on difference",
+    "VT06B_attempt1": "technical comparator failure due only to Generated-at metadata",
+    "VT06B_final": "PASS after metadata normalization; physics and testcase unchanged"
+  }
+}
