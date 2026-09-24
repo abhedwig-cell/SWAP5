@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25C",
+  "title": "Bi-modal MvG conductivity representation",
+  "parent": "F-AHL25B",
+  "phase": "PREREGISTERED_CONSTITUTIVE_RESEARCH",
+  "authority": {
+    "decoded_source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "forward_function": "hconduc",
+    "model": 3
+  },
+  "question": "Can model-3 conductivity be represented independently in log(K) over the same bounded unsaturated domain without pathological dry-tail refinement?",
+  "lookup_domain_cm": [-1000000.0,-1.0],
+  "parameter_stress_set": ["M3_BALANCED","M3_SEPARATED","M3_DOMINANT_SECOND"],
+  "representation": "independent adaptive linear interpolation of log(K) over x=log10(-h)",
+  "prospective_error_limit": {
+    "abs_logK": 0.001
+  },
+  "decision_rule": "PASS only if all three preregistered parameterizations reach abs(logK) <= 1e-3 on independent dense validation without recursion pathology or more than 500 support points. If dry-tail pathology appears, stop rather than inventing a posthoc floor.",
+  "hard_exclusions": [
+    "NO_POSTHOC_K_FLOOR",
+    "NO_RICHARDS_CLAIM",
+    "NO_TIMING_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
