@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10A",
+  "title": "Failed-regime representation attribution",
+  "parent": "F-AHL10",
+  "phase": "PREREGISTERED_RESEARCH",
+  "failed_cases": ["B01:wet","B01:dry","B12:wet","B12:dry","O05:wet","O14:dry"],
+  "question": "Are the F-AHL10 endpoint-fidelity failures caused primarily by the derivative-consistent retention interpolant, by the log(K) lookup, or by their interaction?",
+  "variants": [
+    "dc_retention_plus_lookup_K",
+    "dc_retention_plus_exact_K_from_represented_theta",
+    "exact_retention_capacity_plus_lookup_K",
+    "fully_analytical_reference"
+  ],
+  "frozen_solver_and_case_policy": "Identical to F-AHL10; no gate or regime changes.",
+  "primary_observables": [
+    "max pressure-head delta",
+    "max water-content delta",
+    "bottom-flux delta",
+    "nonlinear iteration delta",
+    "backtracking delta"
+  ],
+  "attribution_rule": {
+    "K_lookup_dominated": "dc+exactK passes while exact-retention+lookupK remains materially discrepant",
+    "retention_dominated": "exact-retention+lookupK passes while dc+exactK remains materially discrepant",
+    "interaction_or_both": "neither isolated restoration passes or both are required"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_REPRESENTATION_REFINEMENT_WITHIN_THIS_WORK_UNIT",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
