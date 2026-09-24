@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL08",
+  "phase": "STAGE1_K_LOOKUP_RUNTIME_COMPLETE",
+  "status": "PASS_STAGE1",
+  "workflow_run": 36041607129,
+  "workflow_job": 107774875429,
+  "seconds_per_evaluation": {
+    "B01": {"analytical":8.5331916809e-8,"k_lookup":7.8100204468e-8,"reduction_fraction":0.08474},
+    "B12": {"analytical":8.7430477142e-8,"k_lookup":8.0538272858e-8,"reduction_fraction":0.07883},
+    "O05": {"analytical":8.0049991608e-8,"k_lookup":7.6278686523e-8,"reduction_fraction":0.04711},
+    "O14": {"analytical":8.2233905792e-8,"k_lookup":8.0494403839e-8,"reduction_fraction":0.02115}
+  },
+  "finding": "Exact theta and C plus K lookup is faster than fully analytical constitutive evaluation for all four tested materials, but only by about 2-8%.",
+  "decision": "ADVANCE_TO_STAGE2_END_TO_END_RICHARDS",
+  "reason": "F-AHL07 showed that exact C restores the analytical nonlinear iteration/backtracking route; therefore even a modest provider saving may survive at complete-solve level.",
+  "nonclaims": [
+    "No complete-solve speedup is yet established.",
+    "No whole-SWAP speedup is implied."
+  ]
+}
