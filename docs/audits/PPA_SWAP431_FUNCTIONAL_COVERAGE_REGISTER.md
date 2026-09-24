@@ -19,8 +19,8 @@ confirmed B0 defects are not migration targets.
 | PMdirect normal-input derivation | B1 `MOD_meteo`; PPA-ET-00 | PARTIAL | Restricted typed Hupsel composition admitted | Bind ordinary input derivation without changing ET physics |
 | Dynamic top: head/flux/ponding/linear runoff | B1 `boundtop`; PPA-TOP-01 | IMPLEMENTED_NOT_FULLY_QUALIFIED | Restricted profile only | Broaden only with option-specific authority |
 | SWINTER=0 / Rutter SWINTER=3 | PPA-INT-00 / PPA-INT-03 | CANONICALLY_ADMITTED | Bounded typed applications | Preserve profile bounds |
-| SWINTER=1 daily aggregate | PPA-INT-12; PPA-WU04-C | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 oracle, typed receipt/restart progress, accepted-only F-KT publication, exhausted-retry rejection and changed-dt replay; no full-SWAP ingress/hard-mass closure | Qualify combined production hydraulic/source-window replay |
-| SWINTER=2 daily aggregate | PPA-INT-12; PPA-WU04-D | IMPLEMENTED_NOT_FULLY_QUALIFIED | 100,000-vector B1.11 Gash equation/gate oracle, explicit non-finite source fail-closed tests and shared F-KT receipt/retry/restart contract; no full-SWAP ingress/hard-mass closure | Qualify combined production hydraulic/source-window replay |
+| SWINTER=1 daily aggregate | PPA-INT-12; PPA-WU04-C | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 oracle plus branch-local explicit mode-7 storage/temporal/event owner gates: hard mass, failed/partial rollback, accepted-only receipts, mid-window restart and changing-source sequences; not canonical admission | Broaden ordinary ingress and dynamic-top regimes beyond the qualified fixed-flux profile |
+| SWINTER=2 daily aggregate | PPA-INT-12; PPA-WU04-D | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 Gash oracle plus branch-local owner hard-mass/receipt/mid-window restart gates; low-rain full-window replay passes with explicit numerical retry profile 0.8/64; not canonical admission | Extend bounded source transitions; ordinary ingress, disk restart and broader regimes remain open |
 | SWREDU=1 Black | PPA-WU04-A | CANONICALLY_ADMITTED | Transaction, restart, mass and preservation evidence | Preserve restricted envelope |
 | SWREDU=2 Boesten, `0 < COFRED <= 1` | PPA-WU04-B | IMPLEMENTED_NOT_FULLY_QUALIFIED | Qualified owner gate; admission evidence is required before canonical claim | Reconcile current canonical and route for admission |
 | Boesten `COFRED=0` | B1 / PPA-WU04-B | CONFIRMED_LEGACY_DEFECT | Exact branch can form `0/0` | Classify and qualify a B1 correction before SWAP5 work |
@@ -45,8 +45,13 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
-1. **PPA-WU04-C/D** have source, receipt and restart layers implemented, but
-   their typed production ingress and hard-mass closure remain open.
+1. **PPA-WU04-C/D** have bounded branch-local combined hydraulic/source-window
+   receipt, in-memory restart, failed/partial rollback and hard-mass evidence.
+   These explicit opt-in mode-7 gates do not close ordinary weather ingress,
+   disk persistence, unrestricted dynamic-top regimes or canonical admission.
+   Exact tested refs and limits are recorded in
+   `integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json` and
+   `integration/audits/PPA_WU04D_PREREGISTRATION.json`.
 2. **PPA-LOW05-APP** is blocked pending an ownership/mass-publication contract.
 3. **PPA-LOW01 / PPA-LOW08** now have pure input/regime/profile/row-term oracles, but their stateful lower-boundary slices remain open; do not conflate them with production migration.
 4. **PPA-WU05 remaining root family** has exact-equation oracles but no qualified multi-stressor or MICRO stateful runtime owner.

@@ -3,6 +3,13 @@
   "work_unit": "PPA-WU04-D",
   "title": "Gash source-window interception",
   "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
+  "low_high_sequence_successor": {
+    "tested_commit": "206dbf73e",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashBranchRejection",
+    "result": "PASS O0/O2: 990120 identical lines SHA256 5917F1706A36A91E3275D8CDB72105202AB224BE74E434509DE74E250B6A093E, build swap-ppa-wu01-565e61da9e704341a32b0c92b8225cc4. After the qualified dense-retry low-rain window, three half-day windows cover unmarked 0.04/0.02 rain/sprinkling, marked return to 0.16/0.08 and unmarked 0.16/0.08 continuation. Accepted steps per tile are 776, 1622 and 750. Every window is independently materialized from continued/restored owner snapshots, replayed after fresh in-memory restore, and compared for exact full hydraulic/history/provenance identity. Both source receipts close once, duplicates reject, hard mass remains 1e-12. Event counts are zero in both unmarked windows and bounded to initial trials in the marked window.",
+    "scope": "Explicit storage/temporal/event options and retry profile 0.8/64 only; no production code, default numerical policy, tolerances, forcing amplitudes or state ownership changed. Original halving failure and low-rain intermediate-duration diagnostic gates remain in this run. Not canonical admission, disk persistence or general meteorology/dynamic-top qualification.",
+    "next": "Reconcile ordinary typed meteorology integration against the qualified bounded owner profile. The separate ATM02 root-extraction-active scenario must be investigated independently; do not infer its admission from root-inactive Gash success or bypass root/event compatibility guards. Broader top-regime and disk-restart work remain separate capabilities."
+  },
   "low_rain_dense_retry_successor": {
     "tested_commit": "67990fccf",
     "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashBranchRejection",
@@ -57,7 +64,7 @@
     "The source-window aggregate is closed exactly once after the restored continuation commits."
   ],
   "remaining_qualification": [
-    "unmarked low-rain continuation followed by a marked return to post-saturation forcing under the explicit dense retry profile",
+    "ordinary meteorological ingress and root-demand composition beyond the root-inactive Gash profile",
     "broader dynamic-top regimes and non-opt-in production admission"
   ],
   "nonclaims": ["general weather-table ingestion", "canopy-loss mass-ledger redesign", "WU04C admission"]
