@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT03",
+  "phase": "PINNED_ACTUAL_SOURCE_FORTRAN_GATE_COMPLETE",
+  "status": "PASS",
+  "upstream_source": {
+    "repository": "SWAP-model/SWAP",
+    "commit": "c22bd832ddf3e53e330a552f5e31e74f183362d1",
+    "path": "src/soil/WC_K_models_04_11.f90",
+    "git_blob_sha": "40c5b57fb6691c1f4b51ddf76675b435ca71b589"
+  },
+  "candidate_patch": {
+    "preserves_SWAP009_signed_h": true,
+    "temperature_fix": "TK=Temp+273.15d0; use TK consistently in MgRT, Da and Rho_sv"
+  },
+  "gate": {
+    "temperatures_C": [
+      -20,
+      -5,
+      0,
+      5,
+      20,
+      35,
+      50
+    ],
+    "heads_cm": [
+      -1000,
+      -100000,
+      -10000000
+    ],
+    "method": "actual upstream Fortran source compiled with strict runtime checks; Ksat=0 in harness isolates the vapor addend without subtraction cancellation",
+    "result": "21/21 exact agreement with independent absolute-temperature formula at printed precision"
+  },
+  "initial_attempt": "F-PDI-VT03_ATTEMPT1.json records cancellation-limited measurement failure and is retained as negative technical evidence",
+  "classification": "CONFIRMED_IMPLEMENTATION_UNIT_BUG_ACTUAL_SOURCE",
+  "next_blocker": "Full-SWAP candidate qualification requires an exact reconstructable source preimage/archive for the historical B1 chain or an explicitly governed upstream-source qualification path.",
+  "production_status": "NOT_ADMITTED"
+}
