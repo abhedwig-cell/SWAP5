@@ -12,15 +12,20 @@
     "candidate": "same control plus absolute-temperature repair"
   },
   "case_changes_only": {
-    "initial_TSOIL_C": [8.0,8.0,8.0,8.0],
-    "meteorology_Tmin_C": 8.0,
-    "meteorology_Tmax_C": 12.0
+    "initial_TSOIL_C": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "meteorology_Tmin_C": 8,
+    "meteorology_Tmax_C": 12
   },
   "unchanged": {
-    "initial_head_cm": -100000.0,
+    "initial_head_cm": -100000,
     "PDI_model": 8,
     "heat_flow": true,
-    "CRITDEVMASBAL": 1e-6,
+    "CRITDEVMASBAL": 0.000001,
     "duration": "same short VT04C qualification period"
   },
   "gates": [
@@ -32,5 +37,12 @@
     "CRITDEVMASBAL=1e-6 remains enforced"
   ],
   "gate_policy": "VT06A remains failed. This is a new independent preregistration; no prior gate is retuned.",
-  "forbidden": ["No physics changes","No AHL changes","No historical-source substitution"]
+  "forbidden": [
+    "No physics changes",
+    "No AHL changes",
+    "No historical-source substitution"
+  ],
+  "execution_status": "SUPERSEDED_BEFORE_EXECUTION",
+  "superseded_by": "F-PDI-VT06B-COLD_PREREGISTRATION.json",
+  "supersession_reason": "Parallel preregistration was already bound to the executable workflow and case adapter before this variant executed. No gate or result is transferred between the two."
 }
