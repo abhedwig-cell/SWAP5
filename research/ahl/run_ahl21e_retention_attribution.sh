@@ -7,6 +7,10 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 PYTHONPATH=research/ahl python3 research/ahl/ahl15_wet_local_k.py "$BUILD/tables" >/dev/null
+# AHL08 exact-retention provider consumes a compact table beginning with N.
+# The selected AHL15 file has one parameter line before N; strip only that
+# metadata line without changing any support or log(K) values.
+tail -n +2 "$BUILD/tables/O05_dc.dat" > "$BUILD/tables/O05_konly.dat"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
@@ -38,6 +42,6 @@ gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl21e_
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 
 RESULT="${1:-/tmp/ahl21e_result.txt}"
-"$BUILD/test" "$BUILD/tables/O05_dc.dat" O05 dry -500 0 0.99 0.0625 2>&1 | tee "$RESULT"
+"$BUILD/test" "$BUILD/tables/O05_konly.dat" O05 dry -500 0 0.99 0.0625 2>&1 | tee "$RESULT"
 grep -Fq 'AHL21E_EXACT_RET_CASE O05 dry PASS' "$RESULT"
 echo "AHL21E_RETENTION_ATTRIBUTION=PASS" | tee -a "$RESULT"
