@@ -48,7 +48,7 @@ def compare_pair(control,candidate):
             "candidate_name":dp.name,
             "control_sha":sha(cp),
             "candidate_sha":sha(dp),
-            "different":cp.read_bytes()!=dp.read_bytes(),
+            "different":normalized_text(cp)!=normalized_text(dp),
             "candidate_finite":finite_file(dp)
         }
     return evidence,produced
