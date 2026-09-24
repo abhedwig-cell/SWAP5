@@ -24,7 +24,8 @@
     "scope": "Manufactured nonlinear callback driver now starts with eightfold overrelaxation and halves the step until the residual norm drops by at least half. This deliberately exercises rejection and reevaluation; it is not the production HeadCalc line-search policy or legacy frozen-exchange branch.",
     "checks": "Each dt must reject at least one step and converge within 100 iterations to its analytic root. Rejected transfer is explicitly discarded, cannot be extracted, and initial store stays unchanged. Distinct evaluation keys are assigned to every trial. Final transfer is checked against final heads and duration.",
     "finding": "Accepting any residual decrease could stagnate beyond the bounded iteration count in this deliberately overrelaxed test. Requiring sufficient decrease resolves the test-driver issue without changing production or source derivatives.",
-    "test_result": "Working-tree Richards scratch gate PASS O0/O2; persisted replay pending"
+    "recovery_point": "8ad20c8c1",
+    "test_result": "Persisted 8ad20c8c1 Richards scratch and trial exchange gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
   },
   "transfer_identity_contract": {
     "baseline": "d3527f9ec",
