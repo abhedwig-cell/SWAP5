@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """F-AHL10D: dry-end relevance-bounded derivative-consistent table builder."""
 from __future__ import annotations
-import json, math, pathlib, sys
-import ahl09_derivative_consistent as dc
+import json, math, pathlib, sys, contextlib, io
+with contextlib.redirect_stdout(io.StringIO()):
+    import ahl09_derivative_consistent as dc
 
 ROOT=pathlib.Path(sys.argv[1] if len(sys.argv)>1 else "/tmp/ahl10d")
 ROOT.mkdir(parents=True,exist_ok=True)
