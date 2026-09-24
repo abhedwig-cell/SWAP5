@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.research_result.v1",
+  "workunit": "TAB-SPEED-ACCURACY-P1",
+  "date": "2026-09-24",
+  "branch": "research/tab-speed-accuracy",
+  "controlling_run": 35966721412,
+  "result": "ROW_COUNT_FRONTIER_CHARACTERIZED",
+  "design": {
+    "rows": [400,200,100,50,25],
+    "representation": "same raw-head/log(K) generated TSPACK provider; row count only",
+    "all_matrix_jobs": "PASS"
+  },
+  "results": [
+    {"rows":400,"provider_delta_pct":-8.98911615,"richards_head_max_abs_cm":2.3771343649059418e-6,"richards_theta_max_abs":8.566507864182782e-9,"richards_delta_pct_range":[-14.97853685,-11.82059012],"serialized_theta_max_abs":3.841900825252154e-9,"serialized_delta_pct_range":[-7.91540785,-4.88248673]},
+    {"rows":200,"provider_delta_pct":-17.49913164,"richards_head_max_abs_cm":1.8368015304304208e-5,"richards_theta_max_abs":4.999616137757457e-8,"richards_delta_pct_range":[-23.88428435,-18.18970960],"serialized_theta_max_abs":2.7697313886854147e-8,"serialized_delta_pct_range":[-11.52931300,-7.83898305]},
+    {"rows":100,"provider_delta_pct":-27.58003175,"richards_head_max_abs_cm":1.0131200004082075e-4,"richards_theta_max_abs":3.5202416948099113e-7,"richards_delta_pct_range":[-22.67446056,-22.15713553],"serialized_theta_max_abs":1.7815648822860908e-7,"serialized_delta_pct_range":[-12.25454545,-10.29767667]},
+    {"rows":50,"provider_delta_pct":-37.90361354,"richards_head_max_abs_cm":6.38125946274215e-4,"richards_theta_max_abs":1.9279282057471647e-6,"richards_delta_pct_range":[-27.10920380,-24.55215059],"serialized_theta_max_abs":2.0328172256611765e-6,"serialized_delta_pct_range":[-14.95823842,-11.64061314]},
+    {"rows":25,"provider_delta_pct":-41.29032258,"richards_head_max_abs_cm":3.546999502376025e-2,"richards_theta_max_abs":1.5791363833436434e-3,"richards_delta_pct_range":[-35.16072924,-28.78642567],"serialized_theta_max_abs":1.586167362095381e-3,"serialized_delta_pct_range":[-22.29793479,-14.41940648]}
+  ],
+  "common_numerical_behavior": {
+    "richards_iterations": "3 analytical / 3 generated for every tested profile and row count",
+    "serialized_iterations": "3 analytical / 3 generated for every tested profile and row count",
+    "serialized_retries": "0 / 0 for every tested profile and row count",
+    "mass_residual_differences": "approximately machine precision in all tested Richards cases"
+  },
+  "interpretation": [
+    "400 rows is not on the useful speed-accuracy frontier if practical rather than near-identity fidelity is the objective.",
+    "200, 100 and 50 rows retain very small bounded Richards errors while materially increasing measured acceleration.",
+    "25 rows is qualitatively different: coarse-profile head error rises to about 0.0355 cm and theta error to about 0.00158, so it should not be promoted before whole-application characterization.",
+    "50 and 100 rows are the primary Phase-2 whole-Hupsel candidates; 200 rows is a conservative bridge/reference candidate.",
+    "Timing values are single-run matrix characterization and require paired whole-Hupsel confirmation before practical selection."
+  ],
+  "next": "Run exact whole-Hupsel paired characterization for 200/100/50 rows against analytical baseline, using the uploaded official SWAP 4.3.1 authority. Keep 25 rows as an exploratory lower-bound candidate only if the primary candidates do not expose application instability.",
+  "production_effect": "NONE"
+}
