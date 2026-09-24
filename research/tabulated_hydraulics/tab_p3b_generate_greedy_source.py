@@ -63,7 +63,7 @@ new="""    ! P3B research-only greedy constitutive-error placement.
             lklin=dense_logk(left,i)+w*(dense_logk(right,i)-dense_logk(left,i))
             thscale=max(epsilon(1.0_real64),parameters%cofgen(2,i)-parameters%cofgen(1,i))
             lkscale=max(1.0_real64,abs(dense_logk(dense_n,i)-dense_logk(1,i)))
-            score=max(abs(dense_theta(q,i)-thlin)/thscale,abs(dense_logk(q,i)-lklin)/lkscale)
+            score=max(abs(dense_theta(q,i)-thlin)/thscale,abs(dense_logk(q,i)-lklin))
             if(score>best_score) then; best_score=score; best_q=q; end if
           end do
           chosen(best_q,i)=.true.; support(kk,i)=best_q
