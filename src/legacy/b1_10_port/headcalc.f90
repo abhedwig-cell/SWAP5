@@ -379,7 +379,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
       call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
-           fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror)
+           fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror, &
+           capture_in_gamma_requested=fsi_ws%tridag_factorization_capture_active)
 
 !     in the rare case that TRIDAG fails, use alternative solution
       if (ierror /= 0) then
