@@ -731,3 +731,18 @@ H21 resolves `template_index` once in `execute_column` and uses that resolved in
 Expected effect: remove one linear template-registry scan per column per serialized MultiSWAP call. This is O(Ncolumns * Ntemplates) avoidable comparison work in the current path.
 
 No routing semantics change: backend id, parameter/forcing handle bounds and template compatibility checks remain identical.
+
+
+## ZW01-H21 preregistration — remove registry state-claim scratch allocation
+
+`registry_structure_valid` currently allocates `state_claimed(size(states))`, zero-fills it, and marks each referenced state handle while validating columns.
+
+The same routine already performs a nested `i/j` column loop to reject duplicate `column_id` values. State-handle uniqueness can be checked in that existing loop at essentially no additional asymptotic cost:
+
+- keep bounds validation for each state handle;
+- in the existing duplicate-column loop, also reject equal `state_handle`;
+- remove the temporary logical `state_claimed` array and its zero-fill.
+
+Expected effect: remove one length-|states| allocation, deallocation and logical zero-fill per serialized MultiSWAP dispatch.
+
+Semantics are unchanged: duplicate state ownership remains rejected before physical execution, and no public diagnostics/interface type changes.
