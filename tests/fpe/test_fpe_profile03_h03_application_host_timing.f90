@@ -40,12 +40,17 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   real(real64) :: k0, qeq, elapsed_seconds, checksum
   integer(int64) :: clock_start, clock_end, clock_rate
   integer :: calls, warmups, i
-  character(len=64) :: arg
-  logical :: ok, available_off, available_on
+  character(len=64) :: arg, timing_mode
+  logical :: ok, available_off, available_on, timing_directional
 
   call get_command_argument(1, arg)
   read(arg,*) calls
   if (calls <= 0) error stop 'PROFILE03 invalid call count'
+  timing_directional = .false.
+  if (command_argument_count() >= 2) then
+    call get_command_argument(2, timing_mode)
+    timing_directional = trim(timing_mode) == 'directional'
+  end if
 
   call initialize_parameters(parameters)
   call determine_initial_conductivity(parameters, k0)
@@ -68,30 +73,56 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   call backend_on%initialize(top)
 
   warmups = min(100, max(10, calls/100))
-  do i = 1, warmups
-    call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
-         0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
-  end do
+  if (timing_directional) then
+    do i = 1, warmups
+      call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
+           0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+    end do
+  else
+    do i = 1, warmups
+      call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
+           0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
+    end do
+  end if
 
   checksum = 0.0_real64
   call system_clock(clock_start, clock_rate)
-  do i = 1, calls
-    call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
-         0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
-    checksum = checksum + result_off%mass%storage_end + result_off%mass%residual
-  end do
+  if (timing_directional) then
+    do i = 1, calls
+      call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
+           0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+      checksum = checksum + result_on%mass%storage_end + result_on%mass%residual
+    end do
+    observation_off = backend_on%observation()
+  else
+    do i = 1, calls
+      call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
+           0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
+      checksum = checksum + result_off%mass%storage_end + result_off%mass%residual
+    end do
+    observation_off = backend_off%observation()
+  end if
   call system_clock(clock_end)
   elapsed_seconds = real(clock_end-clock_start,real64)/real(clock_rate,real64)
-  observation_off = backend_off%observation()
 
-  call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
-       0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  if (timing_directional) then
+    call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
+         0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
+  else
+    call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
+         0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  end if
 
   write(*,'(A,I0,A,ES24.16,A,ES24.16,A,I0,A,I0,A,ES24.16)') &
        'PROFILE03_E1_TIMING,calls=',calls,',seconds=',elapsed_seconds,',ns_per_interval=', &
        1.0e9_real64*elapsed_seconds/real(calls,real64),',nonlinear_iterations_per_solve=', &
        observation_off%solver_diagnostics%nonlinear_iterations,',constitutive_evaluations_per_solve=', &
        observation_off%solver_diagnostics%constitutive_evaluations,',checksum=',checksum
+  if (timing_directional) then
+    write(*,'(A)') 'PROFILE03_E1_TIMING_MODE=directional'
+  else
+    write(*,'(A)') 'PROFILE03_E1_TIMING_MODE=reference'
+  end if
 
   call require(result_off%status == CANONICAL_STATUS_COMPLETED .and. result_off%completed, &
        'default-off production interval completed')
