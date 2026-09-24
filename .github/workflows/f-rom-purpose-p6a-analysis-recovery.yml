@@ -1,0 +1,79 @@
+name: F-ROM-PURPOSE P6A analysis recovery
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P6A_ANALYSIS_RECOVERY_BINDING.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify P6A analysis recovery
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p6a_boundary_oracle.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P6A_ANALYSIS_RECOVERY_BINDING.json'))
+          assert b['status']=='BOUND_ANALYSIS_ONLY_AFTER_COMPLETE_P6A_ROUTES'
+          assert b['source_route_run']==35955946509
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Recover exact P6A route artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/source /tmp/p6a
+          gh run download 35955946509 --repo abhedwig-cell/SWAP5 -p 'p6a-*' -D /tmp/source
+          find /tmp/source -type f -name 'p6a_*_o0.txt' -exec cp {} /tmp/p6a/ \;
+          find /tmp/source -type f -name 'p6a_*_o2.txt' -exec cp {} /tmp/p6a/ \;
+          find /tmp/source -type f -name 'p6a_*_execution.json' -exec cp {} /tmp/p6a/ \;
+      - name: Analyze lagged boundary contrast
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p6a_boundary_oracle.py             --prereg integration/f-rom/ROM_PURPOSE_P6A_PREREGISTRATION.json             --root /tmp/p6a             --output result/ROM_PURPOSE_P6A_RESULT.json | tee result/runner.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p6a-recovered
+          path: result/
+          if-no-files-found: error
+      - name: Persist P6A
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P6A_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P6A_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P6_STATUS.json')
+          s=json.load(open(p))
+          s.update({
+            'p6a_result':'integration/f-rom/ROM_PURPOSE_P6A_RESULT.json',
+            'p6a_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p6a_route_source_run':35955946509,
+            'p6a_execution_sha':os.environ['SOURCE_SHA'],
+            'p6a_decision':r['decision']
+          })
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P6A_RESULT.json integration/f-rom/ROM_PURPOSE_P6_STATUS.json
+          git commit -m "ROM-PURPOSE P6A: persist recovered lagged boundary contrast" || exit 0
+          git push origin HEAD:work/f-rom-purpose
