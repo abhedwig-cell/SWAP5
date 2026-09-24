@@ -1,0 +1,25 @@
+name: F-AHL10 cross-material regime matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl10_matrix.f90'
+      - 'research/ahl/run_ahl10_matrix.sh'
+      - 'integration/f-ahl/F-AHL10_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl10-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run 12-case AHL10 matrix
+        run: |
+          bash research/ahl/run_ahl10_matrix.sh /tmp/ahl10_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl10-${{ github.run_id }}
+          path: /tmp/ahl10_result.txt
