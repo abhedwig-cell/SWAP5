@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11C",
+  "title": "Cross-material cross-regime paired timing",
+  "parent": "F-AHL11",
+  "phase": "PREREGISTERED_RESEARCH",
+  "candidate": "F-AHL11 Stage-B decoupled derivative-consistent retention/capacity plus independent logK support at abs logK error 3e-4",
+  "cases": [
+    "B01:wet","B01:mid","B01:dry",
+    "B12:wet","B12:mid","B12:dry",
+    "O05:wet","O05:mid","O05:dry",
+    "O14:wet","O14:mid","O14:dry"
+  ],
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 16384,
+    "paired_repetitions_per_case": 7,
+    "order": "alternate analytical->candidate and candidate->analytical by repetition",
+    "case_statistic": "median paired candidate/analytical CPU ratio",
+    "matrix_statistic": "median of the 12 case medians",
+    "table_generation_and_binding": "outside timed batches"
+  },
+  "fidelity_precondition": "F-AHL11 Stage B 12/12 PASS with identical nonlinear iteration and backtracking counts",
+  "decision_rule": {
+    "advance": "matrix median < 0.98 AND no individual case median > 1.02",
+    "equivocal": "matrix median between 0.98 and 1.02 inclusive, or any isolated case median >1.02 while matrix median <0.98",
+    "reject": "matrix median > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_TABLE_BUILD_COST_OMISSION_IN_LATER_APPLICATION_BENCHMARKS",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
