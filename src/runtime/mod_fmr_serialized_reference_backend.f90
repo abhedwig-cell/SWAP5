@@ -1600,6 +1600,7 @@ contains
         if (.not. ieee_is_finite(forcing%temporal_forcing_event_time)) return
         if (.not. same_real_bits(forcing%temporal_forcing_event_time,interval%t0)) return
         if (.not. self%temporal_indicator_history_enabled.or..not.associated(self%free_drainage_indicator)) return
+        if (.not.self%soil_water_selection%uses_reference().or.self%fixed_weir_surface_water_active) return
         if (self%bottom_mode/=7.or.self%swkimpl/=0.or.self%swkmean/=1) return
         if (self%root_extraction_active.or.self%snow_active.or.self%soil_temperature_active.or. &
             self%black_evaporation_active.or.self%boesten_evaporation_active.or.self%drainage_response_active) return

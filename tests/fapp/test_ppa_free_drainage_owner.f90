@@ -686,6 +686,13 @@ contains
         call fresh%export_committed_restart(9902_int64,resumed,ok,code)
         call require(ok.and.code==FMR_APP_BOOT_OK,'wrong-time rejection exportable')
         call compare_restart_bundles(before,resumed,'wrong event time does not mutate owner')
+        restored_forcing%temporal_forcing_event_time=ieee_value(0.0_real64,ieee_quiet_nan)
+        call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
+             restored_result,restored_receipt,code)
+        call require(code/=FMR_APP_BOOT_OK.and.all(.not.restored_result%committed),'nonfinite event time rejected')
+        call fresh%export_committed_restart(9902_int64,resumed,ok,code)
+        call require(ok.and.code==FMR_APP_BOOT_OK,'nonfinite event rejection exportable')
+        call compare_restart_bundles(before,resumed,'nonfinite event time does not mutate owner')
         restored_forcing%temporal_forcing_event_time=start_time
       end if
       call owner%export_committed_restart(9902_int64,unchanged,ok,code)
