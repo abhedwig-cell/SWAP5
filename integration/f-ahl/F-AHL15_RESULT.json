@@ -2,42 +2,42 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL15",
-  "phase": "WET_RANGE_LOCAL_REFINEMENT_MATRIX_COMPLETE",
-  "status": "PASS_12_OF_12",
-  "workflow_run": 36044386992,
-  "workflow_job": 107784187008,
+  "phase": "FIDELITY_AND_PAIRED_TIMING_COMPLETE",
+  "status": "PASS_RESEARCH_CANDIDATE",
   "representation": {
-    "global_floor_scaled_logK_tolerance": 1e-3,
-    "wet_range_cm": [-25.0,-1.0],
-    "wet_range_floor_scaled_logK_tolerance": 3e-4,
-    "K_floor_cm_per_day": 1e-10,
-    "theta_C": "derivative-consistent Hermite retention representation"
+    "retention": "derivative-consistent cubic Hermite z=logit(Se) over log10(-h)",
+    "capacity": "derivative of the same retention interpolant",
+    "conductivity": "linear log(K) on shared support",
+    "conductivity_error_metric": "abs(log(max(K_interp,1e-10))-log(max(K_true,1e-10)))",
+    "conductivity_error_limit": 3e-4,
+    "near_saturation": "authoritative analytical for h > -1 cm"
   },
-  "support_points": {
-    "B01": 121,
-    "B12": 79,
-    "O05": 122,
-    "O14": 108
+  "support_points": {"B01":164,"B12":104,"O05":160,"O14":169},
+  "fidelity_matrix": {
+    "workflow_run": 36044316960,
+    "passed_cases": 12,
+    "total_cases": 12,
+    "all_nonlinear_iteration_deltas_zero": true,
+    "all_backtracking_deltas_zero": true
   },
-  "matrix": {
-    "case_count": 12,
-    "pass_count": 12,
-    "same_iteration_count_count": 12,
-    "same_backtracking_count_count": 12
+  "paired_timing_confirmation": {
+    "workflow_run": 36044613768,
+    "workflow_job": 107784946268,
+    "paired_candidate_over_analytical_ratios": [0.740992,0.762142,0.751648,0.761448,0.758629,0.744447,0.706643],
+    "median_ratio": 0.751648,
+    "median_cpu_reduction_fraction": 0.248352,
+    "fidelity": {
+      "max_abs_pressure_head_delta_cm": 1.038717e-6,
+      "max_abs_water_content_delta": 1.143307e-9,
+      "bottom_flux_delta_cm_per_day": 4.617402e-9,
+      "mass_residual_abs_cm": 6.678685e-17
+    }
   },
-  "critical_B01_wet": {
-    "max_abs_pressure_head_delta_cm": 7.184539e-4,
-    "max_abs_water_content_delta": 1.155318e-6,
-    "bottom_flux_delta_cm_per_day": 6.594750e-6,
-    "iteration_delta": 0,
-    "backtracking_delta": 0,
-    "verdict": "PASS"
-  },
-  "finding": "Local wet-range conductivity refinement closes the single F-AHL14 B01-wet failure without global densification and preserves the analytical nonlinear path across all 12 frozen cases.",
-  "decision": "ADVANCE_TO_PAIRED_TIMING",
-  "next_action": "Run long paired complete-Richards timing on the critical B01-wet case, where the largest local support increase is active.",
+  "repeatability_note": "An immediately preceding fully executed paired timing run produced median ratio 0.736377 (26.36% reduction) but its workflow was marked failed only because the wrapper grepped for a renamed marker. The corrected rerun produced 0.751648 and passed. Both independently indicate a material complete-solve benefit.",
+  "finding": "The tight floor-scaled shared-support representation is the first tested candidate to combine 12/12 cross-material wet-mid-dry fidelity closure, preservation of the analytical nonlinear path, and robust paired complete-Richards speed benefit.",
+  "next_action": "Cross-material and cross-regime paired performance characterization before any production-oriented admission work.",
   "nonclaims": [
-    "No speedup is established by the fidelity matrix.",
-    "No whole-SWAP speedup or production admission is implied."
+    "The measured 24.8% reduction is for the frozen FSI24-style Richards fixture, not whole SWAP.",
+    "No production admission is implied."
   ]
 }
