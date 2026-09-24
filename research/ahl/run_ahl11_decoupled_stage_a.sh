@@ -41,9 +41,16 @@ RESULT="${1:-/tmp/ahl11v2_result.txt}"
 : > "$RESULT"
 for variant in k3 k1 k03; do
   pass=0
+  built=0
   while read -r material regime h0 hbot; do
+    kfile="$BUILD/tables/${material}_${variant}_k.dat"
+    if [[ ! -s "$kfile" ]]; then
+      echo "AHL11V2_CASE_STATUS ${variant} ${material}:${regime} BUILD_FAIL" | tee -a "$RESULT"
+      continue
+    fi
+    built=$((built+1))
     set +e
-    "$OUT/test" "$BUILD/tables/${material}_ret_dc.dat" "$BUILD/tables/${material}_${variant}_k.dat" "$material" "$regime" "$h0" "$hbot" 2>&1 | tee -a "$RESULT"
+    "$OUT/test" "$BUILD/tables/${material}_ret_dc.dat" "$kfile" "$material" "$regime" "$h0" "$hbot" 2>&1 | tee -a "$RESULT"
     rc=${PIPESTATUS[0]}
     set -e
     if [[ "$rc" -eq 0 ]]; then
@@ -60,6 +67,6 @@ B12 dry -500 -400
 O05 wet -10 -7.5
 O14 dry -500 -400
 CASES
-  echo "AHL11V2_VARIANT ${variant} PASS_COUNT=${pass}/6" | tee -a "$RESULT"
+  echo "AHL11V2_VARIANT ${variant} PASS_COUNT=${pass}/6 BUILT_CASES=${built}/6" | tee -a "$RESULT"
 done
 echo "AHL11V2_STAGE_A=COMPLETE" | tee -a "$RESULT"
