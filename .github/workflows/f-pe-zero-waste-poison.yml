@@ -1,0 +1,22 @@
+name: F-PE-ZERO-WASTE poison gate
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90'
+      - 'tests/fpe/run_fpe_zero_waste_poison_gate.sh'
+      - '.github/workflows/f-pe-zero-waste-poison.yml'
+  workflow_dispatch:
+
+jobs:
+  poison-reference-workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run poisoned-workspace falsification gate
+        run: bash tests/fpe/run_fpe_zero_waste_poison_gate.sh
