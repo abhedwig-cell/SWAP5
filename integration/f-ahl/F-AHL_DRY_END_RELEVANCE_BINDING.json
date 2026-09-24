@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "DRY_END_RELEVANCE_BINDING",
+  "title": "Dry-end hydraulic relevance and representation bound",
+  "source_authority": "Earlier O05 dry-end Newton-conditioning investigation, reconciled into current AHL research",
+  "scientific_observation": {
+    "quantity": "moisture capacity C = dtheta/dh",
+    "order_of_magnitude_relevance_floor": 1e-13,
+    "interpretation": "In the extremely dry O05 regime, C falls to about 1e-10..1e-13 and below about 1e-13 the storage response is practically negligible for the investigated Newton solve. Further representational refinement there should not be assumed hydrologically useful."
+  },
+  "historical_numerical_regularization": {
+    "form": "C_J = max(C, dt * 1e-13)",
+    "scope": "Newton Jacobian conditioning only",
+    "does_not_modify": [
+      "theta(h)",
+      "residual physics",
+      "K(h)",
+      "soil hydraulic parameters"
+    ]
+  },
+  "current_AHL_implication": {
+    "rule": "Adaptive refinement must have an explicit dry-end relevance stop. It must not spend support points solely to resolve constitutive variation below an already-qualified negligible-storage regime.",
+    "do_not_conflate": [
+      "the scientific dry-end relevance scale around C ~ 1e-13",
+      "the timestep-dependent Jacobian regularization dt * 1e-13"
+    ],
+    "implementation_direction": "Derive a material-specific dry-end representation boundary from authoritative hydraulics and the frozen numerical relevance policy, then use an exact/regularized tail contract rather than continued adaptive knot refinement."
+  },
+  "current_domain_check": {
+    "AHL09_nominal_lower_head_cm": -1000000.0,
+    "O05_approx_head_where_raw_C_equals_1e-13_cm": -264278.0,
+    "finding": "The current nominal AHL09 domain extends materially beyond the earlier O05 dry-end relevance scale and should therefore be tightened or explicitly tailed before broader qualification."
+  },
+  "governance": {
+    "not_a_new_physics_claim": true,
+    "not_a_posthoc_error_gate_change": true,
+    "must_be_preregistered_before_using_as_AHL_refinement_stop": true
+  }
+}
