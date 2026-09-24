@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06B_ATTEMPT1",
+  "status": "TECHNICAL_COMPARATOR_FAILURE",
+  "workflow_run": 36061766976,
+  "physics_case": "10,9,8,7 C initial TSOIL; Tmin/Tmax 10/15 C; otherwise VT04C authority unchanged",
+  "observed": {
+    "all_four_runs_normal_completion": true,
+    "vapor_on_control_candidate_different": true,
+    "candidate_vapor_finite": true,
+    "novap_only_visible_difference": "Generated at timestamp"
+  },
+  "classification": "The NoVap numerical content is unchanged; the comparator normalized 'date and time of simulation' but not the BFO 'Generated at:' metadata line.",
+  "repair": "Extend metadata normalization to omit Generated at lines and rerun the identical preregistered VT06B case.",
+  "physics_changed": false,
+  "gate_changed": false
+}
