@@ -795,3 +795,68 @@ This does **not** imply a forty-fold whole-model speedup. It establishes repair 
 3. H02 deep-copy route: still pending direct timing and necessity adjudication.
 
 No production repair is admitted by these measurements.
+
+
+## H02 measured clone cost
+
+The focused base-state clone microbenchmark completed successfully on GNU Fortran 13.3.0, O2, shared GitHub-hosted runner:
+
+| Nodes | ns/deep clone |
+| ---: | ---: |
+| 4 | 37.88 |
+| 20 | 45.65 |
+| 60 | 62.29 |
+| 200 | 174.64 |
+| 1000 | 552.65 |
+
+For the source-derived four-clone no-retry full/half interval, this implies a focused base-state clone cost of approximately:
+
+| Nodes | four-clone cost / interval |
+| ---: | ---: |
+| 4 | 0.152 us |
+| 20 | 0.183 us |
+| 60 | 0.249 us |
+| 200 | 0.699 us |
+| 1000 | 2.211 us |
+
+This excludes the separately created reusable checkpoint clone and excludes optional-state payloads such as snow or soil-temperature state. Retries add two more state clones per retry attempt.
+
+Interpretation:
+
+- H02 is a real implementation/data-movement cost;
+- for the base physical-state route measured here, its focused cost is smaller than the already-confirmed H03 constitutive redundancy and also smaller than the two-reset H01 avoidable cost at 1000 nodes;
+- H02 remains `N1_OR_N2`, not N4, because the clones implement accepted/trial-state isolation;
+- no aliasing/pointer optimization is justified by this measurement alone.
+
+## PROFILE01 first-phase synthesis
+
+Measured/shared-runner priority at 1000 nodes for the currently isolated events:
+
+| Candidate | Necessity class | Focused avoidable / attributable cost |
+| --- | --- | ---: |
+| H03 duplicate constitutive evaluation | N4 confirmed bounded | ~111.4 us per redundant provider call; ~one redundant call per Newton iteration on inspected route |
+| H01 two duplicate workspace resets | N4 confirmed bounded | ~5.41 us per Reference solve |
+| H02 four base-state deep clones | N1/N2 | ~2.21 us per no-retry full/half interval, not presently classified avoidable |
+| H04 provider tuple granularity | NX unresolved | not isolated |
+
+The dominant bounded repair target among confirmed redundant work is therefore H03.
+
+This ranking is local and diagnostic. It is not a whole-SWAP speedup claim. Whole-run attribution on representative production workloads remains required before any program-level performance percentage is reported.
+
+## PROFILE01 phase-1 closeout status
+
+```text
+RECONCILE        = COMPLETE
+PREREGISTER      = COMPLETE
+P01-A BASELINE   = COMPLETE
+COUNTER PROFILE  = COMPLETE_FOR_P01-A
+H01 ATTRIBUTE    = COMPLETE_BOUNDED
+H02 ATTRIBUTE    = COMPLETE_BASE_STATE_BOUNDED
+H03 ATTRIBUTE    = COMPLETE_BOUNDED
+H04 ATTRIBUTE    = UNRESOLVED
+REPAIR           = NONE_IN_PROFILE01
+PHASE1 VERDICT   = CLOSED_MEASURED_PRIORITY
+NEXT              = PROFILE02_H03_REPAIR_QUALIFICATION + broader production attribution
+```
+
+PROFILE01 phase 1 closes the focused redundancy screen, not the entire SWAP5 performance programme. P01-B/P01-C/P01-D representative workload attribution and whole-program sampling remain open programme work and must not be implied by the P01-A microbenchmarks.
