@@ -23,7 +23,8 @@
     "baseline": "d3527f9ec",
     "interface": "Optional expected head and dt on transfer extraction validate exact finite residual identity and duration before returning integrated amounts. Legacy key-only reads remain unchanged. A failed checked read invalidates the reference adapter capture; raw scratch extraction remains read-only.",
     "purpose": "Prevent candidate mass accounting against changed heads or duration even if a caller reuses an evaluation key. These checks do not establish convergence, workspace identity across instances, or physical commit authority.",
-    "test_result": "Pending"
+    "recovery_point": "67030f9e2",
+    "test_result": "Persisted 67030f9e2 trial-exchange, Richards scratch and saturated-trial gates PASS O0/O2 with identical transcripts and bounds/FPE checks. Matching, changed, short and nonfinite heads; changed/nonfinite duration; raw read-only behavior and adapter invalidation tested."
   },
   "head_identity_extension": {
     "baseline": "59ef5f385",
