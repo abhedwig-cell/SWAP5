@@ -209,3 +209,17 @@ Therefore the preclear is not needed for either control path.
 - no claim yet for `dfdh_upper/lower` clears, because linear-solver boundary indexing must be proved separately.
 
 H5 is a pure removal of overwrite-before-read memory writes. No physics or numerical policy change is authorized.
+
+
+## H2 implementation refinement after contract audit
+
+A broader API audit found that the first H2 implementation made every caller-supplied `HeadCalc` workspace shape-only, which was wider than the preregistered production-binding claim. That implementation has been narrowed before admission.
+
+Final intended ownership split:
+
+- the Reference binding uses `ensure_reference_workspace_shape` before optional factorization-capture preparation, because allocation/shape is required there but clearing is not;
+- `HeadCalc` retains its general contract and always calls `initialize_reference_workspace`, including for caller-supplied workspaces;
+- the production binding therefore still reaches exactly one full reset per solve;
+- arbitrary direct callers retain the historical clean-workspace initialization behavior.
+
+This is a safety refinement, not a changed performance target. The 3 -> 1 reset goal remains unchanged while the public behavioral surface is narrower.
