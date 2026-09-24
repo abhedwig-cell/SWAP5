@@ -19,5 +19,12 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "split_callback_contract": {
+    "baseline": "acf111d65",
+    "design": "Provide separate residual and diagonal scratch entry points matching vector_F then jacobian_F ordering. Residual captures evaluated transfer; diagonal consumes the paired derivative without reevaluating physical inputs. Caller must assign a distinct evaluation key whenever heads change and rebuild the base diagonal before each application.",
+    "failure": "Rejected residual invalidates old capture without changing residual. Failed diagonal leaves diagonal unchanged and invalidates capture; it does not roll back the already assembled residual. Interval owner must reject that numerical trial. Disabled derivative preserves diagonal and retains valid transfer.",
+    "scope": "PPA-local additive interface; production HeadCalc and frozen provider/workspace ABI unchanged. No special legacy frozen-exchange backtracking branch or physical commit admission.",
+    "test_result": "Pending"
+  },
   "next_action": "Specify residual/Jacobian callback ordering and candidate geometry ownership inside HeadCalc, including final-used evaluation capture and inactive-path preservation, before enabling any production route."
 }

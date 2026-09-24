@@ -81,6 +81,62 @@ program test_scratch_binding
   call check(abs(ws%dfdh_main(2)-11.0_real64/9)<1.e-14_real64,27)
   call copy_reference_transfer(ws,used,key,amount,ok)
   call check(.not.ok.and..not.allocated(amount),28)
+  call reset_reference_workspace(ws)
+  ws%dfdh_main=7
+  key%evaluation=4
+  call apply_saturated_reference_residual(input,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+      key,generation,ws,used,storage,ok)
+  call check(ok,29)
+  call check(maxval(abs(ws%dfdh_main-7))<1.e-14_real64,30)
+  call check(abs(ws%residual(2)+1.0_real64/6)<1.e-14_real64,31)
+  ! Rebuilding the ordinary Jacobian happens later. Altering physical input
+  ! here must not affect the derivative already captured by the residual.
+  input%resistance_inverse=99
+  ws%dfdh_main=1
+  call apply_reference_trial_diagonal(ws,used,key,.true.,ok)
+  call check(ok,32)
+  call check(abs(ws%dfdh_main(2)-11.0_real64/9)<1.e-14_real64,33)
+  call check(abs(ws%residual(2)+1.0_real64/6)<1.e-14_real64,34)
+  ws%dfdh_main=2
+  call apply_reference_trial_diagonal(ws,used,key,.false.,ok)
+  call check(ok.and.maxval(abs(ws%dfdh_main-2))<1.e-14_real64,35)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(ok,36)
+  call check(abs(storage-input%storage+sum(amount))<1.e-14_real64,37)
+  key%evaluation=5
+  call apply_reference_trial_diagonal(ws,used,key,.true.,ok)
+  call check(.not.ok.and.maxval(abs(ws%dfdh_main-2))<1.e-14_real64,38)
+  key%evaluation=4
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),39)
+  input%resistance_inverse=0.25_real64
+  ws%residual=0
+  call apply_saturated_reference_residual(input,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+      key,generation,ws,used,storage,ok)
+  call check(ok,40)
+  call initialize_reference_workspace(ws,2)
+  ws%dfdh_main=3
+  call apply_reference_trial_diagonal(ws,used,key,.true.,ok)
+  call check(.not.ok.and.maxval(abs(ws%dfdh_main-3))<1.e-14_real64,41)
+  generation=ws%generation
+  call apply_saturated_reference_residual(input,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+      key,generation,ws,used,storage,ok)
+  call check(ok,42)
+  ws%dfdh_main=[3.0_real64]
+  call apply_reference_trial_diagonal(ws,used,key,.true.,ok)
+  call check(.not.ok.and.abs(ws%dfdh_main(1)-3)<1.e-14_real64,43)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),44)
+  ws%residual=0
+  call apply_saturated_reference_residual(input,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+      key,generation,ws,used,storage,ok)
+  call check(ok,45)
+  key%evaluation=5
+  call apply_saturated_reference_residual(input,[-0.5_real64,-0.25_real64],0.0_real64,1.0_real64, &
+      key,generation,ws,used,storage,ok)
+  call check(.not.ok.and.abs(ws%residual(2)+1.0_real64/6)<1.e-14_real64,46)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),47)
   call release_reference_workspace(ws)
   call copy_reference_transfer(ws,used,key,amount,ok)
   call check(.not.ok,18)
@@ -90,6 +146,7 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_REFERENCE_SCRATCH_GENERATION_POISON=PASS'
   print '(a)','PPA_WU05A4_REFERENCE_TRANSFER_LIFETIME=PASS'
   print '(a)','PPA_WU05A4_REFERENCE_HEAD_DERIVED_ASSEMBLY=PASS'
+  print '(a)','PPA_WU05A4_REFERENCE_SPLIT_CALLBACKS=PASS'
 contains
   subroutine run(expected)
     integer(int64),intent(in)::expected
