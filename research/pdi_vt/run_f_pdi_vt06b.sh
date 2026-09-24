@@ -7,3 +7,4 @@ sed -i 's/f_pdi_vt04_make_case.py/f_pdi_vt06b_cold_case.py/g' "$TMP"
 chmod +x "$TMP"
 bash "$TMP" /tmp/f_pdi_vt06b_base.json
 # Comparator normalization repair: Generated-at metadata is ignored by f_pdi_vt04_compare.py.
+# Vapor-on activation comparison is also metadata-normalized.
