@@ -10,8 +10,8 @@ if text.count(old)!=1:
     raise SystemExit("expected one SWHEA=0 target")
 text=text.replace(old,"SWHEA = 1",1)
 for key in ("SWVAP","SWWBA","SWINC"):
-    import re
-    text,n=re.subn(rf'(?mi)^(\\s*{key}\\s*=\\s*)0(\\s*!.*)
-,rf'\\g<1>1\\g<2>',text,count=1)
-    if n!=1: raise SystemExit(f"expected one {key}=0 output switch")
+    old_key=f"{key} = 0"
+    if text.count(old_key)!=1:
+        raise SystemExit(f"expected one {old_key} output switch")
+    text=text.replace(old_key,f"{key} = 1",1)
 case.write_text(text)
