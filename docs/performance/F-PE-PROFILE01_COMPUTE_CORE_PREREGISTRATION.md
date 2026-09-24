@@ -595,3 +595,42 @@ Illustrative byte volumes, not timing claims:
 | 1000 | 196,028 B | 392,056 B | 1,176,168 B |
 
 The final column assumes one full plus two half Reference solves and no retry. It remains a source-derived volume estimate until interval-level observer qualification passes. Runtime significance is left to the preregistered reset microbenchmark and later whole-run attribution.
+
+
+## H02 source-derived clone accounting
+
+For the current external full/half route with a supplied reusable kernel checkpoint, one successful no-retry compute interval performs the following physical-state deep clones inside the compute boundary:
+
+1. `kernel_advance_interval`: checkpoint physical state -> `working`;
+2. `execute_reference_interval`: `working` -> transaction `checkpoint`;
+3. transaction full trial: transaction checkpoint -> `full_state`;
+4. transaction half route: transaction checkpoint -> `half_state`.
+
+The second half-step advances the existing `half_state` in place and therefore does not create another physical-state clone.
+
+Thus:
+
+```text
+base deep clones per successful full/half interval = 4
+additional deep clones per retry attempt          = 2
+```
+
+A reusable checkpoint itself is created by a separate `kernel_capture_checkpoint` clone. That cost belongs to checkpoint preparation and must be attributed according to how often a coupling/application workflow reuses the checkpoint; it is not silently folded into every compute interval.
+
+For the base `fmr_b110_physical_state_t`, each clone allocates and copies at least:
+
+- `pressure_head(n)`;
+- `water_content(n)`;
+- two scalar `real64` fields;
+- optional snow and soil-temperature state when active.
+
+Ignoring allocator metadata and optional-state payload, the minimum copied physical payload is:
+
+```text
+B_state_clone_min(n) = 16*n + 16 bytes
+B_four_clones_min(n) = 64*n + 64 bytes per no-retry full/half interval
+```
+
+Each base-state clone also performs two array allocations. The no-retry route therefore causes at least eight profile-array allocations inside the interval, before optional-state allocations.
+
+Necessity status remains `N1_OR_N2_PENDING_MEASUREMENT`. The four-clone route is structurally real, but transactional accepted/trial isolation is authoritative. Later work may investigate whether one or more implementation-level clones can be eliminated without aliasing committed state or weakening rollback semantics; PROFILE01 makes no such assumption.
