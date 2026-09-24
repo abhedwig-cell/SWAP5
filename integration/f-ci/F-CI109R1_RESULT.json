@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.f-ci109r1.result.v1",
+  "workunit": "F-CI109R1",
+  "date": "2026-09-23",
+  "tested_head": "36e02dbd5da582649b6711b93ee31cae3934197b",
+  "canonical_parent": "43577e083ae1e315d86cafd55f971d80279db27c",
+  "evidence_run": 35919344950,
+  "evidence_job": 107379000224,
+  "decision": "PASS_CURRENT_CANONICAL_RECONCILIATION",
+  "checks": {
+    "exact_five_file_production_delta": "PASS",
+    "frozen_FAPP09_FVQ128_postimages": "PASS",
+    "owner_gate_replay": "PASS",
+    "independent_FVQ128_replay": "PASS",
+    "O0_O2_identity": "PASS",
+    "single_level_scope": "PASS",
+    "typed_external_head_materializer": "PASS",
+    "surface_water_owner_xor": "PASS",
+    "no_persistent_surface_water_state": "PASS",
+    "recomposition_discard_replay": "PASS",
+    "positive_drainage_transaction": "PASS",
+    "negative_infiltration_transaction": "PASS",
+    "stale_origin_fail_closed": "PASS"
+  },
+  "reconciliation": "The current canonical adds only Ribasim-management governance documents relative to the original F-CI109 base and does not change any pre-existing src file touched by F-APP09. The exact independently qualified five production postimages replay unchanged.",
+  "production_candidate_unchanged": true,
+  "canonical_admission": false,
+  "next_action": "Use this result as current-canonical reconciliation authority for existing PR #593. Do not open a competing F-APP09 production PR."
+}

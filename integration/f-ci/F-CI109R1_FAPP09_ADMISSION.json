@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.f-ci109r1.fapp09-current-canonical-admission.v1",
+  "workunit": "F-CI109R1",
+  "phase": "CURRENT_CANONICAL_RECONCILIATION",
+  "branch": "integration/f-ci109r1-fapp09-current-canonical-admission",
+  "canonical_source": "43577e083ae1e315d86cafd55f971d80279db27c",
+  "predecessor": "F-CI109@dd7ec9983e6e99602c04a7d94a736cf1c18c8c0d",
+  "subject_candidate": "work/f-app09-ribasim-external-surface-water-profile@ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+  "independent_authority": "F-VQ128 PASS@181c785de059842a6361a1f57951a129ed78d8bb",
+  "reconciliation_fact": "The two pre-existing source files touched by F-APP09 are byte-identical between the original F-CI109 canonical source a2d99ddd and current canonical 43577e08; the three other production files are new.",
+  "production_delta": {
+    "allowed": [
+      "src/process/mod_drainage_extended_exchange.f90",
+      "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90",
+      "src/runtime/mod_fmr_surface_water_swap_participant.f90"
+    ],
+    "postimages": {
+      "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+      "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "0cdf05c1fc066f80aad7807c35a4e718fdecdb09",
+      "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "1029cd4658a28f4aaf21db3cd480872c2d17722a",
+      "src/runtime/mod_fmr_surface_water_swap_participant.f90": "5fd5007cf8e523d3b2cd4236114e887d0c383f0a"
+    }
+  },
+  "scope": "Exact F-APP09 V1 single-level external Ribasim surface-water owner profile. No live Ribasim network claim, no multilevel profile, no SWMAN2 runtime, no MODFLOW triangle claim.",
+  "gate": "Replay exact F-APP09 owner and F-VQ128 independent qualification against current canonical-derived postimage without changing any production blob.",
+  "canonical_admission": false
+}
