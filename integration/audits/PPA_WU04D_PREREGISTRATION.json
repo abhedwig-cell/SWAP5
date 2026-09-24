@@ -3,6 +3,15 @@
   "work_unit": "PPA-WU04-D",
   "title": "Gash source-window interception",
   "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
+  "mid_source_window_hydraulic_restart": {
+    "tested_commit": "7da13c19e",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashReceipts",
+    "result": "PASS O0/O2 with identical full numerical transcripts. A one-day Gash source at rain/sprinkling 0.20/0.10 cm/day is frozen once, apportioned into two half-day accepted amounts in cm, and restarted after the first. Every source continuation field and exact remaining half aggregate survives restore. Continued/restored full hydraulic state, temporal history and provenance match; source aggregate closes once at revision 2. Unready/foreign/duplicate receipts reject. Real failed and one-internal-substep attempts preserve accepted state/progress and replay exactly. Invalid second hydraulic restart record publishes neither column. Hard mass gate remains 1e-12.",
+    "build": "swap-ppa-wu01-1c00f5b9a6f84c9c8c851b96faccb555",
+    "transcript": "110495 identical lines, SHA256 1EABC1081CD6AD29D63D6FDB34F6267B245C0236960F8CF21FDDCD241B4CFB59. Initial d71331004 gate and strengthened 7da13c19e gate have the same transcript; additional assertions do not alter execution.",
+    "shared_helper_preservation": "Same persisted 7da13c19e executables replayed --stable-receipts successfully at O0/O2, 240436 lines each, identical SHA256 D67D03E099103173761E9BD8C3B97059EA48D5FA85E4FA154359391EE89E1500. Logs O0/O2/replay-receipts.txt in the same build. Covers existing WU04C source restart and failed/partial replay with strengthened source-field/full-state assertions.",
+    "scope": "Branch-local explicit storage/temporal opt-ins, fixed-flux mode 7, constant source rates, in-memory typed restart. Not disk persistence, general weather ingestion, low-rain continuation, canonical admission or whole migration closure. No production code changed."
+  },
   "bounded_source_window_successor": {
     "tested_commit": "a299c01bf",
     "preservation_replay": "After the initial full GashWindows gate at 1d67d2b87, reran both Windows and GashWindows arguments on the persisted a299c01bf O0/O2 executables from swap-ppa-wu01-cddac965f6a44e4187c34b10c5c06da8. All four replays pass and exactly match the prior full transcript hashes recorded below. Logs: O0/O2/replay-windows.txt and replay-gash.txt. No rebuild or production change needed between argument-selected scopes.",
@@ -33,7 +42,6 @@
     "The source-window aggregate is closed exactly once after the restored continuation commits."
   ],
   "remaining_qualification": [
-    "real hydraulic Gash restart inside a partially consumed source window (boundary-to-boundary replay is covered by the bounded successor)",
     "successful low-rain presaturation production continuation beyond the isolated seven-substep failure",
     "broader dynamic-top regimes and non-opt-in production admission"
   ],
