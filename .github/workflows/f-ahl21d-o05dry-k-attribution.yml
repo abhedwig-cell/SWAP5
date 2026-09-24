@@ -1,0 +1,24 @@
+name: F-AHL21D O05-dry qbot K attribution
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl21d_exactk.f90'
+      - 'research/ahl/test_ahl21d_k03.f90'
+      - 'research/ahl/run_ahl21d_qbot_k_attribution.sh'
+      - 'integration/f-ahl/F-AHL21D_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl21d-o05dry-k-attribution.yml'
+  workflow_dispatch:
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run O05-dry K attribution
+        run: bash research/ahl/run_ahl21d_qbot_k_attribution.sh /tmp/ahl21d_result.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl21d-${{ github.run_id }}
+          path: /tmp/ahl21d_result.txt
