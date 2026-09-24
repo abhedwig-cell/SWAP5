@@ -1,28 +1,57 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-AHL",
-  "status": "ACTIVE_RESEARCH_F_AHL04A_FAIL_BOTTOM_FLUX",
+  "status": "ACTIVE_RESEARCH_F_AHL09T_ADVANCE",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "completed": [
     "F-AHL01 adaptive constitutive screen",
     "F-AHL02 transformed-representation screen",
     "F-AHL03 optimized Fortran constitutive runtime screen",
-    "F-AHL04A nonlinear Reference Richards provider replay executed against frozen contract"
+    "F-AHL04A strict nonlinear Richards replay",
+    "F-AHL04B constitutive-error attribution",
+    "F-AHL04C asymmetric representation decomposition",
+    "F-AHL05 split exact-retention constitutive runtime screen",
+    "F-AHL06/F-AHL06R fast split end-to-end timing and reconciliation",
+    "F-AHL07 convergence attribution",
+    "F-AHL08/F-AHL08R exact theta+C plus K-lookup rejection as speed route",
+    "F-AHL09 derivative-consistent adaptive retention Stage 1",
+    "F-AHL09 Stage 2 nonlinear Richards replay",
+    "F-AHL09T long paired end-to-end Richards timing"
   ],
-  "current_evidence": {
-    "constitutive_ci_run": 36036616652,
-    "runtime_ci_run": 36036859381,
-    "richards_stage_a_authority_run": 36039942353,
-    "adaptive_stage_a_contract_verdict": "FAIL_BOTTOM_FLUX_ONLY",
-    "adaptive_stage_a_max_head_delta_cm": 0.0003415032,
-    "adaptive_stage_a_max_theta_delta": 0.000003215794,
-    "adaptive_stage_a_bottom_flux_delta_cm_per_day": 0.00002951951,
-    "adaptive_stage_a_bottom_flux_gate_cm_per_day": 0.00001,
-    "adaptive_stage_a_mass_residual_cm": 3.4521e-16
+  "current_candidate": {
+    "representation": "cubic Hermite logit(Se) over log10(-h), with C derived from the same interpolant and log(K) lookup",
+    "support_points_tested_range": [
+      23,
+      30
+    ],
+    "near_saturation": "authoritative analytical for h > -1 cm",
+    "runtime_refinement": false
   },
-  "candidate_architecture": "BUILD_ONCE_QUALIFY_FREEZE_RUN; exact semantic branch logic plus adaptive smooth-core representation; representation coordinate selected by measured error and cost, not support count alone",
-  "next": "Execute preregistered F-AHL04B constitutive-error attribution sweep. Do not proceed to timing or broadened application qualification until the remaining bottom-flux discrepancy is understood.",
-  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION",
-  "supersession_note": "Earlier status text describing F-AHL04A as PASS is superseded by F-AHL04A_RESULT.json, which binds the earlier frozen 1e-5 cm/day bottom-flux gate and records FAIL_BOTTOM_FLUX."
+  "current_evidence": {
+    "constitutive_materials": [
+      "B01",
+      "B12",
+      "O05",
+      "O14"
+    ],
+    "constitutive_stage1_run": 36042076637,
+    "richards_stage2_run": 36042429946,
+    "paired_timing_run": 36042581016,
+    "stage2_max_head_delta_cm": 0.000008225771,
+    "stage2_max_theta_delta": 2.836443e-8,
+    "stage2_bottom_flux_delta_cm_per_day": 1.36697e-7,
+    "stage2_mass_residual_cm": 8.933826e-17,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0,
+    "median_paired_candidate_over_analytical_cpu_ratio": 0.72987,
+    "median_complete_richards_cpu_reduction_fraction": 0.27013
+  },
+  "superseded_candidates": [
+    "full lookup: constitutively fast but failed frozen F-AHL04A bottom-flux fidelity gate",
+    "exact theta plus lookup C/K: high fidelity but robust paired Richards timing about 7.4% slower",
+    "exact theta+C plus lookup K: analytical convergence path but robust paired timing about 8.0% slower"
+  ],
+  "next": "Preregister blind multi-material and multi-regime Richards qualification using the frozen F-AHL09 representation policy; then quantify table-build amortization and full SWAP trajectory runtime.",
+  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
 }
