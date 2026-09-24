@@ -1,0 +1,89 @@
+name: F-ROM-PURPOSE P7A GW exchange-storage attribution
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P7A_EXECUTION_BINDING.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify retrospective attribution authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p7a_gw_exchange_storage.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P7A_EXECUTION_BINDING.json'))
+          a=json.load(open('integration/f-rom/ROM_PURPOSE_P7A_ERROR_IDENTITY_AUTHORITY.json'))
+          assert b['status']=='BOUND_RETROSPECTIVE_ALGEBRAIC_RECONCILIATION'
+          assert a['status']=='RETROSPECTIVE_ALGEBRAIC_RECONCILIATION_RESPONSE_EXPOSED'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Recover P4 Layer-ROM candidates
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/candidates
+          gh run download 35918240728 --repo abhedwig-cell/SWAP5 -p 'p4candidate-*' -D /tmp/candidates
+          test "$(find /tmp/candidates -type f -name 'GW_LB_*.json' | wc -l)" -eq 6
+      - name: Recover P4 R2048 T32 groundwater Reference
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/reference
+          gh run download 35900642592 --repo abhedwig-cell/SWAP5 -n p4gw-r2048-t32-routes -D /tmp/reference
+          test -f /tmp/reference/gw_B01_R2048_T32_o0.txt
+          test -f /tmp/reference/gw_B14_R2048_T32_o0.txt
+      - name: Analyze conservation-law attribution
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p7a_gw_exchange_storage.py             --authority integration/f-rom/ROM_PURPOSE_P7A_ERROR_IDENTITY_AUTHORITY.json             --candidate-root /tmp/candidates             --reference-root /tmp/reference             --output result/ROM_PURPOSE_P7A_RESULT.json | tee result/runner.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p7a-result
+          path: result/
+          if-no-files-found: error
+      - name: Persist P7A
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P7A_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P7A_RESULT.json'))
+          s={
+            'schema':'swap5.rom-purpose.p7.status.v1','workstream':'ROM-PURPOSE','work_unit':'ROM-PURPOSE-P7',
+            'date':'2026-09-24','status':'P7A_'+r['decision'],
+            'current_gate':'P7B_PURPOSE_SEMANTICS_SPLIT',
+            'p7a_result':'integration/f-rom/ROM_PURPOSE_P7A_RESULT.json',
+            'p7a_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p7a_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':['Freeze separate GW_EXCHANGE and GW_LOCAL_DARCY purpose contracts before any further reduced-state experiment.'],
+            'scientific_firewall':{
+              'blind_validation_claimed':False,'new_closure_family_authorized':False,
+              'application_acceptance_adjudicated':False,'production_rom_authorized':False
+            }
+          }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P7_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P7A_RESULT.json integration/f-rom/ROM_PURPOSE_P7_STATUS.json
+          git commit -m "ROM-PURPOSE P7A: persist GW exchange-storage attribution" || exit 0
+          git push origin HEAD:work/f-rom-purpose
