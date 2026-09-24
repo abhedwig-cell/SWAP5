@@ -4,8 +4,6 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-import numpy as np
-
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src" / "adapter"))
 
@@ -65,8 +63,8 @@ class FakeSession:
             PreparedSolveIteration(
                 iteration=self.index,
                 modflow_converged=converged,
-                head_m=np.array([head], dtype=np.float64),
-                accepted_head_old_m=np.array([head], dtype=np.float64),
+                head_m=(head,),
+                accepted_head_old_m=(head,),
             ),
         )
 
