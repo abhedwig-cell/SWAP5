@@ -16,8 +16,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    ! input
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
-   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
-        ensure_reference_workspace_shape
+   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
    use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
@@ -199,11 +198,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_runoff_resolved = .false.
    if (present(fsi_workspace)) then
       fsi_ws => fsi_workspace
-      call ensure_reference_workspace_shape(fsi_ws, numnod)
    else
       fsi_ws => local_fsi_workspace
-      call initialize_reference_workspace(fsi_ws, numnod)
    end if
+   call initialize_reference_workspace(fsi_ws, numnod)
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
 
 !  reset some variables at the start of a new day
