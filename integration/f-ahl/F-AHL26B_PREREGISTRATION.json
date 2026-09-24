@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26B",
+  "title": "PDI retention-transform compatibility",
+  "parent": "F-AHL26A",
+  "phase": "PREREGISTERED_CONSTITUTIVE_DIAGNOSIS",
+  "question": "Is the existing z=logit((theta-theta_r)/(theta_s-theta_r)) representation mathematically valid over the source-authoritative PDI retention domain, and if not, what source-defined bounded state variable can replace it without breaking theta/C derivative consistency?",
+  "models": [8,10],
+  "parameter_sets": {
+    "PDI8_REFERENCE": {
+      "theta_r":0.05,"theta_s":0.45,"alpha1":0.02,"n1":1.6,"m1":0.375,
+      "h0_abs_cm":1e7,"ha_abs_cm":1e4,"Apar":-1.5,"OmegaK":0.01
+    },
+    "PDI10_BIMODAL": {
+      "theta_r":0.04,"theta_s":0.46,"alpha1":0.03,"n1":1.8,"m1":0.4444444444444444,
+      "alpha2":0.003,"n2":1.6,"m2":0.375,"omega1":0.6,"omega2":0.4,
+      "h0_abs_cm":1e7,"ha_abs_cm":1e4,"Apar":-1.2,"OmegaK":0.02
+    }
+  },
+  "domain_cm": [-1.0,-10000000.0],
+  "diagnostics": [
+    "minimum theta",
+    "head where theta first falls below theta_r",
+    "range of legacy Se=(theta-theta_r)/(theta_s-theta_r)",
+    "monotonicity of theta(h)",
+    "positivity and consistency of C=dtheta/dh",
+    "candidate source-defined normalization theta/theta_s",
+    "candidate direct transformed theta using logit(theta/theta_s) where 0<theta<theta_s"
+  ],
+  "decision_rule": "If legacy Se leaves (0,1), the existing retention transform is rejected for PDI. A replacement transform may proceed only if it stays bounded/monotone over the qualified domain and its analytic derivative reconstructs C from the same interpolant.",
+  "hard_exclusions": ["NO_CLAMPING_SE_TO_HIDE_INVALID_DOMAIN","NO_GATE_RETUNING","NO_RICHARDS_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
