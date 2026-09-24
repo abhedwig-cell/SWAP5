@@ -323,11 +323,11 @@ contains
     if (self%execution_plan%ready()) then
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-           aggregate, dispatch_status, runtime, execution_plan=self%execution_plan)
+           aggregate, dispatch_status, runtime, execution_plan=self%execution_plan, materialize_worker_assignments=.false.)
     else
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-           aggregate, dispatch_status, runtime)
+           aggregate, dispatch_status, runtime, materialize_worker_assignments=.false.)
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED

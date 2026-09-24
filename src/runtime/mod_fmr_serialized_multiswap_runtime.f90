@@ -166,7 +166,8 @@ contains
   subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
-                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan)
+                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
+                                                    materialize_worker_assignments)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -184,14 +185,18 @@ contains
     integer(int64), intent(in), optional :: receipt_column_ids(:)
     type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
     type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
+    logical, intent(in), optional :: materialize_worker_assignments
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     integer, allocatable :: order(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
+    logical :: do_worker_assignments
 
-    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
+    do_worker_assignments = .true.
+    if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
+    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
     active_physical_calls = 0
     dispatch_status = FMR_SERIAL_DISPATCH_OK
@@ -399,12 +404,13 @@ contains
          bottom_energy_publication=energy_publication)
   end subroutine fmr_execute_serialized_column_with_bottom_energy
 
-  subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
+  subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, materialize_worker_assignments)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     real(real64), intent(in) :: t0, t1
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
     type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
+    logical, intent(in) :: materialize_worker_assignments
     integer :: i
 
     allocate(results(size(columns)), diagnostics(size(columns)))
@@ -417,8 +423,10 @@ contains
       diagnostics(i)%template_id = columns(i)%template_id
       diagnostics(i)%backend = columns(i)%backend_id
       diagnostics(i)%execution_class = columns(i)%execution_class
-      allocate(diagnostics(i)%worker_assignments(1))
-      diagnostics(i)%worker_assignments(1) = 1
+      if (materialize_worker_assignments) then
+        allocate(diagnostics(i)%worker_assignments(1))
+        diagnostics(i)%worker_assignments(1) = 1
+      end if
     end do
   end subroutine initialize_outputs
 
