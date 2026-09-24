@@ -41,7 +41,7 @@ contains
     read(u,*,iostat=ios) n
     if (ios/=0 .or. n<2) then; close(u); return; end if
     allocate(provider%x(n),provider%logc(n),provider%logk(n))
-    do i=1,size(pressure_head)
+    do i=1,n
       read(u,*,iostat=ios) provider%x(i),ignored,provider%logc(i),provider%logk(i)
       if (ios/=0) then; close(u); return; end if
     end do
@@ -68,7 +68,7 @@ contains
       call self%analytical%evaluate(pressure_head,w_exact,k_exact,c_exact,d_exact)
     end if
 
-    do i=1,n
+    do i=1,size(pressure_head)
       if (pressure_head(i)<=LOOKUP_H_MAX .and. pressure_head(i)>=-1.0e6_real64) then
         water_content(i)=exact_theta(self%cofgen(:,i),pressure_head(i))
         xv=log10(-pressure_head(i))
