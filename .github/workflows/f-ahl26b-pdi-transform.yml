@@ -1,0 +1,20 @@
+name: F-AHL26B PDI retention transform diagnosis
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/ahl26b_pdi_transform_diagnosis.py'
+      - 'research/ahl/run_ahl26b_pdi_transform_diagnosis.sh'
+      - 'integration/f-ahl/F-AHL26B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl26b-pdi-transform.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl26b_pdi_transform_diagnosis.sh /tmp/ahl26b.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl26b-${{ github.run_id }}
+          path: /tmp/ahl26b.json
