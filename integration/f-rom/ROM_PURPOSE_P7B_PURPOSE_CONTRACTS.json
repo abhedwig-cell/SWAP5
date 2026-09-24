@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.rom-purpose.p7b.purpose-contracts.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P7B-PURPOSE-SEMANTICS-SPLIT",
+  "date": "2026-09-24",
+  "status": "FROZEN_AFTER_P6_SEMANTICS_RECONCILIATION_BEFORE_FUTURE_REDUCED_STATE_EXPERIMENT",
+  "inherited_authority": {
+    "p6_closeout": "integration/f-rom/ROM_PURPOSE_P6_CLOSEOUT.json",
+    "p6b_result": "integration/f-rom/ROM_PURPOSE_P6B_RESULT.json",
+    "p7a_result": "integration/f-rom/ROM_PURPOSE_P7A_RESULT.json"
+  },
+  "contracts": {
+    "GW_EXCHANGE": {
+      "target": "Published prescribed-head bottom-outward interval exchange and its interval-average flux.",
+      "temporal_semantics": "State transition over an accepted interval.",
+      "exact_output_identity": "E_bottom_out = -E_top_native - (S_end-S_start) plus explicitly represented source/sink/root terms.",
+      "required_output_information": [
+        "accepted start storage",
+        "accepted end storage",
+        "integrated external interval fluxes"
+      ],
+      "vertical_representation_role": "Vertical state is required only insofar as it predicts the storage transition under forcing; local terminal boundary shape is not an independent output closure for this target.",
+      "inherited_metrics": [
+        "cumulative bottom exchange",
+        "interval-average bottom flux",
+        "sign/reversal",
+        "long-term drift",
+        "storage"
+      ],
+      "authority_status": "SCIENTIFIC_TARGET_AUTHORITY_ESTABLISHED_BY_P6B_AND_P7A"
+    },
+    "GW_LOCAL_DARCY": {
+      "target": "A separately defined terminal local Darcy-face diagnostic at the lower boundary.",
+      "temporal_semantics": "Terminal/local operator diagnostic, not the currently published prescribed-head interval exchange.",
+      "candidate_information": [
+        "accepted terminal bottom head",
+        "prescribed boundary head",
+        "face distance",
+        "conductivity time-level/operator state, including lagged-state semantics when SWKIMPL=0"
+      ],
+      "vertical_representation_role": "Boundary-adjacent hydraulic shape and operator memory may be relevant.",
+      "inherited_metrics": [],
+      "authority_status": "NOT_YET_ESTABLISHED_AS_ROM_PURPOSE_OUTPUT; REQUIRES SEPARATE DIAGNOSTIC CONTRACT BEFORE TESTING"
+    }
+  },
+  "superseded_ambiguity": "The former broad GW_LB label mixed an interval mass-balance exchange observable with a local terminal hydraulic-flux interpretation. Existing P2-P4 evidence remains valid for its recorded metrics, but future work must name the target as GW_EXCHANGE or GW_LOCAL_DARCY.",
+  "scientific_firewall": {
+    "prior_evidence_relabelled_not_recomputed": true,
+    "no_new_model_response": true,
+    "no_closure_family_authorized": true,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
