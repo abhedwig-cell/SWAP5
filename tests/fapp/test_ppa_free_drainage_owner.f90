@@ -243,6 +243,18 @@ contains
           call fresh%run_standalone_with_forcing_receipts(interval%t0,interval%t1,forcing,result,receipt,code)
         end if
         write(*,*) 'ATM02_OPT_IN',window,pass,code,result%kernel_status,result%accepted_substeps
+        if(events.and.window==3) then
+          call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed).and.all(.not.result%completed), &
+               'ATM02 third interval remains a diagnosed rejection, not continuation success')
+          call require(all(result%accepted_substeps>0),'ATM02 third interval fails after internal progress')
+          call require(observed_event_calls==0,'ATM02 unmarked failed continuation does not reseed')
+          call require(all(.not.result%actual_transpiration_available).and. &
+               all(result%actual_transpiration_amount==0.0_real64),'ATM02 failed continuation publishes no root amount')
+          do tile=1,NTILE
+            call require(.not.receipt(tile)%receipt%ready(),'ATM02 failed continuation has no ready receipt')
+          end do
+          cycle
+        end if
         call require(code==FMR_APP_BOOT_OK.and.all(result%committed).and.all(result%completed),'ATM02 opt-in commits')
         if(events.and.window==2) then
           call require(observed_event_calls>0.and.observed_event_calls<sum(result%accepted_substeps), &
@@ -264,12 +276,78 @@ contains
       call fresh%export_committed_restart(9903_int64,resumed,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'ATM02 fresh export')
       call compare_restart_bundles(after,resumed,'ATM02 exact hydraulic history restart')
+      if(events.and.window==2) call verify_root_event_rollback(active,before,after,forcing,interval%t0,interval%t1)
+      if(events.and.window==3) then
+        call compare_restart_bundles(before,after,'ATM02 third interval exact rollback')
+        write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02_UNMARKED_REJECTION_ROLLBACK=PASS'
+      end if
       call fresh%close(code)
       call require(code==FMR_APP_BOOT_OK,'ATM02 fresh closes')
     end do
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'ATM02 owner closes')
   end subroutine
+  subroutine verify_root_event_rollback(profile,before,expected,forcing,t_start,t_end)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_committed_restart_bundle_t),intent(in)::before,expected
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
+    real(real64),intent(in)::t_start,t_end
+    type(fmr_production_application_config_t)::limited
+    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_committed_restart_bundle_t)::after,replayed
+    type(fmr_serialized_column_result_t),allocatable::result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:)
+    integer::variant,code,tile
+    logical::ok
+    do variant=0,2
+      limited=profile
+      if(variant==0) nullify(limited%free_drainage_indicator)
+      if(variant==1) limited%numerical%transaction%max_retries=0
+      if(variant==2) limited%numerical%max_committed_substeps=1
+      call owner%initialize(limited,code)
+      call require(code==FMR_APP_BOOT_OK,'root event limited owner initializes')
+      call owner%restore_committed_restart(before,9903_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'root event accepted boundary restores')
+      call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,code)
+      call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed).and.all(.not.result%completed), &
+           'root event limited interval rejects')
+      if(variant==0) call require(all(result%solver_headcalc_calls==0),'unbound root event rejects before solve')
+      if(variant==1) call require(all(result%solver_headcalc_calls>0).and.all(result%accepted_substeps==0), &
+           'root event real failure before acceptance')
+      if(variant==2) call require(all(result%accepted_substeps==1),'root event partial internal acceptance')
+      call require(all(.not.result%actual_transpiration_available).and. &
+           all(result%actual_transpiration_amount==0.0_real64),'failed root event publishes no transpiration')
+      do tile=1,NTILE
+        call require(.not.receipt(tile)%receipt%ready(),'failed root event has no ready receipt')
+      end do
+      call owner%export_committed_restart(9903_int64,after,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'failed root event remains exportable')
+      call compare_restart_bundles(before,after,'root event exact physical history provenance rollback')
+      call owner%close(code)
+      call require(code==FMR_APP_BOOT_OK,'limited root event owner closes')
+    end do
+    ! Replay from the exported boundary after an actual partially accepted failure.
+    call owner%initialize(profile,code)
+    call require(code==FMR_APP_BOOT_OK,'root event replay owner initializes')
+    call owner%restore_committed_restart(after,9903_int64,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'root event replay restores failed attempt boundary')
+    call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,code)
+    call require(code==FMR_APP_BOOT_OK.and.all(result%committed).and.all(result%completed),'root event replay commits')
+    call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE,'root event replay hard mass')
+    do tile=1,NTILE
+      call require(receipt(tile)%receipt%ready().and.result(tile)%actual_transpiration_available, &
+           'root event replay publishes accepted receipt and uptake')
+      call require(abs(result(tile)%actual_transpiration_amount- &
+           sum(forcing(tile)%root_extraction_sink)*(t_end-t_start))<HARD_MASS_GATE,'root event replay root amount')
+    end do
+    call owner%export_committed_restart(9903_int64,replayed,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'root event replay exports')
+    call compare_restart_bundles(expected,replayed,'root event replay equals uninterrupted owner')
+    call owner%close(code)
+    call require(code==FMR_APP_BOOT_OK,'root event replay closes')
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ROOT_EVENT_ROLLBACK_REPLAY=PASS'
+  end subroutine
+
   subroutine verify_opt_in_guards(valid)
     type(fmr_production_application_config_t), intent(in) :: valid
     type(fmr_production_application_config_t) :: invalid
