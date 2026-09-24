@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04B",
+  "title": "Bottom-flux constitutive-error attribution sweep",
+  "parent": "F-AHL04A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "motivation": "F-AHL04A failed only the frozen bottom-flux gate. The adaptive candidate was closest, but still had 2.951951e-5 cm/day bottom-flux delta against the 1e-5 gate.",
+  "question": "Which constitutive approximation component controls the remaining nonlinear Richards bottom-flux discrepancy: retention theta, capacity C, or conductivity K?",
+  "frozen_fixture": {
+    "initial_head_cm": -75.0,
+    "bottom_head_cm": -50.0,
+    "duration_day": 0.25,
+    "lookup_domain_cm": [-1000000.0,-1.0],
+    "analytical_domain": "h > -1 cm",
+    "solver_policy_change": false
+  },
+  "baseline_tolerances": {
+    "theta_span_normalized_abs": 1e-5,
+    "abs_log_capacity": 1e-2,
+    "abs_log_conductivity": 1e-2
+  },
+  "prospective_variants": [
+    {"id":"base","theta":1e-5,"logC":1e-2,"logK":1e-2},
+    {"id":"theta3","theta":3e-6,"logC":1e-2,"logK":1e-2},
+    {"id":"theta1","theta":1e-6,"logC":1e-2,"logK":1e-2},
+    {"id":"c3","theta":1e-5,"logC":3e-3,"logK":1e-2},
+    {"id":"c1","theta":1e-5,"logC":1e-3,"logK":1e-2},
+    {"id":"k3","theta":1e-5,"logC":1e-2,"logK":3e-3},
+    {"id":"k1","theta":1e-5,"logC":1e-2,"logK":1e-3}
+  ],
+  "primary_observable": "absolute bottom-flux delta versus analytical Richards",
+  "secondary_observables": [
+    "support point count",
+    "max pressure-head delta",
+    "max water-content delta",
+    "nonlinear iteration delta",
+    "backtracking delta",
+    "mass residual"
+  ],
+  "interpretation_rule": "Attribute sensitivity only when tightening one error family produces a reproducible material reduction in bottom-flux discrepancy. Do not alter the F-AHL04A acceptance gate.",
+  "hard_exclusions": [
+    "NO_POSTHOC_GATE_RETUNING",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_SURFACE_BOUNDARY_REDESIGN",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
