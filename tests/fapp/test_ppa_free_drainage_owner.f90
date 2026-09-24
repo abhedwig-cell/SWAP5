@@ -33,7 +33,8 @@ program test_ppa_free_drainage_owner
        B110_DYN_TOP_REGIME_FLUX
   use mod_ppa_wu04c_dynamic_top_forcing_adapter, only: bind_ppa_wu04c_dynamic_top_to_effective_forcing, &
        PPA_WU04C_TOP_FORCING_OK, PPA_WU04C_TOP_FORCING_REJECTED
-  use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t
+  use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t, vonhhbraden_parameters_t, &
+       vonhhbraden_result_t, evaluate_vonhhbraden_source_window, VONHHBRADEN_AVAILABLE
   use mod_ppa_wu04c_production_forcing_adapter, only: ppa_wu04c_production_forcing_diagnostics_t, &
        materialize_ppa_wu04c_production_forcing, PPA_WU04C_PRODUCTION_FORCING_OK
   use mod_gash_interception, only: gash_parameters_t
@@ -95,6 +96,7 @@ program test_ppa_free_drainage_owner
   call get_command_argument(1,test_scope)
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
+  if(trim(test_scope)=='--stable-windows') config%storage_difference => evaluate_mvg_storage_difference_service
   if(trim(test_scope)=='--guards'.or.trim(test_scope)=='--stable-guards') then
     call verify_opt_in_guards(config)
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS'
@@ -379,6 +381,7 @@ contains
     call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')
     if(trim(test_scope)=='--stable-receipts') &
          call verify_storage_receipt_restart(production_app,transient_profile,forcing_vector,receipts,interception_by_tile)
+    if(trim(test_scope)=='--stable-windows') call verify_changing_windows(production_app,transient_profile)
     call production_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
     deallocate(forcing_vector)
@@ -609,6 +612,125 @@ contains
     else
       write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS'
     end if
+  end subroutine
+
+  subroutine verify_changing_windows(owner,profile)
+    type(fmr_production_application_bootstrap_t),intent(inout)::owner
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_production_application_bootstrap_t)::fresh
+    type(fmr_committed_restart_bundle_t)::before,unchanged,continued,resumed
+    type(fmr_committed_top_state_t),allocatable::top(:),restored_top(:)
+    type(fmr_b110_physical_forcing_t)::forcing(NTILE),restored_forcing(NTILE)
+    type(fmr_serialized_column_result_t),allocatable::result(:),restored_result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:),restored_receipt(:)
+    type(fmr_vonhhbraden_source_window_progress_t)::progress,restored_progress
+    type(vonhhbraden_source_window_t)::source
+    type(vonhhbraden_parameters_t)::parameters
+    type(vonhhbraden_result_t)::source_result
+    real(real64)::start_time,end_time,amount(NTILE),restored_amount(NTILE),previous_flux
+    integer::window,tile,code
+    logical::ok
+    parameters%cofab_cm=0.5_real64
+    source%leaf_area_index=2.0_real64
+    source%vegetation_cover_fraction=0.5_real64
+    previous_flux=0.0_real64
+    do window=1,2
+      start_time=T1+real(window-1,real64)*(T1-T0)
+      end_time=start_time+(T1-T0)
+      source%gross_rain_cm_per_day=0.20_real64-0.04_real64*real(window-1,real64)
+      source%sprinkling_irrigation_cm_per_day=0.10_real64-0.02_real64*real(window-1,real64)
+      call evaluate_vonhhbraden_source_window(parameters,source,0.1_real64,source_result)
+      call require(source_result%status==VONHHBRADEN_AVAILABLE,'changing source evaluated')
+      call owner%export_committed_restart(9902_int64,before,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'window boundary export')
+      call fresh%initialize(profile,code)
+      call require(code==FMR_APP_BOOT_OK,'window fresh initialize')
+      call fresh%restore_committed_restart(before,9902_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'window boundary restore')
+      call owner%copy_committed_top_states(top,code)
+      call require(code==FMR_APP_BOOT_OK.and.all(top%available),'window committed top')
+      call fresh%copy_committed_top_states(restored_top,code)
+      call require(code==FMR_APP_BOOT_OK.and.all(restored_top%available),'window restored top')
+      do tile=1,NTILE
+        call require(top(tile)%committed_time==start_time.and.top(tile)%revision==int(window,int64), &
+             'window uses current committed boundary')
+        call build_window_forcing(profile,tile,top(tile),source,source_result,forcing(tile),amount(tile))
+        call build_window_forcing(profile,tile,restored_top(tile),source,source_result, &
+             restored_forcing(tile),restored_amount(tile))
+        call require(forcing(tile)%top_flux==restored_forcing(tile)%top_flux.and. &
+             amount(tile)==restored_amount(tile),'restored window materialization identical')
+      end do
+      if(window==2) call require(forcing(1)%top_flux/=previous_flux,'effective forcing changes between windows')
+      previous_flux=forcing(1)%top_flux
+      call owner%export_committed_restart(9902_int64,unchanged,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'materialization leaves owner exportable')
+      call compare_restart_bundles(before,unchanged,'read-only window materialization')
+      call owner%run_standalone_with_forcing_receipts(start_time,end_time,forcing,result,receipt,code)
+      write(*,*) 'CHANGING_WINDOW_DIAG',window,code,result%kernel_status,result%accepted_substeps
+      call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'changing window commits')
+      call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
+           restored_result,restored_receipt,code)
+      call require(code==FMR_APP_BOOT_OK.and.all(restored_result%committed),'restored changing window commits')
+      call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE.and. &
+           maxval(abs(restored_result%mass%residual))<=HARD_MASS_GATE,'changing window hard mass')
+      do tile=1,NTILE
+        call fmr_initialize_vonhhbraden_source_window_progress(int(9800+10*window+tile,int64), &
+             start_time,end_time,amount(tile),progress,code,profile%tiles(tile)%tile_id,top(tile)%revision)
+        call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'distinct window progress initialized')
+        restored_progress=progress
+        call publish_ppa_wu04c_accepted_progress(progress,receipt(tile)%receipt,amount(tile),code)
+        call require(code==PPA_WU04C_PUBLICATION_OK,'changing window source publication')
+        call publish_ppa_wu04c_accepted_progress(restored_progress,restored_receipt(tile)%receipt, &
+             restored_amount(tile),code)
+        call require(code==PPA_WU04C_PUBLICATION_OK,'restored changing window publication')
+        call require(progress%remaining_interception()==0.0_real64.and. &
+             restored_progress%remaining_interception()==0.0_real64,'distinct source amount exhausted')
+      end do
+      call owner%export_committed_restart(9902_int64,continued,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'window continued export')
+      call fresh%export_committed_restart(9902_int64,resumed,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'window resumed export')
+      call compare_restart_bundles(continued,resumed,'changing window restart equivalence')
+      call fresh%close(code)
+      call require(code==FMR_APP_BOOT_OK,'window fresh closes')
+    end do
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS'
+  end subroutine
+
+  subroutine build_window_forcing(profile,tile,top,source,source_result,forcing,amount_cm)
+    type(fmr_production_application_config_t),intent(in)::profile
+    integer,intent(in)::tile
+    type(fmr_committed_top_state_t),intent(in)::top
+    type(vonhhbraden_source_window_t),intent(in)::source
+    type(vonhhbraden_result_t),intent(in)::source_result
+    type(fmr_b110_physical_forcing_t),intent(out)::forcing
+    real(real64),intent(out)::amount_cm
+    type(soil_water_parameter_set_t)::geometry
+    type(b110_default_mvg_parameters_t)::hydraulics
+    type(b110_dynamic_top_boundary_request_t)::request
+    type(ppa_wu04c_production_forcing_diagnostics_t)::diagnostics
+    real(real64)::rate
+    geometry%parameter_set_id=profile%tiles(tile)%parameters%parameter_set_id
+    geometry%active_nodes=profile%tiles(tile)%parameters%active_nodes
+    geometry%z=profile%tiles(tile)%parameters%z
+    geometry%dz=profile%tiles(tile)%parameters%dz
+    geometry%node_distance=profile%tiles(tile)%parameters%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics,profile%tiles(tile)%parameters%cofgen)
+    request%conductivity_mean_method=profile%tiles(tile)%parameters%swkmean
+    request%pressure_head_top_cm=top%pressure_head_top_cm
+    request%water_content_top=top%water_content_top
+    request%ponding_depth_cm=top%ponding_depth_cm
+    request%step_duration_day=T1-T0
+    request%ponding_max_cm=2.0_real64
+    request%runoff_resistance_day=1.0_real64
+    request%runoff_exponent=1.0_real64
+    call materialize_ppa_wu04c_production_forcing(profile%tiles(tile)%base_forcing,request,geometry,hydraulics, &
+         source,source_result%source_window_interception_cm_per_day,source%gross_rain_cm_per_day, &
+         source%sprinkling_irrigation_cm_per_day,forcing,rate,diagnostics)
+    call require(diagnostics%status==PPA_WU04C_PRODUCTION_FORCING_OK,'committed-top forcing composition')
+    amount_cm=rate*(T1-T0)
+    call require(abs(amount_cm-source_result%source_window_interception_cm_per_day*(T1-T0))<1.0e-15_real64, &
+         'whole source interval amount cm')
   end subroutine
 
   subroutine compare_restart_bundles(a,b,label)
