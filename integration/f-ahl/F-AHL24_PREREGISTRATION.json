@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL24",
+  "title": "Boundary-contract fallback qualification for prescribed-qbot",
+  "parent": "F-AHL23",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can prescribed-qbot use exact authoritative retention/capacity with lookup conductivity as a boundary-contract fallback that restores strict nonlinear-path invariance across the qualified 12-case matrix, and is that hybrid faster than fully analytical hydraulics?",
+  "frozen_matrix": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": [
+      {"id":"wet","initial_head_cm":-10.0},
+      {"id":"mid","initial_head_cm":-75.0},
+      {"id":"dry","initial_head_cm":-500.0}
+    ],
+    "bottom_mode": 2,
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.99*K(initial)",
+    "step_duration_day": 0.0625
+  },
+  "candidate": "exact authoritative theta and C plus selected F-AHL15 lookup K",
+  "stage_1_gates": "identical state, flux, mass and nonlinear-path gates to F-AHL21C; require 12/12",
+  "stage_2_timing": {
+    "only_if_stage_1_passes": true,
+    "cases": ["B01:wet","O05:dry"],
+    "protocol": "paired O3 timing, 7 repetitions, alternating order, table generation/binding outside timed solve batches",
+    "decision": {
+      "faster": "median candidate/analytical < 0.98",
+      "equivocal": "0.98 <= ratio <= 1.02",
+      "slower": "ratio > 1.02"
+    }
+  },
+  "decision_rule": "If fidelity closes but timing is not faster, prescribed-qbot should fall back to fully analytical hydraulics rather than retain a lookup solely for K. If fidelity fails, boundary-contract fallback itself is rejected.",
+  "hard_exclusions": ["NO_GATE_RETUNING","NO_MATERIAL_HARDCODE","NO_PRODUCTION_ADMISSION"]
+}
