@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.sw_tri01.a.preregistration.v1",
+  "work_unit": "SW-TRI01-A",
+  "date": "2026-09-24",
+  "canonical_base": "879945f9b994db91bca2cacd1cb85ff381f45f39",
+  "title": "Single-candidate forcing composition for MODFLOW6 plus Ribasim",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "central_question": "Can the admitted FMR physics execute one transaction candidate from one accepted SWAP origin with both a prescribed MODFLOW bottom head and one Ribasim-owned EXTENDED_SIGNED surface-water head, without duplicate state or split candidate authority?",
+  "source_findings": [
+    "The current groundwater participant materializes a prescribed bottom head only for bottom_mode=5.",
+    "The current F-APP09 surface-water participant is bounded to bottom_mode=7.",
+    "Both participants create full independent kernel candidates, so their candidates cannot be merged after execution.",
+    "fmr_b110_physical_forcing_t can carry both bottom_head and drainage_response_controls.",
+    "The groundwater head materializer copies a typed base forcing and changes only bottom_head.",
+    "The drainage-response physics itself is independent of the surface-water participant's bottom_mode=7 admission guard."
+  ],
+  "frozen_composition": [
+    "Start from one accepted fmr_b110_physical_state_t origin.",
+    "Use bottom_mode=5.",
+    "Activate exactly one FMR_DRAIN_VARIANT_EXTENDED_SIGNED drainage-response level.",
+    "Materialize one finite Ribasim surface-water head into drainage_response_controls.",
+    "Use that materialized forcing as the base forcing for fmr_groundwater_head_forcing_materializer_t.",
+    "Materialize one finite MODFLOW interface head into bottom_head.",
+    "Run exactly one backend trial from the captured origin.",
+    "Do not commit in TRI01-A."
+  ],
+  "required_evidence": [
+    "combined forcing retains Ribasim resolved surface-water head after MODFLOW-head materialization",
+    "combined forcing contains the mapped MODFLOW bottom head",
+    "single candidate is complete and mass-complete",
+    "bottom_interface_exchange_available is true",
+    "drainage_response_window_exchange_available is true",
+    "both reported exchanges are finite",
+    "accepted committed revision is unchanged",
+    "candidate interval is exactly the frozen window",
+    "discard returns to the same accepted origin"
+  ],
+  "comparison_cases": [
+    "R1 positive soil-to-surface-water exchange with finite groundwater bottom head",
+    "R2 negative surface-water-to-soil exchange with finite groundwater bottom head"
+  ],
+  "failure_rule": "A profile rejection, missing exchange, incomplete mass, or inability to carry both forcings in one accepted trial is a genuine composition blocker. Do not work around it by running separate SWAP candidates and merging results.",
+  "pass_meaning": "Kernel-level evidence that a single joint SWAP candidate is feasible with existing admitted physics. It does not yet admit a three-model orchestration or production participant.",
+  "nonclaims": [
+    "No live MODFLOW6 in TRI01-A.",
+    "No live Ribasim in TRI01-A.",
+    "No joint publication/commit.",
+    "No multilevel surface-water exchange.",
+    "No automatic SWMAN=2.",
+    "No triangle production admission."
+  ],
+  "production_admission": false
+}
