@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21",
+  "phase": "PRESCRIBED_QBOT_MATRIX_COMPLETE",
+  "status": "PARTIAL_FAIL_ENVELOPE_AND_ONE_CONVERGENCE_PATH_CASE",
+  "workflow_run": 36046869154,
+  "workflow_job": 107792464514,
+  "forcing": {
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.9*K(initial)"
+  },
+  "reference_nonconvergence_cases": ["B01:wet","O05:wet","O14:wet"],
+  "candidate_path_failure_with_reference_converged": ["O05:dry"],
+  "passing_cases": ["B01:mid","B01:dry","B12:wet","B12:mid","B12:dry","O05:mid","O14:mid","O14:dry"],
+  "selected_bottom_head_response_examples_cm": {
+    "B01_mid_reference_change": 1.902640,
+    "B12_wet_reference_change": 0.9259594,
+    "O14_mid_reference_change": 27.61171,
+    "O14_mid_candidate_minus_reference": 5.177427e-6,
+    "B01_dry_reference_change": 0.04342295,
+    "B12_dry_reference_change": 0.07265141,
+    "O14_dry_reference_change": 1.424642
+  },
+  "interpretation": [
+    "Prescribed-qbot makes the bottom pressure head a freely responding state, unlike the previously tested prescribed-head boundary.",
+    "Three wet failures are outside the usable analytical fixture envelope at the preregistered 10 percent flux imbalance and cannot be attributed to the adaptive representation.",
+    "O05-dry requires separate convergence-path diagnosis because the analytical solve converges but the candidate does not preserve the exact iteration gate."
+  ],
+  "next_action": "Prospectively map a milder prescribed-qbot perturbation envelope, retaining the same fidelity gates, then revisit O05-dry if convergence-path drift persists.",
+  "nonclaims": [
+    "No general prescribed-qbot qualification is established.",
+    "No claim is made yet about discontinuities caused by surface-boundary switching.",
+    "No MODFLOW coupling claim is made."
+  ]
+}
