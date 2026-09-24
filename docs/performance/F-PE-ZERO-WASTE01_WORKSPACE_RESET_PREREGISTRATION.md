@@ -247,3 +247,48 @@ For the tridiagonal arrays, the retained reset establishes zero boundary/scratch
 - any poison/scratch-independence failure reclassifies the clear as required and forces revert.
 
 H6 deliberately depends on the retained one-reset-per-solve invariant. If that invariant changes in a future workunit, this removal must be requalified.
+
+
+## ZW01-H7 preregistration — minimal solve preparation instead of full scratch zeroing
+
+The remaining one full workspace reset still writes every scratch array before every Reference solve. Exact control-flow audit shows that most of these arrays are fully overwritten before their first active read on the explicit production route.
+
+### Arrays classified overwrite-before-read for solve preparation
+
+- `residual(1:NN)`: assigned completely by `vector_F` before convergence use;
+- `delta_head(1:NN)`: written by the linear solver before backtracking use;
+- `sink/source(1:n)`: fully written by either provider or legacy source/sink construction;
+- `provider_theta/provider_k/provider_capacity/provider_dkdh`: full `intent(out)` provider tuple whenever provider path is active, otherwise not consumed as provider scratch;
+- `provider_root_sink`: full `intent(out)` when active, otherwise not read;
+- `dconductivity_dhead(1:NN)`: written before use on SwKimpl=1; not used on admitted SwKimpl=0 path;
+- `old_head(1:NN)`: assigned at Newton-iteration entry before use;
+- `vertical_flux`: initialized from its first active face then propagated before use on routes that consume it;
+- `band_matrix(1:NN,1:3)` and `band_rhs(1:NN)`: fully materialized before alternative band solve;
+- `band_pivots`: solver output;
+- `nonconverged_balance/nonconverged_head`: explicitly cleared before convergence classification;
+- `dfdh_main(1:NN)`: fully rebuilt by `jacobian_F` before linear solve.
+
+### Values that remain explicit solve-start authority
+
+Minimal solve preparation must still establish:
+
+- workspace shape/allocation;
+- generation increment;
+- reset diagnostics object;
+- `poisoned=.false.`;
+- `unsaturated_flags=.false.`;
+- `has_warm_start=.false.` unless a future admitted warm-start contract says otherwise;
+- tridiagonal boundary sentinels required by current indexing;
+- any factorization-capture metadata/scratch required by its own preparation contract.
+
+### Poison gate
+
+H7 is admissible only if a direct Reference solve succeeds from a workspace whose scratch arrays were first filled with NaNs / invalid sentinels using `poison_reference_workspace`, and produces bit-identical physical output to the clean baseline.
+
+The poison test is stronger than a normal repeated-run test: any omitted initialization that is actually read before overwrite should propagate NaN/invalid state or alter the result.
+
+### Scope
+
+H7 does not remove `reset_reference_workspace`; the full-reset API remains available for callers/tests requiring an explicitly zeroed workspace. H7 introduces a separate solve-preparation operation for the hot path.
+
+No physics, tolerance, timestep, transaction, H03, F-AHL or approximate-mode change is authorized.
