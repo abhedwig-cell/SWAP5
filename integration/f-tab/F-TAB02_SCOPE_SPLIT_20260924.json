@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.workunit_checkpoint.v1",
+  "workunit": "F-TAB02-SCOPE-SPLIT",
+  "title": "Separate bounded production qualification from historical whole-Hupsel preservation gate",
+  "date": "2026-09-24",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "classification": "BOUNDED_TECHNICAL_QUALIFICATION_PASS__HISTORICAL_F_PRESERVATION_OPEN",
+  "decision": {
+    "technical_scientific_qualification": "PASS_WITHIN_QUALIFIED_BOUNDED_SCOPE",
+    "historical_whole_hupsel_F": "OPEN_NOT_REPRODUCIBLE_IN_CURRENT_AUTOMATION",
+    "canonical_admission": "NOT_AUTHORIZED_BY_THIS_CHECKPOINT",
+    "research_reopen": false
+  },
+  "basis": {
+    "A_through_E": "PASS",
+    "G_bounded_FSI39_KSATEXM": "PASS",
+    "F0_selection_and_lifetime": "PASS",
+    "same_postimage_A_through_G_preservation_run": 35882579159,
+    "F0_owner_run": 35884404981,
+    "production_performance_runs": [35824004715, 35824244178],
+    "public_hupsel_lineage_characterization_run": 35920836243
+  },
+  "qualified_production_scope": {
+    "constitutive_family": "existing default Mualem-van Genuchten only",
+    "swsophy": 0,
+    "swkimpl": 0,
+    "provider": "generated immutable raw-head400 K0 acceleration provider",
+    "selection": "explicit standalone opt-in only",
+    "analytical_default_preserved": true,
+    "bounded_FSI39_KSATEXM": "exact Hupsel upper/lower M1-C3 materials only",
+    "generic_user_tables": false,
+    "generic_KSATEXM": false,
+    "worker_or_MultiSWAP_generated_selection": false,
+    "K1": false
+  },
+  "technical_evidence": {
+    "correctness": "A-D plus G/F0 owner and preservation gates PASS",
+    "reference_richards": "bounded head/theta/mass differences remain within preregistered qualification; iteration counts equal in qualified cases",
+    "transaction_and_state": "F0 confirms no generated-provider physical or transaction state ownership and correct cache invalidation/reuse",
+    "performance": {
+      "provider_runtime_delta_pct_repeated_range": [-5.66007486, -4.3575333],
+      "reference_richards_delta_pct_repeated_range": [-17.79710569, -12.0806817],
+      "serialized_runtime_delta_pct_repeated_range": [-9.18127598, -4.72044883],
+      "interpretation": "reproduced acceleration sign within production qualification fixtures; not a whole-SWAP speed guarantee"
+    }
+  },
+  "historical_F_preservation_gate": {
+    "status": "OPEN",
+    "preregistration": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json",
+    "meaning": "additional historical exact whole-Hupsel preservation evidence, not evidence that the already qualified bounded generated provider failed",
+    "exact_authority": {
+      "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "previously_verified": true,
+      "current_repository_resident_bytes": false,
+      "project_library_reference_exists_but_raw_materialization_currently_unavailable": true
+    },
+    "public_substitution": {
+      "source": "SWAP-model/swap-testcases@a1b15843e9e9732713bed1ee41d09c16c3136593",
+      "raw_identity": "NO_MATCH",
+      "run": 35920836243,
+      "authorized_for_F": false
+    },
+    "effect": "F remains open and must be completed when exact authority bytes are again materializable; no surrogate substitution and no weakening of F acceptance criteria."
+  },
+  "admission_policy": {
+    "this_checkpoint_does_not_merge_or_admit": true,
+    "permitted_next_governance_action": "evaluate bounded canonical admission of the already-qualified explicit-opt-in scope independently from historical F preservation, with F retained as an open preservation obligation",
+    "required_if_admitted": [
+      "analytical route remains default",
+      "generated route remains explicit opt-in",
+      "scope remains exactly the qualified K0/F-SI39 standalone envelope",
+      "no generic table or generic KSATEXM claim",
+      "no worker/MultiSWAP generated selection",
+      "F remains visibly OPEN and cannot be relabelled PASS",
+      "whole-model speedup cannot be claimed"
+    ]
+  },
+  "nonclaims": [
+    "F-TAB02-F PASS",
+    "whole-Hupsel generated-provider equivalence",
+    "generic tabulated hydraulics production",
+    "generic KSATEXM production",
+    "SWKIMPL=1 production",
+    "worker/MultiSWAP generated-provider qualification",
+    "portable whole-SWAP speedup",
+    "canonical admission"
+  ]
+}
