@@ -1,0 +1,28 @@
+name: F-AHL09 Stage-2 Richards replay
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl09_generate_fsi24.py'
+      - 'research/ahl/mod_ahl09_dc_provider.f90'
+      - 'research/ahl/test_ahl09_stage2_richards.f90'
+      - 'research/ahl/run_ahl09_stage2_richards.sh'
+      - 'integration/f-ahl/F-AHL09_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl09-stage2-richards.yml'
+  workflow_dispatch:
+
+jobs:
+  stage2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run derivative-consistent Richards replay
+        run: |
+          bash research/ahl/run_ahl09_stage2_richards.sh /tmp/ahl09_stage2.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl09-stage2-${{ github.run_id }}
+          path: /tmp/ahl09_stage2.txt
