@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04A",
+  "title": "FSI24 nonlinear Richards provider substitution gate",
+  "parent": "F-AHL04",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "fixture": {
+    "authority": "tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90",
+    "initial_head_cm": -75.0,
+    "bottom_head_perturbation_cm": 25.0,
+    "duration_day": 0.25,
+    "bottom_mode": 5,
+    "top_forcing": "fixed flux equal to negative initial analytical conductivity"
+  },
+  "candidates": ["fixed50","fixed100","adaptive"],
+  "hybrid_policy": {
+    "lookup_for_h_cm_at_or_below": -1.0,
+    "analytical_for_h_cm_above": -1.0
+  },
+  "gates": {
+    "all_solves_converged": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12,
+    "max_nonlinear_iteration_count_delta": 2,
+    "max_backtracking_attempt_count_delta": 2
+  },
+  "diagnostic_non_gate_outputs": [
+    "jacobian build delta",
+    "linear solve delta",
+    "provider table point count"
+  ],
+  "interpretation": "PASS only establishes bounded end-to-end solver response on one controlled nonlinear fixture. It is not a general hydrological or performance qualification."
+}
