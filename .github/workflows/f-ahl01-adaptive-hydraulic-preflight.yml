@@ -60,6 +60,10 @@ jobs:
           test -s /tmp/ahl04/fixed100.dat
           test -s /tmp/ahl04/adaptive.dat
 
+      - name: Run F-AHL04A nonlinear Richards provider replay
+        run: |
+          bash research/ahl/run_ahl04a_richards_provider_replay.sh | tee /tmp/ahl04a_replay.txt
+
       - name: Preserve preflight outputs
         uses: actions/upload-artifact@v4
         with:
@@ -72,3 +76,4 @@ jobs:
             /tmp/ahl04/fixed50.dat
             /tmp/ahl04/fixed100.dat
             /tmp/ahl04/adaptive.dat
+            /tmp/ahl04a_replay.txt
