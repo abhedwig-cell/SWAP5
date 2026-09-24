@@ -11,6 +11,13 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "trial_reduction_contract": {
+    "baseline": "e10464322",
+    "source": "B1.11 MACRORATE line 131: FrReduQ = 0.1d0**dble(IDecMpRat)",
+    "interface": "PPA-local saturated_domain_inputs gains nonnegative reduction_decades, default zero. Evaluator computes the source real-exponent factor and passes it to SATFLOW before storage limiting and paired derivative assembly. Caller owns recovery policy; evaluator never increments or commits this field.",
+    "scope": "Numerical trial control only, no production recovery-history/restart admission or source change.",
+    "test_result": "Pending"
+  },
   "incoming_assembly_verification": {
     "baseline": "f8633edd8",
     "scope": "Verification of the existing bounded evaluator in the matrix-to-pore direction; no production code or admitted scope change.",

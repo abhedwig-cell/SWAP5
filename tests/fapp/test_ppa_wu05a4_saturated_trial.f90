@@ -156,8 +156,37 @@ program test_saturated_trial
   print '(a)','PPA_WU05A4_DERIVED_MATRIX_TRIAL=PASS'
   print '(a)','PPA_WU05A4_UNUSED_PORE_METADATA_VALIDATION=PASS'
   call incoming_trials()
+  call reduced_trials()
+  print '(a)','PPA_WU05A4_TRIAL_REDUCTION_DECADES=PASS'
   print '(a)','PPA_WU05A4_MATRIX_TO_PORE_LIMITED_ASSEMBLY=PASS'
 contains
+  subroutine reduced_trials()
+    integer::j
+    real(real64)::factor
+    input%pore_level=-0.5_real64; input%storage=0.375_real64
+    input%saturated_fraction=0.5_real64
+    do j=0,2
+      input%reduction_decades=j
+      factor=0.1_real64**real(j,real64)
+      residual=0; diagonal=1
+      key%evaluation=200+j
+      call evaluate_saturated_system(input,[-0.5_real64,0.5_real64],1.0_real64,key,.true., &
+          residual,diagonal,slot,storage,ok,pond=0.0_real64)
+      call check(ok,80)
+      call check(abs(residual(2)+0.125_real64*factor)<1.e-14_real64,81)
+      call check(abs(diagonal(2)-1-0.25_real64*factor)<1.e-14_real64,82)
+      call check(abs(storage-0.375_real64+0.125_real64*factor)<1.e-14_real64,83)
+      call check(abs(input%storage-0.375_real64)<1.e-14_real64,84)
+    end do
+    input%reduction_decades=-1; residual=7; diagonal=3
+    call evaluate_saturated_system(input,[-0.5_real64,0.5_real64],1.0_real64,key,.true., &
+        residual,diagonal,slot,storage,ok,pond=0.0_real64)
+    call check(.not.ok.and.maxval(abs(residual-7))+maxval(abs(diagonal-3))<1.e-14_real64,85)
+    call copy_matrix_transfer(slot,key,amount,ok)
+    call check(.not.ok.and..not.allocated(amount),86)
+    input%reduction_decades=0
+  end subroutine
+
   subroutine incoming_trials()
     real(real64)::dt,expected_rate,expected_store
     integer::j

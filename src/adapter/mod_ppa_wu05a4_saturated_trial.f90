@@ -16,6 +16,7 @@ module mod_ppa_wu05a4_saturated_trial
   private
   type,public::saturated_domain_inputs
     integer::matrix_top=0,pore_saturated_top=0
+    integer::reduction_decades=0
     real(real64)::bottom=0,pore_level=0,matrix_level=0,storage=0,saturated_fraction=0
     real(real64),allocatable::z(:),dz(:),volume(:),resistance_inverse(:)
   end type
@@ -155,6 +156,7 @@ contains
     if(.not.ieee_is_finite(input%saturated_fraction))return
     if(input%saturated_fraction<0.or.input%saturated_fraction>1)return
     if(any(input%resistance_inverse<0))return
+    if(input%reduction_decades<0)return
     total_volume=sum(input%volume)
     call domain_storage_bounds(input%bottom,n,input%dz,input%volume,total_volume,input%storage, &
         input%matrix_level,input%bottom,.false.,ground,minimum,valid)
@@ -173,7 +175,8 @@ contains
         .and.head(input%matrix_top:n)>=0))return
     call ppa_wu05a3_satflow_task1(n,input%matrix_top,n,input%pore_saturated_top, &
         input%pore_level,input%matrix_level,head,input%z,input%dz,input%saturated_fraction, &
-        input%resistance_inverse,0,ones,ones,zeros,zeros,acos(-1.0_real64),1.0_real64,dt, &
+        input%resistance_inverse,0,ones,ones,zeros,zeros,acos(-1.0_real64), &
+        0.1_real64**real(input%reduction_decades,real64),dt, &
         dh,potential,inpot,total_in,status)
     if(status/=PPA_WU05A3_SATFLOW_TASK1_OK)return
     outpot=max(-potential,0.0_real64); total_out=sum(outpot)
