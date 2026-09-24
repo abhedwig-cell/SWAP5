@@ -114,7 +114,8 @@ contains
     logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
     type(reference_richards_state_binding_t) :: state_binding
-    integer :: n, tangent_ierror, interface_sensitivity_backsolves
+    integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
+    integer(int64) :: reset_bytes_before
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
