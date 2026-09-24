@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL07",
+  "phase": "CONVERGENCE_ATTRIBUTION_COMPLETE",
+  "status": "PASS_DIAGNOSTIC",
+  "workflow_run": 36041299352,
+  "workflow_job": 107773837850,
+  "results": {
+    "exact_theta_lookup_C_lookup_K": {
+      "iteration_delta": 1,
+      "backtracking_delta": 1,
+      "bottom_flux_delta_cm_per_day": 4.654080e-9
+    },
+    "exact_theta_exact_C_lookup_K": {
+      "iteration_delta": 0,
+      "backtracking_delta": 0,
+      "bottom_flux_delta_cm_per_day": 4.654080e-9
+    },
+    "exact_theta_lookup_C_exact_K": {
+      "iteration_delta": 1,
+      "backtracking_delta": 1,
+      "bottom_flux_delta_cm_per_day": 0.0
+    },
+    "exact_theta_exact_C_exact_K": {
+      "iteration_delta": 0,
+      "backtracking_delta": 0,
+      "bottom_flux_delta_cm_per_day": 0.0
+    }
+  },
+  "finding": "Capacity approximation controls the extra nonlinear iteration/backtracking in this fixture. Restoring exact C recovers the analytical convergence path even while K remains lookup-based. Restoring exact K alone removes the residual endpoint discrepancy but does not recover the convergence path.",
+  "numerical_interpretation": "The result is consistent with Jacobian/residual inconsistency when theta is exact but C=dtheta/dh is independently approximated. Retention and capacity should therefore be treated as one derivative-consistent representation rather than independent lookup channels.",
+  "design_direction": "Keep theta and C mutually consistent, preferably both authoritative analytical in the next bounded candidate, and target lookup acceleration primarily at K. A future interpolated retention representation should derive C from the same interpolant rather than tabulate it independently.",
+  "next_action": "Measure exact theta+C plus lookup K cost and end-to-end Richards performance.",
+  "nonclaims": [
+    "The derivative-consistency interpretation requires broader confirmation across materials and regimes.",
+    "No production admission is implied."
+  ]
+}
