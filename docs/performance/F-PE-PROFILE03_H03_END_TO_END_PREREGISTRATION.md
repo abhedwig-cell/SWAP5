@@ -164,3 +164,53 @@ E1 CALL REDUCTION           = 3 -> 2 per Reference solve
 E2 WHOLE SWAP               = NEXT_BIND_EXECUTABLE
 WHOLE-SWAP SPEEDUP CLAIM    = NOT YET PERMITTED
 ```
+
+## E2 binding reconciliation
+
+The complete Hupsel typed-adapter route is now structurally bound to H03.
+
+Current source path:
+
+```text
+legacy Hupsel files/application processes
+  -> MOD_SoilWater task 2
+  -> run_b110_production_task2
+  -> try_b110_production_task2
+  -> reference_richards_legacy_solver_t
+  -> reference_richards_legacy_solve
+  -> current src/legacy/b1_10_port/headcalc.f90
+```
+
+`mod_b110_production_soil_water_task2.f90` constructs the typed request and instantiates `reference_richards_legacy_solver_t`; the Reference solver binding invokes `headcalc`. The qualified M1-C3 whole-Hupsel route therefore traverses the exact production source changed by H03.
+
+The historical M1-C3 whole-Hupsel qualification established:
+
+- 32,518 accepted physical intervals;
+- 32,552 typed Task2 attempts;
+- 34 additional retry attempts;
+- no accepted-interval fallback;
+- exact normalized `result.bal` identity;
+- exact normalized `result.blc` identity.
+
+Therefore E2 is architecturally valid for measuring H03.
+
+### Reproducibility blocker found
+
+The prior whole-Hupsel PASS was recorded as an `external_exact_asset_execution`. The exact SWAP 4.3.1 archive used for that run is not persisted in this repository, no workflow artifact remains attached to the recorded owner qualification run, and the complete external whole-run build/execution recipe was not committed.
+
+The repository does contain deterministic B1.11 reconstruction tooling and identity records, but `tools/vq/b1_11_reconstruct.py` still requires the exact B0 archive as an input. It cannot reconstruct B1.11 from repository contents alone.
+
+The public pinned `SWAP-model/swap-testcases` Hupsel legacy directory does expose the meteorology, crop, drainage and SWP-template assets used in the Hupsel lineage, so the application input side is largely recoverable. That does not by itself recreate the missing exact source archive/build environment needed to repeat the historical whole-run qualification.
+
+Classification:
+
+```text
+E2 H03 SOURCE BINDING        = PASS
+E2 HISTORICAL WHOLE HUPSEL   = QUALIFIED
+E2 CURRENT REPLAY RECIPE     = NOT_REPOSITORY_COMPLETE
+E2 BLOCKER CLASS             = REPRODUCIBILITY / BUILD-ASSET
+E2 SCIENTIFIC BLOCKER        = NO
+E2 RUNTIME RESULT            = NOT YET MEASURED
+```
+
+No whole-SWAP speedup is inferred from the historical run or from E1.
