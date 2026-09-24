@@ -1,0 +1,20 @@
+name: F-PDI-VT02 direct temperature correction gate
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'research/pdi_vt/f_pdi_vt02_direct_gate.py'
+      - 'research/pdi_vt/run_f_pdi_vt02_direct_gate.sh'
+      - 'integration/f-pdi-vt/F-PDI-VT02_PREREGISTRATION.json'
+      - '.github/workflows/f-pdi-vt02-direct-gate.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/pdi_vt/run_f_pdi_vt02_direct_gate.sh /tmp/f_pdi_vt02.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pdi-vt02-${{ github.run_id }}
+          path: /tmp/f_pdi_vt02.json
