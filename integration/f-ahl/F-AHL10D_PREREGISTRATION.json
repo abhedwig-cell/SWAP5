@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10D",
+  "title": "Dry-end relevance-bounded adaptive representation",
+  "parent": "F-AHL10C",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the F-AHL10B conductivity refinement be completed without wasting support in the previously qualified negligible-storage dry tail, while preserving authoritative hydraulics through analytical fallback outside the represented domain?",
+  "dry_end_policy": {
+    "relevance_quantity": "raw authoritative moisture capacity C=dtheta/dh",
+    "representation_stop_threshold": 1e-13,
+    "historical_numerical_context": "Earlier O05 work used C_J=max(C,dt*1e-13) as a Newton-Jacobian regularization; this work does not conflate that timestep-dependent floor with the raw-C representation stop.",
+    "tail_semantics": "No constitutive truncation. Heads drier than the material-specific represented-domain bound use the authoritative analytical provider.",
+    "physics_change": false
+  },
+  "materials": ["B01","B12","O05","O14"],
+  "nominal_head_domain_cm": [-1000000.0,-1.0],
+  "material_specific_rule": "If C crosses 1e-13 inside the nominal domain, use that head as the dry lookup-domain boundary; otherwise retain the nominal -1e6 cm boundary.",
+  "K_tolerances_to_resume": [0.001,0.0003,0.0001],
+  "stable_construction_oracle": "-expm1(m*log1p(-u)) for the Mualem bracket, as qualified by F-AHL10C",
+  "acceptance": [
+    "all four materials build successfully at each tested tolerance",
+    "represented-domain constitutive gates pass",
+    "tails are routed to analytical fallback rather than constant extrapolation",
+    "frozen F-AHL10 Richards gates are not changed"
+  ],
+  "hard_exclusions": [
+    "NO_ZEROING_OR_CLAMPING_OF_THETA_C_OR_K_AS_PHYSICS",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_PROVIDER_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
