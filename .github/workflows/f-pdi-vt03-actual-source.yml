@@ -1,0 +1,20 @@
+name: F-PDI-VT03 actual source gate
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'research/pdi_vt/f_pdi_vt03_stubs.f90'
+      - 'research/pdi_vt/f_pdi_vt03_harness.f90'
+      - 'research/pdi_vt/run_f_pdi_vt03_actual_source.sh'
+      - '.github/workflows/f-pdi-vt03-actual-source.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/pdi_vt/run_f_pdi_vt03_actual_source.sh /tmp/f_pdi_vt03.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pdi-vt03-${{ github.run_id }}
+          path: /tmp/f_pdi_vt03.txt
