@@ -280,6 +280,11 @@ contains
     call production_app%initialize(value, local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner initialize')
     call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    do tile=1,NTILE
+      write(*,*) 'OWNER_DIAG',tile,local_status,production_results(tile)%kernel_status, &
+           production_results(tile)%accepted_substeps,production_results(tile)%solver_headcalc_calls, &
+           production_results(tile)%solver_nonlinear_iterations
+    end do
     call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
          'WU04C production owner commit')
     call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')

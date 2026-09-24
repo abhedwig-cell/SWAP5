@@ -86,6 +86,7 @@ module mod_fmr_production_application_bootstrap
 
   type, public :: fmr_production_application_bootstrap_t
     private
+    procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     logical :: initialized = .false.
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
@@ -199,6 +200,7 @@ contains
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
     self%numerical = config%numerical
+    self%free_drainage_indicator => config%free_drainage_indicator
 
     call self%backend%initialize(self%top_boundary)
     if (associated(config%free_drainage_indicator)) &
@@ -362,7 +364,7 @@ contains
 
     call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
          self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime)
+         aggregate, dispatch_status, runtime, free_drainage_indicator=self%free_drainage_indicator)
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK) return
@@ -404,7 +406,7 @@ contains
     end do
     call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
          self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime, receipt_column_ids, receipts)
+         aggregate, dispatch_status, runtime, receipt_column_ids, receipts, self%free_drainage_indicator)
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK .or. .not. allocated(results) .or. .not. allocated(receipts)) return
     if (size(results) /= size(self%columns) .or. size(receipts) /= size(self%columns)) return
@@ -772,6 +774,7 @@ contains
     nullify(self%base_forcing)
     nullify(self%parameters)
     nullify(self%backend)
+    nullify(self%free_drainage_indicator)
     nullify(self%top_boundary)
 
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
