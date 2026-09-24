@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.sw_tri01.c.preregistration.v1",
+  "work_unit": "SW-TRI01-C",
+  "date": "2026-09-24",
+  "prerequisite": {
+    "tri01a": "PASS_SINGLE_JOINT_SWAP_CANDIDATE",
+    "tri01b": "PASS_JOINT_TRANSACTION_PARTICIPANT"
+  },
+  "title": "Dual-external reversible preflight and publication ordering",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "central_question": "Can the joint SWAP candidate, a prepared MODFLOW solve and a Ribasim realization be orchestrated so that any surface-transfer mismatch or groundwater nonconvergence is resolved before either external model crosses an irreversible publication point?",
+  "invariants": [
+    "No MODFLOW finalize_time_step before joint SWAP publication_ready is true.",
+    "No persistent Ribasim accepted-state publication before joint SWAP publication_ready is true.",
+    "A Ribasim realized-transfer mismatch discards the SWAP candidate and recomposes from the same accepted SWAP, MODFLOW and Ribasim origins.",
+    "A MODFLOW residual failure discards the SWAP candidate and does not publish Ribasim acceptance.",
+    "Exactly one external publication sequence occurs per accepted window.",
+    "The SWAP commit occurs exactly once and only after both external preflights are green.",
+    "Ledger commit is last."
+  ],
+  "required_cases": [
+    "C1 all receipts match and convergence is green: publish once",
+    "C2 Ribasim mismatch first: no external publication, recomposition, then publish once",
+    "C3 groundwater not converged: no publication",
+    "C4 stale joint SWAP origin: no publication"
+  ],
+  "implementation_scope": "Research orchestration policy with deterministic external transaction doubles first. Live product integration follows only after ordering is proven.",
+  "production_admission": false
+}
