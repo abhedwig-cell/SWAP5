@@ -1,0 +1,22 @@
+name: F-PE-PROFILE01 constitutive microbenchmark
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile01
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'tests/fpe/test_fpe_profile01_constitutive_timing.f90'
+      - 'tests/fpe/run_fpe_profile01_constitutive_timing.sh'
+      - '.github/workflows/f-pe-profile01-constitutive-microbenchmark.yml'
+  workflow_dispatch:
+
+jobs:
+  constitutive-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_profile01_constitutive_timing.sh
