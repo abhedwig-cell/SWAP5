@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL08R",
+  "title": "K-only end-to-end timing reconciliation",
+  "parent": "F-AHL08",
+  "phase": "PREREGISTERED_RESEARCH",
+  "motivation": "Short shared-runner measurements of the exact-theta+C plus K-lookup candidate disagree in sign or show only a few percent effect. A longer paired protocol is required before any performance conclusion.",
+  "question": "Does the derivative-consistent exact-theta+C plus K-lookup provider reduce total Reference Richards solve CPU under a longer paired timing protocol?",
+  "frozen_fixture": "F-AHL04A nonlinear fixture",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->Klookup and Klookup->analytical by repetition",
+    "primary_statistic": "median of paired Klookup/analytical CPU ratios",
+    "provider_binding_and_table_io": "outside timed batches",
+    "same_request_solver_policy_and_initial_state": true
+  },
+  "fidelity": {
+    "required_iteration_delta": 0,
+    "required_backtracking_delta": 0,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "advance_as_end_to_end_speed_candidate": "median paired ratio < 0.98",
+    "timing_equivocal": "0.98 <= median paired ratio <= 1.02",
+    "reject_end_to_end_speed_candidate": "median paired ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
