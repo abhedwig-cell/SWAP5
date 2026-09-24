@@ -159,7 +159,7 @@ contains
     use mod_ppa_irr_dcs1_composition, only: evaluate_profile_scheduled_irrigation
     use mod_process_hydraulic_view, only: process_hydraulic_view_t
     type(fmr_production_application_config_t),intent(in)::profile
-    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_production_application_bootstrap_t)::owner,fresh_owner
     type(fmr_committed_hydraulic_state_t),allocatable::copied(:),again(:)
     type(fmr_committed_restart_bundle_t)::bundle
     integer::code,tile
@@ -322,6 +322,28 @@ contains
              error stop 'irrigation source accepted inflow'
       end do
       write(*,'(a)') 'PPA_OWNER_DCS1_SOURCE_ACCEPTED_MASS=PASS'
+      call owner%copy_committed_hydraulic_states(copied,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'accepted irrigation profile copy'
+      call owner%export_committed_restart(92001_int64,bundle,ok,code)
+      if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'accepted irrigation export'
+      call fresh_owner%initialize(profile,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'accepted irrigation fresh initialize'
+      call fresh_owner%restore_committed_restart(bundle,92001_int64,ok,code)
+      if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'accepted irrigation fresh restore'
+      call fresh_owner%copy_committed_hydraulic_states(again,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'accepted irrigation restored copy'
+      do tile=1,NTILE
+        if(abs(copied(tile)%committed_time-request%t1)>0.0_real64) error stop 'accepted irrigation time'
+        if(again(tile)%revision/=copied(tile)%revision) error stop 'accepted irrigation restart revision'
+        if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) &
+             error stop 'accepted irrigation restart time'
+        if(any(abs(again(tile)%water_content-copied(tile)%water_content)>0.0_real64)) &
+             error stop 'accepted irrigation restart water'
+        if(any(abs(again(tile)%pressure_head_cm-copied(tile)%pressure_head_cm)>0.0_real64)) &
+             error stop 'accepted irrigation restart pressure'
+      end do
+      call fresh_owner%close(code)
+      write(*,'(a)') 'PPA_IRRIGATION_ACCEPTED_PROFILE_FRESH_RESTART=PASS'
     end if
     call owner%close(code)
     call owner%copy_committed_hydraulic_states(again,code)
