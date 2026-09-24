@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.rom-purpose.p6b.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P6B-INTERVAL-BALANCE-BOUNDARY-OPERATOR",
+  "date": "2026-09-24",
+  "status": "BOUND_ANALYSIS_ONLY_BEFORE_ANY_P6B_ANALYSIS",
+  "source_route_run": 35923634779,
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p6b.yml": "94413b477a1f067744c1ade7ec45100abd12f38d",
+    "integration/f-rom/ROM_PURPOSE_P6B_PREREGISTRATION.json": "d2b5cfaac16bed88ad83d9f666e5430f7de9304c",
+    "tests/rom/analyze_rom_purpose_p6b_interval_balance.py": "c9311d90e74ddccb73bbc5038a71a82fd154e745"
+  },
+  "scientific_firewall": {
+    "simulations_rerun": false,
+    "source_route_artifacts_reused": true,
+    "candidate_screen_adjudicated": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
