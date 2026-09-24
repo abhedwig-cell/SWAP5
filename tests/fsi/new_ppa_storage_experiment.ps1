@@ -2,6 +2,13 @@ param([Parameter(Mandatory)][string]$Source, [Parameter(Mandatory)][string]$Dest
 $ErrorActionPreference = 'Stop'
 # Disposable numerical experiment: no production source or shared ABI edits.
 $headcalc = Get-Content -Raw $Source
+if ($headcalc.Contains('function storage_change(node)')) {
+    # Keep the independent pre-integration experiment available as a frozen oracle.
+    $repo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+    $frozen = & git -C $repo show 'f05760c6d8e2daf379814df4415a51dcf6e1c5be:src/legacy/b1_10_port/headcalc.f90'
+    if ($LASTEXITCODE -ne 0) { throw 'Frozen experiment source unavailable' }
+    $headcalc = $frozen -join "`n"
+}
 $headcalc = $headcalc.Replace('   use MOD_arrays,', @'
    use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
    use mod_ppa_mvg_storage_binding, only: evaluate_bound_mvg_storage_difference

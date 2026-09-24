@@ -47,6 +47,7 @@ program test_ppa_free_drainage_owner
        fmr_restore_vonhhbraden_source_window_progress, FMR_VONHHBRADEN_PROGRESS_OK
   use mod_ppa_wu04c_runtime_publication, only: publish_ppa_wu04c_accepted_progress, PPA_WU04C_PUBLICATION_OK
   use mod_ppa_free_drainage_temporal_indicator, only: evaluate_free_drainage_temporal_indicator
+  use mod_ppa_mvg_storage_binding, only: evaluate_mvg_storage_difference_service
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fmr_runtime_core, only: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   implicit none
@@ -90,7 +91,9 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
-  if(trim(test_scope)=='--guards') then
+  if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards') &
+       config%storage_difference => evaluate_mvg_storage_difference_service
+  if(trim(test_scope)=='--guards'.or.trim(test_scope)=='--stable-guards') then
     call verify_opt_in_guards(config)
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS'
     stop
@@ -103,6 +106,22 @@ contains
     type(fmr_production_application_config_t) :: invalid
     type(fmr_production_application_bootstrap_t) :: owner
     integer :: code,j
+    if(associated(valid%storage_difference)) then
+      invalid=valid
+      nullify(invalid%free_drainage_indicator)
+      do j=1,NTILE
+        invalid%tiles(j)%parameters%bottom_mode=2
+      end do
+      call owner%initialize(invalid,code)
+      call require(code==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.owner%ready(), &
+           'storage-only opt-in rejects prescribed flux')
+      do j=1,NTILE
+        invalid%tiles(j)%parameters%bottom_mode=5
+      end do
+      call owner%initialize(invalid,code)
+      call require(code==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.owner%ready(), &
+           'storage-only opt-in rejects groundwater')
+    end if
     invalid=valid
     invalid%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     deallocate(invalid%tiles(1)%initial_right_derivative)
@@ -129,6 +148,7 @@ contains
     call require(code==FMR_APP_BOOT_OK.and..not.owner%ready(),'opt-in owner closes')
     invalid=valid
     nullify(invalid%free_drainage_indicator)
+    nullify(invalid%storage_difference)
     call owner%initialize(invalid,code)
     call require(code==FMR_APP_BOOT_OK.and.owner%ready(),'owner reusable with default configuration')
     call owner%close(code)

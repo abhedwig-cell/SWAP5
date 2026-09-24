@@ -24,7 +24,7 @@ module mod_fmr_serialized_reference_backend
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
-       SW_TEMPORAL_INDICATOR_NOT_RUN
+       SW_TEMPORAL_INDICATOR_NOT_RUN, constitutive_storage_difference_ifc
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
        soil_water_accepted_step_direction_result_t, SW_STEP_DIRECTION_UNAVAILABLE
   use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, trajectory_step_token_t, &
@@ -350,6 +350,7 @@ module mod_fmr_serialized_reference_backend
   public :: free_drainage_indicator_service
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
     procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -463,6 +464,7 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: set_free_drainage_indicator => set_free_drainage_indicator
+    procedure, public :: set_storage_difference => set_storage_difference
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
@@ -486,6 +488,13 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_boesten_evaporation_committed_state
 
 contains
+
+  subroutine set_storage_difference(self, service)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    procedure(constitutive_storage_difference_ifc), optional :: service
+    nullify(self%model%storage_difference)
+    if (present(service)) self%model%storage_difference => service
+  end subroutine
 
   subroutine set_free_drainage_indicator(self, service)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -805,6 +814,7 @@ contains
     integer :: selection_status
     self%initialized = .false.
     nullify(self%model%free_drainage_indicator)
+    nullify(self%model%storage_difference)
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
@@ -2109,6 +2119,7 @@ contains
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
     request%evaluation%constitutive => self%constitutive
+    request%evaluation%storage_difference => self%storage_difference
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &

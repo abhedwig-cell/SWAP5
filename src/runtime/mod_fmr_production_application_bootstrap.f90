@@ -1,4 +1,5 @@
 module mod_fmr_production_application_bootstrap
+  use mod_soil_water_solver_contract, only: constitutive_storage_difference_ifc
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_result_t
@@ -69,6 +70,7 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
     procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     real(real64) :: initial_time = 0.0_real64
     type(canonical_numerical_config_t) :: numerical
@@ -87,6 +89,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_bootstrap_t
     private
     procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
+    procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
     logical :: initialized = .false.
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
@@ -180,6 +183,12 @@ contains
         end if
       end do
     end if
+    if (associated(config%storage_difference)) then
+      if (.not.standalone_profile) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+    end if
     if (groundwater_profile) then
       do i = 1, n
         if (config%tiles(i)%ledger_id <= 0_int64) then
@@ -201,10 +210,13 @@ contains
     allocate(self%backend, self%top_boundary)
     self%numerical = config%numerical
     self%free_drainage_indicator => config%free_drainage_indicator
+    self%storage_difference => config%storage_difference
 
     call self%backend%initialize(self%top_boundary)
     if (associated(config%free_drainage_indicator)) &
          call self%backend%set_free_drainage_indicator(config%free_drainage_indicator)
+    if (associated(config%storage_difference)) &
+         call self%backend%set_storage_difference(config%storage_difference)
 
     if (groundwater_profile) then
       allocate(self%participant_handles(n), self%materializers(n), self%ledgers(n), self%registry)
@@ -364,7 +376,8 @@ contains
 
     call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
          self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime, free_drainage_indicator=self%free_drainage_indicator)
+         aggregate, dispatch_status, runtime, free_drainage_indicator=self%free_drainage_indicator, &
+         storage_difference=self%storage_difference)
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK) return
@@ -406,7 +419,8 @@ contains
     end do
     call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
          self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime, receipt_column_ids, receipts, self%free_drainage_indicator)
+         aggregate, dispatch_status, runtime, receipt_column_ids, receipts, self%free_drainage_indicator, &
+         self%storage_difference)
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK .or. .not. allocated(results) .or. .not. allocated(receipts)) return
     if (size(results) /= size(self%columns) .or. size(receipts) /= size(self%columns)) return
@@ -775,6 +789,7 @@ contains
     nullify(self%parameters)
     nullify(self%backend)
     nullify(self%free_drainage_indicator)
+    nullify(self%storage_difference)
     nullify(self%top_boundary)
 
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)

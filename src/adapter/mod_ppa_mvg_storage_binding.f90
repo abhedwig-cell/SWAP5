@@ -3,11 +3,26 @@ module mod_ppa_mvg_storage_binding
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
+  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
   use mod_ppa_mvg_storage_difference, only: local_mvg_storage_difference
   implicit none
   private
   public :: evaluate_bound_mvg_storage_difference
+  public :: evaluate_mvg_storage_difference_service
 contains
+  subroutine evaluate_mvg_storage_difference_service(provider,before,water_before,after,difference,available)
+    class(constitutive_hydraulics_provider_t),intent(in)::provider
+    real(real64),intent(in)::before(:),water_before(:),after(:)
+    real(real64),intent(out)::difference(:)
+    logical,intent(out)::available
+    difference=0.0_real64
+    available=.false.
+    select type(provider)
+    type is(b110_default_mvg_provider_t)
+      call evaluate_bound_mvg_storage_difference(provider,before,water_before,after,difference,available)
+    end select
+  end subroutine
+
   subroutine evaluate_bound_mvg_storage_difference(provider,before,water_before,after,difference,available)
     type(b110_default_mvg_provider_t),intent(in)::provider
     real(real64),intent(in)::before(:),water_before(:),after(:)

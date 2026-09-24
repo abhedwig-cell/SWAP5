@@ -120,6 +120,8 @@ module mod_soil_water_solver_contract
      class(top_boundary_provider_t), pointer :: top_boundary => null()
      class(dynamic_top_boundary_provider_t), pointer :: dynamic_top_boundary => null()
      class(macropore_exchange_provider_t), pointer :: macropore => null()
+     ! Explicit numerical service; null preserves reference rounded subtraction.
+     procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
   end type hydraulic_evaluation_context_t
 
   type, public :: soil_water_solve_request_t
@@ -202,8 +204,17 @@ module mod_soil_water_solver_contract
   end type soil_water_solver_t
 
   public :: validate_soil_water_request
+  public :: constitutive_storage_difference_ifc
 
   abstract interface
+     subroutine constitutive_storage_difference_ifc(provider, before, water_before, after, difference, available)
+       import :: constitutive_hydraulics_provider_t, real64
+       class(constitutive_hydraulics_provider_t), intent(in) :: provider
+       real(real64), intent(in) :: before(:), water_before(:), after(:)
+       real(real64), intent(out) :: difference(:)
+       logical, intent(out) :: available
+     end subroutine constitutive_storage_difference_ifc
+
      subroutine constitutive_evaluate_ifc(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
        import :: constitutive_hydraulics_provider_t, real64
        class(constitutive_hydraulics_provider_t), intent(in) :: self

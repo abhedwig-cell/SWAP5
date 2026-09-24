@@ -1,4 +1,4 @@
-param([switch]$StableStorageExperiment)
+param([switch]$StableStorageExperiment, [switch]$StableStorage, [switch]$UnavailableStorage)
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $build = Join-Path $env:TEMP ('swap-free-drainage-' + [guid]::NewGuid())
@@ -14,7 +14,7 @@ $sources = @($sources | ForEach-Object {
         'src/solver/mod_b110_root_sink_provider.f90'
     }
     $_
-}) + @('src/solver/mod_b110_default_mvg_directional_provider.f90', 'src/adapter/mod_ppa_free_drainage_stiffness.f90', 'src/adapter/mod_ppa_free_drainage_temporal_indicator.f90')
+}) + @('src/solver/mod_b110_default_mvg_directional_provider.f90', 'src/adapter/mod_ppa_free_drainage_stiffness.f90', 'src/adapter/mod_ppa_free_drainage_temporal_indicator.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90', 'src/adapter/mod_ppa_mvg_storage_binding.f90')
 $flags = @('-g','-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow')
 $tests = @('test_ppa_free_drainage_small_dt')
 if ($StableStorageExperiment) {
@@ -26,7 +26,7 @@ if ($StableStorageExperiment) {
             'src/solver/mod_ppa_mvg_storage_difference.f90'
             'src/adapter/mod_ppa_mvg_storage_binding.f90'
         }
-        $_
+        if ($_ -notin @('src/solver/mod_ppa_mvg_storage_difference.f90','src/adapter/mod_ppa_mvg_storage_binding.f90')) { $_ }
     })
 }
 foreach ($opt in 0,2) {
@@ -46,6 +46,8 @@ foreach ($opt in 0,2) {
         & gfortran @flags "-O$opt" -J $out -I $out (Join-Path $PSScriptRoot "$test.f90") @objects -o $exe
         if ($LASTEXITCODE -ne 0) { throw "Test compilation failed: $test" }
         $argsForTest = @()
+        if ($StableStorage) { $argsForTest = @('--stable-storage') }
+        if ($UnavailableStorage) { $argsForTest = @('--unavailable-storage') }
         if ($test -like 'test_fsi25*') { $argsForTest = @('-75.0','0.01') }
         $lines = & $exe @argsForTest
         if ($LASTEXITCODE -ne 0) { $lines; throw "Test failed: $test O$opt" }

@@ -1,6 +1,6 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('Composition','Guards')][string]$Scope = 'Composition', [switch]$StableStorageExperiment)
+param([ValidateSet('Composition','Guards')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
@@ -12,7 +12,7 @@ $sourcePaths = @($sources.Groups[1].Value -split '\r?\n' | ForEach-Object { $_.T
 foreach ($source in $sourcePaths) {
     if ($source -notmatch '^(src|tests)/[A-Za-z0-9_./-]+\.f90$') { throw "Unsupported source entry: $source" }
 }
-$sourcePaths += @('src/adapter/mod_ppa_free_drainage_stiffness.f90','src/adapter/mod_ppa_free_drainage_temporal_indicator.f90')
+$sourcePaths += @('src/adapter/mod_ppa_free_drainage_stiffness.f90','src/adapter/mod_ppa_free_drainage_temporal_indicator.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90','src/adapter/mod_ppa_mvg_storage_binding.f90')
 $common = @($flags.Groups[1].Value -split '\s+' | Where-Object { $_ })
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-ppa-wu01-' + [guid]::NewGuid().ToString('N'))
@@ -27,7 +27,7 @@ if ($StableStorageExperiment) {
             'src/solver/mod_ppa_mvg_storage_difference.f90'
             'src/adapter/mod_ppa_mvg_storage_binding.f90'
         }
-        $_
+        if ($_ -notin @('src/solver/mod_ppa_mvg_storage_difference.f90','src/adapter/mod_ppa_mvg_storage_binding.f90')) { $_ }
     })
 }
 $tests = @('ppa_free_drainage_owner')
@@ -58,6 +58,10 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Link failed $opt $test" }
             $testArguments = @()
             if ($Scope -eq 'Guards') { $testArguments = @('--guards') }
+            if ($StableStorage) {
+                $testArguments = @('--stable-storage')
+                if ($Scope -eq 'Guards') { $testArguments = @('--stable-guards') }
+            }
             $output = @(& $exe @testArguments 2>&1)
             if ($LASTEXITCODE -ne 0) { throw "Runtime failed $opt $test : $($output -join "`n")" }
             $textOutput = $output -join "`n"
@@ -77,7 +81,7 @@ try {
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'
             }
             $stable["$test-$opt"] = (@($output | Where-Object { $_ -match $prefix }) -join "`n")
-            if ($StableStorageExperiment) {
+            if ($StableStorageExperiment -or $StableStorage) {
                 # Compare numerical diagnostics as well as success markers.
                 $stable["$test-$opt"] = $textOutput
             }

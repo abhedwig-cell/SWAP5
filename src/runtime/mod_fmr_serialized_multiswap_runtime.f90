@@ -6,7 +6,7 @@ module mod_fmr_serialized_multiswap_runtime
   use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t
+  use mod_soil_water_solver_contract, only: top_boundary_provider_t, constitutive_storage_difference_ifc
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, fmr_commit_candidate_with_receipt, &
        FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
@@ -174,7 +174,9 @@ contains
   subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
-                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, free_drainage_indicator)
+                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, &
+                                                    free_drainage_indicator, storage_difference)
+    procedure(constitutive_storage_difference_ifc), optional :: storage_difference
     procedure(free_drainage_indicator_service), optional :: free_drainage_indicator
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
@@ -254,6 +256,7 @@ contains
     if(present(free_drainage_indicator)) then
       call backend%set_free_drainage_indicator(free_drainage_indicator)
     end if
+    if(present(storage_difference)) call backend%set_storage_difference(storage_difference)
     call fmr_build_execution_order(columns, order)
     batches = 0
     do batch_start = 1, size(columns), batch_size

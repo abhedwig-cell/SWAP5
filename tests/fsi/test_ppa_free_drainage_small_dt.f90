@@ -20,15 +20,19 @@ program test_ppa_free_drainage_small_dt
 
   real(real64), parameter :: h0=-75.0_real64, hard_mass_gate=1.0e-12_real64
   integer :: exponent, accepted, rejected
+  character(len=32) :: storage_option
+  call get_command_argument(1,storage_option)
   accepted=0
   rejected=0
   do exponent=0,19
     call diagnose_step(0.5_real64/2.0_real64**exponent,accepted,rejected)
   end do
   call require(accepted>0.and.rejected>0,'sweep covers both converged and rejected attempts')
+  if(trim(storage_option)=='--stable-storage') call require(accepted==17,'qualified stable-storage convergence count')
   write(*,'(a)') 'FREE_DRAINAGE_SMALL_DT_DIAGNOSTIC=PASS'
 contains
   subroutine diagnose_step(step_dt,accepted,rejected)
+    use mod_ppa_mvg_storage_binding, only: evaluate_mvg_storage_difference_service
     real(real64), intent(in) :: step_dt
     integer, intent(inout) :: accepted,rejected
     type(soil_water_parameter_set_t), target :: parameters
@@ -102,6 +106,10 @@ contains
     request%evaluation%source_sink => source_sink
     request%evaluation%root_sink => root_provider
     request%evaluation%top_boundary => top_provider
+    if(trim(storage_option)=='--stable-storage') &
+         request%evaluation%storage_difference => evaluate_mvg_storage_difference_service
+    if(trim(storage_option)=='--unavailable-storage') &
+         request%evaluation%storage_difference => unavailable_storage
 
     call solver%solve(request,workspace,result)
     call require(all(ieee_is_finite(workspace%richards%residual)), 'finite retained equation residual')
@@ -123,6 +131,16 @@ contains
          ':max_storage_ulp_rate=',maxval(spacing(water)*parameters%dz/step_dt), &
          ':balance_rejected=',any(workspace%richards%nonconverged_balance), &
          ':head_rejected=',any(workspace%richards%nonconverged_head)
+  end subroutine
+  subroutine unavailable_storage(provider,before,water_before,after,difference,available)
+    use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+    class(constitutive_hydraulics_provider_t),intent(in)::provider
+    real(real64),intent(in)::before(:),water_before(:),after(:)
+    real(real64),intent(out)::difference(:)
+    logical,intent(out)::available
+    ! A nonzero unavailable vector must never leak into residual evaluation.
+    difference=12345.0_real64
+    available=.false.
   end subroutine
   subroutine configure_parameters(parameters, cofgen)
     type(soil_water_parameter_set_t), target, intent(out) :: parameters
