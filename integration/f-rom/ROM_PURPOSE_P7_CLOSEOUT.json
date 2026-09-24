@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.rom-purpose.p7.closeout.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P7",
+  "date": "2026-09-24",
+  "status": "P7_CLOSED_GW_EXCHANGE_STORAGE_TRANSITION_ATTRIBUTED_AND_PURPOSE_SPLIT",
+  "evidence": {
+    "p7a": "integration/f-rom/ROM_PURPOSE_P7A_RESULT.json",
+    "p7b": "integration/f-rom/ROM_PURPOSE_P7B_PURPOSE_CONTRACTS.json",
+    "p7c": "integration/f-rom/ROM_PURPOSE_P7C_TEMPORAL_SEMANTICS_RECONCILIATION.json"
+  },
+  "conclusions": [
+    "Published prescribed-head GW exchange is an interval state-transition observable.",
+    "Within P4 evidence, interval exchange error equals negative storage-transition error to ledger/serialization precision under shared top forcing.",
+    "G12-to-G16 interval-response plateau occurs in both Layer-ROM and same-partition Richards, so it is not a Layer-ROM closure signature.",
+    "Cumulative exchange/storage and interval exchange are separate fidelity purposes; B01 cumulative fidelity still improves G12-to-G16 while interval fidelity does not.",
+    "GW_LOCAL_DARCY is a separate, not-yet-authoritative diagnostic purpose and must not be conflated with published GW_EXCHANGE."
+  ],
+  "next_phase": {
+    "name": "ROM-PURPOSE-P8",
+    "question": "Does explicit one-step transition memory add blind next-storage-transition information beyond static storage summaries under prescribed-head groundwater forcing?",
+    "method_boundary": "Use an information-probe transition model only; no production ROM or application acceptance."
+  },
+  "scientific_firewall": {
+    "blind_claim_for_p7a_or_p7c": false,
+    "minimum_state_count_adjudicated": false,
+    "closure_deficit_adjudicated": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
