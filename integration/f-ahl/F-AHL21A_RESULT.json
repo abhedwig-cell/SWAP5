@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21A",
+  "phase": "PRESCRIBED_QBOT_PERTURBATION_ENVELOPE_COMPLETE",
+  "status": "NO_REFERENCE_VALID_12_CASE_FACTOR_IN_PREREGISTERED_SET",
+  "workflow_run": 36047139724,
+  "workflow_job": 107793358796,
+  "prospective_bottom_flux_factors": [0.99, 0.97, 0.95],
+  "factor_results": {
+    "0.99": {
+      "reference_nonconvergence": ["B01:wet", "O05:wet", "O14:wet"],
+      "candidate_path_failure_with_reference_converged": ["O05:dry"],
+      "other_cases_pass": 8
+    },
+    "0.97": {
+      "reference_nonconvergence": ["B01:wet", "O05:wet", "O14:wet"],
+      "candidate_path_failure_with_reference_converged": ["O05:dry"],
+      "other_cases_pass": 8
+    },
+    "0.95": {
+      "reference_nonconvergence": ["B01:wet", "O05:wet", "O14:wet"],
+      "candidate_path_failure_with_reference_converged": ["O05:dry"],
+      "other_cases_pass": 8
+    }
+  },
+  "selection_rule_outcome": "No preregistered factor qualifies because the analytical reference itself does not converge in three wet cases even at factor 0.99.",
+  "scientific_classification": [
+    "The wet-case failures are fixture-envelope failures and are not evidence against the adaptive representation.",
+    "O05:dry is a representation-specific nonlinear-path failure because the analytical reference converges while the candidate violates the frozen iteration gate at all three factors.",
+    "The eight remaining cases preserve the frozen fidelity and convergence-path gates at all three factors."
+  ],
+  "next_action": "Diagnose O05:dry locally under prescribed-qbot before defining any new broader reference-valid qbot envelope.",
+  "hard_nonclaims": [
+    "NO_PRESCRIBED_QBOT_GENERALIZATION",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
