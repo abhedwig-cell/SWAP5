@@ -11,6 +11,8 @@ python3 research/ahl/ahl04_generate_fsi24_tables.py "$BUILD/tables" | tee "$BUIL
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
