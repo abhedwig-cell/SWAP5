@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "FIXED_TABLE_BASELINE_RECONCILIATION",
+  "source": "parallel SWAP5 tabulated-hydraulics research line",
+  "purpose": "Bind the existing fixed log-head table evidence as explicit comparison authority for F-AHL04.",
+  "fixed_log_head_sweep": {
+    "25": {
+      "max_head_error_cm": 3.55e-2,
+      "max_theta_error": 1.58e-3,
+      "reported_hydraulic_speed_gain_percent_range": [29,35],
+      "reported_fixture_speed_gain_percent_range": [14,22],
+      "classification": "TOO_COARSE_FOR_DEFAULT_CANDIDATE"
+    },
+    "50": {
+      "max_head_error_cm": 6.4e-4,
+      "max_theta_error": 1.9e-6,
+      "reported_hydraulic_speed_gain_percent_range": [25,27],
+      "reported_fixture_speed_gain_percent_range": [12,15],
+      "classification": "FAST_FIXED_BASELINE"
+    },
+    "100": {
+      "max_head_error_cm": 1.0e-4,
+      "max_theta_error": 3.5e-7,
+      "reported_hydraulic_speed_gain_percent_approx": 22,
+      "reported_fixture_speed_gain_percent_range": [10,12],
+      "classification": "HIGH_FIDELITY_FIXED_BASELINE"
+    },
+    "200": {
+      "max_head_error_cm": 1.8e-5,
+      "max_theta_error": 5.0e-8,
+      "reported_hydraulic_speed_gain_percent_range": [18,24],
+      "reported_fixture_speed_gain_percent_range": [8,12]
+    },
+    "400": {
+      "max_head_error_cm": 2.4e-6,
+      "max_theta_error": 8.6e-9,
+      "reported_hydraulic_speed_gain_percent_range": [12,15],
+      "reported_fixture_speed_gain_percent_range": [5,8],
+      "classification": "CONSERVATIVE_REFERENCE_FIXED_BASELINE"
+    }
+  },
+  "additional_historical_result": {
+    "branch_aware_log_head_400_tspack_hermite_exact_cache": {
+      "reported_k1_speed_gain_percent": [6.5,6.6],
+      "reported_fidelity": "NO_OBSERVED_FIDELITY_LOSS_IN_THAT_RESEARCH_LINE"
+    }
+  },
+  "bound_conclusion": "F-AHL04 must compare against at least fixed-50 and fixed-100 behavior. Adaptive representation is not successful merely because it uses fewer points; it must preserve or improve fidelity while being competitive in total runtime.",
+  "caution": "These values are prior research evidence from the parallel table-option line and are comparison authority, not new measurements produced by F-AHL."
+}
