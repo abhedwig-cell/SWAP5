@@ -35,3 +35,16 @@ unavailable/default preservation, mode-2/5 regression, owner configuration guard
 strong owner composition, restart/rebind and accepted source-window receipts.
 Canonical admission is a subsequent integration/qualification decision, not
 implied by local implementation. Local commits only per requested campaign scope.
+
+## Owner restart correction discovered during qualification
+
+At de04a2a79 the new strong receipt test reaches fresh-owner restart and fails.
+The application initializes every committed slot, then passes that registry to
+fmr_restore_committed_restart, which deliberately rejects initialized targets.
+For standalone mode-7 owners, restore into an empty call-local registry, validate
+every record using the existing FMR routine, then deep-copy the successful result
+into the existing owner registry. This is temporary reconstruction, not a second
+persistent state owner. Failed validation must leave the live registry untouched.
+Existing no-active-context guard remains. Other bottom profiles retain their
+existing route; this checkpoint does not qualify groundwater ledger restoration.
+Test a late invalid second record before valid restore and full continuation.

@@ -420,7 +420,7 @@ contains
     type(fmr_serialized_commit_receipt_record_t),intent(in)::receipts(:)
     real(real64),intent(in)::interception(:)
     type(fmr_production_application_bootstrap_t)::fresh
-    type(fmr_committed_restart_bundle_t)::bundle,continued_bundle,resumed_bundle
+    type(fmr_committed_restart_bundle_t)::bundle,continued_bundle,resumed_bundle,bad_bundle
     type(fmr_vonhhbraden_source_window_progress_t)::progress(NTILE),resumed(NTILE)
     type(fmr_vonhhbraden_source_window_restart_t)::saved(NTILE),final_progress
     type(fmr_accepted_commit_receipt_t)::unready
@@ -456,6 +456,22 @@ contains
     call require(ok.and.code==FMR_APP_BOOT_OK,'strong owner restart exported')
     call fresh%initialize(profile,code)
     call require(code==FMR_APP_BOOT_OK,'fresh owner explicit numerical bindings')
+    bad_bundle=bundle
+    bad_bundle%records(2)%parameter_ref=-1_int64
+    call fresh%restore_committed_restart(bad_bundle,9901_int64,ok,code)
+    call require(.not.ok.and.code/=FMR_APP_BOOT_OK,'late invalid restart record rejected')
+    call fresh%export_committed_restart(9901_int64,resumed_bundle,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'failed restore leaves owner exportable')
+    do tile=1,NTILE
+      call require(resumed_bundle%records(tile)%revision==0_int64,'failed restore publishes no earlier record')
+      select type(a=>resumed_bundle%records(tile)%physical_state)
+      class is(fmr_b110_physical_state_t)
+        call require(all(a%pressure_head==profile%tiles(tile)%initial_state%pressure_head).and. &
+             all(a%water_content==profile%tiles(tile)%initial_state%water_content),'failed restore preserves physical state')
+      class default
+        call require(.false.,'failed restore state type preserved')
+      end select
+    end do
     call fresh%restore_committed_restart(bundle,9901_int64,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'fresh owner restart restored')
     call owner%run_standalone_with_forcing_receipts(T1,t2,forcing,next_results,next_receipts,code)

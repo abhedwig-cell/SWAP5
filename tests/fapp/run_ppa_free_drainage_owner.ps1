@@ -65,7 +65,10 @@ try {
                 if ($Scope -eq 'Receipts') { $testArguments = @('--stable-receipts') }
             }
             $output = @(& $exe @testArguments 2>&1)
-            if ($LASTEXITCODE -ne 0) { throw "Runtime failed $opt $test : $($output -join "`n")" }
+            if ($LASTEXITCODE -ne 0) {
+                $output | Set-Content (Join-Path $dir "$test.failed.txt")
+                throw "Runtime failed $opt $test : $(($output | Select-Object -Last 20) -join "`n")"
+            }
             $textOutput = $output -join "`n"
             $textOutput | Set-Content (Join-Path $dir "$test.txt")
             if ($test -eq 'ppa_output_canon_application_binding') {

@@ -596,11 +596,22 @@ contains
     logical, intent(out) :: restored
     integer, intent(out) :: status
     integer :: restart_status
+    type(kernel_committed_state_t), allocatable :: reconstructed(:)
 
     restored = .false.
     status = FMR_APP_BOOT_NOT_READY
     if (.not. self%ready() .or. associated(self%active_context)) return
-    call fmr_restore_committed_restart(bundle, parameter_set_identity, self%columns, self%templates, self%committed, restored, restart_status)
+    if (all(self%parameters%bottom_mode == 7)) then
+      ! The low-level restore requires fresh slots. Publish only after all records
+      ! validate, preserving the existing owner registry and any failed restore.
+      allocate(reconstructed(size(self%committed)))
+      call fmr_restore_committed_restart(bundle, parameter_set_identity, self%columns, self%templates, &
+           reconstructed, restored, restart_status)
+      if (restart_status == FMR_RESTART_OK .and. restored) self%committed = reconstructed
+    else
+      call fmr_restore_committed_restart(bundle, parameter_set_identity, self%columns, self%templates, &
+           self%committed, restored, restart_status)
+    end if
     if (restart_status == FMR_RESTART_OK .and. restored) status = FMR_APP_BOOT_OK
   end subroutine production_application_restore_committed_restart
 

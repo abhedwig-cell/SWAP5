@@ -2,6 +2,7 @@
   "baseline": "55d430238",
   "production_opt_in": {
     "baseline": "4a8117e9f6c6a2cb49227cbc5218ab0a11d3352e",
+    "owner_restart_correction": "de04a2a79 receipt run exposed pre-existing bootstrap restore passing initialized registry to fresh-only FMR restore. Mode-7-only staging/publication fix and late-invalid-record atomicity test implemented; replay pending. Other profiles untouched.",
     "status": "DIRECT_OWNER_DEFAULT_RESTART_GUARDS_PASS_RECEIPTS_PENDING_NOT_ADMITTED",
     "restart_guard_tested_commit": "c5328c173",
     "restart_guard_evidence": "run_ppa_free_drainage_runtime.ps1 -StableStorage PASS O0/O2: supported service calls observed, backend initialize clears pointer, rejected unbound restored trial preserves history, explicit rebind gives exact full head/water/history continuation. run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Guards PASS O0/O2 including storage-only mode-2/5 rejection and reuse with default configuration. Builds swap-ppa-wu01-c28ad81f962f4ab3a772a4a0c99dc0c2 and swap-ppa-wu01-2b59fb741d0149269d4df4e77367796e.",
