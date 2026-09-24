@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.sw_rib_adm01.g7.result.v1",
+  "work_unit": "SW-RIB-ADM01-G7",
+  "date": "2026-09-23",
+  "tested_head": "00ecbf343f31a1deb33ef880f57d006b9520ba90",
+  "evidence_run": 35902473388,
+  "evidence_job": 107321855529,
+  "decision": "PASS_LIVE_RIBASIM_APPLICATION_OVER_FAPP09_TRANSACTION_BOUNDARY",
+  "ribasim": {
+    "version": "2026.1.2",
+    "sha": "eae77424a4078497d40d8197237cb83e3aba6a83",
+    "pin": "PASS",
+    "python_version": "PASS",
+    "model_metadata": "PASS"
+  },
+  "production_subject": {
+    "FCI109_replay": "PASS",
+    "FAPP09_postimages": "PASS",
+    "source_changed_on_G7_branch": false
+  },
+  "cases": {
+    "E1_POSITIVE_DRAINAGE": {
+      "request_m3": 0.0025,
+      "realized_m3": 0.0025,
+      "mass_residual_m3": -1.1596062651775263e-13,
+      "iterations": 1,
+      "final_disposition": "COMMIT",
+      "result": "PASS"
+    },
+    "E2_NEGATIVE_INFILTRATION_SUFFICIENT": {
+      "request_m3": -0.0025,
+      "realized_m3": -0.0024999999999999996,
+      "mass_residual_m3": 1.1596019283688364e-13,
+      "iterations": 1,
+      "final_disposition": "COMMIT",
+      "result": "PASS"
+    },
+    "E3_NEGATIVE_INFILTRATION_LIMITED": {
+      "initial_request_m3": -0.0025,
+      "iterations": [
+        {
+          "n": 1,
+          "external_head_cm": 7.75,
+          "request_m3": -0.0025,
+          "realized_m3": -0.0000699939098777652,
+          "disposition": "RECOMPOSE"
+        },
+        {
+          "n": 2,
+          "external_head_cm": -1.9700243604889391,
+          "request_m3": -0.0000699939098777652,
+          "realized_m3": -0.0000019598245605966754,
+          "disposition": "RECOMPOSE"
+        },
+        {
+          "n": 3,
+          "external_head_cm": -2.2421607017576135,
+          "request_m3": -0.0000019598245605966754,
+          "realized_m3": -5.487507987519978e-8,
+          "disposition": "RECOMPOSE"
+        },
+        {
+          "n": 4,
+          "external_head_cm": -2.249780499680499,
+          "request_m3": -5.487507987519978e-8,
+          "realized_m3": -1.53650211928671e-9,
+          "disposition": "RECOMPOSE"
+        },
+        {
+          "n": 5,
+          "external_head_cm": -2.2499938539915227,
+          "request_m3": -1.53650211928671e-9,
+          "realized_m3": -4.302205613769745e-11,
+          "disposition": "COMMIT"
+        }
+      ],
+      "same_accepted_origin_recomposition": true,
+      "no_commit_before_final": true,
+      "committed_revision_count": 1,
+      "result": "PASS"
+    }
+  },
+  "checks": [
+    "exact Ribasim product pin and metadata",
+    "physical ledgers close",
+    "live measured receipts consumed at F-APP09 publication boundary",
+    "availability-limited infiltration rejects first candidate",
+    "same-origin iterative recomposition converges before commit",
+    "exactly one commit after final receipt match",
+    "O0/O2 stable transaction marker identity"
+  ],
+  "interpretation": [
+    "The F-APP09 SWAP-side transaction authority is compatible with real Ribasim v2026.1.2 physical realization in the frozen single-level application profile.",
+    "Availability-limited infiltration is not handled by clipping an accepted SWAP transfer. It is resolved through repeated same-origin candidate/receipt recomposition and a sole final commit.",
+    "This closes the live Ribasim application gate for the bounded F-APP09 profile but does not broaden the explicit F-CI109 exclusions such as multilevel exchange, automatic SWMAN2 runtime, top-runoff/rapid drainage binding, nonlinear legacy weir parity or MODFLOW triangle composition."
+  ],
+  "qualification_state": "PASS",
+  "production_source_changed": false,
+  "production_admission": "DEPENDENT_ON_FCI109_CANONICAL_ADMISSION",
+  "canonical_admission": false
+}
