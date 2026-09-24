@@ -109,11 +109,12 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
-  if(trim(test_scope)=='--atm02') then
+  if(trim(test_scope)=='--atm02'.or.trim(test_scope)=='--atm02-events') then
     config%storage_difference => evaluate_mvg_storage_difference_service
     config%numerical%transaction%retry_scale=0.8_real64
     config%numerical%transaction%max_retries=64
-    call verify_atm02_owner(config)
+    call verify_atm02_owner(config,trim(test_scope)=='--atm02-events')
+    if(trim(test_scope)=='--atm02-events') write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02_EVENTS=PASS'
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02=PASS'
     stop
   end if
@@ -135,8 +136,9 @@ program test_ppa_free_drainage_owner
   call verify_wu04c_production_composition(config)
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
-  subroutine verify_atm02_owner(profile)
+  subroutine verify_atm02_owner(profile,events)
     type(fmr_production_application_config_t),intent(in)::profile
+    logical,intent(in)::events
     type(fmr_production_application_config_t)::active
     type(fmr_production_application_bootstrap_t)::owner,fresh
     type(fmr_committed_restart_bundle_t)::before,after,resumed
@@ -169,11 +171,12 @@ contains
     canopy%crop_emerged=.true.; canopy%lai=3.0_real64; canopy%vegetation_cover_fraction=0.7_real64
     canopy%cofab_cm=0.5_real64; canopy%albedo=0.23_real64
     canopy%dry_canopy_resistance_s_m=70.0_real64; canopy%wet_canopy_resistance_s_m=30.0_real64
-    do window=1,2
+    do window=1,merge(3,2,events)
       interval%t0=T0+real(window-1,real64)*(T1-T0); interval%t1=interval%t0+(T1-T0)
       decoded%source_record_index=43+window
       decoded%t0=interval%t0-0.25_real64; decoded%t1=interval%t1+0.25_real64
-      if(window==2) then
+      if(events.and.window==2) decoded%radiation_j_m2_d=20.0e6_real64
+      if(window>1) then
         call owner%copy_committed_top_states(top,code)
         call require(code==FMR_APP_BOOT_OK.and.all(top%available),'ATM02 committed top available')
       end if
@@ -192,7 +195,7 @@ contains
         request%conductivity_mean_method=active%tiles(tile)%parameters%swkmean
         request%pressure_head_top_cm=active%tiles(tile)%initial_state%pressure_head(1)
         request%water_content_top=active%tiles(tile)%initial_state%water_content(1)
-        if(window==2) then
+        if(window>1) then
           request%pressure_head_top_cm=top(tile)%pressure_head_top_cm
           request%water_content_top=top(tile)%water_content_top
           request%previous_ponding_depth_cm=top(tile)%ponding_depth_cm
@@ -208,6 +211,12 @@ contains
         if(window==1) then
           call seed_initial_derivative(active%tiles(tile)%parameters,active%tiles(tile)%initial_state, &
                forcing(tile),active%tiles(tile)%initial_right_derivative)
+        else if(events.and.window==2) then
+          call require(forcing(tile)%top_flux/=previous(tile)%top_flux.and. &
+               any(forcing(tile)%root_extraction_sink/=previous(tile)%root_extraction_sink), &
+               'ATM02 changed weather changes top flux and prescribed roots')
+          forcing(tile)%temporal_forcing_event=.true.
+          forcing(tile)%temporal_forcing_event_time=interval%t0
         else
           call require(forcing(tile)%top_flux==previous(tile)%top_flux.and. &
                all(forcing(tile)%root_extraction_sink==previous(tile)%root_extraction_sink), &
@@ -235,7 +244,12 @@ contains
         end if
         write(*,*) 'ATM02_OPT_IN',window,pass,code,result%kernel_status,result%accepted_substeps
         call require(code==FMR_APP_BOOT_OK.and.all(result%committed).and.all(result%completed),'ATM02 opt-in commits')
-        call require(observed_event_calls==0,'ATM02 retains normal root-compatible temporal history')
+        if(events.and.window==2) then
+          call require(observed_event_calls>0.and.observed_event_calls<sum(result%accepted_substeps), &
+               'ATM02 root event restricted to first boundary retries')
+        else
+          call require(observed_event_calls==0,'ATM02 retains normal root-compatible temporal history')
+        end if
         call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE,'ATM02 opt-in hard mass')
         do tile=1,NTILE
           call require(receipt(tile)%receipt%ready(),'ATM02 accepted receipt ready')

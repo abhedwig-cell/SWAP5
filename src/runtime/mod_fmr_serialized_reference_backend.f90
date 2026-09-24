@@ -1602,7 +1602,8 @@ contains
         if (.not. self%temporal_indicator_history_enabled.or..not.associated(self%free_drainage_indicator)) return
         if (.not.self%soil_water_selection%uses_reference().or.self%fixed_weir_surface_water_active) return
         if (self%bottom_mode/=7.or.self%swkimpl/=0.or.self%swkmean/=1) return
-        if (self%root_extraction_active.or.self%snow_active.or.self%soil_temperature_active.or. &
+        ! Prescribed roots use the concrete read-only event derivative provider.
+        if (self%snow_active.or.self%soil_temperature_active.or. &
             self%black_evaporation_active.or.self%boesten_evaporation_active.or.self%drainage_response_active) return
         if (allocated(forcing%legacy_swbotb2_control)) return
       end if

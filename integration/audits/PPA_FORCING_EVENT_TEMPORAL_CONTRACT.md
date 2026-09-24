@@ -2,6 +2,17 @@
 
 ## Prescribed-root successor design (2026-09-24)
 
+Component qualification at 46982aee045a84e9613ff152997c5526477ab281:
+`tests/fsi/run_ppa_free_drainage_indicator.ps1` passes O0/O2 with identical
+transcripts (build `swap-free-drainage-1bf65088-cde8-41c1-a946-87134e07ee7e`).
+All 45 cases compare the root-enabled derivative with an independent flux/source
+oracle and the no-root delta. Eight atomic rejection cases cover unbound vector,
+wrong count/shape, negative, NaN, oversized, unsupported extension and duplicate
+embedded roots. Existing mode-2 FSI38 and mode-5 FSI25 preservation passes.
+The initial duplicate-root fixture incorrectly invoked a rejecting binding API;
+46982aee0 fixes the fixture by corrupting its target only after valid binding.
+Runtime changed-weather qualification remains separate and pending.
+
 Baseline: 543955b9a. Bounded implementation is authorized first in the read-only
 derivative component, then in runtime forwarding only after direct oracle/guard
 qualification. Accept exactly `b110_root_sink_provider_t`, not extensions or
