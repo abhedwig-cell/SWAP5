@@ -1,0 +1,25 @@
+name: F-AHL08R paired K lookup timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl08r_timing_reconciliation.f90'
+      - 'research/ahl/run_ahl08r_timing_reconciliation.sh'
+      - 'integration/f-ahl/F-AHL08R_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl08r-paired-klookup-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired K lookup timing reconciliation
+        run: |
+          bash research/ahl/run_ahl08r_timing_reconciliation.sh /tmp/ahl08r_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl08r-${{ github.run_id }}
+          path: /tmp/ahl08r_result.txt
