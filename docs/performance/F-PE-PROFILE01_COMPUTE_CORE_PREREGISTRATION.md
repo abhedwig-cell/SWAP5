@@ -503,3 +503,30 @@ H01 status is therefore advanced from `SUSPECTED_N4_REDUNDANCY_UNMEASURED` to:
 This is not yet an N4 verdict. PROFILE01 still has to establish which reset(s) are semantically required and measure the time contribution before a repair is authorized.
 
 The external full/half transaction source path performs one full and two half Reference solves per successful no-retry interval. Current diagnostic assertions expect nine aggregate resets for that interval, but the interval-level value remains pending a successful run of the latest observer plumbing and must not be treated as measured evidence until that run passes.
+
+
+## H01 necessity adjudication — first bounded verdict
+
+Source-path inspection after the measured triple-reset result separates the three reset events:
+
+1. `reference_richards_legacy_solve -> initialize_reference_workspace(ws%richards,n)`:
+   - this call both ensures allocation/shape and performs a full reset;
+   - one clean-scratch establishment at solve start is semantically defensible;
+   - classification: `N1_REQUIRED_OR_RELOCATABLE` pending timing/design choice.
+
+2. the immediately following explicit `reset_reference_workspace(ws%richards)`:
+   - no workspace mutation occurs between reset 1 and reset 2;
+   - it repeats the complete zeroing performed by `initialize_reference_workspace`;
+   - classification for the current explicit Reference route: `N4_REDUNDANT_CONFIRMED`.
+
+3. `HeadCalc -> initialize_reference_workspace(fsi_ws,numnod)`:
+   - on P01-A, between reset 2 and this call only the separate state binding is initialized; it does not modify the Richards workspace;
+   - on the optional interface-sensitivity route, `prepare_reference_tridag_factorization_capture` may resize `tridag_gamma`, but it explicitly zero-initializes the new/expanded storage itself;
+   - no evidence was found that a second complete workspace zeroing is required before HeadCalc begins;
+   - classification for the currently inspected explicit route: `N4_REDUNDANT_CONFIRMED_BOUNDED`.
+
+Thus the current evidence supports a bounded statement:
+
+> Of the three full workspace resets measured per explicit Reference solve, two are redundant on the inspected SWAP5 route. One full clean-scratch establishment remains semantically justified unless a later ownership design proves otherwise.
+
+This does not yet authorize repair in PROFILE01. A later repair workunit must remove resets one at a time, preserve poison/scratch independence tests, preserve sensitivity-capture behavior, and demonstrate physical/result identity before claiming runtime benefit.
