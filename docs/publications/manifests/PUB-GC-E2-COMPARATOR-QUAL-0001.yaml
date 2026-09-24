@@ -1,0 +1,108 @@
+qualification:
+  qualification_id: PUB-GC-E2-COMPARATOR-QUAL-0001
+  publication_owner: PUB-GC
+  experiment_family: PUB-GC-E2
+  hypothesis: H2
+  evidence_role: RESEARCH_COMPARATOR_QUALIFICATION
+  primary_h2_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  comparator_spec_commit: 4e9d891f9a4d1678e5fa4590adae13471597d72e
+  E1_primary_result_receipt_commit: e0d7c70d855d20665699ab3d86489b04144e01a7
+  qualification_precedes_E2_screening: true
+  qualification_precedes_E2_primary: true
+
+research_branch:
+  name: research/pub-gc-e2-terminal-comparator
+  base: d2e810649c5deae20bb22f42c92918eb1795d786
+  allowed_mutations:
+    - tests/publication/pub_gc/e2_terminal_comparator/**
+    - .github/workflows/pub-gc-e2-terminal-comparator-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/gw_a/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/e1_primary_engine/**
+
+comparator_contract:
+  Q_terminal_cm: q_terminal_cm_per_day * duration_days
+  interface_residual_whole_cm: Q_whole_cm - Q_whole_cm
+  interface_residual_terminal_cm: Q_whole_cm - Q_terminal_cm
+  groundwater_component: GW-A
+  groundwater_origin: same_accepted_checkpoint_for_both_arms
+  groundwater_commit_allowed: false
+  SWAP_calls_inside_comparator: 0
+
+GW_A:
+  authority: 8a090fc9228574525e599817771aadb8ae176047
+  area_m2: 1.0
+  specific_yield: 0.2
+  initial_head_m: 0.0
+  initial_time_day: 0.0
+  external_source_m_per_s: 0.0
+
+qualification_fixtures:
+  - fixture_id: SYN-EQUAL
+    role: exact_equivalence_control
+    Q_whole_cm: 0.2
+    q_terminal_cm_per_day: 0.4
+    duration_days: 0.5
+    expected_Q_terminal_cm: 0.2
+    expected_terminal_interface_residual_cm: 0.0
+  - fixture_id: SYN-TERMINAL-ONLY
+    role: terminal_arm_selectivity
+    Q_whole_cm: 0.2
+    q_terminal_cm_per_day: 0.6
+    duration_days: 0.5
+    expected_Q_terminal_cm: 0.3
+    expected_terminal_interface_residual_cm: -0.1
+  - fixture_id: SYN-WHOLE-ONLY
+    role: whole_arm_selectivity
+    Q_whole_cm: 0.35
+    q_terminal_cm_per_day: 0.4
+    duration_days: 0.5
+    expected_Q_terminal_cm: 0.2
+    expected_terminal_interface_residual_cm: 0.15
+  - fixture_id: REAL-E1-B
+    role: immutable_real_SWAP_trial_qualification_only
+    provenance:
+      experiment_id: PUB-GC-E1-PRIMARY-0001
+      raw_output_sha256: 514ccd628d4f4e8aff6de32022587c5018bc5d23a039e74b5fd0ca8e9d25ae4a
+      source_row: S1_SAME_index2_B
+    Q_whole_cm: 4.13068016868983270e-2
+    q_terminal_cm_per_day: 1.37689338957496554
+    duration_days: 0.03
+    may_be_used_for_H2_effect_estimation: false
+
+qualification_oracles:
+  - comparator_source_contains_no_SWAP_trial_or_backend_execution
+  - terminal_exchange_exactly_q_terminal_times_duration
+  - same_GW_A_checkpoint_used_for_both_arms
+  - no_GW_A_commit
+  - whole_window_action_reaction_residual_zero
+  - terminal_residual_exactly_Q_whole_minus_Q_terminal
+  - SYN_EQUAL_both_arms_exactly_equivalent
+  - SYN_TERMINAL_ONLY_changes_terminal_arm_only
+  - SYN_WHOLE_ONLY_changes_whole_arm_only
+  - REAL_E1_B_reproduces_analytic_GW_A_heads_from_frozen_observables
+  - nonfinite_input_fails_closed
+  - O0_O2_scientific_output_identity
+  - production_src_and_qualified_GW_A_bytes_unchanged
+
+interpretation:
+  pass_means: >
+    The research comparator isolates only the interface exchange representation
+    and can evaluate whole-window versus endpoint-terminal transfer against the
+    same GW-A accepted origin without changing SWAP execution semantics.
+  pass_does_not_mean:
+    - H2 is supported
+    - terminal flux is practically inaccurate
+    - whole-window exchange is materially superior
+    - any coupling-window accuracy threshold is established
+    - MODFLOW6 transferability is established
+
+next_permitted_action_on_pass:
+  - persist immutable comparator qualification receipt
+  - define GC-REF before E2 primary effect inference
+  - perform separately labelled E2 screening only after qualification

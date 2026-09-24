@@ -1,0 +1,131 @@
+result:
+  result_id: PUB-GC-E1-HARNESS-QUAL-0001
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_HARNESS_QUALIFICATION
+  status: PASS
+
+chronology:
+  frozen_harness_specification_commit: 2d0a9ea26dbb6048e60e67dcf6882a1b03664d61
+  frozen_harness_specification_blob: 554ebf5841b533b38f19dce533b2efb978348971
+  gw_a_qualification_authority: 8a090fc9228574525e599817771aadb8ae176047
+  research_branch: research/pub-gc-gw-a
+  qualified_research_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  qualified_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  workflow_created_utc: 2026-09-17T23:01:46Z
+  workflow_completed_utc: 2026-09-17T23:02:17Z
+  qualification_precedes_pub_gc_e1_screening: true
+  qualification_precedes_pub_gc_e1_primary_freeze: true
+  qualification_precedes_pub_gc_e1_primary_execution: true
+
+implementation:
+  oracle_path: tests/publication/pub_gc/e1_origin/test_pub_gc_e1_origin_harness.f90
+  oracle_blob: 687525b578eb0a28692dd666a87ddefe18b37c96
+  runner_path: tests/publication/pub_gc/e1_origin/run_pub_gc_e1_origin_harness_qualification.sh
+  runner_blob: 8585a54e6ad46a9a3b9f5e3b72e5688c5c7e7a56
+  workflow_path: .github/workflows/pub-gc-e1-origin-harness-qualification.yml
+  workflow_blob: 9add1daed4d77a63a668122933f2987a536dffda
+  scope: RESEARCH_ONLY
+  production_src_modified: false
+  gw_a_modified_after_qualification: false
+
+execution:
+  github_actions_run_id: 35284904390
+  github_actions_job_id: 105414974936
+  workflow_name: PUB-GC E1 origin harness qualification
+  optimization_modes:
+    - O0
+    - O2
+  artifact_id: 10523354676
+  artifact_name: pub-gc-e1-origin-harness-14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  artifact_zip_sha256: a290a6b2566acaac8ca240315d9165d18be500fc0f4b08038d6631ed7c7eb41d
+  scientific_oracle_output_sha256: 5da3833d7fa47214a67fa17fbb825f05f2aa54ed3af306c1151001ff5c709c18
+
+temporal_acceptance_composition:
+  route: TX_TEMPORAL_MODEL_CERTIFICATE
+  continuation_layout: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  top_boundary_provider: fixed_flux_top_boundary_provider_t
+  predecessor_right_derivative_seed: zero_stationary_origin
+  qualification_head_budget_cm: 100.0
+  interpretation: >
+    This explicit permissive budget belongs only to harness qualification. It
+    demonstrates that a real transient candidate can traverse the already
+    qualified reference temporal-certificate surface. It is not an E1 accuracy
+    tolerance, coupling tolerance, or publication result.
+
+qualified_oracles:
+  frozen_specification_binding: PASS
+  research_only_scope: PASS
+  production_source_tree_unchanged: PASS
+  gw_a_bytes_unchanged: PASS
+  gw_a_independent_requalification: PASS
+  public_snapshot_initialize_api_only: PASS
+  no_production_commit_in_history_diagnostic: PASS
+  real_swap_reference_solver_o0: PASS
+  real_swap_reference_solver_o2: PASS
+  same_origin_a_b_a_repeatability: PASS
+  accepted_origin_unchanged: PASS
+  whole_window_exchange_available: PASS
+  history_diagnostic_public_snapshot_initialize: PASS
+  history_diagnostic_distinct_research_lineage: PASS
+  history_diagnostic_no_commit: PASS
+  history_diagnostic_explicitly_invalid_for_production: PASS
+  unsupported_route_fail_closed: PASS
+  o0_o2_scientific_oracle_identity: PASS
+  origin_harness_oracle: PASS
+
+qualification_telemetry:
+  same_origin_a_exchange_bits: "3F6AA5952E7DB226"
+  same_origin_b_exchange_bits: "BF72F2E5D1279AED"
+  history_diagnostic_a_exchange_bits: "3F80E5077C938089"
+  same_origin_a_terminal_flux_bits: "3FC4D15C8C503F8D"
+  history_diagnostic_a_terminal_flux_bits: "3FDA65DBB2A3FF4A"
+  interpretation: >
+    These values are retained only as qualification reproducibility telemetry.
+    Their differences are not admitted as H1 evidence because this qualification
+    case and sequence were not frozen as a primary PUB-GC-E1 experiment.
+
+development_attempts:
+  - run_id: 35284472026
+    research_head: c243846478d857a3bd21055b2542b72d32835237
+    classification: INVALID_HARNESS_CONFIGURATION
+    first_failure: same-origin B did not complete under external full/half temporal identity
+    scientific_conclusion: NONE
+  - run_id: 35284600043
+    research_head: 63b2f5d8a1b36bfc303a353ae50326509e11c5d2
+    classification: INVALID_HARNESS_CONFIGURATION
+    first_failure: 5 temporal rejections; external full/half transient comparator returned unavailable/infinite indicator
+    scientific_conclusion: NONE
+  - run_id: 35284767581
+    research_head: 77b33814ee2833825b5dadd33913537257e79667
+    classification: INVALID_HARNESS_CONFIGURATION
+    first_failure: model-certificate route lacked a certified top-boundary provider
+    scientific_conclusion: NONE
+  - run_id: 35284838984
+    research_head: c56d89a9420ed091959c5e8ad4ac7e0bad17372f
+    classification: INVALID_HARNESS_CONFIGURATION
+    first_failure: temporal indicator route reported fixed-top-flux-required
+    scientific_conclusion: NONE
+
+admitted_scope:
+  - The real serialized B1.10 prescribed-head route can evaluate repeated candidates from one immutable accepted SWAP origin under the qualified model-certificate temporal route.
+  - A/B/A same-origin replay is exactly repeatable in the qualification oracle.
+  - Candidate physical endpoint snapshots can seed a separate disposable research lineage through public snapshot and initialize contracts.
+  - That synthetic history-contaminated lineage is explicitly invalid for production or physical-trajectory interpretation and never uses production commit.
+  - Whole-window lower-boundary exchange is finite and available for the admitted qualification trials.
+  - The composed harness produces identical scientific-oracle output under O0 and O2.
+  - GW-A remains independently qualified and byte-identical to its frozen qualification authority.
+
+nonclaims:
+  - This is not a PUB-GC-E1 scientific result and does not establish H1.
+  - Qualification telemetry is not primary or screening evidence for practical history sensitivity.
+  - The 100 cm temporal head budget is not an application accuracy recommendation.
+  - The history-contaminated diagnostic is not a realistic or supported coupling algorithm.
+  - This does not establish superiority of same-origin replay over a real-world competing groundwater-coupling implementation.
+  - This does not establish whole-window superiority, coupling-window convergence, robustness, MODFLOW 6 transferability, N:1 hydrologic value, response acceleration, or solver performance.
+  - This does not modify or admit new SWAP5 production science.
+
+next_permitted_action:
+  - change PUB-GC-E1 readiness from DESIGNED to READY_FOR_SCREENING
+  - execute separately labelled screening within the broad bounds already frozen by PUB-GC_E1_ORIGIN_HARNESS_SPEC.md
+  - use screening only to select a transient stress regime
+  - after screening, freeze exact SWAP authority, case, candidate heads, sequence permutations, metrics, thresholds and null interpretation in a new primary manifest before any H1 primary execution

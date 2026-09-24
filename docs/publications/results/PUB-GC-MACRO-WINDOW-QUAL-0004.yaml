@@ -1,0 +1,72 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0004
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_ENVELOPE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  result: PASS
+
+chronology:
+  native_time_0003_result_commit: b88bc28d4930e9f820bf7e7ca3def5846d01371c
+  refinement_decision_commit: f581b112add1ae2c7bf6dcce37557eaa22cf21a7
+  refinement_decision_blob: fb86dc34d092f04942253ed0a6bc2732ba30159a
+  macro_512_spec_commit: 0879d0038efb0931774744bb26f2be6eea0e29d4
+  macro_512_spec_blob: 29ed1643be0d24fab234938e65316d714d052a27
+  frozen_manifest_commit: ec809e3da580b23a48da2ee7fac624781fd0a62e
+  frozen_manifest_blob: 5900cebf510c33382d15f67da1d0d538483ef8f4
+  frozen_before_execution: true
+
+authority:
+  research_branch: research/pub-gc-macro-512-envelope
+  research_head: b0f72c6c740ded2e331bb9dfce678a36bedac731
+  base_qualified_head: 2189109de15df92d6712b5a3f5b27c1a922edd42
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  macro_module_unchanged: true
+  test_blob: c40fa70e511ec0417b1bbbfd7ca178dd96015fad
+  runner_blob: 5965e5b9fc6c263cf73ed15f9ccc387084429f86
+  workflow_blob: c09225959a2091de695825abc498c0d71b38f7af
+
+execution:
+  github_actions_run: 35293175464
+  github_actions_job: 105440195612
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: 82cbf3780ac64a72d8f553c357ceccc16d9ef07fa41b333557dad377f2a9c817
+  artifact:
+    id: 10526653962
+    digest: sha256:24323901765f22d29d3530c665b34214a3a2b1c24e6c7a8717cfe3235fdaa6a4
+    expires_at: 2026-12-17T00:55:05Z
+
+qualification:
+  Q0_through_Q9_preserved: PASS
+  Q10A_256_contributions:
+    result: PASS
+    max_abs_nominal_actual_dt_difference_day: 7.63975552741866237e-13
+  Q10B_512_contributions:
+    result: PASS
+    max_abs_nominal_actual_dt_difference_day: 8.36735127257397238e-13
+  Q10C_512_contributions_shifted_10000_day:
+    result: PASS
+    max_abs_nominal_actual_dt_difference_day: 1.74622982903032548e-12
+
+interpretation:
+  admitted:
+    - The unchanged research-only macro response is qualified for up to 512 native contributions within the frozen temporal envelope.
+    - All prior Q0-Q9 invariants remain preserved under O0 and O2.
+  qualification_only:
+    - Q10 hydrologic values and represented-duration errors are qualification provenance only.
+    - No Q10 value may be used to tune NATIVE-TIME-0004 or H2/H3 experiments.
+  nonclaims:
+    - no H2 or H3 inference
+    - no native integration policy
+    - no production admission
+    - no universal SWAP timestep recommendation
+
+next_permitted_action:
+  - preregister PUB-GC-NATIVE-TIME-0004
+  - retain the five cases and all four adequacy tolerances unchanged
+  - extend the ladder with N6 and N7
+  - use N6 versus N7 as the final bounded fine-level guard
+  - accept the mechanical outcome without retuning

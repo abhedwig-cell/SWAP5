@@ -1,0 +1,115 @@
+qualification:
+  qualification_id: PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_ENGINE_QUALIFICATION
+  primary_h1_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  primary_manifest_commit: c3114e455029ee5dee0d92dbc4814c3fc0923ef6
+  primary_manifest_blob: abf45b4a83f528eda69024e3d75a38edc4ce713f
+  qualified_origin_harness_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  frozen_production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  qualification_precedes_primary_execution: true
+  qualification_may_not_execute_primary_values: true
+
+research_branch:
+  name: research/pub-gc-e1-primary-engine
+  base: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  allowed_mutations:
+    - tests/publication/pub_gc/e1_primary_engine/**
+    - .github/workflows/pub-gc-e1-primary-engine-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/gw_a/**
+
+engine_contract:
+  arguments: [A_head_cm, B_head_cm, C_head_cm, duration_days]
+  sequence_S1: [A, B, A, C]
+  sequence_S2: [A, C, A, B]
+  origin_policies: [GC-ORIGIN-SAME, GC-ORIGIN-HISTORY-DIAG]
+  groundwater_telemetry:
+    component: GW-A
+    same_accepted_checkpoint_for_all_trials: true
+    commit_allowed: false
+  required_machine_markers:
+    - PUB_GC_E1_ENGINE_SAME_ORIGIN_IDENTITY=PASS
+    - PUB_GC_E1_ENGINE_ACCEPTED_ORIGIN_UNCHANGED=PASS
+    - PUB_GC_E1_ENGINE_GW_A_SAME_CHECKPOINT_NO_COMMIT=PASS
+    - PUB_GC_E1_ENGINE_HISTORY_DIAG_PRODUCTION_VALID=false
+    - PUB_GC_E1_PRIMARY_ENGINE_ORACLE=PASS
+  expected_rows_per_fixture:
+    swap_rows: 16
+    gw_rows: 16
+
+qualification_fixtures:
+  - fixture_id: Q1
+    provenance: values_already_seen_in_supporting_screening
+    A_head_cm: -75.0
+    B_head_cm: -90.0
+    C_head_cm: -60.0
+    duration_days: 0.005
+  - fixture_id: Q2
+    provenance: values_already_seen_in_supporting_screening
+    A_head_cm: -75.0
+    B_head_cm: -85.0
+    C_head_cm: -65.0
+    duration_days: 0.01
+
+primary_holdout_guard:
+  forbidden_primary_values:
+    A_head_cm: -80.0
+    B_head_cm: -102.5
+    C_head_cm: -98.75
+    duration_days: 0.03
+  requirement: >
+    No qualification command may invoke the frozen primary tuple or any partial
+    fixture constructed from those primary numeric values. The generic source
+    may parse arbitrary values, but qualification executes only Q1 and Q2.
+
+qualification_oracles:
+  - base_E1_origin_harness_replays_at_frozen_authority
+  - GW_A_bytes_equal_qualified_authority
+  - origin_harness_bytes_equal_qualified_authority
+  - production_src_tree_equal_frozen_authority
+  - Q1_completes_under_O0_and_O2
+  - Q2_completes_under_O0_and_O2
+  - O0_O2_scientific_output_exact_for_each_fixture
+  - 16_SWAP_rows_and_16_GW_rows_per_fixture
+  - same_origin_A_B_C_exact_across_both_sequences
+  - accepted_SW_state_unchanged
+  - history_policy_uses_public_snapshot_initialize_only
+  - history_policy_never_commits
+  - synthetic_origin_lineages_are_distinct
+  - one_GW_A_checkpoint_reused_for_all_candidates
+  - GW_A_analytic_head_check_passes_for_every_candidate
+  - GW_A_accepted_state_revision_time_unchanged
+  - telemetry_contains_temporal_indicator_mass_retries_lineage_and_disposition
+
+interpretation:
+  pass_means: >
+    The research engine can execute the frozen primary experiment structure
+    reproducibly without changing production science, and can therefore be
+    frozen as execution infrastructure.
+  pass_does_not_mean:
+    - H1 is supported
+    - qualification effect magnitudes are primary evidence
+    - primary values will necessarily complete
+    - history diagnostic is production valid
+    - practical materiality is established
+
+failure_policy:
+  compile_or_runtime_failure: INVALID_ENGINE_QUALIFICATION
+  scientific_conclusion: NONE
+  repair_rule: >
+    Surgical research-infrastructure fixes are permitted while primary values
+    remain unexecuted. Every changed engine head must be requalified from
+    scratch on both frozen fixtures.
+  primary_values_may_not_be_used_for_debugging: true
+
+next_permitted_action_on_pass:
+  - persist immutable qualification receipt with head, blobs, workflow run and output hashes
+  - advance PUB-GC-E1 to READY_FOR_PRIMARY_RUN
+  - freeze a separate primary execution authority
+  - execute PUB-GC-E1-PRIMARY-0001 exactly once without tuning

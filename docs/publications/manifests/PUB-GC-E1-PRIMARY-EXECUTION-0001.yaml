@@ -1,0 +1,114 @@
+execution_authority:
+  authority_id: PUB-GC-E1-PRIMARY-EXECUTION-0001
+  experiment_id: PUB-GC-E1-PRIMARY-0001
+  publication_owner: PUB-GC
+  status: FROZEN_NOT_RUN
+  primary_h1_inference_eligible: true
+
+chronology:
+  scientific_primary_manifest_commit: c3114e455029ee5dee0d92dbc4814c3fc0923ef6
+  primary_manifest_commit: c3114e455029ee5dee0d92dbc4814c3fc0923ef6
+  primary_manifest_blob: abf45b4a83f528eda69024e3d75a38edc4ce713f
+  engine_qualification_manifest_commit: bf62fc34ed603bf2fd551e8ea352310a1e823066
+  engine_qualification_receipt_commit: 0bcbcad0dece1d4eada59f847bb0eb3908b56563
+  readiness_register_commit: b210a2a8f8b465c0275a9517ad924db8e9dbbaad
+  authority_frozen_before_primary_execution: true
+  primary_execution_observed_before_this_authority: false
+
+qualified_engine:
+  qualification_execution_head: 98858378c2fcf48acbf1c2b34094056b7fc76c18
+  postqualification_dispatch_only_head: d2e810649c5deae20bb22f42c92918eb1795d786
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  engine_path: tests/publication/pub_gc/e1_primary_engine/test_pub_gc_e1_primary_engine.f90
+  engine_blob: 7214117cc64591bd4ced071561a19e37aab0de1b
+  qualification_runner_blob: 1c8914b3b996ed455de91e9c8ffc5f2adf20bac8
+
+primary_execution_branch:
+  branch: research/pub-gc-e1-primary-run
+  base: d2e810649c5deae20bb22f42c92918eb1795d786
+  pretrigger_head: 13753ee92c77f1492852500f5586f7fd7ae66773
+  pretrigger_delta_from_base:
+    - tests/publication/pub_gc/e1_primary_run/run_pub_gc_e1_primary_once.sh
+    - .github/workflows/pub-gc-e1-primary-run.yml
+  runner_path: tests/publication/pub_gc/e1_primary_run/run_pub_gc_e1_primary_once.sh
+  runner_blob: 8db588c83381fbbf656f5d3bc21336d2d15505e7
+  workflow_path: .github/workflows/pub-gc-e1-primary-run.yml
+  workflow_blob: 2d75dec75d3568b87c52a003de99f46dd9d4bab5
+  pretrigger_workflow_runs: 0
+
+one_time_trigger:
+  sentinel_path: tests/publication/pub_gc/e1_primary_run/EXECUTE_ONCE
+  required_trigger_commit_delta: sentinel_only
+  expected_parent: 13753ee92c77f1492852500f5586f7fd7ae66773
+  workflow_trigger_scope: sentinel_path_only
+  rerun_after_first_heldout_invocation: forbidden
+  workflow_dispatch_enabled: false
+
+held_out_tuple:
+  A_head_cm: -80.0
+  B_head_cm: -102.5
+  C_head_cm: -98.75
+  duration_days: 0.03
+  sequence_S1: [A, B, A, C]
+  sequence_S2: [A, C, A, B]
+  source: frozen_scientific_primary_manifest_only
+
+execution_contract:
+  compiler_optimization: O2
+  heldout_engine_invocations: 1
+  additional_O0_primary_execution: forbidden
+  production_src_mutation: forbidden
+  origin_harness_mutation: forbidden
+  GW_A_mutation: forbidden
+  candidate_value_substitution_after_execution: forbidden
+  duration_substitution_after_execution: forbidden
+  threshold_change_after_execution: forbidden
+  raw_output_required: true
+  artifact_upload_required_even_on_failure: true
+
+required_validity_markers:
+  - PUB_GC_E1_ENGINE_SAME_ORIGIN_IDENTITY=PASS
+  - PUB_GC_E1_ENGINE_ACCEPTED_ORIGIN_UNCHANGED=PASS
+  - PUB_GC_E1_ENGINE_GW_A_SAME_CHECKPOINT_NO_COMMIT=PASS
+  - PUB_GC_E1_ENGINE_HISTORY_DIAG_PRODUCTION_VALID=false
+  - PUB_GC_E1_PRIMARY_ENGINE_ORACLE=PASS
+
+frozen_primary_discrimination_floors:
+  delta_Q_cm: 1.0e-9
+  delta_endpoint_pressure_head_cm: 1.0e-8
+  practical_materiality_threshold: null
+
+interpretation:
+  support_for_operator_definition_requires:
+    - all_same_origin_repeated_responses_exact
+    - accepted_origin_unchanged
+    - public_API_only_history_diagnostic_with_no_production_commit
+    - delta_Q_A_after_B_vs_C_cm_gt_1e-9
+    - delta_endpoint_head_A_after_B_vs_C_cm_gt_1e-8
+  mixed_rule: >
+    If only one primary history discriminant exceeds its frozen numerical
+    floor, classify the result as mixed/partial and do not strengthen H1.
+  null_rule: >
+    If both primary discriminants are at or below their frozen floors while
+    validity checks pass, retain a valid held-out null result and narrow H1.
+  execution_failure_rule: >
+    If the frozen solver/temporal candidate does not execute, retain that as a
+    primary-case execution failure. Do not substitute easier heads or a shorter
+    window.
+  practical_materiality_claim: not_established_by_E1
+
+superseded_or_non_authoritative_surfaces:
+  - branch: research/pub-gc-e1-primary
+    head: 4384a047e10f78f2b30a713577119a4fd75cbb97
+    status: NON_AUTHORITATIVE_UNEXECUTED_PREQUALIFICATION_ORACLE
+    reason: >
+      This branch was created before generic-engine qualification and contains
+      a separate copied primary oracle rather than the independently qualified
+      generic engine. It had zero Actions runs at execution-authority freeze and
+      must not be used for PUB-GC-E1-PRIMARY-0001.
+
+next_permitted_action:
+  - create exactly one sentinel commit on research/pub-gc-e1-primary-run
+  - sentinel must name this execution-authority commit
+  - execute the frozen held-out tuple once through the qualified generic engine
+  - persist raw output and workflow artifact before interpretation

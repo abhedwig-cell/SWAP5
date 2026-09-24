@@ -1,0 +1,124 @@
+qualification_result:
+  qualification_id: PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_ENGINE_QUALIFICATION
+  primary_h1_inference_eligible: false
+  verdict: PASS_AFTER_INFRASTRUCTURE_REPAIR
+
+preregistration:
+  manifest_commit: bf62fc34ed603bf2fd551e8ea352310a1e823066
+  manifest_path: docs/publications/manifests/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001.yaml
+  manifest_blob: ea5042e51c61fbd6b11be87ded6198b8bdc44e81
+  primary_manifest_commit: c3114e455029ee5dee0d92dbc4814c3fc0923ef6
+  primary_manifest_blob: abf45b4a83f528eda69024e3d75a38edc4ce713f
+  primary_values_executed_during_qualification: false
+
+frozen_dependencies:
+  qualified_origin_harness_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  gw_a_authority: 8a090fc9228574525e599817771aadb8ae176047
+
+attempts:
+  - attempt: 1
+    execution_head: 94a75b503ad48eac4a1d26e276b3aaa965a69695
+    github_actions_run: 35286599570
+    job: 105420199550
+    verdict: INVALID_ENGINE_QUALIFICATION
+    scientific_conclusion: NONE
+    failure: >
+      GNU Fortran O2 execution segfaulted while materializing a strided array
+      temporary for the history-state sequence. The failure occurred in
+      qualification infrastructure before any held-out primary tuple was run.
+    retained_artifact:
+      id: 10524302465
+      sha256: ade26437793ab1eb68f9b4916118c1241217ab4bd9727fef1b525a359c88ac0f
+    repair_rule_applied: >
+      Remove the non-contiguous polymorphic derived-type array-section
+      handoff while preserving the same sequence, physical calculations,
+      qualification fixtures and primary holdout.
+
+  - attempt: 2
+    execution_head: 98858378c2fcf48acbf1c2b34094056b7fc76c18
+    github_actions_run: 35286757049
+    job: 105420678756
+    verdict: PASS
+    event: controlled_push_trigger
+    trigger_note: >
+      The workflow is normally dispatch-only. A push trigger was introduced
+      solely to create this qualification run because the available connector
+      cannot dispatch workflow_dispatch directly; it was restored to
+      dispatch-only after the run without changing engine bytes.
+    artifact:
+      id: 10524567359
+      sha256: c78b6076b3abb7f5385b2ea654d2b58e2839ef3a505b5fdd20752a20260834d4
+
+qualified_engine:
+  execution_head: 98858378c2fcf48acbf1c2b34094056b7fc76c18
+  postqualification_dispatch_only_head: d2e810649c5deae20bb22f42c92918eb1795d786
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  test_blob: 7214117cc64591bd4ced071561a19e37aab0de1b
+  runner_blob: 1c8914b3b996ed455de91e9c8ffc5f2adf20bac8
+  execution_workflow_blob: 261ef59311d3ca8cfae6b47584a50f2116e63352
+  dispatch_only_workflow_blob: ec61f636ffe7e5039ac4dce77d7e7c027237106d
+
+qualification_fixtures:
+  Q1:
+    A_head_cm: -75.0
+    B_head_cm: -90.0
+    C_head_cm: -60.0
+    duration_days: 0.005
+    O0_O2_identity: PASS
+    output_sha256: be68a62b4459e9f8e53183762ea49db1fd3573117af448ceb973b59a598421ce
+  Q2:
+    A_head_cm: -75.0
+    B_head_cm: -85.0
+    C_head_cm: -65.0
+    duration_days: 0.01
+    O0_O2_identity: PASS
+    output_sha256: b8bb097859e47ece3885876676a1644ee61280066703afad54a25cf8db138cda
+
+oracles:
+  primary_manifest_lock: PASS
+  qualification_manifest_lock: PASS
+  production_src_unchanged: PASS
+  origin_harness_bytes_unchanged: PASS
+  gw_a_bytes_unchanged: PASS
+  static_origin_policy: PASS
+  frozen_base_requalification: PASS
+  O0_build: PASS
+  O2_build: PASS
+  same_origin_identity: PASS
+  accepted_origin_unchanged: PASS
+  gw_a_same_checkpoint_no_commit: PASS
+  history_diag_production_valid: false
+  generic_engine_oracle: PASS
+
+qualification_observations_not_primary_evidence:
+  Q1:
+    delta_Q_A_after_B_vs_C_cm: 9.55506198915445637e-3
+    delta_endpoint_head_A_after_B_vs_C_cm: 5.64031700007701886
+  Q2:
+    delta_Q_A_after_B_vs_C_cm: 1.14418903357274004e-2
+    delta_endpoint_head_A_after_B_vs_C_cm: 4.37968117233060639
+  use_for_H1_effect_estimation: false
+  use_for_primary_case_tuning: false
+
+interpretation:
+  admitted: >
+    The generic research-only E1 sequence engine is qualified to execute the
+    already frozen primary experiment structure with real B1.10 SWAP physics,
+    same-origin and deliberately history-contaminated origin policies, and
+    analytic GW-A telemetry, without changing production science.
+  not_admitted:
+    - H1 support or falsification
+    - practical materiality
+    - use of Q1/Q2 effect magnitudes as primary evidence
+    - production validity of HISTORY_DIAG
+    - MODFLOW6 transferability
+    - whole-window versus terminal-flux conclusions
+
+next_permitted_action:
+  - advance PUB-GC-E1 to READY_FOR_PRIMARY_RUN
+  - freeze the primary execution authority against the qualified engine blobs
+  - execute PUB-GC-E1-PRIMARY-0001 exactly once with the preregistered tuple
+  - do not tune values or thresholds after execution

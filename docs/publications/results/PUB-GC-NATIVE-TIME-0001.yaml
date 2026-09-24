@@ -1,0 +1,127 @@
+result:
+  result_id: PUB-GC-NATIVE-TIME-0001
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_NATIVE_INTEGRATION_ADEQUACY
+  primary_h2_h3_inference_eligible: false
+  execution_status: VALID_EXECUTION
+  policy_selection: NO_POLICY_SELECTED
+  reason_class: RESEARCH_MACRO_TIME_COORDINATE_LIMIT
+
+chronology:
+  native_time_spec_commit: 9d8528af50bfa8450e5ec731bfdd47f7cd6c83d1
+  native_time_spec_blob: 5f563ca26d602a56fdd82419265fa1bfea63399e
+  frozen_manifest_commit: e553ca282a31f221a23f9291c5670e73f3455b06
+  frozen_manifest_blob: 19c98e4ae7f97d029c9ce2d42d0fe4104a54f0bd
+  frozen_before_implementation_and_execution: true
+
+authority:
+  research_branch: research/pub-gc-native-time
+  research_head: 6ad2c56c0e75a4b220e88b64510795a12f162285
+  base_qualified_macro_head: 32d1e9ae1bb3f0cda7a26e114eca0fe5fd900d12
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  qualified_macro_module_blob: 920b93b943ead1187887e683c50a84e0f4cb3a46
+  production_src_modified: false
+  qualified_dependencies_modified: false
+  study_test_blob: 2a36de6c1b8b67b280a860e27df620fee4f9b4d8
+  study_runner_blob: 508371e9cdd6239f6ebd5af474b5088264cd671d
+  workflow_blob: f3559b7ad33a56afcb24ef0b6520b2e642b99167
+
+execution:
+  github_actions_run: 35291849037
+  github_actions_job: 105436176829
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  runner_os: Ubuntu 24.04
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: 2335cac984006f397cea843e5d23f909d68acabe109965e08139ff9df0c2259e
+  artifact:
+    id: 10526451569
+    digest: sha256:1a8234d76fc9924e8dd8fb3de74b4a8e99d03714099345ddf03a951bc393d58d
+    expires_at: 2026-12-17T00:35:44Z
+
+frozen_ladder:
+  N0: {native_dt_day: 0.01, interval_count: 4}
+  N1: {native_dt_day: 0.005, interval_count: 8}
+  N2: {native_dt_day: 0.0025, interval_count: 16}
+  N3: {native_dt_day: 0.00125, interval_count: 32}
+
+case_results:
+  NT-C0:
+    N0: {status: OK, Q_whole_cm: 5.71692879778620214e-3, storage_cm: 1.02356600373904794, retries: 0, substeps: 4}
+    N1: {status: OK, Q_whole_cm: 5.71692879778620214e-3, storage_cm: 1.02356600373904794, retries: 0, substeps: 8}
+    N2: {status: PUB_GC_MACRO_INVALID}
+    N3: {status: PUB_GC_MACRO_INVALID}
+  NT-W3:
+    N0: {status: OK, Q_whole_cm: 7.60353693779522877e-3, storage_cm: 1.02453785999793201, retries: 0, substeps: 4}
+    N1: {status: OK, Q_whole_cm: 7.62183569406635775e-3, storage_cm: 1.02451956124166088, retries: 0, substeps: 8}
+    N2: {status: PUB_GC_MACRO_INVALID}
+    N3: {status: PUB_GC_MACRO_INVALID}
+  NT-D05:
+    N0: {status: OK, Q_whole_cm: 4.30964050353510510e-3, storage_cm: 1.02282944373412921, retries: 0, substeps: 4}
+    N1: {status: OK, Q_whole_cm: 4.30095089063786597e-3, storage_cm: 1.02283813334702645, retries: 0, substeps: 8}
+    N2: {status: PUB_GC_MACRO_INVALID}
+    N3: {status: PUB_GC_MACRO_INVALID}
+  NT-R3:
+    N0: {status: OK, Q_whole_cm: 6.47273876806726475e-3, storage_cm: 1.02352480986849015, retries: 0, substeps: 4}
+    N1: {status: OK, Q_whole_cm: 6.51047822199097778e-3, storage_cm: 1.02348707041456644, retries: 0, substeps: 8}
+    N2: {status: PUB_GC_MACRO_INVALID}
+    N3: {status: PUB_GC_MACRO_INVALID}
+  NT-H60:
+    N0: {status: OK, Q_whole_cm: -4.24835271747590962e-2, storage_cm: 1.07176645971159323, retries: 0, substeps: 4}
+    N1: {status: OK, Q_whole_cm: -4.44407925982043192e-2, storage_cm: 1.07372372513503844, retries: 0, substeps: 8}
+    N2: {status: PUB_GC_MACRO_INVALID}
+    N3: {status: PUB_GC_MACRO_INVALID}
+
+mechanical_adjudication:
+  all_trajectories_valid: false
+  fine_level_guard: false
+  selected_policy: NO_POLICY_SELECTED
+  terminal_mismatch_used_for_selection: false
+  thresholds_or_cases_changed_after_execution: false
+
+failure_diagnosis:
+  macro_status_1: PUB_GC_MACRO_INVALID
+  production_or_Richards_trial_failure: false
+  observed_pattern: >-
+    N0 and N1 execute in all five frozen cases; N2 and N3 return
+    PUB_GC_MACRO_INVALID in all five cases before an endpoint response is
+    published.
+  exact_component_guard: >-
+    The qualified macro component advances absolute time by repeated
+    t1=t0+native_dt and after the final native contribution rejects the response
+    if abs(t0-macro_t1) exceeds 1e-12 day.
+  arithmetic_reconstruction:
+    macro_t0_day: 4200.125
+    target_macro_t1_day: 4200.165
+    N0_repeated_addition_end_minus_target_day: 9.094947017729282e-13
+    N1_repeated_addition_end_minus_target_day: 9.094947017729282e-13
+    N2_repeated_addition_end_minus_target_day: -6.366462912410498e-12
+    N3_repeated_addition_end_minus_target_day: 8.185452315956354e-12
+    macro_time_tolerance_day: 1.0e-12
+  interpretation: >-
+    The no-policy outcome is caused by absolute floating-point time accumulation
+    leaving the qualified macro component envelope for 16/32 contributions. It
+    is not evidence that the fine native SWAP/Richards intervals are physically
+    or numerically invalid.
+
+scientific_interpretation:
+  admitted:
+    - The preregistered study was executed without changing cases, ladder, thresholds or selection rule.
+    - No native policy may be selected from PUB-GC-NATIVE-TIME-0001.
+    - The research macro-window component requires an explicitly adjudicated time-coordinate extension before finer native partitions can be evaluated.
+  nonclaims:
+    - N0 is not declared adequate.
+    - N1 is not declared adequate.
+    - N2 or N3 SWAP physics did not fail.
+    - H2 is not tested.
+    - H3 is not tested.
+    - No coupling-window threshold is established.
+    - No MODFLOW6 result is established.
+    - No universal SWAP timestep recommendation is established.
+
+next_permitted_action:
+  - freeze a separate macro temporal-coordinate design decision
+  - extend/requalify the research-only macro response without changing production src
+  - assign new qualification and native-time experiment IDs
+  - preserve PUB-GC-NATIVE-TIME-0001 unchanged as a valid no-policy result

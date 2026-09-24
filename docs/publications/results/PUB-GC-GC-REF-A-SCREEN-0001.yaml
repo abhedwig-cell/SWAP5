@@ -1,0 +1,135 @@
+result:
+  result_id: PUB-GC-GC-REF-A-SCREEN-0001
+  publication_owner: PUB-GC
+  experiment_family: PUB-GC-E2_E3_REFERENCE_CONSTRUCTION
+  evidence_role: PROSPECTIVE_SUPPORTING_REFERENCE_SCREENING
+  primary_h2_h3_inference_eligible: false
+  status: PASS
+  reference_stability: STABLE
+
+chronology:
+  GC_REF_A_spec_commit: c95d67c70dc16126797c6613affe641537e3655e
+  GC_REF_A_qualification_receipt_commit: 4d028af031bc506b33db9513552070a297ea4409
+  accuracy_adjudication_commit: 2cf85d4236e970fb9cb9556ce2489219b9b6acef
+  screening_manifest_commit: a702dbd47bab84a634c49f3d3cdc4e63701317bd
+  research_branch_base: 4fc8f6e2a7569503594d0ecf91b651431c607df2
+  execution_head: c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+  precedes_transient_screening: true
+  excluded_from_heldout_primary: true
+
+implementation:
+  branch: research/pub-gc-reference-screening
+  trajectory_module_path: tests/publication/pub_gc/reference_screening/mod_pub_gc_reference_trajectory.f90
+  trajectory_module_blob: 79a30b05efa068eec1b0961486cbf9f0954c5bda
+  test_path: tests/publication/pub_gc/reference_screening/test_pub_gc_reference_screening.f90
+  test_blob: bf3af68673f97ea5323a67da1ea2cb82e85db716
+  runner_path: tests/publication/pub_gc/reference_screening/run_pub_gc_reference_screening.sh
+  runner_blob: 221682686312d92329cdd19a0f865dfce0f6cb67
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  production_src_modified: false
+  qualified_dependencies_modified: false
+  accepted_state_policy:
+    SWAP: fmr_commit_candidate_with_receipt
+    groundwater: groundwater_prepare_candidate_then_groundwater_commit_prepared
+    root_search_candidates: discarded
+    accepted_candidate: reconstructed_from_original_window_origins
+
+execution:
+  github_actions_run_id: 35289048209
+  github_actions_job_id: 105427691034
+  workflow_name: PUB-GC reference screening
+  workflow_conclusion: success
+  runner_os: ubuntu-24.04
+  compiler: GNU Fortran 13.3.0
+  optimization_modes:
+    - O0
+    - O2
+  scientific_output_sha256: d41c5b57f3b54c4e5f0038655873589b864c6e4211dd44080c9fded39191e465
+  artifact:
+    id: 10525691519
+    name: pub-gc-reference-screening-c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+    zip_sha256: ea8bfd5f2deac30f12f9957298b20662fe22ffcfd4cf52195fa07b034a6db5a2
+    expires_at: 2026-12-16T23:56:41Z
+  o0_o2_scientific_output_identity: PASS
+
+case:
+  case_id: GC-REF-S0-CONSTANT-FORCING
+  initial_time_day: 4200.125
+  total_duration_day: 0.12
+  initial_pressure_head_cm: -80.0
+  initial_groundwater_head_m: 0.0
+  bottom_mode: 5
+  primary_effect_estimation_allowed: false
+
+levels:
+  L0:
+    coupling_window_day: 0.04
+    windows: 3
+    cumulative_Q_whole_cm: 1.69575153125870598e-2
+    terminal_GW_head_m: 8.47875765629352773e-4
+    final_total_water_storage_cm: 1.02375927481942952
+    final_SWAP_revision: 3
+    final_GW_revision: 3
+  L1:
+    coupling_window_day: 0.02
+    windows: 6
+    cumulative_Q_whole_cm: 1.69597602642063243e-2
+    terminal_GW_head_m: 8.47988013210316128e-4
+    final_total_water_storage_cm: 1.02375702986781025
+    final_SWAP_revision: 6
+    final_GW_revision: 6
+  L2:
+    coupling_window_day: 0.01
+    windows: 12
+    cumulative_Q_whole_cm: 1.69608513800062581e-2
+    terminal_GW_head_m: 8.48042569000312819e-4
+    final_total_water_storage_cm: 1.02375593875201032
+    final_SWAP_revision: 12
+    final_GW_revision: 12
+
+refinement:
+  L0_to_L1:
+    max_matched_GW_head_difference_m: 1.75224252085858564e-7
+    cumulative_exchange_difference_cm: 2.24495161926449582e-6
+  L1_to_L2:
+    max_matched_GW_head_difference_m: 1.08404898824178593e-7
+    cumulative_exchange_difference_cm: 1.09111579993381724e-6
+    final_max_pressure_head_difference_cm: 7.49676515425790058e-4
+    final_max_water_content_difference: 6.96306166836357932e-7
+    final_total_water_storage_difference_cm: 1.09111579993381724e-6
+
+frozen_stability_thresholds:
+  max_GW_head_difference_m: 1.0e-4
+  cumulative_exchange_difference_cm: 1.0e-4
+  final_max_pressure_head_difference_cm: 1.0e-2
+  final_max_water_content_difference: 1.0e-5
+  final_total_water_storage_difference_cm: 1.0e-4
+
+adjudication:
+  max_GW_head: PASS
+  cumulative_exchange: PASS
+  final_pressure_head_profile: PASS
+  final_water_content_profile: PASS
+  final_total_water_storage: PASS
+  overall: STABLE
+
+admitted_scope:
+  - A full multi-window GC-REF-A trajectory can advance real B1.10 SWAP and qualified GW-A through accepted revisions while retaining same-origin root evaluation within each window.
+  - The controlled constant-forcing screening case has a stable finest L2 trajectory under all prospectively frozen L1-to-L2 criteria.
+  - The accepted-state trajectory machinery is suitable for designing stronger transient reference-screening cases.
+  - The numerical differences decreased from the coarser L0-to-L1 step to the final L1-to-L2 step for groundwater head and cumulative exchange in this screening case.
+
+nonclaims:
+  - H2 is not tested.
+  - H3 is not established as a primary publication result.
+  - The L2 trajectory is not a held-out primary reference.
+  - No whole-window versus terminal-flux method comparison was executed.
+  - No practical adequacy threshold is established.
+  - No MODFLOW 6 transferability is established.
+  - This calm screening case may not be promoted to primary evidence.
+
+next_permitted_action:
+  - freeze a small transient screening matrix before execution
+  - construct stable GC-REF-A trajectories for those transient screening cases
+  - quantify whether whole-window versus terminal exchange produces a resolvable screening effect
+  - use a frozen case-selection rule to select later held-out primary E2/E3 cases

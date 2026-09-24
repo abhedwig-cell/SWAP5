@@ -1,0 +1,109 @@
+experiment:
+  experiment_id: PUB-SQ-E0-0001
+  run_family_id: PUB-SQ-E0
+  title: Explicit production solver selection and fail-closed RossFast screening
+  evidence_class: PROSPECTIVE_SUPPORTING
+
+publication:
+  primary_owner: PUB-SQ
+  doctoral_rq: RQ2
+  thesis_synthesis_relevance: [TS1, TS2]
+  excluded_primary_owners: [PUB-ME, PUB-GC, PUB-RC, PUB-SG]
+
+chronology:
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  contract_commit: f49182c940d2aa161dd2f1ab3beb0344fa547fcf
+  manifest_commit: RESOLVE_FROM_GIT_HISTORY_AT_RUN_TIME
+  created_utc: 2026-09-17T18:20:29Z
+
+question:
+  hypothesis_id: [H2, H3]
+  primary_claim_if_supported: Explicit RossFast production selection preserves solver identity and fails closed for unsupported or unusable RossFast requests rather than silently falling back to the Reference Richards solver.
+  null_or_falsifying_result: Any unsupported or failed explicit RossFast request that executes or publishes through the Reference solver, or any ambiguity in actual solver identity, falsifies the screening claim.
+
+system:
+  repository: abhedwig-cell/SWAP5
+  code_commit: 93d50e349528551ff74bce3944e984e582a21b84
+  reference_commit: null
+  capability_authorities:
+    - F-ROSS12@93d50e349528551ff74bce3944e984e582a21b84
+  compiler: gfortran-on-github-hosted-ubuntu
+  build_mode: [O0, O2]
+  platform: github-hosted-ubuntu-latest
+
+case:
+  case_id: PUB-SQ-E0-FROSS12-SELECTION-V1
+  input_digest: DERIVED_FROM_PINNED_TEST_AND_ASSET_BLOBS
+  forcing_digest: null
+  initial_state_digest: DERIVED_FROM_tests/ross/test_ross12_solver_selection_binding.f90
+  geometry_digest: DERIVED_FROM_FROSS12_MODEL_BINDING
+  soil_materials: [B01, XXX]
+  boundary_configuration: FROSS12_EXPLICIT_FLUX_TEST_REQUEST
+
+factors:
+  requested_solver: [REFERENCE_RICHARDS, ROSSFAST_D3R, NOT_A_MODEL]
+  rossfast_asset_state: [present, omitted, missing]
+  rossfast_material: [B01, XXX]
+  optimization: [O0, O2]
+
+method:
+  candidate_method: ROSSFAST_D3R_EXPLICIT_PRODUCTION_SELECTION
+  comparator: REFERENCE_RICHARDS_EXPLICIT_SELECTION
+  numerical_reference: NOT_REQUIRED_FOR_CONTRACT_IDENTITY_SCREENING
+  acceptance_tolerances: exact_status_and_identity_assertions_in_runner
+
+outcomes:
+  primary_metrics:
+    - requested_solver_identity
+    - executed_solver_route
+    - execution_ready_status
+    - explicit_selection_status
+    - failure_classification
+    - fallback_presence_or_absence
+  secondary_metrics:
+    - rossfast_temporal_certificate_availability
+    - rossfast_linear_solve_work_counter
+    - O0_O2_output_identity
+  failure_metrics:
+    - unexpected_reference_fallback
+    - unsupported_selection_execution
+    - supported_B01_failure
+    - O0_O2_output_difference
+
+analysis:
+  predeclared_transform: none
+  aggregation_rule: exact_boolean_and_status_assertions
+  repeat_count: 1
+  exclusion_rule: none; runner failure invalidates this screening execution
+  stopping_rule: execute the pinned F-ROSS12 gate once under O0 and O2; do not extend the domain after inspecting results
+
+execution:
+  runner: tests/ross/run_ross12_solver_selection_binding.sh
+  runner_blob_sha: 7a6c731b778453023afc67653b84757a4e56fd2f
+  test_blob_sha: 42792262f5e362e90a9d7f13629b1ae0b83f98e0
+  expected_scope:
+    - blank/default Reference selection
+    - explicit Reference selection
+    - unknown solver selection
+    - RossFast without asset configuration
+    - RossFast with missing assets
+    - RossFast unsupported material XXX
+    - real B01 RossFast execution through production selection binding
+  explicit_noncoverage:
+    - solver accuracy equivalence
+    - equal-error performance
+    - full model mass-ledger comparison
+    - RossFast domain beyond the currently admitted production selection contract
+
+artifacts:
+  raw_output: artifacts/PUB-SQ-E0-0001/ross12-selection.log
+  telemetry: artifacts/PUB-SQ-E0-0001/runner-receipt.txt
+  logs: artifacts/PUB-SQ-E0-0001/ross12-selection.log
+  derived_table: null
+  candidate_figure: null
+
+result:
+  status: NOT_RUN
+  conclusion: null
+  deviations_from_plan: null

@@ -1,0 +1,125 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0001
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  result: PASS
+
+chronology:
+  macro_window_adjudication_commit: 29f3bf635d69e076926d6cb99cf3f7d058f67a63
+  macro_window_spec_commit: 1b54c6c6acfffd8bd71c368ae36bdf77f788850b
+  macro_window_spec_blob: e7b042300c67e06163cbb27a603dc1ab70fa1834
+  frozen_manifest_commit: 8a688bf44addd8afee3977cce625c4ebaf1aa81b
+  frozen_manifest_blob: 09987670ad420e021fad5cb5e3b486b44c85f326
+  frozen_before_implementation_and_execution: true
+
+authority:
+  research_branch: research/pub-gc-macro-window-response
+  frozen_base: c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+  qualified_head: 32d1e9ae1bb3f0cda7a26e114eca0fe5fd900d12
+  frozen_production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  production_source_tree_at_pass: d7ef6c045263de821db7800459289efcd8a6420b
+  production_src_unchanged: true
+  qualified_dependencies_unchanged: true
+
+immutable_research_blobs:
+  macro_module: 920b93b943ead1187887e683c50a84e0f4cb3a46
+  qualification_test: 5045dc35c253b6063229f8843452c21c2c8178c1
+  qualification_runner: 4114e5624480ad056aa25e298e75fa3f2e58d654
+  workflow: 233819d9f74ddd914f7b6a0effe6d2bb7f7ddba9
+
+controlling_execution:
+  github_actions_run: 35291452130
+  github_actions_job: 105434979678
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  runner_os: Ubuntu 24.04
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: true
+  output_sha256: fcd7e241ba5495deed98e007d4547fc4f40be0b93f4988f0cbd4c2fa68d1373f
+  artifact:
+    id: 10526361147
+    digest: sha256:09758165fa673021dbb2d881abef4f1851c41caf0b9af500a1ef9c25dd07c1a1
+    expires_at: 2026-12-17T00:30:05Z
+
+qualification_oracles:
+  Q0_one_contribution_reduction: PASS
+  Q1_four_contribution_sequential_equivalence: PASS
+  Q2_aggregate_terminal_selectivity: PASS
+  Q3_same_origin_ABA: PASS
+  Q5_seeded_temporal_history: PASS
+  failure_controls: PASS
+  O0_O2_identity: PASS
+  primary_H2_H3_eligible: false
+
+qualification_only_telemetry:
+  Q0_Q_whole_cm: 1.42923219944655054e-3
+  Q1_Q_whole_cm: 2.85846439889310107e-3
+  Q2_contributions_cm:
+    - 8.66351463106762262e-4
+    - 9.89054523143617463e-4
+    - 1.03695552205300672e-3
+    - 1.03226600447297017e-3
+  Q2_Q_whole_cm: 3.92462751277635608e-3
+  Q2_Q_terminal_cm: 4.12906401789188068e-3
+  Q2_whole_minus_terminal_cm: -2.04436505115524608e-4
+  Q5_first_Q_cm: 9.06596090021637895e-5
+  reuse_for_primary_H2_H3_case_selection: prohibited
+
+invalid_predecessor_attempts:
+  - attempt: 1
+    research_head: 78101b8a995ac54136d9eb8f346ff0c5180f9d6b
+    github_actions_run: 35291116752
+    github_actions_job: 105433942227
+    classification: INVALID_ENGINE_QUALIFICATION
+    scientific_execution_reached: false
+    reason: >-
+      Qualification test did not compile because a deferred-shape temporal-history
+      output variable was declared without ALLOCATABLE although the public snapshot
+      API requires an allocatable actual argument.
+    permitted_repair: >-
+      Change only the qualification-test declaration to an allocatable array.
+    scientific_fixture_or_threshold_changed: false
+
+  - attempt: 2
+    research_head: 45686e68d93080e1ceeebea563bfe956eb67fcdd
+    github_actions_run: 35291389064
+    github_actions_job: 105434781949
+    classification: INVALID_ORACLE_IMPLEMENTATION
+    scientific_execution_reached: true
+    reason: >-
+      The Q2 oracle required bitwise identity against q_terminal multiplied by
+      literal 0.02 day, while the frozen definition and component use the actual
+      macro duration macro_t1-macro_t0. At absolute times near day 4200 those are
+      mathematically equal but need not be bitwise identical.
+    permitted_repair: >-
+      Bind the test oracle to the already frozen macro_duration result without
+      changing the fixture, threshold, component equation or scientific criterion.
+    scientific_fixture_or_threshold_changed: false
+
+interpretation:
+  pass_means: >-
+    The research-only macro-window SWAP response preserves the qualified one-step
+    response, composes multiple native SWAP contributions in a disposable lineage,
+    accumulates whole-window exchange, selects the final native terminal flux,
+    preserves same-origin replay and temporal continuation through public contracts,
+    leaves the authoritative macro origin unchanged, fails closed on the frozen
+    invalid inputs, and gives byte-identical scientific output under O0 and O2.
+  qualification_only_discrimination: >-
+    Q2 confirms that, once a macro-window contains multiple native contributions,
+    Q_whole and q_terminal*DeltaT_c can be numerically distinct. The observed
+    magnitude is infrastructure evidence only and may not be reused as an H2/H3
+    effect estimate or to tune later primary cases.
+  nonclaims:
+    - no H2 support or falsification
+    - no H3 support or falsification
+    - no practical coupling-window threshold
+    - no MODFLOW6 result
+    - no production admission
+    - no response/tangent acceleration result
+
+next_permitted_action:
+  - freeze PUB-GC-NATIVE-TIME-0001 before execution
+  - select the native SWAP internal-integration policy using endpoint-state and integrated-exchange convergence only
+  - prohibit Q_whole-minus-Q_terminal from serving as the native-time selection objective
+  - only after native-time adequacy is qualified, preregister new macro-window E2/E3 screening

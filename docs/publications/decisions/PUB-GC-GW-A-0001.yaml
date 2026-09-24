@@ -1,0 +1,45 @@
+decision:
+  decision_id: PUB-GC-GW-A-0001
+  publication_owner: PUB-GC
+  subject: groundwater component for PUB-GC-E1 through PUB-GC-E4
+  status: DECIDED
+
+chronology:
+  specification_commit: b6800d1337c2101b39d1c07e45ee808a35711926
+  decision_made_before_gw_a_implementation: true
+  decision_made_before_pub_gc_e1_execution: true
+
+evidence_reviewed:
+  fgc21_fixture_owner_commit: 1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f
+  fgc21_fixture_path: tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90
+  fgc21_fixture_blob: d3cd07965f6fc0d0628557b18d65f3bbc9396888
+  fvq87_code_authority: 37c02ac3747bfaacdb8b3408b8228f3deb2b9824
+  fvq87_owner_postimage: 43c9f09110dea83928ef7d58990c37575d8ca223
+  fvq87_publication_result_receipt: 218c579d155887423343c0c5daef95a5f67a182c
+
+observations:
+  - dummy_gw_trial records q_groundwater_m_per_s but does not calculate groundwater head from that exchange.
+  - returned groundwater head is scripted from trial count and response_mode as 0.5 m or 0.7 m.
+  - dummy_gw_capture provides service, lineage, revision, time and a token but does not snapshot an explicit physical groundwater head/storage state.
+  - groundwater commit advances time and revision but does not publish a storage-derived head state.
+
+verdict:
+  reuse_fgc21_dummy_as_gw_a: false
+  classification: TRANSACTIONAL_QUALIFICATION_TEST_DOUBLE_ONLY
+  reason: The fixture is appropriate for fail-closed transaction and conservation-oracle testing, but it does not implement the dynamic storage-to-head response required for the PUB-GC controlled groundwater model.
+
+selected_path:
+  component_id: PUB-GC-GW-A
+  specification: docs/publications/PUB-GC_GW-A_SPECIFICATION.md
+  scientific_form: linear groundwater storage reservoir with analytic finite-window head update
+  implementation_scope: RESEARCH_ONLY
+  production_authority_changed: false
+  next_permitted_action: implement and independently qualify GW-A against the frozen analytic contract; do not execute PUB-GC-E1 yet
+
+publication_firewall:
+  no_modflow_claim: true
+  no_production_groundwater_backend_claim: true
+  no_pub_me_primary_claim: true
+  no_pub_sq_primary_claim: true
+  no_pub_rc_primary_claim: true
+  no_pub_sg_primary_claim: true
