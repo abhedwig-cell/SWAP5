@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL16",
+  "phase": "CROSS_MATERIAL_CROSS_REGIME_PAIRED_PERFORMANCE_COMPLETE",
+  "status": "PASS_BROAD_RICHARDS_RESEARCH_CLAIM",
+  "workflow_run": 36044880081,
+  "workflow_job": 107785854756,
+  "cases": {
+    "B01_wet": {"median_ratio":0.749041,"cpu_reduction_fraction":0.250959},
+    "B01_mid": {"median_ratio":0.743779,"cpu_reduction_fraction":0.256221},
+    "B01_dry": {"median_ratio":0.744841,"cpu_reduction_fraction":0.255159},
+    "B12_wet": {"median_ratio":0.749327,"cpu_reduction_fraction":0.250673},
+    "B12_mid": {"median_ratio":0.734965,"cpu_reduction_fraction":0.265035},
+    "B12_dry": {"median_ratio":0.748883,"cpu_reduction_fraction":0.251117},
+    "O05_wet": {"median_ratio":0.774964,"cpu_reduction_fraction":0.225036},
+    "O05_mid": {"median_ratio":0.765318,"cpu_reduction_fraction":0.234682},
+    "O05_dry": {"median_ratio":0.775156,"cpu_reduction_fraction":0.224844},
+    "O14_wet": {"median_ratio":0.786661,"cpu_reduction_fraction":0.213339},
+    "O14_mid": {"median_ratio":0.748322,"cpu_reduction_fraction":0.251678},
+    "O14_dry": {"median_ratio":0.785136,"cpu_reduction_fraction":0.214864}
+  },
+  "summary": {
+    "fidelity_pass_cases": 12,
+    "timed_cases": 12,
+    "cases_with_median_ratio_below_0_98": 12,
+    "cpu_reduction_fraction_range": [0.213339,0.265035]
+  },
+  "finding": "The F-AHL15 derivative-consistent, floor-scaled shared-support representation preserves the frozen Richards fidelity gates and yields a paired complete-solve CPU reduction in every tested material-regime combination.",
+  "research_claim": "Within the tested four-material, wet-mid-dry prescribed-head-bottom Richards matrix, auto-generated derivative-consistent hydraulic lookup reduces complete Richards solve CPU by approximately 21-27% while preserving the analytical nonlinear iteration/backtracking path and the preregistered response gates.",
+  "limits": [
+    "The matrix uses four selected unimodal materials and prescribed-head lower boundaries.",
+    "This is a Richards-solver result, not yet a whole-SWAP application runtime result.",
+    "Build cost, cache reuse and many-column amortization are not yet included.",
+    "Other hydraulic model families and SWKIMPL=1/dKdh are outside current authority.",
+    "Surface-boundary redesign and groundwater-coupling tangent behavior remain separate future questions."
+  ],
+  "next_phase": "Engineering qualification of auto-generation, fingerprinted immutable caching, build-cost amortization and production-runtime integration without changing hydraulic science.",
+  "production_status": "NOT_ADMITTED"
+}
