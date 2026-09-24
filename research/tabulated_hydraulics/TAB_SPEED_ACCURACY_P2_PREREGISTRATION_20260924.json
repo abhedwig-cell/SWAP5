@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.research_preregistration.v1",
+  "workunit": "TAB-SPEED-ACCURACY-P2",
+  "date": "2026-09-24",
+  "branch": "research/tab-speed-accuracy",
+  "question": "Do the 200, 100 and 50 row candidates retain practically relevant whole-Hupsel hydrology while improving complete-application runtime relative to the 400-row baseline?",
+  "authority": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "analytical_normalized_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "analytical_normalized_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+  },
+  "candidates": [400,200,100,50],
+  "exploratory_lower_bound": 25,
+  "frozen_numerical_policy": ["same Hupsel forcing and inputs","same solver","same timestep policy","same retry policy","same tolerances","same generated-provider algorithm except row count"],
+  "comparison": {
+    "signed_zero": "numeric zero equality; historical F text-identity contract remains unchanged",
+    "required": ["normal completion","accepted intervals","retries","route census","numeric result.bal fields","numeric result.blc fields","whole-run wall time"],
+    "timing": "paired balanced repetitions; analytical baseline interleaved with generated candidates"
+  },
+  "decision": "Report Pareto frontier. Do not preselect 50 or 100 rows. A candidate with altered accepted-step/retry/route behavior is not considered practically equivalent until diagnosed.",
+  "production_effect": "NONE"
+}
