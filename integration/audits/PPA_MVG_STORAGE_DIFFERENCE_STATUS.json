@@ -3,13 +3,15 @@
   "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
   "residual_experiment": {
     "baseline": "f05760c6d8e2daf379814df4415a51dcf6e1c5be",
-    "status": "SMALL_DT_EXPERIMENT_PASS_OWNER_REPLAY_PENDING",
+    "status": "SMALL_DT_AND_OWNER_EXPERIMENT_PASS_FULL_TRANSCRIPT_REPLAY_PENDING",
+    "owner_tested_commit": "8a94ba3e8",
+    "owner_evidence": "Disposable storage variant: WU04C and WU04D owner composition complete/commit on both tiles with unchanged 1e-12 cm hard mass gate at O0 and O2; original forcing amplitudes and half-day duration. Build swap-ppa-wu01-b465eb3973234e998a713518368e7ee0. Initial runner compared success markers only; strengthen to retain and compare complete numerical diagnostics next. Not a production integration or source-window/restart qualification.",
     "tested_commit": "fcd24308d",
     "evidence": "Default and experimental sweep O0/O2 identical within each variant; all converged attempts pass native compartment 1e-12 cm/day and independent rounded-state ledger 1e-12 cm gates. Default 14/20 converged; experiment 17/20. At dt 1.52588e-5 residual drops from 2.83382e-12 (retry) to 4.01040e-13 (converged); dt 7.62939e-6 and 3.81470e-6 additionally converge. The two smallest steps still fail balance; dt .5 still fails. No full sweep or WU04C closure claim.",
     "builds": ["swap-free-drainage-d7281f13-fdd8-46fa-ab1c-08ecc6781fd3", "swap-free-drainage-3eb5ea7c-9258-471c-9ccd-2b9b2e6e157a"],
     "contract": "integration/audits/PPA_MVG_RESIDUAL_EXPERIMENT.md",
     "runner": "tests/fsi/run_ppa_free_drainage_small_dt.ps1 -StableStorageExperiment",
-    "next": "Replay owner composition with the same disposable transform through run_ppa_free_drainage_owner.ps1 -StableStorageExperiment. Transform extracted unchanged to new_ppa_storage_experiment.ps1. No production source/shared interface changed."
+    "next": "Replay full owner transcript identity, then design explicit opt-in production storage callback. No production source/shared interface changed."
   },
   "provider_binding": {
     "status": "BOUNDED_PROVIDER_BINDING_PASS_NOT_INTEGRATED",

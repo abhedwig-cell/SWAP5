@@ -61,6 +61,7 @@ try {
             $output = @(& $exe @testArguments 2>&1)
             if ($LASTEXITCODE -ne 0) { throw "Runtime failed $opt $test : $($output -join "`n")" }
             $textOutput = $output -join "`n"
+            $textOutput | Set-Content (Join-Path $dir "$test.txt")
             if ($test -eq 'ppa_output_canon_application_binding') {
                 foreach ($marker in @('PPA_OUTPUT_CANON_APPLICATION_BYTE_IDENTITY=PASS',
                     'PPA_OUTPUT_CANON_APPLICATION_READ_ONLY_SNAPSHOT=PASS')) {
@@ -76,6 +77,10 @@ try {
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'
             }
             $stable["$test-$opt"] = (@($output | Where-Object { $_ -match $prefix }) -join "`n")
+            if ($StableStorageExperiment) {
+                # Compare numerical diagnostics as well as success markers.
+                $stable["$test-$opt"] = $textOutput
+            }
             if ($opt -eq 'O2' -and $stable["$test-O0"] -cne $stable["$test-O2"]) {
                 throw "O0/O2 output differs: $test"
             }
