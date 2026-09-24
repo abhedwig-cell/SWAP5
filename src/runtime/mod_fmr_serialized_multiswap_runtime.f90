@@ -444,8 +444,7 @@ contains
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(kernel_committed_state_t), intent(in) :: states(:)
-    logical, allocatable :: state_claimed(:)
-    integer :: i, j, state_index
+    integer :: i, j
 
     valid = .false.
 
@@ -456,18 +455,14 @@ contains
       end do
     end do
 
-    allocate(state_claimed(size(states)))
-    state_claimed = .false.
     do i = 1, size(columns)
       if (columns(i)%column_id <= 0_int64) return
       do j = i + 1, size(columns)
         if (columns(j)%column_id == columns(i)%column_id) return
+        if (columns(j)%state_handle == columns(i)%state_handle) return
       end do
       if (columns(i)%state_handle < 1_int64 .or. &
           columns(i)%state_handle > int(size(states), int64)) return
-      state_index = int(columns(i)%state_handle)
-      if (state_claimed(state_index)) return
-      state_claimed(state_index) = .true.
     end do
 
     valid = .true.
