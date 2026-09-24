@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25F",
+  "title": "Bi-modal conductivity tightening and full Richards closure",
+  "parent": "F-AHL25E",
+  "phase": "PREREGISTERED_REPAIR",
+  "frozen_retention": "F-AHL25B derivative-consistent theta/C representation unchanged",
+  "prospective_K_error_limits_abs_logK": [0.0003,0.0001],
+  "stage_1_cases": ["M3_SEPARATED:wet","M3_DOMINANT_SECOND:dry"],
+  "selection_rule": "Select the loosest prospective K limit that closes every original F-AHL25D gate in both failed cases. If neither closes, stop K densification.",
+  "stage_2_rule": "If a K limit is selected, rerun the complete original 9-case F-AHL25D matrix with that one frozen limit. Require 9/9 and unchanged nonlinear/backtracking path.",
+  "hard_exclusions": ["NO_RETENTION_CHANGE","NO_GATE_RETUNING","NO_TIMING_BEFORE_9_OF_9","NO_PRODUCTION_ADMISSION"]
+}
