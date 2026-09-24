@@ -1,0 +1,86 @@
+name: F-ROM-PURPOSE P8A transition-carrier derivation
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P8A_EXECUTION_BINDING.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  derive:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify derivation authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/derive_rom_purpose_p8a_transition_carriers.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P8A_EXECUTION_BINDING.json'))
+          c=json.load(open('integration/f-rom/ROM_PURPOSE_P8A_DERIVATION_CONTRACT.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P8B_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_DERIVATION_ONLY_RESPONSE_EXPOSED'
+          assert c['status']=='DERIVATION_ONLY_RESPONSE_EXPOSED'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P8B_REFERENCE_OR_VALIDATION_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Recover derivation traces
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/source /tmp/p8a
+          gh run download 35923634779 --repo abhedwig-cell/SWAP5 -p 'p5c-*' -D /tmp/source
+          find /tmp/source -type f -name 'p5c_*_o0.txt' -exec cp {} /tmp/p8a/ \;
+          find /tmp/source -type f -name 'p5c_*_execution.json' -exec cp {} /tmp/p8a/ \;
+      - name: Freeze transition-probe coefficients
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/derive_rom_purpose_p8a_transition_carriers.py             --contract integration/f-rom/ROM_PURPOSE_P8A_DERIVATION_CONTRACT.json             --root /tmp/p8a             --output result/ROM_PURPOSE_P8A_COEFFICIENTS.json | tee result/runner.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p8a-coefficients
+          path: result/
+          if-no-files-found: error
+      - name: Persist frozen P8A coefficients
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P8A_COEFFICIENTS.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P8_STATUS.json')
+          s={
+            'schema':'swap5.rom-purpose.p8.status.v1','workstream':'ROM-PURPOSE','work_unit':'ROM-PURPOSE-P8','date':'2026-09-24',
+            'status':'P8A_DERIVATION_COMPLETE_P8B_NOT_EXECUTED',
+            'current_gate':'P8B_BIND_FROZEN_COEFFICIENTS',
+            'p8a_coefficients':'integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json',
+            'p8a_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p8a_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':['Bind exact P8A coefficients to preregistered fresh P8B workload before any validation response.'],
+            'scientific_firewall':{
+              'p8b_validation_response_seen':False,'coefficients_refit_on_validation':False,
+              'candidate_family_changed_after_training':False,'application_acceptance_adjudicated':False,
+              'production_rom_authorized':False
+            }
+          }
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json integration/f-rom/ROM_PURPOSE_P8_STATUS.json
+          git commit -m "ROM-PURPOSE P8A: persist frozen transition coefficients" || exit 0
+          git push origin HEAD:work/f-rom-purpose
