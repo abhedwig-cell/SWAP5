@@ -42,6 +42,7 @@ module mod_reference_richards_workspace
   end type reference_richards_workspace_t
 
   public :: initialize_reference_workspace
+  public :: ensure_reference_workspace_shape
   public :: reset_reference_workspace
   public :: poison_reference_workspace
   public :: release_reference_workspace
@@ -51,7 +52,7 @@ module mod_reference_richards_workspace
 
 contains
 
-  subroutine initialize_reference_workspace(workspace, active_nodes)
+  subroutine ensure_reference_workspace_shape(workspace, active_nodes)
     type(reference_richards_workspace_t), intent(inout) :: workspace
     integer, intent(in) :: active_nodes
 
@@ -75,6 +76,14 @@ contains
     else if (workspace%profile_reset_payload_bytes <= 0_int64) then
        workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
     end if
+  end subroutine ensure_reference_workspace_shape
+
+
+  subroutine initialize_reference_workspace(workspace, active_nodes)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+    integer, intent(in) :: active_nodes
+
+    call ensure_reference_workspace_shape(workspace, active_nodes)
     workspace%generation = workspace%generation + 1_int64
     call reset_reference_workspace(workspace)
   end subroutine initialize_reference_workspace
