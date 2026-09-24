@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL05",
+  "phase": "SPLIT_RUNTIME_SCREEN_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36040711538,
+  "workflow_job": 107771902359,
+  "seconds_per_evaluation": {
+    "B01": {"analytical":8.4274768829e-8,"full_logit_lookup":5.2994251251e-8,"split_exact_theta_lookup_C_K":6.4847469330e-8,"split_reduction_vs_analytical":0.2305},
+    "B12": {"analytical":8.6723327637e-8,"full_logit_lookup":5.4730892181e-8,"split_exact_theta_lookup_C_K":6.5804958344e-8,"split_reduction_vs_analytical":0.2412},
+    "O05": {"analytical":7.9415798187e-8,"full_logit_lookup":5.0835132599e-8,"split_exact_theta_lookup_C_K":6.2326908112e-8,"split_reduction_vs_analytical":0.2152},
+    "O14": {"analytical":8.2104682922e-8,"full_logit_lookup":5.4246902466e-8,"split_exact_theta_lookup_C_K":6.5466403961e-8,"split_reduction_vs_analytical":0.2026}
+  },
+  "finding": "Exact retention plus lookup C/K remains faster than full analytical constitutive evaluation for all four tested materials, with about 20-24% lower constitutive evaluation cost on this optimized-Fortran screen.",
+  "tradeoff": "The split representation is slower than a full lookup, but F-AHL04C showed that it nearly eliminates the nonlinear Richards response discrepancy that remained with full lookup.",
+  "decision": "ADVANCE_SPLIT_REPRESENTATION_TO_OPTIMIZED_END_TO_END_RESEARCH_PROVIDER",
+  "nonclaims": [
+    "No whole-SWAP speedup is established.",
+    "One-time build cost is not included in this inner-loop benchmark.",
+    "No production admission is implied."
+  ]
+}
