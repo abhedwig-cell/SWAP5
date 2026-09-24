@@ -214,3 +214,40 @@ E2 RUNTIME RESULT            = NOT YET MEASURED
 ```
 
 No whole-SWAP speedup is inferred from the historical run or from E1.
+
+## E2 route binding and executable reproducibility result
+
+Current-source route binding is now explicitly gated by workflow `F-PE-PROFILE03 H03 E2 route binding`.
+
+Successful run `36067148732` proves the following current source chain:
+
+```text
+legacy SoilWater task-2
+  -> run_b110_production_soil_water_task2
+  -> admitted Hupsel/B1.11 explicit production profile
+  -> reference_richards_legacy_solver_t
+  -> reference_richards_legacy_solve
+  -> current src/legacy/b1_10_port/headcalc.f90
+  -> H03 provider_tuple_valid reuse logic
+```
+
+This closes the semantic question whether H03 is on the previously qualified whole-Hupsel typed-adapter route: it is.
+
+However, E2 timing cannot yet be executed reproducibly from the current repository alone. The prior M1-C3 whole-Hupsel qualification record shows that its complete executable was built by combining the exact external SWAP 4.3.1/B1.11 source authority with the current typed-adapter production delta. The current repository persists identities, reconstruction tooling and patches, but not the complete 63-member source tree or the original exact outer archive required by that reconstruction.
+
+Additional recovery checks performed for PROFILE03:
+
+- historical SWAP5 branches contain B0 identity manifests and ordered B1 patches, not the complete exact source archive;
+- public `SWAP-model/SWAP` is explicitly a legacy 4.2.0 line and is not authority-equivalent to the 4.3.1/B1.11 source used by M1-C3;
+- the user Library contains historical SWAP audit ZIP packages, but the exact 4.3.1 outer source archive is not exposed as a directly materializable file in this Project context.
+
+Therefore the state is:
+
+```text
+E2 HUPSEL -> H03 ROUTE BINDING = PASS
+E2 COMPLETE EXECUTABLE SOURCE   = BLOCKED_EXTERNAL_EXACT_ARCHIVE
+E2 TIMING                        = NOT_EXECUTED
+WHOLE-SWAP SPEEDUP CLAIM         = NOT PERMITTED
+```
+
+This is an infrastructure/provenance blocker, not a physics or H03 qualification failure. E1 remains valid and closed at 12.262324% mean application-host interval speedup.
