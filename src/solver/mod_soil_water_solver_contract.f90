@@ -141,6 +141,8 @@ module mod_soil_water_solver_contract
      integer :: alternative_solver_calls = 0
      integer :: internal_retries = 0
      integer :: interface_sensitivity_backsolves = 0
+     integer :: workspace_full_resets = 0
+     integer(int64) :: workspace_zeroed_bytes = 0_int64
      character(len=32) :: route = 'not-run'
   end type soil_water_solver_diagnostics_t
 
