@@ -1,0 +1,25 @@
+name: F-AHL08 K lookup end-to-end
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/mod_ahl08_klookup_provider.f90'
+      - 'research/ahl/test_ahl08_klookup_end_to_end.f90'
+      - 'research/ahl/run_ahl08_klookup_end_to_end.sh'
+      - '.github/workflows/f-ahl08-klookup-end-to-end.yml'
+  workflow_dispatch:
+
+jobs:
+  end-to-end:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run K-lookup end-to-end Richards timing
+        run: |
+          bash research/ahl/run_ahl08_klookup_end_to_end.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl08-e2e-${{ github.run_id }}
+          path: /tmp/ahl08e2e_result.txt
