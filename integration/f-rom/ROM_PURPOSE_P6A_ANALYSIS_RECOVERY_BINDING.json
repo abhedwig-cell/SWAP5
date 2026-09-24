@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.rom-purpose.p6a.analysis-recovery-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P6A-LAGGED-BOUNDARY-OPERATOR-ORACLE",
+  "date": "2026-09-24",
+  "status": "BOUND_ANALYSIS_ONLY_AFTER_COMPLETE_P6A_ROUTES",
+  "source_route_run": 35955946509,
+  "route_accounting": {
+    "B01": "SUCCESS",
+    "B14": "SUCCESS",
+    "original_analysis": "FAILED_COUNT_ASSERTION",
+    "original_persist": "SKIPPED"
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p6a-analysis-recovery.yml": "b2fb9e2ae7f3245c98aba40599c28473cdb6f4ee",
+    "tests/rom/analyze_rom_purpose_p6a_boundary_oracle.py": "f4d5e413549cb1daf6e7c5fa8e2b6e1dbf04649e",
+    "integration/f-rom/ROM_PURPOSE_P6A_PREREGISTRATION.json": "6e8dd8501956e9cb87909e0802a96462ba283358"
+  },
+  "scientific_firewall": {
+    "simulations_rerun": false,
+    "route_artifacts_reused": true,
+    "scientific_classification_seen_before_repair": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
