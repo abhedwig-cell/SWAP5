@@ -6,7 +6,7 @@ mkdir -p "$BUILD/tables"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-PYTHONPATH=research/ahl python3 research/ahl/ahl15_generate_fsi24.py "$BUILD/tables" > "$BUILD/table_summary.json"
+PYTHONPATH=research/ahl python3 research/ahl/ahl15_wet_local_k.py "$BUILD/tables" > "$BUILD/table_summary.json"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fbacktrace)
 SRC=(
@@ -35,9 +35,9 @@ for source in "${SRC[@]}"; do
   gfortran "${COMMON[@]}" -O3 -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
   objects+=("$obj")
 done
-gfortran "${COMMON[@]}" -O3 -J "$OUT" -I "$OUT" -c research/ahl/test_ahl09r_timing_reconciliation.f90 -o "$OUT/test.o"
+gfortran "${COMMON[@]}" -O3 -J "$OUT" -I "$OUT" -c research/ahl/test_ahl15r_b01wet_timing.f90 -o "$OUT/test.o"
 gfortran -O3 "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
 
 RESULT="${1:-/tmp/ahl15r_result.txt}"
-"$OUT/test" "$BUILD/tables/FSI24_dc.dat" | tee "$RESULT"
+"$OUT/test" "$BUILD/tables/B01_dc.dat" | tee "$RESULT"
 grep -Fq 'AHL09R_FIDELITY=PASS' "$RESULT"
