@@ -13,6 +13,7 @@ program test_ppa_free_drainage_indicator
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   implicit none
 
   real(real64), parameter :: h0 = -75.0_real64
@@ -21,31 +22,35 @@ program test_ppa_free_drainage_indicator
   real(real64), parameter :: q_values(5) = [-1.0e-6_real64, -1.0e-10_real64, 0.0_real64, &
                                              1.0e-10_real64,  1.0e-6_real64]
   real(real64), parameter :: dt_values(3) = [1.0e-2_real64, 1.0e-4_real64, 1.0_real64]
-  integer :: iq, idt, mode2_cases, wrong_dirichlet_separations
+  integer :: iq, idt, isource, mode2_cases, wrong_dirichlet_separations
 
   mode2_cases = 0
   wrong_dirichlet_separations = 0
+  do isource = 0, 2
   do idt = 1, size(dt_values)
     do iq = 1, size(q_values)
-      call run_mode2_case(q_values(iq), dt_values(idt), mode2_cases, wrong_dirichlet_separations)
+      call run_mode2_case(q_values(iq), dt_values(idt), isource, mode2_cases, wrong_dirichlet_separations)
     end do
   end do
+  end do
 
-  call require(mode2_cases == size(q_values)*size(dt_values), 'complete prescribed-qbot matrix')
+  call require(mode2_cases == 3*size(q_values)*size(dt_values), 'complete free drainage/source matrix')
   call require(wrong_dirichlet_separations > 0, 'oracle distinguishes Neumann from Dirichlet bottom stiffness')
   write(*,'(A,I0)') 'FREE_DRAINAGE_MODE2_CASES=', mode2_cases
   write(*,'(A,I0)') 'FREE_DRAINAGE_WRONG_DIRICHLET_SEPARATIONS=', wrong_dirichlet_separations
-  write(*,'(A)') 'FREE_DRAINAGE_PRESCRIBED_QBOT_TEMPORAL_CERTIFICATE=PASS'
+  write(*,'(A)') 'FREE_DRAINAGE_MASS_LEDGER_AND_RETRY=PASS'
 
 contains
 
-  subroutine run_mode2_case(q, step_dt, completed_cases, separated_cases)
+  subroutine run_mode2_case(q, step_dt, source_case, completed_cases, separated_cases)
     real(real64), intent(in) :: q, step_dt
+    integer, intent(in) :: source_case
     integer, intent(inout) :: completed_cases, separated_cases
     type(soil_water_parameter_set_t), target :: parameters
     type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
     type(b110_default_mvg_provider_t), target :: constitutive
     type(b110_source_sink_provider_t), target :: source_sink
+    type(b110_root_sink_provider_t), target :: root_provider
     type(fixed_flux_top_boundary_provider_t), target :: top_provider
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace, comparison_workspace
@@ -54,6 +59,7 @@ contains
     type(soil_water_temporal_indicator_request_t) :: indicator_request
     type(soil_water_temporal_indicator_result_t) :: indicator, unsupported
     real(real64), target :: drainage(1,numnod), irrigation(numnod), root_sink(numnod)
+    real(real64), target :: no_root(numnod)
     real(real64) :: cofgen(24,numnod)
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
     real(real64) :: candidate_water(numnod), candidate_k(numnod), candidate_capacity(numnod), candidate_dkdh(numnod)
@@ -77,7 +83,14 @@ contains
     drainage = 0.0_real64
     irrigation = 0.0_real64
     root_sink = 0.0_real64
-    call bind_b110_source_sink_provider(source_sink, drainage, irrigation, root_sink)
+    if (source_case == 1) irrigation = 1.0e-8_real64
+    if (source_case == 2) then
+      drainage = 1.0e-8_real64
+      root_sink = 2.0e-8_real64
+    end if
+    no_root = 0.0_real64
+    call bind_b110_source_sink_provider(source_sink, drainage, irrigation, no_root)
+    call bind_b110_root_sink_provider(root_provider, root_sink)
 
     request = soil_water_solve_request_t()
     request%parameters => parameters
@@ -107,6 +120,7 @@ contains
     request%numerical%ponding_tolerance = hard_mass_gate
     request%evaluation%constitutive => constitutive
     request%evaluation%source_sink => source_sink
+    request%evaluation%root_sink => root_provider
     request%evaluation%top_boundary => top_provider
 
     storage0 = sum(request%base_state%water_content*parameters%dz) + request%base_state%ponding_depth
@@ -128,7 +142,8 @@ contains
     call require(comparison_result%native_balance_rate_residual_available, 'mode7 native residual available')
     call require(comparison_result%integrated_mass_balance_residual_available, 'mode7 integrated residual available')
     storage1 = sum(comparison_result%candidate_state%water_content*parameters%dz)
-    ledger_residual = storage1-storage0-step_dt*(comparison_result%bottom_flux-comparison_result%top_flux)
+    ledger_residual = storage1-storage0-step_dt*(comparison_result%bottom_flux-comparison_result%top_flux &
+         +sum(irrigation)-sum(drainage)-sum(root_sink))
     call require(abs(ledger_residual)<=hard_mass_gate, 'independent mode7 storage flux ledger')
     call require(abs(ledger_residual-comparison_result%integrated_mass_balance_residual_cm)<=hard_mass_gate, &
          'mode7 integrated equation agrees with independent ledger')
@@ -139,7 +154,8 @@ contains
     storage1 = sum(result%candidate_state%water_content*parameters%dz) + result%candidate_state%ponding_depth
     total_in = max(0.0_real64,-result%top_flux)*step_dt + max(0.0_real64,result%bottom_flux)*step_dt
     total_out = max(0.0_real64,result%top_flux)*step_dt + max(0.0_real64,-result%bottom_flux)*step_dt
-    ledger_residual = storage1-storage0-(total_in-total_out)
+    ledger_residual = storage1-storage0-(total_in-total_out) &
+         -step_dt*(sum(irrigation)-sum(drainage)-sum(root_sink))
     solver_mass = result%unrounded_mass_balance_residual
     call require(ieee_is_finite(solver_mass), 'finite solver mass residual')
     call require(max(abs(ledger_residual),abs(solver_mass)) <= hard_mass_gate, 'hard mass gate before certificate')

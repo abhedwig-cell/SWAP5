@@ -1,10 +1,10 @@
 {
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
-  "status": "MASS_DIAGNOSTIC_IMPLEMENTED_RETRY_QUALIFICATION_PENDING",
+  "status": "MASS_DIAGNOSTIC_45_CASES_IMPLEMENTED_FINAL_REPLAY_PENDING",
   "contract": "Rejected hypothesis: mode7 is NOT equivalent to fixed base-qbot under SwKimpl=0. Proposed adapter removed before admission. No production changes or relaxed mass gates.",
   "source": "headcalc.f90 lines 1001-1011 recomputes qbot from candidate provider_k; jacobian_F includes mode7 conductivity derivative. Legacy binding initializes mass diagnostic to NaN and publishes it only for modes 2 and 5.",
-  "tests": "Initial corrected implementation: 15 cases O0/O2 PASS including independent storage/flux ledger, native/integrated units, unchanged FSI38 and FSI25, identical optimization transcripts. Added forced-retry/no-publication/base-preservation assertions pending final replay.",
+  "tests": "74e39d73c: 15 cases O0/O2 PASS including independent ledger, forced-retry/no-publication/base immutability and unchanged FSI38/FSI25. Extended matrix: 45 cases (zero sources, subsurface irrigation, drainage plus separate root provider); final persisted replay pending.",
   "invariants": [3, 7, 13, 23, 25],
   "scope": "Mode7 explicit-flux-top converged solves now publish existing final native residual and time-integrated residual. No equation, flux, budget, continuation schema, committed-state or temporal indicator admission change. Modes -2 and dynamic top remain outside this extension.",
   "next_action": "Implement and qualify explicit mode7 residual publication with independent storage/flux ledger, then derive candidate-dependent bottom stiffness for an opt-in temporal service. Replay unchanged FSI38 and FSI25 O0/O2. Do not replace the failed mass gate or equate mode7 to fixed base flux."
