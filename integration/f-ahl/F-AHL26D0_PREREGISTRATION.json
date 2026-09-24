@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26D0",
+  "title": "PDI vapor source-temperature domain check",
+  "parent": "F-AHL26D",
+  "phase": "SOURCE_SEMANTICS_CHECK",
+  "trigger": "F-AHL26D preregistered temperatures include -5 C. SWAP authority confirms tsoil is degrees C and accepts negative values.",
+  "source_formula": {
+    "MgRT": "MgR/(Temp+273.15)",
+    "Da": "2.14e-5*((Temp+273.15)/273.15)^2",
+    "Rho_sv": "1e-3*exp(31.3716 - 6014.79/Temp - 7.92495e-3*Temp)/Temp",
+    "Hr": "exp(h/100*MgRT)"
+  },
+  "temperatures_C": [-5.0,5.0,20.0,35.0],
+  "representative_state": {"theta":0.10,"theta_s":0.45,"head_cm":-100000.0},
+  "decision_rule": "If the authoritative formula is non-finite or non-positive for an allowed negative-C soil temperature, classify that part of F-AHL26D as upstream source-semantics blocked. Do not alter Kvap physics inside F-AHL.",
+  "hard_exclusions": ["NO_KVAP_PHYSICS_FIX","NO_TEMPERATURE_UNIT_REINTERPRETATION","NO_GATE_RETUNING"]
+}
