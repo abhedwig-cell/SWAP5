@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL20",
+  "phase": "STAGE1_SELF_BUILT_PROVIDER_COMPLETE",
+  "status": "PASS_STAGE1",
+  "workflow_run": 36046715757,
+  "workflow_job": 107791962714,
+  "external_table_file_used": false,
+  "cache": {
+    "builds": 1,
+    "hits": 1,
+    "misses": 1,
+    "entries": 1
+  },
+  "richards_response": {
+    "max_abs_pressure_head_delta_cm": 2.071933e-6,
+    "max_abs_water_content_delta": 2.367780e-9,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 8.756861e-9,
+    "mass_residual_abs_cm": 1.240327e-16,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "finding": "The selected representation can be constructed internally from B1.10 authority, cached, rebound without rebuilding, and used by the nonlinear Richards solver without any external lookup-table asset.",
+  "next_gate": "12-case cross-material wet-mid-dry replay through the self-built provider path.",
+  "production_status": "RESEARCH_ONLY_NO_ADMISSION"
+}
