@@ -87,6 +87,7 @@ program test_ppa_free_drainage_owner
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
   character(len=32) :: test_scope
+  integer :: observed_event_calls=0
 
   call initialize_application_config(config)
   config%free_drainage_indicator => traced_indicator
@@ -175,6 +176,7 @@ contains
     type(soil_water_solve_result_t), intent(in) :: solution
     type(soil_water_temporal_indicator_request_t), intent(in) :: history
     type(soil_water_temporal_indicator_result_t), intent(out) :: certificate
+    if(history%forcing_event_at_start) observed_event_calls=observed_event_calls+1
     call evaluate_free_drainage_temporal_indicator(request,solution,history,certificate)
     write(*,*) 'OWNER_CERT',request%step_duration,trim(certificate%route),certificate%head_inf_bound
   end subroutine
@@ -647,11 +649,11 @@ contains
     source%leaf_area_index=2.0_real64
     source%vegetation_cover_fraction=0.5_real64
     previous_flux=0.0_real64
-    do window=1,2
+    do window=1,3
       start_time=T1+real(window-1,real64)*(T1-T0)
       end_time=start_time+(T1-T0)
-      source%gross_rain_cm_per_day=0.20_real64-0.04_real64*real(window-1,real64)
-      source%sprinkling_irrigation_cm_per_day=0.10_real64-0.02_real64*real(window-1,real64)
+      source%gross_rain_cm_per_day=0.20_real64-0.04_real64*real(min(window-1,1),real64)
+      source%sprinkling_irrigation_cm_per_day=0.10_real64-0.02_real64*real(min(window-1,1),real64)
       call evaluate_vonhhbraden_source_window(parameters,source,0.1_real64,source_result)
       call require(source_result%status==VONHHBRADEN_AVAILABLE,'changing source evaluated')
       call owner%export_committed_restart(9902_int64,before,ok,code)
@@ -674,6 +676,11 @@ contains
              amount(tile)==restored_amount(tile),'restored window materialization identical')
       end do
       if(window==2) call require(forcing(1)%top_flux/=previous_flux,'effective forcing changes between windows')
+      if(window==3) then
+        call require(forcing(1)%top_flux==previous_flux,'post-event window retains physical forcing')
+        call require(all(.not.forcing%temporal_forcing_event).and.all(.not.restored_forcing%temporal_forcing_event), &
+             'newly materialized forcing does not retain event marker')
+      end if
       previous_flux=forcing(1)%top_flux
       if(window==2.and.trim(test_scope)=='--stable-windows') then
         forcing%temporal_forcing_event=.true.
@@ -706,6 +713,7 @@ contains
           call require(.false.,'window diagnostic requires temporal state')
         end select
       end if
+      observed_event_calls=0
       call owner%run_standalone_with_forcing_receipts(start_time,end_time,forcing,result,receipt,code)
       write(*,*) 'CHANGING_WINDOW_DIAG',window,code,result%kernel_status,result%accepted_substeps
       if(window==2.and.trim(test_scope)=='--window-rejection') then
@@ -739,9 +747,18 @@ contains
         return
       end if
       call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'changing window commits')
+      if(window==2) then
+        call require(observed_event_calls>0.and.observed_event_calls<=NTILE*(profile%numerical%transaction%max_retries+1), &
+             'event certificate bounded to initial trial retries')
+        call require(sum(result%accepted_substeps)>observed_event_calls,'later accepted substeps use normal history')
+      else
+        call require(observed_event_calls==0,'unmarked window never uses event derivative')
+      end if
+      observed_event_calls=0
       call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
            restored_result,restored_receipt,code)
       call require(code==FMR_APP_BOOT_OK.and.all(restored_result%committed),'restored changing window commits')
+      if(window/=2) call require(observed_event_calls==0,'restored unmarked window never uses event derivative')
       call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE.and. &
            maxval(abs(restored_result%mass%residual))<=HARD_MASS_GATE,'changing window hard mass')
       do tile=1,NTILE
@@ -768,6 +785,7 @@ contains
       call require(code==FMR_APP_BOOT_OK,'window fresh closes')
     end do
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS'
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_EVENT_THEN_UNMARKED=PASS'
   end subroutine
 
   subroutine verify_event_rollback(profile,before,expected,forcing,amount,t_start,t_end)
