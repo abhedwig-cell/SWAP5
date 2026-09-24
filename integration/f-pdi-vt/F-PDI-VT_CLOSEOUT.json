@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "record": "CLOSEOUT",
+  "status": "FIX_QUALIFIED_READY_FOR_GOVERNED_ADMISSION",
+  "defect": "PDI vapor saturated-density equation used runtime Celsius directly where the authoritative equation requires absolute Kelvin.",
+  "minimal_fix": "Introduce TK=Temp+273.15 and use TK consistently in MgRT, Da and Rho_sv. Preserve signed unsaturated h in the Kelvin term from SWAP-009.",
+  "evidence": {
+    "theory_documentation_code_reconciliation": "PASS",
+    "independent_formula_gate": "PASS",
+    "actual_source_fortran_gate": "21/21 PASS",
+    "full_model_vapor_on_gate": "PASS",
+    "NoVap_noninterference_gate": "PASS"
+  },
+  "negative_or_technical_evidence_preserved": [
+    "F-AHL26D0 original source-domain failure",
+    "F-PDI-VT03 cancellation-limited initial attempt",
+    "F-PDI-VT04 technical host/build/case attempts"
+  ],
+  "remaining_before_production_admission": [
+    "bind the fix to the exact intended historical or production source authority in the canonical admission chain",
+    "apply source-identity preimage checks for that target",
+    "run canonical CI/regression suite including SWAP-009 Kelvin-sign evidence",
+    "admit through SWAP5 governance rather than from this research branch"
+  ],
+  "nonclaims": [
+    "No change to PDI retention, capacity, capillary conductivity or film conductivity",
+    "No change to NoVap behavior",
+    "No reversal of the SWAP-009 signed-head fix",
+    "No production admission has occurred"
+  ]
+}
