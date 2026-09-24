@@ -25,7 +25,6 @@ declare -A files=(
   [maizes.crp]='2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33'
   [potatod.crp]='96b8591c2401a8363c6a2a35f9d535c01d78e10ebf25d3dba88a9b807381a707'
   [swap.dra]='070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17'
-  [swap_linux.swp.template]='a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b'
 )
 
 for name in "${!files[@]}"; do
@@ -34,7 +33,13 @@ for name in "${!files[@]}"; do
   [[ "$got" == "${files[$name]}" ]] || fail "$name SHA mismatch: $got"
 done
 
-echo 'PROFILE03_E2_PUBLIC_HUPSEL_ASSET_IDENTITY=PASS'
+echo 'PROFILE03_E2_PUBLIC_HUPSEL_EXACT_ASSET_IDENTITY=PASS'
+
+curl -fsSL --retry 3 "$base/swap_linux.swp.template" -o "$tmp/swap_linux.swp.template"
+template_sha="$(sha256sum "$tmp/swap_linux.swp.template" | awk '{print $1}')"
+echo "PROFILE03_E2_PUBLIC_SWP_TEMPLATE_SHA256=$template_sha"
+[[ "$template_sha" != 'a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b' ]] || fail 'public SWP template unexpectedly equals official Hupsel swap.swp authority'
+echo 'PROFILE03_E2_PUBLIC_SWP_TEMPLATE=LINEAGE_ONLY_NOT_BYTE_AUTHORITY'
 
 python3 - <<'PY'
 from pathlib import Path
