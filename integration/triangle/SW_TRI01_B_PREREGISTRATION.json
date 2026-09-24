@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.sw_tri01.b.preregistration.v1",
+  "work_unit": "SW-TRI01-B",
+  "date": "2026-09-24",
+  "prerequisite": {
+    "tri01a": "PASS_SINGLE_JOINT_SWAP_CANDIDATE",
+    "run": 35956286428
+  },
+  "title": "Joint groundwater plus surface-water SWAP transaction participant",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "purpose": "Create one bounded participant that owns one SWAP checkpoint/candidate while exposing both the MODFLOW bottom-interface response and the Ribasim signed surface-water exchange.",
+  "required_contract": [
+    "one accepted origin lineage/revision/time",
+    "one joint forcing assembled by surface-water-head then groundwater-head materialization",
+    "one backend candidate per trial",
+    "groundwater q_swap and optional accepted bottom-head tangent from that candidate",
+    "signed surface-water exchange from that same candidate",
+    "realized Ribasim surface transfer must match requested candidate transfer before publication_ready",
+    "MODFLOW residual convergence alone is insufficient for publication readiness",
+    "surface mismatch blocks commit without mutating committed SWAP state",
+    "discard keeps the same accepted origin for recomposition",
+    "successful publication performs exactly one kernel commit"
+  ],
+  "cases": [
+    "B1 positive surface drainage, matched Ribasim receipt, one commit",
+    "B2 negative surface infiltration, matched receipt, one commit",
+    "B3 surface receipt mismatch, commit blocked, discard and same-origin replay",
+    "B4 stale accepted origin fails closed"
+  ],
+  "exclusions": [
+    "no live MODFLOW6 yet",
+    "no live Ribasim yet",
+    "no external-model irreversible publication",
+    "no multilevel surface-water exchange",
+    "no SWMAN=2"
+  ],
+  "pass_meaning": "Transaction-level authority for a single SWAP participant suitable for later joint MODFLOW/Ribasim orchestration.",
+  "production_admission": false
+}
