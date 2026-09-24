@@ -1,0 +1,91 @@
+name: F-ROM Practical P6B SM rainfall qualification
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_HUPSEL_RAINFALL_WORKLOAD.json
+      - integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_PREREGISTRATION.json
+      - tools/rom/materialize_rom_practical_p6b_sm_core.py
+      - tools/rom/materialize_rom_practical_p6b_sm_reference.py
+      - .github/workflows/f-rom-practical-p6b-sm-rainfall.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: rom-practical-p6b-sm-rainfall-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+jobs:
+  case:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B02, B05, B06, B11, B12, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 1
+      - name: Bind frozen authority
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext evidence
+          git cat-file blob b2df7793d3f56f5d8d1d121636d2eb1a0952e271 > ext/rom_purpose_p1_surface_b01_source.f90
+          git cat-file blob 31060946d233ba80e88ca42e43c90f512dc890de > ext/materialize_rom_purpose_p3_surface_reference.py
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+      - name: Build rainfall S4
+        run: |
+          python3 tools/rom/materialize_rom_practical_p6b_sm_core.py             --source tools/rom/rom_practical_p4_rk4.f90             --workload integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_HUPSEL_RAINFALL_WORKLOAD.json             --output /tmp/rain_s4.f90
+          gfortran -O2 -std=f2008 -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow /tmp/rain_s4.f90 -o /tmp/rain_s4
+      - name: Build rainfall R64 R128
+        run: |
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py             --purpose SURF_P --material '${{ matrix.material }}'             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --surface-source ext/rom_purpose_p1_surface_b01_source.f90             --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py             --output /tmp/rain_base.f90 --manifest evidence/base_materialization.json
+          python3 tools/rom/prepare_rom_practical_p3_reference.py --purpose SURF_P --source /tmp/rain_base.f90 --output /tmp/rain_p3.f90
+          python3 tools/rom/materialize_rom_practical_p6b_sm_reference.py             --source /tmp/rain_p3.f90             --workload integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_HUPSEL_RAINFALL_WORKLOAD.json             --output canonical/tests/rom/test_rain_reference.f90
+          for nodes in 64 128; do
+            dz="$(python3 -c "print(160.0/$nodes)")"
+            stub="rain_r${nodes}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "canonical/$stub" --nodes "$nodes" --dz-cm "$dz"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py --root canonical --stub "$stub" --target tests/rom/test_rain_reference.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build "/tmp/rain_r${nodes}" --opt 2
+          done
+      - name: Qualify rainfall workload
+        run: |
+          python3 tools/rom/qualify_rom_practical_p6b_sm.py case             --material '${{ matrix.material }}'             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --exe /tmp/rain_s4 --reference64 /tmp/rain_r64/rom0_test --reference128 /tmp/rain_r128/rom0_test             --outdir evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rom-practical-p6b-sm-rainfall-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+  aggregate:
+    needs: case
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p6b-sm-rainfall-*
+          path: /tmp/rain
+      - name: Aggregate
+        run: |
+          python3 tools/rom/qualify_rom_practical_p6b_sm.py aggregate             --input-dir /tmp/rain --output integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_RESULT.json
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_RESULT.json
+          git commit -m 'ROM-PRACTICAL P6B-SM: persist rainfall-only qualification' || exit 0
+          git push origin HEAD:work/f-rom-practical
