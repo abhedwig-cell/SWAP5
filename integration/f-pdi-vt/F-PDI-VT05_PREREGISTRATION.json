@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT05",
+  "phase": "PREREGISTER",
+  "title": "Historical B1 repair binding",
+  "authority_chain": "B0 -> B1.5p1 -> B1.6/SWAP-009 -> B1.7/SWAP-010 -> B1.8 -> B1.9 -> B1.10 -> B1.11/SWAP-011",
+  "target": "SWAP/WC_K_models_04_11.f90",
+  "required_identity_gates": {
+    "B0_target_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+    "B1_6_after_SWAP_009_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+    "B1_7_through_B1_10_after_SWAP_010_sha256": "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e",
+    "B1_11_after_SWAP_011_sha256": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
+    "B1_11_source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "repair": "Apply only the already-qualified absolute-temperature repair to the exact B1.11 post-SWAP-011 target; preserve SWAP-009 signed-head semantics and all SWAP-011 derivative/cache logic.",
+  "gates": [
+    "pinned upstream raw target must reproduce canonical B0 SHA before any historical transforms",
+    "ordered SWAP-009, SWAP-010 and SWAP-011 target identities must match existing authority exactly",
+    "temperature repair target sites must be unique",
+    "derive exact repaired target postimage SHA256 and byte count",
+    "derive exact repaired B1.11 source manifest and manifest SHA256 by replacing only the target manifest entry"
+  ],
+  "hard_exclusions": ["NO_MANUAL_SOURCE_RECONSTRUCTION", "NO_OTHER_PHYSICS_CHANGES", "NO_GATE_RETUNING"]
+}
