@@ -565,3 +565,21 @@ Gates:
 - tangent backsolve count unchanged;
 - bottom-head and bottom-flux control routes unchanged;
 - F-SI37 moving and independent qualification PASS.
+
+
+## H7 safety refinement — free-drainage dK/dh sentinel
+
+Further boundary-mode audit found one route where the former full-reset zero value was semantically consumed:
+
+- in `jacobian_F`, bottom modes 7/-2 add `0.5*dconductivity_dhead(NN)`;
+- `dconductivity_dhead` is physically populated only for `SWKIMPL=1`;
+- under `SWKIMPL=0`, historical full-reset behavior made this contribution exactly zero.
+
+After H7 bulk-reset removal, relying on stale scratch for this implicit zero would be unsafe.
+
+The repair is not to restore array clearing. Instead the Jacobian adds this term only when `SWKIMPL=1`. This makes the existing numerical semantics explicit and removes hidden dependence on reset state.
+
+Required follow-up:
+- free-drainage SWKIMPL=0 poison case;
+- existing SWKIMPL=1 preservation;
+- no change to other bottom modes.
