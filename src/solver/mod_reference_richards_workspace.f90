@@ -142,6 +142,7 @@ contains
     workspace%warm_start_head = 0.0_real64
     workspace%has_warm_start = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
+    workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .false.
   end subroutine reset_reference_workspace
 
