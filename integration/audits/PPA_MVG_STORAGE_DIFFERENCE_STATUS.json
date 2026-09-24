@@ -1,6 +1,13 @@
 {
   "baseline": "55d430238",
   "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
+  "residual_experiment": {
+    "baseline": "f05760c6d8e2daf379814df4415a51dcf6e1c5be",
+    "status": "HARNESS_IMPLEMENTED_NOT_TESTED",
+    "contract": "integration/audits/PPA_MVG_RESIDUAL_EXPERIMENT.md",
+    "runner": "tests/fsi/run_ppa_free_drainage_small_dt.ps1 -StableStorageExperiment",
+    "next": "Run default and disposable stable-storage variant at O0/O2; independently gate rounded-state ledger for converged trials. No shared interface changed."
+  },
   "provider_binding": {
     "status": "BOUNDED_PROVIDER_BINDING_PASS_NOT_INTEGRATED",
     "tested_commit": "1b8638c9c",

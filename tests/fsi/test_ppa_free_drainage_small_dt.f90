@@ -108,6 +108,11 @@ contains
     call require(all(request%base_state%pressure_head==heads),'base heads immutable')
     call require(all(request%base_state%water_content==water),'base water immutable')
     if(result%status==SW_SOLVE_CONVERGED) then
+      call require(maxval(abs(workspace%richards%residual))<=hard_mass_gate,'native compartment balance gate')
+      storage0=sum(water*parameters%dz)
+      storage1=sum(result%candidate_state%water_content*parameters%dz)
+      ledger_residual=storage1-storage0+step_dt*(result%top_flux-result%bottom_flux)
+      call require(abs(ledger_residual)<=hard_mass_gate,'independent rounded-state ledger gate')
       accepted=accepted+1
     else
       rejected=rejected+1
