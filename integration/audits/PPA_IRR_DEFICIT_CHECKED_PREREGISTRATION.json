@@ -1,0 +1,9 @@
+{
+  "work_unit": "PPA-IRR-DEFICIT-CHECKED",
+  "baseline": "c35dd3785",
+  "authority": "PPA_IRR_WATER_DEFICIT_STATUS.json; B1.11 irrigation.f90 root-zone accounting",
+  "contract": "Add a pure checked entry to the existing source accounting module, preserving the unchecked oracle entry. Validate active array extents, layer indices, finite content in [0,1], positive thickness <=1e6 cm, absolute top coordinate <=1e6 cm, root depth [0,1e6] cm and final rooted length in [0,dz]. Return status and zero outputs on invalid input, otherwise invoke the unchanged source-order equation. These are bounded ingestion constraints, not new physical equations.",
+  "invariants": [3,7,13,29],
+  "gates": "100000 bitwise source comparisons through both entries O0/O2; explicit bad extent/index/nonfinite/zero thickness/root fraction cases under bounds and FPE traps; existing scheduled DCS1 preservation.",
+  "non_claims": "No automatic geometry derivation, production binding, accepted mass, restart or canonical admission."
+}

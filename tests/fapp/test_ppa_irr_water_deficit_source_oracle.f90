@@ -1,10 +1,11 @@
 program test_ppa_irr_water_deficit_source_oracle
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_ppa_irr_water_deficit, only: evaluate_root_zone_water_deficit
+  use mod_ppa_irr_water_deficit
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   implicit none
 
   integer, parameter :: max_nodes = 24, layer_count = 5, vector_count = 100000
-  integer :: layer(max_nodes), noddrz, i, node
+  integer :: layer(max_nodes), noddrz, i, node, status
   real(real64) :: dz(max_nodes), ztopcp(max_nodes), wclos(layer_count), wcmes(layer_count)
   real(real64) :: wchis(layer_count), wcac(max_nodes), rd
   real(real64) :: actual_awlh, actual_awmh, actual_awah, actual_cdef
@@ -48,7 +49,38 @@ program test_ppa_irr_water_deficit_source_oracle
     call require(transfer(actual_awmh, 0_int64) == transfer(expected_awmh, 0_int64), 2)
     call require(transfer(actual_awah, 0_int64) == transfer(expected_awah, 0_int64), 3)
     call require(transfer(actual_cdef, 0_int64) == transfer(expected_cdef, 0_int64), 4)
+    call evaluate_root_zone_water_deficit_checked(noddrz, layer, dz, ztopcp, rd, wclos, wcmes, wchis, wcac, &
+         actual_awlh, actual_awmh, actual_awah, actual_cdef, status)
+    call require(status==IRR_DEFICIT_OK,5)
+    call require(transfer(actual_awlh,0_int64)==transfer(expected_awlh,0_int64),6)
+    call require(transfer(actual_awmh,0_int64)==transfer(expected_awmh,0_int64),7)
+    call require(transfer(actual_awah,0_int64)==transfer(expected_awah,0_int64),8)
+    call require(transfer(actual_cdef,0_int64)==transfer(expected_cdef,0_int64),9)
   end do
+
+  do i=1,12
+    noddrz=1; layer=1; dz=1.0_real64; ztopcp=0.0_real64; rd=0.5_real64
+    wclos=0.3_real64; wcmes=0.2_real64; wchis=0.1_real64; wcac=0.2_real64
+    select case(i)
+    case(1); noddrz=0
+    case(2); noddrz=max_nodes+1
+    case(3); layer(1)=0
+    case(4); layer(1)=layer_count+1
+    case(5); dz(1)=0.0_real64
+    case(6); rd=2.0_real64
+    case(7); ztopcp(1)=-1.0_real64
+    case(8); wcac(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+    case(9); wclos(1)=1.1_real64
+    case(10); dz(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+    case(11); rd=ieee_value(0.0_real64,ieee_quiet_nan)
+    case(12); dz(1)=1.0e6_real64+1.0_real64
+    end select
+    call evaluate_root_zone_water_deficit_checked(noddrz,layer,dz,ztopcp,rd,wclos,wcmes,wchis,wcac, &
+         actual_awlh,actual_awmh,actual_awah,actual_cdef,status)
+    call require(status==IRR_DEFICIT_INVALID_INPUT,10)
+    call require(abs(actual_awlh)+abs(actual_awmh)+abs(actual_awah)+abs(actual_cdef)<tiny(1.0_real64),11)
+  end do
+  print '(A)', 'PPA_IRR_DEFICIT_CHECKED_SOURCE_AND_GUARDS=PASS'
 
   print '(A)', 'PPA_IRR_ROOT_ZONE_WATER_ACCOUNTING_SOURCE_ORACLE_100000=PASS'
   print '(A)', 'PPA_IRR_FRACTIONAL_LAST_NODE_SOURCE_ORACLE=PASS'
