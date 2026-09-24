@@ -594,3 +594,20 @@ H14 stores one zero-direction vector on the serialized model and prepares it onc
 Expected effect: remove one allocation, one deallocation and N real zero writes per physical solve on the smooth drainage-qbot projection route. This route is directly relevant to coupled groundwater execution.
 
 Gates: projected groundwater level bit-identical, drainage response diagnostics unchanged, accepted-direction drainage route unchanged, and existing groundwater/drainage qualification remains green.
+
+
+## ZW01-H15 preregistration — reuse shape-stable forcing buffers across intervals
+
+`fmr_serialized_prepare_interval` currently deallocates and reallocates `qdra`, `qssdi`, `qrot` and related zero buffers every interval, even when the active-node count and drainage-level count are unchanged. In long MODFLOW/MultiSWAP runs this creates allocator traffic at every coupling interval.
+
+H15 changes only storage lifetime:
+
+- retain each buffer when its required shape is unchanged;
+- reallocate only on shape change;
+- overwrite all active values from the new forcing every interval;
+- preserve separate zero-root and zero-projection buffers;
+- no forcing value is carried forward implicitly.
+
+This is not forcing caching. Values are refreshed every interval; only memory capacity is reused.
+
+Expected benefit: remove repeated deallocate/allocate operations from the normal fixed-layout MultiSWAP interval path.
