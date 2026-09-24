@@ -353,7 +353,10 @@ contains
       call materialize_ppa_wu04c_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, source, &
            0.12_real64, 0.20_real64, 0.10_real64, forcing_vector(tile), interception, diagnostics)
       call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK, 'WU04C tile forcing composition')
-      interception_by_tile(tile)=interception
+      ! The adapter returns cm/day; source progress consumes interval amounts in cm.
+      interception_by_tile(tile)=interception*(T1-T0)
+      call require(abs(interception_by_tile(tile)-0.03_real64)<1.0e-15_real64, &
+           'WU04C half-day interception amount cm')
       call seed_initial_derivative(transient_profile%tiles(tile)%parameters, &
            transient_profile%tiles(tile)%initial_state,forcing_vector(tile), &
            transient_profile%tiles(tile)%initial_right_derivative)
