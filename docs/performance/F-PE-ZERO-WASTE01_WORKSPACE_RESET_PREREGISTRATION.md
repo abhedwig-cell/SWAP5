@@ -534,3 +534,34 @@ H12 moves this zero vector to persistent model storage and initializes it once d
 Expected effect: one allocation/zero-fill per interval preparation instead of one allocation/zero-fill per full/half/retry physical solve.
 
 Semantics remain unchanged: source/sink provider still receives a distinct all-zero root term, while the dedicated root-sink provider receives the actual root extraction sink. No aliasing between the two is introduced.
+
+
+## ZW01-H13 preregistration — remove accepted-direction scratch vector preclears
+
+The accepted-direction tangent assembly currently performs two full vector clears:
+
+- `vertical_flux(1:n+1)=0`;
+- `head_gradient(1:n+1)=0`.
+
+Exact use audit shows:
+
+- `vertical_flux(2:n)` is assigned by the hydraulic-mean directional loop;
+- `vertical_flux(n+1)` is assigned explicitly from the bottom-node constitutive direction;
+- only indices 2..n+1 are subsequently read;
+- `vertical_flux(1)` is never read in this routine.
+
+Likewise:
+
+- `head_gradient(2:n)` is fully assigned by the gradient loop;
+- only indices 2..n are subsequently read;
+- indices 1 and n+1 are not consumed by the tangent RHS.
+
+Therefore both full preclears are overwrite-before-read for all consumed entries and may be removed.
+
+Expected benefit: remove roughly 2*(n+1) real writes per accepted-direction evaluation.
+
+Gates:
+- accepted-direction outputs bit-identical;
+- tangent backsolve count unchanged;
+- bottom-head and bottom-flux control routes unchanged;
+- F-SI37 moving and independent qualification PASS.
