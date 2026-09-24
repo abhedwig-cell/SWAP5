@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL23",
+  "phase": "PROSPECTIVE_STORAGE_JACOBIAN_TRIGGER_FALSIFICATION_COMPLETE",
+  "status": "TRIGGER_FALSIFIED",
+  "workflow_run": 36048740434,
+  "frozen_threshold": 1e-8,
+  "cases": {
+    "B01_dry_dt0060": {"metric":1.0070981414986071e-8,"trigger":true,"observed_path":"PASS","classification":"FALSE_POSITIVE"},
+    "B01_dry_dt0065": {"metric":9.29629053691022e-9,"trigger":false,"observed_path":"PASS","classification":"TRUE_NEGATIVE"},
+    "O05_dry_dt0060": {"metric":1.0779852725280013e-8,"trigger":true,"observed_path":"FAIL","classification":"TRUE_POSITIVE"},
+    "O05_dry_dt0065": {"metric":9.950633284873857e-9,"trigger":false,"observed_path":"FAIL","classification":"FALSE_NEGATIVE"}
+  },
+  "decision_rule_outcome": "FALSIFIED because a false negative occurred. Threshold adjustment is prohibited in this work unit.",
+  "finding": "Accepted-state storage-Jacobian perturbation is correlated with sensitivity but does not provide a reliable material-independent binary predictor of nonlinear-path invariance near the observed boundary.",
+  "scientific_implication": "The path sensitivity depends on more than a scalar accepted-state C error. A safe fallback policy should not be based on this threshold.",
+  "next_action": "Test a semantically bounded provider policy for prescribed-qbot: exact authoritative retention/capacity with lookup conductivity, then compare its speed to fully analytical hydraulics before deciding whether qbot should use a hybrid or full analytical fallback.",
+  "nonclaims": ["NO_TRIGGER_RETUNING","NO_PRODUCTION_ADMISSION"]
+}
