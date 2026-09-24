@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26B",
+  "phase": "PDI_RETENTION_TRANSFORM_DIAGNOSIS_COMPLETE",
+  "status": "LEGACY_TRANSFORM_REJECTED_NEW_TRANSFORM_CANDIDATE_IDENTIFIED",
+  "valid_workflow_run": 36051819543,
+  "valid_workflow_job": 107808989845,
+  "invalid_attempt": "integration/f-ahl/F-AHL26B_ATTEMPT1_INVALID.json",
+  "results": {
+    "PDI8_REFERENCE": {
+      "min_theta": 0.0002639015818278891,
+      "theta_r": 0.05,
+      "theta_s": 0.45,
+      "first_head_theta_below_theta_r_cm": -31622.776601683792,
+      "legacy_Se_min": -0.12434024604543029,
+      "theta_over_theta_s_range": [0.0005864479596175314,0.9993632687919324],
+      "theta_monotone": true,
+      "capacity_positive": true
+    },
+    "PDI10_BIMODAL": {
+      "min_theta": 0.0003564326073039092,
+      "theta_r": 0.04,
+      "theta_s": 0.46,
+      "first_head_theta_below_theta_r_cm": -48865.235934283366,
+      "legacy_Se_min": -0.09438944617308592,
+      "theta_over_theta_s_range": [0.000774853494138933,0.9995461368270204],
+      "theta_monotone": true,
+      "capacity_positive": true
+    }
+  },
+  "finding": "The default-MvG transform logit((theta-theta_r)/(theta_s-theta_r)) is mathematically invalid for PDI because adsorption lets theta fall below theta_r in the intended dry domain. Direct normalization theta/theta_s remains strictly within (0,1) for both preregistered PDI stress sets.",
+  "selected_transform_candidate": "z=logit(theta/theta_s), with C reconstructed only from the derivative of the same interpolant",
+  "next_action": "F-AHL26C prospectively qualify this PDI-specific derivative-consistent transform before K or Richards integration.",
+  "nonclaims": ["NO_PDI_RETENTION_QUALIFICATION_YET","NO_RICHARDS_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
