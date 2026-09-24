@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT05_ATTEMPT1",
+  "status": "TECHNICAL_AUTHORITY_FAILURE",
+  "workflow_run": 36060628643,
+  "workflow_job": 107838421449,
+  "failed_gate": "pinned upstream raw target must reproduce canonical SWAP4.3.1 B0 target SHA before any historical transforms",
+  "expected_B0_target_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+  "observed_host_target_sha256": "9b1bc5bf30800a00ab6c97250316821754c005c42998aa831b13e5ceb10f5262",
+  "classification": "The legacy-capable upstream host at 68b6d8d4e53af2586d009d77245543e908ecdac5 is physics-equivalent for VT04 hosting but is not byte-identical to canonical SWAP4.3.1 B0. It cannot be used as a substitute source for the B1 historical reconstruction chain.",
+  "preserved_authority": {
+    "B1_6_after_SWAP_009_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+    "B1_7_through_B1_10_after_SWAP_010_sha256": "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e",
+    "B1_11_after_SWAP_011_sha256": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
+    "B1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "repair_rule": "Do not relax the identity gate and do not reconstruct manually from the upstream host. Continue only from exact canonical B0/B1 bytes or an already replay-verified exact B1.11 source artifact.",
+  "physics_changed": false
+}
