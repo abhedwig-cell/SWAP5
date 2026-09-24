@@ -1,60 +1,66 @@
 {
-  "schema_version": 10,
+  "schema_version": 11,
   "workstream": "F-AHL",
-  "status": "CURRENT_B1_10_BOUNDARY_ARCHITECTURE_CLOSED",
+  "status": "STRICT_RESEARCH_ARCHITECTURE_CLOSED_WITH_PDI_ARCHITECTURE_BLOCKER",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "completed_through": "F-AHL24",
+  "completed_through": "F-AHL25G",
   "selected_research_architecture": {
-    "prescribed_head_like_qualified_envelope": "auto-generated derivative-consistent AHL representation",
+    "default_MvG_prescribed_head_like": "auto-generated derivative-consistent theta/C plus independently controlled K lookup",
+    "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent theta/C concept with family-specific tighter K support",
     "prescribed_qbot": "fully analytical authoritative hydraulics",
-    "near_saturation_h_gt_minus_1_cm": "authoritative analytical handling",
+    "near_saturation_h_gt_minus_1_cm": "authoritative analytical handling where applicable",
     "runtime_refinement": false,
-    "external_table_files": false,
+    "external_user_tables": false,
     "cache": "immutable exact-key internal cache"
   },
   "positive_evidence": {
-    "prescribed_head_matrix": {
-      "materials": ["B01","B12","O05","O14"],
-      "regimes": ["wet","mid","dry"],
-      "fidelity_pass": "12/12",
-      "same_iteration_and_backtracking_path": "12/12",
-      "complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290]
+    "default_MvG": {
+      "matrix": "12/12 PASS",
+      "same_nonlinear_path": "12/12",
+      "complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290],
+      "self_built_stage3_reduction_fraction": 0.200401
     },
-    "self_built_provider": {
-      "matrix_pass": "12/12",
-      "median_complete_Richards_cpu_reduction_fraction": 0.200401,
-      "cold_bind_seconds": 0.001029
+    "bi_modal_MvG_model3": {
+      "source_authority_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+      "retention_support_points_range": [20,25],
+      "selected_abs_logK_limit": 0.0001,
+      "conductivity_support_points_range": [299,448],
+      "Richards_matrix": "9/9 PASS",
+      "same_nonlinear_path": "9/9",
+      "complete_Richards_cpu_reduction_fraction_range": [0.352169,0.390877],
+      "matrix_median_cpu_reduction_fraction": 0.380194
     },
-    "prescribed_qbot_analytical_fallback": {
-      "hybrid_exact_retention_lookup_K_fidelity": "12/12 PASS",
-      "B01_wet_hybrid_timing_ratio": 1.002601,
-      "O05_dry_hybrid_timing_ratio": 0.993863,
-      "classification": "EQUIVOCAL_NO_MEANINGFUL_SPEED_BENEFIT",
+    "prescribed_qbot_policy": {
+      "strict_lookup_failure_localized": true,
       "selected_policy": "fully analytical authoritative hydraulics"
     }
   },
-  "falsified_or_rejected": [
-    "independent theta and C lookup channels",
-    "K-only lookup as general speed strategy",
-    "global theta or C densification as qbot Newton-path repair",
-    "K tightening or exact K as O05-dry qbot repair",
-    "accepted-state scalar storage-Jacobian threshold as a general fallback trigger",
-    "hybrid exact-retention plus lookup-K for qbot as a meaningful speed optimization"
-  ],
-  "scientific_conclusion": "Derivative-consistent theta/C representation provides robust acceleration in the qualified prescribed-head B1.10 envelope, but boundary-sensitive prescribed-flux cases can amplify tiny retention/capacity representation differences into extra nonlinear work. No reliable material-independent scalar pre-solve trigger was found. The strict architecture therefore accelerates only the qualified envelope and falls back to authoritative analytical hydraulics for prescribed-qbot.",
+  "cross_family_scientific_conclusion": "The theta/C derivative-consistency principle generalizes beyond unimodal MvG to source-authoritative bi-modal MvG. Conductivity resolution is strongly family-dependent: model 3 requires much denser K support for the same strict flux fidelity, yet remains substantially faster because analytical bi-modal evaluation is more expensive.",
   "dry_tail_authority": {
     "raw_capacity_relevance_scale": "C=dtheta/dh around 1e-13 in earlier O05 extreme-dry analysis",
     "historical_jacobian_regularization": "C_J=max(C,dt*1e-13)",
     "not_a_K_cutoff": true,
     "not_a_physical_theta_or_K_truncation": true,
-    "design_rule": "do not refine indefinitely into numerically negligible extreme-dry storage tails; any explicit tail termination remains separately qualifiable"
+    "explicit_tail_termination": "not yet qualified"
   },
-  "next_research_scope": [
-    "broader hydraulic-model-family envelope",
-    "SWKIMPL=1/dKdh qualification if included in target admission",
-    "whole-SWAP accepted-trajectory performance",
-    "prospective dry-tail termination/asymptotic continuity qualification"
+  "remaining_architecture_blocker": {
+    "family": "PDI models 4-11",
+    "reason": "PDI conductivity may include temperature-dependent vapor conductivity, so the current parameter-only immutable K representation identity is not semantically sufficient.",
+    "choice_required": [
+      "source-authoritatively factor dynamic temperature-dependent conductivity from a frozen pressure-head representation",
+      "or qualify a multidimensional pressure-head x temperature representation and extend cache identity"
+    ],
+    "status": "NO_EXISTING_AUTHORITY_SELECTS_BETWEEN_THESE_ARCHITECTURES"
+  },
+  "production_admission_still_requires": [
+    "production implementation behind the typed hydraulic-provider contract",
+    "whole-SWAP accepted-trajectory and application timing",
+    "lower-boundary modes beyond current qualified envelopes",
+    "SWKIMPL=1/dKdh qualification if included in target",
+    "dry-tail termination qualification if implemented",
+    "family-specific qualification for any additional hydraulic models",
+    "canonical regression and governance admission"
   ],
   "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
 }
