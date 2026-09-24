@@ -1,0 +1,79 @@
+name: TAB speed-accuracy row-count sweep
+
+on:
+  push:
+    branches:
+      - research/tab-speed-accuracy
+    paths:
+      - '.github/workflows/tab-speed-accuracy-row-sweep.yml'
+      - 'research/tabulated_hydraulics/TAB_SPEED_ACCURACY_PREREGISTRATION_20260924.json'
+      - 'src/solver/mod_b110_generated_mvg_table_state.f90'
+      - 'src/solver/mod_b110_generated_mvg_provider.f90'
+      - 'src/solver/mod_b110_generated_mvg_tspack.f90'
+      - 'tests/fsi/run_ftab02e_generated_provider_performance.sh'
+      - 'tests/fsi/test_ftab02e_provider_richards_performance.f90'
+      - 'tests/fsi/test_ftab02e_serialized_runtime_performance.f90'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  row-sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        rows: [400, 200, 100, 50, 25]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Bind research row count
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - "${{ matrix.rows }}" <<'PY'
+          from pathlib import Path
+          import re,sys
+          n=int(sys.argv[1])
+          p=Path('src/solver/mod_b110_generated_mvg_table_state.f90')
+          s=p.read_text()
+          s2,count=re.subn(
+              r'integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = [0-9]+',
+              f'integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = {n}',
+              s,
+              count=1,
+          )
+          assert count == 1
+          p.write_text(s2)
+          print(f'TAB_SPEED_ACCURACY_ROWS={n}')
+          PY
+          grep -F "B110_GENERATED_MVG_TABLE_N = ${{ matrix.rows }}" src/solver/mod_b110_generated_mvg_table_state.f90
+      - name: Run correctness and performance characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fsi/run_ftab02e_generated_provider_performance.sh | tee TAB-SA-${{ matrix.rows }}.log
+          cp F-TAB02-E_SUMMARY.tsv TAB-SA-${{ matrix.rows }}.tsv
+          {
+            echo "TAB_SPEED_ACCURACY_ROWS=${{ matrix.rows }}"
+            echo "head=$(git rev-parse HEAD)"
+            echo "compiler=$(gfortran --version | head -n1)"
+            grep -E '^F_TAB02_E_(PROVIDER|RICHARDS|SERIALIZED).*=' TAB-SA-${{ matrix.rows }}.log || true
+          } > TAB-SA-${{ matrix.rows }}-EVIDENCE.txt
+      - name: Upload row-count evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-speed-accuracy-${{ matrix.rows }}
+          path: |
+            TAB-SA-${{ matrix.rows }}.log
+            TAB-SA-${{ matrix.rows }}.tsv
+            TAB-SA-${{ matrix.rows }}-EVIDENCE.txt
+          if-no-files-found: error
