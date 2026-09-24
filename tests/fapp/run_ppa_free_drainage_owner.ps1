@@ -1,11 +1,12 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('Composition','Guards','Receipts','Windows','WindowRejection','GashWindows')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
+param([ValidateSet('Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
 if ($Scope -eq 'Receipts' -and !$StableStorage) { throw 'Receipts qualification requires explicit StableStorage' }
 if ($Scope -eq 'Windows' -and !$StableStorage) { throw 'Windows qualification requires explicit StableStorage' }
 if ($Scope -eq 'WindowRejection' -and !$StableStorage) { throw 'WindowRejection requires explicit StableStorage' }
 if ($Scope -eq 'GashWindows' -and !$StableStorage) { throw 'GashWindows requires explicit StableStorage' }
+if ($Scope -eq 'GashBranchRejection' -and !$StableStorage) { throw 'GashBranchRejection requires explicit StableStorage' }
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
 $static = [regex]::Match($script, "(?ms)^python3 - <<'PY'\r?\n(.*?)^PY\r?$")
@@ -69,6 +70,7 @@ try {
                 if ($Scope -eq 'Windows') { $testArguments = @('--stable-windows') }
                 if ($Scope -eq 'WindowRejection') { $testArguments = @('--window-rejection') }
                 if ($Scope -eq 'GashWindows') { $testArguments = @('--gash-windows') }
+                if ($Scope -eq 'GashBranchRejection') { $testArguments = @('--gash-branch-rejection') }
             }
             $output = @(& $exe @testArguments 2>&1)
             if ($LASTEXITCODE -ne 0) {
@@ -90,6 +92,7 @@ try {
                 if ($Scope -eq 'Windows') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS' }
                 if ($Scope -eq 'WindowRejection') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_WINDOW_REJECTION=PASS' }
                 if ($Scope -eq 'GashWindows') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GASH_WINDOWS=PASS' }
+                if ($Scope -eq 'GashBranchRejection') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GASH_BRANCH_REJECTION=PASS' }
                 if (!$textOutput.Contains($requiredMarker)) {
                     throw "Missing bootstrap success marker $opt"
                 }

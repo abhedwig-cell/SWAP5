@@ -90,6 +90,7 @@ program test_ppa_free_drainage_owner
   real(real64) :: reference_head_m
   character(len=32) :: test_scope
   integer :: observed_event_calls=0
+  logical :: is_gash=.false.
 
   call initialize_application_config(config)
   config%free_drainage_indicator => traced_indicator
@@ -105,10 +106,11 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
+  is_gash=trim(test_scope)=='--gash-windows'.or.trim(test_scope)=='--gash-branch-rejection'
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
   if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection'.or. &
-       trim(test_scope)=='--gash-windows') then
+       is_gash) then
     config%storage_difference => evaluate_mvg_storage_difference_service
     ! A forcing discontinuity can require smaller first steps, not a larger error budget.
     config%numerical%transaction%max_retries=24
@@ -399,7 +401,7 @@ contains
     if(trim(test_scope)=='--stable-receipts') &
          call verify_storage_receipt_restart(production_app,transient_profile,forcing_vector,receipts,interception_by_tile)
     if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection'.or. &
-         trim(test_scope)=='--gash-windows') &
+         is_gash) &
          call verify_changing_windows(production_app,transient_profile)
     call production_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
@@ -654,9 +656,9 @@ contains
     source%vegetation_cover_fraction=0.5_real64
     previous_flux=0.0_real64
     window_count=3
-    if(trim(test_scope)=='--gash-windows') window_count=4
+    if(trim(test_scope)=='--gash-branch-rejection') window_count=4
     do window=1,window_count
-      marked_window=window==2.or.((window==1.or.window==4).and.trim(test_scope)=='--gash-windows')
+      marked_window=window==2.or.((window==1.or.window==4).and.is_gash)
       start_time=T1+real(window-1,real64)*(T1-T0)
       end_time=start_time+(T1-T0)
       source%gross_rain_cm_per_day=0.20_real64-0.04_real64*real(min(window-1,1),real64)
@@ -666,7 +668,7 @@ contains
         source%sprinkling_irrigation_cm_per_day=0.02_real64
       end if
       call evaluate_vonhhbraden_source_window(parameters,source,0.1_real64,source_result)
-      if(trim(test_scope)=='--gash-windows') call evaluate_gash_source_window(WINDOW_GASH,source, &
+      if(is_gash) call evaluate_gash_source_window(WINDOW_GASH,source, &
            source_result%source_window_interception_cm_per_day,source_result%status)
       call require(source_result%status==VONHHBRADEN_AVAILABLE,'changing source evaluated')
       if(window==4) call require(abs(source_result%source_window_interception_cm_per_day-0.051_real64)< &
@@ -732,9 +734,11 @@ contains
       observed_event_calls=0
       call owner%run_standalone_with_forcing_receipts(start_time,end_time,forcing,result,receipt,code)
       write(*,*) 'CHANGING_WINDOW_DIAG',window,code,result%kernel_status,result%accepted_substeps
-      if(window==2.and.trim(test_scope)=='--window-rejection') then
-        call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed).and. &
-             all(result%accepted_substeps==0),'forcing jump reproduces rejection without accepted steps')
+      if((window==2.and.trim(test_scope)=='--window-rejection').or. &
+           (window==4.and.trim(test_scope)=='--gash-branch-rejection')) then
+        call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed),'forcing jump reproduces rejection')
+        if(window==2) call require(all(result%accepted_substeps==0),'unmarked jump no internal accepts')
+        if(window==4) call require(all(result%accepted_substeps==7),'Gash branch failure after seven internal accepts')
         call owner%export_committed_restart(9902_int64,continued,ok,code)
         call require(ok.and.code==FMR_APP_BOOT_OK,'rejected window remains exportable')
         call compare_restart_bundles(before,continued,'forcing jump rollback')
@@ -759,7 +763,8 @@ contains
         end do
         call fresh%close(code)
         call require(code==FMR_APP_BOOT_OK,'rejected window fresh closes')
-        write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_WINDOW_REJECTION=PASS'
+        if(window==2) write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_WINDOW_REJECTION=PASS'
+        if(window==4) write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_BRANCH_REJECTION=PASS'
         return
       end if
       call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'changing window commits')
@@ -802,7 +807,7 @@ contains
     end do
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS'
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_EVENT_THEN_UNMARKED=PASS'
-    if(trim(test_scope)=='--gash-windows') write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_WINDOWS=PASS'
+    if(is_gash) write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_WINDOWS=PASS'
   end subroutine
 
   subroutine verify_event_rollback(profile,before,expected,forcing,amount,t_start,t_end)
@@ -1039,7 +1044,7 @@ contains
     request%ponding_max_cm=2.0_real64
     request%runoff_resistance_day=1.0_real64
     request%runoff_exponent=1.0_real64
-    if(trim(test_scope)=='--gash-windows') then
+    if(is_gash) then
       call materialize_ppa_wu04d_production_forcing(profile%tiles(tile)%base_forcing,request,geometry,hydraulics, &
            WINDOW_GASH,source,source%gross_rain_cm_per_day,source%sprinkling_irrigation_cm_per_day,forcing,rate,gash_diagnostics)
       call require(gash_diagnostics%status==PPA_WU04D_PRODUCTION_FORCING_OK,'Gash committed-top forcing composition')
