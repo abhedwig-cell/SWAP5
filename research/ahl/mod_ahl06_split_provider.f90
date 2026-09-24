@@ -41,7 +41,7 @@ contains
     read(u,*,iostat=ios) n
     if (ios/=0 .or. n<2) then; close(u); return; end if
     allocate(provider%x(n),provider%logc(n),provider%logk(n))
-    do i=1,n
+    do i=1,size(pressure_head)
       read(u,*,iostat=ios) provider%x(i),ignored,provider%logc(i),provider%logk(i)
       if (ios/=0) then; close(u); return; end if
     end do
