@@ -436,3 +436,34 @@ Gates:
 - no tolerance or convergence-rule change.
 
 This is a pure diagnostics-data-movement elimination, not a numerical approximation.
+
+
+## ZW01-H11 preregistration — remove directional-wrapper full reset
+
+The production groundwater/accepted-direction path calls `solve_with_accepted_step_direction`. On the eligible Reference route this wrapper currently performs:
+
+1. `initialize_reference_workspace(ref_ws%richards,n)`;
+2. `prepare_reference_tridag_factorization_capture(ref_ws%richards)`;
+3. `ref_solver%solve(...)`.
+
+After H7, the Reference solver itself performs minimal solve preparation and no full bulk reset. Therefore step 1 in the directional wrapper reintroduces a full reset solely to ensure allocation/shape before factorization capture.
+
+The wrapper does not require zero-filled general scratch. Its pre-solve responsibility is only:
+- ensure workspace allocation/shape;
+- ensure expanded factorization capture storage exists.
+
+H11 replaces the wrapper's full initializer with `ensure_reference_workspace_shape`. The solver remains responsible for solve-start preparation.
+
+Expected effect on eligible directional/MODFLOW-style solves:
+- full workspace resets before physical solve: `1 -> 0`;
+- factorization capture remains available;
+- accepted-direction values, nonlinear trajectory and physical result remain identical.
+
+Required gates:
+- FKT22 requested-trajectory/accepted-direction route PASS;
+- accepted backsolve counts unchanged;
+- poison-workspace gate PASS;
+- paired runtime benchmark includes directional route before any MODFLOW-level speed claim;
+- no change to direction eligibility, tangent equations or state ownership.
+
+This is pure ownership cleanup: the wrapper ensures capacity, the solver prepares a solve.
