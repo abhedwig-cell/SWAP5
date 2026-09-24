@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21C",
+  "title": "Qualified prescribed-qbot 12-case matrix",
+  "parent": "F-AHL21B",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "At the prospectively selected wet-convergent timestep, does the selected adaptive hydraulic representation preserve the analytical prescribed-qbot Richards response across all four materials and wet-mid-dry regimes?",
+  "frozen": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"],
+    "step_duration_day": 0.0625,
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.99*K(initial)",
+    "bottom_mode": 2,
+    "candidate": "same F-AHL16 selected representation"
+  },
+  "gates_per_case": {
+    "both_solvers_converged": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_profile_pressure_head_delta_cm": 0.05,
+    "max_abs_bottom_node_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "Prescribed-qbot coverage advances only on 12/12 PASS. The previously observed F-AHL21 0.25-day failures remain valid outside this bounded timestep envelope.",
+  "hard_exclusions": [
+    "NO_MODFLOW_COUPLING_CLAIM",
+    "NO_SURFACE_BOUNDARY_SWITCH_CLAIM",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
