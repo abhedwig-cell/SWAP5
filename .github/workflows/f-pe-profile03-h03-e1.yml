@@ -1,0 +1,26 @@
+name: F-PE-PROFILE03 H03 E1 application-host runtime
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile03-h03-e2e
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fpe/test_fpe_profile03_h03_application_host_timing.f90'
+      - 'tests/fpe/run_fpe_profile03_h03_application_host_timing.sh'
+      - 'docs/performance/F-PE-PROFILE03_H03_END_TO_END_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-profile03-h03-e1.yml'
+  workflow_dispatch:
+
+jobs:
+  e1-paired-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run paired application-host timing
+        run: bash tests/fpe/run_fpe_profile03_h03_application_host_timing.sh
