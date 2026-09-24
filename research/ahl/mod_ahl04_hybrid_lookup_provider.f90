@@ -14,6 +14,9 @@ module mod_ahl04_hybrid_lookup_provider
     real(real64), pointer :: cofgen(:,:) => null()
     real(real64), allocatable :: x(:), zse(:), logc(:), logk(:)
     logical :: ready = .false.
+    logical :: lookup_theta = .true.
+    logical :: lookup_capacity = .true.
+    logical :: lookup_conductivity = .true.
   contains
     procedure :: evaluate => ahl04_evaluate
   end type ahl04_hybrid_lookup_provider_t
@@ -22,16 +25,24 @@ module mod_ahl04_hybrid_lookup_provider
 
 contains
 
-  subroutine bind_ahl04_hybrid_lookup_provider(provider, parameters, step_duration, table_path, valid)
+  subroutine bind_ahl04_hybrid_lookup_provider(provider, parameters, step_duration, table_path, valid, &
+       lookup_theta, lookup_capacity, lookup_conductivity)
     type(ahl04_hybrid_lookup_provider_t), intent(out) :: provider
     type(b110_default_mvg_parameters_t), target, intent(in) :: parameters
     real(real64), intent(in) :: step_duration
     character(len=*), intent(in) :: table_path
     logical, intent(out) :: valid
+    logical, intent(in), optional :: lookup_theta, lookup_capacity, lookup_conductivity
     integer :: u, ios, n, i
 
     valid = .false.
     provider%ready = .false.
+    provider%lookup_theta = .true.
+    provider%lookup_capacity = .true.
+    provider%lookup_conductivity = .true.
+    if (present(lookup_theta)) provider%lookup_theta = lookup_theta
+    if (present(lookup_capacity)) provider%lookup_capacity = lookup_capacity
+    if (present(lookup_conductivity)) provider%lookup_conductivity = lookup_conductivity
     call bind_b110_default_mvg_provider(provider%analytical, parameters, step_duration)
     if (.not. allocated(parameters%cofgen)) return
     provider%cofgen => parameters%cofgen
@@ -81,9 +92,9 @@ contains
         end if
         tr = self%cofgen(1,i)
         span = self%cofgen(2,i)-tr
-        water_content(i) = tr + span*se
-        capacity(i) = exp(self%logc(idx)+f*(self%logc(idx+1)-self%logc(idx)))
-        conductivity(i) = exp(self%logk(idx)+f*(self%logk(idx+1)-self%logk(idx)))
+        if (self%lookup_theta) water_content(i) = tr + span*se
+        if (self%lookup_capacity) capacity(i) = exp(self%logc(idx)+f*(self%logc(idx+1)-self%logc(idx)))
+        if (self%lookup_conductivity) conductivity(i) = exp(self%logk(idx)+f*(self%logk(idx+1)-self%logk(idx)))
         dconductivity_dhead(i) = 0.0_real64
       end if
     end do
