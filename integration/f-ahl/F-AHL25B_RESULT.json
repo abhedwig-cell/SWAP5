@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25B",
+  "phase": "BIMODAL_RETENTION_CONSTITUTIVE_QUALIFICATION_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36049800359,
+  "workflow_job": 107802216981,
+  "source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "representation": "cubic Hermite z=logit(Se) over x=log10(-h), with C obtained only by differentiating the same interpolant",
+  "lookup_domain_cm": [-1000000.0,-1.0],
+  "cases": {
+    "M3_BALANCED": {
+      "support_points": 20,
+      "max_theta_span_error": 7.723424989481123e-6,
+      "max_abs_logC_error": 0.0013528551731205596
+    },
+    "M3_SEPARATED": {
+      "support_points": 25,
+      "max_theta_span_error": 8.683737685535744e-6,
+      "max_abs_logC_error": 0.0011973187554339404
+    },
+    "M3_DOMINANT_SECOND": {
+      "support_points": 22,
+      "max_theta_span_error": 6.200828292139874e-6,
+      "max_abs_logC_error": 0.0020611001313621813
+    }
+  },
+  "finding": "The derivative-consistent retention/capacity representation generalizes cleanly from default unimodal MvG to the source-authoritative bi-modal MvG model-3 family for all three preregistered stress parameterizations.",
+  "scientific_implication": "The useful invariant is representation of the retention mapping and its derivative as one mathematical object, rather than dependence on a single-mode MvG formula.",
+  "next_action": "F-AHL25C: qualify separately controlled model-3 conductivity representation before any Richards integration.",
+  "nonclaims": ["NO_K_CLAIM","NO_RICHARDS_CLAIM","NO_TIMING_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
