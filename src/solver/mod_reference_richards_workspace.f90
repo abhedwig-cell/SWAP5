@@ -38,6 +38,7 @@ module mod_reference_richards_workspace
      type(soil_water_solver_diagnostics_t) :: diagnostics
      integer :: profile_full_reset_calls = 0
      integer(int64) :: profile_zeroed_bytes = 0_int64
+     integer(int64) :: profile_reset_payload_bytes = 0_int64
   end type reference_richards_workspace_t
 
   public :: initialize_reference_workspace
@@ -70,6 +71,9 @@ contains
        allocate(workspace%nonconverged_balance(active_nodes), workspace%nonconverged_head(active_nodes))
        allocate(workspace%warm_start_head(active_nodes))
        workspace%active_nodes = active_nodes
+       workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
+    else if (workspace%profile_reset_payload_bytes <= 0_int64) then
+       workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
     end if
     workspace%generation = workspace%generation + 1_int64
     call reset_reference_workspace(workspace)
@@ -77,13 +81,11 @@ contains
 
   subroutine reset_reference_workspace(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
-    integer(int64) :: reset_bytes
 
     if (workspace%active_nodes <= 0) return
     if (.not. allocated(workspace%residual)) return
-    reset_bytes = reference_workspace_payload_bytes(workspace)
     workspace%profile_full_reset_calls = workspace%profile_full_reset_calls + 1
-    workspace%profile_zeroed_bytes = workspace%profile_zeroed_bytes + reset_bytes
+    workspace%profile_zeroed_bytes = workspace%profile_zeroed_bytes + workspace%profile_reset_payload_bytes
     workspace%dfdh_lower = 0.0_real64
     workspace%dfdh_main = 0.0_real64
     workspace%dfdh_upper = 0.0_real64
@@ -127,6 +129,7 @@ contains
        expanded = 0.0_real64
        deallocate(workspace%tridag_gamma)
        call move_alloc(expanded, workspace%tridag_gamma)
+       workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
     else
        workspace%tridag_gamma = 0.0_real64
     end if
@@ -144,6 +147,7 @@ contains
     compact = 0.0_real64
     deallocate(workspace%tridag_gamma)
     call move_alloc(compact, workspace%tridag_gamma)
+    workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
   end subroutine release_reference_tridag_factorization_capture
 
   subroutine poison_reference_workspace(workspace)
@@ -217,6 +221,7 @@ contains
     workspace%diagnostics = soil_water_solver_diagnostics_t()
     workspace%profile_full_reset_calls = 0
     workspace%profile_zeroed_bytes = 0_int64
+    workspace%profile_reset_payload_bytes = 0_int64
   end subroutine release_reference_workspace
 
   function reference_workspace_payload_bytes(workspace) result(nbytes)
