@@ -247,6 +247,8 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
+    logical :: temporal_forcing_event = .false.
+    real(real64) :: temporal_forcing_event_time = 0.0_real64
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -388,6 +390,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: base_top_flux = 0.0_real64
+    logical :: temporal_forcing_event = .false.
+    real(real64) :: temporal_forcing_event_time = 0.0_real64
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
@@ -815,6 +819,8 @@ contains
     self%initialized = .false.
     nullify(self%model%free_drainage_indicator)
     nullify(self%model%storage_difference)
+    self%model%temporal_forcing_event = .false.
+    self%model%temporal_forcing_event_time = 0.0_real64
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
@@ -1545,6 +1551,8 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%temporal_forcing_event = .false.
+    self%temporal_forcing_event_time = 0.0_real64
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
@@ -1588,6 +1596,15 @@ contains
     n = self%soil_parameters%active_nodes
     select type (forcing)
     type is (fmr_b110_physical_forcing_t)
+      if (forcing%temporal_forcing_event) then
+        if (.not. ieee_is_finite(forcing%temporal_forcing_event_time)) return
+        if (.not. same_real_bits(forcing%temporal_forcing_event_time,interval%t0)) return
+        if (.not. self%temporal_indicator_history_enabled.or..not.associated(self%free_drainage_indicator)) return
+        if (self%bottom_mode/=7.or.self%swkimpl/=0.or.self%swkmean/=1) return
+        if (self%root_extraction_active.or.self%snow_active.or.self%soil_temperature_active.or. &
+            self%black_evaporation_active.or.self%boesten_evaporation_active.or.self%drainage_response_active) return
+        if (allocated(forcing%legacy_swbotb2_control)) return
+      end if
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
       if (self%drainage_response_active) then
@@ -1694,6 +1711,8 @@ contains
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
       self%base_top_flux = forcing%top_flux
+      self%temporal_forcing_event = forcing%temporal_forcing_event
+      self%temporal_forcing_event_time = forcing%temporal_forcing_event_time
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
       self%top_head = forcing%top_head
@@ -1764,13 +1783,14 @@ contains
     self%last_observation%fixed_weir_surface_water_route = self%fixed_weir_surface_water_result%route
   end subroutine populate_fixed_weir_surface_water_observation
 
-  subroutine evaluate_temporal_history_service(self, state, request, solve_result, outcome, ok)
+  subroutine evaluate_temporal_history_service(self, state, request, solve_result, outcome, ok, trial_t0)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(transaction_state_t), intent(inout) :: state
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solve_result
     type(trial_outcome_t), intent(inout) :: outcome
     logical, intent(out) :: ok
+    real(real64), intent(in) :: trial_t0
     type(soil_water_temporal_indicator_request_t) :: indicator_request
     type(soil_water_temporal_indicator_result_t) :: indicator_result
     real(real64), allocatable :: previous_derivative(:)
@@ -1788,6 +1808,8 @@ contains
       return
     end select
     indicator_request%previous_right_derivative_available = previous_available
+    indicator_request%forcing_event_at_start = self%temporal_forcing_event.and. &
+         same_real_bits(trial_t0,self%temporal_forcing_event_time)
     if (previous_available) then
       allocate(indicator_request%previous_right_derivative(n))
       indicator_request%previous_right_derivative = previous_derivative
@@ -2225,7 +2247,7 @@ contains
       self%last_observation%temporal_indicator_route = 'rossfast-model-certificate'
       self%last_observation%temporal_certificate_unavailable_reason = 'available'
     else if (self%temporal_indicator_history_enabled) then
-      call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
+      call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok,t0)
       if (.not. temporal_history_ok) return
     end if
 

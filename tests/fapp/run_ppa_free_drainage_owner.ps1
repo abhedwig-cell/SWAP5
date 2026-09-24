@@ -15,8 +15,7 @@ $sourcePaths = @($sources.Groups[1].Value -split '\r?\n' | ForEach-Object { $_.T
 foreach ($source in $sourcePaths) {
     if ($source -notmatch '^(src|tests)/[A-Za-z0-9_./-]+\.f90$') { throw "Unsupported source entry: $source" }
 }
-$sourcePaths += @('src/adapter/mod_ppa_free_drainage_stiffness.f90','src/adapter/mod_ppa_free_drainage_temporal_indicator.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90','src/adapter/mod_ppa_mvg_storage_binding.f90')
-$sourcePaths += 'src/adapter/mod_ppa_forcing_event_derivative.f90'
+$sourcePaths += @('src/adapter/mod_ppa_free_drainage_stiffness.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90','src/adapter/mod_ppa_mvg_storage_binding.f90','src/adapter/mod_ppa_forcing_event_derivative.f90','src/adapter/mod_ppa_free_drainage_temporal_indicator.f90')
 $common = @($flags.Groups[1].Value -split '\s+' | Where-Object { $_ })
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-ppa-wu01-' + [guid]::NewGuid().ToString('N'))

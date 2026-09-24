@@ -14,6 +14,7 @@ module mod_ppa_free_drainage_temporal_indicator
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_ppa_free_drainage_stiffness, only: evaluate_free_drainage_stiffness
+  use mod_ppa_forcing_event_derivative, only: evaluate_forcing_event_derivative
   implicit none
   private
 
@@ -27,13 +28,14 @@ contains
     type(soil_water_temporal_indicator_request_t), intent(in) :: indicator_request
     type(soil_water_temporal_indicator_result_t), intent(out) :: indicator_result
 
-    logical :: stiffness_available
+    logical :: stiffness_available, event_available
     integer :: n, i, ierr
     real(real64) :: dt, face_conductance, raw_norm, defect_norm, bounded_norm
     real(real64) :: scale, water_diff
     real(real64), allocatable :: water_base(:), conductivity_base(:), capacity_base(:), dkdh_base(:)
     real(real64), allocatable :: water_candidate(:), conductivity_candidate(:), capacity_candidate(:), dkdh_candidate(:)
     real(real64), allocatable :: mass_weight(:), lower(:), diagonal(:), upper(:), rhs(:), delta(:), gamma(:), e_raw(:)
+    real(real64), allocatable :: event_derivative(:)
 
     indicator_result = soil_water_temporal_indicator_result_t()
     if (solve_result%status /= SW_SOLVE_CONVERGED) then
@@ -235,6 +237,16 @@ contains
     end if
 
     e_raw = 0.5_real64*dt*(indicator_result%current_right_derivative-indicator_request%previous_right_derivative)
+    if (indicator_request%forcing_event_at_start) then
+       allocate(event_derivative(n))
+       call evaluate_forcing_event_derivative(request,event_derivative,event_available)
+       if (.not.event_available) then
+          indicator_result%status=SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route='forcing-event-unsupported'
+          return
+       end if
+       e_raw=0.5_real64*dt*(indicator_result%current_right_derivative-event_derivative)
+    end if
     if (any(.not. ieee_is_finite(e_raw))) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
        indicator_result%route = 'nonfinite-raw-defect'
@@ -323,6 +335,7 @@ contains
     else
        indicator_result%route = 'free-drainage-defect-bound'
     end if
+    if (indicator_request%forcing_event_at_start) indicator_result%route='free-drainage-event-bound'
   end subroutine evaluate_free_drainage_temporal_indicator
 
 end module mod_ppa_free_drainage_temporal_indicator

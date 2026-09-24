@@ -14,7 +14,7 @@ $sources = @($sources | ForEach-Object {
         'src/solver/mod_b110_root_sink_provider.f90'
     }
     $_
-}) + @('src/solver/mod_b110_default_mvg_directional_provider.f90', 'src/adapter/mod_ppa_free_drainage_stiffness.f90', 'src/adapter/mod_ppa_free_drainage_temporal_indicator.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90', 'src/adapter/mod_ppa_mvg_storage_binding.f90')
+}) + @('src/solver/mod_b110_default_mvg_directional_provider.f90', 'src/adapter/mod_ppa_free_drainage_stiffness.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90', 'src/adapter/mod_ppa_mvg_storage_binding.f90','src/adapter/mod_ppa_forcing_event_derivative.f90','src/adapter/mod_ppa_free_drainage_temporal_indicator.f90')
 $flags = @('-g','-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow')
 $tests = @('test_ppa_free_drainage_small_dt')
 if ($StableStorageExperiment) {

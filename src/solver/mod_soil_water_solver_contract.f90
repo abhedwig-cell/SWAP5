@@ -178,6 +178,7 @@ module mod_soil_water_solver_contract
   type, public :: soil_water_temporal_indicator_request_t
      logical :: previous_right_derivative_available = .false.
      real(real64), allocatable :: previous_right_derivative(:)
+     logical :: forcing_event_at_start = .false.
   end type soil_water_temporal_indicator_request_t
 
   type, public :: soil_water_temporal_indicator_result_t

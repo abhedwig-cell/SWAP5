@@ -675,6 +675,19 @@ contains
       end do
       if(window==2) call require(forcing(1)%top_flux/=previous_flux,'effective forcing changes between windows')
       previous_flux=forcing(1)%top_flux
+      if(window==2.and.trim(test_scope)=='--stable-windows') then
+        forcing%temporal_forcing_event=.true.
+        forcing%temporal_forcing_event_time=start_time
+        restored_forcing=forcing
+        restored_forcing%temporal_forcing_event_time=end_time
+        call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
+             restored_result,restored_receipt,code)
+        call require(code/=FMR_APP_BOOT_OK.and.all(.not.restored_result%committed),'wrong event time rejected')
+        call fresh%export_committed_restart(9902_int64,resumed,ok,code)
+        call require(ok.and.code==FMR_APP_BOOT_OK,'wrong-time rejection exportable')
+        call compare_restart_bundles(before,resumed,'wrong event time does not mutate owner')
+        restored_forcing%temporal_forcing_event_time=start_time
+      end if
       call owner%export_committed_restart(9902_int64,unchanged,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'materialization leaves owner exportable')
       call compare_restart_bundles(before,unchanged,'read-only window materialization')
