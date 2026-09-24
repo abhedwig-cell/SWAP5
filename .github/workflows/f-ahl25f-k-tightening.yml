@@ -1,0 +1,21 @@
+name: F-AHL25F bimodal K tightening
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/ahl25f_generate_tables.py'
+      - 'research/ahl/run_ahl25f_k_tightening.sh'
+      - 'integration/f-ahl/F-AHL25F_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl25f-k-tightening.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl25f_k_tightening.sh /tmp/ahl25f.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl25f-${{ github.run_id }}
+          path: /tmp/ahl25f.txt
