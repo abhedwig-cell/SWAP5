@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.rom-purpose.p7a.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P7A-GW-EXCHANGE-STORAGE-ATTRIBUTION",
+  "date": "2026-09-24",
+  "status": "BOUND_RETROSPECTIVE_ALGEBRAIC_RECONCILIATION",
+  "source_runs": {
+    "layer_rom": 35918240728,
+    "reference_r2048_t32": 35900642592
+  },
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p7a.yml": "67e743166d6152a73fed8d9cebb566c8770b9a49",
+    "integration/f-rom/ROM_PURPOSE_P7A_ERROR_IDENTITY_AUTHORITY.json": "7c09561b7b7596d3a6a60d18d2e18ed5c1dca13f",
+    "tests/rom/analyze_rom_purpose_p7a_gw_exchange_storage.py": "f87b17f8fce88cbe574a11278b9903ce0794e79f"
+  },
+  "scientific_firewall": {
+    "retrospective_response_exposed": true,
+    "simulations_rerun": false,
+    "source_artifacts_changed": false,
+    "blind_validation_claimed": false,
+    "minimum_state_count_adjudicated": false,
+    "closure_deficit_adjudicated": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
