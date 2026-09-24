@@ -1,0 +1,11 @@
+{
+  "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
+  "baseline": "93f4eeae4",
+  "status": "DIAGNOSTIC_CHECKPOINT_NOT_QUALIFIED",
+  "contract": "Rejected hypothesis: mode7 is NOT equivalent to fixed base-qbot under SwKimpl=0. Proposed adapter removed before admission. No production changes or relaxed mass gates.",
+  "source": "headcalc.f90 lines 1001-1011 recomputes qbot from candidate provider_k; jacobian_F includes mode7 conductivity derivative. Legacy binding initializes mass diagnostic to NaN and publishes it only for modes 2 and 5.",
+  "tests": "New O0 reproducer passes candidate-conductivity assertion, then FAILS mode7 finite mass diagnostic. O2 and unchanged FSI38/FSI25 preservation not run because runner stops on failure. This is a diagnostic checkpoint, not qualification.",
+  "invariants": [3, 7, 13, 23, 25],
+  "scope": "Proposed candidate temporal service only. No runtime admission, acceptance budget, continuation schema, production solver equation or committed state change.",
+  "next_action": "Implement and qualify explicit mode7 residual publication with independent storage/flux ledger, then derive candidate-dependent bottom stiffness for an opt-in temporal service. Replay unchanged FSI38 and FSI25 O0/O2. Do not replace the failed mass gate or equate mode7 to fixed base flux."
+}
