@@ -712,3 +712,86 @@ Therefore PROFILE01 separates two claims:
 - H04: computing a complete tuple when a call site appears to need only a subset is an unresolved interface-granularity question, not yet a redundancy verdict.
 
 This distinction prevents performance work from prematurely splitting the constitutive API in a way that could conflict with F-AHL or solver semantics.
+
+
+## Measured P01-A interval aggregation and microbenchmark costs
+
+The current P01-A observation now passes on GNU Fortran 13.3.0 with the existing serialized runtime gate and reports:
+
+```text
+workspace_full_resets_per_solve     = 3
+workspace_zeroed_bytes_per_solve    = 2436
+constitutive_evaluations_per_solve  = 3
+nonlinear_iterations_per_solve      = 1
+workspace_full_resets_per_interval  = 9
+workspace_zeroed_bytes_per_interval = 7308
+serialized_runtime_gate             = PASS
+```
+
+The interval-level reset aggregation therefore matches the preregistered full + half1 + half2 prediction exactly for the no-retry P01-A route.
+
+For the same solve, three constitutive provider evaluations occur with one nonlinear iteration. Source analysis attributes these as:
+
+1. pre-loop evaluation at the initial head;
+2. duplicate iteration-start evaluation at the unchanged initial head;
+3. backtracking/candidate evaluation at the updated head.
+
+Thus P01-A dynamically confirms one bounded redundant constitutive call for its one Newton iteration.
+
+### Reset microbenchmark
+
+GNU Fortran 13.3.0, O2, shared GitHub-hosted runner:
+
+| Nodes | Bytes/reset | ns/reset |
+| ---: | ---: | ---: |
+| 4 | 812 | 78.66 |
+| 20 | 3,948 | 93.30 |
+| 60 | 11,788 | 148.78 |
+| 200 | 39,228 | 496.34 |
+| 1000 | 196,028 | 2,705.01 |
+
+The measured effective write bandwidth is approximately 67–74 GiB/s for the larger profiles. These values are diagnostic shared-runner timings, not portable production baselines.
+
+With two redundant resets per Reference solve, the direct microbenchmark cost estimate is therefore about:
+
+| Nodes | avoidable reset time / solve |
+| ---: | ---: |
+| 4 | 0.157 us |
+| 20 | 0.187 us |
+| 60 | 0.298 us |
+| 200 | 0.993 us |
+| 1000 | 5.410 us |
+
+### Constitutive provider microbenchmark
+
+GNU Fortran 13.3.0, O2, same shared-runner class:
+
+| Nodes | ns/full provider call |
+| ---: | ---: |
+| 4 | 455.17 |
+| 20 | 2,230.20 |
+| 60 | 6,672.45 |
+| 200 | 22,279.89 |
+| 1000 | 111,397.53 |
+
+These timings measure one complete default B1.10 MvG provider evaluation over the whole profile and are likewise diagnostic rather than portable hardware claims.
+
+### First measured priority comparison
+
+For one redundant event at 1000 nodes:
+
+```text
+full constitutive provider call ~= 111.4 us
+full workspace reset             ~=   2.7 us
+ratio                            ~=  41.2 x
+```
+
+At 200 nodes the corresponding ratio is about 44.9x. Across the measured larger profiles, redundant constitutive evaluation is therefore roughly forty-to-forty-five times more expensive per occurrence than one redundant full workspace reset on this runner class.
+
+This does **not** imply a forty-fold whole-model speedup. It establishes repair priority within the observed redundant-work candidates:
+
+1. H03 duplicate constitutive evaluation: higher expected payoff;
+2. H01 duplicate workspace resets: real but materially smaller per event;
+3. H02 deep-copy route: still pending direct timing and necessity adjudication.
+
+No production repair is admitted by these measurements.
