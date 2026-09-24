@@ -120,3 +120,4 @@ echo "--- control vapor tail ---"
 tail -40 /tmp/control_vap.log
 echo "--- candidate vapor tail ---"
 tail -40 /tmp/candidate_vap.log
+# R11 trigger: case generator now binds CRITDEVMASBAL explicitly.
