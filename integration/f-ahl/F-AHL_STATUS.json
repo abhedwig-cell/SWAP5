@@ -1,18 +1,23 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "status": "ACTIVE_RESEARCH",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "completed": [
-    "F-AHL01 preregistration",
-    "F-AHL01 direct-theta adaptive prototype",
-    "F-AHL01 preliminary analytical preflight",
-    "F-AHL02 representation-coordinate preregistration",
-    "F-AHL02 logit(Se) prototype",
-    "F-AHL02 preliminary analytical preflight",
-    "branch-scoped research CI workflow"
+    "F-AHL01 preregistration and adaptive direct-theta constitutive screen",
+    "F-AHL02 transformed logit(Se) representation screen",
+    "branch-scoped CI replay of F-AHL01 and F-AHL02",
+    "F-AHL03 optimized Fortran runtime-cost screen"
   ],
-  "current_candidate": "HYBRID_EXACT_BRANCHES_PLUS_FROZEN_ADAPTIVE_LOGIT_SE_LOGC_LOGK",
-  "next": "Repository CI replay, then runtime-cost benchmark before any Richards integration."
+  "current_evidence": {
+    "constitutive_ci_run": 36036616652,
+    "runtime_ci_run": 36036859381,
+    "all_four_materials_constitutive_pass": true,
+    "lookup_faster_than_analytical_in_fortran_microbenchmark": true,
+    "observed_runtime_reduction_range_fraction": [0.2787, 0.3752]
+  },
+  "candidate_architecture": "BUILD_ONCE_QUALIFY_FREEZE_RUN; exact semantic branch logic plus adaptive smooth-core representation; representation coordinate selected by measured error and cost, not support count alone",
+  "next": "F-AHL04 end-to-end research-provider replay in Richards with full build plus solve cost and accepted hydrological trajectory comparison.",
+  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
 }
