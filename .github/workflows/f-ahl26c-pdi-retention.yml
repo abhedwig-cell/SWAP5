@@ -1,0 +1,21 @@
+name: F-AHL26C PDI derivative-consistent retention
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/ahl26c_pdi_retention.py'
+      - 'research/ahl/run_ahl26c_pdi_retention.sh'
+      - 'integration/f-ahl/F-AHL26C_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl26c-pdi-retention.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl26c_pdi_retention.sh /tmp/ahl26c.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl26c-${{ github.run_id }}
+          path: /tmp/ahl26c.json
