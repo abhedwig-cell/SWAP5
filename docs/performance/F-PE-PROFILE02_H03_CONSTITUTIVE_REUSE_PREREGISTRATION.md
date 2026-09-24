@@ -298,3 +298,44 @@ CLOSE                            = READY_FOR_ADMISSION_REVIEW
 Q7 scope review found no intended change to F-AHL representation/lookup logic, RossFast, transaction architecture, approximate-mode behavior, constitutive formulas, solver tolerances, timestep policy or fallback policy. The production change remains the local Reference HeadCalc reuse of an already valid constitutive tuple at an unchanged pressure-head vector.
 
 No whole-program performance percentage is claimed. Representative P01-B/P01-C/P01-D attribution remains separate programme work.
+
+## Q6 paired runtime result
+
+The first Q6 attempt (`36065119542`) exposed a harness defect rather than a model defect. The physical checksum included `constitutive_evaluations`, even though Q6 deliberately compares a baseline with 7 provider evaluations against a candidate with 4. At 3000 solves, the intentional 3-call reduction contributed exactly 9.0 to the accumulated checksum and therefore caused a false `checksum drift` failure.
+
+The timing harness was corrected in commit `4915fd41fabf7f74e7ef1a3ad117fd6f63388426` so that the checksum covers candidate-state pressure head, candidate-state water content and nonlinear-iteration count, while constitutive evaluation count remains a separately asserted diagnostic.
+
+Corrected paired same-runner workflow run `36065753603` completed successfully on GNU Fortran 13.3.0, O2.
+
+Eight alternating-order baseline/candidate pairs were measured, 3000 solves per timing sample, using the qualified three-iteration Reference oracle:
+
+```text
+baseline constitutive evaluations = 7
+candidate constitutive evaluations = 4
+nonlinear iterations               = 3
+physical checksum                  = identical
+paired mean candidate/baseline     = 0.642283280
+paired median candidate/baseline   = 0.641670404
+paired mean speedup                 = 35.771672 %
+paired mean delta                   = -6843.407333 ns/solve
+paired N                            = 8
+Q6 paired runtime                   = PASS
+```
+
+Observed per-solve timings were approximately 19.05-19.28 us for the baseline and 12.23-12.43 us for the candidate on this shared GitHub-hosted runner. These values qualify a focused Reference-solve improvement only. They are not a whole-SWAP or production-hardware speedup claim.
+
+The result is internally consistent with the repair mechanism: three redundant full constitutive evaluations are removed from a three-Newton-iteration solve while the physical checksum and nonlinear-iteration count remain identical.
+
+Current qualification state:
+
+```text
+Q1 compile/runtime preservation = PASS
+Q2 physical identity            = PASS
+Q3 numerical-control identity   = PASS
+Q4 call-count reduction         = PASS
+Q5 multi-iteration coverage     = PASS
+Q6 paired runtime               = PASS
+Q7 cross-workstream drift       = PASS_SO_FAR
+MEASURE                          = COMPLETE_FOCUSED
+CLOSE                            = PENDING_FINAL_SCOPE_REVIEW
+```
