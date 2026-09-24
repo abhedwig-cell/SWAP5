@@ -30,8 +30,8 @@ program test_sw_tri01_a_joint_forcing_candidate
   real(real64), parameter :: signed_rate=1.0e-2_real64
   integer(int64), parameter :: column_id=51001_int64
 
-  call run_case('R1_POSITIVE_SURFACE_EXCHANGE',-12.25_real64,signed_rate,0.40_real64,1)
-  call run_case('R2_NEGATIVE_SURFACE_EXCHANGE',  7.75_real64,-signed_rate,0.40_real64,-1)
+  call run_case('R1_POSITIVE_SURFACE_EXCHANGE',-12.25_real64,signed_rate,-2.23_real64,1)
+  call run_case('R2_NEGATIVE_SURFACE_EXCHANGE',  7.75_real64,-signed_rate,-2.23_real64,-1)
   write(*,'(A)') 'SW_TRI01_A_JOINT_FORCING_CANDIDATE=PASS'
 
 contains
@@ -90,7 +90,7 @@ contains
            'combined surface head supplied')
       call require(abs(forcing%drainage_response_controls(1)%resolved_surface_water_head_cm-surface_head_cm) < 1.0e-14_real64, &
            'combined forcing preserves surface head')
-      call require(abs(forcing%bottom_head-140.0_real64) < 1.0e-10_real64, &
+      call require(abs(forcing%bottom_head+123.0_real64) < 1.0e-10_real64, &
            'combined forcing maps MODFLOW head to bottom pressure head')
 
       call committed%capture_checkpoint(checkpoint,available)
