@@ -6,6 +6,7 @@ program test_scratch_binding
   use mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_trial_exchange
   use mod_ppa_wu05a4_matrix_fraction
+  use mod_ppa_wu05a4_static_geometry
   use mod_ppa_wu05a4_reduction_policy
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
@@ -160,6 +161,8 @@ program test_scratch_binding
   call nonlinear_callback_sequence()
   call interval_handoff()
   call check_matrix_fraction()
+  call check_static_geometry()
+  print '(a)','PPA_WU05A4_STATIC_GEOMETRY_COMPOSITION=PASS'
   call check_reduction_policy()
   call check_reduction_composition()
   print '(a)','PPA_WU05A4_REDUCTION_BEFORE_STORAGE_LIMIT=PASS'
@@ -170,6 +173,25 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine check_static_geometry()
+    type(static_macro_geometry)::geometry
+    logical::valid
+    call prepare_static_macro_geometry([0.25_real64,0.5_real64],[1.0_real64,1.0_real64], &
+        [1.0_real64,1.0_real64],geometry,valid)
+    call check(valid.and.geometry%valid,220)
+    call check(maxval(abs(geometry%matrix_fraction-[0.75_real64,0.5_real64]))<1.e-14_real64,221)
+    call check(abs(geometry%surface_fraction-0.25_real64)+abs(geometry%capacity-1000)<1.e-14_real64,222)
+    call prepare_static_macro_geometry([0.8_real64],[1.0_real64],[1.0_real64],geometry,valid)
+    call check(valid,223)
+    ! Surface cap must not be substituted for the matrix volume fraction.
+    call check(abs(geometry%surface_fraction-0.6_real64)+abs(geometry%matrix_fraction(1)-0.2_real64) &
+        <1.e-14_real64,224)
+    call prepare_static_macro_geometry([1.e-5_real64],[1.0_real64],[1.0_real64],geometry,valid)
+    call check(valid.and.abs(geometry%surface_fraction)<tiny(1.0_real64),225)
+    call prepare_static_macro_geometry([0.25_real64],[1.0_real64],[0.0_real64],geometry,valid)
+    call check(.not.valid.and..not.geometry%valid.and..not.allocated(geometry%matrix_fraction),226)
+  end subroutine
+
   subroutine check_reduction_composition()
     type(exchange_reduction_history)::history,proposal
     type(saturated_domain_inputs)::trial_input

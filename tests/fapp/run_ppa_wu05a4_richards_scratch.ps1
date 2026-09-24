@@ -12,6 +12,8 @@ foreach ($opt in @('O0','O2')) {
     $arguments += $matrixLevelSource
     $arguments += (Join-Path $repo 'src/solver/mod_ppa_wu05a4_reduction_policy.f90')
     $arguments += (Join-Path $repo 'src/process/mod_ppa_wu05a4_matrix_fraction.f90')
+    $arguments += (Join-Path $repo 'src/process/mod_ppa_wu05a3_mpvolume_surface.f90')
+    $arguments += (Join-Path $repo 'src/adapter/mod_ppa_wu05a4_static_geometry.f90')
     foreach ($source in @('src/adapter/mod_ppa_wu05a2_macropore_state.f90',
         'src/adapter/mod_ppa_wu05a3_candidate_mass.f90',
         'src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90',
