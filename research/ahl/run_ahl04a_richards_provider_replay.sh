@@ -18,8 +18,8 @@ SRC=(
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
-  src/solver/mod_reference_richards_temporal_indicator.f90
   src/solver/mod_b110_default_mvg_provider.f90
+  src/solver/mod_reference_richards_temporal_indicator.f90
   src/solver/mod_b110_source_sink_provider.f90
   tests/fmr/mod_fmr04_fixed_top_provider.f90
   src/legacy/b1_10_port/headcalc.f90
