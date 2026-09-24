@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25B",
+  "title": "Bi-modal MvG derivative-consistent retention representation",
+  "parent": "F-AHL25A",
+  "phase": "PREREGISTERED_CONSTITUTIVE_RESEARCH",
+  "authority": {
+    "decoded_source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "forward_functions": ["watcon","moiscap"],
+    "model": 3
+  },
+  "question": "Does the F-AHL derivative-consistent z=logit(Se), x=log10(-h) cubic-Hermite representation generalize to the source-authoritative bi-modal MvG retention/capacity family without independent C approximation?",
+  "lookup_domain_cm": [-1000000.0,-1.0],
+  "near_saturation_policy": "h > -1 cm remains authoritative analytical and is not interpolated",
+  "prospective_error_limits": {
+    "theta_span_normalized_abs": 1e-5,
+    "abs_log_capacity": 1e-2
+  },
+  "parameter_stress_set": [
+    {"id":"M3_BALANCED","theta_r":0.03,"theta_s":0.46,"alpha1":0.02,"n1":1.6,"m1":0.375,"alpha2":0.0025,"n2":1.8,"m2":0.4444444444444444,"omega1":0.55},
+    {"id":"M3_SEPARATED","theta_r":0.02,"theta_s":0.44,"alpha1":0.06,"n1":2.2,"m1":0.5454545454545454,"alpha2":0.001,"n2":1.45,"m2":0.31034482758620685,"omega1":0.35},
+    {"id":"M3_DOMINANT_SECOND","theta_r":0.04,"theta_s":0.50,"alpha1":0.03,"n1":1.7,"m1":0.4117647058823529,"alpha2":0.004,"n2":2.4,"m2":0.5833333333333333,"omega1":0.15}
+  ],
+  "source_binding_rule": "The research sampler must fail closed unless the exact corrected source SHA matches and the model-3 theta/C source expressions are present. The formulas are transcribed from that pinned source, not from textbook convention.",
+  "decision_rule": "PASS only if all three preregistered parameterizations meet both constitutive gates on independent dense validation points and the represented C is obtained solely by differentiating the same interpolant used for theta.",
+  "hard_exclusions": [
+    "NO_K_CLAIM",
+    "NO_RICHARDS_CLAIM",
+    "NO_TIMING_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
