@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.sw_tri01.a.result.v1",
+  "work_unit": "SW-TRI01-A",
+  "date": "2026-09-24",
+  "decision": "PASS_SINGLE_JOINT_SWAP_CANDIDATE",
+  "tested_head": "69d4292999c60f9bb5dc6189a205399dba3f5255",
+  "evidence_run": 35956286428,
+  "evidence_job": 107495201050,
+  "technical_amendment": "SW_TRI01_A_TECHNICAL_AMENDMENT_01.json",
+  "observations": {
+    "R1_POSITIVE_SURFACE_EXCHANGE": {
+      "bottom_outward_exchange_cm": 0.013814059840923806,
+      "surface_exchange_cm": 0.0025,
+      "result": "PASS"
+    },
+    "R2_NEGATIVE_SURFACE_EXCHANGE": {
+      "bottom_outward_exchange_cm": 0.013814059840923805,
+      "surface_exchange_cm": -0.0025,
+      "result": "PASS"
+    }
+  },
+  "checks": [
+    "surface-water forcing materialized first and survived groundwater-head materialization",
+    "groundwater bottom head and surface-water control coexisted in one typed forcing",
+    "one backend candidate was completed with complete mass",
+    "groundwater bottom-interface exchange and surface-water exchange were both available from the same candidate",
+    "positive and negative surface-water transfer directions were preserved",
+    "committed origin remained unchanged until discard",
+    "O0/O2 stable output identity passed"
+  ],
+  "interpretation": [
+    "The current bottom_mode=5 versus F-APP09 bottom_mode=7 incompatibility is a participant/admission-boundary restriction, not a fundamental kernel-physics incompatibility.",
+    "A three-model composition must use one joint SWAP participant/candidate rather than combine the existing groundwater and surface-water candidates after execution."
+  ],
+  "production_admission": false
+}
