@@ -23,7 +23,7 @@
     "behind_by": 0,
     "action": "No canonical admission is performed by this status update. Bounded admission may be evaluated separately under F-TAB02_SCOPE_SPLIT_20260924.json while F remains an explicit open preservation obligation."
   },
-  "state": "BOUNDED_TECHNICAL_QUALIFICATION_PASS__HISTORICAL_F_PRESERVATION_OPEN",
+  "state": "BOUNDED_TECHNICAL_QUALIFICATION_PASS__F_FAIL_CLOSED_SIGNED_ZERO_OUTPUT_IDENTITY",
   "slices": {
     "A": {
       "status": "PASS",
@@ -49,11 +49,11 @@
       "confirmation_replay_run": 35824244178
     },
     "F": {
-      "status": "OPEN_PRESERVATION_GATE",
-      "record": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json",
+      "status": "FAIL_CLOSED_F5_OUTPUT_IDENTITY",
+      "record": "integration/f-tab/F-TAB02_F_QUALIFICATION_20260924.json",
       "prerequisite": "F-TAB02-G PASS and F-TAB02-F0 PASS",
       "prerequisite_result": "PASS",
-      "next": "Resume exact M1-C3 whole-Hupsel generated-provider preservation gate only when the previously verified exact authority bytes are materializable again; do not substitute public lineage copies.",
+      "next": "Bounded diagnosis of signed-zero-only result.blc divergence. Do not broaden normalization, change tolerances, or admit before a representation-preserving repair is prospectively justified and requalified.",
       "blocker_record": "integration/f-tab/F-TAB02_F_BLOCKER.json"
     },
     "G": {
@@ -142,19 +142,22 @@
     "authority": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
     "required_archive_name": "SWAP_4.3.1.zip",
     "required_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "exact_materializable_bytes_available": false,
+    "exact_materializable_bytes_available": true,
     "exact_asset_verified_date": "2026-09-23",
     "exact_asset_size_bytes": 8959314,
     "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
     "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
-    "new_blocker": "EXACT_AUTHORITY_PREVIOUSLY_VERIFIED_BUT_NOT_CURRENTLY_REPOSITORY_RESIDENT_OR_RAW_MATERIALIZABLE; PUBLIC_LINEAGE_COPIES_NO_MATCH",
+    "new_blocker": "F5 normalized result.blc identity fails only at two printed signed-zero balance-deviation fields; result.bal remains exact.",
     "executable_probe_status": "SUPERSEDED_BY_F_TAB02_G_AND_F0",
     "executable_probe_symbol": null,
     "substitutions_authorized": false,
-    "resume_condition": "Exact official authority bytes matching the frozen SHA become materializable again; then execute the preregistered F gate without changing its acceptance contract.",
-    "preregistration": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json"
+    "resume_condition": "Diagnose signed-zero origin under frozen numerical policy; repair only if representation-preserving and prospectively justified, then rerun full F1-F7.",
+    "preregistration": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json",
+    "latest_qualification": "integration/f-tab/F-TAB02_F_QUALIFICATION_20260924.json",
+    "whole_hupsel_local_timing_delta_pct": -8.878181712
   },
   "nonclaims": [
+    "F-TAB02-F PASS after exact-asset run; current F result is fail-closed on F5",
     "canonical production admission by this status record",
     "whole-Hupsel generated-provider equivalence",
     "generic SWSOPHY=1 production",
