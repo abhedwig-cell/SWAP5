@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10B",
+  "title": "Prospective conductivity-tolerance sweep",
+  "parent": "F-AHL10A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "How tight must the conductivity interpolation error be, while leaving the derivative-consistent theta/C representation unchanged, for all 12 F-AHL10 material-regime cases to satisfy the frozen Richards fidelity gates?",
+  "frozen": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"],
+    "theta_span_normalized_abs_tolerance": 1e-5,
+    "capacity": "derived from the same cubic-Hermite retention interpolant",
+    "solver_policy": "identical to F-AHL10",
+    "richards_gates": "identical to F-AHL10"
+  },
+  "prospective_logK_tolerances": [0.003,0.001,0.0003,0.0001],
+  "selection_rule": "Select the loosest prospectively tested log(K) tolerance for which all 12 cases pass every frozen F-AHL10 gate. Do not interpolate a threshold from failed/passed values within this work unit.",
+  "secondary_observables": [
+    "support point count by material",
+    "max head delta by case",
+    "bottom flux delta by case",
+    "iteration and backtracking identity"
+  ],
+  "hard_exclusions": [
+    "NO_THETA_TOLERANCE_CHANGE",
+    "NO_CAPACITY_REPRESENTATION_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
