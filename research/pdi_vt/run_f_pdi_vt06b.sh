@@ -19,3 +19,5 @@ python3 "$ROOT/research/pdi_vt/f_pdi_vt04a_analyze.py" \
   /tmp/control-vap.bfo /tmp/candidate-vap.bfo \
   /tmp/control-novap.bfo /tmp/candidate-novap.bfo \
   | tee /tmp/F-PDI-VT06B_DIAGNOSTICS.json
+
+# Diagnostic rerun: emit normalized Vapor-on diff lines.
