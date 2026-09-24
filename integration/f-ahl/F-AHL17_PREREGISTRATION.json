@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL17",
+  "title": "Self-building Fortran hydraulic representation",
+  "parent": "F-AHL16",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can SWAP5 build the selected F-AHL15 hydraulic representation internally from the authoritative B1.10 provider, freeze it, and amortize its construction cost over realistic repeated constitutive/solve use?",
+  "authority_rule": "The builder samples the existing authoritative B1.10 provider. It must not introduce an independent hydraulic formula as source authority.",
+  "frozen_policy": {
+    "lookup_domain_cm": [-1000000.0,-1.0],
+    "theta_span_normalized_abs_error_max": 1e-5,
+    "abs_log_capacity_error_max": 1e-2,
+    "K_floor_cm_per_day": 1e-10,
+    "global_floored_logK_error_max": 1e-3,
+    "wet_head_range_cm": [-25.0,-1.0],
+    "wet_floored_logK_error_max": 3e-4,
+    "validation_fractions": [0.125,0.25,0.5,0.75,0.875],
+    "runtime_refinement": false
+  },
+  "stage_1": {
+    "materials": ["B01","B12","O05","O14"],
+    "requirements": [
+      "builder completes",
+      "built representation satisfies frozen constitutive error gates under an independent dense validation",
+      "support count remains consistent with the selected Python research builder up to deterministic implementation differences",
+      "frozen representation is immutable during evaluation"
+    ]
+  },
+  "stage_2": {
+    "measure": [
+      "one-time build CPU per unique hydraulic parameterization",
+      "per-evaluation candidate versus analytical CPU",
+      "break-even number of constitutive evaluations",
+      "estimated break-even number of controlled Richards solves using F-AHL16 measured solve savings"
+    ],
+    "rule": "Report measured build cost separately. Do not hide it inside cached runs."
+  },
+  "cache_design": {
+    "key_inputs": [
+      "authoritative hydraulic parameter coefficients",
+      "lookup policy version",
+      "hydraulic model identity",
+      "relevant branch-policy identity"
+    ],
+    "semantics": "same fingerprint reuses immutable representation; changed authority or policy must miss the cache"
+  },
+  "hard_exclusions": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_EXTERNAL_PREGENERATED_TABLE_REQUIREMENT_AS_TARGET_ARCHITECTURE",
+    "NO_RUNTIME_REFINEMENT_DURING_SOLVE",
+    "NO_NEW_HYDRAULIC_PHYSICS",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
