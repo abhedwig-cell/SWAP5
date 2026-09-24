@@ -1,6 +1,8 @@
 {
   "work_unit": "PPA-WU05-A4-MATRIX-LEVEL",
   "baseline": "06933d582",
+  "recovery_point": "b0ad496b4",
+  "persisted_test_result": "PASS at b0ad496b4 O0/O2 with identical transcripts and runtime checks; existing restricted evaluator regression retained",
   "source": "B1.11 calcgwl.f90, bottom-connected groundwater search, gwlevel option 1 and nodlev; SHA256 d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
   "implementation": "src/process/mod_ppa_wu05a4_matrix_level.f90",
   "scope": "Restricted zero-critical-unsaturated-volume matrix water-level candidate from heads, elevations and thicknesses. All-negative profile returns source sentinel 999 and n+1; one bottom-connected saturated zone interpolates the zero head; full saturation uses source pond branch. Perched/multiple saturated zones are rejected.",
