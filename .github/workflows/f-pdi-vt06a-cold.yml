@@ -1,0 +1,28 @@
+name: F-PDI-VT06A colder-temperature regression
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'integration/f-pdi-vt/F-PDI-VT06A_PREREGISTRATION.json'
+      - 'research/pdi_vt/f_pdi_vt06a_cold_case.py'
+      - 'research/pdi_vt/run_f_pdi_vt06a.sh'
+      - '.github/workflows/f-pdi-vt06a-cold.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/pdi_vt/run_f_pdi_vt06a.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-pdi-vt06a-${{ github.run_id }}
+          path: |
+            /tmp/f_pdi_vt06a_base.json
+            /tmp/F-PDI-VT06A_RESULT.json
+            /tmp/control-vap.bfo
+            /tmp/candidate-vap.bfo
+            /tmp/control-novap.bfo
+            /tmp/candidate-novap.bfo
