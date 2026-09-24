@@ -2,45 +2,26 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL21D",
-  "phase": "O05_DRY_PRESCRIBED_QBOT_K_ATTRIBUTION_COMPLETE",
-  "status": "K_CAUSE_FALSIFIED",
-  "workflow_runs": [36047917602, 36047929806],
-  "workflow_jobs": [107795949660, 107795985011],
+  "phase": "O05_DRY_QBOT_K_ATTRIBUTION_COMPLETE",
+  "status": "K_HYPOTHESIS_FALSIFIED",
+  "workflow_runs": [36047917602,36047929806],
   "frozen_case": {
     "material": "O05",
-    "regime": "dry",
     "initial_head_cm": -500.0,
     "step_duration_day": 0.0625,
-    "top_flux": "-K(initial)",
-    "bottom_flux": "-0.99*K(initial)",
+    "bottom_flux_factor": 0.99,
     "bottom_mode": 2
   },
   "candidate_outcomes": {
-    "selected_F_AHL15_16_K": "FAIL nonlinear iteration identity gate",
-    "global_abs_logK_3e_4": "FAIL nonlinear iteration identity gate",
-    "exact_authoritative_K": "FAIL nonlinear iteration identity gate"
+    "selected_K_policy": "FAIL_ITERATION_GATE",
+    "global_abs_logK_3e-4": "FAIL_ITERATION_GATE",
+    "exact_analytical_K": "FAIL_ITERATION_GATE"
   },
-  "supporting_diagnostic_evidence": {
-    "workflow_run": 36047740429,
-    "workflow_job": 107795368673,
-    "exact_K_with_interpolated_theta_C": {
-      "reference_iterations": 2,
-      "candidate_iterations": 4,
-      "reference_backtracking": 2,
-      "candidate_backtracking": 7,
-      "max_head_delta_cm": 0.006733602
-    },
-    "exact_theta_C_with_lookup_K": {
-      "reference_iterations": 2,
-      "candidate_iterations": 2,
-      "reference_backtracking": 2,
-      "candidate_backtracking": 2,
-      "max_head_delta_cm": 1.143699e-5
-    }
-  },
-  "finding": "Conductivity resolution is falsified as the cause of the O05-dry prescribed-qbot nonlinear-path drift. Restoring exact retention/capacity restores the analytical path, whereas restoring exact K does not.",
-  "scientific_implication": "Derivative consistency between theta and C is necessary but not sufficient. A representation can preserve C=dtheta/dh internally and still perturb the local nonlinear map enough to alter Newton/backtracking behavior in a boundary-sensitive regime.",
-  "decision": "DO_NOT_DENSIFY_K_OR_GLOBAL_RETENTION_FURTHER",
-  "open_architecture_choice": "Choose and prospectively qualify either a different solver-facing retention representation family or a bounded exact-retention fallback rule. Existing authority does not yet determine a general fallback trigger across materials and boundary regimes.",
-  "nonclaims": ["NO_GATE_RETUNING","NO_GENERAL_QBOT_QUALIFICATION","NO_PRODUCTION_ADMISSION"]
+  "finding": "Strengthening K from the selected policy through global 3e-4 and finally exact analytical K does not restore the analytical nonlinear path. The remaining O05-dry prescribed-qbot path drift is therefore not attributable to K approximation.",
+  "next_action": "Prospectively attribute the remaining drift to retention/capacity approximation by comparing the selected derivative-consistent theta/C interpolant with a tighter derivative-consistent theta/C representation and exact analytical theta/C while keeping K treatment controlled.",
+  "nonclaims": [
+    "This does not imply the derivative-consistent theta/C representation is physically inaccurate; the frozen failure is an exact nonlinear-path criterion.",
+    "No MODFLOW or surface-switch claim is made.",
+    "No production admission is implied."
+  ]
 }
