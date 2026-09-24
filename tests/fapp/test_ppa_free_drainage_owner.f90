@@ -78,7 +78,7 @@ program test_ppa_free_drainage_owner
   config%free_drainage_indicator => evaluate_free_drainage_temporal_indicator
   config%numerical%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
   config%numerical%transaction%max_retries = 16
-  config%numerical%transaction%max_committed_substeps = 16384
+  config%numerical%max_committed_substeps = 16384
   config%numerical%model_temporal_indicator_budget_available = .true.
   config%numerical%model_temporal_indicator_budget = 1.0e-5_real64
   do i=1,NTILE
