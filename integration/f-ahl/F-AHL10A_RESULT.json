@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10A",
+  "phase": "FAILED_REGIME_ATTRIBUTION_COMPLETE",
+  "status": "PASS_DIAGNOSTIC",
+  "workflow_run": 36043225675,
+  "workflow_job": 107780271680,
+  "failed_cases_from_F_AHL10": ["B01:wet","B01:dry","B12:wet","B12:dry","O05:wet","O14:dry"],
+  "outcome": {
+    "base_dc_retention_lookup_K": "all six reproduce F-AHL10 failures",
+    "dc_retention_exact_K_from_represented_theta": "all six pass frozen F-AHL10 gates",
+    "exact_retention_capacity_lookup_K": "all six remain failed with response close to base"
+  },
+  "representative_changes": {
+    "B01:wet": {"base_bottom_flux_delta":1.038436e-4,"exactK_bottom_flux_delta":2.722199e-8},
+    "B01:dry": {"base_head_delta_cm":0.07118950,"exactK_head_delta_cm":0.01446117,"base_bottom_flux_delta":7.284418e-5,"exactK_bottom_flux_delta":4.644778e-6},
+    "B12:wet": {"base_bottom_flux_delta":4.500818e-5,"exactK_bottom_flux_delta":6.136296e-8},
+    "B12:dry": {"base_head_delta_cm":0.06919694,"exactK_head_delta_cm":0.004418081,"base_bottom_flux_delta":5.912089e-5,"exactK_bottom_flux_delta":1.059327e-6},
+    "O05:wet": {"base_bottom_flux_delta":9.131574e-5,"exactK_bottom_flux_delta":3.300095e-7},
+    "O14:dry": {"base_bottom_flux_delta":6.216003e-5,"exactK_bottom_flux_delta":4.132463e-7}
+  },
+  "global_observation": "Iteration and backtracking deltas remain zero in every attribution replay.",
+  "finding": "The F-AHL10 wet/dry endpoint-fidelity failures are conductivity-lookup dominated, not retention-interpolant dominated. The derivative-consistent theta/C interpolant remains numerically viable when paired with exact conductivity evaluated from represented theta.",
+  "decision": "ADVANCE_DC_RETENTION_PLUS_EXACT_K",
+  "next_action": "Qualify derivative-consistent theta/C interpolation plus exact K over all 12 F-AHL10 cases, then measure constitutive and paired end-to-end runtime."
+}
