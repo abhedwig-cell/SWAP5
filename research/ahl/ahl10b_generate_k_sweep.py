@@ -50,16 +50,23 @@ for tag,tol in TOLS:
     dc.OUT=out
     rows={}
     for mid,p in dc.base.MATERIALS.items():
-        knots=build_from_frozen_support(p,tol)
-        dc.LOGK_TOL=tol
-        err=dc.validate(knots,p)
-        dc.write_table(mid,p,knots)
-        rows[mid]={
-            "points":len(knots),
-            "theta_span_error":err[0],
-            "log_capacity_error":err[1],
-            "log_conductivity_error":err[2],
-            "constitutive_pass":err[0]<=dc.THETA_TOL and err[1]<=dc.LOGC_TOL and err[2]<=tol
-        }
+        try:
+            knots=build_from_frozen_support(p,tol)
+            dc.LOGK_TOL=tol
+            err=dc.validate(knots,p)
+            dc.write_table(mid,p,knots)
+            rows[mid]={
+                "points":len(knots),
+                "theta_span_error":err[0],
+                "log_capacity_error":err[1],
+                "log_conductivity_error":err[2],
+                "constitutive_pass":err[0]<=dc.THETA_TOL and err[1]<=dc.LOGC_TOL and err[2]<=tol,
+                "build_status":"PASS"
+            }
+        except RuntimeError as exc:
+            rows[mid]={
+                "build_status":"FAIL",
+                "reason":str(exc)
+            }
     summary["variants"][tag]={"logK_tolerance":tol,"materials":rows}
 print(json.dumps(summary,indent=2,sort_keys=True))
