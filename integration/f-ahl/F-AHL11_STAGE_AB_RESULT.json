@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11",
+  "phase": "STAGE_A_B_COMPLETE",
+  "status": "PASS_STAGE_B",
+  "stage_a": {
+    "workflow_run": 36044466401,
+    "selected_abs_logK_error": 0.0003,
+    "retention_support_points": {"B01":28,"B12":23,"O05":28,"O14":30},
+    "conductivity_support_points": {"B01":151,"B12":102,"O05":145,"O14":157},
+    "candidate_outcomes": {
+      "0.003": "0/6 failed-extreme cases pass",
+      "0.001": "5/6 pass; B01 wet fails",
+      "0.0003": "6/6 pass"
+    },
+    "generator_repair": "O05 dry-tail refinement failure was removed by a numerically stable direct log(K) evaluation using log1p/expm1; constitutive equations were unchanged."
+  },
+  "stage_b": {
+    "workflow_run": 36044622469,
+    "workflow_job": 107784976476,
+    "case_count": 12,
+    "passed_cases": 12,
+    "same_iteration_path_all_cases": true,
+    "same_backtracking_path_all_cases": true,
+    "largest_observed_max_head_delta_cm": 0.01461643,
+    "largest_observed_bottom_flux_delta_cm_per_day": 6.561084e-6,
+    "status": "PASS_12_OF_12"
+  },
+  "finding": "Decoupling conductivity support from the derivative-consistent retention/capacity support closes the wet and dry regime failures without densifying the retention representation.",
+  "design_candidate": "compact derivative-consistent theta/C Hermite representation plus independent adaptive log(K) support at abs logK error <=3e-4, exact analytical fallback for h>-1 cm.",
+  "next_gate": "Robust paired end-to-end timing over the frozen 12-case material-regime matrix before any production-oriented work.",
+  "nonclaims": [
+    "No whole-SWAP speedup claim is made.",
+    "No production admission is implied.",
+    "Only prescribed-head lower-boundary cases are covered by the current matrix."
+  ]
+}
