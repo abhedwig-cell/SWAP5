@@ -2,7 +2,7 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
-  "storage_accuracy_successor": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json: isolated cancellation-resistant local MvG difference passes 80 independent real128 oracle cases O0/O2 at a83f0b800. Not yet provider-bound or integrated into HeadCalc; strong owner failure remains unresolved.",
+  "storage_accuracy_successor": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json: explicit default-null storage service integrated at bc98a67ac. Strong WU04C/WU04D owner composition passes. At 18ef11bc5 strong source receipts, mode-7 atomic application restart and constant-forcing continuation pass O0/O2 with full physical/history identity. Historical failures below remain evidence for the default/no-storage route, not the combined opt-in. No canonical admission implied.",
   "small_step_diagnosis": {
     "tested_commit": "b0c95387d",
     "gate": "tests/fsi/run_ppa_free_drainage_small_dt.ps1",
@@ -12,7 +12,7 @@
   },
   "application_opt_in": {
     "baseline": "61cac830a",
-    "status": "IMPLEMENTED_STRONG_TRANSIENT_OWNER_TEST_FAILS",
+    "status": "COMBINED_STORAGE_OPT_IN_OWNER_RECEIPT_RESTART_PASS_SEE_SUCCESSOR",
     "admission_guard_evidence": {
       "tested_commit": "1c1a6c92f",
       "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -Scope Guards",
@@ -24,7 +24,7 @@
     "profile": "Separate owner test retains original WU04C/WU04D forcing composition and hard 1e-12 mass gate; explicitly chooses model-certificate budget 1e-5 cm, 40 nonlinear iterations, 16 retries, maximum 16384 committed substeps. Initial derivative is computed from initial face-flux divergence and prescribed sinks divided by C*dz, not zero. Original bootstrap fixture is not modified or claimed repaired.",
     "diagnosis": "Standalone multiswap creates its own backend, so the opt-in callback must be forwarded explicitly on both normal and receipt routes. Procedure optional argument (not pointer dummy) avoids observed native invocation fault. With forwarding and consistent initial derivative, bound falls from 1.36706e-4 at dt=6.10352e-5 to 3.50293e-5 at dt=3.05176e-5, still above 1e-5 budget; smaller attempted steps do not reach certificate evaluation. Both tiles exhaust 17 HeadCalc calls, 239 nonlinear iterations, zero accepted substeps. No tolerance relaxation or success claim.",
     "preservation": "At 9c6f1b71d, default CanonicalOutput owner replay PASS O0/O2 exact identity; build swap-ppa-wu01-897151183e4f43b9a096fd98f6da670d. Strong transient owner remains failing O0 diagnostic; O2 owner not qualified.",
-    "next": "Investigate small-dt principal residual accuracy and consistent startup history under the fixed 1e-5 cm certificate budget. Admission guards are now qualified; receipt/source-window qualification remains outstanding. No application admission while half-day owner composition fails."
+    "next": "Follow storage_accuracy_successor for current combined opt-in evidence and remaining actual failed-owner replay. Original no-storage Composition fixture remains a diagnostic failure; current success requires explicit storage and temporal services."
   },
   "restart_continuation_evidence": {
     "tested_commit": "f3a472593",
@@ -59,5 +59,5 @@
   "production_replay": "Default PPA-WU01 PowerShell runner at 9b4f6137e still fails O0 WU04C production owner commit, matching the known baseline failure. The balance diagnostic extension alone does not fix principal convergence or temporal integration. O2 bootstrap not reached. No production-success claim.",
   "invariants": [3, 7, 13, 23, 25],
   "scope": "Mode7 explicit-flux-top converged solves now publish existing final native residual and time-integrated residual. No equation, flux, budget, continuation schema, committed-state or temporal indicator admission change. Modes -2 and dynamic top remain outside this extension.",
-  "next_action": "Wire an explicit opt-in production application profile and qualify WU04C owner commits with source-window progress under its existing owner. The backend FMR restart-bundle continuation is now tested; byte-level and full application restart remain outside that claim. Address principal convergence through a documented transient numerical profile without relaxing mass gates."
+  "next_action": "Follow PPA_MVG_STORAGE_DIFFERENCE_STATUS.json for integrated storage/temporal opt-in and bounded owner receipt/restart evidence. Extend actual failed-owner receipt/retry coverage; do not infer disk restart or arbitrary dynamic-top admission."
 }
