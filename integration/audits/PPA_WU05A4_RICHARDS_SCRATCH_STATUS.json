@@ -23,7 +23,8 @@
     "baseline": "ec6ff0c86",
     "contract": "Optional captured-rate output on transfer/budget extraction returns the original residual rate alongside its integrated amount after the same identity checks. Failed extraction returns neither array. Candidate preparation now uses this rate directly instead of amount/dt.",
     "scope": "Avoids a numerical round trip; does not alter source equations, tolerances, acceptance ownership or production admission.",
-    "test_result": "Pending"
+    "recovery_point": "ef1a5e7d0",
+    "test_result": "Persisted ef1a5e7d0 trial-exchange and Richards scratch gates PASS O0/O2 with identical transcripts and bounds/FPE checks. Exact rate copy, failed dual-output invalidation and preservation of a tiny rate when integrated amount underflows are tested."
   },
   "candidate_bridge_contract": {
     "baseline": "972c20b50",
