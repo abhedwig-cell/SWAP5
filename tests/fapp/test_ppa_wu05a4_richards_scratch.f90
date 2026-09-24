@@ -156,10 +156,10 @@ contains
     type(reference_richards_workspace_t),allocatable::trial_ws
     type(reference_trial_transfer)::capture
     type(macro_trial_key)::trial_key,old_key
-    real(real64)::h,dt,q,expected,trial_store,step
+    real(real64)::h,dt,q,expected,trial_store,step,trial_h,alpha,base_norm
     real(real64),allocatable::transfer(:)
-    logical::valid,converged
-    integer::attempt,iteration
+    logical::valid,converged,accepted
+    integer::attempt,iteration,backtrack,rejections
     allocate(trial_ws)
     call initialize_reference_workspace(trial_ws,2)
     do attempt=1,3
@@ -171,9 +171,9 @@ contains
       call apply_saturated_reference_residual(input,[-0.5_real64,-0.25_real64],0.0_real64,dt, &
           trial_key,trial_ws%generation,trial_ws,capture,trial_store,valid)
       call check(.not.valid,101)
-      h=0.25_real64; converged=.false.
+      h=0.25_real64; converged=.false.; rejections=0
       do iteration=1,100
-        trial_key%evaluation=int(iteration+1,int64)
+        trial_key%evaluation=trial_key%evaluation+1
         trial_ws%residual=[0.0_real64,h-0.2_real64]
         call apply_saturated_reference_residual(input,[-0.5_real64,h],0.0_real64,dt, &
             trial_key,trial_ws%generation,trial_ws,capture,trial_store,valid)
@@ -189,9 +189,32 @@ contains
         call apply_reference_trial_diagonal(trial_ws,capture,trial_key,.true.,valid,[-0.5_real64,h])
         call check(valid,104)
         step=trial_ws%residual(2)/trial_ws%dfdh_main(2)
-        h=h-step
+        base_norm=abs(trial_ws%residual(2))
+        ! Deliberately overrelax to exercise rejection of valid evaluations,
+        ! then damp. This is a test driver, not HeadCalc's line-search policy.
+        alpha=8; accepted=.false.
+        do backtrack=1,12
+          trial_h=h-alpha*step
+          trial_key%evaluation=trial_key%evaluation+1
+          trial_ws%residual=[0.0_real64,trial_h-0.2_real64]
+          call apply_saturated_reference_residual(input,[-0.5_real64,trial_h],0.0_real64,dt, &
+              trial_key,trial_ws%generation,trial_ws,capture,trial_store,valid)
+          if(valid)then
+            if(abs(trial_ws%residual(2))<0.5_real64*base_norm)then
+              accepted=.true.; h=trial_h; exit
+            end if
+          end if
+          rejections=rejections+1
+          call discard_reference_transfer(capture)
+          call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid)
+          call check(.not.valid.and..not.allocated(transfer),117)
+          call check(abs(input%storage-0.375_real64)<1.e-14_real64,118)
+          alpha=alpha*0.5_real64
+        end do
+        call check(accepted,119)
       end do
       call check(converged,105)
+      call check(rejections>0,120)
       if(attempt==1)then
         expected=0.36_real64
       else
