@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04B",
+  "status": "FAIL_CONTROL_NONFINITE",
+  "workflow_run": 36060489140,
+  "case": "uniform h=-1.0E4 cm, SWHEA=0",
+  "result": {
+    "all_four_runs_normal_completion": true,
+    "control_vapor_nonfinite_tokens": 172,
+    "candidate_vapor_nonfinite_tokens": 0,
+    "vapor_outputs_different": true,
+    "novap_outputs_identical": true
+  },
+  "interpretation": "Reducing dryness did not make the buggy control finite. The nonfinite behavior is therefore not attributable solely to the -1e5 cm initialization. The testcase still disables heat flow, leaving the vapor temperature route unsuitable for a finite-control comparison.",
+  "next_repair": "Restore the official testcase heat-flow path and its explicit positive TSOIL profile while reverting to the original -1e5 cm dry initialization.",
+  "gate_policy": "No gate changed."
+}
