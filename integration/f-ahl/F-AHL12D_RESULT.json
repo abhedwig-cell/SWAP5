@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12D",
+  "phase": "LOCAL_JACOBIAN_DIAGNOSTIC_COMPLETE",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "workflow_run": 36047389555,
+  "workflow_job": 107794192375,
+  "frozen_case": "B01:wet, prescribed qbot=1e-6 cm/day, dt=0.01 day",
+  "observations": {
+    "baseline": {"ref_iterations":2,"candidate_iterations":3,"max_head_delta_cm":1.476859e-6,"max_theta_delta":2.964982e-9},
+    "theta3": {"ref_iterations":2,"candidate_iterations":4,"max_head_delta_cm":2.400160e-5,"max_theta_delta":5.424484e-8},
+    "theta1": {"ref_iterations":2,"candidate_iterations":4,"max_head_delta_cm":2.400160e-5,"max_theta_delta":5.424484e-8}
+  },
+  "prior_attribution_bound": {
+    "exact_K_variant": "did not restore the analytical path: 3 vs 2 iterations",
+    "exact_theta_C_plus_lookup_K": "restored the analytical path: 2 vs 2 iterations with ~1.9e-11 cm max head error"
+  },
+  "finding": "The prescribed-qbot Newton-path shift is controlled by retention/capacity approximation rather than K interpolation, but it is not monotonic in the global theta error tolerance. Global densification from 1e-5 to 3e-6 or 1e-6 worsened the path from 3 to 4 iterations.",
+  "scientific_implication": "The relevant invariant is local Jacobian consistency along the visited trajectory, not a smaller global pointwise theta interpolation error alone.",
+  "next_action": "Do not continue global retention densification. Any repair must target a local derivative/Jacobian metric or exact-retention fallback in the qbot-sensitive envelope.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_SOLVER_POLICY_CHANGE","NO_PRODUCTION_ADMISSION"]
+}
