@@ -1,0 +1,27 @@
+name: F-AHL11 decoupled K support Stage A
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl11_generate_decoupled_support.py'
+      - 'research/ahl/mod_ahl11_decoupled_provider.f90'
+      - 'research/ahl/test_ahl11_decoupled_matrix.f90'
+      - 'research/ahl/run_ahl11_decoupled_stage_a.sh'
+      - 'integration/f-ahl/F-AHL11_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl11-decoupled-stage-a.yml'
+  workflow_dispatch:
+
+jobs:
+  stage-a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run decoupled K support Stage A
+        run: |
+          bash research/ahl/run_ahl11_decoupled_stage_a.sh /tmp/ahl11v2_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl11v2-${{ github.run_id }}
+          path: /tmp/ahl11v2_result.txt
