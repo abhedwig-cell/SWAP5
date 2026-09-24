@@ -1,7 +1,8 @@
 program test_fpe_zero_waste01_dispatch_overhead
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_build_execution_order, FMR_BACKEND_SERIALIZED_REFERENCE
+       fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, fmr_build_execution_order, &
+       FMR_BACKEND_SERIALIZED_REFERENCE
   implicit none
 
   type(fmr_logical_column_t), allocatable :: columns(:), work_columns(:)
@@ -33,6 +34,7 @@ program test_fpe_zero_waste01_dispatch_overhead
   receipt_ids = columns%column_id
 
   call benchmark_registry(columns, templates, quad_reps)
+  call benchmark_plan_match(columns, templates, linear_reps)
   call benchmark_order(columns, 'canonical', linear_reps)
 
   work_columns = columns
@@ -187,6 +189,29 @@ contains
     pair_checks = int(size(cols),int64) * int(size(cols)-1,int64)
     call emit('registry_validation','valid',size(cols),reps,c0,c1,rate,checksum,pair_checks)
   end subroutine benchmark_registry
+
+  subroutine benchmark_plan_match(cols, tmpls, reps)
+    type(fmr_logical_column_t), intent(in) :: cols(:)
+    type(fmr_template_t), intent(in) :: tmpls(:)
+    integer, intent(in) :: reps
+    type(fmr_serialized_execution_plan_t) :: plan
+    integer(int64) :: c0, c1, rate, checksum
+    integer :: r
+    logical :: valid, matches
+
+    call fmr_build_serialized_execution_plan(cols, tmpls, size(cols), plan, valid)
+    if (.not. valid .or. .not. plan%ready()) error stop 'dispatch overhead plan construction failed'
+
+    checksum = 0_int64
+    call system_clock(c0, rate)
+    do r = 1, reps
+      matches = plan%matches(cols, tmpls, size(cols))
+      if (matches) checksum = checksum + 1_int64
+    end do
+    call system_clock(c1)
+    call emit('execution_plan_match','exact_identity',size(cols),reps,c0,c1,rate,checksum, &
+         4_int64*int(size(cols),int64) + int(size(tmpls),int64))
+  end subroutine benchmark_plan_match
 
   subroutine benchmark_order(cols, label, reps)
     type(fmr_logical_column_t), intent(in) :: cols(:)

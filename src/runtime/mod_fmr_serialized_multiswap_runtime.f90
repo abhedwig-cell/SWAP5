@@ -189,7 +189,7 @@ contains
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     integer, allocatable :: order(:)
-    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot
+    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
 
     call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
@@ -261,20 +261,34 @@ contains
       do pos = batch_start, batch_end
         if (present(execution_plan)) then
           idx = execution_plan%order_index(pos)
+          template_index_hint = execution_plan%template_index(idx)
         else
           idx = order(pos)
+          template_index_hint = 0
         end if
         results(idx)%dispatch_ordinal = pos
         receipt_slot = 0
         if (present(receipt_column_ids)) receipt_slot = find_receipt_slot(columns(idx)%column_id, receipt_column_ids)
         if (receipt_slot > 0) then
-          call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-               forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-               local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt)
+          if (present(execution_plan)) then
+            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                 local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint)
+          else
+            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                 local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt)
+          end if
         else
-          call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-               forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-               local_runtime, active_physical_calls)
+          if (present(execution_plan)) then
+            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                 local_runtime, active_physical_calls, template_index_hint=template_index_hint)
+          else
+            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                 local_runtime, active_physical_calls)
+          end if
         end if
       end do
     end do
@@ -494,7 +508,7 @@ contains
   ! shared transaction boundary.
   subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
                             state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
-                            commit_receipt)
+                            commit_receipt, template_index_hint)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -509,11 +523,16 @@ contains
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(inout) :: active_physical_calls
     type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
+    integer, intent(in), optional :: template_index_hint
 
     integer :: state_index, parameter_index, forcing_index, template_index
     logical :: routable
 
-    template_index = find_template_index(column%template_id, templates)
+    if (present(template_index_hint)) then
+      template_index = template_index_hint
+    else
+      template_index = find_template_index(column%template_id, templates)
+    end if
     routable = template_index > 0 .and. column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
          column%parameter_ref >= 1_int64 .and. &
          column%parameter_ref <= int(size(parameter_registry), int64) .and. &
