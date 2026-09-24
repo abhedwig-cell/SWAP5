@@ -15,6 +15,10 @@ for label in control-vap candidate-vap control-novap candidate-novap; do
   cp "$src" "/tmp/${label}.bfo"
 done
 sha256sum /tmp/control-vap.bfo /tmp/candidate-vap.bfo /tmp/control-novap.bfo /tmp/candidate-novap.bfo | tee /tmp/f_pdi_vt04a_bfo.sha256
+python3 "$ROOT/research/pdi_vt/f_pdi_vt04a_analyze.py" \
+  /tmp/control-vap.bfo /tmp/candidate-vap.bfo \
+  /tmp/control-novap.bfo /tmp/candidate-novap.bfo \
+  | tee /tmp/f_pdi_vt04a_diagnostics.json
 echo "=== BFO header ==="
 head -20 /tmp/control-vap.bfo
 echo "=== BFO tails ==="
