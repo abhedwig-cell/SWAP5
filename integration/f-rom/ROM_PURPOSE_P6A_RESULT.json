@@ -1,0 +1,55 @@
+{
+  "decision": "LAGGED_BOUNDARY_OPERATOR_NOT_CONFIRMED",
+  "downstream_authority": "NO_REDUCED_MEMORY_CARRIER_TEST_AUTHORIZED_BY_P6A",
+  "materials": {
+    "B01": {
+      "current_conductivity_contrast": {
+        "count": 24576,
+        "max_abs_error_cm_per_day": 13.26770485621391,
+        "mean_abs_error_cm_per_day": 0.0028222213960793032,
+        "rmse_cm_per_day": 0.15095104315418761,
+        "sign_mismatch_count": 0
+      },
+      "lagged_conductivity_oracle": {
+        "count": 24576,
+        "max_abs_error_cm_per_day": 2.205160498647274e-09,
+        "mean_abs_error_cm_per_day": 3.7736986559490807e-10,
+        "rmse_cm_per_day": 4.745860876090918e-10,
+        "sign_mismatch_count": 0
+      },
+      "oracle_pass": false,
+      "rmse_improvement_factor": 318068833.2324721
+    },
+    "B14": {
+      "current_conductivity_contrast": {
+        "count": 24576,
+        "max_abs_error_cm_per_day": 0.2931748777013743,
+        "mean_abs_error_cm_per_day": 0.00013922028656574174,
+        "rmse_cm_per_day": 0.0035233145436809887,
+        "sign_mismatch_count": 0
+      },
+      "lagged_conductivity_oracle": {
+        "count": 24576,
+        "max_abs_error_cm_per_day": 1.8600849784056184e-09,
+        "mean_abs_error_cm_per_day": 2.727823601453738e-10,
+        "rmse_cm_per_day": 3.537382087037379e-10,
+        "sign_mismatch_count": 0
+      },
+      "oracle_pass": false,
+      "rmse_improvement_factor": 9960231.767419357
+    }
+  },
+  "oracle_gate_pass": false,
+  "schema": "swap5.rom-purpose.p6a.lagged-boundary-operator-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "numerical_policy_changed": false,
+    "production_rom_authorized": false,
+    "reduced_state_sufficiency_adjudicated": false,
+    "solver_or_physics_changed": false,
+    "tolerance_changed": false
+  },
+  "status": "P6A_COMPLETE",
+  "work_unit": "ROM-PURPOSE-P6A-LAGGED-BOUNDARY-OPERATOR-ORACLE",
+  "workstream": "ROM-PURPOSE"
+}
