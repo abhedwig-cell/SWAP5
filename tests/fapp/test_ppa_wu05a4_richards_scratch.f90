@@ -6,6 +6,7 @@ program test_scratch_binding
   use mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_trial_exchange
   use mod_ppa_wu05a4_matrix_fraction
+  use mod_ppa_wu05a4_reduction_policy
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
   use mod_ppa_wu05a3_candidate_mass
@@ -159,12 +160,46 @@ program test_scratch_binding
   call nonlinear_callback_sequence()
   call interval_handoff()
   call check_matrix_fraction()
+  call check_reduction_policy()
+  print '(a)','PPA_WU05A4_REDUCTION_POLICY=PASS'
   call coupled_storage_check()
   print '(a)','PPA_WU05A4_LINEAR_MATRIX_MACRO_STORAGE_BALANCE=PASS'
   print '(a)','PPA_WU05A4_STATIC_MATRIX_FRACTION=PASS'
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine check_reduction_policy()
+    type(exchange_reduction_history)::history,proposal
+    logical::valid
+    integer::j
+    do j=1,3
+      call propose_exchange_retry(history,0.1_real64,proposal,valid)
+      call check(valid.and.proposal%decades==j.and.proposal%reduced_retry,200)
+      call check(history%decades==j-1,201)
+      history=proposal
+    end do
+    call propose_exchange_retry(history,0.1_real64,proposal,valid)
+    call check(.not.valid.and.history%decades==3,202)
+    do j=1,9
+      call propose_exchange_recovery(history,0.1_real64,proposal,valid)
+      call check(valid.and.proposal%decades==3.and.proposal%steps==j,203)
+      call check(.not.proposal%reduced_retry,204)
+      history=proposal
+    end do
+    call propose_exchange_recovery(history,0.1_real64,proposal,valid)
+    call check(valid.and.proposal%decades==2.and.proposal%steps==0,205)
+    history=proposal
+    call propose_exchange_recovery(history,0.2_real64,proposal,valid)
+    call check(valid.and.proposal%decades==1.and.proposal%steps==0,206)
+    call check(abs(proposal%previous_dt-0.2_real64)<tiny(1.0_real64),207)
+    history%decades=-1
+    call propose_exchange_retry(history,0.1_real64,proposal,valid)
+    call check(.not.valid,208)
+    history=exchange_reduction_history()
+    call propose_exchange_recovery(history,ieee_value(0.0_real64,ieee_quiet_nan),proposal,valid)
+    call check(.not.valid,209)
+  end subroutine
+
   ! Closed exchange with a manufactured linear matrix storage law, no vertical
   ! flow. Exercises physical volume weighting but is NOT full Richards.
   subroutine coupled_storage_check()

@@ -11,6 +11,14 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "reduction_policy_component": {
+    "baseline": "6796a272c",
+    "source": "B1.11 headcalc.f90 convergence recovery at lines 384-390 and retry increment at 444; production port retains the three-level retry ceiling.",
+    "implementation": "src/solver/mod_ppa_wu05a4_reduction_policy.f90",
+    "contract": "Pure proposal routines preserve input history. Retry increments reduction up to three and remembers dt without resetting the source step counter. Recovery clears retry flag and reduces one decade after ten converged steps or increased dt. Caller owns timestep-vs-exchange retry selection and physical acceptance.",
+    "scope": "Numerical-history component only; not connected to production owner or restart. Validity requires nonnegative bounded counters and finite positive current dt.",
+    "test_result": "Pending persisted replay"
+  },
   "trial_reduction_contract": {
     "baseline": "e10464322",
     "source": "B1.11 MACRORATE line 131: FrReduQ = 0.1d0**dble(IDecMpRat)",
