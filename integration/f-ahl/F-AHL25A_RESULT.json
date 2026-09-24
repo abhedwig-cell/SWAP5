@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25A",
+  "phase": "MODEL3_CORRECTED_SOURCE_INVENTORY_COMPLETE",
+  "status": "PASS_AUTHORITY_ISOLATED",
+  "workflow_run": 36049447491,
+  "workflow_job": 107801034471,
+  "decoded_source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "forward_entry_points": ["watcon(node,head)","moiscap(node,head)","hconduc(node,head,theta,rfcp)"],
+  "model3": {
+    "family": "bi-modal MvG",
+    "source_comment": "basic form without air-entry h_enpr or h_crit",
+    "active_primary_parameters": ["wcr","wcs","ksatfit","alfamg","lambda","n","m","alfa_2","n_2","m_2","omega_1"],
+    "cofgen_rows_for_second_mode": {"13":"alfa_2","14":"n_2","15":"m_2","16":"omega_1"},
+    "derived_rows_for_second_mode": {"37":"alfa_2*n_2*m_2","38":"n_2-1","39":"m_2+1","40":"1/m_2"},
+    "conductivity_runtime_dependencies": "head, theta and hydraulic parameters only; no soil-temperature dependency in the model-3 branch",
+    "conductivity_semantics": "weighted two-mode saturation plus bimodal Mualem conductivity expression, capped by the relsat>=1 saturated branch",
+    "inverse_authority": "SWAP-012 corrected numerical inversion of actual model-3 retention; 60/60 model-3 points passed the strict corrected-source round-trip gate"
+  },
+  "architecture_implication": "Model 3 can be treated as a parameter-only immutable hydraulic representation family. Unlike PDI, it does not require temperature in the K representation identity. This makes it the correct first non-unimodal generalization target.",
+  "next_action": "F-AHL25B: construct a research-only model-3 authoritative sampler and test derivative-consistent adaptive theta/C plus separately controlled K at constitutive level before any Richards integration.",
+  "nonclaims": ["NO_MODEL3_RICHARDS_QUALIFICATION","NO_PERFORMANCE_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
