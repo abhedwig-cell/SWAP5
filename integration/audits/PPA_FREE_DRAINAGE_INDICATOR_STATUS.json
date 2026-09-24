@@ -3,7 +3,9 @@
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
   "temporal_candidate": {
-    "status": "IMPLEMENTED_FINAL_PERSISTED_REPLAY_PENDING",
+    "status": "BOUNDED_ORACLE_QUALIFICATION_PASS_NOT_RUNTIME_ADMITTED",
+    "tested_commit": "84ad1fce0",
+    "result": "Persisted O0/O2 replay PASS, all three executable transcripts identical; 45 mode7 candidate/ledger/derivative/defect cases, Ksatexm rejection, absent-history and inconsistent-flux rejection, standard mode7 unavailable, unchanged FSI38 and FSI25 preserved.",
     "baseline": "05bfb8da5",
     "contract": "Separate explicit adapter, not standard solver dispatch. Same fixed-flux top, lagged interior conductivity, MvG and prescribed-source envelope as reference indicator. Bottom residual -qbot=K(candidate h_N) adds positive analytic dK/dh_N to the final diagonal, without the iteration Jacobian's half factor. Existing directional-provider analytic smooth derivative is reused; Ksatexm extension and nonsmooth branches are unavailable. No equation, tolerance, retry or state-owner change.",
     "verification": "45 real mode7 solves; derivative compared to two central difference steps; independent Thomas defect oracle uses finite-difference bottom stiffness. Cost is one tridiagonal solve and zero additional nonlinear trajectories. Bad qbot and absent history reject. Standard mode7 temporal rejection remains tested. FSI38/FSI25 unchanged preservation included.",
@@ -17,5 +19,5 @@
   "production_replay": "Default PPA-WU01 PowerShell runner at 9b4f6137e still fails O0 WU04C production owner commit, matching the known baseline failure. The balance diagnostic extension alone does not fix principal convergence or temporal integration. O2 bootstrap not reached. No production-success claim.",
   "invariants": [3, 7, 13, 23, 25],
   "scope": "Mode7 explicit-flux-top converged solves now publish existing final native residual and time-integrated residual. No equation, flux, budget, continuation schema, committed-state or temporal indicator admission change. Modes -2 and dynamic top remain outside this extension.",
-  "next_action": "Derive and independently qualify candidate-dependent bottom stiffness for an opt-in temporal service. Mode7 default temporal indicator remains unavailable. This diagnostic qualification does not close WU04C runtime/restart acceptance."
+  "next_action": "Integrate the separately qualified temporal service through an explicit runtime option and validate history/retry/restart ownership, retaining the default solver rejection. Address known WU04C principal convergence settings with a documented transient profile, not by relaxing mass gates. No runtime/restart closure claimed yet."
 }
