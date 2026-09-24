@@ -3,7 +3,9 @@
   "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
   "residual_experiment": {
     "baseline": "f05760c6d8e2daf379814df4415a51dcf6e1c5be",
-    "status": "SMALL_DT_AND_OWNER_EXPERIMENT_PASS_FULL_TRANSCRIPT_REPLAY_PENDING",
+    "status": "SMALL_DT_AND_OWNER_EXPERIMENT_PASS_NOT_PRODUCTION_INTEGRATED",
+    "full_transcript_tested_commit": "fb14bf768",
+    "full_transcript_evidence": "Owner composition PASS O0/O2 with 94,447 identical output lines including temporal certificates and WU04C per-tile diagnostics. Both transcript SHA256 D583252F96E9BC376DF069C3567835CF348905167C88BDE91F52EFDC77652E6C; build swap-ppa-wu01-a0762fd5a462472c9630c48e516d186b. WU04C each tile: status/kernel 0/0, 2358 accepted substeps, 27126 HeadCalc calls, 286783 nonlinear iterations. Cost is high; no efficiency claim.",
     "owner_tested_commit": "8a94ba3e8",
     "owner_evidence": "Disposable storage variant: WU04C and WU04D owner composition complete/commit on both tiles with unchanged 1e-12 cm hard mass gate at O0 and O2; original forcing amplitudes and half-day duration. Build swap-ppa-wu01-b465eb3973234e998a713518368e7ee0. Initial runner compared success markers only; strengthen to retain and compare complete numerical diagnostics next. Not a production integration or source-window/restart qualification.",
     "tested_commit": "fcd24308d",
@@ -11,7 +13,7 @@
     "builds": ["swap-free-drainage-d7281f13-fdd8-46fa-ab1c-08ecc6781fd3", "swap-free-drainage-3eb5ea7c-9258-471c-9ccd-2b9b2e6e157a"],
     "contract": "integration/audits/PPA_MVG_RESIDUAL_EXPERIMENT.md",
     "runner": "tests/fsi/run_ppa_free_drainage_small_dt.ps1 -StableStorageExperiment",
-    "next": "Replay full owner transcript identity, then design explicit opt-in production storage callback. No production source/shared interface changed."
+    "next": "Design and record explicit opt-in storage-difference callback through hydraulic evaluation context, backend and application configuration, default null. Bind only a compatible provider and fixed-flux/mode-7/no-macro envelope; unavailable leaves original subtraction. Qualify direct replay, default mode-2/5 preservation, configuration guards, owner, restart/rebind and source-window receipts before production admission. No need for user approval; no scientific blocker established by this experiment."
   },
   "provider_binding": {
     "status": "BOUNDED_PROVIDER_BINDING_PASS_NOT_INTEGRATED",

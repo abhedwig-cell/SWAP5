@@ -26,3 +26,25 @@ change. Local checkpoints only, as requested; remote publication is not in scope
 Implemented/tested status and outcome are recorded in the storage-difference status
 record. Next action: persist harness, execute paired default/candidate sweep, then
 decide whether a production opt-in interface is justified by the evidence.
+
+## Completed bounded evidence
+
+At fcd24308d the default small-step sweep converges in 14/20 cases; the stable
+storage variant converges in 17/20. All converged cases pass both unchanged mass
+checks, with identical O0/O2 transcripts within each variant. The two tiniest
+steps and the largest step remain rejected. This is not universal convergence.
+
+At fb14bf768 the disposable variant completes and commits the original WU04C
+and WU04D two-tile half-day owner cases with the unchanged hard mass gate.
+All 94,447 diagnostic lines match between O0/O2, not just PASS markers.
+Transcript SHA256 (both builds):
+`D583252F96E9BC376DF069C3567835CF348905167C88BDE91F52EFDC77652E6C`.
+Build: `swap-ppa-wu01-a0762fd5a462472c9630c48e516d186b` in the local temp directory.
+Each WU04C tile uses 2358 accepted substeps, 27126 HeadCalc calls and 286783
+nonlinear iterations. This demonstrates completion, not efficient production.
+
+The experiment justifies proceeding with a separately explicit numerical opt-in;
+it does not itself introduce it. Shared callback interface design, configuration
+forwarding, default-path regression, restart/rebind and accepted source-window
+receipt coverage remain subsequent work. Existing user-owned dirty files were
+not included in these checkpoints.
