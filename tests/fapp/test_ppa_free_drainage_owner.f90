@@ -226,8 +226,9 @@ contains
     request%evaluation%top_boundary=>top_provider
     request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
     call require(.not.low_rain_history%forcing_event_at_start,'low-rain diagnostic is beyond initial event')
-    do level=0,9
+    do level=0,19
       dt=low_rain_request%step_duration/2.0_real64**level
+      if(level>=10) dt=low_rain_request%step_duration*(1.0_real64-0.025_real64*real(level-9,real64))
       request%step_duration=dt
       call bind_b110_default_mvg_provider(provider,hydraulics,dt)
       call solver%solve(request,workspace,solution)
