@@ -9,7 +9,7 @@ program test_scratch_binding
   type(saturated_domain_inputs)::input
   type(reference_trial_transfer)::used
   type(macro_trial_key)::key
-  real(real64)::storage
+  real(real64)::storage,captured_begin,captured_end
   real(real64),allocatable::amount(:)
   integer(int64)::generation
   logical::ok
@@ -29,6 +29,10 @@ program test_scratch_binding
   call copy_reference_transfer(ws,used,key,amount,ok)
   call check(ok,5)
   call check(abs(storage-input%storage+sum(amount))<1.e-14_real64,6)
+  call copy_reference_budget(ws,used,key,[-0.5_real64,0.5_real64],1.0_real64, &
+      amount,captured_begin,captured_end,ok)
+  call check(ok,48)
+  call check(abs(captured_begin-0.375_real64)+abs(captured_end-0.25_real64)<1.e-14_real64,49)
   call initialize_reference_workspace(ws,2)
   call copy_reference_transfer(ws,used,key,amount,ok)
   call check(.not.ok.and..not.allocated(amount),12)
@@ -156,7 +160,7 @@ contains
     type(reference_richards_workspace_t),allocatable::trial_ws
     type(reference_trial_transfer)::capture
     type(macro_trial_key)::trial_key,old_key
-    real(real64)::h,dt,q,expected,trial_store,step,trial_h,alpha,base_norm
+    real(real64)::h,dt,q,expected,trial_store,step,trial_h,alpha,base_norm,begin_store,end_store
     real(real64),allocatable::transfer(:)
     logical::valid,converged,accepted
     integer::attempt,iteration,backtrack,rejections
@@ -226,6 +230,13 @@ contains
       call check(valid,107)
       call check(abs(sum(transfer)-q*dt)<1.e-14_real64,108)
       call check(abs(trial_store-input%storage+sum(transfer))<1.e-14_real64,109)
+      input%storage=999
+      call copy_reference_budget(trial_ws,capture,trial_key,[-0.5_real64,h],dt, &
+          transfer,begin_store,end_store,valid)
+      input%storage=0.375_real64
+      call check(valid,121)
+      call check(abs(begin_store-input%storage)+abs(end_store-trial_store)<1.e-14_real64,122)
+      call check(abs(end_store-begin_store+sum(transfer))<1.e-14_real64,123)
       call check(abs(input%storage-0.375_real64)<1.e-14_real64,110)
       old_key=trial_key
       old_key%attempt=old_key%attempt+1
@@ -245,6 +256,11 @@ contains
       call check(.not.valid.and..not.allocated(transfer),115)
       call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid)
       call check(.not.valid.and..not.allocated(transfer),116)
+      begin_store=999; end_store=999
+      call copy_reference_budget(trial_ws,capture,trial_key,[-0.5_real64,h],dt, &
+          transfer,begin_store,end_store,valid)
+      call check(.not.valid.and..not.allocated(transfer),124)
+      call check(abs(begin_store)+abs(end_store)<1.e-14_real64,125)
     end do
     call discard_reference_transfer(capture)
     call release_reference_workspace(trial_ws)

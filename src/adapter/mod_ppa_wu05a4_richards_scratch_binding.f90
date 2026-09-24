@@ -12,10 +12,12 @@ module mod_ppa_wu05a4_richards_scratch_binding
     private
     integer(int64)::generation=0
     integer::nodes=0
+    real(real64)::begin_storage=0,candidate_storage=0
     type(macro_used_exchange)::used
   end type
   public::apply_saturated_reference_scratch,copy_reference_transfer,discard_reference_transfer
   public::apply_saturated_reference_residual,apply_reference_trial_diagonal
+  public::copy_reference_budget
 contains
   ! Caller rebuilds the ordinary matrix residual before each evaluation and uses
   ! a new evaluation key for changed heads. No diagonal is touched here.
@@ -40,6 +42,8 @@ contains
     if(ok)then
       used%generation=workspace%generation
       used%nodes=workspace%active_nodes
+      used%begin_storage=input%storage
+      used%candidate_storage=storage_candidate
     end if
   end subroutine
 
@@ -96,6 +100,23 @@ contains
     if(.not.ok.and.(present(head).or.present(dt)))call discard_reference_transfer(record)
   end subroutine
 
+  ! Candidate-only paired budget from the actual residual evaluation. Do not
+  ! recompute storage or read mutable physical inputs during final accounting.
+  subroutine copy_reference_budget(workspace,record,key,head,dt,amount,begin_storage,candidate_storage,ok)
+    type(reference_richards_workspace_t),intent(in)::workspace
+    type(reference_trial_transfer),intent(inout)::record
+    type(macro_trial_key),intent(in)::key
+    real(real64),intent(in)::head(:),dt
+    real(real64),allocatable,intent(out)::amount(:)
+    real(real64),intent(out)::begin_storage,candidate_storage
+    logical,intent(out)::ok
+    begin_storage=0; candidate_storage=0
+    call copy_reference_transfer(workspace,record,key,amount,ok,head,dt)
+    if(.not.ok)return
+    begin_storage=record%begin_storage
+    candidate_storage=record%candidate_storage
+  end subroutine
+
   subroutine apply_saturated_reference_scratch(input,head,dt,key,expected_generation, &
       derivative_enabled,workspace,used,storage_candidate,ok,pond)
     type(saturated_domain_inputs),intent(in)::input
@@ -120,6 +141,8 @@ contains
     if(ok) then
       used%generation=workspace%generation
       used%nodes=workspace%active_nodes
+      used%begin_storage=input%storage
+      used%candidate_storage=storage_candidate
     end if
   end subroutine
 end module

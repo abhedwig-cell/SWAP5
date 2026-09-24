@@ -19,6 +19,12 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "paired_storage_contract": {
+    "baseline": "0cd824efb",
+    "design": "Capture beginning and candidate scalar macropore storage in the private reference transfer record after successful residual/system assembly. Add copy_reference_budget requiring heads and duration, returning transfer and both captured stores together only on successful identity checks. Failure returns no amount and zero scalar outputs.",
+    "scope": "Restricted single-domain candidate budget only, not an A2 continuation payload or whole-column physical acceptance. No committed owner, frozen provider ABI or production HeadCalc changes.",
+    "test_result": "Pending"
+  },
   "backtracking_verification": {
     "baseline": "3bc88886e",
     "scope": "Manufactured nonlinear callback driver now starts with eightfold overrelaxation and halves the step until the residual norm drops by at least half. This deliberately exercises rejection and reevaluation; it is not the production HeadCalc line-search policy or legacy frozen-exchange branch.",
