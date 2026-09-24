@@ -292,3 +292,32 @@ The poison test is stronger than a normal repeated-run test: any omitted initial
 H7 does not remove `reset_reference_workspace`; the full-reset API remains available for callers/tests requiring an explicitly zeroed workspace. H7 introduces a separate solve-preparation operation for the hot path.
 
 No physics, tolerance, timestep, transaction, H03, F-AHL or approximate-mode change is authorized.
+
+
+## H7 quantitative reset-volume consequence
+
+The existing `reference_workspace_payload_bytes` accounting gives the normal compact-workspace full-reset payload:
+
+```text
+payload_bytes(n) = 196*n + 28
+```
+
+for the current type sizes and compact `tridag_gamma(n)` layout. This reproduces the earlier measured four-node payload exactly:
+
+```text
+n=4    -> 812 bytes
+n=60   -> 11,788 bytes
+n=200  -> 39,228 bytes
+n=1000 -> 196,028 bytes
+```
+
+PROFILE01 measured two redundant full resets at approximately 5.41 us per 1000-node Reference solve on the shared runner, implying roughly 2.7 us per full reset on that runner class. H1/H2 removed the first two full resets; H7 removes the remaining bulk reset from the production solve hot path while retaining only a handful of scalar/sentinel writes.
+
+Therefore the reset-specific zero-waste line removes approximately three full payload writes per Reference solve relative to the original PROFILE01 path:
+
+```text
+original PROFILE01: 3 * (196*n + 28) bytes written per solve
+H7 candidate:       0 full-reset payload bytes per solve
+```
+
+At n=1000 this is about 588 kB of avoidable bulk writes per Reference solve. This is a data-movement statement, not yet a whole-model speedup claim.
