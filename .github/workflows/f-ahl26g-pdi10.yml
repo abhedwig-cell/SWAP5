@@ -1,0 +1,21 @@
+name: F-AHL26G PDI10 attribution and dry envelope
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/test_ahl26g_pdi10.f90'
+      - 'research/ahl/run_ahl26g_pdi10.sh'
+      - 'research/ahl/mod_ahl26f_pdi_lookup.f90'
+      - 'integration/f-ahl/F-AHL26G_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl26g-pdi10.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl26g_pdi10.sh /tmp/ahl26g.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl26g-${{ github.run_id }}
+          path: /tmp/ahl26g.txt
