@@ -60,6 +60,27 @@ program test_scratch_binding
   ws%dfdh_main=1
   call run(generation)
   call check(ok,17)
+  call reset_reference_workspace(ws)
+  ws%dfdh_main=1
+  input%matrix_top=-9; input%matrix_level=999
+  key%evaluation=2
+  call apply_saturated_reference_scratch(input,[-0.5_real64,0.25_real64],1.0_real64,key, &
+      generation,.true.,ws,used,storage,ok,pond=0.0_real64)
+  call check(ok,19)
+  call check(abs(ws%residual(2)+1.0_real64/6)<1.e-14_real64,20)
+  call check(abs(ws%dfdh_main(2)-11.0_real64/9)<1.e-14_real64,21)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(ok,22)
+  call check(abs(storage-input%storage+sum(amount))<1.e-14_real64,23)
+  call check(input%matrix_top==-9.and.abs(input%matrix_level-999)<1.e-14_real64,24)
+  key%evaluation=3
+  call apply_saturated_reference_scratch(input,[-0.5_real64,-0.25_real64],1.0_real64,key, &
+      generation,.true.,ws,used,storage,ok,pond=0.0_real64)
+  call check(.not.ok,25)
+  call check(abs(ws%residual(2)+1.0_real64/6)<1.e-14_real64,26)
+  call check(abs(ws%dfdh_main(2)-11.0_real64/9)<1.e-14_real64,27)
+  call copy_reference_transfer(ws,used,key,amount,ok)
+  call check(.not.ok.and..not.allocated(amount),28)
   call release_reference_workspace(ws)
   call copy_reference_transfer(ws,used,key,amount,ok)
   call check(.not.ok,18)
@@ -68,6 +89,7 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_REFERENCE_SCRATCH_BINDING=PASS'
   print '(a)','PPA_WU05A4_REFERENCE_SCRATCH_GENERATION_POISON=PASS'
   print '(a)','PPA_WU05A4_REFERENCE_TRANSFER_LIFETIME=PASS'
+  print '(a)','PPA_WU05A4_REFERENCE_HEAD_DERIVED_ASSEMBLY=PASS'
 contains
   subroutine run(expected)
     integer(int64),intent(in)::expected

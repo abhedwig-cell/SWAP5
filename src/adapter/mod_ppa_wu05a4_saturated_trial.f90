@@ -47,7 +47,7 @@ contains
   ! Candidate-only assembly: residual and diagonal must belong to one evaluation.
   ! If either application fails, neither caller vector is changed.
   subroutine evaluate_saturated_system(input,head,dt,key,derivative_enabled,residual,diagonal, &
-      used,storage_candidate,ok)
+      used,storage_candidate,ok,pond)
     type(saturated_domain_inputs),intent(in)::input
     real(real64),intent(in)::head(:),dt
     type(macro_trial_key),intent(in)::key
@@ -57,12 +57,13 @@ contains
     real(real64),intent(out)::storage_candidate
     logical,intent(out)::ok
     type(macro_used_exchange)::trial_used
+    real(real64),optional,intent(in)::pond
     real(real64),allocatable::trial_residual(:),trial_diagonal(:)
     real(real64)::trial_storage
     call discard_macro_exchange(used)
     storage_candidate=0
     trial_residual=residual; trial_diagonal=diagonal
-    call evaluate_saturated_residual(input,head,dt,key,trial_residual,trial_used,trial_storage,ok)
+    call evaluate_saturated_residual(input,head,dt,key,trial_residual,trial_used,trial_storage,ok,pond)
     if(.not.ok)return
     call apply_macro_diagonal(trial_used,key,derivative_enabled,trial_diagonal,ok)
     if(.not.ok)return
@@ -101,7 +102,7 @@ contains
 
   ! A failed preparation must not leave the previous residual's transfer usable.
   ! Scalar candidate storage is exposed only after successful residual application.
-  subroutine evaluate_saturated_residual(input,head,dt,key,residual,used,storage_candidate,ok)
+  subroutine evaluate_saturated_residual(input,head,dt,key,residual,used,storage_candidate,ok,pond)
     type(saturated_domain_inputs),intent(in)::input
     real(real64),intent(in)::head(:),dt
     type(macro_trial_key),intent(in)::key
@@ -110,10 +111,15 @@ contains
     real(real64),intent(out)::storage_candidate
     logical,intent(out)::ok
     type(macro_exchange_evaluation)::evaluation
+    real(real64),optional,intent(in)::pond
     real(real64)::trial_storage
     call discard_macro_exchange(used)
     storage_candidate=0
-    call prepare_saturated_trial(input,head,dt,key,evaluation,trial_storage,ok)
+    if(present(pond))then
+      call prepare_saturated_from_heads(input,head,pond,dt,key,evaluation,trial_storage,ok)
+    else
+      call prepare_saturated_trial(input,head,dt,key,evaluation,trial_storage,ok)
+    end if
     if(.not.ok)return
     call apply_macro_residual(evaluation,key,head,residual,used,ok)
     if(.not.ok)return

@@ -35,7 +35,7 @@ contains
   end subroutine
 
   subroutine apply_saturated_reference_scratch(input,head,dt,key,expected_generation, &
-      derivative_enabled,workspace,used,storage_candidate,ok)
+      derivative_enabled,workspace,used,storage_candidate,ok,pond)
     type(saturated_domain_inputs),intent(in)::input
     real(real64),intent(in)::head(:),dt
     type(macro_trial_key),intent(in)::key
@@ -45,6 +45,7 @@ contains
     type(reference_trial_transfer),intent(out)::used
     real(real64),intent(out)::storage_candidate
     logical,intent(out)::ok
+    real(real64),optional,intent(in)::pond
     call discard_reference_transfer(used)
     storage_candidate=0; ok=.false.
     if(workspace%poisoned)return
@@ -53,7 +54,7 @@ contains
     if(.not.allocated(workspace%residual).or..not.allocated(workspace%dfdh_main))return
     if(size(workspace%residual)/=size(head).or.size(workspace%dfdh_main)/=size(head))return
     call evaluate_saturated_system(input,head,dt,key,derivative_enabled,workspace%residual, &
-        workspace%dfdh_main,used%used,storage_candidate,ok)
+        workspace%dfdh_main,used%used,storage_candidate,ok,pond)
     if(ok) then
       used%generation=workspace%generation
       used%nodes=workspace%active_nodes
