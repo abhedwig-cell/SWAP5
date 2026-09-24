@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26I",
+  "phase": "PDI_NOVAP_PAIRED_RICHARDS_TIMING_COMPLETE",
+  "status": "PASS_USEFUL_SPEED_CANDIDATE",
+  "workflow_run": 36053487373,
+  "workflow_job": 107814622368,
+  "case_median_candidate_over_analytical_ratios": {
+    "PDI8_REFERENCE:wet": 0.443097,
+    "PDI8_REFERENCE:mid": 0.426564,
+    "PDI8_REFERENCE:dry": 0.466163,
+    "PDI10_BIMODAL:wet": 0.346791,
+    "PDI10_BIMODAL:mid": 0.344444,
+    "PDI10_BIMODAL:dry": 0.356709
+  },
+  "cpu_reduction_fraction_range": [0.533837,0.655556],
+  "six_case_median_ratio": 0.3916365,
+  "six_case_median_cpu_reduction_fraction": 0.6083635,
+  "finding": "The final strict PDI NoVap representation is substantially faster than the analytical research provider in every qualified case while preserving the closed F-AHL26H fidelity and nonlinear-path matrix.",
+  "family_pattern": {
+    "PDI8_reduction_fraction_range": [0.533837,0.573436],
+    "PDI10_reduction_fraction_range": [0.643291,0.655556]
+  },
+  "limits": [
+    "NoVap source route only",
+    "two preregistered PDI parameter families",
+    "controlled Richards fixtures, not whole-SWAP wall time",
+    "PDI10 dry uses the reference-qualified dt=0.125 day fixture"
+  ],
+  "vapor_enabled_status": "NOT_QUALIFIED_DUE_TO_F_AHL26D0_UPSTREAM_SOURCE_TEMPERATURE_SEMANTICS_FAILURE",
+  "production_status": "NOT_ADMITTED"
+}
