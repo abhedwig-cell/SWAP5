@@ -8,6 +8,11 @@
   "migration_closure_ledger": "integration/audits/SWAP4_TO_SWAP5_MIGRATION_CLOSURE_LEDGER.json",
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
+  "latest_atm02_owner_checkpoint": {
+    "tested_commit": "0dc7b93a3",
+    "record": "integration/audits/PPA_ATM02_PRODUCTION_COMPOSITION_PREREGISTRATION.json",
+    "scope": "Explicit storage/temporal/dense-retry profile completes two unchanged-weather PMdirect intervals with active prescribed roots, exact fresh hydraulic/history restart, accepted root amount and hard mass. O0/O2 full transcripts match. Not the historical non-opt-in profile, changed-weather event support, general weather decoding or canonical admission."
+  },
   "latest_storage_owner_checkpoint": {
     "tested_commit": "206dbf73e",
     "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
@@ -104,7 +109,7 @@
     "status": "AVAILABLE_BY_EXPLICIT_PATH; Codex PATH refresh pending"
   },
   "blockers": [
-    "PPA-ATM-02 continuation: committed-top and owner restart APIs exist, but the bounded two-interval composition case does not pass its first Reference Richards transaction (status 2, zero accepted substeps at O0/O2); isolate the configured nonlinear rejection without weakening solver, retry or mass gates.",
+    "PPA-ATM-02 historical non-opt-in scenario fails its first transaction, but the separate explicit storage/temporal/0.8-retry prescribed-root profile now passes both intervals and fresh restart at 0dc7b93a3. Changed-weather events with active roots still require a bounded derivative/guard extension; general file/calendar input and admission remain open.",
     "B2 integrated reference-mode comparison remains fail-closed",
     "macropore production migration requires a single Richards interval owner plus restart/rollback and internal/external mass-transfer qualification",
     "B1.11 ABSORPTION reads local SorpFac outside its assignment branch, so Darcy-disabled/out-of-interval production arbitration is stale or undefined; isolated oracles cover only defined source branches until owner semantics are resolved",

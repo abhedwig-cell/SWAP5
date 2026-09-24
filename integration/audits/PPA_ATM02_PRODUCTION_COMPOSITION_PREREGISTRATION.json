@@ -2,6 +2,14 @@
   "schema_version": "1.0",
   "work_unit": "PPA-ATM-02-PRODUCTION-COMPOSITION",
   "state": "RESTRICTED_TWO_INTERVAL_RESTART_OWNER_QUALIFIED",
+  "explicit_numerical_owner_successor": {
+    "tested_commit": "0dc7b93a3",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Atm02",
+    "result": "PASS O0/O2, 1684273 identical lines SHA256 1AA2CAC23663DA003BF24447FA73D8C4ACB9997025C45F72B14FFD1B0539CB4C, build swap-ppa-wu01-9a9886f8fc9643e99bef1e12e70f1a0b. Two half-day intervals under unchanged PMdirect weather/canopy values, source records 44/45, root_extraction_active with nonzero prescribed uptake. Both original and independently initialized/restored owners complete each interval, preserving full hydraulic state, temporal history and provenance exactly. Each accepted transpiration amount equals sum(prescribed root vector)*interval duration within 1e-12; accepted receipts are ready and hard mass is <=1e-12. Accepted steps per tile are 4052 then 7860; no efficiency claim.",
+    "profile": "Explicit stable-storage callback, concrete prescribed-root-compatible free-drainage temporal indicator, initial analytical derivative including root sink, model temporal budget 1e-5, retry_scale 0.8/max_retries 64, max_iterations 40, max accepted substeps 16384, mode 7 fixed-flux reference solver. Existing PMdirect fixture weather amplitudes and hard mass/native convergence criteria retained. No production implementation or default numerical policy changed.",
+    "scope": "SWINTER=0 only, no fictitious interception-progress amounts. Second interval uses owner-issued committed-top snapshot and asserts identical effective top/root forcing; event callback count remains zero. Does not qualify changed-weather events with roots, file/calendar decoding, stateful root stress, disk restart, general dynamic-top regimes or canonical admission. The historical non-opt-in first-transaction failure is not erased by this separate successful numerical profile.",
+    "next": "Design a bounded right-limit derivative extension for the exact concrete prescribed-root provider before testing changed-weather events. Subtract its finite nonnegative fixed root vector exactly once, preserve zero-root source-sink binding and fail-closed unsupported root policies, and keep default-false event behavior. Require direct derivative/guard oracles, failed/partial rollback, changed-weather restart and root-inactive preservation before any expanded qualification."
+  },
   "baseline": "9e84afcb3",
   "purpose": "Deliver one validated typed effective-forcing vector to the existing PPA-WU01 production owner from decoded PMdirect/SWINTER=0 records without creating a second state, transaction, mass or restart owner.",
   "owner_boundary": {
