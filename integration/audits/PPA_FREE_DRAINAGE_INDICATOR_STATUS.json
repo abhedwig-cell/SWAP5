@@ -2,6 +2,13 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
+  "small_step_diagnosis": {
+    "tested_commit": "b0c95387d",
+    "gate": "tests/fsi/run_ppa_free_drainage_small_dt.ps1",
+    "result": "20-step sweep O0/O2 identical. Diagnostic completes successfully, not all physical solves. At dt=3.05176e-5 d solve converges with max rate residual 5.69322e-13. At dt=1.52588e-5 d solve rejects with residual 2.83382e-12 and balance flags true while head flags false; smaller steps likewise reject on balance alone. Base heads/water remain unchanged.",
+    "interpretation": "Computed water-content representational spacing scaled by dz/dt is 3.63798e-12 at the first small-step rejection, above the fixed 1e-12 rate criterion. This supports a cancellation/roundoff limitation in theta differences divided by dt; it is not a rigorous impossibility bound or permission to relax conservation.",
+    "next": "Investigate a separately qualified cancellation-resistant constitutive storage difference or higher-precision residual evaluation. Preserve original solver path and hard ledger gate; do not treat a diagnostic PASS as WU04C closure."
+  },
   "application_opt_in": {
     "baseline": "61cac830a",
     "status": "IMPLEMENTED_STRONG_TRANSIENT_OWNER_TEST_FAILS",
