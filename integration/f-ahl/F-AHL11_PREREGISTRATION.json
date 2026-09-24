@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11",
+  "title": "Wet-dry fidelity attribution",
+  "parent": "F-AHL10",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "For the six F-AHL10 cases that fail end-state fidelity while preserving the analytical Newton path, is the amplified response error controlled primarily by retention accuracy, conductivity accuracy, or both?",
+  "frozen_failed_cases": [
+    "B01_wet",
+    "B01_dry",
+    "B12_wet",
+    "B12_dry",
+    "O05_wet",
+    "O14_dry"
+  ],
+  "prospective_variants": [
+    {"id":"base","theta_span_tolerance":1e-5,"logK_tolerance":1e-2},
+    {"id":"theta3","theta_span_tolerance":3e-6,"logK_tolerance":1e-2},
+    {"id":"k3","theta_span_tolerance":1e-5,"logK_tolerance":3e-3},
+    {"id":"both3","theta_span_tolerance":3e-6,"logK_tolerance":3e-3}
+  ],
+  "capacity_policy": "C remains the derivative of the same retention Hermite interpolant; its independent admissibility ceiling remains abs(log C error)<=1e-2.",
+  "frozen_richards_gates": {
+    "same_nonlinear_iteration_count_as_analytical": true,
+    "same_backtracking_count_as_analytical": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "interpretation_rule": "Attribute a regime failure to retention or conductivity only when tightening that single family materially reduces the failed Richards observable while the Newton path remains unchanged. Do not relax the Richards gates.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
