@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04A",
+  "phase": "O0_PREREGISTERED_GATE_EXECUTED",
+  "status": "FAIL",
+  "branch_head": "e61dd178c4c3d919826f54eaa6bbb84e5f02ea87",
+  "workflow_run": 36039942353,
+  "workflow_job": 107769311054,
+  "contract": "integration/f-ahl/F-AHL04A_CONTRACT.json",
+  "compiler_mode": "O0",
+  "results": {
+    "fixed50": {
+      "max_abs_pressure_head_delta_cm": 0.005165382,
+      "max_abs_water_content_delta": 3.072351e-5,
+      "top_flux_delta_cm_per_day": 0.0,
+      "bottom_flux_delta_cm_per_day": 1.693745e-4,
+      "mass_residual_abs_cm": 1.353084e-16,
+      "nonlinear_iteration_delta": 2,
+      "backtracking_delta": 2,
+      "verdict": "FAIL_BOTTOM_FLUX"
+    },
+    "fixed100": {
+      "max_abs_pressure_head_delta_cm": 0.002170221,
+      "max_abs_water_content_delta": 2.148240e-5,
+      "top_flux_delta_cm_per_day": 0.0,
+      "bottom_flux_delta_cm_per_day": 2.042812e-4,
+      "mass_residual_abs_cm": 1.379105e-16,
+      "nonlinear_iteration_delta": 1,
+      "backtracking_delta": 1,
+      "verdict": "FAIL_BOTTOM_FLUX"
+    },
+    "adaptive": {
+      "max_abs_pressure_head_delta_cm": 3.415032e-4,
+      "max_abs_water_content_delta": 3.215794e-6,
+      "top_flux_delta_cm_per_day": 0.0,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5,
+      "mass_residual_abs_cm": 3.452100e-16,
+      "nonlinear_iteration_delta": 1,
+      "backtracking_delta": 1,
+      "verdict": "FAIL_BOTTOM_FLUX"
+    }
+  },
+  "gate": {
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12,
+    "max_nonlinear_iteration_count_delta": 2,
+    "max_backtracking_attempt_count_delta": 2
+  },
+  "interpretation": [
+    "All three representations fail only the preregistered bottom-flux gate.",
+    "The adaptive representation is substantially closer to the analytical Richards response than either fixed baseline on pressure head, water content and bottom flux.",
+    "Increasing a uniform fixed table from 50 to 100 points does not monotonically improve bottom-flux agreement in this nonlinear fixture.",
+    "No gate is retuned after observing these data."
+  ],
+  "next_action": "Preregister a constitutive-error attribution sweep to determine which lookup component controls the remaining bottom-flux discrepancy before any broader Richards timing claim."
+}
