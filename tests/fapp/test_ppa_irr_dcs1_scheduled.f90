@@ -1,0 +1,133 @@
+program test_ppa_irr_dcs1_scheduled
+  use, intrinsic :: iso_fortran_env, only: real64,int64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
+  use mod_irrigation_process
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_ppa_irr_dcs1_depth, only: evaluate_dcs1_depth,IRR_DCS1_OK
+  implicit none
+  type(scheduled_irrigation_parameters_t)::p,saved
+  type(scheduled_irrigation_request_t)::r
+  type(irrigation_state_t)::base,candidate,first
+  type(irrigation_flux_result_t)::f
+  type(irrigation_diagnostics_t)::d
+  type(process_hydraulic_view_t)::h
+  real(real64)::correction,raw,expected,oracle,oracle_correction,rate,duration,amount,nan
+  integer::i,code
+  p%scheduled_irrigation_enabled=.true.; p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+  p%active_nodes=2; p%sensor_node=1; p%single_ssdi_node=2
+  p%tcs7_knot_count=2; p%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%tcs7_pressure_head(1:2)=-1.0_real64
+  p%dcs1_knot_count=2; p%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%rain_threshold_cm=0.5_real64
+  p%solute_enabled=.true.; p%solute_overirrigation_enabled=.true.
+  p%solute_concentration_threshold=1.0_real64; p%solute_overirrigation_percent=25.0_real64
+  p%minimum_depth_mm=2.0_real64; p%maximum_depth_mm=8.0_real64
+  h%active_nodes=2; allocate(h%pressure_head(2),h%water_content(2))
+  h%pressure_head=-10.0_real64; h%water_content=0.2_real64
+  r%t0=0.0_real64
+  r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
+  r%crop_emerged=.true.; r%irrigation_window_open=.true.
+  do i=1,100000
+    r%dvs=real(modulo(i,129),real64)/64.0_real64
+    r%deficit_cm=real(modulo(3*i,257),real64)/64.0_real64-1.0_real64
+    r%rainfall_cm=real(modulo(i,5),real64)/4.0_real64
+    r%sensor_solute_concentration=real(modulo(i,3),real64)
+    p%dcs1_correction_mm(1)=real(modulo(i,201)-100,real64)
+    p%dcs1_correction_mm(2)=real(modulo(7*i,201)-100,real64)
+    p%depth_limit_enabled=modulo(i,2)==0
+    p%single_ssdi_node=modulo(i,2)+1
+    p%irr_rate_cm_per_day=real(modulo(i,4),real64)/2.0_real64
+    correction=p%dcs1_correction_mm(1)+r%dvs* &
+         ((p%dcs1_correction_mm(2)-p%dcs1_correction_mm(1))/2.0_real64)
+    raw=r%deficit_cm+correction*0.1_real64
+    if(r%rainfall_cm>p%rain_threshold_cm) raw=raw-r%rainfall_cm
+    raw=max(0.0_real64,raw)
+    expected=raw
+    if(p%depth_limit_enabled) then
+      expected=max(expected,p%minimum_depth_mm*0.1_real64)
+      expected=min(expected,p%maximum_depth_mm*0.1_real64)
+    end if
+    if(r%sensor_solute_concentration>1.0_real64) expected=expected+0.01_real64*25.0_real64*expected
+    call evaluate_dcs1_depth(r%dvs,p%dcs1_dvs,p%dcs1_correction_mm,2,r%deficit_cm,r%rainfall_cm, &
+         p%rain_threshold_cm,p%depth_limit_enabled,p%minimum_depth_mm,p%maximum_depth_mm, &
+         .true.,r%sensor_solute_concentration,1.0_real64,25.0_real64,oracle,oracle_correction,code)
+    call require(code==IRR_DCS1_OK.and.transfer(oracle,0_int64)==transfer(expected,0_int64), &
+         'independent DCS1 helper matches source formula')
+    duration=1.0_real64; rate=expected
+    if(p%irr_rate_cm_per_day>0.0_real64.and.expected<=p%irr_rate_cm_per_day) then
+      rate=p%irr_rate_cm_per_day; duration=expected/rate
+    end if
+    r%t1=max(duration,0.125_real64)
+    if(expected>0.0_real64) r%t1=duration
+    call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+    if(expected<=0.0_real64) then
+      call require(d%status==IRRIGATION_INVALID_EVENT.and..not.f%applied,'zero depth rejects without event')
+    else
+      call require(d%status==IRRIGATION_OK.and.f%applied.and.f%event_finished,'DCS1 complete event')
+      call require(transfer(d%interpolated_depth,0_int64)==transfer(raw,0_int64),'raw DCS1 amount exact')
+      call require(transfer(f%event_duration,0_int64)==transfer(duration,0_int64),'duration exact')
+      call require(transfer(f%subsurface_source(p%single_ssdi_node),0_int64)==transfer(rate,0_int64), &
+           'source rate exact')
+      call require(abs(f%external_inflow_amount-expected)<=8.0_real64*epsilon(expected)*max(1.0_real64,expected), &
+           'DCS1 source amount conserved')
+    end if
+    call require(.not.base%active_event,'committed input unchanged')
+  end do
+  write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_SOURCE_ORACLE_100000=PASS'
+
+  p%dcs1_correction_mm=0.0_real64; p%depth_limit_enabled=.false.; p%solute_enabled=.false.
+  p%irr_rate_cm_per_day=0.0_real64; r%deficit_cm=1.0_real64; r%rainfall_cm=0.5_real64
+  r%dvs=1.0_real64; r%t1=0.25_real64
+  call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and.abs(d%interpolated_depth-1.0_real64)<epsilon(1.0_real64), &
+       'rain threshold equality subtracts no rainfall')
+  first=candidate; amount=f%external_inflow_amount
+  call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+  call require(transfer(amount,0_int64)==transfer(f%external_inflow_amount,0_int64),'same-boundary retry exact')
+  nan=ieee_value(0.0_real64,ieee_quiet_nan)
+  r%deficit_cm=nan; r%rainfall_cm=nan; r%dvs=nan; r%t0=0.25_real64; r%t1=1.0_real64
+  call evaluate_scheduled_irrigation_interval(p,first,r,h,candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and.f%event_finished,'active event ignores new demand inputs')
+  call require(abs(amount+f%external_inflow_amount-1.0_real64)<epsilon(1.0_real64),'copied-state continuation total')
+  write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_RAIN_RETRY_CONTINUATION=PASS'
+
+  r%t0=0.0_real64; r%t1=1.0_real64; r%dvs=1.0_real64
+  saved=p
+  do i=1,10
+    p=saved; r%deficit_cm=1.0_real64; r%rainfall_cm=0.0_real64
+    select case(i)
+    case(1); r%deficit_cm=nan
+    case(2); r%rainfall_cm=-1.0_real64
+    case(3); r%deficit_cm=1.0e6_real64+1.0_real64
+    case(4); r%rainfall_cm=1.0e6_real64+1.0_real64
+    case(5); p%rain_threshold_cm=1001.0_real64
+    case(6); p%dcs1_correction_mm(1)=101.0_real64
+    case(7); p%dcs1_knot_count=0
+    case(8); p%depth_criterion=3
+    case(9); p%dcs1_dvs(2)=1.0e-310_real64; p%dcs1_correction_mm(2)=100.0_real64
+    case(10); p%dcs1_correction_mm(1)=nan
+    end select
+    call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+    call require(d%status==IRRIGATION_INVALID_PARAMETERS.and..not.f%applied.and..not.candidate%active_event, &
+         'invalid DCS1 input publishes nothing')
+  end do
+  p=saved; r%deficit_cm=nan; r%rainfall_cm=nan; h%pressure_head=0.0_real64
+  call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and..not.d%triggered,'untriggered demand inputs ignored')
+  h%pressure_head=-10.0_real64
+  p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
+  p%dcs2_knot_count=2; p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
+  p%dcs1_knot_count=0; p%rain_threshold_cm=nan
+  call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and.abs(f%external_inflow_amount-0.5_real64)<epsilon(1.0_real64), &
+       'DCS2 ignores inactive DCS1 fields')
+  write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_GUARDS_DCS2_PRESERVATION=PASS'
+contains
+  subroutine require(ok,message)
+    logical,intent(in)::ok
+    character(*),intent(in)::message
+    if(ok)return
+    write(*,'(a)') message
+    error stop 1
+  end subroutine
+end program

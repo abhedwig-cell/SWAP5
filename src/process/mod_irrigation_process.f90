@@ -28,6 +28,8 @@ module mod_irrigation_process
 
   integer, parameter, public :: IRRIGATION_TIMING_TCS7_PRESSURE_HEAD = 7
   integer, parameter, public :: IRRIGATION_TIMING_TCS8_WATER_CONTENT = 8
+  integer, parameter, public :: IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY = 1
+  integer, parameter, public :: IRRIGATION_DEPTH_DCS2_FIXED = 2
 
   type, public :: fixed_irrigation_event_t
     real(real64) :: event_time = 0.0_real64
@@ -69,6 +71,11 @@ module mod_irrigation_process
     logical :: depth_limit_enabled = .false.
     real(real64) :: minimum_depth_mm = 0.0_real64
     real(real64) :: maximum_depth_mm = 1.0e7_real64
+    integer :: depth_criterion = IRRIGATION_DEPTH_DCS2_FIXED
+    integer :: dcs1_knot_count = 0
+    real(real64) :: dcs1_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: dcs1_correction_mm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: rain_threshold_cm = 0.0_real64
   end type scheduled_irrigation_parameters_t
 
   type, public :: irrigation_state_t
@@ -97,6 +104,8 @@ module mod_irrigation_process
     logical :: crop_emerged = .false.
     logical :: irrigation_window_open = .false.
     logical :: fixed_event_already_selected = .false.
+    real(real64) :: deficit_cm = 0.0_real64
+    real(real64) :: rainfall_cm = 0.0_real64
   end type scheduled_irrigation_request_t
 
   type, public :: irrigation_flux_result_t
@@ -271,6 +280,7 @@ contains
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
     real(real64) :: threshold, observed_value, depth, duration, event_end, event_rate, effective_t0, effective_t1
+    real(real64) :: correction_mm, rainfall_reduction
     logical :: ok, finishes_at_event_end
 
     candidate_state = committed_state
@@ -389,8 +399,29 @@ contains
     if (observed_value > threshold) return
     diagnostics%triggered = .true.
 
-    call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
-                          request%dvs, depth, ok)
+    select case (parameters%depth_criterion)
+    case (IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY)
+      if (.not. ieee_is_finite(request%deficit_cm).or..not. ieee_is_finite(request%rainfall_cm)) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      if (abs(request%deficit_cm)>1.0e6_real64.or.request%rainfall_cm<0.0_real64.or. &
+          request%rainfall_cm>1.0e6_real64.or.request%dvs<0.0_real64.or.request%dvs>2.0_real64) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      call restricted_afgen(parameters%dcs1_dvs,parameters%dcs1_correction_mm,parameters%dcs1_knot_count, &
+                            request%dvs,correction_mm,ok)
+      rainfall_reduction = 0.0_real64
+      if (request%rainfall_cm>parameters%rain_threshold_cm) rainfall_reduction=request%rainfall_cm
+      depth = max(0.0_real64,request%deficit_cm+correction_mm*0.1_real64-rainfall_reduction)
+    case (IRRIGATION_DEPTH_DCS2_FIXED)
+      call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
+                            request%dvs, depth, ok)
+    case default
+      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+      return
+    end select
     if (.not. ok) then
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
@@ -505,6 +536,8 @@ contains
 
   pure logical function valid_scheduled_parameters(parameters)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    integer :: knot
+    real(real64) :: width, delta
 
     valid_scheduled_parameters = .false.
     if (.not. parameters%scheduled_irrigation_enabled) return
@@ -540,8 +573,23 @@ contains
     case default
       return
     end select
-    if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
-    if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
+    select case(parameters%depth_criterion)
+    case(IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY)
+      if (.not.valid_table(parameters%dcs1_dvs,parameters%dcs1_correction_mm,parameters%dcs1_knot_count)) return
+      if (any(abs(parameters%dcs1_correction_mm(1:parameters%dcs1_knot_count))>100.0_real64)) return
+      if (.not.ieee_is_finite(parameters%rain_threshold_cm)) return
+      if (parameters%rain_threshold_cm<0.0_real64.or.parameters%rain_threshold_cm>1000.0_real64) return
+      do knot=2,parameters%dcs1_knot_count
+        width=parameters%dcs1_dvs(knot)-parameters%dcs1_dvs(knot-1)
+        delta=abs(parameters%dcs1_correction_mm(knot)-parameters%dcs1_correction_mm(knot-1))
+        if (width<delta/huge(1.0_real64)) return
+      end do
+    case(IRRIGATION_DEPTH_DCS2_FIXED)
+      if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
+      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
+    case default
+      return
+    end select
     valid_scheduled_parameters = .true.
   end function valid_scheduled_parameters
 
