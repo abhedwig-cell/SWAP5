@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL20",
+  "phase": "SELF_BUILDING_CACHED_PROVIDER_RESEARCH_COMPLETE",
+  "status": "PASS_RESEARCH_CANDIDATE",
+  "stage1": {
+    "workflow_run": 36046715757,
+    "workflow_job": 107791962714,
+    "external_table_file_used": false,
+    "first_bind_builds": 1,
+    "second_identical_bind_hits_cache": true,
+    "max_abs_pressure_head_delta_cm": 2.071933e-6,
+    "max_abs_water_content_delta": 2.367780e-9,
+    "bottom_flux_delta_cm_per_day": 8.756861e-9,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "stage2": {
+    "workflow_run": 36046963204,
+    "workflow_job": 107792777365,
+    "passed_cases": 12,
+    "total_cases": 12,
+    "same_iteration_path_cases": 12,
+    "same_backtracking_path_cases": 12,
+    "external_table_file_used": false
+  },
+  "stage3": {
+    "workflow_run": 36047155861,
+    "workflow_job": 107793411265,
+    "paired_candidate_over_analytical_ratios": [0.795234,0.799502,0.801784,0.797526,0.799599,0.801394,0.801288],
+    "median_ratio": 0.799599,
+    "median_complete_Richards_cpu_reduction_fraction": 0.200401,
+    "cold_bind_seconds": 0.001029,
+    "warm_cache_bind_seconds": 0.000004,
+    "cold_build_plus_median_candidate_solve_seconds": 0.0010347937622,
+    "fidelity": {
+      "max_abs_pressure_head_delta_cm": 2.071933e-6,
+      "max_abs_water_content_delta": 2.367780e-9,
+      "bottom_flux_delta_cm_per_day": 8.756861e-9,
+      "mass_residual_abs_cm": 1.240327e-16
+    }
+  },
+  "research_conclusion": "Within the qualified four-material wet-mid-dry prescribed-head Richards envelope, the hydraulic representation can be generated internally from the authoritative B1.10 provider, cached by exact authority/policy identity, frozen before solving, and used without external table assets while retaining a material complete-Richards CPU benefit.",
+  "target_architecture": "B1.10 parameters -> one-node authoritative sampler -> adaptive build -> exact-key immutable cache -> column-bound frozen provider -> Richards",
+  "remaining_envelope_limits": [
+    "prescribed-head lower-boundary qualification only",
+    "four selected unimodal materials",
+    "no SWKIMPL=1/dKdh qualification",
+    "no other hydraulic model families",
+    "no full-SWAP application runtime claim"
+  ],
+  "next_action": "Qualify the self-built provider under a prescribed-flux lower boundary before any production-oriented admission work.",
+  "production_status": "NOT_ADMITTED"
+}
