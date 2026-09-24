@@ -4,8 +4,8 @@
   "work_unit": "F-AHL18",
   "phase": "IMMUTABLE_CACHE_QUALIFICATION_COMPLETE",
   "status": "PASS",
-  "workflow_run": 36046058248,
-  "workflow_job": 107789778868,
+  "workflow_run": 36046087775,
+  "workflow_job": 107789879280,
   "qualification": {
     "initial_builds": 1,
     "repeated_identical_requests": 10000,
@@ -21,9 +21,17 @@
     "misses": 3,
     "entries": 3
   },
-  "measured_mean_cache_hit_seconds": 4.264e-7,
-  "reference_build_cost_seconds_from_F_AHL17": [7.1197e-4,1.11333e-3],
-  "interpretation": "The self-building representation can be safely amortized over repeated columns or solves when hydraulic authority and policy keys are shared. Fingerprint equality is only an index/provenance aid; full exact key equality is required before reuse.",
+  "measured_mean_cache_hit_seconds": 5.006e-7,
+  "reference_build_cost_seconds_from_F_AHL17": [
+    0.00071197,
+    0.00111333
+  ],
+  "interpretation": "The self-building representation can be safely amortized over repeated columns or solves when the complete initialized hydraulic authority and policy key are shared. Fingerprint equality is only an index/provenance aid; bitwise full-key equality is required before reuse.",
   "next_action": "Qualify amortization over accepted trajectories and multi-column repeated use, then bind the builder/cache behind the existing research hydraulic-provider contract without changing solver ownership.",
-  "production_status": "RESEARCH_ONLY_NO_ADMISSION"
+  "production_status": "RESEARCH_ONLY_NO_ADMISSION",
+  "key_strengthening": {
+    "initialized_cofgen_rows": 42,
+    "ksatexm_extension_flag_included": true,
+    "exact_hit_confirmation": "bitwise coefficient identity plus model/policy/branch identities"
+  }
 }
