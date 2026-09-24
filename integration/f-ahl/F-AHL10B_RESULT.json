@@ -1,40 +1,39 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "work_unit": "F-AHL10B",
-  "phase": "PROSPECTIVE_K_TOLERANCE_SWEEP_COMPLETE_WITH_DRY_END_BUILD_BLOCKER",
-  "status": "PARTIAL_BLOCKED",
-  "workflow_run": 36045237439,
-  "observations": {
+  "phase": "PROSPECTIVE_K_TOLERANCE_SWEEP_COMPLETE",
+  "status": "PASS_SELECT_K03",
+  "workflow_run": 36045499630,
+  "workflow_job": 107787917445,
+  "prospective_variants": {
     "logK_3e-3": {
+      "points": {"B01":48,"B12":36,"O05":47,"O14":49},
       "matrix_status": "FAIL",
       "failed_cases": ["B01:wet","B01:dry","B12:wet","B12:dry","O05:wet","O14:dry"]
     },
     "logK_1e-3": {
-      "matrix_status": "BUILD_BLOCKED_O05",
-      "passed_cases_except_O05": ["B01:mid","B01:dry","B12:wet","B12:mid","B12:dry","O14:wet","O14:mid","O14:dry"],
-      "failed_cases_except_O05": ["B01:wet"]
+      "points": {"B01":83,"B12":59,"O05":83,"O14":86},
+      "matrix_status": "FAIL",
+      "failed_cases": ["B01:wet"]
     },
     "logK_3e-4": {
-      "matrix_status": "BUILD_BLOCKED_O05",
-      "all_executed_non_O05_cases_pass": true
+      "points": {"B01":151,"B12":104,"O05":145,"O14":157},
+      "matrix_status": "PASS_12_OF_12"
     },
     "logK_1e-4": {
-      "matrix_status": "BUILD_BLOCKED_O05",
-      "all_executed_non_O05_cases_pass": true
+      "points": {"B01":267,"B12":175,"O05":225,"O14":260},
+      "matrix_status": "PASS_12_OF_12"
     }
   },
-  "blocker": {
-    "material": "O05",
-    "location": "extreme dry end near h=-8.7e5 cm",
-    "symptom": "adaptive log(K) refinement does not converge to the tighter error target even on vanishingly small intervals",
-    "classification": "NUMERICAL_CONSTITUTIVE_ARITHMETIC_BLOCKER_NOT_RICHARDS_GATE_FAILURE"
-  },
-  "interpretation": "The prospective sweep suggests that a log(K) tolerance near 3e-4 may be sufficient for the tested wet/mid/dry Richards regimes, but the preregistered selection rule cannot be completed until O05 dry-end conductivity arithmetic is reconciled.",
-  "next_action": "Diagnose stable-but-semantically-equivalent evaluation of the very dry Mualem conductivity term for O05 before resuming the frozen AHL10B selection rule.",
+  "selection_rule": "Select the loosest prospectively tested tolerance that passes all 12 frozen Richards cases.",
+  "selected_logK_tolerance": 3e-4,
+  "finding": "A log(K) interpolation tolerance of 3e-4 is the first preregistered level that preserves all frozen F-AHL10 fidelity and nonlinear-path gates across B01, B12, O05 and O14 in wet, mid and dry regimes.",
+  "numerical_note": "Completion required the F-AHL10C cancellation-stable but algebraically equivalent Mualem conductivity expression as the research table-construction oracle at the extreme dry end. The production B1.10 provider was not changed.",
+  "next_action": "Measure constitutive and paired end-to-end runtime for the selected 3e-4 representation across the 12-case matrix before any broader application or production-oriented work.",
   "nonclaims": [
-    "No K tolerance is selected yet.",
-    "The O05 blocker is not evidence that the Richards candidate fails in the tested O05 wet/mid/dry regimes.",
-    "No performance or production claim is made."
+    "The selected tolerance is qualified only for the tested materials, head regimes and prescribed-head lower boundary.",
+    "No whole-SWAP speedup is established by this matrix.",
+    "No production admission is implied."
   ]
 }
