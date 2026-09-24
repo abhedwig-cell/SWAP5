@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04A",
+  "record": "HARNESS_RECONCILIATION",
+  "invalid_runs": [
+    {
+      "run_id": 36039117943,
+      "classification": "FALSE_GREEN_PIPELINE_MASKED_COMPILE_FAILURE",
+      "failure": "missing mod_a23bu_worker_execution_context dependency",
+      "scientific_result": "NONE"
+    },
+    {
+      "run_id": 36039332094,
+      "classification": "FAIL_CLOSED_HARNESS_COMPILE_FAILURE",
+      "failure": "missing mod_accepted_trajectory_directional_sensitivity dependency",
+      "scientific_result": "NONE"
+    },
+    {
+      "run_id": 36039474774,
+      "classification": "FAIL_CLOSED_HARNESS_COMPILE_ORDER_OR_STALE_HEAD_FAILURE",
+      "failure": "mod_reference_richards_temporal_indicator could not resolve mod_b110_default_mvg_provider on that workflow head",
+      "scientific_result": "NONE"
+    }
+  ],
+  "current_rule": "No AHL04A hydrological claim is permitted until a fail-closed exact-head run compiles, executes all three candidate solves, emits preserved diagnostics and passes the preregistered gates."
+}
