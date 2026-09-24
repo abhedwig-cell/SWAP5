@@ -99,6 +99,9 @@ try {
                 if (!$textOutput.Contains($requiredMarker)) {
                     throw "Missing bootstrap success marker $opt"
                 }
+                if ($Scope -eq 'GashBranchRejection' -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_GASH_LOW_RAIN_DENSE_RESTART=PASS')) {
+                    throw 'Missing explicit dense-retry low-rain restart qualification'
+                }
                 if ($Scope -in @('Receipts','GashReceipts') -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS')) {
                     throw 'Missing actual failed hydraulic replay marker'
                 }

@@ -212,7 +212,7 @@ contains
     type(soil_water_solve_result_t)::solution
     type(soil_water_temporal_indicator_result_t)::certificate
     real(real64)::dt,ledger
-    integer::level
+    integer::level,eligible
     geometry%parameter_set_id=p%parameter_set_id
     geometry%active_nodes=p%active_nodes
     geometry%z=p%z; geometry%dz=p%dz; geometry%node_distance=p%node_distance
@@ -226,12 +226,14 @@ contains
     request%evaluation%top_boundary=>top_provider
     request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
     call require(.not.low_rain_history%forcing_event_at_start,'low-rain diagnostic is beyond initial event')
+    eligible=0
     do level=0,19
       dt=low_rain_request%step_duration/2.0_real64**level
       if(level>=10) dt=low_rain_request%step_duration*(1.0_real64-0.025_real64*real(level-9,real64))
       request%step_duration=dt
       call bind_b110_default_mvg_provider(provider,hydraulics,dt)
       call solver%solve(request,workspace,solution)
+      if(level==1) call require(solution%status/=SW_SOLVE_CONVERGED,'binary halving reproduces native rejection')
       write(*,'(a,i0,a,es23.15,a,i0,a,es23.15,a,l1,a,l1)') 'LOW_RAIN_SOLVE level=',level, &
            ':dt=',dt,':status=',solution%status,':residual=',maxval(abs(workspace%richards%residual)), &
            ':balance=',any(workspace%richards%nonconverged_balance),':head=',any(workspace%richards%nonconverged_head)
@@ -242,7 +244,10 @@ contains
            sum(forcing%root_extraction_sink)-sum(forcing%subsurface_irrigation_source))
       write(*,'(a,i0,a,l1,2(a,es23.15))') 'LOW_RAIN_CERT level=',level,':available=',certificate%available, &
            ':bound=',certificate%head_inf_bound,':mass=',ledger
+      if(level>=12.and.certificate%available.and.certificate%head_inf_bound<=1.0e-5_real64.and. &
+           abs(ledger)<=HARD_MASS_GATE) eligible=eligible+1
     end do
+    call require(eligible==8,'eight intermediate durations pass native temporal and mass gates')
   end subroutine
   subroutine probe_low_rain_retry(profile,before,forcing,t_start,t_end,amount)
     type(fmr_production_application_config_t),intent(in)::profile
@@ -251,23 +256,30 @@ contains
     real(real64),intent(in)::t_start,t_end,amount(:)
     type(fmr_production_application_config_t)::dense
     type(fmr_production_application_bootstrap_t)::owner
-    type(fmr_committed_restart_bundle_t)::after
+    type(fmr_committed_restart_bundle_t)::after,expected
     type(fmr_serialized_column_result_t),allocatable::result(:)
     type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:)
     type(fmr_vonhhbraden_source_window_progress_t)::progress
-    integer::code,tile,run_code
+    integer::code,tile,run_code,replay
     logical::ok
     dense=profile
     dense%numerical%transaction%retry_scale=0.8_real64
     dense%numerical%transaction%max_retries=64
+    do replay=1,2
     call owner%initialize(dense,code)
     call require(code==FMR_APP_BOOT_OK,'dense retry owner initialized')
     call owner%restore_committed_restart(before,9902_int64,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'dense retry starts at same accepted source boundary')
+    observed_event_calls=0
     call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,run_code)
     write(*,*) 'LOW_RAIN_DENSE_RETRY',run_code,result%kernel_status,result%accepted_substeps
+    call require(run_code==FMR_APP_BOOT_OK.and.all(result%completed),'dense retry full low-rain window completes')
+    call require(observed_event_calls>0.and.observed_event_calls<=NTILE*65.and. &
+         sum(result%accepted_substeps)>observed_event_calls,'dense retry event remains initial-boundary-only')
     call owner%export_committed_restart(9902_int64,after,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'dense retry owner exportable')
+    if(replay==1) expected=after
+    if(replay==2) call compare_restart_bundles(expected,after,'dense retry fresh restart replay identical')
     if(run_code==FMR_APP_BOOT_OK) then
       call require(all(result%committed).and.maxval(abs(result%mass%residual))<=HARD_MASS_GATE, &
            'dense retry successful hard mass')
@@ -283,6 +295,9 @@ contains
       if(run_code==FMR_APP_BOOT_OK) then
         call require(code==PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==0.0_real64, &
              'dense retry accepted aggregate consumed once')
+        call publish_ppa_wu04c_accepted_progress(progress,receipt(tile)%receipt,amount(tile),code)
+        call require(code/=PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==0.0_real64, &
+             'dense retry duplicate receipt rejected')
       else
         call require(code/=PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==amount(tile), &
              'dense retry failed aggregate untouched')
@@ -290,6 +305,8 @@ contains
     end do
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'dense retry owner closed')
+    end do
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_LOW_RAIN_DENSE_RESTART=PASS'
   end subroutine
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
