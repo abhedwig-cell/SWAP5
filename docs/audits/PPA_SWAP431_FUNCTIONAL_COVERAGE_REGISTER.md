@@ -45,6 +45,14 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
+At 728085a6e, explicit DCS1 selection joins the existing scheduled single-node
+SSDI candidate route. The 100,000-case TCS7 integration gate and independent
+DCS1 oracle pass O0/O2, including source-ordered limits, solute increment,
+rate/duration, split/retry and copied-event continuation. The DCS2 bundle and
+F-APP07 exact 110-interval composition remain green. This is not a scheduled
+surface route, accepted soil/solute booking or whole-application restart.
+Evidence: `integration/audits/PPA_IRR_DCS1_SCHEDULED_STATUS.json`.
+
 Branch-local irrigation follow-up at 91e62d47b adds default-disabled scheduled
 DCS2 minimum/maximum gift limits in B1.11 order: limit, solute overirrigation,
 then rate/duration. The 100,000-case O0/O2 gate, split/retry and invalid-input

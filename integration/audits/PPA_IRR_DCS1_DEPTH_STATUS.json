@@ -36,7 +36,8 @@
     "transcript_sha256": "c125e1de7b0a0440bc57cffd152beece3240c521c12ce583437f8b6f089c0f77"
   },
   "qualification_status": "NOT_QUALIFIED; isolated amount equation only, no scheduled or fixed-event application, soil source booking, solute transport, transaction, restart or production qualification",
-  "next_action": "Continue other independent source-bound TCS/DCS selectors; retain production admission NONE.",
+  "successor": "integration/audits/PPA_IRR_DCS1_SCHEDULED_STATUS.json records bounded scheduled single-node SSDI candidate integration at 728085a6e; this historical isolated-oracle record does not establish production admission.",
+  "next_action": "Continue scheduled integration qualification; retain production admission NONE.",
   "recovery_point": "this status record, preregistration, module and test",
   "blockers": ["The DCS1 formula's dependencies cdef, grai, DVS and cml are supplied here as source inputs; crop/solute owners, event selection and accepted irrigation mass are not bound."]
 }
