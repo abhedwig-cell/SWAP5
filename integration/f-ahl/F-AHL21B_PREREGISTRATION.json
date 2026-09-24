@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21B",
+  "title": "Wet prescribed-qbot timestep envelope",
+  "parent": "F-AHL21A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the three analytically nonconvergent wet prescribed-qbot cases be brought inside the existing Reference Richards convergence envelope by timestep reduction, without changing solver tolerances, iteration limits or the adaptive representation?",
+  "frozen": {
+    "materials": ["B01","O05","O14"],
+    "initial_head_cm": -10.0,
+    "bottom_flux_factor": 0.99,
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.99*K(initial)",
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "candidate": "same F-AHL16 selected representation"
+  },
+  "prospective_step_durations_day": [0.125,0.0625,0.03125],
+  "selection_rule": "Select the largest prospectively tested step duration at which all three analytical reference cases converge and all three adaptive cases pass the unchanged F-AHL21 fidelity and nonlinear-path gates.",
+  "hard_exclusions": [
+    "NO_ITERATION_LIMIT_INCREASE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_FLUX_FACTOR_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
