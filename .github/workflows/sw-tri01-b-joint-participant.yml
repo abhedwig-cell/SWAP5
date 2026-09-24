@@ -1,0 +1,38 @@
+name: SW-TRI01-B joint transaction participant
+
+on:
+  push:
+    branches:
+      - work/sw-tri01-minimal-real-three-model-composition
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_surface_water_swap_participant.f90'
+      - 'tests/triangle/test_sw_tri01_b_joint_transaction_participant.f90'
+      - 'tests/triangle/run_sw_tri01_b_joint_transaction_participant.sh'
+      - 'integration/triangle/SW_TRI01_B_*'
+      - '.github/workflows/sw-tri01-b-joint-participant.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_surface_water_swap_participant.f90'
+      - 'tests/triangle/test_sw_tri01_b_joint_transaction_participant.f90'
+      - 'tests/triangle/run_sw_tri01_b_joint_transaction_participant.sh'
+      - 'integration/triangle/SW_TRI01_B_*'
+      - '.github/workflows/sw-tri01-b-joint-participant.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Joint transaction participant
+        run: bash tests/triangle/run_sw_tri01_b_joint_transaction_participant.sh
