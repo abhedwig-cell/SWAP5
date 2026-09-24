@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04B",
+  "phase": "ATTRIBUTION_COMPLETE",
+  "status": "PASS_DIAGNOSTIC",
+  "workflow_run": 36040173519,
+  "workflow_job": 107770086311,
+  "baseline": {
+    "points": 178,
+    "bottom_flux_delta_cm_per_day": 2.951951e-5
+  },
+  "variants": {
+    "theta3": {
+      "theta_tolerance": 3e-6,
+      "points": 329,
+      "bottom_flux_delta_cm_per_day": 7.344441e-6,
+      "max_pressure_head_delta_cm": 5.596982e-5,
+      "max_water_content_delta": 8.183877e-7,
+      "iteration_delta": 0,
+      "backtracking_delta": 0,
+      "passes_original_AHL04A_bottom_flux_gate": true
+    },
+    "theta1": {
+      "theta_tolerance": 1e-6,
+      "points": 571,
+      "bottom_flux_delta_cm_per_day": 1.356217e-6,
+      "max_pressure_head_delta_cm": 1.202343e-5,
+      "max_water_content_delta": 1.700985e-7,
+      "iteration_delta": 1,
+      "backtracking_delta": 1,
+      "passes_original_AHL04A_bottom_flux_gate": true
+    },
+    "c3": {
+      "logC_tolerance": 3e-3,
+      "points": 178,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5,
+      "response_change_from_baseline": false
+    },
+    "c1": {
+      "logC_tolerance": 1e-3,
+      "points": 181,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5,
+      "response_change_from_baseline": false
+    },
+    "k3": {
+      "logK_tolerance": 3e-3,
+      "points": 182,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5,
+      "response_change_from_baseline": false
+    },
+    "k1": {
+      "logK_tolerance": 1e-3,
+      "points": 191,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5,
+      "response_change_from_baseline": false
+    }
+  },
+  "finding": "Within the frozen FSI24 nonlinear fixture, the remaining adaptive lookup error is retention-dominated. Tightening only theta strongly reduces bottom-flux, head and water-content response error; tightening only C or K over the tested range leaves the solver response unchanged.",
+  "design_implication": "A single joint tolerance is not an efficient design target. Investigate asymmetric representation with near-exact retention and cheaper capacity/conductivity lookup before accepting a 329-571 point joint table.",
+  "nonclaims": [
+    "This attribution is fixture-specific until repeated across materials and flow regimes.",
+    "It does not show C or K accuracy is generally unimportant.",
+    "It is not a performance qualification."
+  ]
+}
