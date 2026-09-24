@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25A",
+  "title": "Model-3 corrected-source constitutive inventory",
+  "parent": "F-AHL25",
+  "phase": "PREREGISTERED_SOURCE_INVENTORY",
+  "authority": {
+    "source_asset": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+    "decoded_sha256_expected": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "meaning": "corrected B1.10 MOD_MvG_functions authority"
+  },
+  "question": "What exact forward theta, C and K call paths and branch conditions implement hydraulic model 3, and can they be isolated as a deterministic research oracle without altering the source?",
+  "required_inventory": [
+    "public or callable model-3 forward functions",
+    "theta expression path",
+    "capacity expression path",
+    "conductivity expression path",
+    "active cofgen rows",
+    "branch/saturation guards",
+    "temperature or other runtime-state dependencies"
+  ],
+  "decision_rule": "Only after the exact model-3 forward authority is identified may F-AHL25B build an adaptive representation. If model-3 forward evaluation cannot be isolated without unrelated runtime state, stop and record the dependency.",
+  "hard_exclusions": ["NO_TEXTBOOK_REIMPLEMENTATION","NO_MODEL3_PRODUCTION_ADMISSION","NO_TIMING_CLAIM"]
+}
