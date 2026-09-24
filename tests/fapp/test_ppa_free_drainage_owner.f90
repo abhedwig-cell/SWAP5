@@ -74,6 +74,7 @@ program test_ppa_free_drainage_owner
   integer :: i, status, topology_status
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
+  character(len=32) :: test_scope
 
   call initialize_application_config(config)
   config%free_drainage_indicator => traced_indicator
@@ -88,9 +89,51 @@ program test_ppa_free_drainage_owner
     allocate(config%tiles(i)%initial_right_derivative(numnod))
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
+  call get_command_argument(1,test_scope)
+  if(trim(test_scope)=='--guards') then
+    call verify_opt_in_guards(config)
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS'
+    stop
+  end if
   call verify_wu04c_production_composition(config)
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
+  subroutine verify_opt_in_guards(valid)
+    type(fmr_production_application_config_t), intent(in) :: valid
+    type(fmr_production_application_config_t) :: invalid
+    type(fmr_production_application_bootstrap_t) :: owner
+    integer :: code,j
+    invalid=valid
+    invalid%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    deallocate(invalid%tiles(1)%initial_right_derivative)
+    call owner%initialize(invalid,code)
+    call require(code==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.owner%ready(), &
+         'opt-in requires temporal history layout for every tile')
+    invalid=valid
+    do j=1,NTILE
+      invalid%tiles(j)%parameters%bottom_mode=2
+    end do
+    call owner%initialize(invalid,code)
+    call require(code==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.owner%ready(), &
+         'free drainage opt-in cannot activate on prescribed flux')
+    invalid=valid
+    do j=1,NTILE
+      invalid%tiles(j)%parameters%bottom_mode=5
+    end do
+    call owner%initialize(invalid,code)
+    call require(code==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.owner%ready(), &
+         'free drainage opt-in cannot activate on groundwater profile')
+    call owner%initialize(valid,code)
+    call require(code==FMR_APP_BOOT_OK.and.owner%ready(),'failed admissions leave owner reusable')
+    call owner%close(code)
+    call require(code==FMR_APP_BOOT_OK.and..not.owner%ready(),'opt-in owner closes')
+    invalid=valid
+    nullify(invalid%free_drainage_indicator)
+    call owner%initialize(invalid,code)
+    call require(code==FMR_APP_BOOT_OK.and.owner%ready(),'owner reusable with default configuration')
+    call owner%close(code)
+    call require(code==FMR_APP_BOOT_OK,'default owner closes after opt-in')
+  end subroutine
   subroutine traced_indicator(request,solution,history,certificate)
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solution

@@ -1,6 +1,6 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-$Scope = 'FreeDrainage'
+param([ValidateSet('Composition','Guards')][string]$Scope = 'Composition')
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
@@ -41,7 +41,9 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Test compile failed $opt $test" }
             & gfortran -fopenmp "-$opt" @objects $obj -o $exe
             if ($LASTEXITCODE -ne 0) { throw "Link failed $opt $test" }
-            $output = @(& $exe 2>&1)
+            $testArguments = @()
+            if ($Scope -eq 'Guards') { $testArguments = @('--guards') }
+            $output = @(& $exe @testArguments 2>&1)
             if ($LASTEXITCODE -ne 0) { throw "Runtime failed $opt $test : $($output -join "`n")" }
             $textOutput = $output -join "`n"
             if ($test -eq 'ppa_output_canon_application_binding') {
@@ -51,7 +53,9 @@ try {
                 }
                 $prefix = '^PPA_OUTPUT_CANON_'
             } else {
-                if (!$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS')) {
+                $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
+                if ($Scope -eq 'Guards') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS' }
+                if (!$textOutput.Contains($requiredMarker)) {
                     throw "Missing bootstrap success marker $opt"
                 }
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'
@@ -68,7 +72,7 @@ try {
         tests/fapp/run_ppa_wu01_production_application_bootstrap.sh `
         tests/fapp/run_ppa_wu01_production_application_bootstrap.ps1
     if ($LASTEXITCODE -ne 0) { throw 'Owner gate diff check failed' }
-    'PPA_FREE_DRAINAGE_OWNER_O0_O2_IDENTITY=PASS'
+    "PPA_FREE_DRAINAGE_OWNER_${Scope}_O0_O2_IDENTITY=PASS"
     if ($Scope -eq 'All') {
         'PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS'
         'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS'
