@@ -24,7 +24,8 @@
     "scope": "Verification only: manufactured scalar matrix residual h-0.2 coupled to the real bounded head-derived macropore evaluator through separate residual and Jacobian callbacks. Not HeadCalc or a physical Richards column solve.",
     "oracle": "For the two-cell fixture and positive bottom head below 0.5: q=min(0.25*(1-h),0.125/((h+0.5)*dt)). At dt=0.5, root h=0.36; at dt=1 and 2, root (-0.3+sqrt(0.49+0.5/dt))/2. The source quasi-Newton derivative is used, not replaced with the analytic derivative of the capped rate.",
     "invariants": "Failed fully unsaturated trial followed by recovery; distinct evaluation keys during iterations; unchanged initial macropore store; final-used transfer captured without reevaluation; transfer/storage cancellation; old attempt rejected when extracting amounts; changed dt restarts from identical input history.",
-    "test_result": "Working-tree O0/O2 PASS with identical transcripts and runtime/FPE checks; persisted replay pending",
+    "recovery_point": "b78d60526",
+    "test_result": "Persisted b78d60526 Richards scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks",
     "limits": "No full matrix constitutive/storage law, line search, physical acceptance, committed restart or production admission. No shared interface changed."
   },
   "split_callback_contract": {
