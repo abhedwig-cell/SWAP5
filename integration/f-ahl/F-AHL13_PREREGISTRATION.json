@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL13",
+  "title": "Derivative-consistent retention with analytical conductivity",
+  "parent": "F-AHL10A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the derivative-consistent adaptive theta/C interpolant paired with analytical K close the full 12-case F-AHL10 fidelity matrix and still reduce constitutive and complete Richards solve cost?",
+  "candidate": {
+    "theta": "cubic-Hermite logit(Se) interpolant",
+    "capacity": "derivative of the same interpolant via chain rule",
+    "conductivity": "authoritative analytical K evaluated from represented theta",
+    "near_saturation": "authoritative analytical handling for h>-1 cm",
+    "runtime_refinement": false
+  },
+  "stage_1": {
+    "scope": "all 12 frozen F-AHL10 material-regime cases",
+    "gates": "identical to F-AHL10",
+    "advance_rule": "all 12 cases pass and iteration/backtracking deltas remain zero"
+  },
+  "stage_2": {
+    "scope": "B01,B12,O05,O14 optimized constitutive timing",
+    "advance_rule": "candidate faster than full analytical theta+C+K for all four materials"
+  },
+  "stage_3": {
+    "scope": "long paired FSI24-style Reference Richards timing",
+    "protocol": "7 alternating paired batches of 32768 solves",
+    "decision_rule": {
+      "advance": "median candidate/analytical ratio < 0.98",
+      "equivocal": "0.98 <= ratio <= 1.02",
+      "reject": "ratio > 1.02"
+    }
+  },
+  "hard_exclusions": [
+    "NO_CONDUCTIVITY_LOOKUP",
+    "NO_GATE_RETUNING",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
