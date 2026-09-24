@@ -1,6 +1,7 @@
 # Candidate forcing-event temporal continuation
 
-Baseline: ea8354e6a. Status: implementation design, not implemented or admitted.
+Baseline: ea8354e6a. Status: derivative component implemented; runtime event
+forwarding remains a design, not implemented or admitted.
 Derivative component: candidate module at 235a71d03; runtime event forwarding is
 still unimplemented. The component deliberately restricts the numerical envelope
 further: head >= -1e4 cm, alpha in [1e-8,1], n in (1,3], m >= 0.1,
@@ -8,6 +9,8 @@ lambda in [0,1], Ksat <= 1e6, and finite bounded geometry/source rates.
 It requires initialized standard MvG coefficients and exact committed-water
 consistency through the existing storage-binding guard. These are candidate
 availability bounds, not restrictions added to the default physical model.
+Provider duration must also be finite and positive before provider evaluation;
+all unavailable results return an all-zero derivative atomically.
 Owning workstream: PPA free-drainage temporal continuation / WU04C windows.
 Evidence: PPA_MVG_STORAGE_DIFFERENCE_STATUS.json, WindowRejection gate.
 
