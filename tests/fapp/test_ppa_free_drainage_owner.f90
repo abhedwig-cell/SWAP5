@@ -163,6 +163,7 @@ contains
     real(real64)::selected_amount(NTILE),expected,thickness
     integer::pass
     type(fmr_b110_physical_forcing_t)::irrigation_forcing(NTILE)
+    type(fmr_b110_physical_forcing_t)::control_forcing(NTILE)
     type(fmr_serialized_column_result_t),allocatable::irrigation_result(:)
     real(real64),parameter::irrigation_dt=1.0_real64/1024.0_real64
     call owner%copy_committed_hydraulic_states(copied,code)
@@ -261,6 +262,26 @@ contains
         irrigation_forcing(tile)%top_flux=0.0_real64
         irrigation_forcing(tile)%subsurface_irrigation_source=flux%subsurface_source
       end do
+      control_forcing=irrigation_forcing
+      do tile=1,NTILE
+        control_forcing(tile)%subsurface_irrigation_source=0.0_real64
+      end do
+      call owner%run_standalone_with_forcing(request%t0,request%t1,control_forcing,irrigation_result,code)
+      write(*,*) 'IRRIGATION_ZERO_CONTROL_STATUS',code,irrigation_result%kernel_status,irrigation_result%accepted_substeps
+      call owner%restore_committed_restart(bundle,92001_int64,ok,code)
+      if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation control reset'
+      call owner%copy_committed_hydraulic_states(again,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation control restored profile'
+      do tile=1,NTILE
+        if(again(tile)%revision/=copied(tile)%revision) error stop 'irrigation control restored revision'
+        if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) &
+             error stop 'irrigation control restored time'
+        if(any(abs(again(tile)%water_content-profile%tiles(tile)%initial_state%water_content)>0.0_real64)) &
+             error stop 'irrigation control restored water'
+        if(any(abs(again(tile)%pressure_head_cm-profile%tiles(tile)%initial_state%pressure_head)>0.0_real64)) &
+             error stop 'irrigation control restored pressure'
+      end do
+      write(*,'(a)') 'PPA_IRRIGATION_CONTROL_COMMON_BOUNDARY=PASS'
       call owner%run_standalone_with_forcing(request%t0,request%t1,irrigation_forcing,irrigation_result,code)
       write(*,*) 'IRRIGATION_SOURCE_STATUS',code,irrigation_result%kernel_status,irrigation_result%accepted_substeps
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation source interval failed'
