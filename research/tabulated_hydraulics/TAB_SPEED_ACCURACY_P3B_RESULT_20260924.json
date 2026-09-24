@@ -1,0 +1,23 @@
+{
+  "schema":"swap5.research_result.v1",
+  "workunit":"TAB-SPEED-ACCURACY-P3B",
+  "date":"2026-09-24",
+  "branch":"research/tab-speed-accuracy",
+  "controlling_run":36035869078,
+  "result":"REJECTED_FAIL_CLOSED",
+  "tested_rows":[25,32,40],
+  "algorithm":"deterministic dense analytical greedy refinement using normalized theta error and local absolute log(K) interpolation error in log-head coordinate",
+  "outcome":{
+    "25":"FAIL before performance characterization",
+    "32":"FAIL before performance characterization",
+    "40":"FAIL before performance characterization"
+  },
+  "interpretation":[
+    "Neither hand-shaped endpoint concentration nor constitutive-error greedy sparse placement improved on the naive log-head grid in the tested sparse range.",
+    "The existing log-head placement is empirically robust and unexpectedly efficient for this provider/interpolator.",
+    "P1 remains controlling: 50 rows is the lowest tested naive grid with small Richards errors and unchanged iterations/retries; 25 rows shows a marked error increase."
+  ],
+  "decision":"Close sparse-placement tuning. Do not add further placement heuristics without a new independent hypothesis.",
+  "recommended_next":"Characterize the practical 50/100/200 row candidates on broader dynamic/reference cases and whole-application workloads when executable; prioritize 50 versus 100 as the engineering tradeoff.",
+  "production_effect":"NONE"
+}
