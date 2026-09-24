@@ -1,0 +1,89 @@
+name: F-ROM Practical P6B SM adaptive Reference qualification
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_PREREGISTRATION.json
+      - tools/rom/materialize_rom_practical_p6b_sm_adaptive_reference.py
+      - tools/rom/qualify_rom_practical_p6b_sm_adaptive_reference.py
+      - .github/workflows/f-rom-practical-p6b-sm-adaptive-reference.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: rom-practical-p6b-sm-adaptive-reference-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  material:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B02, B05, B06, B11, B12, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 1
+      - name: Bind frozen sources
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext evidence
+          git cat-file blob b2df7793d3f56f5d8d1d121636d2eb1a0952e271 > ext/rom_purpose_p1_surface_b01_source.f90
+          git cat-file blob 31060946d233ba80e88ca42e43c90f512dc890de > ext/materialize_rom_purpose_p3_surface_reference.py
+          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_adaptive_reference.py)" = d5881ededa27210f521ca513f3f793e6225e4b3c
+          test "$(git hash-object tools/rom/qualify_rom_practical_p6b_sm_adaptive_reference.py)" = 43639ab222e32af9201f13ddef87cf554c31b76e
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+      - name: Materialize realistic base
+        run: |
+          set -euo pipefail
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py             --purpose SURF_P --material '${{ matrix.material }}'             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --surface-source ext/rom_purpose_p1_surface_b01_source.f90             --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py             --output /tmp/rnp2_base.f90 --manifest evidence/base_materialization.json
+          python3 tools/rom/prepare_rom_practical_p3_reference.py             --purpose SURF_P --source /tmp/rnp2_base.f90 --output /tmp/rnp2_p3.f90
+          python3 tools/rom/materialize_rom_practical_p6b_sm_reference.py             --source /tmp/rnp2_p3.f90             --workload integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json             --output /tmp/rnp2_realistic.f90
+      - name: Execute A32 and A64 adaptive policies
+        run: |
+          set -euo pipefail
+          for spec in 'A32|0.03125' 'A64|0.015625'; do
+            IFS='|' read -r id maxstep <<< "$spec"
+            python3 tools/rom/materialize_rom_practical_p6b_sm_adaptive_reference.py               --source /tmp/rnp2_realistic.f90 --max-step-day "$maxstep"               --output canonical/tests/rom/test_p6b_sm_rnp02.f90
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output canonical/p6b_sm_rnp02_stubs.f90 --nodes 128 --dz-cm 1.25
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub p6b_sm_rnp02_stubs.f90               --target tests/rom/test_p6b_sm_rnp02.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/rnp2_$id" --opt 2
+            set +e
+            "/tmp/rnp2_$id/rom0_test" > "evidence/$id.txt" 2>&1
+            echo "$?" > "evidence/$id.exit"
+            set -e
+          done
+          python3 tools/rom/qualify_rom_practical_p6b_sm_adaptive_reference.py case             --material '${{ matrix.material }}' --dir evidence
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-practical-p6b-sm-rnp02-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+  aggregate:
+    needs: material
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p6b-sm-rnp02-*
+          path: /tmp/rnp02
+      - run: |
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+          python3 tools/rom/qualify_rom_practical_p6b_sm_adaptive_reference.py aggregate             --input-dir /tmp/rnp02 --output integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_RESULT.json
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_RESULT.json
+          git commit -m 'ROM-PRACTICAL P6B-SM: persist adaptive Reference qualification' || exit 0
+          git push origin HEAD:work/f-rom-practical
