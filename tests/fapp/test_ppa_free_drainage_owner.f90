@@ -109,6 +109,14 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
+  if(trim(test_scope)=='--atm02') then
+    config%storage_difference => evaluate_mvg_storage_difference_service
+    config%numerical%transaction%retry_scale=0.8_real64
+    config%numerical%transaction%max_retries=64
+    call verify_atm02_owner(config)
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02=PASS'
+    stop
+  end if
   is_gash=trim(test_scope)=='--gash-windows'.or.trim(test_scope)=='--gash-branch-rejection'
   if(trim(test_scope)=='--gash-receipts') config%storage_difference => evaluate_mvg_storage_difference_service
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
@@ -127,6 +135,127 @@ program test_ppa_free_drainage_owner
   call verify_wu04c_production_composition(config)
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
+  subroutine verify_atm02_owner(profile)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_production_application_config_t)::active
+    type(fmr_production_application_bootstrap_t)::owner,fresh
+    type(fmr_committed_restart_bundle_t)::before,after,resumed
+    type(fmr_committed_top_state_t),allocatable::top(:)
+    type(fmr_b110_physical_forcing_t)::forcing(NTILE),previous(NTILE)
+    type(fmr_serialized_column_result_t),allocatable::result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:)
+    type(ppa_atm02_decoded_daily_meteo_t)::decoded
+    type(ppa_atm02_generic_interval_t)::interval
+    type(pmdirect_swetr0_site_t)::site
+    type(pmdirect_swetr0_canopy_t)::canopy
+    type(crop_root_uptake_input_t)::roots
+    type(soil_water_parameter_set_t)::geometry
+    type(b110_default_mvg_parameters_t)::hydraulics
+    type(b110_dynamic_top_boundary_request_t)::request
+    type(ppa_atm02_meteo_provenance_t)::provenance
+    type(ppa_atm02_production_forcing_diagnostics_t)::diagnostics
+    integer::window,tile,node,code,pass
+    logical::ok
+    active=profile
+    active%tiles%parameters%root_extraction_active=.true.
+    decoded%source_id=9201_int64; decoded%day_of_year=180
+    decoded%radiation_j_m2_d=18.0e6_real64
+    decoded%minimum_air_temperature_c=12.0_real64; decoded%maximum_air_temperature_c=24.0_real64
+    decoded%vapour_pressure_kpa=1.3_real64; decoded%wind_speed_m_s=2.0_real64
+    decoded%gross_rain_cm_d=0.0_real64
+    site%latitude_degrees=52.0_real64; site%altitude_m=10.0_real64
+    site%wind_measurement_height_m=2.0_real64; site%humidity_measurement_height_m=2.0_real64
+    site%angstrom_a=0.25_real64; site%angstrom_b=0.50_real64; site%soil_surface_resistance_s_m=100.0_real64
+    canopy%crop_emerged=.true.; canopy%lai=3.0_real64; canopy%vegetation_cover_fraction=0.7_real64
+    canopy%cofab_cm=0.5_real64; canopy%albedo=0.23_real64
+    canopy%dry_canopy_resistance_s_m=70.0_real64; canopy%wet_canopy_resistance_s_m=30.0_real64
+    do window=1,2
+      interval%t0=T0+real(window-1,real64)*(T1-T0); interval%t1=interval%t0+(T1-T0)
+      decoded%source_record_index=43+window
+      decoded%t0=interval%t0-0.25_real64; decoded%t1=interval%t1+0.25_real64
+      if(window==2) then
+        call owner%copy_committed_top_states(top,code)
+        call require(code==FMR_APP_BOOT_OK.and.all(top%available),'ATM02 committed top available')
+      end if
+      do tile=1,NTILE
+        geometry%parameter_set_id=active%tiles(tile)%parameters%parameter_set_id
+        geometry%active_nodes=active%tiles(tile)%parameters%active_nodes
+        geometry%z=active%tiles(tile)%parameters%z; geometry%dz=active%tiles(tile)%parameters%dz
+        geometry%node_distance=active%tiles(tile)%parameters%node_distance
+        call initialize_b110_default_mvg_parameters(hydraulics,active%tiles(tile)%parameters%cofgen)
+        roots%crop_emerged=.true.; roots%rooted_nodes=min(4,geometry%active_nodes)
+        allocate(roots%cumulative_root_fraction(roots%rooted_nodes+1))
+        do node=1,roots%rooted_nodes+1
+          roots%cumulative_root_fraction(node)=real(node-1,real64)/real(roots%rooted_nodes,real64)
+        end do
+        request=b110_dynamic_top_boundary_request_t()
+        request%conductivity_mean_method=active%tiles(tile)%parameters%swkmean
+        request%pressure_head_top_cm=active%tiles(tile)%initial_state%pressure_head(1)
+        request%water_content_top=active%tiles(tile)%initial_state%water_content(1)
+        if(window==2) then
+          request%pressure_head_top_cm=top(tile)%pressure_head_top_cm
+          request%water_content_top=top(tile)%water_content_top
+          request%previous_ponding_depth_cm=top(tile)%ponding_depth_cm
+          request%candidate_ponding_depth_cm=top(tile)%ponding_depth_cm
+        end if
+        request%ponding_max_cm=2.0_real64; request%runoff_resistance_day=1.0_real64
+        request%runoff_exponent=1.0_real64
+        call materialize_ppa_atm02_pmdirect_production_forcing(decoded,interval,site,canopy,0.0_real64,roots, &
+             geometry,hydraulics,request,active%tiles(tile)%base_forcing,forcing(tile),provenance,diagnostics)
+        call require(diagnostics%status==PPA_ATM02_PRODUCTION_FORCING_OK.and.diagnostics%result_produced, &
+             'ATM02 complete typed forcing')
+        call require(sum(forcing(tile)%root_extraction_sink)>0.0_real64,'ATM02 nonzero prescribed transpiration')
+        if(window==1) then
+          call seed_initial_derivative(active%tiles(tile)%parameters,active%tiles(tile)%initial_state, &
+               forcing(tile),active%tiles(tile)%initial_right_derivative)
+        else
+          call require(forcing(tile)%top_flux==previous(tile)%top_flux.and. &
+               all(forcing(tile)%root_extraction_sink==previous(tile)%root_extraction_sink), &
+               'ATM02 unchanged forcing needs no event reseeding')
+        end if
+        deallocate(roots%cumulative_root_fraction)
+      end do
+      previous=forcing
+      if(window==1) then
+        call owner%initialize(active,code)
+        call require(code==FMR_APP_BOOT_OK,'ATM02 opt-in owner initializes')
+      end if
+      call owner%export_committed_restart(9903_int64,before,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'ATM02 pre-interval export')
+      call fresh%initialize(active,code)
+      call require(code==FMR_APP_BOOT_OK,'ATM02 fresh owner initializes')
+      call fresh%restore_committed_restart(before,9903_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'ATM02 fresh restart restores')
+      do pass=1,2
+        observed_event_calls=0
+        if(pass==1) then
+          call owner%run_standalone_with_forcing_receipts(interval%t0,interval%t1,forcing,result,receipt,code)
+        else
+          call fresh%run_standalone_with_forcing_receipts(interval%t0,interval%t1,forcing,result,receipt,code)
+        end if
+        write(*,*) 'ATM02_OPT_IN',window,pass,code,result%kernel_status,result%accepted_substeps
+        call require(code==FMR_APP_BOOT_OK.and.all(result%committed).and.all(result%completed),'ATM02 opt-in commits')
+        call require(observed_event_calls==0,'ATM02 retains normal root-compatible temporal history')
+        call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE,'ATM02 opt-in hard mass')
+        do tile=1,NTILE
+          call require(receipt(tile)%receipt%ready(),'ATM02 accepted receipt ready')
+          call require(result(tile)%actual_transpiration_available,'ATM02 accepted transpiration available')
+          call require(abs(result(tile)%actual_transpiration_amount- &
+               sum(forcing(tile)%root_extraction_sink)*(interval%t1-interval%t0))<HARD_MASS_GATE, &
+               'ATM02 accepted root amount equals prescribed interval demand')
+        end do
+      end do
+      call owner%export_committed_restart(9903_int64,after,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'ATM02 continued export')
+      call fresh%export_committed_restart(9903_int64,resumed,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'ATM02 fresh export')
+      call compare_restart_bundles(after,resumed,'ATM02 exact hydraulic history restart')
+      call fresh%close(code)
+      call require(code==FMR_APP_BOOT_OK,'ATM02 fresh closes')
+    end do
+    call owner%close(code)
+    call require(code==FMR_APP_BOOT_OK,'ATM02 owner closes')
+  end subroutine
   subroutine verify_opt_in_guards(valid)
     type(fmr_production_application_config_t), intent(in) :: valid
     type(fmr_production_application_config_t) :: invalid
