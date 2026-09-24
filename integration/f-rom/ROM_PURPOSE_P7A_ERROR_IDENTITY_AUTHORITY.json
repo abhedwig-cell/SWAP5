@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.rom-purpose.p7a.error-identity-authority.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P7A-GW-EXCHANGE-STORAGE-ATTRIBUTION",
+  "date": "2026-09-24",
+  "status": "RETROSPECTIVE_ALGEBRAIC_RECONCILIATION_RESPONSE_EXPOSED",
+  "rationale": "P6B established from source authority and fresh traces that published prescribed-head bottom exchange is the interval water-balance output. P7A therefore performs an exact conservation-law attribution on already exposed P4 blind-validation artifacts; it is not a new blind experiment and makes no admission claim.",
+  "source_authority": {
+    "p6_closeout": "integration/f-rom/ROM_PURPOSE_P6_CLOSEOUT.json",
+    "p6b_result": "integration/f-rom/ROM_PURPOSE_P6B_RESULT.json",
+    "p4_candidate_run": 35918240728,
+    "p4_reference_r2048_t32_run": 35900642592,
+    "candidate_members": [
+      "G8",
+      "G12",
+      "G16"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "G17",
+      "G18",
+      "G19",
+      "G20"
+    ]
+  },
+  "identity": "e_B = e_Qtop - e_DeltaS + ledger_terms, where B is positive downward/outward interval bottom exchange. Under the shared frozen top forcing e_Qtop should be numerical zero.",
+  "scope": [
+    "interval bottom exchange error attribution",
+    "cumulative bottom exchange error attribution relative to the first serialized observation",
+    "state-count plateau interpretation from G8 to G12 to G16"
+  ],
+  "prohibited": [
+    "claim blind validation from P7A",
+    "derive a new minimum state count",
+    "retune P4 representations",
+    "infer a closure deficit",
+    "application acceptance",
+    "production admission"
+  ],
+  "scientific_firewall": {
+    "source_artifacts_changed": false,
+    "simulations_rerun": false,
+    "p4_reopened": false,
+    "p6_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
