@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp03.result.v1",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP03",
+  "status": "GENUINE_REFERENCE_SOLVER_FLOOR_REMAINS",
+  "selected_policy": null,
+  "R12_all_materials_complete": false,
+  "R16_all_materials_complete": false,
+  "cases": [
+    {
+      "R12_status": "FAILED",
+      "R12_vs_R16": null,
+      "R16_status": "FAILED",
+      "diagnostics": {
+        "R12": {
+          "failure_reason": "RNP03 retry budget"
+        },
+        "R16": {
+          "failure_reason": "RNP03 retry budget"
+        }
+      },
+      "material": "B02",
+      "schema": "swap5.rom-practical.p6b-sm-rnp03.case.v1"
+    },
+    {
+      "R12_status": "FAILED",
+      "R12_vs_R16": null,
+      "R16_status": "FAILED",
+      "diagnostics": {
+        "R12": {
+          "failure_reason": "RNP03 retry budget"
+        },
+        "R16": {
+          "failure_reason": "RNP03 retry budget"
+        }
+      },
+      "material": "B05",
+      "schema": "swap5.rom-practical.p6b-sm-rnp03.case.v1"
+    },
+    {
+      "R12_status": "FAILED",
+      "R12_vs_R16": null,
+      "R16_status": "FAILED",
+      "diagnostics": {
+        "R12": {
+          "failure_reason": "RNP03 retry budget"
+        },
+        "R16": {
+          "failure_reason": "RNP03 retry budget"
+        }
+      },
+      "material": "B06",
+      "schema": "swap5.rom-practical.p6b-sm-rnp03.case.v1"
+    },
+    {
+      "R12_status": "FAILED",
+      "R12_vs_R16": null,
+      "R16_status": "FAILED",
+      "diagnostics": {
+        "R12": {
+          "failure_reason": "RNP03 retry budget"
+        },
+        "R16": {
+          "failure_reason": "RNP03 retry budget"
+        }
+      },
+      "material": "B11",
+      "schema": "swap5.rom-practical.p6b-sm-rnp03.case.v1"
+    },
+    {
+      "R12_status": "FAILED",
+      "R12_vs_R16": null,
+      "R16_status": "FAILED",
+      "diagnostics": {
+        "R12": {
+          "failure_reason": "RNP03 retry budget"
+        },
+        "R16": {
+          "failure_reason": "RNP03 retry budget"
+        }
+      },
+      "material": "B12",
+      "schema": "swap5.rom-practical.p6b-sm-rnp03.case.v1"
+    },
+    {
+      "R12_status": "COMPLETE",
+      "R12_vs_R16": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 0,
+        "mapped_10cm_theta_rmse": 0,
+        "root_zone_0_40_storage_rmse_cm": 0,
+        "surface_0_20_storage_rmse_cm": 0,
+        "total_storage_rmse_cm": 0,
+        "upper_0_80_storage_rmse_cm": 0
+      },
+      "R16_status": "COMPLETE",
+      "diagnostics": {
+        "R12": {
+          "days_with_extra_substeps": 0,
+          "max_accepted_substeps_per_day": 64,
+          "max_cumulative_retries": 0
+        },
+        "R16": {
+          "days_with_extra_substeps": 0,
+          "max_accepted_substeps_per_day": 64,
+          "max_cumulative_retries": 0
+        }
+      },
+      "material": "B16",
+      "schema": "swap5.rom-practical.p6b-sm-rnp03.case.v1"
+    }
+  ],
+  "candidate_evidence_used_for_selection": false
+}
