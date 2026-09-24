@@ -112,6 +112,25 @@ program test_saturated_trial
       residual,diagonal,slot,storage,ok)
   call check(ok.and.maxval(abs(diagonal-1))<1.e-14_real64,35)
   call check(abs(residual(2)+0.125_real64)<1.e-14_real64,36)
+  ! Ignore intentionally stale caller matrix metadata in the derived route.
+  input%matrix_top=-9; input%matrix_level=999
+  call prepare_saturated_from_heads(input,[-0.5_real64,0.5_real64],0.0_real64,1.0_real64, &
+      key,e,storage,ok)
+  call check(ok.and.abs(storage-0.25_real64)<1.e-14_real64,42)
+  call check(abs(e%rate(2)-0.125_real64)<1.e-14_real64,43)
+  call prepare_saturated_from_heads(input,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+      key,e,storage,ok)
+  call check(ok.and.abs(storage-5.0_real64/24.0_real64)<1.e-14_real64,44)
+  call check(abs(e%rate(2)-1.0_real64/6.0_real64)<1.e-14_real64,45)
+  call check(abs(e%derivative(2)+2.0_real64/9.0_real64)<1.e-14_real64,46)
+  call check(input%matrix_top==-9.and.abs(input%matrix_level-999.0_real64)<1.e-14_real64,47)
+  call prepare_saturated_from_heads(input,[-0.5_real64,-0.25_real64],0.0_real64,1.0_real64, &
+      key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),48)
+  call prepare_saturated_from_heads(input,[0.5_real64,-0.25_real64],0.0_real64,1.0_real64, &
+      key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),49)
+  input%matrix_top=2; input%matrix_level=-1
   input%pore_level=-2
   call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
   call check(.not.ok.and..not.allocated(e%rate),11)
@@ -121,6 +140,7 @@ program test_saturated_trial
   print '(a)','PPA_WU05A4_SATURATED_GEOMETRY_CONSISTENCY=PASS'
   print '(a)','PPA_WU05A4_SATURATED_SYSTEM_ATOMIC=PASS'
   print '(a)','PPA_WU05A4_MATRIX_LEVEL_HEAD_BRANCHES=PASS'
+  print '(a)','PPA_WU05A4_DERIVED_MATRIX_TRIAL=PASS'
 contains
   subroutine check(condition,code)
     logical,intent(in)::condition

@@ -11,6 +11,14 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "derived_matrix_extension": {
+    "baseline": "693ae02fa",
+    "interface": "prepare_saturated_from_heads copies input and derives matrix_level/matrix_top from current heads and pond at each call before preparation. Caller matrix metadata is ignored by this entry point, but never overwritten.",
+    "branch_reconciliation": "At an exact layer boundary CALCGWL chooses the upper containing cell even if its center is unsaturated. Wet-pore guard now skips negative-head centers, matching SATFLOW's zero difference there; nonnegative-head dry-pore branches remain rejected.",
+    "tests": "Stale caller metadata is replaced in trial copy. Head change moves water level from -1 to -7/6 cm, changes minimum inventory to 5/24 cm, final rate to 1/6 cm/day and source tangent to -2/9 per day. Original metadata unchanged. Fully unsaturated/perched cases return no evaluation.",
+    "limits": "New preparation entry point only. Existing residual/system/scratch wrappers still use explicit metadata until deliberately rebound; no HeadCalc call site, full nonlinear solve or complete mixed-physics admission.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "system_wrapper_extension": {
     "baseline": "46919a73e",
     "interface": "evaluate_saturated_system applies residual and source diagonal contributions to local scratch copies and exposes both caller vectors, used transfer and scalar candidate storage only after both operations succeed.",

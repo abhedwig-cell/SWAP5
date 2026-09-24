@@ -7,6 +7,7 @@ module mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a3_satflow_derivative
   use mod_ppa_wu05a3_volundr,only:ppa_wu05a3_volume_under_level,PPA_WU05A3_OK
   use mod_ppa_wu05a4_storage_bounds
+  use mod_ppa_wu05a4_matrix_level,only:matrix_level_from_heads
   use mod_ppa_wu05a4_inflow_limit
   use mod_ppa_wu05a4_outflow_limit
   use mod_ppa_wu05a4_trial_exchange,only:macro_trial_key,macro_exchange_evaluation, &
@@ -19,7 +20,30 @@ module mod_ppa_wu05a4_saturated_trial
     real(real64),allocatable::z(:),dz(:),volume(:),resistance_inverse(:)
   end type
   public::prepare_saturated_trial,evaluate_saturated_residual,evaluate_saturated_system
+  public::prepare_saturated_from_heads
 contains
+  ! Rebuild matrix metadata per evaluation; do not mutate committed input.
+  subroutine prepare_saturated_from_heads(input,head,pond,dt,key,evaluation,storage_candidate,ok)
+    type(saturated_domain_inputs),intent(in)::input
+    real(real64),intent(in)::head(:),pond,dt
+    type(macro_trial_key),intent(in)::key
+    type(macro_exchange_evaluation),intent(out)::evaluation
+    real(real64),intent(out)::storage_candidate
+    logical,intent(out)::ok
+    type(saturated_domain_inputs)::trial_input
+    ok=.false.; storage_candidate=0
+    if(.not.allocated(input%z).or..not.allocated(input%dz))return
+    trial_input=input
+    call matrix_level_from_heads(head,input%z,input%dz,pond,trial_input%matrix_level,trial_input%matrix_top,ok)
+    if(.not.ok)return
+    ! Fully unsaturated and perched regimes require additional physics; this
+    ! restricted saturated exchange route must not silently report a full solve.
+    if(trial_input%matrix_top>size(head))then
+      ok=.false.; return
+    end if
+    call prepare_saturated_trial(trial_input,head,dt,key,evaluation,storage_candidate,ok)
+  end subroutine
+
   ! Candidate-only assembly: residual and diagonal must belong to one evaluation.
   ! If either application fails, neither caller vector is changed.
   subroutine evaluate_saturated_system(input,head,dt,key,derivative_enabled,residual,diagonal, &
@@ -131,7 +155,10 @@ contains
     if(input%matrix_top<1.or.input%matrix_top>n)return
     if(.not.ieee_is_finite(input%pore_level))return
     if(.not.all(ieee_is_finite(input%z)))return
-    if(any(input%pore_level-input%z(input%matrix_top:n)<=0))return
+    ! CALCGWL can select a containing cell whose center remains unsaturated.
+    ! SATFLOW sets its head difference to zero, so no dry-pore law is needed there.
+    if(any((input%pore_level-input%z(input%matrix_top:n)<=0) &
+        .and.head(input%matrix_top:n)>=0))return
     call ppa_wu05a3_satflow_task1(n,input%matrix_top,n,input%pore_saturated_top, &
         input%pore_level,input%matrix_level,head,input%z,input%dz,input%saturated_fraction, &
         input%resistance_inverse,0,ones,ones,zeros,zeros,acos(-1.0_real64),1.0_real64,dt, &
