@@ -161,6 +161,8 @@ program test_scratch_binding
   call interval_handoff()
   call check_matrix_fraction()
   call check_reduction_policy()
+  call check_reduction_composition()
+  print '(a)','PPA_WU05A4_REDUCTION_BEFORE_STORAGE_LIMIT=PASS'
   print '(a)','PPA_WU05A4_REDUCTION_POLICY=PASS'
   call coupled_storage_check()
   print '(a)','PPA_WU05A4_LINEAR_MATRIX_MACRO_STORAGE_BALANCE=PASS'
@@ -168,6 +170,40 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine check_reduction_composition()
+    type(exchange_reduction_history)::history,proposal
+    type(saturated_domain_inputs)::trial_input
+    type(macro_exchange_evaluation)::evaluation
+    type(macro_trial_key)::identity
+    real(real64)::rate,store
+    logical::valid
+    integer::j
+    trial_input=input
+    do j=0,3
+      if(j>0)then
+        call propose_exchange_retry(history,100.0_real64,proposal,valid)
+        call check(valid,210)
+        history=proposal
+      end if
+      trial_input%reduction_decades=history%decades
+      identity=macro_trial_key(96_int64,0_int64,int(j+1,int64),1_int64)
+      call prepare_saturated_from_heads(trial_input,[-0.5_real64,0.25_real64],0.0_real64, &
+          100.0_real64,identity,evaluation,store,valid)
+      call check(valid,211)
+      ! Long dt: storage cap stays active at levels 0,1,2, then releases at 3.
+      rate=min(0.1875_real64*0.1_real64**real(j,real64), &
+          (0.375_real64-5.0_real64/24.0_real64)/100.0_real64)
+      call check(abs(evaluation%rate(2)-rate)<1.e-14_real64,212)
+      call check(abs(evaluation%derivative(2)+rate/0.75_real64)<1.e-14_real64,213)
+      call check(abs(store-0.375_real64+rate*100.0_real64)<1.e-13_real64,214)
+      call check(abs(input%storage-0.375_real64)<1.e-14_real64.and.input%reduction_decades==0,215)
+    end do
+    ! Recovery proposal changes future trials only, not the last captured rate.
+    call propose_exchange_recovery(history,101.0_real64,proposal,valid)
+    call check(valid.and.proposal%decades==2.and.history%decades==3,216)
+    call check(abs(evaluation%rate(2)-rate)<1.e-14_real64,217)
+  end subroutine
+
   subroutine check_reduction_policy()
     type(exchange_reduction_history)::history,proposal
     logical::valid
