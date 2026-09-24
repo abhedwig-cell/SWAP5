@@ -1,0 +1,24 @@
+name: F-AHL15R paired tight-K timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl15_generate_fsi24.py'
+      - 'research/ahl/run_ahl15r_timing_reconciliation.sh'
+      - '.github/workflows/f-ahl15r-paired-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired tight-K timing
+        run: |
+          bash research/ahl/run_ahl15r_timing_reconciliation.sh /tmp/ahl15r_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl15r-${{ github.run_id }}
+          path: /tmp/ahl15r_result.txt
