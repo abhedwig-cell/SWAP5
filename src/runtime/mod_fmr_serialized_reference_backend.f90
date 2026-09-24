@@ -1497,8 +1497,6 @@ contains
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
     self%drainage_response_window_signed_exchange_native = 0.0_real64
-    if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
-    if (allocated(self%legacy_swbotb2_control)) deallocate(self%legacy_swbotb2_control)
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
@@ -1561,7 +1559,7 @@ contains
       if (allocated(forcing%legacy_swbotb2_control)) then
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
         if (.not. forcing%legacy_swbotb2_control%ready()) return
-        allocate(self%legacy_swbotb2_control)
+        if (.not. allocated(self%legacy_swbotb2_control)) allocate(self%legacy_swbotb2_control)
         self%legacy_swbotb2_control = forcing%legacy_swbotb2_control
       end if
       if (self%snow_active) then
@@ -1577,6 +1575,8 @@ contains
         self%soil_temperature_forcing = forcing%soil_temperature
       else
         if (allocated(forcing%soil_temperature)) return
+      else if (allocated(self%legacy_swbotb2_control)) then
+        deallocate(self%legacy_swbotb2_control)
       end if
 
       self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
@@ -1636,9 +1636,15 @@ contains
         end if
         if (.not. associated(self%qdra)) allocate(self%qdra(size(self%drainage_response_levels),n))
         self%qdra = 0.0_real64
-        allocate(self%drainage_response_controls(size(forcing%drainage_response_controls)))
+        if (allocated(self%drainage_response_controls)) then
+          if (size(self%drainage_response_controls) /= size(forcing%drainage_response_controls)) &
+               deallocate(self%drainage_response_controls)
+        end if
+        if (.not. allocated(self%drainage_response_controls)) &
+             allocate(self%drainage_response_controls(size(forcing%drainage_response_controls)))
         self%drainage_response_controls = forcing%drainage_response_controls
       else
+        if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
         if (associated(self%qdra)) then
           if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n) then
             deallocate(self%qdra)
