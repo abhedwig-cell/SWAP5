@@ -1,0 +1,26 @@
+name: F-AHL06R timing reconciliation
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl06r_timing_reconciliation.f90'
+      - 'research/ahl/run_ahl06r_timing_reconciliation.sh'
+      - 'integration/f-ahl/F-AHL06R_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl06r-timing-reconciliation.yml'
+  workflow_dispatch:
+
+jobs:
+  timing-reconciliation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired timing reconciliation
+        run: |
+          bash research/ahl/run_ahl06r_timing_reconciliation.sh /tmp/ahl06r_result.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl06r-${{ github.run_id }}
+          path: /tmp/ahl06r_result.txt
