@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL02",
+  "title": "Adaptive representation-coordinate comparison",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "parent": "F-AHL01",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can a physically transformed retention representation reduce support count at the same constitutive error limits more effectively than increasing interpolation order?",
+  "fixed_conditions": {
+    "materials": ["B01", "B12", "O05", "O14"],
+    "domain_cm": [-1000000.0, -0.01],
+    "independent_coordinate": "log10(-h)",
+    "capacity_coordinate": "log(C)",
+    "conductivity_coordinate": "log(K)",
+    "theta_span_normalized_abs_error_max": 1e-5,
+    "abs_log_capacity_error_max": 1e-2,
+    "abs_log_conductivity_error_max": 1e-2
+  },
+  "candidates": [
+    "linear interpolation of theta",
+    "linear interpolation of logit(Se), with theta reconstructed from theta_r + (theta_s-theta_r)*Se"
+  ],
+  "decision_rule": "Prefer transformed retention only if every material satisfies all three error limits and support count is reduced without crossing a constitutive branch or changing authoritative physics.",
+  "hard_exclusions": [
+    "NO_END_TO_END_SPEED_CLAIM",
+    "NO_PRODUCTION_CODE",
+    "NO_BRANCH_INTERPOLATION",
+    "NO_RUNTIME_REFINEMENT",
+    "NO_NEW_HYDRAULIC_PHYSICS"
+  ]
+}
