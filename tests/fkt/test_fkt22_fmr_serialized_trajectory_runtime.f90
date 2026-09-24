@@ -11,7 +11,7 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_new_b110_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -34,6 +34,7 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   type(kernel_candidate_state_t) :: candidate_off, candidate_on
   type(kernel_diagnostics_t) :: diagnostics_off, diagnostics_on
   type(fmr_serialized_reference_backend_t) :: backend_off, backend_on
+  type(fmr_serialized_physical_observation_t) :: observation_off
   type(fixed_flux_top_boundary_provider_t), target :: top
   class(transaction_state_t), allocatable :: snapshot_off, snapshot_on
   real(real64) :: k0, qeq
@@ -63,6 +64,7 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
   call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
        0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  observation_off = backend_off%observation()
 
   call require(result_off%status == CANONICAL_STATUS_COMPLETED .and. result_off%completed, &
        'default-off production interval completed')
@@ -132,6 +134,30 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        diagnostics_on%linear_solves - diagnostics_off%linear_solves, &
        'rejected full-trial tangent work absent from publication')
   write(*,'(A)') 'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS'
+
+  call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
+       'reference solve performs three full workspace resets on current path')
+  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
+       'workspace reset observer records positive zeroed byte volume')
+  write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_SOLVE=', &
+       observation_off%solver_diagnostics%workspace_full_resets
+  write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
+       observation_off%solver_diagnostics%workspace_zeroed_bytes
+  write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  call require(observation_off%solver_diagnostics%constitutive_evaluations > 0, &
+       'constitutive evaluation count observed on Reference solve')
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
+       observation_off%solver_diagnostics%nonlinear_iterations
+  write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
+  call require(diagnostics_off%workspace_full_resets == 9, &
+       'external full-half interval aggregates three resets across three Reference solves')
+  call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
+       observation_off%solver_diagnostics%workspace_zeroed_bytes, &
+       'interval reset bytes equal three Reference-solve reset payloads')
+  write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_INTERVAL=', diagnostics_off%workspace_full_resets
+  write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_INTERVAL=', diagnostics_off%workspace_zeroed_bytes
 
   call candidate_off%snapshot(snapshot_off, available_off)
   call candidate_on%snapshot(snapshot_on, available_on)

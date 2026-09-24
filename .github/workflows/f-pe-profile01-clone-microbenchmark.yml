@@ -1,0 +1,20 @@
+name: F-PE-PROFILE01 clone microbenchmark
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile01
+    paths:
+      - 'tests/fpe/test_fpe_profile01_state_clone_timing.f90'
+      - 'tests/fpe/run_fpe_profile01_state_clone_timing.sh'
+      - '.github/workflows/f-pe-profile01-clone-microbenchmark.yml'
+  workflow_dispatch:
+
+jobs:
+  clone-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_profile01_state_clone_timing.sh

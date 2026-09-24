@@ -2142,6 +2142,8 @@ contains
     outcome%linear_solves = solve_result%diagnostics%linear_solves
     outcome%backtracking_attempts = solve_result%diagnostics%backtracking_attempts
     outcome%alternative_solver_calls = solve_result%diagnostics%alternative_solver_calls
+    outcome%workspace_full_resets = solve_result%diagnostics%workspace_full_resets
+    outcome%workspace_zeroed_bytes = solve_result%diagnostics%workspace_zeroed_bytes
     if (trajectory_solver_used) then
       outcome%linear_solves = outcome%linear_solves + direction_result%additional_tridiagonal_backsolves
       outcome%jacobian_builds = outcome%jacobian_builds + direction_result%additional_jacobian_builds

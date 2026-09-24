@@ -69,6 +69,8 @@ module mod_transaction_reference
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type trial_outcome_t
 
@@ -118,6 +120,10 @@ module mod_transaction_reference
     integer :: accepted_backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     integer :: accepted_alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
+    integer :: accepted_workspace_full_resets = 0
+    integer(int64) :: accepted_workspace_zeroed_bytes = 0_int64
     logical :: accepted_mass_complete = .false.
     integer(int64) :: accepted_missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     real(real64) :: accepted_storage_start = 0.0_real64
@@ -263,6 +269,8 @@ contains
       result%linear_solves = result%linear_solves + full_outcome%linear_solves
       result%backtracking_attempts = result%backtracking_attempts + full_outcome%backtracking_attempts
       result%alternative_solver_calls = result%alternative_solver_calls + full_outcome%alternative_solver_calls
+      result%workspace_full_resets = result%workspace_full_resets + full_outcome%workspace_full_resets
+      result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + full_outcome%workspace_zeroed_bytes
 
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
@@ -301,6 +309,8 @@ contains
       result%linear_solves = result%linear_solves + half1_outcome%linear_solves
       result%backtracking_attempts = result%backtracking_attempts + half1_outcome%backtracking_attempts
       result%alternative_solver_calls = result%alternative_solver_calls + half1_outcome%alternative_solver_calls
+      result%workspace_full_resets = result%workspace_full_resets + half1_outcome%workspace_full_resets
+      result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + half1_outcome%workspace_zeroed_bytes
 
       if (half1_outcome%solver_ok) then
         call model%capture_attempt_context(half_context)
@@ -314,6 +324,8 @@ contains
         result%linear_solves = result%linear_solves + half2_outcome%linear_solves
         result%backtracking_attempts = result%backtracking_attempts + half2_outcome%backtracking_attempts
         result%alternative_solver_calls = result%alternative_solver_calls + half2_outcome%alternative_solver_calls
+        result%workspace_full_resets = result%workspace_full_resets + half2_outcome%workspace_full_resets
+        result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + half2_outcome%workspace_zeroed_bytes
         call model%capture_attempt_context(half_context)
       else
         half2_outcome = trial_outcome_t()
@@ -422,6 +434,8 @@ contains
       result%accepted_linear_solves = half1_outcome%linear_solves + half2_outcome%linear_solves
       result%accepted_backtracking_attempts = half1_outcome%backtracking_attempts + half2_outcome%backtracking_attempts
       result%accepted_alternative_solver_calls = half1_outcome%alternative_solver_calls + half2_outcome%alternative_solver_calls
+      result%accepted_workspace_full_resets = half1_outcome%workspace_full_resets + half2_outcome%workspace_full_resets
+      result%accepted_workspace_zeroed_bytes = half1_outcome%workspace_zeroed_bytes + half2_outcome%workspace_zeroed_bytes
       call publish_local_terminal_sensitivity(half2_outcome%interface_sensitivity, midpoint, attempt_t1, &
            t0, t1, result%interface_sensitivity)
       result%commits = result%commits + 1
@@ -478,6 +492,8 @@ contains
       result%linear_solves = result%linear_solves + outcome%linear_solves
       result%backtracking_attempts = result%backtracking_attempts + outcome%backtracking_attempts
       result%alternative_solver_calls = result%alternative_solver_calls + outcome%alternative_solver_calls
+      result%workspace_full_resets = result%workspace_full_resets + outcome%workspace_full_resets
+      result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + outcome%workspace_zeroed_bytes
 
       if (.not. outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
@@ -571,6 +587,8 @@ contains
       result%accepted_linear_solves = outcome%linear_solves
       result%accepted_backtracking_attempts = outcome%backtracking_attempts
       result%accepted_alternative_solver_calls = outcome%alternative_solver_calls
+      result%accepted_workspace_full_resets = outcome%workspace_full_resets
+      result%accepted_workspace_zeroed_bytes = outcome%workspace_zeroed_bytes
       call publish_local_terminal_sensitivity(outcome%interface_sensitivity, t0, attempt_t1, &
            t0, t1, result%interface_sensitivity)
       result%commits = result%commits + 1
