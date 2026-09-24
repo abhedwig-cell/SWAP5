@@ -244,6 +244,53 @@ contains
            ':bound=',certificate%head_inf_bound,':mass=',ledger
     end do
   end subroutine
+  subroutine probe_low_rain_retry(profile,before,forcing,t_start,t_end,amount)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_committed_restart_bundle_t),intent(in)::before
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
+    real(real64),intent(in)::t_start,t_end,amount(:)
+    type(fmr_production_application_config_t)::dense
+    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_committed_restart_bundle_t)::after
+    type(fmr_serialized_column_result_t),allocatable::result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:)
+    type(fmr_vonhhbraden_source_window_progress_t)::progress
+    integer::code,tile,run_code
+    logical::ok
+    dense=profile
+    dense%numerical%transaction%retry_scale=0.8_real64
+    dense%numerical%transaction%max_retries=64
+    call owner%initialize(dense,code)
+    call require(code==FMR_APP_BOOT_OK,'dense retry owner initialized')
+    call owner%restore_committed_restart(before,9902_int64,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'dense retry starts at same accepted source boundary')
+    call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,run_code)
+    write(*,*) 'LOW_RAIN_DENSE_RETRY',run_code,result%kernel_status,result%accepted_substeps
+    call owner%export_committed_restart(9902_int64,after,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'dense retry owner exportable')
+    if(run_code==FMR_APP_BOOT_OK) then
+      call require(all(result%committed).and.maxval(abs(result%mass%residual))<=HARD_MASS_GATE, &
+           'dense retry successful hard mass')
+    else
+      call require(all(.not.result%committed),'dense retry failed with no publication')
+      call compare_restart_bundles(before,after,'dense retry failed state unchanged')
+    end if
+    do tile=1,NTILE
+      call fmr_initialize_vonhhbraden_source_window_progress(int(9900+tile,int64),t_start,t_end,amount(tile), &
+           progress,code,profile%tiles(tile)%tile_id,before%records(tile)%revision)
+      call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'dense retry source initialized')
+      call publish_ppa_wu04c_accepted_progress(progress,receipt(tile)%receipt,amount(tile),code)
+      if(run_code==FMR_APP_BOOT_OK) then
+        call require(code==PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==0.0_real64, &
+             'dense retry accepted aggregate consumed once')
+      else
+        call require(code/=PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==amount(tile), &
+             'dense retry failed aggregate untouched')
+      end if
+    end do
+    call owner%close(code)
+    call require(code==FMR_APP_BOOT_OK,'dense retry owner closed')
+  end subroutine
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
     real(real64) :: conductivity0
@@ -860,6 +907,7 @@ contains
         call require(code==FMR_APP_BOOT_OK,'rejected window fresh closes')
         if(window==2) write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_WINDOW_REJECTION=PASS'
         if(window==4) write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_BRANCH_REJECTION=PASS'
+        if(window==4) call probe_low_rain_retry(profile,before,forcing,start_time,end_time,amount)
         return
       end if
       call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'changing window commits')
