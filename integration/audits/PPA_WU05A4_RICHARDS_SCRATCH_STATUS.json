@@ -19,6 +19,16 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "reference_final_state_bridge": {
+    "baseline": "2379ef5ea",
+    "implementation": "src/adapter/mod_ppa_wu05a4_reference_finish.f90",
+    "contract": "Read final h/thetm1/theta/qtop/qbot/kmean from existing reference state binding and head gradients/source/sink/provider root rates from existing workspace. Internal faces are -kmean*head_gradient, matching vector_F; vertical_flux scratch is not authority. Delegate candidate extraction to the per-cell and global matrix/macropore guard; failures consume attempt.",
+    "scope": "Explicit flux boundaries with caller-materialized final qtop/qbot, full column n>=2, provider root path only. Reject prescribed-head top and special unsaturated flags. No shared ABI change or production call site yet; no pond or canonical commit.",
+    "invariants": [3, 5, 7, 13, 21],
+    "tests": "Three-dt nonlinear manufactured storage fixture populates actual state/workspace types. NaN in unrelated vertical_flux must not contaminate result. Reject prescribed top head, wrong internal Darcy sign, special branch flag, negative conductivity and stale final head.",
+    "status": "IMPLEMENTED_REPLAY_PENDING",
+    "next_action": "Persist and replay focused and nine-gate bounded regressions"
+  },
   "matrix_flux_balance": {
     "baseline": "2be21a72e",
     "interface": "PPA-local finish_matrix_static_attempt accepts upward-positive face rates and separate nonnegative ordinary source, drainage sink and root sink rates. Matrix storage change equals captured macro amount plus dt*(lower face-upper face+source-sink-root). Global balance telescopes internal faces and cancels internal macro transfer. Closed guard delegates with zero rates.",

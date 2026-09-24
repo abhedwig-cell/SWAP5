@@ -30,6 +30,8 @@ foreach ($opt in @('O0','O2')) {
     $arguments = $arguments[0..($arguments.Count-2)]
     $arguments += (Join-Path $repo 'src/adapter/mod_ppa_wu05a4_checkpoint_input.f90')
     $arguments += (Join-Path $repo 'src/adapter/mod_ppa_wu05a4_attempt.f90')
+    $arguments += (Join-Path $repo 'src/solver/mod_reference_richards_state_binding.f90')
+    $arguments += (Join-Path $repo 'src/adapter/mod_ppa_wu05a4_reference_finish.f90')
     $arguments += $testSource
     $arguments += @('-o',$exe)
     & gfortran @arguments

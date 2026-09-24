@@ -9,6 +9,8 @@ program test_scratch_binding
   use mod_ppa_wu05a4_static_geometry
   use mod_ppa_wu05a4_checkpoint_input
   use mod_ppa_wu05a4_attempt
+  use mod_ppa_wu05a4_reference_finish
+  use mod_reference_richards_state_binding
   use mod_ppa_wu05a4_reduction_policy
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
@@ -188,6 +190,7 @@ contains
     type(ppa_wu05a2_macropore_candidate_t)::candidate
     type(candidate_mass_account)::account
     type(reference_richards_workspace_t),allocatable::scratch
+    type(reference_richards_state_binding_t)::final_state
     real(real64)::h,dt,capacity,theta(2),bad_theta(2),faces(3),source(2),sink(2),root(2),external
     integer::j,k,mode
     logical::valid,converged
@@ -198,9 +201,14 @@ contains
     cp%payload%pore_water(1,:)=[0.125_real64,0.25_real64]
     allocate(scratch)
     call initialize_reference_workspace(scratch,2)
+    final_state%active_nodes=2
+    allocate(final_state%h(2),final_state%theta(2),final_state%hm1(2),final_state%thetm1(2), &
+        final_state%k(2),final_state%kmean(3),final_state%dimoca(2),final_state%itnumb(100,2))
+    final_state%hm1=0; final_state%k=1; final_state%dimoca=0; final_state%itnumb=0
     do j=1,3
       dt=0.5_real64*2.0_real64**(j-1)
-      do mode=0,10
+      do mode=0,15
+        scratch%unsaturated_flags=.false.
         call begin_static_attempt(cp,input%z,input%dz,input%volume,[1.0_real64,1.0_real64], &
             input%resistance_inverse,dt,int(10*j+mode,int64),0,scratch,attempt,geometry,valid)
         call check(valid,301)
@@ -239,7 +247,21 @@ contains
         case(4)
           bad_theta(1)=-0.1_real64
         end select
-        if(mode>=5)then
+        if(mode==5.or.mode>=11)then
+          final_state%h=[-0.5_real64,h]; final_state%thetm1=0.2_real64
+          final_state%theta=theta; final_state%qtop=faces(1); final_state%qbot=faces(3)
+          final_state%kmean=1; final_state%ftoph=.false.
+          scratch%head_gradient=-faces
+          scratch%source=source; scratch%sink=sink; scratch%provider_root_sink=root
+          ! Poison unrelated scratch to prove it is not a face-flux authority.
+          scratch%vertical_flux=ieee_value(0.0_real64,ieee_quiet_nan)
+          if(mode==11)final_state%ftoph=.true.
+          if(mode==12)scratch%head_gradient(2)=-scratch%head_gradient(2)
+          if(mode==13)scratch%unsaturated_flags(3)=.true.
+          if(mode==14)final_state%kmean(2)=-1
+          if(mode==15)final_state%h(2)=h+0.01_real64
+          call finish_reference_static_attempt(attempt,scratch,final_state,1.e-12_real64,candidate,account,valid)
+        else if(mode>=5)then
           if(mode==6)faces=-faces
           if(mode==7)faces(2)=faces(2)+0.01_real64 ! unchanged external total
           if(mode==8)source(2)=source(2)+0.01_real64 ! duplicated input
