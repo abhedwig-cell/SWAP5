@@ -1,0 +1,25 @@
+name: F-AHL21 prescribed qbot matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl21_qbot_matrix.f90'
+      - 'research/ahl/run_ahl21_qbot_matrix.sh'
+      - 'integration/f-ahl/F-AHL21_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl21-qbot-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run prescribed qbot Richards matrix
+        run: |
+          bash research/ahl/run_ahl21_qbot_matrix.sh /tmp/ahl21_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl21-${{ github.run_id }}
+          path: /tmp/ahl21_result.txt
