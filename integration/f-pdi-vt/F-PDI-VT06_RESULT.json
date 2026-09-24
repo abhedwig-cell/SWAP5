@@ -1,28 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PDI-VT",
   "work_unit": "F-PDI-VT06",
-  "status": "SCIENTIFIC_FIX_QUALIFIED_PRODUCTION_ADMISSION_BLOCKED",
+  "status": "CORE_SCIENTIFIC_FIX_QUALIFIED_COLD_FULLMODEL_PENDING_PRODUCTION_ADMISSION_BLOCKED",
   "answers": {
     "1_exact_bug": "Kvap_func receives soil temperature in degrees Celsius, but the saturated vapor-density expression used that Celsius value directly in a thermodynamic expression whose temperature is absolute Kelvin. MgRT and Da already converted to Kelvin, so the routine mixed temperature scales internally.",
     "2_source_authority": "The defect is present in canonical SWAP4.3.1 B0 WC_K_models_04_11.f90 and survives the admitted B1 chain through B1.11. SWAP-009 changes signed-head calling semantics, SWAP-010 changes model-7 capacity algebra, and SWAP-011 adds derivative/cache logic but leaves the production Kvap_func Celsius use unresolved.",
-    "3_physical_dimensional_correctness": "The unique authority-consistent repair defines TK=Temp+273.15d0 and uses TK in MgRT, Da and Rho_sv. This makes the saturated-vapor-density equation use absolute temperature consistently while preserving the Celsius interface and SWAP-009 signed h in the Kelvin relative-humidity factor.",
-    "4_results_that_change": "Only PDI conductivity evaluations with vapor enabled are intended to change. The full-model Vapor-on control and repaired candidate differ in the qualified heat-bound case. The repaired candidate remains finite in the pathological dry case where the buggy zero-temperature-hosted control becomes non-finite.",
-    "5_results_unchanged": "NoVap control and candidate are numerically identical in the full-model gates. PDI retention, capacity, capillary conductivity and film conductivity are not changed by the patch. SWAP-009 signed-head semantics are preserved.",
-    "6_production_admission": "The correction is scientifically qualified for admission, but production admission is not yet provenance-complete because the exact repaired B1.11 target postimage SHA256 and repaired full source-manifest SHA256 cannot be derived from GitHub-only evidence without the exact canonical B1.11 source bytes.",
-    "7_AHL_requalification": "Do not reopen F-AHL. After the temperature fix is actually admitted upstream, run only F-AHL-PDI-VAPOR-REQUAL over the previously excluded/blocked PDI Vapor-on envelope using the corrected authoritative hydraulics. Retain existing NoVap and non-PDI AHL evidence unless the admitted source delta touches those paths."
+    "3_physical_dimensional_correctness": "The authority-consistent repair defines TK=Temp+273.15d0 and uses TK in MgRT, Da and Rho_sv. This makes the saturated-vapor-density equation use absolute temperature consistently while preserving the Celsius interface and SWAP-009 signed h in the Kelvin relative-humidity factor.",
+    "4_results_that_change": "Only PDI conductivity evaluations with vapor enabled are intended to change. The qualified VT04C full-model Vapor-on control and repaired candidate differ. The repaired candidate also remains finite in the pathological zero-temperature-hosted dry case where the buggy control becomes non-finite.",
+    "5_results_unchanged": "NoVap control and candidate are numerically identical after metadata normalization in the qualified full-model gates. PDI retention, capacity, capillary conductivity and film conductivity are not changed by the patch. SWAP-009 signed-head semantics are preserved.",
+    "6_production_admission": "Not ready. Exact repaired B1.11 target postimage SHA256 and repaired full source-manifest SHA256 cannot be derived from GitHub-only evidence without the exact canonical historical source bytes.",
+    "7_AHL_requalification": "Do not reopen F-AHL. After the temperature fix is actually admitted upstream, run only F-AHL-PDI-VAPOR-REQUAL over the previously excluded/blocked PDI Vapor-on envelope using corrected authoritative hydraulics."
   },
   "qualification_evidence": {
     "theory_documentation_code_reconciliation": "PASS",
     "independent_formula_gate": "PASS",
-    "actual_source_fortran_temperature_head_gate": "21/21 PASS",
+    "actual_source_fortran_temperature_head_gate": "21/21 PASS at -20,-5,0,5,20,35,50 C and three dry heads",
     "SWAP_009_signed_head_regression": "PASS",
     "NoVap_identity": "PASS",
-    "VT04C_finite_control_full_model": "PASS run 36060706618",
-    "VT04A_diagnostic": "buggy control becomes non-finite when the testcase supplies an unsuitable zero-temperature route; repaired candidate finite",
-    "water_balance": "CRITDEVMASBAL=1e-6 retained; qualified VT04C runs all reached normal completion",
-    "nonlinear_convergence": "No failure/retry evidence in the qualified VT04C logs; detailed nonlinear iteration counters were not emitted by this host output configuration",
-    "colder_temperature": "covered by the function-level multi-temperature sweep including sub-zero Celsius temperatures; a separate full-model colder-temperature production case remains unnecessary for scientific bug classification but would be part of canonical admission regression if exact historical source is materialized"
+    "VT04C_finite_control_full_model": "PASS run 36060706618 and reproduced after adapter repair",
+    "water_balance": "CRITDEVMASBAL=1e-6 retained; qualified full-model runs reached normal completion",
+    "nonlinear_convergence": "Qualified host logs show normal completion and no emitted failure/retry evidence; detailed nonlinear iteration counters are not emitted by this output configuration",
+    "VT06A_cold_5C": "FAIL activation gate: finite but Vapor-on control and candidate numerically identical",
+    "VT06B_moderately_cold_attempt1": "Hydraulic evidence positive, but workflow failed because comparator treated Generated-at timestamp metadata as NoVap numerical difference",
+    "VT06B_comparator_repair": "Metadata normalization now removes Generated-at lines and requires Vapor-on activation on normalized content as well",
+    "VT06B_rerun": "queued in GitHub Actions at dossier update time"
   },
   "historical_authority": {
     "B0_target_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
@@ -32,8 +34,7 @@
     "B1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
   },
   "exact_minimal_patch": "integration/f-pdi-vt/F-PDI-VT_FIX.patch",
-  "remaining_blocker": "Exact canonical B1.11 source bytes are not present as reconstructable bytes in the GitHub repository. The available upstream legacy-capable host fails the canonical B0 byte-identity gate and cannot substitute for the historical chain.",
-  "closeout_state": "STOP_AT_REAL_EXTERNAL_AUTHORITY_BLOCKER",
+  "remaining_external_authority_blocker": "Exact canonical B0/B1.11 source bytes are not available through the GitHub repository. The upstream legacy-capable host fails the historical byte-identity gate and cannot substitute for the deterministic B1 chain.",
   "production_source_modified": false,
   "F_AHL_reopened": false
 }
