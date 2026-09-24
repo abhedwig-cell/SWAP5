@@ -25,7 +25,8 @@
     "contract": "One static domain starting at surface, no cracks/subsidence/covering layer. Compose source static matrix fraction with MPVOLUME surface area and capacity. Publish complete geometry only after both calculations succeed; no partial fraction array on failure.",
     "tests": "Layer matrix fractions and surface fraction/capacity, source surface cap at 0.6 without changing matrix fraction, minimum-width area cutoff, invalid diameter clears previous output.",
     "limits": "Not wired into production HeadCalc; does not introduce top flux, pond partition or owner state. Total dynamic volume must not be substituted for explicit static volume.",
-    "test_result": "Pending persisted replay"
+    "recovery_point": "b59bf1688",
+    "test_result": "Persisted b59bf1688 Richards scratch and MPVOLUME surface gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
   },
   "surface_dependency_guard": {
     "baseline": "f34c97f3c",
