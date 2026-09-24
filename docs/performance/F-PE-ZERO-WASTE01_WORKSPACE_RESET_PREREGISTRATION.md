@@ -114,3 +114,35 @@ The one retained reset is the clean-scratch establishment at solve start in the 
 - runtime attribution only after semantic gates pass.
 
 H2 is forbidden from changing transaction ownership or relying on dirty scratch from a prior solve.
+
+
+## H2 qualification checkpoint
+
+Candidate head: `da869df8582e252f3b0bb795ba069a3a86f9b86a`.
+
+Observed CI:
+
+- `F-PE-PROFILE01 compute-core observation`: PASS;
+- `F-PE-PROFILE01 reset microbenchmark`: PASS;
+- `PUB-P2E01 E0 paired pilot`: PASS;
+- Documentation: PASS;
+- F-CI canonical qualification: still running at this checkpoint.
+
+The three PUB-ME D1/D3/D5 failures are not interpreted as physical regressions. Their runners contain explicit fail-closed guards rejecting any workunit that changes `src` or `reference` relative to their own immutable publication execution bases. This zero-waste workunit deliberately changes production source, so those publication-specific immutable-workunit guards are outside the H2 qualification claim.
+
+F-CI96 F-ROSS12 postimage preservation likewise failed at its exact postimage/successor reconciliation step after a production-source change. It is retained as a preservation-scope signal, not silently reclassified as a successful unchanged-postimage replay.
+
+### Current H2 verdict
+
+```text
+H1 immediate duplicate reset removal = PASS
+H2 caller-owned HeadCalc reset removal = PASS on focused compute/runtime oracle
+resets per Reference solve             = 1 expected and observed by passing PROFILE01 gate
+reset microbenchmark                   = PASS
+paired independent pilot               = PASS
+documentation                          = PASS
+canonical qualification                = PENDING
+publication immutable-workunit guards  = EXPECTED_SCOPE_FAILURES
+```
+
+No canonical-admission or whole-model speedup claim is made at this checkpoint.
