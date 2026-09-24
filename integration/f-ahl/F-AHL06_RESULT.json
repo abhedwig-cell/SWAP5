@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL06",
+  "phase": "OPTIMIZED_SPLIT_END_TO_END_SCREEN_COMPLETE",
+  "status": "FAIL_PERFORMANCE_PASS_FIDELITY",
+  "workflow_run": 36041096007,
+  "workflow_job": 107773171271,
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 1.038972e-6,
+    "max_abs_water_content_delta": 1.143353e-9,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 4.654080e-9,
+    "mass_residual_abs_cm": 1.405126e-16,
+    "verdict": "PASS"
+  },
+  "solver_diagnostics": {
+    "analytical_nonlinear_iterations": 4,
+    "split_nonlinear_iterations": 5,
+    "analytical_backtracking_attempts": 4,
+    "split_backtracking_attempts": 5
+  },
+  "timing": {
+    "analytical_seconds_per_solve": 7.23046875e-6,
+    "split_seconds_per_solve": 7.6640625e-6,
+    "split_reduction_fraction": -0.059967585089
+  },
+  "finding": "The optimized split provider preserves the near-analytical F-AHL04C response but is about 6% slower end-to-end on this nonlinear fixture because it triggers one additional nonlinear iteration and one additional backtracking attempt.",
+  "interpretation": "Constitutive micro-cost reduction alone is insufficient. Solver trajectory preservation is now the controlling performance question.",
+  "next_action": "Preregister convergence attribution with exact theta and controlled C/K representation variants to identify which approximated constitutive component causes the extra iteration.",
+  "nonclaims": [
+    "This does not reject adaptive hydraulics generally.",
+    "This is one nonlinear fixture and not a whole-SWAP performance result.",
+    "No production admission is implied."
+  ]
+}
