@@ -1,40 +1,38 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "work_unit": "F-AHL11",
-  "title": "Wet-dry fidelity attribution",
-  "parent": "F-AHL10",
+  "title": "Decoupled adaptive conductivity support",
+  "parent": "F-AHL10A",
   "phase": "PREREGISTERED_RESEARCH",
-  "question": "For the six F-AHL10 cases that fail end-state fidelity while preserving the analytical Newton path, is the amplified response error controlled primarily by retention accuracy, conductivity accuracy, or both?",
-  "frozen_failed_cases": [
-    "B01_wet",
-    "B01_dry",
-    "B12_wet",
-    "B12_dry",
-    "O05_wet",
-    "O14_dry"
-  ],
-  "prospective_variants": [
-    {"id":"base","theta_span_tolerance":1e-5,"logK_tolerance":1e-2},
-    {"id":"theta3","theta_span_tolerance":3e-6,"logK_tolerance":1e-2},
-    {"id":"k3","theta_span_tolerance":1e-5,"logK_tolerance":3e-3},
-    {"id":"both3","theta_span_tolerance":3e-6,"logK_tolerance":3e-3}
-  ],
-  "capacity_policy": "C remains the derivative of the same retention Hermite interpolant; its independent admissibility ceiling remains abs(log C error)<=1e-2.",
-  "frozen_richards_gates": {
-    "same_nonlinear_iteration_count_as_analytical": true,
-    "same_backtracking_count_as_analytical": true,
-    "max_abs_pressure_head_delta_cm": 0.05,
-    "max_abs_water_content_delta": 1e-4,
-    "max_abs_top_flux_delta_cm_per_day": 1e-5,
-    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
-    "candidate_mass_residual_abs_cm": 1e-12
+  "supersedes": "F-AHL11 schema_version 1 wet-dry attribution design",
+  "supersession_reason": "F-AHL10A has now directly attributed all six F-AHL10 failures to the conductivity representation: exact K makes 6/6 pass, whereas exact retention/capacity with lookup K leaves 6/6 failed. Further retention-vs-K attribution is therefore no longer the next uncertainty.",
+  "question": "Can a separate conductivity-specific adaptive support remove the extreme-regime fidelity failures while preserving the compact derivative-consistent retention/capacity representation and its end-to-end speed advantage?",
+  "architecture": {
+    "retention_capacity": "F-AHL09 derivative-consistent cubic-Hermite z=logit(Se), C from the same interpolant derivative",
+    "conductivity": "independent adaptive log(K) representation with its own support and error target",
+    "near_saturation": "authoritative exact handling for h > -1 cm",
+    "shared_support_required": false
   },
-  "interpretation_rule": "Attribute a regime failure to retention or conductivity only when tightening that single family materially reduces the failed Richards observable while the Newton path remains unchanged. Do not relax the Richards gates.",
+  "stage_A": {
+    "purpose": "find the loosest conductivity error limit that closes all six frozen F-AHL10 failures",
+    "candidate_abs_logK_error_limits": [0.003,0.001,0.0003],
+    "frozen_failed_cases": ["B01:wet","B01:dry","B12:wet","B12:dry","O05:wet","O14:dry"],
+    "decision_rule": "Select the loosest prospectively tested K error limit for which all six cases pass the original F-AHL10 gates."
+  },
+  "stage_B": {
+    "purpose": "repeat all 12 F-AHL10 cases with the selected decoupled representation",
+    "gates": "identical to F-AHL10"
+  },
+  "stage_C_after_fidelity_pass": {
+    "purpose": "repeat robust paired end-to-end timing",
+    "timing_protocol": "same long paired alternating-order protocol as F-AHL09R"
+  },
   "hard_exclusions": [
+    "NO_RETENTION_SUPPORT_REFINEMENT_TO_FIX_K",
     "NO_GATE_RETUNING",
-    "NO_PERFORMANCE_CLAIM",
-    "NO_SOLVER_POLICY_CHANGE",
+    "NO_BOTTOM_BOUNDARY_GENERALIZATION",
+    "NO_SURFACE_REGIME_REDESIGN",
     "NO_PRODUCTION_ADMISSION"
   ]
 }
