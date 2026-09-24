@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL14",
+  "phase": "FLOOR_SCALED_K_MATRIX_COMPLETE",
+  "status": "FAIL_11_OF_12_PASS",
+  "workflow_run": 36043943358,
+  "workflow_job": 107782696897,
+  "builder": {
+    "K_floor_cm_per_day": 1e-10,
+    "floored_logK_error_max": 1e-3,
+    "support_points": {"B01":94,"B12":59,"O05":96,"O14":96},
+    "all_builders_completed": true
+  },
+  "matrix": {
+    "pass_count": 11,
+    "fail_count": 1,
+    "only_failure": {
+      "case": "B01:wet",
+      "max_abs_pressure_head_delta_cm": 0.002926360,
+      "max_abs_water_content_delta": 4.705210e-6,
+      "bottom_flux_delta_cm_per_day": 2.685820e-5,
+      "nonlinear_iteration_delta": 0,
+      "backtracking_delta": 0
+    }
+  },
+  "notable_closures": [
+    "B01:dry now passes",
+    "B12:wet and B12:dry now pass",
+    "O05:wet now passes",
+    "O14:dry now passes"
+  ],
+  "finding": "The floor-scaled K metric removes the extreme-dry refinement pathology and closes five of the six F-AHL10 failures. Only B01 wet remains outside the frozen bottom-flux gate.",
+  "decision": "DO_NOT_ADVANCE_TO_TIMING_YET",
+  "next_action": "Diagnose the B01-wet visited-head interval and local conductivity interpolation error prospectively; do not globally tighten K."
+}
