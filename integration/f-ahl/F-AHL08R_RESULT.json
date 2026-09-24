@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL08R",
+  "phase": "PAIRED_TIMING_RECONCILIATION_COMPLETE",
+  "status": "REJECT_END_TO_END_SPEED_CANDIDATE",
+  "workflow_run": 36042058609,
+  "workflow_job": 107776366158,
+  "paired_ratios": [1.074925,1.028591,1.079914,1.082606,1.078388,1.083874,1.080756],
+  "median_paired_ratio": 1.079914,
+  "median_reduction_fraction": -0.079914,
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 1.038972e-6,
+    "max_abs_water_content_delta": 1.143353e-9,
+    "bottom_flux_delta_cm_per_day": 4.654080e-9,
+    "mass_residual_abs_cm": 1.405126e-16,
+    "verdict": "PASS"
+  },
+  "decision_rule": {
+    "advance_below": 0.98,
+    "equivocal_interval": [0.98,1.02],
+    "reject_above": 1.02
+  },
+  "decision": "REJECT_K_ONLY_AS_SPEED_CANDIDATE",
+  "interpretation": "The numerically clean exact-theta+C plus K-lookup architecture preserves Richards response but lookup transform/search/reconstruction overhead exceeds analytical K evaluation under the longer paired protocol.",
+  "next_direction": "Test a derivative-consistent interpolated retention representation in which theta and C are generated from the same interpolant, preserving Jacobian/residual consistency while avoiding repeated analytical power evaluations.",
+  "nonclaims": [
+    "This rejects K-only lookup as a speed candidate for the tested implementation and fixture, not tabulation generally.",
+    "No production claim is made."
+  ]
+}
