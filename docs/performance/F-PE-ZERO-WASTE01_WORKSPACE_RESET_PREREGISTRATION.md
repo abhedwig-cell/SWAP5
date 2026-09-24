@@ -380,3 +380,16 @@ Both solves:
 Therefore the H7 minimal solve preparation is qualified for this direct Reference route against poisoned prior scratch. The evidence supports the overwrite-before-read classification for the tested path and falsifies dependence on zero-filled bulk scratch there.
 
 This remains bounded evidence, not a claim that every future solver path may omit arbitrary initialization.
+
+
+## ZW01-H9 preregistration — compact factorization-release zero-fill
+
+`release_reference_tridag_factorization_capture` currently allocates a compact n-entry gamma array and immediately zero-fills it before replacing the expanded capture array.
+
+On the next normal TRIDAG solve:
+- gamma(2:n) is assigned during forward elimination before back substitution;
+- gamma(1) is not consumed.
+
+Therefore the compact-array zero-fill is overwrite-before-read and may be removed without changing the release semantics or the compact allocation policy.
+
+H9 intentionally does not yet retain the expanded 2n allocation across solves. Retaining capacity could avoid repeated allocation/deallocation, but current `reference_tridag` infers capture mode from array size, so capacity and behavior are coupled. Decoupling those is a separate design/performance work item.
