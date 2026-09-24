@@ -69,6 +69,8 @@ module mod_transaction_reference
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type trial_outcome_t
 
@@ -118,6 +120,10 @@ module mod_transaction_reference
     integer :: accepted_backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     integer :: accepted_alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
+    integer :: accepted_workspace_full_resets = 0
+    integer(int64) :: accepted_workspace_zeroed_bytes = 0_int64
     logical :: accepted_mass_complete = .false.
     integer(int64) :: accepted_missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     real(real64) :: accepted_storage_start = 0.0_real64
