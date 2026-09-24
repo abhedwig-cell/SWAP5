@@ -1,20 +1,23 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "record": "DRY_TAIL_AUTHORITY_NOTE",
-  "source_context": "Earlier O05 dry-end stabilization research",
+  "source_context": "Earlier O05 dry-end stabilization research reconciled against the current authoritative B1.10 constitutive formula",
   "clarification": {
-    "threshold": "dt * 1e-13",
-    "quantity": "Jacobian capacity floor C_J, not a physical K cutoff",
+    "jacobian_regularization": "C_J = max(C, dt * 1e-13)",
+    "quantity": "Jacobian capacity regularization, not a physical K cutoff",
     "scope": "extremely dry standard MvG route",
-    "O05_onset_approx_head_cm": -800000,
-    "O05_theta_minus_theta_r_approx": 1.7e-9
+    "O05_raw_C_equals_1e_13_head_cm": -264277.5,
+    "O05_raw_C_at_minus_800000_cm": 4.08e-15,
+    "O05_theta_minus_theta_r_at_minus_800000_cm": 1.73e-9
   },
+  "reconciliation": "The earlier -800000 cm marker is not the O05 C=1e-13 crossing. Direct evaluation of the authoritative constitutive relation places C=1e-13 at about -264278 cm. Around -800000 cm the raw C value is already about 4.1e-15; the previously recorded ~1.7e-9 quantity corresponds to theta-theta_r scale, not C.",
   "interpretation_for_AHL": [
     "Adaptive lookup generation should not keep adding resolution indefinitely in the extreme dry tail once storage response is numerically negligible.",
-    "The threshold must not be reinterpreted as a physical truncation of theta(h) or K(h).",
-    "A dry-tail termination/asymptotic rule requires its own prospective continuity and solver-response qualification.",
+    "The 1e-13 scale must not be reinterpreted as a physical truncation of theta(h) or K(h).",
+    "The historical dt*1e-13 term is a Newton/Jacobian regularization authority, not a constitutive K cutoff.",
+    "Any explicit dry-tail termination or asymptotic replacement still requires prospective continuity and solver-response qualification.",
     "The F-AHL10/F-AHL12 dry regimes around hundreds of cm are ordinary dry conditions and are not covered by this extreme-tail rule."
   ],
-  "status": "BOUND_AS_DESIGN_CONSTRAINT_NOT_YET_IMPLEMENTED"
+  "status": "RECONCILED_DESIGN_CONSTRAINT_NOT_YET_IMPLEMENTED"
 }
