@@ -523,3 +523,14 @@ Callsite audit after the H11 candidate showed that `copy_b110_physical_state` is
 The H11 production edit was reverted. This is retained as a negative result: optimizing the helper's inout allocation policy without first changing higher-level carrier reuse would add code complexity without material runtime benefit.
 
 Future state-copy performance work should target ownership/lifetime of reusable carriers or avoid unnecessary snapshots, while preserving deep-copy transaction isolation. The clone semantics themselves remain N1/N2 and are not classified as waste.
+
+
+## ZW01-H12 preregistration — persistent zero-root source/sink buffer
+
+When root extraction is active, each physical solve currently allocates `source_sink_root_zero(size(self%qrot))`, fills it with zero, binds it into the generic source/sink provider, and separately binds the real root sink through the root-sink provider. The zero vector is shape-invariant across the interval and contains no state-dependent information.
+
+H12 moves this zero vector to persistent model storage and initializes it once during `prepare_interval` together with `qrot`.
+
+Expected effect: one allocation/zero-fill per interval preparation instead of one allocation/zero-fill per full/half/retry physical solve.
+
+Semantics remain unchanged: source/sink provider still receives a distinct all-zero root term, while the dedicated root-sink provider receives the actual root extraction sink. No aliasing between the two is introduced.
