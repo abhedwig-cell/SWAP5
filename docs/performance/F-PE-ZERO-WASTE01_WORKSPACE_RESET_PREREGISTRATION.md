@@ -653,3 +653,47 @@ Expected effect: remove one allocation, one full length-N copy and one later tem
 Semantics are unchanged: ownership of the already-computed vector moves into the request; values and shape are identical and no alias remains.
 
 Gates: drainage directional values bit-identical, accepted-direction result bit-identical, no change in backsolve/Jacobian/nonlinear counts, existing groundwater/drainage directional qualification PASS.
+
+
+## Recovery checkpoint — zero-waste runtime expansion
+
+Checkpoint head at write start: `2159d93aea44fbb304c84eedea6f99750fb9cf6e`.
+
+### Qualified / already evidenced on earlier postimages
+
+- H7 minimal Reference solve preparation: dedicated poisoned-workspace equivalence PASS;
+- production compute-core observation PASS with zero full workspace resets;
+- paired pilot PASS;
+- bulk reset payload eliminated from the tested Reference hot path.
+
+### Current candidate stack requiring current-head replay
+
+- H8/H9: remove TRIDAG factorization-capture overwrite-before-read clears;
+- H10: retain 2n TRIDAG capture capacity and decouple capacity from capture mode;
+- H12A: avoid zero temporary source/sink direction arrays when no incoming direction exists;
+- H12B: persist zero-root source/sink buffer across physical solves;
+- H13: remove accepted-direction vertical-flux/head-gradient preclears;
+- H14: persist smooth drainage-qbot zero-direction buffer;
+- H15: reuse shape-stable qdra/qssdi/qrot/zero-buffer capacity across intervals;
+- H16: reuse drainage-response and legacy SWBOTB2 control storage across intervals;
+- H17: reuse scalar soil-temperature forcing storage;
+- drainage directional handoff: move the computed sink-direction allocation into the request rather than allocate+copy;
+- paired-runtime harness expanded so baseline also freezes the directional service and serialized backend.
+
+### Negative result retained
+
+- H11 shape-stable reuse inside `copy_b110_physical_state` was reverted because all audited hot-path targets are freshly allocated before the helper is called. No material allocation saving would result without a higher-level lifetime redesign.
+
+### Pending gates at this checkpoint
+
+Current-head CI was queued at checkpoint time. Required before closure:
+
+- capture-capacity lifecycle;
+- poisoned workspace;
+- compute-core observation;
+- F-SI37 moving preservation and F-VQ89 independent qualification for directional changes;
+- paired Reference and directional runtime;
+- relevant application/runtime preservation including PPA-LOW02 and evaporation successors;
+- documentation.
+
+Exact-postimage publication/canonical guards that reject any changed production source remain scope guards rather than equivalence evidence and must not be counted as model regressions without inspecting their failure mode.
