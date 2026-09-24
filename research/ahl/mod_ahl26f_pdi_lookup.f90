@@ -9,20 +9,23 @@ module mod_ahl26f_pdi_lookup
     type(pdi_params_t)::p
     type(pdi_analytical_provider_t)::analytical
     real(real64),allocatable::xr(:),zr(:),mr(:),xk(:),lk(:)
-    logical::ready=.false.
+    logical::ready=.false.,exact_retention=.false.,exact_k=.false.
   contains
     procedure::evaluate=>eval_provider
   end type
   public::bind_pdi_lookup_provider
 contains
-  subroutine bind_pdi_lookup_provider(provider,path,ok)
+  subroutine bind_pdi_lookup_provider(provider,path,ok,exact_retention,exact_k)
     type(pdi_lookup_provider_t),intent(out)::provider
     character(len=*),intent(in)::path
     logical,intent(out)::ok
+    logical,intent(in),optional::exact_retention,exact_k
     integer::u,ios,nr,nk,i
     character(len=1)::tag
     real(real64)::modelr
-    ok=.false.;provider%ready=.false.
+    ok=.false.;provider%ready=.false.;provider%exact_retention=.false.;provider%exact_k=.false.
+    if(present(exact_retention))provider%exact_retention=exact_retention
+    if(present(exact_k))provider%exact_k=exact_k
     open(newunit=u,file=trim(path),status='old',action='read',iostat=ios);if(ios/=0)return
     read(u,*,iostat=ios)modelr,provider%p%tr,provider%p%ts,provider%p%a1,provider%p%n1,provider%p%m1,provider%p%a2,provider%p%n2,provider%p%m2,provider%p%w1,provider%p%w2,provider%p%h0,provider%p%ha,provider%p%apar,provider%p%omegaK,provider%p%ksat,provider%p%lpar
     provider%p%model=nint(modelr)
@@ -41,7 +44,7 @@ contains
     real(real64)::x,f,dx,t,h00,h10,h01,h11,dh00,dh10,dh01,dh11,z,dzdx,q
     integer::i,ir,ik
     if(.not.self%ready)error stop 'pdi lookup not ready'
-    if(any(pressure_head>HMAX).or.any(pressure_head<HMIN))call self%analytical%evaluate(pressure_head,ta,ka,ca,da)
+    if(any(pressure_head>HMAX).or.any(pressure_head<HMIN).or.self%exact_retention.or.self%exact_k)call self%analytical%evaluate(pressure_head,ta,ka,ca,da)
     do i=1,size(pressure_head)
       if(pressure_head(i)<=HMAX.and.pressure_head(i)>=HMIN)then
         x=log10(-pressure_head(i));call locate(self%xr,x,ir,f);dx=self%xr(ir+1)-self%xr(ir);t=f
@@ -52,7 +55,11 @@ contains
         if(z>=0)then;q=1/(1+exp(-z));else;q=exp(z)/(1+exp(z));end if
         water_content(i)=self%p%ts*q
         capacity(i)=self%p%ts*q*(1-q)*dzdx/(pressure_head(i)*LN10)
+        if(self%exact_retention)then
+          water_content(i)=ta(i);capacity(i)=ca(i)
+        end if
         call locate(self%xk,x,ik,f);conductivity(i)=exp(self%lk(ik)+f*(self%lk(ik+1)-self%lk(ik)))
+        if(self%exact_k)conductivity(i)=ka(i)
         dconductivity_dhead(i)=0
       else
         water_content(i)=ta(i);conductivity(i)=ka(i);capacity(i)=ca(i);dconductivity_dhead(i)=da(i)
