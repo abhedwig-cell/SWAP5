@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04B",
+  "phase": "PREREGISTER",
+  "purpose": "Repair the full-model finite-output qualification without changing the original VT04 gate.",
+  "case_change_only": "Use the same frozen legacy grassgrowth-derived PDI case, but initialize the profile uniformly at h=-1.0E4 cm instead of -1.0E5 cm.",
+  "authority": {
+    "host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+    "case_commit": "a839e2e905f34dd264ad0c739f638454b3023def",
+    "control": "SWAP-009 signed-head correction only",
+    "candidate": "same control plus absolute-temperature repair"
+  },
+  "gates": [
+    "all four runs normal completion",
+    "control Vapor-on numerical BFO finite",
+    "candidate Vapor-on numerical BFO finite",
+    "Vapor-on control and candidate numerically different",
+    "NoVap control and candidate numerically identical",
+    "CRITDEVMASBAL remains 1e-6"
+  ],
+  "forbidden": [
+    "No physics changes",
+    "No gate relaxation",
+    "No AHL changes"
+  ]
+}
