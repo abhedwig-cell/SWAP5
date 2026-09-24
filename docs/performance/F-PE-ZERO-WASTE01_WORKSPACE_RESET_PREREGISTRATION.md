@@ -223,3 +223,27 @@ Final intended ownership split:
 - arbitrary direct callers retain the historical clean-workspace initialization behavior.
 
 This is a safety refinement, not a changed performance target. The 3 -> 1 reset goal remains unchanged while the public behavioral surface is narrower.
+
+
+## ZW01-H6 preregistration — remove clears made redundant by the retained clean-scratch reset
+
+After the H2 refinement, `HeadCalc` again guarantees one full `initialize_reference_workspace` reset before solver scratch is used.
+
+Two subsequent clears are therefore duplicate writes on every Reference solve:
+
+- `fsi_ws%unsaturated_flags(1:3) = .false.` immediately after initialization;
+- for `SwKimpl == 0`, full-array zeroing of `dfdh_upper` and `dfdh_lower` before their active coefficients are assigned.
+
+The first is directly redundant because the retained workspace reset already sets all unsaturated flags false and no intervening operation modifies them.
+
+For the tridiagonal arrays, the retained reset establishes zero boundary/scratch values before the coefficient loop. The loop then assigns the active off-diagonal coefficients required by the current solve. H6 therefore removes only the duplicate whole-array preclear; it does not change coefficient formulas or the later per-iteration SwKimpl=1 updates.
+
+### H6 gates
+
+- existing FKT22 O0/O2 physical/runtime oracle PASS;
+- alternative-solver behavior remains covered by existing qualification; no band-matrix mapping is changed;
+- reset count remains one per Reference solve;
+- no constitutive, nonlinear-iteration, timestep or transaction-policy changes;
+- any poison/scratch-independence failure reclassifies the clear as required and forces revert.
+
+H6 deliberately depends on the retained one-reset-per-solve invariant. If that invariant changes in a future workunit, this removal must be requalified.
