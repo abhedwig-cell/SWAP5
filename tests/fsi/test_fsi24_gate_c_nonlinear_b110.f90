@@ -87,8 +87,8 @@ program test_fsi24_gate_c_nonlinear_b110
   request%evaluation%top_boundary=>top_provider
 
   storage0=sum(initial_state%water_content*parameters%dz)+initial_state%ponding_depth
-  call ensure_reference_workspace_shape(workspace,numnod)
-  call poison_reference_workspace(workspace)
+  call ensure_reference_workspace_shape(workspace%richards,numnod)
+  call poison_reference_workspace(workspace%richards)
   call require(workspace%richards%poisoned,'workspace poison precondition active')
   call solver%solve(request,workspace,result)
   call require(.not.workspace%richards%poisoned,'solve preparation clears poison state')
