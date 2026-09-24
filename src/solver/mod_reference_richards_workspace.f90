@@ -42,6 +42,7 @@ module mod_reference_richards_workspace
   end type reference_richards_workspace_t
 
   public :: initialize_reference_workspace
+  public :: prepare_reference_workspace_for_solve
   public :: ensure_reference_workspace_shape
   public :: reset_reference_workspace
   public :: poison_reference_workspace
@@ -87,6 +88,24 @@ contains
     workspace%generation = workspace%generation + 1_int64
     call reset_reference_workspace(workspace)
   end subroutine initialize_reference_workspace
+
+  subroutine prepare_reference_workspace_for_solve(workspace, active_nodes)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+    integer, intent(in) :: active_nodes
+
+    call ensure_reference_workspace_shape(workspace, active_nodes)
+    workspace%generation = workspace%generation + 1_int64
+
+    ! Only establish solve-start authority that is read before overwrite.
+    ! Bulk scratch arrays are deliberately left untouched and must therefore
+    ! be fully materialized by the solver before their first active read.
+    workspace%dfdh_upper(1) = 0.0_real64
+    workspace%dfdh_lower(active_nodes) = 0.0_real64
+    workspace%unsaturated_flags = .false.
+    workspace%has_warm_start = .false.
+    workspace%diagnostics = soil_water_solver_diagnostics_t()
+    workspace%poisoned = .false.
+  end subroutine prepare_reference_workspace_for_solve
 
   subroutine reset_reference_workspace(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
