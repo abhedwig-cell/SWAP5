@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "status": "BUG_CONFIRMED_FUNCTION_GATE_PASS_FULL_MODEL_BLOCKED_ON_EXACT_B1_6_SOURCE",
+  "branch": "work/f-pdi-vapor-temperature-audit",
+  "completed_through": "F-PDI-VT03",
+  "confirmed_bug": {
+    "location": "PDI Kvap_func saturated-vapor-density temperature handling",
+    "interface_temperature": "degrees Celsius",
+    "required_equation_temperature": "absolute temperature Kelvin",
+    "minimal_fix": "TK=Temp+273.15d0; use TK consistently in MgRT, Da and Rho_sv; preserve signed h"
+  },
+  "qualification": {
+    "direct_absolute_temperature_formula_gate": "PASS",
+    "actual_source_Fortran_gate": "PASS 21/21 temperature-head combinations",
+    "NoVap_semantics": "unchanged by construction in direct source gate",
+    "SWAP009_signed_head_rule": "preserved"
+  },
+  "full_model_attempt": {
+    "modern_upstream_source": "builds",
+    "legacy_PDI_case": "generated",
+    "runtime_result": "invalid path because modern executable is TOML-only and typed TOML hydraulics do not expose the PDI vapor model",
+    "classification": "technical reachability blocker, not hydraulic failure"
+  },
+  "required_next_authority": {
+    "archive": "exact SWAP 4.3.1 nested source SWAP.ZIP",
+    "required_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "reconstruction": "tools/vq/b1_6_reconstruct.py",
+    "target_snapshot": "B1.6",
+    "qualification_case": "reuse the already admitted SWAP-009 two-day model-8 vapor-on full-production case"
+  },
+  "external_blocker": "Official SWAP 4.3.1 distribution access requires registration information and explicit license acceptance. Exact archive bytes are not stored in this Git repository.",
+  "next_action_when_archive_available": [
+    "verify exact archive SHA and 63-member manifest",
+    "reconstruct exact B1.6",
+    "apply only F-PDI-VT temperature-scale patch to B1.6 candidate",
+    "run B1.6 control and candidate on the frozen SWAP-009 full-production PDI case",
+    "compare normal completion, Newton route, pressure head, theta, boundary flux and unrounded mass residuals",
+    "run NoVap control to prove isolation",
+    "only then decide corrected-reference admission"
+  ],
+  "production_status": "NOT_ADMITTED"
+}
