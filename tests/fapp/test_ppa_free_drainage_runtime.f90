@@ -17,6 +17,9 @@ program test_ppa_free_drainage_runtime
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_ppa_free_drainage_temporal_indicator, only: evaluate_free_drainage_temporal_indicator
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, &
+       fmr_export_committed_restart, fmr_restore_committed_restart, FMR_RESTART_OK
   implicit none
 
   real(real64), parameter :: H0_CM = -75.0_real64
@@ -144,7 +147,80 @@ contains
     call backend%run_trial(column, temporal_template, parameters, temporal_committed, forcing, numerical, &
          0.0_real64, 1.0e-1_real64, checkpoint, result, candidate, diagnostics)
     obs = backend%observation()
+    if(result%completed) call check_restart_continuation(backend,temporal_committed,candidate,diagnostics, &
+         temporal_template,parameters,forcing,numerical)
   end subroutine run_certificate_case
+
+  subroutine history_snapshot(state, values)
+    type(kernel_committed_state_t), intent(in) :: state
+    real(real64), allocatable, intent(out) :: values(:)
+    class(transaction_state_t), allocatable :: physical
+    logical :: ok
+    call state%snapshot(physical,ok)
+    call require(ok,'committed snapshot for history')
+    select type(physical)
+    type is(fmr_b110_temporal_indicator_state_t)
+      call physical%temporal_history_snapshot(values,ok)
+      call require(ok,'committed history available')
+    class default
+      call require(.false.,'history state type retained')
+    end select
+  end subroutine
+
+  subroutine check_restart_continuation(backend,state,candidate,diag,profile,parameters,forcing,numerical)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_committed_state_t), intent(inout) :: state
+    type(kernel_candidate_state_t), intent(inout) :: candidate
+    type(kernel_diagnostics_t), intent(inout) :: diag
+    type(fmr_template_t), intent(in) :: profile
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    type(canonical_numerical_config_t), intent(in) :: numerical
+    type(fmr_serialized_reference_backend_t) :: fresh
+    type(fmr_committed_restart_bundle_t) :: bundle
+    type(kernel_committed_state_t) :: restored(1)
+    type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint
+    type(kernel_candidate_state_t) :: next_candidate, restored_candidate
+    type(kernel_result_t) :: next_result, restored_result
+    type(kernel_diagnostics_t) :: next_diag, restored_diag
+    real(real64), allocatable :: before(:), accepted(:), resumed(:)
+    real(real64) :: head_diff, theta_diff
+    logical :: ok
+    integer :: status
+    call history_snapshot(state,before)
+    call require(all(before==0.0_real64),'trial has not published candidate history')
+    call backend%commit_trial_candidate(state,candidate,diag,ok,status)
+    call require(ok,'first temporal candidate commit')
+    call history_snapshot(state,accepted)
+    call require(any(accepted/=0.0_real64),'commit publishes nonzero derivative history')
+    call fmr_export_committed_restart([column],[profile],[state],591099_int64,bundle,ok,status)
+    call require(ok.and.status==FMR_RESTART_OK,'export committed temporal restart')
+    call fmr_restore_committed_restart(bundle,591099_int64,[column],[profile],restored,ok,status)
+    call require(ok.and.status==FMR_RESTART_OK,'restore committed temporal restart')
+    call history_snapshot(restored(1),resumed)
+    call require(all(accepted==resumed),'restart history exact identity')
+    call fresh%initialize(top)
+    call fresh%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+    call fmr_capture_checkpoint(state,checkpoint,ok)
+    call require(ok,'continued checkpoint')
+    call fmr_capture_checkpoint(restored(1),restored_checkpoint,ok)
+    call require(ok,'restored checkpoint')
+    call backend%run_trial(column,profile,parameters,state,forcing,numerical, &
+         0.1_real64,0.2_real64,checkpoint,next_result,next_candidate,next_diag)
+    call fresh%run_trial(column,profile,parameters,restored(1),forcing,numerical, &
+         0.1_real64,0.2_real64,restored_checkpoint,restored_result,restored_candidate,restored_diag)
+    call require(next_result%completed.and.restored_result%completed,'continued and restored trials complete')
+    call compare_candidate_states(next_candidate,restored_candidate,head_diff,theta_diff)
+    call require(head_diff==0.0_real64.and.theta_diff==0.0_real64,'restart continuation exact physical identity')
+    call backend%commit_trial_candidate(state,next_candidate,next_diag,ok,status)
+    call require(ok,'continuation commit')
+    call fresh%commit_trial_candidate(restored(1),restored_candidate,restored_diag,ok,status)
+    call require(ok,'restored continuation commit')
+    call history_snapshot(state,accepted)
+    call history_snapshot(restored(1),resumed)
+    call require(all(accepted==resumed),'continued committed history exact identity')
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_RUNTIME_RESTART_HISTORY_CONTINUATION=PASS'
+  end subroutine
 
   subroutine initialize_temporal_committed_state(state, previous_derivative)
     type(kernel_committed_state_t), intent(out) :: state
