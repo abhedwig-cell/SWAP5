@@ -1,0 +1,22 @@
+name: F-AHL26H PDI component tightening
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/ahl26h_generate_tables.py'
+      - 'research/ahl/test_ahl26h_case.f90'
+      - 'research/ahl/run_ahl26h_tightening.sh'
+      - 'integration/f-ahl/F-AHL26H_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl26h-pdi-tightening.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl26h_tightening.sh /tmp/ahl26h.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl26h-${{ github.run_id }}
+          path: /tmp/ahl26h.txt
