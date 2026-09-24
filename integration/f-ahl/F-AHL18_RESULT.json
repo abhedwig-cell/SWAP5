@@ -2,36 +2,39 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL18",
-  "phase": "IMMUTABLE_CACHE_QUALIFICATION_COMPLETE",
-  "status": "PASS",
-  "workflow_run": 36046087775,
-  "workflow_job": 107789879280,
-  "qualification": {
-    "initial_builds": 1,
-    "repeated_identical_requests": 10000,
-    "repeated_hits": 10000,
-    "one_coefficient_perturbation_causes_miss": true,
-    "policy_version_change_causes_miss": true,
-    "cached_arrays_exactly_unchanged_across_hits": true,
-    "hash_only_identity_used": false
+  "phase": "IMMUTABLE_CACHE_AND_AMORTIZATION_QUALIFIED",
+  "status": "PASS_RESEARCH",
+  "workflow_run": 36046324307,
+  "workflow_job": 107790666186,
+  "cache": {
+    "hit_seconds_mean": 4.86e-7,
+    "repeated_hit_requests": 10001,
+    "builds": 5,
+    "misses": 5,
+    "entries": 5,
+    "full_exact_key_check_after_fingerprint_match": true,
+    "caller_mutation_cannot_change_cached_representation": true,
+    "hydraulic_parameter_change_misses": true,
+    "lookup_policy_change_misses": true,
+    "branch_policy_change_misses": true,
+    "model_identity_change_misses": true
   },
-  "cache_stats_after_test": {
-    "builds": 3,
-    "hits": 10000,
-    "misses": 3,
-    "entries": 3
+  "builder_cost_seconds_per_unique_parameterization": {
+    "B01": 1.10817e-3,
+    "B12": 7.1197e-4,
+    "O05": 1.11333e-3,
+    "O14": 9.7628e-4
   },
-  "measured_mean_cache_hit_seconds": 5.006e-7,
-  "reference_build_cost_seconds_from_F_AHL17": [
-    0.00071197,
-    0.00111333
-  ],
-  "interpretation": "The self-building representation can be safely amortized over repeated columns or solves when the complete initialized hydraulic authority and policy key are shared. Fingerprint equality is only an index/provenance aid; bitwise full-key equality is required before reuse.",
-  "next_action": "Qualify amortization over accepted trajectories and multi-column repeated use, then bind the builder/cache behind the existing research hydraulic-provider contract without changing solver ownership.",
-  "production_status": "RESEARCH_ONLY_NO_ADMISSION",
-  "key_strengthening": {
-    "initialized_cofgen_rows": 42,
-    "ksatexm_extension_flag_included": true,
-    "exact_hit_confirmation": "bitwise coefficient identity plus model/policy/branch identities"
-  }
+  "AHL16_observed_complete_Richards_saving_seconds_per_solve_range": [1.1199951172e-6,1.6311645508e-6],
+  "simple_build_break_even_solve_count_range": {
+    "optimistic": 437,
+    "conservative": 995
+  },
+  "interpretation": "For the measured research cases, a representation built once per unique hydraulic parameterization amortizes its construction cost after roughly several hundred to one thousand controlled Richards solves. Cache lookup cost is sub-microsecond and is paid only when binding/retrieving a representation, not as a replacement for the per-evaluation interpolation cost.",
+  "design_conclusion": "The target architecture can be self-building and internally cached. External pregenerated hydraulic table files are not required by the research design.",
+  "next_gate": "Prescribed-flux lower-boundary Richards falsification with explicit bottom-head response diagnostics.",
+  "nonclaims": [
+    "Break-even is estimated from F-AHL17 build costs and F-AHL16 controlled-solve savings, not from a full SWAP application trajectory.",
+    "No production admission is implied."
+  ]
 }
