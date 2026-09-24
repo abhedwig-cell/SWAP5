@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL14",
+  "title": "Floor-scaled conductivity error metric",
+  "parent": "F-AHL12",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the derivative-consistent AHL09 representation close the wet/dry fidelity failures using a conductivity error metric that is strict where K is hydrologically relevant but does not over-refine the numerically irrelevant extreme-dry tail?",
+  "frozen_representation": {
+    "retention": "cubic-Hermite logit(Se) over log10(-h)",
+    "capacity": "derivative of the same interpolant",
+    "conductivity": "linear log(K) interpolation on shared support",
+    "near_saturation": "authoritative analytical for h>-1 cm"
+  },
+  "error_targets": {
+    "theta_span_normalized_abs": 1e-5,
+    "abs_log_capacity": 1e-2,
+    "conductivity_metric": "abs(log(max(K_interp,K_floor))-log(max(K_true,K_floor)))",
+    "conductivity_metric_max": 1e-3,
+    "K_floor_cm_per_day": 1e-10
+  },
+  "K_floor_authority": "B1.10 B110_HCON_VSMALL = 1e-10 cm/day",
+  "stage_1": {
+    "materials": ["B01","B12","O05","O14"],
+    "require_builder_completion": true,
+    "record_support_count": true
+  },
+  "stage_2": {
+    "scope": "all 12 frozen F-AHL10 material-regime cases",
+    "gates": "identical to F-AHL10",
+    "advance_rule": "all 12 pass with zero iteration/backtracking deltas"
+  },
+  "stage_3_if_pass": {
+    "test": "long paired FSI24-style Richards timing",
+    "decision_rule": {
+      "advance": "median candidate/analytical ratio < 0.98",
+      "equivocal": "0.98 <= ratio <= 1.02",
+      "reject": "ratio > 1.02"
+    }
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_FURTHER_GLOBAL_K_TIGHTENING_INSIDE_THIS_WORK_UNIT",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
