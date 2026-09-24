@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.sw_tri01.c.technical_amendment.v1",
+  "work_unit": "SW-TRI01-C",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-24",
+  "evidence_run": 35956933879,
+  "evidence_job": 107497132959,
+  "classification": "TEST_HARNESS_DEPENDENCY_ONLY",
+  "failure": "ModuleNotFoundError: numpy before any TRI01-C case executed.",
+  "repair": "Replace NumPy arrays in the deterministic FakeSession with plain Python tuples accepted as head sequences.",
+  "unchanged": [
+    "all four frozen cases",
+    "publication ordering",
+    "surface recomposition semantics",
+    "MODFLOW and Ribasim preflight rules",
+    "all convergence tolerances",
+    "all expected pass/fail decisions"
+  ],
+  "physical_or_transaction_result_observed": false
+}
