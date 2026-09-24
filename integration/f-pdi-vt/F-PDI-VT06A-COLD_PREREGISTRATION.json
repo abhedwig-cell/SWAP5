@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06A-COLD",
+  "phase": "PREREGISTER",
+  "purpose": "Representative colder-temperature full-model regression required by VT06.",
+  "authority": {
+    "host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+    "testcase_commit": "a839e2e905f34dd264ad0c739f638454b3023def",
+    "control": "SWAP-009 signed-head correction only",
+    "candidate": "same control plus qualified absolute-temperature repair"
+  },
+  "case_delta_from_VT04C": {
+    "initial_head": "-1e5 cm unchanged",
+    "heat_flow": "SWHEA=1 unchanged",
+    "initial_TSOIL_C": [8.0, 6.0, 4.0, 2.0],
+    "reason": "cool positive soil-temperature profile exercises the full Vapor-on path without introducing the Temp=0 singularity of the known buggy control"
+  },
+  "gates": [
+    "all four runs normal completion",
+    "control Vapor-on BFO finite",
+    "candidate Vapor-on BFO finite",
+    "Vapor-on control and candidate numerically different",
+    "NoVap control and candidate numerically identical",
+    "CRITDEVMASBAL=1e-6 remains enforced"
+  ],
+  "forbidden": ["No physics changes", "No gate relaxation", "No AHL changes", "No historical-source substitution"]
+}
