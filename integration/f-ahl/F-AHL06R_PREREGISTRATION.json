@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL06R",
+  "title": "End-to-end timing reconciliation",
+  "parent": "F-AHL06",
+  "phase": "PREREGISTERED_RESEARCH",
+  "motivation": "Two F-AHL06 timing harnesses produced opposite small effects: about 6% slower without runtime checks versus about 4.4% faster with -fcheck=all. Both used batches of only about 4 ms, insufficient for a robust performance decision.",
+  "question": "Does the optimized exact-theta plus lookup-C/K provider reduce total Reference Richards solve CPU under a longer paired timing protocol?",
+  "frozen_fixture": "F-AHL04A nonlinear fixture",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without -fcheck or floating-point traps",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->split and split->analytical by repetition",
+    "primary_statistic": "median of paired split/analytical CPU ratios",
+    "provider_binding_and_table_io": "outside timed batches",
+    "same_request_solver_policy_and_initial_state": true
+  },
+  "fidelity": "Must retain the frozen F-AHL06/F-AHL04A fidelity gates before timing is interpreted.",
+  "decision_rule": {
+    "advance_as_end_to_end_speed_candidate": "median paired ratio < 0.98",
+    "timing_equivocal": "0.98 <= median paired ratio <= 1.02",
+    "reject_end_to_end_speed_candidate": "median paired ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
