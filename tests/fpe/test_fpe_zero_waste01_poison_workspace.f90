@@ -20,10 +20,10 @@ program test_fpe_zero_waste01_poison_workspace
   type(b110_source_sink_provider_t), target :: source_sink
   type(fixed_flux_top_boundary_provider_t), target :: top_provider
   type(reference_richards_legacy_solver_t) :: solver
-  type(reference_richards_legacy_workspace_t) :: clean_workspace, poisoned_workspace
+  type(reference_richards_legacy_workspace_t) :: clean_workspace, poisoned_workspace, clean_fd_workspace, poisoned_fd_workspace
   type(soil_water_physical_state_t) :: initial_state
   type(soil_water_solve_request_t) :: request
-  type(soil_water_solve_result_t) :: clean_result, poisoned_result
+  type(soil_water_solve_result_t) :: clean_result, poisoned_result, clean_fd_result, poisoned_fd_result
   real(real64), allocatable, target :: drainage(:,:), subsurface(:), root_sink(:)
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
@@ -86,6 +86,36 @@ program test_fpe_zero_waste01_poison_workspace
        poisoned_result%diagnostics%workspace_zeroed_bytes == 0_int64,'no full-reset zeroed bytes')
 
   write(*,'(A)') 'FPE_ZERO_WASTE01_POISON_WORKSPACE_EQUIVALENCE=PASS'
+
+  ! Free-drainage SWKIMPL=0 used to inherit an implicit zero dK/dh sentinel
+  ! from the full workspace reset. Verify that the explicit Jacobian guard
+  ! removes all dependence on prior poisoned scratch.
+  request%boundary%bottom_mode = 7
+  call solver%solve(request,clean_fd_workspace,clean_fd_result)
+  call require(clean_fd_result%status == SW_SOLVE_CONVERGED,'clean free-drainage solve converged')
+
+  call ensure_reference_workspace_shape(poisoned_fd_workspace%richards,numnod)
+  call poison_reference_workspace(poisoned_fd_workspace%richards)
+  call solver%solve(request,poisoned_fd_workspace,poisoned_fd_result)
+  call require(poisoned_fd_result%status == SW_SOLVE_CONVERGED,'poisoned free-drainage solve converged')
+
+  call require(same_vector_bits(clean_fd_result%candidate_state%pressure_head, &
+       poisoned_fd_result%candidate_state%pressure_head),'free-drainage pressure-head bit identity')
+  call require(same_vector_bits(clean_fd_result%candidate_state%water_content, &
+       poisoned_fd_result%candidate_state%water_content),'free-drainage water-content bit identity')
+  call require(same_bits(clean_fd_result%candidate_state%ponding_depth, &
+       poisoned_fd_result%candidate_state%ponding_depth),'free-drainage ponding bit identity')
+  call require(same_bits(clean_fd_result%top_flux,poisoned_fd_result%top_flux), &
+       'free-drainage top-flux bit identity')
+  call require(same_bits(clean_fd_result%bottom_flux,poisoned_fd_result%bottom_flux), &
+       'free-drainage bottom-flux bit identity')
+  call require(clean_fd_result%diagnostics%nonlinear_iterations == &
+       poisoned_fd_result%diagnostics%nonlinear_iterations,'free-drainage nonlinear-iteration identity')
+  call require(clean_fd_result%diagnostics%workspace_full_resets == 0 .and. &
+       poisoned_fd_result%diagnostics%workspace_full_resets == 0,'free-drainage no full reset')
+  call require(clean_fd_result%diagnostics%workspace_zeroed_bytes == 0_int64 .and. &
+       poisoned_fd_result%diagnostics%workspace_zeroed_bytes == 0_int64,'free-drainage no reset bytes')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_POISON_FREE_DRAINAGE=PASS'
 
 contains
 
