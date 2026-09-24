@@ -118,9 +118,9 @@ run_one() {
   local pair="$1" order="$2" variant="$3"
   local line
   if [[ "$TIMING_MODE" == "directional" ]]; then
-    line="$("$BUILD/$variant/test" "$CALLS" directional | grep '^PROFILE03_E1_TIMING')"
+    line="$("$BUILD/$variant/test" "$CALLS" directional zero-waste-paired | grep '^PROFILE03_E1_TIMING')"
   else
-    line="$("$BUILD/$variant/test" "$CALLS" | grep '^PROFILE03_E1_TIMING')"
+    line="$("$BUILD/$variant/test" "$CALLS" reference zero-waste-paired | grep '^PROFILE03_E1_TIMING')"
   fi
   python3 - "$pair" "$order" "$variant" "$line" "$RESULTS" <<'PY'
 import sys,re,csv

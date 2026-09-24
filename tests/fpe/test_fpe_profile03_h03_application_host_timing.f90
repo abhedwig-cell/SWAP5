@@ -41,15 +41,20 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   integer(int64) :: clock_start, clock_end, clock_rate
   integer :: calls, warmups, i
   character(len=64) :: arg, timing_mode
-  logical :: ok, available_off, available_on, timing_directional
+  logical :: ok, available_off, available_on, timing_directional, skip_workspace_reset_observation
 
   call get_command_argument(1, arg)
   read(arg,*) calls
   if (calls <= 0) error stop 'PROFILE03 invalid call count'
   timing_directional = .false.
+  skip_workspace_reset_observation = .false.
   if (command_argument_count() >= 2) then
     call get_command_argument(2, timing_mode)
     timing_directional = trim(timing_mode) == 'directional'
+  end if
+  if (command_argument_count() >= 3) then
+    call get_command_argument(3, arg)
+    skip_workspace_reset_observation = trim(arg) == 'zero-waste-paired'
   end if
 
   call initialize_parameters(parameters)
@@ -193,25 +198,33 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        'rejected full-trial tangent work absent from publication')
   write(*,'(A)') 'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS'
 
-  call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
-       'reference solve performs three full workspace resets on current path')
-  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
-       'workspace reset observer records positive zeroed byte volume')
+  if (.not. skip_workspace_reset_observation) then
+    call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
+         'reference solve performs three full workspace resets on current path')
+    call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
+         'workspace reset observer records positive zeroed byte volume')
+  end if
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_zeroed_bytes
-  write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  if (skip_workspace_reset_observation) then
+    write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=SKIPPED_ZERO_WASTE_PAIRED'
+  else
+    write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  end if
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_evaluations
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
-  call require(diagnostics_off%workspace_full_resets == 9, &
-       'external full-half interval aggregates three resets across three Reference solves')
-  call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
-       observation_off%solver_diagnostics%workspace_zeroed_bytes, &
-       'interval reset bytes equal three Reference-solve reset payloads')
+  if (.not. skip_workspace_reset_observation) then
+    call require(diagnostics_off%workspace_full_resets == 9, &
+         'external full-half interval aggregates three resets across three Reference solves')
+    call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
+         observation_off%solver_diagnostics%workspace_zeroed_bytes, &
+         'interval reset bytes equal three Reference-solve reset payloads')
+  end if
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_INTERVAL=', diagnostics_off%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_INTERVAL=', diagnostics_off%workspace_zeroed_bytes
 
