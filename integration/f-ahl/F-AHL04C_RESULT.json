@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04C",
+  "phase": "ASYMMETRIC_DECOMPOSITION_COMPLETE",
+  "status": "PASS_DIAGNOSTIC",
+  "workflow_run": 36040469264,
+  "workflow_job": 107771094993,
+  "lookup_support_points": 178,
+  "results": {
+    "lookup_all": {
+      "max_abs_pressure_head_delta_cm": 3.415032e-4,
+      "max_abs_water_content_delta": 3.215794e-6,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5
+    },
+    "exact_theta_lookup_C_K": {
+      "max_abs_pressure_head_delta_cm": 1.038972e-6,
+      "max_abs_water_content_delta": 1.143353e-9,
+      "bottom_flux_delta_cm_per_day": 4.654080e-9,
+      "passes_original_AHL04A_bottom_flux_gate": true
+    },
+    "lookup_theta_exact_C_lookup_K": {
+      "max_abs_pressure_head_delta_cm": 3.415032e-4,
+      "max_abs_water_content_delta": 3.215794e-6,
+      "bottom_flux_delta_cm_per_day": 2.951951e-5
+    },
+    "lookup_theta_lookup_C_exact_K": {
+      "max_abs_pressure_head_delta_cm": 3.425415e-4,
+      "max_abs_water_content_delta": 3.214651e-6,
+      "bottom_flux_delta_cm_per_day": 2.952417e-5
+    }
+  },
+  "finding": "For the frozen nonlinear fixture, retaining exact theta while looking up C and K nearly eliminates the solver-response discrepancy. Retaining exact C alone or exact K alone does not.",
+  "design_implication": "Prefer an asymmetric hydraulic representation over a uniformly tightened joint table: retention should be exact or independently near-exact, while C and K may use a looser frozen lookup subject to broader qualification.",
+  "next_gate": "Measure the optimized cost of exact-theta plus lookup-C/K against full analytical evaluation and full lookup before implementing an end-to-end fast provider.",
+  "nonclaims": [
+    "The result is not yet generalized across materials, boundary regimes or full SWAP trajectories.",
+    "The current Stage-A split provider is intentionally not performance optimized because it first evaluates the analytical provider."
+  ]
+}
