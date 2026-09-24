@@ -2,6 +2,9 @@
 # single source of the static Python checks, compilation flags and source list.
 param([ValidateSet('HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
+if ($Scope -eq 'HydraulicCopy' -and ($StableStorage -or $StableStorageExperiment)) {
+    throw 'HydraulicCopy uses the unchanged default storage profile'
+}
 if ($Scope -eq 'Atm02Dense' -and !$StableStorage) { throw 'Atm02Dense requires explicit StableStorage' }
 if ($Scope -eq 'Atm02Events' -and !$StableStorage) { throw 'Atm02Events requires explicit StableStorage' }
 if ($Scope -eq 'Atm02' -and !$StableStorage) { throw 'Atm02 requires explicit StableStorage' }
@@ -122,7 +125,7 @@ try {
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'
             }
             $stable["$test-$opt"] = (@($output | Where-Object { $_ -match $prefix }) -join "`n")
-            if ($StableStorageExperiment -or $StableStorage) {
+            if ($StableStorageExperiment -or $StableStorage -or $Scope -eq 'HydraulicCopy') {
                 # Compare numerical diagnostics as well as success markers.
                 $stable["$test-$opt"] = $textOutput
             }
