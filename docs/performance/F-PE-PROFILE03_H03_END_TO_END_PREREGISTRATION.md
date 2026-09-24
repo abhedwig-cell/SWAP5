@@ -251,3 +251,32 @@ WHOLE-SWAP SPEEDUP CLAIM         = NOT PERMITTED
 ```
 
 This is an infrastructure/provenance blocker, not a physics or H03 qualification failure. E1 remains valid and closed at 12.262324% mean application-host interval speedup.
+
+## E2 blocker refinement — exact archive exists but is not executable from current automation surface
+
+Further recovery established that the exact SWAP 4.3.1 distribution is still available in the user Library in multiple copies, including:
+
+- `SWAP_4.3.1(2).zip`, size 8,959,314 bytes;
+- `SWAP_4.3.1.zip` under the historical `M1C3_work` path, size 8,959,314 bytes;
+- additional numbered copies with the same recorded size.
+
+This materially narrows the blocker. The archive is not lost.
+
+However, the current execution surface cannot materialize the raw bytes of those Library ZIP records into the working container: the Files layer returns `This Project file does not have an authorized raw-byte materialization path.` The ZIP contents are also not text-indexed for member-level reconstruction. The local container has no outbound network access, while GitHub Actions cannot access the private ChatGPT Library.
+
+The current repository itself is insufficient for a standalone full SWAP build: the migrated legacy source directories contain only a bounded subset of the complete 63-member B1.11 source tree.
+
+Therefore:
+
+```text
+EXACT B0 ARCHIVE EXISTENCE       = CONFIRMED_IN_LIBRARY
+EXACT B0 ARCHIVE LOST            = NO
+RAW BYTES AVAILABLE TO E2 CI     = NO
+CURRENT REPO FULL BUILD SOURCE    = INCOMPLETE
+E2 ROUTE BINDING                 = PASS
+E2 PREFLIGHT                     = PASS
+E2 WHOLE-HUPSEL TIMING           = BLOCKED_BY_ARTIFACT_HANDOFF
+BLOCKER TYPE                      = EXECUTION/ARTIFACT ACCESS ONLY
+```
+
+The next technically valid action is to make the already-known exact archive available to the execution environment or repository-side CI as a raw artifact. No new scientific design or solver work is required before E2 timing.
