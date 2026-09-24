@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.rom-purpose.p5c.analysis-recovery-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5C-GW-BOUNDARY-INTERFACE-CARRIER",
+  "date": "2026-09-24",
+  "status": "BOUND_ANALYSIS_ONLY_AFTER_TRACE_SIGN_RECONCILIATION",
+  "source_route_run": 35923634779,
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json@d8b11e23b52f7ac6f0c4c689686b3010e76b2171",
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p5c-analysis-recovery.yml": "0b6876009981286c00906018707399b2267cac5e",
+    "tests/rom/analyze_rom_purpose_p5c_gw_interface.py": "fa7f5f6620e4ea73299d68168286c576eeb8b0b6",
+    "integration/f-rom/ROM_PURPOSE_P5C_ORACLE_SIGN_SEMANTICS_REPAIR.json": "74c6024d8b31a4034e27e33fb9d450e88934618e",
+    "integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json": "d8b11e23b52f7ac6f0c4c689686b3010e76b2171"
+  },
+  "scientific_firewall": {
+    "simulations_rerun": false,
+    "route_artifacts_reused": true,
+    "estimator_information_content_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerances_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
