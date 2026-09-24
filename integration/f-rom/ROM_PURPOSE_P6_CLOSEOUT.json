@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.rom-purpose.p6.closeout.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P6",
+  "date": "2026-09-24",
+  "status": "P6_CLOSED_BOUNDARY_OUTPUT_SEMANTICS_RECONCILED",
+  "authority": {
+    "p6a": "integration/f-rom/ROM_PURPOSE_P6A_RESULT.json",
+    "p6b": "integration/f-rom/ROM_PURPOSE_P6B_RESULT.json",
+    "adapter": "src/adapter/mod_reference_richards_legacy_binding.f90@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "backend": "src/runtime/mod_fmr_serialized_reference_backend.f90@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "findings": {
+    "terminal_local_darcy_contrast": {
+      "decision": "LAGGED_BOUNDARY_OPERATOR_NOT_CONFIRMED",
+      "interpretation": "Lagged pre-step conductivity plus accepted terminal boundary gradient approximates the reported flux extremely closely and vastly outperforms current-state conductivity, but does not satisfy the prospectively frozen roundoff-scale oracle gate. It is therefore not authority for the published bottom flux."
+    },
+    "published_prescribed_head_exchange": {
+      "decision": "INTERVAL_BALANCE_OPERATOR_CONFIRMED",
+      "identity": "bottom_outward_exchange = -top_exchange - (storage_end - storage_start) for the tested zero-source/sink prescribed-head transactions",
+      "interpretation": "The solver adapter materializes qbot from the exact interval water balance; the runtime then exposes its opposite sign as bottom-outward exchange. The published coupling exchange is therefore an interval state-transition observable, not the terminal local Darcy-face flux."
+    }
+  },
+  "consequences_for_rom_purpose": [
+    "Groundwater bottom exchange and terminal local boundary hydraulic flux must be treated as distinct hydrological purposes/observables.",
+    "A reduced model does not need a separate local boundary-flux closure to reproduce the published interval exchange if it already preserves the relevant storage transition and external interval fluxes mass-conservatively.",
+    "Local boundary-shape carriers may still matter for predicting hydraulic state evolution or a separately defined instantaneous Darcy-face observable, but P5C does not adjudicate that question.",
+    "P5B/P5C carrier screens cannot be used as rejection or admission evidence for the published interval exchange because their target operator was initially misidentified."
+  ],
+  "next_scientific_question": "Is P4 groundwater exchange error quantitatively attributable to storage-transition error under the mass-balance identity, and which retained state information controls that storage transition?",
+  "claims_not_made": [
+    "application acceptance",
+    "production ROM admission",
+    "minimum state count",
+    "closure deficit",
+    "instantaneous terminal Darcy-flux sufficiency",
+    "performance"
+  ],
+  "scientific_firewall": {
+    "p4_reopened": false,
+    "p5_reopened": false,
+    "tolerance_changed": false,
+    "solver_or_physics_changed": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
