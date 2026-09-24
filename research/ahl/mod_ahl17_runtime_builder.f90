@@ -161,9 +161,11 @@ contains
     real(real64),intent(inout)::mt,mc,mk
     logical,intent(out)::ok
     real(real64)::f,xx,h,z,dz,se,thi,ci,ki,th,c,k,dk,za,ma,lka,span
+    real(real64)::et,ec,ek,ktol
     integer::j
     logical::q
     span=ts-tr
+    ok=.true.
     do j=1,31
       f=real(j,real64)/32.0_real64
       xx=table%x(i)+f*(table%x(i+1)-table%x(i));h=head_from_x(xx)
@@ -173,11 +175,14 @@ contains
       ki=exp(table%logk(i)+f*(table%logk(i+1)-table%logk(i)))
       call sample_authority(h,provider,tr,ts,za,ma,lka,th,c,k,dk,q)
       if(.not.q)then;ok=.false.;return;end if
-      mt=max(mt,abs(thi-th)/span)
-      mc=max(mc,abs(log(max(ci,tiny(1.0_real64)))-log(max(c,tiny(1.0_real64)))))
-      mk=max(mk,abs(log(max(ki,K_FLOOR))-log(max(k,K_FLOOR))))
+      et=abs(thi-th)/span
+      ec=abs(log(max(ci,tiny(1.0_real64)))-log(max(c,tiny(1.0_real64))))
+      ek=abs(log(max(ki,K_FLOOR))-log(max(k,K_FLOOR)))
+      mt=max(mt,et);mc=max(mc,ec);mk=max(mk,ek)
+      ktol=K_TOL_GLOBAL
+      if(h>=WET_H_MIN .and. h<=WET_H_MAX)ktol=K_TOL_WET
+      if(et>THETA_TOL .or. ec>LOGC_TOL .or. ek>ktol)ok=.false.
     end do
-    ok=.true.
   end subroutine validate_interval
 
   pure subroutine hermite_value_derivative(x,x0,x1,y0,y1,m0,m1,y,dydx)
