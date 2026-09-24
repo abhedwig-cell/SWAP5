@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-IRR-DCS1-COMPOSITION",
+  "tested_commit": "6125a6ab1",
+  "status": "CALLABLE_PROCESS_COMPOSITION_PASS_NOT_PRODUCTION_BOUND",
+  "contract": "PPA_IRR_DCS1_COMPOSITION_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_irr_dcs1_composition.f90",
+  "gate": "tests/fapp/run_ppa_irr_dcs1_scheduled.ps1",
+  "result": "PASS O0/O2 with identical transcripts, bounds and FPE traps. 200000 profile-derived cases compare status and gift amount with independently prepared requests and source-order amount/rate/duration assertions; original 200000 supplied-deficit cases remain green. Invalid root profile and mismatched hydraulic node counts return no flux. Active copied event ignores invalid unused profile and retains its selected rate. Standalone root-zone and DCS1 oracles also pass.",
+  "build": "swap-irr-dcs1-scheduled-09d3865677af47edbc81988d2ed68885",
+  "ownership": "Existing irrigation_state_t only; new pure composition entry has no retained state and delegates event handling to existing evaluator. Original process modules unchanged.",
+  "limits": "Eligible new DCS1 requests require valid profile eagerly before timing evaluation. Supplied geometry is not derived from crop state. No production driver wiring, accepted soil/solute booking, disk restart or canonical admission.",
+  "next": "Wire the explicit composition into a qualified application owner with accepted-only water accounting and restart evidence. Preserve the documented eager-profile contract."
+}
