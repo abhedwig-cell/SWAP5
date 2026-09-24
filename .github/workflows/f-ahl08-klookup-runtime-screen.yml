@@ -1,0 +1,31 @@
+name: F-AHL08 K lookup runtime screen
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl08_klookup_runtime_screen.f90'
+      - 'integration/f-ahl/F-AHL08_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl08-klookup-runtime-screen.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Benchmark exact theta C plus K lookup
+        run: |
+          mkdir -p /tmp/ahl08
+          python3 research/ahl/ahl03_generate_tables.py /tmp/ahl08
+          gfortran -O3 -std=f2008 -Wall -Wextra -pedantic             research/ahl/ahl08_klookup_runtime_screen.f90 -o /tmp/ahl08_bench
+          : > /tmp/ahl08_result.txt
+          for m in B01 B12 O05 O14; do
+            /tmp/ahl08_bench /tmp/ahl08/${m}_direct.dat /tmp/ahl08/${m}_logit.dat ${m}               | tee -a /tmp/ahl08_result.txt
+          done
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl08-${{ github.run_id }}
+          path: /tmp/ahl08_result.txt
