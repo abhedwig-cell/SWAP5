@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06B",
+  "phase": "PREREGISTER",
+  "purpose": "Moderately colder representative full-model regression after the frozen VT06A 5 C case produced no observable Vapor-on output difference.",
+  "authority": {
+    "host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+    "testcase_commit": "a839e2e905f34dd264ad0c739f638454b3023def",
+    "base_case": "qualified VT04C heat-bound full-model case",
+    "control": "SWAP-009 signed-head correction only",
+    "candidate": "same control plus absolute-temperature repair"
+  },
+  "case_changes_only": {
+    "initial_TSOIL_C": [8.0,8.0,8.0,8.0],
+    "meteorology_Tmin_C": 8.0,
+    "meteorology_Tmax_C": 12.0
+  },
+  "unchanged": {
+    "initial_head_cm": -100000.0,
+    "PDI_model": 8,
+    "heat_flow": true,
+    "CRITDEVMASBAL": 1e-6,
+    "duration": "same short VT04C qualification period"
+  },
+  "gates": [
+    "all four runs normal completion",
+    "control Vapor-on BFO finite",
+    "candidate Vapor-on BFO finite",
+    "Vapor-on control and candidate numerically different",
+    "NoVap control and candidate numerically identical",
+    "CRITDEVMASBAL=1e-6 remains enforced"
+  ],
+  "gate_policy": "VT06A remains failed. This is a new independent preregistration; no prior gate is retuned.",
+  "forbidden": ["No physics changes","No AHL changes","No historical-source substitution"]
+}
