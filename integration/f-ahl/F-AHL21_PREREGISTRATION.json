@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21",
+  "title": "Prescribed-qbot lower-boundary Richards falsification",
+  "parent": "F-AHL20",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the selected adaptive hydraulic representation preserve the analytical Richards response when qbot is prescribed and the bottom pressure head is free to respond?",
+  "boundary_authority": {
+    "bottom_mode": 2,
+    "meaning": "typed prescribed native qbot",
+    "sign_convention": "qbot > 0 into the soil profile; qbot < 0 out of the soil profile",
+    "source_authority": "PPA-WU02 / F-SI27 prescribed-qbot residual row"
+  },
+  "materials": ["B01","B12","O05","O14"],
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0},
+    {"id":"mid","initial_head_cm":-75.0},
+    {"id":"dry","initial_head_cm":-500.0}
+  ],
+  "forcing": {
+    "top_flux": "-K(initial_head)",
+    "bottom_flux": "-0.9*K(initial_head)",
+    "purpose": "a controlled flux imbalance creates storage/head response while the lower pressure head remains unconstrained"
+  },
+  "candidate": "F-AHL16 selected derivative-consistent theta/C representation with floor-scaled K policy and authoritative h>-1 cm fallback",
+  "gates_per_case": {
+    "both_solvers_converged": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_profile_pressure_head_delta_cm": 0.05,
+    "max_abs_bottom_node_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "diagnostics": [
+    "analytical bottom-node head change from initial state",
+    "candidate bottom-node head change from initial state",
+    "candidate-minus-analytical bottom-node pressure-head delta",
+    "profile maximum pressure-head delta",
+    "iteration and backtracking counts"
+  ],
+  "decision_rule": "Advance prescribed-flux lower-boundary coverage only if all 12 cases pass all frozen gates.",
+  "hard_exclusions": [
+    "NO_SURFACE_BOUNDARY_REGIME_REDESIGN",
+    "NO_MODFLOW_COUPLING_CLAIM",
+    "NO_INTERFACE_TANGENT_CLAIM",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
