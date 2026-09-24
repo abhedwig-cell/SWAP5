@@ -4,6 +4,9 @@ program test_scratch_binding
   use mod_ppa_wu05a4_richards_scratch_binding
   use mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_trial_exchange
+  use mod_ppa_wu05a2_macropore_state
+  use mod_ppa_wu05a3_interval_candidate
+  use mod_ppa_wu05a3_candidate_mass
   implicit none
   type(reference_richards_workspace_t)::ws
   type(saturated_domain_inputs)::input
@@ -152,8 +155,60 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_REFERENCE_HEAD_DERIVED_ASSEMBLY=PASS'
   print '(a)','PPA_WU05A4_REFERENCE_SPLIT_CALLBACKS=PASS'
   call nonlinear_callback_sequence()
+  call interval_handoff()
+  print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine interval_handoff()
+    type(ppa_wu05a2_macropore_committed_t)::initial
+    type(ppa_wu05a2_macropore_checkpoint_t)::checkpoint
+    type(ppa_wu05a2_macropore_candidate_t)::candidate
+    type(candidate_mass_account)::account
+    type(reference_richards_workspace_t),allocatable::scratch
+    type(reference_trial_transfer)::capture
+    type(macro_trial_key)::identity
+    real(real64),allocatable::matrix(:),faces(:,:),balance(:)
+    real(real64)::start_store,end_store,diagnostic,exchange(1,2),volume(1,2)
+    logical::valid
+    integer::status
+    allocate(scratch)
+    call initialize_reference_workspace(scratch,2)
+    call ppa_wu05a2_initialize_payload(1,2,initial%payload,valid)
+    call check(valid,130)
+    initial%lineage_id=81; initial%revision=0
+    initial%payload%bottom_domain=2
+    initial%payload%pore_volume=0.25_real64
+    initial%payload%pore_water(1,:)=[0.125_real64,0.25_real64]
+    initial%payload%domain_water_storage=0.375_real64
+    call ppa_wu05a2_capture_checkpoint(initial,checkpoint,valid)
+    call check(valid,131)
+    identity=macro_trial_key(81_int64,0_int64,1_int64,1_int64)
+    call apply_saturated_reference_residual(input,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+        identity,scratch%generation,scratch,capture,diagnostic,valid)
+    call check(valid,132)
+    call copy_reference_budget(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
+        matrix,start_store,end_store,valid)
+    call check(valid,133)
+    volume=0.25_real64; exchange(1,:)=matrix ! dt = 1 day
+    call prepare_macropore_interval_candidate(checkpoint,1.0_real64,volume,[0.0_real64],[0.0_real64], &
+        exchange,[0.0_real64,0.0_real64],input%dz,[-2.0_real64],1.e-13_real64, &
+        candidate,faces,balance,status)
+    call check(status==0.and.candidate%valid,134)
+    call check(abs(candidate%payload%domain_water_storage(1)-end_store)<1.e-13_real64,135)
+    call check(abs(sum(candidate%payload%pore_water)-end_store)<1.e-13_real64,136)
+    call account_candidate_mass(checkpoint,candidate,1.0_real64,[0.0_real64],exchange, &
+        [0.0_real64,0.0_real64],matrix,1.e-13_real64,account,status)
+    call check(status==0.and.account%valid,137)
+    ! A mismatched transfer must not pass the accounting seam.
+    matrix(1)=matrix(1)+0.01_real64
+    call account_candidate_mass(checkpoint,candidate,1.0_real64,[0.0_real64],exchange, &
+        [0.0_real64,0.0_real64],matrix,1.e-13_real64,account,status)
+    call check(status/=0.and..not.account%valid,138)
+    call ppa_wu05a2_discard_candidate(candidate)
+    call check(initial%revision==0.and.abs(initial%payload%domain_water_storage(1)-start_store)<1.e-14_real64,139)
+    call release_reference_workspace(scratch)
+  end subroutine
+
   ! Manufactured scalar matrix residual, NOT the full Richards equation.
   ! The macro part is the real bounded evaluator, including head-derived caps.
   subroutine nonlinear_callback_sequence()

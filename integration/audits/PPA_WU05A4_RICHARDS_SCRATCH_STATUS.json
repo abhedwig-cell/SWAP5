@@ -19,6 +19,14 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "interval_handoff_verification": {
+    "baseline": "4ee31fe89",
+    "scope": "Integration test feeds the actual captured restricted residual transfer into existing A3 interval candidate preparation and candidate mass accounting; no production or physical commit route enabled.",
+    "fixture": "One domain, two cells, initial profile [0.125,0.25] cm, fixed pore volumes 0.25 cm per cell, heads [-0.5,0.25], dt=1. Generated transfer is consumed without reevaluating the flow law. Reconstructed scalar/profile storage must match the captured candidate storage.",
+    "checks": "Candidate preparation and per-cell/domain mass checks succeed; perturbing one matrix transfer by 0.01 cm rejects accounting. Candidate is discarded and initial owner revision/storage remain unchanged.",
+    "limits": "A3 conservative flux reconstruction remains a proposed reference correction, not canonically qualified. No complete continuation physics, joint matrix commit, HeadCalc call site or runtime restart. This test establishes component composition only.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "paired_storage_contract": {
     "baseline": "0cd824efb",
     "design": "Capture beginning and candidate scalar macropore storage in the private reference transfer record after successful residual/system assembly. Add copy_reference_budget requiring heads and duration, returning transfer and both captured stores together only on successful identity checks. Failure returns no amount and zero scalar outputs.",
