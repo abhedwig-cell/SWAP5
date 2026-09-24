@@ -47,7 +47,7 @@ def exact(h,p):
 def main():
     out={}
     for name,p in SETS.items():
-        heads=[-(10**(i/1000*7)) for i in range(0,7001)]
+        heads=[-(10**(i/1000)) for i in range(0,7001)]
         vals=[exact(h,p) for h in heads]
         theta=[v[0] for v in vals];cap=[v[1] for v in vals]
         se=[(t-p["tr"])/(p["ts"]-p["tr"]) for t in theta]
