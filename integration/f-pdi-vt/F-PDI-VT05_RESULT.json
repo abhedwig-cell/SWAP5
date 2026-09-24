@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT05",
+  "status": "HISTORICAL_BINDING_PASS_POSTIMAGE_BLOCKED_ON_EXACT_BYTES",
+  "historical_binding": {
+    "bug_present_in_canonical_B0": true,
+    "B0_target_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+    "B1_6_after_SWAP_009_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+    "B1_7_through_B1_10_after_SWAP_010_sha256": "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e",
+    "B1_11_after_SWAP_011_sha256": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
+    "B1_11_source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "B1_11_source_bytes": 1886519,
+    "B1_11_member_count": 63
+  },
+  "ordered_overlap": {
+    "SWAP_009": "changes only Kvap_func call head semantics from abs(h) to signed h",
+    "SWAP_010": "changes model-7 capacity algebra on the same source file",
+    "SWAP_011": "changes derivative/cache infrastructure on the same source file and advances target identity from 7ca607b2... to d6038f1c...",
+    "temperature_bug_after_SWAP_011": "still present in production Kvap_func",
+    "supporting_internal_consistency": "SWAP-011 derivativevalue_04_11 already evaluates its vapor temperature terms using tk=Temp+273.15d0"
+  },
+  "attempt1": {
+    "workflow_run": 36060628643,
+    "result": "FAIL",
+    "reason": "legacy-capable upstream host target is not canonical SWAP4.3.1 B0 bytes",
+    "expected_B0_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+    "observed_host_sha256": "9b1bc5bf30800a00ab6c97250316821754c005c42998aa831b13e5ceb10f5262"
+  },
+  "blocked_items": [
+    "exact repaired B1.11 WC_K_models_04_11.f90 postimage SHA256",
+    "exact repaired B1.11 source-manifest SHA256"
+  ],
+  "blocker": "The GitHub repository stores replay-verified B1.11 identities and ordered patches, but not an exact reconstructable copy of the canonical B0/B1.11 source bytes. The legacy-capable upstream host is not byte-identical and is forbidden as a substitute by the preregistered identity gate.",
+  "governance": "Do not relax the identity gate, do not invent postimage hashes, and do not manually reconstruct outside the existing deterministic authority chain.",
+  "production_status": "NOT_ADMITTED"
+}
