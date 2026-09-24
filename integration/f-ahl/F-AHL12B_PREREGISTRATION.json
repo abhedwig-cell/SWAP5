@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12B",
+  "title": "Prescribed-qbot retention-capacity attribution",
+  "parent": "F-AHL12A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "observation": "Exact K with derivative-consistent interpolated theta/C still gives 3 iterations versus 2 analytically in B01:wet prescribed-qbot.",
+  "question": "Does restoring exact theta and C recover the analytical prescribed-qbot nonlinear path while K remains approximated?",
+  "variant": "exact authoritative theta and C plus lookup K",
+  "case": "B01:wet, bottom_mode=2, qbot=1e-6 cm/day, dt=0.01 day",
+  "decision_rule": "Attribute the qbot convergence shift to retention/capacity approximation only if this variant restores 2 nonlinear iterations and 2 backtracking attempts while retaining the frozen state/mass gates.",
+  "hard_exclusions": [
+    "NO_SOLVER_TOLERANCE_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_BOUNDARY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
