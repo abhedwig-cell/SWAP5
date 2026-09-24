@@ -450,3 +450,30 @@ predicted reset payload touched at n=4       ~= 7308 bytes
 ```
 
 This remains a prediction until the runtime observer passes. A mismatch is evidence to investigate, not a reason to alter the counter or gate after observation.
+
+
+## First measured result — H01 per-solve reset observation
+
+Workflow run 36061582716 completed successfully on GNU Fortran 13.3.0 after bounded runner dependency repair.
+
+Observed for the P01-A Reference solve path, identically at O0 and O2:
+
+```text
+workspace_full_resets_per_solve = 3
+workspace_zeroed_bytes_per_solve = 2436
+runtime_gate_O0 = PASS
+runtime_gate_O2 = PASS
+O0_O2_semantic_identity = PASS
+production_runtime_gate = PASS
+```
+
+The byte result implies 812 bytes of workspace payload are touched by each full reset for the four-node P01-A workspace. This matches the preregistered source-level workspace-layout calculation.
+
+Interpretation:
+
+- H01's existence claim is **confirmed**: the current Reference solve path performs three full workspace reset passes per solve;
+- the observation remains a **redundancy candidate**, not yet a removal authorization;
+- physical/runtime semantics remained qualified under the existing FKT22 gate at O0 and O2;
+- the time significance of the repeated reset is still unmeasured and must be established before prioritizing a repair.
+
+Current necessity classification: `N4_CANDIDATE_CONFIRMED_BEHAVIOR_COST_UNMEASURED`.
