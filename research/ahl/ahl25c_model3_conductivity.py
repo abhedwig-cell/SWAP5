@@ -11,6 +11,7 @@ HMIN=-1.0e6
 HMAX=-1.0
 LOGK_TOL=1e-3
 MAX_POINTS=500
+DENSE_FRACS=tuple(j/40 for j in range(1,40))
 
 def bind_source():
     raw=gzip.decompress(base64.b64decode(ASSET.read_bytes()))
@@ -56,7 +57,7 @@ def interp(h,h0,h1,p):
     f=(x-x0)/(x1-x0)
     return math.exp(y0+f*(y1-y0))
 
-def interval_error(h0,h1,p,fracs=(0.125,0.25,0.5,0.75,0.875)):
+def interval_error(h0,h1,p,fracs=DENSE_FRACS):
     mx=0.0
     for f in fracs:
         h=hx(xh(h0)+f*(xh(h1)-xh(h0)))
