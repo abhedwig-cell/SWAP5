@@ -7,6 +7,7 @@ program test_fsi24_gate_c_nonlinear_b110
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_reference_richards_workspace, only: ensure_reference_workspace_shape, poison_reference_workspace
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -86,7 +87,11 @@ program test_fsi24_gate_c_nonlinear_b110
   request%evaluation%top_boundary=>top_provider
 
   storage0=sum(initial_state%water_content*parameters%dz)+initial_state%ponding_depth
+  call ensure_reference_workspace_shape(workspace,numnod)
+  call poison_reference_workspace(workspace)
+  call require(workspace%richards%poisoned,'workspace poison precondition active')
   call solver%solve(request,workspace,result)
+  call require(.not.workspace%richards%poisoned,'solve preparation clears poison state')
   call require(result%status==SW_SOLVE_CONVERGED,'N1 direct Richards solve converged')
   storage1=sum(result%candidate_state%water_content*parameters%dz)+result%candidate_state%ponding_depth
   total_in=max(0.0_real64,-result%top_flux)*total_dt+max(0.0_real64,result%bottom_flux)*total_dt
@@ -162,6 +167,7 @@ program test_fsi24_gate_c_nonlinear_b110
        'FSI24_GC_DIAG:MAX_M=',max_m,':RAW_TO_BINF=',raw_to_binf,':MASS=',max_mass, &
        ':EOBS_REPRO_DIFF=',reproduction_diff,':WATER_PROVIDER_DIFF=',provider_water_diff, &
        ':EXPLICIT_BOTTOM_DISTANCE=',explicit_bottom_distance
+  write(*,'(A)') 'FSI24_GATE_C_POISONED_WORKSPACE=PASS'
   write(*,'(A)') 'FSI24_GATE_C_NONLINEAR_CASE PASS'
 
 contains
