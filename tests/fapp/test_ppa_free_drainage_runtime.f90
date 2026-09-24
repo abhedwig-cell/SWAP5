@@ -200,11 +200,16 @@ contains
     call history_snapshot(restored(1),resumed)
     call require(all(accepted==resumed),'restart history exact identity')
     call fresh%initialize(top)
-    call fresh%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
     call fmr_capture_checkpoint(state,checkpoint,ok)
     call require(ok,'continued checkpoint')
     call fmr_capture_checkpoint(restored(1),restored_checkpoint,ok)
     call require(ok,'restored checkpoint')
+    call fresh%run_trial(column,profile,parameters,restored(1),forcing,numerical, &
+         0.1_real64,0.2_real64,restored_checkpoint,restored_result,restored_candidate,restored_diag)
+    call require(.not.restored_result%completed,'restored backend requires explicit service rebinding')
+    call history_snapshot(restored(1),resumed)
+    call require(all(accepted==resumed),'rejected restored trial preserves committed history')
+    call fresh%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
     call backend%run_trial(column,profile,parameters,state,forcing,numerical, &
          0.1_real64,0.2_real64,checkpoint,next_result,next_candidate,next_diag)
     call fresh%run_trial(column,profile,parameters,restored(1),forcing,numerical, &
