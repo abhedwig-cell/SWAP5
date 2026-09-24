@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21B",
+  "phase": "WET_QBOT_TIMESTEP_ENVELOPE_COMPLETE",
+  "status": "PASS_SELECT_DT_0_0625",
+  "workflow_run": 36047424861,
+  "workflow_job": 107794312071,
+  "bottom_flux_factor": 0.99,
+  "prospective_step_results": {
+    "0.125_day": {
+      "status": "FAIL",
+      "B01_wet": "PASS",
+      "O05_wet": "PASS",
+      "O14_wet": "FAIL"
+    },
+    "0.0625_day": {
+      "status": "PASS_3_OF_3",
+      "B01_bottom_head_change_cm": 1.633082,
+      "O05_bottom_head_change_cm": 1.858876,
+      "O14_bottom_head_change_cm": 5.124641,
+      "max_candidate_reference_bottom_head_delta_cm": 3.081126e-4
+    },
+    "0.03125_day": {
+      "status": "PASS_3_OF_3"
+    }
+  },
+  "selection_rule": "largest prospectively tested step duration passing all three wet cases",
+  "selected_step_duration_day": 0.0625,
+  "selected_step_duration_hours": 1.5,
+  "finding": "The wet prescribed-qbot reference failures in F-AHL21/A are timestep-envelope failures, not evidence against the adaptive representation. At 0.0625 day all three wet reference and adaptive solves preserve the frozen fidelity and nonlinear-path gates.",
+  "next_action": "Run the full 12-case prescribed-qbot matrix at factor 0.99 and dt=0.0625 day, including the previously path-sensitive O05-dry case.",
+  "nonclaims": [
+    "This does not establish that 0.0625 day is a universal timestep requirement for prescribed-qbot SWAP.",
+    "No surface-regime or MODFLOW claim is made."
+  ]
+}
