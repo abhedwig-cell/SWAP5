@@ -469,50 +469,27 @@ contains
     class(fmr_b110_physical_state_t), intent(in) :: source
     class(fmr_b110_physical_state_t), intent(inout) :: target
     target%active_nodes = source%active_nodes
-
+    if (allocated(target%pressure_head)) deallocate(target%pressure_head)
     if (allocated(source%pressure_head)) then
-      if (allocated(target%pressure_head)) then
-        if (size(target%pressure_head) /= size(source%pressure_head)) then
-          deallocate(target%pressure_head)
-          allocate(target%pressure_head(size(source%pressure_head)))
-        end if
-      else
-        allocate(target%pressure_head(size(source%pressure_head)))
-      end if
+      allocate(target%pressure_head(size(source%pressure_head)))
       target%pressure_head = source%pressure_head
-    else if (allocated(target%pressure_head)) then
-      deallocate(target%pressure_head)
     end if
-
+    if (allocated(target%water_content)) deallocate(target%water_content)
     if (allocated(source%water_content)) then
-      if (allocated(target%water_content)) then
-        if (size(target%water_content) /= size(source%water_content)) then
-          deallocate(target%water_content)
-          allocate(target%water_content(size(source%water_content)))
-        end if
-      else
-        allocate(target%water_content(size(source%water_content)))
-      end if
+      allocate(target%water_content(size(source%water_content)))
       target%water_content = source%water_content
-    else if (allocated(target%water_content)) then
-      deallocate(target%water_content)
     end if
-
     target%ponding_depth = source%ponding_depth
     target%groundwater_level = source%groundwater_level
-
+    if (allocated(target%snow)) deallocate(target%snow)
     if (allocated(source%snow)) then
-      if (.not. allocated(target%snow)) allocate(target%snow)
+      allocate(target%snow)
       target%snow = source%snow
-    else if (allocated(target%snow)) then
-      deallocate(target%snow)
     end if
-
+    if (allocated(target%soil_temperature)) deallocate(target%soil_temperature)
     if (allocated(source%soil_temperature)) then
-      if (.not. allocated(target%soil_temperature)) allocate(target%soil_temperature)
+      allocate(target%soil_temperature)
       target%soil_temperature = source%soil_temperature
-    else if (allocated(target%soil_temperature)) then
-      deallocate(target%soil_temperature)
     end if
   end subroutine copy_b110_physical_state
 
