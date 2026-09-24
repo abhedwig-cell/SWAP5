@@ -1107,28 +1107,34 @@ contains
     integer, intent(in) :: batches
     type(fmr_aggregate_diagnostics_t), intent(inout) :: aggregate
     integer, intent(in), optional :: execution_order(:)
-    integer, allocatable :: local_order(:)
     integer :: pos, i
 
     aggregate = fmr_aggregate_diagnostics_t()
     aggregate%columns = size(columns)
-    aggregate%templates = fmr_count_templates(columns)
+    if (present(execution_order)) then
+      aggregate%templates = 0
+      do pos = 1, size(execution_order)
+        i = execution_order(pos)
+        if (pos == 1) then
+          aggregate%templates = 1
+        else if (columns(i)%template_id /= columns(execution_order(pos-1))%template_id) then
+          aggregate%templates = aggregate%templates + 1
+        end if
+      end do
+    else
+      aggregate%templates = fmr_count_templates(columns)
+    end if
     aggregate%batches = batches
     aggregate%workers = 1
     allocate(aggregate%work_distribution(1))
     aggregate%work_distribution = 0_int64
 
-    allocate(local_order(size(columns)))
-    if (present(execution_order)) then
-      local_order = execution_order
-    else
-      do i = 1, size(columns)
-        local_order(i) = i
-      end do
-    end if
-
-    do pos = 1, size(local_order)
-      i = local_order(pos)
+    do pos = 1, size(columns)
+      if (present(execution_order)) then
+        i = execution_order(pos)
+      else
+        i = pos
+      end if
       aggregate%attempts = aggregate%attempts + diagnostics(i)%attempts
       aggregate%retries = aggregate%retries + diagnostics(i)%retries
       if (diagnostics(i)%accepted == 0) aggregate%failures = aggregate%failures + 1
@@ -1144,7 +1150,6 @@ contains
     type(fmr_serialized_column_result_t), intent(in) :: results(:)
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(in), optional :: execution_order(:)
-    integer, allocatable :: local_order(:)
     integer :: pos, i
     logical :: aggregate_complete
 
@@ -1166,17 +1171,12 @@ contains
     runtime%authoritative_aggregate_mass%residual = 0.0_real64
     aggregate_complete = .true.
 
-    allocate(local_order(size(results)))
-    if (present(execution_order)) then
-      local_order = execution_order
-    else
-      do i = 1, size(results)
-        local_order(i) = i
-      end do
-    end if
-
-    do pos = 1, size(local_order)
-      i = local_order(pos)
+    do pos = 1, size(results)
+      if (present(execution_order)) then
+        i = execution_order(pos)
+      else
+        i = pos
+      end if
       if (results(i)%admitted) runtime%number_admitted = runtime%number_admitted + 1
       if (results(i)%solver_executed) then
         runtime%number_executed = runtime%number_executed + 1
