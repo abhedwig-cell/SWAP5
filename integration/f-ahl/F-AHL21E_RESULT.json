@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21E",
+  "phase": "O05_DRY_RETENTION_ATTRIBUTION_COMPLETE",
+  "status": "RETENTION_CAPACITY_ATTRIBUTED",
+  "workflow_run": 36048171596,
+  "workflow_job": 107796789128,
+  "frozen_case": {
+    "material": "O05",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "candidate": "analytical theta/C plus unchanged selected K lookup",
+  "outcome": {
+    "nonlinear_path": "PASS_IDENTICAL_TO_ANALYTICAL",
+    "bottom_head_reference_change_cm": 6.616231e-5,
+    "bottom_head_candidate_change_cm": 6.467219e-5,
+    "candidate_minus_reference_bottom_head_cm": 1.490119e-6
+  },
+  "finding": "Restoring analytical theta and C while keeping the selected K lookup restores the analytical nonlinear path. Together with F-AHL21D, this attributes the remaining O05-dry prescribed-qbot iteration-path drift to retention/capacity approximation rather than K.",
+  "next_action": "Prospectively tighten only the derivative-consistent theta/C interpolation and identify the minimum representation that restores the qbot nonlinear path while retaining K and solver policy unchanged.",
+  "nonclaims": [
+    "No need for exact theta/C is established yet; only the cause of the current path drift is identified.",
+    "No MODFLOW or surface-switch claim is made.",
+    "No production admission is implied."
+  ]
+}
