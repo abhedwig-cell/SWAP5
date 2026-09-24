@@ -1,0 +1,22 @@
+name: F-AHL25A model3 source inventory
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl25a_model3_source_inventory.py'
+      - 'research/ahl/run_ahl25a_model3_source_inventory.sh'
+      - 'integration/f-ahl/F-AHL25A_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl25a-model3-source-inventory.yml'
+  workflow_dispatch:
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory corrected model3 source
+        run: bash research/ahl/run_ahl25a_model3_source_inventory.sh /tmp/ahl25a_inventory.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl25a-${{ github.run_id }}
+          path: /tmp/ahl25a_inventory.json
