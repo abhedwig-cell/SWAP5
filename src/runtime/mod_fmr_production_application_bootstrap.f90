@@ -4,7 +4,8 @@ module mod_fmr_production_application_bootstrap
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
+       fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
@@ -74,6 +75,7 @@ module mod_fmr_production_application_bootstrap
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
+    type(fmr_serialized_execution_plan_t) :: execution_plan
     type(fmr_b110_physical_parameters_t), pointer :: parameters(:) => null()
     type(fmr_b110_physical_forcing_t), pointer :: base_forcing(:) => null()
     type(kernel_committed_state_t), pointer :: committed(:) => null()
@@ -234,6 +236,14 @@ contains
       end if
     end do
 
+    call fmr_build_serialized_execution_plan(self%columns, self%templates, size(self%committed), &
+         self%execution_plan, ok)
+    if (.not. ok) then
+      status = FMR_APP_BOOT_REGISTRY_FAILED
+      call discard_owner_storage(self)
+      return
+    end if
+
     self%initialized = .true.
     status = FMR_APP_BOOT_OK
   end subroutine production_application_initialize
@@ -243,7 +253,7 @@ contains
 
     ready = self%initialized
     if (.not. ready) return
-    ready = allocated(self%columns) .and. allocated(self%templates)
+    ready = allocated(self%columns) .and. allocated(self%templates) .and. self%execution_plan%ready()
     if (.not. ready) return
     ready = associated(self%parameters) .and. associated(self%base_forcing) .and. associated(self%committed) .and. &
          associated(self%backend) .and. associated(self%top_boundary)
@@ -317,7 +327,7 @@ contains
 
     call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
          self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime)
+         aggregate, dispatch_status, runtime, execution_plan=self%execution_plan)
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK) return
@@ -612,6 +622,7 @@ contains
     nullify(self%backend)
     nullify(self%top_boundary)
 
+    call self%execution_plan%clear()
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)

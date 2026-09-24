@@ -11,7 +11,7 @@ module mod_fmr_serialized_multiswap_runtime
        FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
   use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t, fmr_commit_candidate_with_owned_receipt
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, fmr_build_execution_order, fmr_count_templates, &
+       fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_execution_order, fmr_count_templates, &
        FMR_BACKEND_SERIALIZED_REFERENCE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
@@ -166,7 +166,7 @@ contains
   subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
-                                                    runtime_diagnostics, receipt_column_ids, commit_receipts)
+                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -183,6 +183,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
     integer(int64), intent(in), optional :: receipt_column_ids(:)
     type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
+    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
@@ -231,23 +232,38 @@ contains
       return
     end if
 
-    if (.not. registry_structure_valid(columns, templates, state_registry)) then
-      dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
-      call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
-      call build_aggregate(columns, diagnostics, 0, aggregate)
-      call finalize_runtime_diagnostics(results, local_runtime)
-      if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-      return
+    if (present(execution_plan)) then
+      if (.not. execution_plan%matches(columns, templates, size(state_registry))) then
+        dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+        call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
+        call build_aggregate(columns, diagnostics, 0, aggregate)
+        call finalize_runtime_diagnostics(results, local_runtime)
+        if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        return
+      end if
+    else
+      if (.not. registry_structure_valid(columns, templates, state_registry)) then
+        dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+        call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
+        call build_aggregate(columns, diagnostics, 0, aggregate)
+        call finalize_runtime_diagnostics(results, local_runtime)
+        if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        return
+      end if
+      call fmr_build_execution_order(columns, order)
     end if
 
     call backend%initialize(top_boundary)
-    call fmr_build_execution_order(columns, order)
     batches = 0
     do batch_start = 1, size(columns), batch_size
       batches = batches + 1
       batch_end = min(size(columns), batch_start + batch_size - 1)
       do pos = batch_start, batch_end
-        idx = order(pos)
+        if (present(execution_plan)) then
+          idx = execution_plan%order_index(pos)
+        else
+          idx = order(pos)
+        end if
         results(idx)%dispatch_ordinal = pos
         receipt_slot = 0
         if (present(receipt_column_ids)) receipt_slot = find_receipt_slot(columns(idx)%column_id, receipt_column_ids)
@@ -264,8 +280,13 @@ contains
     end do
 
     local_runtime%deterministic_collection = .true.
-    call build_aggregate(columns, diagnostics, batches, aggregate, order)
-    call finalize_runtime_diagnostics(results, local_runtime, order)
+    if (present(execution_plan)) then
+      call build_aggregate(columns, diagnostics, batches, aggregate, execution_plan=execution_plan)
+      call finalize_runtime_diagnostics(results, local_runtime, execution_plan=execution_plan)
+    else
+      call build_aggregate(columns, diagnostics, batches, aggregate, execution_order=order)
+      call finalize_runtime_diagnostics(results, local_runtime, execution_order=order)
+    end if
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
   end subroutine fmr_run_serialized_physical_multiswap
 
@@ -1103,24 +1124,34 @@ contains
     end do
   end subroutine mark_all_rejected
 
-  subroutine build_aggregate(columns, diagnostics, batches, aggregate, execution_order)
+  subroutine build_aggregate(columns, diagnostics, batches, aggregate, execution_order, execution_plan)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_column_diagnostics_t), intent(in) :: diagnostics(:)
     integer, intent(in) :: batches
     type(fmr_aggregate_diagnostics_t), intent(inout) :: aggregate
     integer, intent(in), optional :: execution_order(:)
-    integer :: pos, i
+    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
+    integer :: pos, i, previous_i
 
     aggregate = fmr_aggregate_diagnostics_t()
     aggregate%columns = size(columns)
-    if (present(execution_order)) then
+    if (present(execution_order) .or. present(execution_plan)) then
       aggregate%templates = 0
-      do pos = 1, size(execution_order)
-        i = execution_order(pos)
+      do pos = 1, size(columns)
+        if (present(execution_plan)) then
+          i = execution_plan%order_index(pos)
+        else
+          i = execution_order(pos)
+        end if
         if (pos == 1) then
           aggregate%templates = 1
-        else if (columns(i)%template_id /= columns(execution_order(pos-1))%template_id) then
-          aggregate%templates = aggregate%templates + 1
+        else
+          if (present(execution_plan)) then
+            previous_i = execution_plan%order_index(pos-1)
+          else
+            previous_i = execution_order(pos-1)
+          end if
+          if (columns(i)%template_id /= columns(previous_i)%template_id) aggregate%templates = aggregate%templates + 1
         end if
       end do
     else
@@ -1132,7 +1163,9 @@ contains
     aggregate%work_distribution = 0_int64
 
     do pos = 1, size(columns)
-      if (present(execution_order)) then
+      if (present(execution_plan)) then
+        i = execution_plan%order_index(pos)
+      else if (present(execution_order)) then
         i = execution_order(pos)
       else
         i = pos
@@ -1148,10 +1181,11 @@ contains
     aggregate%work_distribution(1) = int(aggregate%attempts, int64)
   end subroutine build_aggregate
 
-  subroutine finalize_runtime_diagnostics(results, runtime, execution_order)
+  subroutine finalize_runtime_diagnostics(results, runtime, execution_order, execution_plan)
     type(fmr_serialized_column_result_t), intent(in) :: results(:)
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(in), optional :: execution_order(:)
+    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
     integer :: pos, i
     logical :: aggregate_complete
 
@@ -1174,7 +1208,9 @@ contains
     aggregate_complete = .true.
 
     do pos = 1, size(results)
-      if (present(execution_order)) then
+      if (present(execution_plan)) then
+        i = execution_plan%order_index(pos)
+      else if (present(execution_order)) then
         i = execution_order(pos)
       else
         i = pos
