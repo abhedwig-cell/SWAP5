@@ -109,6 +109,25 @@ program test_ppa_irr_dcs1_scheduled
        'TCS8 above threshold skips invalid inactive demand')
   h%water_content=0.2_real64
   write(*,'(a)') 'PPA_IRR_DCS1_TCS8_THRESHOLD_CONTINUATION=PASS'
+  do i=1,7
+    p%scheduled_irrigation_enabled=.true.; r%selection_opportunity=.true.
+    r%irrigation_enabled=.true.; r%schedule_enabled=.true.; r%crop_emerged=.true.
+    r%irrigation_window_open=.true.; r%fixed_event_already_selected=.false.
+    select case(i)
+    case(1); p%scheduled_irrigation_enabled=.false.
+    case(2); r%selection_opportunity=.false.
+    case(3); r%irrigation_enabled=.false.
+    case(4); r%schedule_enabled=.false.
+    case(5); r%crop_emerged=.false.
+    case(6); r%irrigation_window_open=.false.
+    case(7); r%fixed_event_already_selected=.true.
+    end select
+    call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+    call require(d%status==IRRIGATION_OK.and..not.d%selection_evaluated.and..not.f%applied.and. &
+         .not.candidate%active_event,'DCS1 eligibility suppresses invalid demand and candidate event')
+  end do
+  r%fixed_event_already_selected=.false.
+  write(*,'(a)') 'PPA_IRR_DCS1_ELIGIBILITY_FIXED_PRECEDENCE=PASS'
   p%timing_criterion=IRRIGATION_TIMING_TCS7_PRESSURE_HEAD
   saved=p
   do i=1,10
