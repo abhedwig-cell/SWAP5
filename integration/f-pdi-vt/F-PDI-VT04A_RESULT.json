@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04A",
+  "status": "FAIL_CONTROL_NONFINITE",
+  "workflow_run": 36060013962,
+  "finding": "The prior VT04 comparator checked finite numerical content only for the candidate Vapor-on BFO. Preserved raw outputs show the Vapor-on control contains NaN fields while the candidate is finite.",
+  "gate_effect": "The preregistered full-model gate required finite outputs for both executables. Therefore F-PDI-VT04 cannot be treated as a complete PASS under that gate, despite normal completion and the valid NoVap identity result.",
+  "preserved_valid_evidence": {
+    "candidate_vapor_on_finite": true,
+    "vapor_on_control_candidate_different": true,
+    "novap_control_candidate_identical": true,
+    "all_four_runs_reported_normal_completion": true
+  },
+  "repair_rule": "Do not weaken or rewrite the gate. Add a separate representative dry case in which both control and candidate remain finite, while retaining enough vapor contribution to produce a measurable difference.",
+  "nonclaim": "This failure does not invalidate the confirmed Celsius/Kelvin defect or the function-level qualification."
+}
