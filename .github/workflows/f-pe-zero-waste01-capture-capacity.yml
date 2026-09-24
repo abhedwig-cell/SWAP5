@@ -1,0 +1,15 @@
+name: F-PE-ZERO-WASTE01 capture capacity
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  capture-capacity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run capture capacity lifecycle gate
+        run: bash tests/fpe/run_fpe_zero_waste01_capture_capacity.sh
