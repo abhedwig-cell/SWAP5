@@ -2,6 +2,16 @@
 
 ## Prescribed-root successor design (2026-09-24)
 
+Third-period diagnostic successor: copy only owned solver inputs/history at the
+last native-converged callback in the failed unmarked period. Rebind prescribed
+roots separately from zero embedded roots; sweep raw and absolute-clock-grid
+durations without changing committed state. A separate `Atm02Dense` candidate
+uses existing retry_scale=0.9/max_retries=128 from the original third-period
+restart boundary, same forcing/duration/tolerances/history, no event reseeding.
+It must complete twice with exact full-state restart replay and accepted uptake
+before claiming completion. The prior 0.8/64 rejection stays in the test.
+Neither diagnostic feasibility nor this preregistration establishes success.
+
 Component qualification at 46982aee045a84e9613ff152997c5526477ab281:
 `tests/fsi/run_ppa_free_drainage_indicator.ps1` passes O0/O2 with identical
 transcripts (build `swap-free-drainage-1bf65088-cde8-41c1-a946-87134e07ee7e`).

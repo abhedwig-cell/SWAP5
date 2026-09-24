@@ -110,11 +110,12 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
-  if(trim(test_scope)=='--atm02'.or.trim(test_scope)=='--atm02-events') then
+  if(trim(test_scope)=='--atm02'.or.trim(test_scope)=='--atm02-events'.or.trim(test_scope)=='--atm02-dense') then
     config%storage_difference => evaluate_mvg_storage_difference_service
     config%numerical%transaction%retry_scale=0.8_real64
     config%numerical%transaction%max_retries=64
-    call verify_atm02_owner(config,trim(test_scope)=='--atm02-events')
+    call verify_atm02_owner(config,trim(test_scope)/='--atm02')
+    if(trim(test_scope)=='--atm02-dense') write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02_DENSE=PASS'
     if(trim(test_scope)=='--atm02-events') write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02_EVENTS=PASS'
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02=PASS'
     stop
@@ -284,6 +285,8 @@ contains
       if(events.and.window==3) then
         call compare_restart_bundles(before,after,'ATM02 third interval exact rollback')
         write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ATM02_UNMARKED_REJECTION_ROLLBACK=PASS'
+        if(trim(test_scope)=='--atm02-dense') &
+             call probe_root_retry(active,before,forcing,interval%t0,interval%t1)
       end if
       call fresh%close(code)
       call require(code==FMR_APP_BOOT_OK,'ATM02 fresh closes')
@@ -350,6 +353,48 @@ contains
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'root event replay closes')
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_ROOT_EVENT_ROLLBACK_REPLAY=PASS'
+  end subroutine
+
+  subroutine probe_root_retry(profile,before,forcing,t_start,t_end)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_committed_restart_bundle_t),intent(in)::before
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
+    real(real64),intent(in)::t_start,t_end
+    type(fmr_production_application_config_t)::dense
+    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_committed_restart_bundle_t)::after,expected
+    type(fmr_serialized_column_result_t),allocatable::result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:)
+    integer::code,tile,replay
+    logical::ok
+    dense=profile
+    dense%numerical%transaction%retry_scale=0.9_real64
+    dense%numerical%transaction%max_retries=128
+    do replay=1,2
+      call owner%initialize(dense,code)
+      call require(code==FMR_APP_BOOT_OK,'dense root owner initializes')
+      call owner%restore_committed_restart(before,9903_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'dense root replay restores original third-period boundary')
+      observed_event_calls=0
+      call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,code)
+      write(*,*) 'ROOT_DENSE_RETRY',replay,code,result%kernel_status,result%accepted_substeps
+      call require(code==FMR_APP_BOOT_OK.and.all(result%completed).and.all(result%committed), &
+           'dense root full third period completes')
+      call require(observed_event_calls==0,'dense root continuation never reseeds accepted history')
+      call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE,'dense root hard mass')
+      do tile=1,NTILE
+        call require(receipt(tile)%receipt%ready().and.result(tile)%actual_transpiration_available, &
+             'dense root accepted publication')
+        call require(abs(result(tile)%actual_transpiration_amount- &
+             sum(forcing(tile)%root_extraction_sink)*(t_end-t_start))<HARD_MASS_GATE,'dense root amount unchanged')
+      end do
+      call owner%export_committed_restart(9903_int64,after,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'dense root export')
+      if(replay==1) expected=after
+      if(replay==2) call compare_restart_bundles(expected,after,'dense root fresh restart replay exact')
+      call owner%close(code)
+      call require(code==FMR_APP_BOOT_OK,'dense root owner closes')
+    end do
   end subroutine
 
   subroutine verify_opt_in_guards(valid)
@@ -509,9 +554,16 @@ contains
     request%evaluation%top_boundary=>top_provider
     request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
     eligible=0
-    do level=0,29
+    do level=0,59
       dt=low_rain_request%step_duration*0.8_real64**level
       if(level>=10) dt=low_rain_request%step_duration*(1.0_real64-0.01_real64*real(level-9,real64))
+      if(level>=30) then
+        dt=low_rain_request%step_duration*0.8_real64**(level-30)
+        if(level>=40) dt=low_rain_request%step_duration*(1.0_real64-0.01_real64*real(level-39,real64))
+        ! Same binary exponent as this fixture's absolute clock. This is a grid
+        ! sensitivity probe, not an exact reconstruction of the retry's raw dt.
+        dt=(T0+dt)-T0
+      end if
       request%step_duration=dt
       call bind_b110_default_mvg_provider(provider,hydraulics,dt)
       call solver%solve(request,workspace,solution)
