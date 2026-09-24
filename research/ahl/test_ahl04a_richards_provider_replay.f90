@@ -124,23 +124,17 @@ contains
       mass=abs(cand%unrounded_mass_balance_residual)
     end if
 
-    write(*,'(A,1X,A,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6)') &
-         'AHL04A',trim(name),'MAX_DH_CM=',dh,'MAX_DTHETA=',dw,'DTOP=',dtf,'DBOTTOM=',dbf,'MASS=',mass
+    ! Measurement only. The preregistered F-AHL04A contract is applied after
+    ! all three candidates have executed, so an early baseline failure cannot
+    ! hide later candidate evidence and gate values cannot drift in this test.
+    write(*,'(A,1X,A,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,I0,1X,A,I0)') &
+         'AHL04A_METRIC',trim(name),'MAX_DH_CM=',dh,'MAX_DTHETA=',dw,'DTOP=',dtf,'DBOTTOM=',dbf,'MASS=',mass, &
+         'ITER_DELTA=',diter,'BACKTRACK_DELTA=',dbt
     write(*,'(A,1X,A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
          'AHL04A_DIAG',trim(name),'REF_ITER=',ref%diagnostics%nonlinear_iterations, &
          'CAND_ITER=',cand%diagnostics%nonlinear_iterations,'REF_BACKTRACK=',ref%diagnostics%backtracking_attempts, &
          'CAND_BACKTRACK=',cand%diagnostics%backtracking_attempts
-
-    if (trim(name)=='adaptive') then
-      call require(dh<=0.05_real64,'adaptive pressure-head gate')
-      call require(dw<=1.0e-5_real64,'adaptive water-content gate')
-      call require(max(dtf,dbf)<=1.0e-4_real64,'adaptive boundary-flux gate')
-      call require(mass<=mass_gate,'adaptive mass gate')
-      call require(diter<=1,'adaptive iteration-count gate')
-      write(*,'(A,1X,A,1X,A)') 'AHL04A',trim(name),'PASS'
-    else
-      write(*,'(A,1X,A,1X,A)') 'AHL04A',trim(name),'OBSERVED_BASELINE'
-    end if
+    write(*,'(A,1X,A,1X,A)') 'AHL04A',trim(name),'MEASURED'
   end subroutine report_and_gate
 
   subroutine require(condition,message)
