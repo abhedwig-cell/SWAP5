@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL23",
+  "title": "Prospective falsification of storage-Jacobian fallback trigger",
+  "parent": "F-AHL22",
+  "phase": "PREREGISTERED_VALIDATION",
+  "frozen_trigger": {
+    "metric": "max_i |C_lookup-C_authoritative| * dz_i / dt",
+    "threshold_per_day": 1e-8,
+    "fallback_if": "metric > 1e-8",
+    "material_identity_used": false,
+    "solver_outcome_used": false
+  },
+  "new_cases": [
+    {"id":"B01_dry_dt0060","material":"B01","head_cm":-500.0,"qfactor":0.99,"dt_day":0.060},
+    {"id":"B01_dry_dt0065","material":"B01","head_cm":-500.0,"qfactor":0.99,"dt_day":0.065},
+    {"id":"O05_dry_dt0060","material":"O05","head_cm":-500.0,"qfactor":0.99,"dt_day":0.060},
+    {"id":"O05_dry_dt0065","material":"O05","head_cm":-500.0,"qfactor":0.99,"dt_day":0.065}
+  ],
+  "why_these_cases": "They perturb timestep around the diagnostic threshold while keeping material, hydraulic state, boundary factor and solver policy fixed. They were not used to select the 1e-8 threshold.",
+  "prediction_rule": "A case above threshold predicts that lookup theta/C is unsafe for strict nonlinear-path invariance and should use exact retention/capacity. A case at or below threshold predicts lookup theta/C preserves the analytical iteration/backtracking path.",
+  "validation_gates": {
+    "reference_converges": true,
+    "candidate_converges": true,
+    "endpoint_fidelity": "same frozen F-AHL21C gates",
+    "trigger_classification_matches_path_identity": true
+  },
+  "decision_rule": "The trigger is falsified by any false negative. Any false positive prevents a clean efficiency claim and must be reported. No threshold adjustment is allowed in F-AHL23.",
+  "hard_exclusions": [
+    "NO_THRESHOLD_RETUNING",
+    "NO_MATERIAL_HARDCODE",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
