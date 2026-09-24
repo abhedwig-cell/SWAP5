@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26C",
+  "record": "INITIAL_ATTEMPT",
+  "status": "FAIL_BUILDER_UNDERSAMPLING_SUSPECTED",
+  "workflow_run": 36052063222,
+  "workflow_job": 107809789914,
+  "frozen_gates": {
+    "max_abs_theta_over_theta_s_error": 1e-5,
+    "max_abs_log_capacity_error": 1e-2
+  },
+  "cases": {
+    "PDI8_REFERENCE": {
+      "support_points":34,
+      "theta_error":1.0239623069853278e-5,
+      "logC_error":0.00959539595491421
+    },
+    "PDI10_BIMODAL": {
+      "support_points":38,
+      "theta_error":1.0939164982664876e-5,
+      "logC_error":0.006929907212896325
+    }
+  },
+  "repair_rule": "Keep both scientific gates unchanged and align adaptive refinement interior sampling with the independent dense validator before rerunning both preregistered cases.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_PDI_QUALIFICATION_FROM_THIS_ATTEMPT"]
+}
