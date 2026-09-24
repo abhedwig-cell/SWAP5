@@ -2,6 +2,7 @@ program test_fpe_profile02_h03_reference_timing
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_material_t, rossfast_d3r_material_from_id, &
@@ -15,6 +16,7 @@ program test_fpe_profile02_h03_reference_timing
 
   integer, parameter :: n = ROSSFAST_D3R_N_CELLS
   real(real64), parameter :: initial_head_cm = -101.0_real64
+  real(real64), parameter :: reference_internal_balance_rate_tol_cm_per_day = 1.0e-12_real64
   type(soil_water_parameter_set_t), target :: parameters
   type(soil_water_solve_request_t) :: request
   type(soil_water_solve_result_t) :: result
@@ -110,18 +112,23 @@ contains
     req%base_state%pressure_head=initial_head_cm
     req%base_state%water_content=theta
     req%base_state%ponding_depth=0.0_real64
-    req%base_state%groundwater_level=-100.0_real64
-    req%boundary%top_mode=1; req%boundary%bottom_mode=2
-    req%boundary%top_flux=-k0; req%boundary%bottom_flux=-k0
+    req%base_state%groundwater_level=-999.0_real64
+    req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
+    req%boundary%bottom_mode=2
+    req%boundary%top_flux=0.01_real64*k0
+    req%boundary%top_head=initial_head_cm
+    req%boundary%bottom_flux=-0.004_real64*k0
+    req%boundary%bottom_head=-999999.0_real64
     req%physical%macropore_active=.false.
     req%numerical%max_iterations=16; req%numerical%max_backtracking=8
     req%numerical%conductivity_implicit_mode=0; req%numerical%conductivity_mean_method=1
     req%numerical%min_step_duration=1.0e-8_real64
-    req%numerical%compartment_balance_tolerance=1.0e-12_real64
-    req%numerical%total_balance_tolerance=1.0e-12_real64
+    req%numerical%compartment_balance_tolerance=reference_internal_balance_rate_tol_cm_per_day
+    req%numerical%total_balance_tolerance=reference_internal_balance_rate_tol_cm_per_day
     req%numerical%head_abs_tolerance=1.0e-12_real64
     req%numerical%head_rel_tolerance=1.0e-12_real64
     req%numerical%ponding_tolerance=1.0e-12_real64
+    req%request_interface_sensitivity=.false.
     req%evaluation%constitutive=>hydraulic_provider
     req%evaluation%source_sink=>source_provider
     req%evaluation%top_boundary=>top_provider
