@@ -697,3 +697,17 @@ Current-head CI was queued at checkpoint time. Required before closure:
 - documentation.
 
 Exact-postimage publication/canonical guards that reject any changed production source remain scope guards rather than equivalence evidence and must not be counted as model regressions without inspecting their failure mode.
+
+
+## ZW01-H19 preregistration — eliminate duplicate execution-order materialization
+
+The serialized MultiSWAP runtime computes `execution_order` once, then `build_aggregate` and `finalize_runtime_diagnostics` each allocate a second length-N `local_order` array and copy the same order into it. `build_aggregate` also calls `fmr_count_templates`, which allocates another length-N template-id buffer even though the provided execution order is already grouped by template id.
+
+H19 removes these duplicate metadata allocations on the primary path:
+
+- iterate directly through the provided `execution_order` without copying it;
+- when no order is provided, iterate natural index order without materializing an identity array;
+- when sorted execution order is present, count template transitions directly instead of allocating the temporary id set;
+- retain `fmr_count_templates` only as fallback for callers without an execution order.
+
+Expected effect for N columns: remove two N-integer allocations/copies plus one N-int64 temporary allocation from end-of-batch aggregation on the normal serialized MultiSWAP path. No column execution order or diagnostics semantics change.
