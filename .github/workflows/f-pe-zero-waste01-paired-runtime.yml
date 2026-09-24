@@ -7,6 +7,8 @@ on:
       - 'src/solver/mod_reference_linear_solver.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fpe/run_fpe_zero_waste01_paired_runtime.sh'
       - '.github/workflows/f-pe-zero-waste01-paired-runtime.yml'
   workflow_dispatch:
