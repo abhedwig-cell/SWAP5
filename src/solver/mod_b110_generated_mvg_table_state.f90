@@ -8,7 +8,7 @@ module mod_b110_generated_mvg_table_state
   private
 
   integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = 32
-  logical, parameter, public :: B110_GENERATED_MVG_CURVATURE_GRID = .true.
+  logical, parameter, public :: B110_GENERATED_MVG_CURVATURE_GRID = .false.
   real(real64), parameter :: H_CRIT = -1.0e-2_real64
   real(real64), parameter :: GENERATION_H_DRY = -1.0e7_real64
   real(real64), parameter :: GENERATION_H_WET = -1.0e-12_real64
