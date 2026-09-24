@@ -3,7 +3,8 @@
   "work_unit": "PPA-WU04C-R1",
   "parent_work_unit": "PPA-WU04C",
   "current_bounded_richards_successor": {
-    "tested_commit": "468e2f4ad",
+    "tested_commit": "4f5454181",
+    "units_correction": "Requalified at 4f5454181: convert adapter interception rate cm/day to interval amount cm (0.03 cm per half day). Previous 468e2f4ad evidence was transactionally valid but used incorrect source amount units. Corrected gate passes O0/O2 including independent 0.03 cm assertion; full transcript unchanged. Details in linked storage status record.",
     "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
     "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Receipts",
     "result": "PASS O0/O2: real strong mode-7 Richards attempt fails with zero internal accepts; a second case fails after one internal accept. Neither publishes physical/history/source progress or a ready receipt. Retry-enabled reconstruction and replay match uninterrupted full state exactly. Strong accepted source progress and application restart continuation also pass.",

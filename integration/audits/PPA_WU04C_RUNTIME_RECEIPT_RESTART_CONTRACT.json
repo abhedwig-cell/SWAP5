@@ -20,6 +20,7 @@
     "receipt_binding": ["lineage_id", "origin_revision", "committed_revision", "accepted_interval"]
   },
   "rules": [
+    "Frozen aggregate and accepted interception in the progress API are amounts in cm, not rates. Convert adapter output in cm/day using the corresponding interval duration in days before publishing progress.",
     "The first accepted receipt starts at source_t0; each later receipt starts exactly at accepted_through_time.",
     "A source-window progress record is bound to one positive F-KT lineage and the expected origin revision; each ready receipt must match both and advance the expected revision by exactly one.",
     "A receipt must end within the source window and must advance time.",

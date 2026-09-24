@@ -1,6 +1,7 @@
 {
   "baseline": "55d430238",
   "production_opt_in": {
+    "receipt_units_correction": "Checkpoint 4f5454181 corrects the owner test's cm/day-to-cm conversion: adapter interception 0.06 cm/day over 0.5 day is 0.03 cm, with an independent numeric assertion. Historical receipt gates below used a rate as an amount and therefore establish transactional/restart behavior, not dimensionally correct source totals. Production forcing, solver, mass gates and progress API are unchanged. Corrected Receipts gate PASS O0/O2, 240436 identical lines, SHA256 6823F9DEDABABE4191D6D6B3EB5D0A5A1F1752F847A4BCBD2B40AA0637D54255, build swap-ppa-wu01-58f0396e5b254751b2ba018bd0f23d0b. Transcript unchanged because source amounts are asserted rather than printed. Both failed/partial replay variants and accepted restart consume correctly dimensioned amounts. Distinct changing source windows remain the next qualification, not established by this correction.",
     "baseline": "4a8117e9f6c6a2cb49227cbc5218ab0a11d3352e",
     "owner_restart_correction": "de04a2a79 receipt run exposed pre-existing bootstrap restore passing initialized registry to fresh-only FMR restore. Mode-7-only staging/publication fix at 18ef11bc5 passes late-invalid-record atomicity and full strong continuation. Other profiles untouched.",
     "status": "BOUNDED_OWNER_RECEIPT_RESTART_QUALIFICATION_PASS_NOT_CANONICALLY_ADMITTED",
