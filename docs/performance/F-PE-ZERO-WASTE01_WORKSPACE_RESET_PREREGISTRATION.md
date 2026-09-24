@@ -514,3 +514,12 @@ Gates:
 - drainage smooth-projection route unchanged when incoming sink direction is present;
 - poison and FKT22 trajectory gates PASS;
 - paired directional runtime measured before broader claim.
+
+
+## H11 result — negative, no production change retained
+
+Callsite audit after the H11 candidate showed that `copy_b110_physical_state` is currently invoked into freshly allocated polymorphic carriers/clones at all observed callsites. The proposed shape-stable target reuse therefore does not remove allocator churn from the current hot path: the target storage does not yet exist to be reused.
+
+The H11 production edit was reverted. This is retained as a negative result: optimizing the helper's inout allocation policy without first changing higher-level carrier reuse would add code complexity without material runtime benefit.
+
+Future state-copy performance work should target ownership/lifetime of reusable carriers or avoid unnecessary snapshots, while preserving deep-copy transaction isolation. The clone semantics themselves remain N1/N2 and are not classified as waste.
