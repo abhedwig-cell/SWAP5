@@ -144,6 +144,13 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_zeroed_bytes
   write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  call require(observation_off%solver_diagnostics%constitutive_evaluations > 0, &
+       'constitutive evaluation count observed on Reference solve')
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
+       observation_off%solver_diagnostics%nonlinear_iterations
+  write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
   call require(diagnostics_off%workspace_full_resets == 9, &
        'external full-half interval aggregates three resets across three Reference solves')
   call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
