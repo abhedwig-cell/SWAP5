@@ -212,7 +212,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
  
 !  summation of fsi_ws%sink terms (constant for the current time step)
    iBackTr        = 0
-   fsi_ws%unsaturated_flags(1:3) = .FALSE.
    if (provider_source_sink_active) then
       call evaluation_context%source_sink%evaluate(state%h(1:numnod), state%theta(1:numnod), &
            fsi_ws%source(1:numnod), fsi_ws%sink(1:numnod))
@@ -313,8 +312,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  lower and upper diagnal elements
    if (SwKimpl == 0) then
-      fsi_ws%dfdh_upper = 0.0d0
-      fsi_ws%dfdh_lower = 0.0d0
       do i = 2, numnod
          fsi_ws%dfdh_upper(i)   = - state%kmean(i)  /grid_disnod(i)
          fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
