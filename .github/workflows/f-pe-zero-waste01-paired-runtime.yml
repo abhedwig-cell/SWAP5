@@ -14,6 +14,12 @@ on:
 jobs:
   paired-runtime:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        timing_mode: [reference, directional]
+    env:
+      TIMING_MODE: ${{ matrix.timing_mode }}
     steps:
       - uses: actions/checkout@v4
         with:
