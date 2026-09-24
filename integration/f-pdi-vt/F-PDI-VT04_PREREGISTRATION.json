@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04",
+  "title": "Pinned upstream full-SWAP PDI vapor-on regression",
+  "phase": "PREREGISTERED_FULL_MODEL_QUALIFICATION",
+  "source": {
+    "repository": "SWAP-model/SWAP",
+    "commit": "c22bd832ddf3e53e330a552f5e31e74f183362d1"
+  },
+  "case_source": {
+    "repository": "SWAP-model/swap-testcases",
+    "commit": "a839e2e905f34dd264ad0c739f638454b3023def",
+    "case": "cases/grassgrowth/legacy"
+  },
+  "control": "upstream source plus SWAP-009 signed-head correction only",
+  "candidate": "same control plus TempK=TempC+273.15 used consistently in PDI vapor-density equation",
+  "qualification_case": {
+    "period": "1980-01-01 through 1980-01-02",
+    "crop": "bare soil",
+    "initial_head_cm": -100000.0,
+    "hydraulic_model": 8,
+    "vapor": "enabled",
+    "bottom_boundary": "zero flux",
+    "rain": 0.0,
+    "reference_ET_mm_per_day": 5.0
+  },
+  "gates": {
+    "both_build": true,
+    "both_normal_completion": true,
+    "candidate_outputs_finite": true,
+    "candidate_water_balance_within_input_criterion": true,
+    "control_candidate_difference_must_be_nonzero": true,
+    "NoVap_control_case_is_identical": true
+  },
+  "interpretation": "The full-model gate qualifies behavioural consequences of the already confirmed temperature-scale repair. It is not a production-admission gate for historical B1.",
+  "hard_exclusions": [
+    "NO_OTHER_PHYSICS_CHANGES",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
