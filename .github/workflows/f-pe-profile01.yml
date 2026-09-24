@@ -1,0 +1,26 @@
+name: F-PE-PROFILE01 compute-core observation
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile01
+  pull_request:
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'docs/performance/F-PE-PROFILE01_COMPUTE_CORE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-profile01.yml'
+
+jobs:
+  p01-a-reset-observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run existing FKT22 production runtime gate with PROFILE01 observer
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
