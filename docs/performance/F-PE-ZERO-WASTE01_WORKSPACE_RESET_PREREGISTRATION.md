@@ -631,3 +631,12 @@ No control value is cached across intervals. This only removes allocator churn.
 `soil_temperature_forcing` is an allocatable scalar object that is deallocated at every interval start and reallocated immediately when soil temperature remains active. Its values must change with forcing, but its storage need not.
 
 H17 retains the allocated object while the feature remains active, overwrites it from current forcing each interval, and deallocates only when the feature becomes inactive. No forcing value is retained implicitly.
+
+
+## Paired-runtime harness reconciliation
+
+Audit of `run_fpe_zero_waste01_paired_runtime.sh` found that its baseline initially replaced only workspace, linear solver, HeadCalc and Reference binding with the pinned PROFILE03 baseline. The accepted-direction service and serialized Reference backend were compiled from the candidate branch for both variants.
+
+That design is sufficient for H1-H10 solver-local attribution but cannot measure H12A/H12B/H13-H17, because those changes live in the directional service and serialized backend and would be present on both sides of the pair.
+
+The harness is therefore expanded before using it for bundle-level claims: baseline builds must also use the pinned baseline versions of `mod_reference_richards_accepted_step_directional_service.f90` and `mod_fmr_serialized_reference_backend.f90`; candidate builds use current branch versions. Physical checksum, nonlinear iteration count and constitutive evaluation count remain equality gates.
