@@ -66,7 +66,7 @@ contains
     logical,intent(out)::ok
     type(ppa_wu05a2_macropore_candidate_t)::trial
     type(candidate_mass_account)::trial_account
-    real(real64),allocatable::amount(:),exchange(:,:),zeros(:),profile(:),faces(:,:),balance(:)
+    real(real64),allocatable::amount(:),rate(:),exchange(:,:),zeros(:),profile(:),faces(:,:),balance(:)
     real(real64)::begin_store,end_store,representation_tol
     integer::n,status
     ok=.false.
@@ -77,7 +77,7 @@ contains
     n=size(head)
     if(checkpoint%payload%n_domains/=1.or.checkpoint%payload%n_compartments/=n)return
     if(checkpoint%payload%bottom_domain(1)/=n)return
-    call copy_reference_budget(workspace,record,key,head,dt,amount,begin_store,end_store,ok)
+    call copy_reference_budget(workspace,record,key,head,dt,amount,begin_store,end_store,ok,rate)
     if(.not.ok)return
     ok=.false.
     representation_tol=32*epsilon(1.0_real64)*max(1.0_real64,begin_store)
@@ -87,7 +87,7 @@ contains
         (record%geometry%pore_level-record%geometry%z+0.5_real64*record%geometry%dz)/record%geometry%dz))
     if(any(abs(checkpoint%payload%pore_water(1,:)-profile)>representation_tol))return
     allocate(exchange(1,n),zeros(n)); zeros=0
-    exchange(1,:)=amount/dt
+    exchange(1,:)=rate
     call prepare_macropore_interval_candidate(checkpoint,dt,checkpoint%payload%pore_volume, &
         [0.0_real64],[0.0_real64],exchange,zeros,record%geometry%dz,[record%geometry%bottom], &
         tolerance,trial,faces,balance,status)
@@ -135,34 +135,36 @@ contains
     record%generation=0
   end subroutine
 
-  subroutine copy_reference_transfer(workspace,record,key,amount,ok,head,dt)
+  subroutine copy_reference_transfer(workspace,record,key,amount,ok,head,dt,rate)
     type(reference_richards_workspace_t),intent(in)::workspace
     type(reference_trial_transfer),intent(inout)::record
     type(macro_trial_key),intent(in)::key
     real(real64),allocatable,intent(out)::amount(:)
     logical,intent(out)::ok
     real(real64),optional,intent(in)::head(:),dt
+    real(real64),allocatable,optional,intent(out)::rate(:)
     ok=.false.
     if(.not.workspace_matches(workspace,record)) then
       call discard_reference_transfer(record)
       return
     end if
-    call copy_matrix_transfer(record%used,key,amount,ok,head,dt)
+    call copy_matrix_transfer(record%used,key,amount,ok,head,dt,rate)
     if(.not.ok.and.(present(head).or.present(dt)))call discard_reference_transfer(record)
   end subroutine
 
   ! Candidate-only paired budget from the actual residual evaluation. Do not
   ! recompute storage or read mutable physical inputs during final accounting.
-  subroutine copy_reference_budget(workspace,record,key,head,dt,amount,begin_storage,candidate_storage,ok)
+  subroutine copy_reference_budget(workspace,record,key,head,dt,amount,begin_storage,candidate_storage,ok,rate)
     type(reference_richards_workspace_t),intent(in)::workspace
     type(reference_trial_transfer),intent(inout)::record
     type(macro_trial_key),intent(in)::key
     real(real64),intent(in)::head(:),dt
     real(real64),allocatable,intent(out)::amount(:)
     real(real64),intent(out)::begin_storage,candidate_storage
+    real(real64),allocatable,optional,intent(out)::rate(:)
     logical,intent(out)::ok
     begin_storage=0; candidate_storage=0
-    call copy_reference_transfer(workspace,record,key,amount,ok,head,dt)
+    call copy_reference_transfer(workspace,record,key,amount,ok,head,dt,rate)
     if(.not.ok)return
     begin_storage=record%begin_storage
     candidate_storage=record%candidate_storage

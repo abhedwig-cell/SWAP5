@@ -7,7 +7,7 @@ program test_trial_exchange
   type(macro_used_exchange) :: slot
   type(macro_trial_key) :: key, wrong
   real(real64) :: residual(3), diagonal(3), head(3), expected(3)
-  real(real64), allocatable :: amount(:)
+  real(real64), allocatable :: amount(:),captured_rate(:)
   logical :: ok
   integer :: i
   key = macro_trial_key(7_int64,2_int64,1_int64,1_int64)
@@ -95,6 +95,18 @@ program test_trial_exchange
   call require(.not.ok.and..not.allocated(amount),'nonfinite duration rejects transfer')
   call copy_matrix_transfer(slot,key,amount,ok,head,e%dt)
   call require(ok,'raw extraction remains read only')
+  call copy_matrix_transfer(slot,key,amount,ok,head,e%dt,captured_rate)
+  call require(ok,'paired exact rate extraction')
+  call require(all(abs(captured_rate-e%rate)<tiny(1.0_real64)),'original rate preserved')
+  call copy_matrix_transfer(slot,key,amount,ok,head,2*e%dt,captured_rate)
+  call require(.not.ok.and..not.allocated(amount).and..not.allocated(captured_rate),'failed paired extraction')
+  e%rate=tiny(1.0_real64); e%dt=tiny(1.0_real64); residual=0
+  call apply_macro_residual(e,key,head,residual,slot,ok)
+  call require(ok,'tiny rate captured')
+  call copy_matrix_transfer(slot,key,amount,ok,head,e%dt,captured_rate)
+  call require(ok,'tiny transfer available')
+  call require(all(abs(amount)<tiny(1.0_real64)),'tiny amount underflows')
+  call require(all(captured_rate>=tiny(1.0_real64)),'original tiny rate preserved')
   call discard_macro_exchange(slot)
   call copy_matrix_transfer(slot,key,amount,ok)
   call require(.not. ok,'discard no receipt')

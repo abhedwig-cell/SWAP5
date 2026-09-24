@@ -19,10 +19,16 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "exact_rate_extension": {
+    "baseline": "ec6ff0c86",
+    "contract": "Optional captured-rate output on transfer/budget extraction returns the original residual rate alongside its integrated amount after the same identity checks. Failed extraction returns neither array. Candidate preparation now uses this rate directly instead of amount/dt.",
+    "scope": "Avoids a numerical round trip; does not alter source equations, tolerances, acceptance ownership or production admission.",
+    "test_result": "Pending"
+  },
   "candidate_bridge_contract": {
     "baseline": "972c20b50",
     "design": "Capture immutable evaluator geometry with the used exchange. A new candidate preparation entry point checks checkpoint lineage/revision, single-domain extent, fixed volume and hydrostatic beginning profile before composing A3 interval preparation and accounting from the captured budget. Publish candidate and account only after all checks pass; never commit.",
-    "limits": "PPA-local proposed integration only. Inherits A3 conservative-flux reference-policy limitation; no complete continuation physics, production admission or restart qualification. Amount/dt reconstructs rates for the existing A3 interface and is subject to the explicit accounting tolerance.",
+    "limits": "PPA-local proposed integration only. Inherits A3 conservative-flux reference-policy limitation; no complete continuation physics, production admission or restart qualification. Exact-rate extension removes amount/dt reconstruction from the A3 handoff.",
     "recovery_point": "8ce32fec8",
     "test_result": "Persisted 8ce32fec8 Richards scratch and A3 interval candidate gates PASS O0/O2 with identical transcripts and bounds/FPE checks. Valid bridge, stale revision rejection, same-total wrong-profile rejection, recovery and unchanged initial state tested."
   },
