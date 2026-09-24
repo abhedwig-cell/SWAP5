@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12E",
+  "phase": "CAPACITY_CONTROLLED_RETENTION_SWEEP_COMPLETE",
+  "status": "FAIL_NO_PROSPECTIVE_VARIANT_PASSED",
+  "workflow_run": 36047531536,
+  "workflow_job": 107794663655,
+  "variants": {
+    "c1e6": {
+      "support_points": 105,
+      "max_theta_error": 1.346878461417e-8,
+      "max_abs_logC_error": 9.550347339626e-7,
+      "reference_iterations": 2,
+      "candidate_iterations": 3,
+      "iteration_delta": 1,
+      "backtracking_delta": 1,
+      "max_abs_pressure_head_delta_cm": 1.008084e-7,
+      "max_abs_water_content_delta": 1.845127e-10
+    },
+    "c3e7": {
+      "support_points": 162,
+      "max_theta_error": 2.104921623966e-9,
+      "max_abs_logC_error": 2.997630534907e-7,
+      "reference_iterations": 2,
+      "candidate_iterations": 3,
+      "iteration_delta": 1,
+      "backtracking_delta": 1,
+      "max_abs_pressure_head_delta_cm": 7.019512e-9,
+      "max_abs_water_content_delta": 1.011802e-11
+    }
+  },
+  "finding": "Directly tightening the global capacity interpolation error by orders of magnitude drives endpoint state error essentially to zero but does not recover the analytical prescribed-qbot Newton path.",
+  "scientific_interpretation": "The remaining path difference is not explained by insufficient global theta or C resolution. The solver-facing issue is trajectory-local and/or representation-form dependent. Continuing global knot densification is falsified as the repair strategy.",
+  "decision": "STOP_GLOBAL_RETENTION_DENSIFICATION",
+  "next_action": "Characterize the computational cost of the existing path difference separately, while preserving the failed nonlinear-path classification. Any later fidelity repair must use a different representation family or a locally justified solver-facing invariant.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_PRODUCTION_ADMISSION"]
+}
