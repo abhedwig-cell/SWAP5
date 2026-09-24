@@ -1,13 +1,14 @@
 {
   "work_unit": "PPA-IRR-DCS1-SCHEDULED",
-  "tested_commit": "728085a6e",
+  "tested_commit": "3474958de",
   "status": "BOUNDED_CANDIDATE_PROCESS_PASS_NOT_CANONICALLY_ADMITTED",
   "preregistration": "integration/audits/PPA_IRR_DCS1_SCHEDULED_PREREGISTRATION.json",
   "gate": "tests/fapp/run_ppa_irr_dcs1_scheduled.ps1",
   "result": "PASS O0/O2 with bounds and FPE checks and identical transcripts. 100000 source-order comparisons and independent DCS1 helper oracle; strict rainfall threshold, depth limits, solute increment, selected rate/duration, split/retry, copied active-event continuation, invalid-input rejection and default DCS2 preservation.",
   "build": "swap-irr-dcs1-scheduled-04bc4b3686dd4594babc32d4e64b9c10",
   "preservation": "DCS2 limit and five existing irrigation suites PASS O0/O2 in swap-irr-dcs2-limit-54584abfd0f54c8cb1285322f48aef19. Frozen F-APP07 process and exact 110-interval application composition PASS O0/O2 in swap-fapp07-e67363067be54827b3bbe5b122cc435c.",
-  "scope": "Explicit DCS1 depth selector in the existing single-node SSDI scheduled candidate route. New direct integration vectors use TCS7. Existing DCS2 remains default; active events retain stored rate and existing state owner.",
+  "scope": "Explicit DCS1 depth selector in the existing single-node SSDI scheduled candidate route. Direct integration vectors cover TCS7 and TCS8, 100000 each per optimization level. Existing DCS2 remains default; active events retain stored rate and existing state owner.",
+  "timing_followup": "3474958de PASS O0/O2 with identical transcripts in swap-irr-dcs1-scheduled-047df615820b42aeb8416a9b842c9474. TCS8 exact threshold selects DCS1; nearest representable higher value suppresses selection even with invalid unused demand. TCS8 copied-event continuation conserves the selected amount. All seven eligibility/fixed-precedence gates suppress evaluation and candidate publication. Existing isolated DCS1 oracle also passes. Production code unchanged since 728085a6e; earlier DCS2/F-APP07 preservation evidence inherited on that unchanged dependency surface.",
   "non_claims": "No scheduled surface route, derived crop deficit, calendar/parser ingress, accepted soil/solute mass booking, disk restart, public production binding or canonical admission. Copied candidate-state continuation is not whole-application restart.",
-  "next": "Extend timing-combination evidence and bind supplied demand through existing owners before production qualification."
+  "next": "Bind supplied demand through existing owners and qualify accepted soil/solute booking before production qualification."
 }

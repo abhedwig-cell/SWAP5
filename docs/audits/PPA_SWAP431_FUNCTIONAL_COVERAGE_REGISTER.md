@@ -53,6 +53,11 @@ F-APP07 exact 110-interval composition remain green. This is not a scheduled
 surface route, accepted soil/solute booking or whole-application restart.
 Evidence: `integration/audits/PPA_IRR_DCS1_SCHEDULED_STATUS.json`.
 
+Verification follow-up at 3474958de covers both TCS7 and TCS8 (100,000
+source-order cases each at O0/O2), TCS8 inclusive threshold and immediately
+higher non-trigger value, copied-event continuation and all seven selection
+eligibility/fixed-precedence gates. Production code and admission are unchanged.
+
 Branch-local irrigation follow-up at 91e62d47b adds default-disabled scheduled
 DCS2 minimum/maximum gift limits in B1.11 order: limit, solute overirrigation,
 then rate/duration. The 100,000-case O0/O2 gate, split/retry and invalid-input
