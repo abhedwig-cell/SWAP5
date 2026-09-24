@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.rom-purpose.p6a.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P6A-LAGGED-BOUNDARY-OPERATOR-ORACLE",
+  "date": "2026-09-24",
+  "status": "BOUND_BEFORE_ANY_P6A_RESPONSE",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P6A_PREREGISTRATION.json@6e8dd8501956e9cb87909e0802a96462ba283358",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "blobs": {
+    "integration/f-rom/ROM_PURPOSE_P6A_PREREGISTRATION.json": "6e8dd8501956e9cb87909e0802a96462ba283358",
+    "tests/rom/materialize_rom_purpose_p6a_boundary_oracle.py": "ad1730a6f60853f1a08168ad1380fa7646e8db81",
+    "tests/rom/run_rom_purpose_p6a_boundary_oracle.py": "9eef960ada5d5f4363b9f09c05287888a454599c",
+    "tests/rom/analyze_rom_purpose_p6a_boundary_oracle.py": "5ccb67b29ebc14abca85f575ef45544193174738",
+    ".github/workflows/f-rom-purpose-p6a.yml": "c12d7ed3c5db1566f10534f4ab13e60707d53fed"
+  },
+  "scientific_firewall": {
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "reduced_state_sufficiency_adjudicated": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
