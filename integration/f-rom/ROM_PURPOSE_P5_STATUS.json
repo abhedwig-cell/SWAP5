@@ -22,9 +22,11 @@
     "new_closure_family_authorized": false,
     "p4_reopened": false,
     "production_rom_authorized": false,
-    "tolerance_relaxation_authorized": false
+    "tolerance_relaxation_authorized": false,
+    "dynamic_carrier_validation_authorized": false
   },
-  "status": "P5C_SCREEN_COMPLETE_ORACLE_GATE_FAILED",
+  "status": "P5_CLOSED_P5A_CONTRACT_BOUNDARY_P5B_SUPERSEDED_P5C_ORACLE_CONTRACT_INVALID",
   "work_unit": "ROM-PURPOSE-P5",
-  "workstream": "ROM-PURPOSE"
+  "workstream": "ROM-PURPOSE",
+  "p5c_oracle_contract_reconciliation": "integration/f-rom/ROM_PURPOSE_P5C_ORACLE_CONTRACT_RECONCILIATION.json"
 }
