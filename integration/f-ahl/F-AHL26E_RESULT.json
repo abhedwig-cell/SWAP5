@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26E",
+  "phase": "PDI_NOVAP_STATIC_CONDUCTIVITY_QUALIFICATION_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36052578223,
+  "workflow_job": 107811513939,
+  "selected_builder_abs_logK_limit": 0.001,
+  "cases": {
+    "PDI8_REFERENCE": {"support_points":103,"max_abs_logK_error":0.0009838016959757834},
+    "PDI10_BIMODAL": {"support_points":98,"max_abs_logK_error":0.0009822965643033303}
+  },
+  "finding": "The source-authoritative PDI NoVap static liquid/film conductivity can be represented compactly at the same 1e-3 logK accuracy order used in the default-MvG strict line.",
+  "next_action": "F-AHL26F controlled NoVap Richards falsification for PDI8 and PDI10 across wet, mid and dry regimes.",
+  "vapor_status": "BLOCKED_BY_F_AHL26D0_UPSTREAM_SOURCE_SEMANTICS_FAILURE",
+  "nonclaims": ["NO_VAPOR_ENABLED_PDI_CLAIM","NO_RICHARDS_CLAIM_YET","NO_PRODUCTION_ADMISSION"]
+}
