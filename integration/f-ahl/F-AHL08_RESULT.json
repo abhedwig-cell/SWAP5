@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL08",
+  "phase": "K_LOOKUP_RUNTIME_SCREEN_COMPLETE",
+  "status": "FAIL_ADVANCE_RULE",
+  "workflow_run": 36041549881,
+  "workflow_job": 107774676254,
+  "candidate": "exact authoritative theta and C; lookup K",
+  "seconds_per_evaluation": {
+    "B01": {"analytical":1.0641622543e-7,"k_only_lookup":1.0766363144e-7},
+    "B12": {"analytical":1.0904741287e-7,"k_only_lookup":1.0854768753e-7},
+    "O05": {"analytical":1.0064744949e-7,"k_only_lookup":1.0462093353e-7},
+    "O14": {"analytical":1.0302829742e-7,"k_only_lookup":1.0870409012e-7}
+  },
+  "finding": "K-only lookup does not retain a meaningful constitutive runtime advantage. Lookup transform/search/reconstruction cost is comparable to or greater than analytical K evaluation for three of four materials.",
+  "decision": "DO_NOT_ADVANCE_K_ONLY_AS_SPEED_CANDIDATE",
+  "implication": "The next speed candidate should keep theta and C derivative-consistent without evaluating the full analytical retention/capacity pair at every call. A shared interpolant whose derivative supplies C is the preferred next research direction.",
+  "nonclaims": [
+    "K lookup remains numerically admissible as a research representation; this result only rejects it as a speed candidate under the preregistered rule.",
+    "No production claim is made."
+  ]
+}
