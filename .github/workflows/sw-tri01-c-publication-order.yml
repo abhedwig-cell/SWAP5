@@ -32,5 +32,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Install admitted groundwater-service dependency
+        run: python3 -m pip install numpy
       - name: Deterministic dual-external ordering gate
         run: bash tests/triangle/run_sw_tri01_c_publication_order.sh
