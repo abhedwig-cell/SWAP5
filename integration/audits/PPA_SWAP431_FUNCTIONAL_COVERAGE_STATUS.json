@@ -8,6 +8,11 @@
   "migration_closure_ledger": "integration/audits/SWAP4_TO_SWAP5_MIGRATION_CLOSURE_LEDGER.json",
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
+  "latest_irrigation_checkpoint": {
+    "tested_commit": "91e62d47b",
+    "record": "integration/audits/PPA_IRR_DCS2_LIMIT_STATUS.json",
+    "scope": "Default-disabled scheduled DCS2 gift limits compose in source order before solute bump and rate/duration. 100000 O0/O2 source comparisons, split/retry and invalid-input gates pass; five existing irrigation suites and exact F-APP07 110-interval application preservation pass. Typed candidate process only, not parser/calendar, whole-column acceptance or canonical admission."
+  },
   "latest_atm02_owner_checkpoint": {
     "tested_commit": "d234a4524",
     "record": "integration/audits/PPA_ATM02_PRODUCTION_COMPOSITION_PREREGISTRATION.json",

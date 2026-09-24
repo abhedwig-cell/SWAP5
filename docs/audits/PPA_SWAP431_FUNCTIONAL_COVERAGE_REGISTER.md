@@ -45,6 +45,20 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
+Branch-local irrigation follow-up at 91e62d47b adds default-disabled scheduled
+DCS2 minimum/maximum gift limits in B1.11 order: limit, solute overirrigation,
+then rate/duration. The 100,000-case O0/O2 gate, split/retry and invalid-input
+checks pass. Five existing irrigation suites and the frozen F-APP07 exact
+110-interval composition also pass. This is typed candidate-process coverage,
+not calendar, accepted soil/solute booking or canonical admission. Evidence:
+`integration/audits/PPA_IRR_DCS2_LIMIT_STATUS.json`.
+
+ATM02's late third-period continuation remains open: the explicit 0.9/128 retry
+experiment at 18275e28f also fails, after 10,093 internal accepts per tile.
+Direct copied-boundary feasibility does not establish full runtime completion;
+exact trial-clock/attempt-context diagnosis is still needed. This local numerical
+boundary does not prevent independent capability work.
+
 1. **PPA-WU04-C/D** have bounded branch-local combined hydraulic/source-window
    receipt, in-memory restart, failed/partial rollback and hard-mass evidence.
    These explicit opt-in mode-7 gates do not close ordinary weather ingress,
