@@ -90,8 +90,8 @@ program test_ahl09r_timing_reconciliation
   call require(max_dw<=1.0e-4_real64,'theta gate')
   call require(dbottom<=1.0e-5_real64,'bottom flux gate')
   call require(mass<=mass_gate,'mass gate')
-  call require(abs(candidate_result%diagnostics%nonlinear_iterations-ref_result%diagnostics%nonlinear_iterations)<=2,'iteration gate')
-  call require(abs(candidate_result%diagnostics%backtracking_attempts-ref_result%diagnostics%backtracking_attempts)<=2,'backtrack gate')
+  call require(abs(candidate_result%diagnostics%nonlinear_iterations-ref_result%diagnostics%nonlinear_iterations)==0,'iteration gate')
+  call require(abs(candidate_result%diagnostics%backtracking_attempts-ref_result%diagnostics%backtracking_attempts)==0,'backtrack gate')
 
   do r=1,NTIMING
     if(mod(r,2)==1) then
@@ -183,6 +183,6 @@ contains
 
   subroutine require(ok,msg)
     logical,intent(in)::ok;character(len=*),intent(in)::msg
-    if(.not.ok)then;write(*,'(A,1X,A)')'AHL06_FAIL',trim(msg);error stop 1;end if
+    if(.not.ok)then;write(*,'(A,1X,A)')'AHL09R_FAIL',trim(msg);error stop 1;end if
   end subroutine
 end program test_ahl09r_timing_reconciliation
