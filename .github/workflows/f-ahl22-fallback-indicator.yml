@@ -1,0 +1,22 @@
+name: F-AHL22 fallback indicator diagnostic
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl22_fallback_indicator_diagnostic.py'
+      - 'research/ahl/run_ahl22_fallback_indicator_diagnostic.sh'
+      - 'integration/f-ahl/F-AHL22_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl22-fallback-indicator.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run fallback indicator diagnostic
+        run: bash research/ahl/run_ahl22_fallback_indicator_diagnostic.sh /tmp/ahl22_result.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl22-${{ github.run_id }}
+          path: /tmp/ahl22_result.json
