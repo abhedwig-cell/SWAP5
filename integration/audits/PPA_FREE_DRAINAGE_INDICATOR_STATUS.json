@@ -2,6 +2,13 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
+  "restart_continuation_evidence": {
+    "tested_commit": "f3a472593",
+    "gate": "tests/fapp/run_ppa_free_drainage_runtime.ps1",
+    "result": "PASS O0/O2 identical transcripts. Both root and equivalent drainage cases: trial leaves committed history zero, commit publishes nonzero derivative, FMR export/restore retains derivative exactly, fresh backend without service rejects without modifying restored history, explicit rebinding permits continuation from 0.1 to 0.2 day. Restored and uninterrupted candidate heads/water and subsequent committed histories are exactly identical.",
+    "scope": "Production serialization-neutral FMR restart bundle plus reconstructed backend. Not a byte-level disk format or separate-process test. No WU04C production owner closure; application bootstrap activation remains next.",
+    "production_changes": "None in this checkpoint; tests exercise existing commit/restart contracts and the prior opt-in callback."
+  },
   "runtime_design": "Add an explicit backend setter for a mode7-only temporal callback with the existing read-only solve/history signature. Default null preserves standard dispatch. Callback is execution configuration, not physical/restart state; caller must rebind it on backend reconstruction. Existing transaction-owned history remains sole owner. No automatic bootstrap activation or ABI serialization change. Qualification requires real backend certificate execution; restart activation remains separate.",
   "runtime_binding_evidence": {
     "tested_commit": "f5ea56f14",
@@ -28,5 +35,5 @@
   "production_replay": "Default PPA-WU01 PowerShell runner at 9b4f6137e still fails O0 WU04C production owner commit, matching the known baseline failure. The balance diagnostic extension alone does not fix principal convergence or temporal integration. O2 bootstrap not reached. No production-success claim.",
   "invariants": [3, 7, 13, 23, 25],
   "scope": "Mode7 explicit-flux-top converged solves now publish existing final native residual and time-integrated residual. No equation, flux, budget, continuation schema, committed-state or temporal indicator admission change. Modes -2 and dynamic top remain outside this extension.",
-  "next_action": "Add committed-history checkpoint/restart continuation with explicit callback rebinding, then wire an opt-in production application profile. Keep WU04C source-window progress under its existing owner. Address principal convergence through a documented transient numerical profile without relaxing mass gates."
+  "next_action": "Wire an explicit opt-in production application profile and qualify WU04C owner commits with source-window progress under its existing owner. The backend FMR restart-bundle continuation is now tested; byte-level and full application restart remain outside that claim. Address principal convergence through a documented transient numerical profile without relaxing mass gates."
 }
