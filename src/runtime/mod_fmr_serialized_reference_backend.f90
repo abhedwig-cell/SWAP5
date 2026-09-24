@@ -1570,13 +1570,13 @@ contains
       else
         if (allocated(forcing%snow)) return
       end if
-      if (allocated(self%soil_temperature_forcing)) deallocate(self%soil_temperature_forcing)
       if (self%soil_temperature_active) then
         if (.not. allocated(forcing%soil_temperature)) return
-        allocate(self%soil_temperature_forcing)
+        if (.not. allocated(self%soil_temperature_forcing)) allocate(self%soil_temperature_forcing)
         self%soil_temperature_forcing = forcing%soil_temperature
       else
         if (allocated(forcing%soil_temperature)) return
+        if (allocated(self%soil_temperature_forcing)) deallocate(self%soil_temperature_forcing)
       end if
 
       self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
