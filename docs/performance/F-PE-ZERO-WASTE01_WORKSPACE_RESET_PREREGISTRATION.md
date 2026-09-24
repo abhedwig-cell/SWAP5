@@ -759,3 +759,14 @@ The temporary array carries no independent semantics. H22 performs the same comp
 Expected effect: remove one length-N real allocation, copy, and deallocation per committed-ledger total evaluation.
 
 The summation order and compensation arithmetic remain identical, so bitwise result identity is expected.
+
+
+## ZW01-H23 preregistration — remove initial ledger mass copy array
+
+`publish_multiswap_cell_transaction` currently allocates `initial_mass(n)`, zero-fills it, copies the pre-publication committed ledger mass from every snapshot into that array, and later computes the canonical ordered sum.
+
+The snapshots already contain the exact values. H23 removes `initial_mass` and computes the same canonical ordered initial total directly from `result%ledger_snapshots` using `committed_ledger_total`.
+
+Expected effect: remove one length-N real allocation, zero-fill, N-value copy, and deallocation per committed MultiSWAP groundwater publication.
+
+Transaction staging arrays `prepared_ledgers` and `next_origins` are explicitly retained because they carry precommit authority.
