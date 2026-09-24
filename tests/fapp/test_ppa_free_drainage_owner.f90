@@ -57,6 +57,7 @@ program test_ppa_free_drainage_owner
        reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_solver_contract, only: SW_SOLVE_CONVERGED
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
@@ -237,11 +238,13 @@ contains
       call require(ok.and.code==FMR_APP_BOOT_OK,'ATM02 fresh restart restores')
       do pass=1,2
         observed_event_calls=0
+        capture_low_rain=events.and.window==3.and.pass==1
         if(pass==1) then
           call owner%run_standalone_with_forcing_receipts(interval%t0,interval%t1,forcing,result,receipt,code)
         else
           call fresh%run_standalone_with_forcing_receipts(interval%t0,interval%t1,forcing,result,receipt,code)
         end if
+        capture_low_rain=.false.
         write(*,*) 'ATM02_OPT_IN',window,pass,code,result%kernel_status,result%accepted_substeps
         if(events.and.window==3) then
           call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed).and.all(.not.result%completed), &
@@ -253,6 +256,7 @@ contains
           do tile=1,NTILE
             call require(.not.receipt(tile)%receipt%ready(),'ATM02 failed continuation has no ready receipt')
           end do
+          if(pass==1) call diagnose_root_boundary(active%tiles(NTILE)%parameters,forcing(NTILE))
           cycle
         end if
         call require(code==FMR_APP_BOOT_OK.and.all(result%committed).and.all(result%completed),'ATM02 opt-in commits')
@@ -469,6 +473,62 @@ contains
            abs(ledger)<=HARD_MASS_GATE) eligible=eligible+1
     end do
     call require(eligible==8,'eight intermediate durations pass native temporal and mass gates')
+  end subroutine
+  subroutine diagnose_root_boundary(p,forcing)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    type(fmr_b110_physical_forcing_t),target,intent(in)::forcing
+    type(soil_water_parameter_set_t),target::geometry
+    type(b110_default_mvg_parameters_t),target::hydraulics
+    type(b110_default_mvg_provider_t),target::provider
+    type(b110_source_sink_provider_t),target::sink
+    type(b110_root_sink_provider_t),target::root
+    type(fixed_flux_top_boundary_provider_t),target::top_provider
+    type(reference_richards_legacy_solver_t)::solver
+    type(reference_richards_legacy_workspace_t)::workspace
+    type(soil_water_solve_request_t)::request
+    type(soil_water_solve_result_t)::solution
+    type(soil_water_temporal_indicator_result_t)::certificate
+    real(real64),allocatable,target::zero_root(:)
+    real(real64)::dt,ledger
+    integer::level,eligible
+    call require(allocated(low_rain_request%base_state%pressure_head),'root diagnostic captured owned state')
+    call require(.not.low_rain_history%forcing_event_at_start,'root diagnostic does not reseed history')
+    geometry%parameter_set_id=p%parameter_set_id
+    geometry%active_nodes=p%active_nodes
+    geometry%z=p%z; geometry%dz=p%dz; geometry%node_distance=p%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics,p%cofgen)
+    allocate(zero_root(p%active_nodes)); zero_root=0.0_real64
+    call bind_b110_source_sink_provider(sink,forcing%drainage_flux_by_level, &
+         forcing%subsurface_irrigation_source,zero_root)
+    call bind_b110_root_sink_provider(root,forcing%root_extraction_sink)
+    request=low_rain_request
+    request%parameters=>geometry
+    request%evaluation%constitutive=>provider
+    request%evaluation%source_sink=>sink
+    request%evaluation%root_sink=>root
+    request%evaluation%top_boundary=>top_provider
+    request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
+    eligible=0
+    do level=0,29
+      dt=low_rain_request%step_duration*0.8_real64**level
+      if(level>=10) dt=low_rain_request%step_duration*(1.0_real64-0.01_real64*real(level-9,real64))
+      request%step_duration=dt
+      call bind_b110_default_mvg_provider(provider,hydraulics,dt)
+      call solver%solve(request,workspace,solution)
+      write(*,'(a,i0,a,es23.15,a,i0,a,es23.15,a,l1,a,l1)') 'ROOT_CONTINUATION_SOLVE level=',level, &
+           ':dt=',dt,':status=',solution%status,':residual=',maxval(abs(workspace%richards%residual)), &
+           ':balance=',any(workspace%richards%nonconverged_balance),':head=',any(workspace%richards%nonconverged_head)
+      if(solution%status/=SW_SOLVE_CONVERGED) cycle
+      call evaluate_free_drainage_temporal_indicator(request,solution,low_rain_history,certificate)
+      ledger=sum((solution%candidate_state%water_content-request%base_state%water_content)*p%dz)+ &
+           dt*(solution%top_flux-solution%bottom_flux+sum(forcing%drainage_flux_by_level)+ &
+           sum(forcing%root_extraction_sink)-sum(forcing%subsurface_irrigation_source))
+      write(*,'(a,i0,a,l1,2(a,es23.15))') 'ROOT_CONTINUATION_CERT level=',level, &
+           ':available=',certificate%available,':bound=',certificate%head_inf_bound,':mass=',ledger
+      if(certificate%available.and.certificate%head_inf_bound<=1.0e-5_real64.and. &
+           abs(ledger)<=HARD_MASS_GATE) eligible=eligible+1
+    end do
+    write(*,'(a,i0)') 'ROOT_CONTINUATION_ELIGIBLE=',eligible
   end subroutine
   subroutine probe_low_rain_retry(profile,before,forcing,t_start,t_end,amount)
     type(fmr_production_application_config_t),intent(in)::profile
