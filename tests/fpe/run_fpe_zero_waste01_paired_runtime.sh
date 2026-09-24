@@ -8,7 +8,7 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 BASELINE_COMMIT=82d9938976fd92ff3230e7739539e467c3243225
-for p in   src/solver/mod_reference_richards_workspace.f90   src/solver/mod_reference_linear_solver.f90   src/legacy/b1_10_port/headcalc.f90   src/adapter/mod_reference_richards_legacy_binding.f90; do
+for p in   src/solver/mod_reference_richards_workspace.f90   src/solver/mod_reference_linear_solver.f90   src/legacy/b1_10_port/headcalc.f90   src/adapter/mod_reference_richards_legacy_binding.f90   src/adapter/mod_reference_richards_accepted_step_directional_service.f90   src/runtime/mod_fmr_serialized_reference_backend.f90; do
   git show "${BASELINE_COMMIT}:${p}" > "$BUILD/src/$(basename "$p")"
 done
 
@@ -57,7 +57,7 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   HEADCALC_PLACEHOLDER
   ADAPTER_PLACEHOLDER
-  src/adapter/mod_reference_richards_accepted_step_directional_service.f90
+  DIRECTIONAL_PLACEHOLDER
   src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
@@ -70,7 +70,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
-  src/runtime/mod_fmr_serialized_reference_backend.f90
+  BACKEND_PLACEHOLDER
 )
 
 compile_variant() {
@@ -88,6 +88,10 @@ compile_variant() {
         [[ "$name" == baseline ]] && source="$BUILD/src/headcalc.f90" || source="src/legacy/b1_10_port/headcalc.f90" ;;
       ADAPTER_PLACEHOLDER)
         [[ "$name" == baseline ]] && source="$BUILD/src/mod_reference_richards_legacy_binding.f90" || source="src/adapter/mod_reference_richards_legacy_binding.f90" ;;
+      DIRECTIONAL_PLACEHOLDER)
+        [[ "$name" == baseline ]] && source="$BUILD/src/mod_reference_richards_accepted_step_directional_service.f90" || source="src/adapter/mod_reference_richards_accepted_step_directional_service.f90" ;;
+      BACKEND_PLACEHOLDER)
+        [[ "$name" == baseline ]] && source="$BUILD/src/mod_fmr_serialized_reference_backend.f90" || source="src/runtime/mod_fmr_serialized_reference_backend.f90" ;;
     esac
     local obj="$out/$(basename "${source%.*}").o"
     gfortran -std=f2008 -ffree-line-length-none -O2 -J"$out" -I"$out" -c "$source" -o "$obj"
