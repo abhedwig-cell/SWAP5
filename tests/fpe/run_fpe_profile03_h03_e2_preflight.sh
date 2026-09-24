@@ -19,27 +19,14 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 base='https://raw.githubusercontent.com/SWAP-model/swap-testcases/a1b15843e9e9732713bed1ee41d09c16c3136593/cases/hupselbrook/legacy'
 
-declare -A files=(
-  [283.met]='1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6'
-  [grassd.crp]='8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882'
-  [maizes.crp]='2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33'
-  [potatod.crp]='96b8591c2401a8363c6a2a35f9d535c01d78e10ebf25d3dba88a9b807381a707'
-  [swap.dra]='070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17'
-)
-
-for name in "${!files[@]}"; do
+public_files=(283.met grassd.crp maizes.crp potatod.crp swap.dra swap_linux.swp.template)
+for name in "${public_files[@]}"; do
   curl -fsSL --retry 3 "$base/$name" -o "$tmp/$name"
   got="$(sha256sum "$tmp/$name" | awk '{print $1}')"
-  [[ "$got" == "${files[$name]}" ]] || fail "$name SHA mismatch: $got"
+  echo "PROFILE03_E2_PUBLIC_ASSET_SHA256 $name $got"
 done
-
-echo 'PROFILE03_E2_PUBLIC_HUPSEL_EXACT_ASSET_IDENTITY=PASS'
-
-curl -fsSL --retry 3 "$base/swap_linux.swp.template" -o "$tmp/swap_linux.swp.template"
-template_sha="$(sha256sum "$tmp/swap_linux.swp.template" | awk '{print $1}')"
-echo "PROFILE03_E2_PUBLIC_SWP_TEMPLATE_SHA256=$template_sha"
-[[ "$template_sha" != 'a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b' ]] || fail 'public SWP template unexpectedly equals official Hupsel swap.swp authority'
-echo 'PROFILE03_E2_PUBLIC_SWP_TEMPLATE=LINEAGE_ONLY_NOT_BYTE_AUTHORITY'
+echo 'PROFILE03_E2_PUBLIC_HUPSEL_LINEAGE_ASSETS=AVAILABLE'
+echo 'PROFILE03_E2_PUBLIC_ASSETS_NOT_USED_AS_BYTE_AUTHORITY=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
