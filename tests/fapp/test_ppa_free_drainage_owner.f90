@@ -280,6 +280,23 @@ contains
       end do
       call owner%run_standalone_with_forcing(request%t0,request%t1,control_forcing,irrigation_result,code)
       write(*,*) 'IRRIGATION_ZERO_CONTROL_STATUS',code,irrigation_result%kernel_status,irrigation_result%accepted_substeps
+      call owner%copy_committed_hydraulic_states(again,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation control outcome snapshot'
+      do tile=1,NTILE
+        if(irrigation_result(tile)%kernel_status/=0) then
+          if(again(tile)%revision/=copied(tile)%revision) error stop 'failed tile revision published'
+          if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) &
+               error stop 'failed tile time published'
+          if(any(abs(again(tile)%water_content-profile%tiles(tile)%initial_state%water_content)>0.0_real64)) &
+               error stop 'failed tile water published'
+          if(any(abs(again(tile)%pressure_head_cm-profile%tiles(tile)%initial_state%pressure_head)>0.0_real64)) &
+               error stop 'failed tile pressure published'
+        else
+          if(abs(again(tile)%committed_time-request%t1)>0.0_real64) error stop 'accepted tile time missing'
+          if(again(tile)%revision<=copied(tile)%revision) error stop 'accepted tile revision missing'
+        end if
+      end do
+      write(*,'(a)') 'PPA_IRRIGATION_CONTROL_PER_TILE_PUBLICATION=PASS'
       call owner%restore_committed_restart(bundle,92001_int64,ok,code)
       if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation control reset'
       call owner%copy_committed_hydraulic_states(again,code)
