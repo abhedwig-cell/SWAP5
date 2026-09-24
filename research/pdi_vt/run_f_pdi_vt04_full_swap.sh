@@ -89,6 +89,55 @@ cp -a "$BUILDROOT/control-vap/." "$BUILDROOT/candidate-vap/"
 python3 "$ROOT/research/pdi_vt/f_pdi_vt04_case_v2.py" "$BUILDROOT/cases-src/cases/grassgrowth/legacy" "$BUILDROOT/control-novap" --swvapor 0 | tee /tmp/fpdivt04-novap-case-hash.txt
 cp -a "$BUILDROOT/control-novap/." "$BUILDROOT/candidate-novap/"
 
+bind_case_host_defaults () {
+python3 - "$1/swap.swp" <<'PY'
+from pathlib import Path
+import re,sys
+p=Path(sys.argv[1]); s=p.read_text()
+if not re.search(r'(?mi)^\s*CRITDEVMASBAL\s*=',s):
+    m=re.search(r'(?mi)^\s*SWHEADER\s*=.*
+run_swap () {
+  local exe="$1"; local dir="$2"; local label="$3"
+  set +e
+  (cd "$dir" && "$exe") >"/tmp/${label}.log" 2>&1
+  rc=$?
+  set -e
+  echo "$label rc=$rc"
+  tail -120 "/tmp/${label}.log"
+  if [[ "$rc" -ne 0 && "$rc" -ne 100 ]]; then
+    echo "$label unexpected rc=$rc"
+    return 1
+  fi
+  grep -q "Swap normal completion" "/tmp/${label}.log"
+  echo "$label NORMAL rc=$rc"
+}
+
+CTRL="$BUILDROOT/control-build/swap"
+CAND="$BUILDROOT/candidate-build/swap"
+[[ -x "$CTRL" && -x "$CAND" ]]
+
+run_swap "$CTRL" "$BUILDROOT/control-vap" control_vap
+run_swap "$CAND" "$BUILDROOT/candidate-vap" candidate_vap
+run_swap "$CTRL" "$BUILDROOT/control-novap" control_novap
+run_swap "$CAND" "$BUILDROOT/candidate-novap" candidate_novap
+
+python3 "$ROOT/research/pdi_vt/f_pdi_vt04_compare.py"   "$BUILDROOT/control-vap" "$BUILDROOT/candidate-vap"   "$BUILDROOT/control-novap" "$BUILDROOT/candidate-novap" | tee "${1:-/tmp/f_pdi_vt04.json}"
+
+echo "--- control vapor tail ---"
+tail -40 /tmp/control_vap.log
+echo "--- candidate vapor tail ---"
+tail -40 /tmp/candidate_vap.log
+# R11 trigger: case generator now binds CRITDEVMASBAL explicitly.
+,s)
+    assert m
+    s=s[:m.end()]+'\n  CRITDEVMASBAL = 1.0E-6'+s[m.end():]
+p.write_text(s)
+PY
+}
+for d in "$BUILDROOT/control-vap" "$BUILDROOT/candidate-vap" "$BUILDROOT/control-novap" "$BUILDROOT/candidate-novap"; do
+  bind_case_host_defaults "$d"
+done
+
 run_swap () {
   local exe="$1"; local dir="$2"; local label="$3"
   set +e
