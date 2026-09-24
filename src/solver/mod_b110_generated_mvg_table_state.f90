@@ -7,7 +7,8 @@ module mod_b110_generated_mvg_table_state
   implicit none
   private
 
-  integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = 100
+  integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = 32
+  logical, parameter, public :: B110_GENERATED_MVG_CURVATURE_GRID = .true.
   real(real64), parameter :: H_CRIT = -1.0e-2_real64
   real(real64), parameter :: GENERATION_H_DRY = -1.0e7_real64
   real(real64), parameter :: GENERATION_H_WET = -1.0e-12_real64
@@ -160,6 +161,13 @@ contains
       do i = 1, n
         if (j == B110_GENERATED_MVG_TABLE_N - 1) then
           hvec(i) = lo(i)
+        else if (B110_GENERATED_MVG_CURVATURE_GRID) then
+          ! Research-only deterministic sparse placement.  The smoothstep
+          ! transform concentrates rows toward both dry and wet ends of the
+          ! log-head interval, where theta/log(K) curvature and branch
+          ! transitions are strongest, without changing interpolation.
+          frac = frac*frac*(3.0_real64-2.0_real64*frac)
+          hvec(i) = -10.0_real64**(u0 + frac * (log10(-lo(i)) - u0))
         else
           hvec(i) = -10.0_real64**(u0 + frac * (log10(-lo(i)) - u0))
         end if
