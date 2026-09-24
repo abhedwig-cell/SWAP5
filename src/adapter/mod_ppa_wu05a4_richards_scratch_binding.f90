@@ -80,18 +80,20 @@ contains
     record%generation=0
   end subroutine
 
-  subroutine copy_reference_transfer(workspace,record,key,amount,ok)
+  subroutine copy_reference_transfer(workspace,record,key,amount,ok,head,dt)
     type(reference_richards_workspace_t),intent(in)::workspace
     type(reference_trial_transfer),intent(inout)::record
     type(macro_trial_key),intent(in)::key
     real(real64),allocatable,intent(out)::amount(:)
     logical,intent(out)::ok
+    real(real64),optional,intent(in)::head(:),dt
     ok=.false.
     if(.not.workspace_matches(workspace,record)) then
       call discard_reference_transfer(record)
       return
     end if
-    call copy_matrix_transfer(record%used,key,amount,ok)
+    call copy_matrix_transfer(record%used,key,amount,ok,head,dt)
+    if(.not.ok.and.(present(head).or.present(dt)))call discard_reference_transfer(record)
   end subroutine
 
   subroutine apply_saturated_reference_scratch(input,head,dt,key,expected_generation, &

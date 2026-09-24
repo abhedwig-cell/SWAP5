@@ -122,14 +122,24 @@ contains
 
   ! Candidate-only integrated transfer. Does not assert nonlinear convergence or
   ! authorize a commit. The owner must identify the accepted residual evaluation.
-  subroutine copy_matrix_transfer(slot,key,amount,ok)
+  subroutine copy_matrix_transfer(slot,key,amount,ok,head,dt)
     type(macro_used_exchange), intent(in) :: slot
     type(macro_trial_key), intent(in) :: key
     real(real64), allocatable, intent(out) :: amount(:)
     logical, intent(out) :: ok
+    real(real64), optional, intent(in) :: head(:),dt
     ok = .false.
     if (.not. slot%valid) return
     if (.not. same_key(slot%used%key,key)) return
+    if (present(head)) then
+      if (size(head) /= size(slot%used%head)) return
+      if (.not. all(ieee_is_finite(head))) return
+      if (any(head < slot%used%head) .or. any(head > slot%used%head)) return
+    end if
+    if (present(dt)) then
+      if (.not. ieee_is_finite(dt)) return
+      if (dt < slot%used%dt .or. dt > slot%used%dt) return
+    end if
     if (slot%used%dt > 1.0_real64) then
       if (any(abs(slot%used%rate) > huge(1.0_real64)/slot%used%dt)) return
     end if

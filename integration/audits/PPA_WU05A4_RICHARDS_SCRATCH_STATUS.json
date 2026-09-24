@@ -19,6 +19,12 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "transfer_identity_contract": {
+    "baseline": "d3527f9ec",
+    "interface": "Optional expected head and dt on transfer extraction validate exact finite residual identity and duration before returning integrated amounts. Legacy key-only reads remain unchanged. A failed checked read invalidates the reference adapter capture; raw scratch extraction remains read-only.",
+    "purpose": "Prevent candidate mass accounting against changed heads or duration even if a caller reuses an evaluation key. These checks do not establish convergence, workspace identity across instances, or physical commit authority.",
+    "test_result": "Pending"
+  },
   "head_identity_extension": {
     "baseline": "59ef5f385",
     "interface": "Optional trailing head vector on apply_macro_diagonal and apply_reference_trial_diagonal checks exact finite pressure-head identity against the captured residual before touching the diagonal. Existing callers without this argument retain key-only behavior; the nonlinear sequence supplies it.",

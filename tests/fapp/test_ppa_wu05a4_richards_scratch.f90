@@ -199,7 +199,7 @@ contains
       end if
       call check(abs(h-expected)<2.e-12_real64,106)
       ! Account the last residual's actual captured amount; no reevaluation.
-      call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid)
+      call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid,[-0.5_real64,h],dt)
       call check(valid,107)
       call check(abs(sum(transfer)-q*dt)<1.e-14_real64,108)
       call check(abs(trial_store-input%storage+sum(transfer))<1.e-14_real64,109)
@@ -214,6 +214,14 @@ contains
       call check(.not.valid.and.maxval(abs(trial_ws%dfdh_main-1))<1.e-14_real64,112)
       call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid)
       call check(.not.valid.and..not.allocated(transfer),113)
+      trial_ws%residual=[0.0_real64,h-0.2_real64]
+      call apply_saturated_reference_residual(input,[-0.5_real64,h],0.0_real64,dt, &
+          trial_key,trial_ws%generation,trial_ws,capture,trial_store,valid)
+      call check(valid,114)
+      call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid,[-0.5_real64,h],dt*2)
+      call check(.not.valid.and..not.allocated(transfer),115)
+      call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid)
+      call check(.not.valid.and..not.allocated(transfer),116)
     end do
     call discard_reference_transfer(capture)
     call release_reference_workspace(trial_ws)
