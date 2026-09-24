@@ -6,7 +6,7 @@ mkdir -p "$BUILD/tables"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-PYTHONPATH=research/ahl python3 research/ahl/ahl15_floor_scaled_k.py "$BUILD/tables" | tee "$BUILD/table_summary.json"
+PYTHONPATH=research/ahl python3 research/ahl/ahl15_wet_local_k.py "$BUILD/tables" | tee "$BUILD/table_summary.json"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
