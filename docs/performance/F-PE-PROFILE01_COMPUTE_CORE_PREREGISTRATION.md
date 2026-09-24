@@ -477,3 +477,29 @@ Interpretation:
 - the time significance of the repeated reset is still unmeasured and must be established before prioritizing a repair.
 
 Current necessity classification: `N4_CANDIDATE_CONFIRMED_BEHAVIOR_COST_UNMEASURED`.
+
+
+## First measured result — H01 workspace reset multiplicity
+
+A successful P01-A runtime execution on GNU Fortran 13.3.0 reached the existing FKT22 production runtime oracle and preserved:
+
+- rejected-trial isolation: PASS;
+- physical identity: PASS;
+- serialized runtime gate: PASS.
+
+The observer measured for one Reference solve:
+
+```text
+workspace_full_resets = 3
+workspace_zeroed_bytes = 2436
+```
+
+For the four-node P01-A workspace, one reset therefore corresponds to 812 bytes of zeroing under the current GNU storage sizes. The measured multiplicity confirms the source-path hypothesis that the same solver workspace is fully reset three times in one Reference solve.
+
+H01 status is therefore advanced from `SUSPECTED_N4_REDUNDANCY_UNMEASURED` to:
+
+`MEASURED_TRIPLE_RESET_NECESSITY_NOT_YET_ADJUDICATED`.
+
+This is not yet an N4 verdict. PROFILE01 still has to establish which reset(s) are semantically required and measure the time contribution before a repair is authorized.
+
+The external full/half transaction source path performs one full and two half Reference solves per successful no-retry interval. Current diagnostic assertions expect nine aggregate resets for that interval, but the interval-level value remains pending a successful run of the latest observer plumbing and must not be treated as measured evidence until that run passes.
