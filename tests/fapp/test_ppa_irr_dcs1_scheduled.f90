@@ -5,6 +5,7 @@ program test_ppa_irr_dcs1_scheduled
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_dcs1_depth, only: evaluate_dcs1_depth,IRR_DCS1_OK
   use mod_ppa_irr_water_deficit, only: evaluate_root_zone_water_deficit_checked,IRR_DEFICIT_OK
+  use mod_ppa_irr_dcs1_composition, only: evaluate_profile_scheduled_irrigation
   implicit none
   type(scheduled_irrigation_parameters_t)::p,saved
   type(scheduled_irrigation_request_t)::r
@@ -81,6 +82,16 @@ program test_ppa_irr_dcs1_scheduled
     r%t1=max(duration,0.125_real64)
     if(expected>0.0_real64) r%t1=duration
     call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+    if(demand_mode==2) then
+      amount=f%external_inflow_amount
+      code=d%status
+      r%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
+      call evaluate_profile_scheduled_irrigation(p,base,r,h,2,[1,1],[8.0_real64,16.0_real64], &
+           [0.0_real64,-8.0_real64],root_depth,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
+      call require(d%status==code,'profile composition status matches supplied-deficit route')
+      call require(transfer(f%external_inflow_amount,0_int64)==transfer(amount,0_int64), &
+           'profile composition amount matches supplied-deficit route')
+    end if
     if(expected<=0.0_real64) then
       call require(d%status==IRRIGATION_INVALID_EVENT.and..not.f%applied,'zero depth rejects without event')
     else
@@ -179,6 +190,23 @@ program test_ppa_irr_dcs1_scheduled
   call require(d%status==IRRIGATION_OK.and.abs(f%external_inflow_amount-0.5_real64)<epsilon(1.0_real64), &
        'DCS2 ignores inactive DCS1 fields')
   write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_GUARDS_DCS2_PRESERVATION=PASS'
+  p=saved
+  call evaluate_profile_scheduled_irrigation(p,base,r,h,0,[1],[1.0_real64],[0.0_real64], &
+       0.5_real64,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
+  call require(d%status==IRRIGATION_INVALID_PARAMETERS.and..not.f%applied.and..not.candidate%active_event, &
+       'invalid profile publishes no candidate')
+  h%active_nodes=1
+  call evaluate_profile_scheduled_irrigation(p,base,r,h,1,[1],[1.0_real64],[0.0_real64], &
+       0.5_real64,[0.5_real64],[0.3_real64],[0.1_real64],candidate,f,d)
+  call require(d%status==IRRIGATION_INVALID_HYDRAULIC_VIEW.and..not.f%applied, &
+       'profile view node mismatch rejected')
+  h%active_nodes=2
+  r%t0=0.25_real64; r%t1=1.0_real64
+  call evaluate_profile_scheduled_irrigation(p,first,r,h,0,[0],[0.0_real64],[nan], &
+       nan,[nan],[nan],[nan],candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and.f%event_finished,'active composition ignores unused invalid profile')
+  call require(abs(f%external_inflow_amount-0.75_real64)<epsilon(1.0_real64),'active composition stored gift')
+  write(*,'(a)') 'PPA_IRR_PROFILE_COMPOSITION_GUARDS_CONTINUATION=PASS'
 contains
   subroutine require(ok,message)
     logical,intent(in)::ok
