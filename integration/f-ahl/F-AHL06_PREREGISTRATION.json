@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL06",
+  "title": "Optimized split-provider end-to-end Richards timing",
+  "parent": "F-AHL05",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "When the split representation is implemented without redundant analytical C/K work, does it reduce complete Richards solve cost while retaining the F-AHL04C fidelity result?",
+  "fixture": "F-AHL04A controlled nonlinear Richards fixture",
+  "candidate": "exact authoritative theta(h); adaptive lookup C(h),K(h) for h<=-1 cm; authoritative analytical provider for h>-1 cm",
+  "timing_policy": {
+    "compiler": "-O3",
+    "independent_solve_replays": 512,
+    "minimum_timing_repetitions": 3,
+    "median_reported": true,
+    "same_request_and_solver_policy": true,
+    "table_build_and_file_io_measured_separately_from_solve_loop": true
+  },
+  "fidelity_gates": {
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12,
+    "max_nonlinear_iteration_count_delta": 2,
+    "max_backtracking_attempt_count_delta": 2
+  },
+  "decision_rule": "Advance only if all fidelity gates pass and median complete-solve CPU is lower than analytical. Do not infer whole-SWAP speedup from this fixture.",
+  "hard_exclusions": [
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_TOLERANCE_RETUNING",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
