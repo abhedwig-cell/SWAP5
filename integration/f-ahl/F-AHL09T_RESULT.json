@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL09T",
+  "phase": "PAIRED_END_TO_END_RICHARDS_TIMING_COMPLETE",
+  "status": "PASS_ADVANCE",
+  "workflow_run": 36042581016,
+  "workflow_job": 107778126848,
+  "candidate": "derivative-consistent cubic-Hermite logit(Se) representation; C from same interpolant; log(K) lookup; exact near-saturation fallback",
+  "stage2_fidelity": {
+    "max_abs_pressure_head_delta_cm": 8.225771e-6,
+    "max_abs_water_content_delta": 2.836443e-8,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 1.366970e-7,
+    "mass_residual_abs_cm": 8.933826e-17,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "paired_ratios": [0.729870,0.730694,0.729344,0.735353,0.727750,0.738587,0.721963],
+  "median_paired_candidate_over_analytical_ratio": 0.729870,
+  "median_cpu_reduction_fraction": 0.270130,
+  "decision_rule": {
+    "advance_below_ratio": 0.98,
+    "observed_ratio": 0.729870,
+    "decision": "ADVANCE"
+  },
+  "interpretation": [
+    "The derivative-consistent candidate preserves the analytical nonlinear iteration and backtracking counts on the frozen nonlinear Richards fixture.",
+    "All frozen fidelity gates pass with substantial margin.",
+    "Under the preregistered long paired O3 timing protocol the candidate reduces complete Richards solve CPU by about 27 percent on this fixture.",
+    "All seven paired ratios favor the candidate, so the result is not driven by one timing outlier."
+  ],
+  "nonclaims": [
+    "This is a controlled single-fixture Reference Richards result, not yet a whole-SWAP application speedup.",
+    "Table build cost is outside timed solve batches and must be included in later application-level accounting.",
+    "Generalization across materials, boundary regimes, forcing trajectories and near-saturation events is not yet established.",
+    "No production admission is implied."
+  ],
+  "next_action": "Broaden blind Richards qualification across materials and hydraulic regimes while preserving the frozen representation policy, then measure table-build amortization and full SWAP trajectory cost."
+}
