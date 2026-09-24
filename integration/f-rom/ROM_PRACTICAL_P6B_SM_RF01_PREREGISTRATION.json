@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rf01.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RF01",
+  "date": "2026-09-24",
+  "phase": "PREREGISTERED_BEFORE_RAINFALL_RESPONSE",
+  "title": "Authentic Hupsel rainfall-only dynamic workload",
+  "central_question": "How does frozen S4 reproduce profile/storage redistribution under an authentic 60-day Hupsel rainfall sequence, without conflating ETref with an unlimited soil-water extraction boundary?",
+  "authority": {
+    "rejected_proxy": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_CLOSEOUT.json",
+    "workload": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RF01_HUPSEL_RAINFALL_WORKLOAD.json",
+    "p5_numerical_policy": "compiled RK4 dt=0.005 day"
+  },
+  "frozen": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      {
+        "id": "HR72",
+        "initial_Se": 0.72
+      },
+      {
+        "id": "HR86",
+        "initial_Se": 0.86
+      }
+    ],
+    "days": 60,
+    "S4_boundaries_cm": [
+      0,
+      20,
+      40,
+      80,
+      160
+    ],
+    "candidate_dt_day": 0.005,
+    "top_flux": "K(initial)+Rain/10 cm/day",
+    "bottom_flux": "K(initial)",
+    "reference_geometry": [
+      "R64",
+      "R128"
+    ],
+    "reference_fixed_temporal_factor": 32
+  },
+  "metrics": [
+    "0-20 storage RMSE",
+    "0-40 storage RMSE",
+    "0-80 storage RMSE",
+    "mapped theta RMSE",
+    "total storage RMSE",
+    "final storage bias",
+    "extrema timing",
+    "wall ratio"
+  ],
+  "classification": {
+    "ROBUST_RAIN_RESPONSE": "complete with zero Reference-observable extrema timing error",
+    "TIMING_SENSITIVE": "complete with nonzero Reference-observable extrema timing error",
+    "NUMERICAL_BLOCKED": "candidate does not complete",
+    "REFERENCE_BLOCKED": "R128 reference does not complete"
+  },
+  "limits": [
+    "This isolates rainfall-driven redistribution and infiltration only.",
+    "It is not a complete atmospheric water balance because evaporation and transpiration are absent.",
+    "ETref remains metadata and is not consumed by the hydraulic boundary.",
+    "No application acceptance threshold is introduced."
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
