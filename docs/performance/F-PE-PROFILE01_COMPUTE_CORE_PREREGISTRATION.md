@@ -860,3 +860,48 @@ NEXT              = PROFILE02_H03_REPAIR_QUALIFICATION + broader production attr
 ```
 
 PROFILE01 phase 1 closes the focused redundancy screen, not the entire SWAP5 performance programme. P01-B/P01-C/P01-D representative workload attribution and whole-program sampling remain open programme work and must not be implied by the P01-A microbenchmarks.
+
+
+## Final phase-1 closeout
+
+F-PE-PROFILE01 phase 1 is closed as a focused redundancy and implementation-cost screen.
+
+Final bounded findings:
+
+| ID | Finding | Evidence | Necessity verdict | Priority |
+| --- | --- | --- | --- | --- |
+| H03 | repeated complete constitutive evaluation at unchanged head | source/control-flow audit + P01-A dynamic call counts + focused timing | `N4_REDUNDANT_CONFIRMED_BOUNDED` | 1 |
+| H01 | repeated full Richards workspace zeroing | source audit + per-solve/per-interval counters + focused timing | two of three resets `N4_REDUNDANT_CONFIRMED_BOUNDED`; one reset retained | 2 |
+| H02 | transaction physical-state deep cloning | source clone count + focused base-state clone timing | `N1_OR_N2`; transaction safety authoritative | 3 / investigate only |
+| H04 | full constitutive tuple granularity | source use analysis only | `NX_UNRESOLVED` | no repair authorization |
+
+At 1000 nodes on the shared runner class:
+
+- one redundant H03 provider call: ~111.4 us;
+- two redundant H01 resets per Reference solve: ~5.41 us combined;
+- four H02 base-state deep clones per no-retry full/half interval: ~2.21 us combined and not classified avoidable.
+
+These are focused operation costs, not percentages of whole SWAP runtime.
+
+### Closeout boundary
+
+PROFILE01 does **not** close the wider SWAP5 performance programme. The following remain open for later attribution work:
+
+- representative P01-B production workload;
+- difficult P01-C workload;
+- physics-rich P01-D workload;
+- whole-program/sampling attribution;
+- I/O versus compute-core end-to-end accounting;
+- portable hardware performance baselines;
+- observer-overhead characterization for any future dense timing layer.
+
+PROFILE01 does close the question of which currently confirmed redundancy should be repaired first: H03.
+
+The repair has therefore been split into `F-PE-PROFILE02-H03` on branch `work/f-pe-profile02-h03`. PROFILE01 must not be retroactively modified to contain repair evidence.
+
+```text
+F-PE-PROFILE01_PHASE1 = CLOSED_MEASURED_PRIORITY
+PRODUCTION_REPAIR     = NONE
+FIRST_REPAIR_TARGET   = H03
+NEXT_BRANCH           = work/f-pe-profile02-h03
+```
