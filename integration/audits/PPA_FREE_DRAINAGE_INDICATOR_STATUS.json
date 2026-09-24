@@ -3,6 +3,14 @@
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
   "runtime_design": "Add an explicit backend setter for a mode7-only temporal callback with the existing read-only solve/history signature. Default null preserves standard dispatch. Callback is execution configuration, not physical/restart state; caller must rebind it on backend reconstruction. Existing transaction-owned history remains sole owner. No automatic bootstrap activation or ABI serialization change. Qualification requires real backend certificate execution; restart activation remains separate.",
+  "runtime_binding_evidence": {
+    "tested_commit": "f5ea56f14",
+    "gate": "tests/fapp/run_ppa_free_drainage_runtime.ps1",
+    "result": "PASS O0/O2 identical transcripts. Real backend certificate trials complete for root extraction and equivalent drainage sink at 0.1 day and total sink 1e-7 cm/day. Explicit disable retains boundary-envelope-deferred and rejected certificate. Initialize resets binding; callback remains execution configuration.",
+    "build": "C:/Users/Veldh012/AppData/Local/Temp/swap-ppa-wu01-a7e5cb78ecb24246881e8ac874572ef2",
+    "preservation": "45-case FSI free drainage oracle plus unchanged FSI38 and FSI25 PASS O0/O2 at f5ea56f14. Canonical output owner replay (-Scope CanonicalOutput) PASS O0/O2 identical, build swap-ppa-wu01-d0ef474f02634fcd8e400bba0fcc025d. This does not claim default WU04C bootstrap success.",
+    "limits": "Backend candidate execution only. Not the WU04C owner bootstrap, not committed restart equivalence. Full-half comparison helper inherited in test is not executed; only certificate cases are qualification evidence."
+  },
   "temporal_candidate": {
     "status": "BOUNDED_ORACLE_QUALIFICATION_PASS_NOT_RUNTIME_ADMITTED",
     "tested_commit": "84ad1fce0",
@@ -20,5 +28,5 @@
   "production_replay": "Default PPA-WU01 PowerShell runner at 9b4f6137e still fails O0 WU04C production owner commit, matching the known baseline failure. The balance diagnostic extension alone does not fix principal convergence or temporal integration. O2 bootstrap not reached. No production-success claim.",
   "invariants": [3, 7, 13, 23, 25],
   "scope": "Mode7 explicit-flux-top converged solves now publish existing final native residual and time-integrated residual. No equation, flux, budget, continuation schema, committed-state or temporal indicator admission change. Modes -2 and dynamic top remain outside this extension.",
-  "next_action": "Integrate the separately qualified temporal service through an explicit runtime option and validate history/retry/restart ownership, retaining the default solver rejection. Address known WU04C principal convergence settings with a documented transient profile, not by relaxing mass gates. No runtime/restart closure claimed yet."
+  "next_action": "Add committed-history checkpoint/restart continuation with explicit callback rebinding, then wire an opt-in production application profile. Keep WU04C source-window progress under its existing owner. Address principal convergence through a documented transient numerical profile without relaxing mass gates."
 }
