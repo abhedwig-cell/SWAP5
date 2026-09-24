@@ -7,6 +7,9 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 PYTHONPATH=research/ahl python3 research/ahl/ahl15_wet_local_k.py "$BUILD/tables" >/dev/null
+# mod_ahl08 expects the compact K-lookup format: point count followed by
+# x,z,dzdx,logK rows. The selected F-AHL15 file has one parameter header line.
+tail -n +2 "$BUILD/tables/O05_dc.dat" > "$BUILD/tables/O05_selected_k.dat"
 # AHL08 exact-retention provider consumes a compact table beginning with N.
 # The selected AHL15 file has one parameter line before N; strip only that
 # metadata line without changing any support or log(K) values.
