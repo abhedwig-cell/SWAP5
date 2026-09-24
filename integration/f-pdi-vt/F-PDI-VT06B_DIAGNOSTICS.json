@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06B-DIAGNOSTICS",
+  "status": "PASS",
+  "workflow_run": 36063550891,
+  "case": "VT06B-COLD controlling preregistration: initial TSOIL 10,9,8,7 C; Tmin/Tmax 10/15 C; otherwise VT04C authority unchanged",
+  "gate_evidence": {
+    "all_four_runs_normal_completion": true,
+    "control_vapor_finite": true,
+    "candidate_vapor_finite": true,
+    "vapor_difference_after_metadata_normalization": true,
+    "novap_numerically_identical_after_metadata_normalization": true,
+    "CRITDEVMASBAL": 1e-6
+  },
+  "bfo_hashes": {
+    "control_vapor": "ef11bd4ebb4d2be824d8a4e6a822815f3c82c924580a7a8fe5bf4ddc3afe61fe",
+    "candidate_vapor": "caeec7d317fb73be9fe3bfe1bf9a4e07915433bd38824adbda3ad6fc5f095867",
+    "control_novap": "ef11bd4ebb4d2be824d8a4e6a822815f3c82c924580a7a8fe5bf4ddc3afe61fe",
+    "candidate_novap": "ef11bd4ebb4d2be824d8a4e6a822815f3c82c924580a7a8fe5bf4ddc3afe61fe"
+  },
+  "hydraulic_diagnostics_at_BFO_precision": {
+    "records": 2,
+    "nodes": 28,
+    "pressure_head_max_abs_control_candidate_difference_cm": 0.0,
+    "water_content_max_abs_control_candidate_difference": 0.0,
+    "vertical_flux_max_abs_control_candidate_difference_m_d": 0.0,
+    "root_flux_max_abs_control_candidate_difference_m_d": 0.0,
+    "soil_evaporation_m_d": [
+      {"day": 1, "control": 0.0003, "candidate": 0.0003},
+      {"day": 2, "control": 0.0003, "candidate": 0.0003}
+    ],
+    "top_flux_m_d": [
+      {"day": 1, "control": 0.0055, "candidate": 0.0055},
+      {"day": 2, "control": 0.0003, "candidate": 0.0003}
+    ],
+    "bottom_flux_m_d": [
+      {"day": 1, "control": -0.0, "candidate": -0.0},
+      {"day": 2, "control": -0.0, "candidate": -0.0}
+    ],
+    "storage_m": [
+      {"day": 1, "control": 0.07592862, "candidate": 0.07592862},
+      {"day": 2, "control": 0.076229105, "candidate": 0.076229105}
+    ],
+    "water_balance": [
+      {"day": 1, "control": -0.0, "candidate": -0.0},
+      {"day": 2, "control": -0.0, "candidate": -0.0}
+    ]
+  },
+  "located_normalized_BFO_difference": {
+    "field_interpretation": "soil-temperature profile array following the printed average-temperature scalar",
+    "control_printed_value_C": 4.677283,
+    "candidate_printed_value_C": 4.677284,
+    "printed_difference_C": 0.000001,
+    "note": "This is the first normalized BFO difference. The principal hydraulic arrays listed above remain identical at their printed BFO precision in this short cold case."
+  },
+  "unavailable_outputs": {
+    "hydraulic_conductivity": "not emitted by this BFO configuration",
+    "nonlinear_iteration_counts": "not emitted by this output configuration",
+    "timestep_rejection_counts": "not emitted by this output configuration"
+  },
+  "solver_evidence": "All four runs reached Swap normal completion. No fatal nonlinear/convergence failure was emitted.",
+  "interpretation": "The repair path is demonstrably active in a moderately colder full-model case, but the hydrological response in this short two-day qualification remains below the printed resolution of h, theta, flux and storage outputs. The first visible normalized model-output change is 1e-6 C in the soil-temperature profile."
+}
