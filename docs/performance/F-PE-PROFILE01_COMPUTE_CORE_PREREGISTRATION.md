@@ -422,3 +422,31 @@ After Q01 repair, compilation progressed to `mod_kernel_transactions.f90` and fa
 Repair: add `workspace_full_resets` and `workspace_zeroed_bytes` to `canonical_run_diagnostics_t` and accumulate the corresponding `transaction_result_t` totals in `mod_canonical_interval_runtime`.
 
 These failures are observer-plumbing defects only. Neither attempt reached model execution; neither is evidence about SWAP performance or physics.
+
+
+### Q03 — P01-A runner dependency closure
+
+Result: `FAIL_TEST_RUNNER_DEPENDENCY_DRIFT`.
+
+After observer-plumbing compilation progressed, the existing FKT22 runtime runner failed before model execution because the current serialized backend imports modules that were not present in the runner's explicit source list. The first missing module was `mod_b110_smooth_freatic_projection`; after adding it, the next missing module was `mod_fmr_drainage_qbot_directional_binding`, whose ordering also had to follow the smooth-projection module.
+
+These failures are test-runner source-closure drift caused by the current backend dependency graph. They do not indicate a physics, solver or profiling defect. The bounded repair is limited to completing and ordering the runner compile list.
+
+### H01 static quantitative prediction before runtime observation
+
+For the current P01-A four-node workspace, `reference_workspace_payload_bytes()` accounts for the node-sized real, integer and logical workspace payload touched by a full reset. From the current layout this is approximately 812 bytes per full reset on the GNU runner representation used by the gate.
+
+The source path predicts three full reset calls for each Reference solve:
+
+1. reset inside `initialize_reference_workspace()` called by the legacy binding;
+2. immediate explicit `reset_reference_workspace()` in that binding;
+3. reset inside the second `initialize_reference_workspace()` call in `HeadCalc`.
+
+Because the P01-A external full/half transaction normally evaluates one full trial plus two half trials, the preregistered source-level prediction is:
+
+```text
+predicted workspace resets per requested interval = 9
+predicted reset payload touched at n=4       ~= 7308 bytes
+```
+
+This remains a prediction until the runtime observer passes. A mismatch is evidence to investigate, not a reason to alter the counter or gate after observation.
