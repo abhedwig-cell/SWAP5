@@ -37,7 +37,7 @@ program test_ppa_free_drainage_owner
        vonhhbraden_result_t, evaluate_vonhhbraden_source_window, VONHHBRADEN_AVAILABLE
   use mod_ppa_wu04c_production_forcing_adapter, only: ppa_wu04c_production_forcing_diagnostics_t, &
        materialize_ppa_wu04c_production_forcing, PPA_WU04C_PRODUCTION_FORCING_OK
-  use mod_gash_interception, only: gash_parameters_t
+  use mod_gash_interception, only: gash_parameters_t, evaluate_gash_source_window
   use mod_ppa_wu04d_production_forcing_adapter, only: ppa_wu04d_production_forcing_diagnostics_t, &
        materialize_ppa_wu04d_production_forcing, PPA_WU04D_PRODUCTION_FORCING_OK
   use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
@@ -69,6 +69,8 @@ program test_ppa_free_drainage_owner
   real(real64), parameter :: H0_CM = -75.0_real64
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
+  type(gash_parameters_t),parameter :: WINDOW_GASH = gash_parameters_t( &
+       0.10_real64,0.05_real64,0.10_real64,0.05_real64,0.40_real64)
 
   type(fmr_production_application_config_t) :: config, root_config, gw_config, bad_config, root_bad_config, drainage_bad_config
   type(fmr_production_application_bootstrap_t) :: app, root_app, gw_app, bad_app, root_bad_app, drainage_bad_app
@@ -105,7 +107,8 @@ program test_ppa_free_drainage_owner
   call get_command_argument(1,test_scope)
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
-  if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection') then
+  if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection'.or. &
+       trim(test_scope)=='--gash-windows') then
     config%storage_difference => evaluate_mvg_storage_difference_service
     ! A forcing discontinuity can require smaller first steps, not a larger error budget.
     config%numerical%transaction%max_retries=24
@@ -395,7 +398,8 @@ contains
     call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')
     if(trim(test_scope)=='--stable-receipts') &
          call verify_storage_receipt_restart(production_app,transient_profile,forcing_vector,receipts,interception_by_tile)
-    if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection') &
+    if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection'.or. &
+         trim(test_scope)=='--gash-windows') &
          call verify_changing_windows(production_app,transient_profile)
     call production_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
@@ -644,17 +648,20 @@ contains
     type(vonhhbraden_result_t)::source_result
     real(real64)::start_time,end_time,amount(NTILE),restored_amount(NTILE),previous_flux
     integer::window,tile,code
-    logical::ok
+    logical::ok,marked_window
     parameters%cofab_cm=0.5_real64
     source%leaf_area_index=2.0_real64
     source%vegetation_cover_fraction=0.5_real64
     previous_flux=0.0_real64
     do window=1,3
+      marked_window=window==2.or.(window==1.and.trim(test_scope)=='--gash-windows')
       start_time=T1+real(window-1,real64)*(T1-T0)
       end_time=start_time+(T1-T0)
       source%gross_rain_cm_per_day=0.20_real64-0.04_real64*real(min(window-1,1),real64)
       source%sprinkling_irrigation_cm_per_day=0.10_real64-0.02_real64*real(min(window-1,1),real64)
       call evaluate_vonhhbraden_source_window(parameters,source,0.1_real64,source_result)
+      if(trim(test_scope)=='--gash-windows') call evaluate_gash_source_window(WINDOW_GASH,source, &
+           source_result%source_window_interception_cm_per_day,source_result%status)
       call require(source_result%status==VONHHBRADEN_AVAILABLE,'changing source evaluated')
       call owner%export_committed_restart(9902_int64,before,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'window boundary export')
@@ -682,7 +689,7 @@ contains
              'newly materialized forcing does not retain event marker')
       end if
       previous_flux=forcing(1)%top_flux
-      if(window==2.and.trim(test_scope)=='--stable-windows') then
+      if(marked_window.and.trim(test_scope)/='--window-rejection') then
         forcing%temporal_forcing_event=.true.
         forcing%temporal_forcing_event_time=start_time
         restored_forcing=forcing
@@ -747,7 +754,7 @@ contains
         return
       end if
       call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'changing window commits')
-      if(window==2) then
+      if(marked_window) then
         call require(observed_event_calls>0.and.observed_event_calls<=NTILE*(profile%numerical%transaction%max_retries+1), &
              'event certificate bounded to initial trial retries')
         call require(sum(result%accepted_substeps)>observed_event_calls,'later accepted substeps use normal history')
@@ -758,7 +765,7 @@ contains
       call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
            restored_result,restored_receipt,code)
       call require(code==FMR_APP_BOOT_OK.and.all(restored_result%committed),'restored changing window commits')
-      if(window/=2) call require(observed_event_calls==0,'restored unmarked window never uses event derivative')
+      if(.not.marked_window) call require(observed_event_calls==0,'restored unmarked window never uses event derivative')
       call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE.and. &
            maxval(abs(restored_result%mass%residual))<=HARD_MASS_GATE,'changing window hard mass')
       do tile=1,NTILE
@@ -779,13 +786,14 @@ contains
       call fresh%export_committed_restart(9902_int64,resumed,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'window resumed export')
       call compare_restart_bundles(continued,resumed,'changing window restart equivalence')
-      if(window==2.and.trim(test_scope)=='--stable-windows') &
+      if(window==2.and.trim(test_scope)/='--window-rejection') &
            call verify_event_rollback(profile,before,continued,forcing,amount,start_time,end_time)
       call fresh%close(code)
       call require(code==FMR_APP_BOOT_OK,'window fresh closes')
     end do
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS'
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_EVENT_THEN_UNMARKED=PASS'
+    if(trim(test_scope)=='--gash-windows') write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_WINDOWS=PASS'
   end subroutine
 
   subroutine verify_event_rollback(profile,before,expected,forcing,amount,t_start,t_end)
@@ -1005,6 +1013,7 @@ contains
     type(b110_default_mvg_parameters_t)::hydraulics
     type(b110_dynamic_top_boundary_request_t)::request
     type(ppa_wu04c_production_forcing_diagnostics_t)::diagnostics
+    type(ppa_wu04d_production_forcing_diagnostics_t)::gash_diagnostics
     real(real64)::rate
     geometry%parameter_set_id=profile%tiles(tile)%parameters%parameter_set_id
     geometry%active_nodes=profile%tiles(tile)%parameters%active_nodes
@@ -1021,10 +1030,16 @@ contains
     request%ponding_max_cm=2.0_real64
     request%runoff_resistance_day=1.0_real64
     request%runoff_exponent=1.0_real64
-    call materialize_ppa_wu04c_production_forcing(profile%tiles(tile)%base_forcing,request,geometry,hydraulics, &
+    if(trim(test_scope)=='--gash-windows') then
+      call materialize_ppa_wu04d_production_forcing(profile%tiles(tile)%base_forcing,request,geometry,hydraulics, &
+           WINDOW_GASH,source,source%gross_rain_cm_per_day,source%sprinkling_irrigation_cm_per_day,forcing,rate,gash_diagnostics)
+      call require(gash_diagnostics%status==PPA_WU04D_PRODUCTION_FORCING_OK,'Gash committed-top forcing composition')
+    else
+      call materialize_ppa_wu04c_production_forcing(profile%tiles(tile)%base_forcing,request,geometry,hydraulics, &
          source,source_result%source_window_interception_cm_per_day,source%gross_rain_cm_per_day, &
          source%sprinkling_irrigation_cm_per_day,forcing,rate,diagnostics)
-    call require(diagnostics%status==PPA_WU04C_PRODUCTION_FORCING_OK,'committed-top forcing composition')
+      call require(diagnostics%status==PPA_WU04C_PRODUCTION_FORCING_OK,'committed-top forcing composition')
+    end if
     amount_cm=rate*(T1-T0)
     call require(abs(amount_cm-source_result%source_window_interception_cm_per_day*(T1-T0))<1.0e-15_real64, &
          'whole source interval amount cm')
