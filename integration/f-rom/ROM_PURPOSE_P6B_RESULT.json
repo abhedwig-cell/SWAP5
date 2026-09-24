@@ -1,0 +1,95 @@
+{
+  "decision": "INTERVAL_BALANCE_OPERATOR_CONFIRMED",
+  "implication": "Published prescribed-head bottom exchange is an interval state-transition observable requiring start/end storage and interval external fluxes; terminal local boundary shape is not by itself the published exchange operator.",
+  "materials": {
+    "B01": {
+      "by_history": {
+        "G21": {
+          "count": 5631,
+          "max_abs_exchange_error_cm": 8.673617379884035e-19,
+          "rmse_exchange_cm": 1.8314543702923696e-20,
+          "rmse_flux_cm_per_day": 4.5418554300994185e-13,
+          "sign_mismatch_count": 0
+        },
+        "G22": {
+          "count": 5631,
+          "max_abs_exchange_error_cm": 8.673617379884035e-19,
+          "rmse_exchange_cm": 3.1772017064150395e-20,
+          "rmse_flux_cm_per_day": 5.687954526806692e-13,
+          "sign_mismatch_count": 0
+        },
+        "G23": {
+          "count": 6655,
+          "max_abs_exchange_error_cm": 8.673617379884035e-19,
+          "rmse_exchange_cm": 6.776963907155246e-20,
+          "rmse_flux_cm_per_day": 1.292234561774635e-12,
+          "sign_mismatch_count": 0
+        },
+        "G24": {
+          "count": 6655,
+          "max_abs_exchange_error_cm": 4.336808689942018e-19,
+          "rmse_exchange_cm": 8.011020686918307e-20,
+          "rmse_flux_cm_per_day": 2.1200365976379668e-12,
+          "sign_mismatch_count": 0
+        }
+      },
+      "count": 24572,
+      "max_abs_exchange_error_cm": 8.673617379884035e-19,
+      "max_abs_flux_error_cm_per_day": 2.971489720948739e-11,
+      "oracle_pass": true,
+      "rmse_exchange_cm": 5.736035446817312e-20,
+      "rmse_flux_cm_per_day": 1.3382699275708487e-12,
+      "sign_mismatch_count": 0
+    },
+    "B14": {
+      "by_history": {
+        "G21": {
+          "count": 5631,
+          "max_abs_exchange_error_cm": 5.421010862427522e-20,
+          "rmse_exchange_cm": 1.5264783404558472e-21,
+          "rmse_flux_cm_per_day": 3.3658111447799055e-14,
+          "sign_mismatch_count": 0
+        },
+        "G22": {
+          "count": 5631,
+          "max_abs_exchange_error_cm": 2.710505431213761e-20,
+          "rmse_exchange_cm": 1.6355951794510216e-21,
+          "rmse_flux_cm_per_day": 3.885767910367732e-14,
+          "sign_mismatch_count": 0
+        },
+        "G23": {
+          "count": 6655,
+          "max_abs_exchange_error_cm": 5.421010862427522e-20,
+          "rmse_exchange_cm": 1.9020373939026176e-21,
+          "rmse_flux_cm_per_day": 4.923482384093672e-14,
+          "sign_mismatch_count": 0
+        },
+        "G24": {
+          "count": 6655,
+          "max_abs_exchange_error_cm": 5.421010862427522e-20,
+          "rmse_exchange_cm": 1.7863082539473285e-21,
+          "rmse_flux_cm_per_day": 3.74482666381831e-14,
+          "sign_mismatch_count": 0
+        }
+      },
+      "count": 24572,
+      "max_abs_exchange_error_cm": 5.421010862427522e-20,
+      "max_abs_flux_error_cm_per_day": 2.446043367854145e-12,
+      "oracle_pass": true,
+      "rmse_exchange_cm": 1.7294691078516525e-21,
+      "rmse_flux_cm_per_day": 4.052123529639583e-14,
+      "sign_mismatch_count": 0
+    }
+  },
+  "oracle_gate_pass": true,
+  "schema": "swap5.rom-purpose.p6b.interval-balance-boundary-result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "candidate_screen_adjudicated": false,
+    "production_rom_authorized": false,
+    "simulations_rerun": false
+  },
+  "status": "P6B_COMPLETE",
+  "work_unit": "ROM-PURPOSE-P6B-INTERVAL-BALANCE-BOUNDARY-OPERATOR",
+  "workstream": "ROM-PURPOSE"
+}
