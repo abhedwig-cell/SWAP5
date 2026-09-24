@@ -62,7 +62,10 @@ def parse(path):
     return hist
 
 def qface(k,h,hbot,delta):
-    return -float(k)*((float(h)-float(hbot))/float(delta)+1.0)
+    # The Reference trace field BOTTOM_FLUX is terminal_bottom_outward_flux_native,
+    # which the serialized backend defines as -solve_result%bottom_flux.
+    # headcalc's native qbot for SWBOTB=5 is -K*g, so the outward trace is +K*g.
+    return float(k)*((float(h)-float(hbot))/float(delta)+1.0)
 
 def estimates(material,hist):
     out={x:{h:{} for h in HISTORIES} for x in ("BASE16","SPLIT17","HM17","FINE_ORACLE")}
