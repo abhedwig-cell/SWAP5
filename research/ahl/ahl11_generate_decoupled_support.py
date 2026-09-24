@@ -20,7 +20,26 @@ def x(h): return math.log10(-h)
 def hfrom(v): return -(10.0**v)
 
 def logk(h,p):
-    return math.log(dc.base.evaluate_core(h,p)[2])
+    """Stable log of the authoritative unimodal B1.10/Mualem K relation.
+
+    Compute Se directly from h rather than reconstructing it from theta, and
+    use log1p/expm1 for the small Mualem bracket. This avoids cancellation in
+    the very dry tail without changing the constitutive equation.
+    """
+    tr,ts,alpha,n,ksat,lam=p
+    del tr,ts
+    m=1.0-1.0/n
+    ah=abs(alpha*h)
+    log_one_plus=math.log1p(ah**n)
+    log_se=-m*log_one_plus
+    # u = Se**(1/m) = 1/(1 + |alpha h|**n)
+    u=math.exp(-log_one_plus)
+    # bracket = 1 - (1-u)**m, evaluated stably for u << 1.
+    log_inner=math.log1p(-u)
+    bracket=-math.expm1(m*log_inner)
+    if bracket<=0.0:
+        raise RuntimeError("non-positive stable Mualem bracket")
+    return math.log(ksat)+lam*log_se+2.0*math.log(bracket)
 
 def kerr(h0,h1,p):
     x0,x1=x(h0),x(h1); y0,y1=logk(h0,p),logk(h1,p)
