@@ -1,0 +1,22 @@
+{
+  "schema":"swap5.research_preregistration.v1",
+  "workunit":"TAB-SPEED-ACCURACY-P3B",
+  "date":"2026-09-24",
+  "branch":"research/tab-speed-accuracy",
+  "question":"Can deterministic constitutive-error refinement place 25-40 rows more effectively than both the rejected endpoint transform and naive log spacing?",
+  "algorithm":{
+    "dense_authority_points":2049,
+    "coordinate":"uniform in log10(-h) over the existing generation interval per node",
+    "initial_support":"dry endpoint, wet K-branch endpoint and saturated endpoint handling unchanged",
+    "score":"max of normalized absolute theta interpolation error and normalized absolute log(K) interpolation error on dense analytical samples",
+    "normalization":"theta error divided by theta_s-theta_r; logK error divided by max(1, abs(log(Ksat)-log(Kdry)))",
+    "refinement":"insert the dense sample with largest score, deterministic lowest-index tie break, until requested support count",
+    "candidate_rows":[25,32,40],
+    "interpolation_for_selection":"piecewise linear only for support selection; final provider remains existing TSPACK",
+    "case_calibration":false
+  },
+  "fixed":["analytical MvG authority","final TSPACK interpolation","wet continuation","KSATEXM extension semantics","solver/timestep/retry/tolerance policy"],
+  "comparison":["prior L25/L50/L100","rejected P3A C25/C32/C40"],
+  "decision":"Promote only if a sparse candidate materially reduces fidelity error at comparable runtime. Do not tune weights after observing candidate outcomes.",
+  "production_effect":"NONE"
+}
