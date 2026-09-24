@@ -1,0 +1,31 @@
+name: F-PDI-VT04A variable diagnostics
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'research/pdi_vt/run_f_pdi_vt04a_diagnostics.sh'
+      - 'integration/f-pdi-vt/F-PDI-VT04A_PREREGISTRATION.json'
+      - '.github/workflows/f-pdi-vt04a-diagnostics.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/pdi_vt/run_f_pdi_vt04a_diagnostics.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-pdi-vt04a-${{ github.run_id }}
+          path: |
+            /tmp/f_pdi_vt04a_base.json
+            /tmp/f_pdi_vt04a_bfo.sha256
+            /tmp/control-vap.bfo
+            /tmp/candidate-vap.bfo
+            /tmp/control-novap.bfo
+            /tmp/candidate-novap.bfo
+            /tmp/control_vap.log
+            /tmp/candidate_vap.log
+            /tmp/control_novap.log
+            /tmp/candidate_novap.log
