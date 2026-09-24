@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.research_preregistration.v1",
+  "workunit": "TAB-SPEED-ACCURACY-P3",
+  "date": "2026-09-24",
+  "branch": "research/tab-speed-accuracy",
+  "question": "Can purpose-aware pressure-head node placement recover 50-100 row fidelity with only 25-40 generated table rows, without changing interpolation, solver policy or physical semantics?",
+  "motivation": "P1 showed a sharp fidelity loss between 50 and 25 rows while 50 rows remained highly accurate, suggesting placement rather than row count alone limits the sparse representation.",
+  "hypotheses": {
+    "H3a": "Redistributing sparse rows toward high-curvature constitutive regions reduces Richards error at fixed row count.",
+    "H3b": "A 25-40 row purpose-aware grid can approach the fidelity of the naive 50-100 row log grid.",
+    "H3c": "Purpose-aware placement retains the runtime advantage of sparse tables."
+  },
+  "candidates": [
+    {"id":"L50","rows":50,"placement":"existing log-head baseline"},
+    {"id":"L25","rows":25,"placement":"existing log-head lower-bound baseline"},
+    {"id":"C25","rows":25,"placement":"curvature-weighted"},
+    {"id":"C32","rows":32,"placement":"curvature-weighted"},
+    {"id":"C40","rows":40,"placement":"curvature-weighted"}
+  ],
+  "placement_rule": {
+    "authority_sampling": "dense analytical default-MvG sampling over the same dry-to-kbranch head domain",
+    "importance": "combined normalized curvature/variation score from theta and log(K), with endpoint preservation",
+    "selection": "deterministic cumulative-importance quantiles",
+    "no_dynamic_adaptation": true,
+    "no_case_calibration": "weights and algorithm are fixed before candidate results are inspected"
+  },
+  "fixed": [
+    "same analytical authority",
+    "same theta and log(K) ordinates",
+    "same TSPACK preprocessing/interpolation",
+    "same wet continuation and saturation handling",
+    "same bounded F-SI39 KSATEXM semantics",
+    "same solver/timestep/retry/tolerance policy"
+  ],
+  "primary_metrics": ["Richards head max abs","Richards theta max abs","mass residual difference","iterations","retries","serialized runtime"],
+  "decision": "Compare C25/C32/C40 with L25/L50 and prior L100. Identify Pareto-nondominated candidates without selecting a winner in advance.",
+  "production_effect": "NONE"
+}
