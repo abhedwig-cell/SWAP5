@@ -10,7 +10,7 @@ program f_pdi_vt03_harness
   temps=(/-20d0,-5d0,0d0,5d0,20d0,35d0,50d0/)
   heads=(/-1d3,-1d5,-1d7/)
   layer=1;iHWCKmodel(1)=8;BiModal(1)=.false.;NoVap(1)=.false.;cofgen=0d0
-  cofgen(1,1)=0.05d0;cofgen(2,1)=0.45d0;cofgen(3,1)=50d0;cofgen(4,1)=0.02d0
+  cofgen(1,1)=0.05d0;cofgen(2,1)=0.45d0;cofgen(3,1)=0.0d0;cofgen(4,1)=0.02d0
   cofgen(5,1)=0.5d0;cofgen(6,1)=1.6d0;cofgen(7,1)=1d0-1d0/cofgen(6,1)
   cofgen(18,1)=1d7;cofgen(19,1)=1d4;cofgen(20,1)=-1.5d0;cofgen(21,1)=0.01d0
   mgr=0.018015d0*9.81d0/8.314d0;pass=.true.
