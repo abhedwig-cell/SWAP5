@@ -91,6 +91,9 @@ program test_ppa_free_drainage_owner
   character(len=32) :: test_scope
   integer :: observed_event_calls=0
   logical :: is_gash=.false.
+  logical :: capture_low_rain=.false.
+  type(soil_water_solve_request_t) :: low_rain_request
+  type(soil_water_temporal_indicator_request_t) :: low_rain_history
 
   call initialize_application_config(config)
   config%free_drainage_indicator => traced_indicator
@@ -184,7 +187,61 @@ contains
     type(soil_water_temporal_indicator_result_t), intent(out) :: certificate
     if(history%forcing_event_at_start) observed_event_calls=observed_event_calls+1
     call evaluate_free_drainage_temporal_indicator(request,solution,history,certificate)
+    if(capture_low_rain) then
+      ! Copy owned values only; borrowed callback pointers must not escape.
+      low_rain_request%base_state=request%base_state
+      low_rain_request%boundary=request%boundary
+      low_rain_request%numerical=request%numerical
+      low_rain_request%physical=request%physical
+      low_rain_request%step_duration=request%step_duration
+      low_rain_history=history
+    end if
     write(*,*) 'OWNER_CERT',request%step_duration,trim(certificate%route),certificate%head_inf_bound
+  end subroutine
+  subroutine diagnose_low_rain_boundary(p,forcing)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing
+    type(soil_water_parameter_set_t),target::geometry
+    type(b110_default_mvg_parameters_t),target::hydraulics
+    type(b110_default_mvg_provider_t),target::provider
+    type(b110_source_sink_provider_t),target::sink
+    type(fixed_flux_top_boundary_provider_t),target::top_provider
+    type(reference_richards_legacy_solver_t)::solver
+    type(reference_richards_legacy_workspace_t)::workspace
+    type(soil_water_solve_request_t)::request
+    type(soil_water_solve_result_t)::solution
+    type(soil_water_temporal_indicator_result_t)::certificate
+    real(real64)::dt,ledger
+    integer::level
+    geometry%parameter_set_id=p%parameter_set_id
+    geometry%active_nodes=p%active_nodes
+    geometry%z=p%z; geometry%dz=p%dz; geometry%node_distance=p%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics,p%cofgen)
+    call bind_b110_source_sink_provider(sink,forcing%drainage_flux_by_level, &
+         forcing%subsurface_irrigation_source,forcing%root_extraction_sink)
+    request=low_rain_request
+    request%parameters=>geometry
+    request%evaluation%constitutive=>provider
+    request%evaluation%source_sink=>sink
+    request%evaluation%top_boundary=>top_provider
+    request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
+    call require(.not.low_rain_history%forcing_event_at_start,'low-rain diagnostic is beyond initial event')
+    do level=0,9
+      dt=low_rain_request%step_duration/2.0_real64**level
+      request%step_duration=dt
+      call bind_b110_default_mvg_provider(provider,hydraulics,dt)
+      call solver%solve(request,workspace,solution)
+      write(*,'(a,i0,a,es23.15,a,i0,a,es23.15,a,l1,a,l1)') 'LOW_RAIN_SOLVE level=',level, &
+           ':dt=',dt,':status=',solution%status,':residual=',maxval(abs(workspace%richards%residual)), &
+           ':balance=',any(workspace%richards%nonconverged_balance),':head=',any(workspace%richards%nonconverged_head)
+      if(solution%status/=SW_SOLVE_CONVERGED) cycle
+      call evaluate_free_drainage_temporal_indicator(request,solution,low_rain_history,certificate)
+      ledger=sum((solution%candidate_state%water_content-request%base_state%water_content)*p%dz)+ &
+           dt*(solution%top_flux-solution%bottom_flux+sum(forcing%drainage_flux_by_level)+ &
+           sum(forcing%root_extraction_sink)-sum(forcing%subsurface_irrigation_source))
+      write(*,'(a,i0,a,l1,2(a,es23.15))') 'LOW_RAIN_CERT level=',level,':available=',certificate%available, &
+           ':bound=',certificate%head_inf_bound,':mass=',ledger
+    end do
   end subroutine
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
@@ -766,13 +823,16 @@ contains
         end select
       end if
       observed_event_calls=0
+      capture_low_rain=window==4.and.trim(test_scope)=='--gash-branch-rejection'
       call owner%run_standalone_with_forcing_receipts(start_time,end_time,forcing,result,receipt,code)
+      capture_low_rain=.false.
       write(*,*) 'CHANGING_WINDOW_DIAG',window,code,result%kernel_status,result%accepted_substeps
       if((window==2.and.trim(test_scope)=='--window-rejection').or. &
            (window==4.and.trim(test_scope)=='--gash-branch-rejection')) then
         call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed),'forcing jump reproduces rejection')
         if(window==2) call require(all(result%accepted_substeps==0),'unmarked jump no internal accepts')
         if(window==4) call require(all(result%accepted_substeps==7),'Gash branch failure after seven internal accepts')
+        if(window==4) call diagnose_low_rain_boundary(profile%tiles(NTILE)%parameters,forcing(NTILE))
         call owner%export_committed_restart(9902_int64,continued,ok,code)
         call require(ok.and.code==FMR_APP_BOOT_OK,'rejected window remains exportable')
         call compare_restart_bundles(before,continued,'forcing jump rollback')
