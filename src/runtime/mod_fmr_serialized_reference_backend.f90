@@ -1561,6 +1561,8 @@ contains
         if (.not. forcing%legacy_swbotb2_control%ready()) return
         if (.not. allocated(self%legacy_swbotb2_control)) allocate(self%legacy_swbotb2_control)
         self%legacy_swbotb2_control = forcing%legacy_swbotb2_control
+      else if (allocated(self%legacy_swbotb2_control)) then
+        deallocate(self%legacy_swbotb2_control)
       end if
       if (self%snow_active) then
         if (.not. self%snow_event_prepared .or. .not. allocated(forcing%snow)) return
@@ -1575,8 +1577,6 @@ contains
         self%soil_temperature_forcing = forcing%soil_temperature
       else
         if (allocated(forcing%soil_temperature)) return
-      else if (allocated(self%legacy_swbotb2_control)) then
-        deallocate(self%legacy_swbotb2_control)
       end if
 
       self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
