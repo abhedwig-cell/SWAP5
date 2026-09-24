@@ -18,15 +18,15 @@ contains
     type(model3_parameters_t),intent(in)::p
     provider%p=p
   end subroutine
-  subroutine eval_analytical(self,h,theta,k,c,dkdh)
+  subroutine eval_analytical(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(model3_analytical_provider_t),intent(in)::self
-    real(real64),intent(in)::h(:)
-    real(real64),intent(out)::theta(:),k(:),c(:),dkdh(:)
+    real(real64),intent(in)::pressure_head(:)
+    real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
     integer::i
-    do i=1,size(h)
-      call eval_one(self%p,h(i),theta(i),k(i),c(i))
+    do i=1,size(pressure_head)
+      call eval_one(self%p,pressure_head(i),water_content(i),conductivity(i),capacity(i))
     end do
-    dkdh=0.0_real64
+    dconductivity_dhead=0.0_real64
   end subroutine
   pure subroutine eval_one(p,h,theta,k,c)
     type(model3_parameters_t),intent(in)::p
