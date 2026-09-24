@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL22",
+  "title": "Solver-facing fallback indicator diagnosis",
+  "parent": "F-AHL21E",
+  "phase": "DIAGNOSTIC_NOT_QUALIFICATION",
+  "motivation": "Exact retention/capacity restores the O05-dry prescribed-qbot nonlinear path while exact K does not. A bounded fallback is attractive only if its trigger can be based on solver-relevant quantities rather than material identity.",
+  "question": "Do accepted-state constitutive and Jacobian-scaled diagnostics expose a material-independent signal associated with the known retention-sensitive nonlinear-path failures?",
+  "known_evidence_set": [
+    "F-AHL21C 12-case qbot matrix at factor 0.99 and dt=0.0625 day: 11 pass, O05-dry path failure",
+    "F-AHL12 B01-wet qbot=1e-6 cm/day and dt=0.01 day: endpoint fidelity pass but nonlinear path failure"
+  ],
+  "diagnostics": [
+    "accepted-state absolute log-capacity error",
+    "accepted-state theta-span-normalized error",
+    "storage-Jacobian perturbation |Delta C|*dz/dt",
+    "storage-Jacobian relative perturbation |Delta C|/|C_ref|",
+    "lookup support interval width in log10(-h)",
+    "boundary flux magnitude normalized by authoritative K(initial)"
+  ],
+  "rules": [
+    "No threshold selected in F-AHL22 is a qualification result because known failure labels are already available.",
+    "No material identifier may be used as a trigger variable.",
+    "No solver outcome or iteration count may be used as a runtime trigger variable.",
+    "Any candidate trigger emerging from this diagnosis must be frozen before testing new cases in F-AHL23."
+  ],
+  "hard_exclusions": [
+    "NO_POSTHOC_QUALIFICATION_CLAIM",
+    "NO_MATERIAL_HARDCODE",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
