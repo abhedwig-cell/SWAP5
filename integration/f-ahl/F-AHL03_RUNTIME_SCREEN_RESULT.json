@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL03",
+  "phase": "CI_RUNTIME_SCREEN_COMPLETE",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "branch_head": "a8ce3f7aaa47eaf76da7e58bc91656549cd94af8",
+  "workflow_run": 36036859381,
+  "workflow_job": 107758992014,
+  "workflow_conclusion": "success",
+  "compiler": "gfortran -O3",
+  "timed_costs_include": [
+    "head to log10(-h) transform",
+    "binary interval search on nonuniform adaptive knots",
+    "linear interpolation",
+    "exp reconstruction for log(C) and log(K)",
+    "logistic Se reconstruction for the logit candidate"
+  ],
+  "timed_costs_exclude": [
+    "one-time adaptive table construction",
+    "file I/O and table loading"
+  ],
+  "seconds_per_evaluation": {
+    "B01": {
+      "analytical": 1.0536527634e-7,
+      "direct_theta": 7.1516036987e-8,
+      "logit_se": 7.0728302002e-8,
+      "direct_theta_reduction_fraction": 0.3212561152,
+      "logit_se_reduction_fraction": 0.3287323447
+    },
+    "B12": {
+      "analytical": 1.0773181915e-7,
+      "direct_theta": 6.7312717438e-8,
+      "logit_se": 7.1436882019e-8,
+      "direct_theta_reduction_fraction": 0.3751825787,
+      "logit_se_reduction_fraction": 0.3369008100
+    },
+    "O05": {
+      "analytical": 9.9485397339e-8,
+      "direct_theta": 7.1758270264e-8,
+      "logit_se": 6.7861080170e-8,
+      "direct_theta_reduction_fraction": 0.2787054967,
+      "logit_se_reduction_fraction": 0.3178789854
+    },
+    "O14": {
+      "analytical": 1.0209178925e-7,
+      "direct_theta": 7.3168754578e-8,
+      "logit_se": 7.1670532227e-8,
+      "direct_theta_reduction_fraction": 0.2833042195,
+      "logit_se_reduction_fraction": 0.2979794678
+    }
+  },
+  "finding": "Both adaptive lookup forms are faster than the direct analytical smooth-core evaluator for all four tested materials in this optimized-Fortran microbenchmark.",
+  "secondary_finding": "The lower-support logit(Se) representation is not uniformly the fastest representation; B12 favors direct-theta lookup. Support count and runtime cost must therefore remain separate selection criteria.",
+  "nonclaims": [
+    "This is not an end-to-end Richards speedup.",
+    "This does not include one-time build cost.",
+    "This does not qualify branch handling outside h <= Hcrit.",
+    "This does not admit any production implementation."
+  ],
+  "next_gate": "F-AHL04 end-to-end research-provider replay against the analytical Richards provider, with build cost, solver iterations, accepted trajectories, mass balance and total runtime measured together."
+}
