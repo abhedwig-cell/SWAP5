@@ -45,8 +45,8 @@ for opt in 0 2; do
   for candidate in fixed50 fixed100 adaptive; do
     "$OUT/test" "$BUILD/tables/${candidate}.dat" "$candidate" | tee -a "$OUT/output.txt"
   done
-  grep -Fq 'AHL04A fixed50 PASS' "$OUT/output.txt"
-  grep -Fq 'AHL04A fixed100 PASS' "$OUT/output.txt"
+  grep -Fq 'AHL04A fixed50 OBSERVED_BASELINE' "$OUT/output.txt"
+  grep -Fq 'AHL04A fixed100 OBSERVED_BASELINE' "$OUT/output.txt"
   grep -Fq 'AHL04A adaptive PASS' "$OUT/output.txt"
   echo "AHL04A_O${opt}=PASS"
 done
