@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10C",
+  "phase": "VERY_DRY_CONDUCTIVITY_ARITHMETIC_RECONCILED",
+  "status": "PASS",
+  "workflow_run": 36045519641,
+  "workflow_job": 107787984478,
+  "finding": "The O05 tight-K refinement floor is caused by floating-point cancellation in the standard evaluation of 1-(1-u)^m at very small u, not by unresolved constitutive curvature.",
+  "stable_expression": "-expm1(m*log1p(-u))",
+  "agreement": {
+    "B01_max_relative_difference_over_sampled_domain": 7.302846085019605e-9,
+    "B12_max_relative_difference_over_sampled_domain": 2.813565775122565e-11,
+    "O05_relative_difference_at_h_minus_1e4_cm": 1.4980227341063615e-9,
+    "O05_relative_difference_at_h_minus_5e5_cm": 2.0087526848465453e-4,
+    "O05_relative_difference_at_h_minus_1e6_cm": 1.4313384900058658e-3
+  },
+  "interpretation": "The stable expression is algebraically equivalent and removes a dry-end floating-point cancellation floor that prevented an error-controlled table builder from converging. The production B1.10 provider is unchanged.",
+  "decision": "ALLOW_STABLE_EXPRESSION_AS_RESEARCH_TABLE_CONSTRUCTION_ORACLE",
+  "hard_boundary": "NO_CHANGE_TO_B110_PRODUCTION_PROVIDER"
+}
