@@ -1,0 +1,31 @@
+name: F-AHL05 split runtime screen
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl05_split_runtime_screen.f90'
+      - 'integration/f-ahl/F-AHL05_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl05-split-runtime-screen.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build tables and benchmark split representation
+        run: |
+          mkdir -p /tmp/ahl05
+          python3 research/ahl/ahl03_generate_tables.py /tmp/ahl05
+          gfortran -O3 -std=f2008 -Wall -Wextra -pedantic             research/ahl/ahl05_split_runtime_screen.f90 -o /tmp/ahl05_bench
+          : > /tmp/ahl05_result.txt
+          for m in B01 B12 O05 O14; do
+            /tmp/ahl05_bench /tmp/ahl05/${m}_direct.dat /tmp/ahl05/${m}_logit.dat ${m}               | tee -a /tmp/ahl05_result.txt
+          done
+      - name: Preserve benchmark
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl05-${{ github.run_id }}
+          path: /tmp/ahl05_result.txt
