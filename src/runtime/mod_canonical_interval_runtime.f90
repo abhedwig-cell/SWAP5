@@ -257,6 +257,8 @@ contains
     result%diagnostics%backtracking_attempts = result%diagnostics%backtracking_attempts + tx%backtracking_attempts
     result%diagnostics%alternative_solver_calls = result%diagnostics%alternative_solver_calls + &
          tx%alternative_solver_calls
+    result%diagnostics%workspace_full_resets = result%diagnostics%workspace_full_resets + tx%workspace_full_resets
+    result%diagnostics%workspace_zeroed_bytes = result%diagnostics%workspace_zeroed_bytes + tx%workspace_zeroed_bytes
     if (ieee_is_finite(tx%temporal_indicator) .and. tx%temporal_indicator >= 0.0_real64) then
       result%diagnostics%max_temporal_indicator = max(result%diagnostics%max_temporal_indicator, &
            tx%temporal_indicator)
