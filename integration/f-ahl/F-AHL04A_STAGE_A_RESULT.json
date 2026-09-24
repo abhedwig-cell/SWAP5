@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04A",
+  "phase": "STAGE_A_COMPLETE",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "workflow_run": 36039788025,
+  "workflow_job": 107768802899,
+  "workflow_result": "SUCCESS",
+  "fixture": "FSI24-derived nonlinear Reference Richards replay",
+  "optimization_levels": ["O0","O2"],
+  "lookup_architecture": {
+    "lookup_domain": "h <= -1 cm",
+    "exact_analytic_domain": "h > -1 cm",
+    "runtime_refinement": false,
+    "adaptive_support_points": 178
+  },
+  "analytical_diagnostics": {
+    "nonlinear_iterations": 4,
+    "backtracking_attempts": 4
+  },
+  "fixed50": {
+    "status": "OBSERVED_BASELINE",
+    "max_abs_pressure_head_delta_cm": 0.005165382,
+    "max_abs_water_content_delta": 0.00003072351,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 0.0001693745,
+    "mass_residual_cm": 1.353084e-16,
+    "nonlinear_iterations": 6,
+    "backtracking_attempts": 6
+  },
+  "fixed100": {
+    "status": "OBSERVED_BASELINE",
+    "max_abs_pressure_head_delta_cm": 0.002170221,
+    "max_abs_water_content_delta": 0.00002148240,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 0.0002042812,
+    "mass_residual_cm": 1.379105e-16,
+    "nonlinear_iterations": 5,
+    "backtracking_attempts": 5
+  },
+  "adaptive": {
+    "status": "PASS",
+    "max_abs_pressure_head_delta_cm": 0.0003415032,
+    "max_abs_water_content_delta": 0.000003215794,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 0.00002951951,
+    "mass_residual_cm": 3.452100e-16,
+    "nonlinear_iterations": 5,
+    "backtracking_attempts": 5,
+    "preregistered_gates": {
+      "pressure_head_delta_cm_max": 0.05,
+      "water_content_delta_max": 1e-5,
+      "boundary_flux_delta_cm_per_day_max": 1e-4,
+      "nonlinear_iteration_delta_max": 1,
+      "mass_residual_cm_max": 1e-12
+    }
+  },
+  "interpretation": [
+    "The adaptive hybrid constitutive representation passes all preregistered Stage-A solver-response gates.",
+    "The result is reproduced at O0 and O2.",
+    "In this fixture the adaptive representation is materially closer to the analytical Richards result than both fixed-50 and fixed-100 baselines for head, water content and bottom flux.",
+    "The adaptive candidate changes the nonlinear path slightly: five iterations/backtracks versus four for analytical.",
+    "This is fidelity evidence, not yet an end-to-end speedup claim, because the Stage-A research provider deliberately still evaluates the analytical provider before overwriting lookup-domain values."
+  ],
+  "next_gate": "F-AHL04B fast-provider implementation and timing: remove redundant analytical evaluation inside the lookup domain, account for build cost, and compare total Richards CPU plus diagnostics against analytical, fixed-50 and fixed-100 across a broader material/case set."
+}
