@@ -15,7 +15,7 @@
     "F-PDI-VT06A": "negative result: 5 C cold full-model case finite but no observable Vapor-on control/candidate difference"
   },
   "pending": {
-    "F-PDI-VT06B": "moderately colder full-model gate queued/running in GitHub Actions"
+    "F-PDI-VT06B": "moderately colder full-model gate queued in GitHub Actions; latest rerun 36062174687 at d29000a0424caea24739f0c6ceca3cadbca28b1c"
   },
   "confirmed_bug": {
     "location": "PDI Kvap_func saturated-vapor-density temperature handling",
@@ -32,5 +32,12 @@
   },
   "external_blocker": "GitHub contains replay-verified historical identities and ordered patch authority but not exact canonical B0/B1.11 source bytes from which the repaired B1.11 target postimage and repaired full source-manifest SHA256 can be derived. The legacy-capable upstream host is not byte-identical and is forbidden as a substitute.",
   "production_status": "NOT_ADMITTED",
-  "F_AHL_reopened": false
+  "F_AHL_reopened": false,
+  "execution_blocker": {
+    "classification": "EXTERNAL_CI_QUEUE",
+    "workflow_run": 36062174687,
+    "head_sha": "d29000a0424caea24739f0c6ceca3cadbca28b1c",
+    "state": "queued",
+    "note": "No further scientific or testcase change is justified while the identical preregistered rerun is waiting for a GitHub Actions runner."
+  }
 }
