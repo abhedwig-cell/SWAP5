@@ -42,7 +42,13 @@ RESULT="${1:-/tmp/ahl10b_result.txt}"
 for variant in k3 k1 k03 k01; do
   echo "AHL10B_VARIANT $variant" | tee -a "$RESULT"
   fail=0
+  build_fail=0
   for material in B01 B12 O05 O14; do
+    if [[ ! -s "$BUILD/tables/$variant/${material}_dc.dat" ]]; then
+      echo "AHL10B_BUILD_STATUS $variant $material FAIL" | tee -a "$RESULT"
+      build_fail=1
+      continue
+    fi
     for spec in "wet -10 -7.5" "mid -75 -50" "dry -500 -400"; do
       read -r regime h0 hbot <<< "$spec"
       set +e
@@ -57,7 +63,9 @@ for variant in k3 k1 k03 k01; do
       fi
     done
   done
-  if [[ "$fail" -eq 0 ]]; then
+  if [[ "$build_fail" -ne 0 ]]; then
+    echo "AHL10B_VARIANT_STATUS $variant BUILD_FAIL" | tee -a "$RESULT"
+  elif [[ "$fail" -eq 0 ]]; then
     echo "AHL10B_VARIANT_STATUS $variant PASS_12_OF_12" | tee -a "$RESULT"
   else
     echo "AHL10B_VARIANT_STATUS $variant FAIL" | tee -a "$RESULT"
