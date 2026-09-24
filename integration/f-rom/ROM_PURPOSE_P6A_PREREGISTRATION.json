@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.rom-purpose.p6a.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P6A-LAGGED-BOUNDARY-OPERATOR-ORACLE",
+  "date": "2026-09-24",
+  "phase": "PREREGISTERED_BEFORE_ANY_P6A_RESPONSE",
+  "central_question": "Does the exact SWBOTB=5 bottom-outward flux for SWKIMPL=0 equal K evaluated from the committed pre-step bottom head times the accepted end-step boundary gradient, demonstrating that lagged boundary conductivity is part of the numerical operator state?",
+  "authority": {
+    "p5c_sign_repair": "integration/f-rom/ROM_PURPOSE_P5C_ORACLE_SIGN_SEMANTICS_REPAIR.json",
+    "p5c_corrected_result": "integration/f-rom/ROM_PURPOSE_P5C_RESULT.json",
+    "backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "workload": {
+    "histories": [
+      "G21",
+      "G22",
+      "G23",
+      "G24"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "route": "R512_T8",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "scored_domain": "bottom_mode=5 transactions only"
+  },
+  "oracle": {
+    "pre_state": "committed bottom pressure head immediately before each transaction",
+    "post_state": "accepted bottom pressure head immediately after transaction",
+    "face_distance_cm": 0.15625,
+    "lagged_conductivity": "K(pre_bottom_head)",
+    "outward_flux_formula": "K(pre_bottom_head) * ((post_bottom_head-hbot)/0.15625 + 1)",
+    "target": "terminal_bottom_outward_flux_native",
+    "rmse_gate_cm_per_day": 1e-10,
+    "max_abs_gate_cm_per_day": 1e-8,
+    "sign_mismatch_gate": 0
+  },
+  "hypotheses": {
+    "H1": "Lagged-conductivity oracle passes both materials to serialization/roundoff scale.",
+    "H2": "Current-state conductivity oracle remains measurably worse than lagged-conductivity oracle.",
+    "H3": "O0 and O2 traces remain byte-identical."
+  },
+  "downstream_rule": "Only a passing lagged-conductivity oracle may authorize a separately preregistered reduced memory-carrier screen.",
+  "prohibited": [
+    "change SWKIMPL",
+    "change tolerances",
+    "change solver physics",
+    "change histories",
+    "use post-step K as the lagged oracle",
+    "claim reduced-state sufficiency from P6A"
+  ],
+  "scientific_firewall": {
+    "p4_reopened": false,
+    "p5_reopened": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
