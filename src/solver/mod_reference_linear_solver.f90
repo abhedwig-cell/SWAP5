@@ -24,7 +24,6 @@ contains
 
     call require_vector_sizes(n, a, b, c, r, u, gamma)
     capture_in_gamma = size(gamma) >= 2*n
-    if (capture_in_gamma) gamma(n+1:2*n) = 0.0_real64
     if (present(beta_factor)) then
        if (size(beta_factor) < n) error stop 'reference_tridag: beta factor shape mismatch'
        beta_factor(1:n) = 0.0_real64
