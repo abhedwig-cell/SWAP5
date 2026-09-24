@@ -472,9 +472,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     main flag for testing the convergence
       flnonconv = .FALSE.
 
-!     flags introduced for debugging purposes
-      fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
-      fsi_ws%nonconverged_head(1:numnod) = .FALSE.
+!     flags introduced for debugging/macropore iteration policy
+      if (swmacro == 1) then
+         fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
+         fsi_ws%nonconverged_head(1:numnod) = .FALSE.
+      end if
       flnonconv3 = .FALSE.
 
 !     apply performance criteria per compartment
@@ -482,19 +484,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (swmacro == 1) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               fsi_ws%nonconverged_head(i) = .TRUE.
+               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               fsi_ws%nonconverged_head(i) = .TRUE.
+               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
