@@ -80,7 +80,10 @@ new="""    ! P3B research-only greedy constitutive-error placement.
     ! Values are already populated for rows 1:N-1 by the greedy authority.
     hvec=state%head(B110_GENERATED_MVG_TABLE_N-1,:)
     theta=state%theta(B110_GENERATED_MVG_TABLE_N-1,:)
-    conductivity=exp(state%logk(B110_GENERATED_MVG_TABLE_N-1,:))"""
+    conductivity=exp(state%logk(B110_GENERATED_MVG_TABLE_N-1,:))
+    ! The original generation loop terminator belongs to the replaced loop.
+    ! Consume it here with a one-iteration block-compatible loop.
+    do j=1,1"""
 if old not in s: raise SystemExit("generation block not found")
 s=s.replace(old,new)
 # add a tiny deterministic integer sorter inside module before authority_theta
