@@ -2,6 +2,13 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
+  "temporal_candidate": {
+    "status": "IMPLEMENTED_FINAL_PERSISTED_REPLAY_PENDING",
+    "baseline": "05bfb8da5",
+    "contract": "Separate explicit adapter, not standard solver dispatch. Same fixed-flux top, lagged interior conductivity, MvG and prescribed-source envelope as reference indicator. Bottom residual -qbot=K(candidate h_N) adds positive analytic dK/dh_N to the final diagonal, without the iteration Jacobian's half factor. Existing directional-provider analytic smooth derivative is reused; Ksatexm extension and nonsmooth branches are unavailable. No equation, tolerance, retry or state-owner change.",
+    "verification": "45 real mode7 solves; derivative compared to two central difference steps; independent Thomas defect oracle uses finite-difference bottom stiffness. Cost is one tridiagonal solve and zero additional nonlinear trajectories. Bad qbot and absent history reject. Standard mode7 temporal rejection remains tested. FSI38/FSI25 unchanged preservation included.",
+    "limit": "No WU04C runtime/restart admission. A copied reference-envelope implementation is intentionally isolated; future shared refactoring requires preserving both envelopes."
+  },
   "contract": "Rejected hypothesis: mode7 is NOT equivalent to fixed base-qbot under SwKimpl=0. Proposed adapter removed before admission. No production changes or relaxed mass gates.",
   "source": "headcalc.f90 vector_F recomputes mode7 qbot from candidate provider_k; jacobian_F includes mode7 conductivity derivative. At baseline the legacy binding only published balance diagnostics for modes 2 and 5. Commit 74e39d73c adds bounded mode7 publication without changing qbot or the equation vector.",
   "tested_commit": "9b4f6137e",

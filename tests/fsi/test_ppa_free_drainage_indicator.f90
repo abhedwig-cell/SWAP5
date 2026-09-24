@@ -14,6 +14,8 @@ program test_ppa_free_drainage_indicator
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
+  use mod_ppa_free_drainage_stiffness, only: evaluate_free_drainage_stiffness
+  use mod_ppa_free_drainage_temporal_indicator, only: evaluate_free_drainage_temporal_indicator
   implicit none
 
   real(real64), parameter :: h0 = -75.0_real64
@@ -133,6 +135,7 @@ contains
          candidate_capacity, candidate_dkdh)
     call require(abs(comparison_result%bottom_flux+candidate_k(numnod))<1.0e-12_real64, &
          'mode7 uses candidate conductivity, not frozen base conductivity')
+    call check_bottom_stiffness(constitutive,comparison_result%candidate_state%pressure_head)
     if(abs(q)>=1.0e-6_real64.and.step_dt>=1.0e-2_real64) then
       call require(abs(comparison_result%bottom_flux+conductivity(numnod))>1.0e-14_real64, &
            'transient mode7 differs from lagged Neumann hypothesis')
@@ -233,6 +236,7 @@ contains
     call require(trim(unsupported%route) == 'boundary-envelope-deferred', &
          'unowned bottom mode fails closed at boundary envelope')
 
+    call check_mode7_indicator(unsupported_request,comparison_result,indicator_request,constitutive,conductivity)
     unsupported_request%numerical%max_iterations = 1
     unsupported_request%boundary%top_flux = -1.0_real64
     call solver%solve(unsupported_request, comparison_workspace, comparison_result)
@@ -248,11 +252,79 @@ contains
          ':WRONG_DIRICHLET_BINF=',wrong_binf,':ROUTE=',trim(indicator%route)
   end subroutine run_mode2_case
 
+  subroutine check_mode7_indicator(request,result,history,provider,base_k)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: result
+    type(soil_water_temporal_indicator_request_t), intent(in) :: history
+    type(b110_default_mvg_provider_t), intent(in) :: provider
+    real(real64), intent(in) :: base_k(:)
+    type(soil_water_temporal_indicator_result_t) :: certificate
+    type(soil_water_solve_result_t) :: invalid
+    type(soil_water_temporal_indicator_request_t) :: no_history
+    real(real64) :: heads(numnod), water(numnod), k(numnod), c(numnod), dk(numnod)
+    real(real64) :: plus, minus, slope, raw, defect, bounded, binf, wrong
+    heads = result%candidate_state%pressure_head
+    heads(numnod) = heads(numnod)+0.0005_real64
+    call provider%evaluate(heads,water,k,c,dk)
+    plus = k(numnod)
+    heads(numnod) = heads(numnod)-0.001_real64
+    call provider%evaluate(heads,water,k,c,dk)
+    minus = k(numnod)
+    slope = (plus-minus)/0.001_real64
+    call provider%evaluate(result%candidate_state%pressure_head,water,k,c,dk)
+    call evaluate_free_drainage_temporal_indicator(request,result,history,certificate)
+    call require(certificate%available,'mode7 explicit temporal service available')
+    call require(certificate%additional_full_nonlinear_solves==0,'mode7 no extra nonlinear trajectory')
+    call require(certificate%additional_tridiagonal_solves==1,'mode7 one defect solve')
+    call independent_mode2_oracle(request%parameters,base_k,c,certificate%current_right_derivative, &
+         request%step_duration,raw,defect,bounded,binf,wrong,slope)
+    call require(abs(certificate%defect_m_norm-defect)<=1.0e-8_real64*max(abs(defect),1.0e-14_real64), &
+         'mode7 independent finite difference stiffness defect oracle')
+    call require(abs(certificate%head_inf_bound-binf)<=1.0e-8_real64*max(abs(binf),1.0e-14_real64), &
+         'mode7 independent bound oracle')
+    invalid = result
+    invalid%bottom_flux = invalid%bottom_flux+1.0e-4_real64
+    call evaluate_free_drainage_temporal_indicator(request,invalid,history,certificate)
+    call require(.not.certificate%available,'mode7 inconsistent flux rejected')
+    call evaluate_free_drainage_temporal_indicator(request,result,no_history,certificate)
+    call require(.not.certificate%available,'mode7 missing history unavailable')
+  end subroutine
+
+  subroutine check_bottom_stiffness(provider, heads)
+    type(b110_default_mvg_provider_t), intent(in) :: provider
+    real(real64), intent(in) :: heads(:)
+    real(real64) :: perturbed(size(heads)), water(size(heads)), k(size(heads)), c(size(heads)), reserved(size(heads))
+    real(real64) :: stiffness, plus, minus, numerical, step
+    logical :: available
+    integer :: n, j
+    n = size(heads)
+    call evaluate_free_drainage_stiffness(provider,heads,stiffness,available)
+    call require(available.and.stiffness>0.0_real64,'smooth free drainage stiffness available positive')
+    do j=1,2
+      step = 1.0e-3_real64/real(j,real64)
+      perturbed = heads
+      perturbed(n) = heads(n)+step
+      call provider%evaluate(perturbed,water,k,c,reserved)
+      plus = k(n)
+      perturbed(n) = heads(n)-step
+      call provider%evaluate(perturbed,water,k,c,reserved)
+      minus = k(n)
+      numerical = (plus-minus)/(2*step)
+      call require(abs(stiffness-numerical)<1.0e-7_real64*abs(numerical), &
+           'mode7 stiffness agrees with independent central difference of residual K')
+    end do
+    perturbed = heads
+    perturbed(n) = 0.0_real64
+    call evaluate_free_drainage_stiffness(provider,perturbed,stiffness,available)
+    call require(.not.available,'constitutive switch stiffness unavailable')
+  end subroutine
+
   subroutine independent_mode2_oracle(parameters, conductivity_base, capacity_candidate, current_derivative, step_dt, &
-                                      raw_norm, defect_norm, bounded_norm, binf, wrong_dirichlet_binf)
+                                      raw_norm, defect_norm, bounded_norm, binf, wrong_dirichlet_binf, bottom_stiffness)
     type(soil_water_parameter_set_t), intent(in) :: parameters
     real(real64), intent(in) :: conductivity_base(:), capacity_candidate(:), current_derivative(:), step_dt
     real(real64), intent(out) :: raw_norm, defect_norm, bounded_norm, binf, wrong_dirichlet_binf
+    real(real64), intent(in), optional :: bottom_stiffness
     real(real64) :: mass_weight(numnod), lower(numnod), diagonal(numnod), upper(numnod), rhs(numnod)
     real(real64) :: delta(numnod), wrong_delta(numnod), e_raw(numnod), wrong_diag(numnod)
     real(real64) :: face_conductance, wrong_defect, wrong_bounded
@@ -271,6 +343,7 @@ contains
       diagonal(i-1) = diagonal(i-1)+face_conductance
       diagonal(i) = diagonal(i)+face_conductance
     end do
+    if(present(bottom_stiffness)) diagonal(numnod) = diagonal(numnod)+bottom_stiffness
     rhs = (mass_weight/step_dt)*e_raw
     call local_thomas(lower, diagonal, upper, rhs, delta, ok)
     call require(ok, 'independent Neumann tridiagonal solve')
