@@ -66,6 +66,9 @@ module mod_irrigation_process
     integer :: dcs2_knot_count = 0
     real(real64) :: dcs2_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: dcs2_depth_cm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    logical :: depth_limit_enabled = .false.
+    real(real64) :: minimum_depth_mm = 0.0_real64
+    real(real64) :: maximum_depth_mm = 1.0e7_real64
   end type scheduled_irrigation_parameters_t
 
   type, public :: irrigation_state_t
@@ -393,6 +396,10 @@ contains
       return
     end if
     diagnostics%interpolated_depth = depth
+    if (parameters%depth_limit_enabled) then
+      depth = max(depth, parameters%minimum_depth_mm*0.1_real64)
+      depth = min(depth, parameters%maximum_depth_mm*0.1_real64)
+    end if
     if (depth <= 0.0_real64) then
       diagnostics%status = IRRIGATION_INVALID_EVENT
       return
@@ -508,6 +515,13 @@ contains
     if (parameters%irr_rate_cm_per_day < 0.0_real64) return
     if (.not. ieee_is_finite(parameters%concentration)) return
     if (parameters%concentration < 0.0_real64 .or. parameters%concentration > 100.0_real64) return
+    if (parameters%depth_limit_enabled) then
+      if (.not. ieee_is_finite(parameters%minimum_depth_mm)) return
+      if (.not. ieee_is_finite(parameters%maximum_depth_mm)) return
+      if (parameters%minimum_depth_mm < 0.0_real64.or.parameters%minimum_depth_mm > 100.0_real64) return
+      if (parameters%maximum_depth_mm < parameters%minimum_depth_mm.or. &
+          parameters%maximum_depth_mm > 1.0e7_real64) return
+    end if
     if (parameters%solute_enabled .and. parameters%solute_overirrigation_enabled) then
       if (.not. ieee_is_finite(parameters%solute_concentration_threshold)) return
       if (.not. ieee_is_finite(parameters%solute_overirrigation_percent)) return
