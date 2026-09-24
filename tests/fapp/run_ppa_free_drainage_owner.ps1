@@ -1,8 +1,8 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
+param([ValidateSet('IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
-if ($Scope -eq 'HydraulicCopy' -and ($StableStorage -or $StableStorageExperiment)) {
+if ($Scope -in @('HydraulicCopy','IrrigationSource') -and ($StableStorage -or $StableStorageExperiment)) {
     throw 'HydraulicCopy uses the unchanged default storage profile'
 }
 if ($Scope -eq 'Atm02Dense' -and !$StableStorage) { throw 'Atm02Dense requires explicit StableStorage' }
@@ -73,6 +73,7 @@ try {
             $testArguments = @()
             if ($Scope -eq 'Guards') { $testArguments = @('--guards') }
             if ($Scope -eq 'HydraulicCopy') { $testArguments = @('--hydraulic-copy') }
+            if ($Scope -eq 'IrrigationSource') { $testArguments = @('--irrigation-source') }
             if ($StableStorage) {
                 $testArguments = @('--stable-storage')
                 if ($Scope -eq 'Guards') { $testArguments = @('--stable-guards') }
@@ -103,6 +104,7 @@ try {
                 $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
                 if ($Scope -eq 'Guards') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS' }
                 if ($Scope -eq 'HydraulicCopy') { $requiredMarker = 'PPA_OWNER_HYDRAULIC_COPY=PASS' }
+                if ($Scope -eq 'IrrigationSource') { $requiredMarker = 'PPA_OWNER_DCS1_SOURCE_ACCEPTED_MASS=PASS' }
                 if ($Scope -eq 'Receipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS' }
                 if ($Scope -eq 'GashReceipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GASH_SOURCE_RECEIPT_RESTART=PASS' }
                 if ($Scope -eq 'Atm02') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_ATM02=PASS' }
@@ -127,7 +129,7 @@ try {
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'
             }
             $stable["$test-$opt"] = (@($output | Where-Object { $_ -match $prefix }) -join "`n")
-            if ($StableStorageExperiment -or $StableStorage -or $Scope -eq 'HydraulicCopy') {
+            if ($StableStorageExperiment -or $StableStorage -or $Scope -in @('HydraulicCopy','IrrigationSource')) {
                 # Compare numerical diagnostics as well as success markers.
                 $stable["$test-$opt"] = $textOutput
             }

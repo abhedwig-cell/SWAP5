@@ -111,7 +111,7 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
-  if(trim(test_scope)=='--hydraulic-copy') then
+  if(trim(test_scope)=='--hydraulic-copy'.or.trim(test_scope)=='--irrigation-source') then
     call verify_hydraulic_copy(config)
     write(*,'(a)') 'PPA_OWNER_HYDRAULIC_COPY=PASS'
     stop
@@ -162,6 +162,9 @@ contains
     type(process_hydraulic_view_t)::hydraulic
     real(real64)::selected_amount(NTILE),expected,thickness
     integer::pass
+    type(fmr_b110_physical_forcing_t)::irrigation_forcing(NTILE)
+    type(fmr_serialized_column_result_t),allocatable::irrigation_result(:)
+    real(real64),parameter::irrigation_dt=1.0_real64/1024.0_real64
     call owner%copy_committed_hydraulic_states(copied,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(copied)) error stop 'uninitialized hydraulic copy'
     call owner%initialize(profile,code)
@@ -237,6 +240,37 @@ contains
       if(again(tile)%revision/=copied(tile)%revision) error stop 'hydraulic copy revision'
       if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) error stop 'hydraulic copy time'
     end do
+    if(trim(test_scope)=='--irrigation-source') then
+      irrigation%depth_limit_enabled=.true.
+      irrigation%minimum_depth_mm=0.01_real64*irrigation_dt*10.0_real64
+      irrigation%maximum_depth_mm=irrigation%minimum_depth_mm
+      irrigation%irr_rate_cm_per_day=0.01_real64
+      do tile=1,NTILE
+        hydraulic%active_nodes=size(again(tile)%water_content)
+        hydraulic%pressure_head=again(tile)%pressure_head_cm
+        hydraulic%water_content=again(tile)%water_content
+        irrigation%active_nodes=hydraulic%active_nodes
+        request%t0=again(tile)%committed_time; request%t1=request%t0+irrigation_dt
+        thickness=profile%tiles(tile)%parameters%dz(1)
+        call evaluate_profile_scheduled_irrigation(irrigation,base,request,hydraulic,1,[1],[thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             candidate,flux,diagnostics)
+        if(diagnostics%status/=IRRIGATION_OK.or..not.flux%event_finished) error stop 'irrigation gift selection'
+        selected_amount(tile)=flux%external_inflow_amount
+        irrigation_forcing(tile)=profile%tiles(tile)%base_forcing
+        irrigation_forcing(tile)%top_flux=0.0_real64
+        irrigation_forcing(tile)%subsurface_irrigation_source=flux%subsurface_source
+      end do
+      call owner%run_standalone_with_forcing(request%t0,request%t1,irrigation_forcing,irrigation_result,code)
+      write(*,*) 'IRRIGATION_SOURCE_STATUS',code,irrigation_result%kernel_status,irrigation_result%accepted_substeps
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation source interval failed'
+      if(maxval(abs(irrigation_result%mass%residual))>HARD_MASS_GATE) error stop 'irrigation source mass'
+      do tile=1,NTILE
+        if(abs(irrigation_result(tile)%mass%total_in-selected_amount(tile))>HARD_MASS_GATE) &
+             error stop 'irrigation source accepted inflow'
+      end do
+      write(*,'(a)') 'PPA_OWNER_DCS1_SOURCE_ACCEPTED_MASS=PASS'
+    end if
     call owner%close(code)
     call owner%copy_committed_hydraulic_states(again,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(again)) error stop 'closed hydraulic copy'
