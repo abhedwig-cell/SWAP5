@@ -16,7 +16,8 @@
     "scope": "Verification of the existing bounded evaluator in the matrix-to-pore direction; no production code or admitted scope change.",
     "oracle": "Pore level -0.75 gives beginning storage 0.3125. Heads [-0.5,2] give matrix level -0.7 and groundwater capacity 0.325. Darcy incoming potential rate is 0.3125; actual rate is min(0.3125,0.0125/dt), with source tangent -rate/1.25. Tested dt 0.01, 0.1 and 1.",
     "checks": "Positive matrix residual contribution, paired diagonal, negative matrix transfer, storage increase and internal cancellation. Incoming gradient at bottom head 1 with capacity below initial storage suppresses all inflow and leaves stored water unchanged. Original storage remains unchanged across retries.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "9c799ba72",
+    "test_result": "Persisted 9c799ba72 saturated trial and Richards scratch gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
   },
   "pore_metadata_validation": {
     "baseline": "94b884c91",
