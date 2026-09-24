@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL20",
+  "title": "Self-building cached hydraulic provider",
+  "parent": "F-AHL19",
+  "phase": "PREREGISTERED_ENGINEERING_RESEARCH",
+  "question": "Can the selected adaptive hydraulic representation be acquired directly from B1.10 parameters through the qualified builder/cache and used by Richards without any external pre-generated table file?",
+  "target_path": [
+    "initialized authoritative B1.10 parameters",
+    "exact cache key construction",
+    "cache hit or one-time authority-sampling build",
+    "immutable representation binding",
+    "Richards constitutive evaluation"
+  ],
+  "comparison": {
+    "reference": "analytical B1.10 provider",
+    "research_baseline": "selected file-backed F-AHL15/F-AHL16 adaptive provider",
+    "candidate": "self-building cached in-memory provider"
+  },
+  "stage_1": {
+    "fixture": "FSI24-style nonlinear Richards case",
+    "requirements": [
+      "first bind builds exactly once",
+      "second identical bind is a cache hit",
+      "no table file is read",
+      "candidate passes frozen head/theta/flux/mass gates",
+      "candidate matches analytical nonlinear iteration and backtracking counts"
+    ]
+  },
+  "stage_2": {
+    "scope": "B01,B12,O05,O14 x wet,mid,dry",
+    "requirements": "12/12 frozen F-AHL16 fidelity and convergence-path gates"
+  },
+  "stage_3": {
+    "scope": "paired complete-Richards timing with build reported separately",
+    "rule": "steady-state cached solve speed and cold-start build+solve speed must both be reported"
+  },
+  "hard_exclusions": [
+    "NO_EXTERNAL_TABLE_FILE_IN_CANDIDATE_PATH",
+    "NO_RUNTIME_REFINEMENT_DURING_SOLVE",
+    "NO_SOLVER_OWNERSHIP_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
