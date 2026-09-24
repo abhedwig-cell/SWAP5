@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.rom-purpose.p5c.oracle-sign-semantics-repair.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5C-GW-BOUNDARY-INTERFACE-CARRIER",
+  "date": "2026-09-24",
+  "status": "ORIGINAL_P5C_SCIENTIFIC_AUTHORITY_SUPERSEDED_BY_TRACE_SIGN_SEMANTICS_ERROR",
+  "source_run": 35923634779,
+  "source_result": "integration/f-rom/ROM_PURPOSE_P5C_RESULT.json@50c8af8060f042d8f5d33714a0884758b1a62c64",
+  "source_runtime_authority": {
+    "backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "mapping": [
+      "bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration",
+      "terminal_bottom_outward_flux_native = -solve_result%bottom_flux"
+    ],
+    "headcalc_native_operator": "For SWBOTB=5, native qbot = -kmean(NN+1) * ((h(NN)-hbot)/disnod(NN+1)+1)."
+  },
+  "defect": {
+    "preregistered_estimator_formula": "native qbot_hat = -K*g",
+    "trace_target_actual_semantics": "BOTTOM_FLUX is bottom-outward flux = -native qbot",
+    "analyzer_error": "Compared native qbot reconstruction directly against bottom-outward trace flux.",
+    "consequence": "The oracle sign mismatch was structurally guaranteed and the original P5C carrier metrics are not scientifically interpretable."
+  },
+  "repair": {
+    "analyzer": "tests/rom/analyze_rom_purpose_p5c_gw_interface.py",
+    "repaired_blob": "fa7f5f6620e4ea73299d68168286c576eeb8b0b6",
+    "corrected_trace_estimator": "bottom_outward_hat = +K * ((h-hbot)/delta + 1)",
+    "rerun_simulations": false,
+    "reanalyze_existing_route_artifacts": true
+  },
+  "scientific_firewall": {
+    "estimator_information_content_changed": false,
+    "candidate_state_definitions_changed": false,
+    "fresh_histories_changed": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerances_changed": false,
+    "source_route_artifacts_replaced": false,
+    "p4_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
