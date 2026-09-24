@@ -2,6 +2,13 @@
   "schema": "swap5.ppa_wu04c.retry_replay_status.v1",
   "work_unit": "PPA-WU04C-R1",
   "parent_work_unit": "PPA-WU04C",
+  "current_bounded_richards_successor": {
+    "tested_commit": "468e2f4ad",
+    "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Receipts",
+    "result": "PASS O0/O2: real strong mode-7 Richards attempt fails with zero internal accepts; a second case fails after one internal accept. Neither publishes physical/history/source progress or a ready receipt. Retry-enabled reconstruction and replay match uninterrupted full state exactly. Strong accepted source progress and application restart continuation also pass.",
+    "scope": "Explicit storage and temporal opt-ins, frozen effective forcing, hard mass retained. This supplements the historical test-model gate below; it does not admit arbitrary evolving dynamic-top regimes or disk restart."
+  },
   "status": "FKT_REJECTED_RETRY_AND_SOURCE_WINDOW_RESTART_REPLAY_TESTED",
   "baseline": "77654abee",
   "implemented": true,
@@ -32,5 +39,5 @@
     "end-to-end dynamic-top boundary and source-window restart in one production SWAP run",
     "WU04D Gash production admission or widened WU03 semantics"
   ],
-  "next_action": "Run the new qualification workflow on GitHub; keep full-SWAP combined replay unqualified until that actual runtime route is exercised."
+  "next_action": "For current local real-Richards evidence follow current_bounded_richards_successor. Extend distinct-source-window committed-top forcing composition; historical remote workflow evidence and arbitrary dynamic-top admission are not inferred from this local gate."
 }

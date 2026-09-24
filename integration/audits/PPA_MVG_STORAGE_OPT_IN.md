@@ -48,3 +48,16 @@ persistent state owner. Failed validation must leave the live registry untouched
 Existing no-active-context guard remains. Other bottom profiles retain their
 existing route; this checkpoint does not qualify groundwater ledger restoration.
 Test a late invalid second record before valid restore and full continuation.
+
+## Real failed-interval and partial-progress qualification
+
+At 468e2f4ad, the strong owner Receipts gate includes two real failure routes
+under unchanged forcing and hard tolerances. With no retries, each tile executes
+one HeadCalc call / 40 iterations and accepts no internal substep. With the normal
+retry policy but a one-substep budget, each tile executes 16 calls / 160 iterations
+and accepts one internal substep before the outer interval fails. Neither route
+publishes a ready receipt, changes externally committed state/history/provenance,
+or advances source-window progress. Reconstructing with the qualified retry policy
+from the unchanged accepted boundary produces exactly the uninterrupted result.
+Both routes and the existing strong restart/receipt tests pass at O0/O2 with all
+240436 output lines identical. No production source changed for these tests.
