@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.research_result.v1",
+  "workunit": "TAB-SPEED-ACCURACY-P3A",
+  "date": "2026-09-24",
+  "branch": "research/tab-speed-accuracy",
+  "controlling_run": 35999558262,
+  "result": "SIMPLE_ENDPOINT_CONCENTRATION_REJECTED",
+  "candidates": {
+    "C25": {"status":"FAIL_RICHARDS_PROFILE_GATE","note":"ERROR STOP in richards_profile; no promotion"},
+    "C32": {"status":"COMPLETE_BUT_INFERIOR_TO_L32_L50_FIDELITY","richards_head_max_abs_cm":0.017554544827731888,"richards_theta_max_abs":0.0008296622655325769,"serialized_theta_max_abs":0.0008833271350837113,"serialized_delta_pct_range":[-15.98765432,-14.50476073]},
+    "C40": {"status":"COMPLETE_BUT_INFERIOR_TO_L50_FIDELITY","richards_head_max_abs_cm":0.009047232358597057,"richards_theta_max_abs":0.00013161391448124338,"serialized_theta_max_abs":0.00013342465205612442,"serialized_delta_pct_range":[-14.64646465,-14.18525703]}
+  },
+  "comparison": {
+    "L50_prior_richards_head_max_abs_cm":0.000638125946274215,
+    "L50_prior_richards_theta_max_abs":0.0000019279282057471647,
+    "finding":"The symmetric smoothstep endpoint concentration spends too many nodes at dry/wet extremes and undersamples the interior constitutive region. It is substantially less accurate than the naive 50-row log grid."
+  },
+  "interpretation":"H3 is not supported by this simple placement rule. Sparse placement remains plausible, but it must be driven by constitutive approximation error/curvature rather than a hand-shaped endpoint transform.",
+  "next":"P3B: deterministic greedy error refinement. Start with endpoints and iteratively insert the dense analytical sample with largest normalized theta/logK interpolation error. Freeze weights and dense authority grid before candidate results.",
+  "production_effect":"NONE"
+}
