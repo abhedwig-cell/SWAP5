@@ -195,3 +195,59 @@ QUALIFY        = NOT_STARTED
 MEASURE        = NOT_STARTED
 CLOSE          = OPEN
 ```
+
+
+## Qualification result — P01-A and multi-iteration Reference
+
+### Q1/Q2/Q3/Q4 — P01-A
+
+Dedicated workflow run `36064208787` completed successfully.
+
+Observed at both O0 and O2:
+
+```text
+constitutive_evaluations_per_solve = 2
+nonlinear_iterations_per_solve     = 1
+rejected_trial_isolation           = PASS
+physical_identity                  = PASS
+serialized_runtime_gate            = PASS
+```
+
+Baseline PROFILE01 P01-A had three constitutive evaluations for the same one-iteration solve. The candidate therefore achieves the preregistered `3 -> 2` reduction without changing the qualified physical or numerical path.
+
+### Q5 — existing three-iteration Reference case
+
+Dedicated workflow run `36064698745` reused the existing `PUB-P2E01` Reference oracle rather than constructing a new difficult fixture.
+
+Observed identically at O0 and O2:
+
+```text
+nonlinear_iterations      = 3
+backtracking_attempts     = 3
+constitutive_evaluations  = 4
+H03 multi-iteration reuse = PASS
+solver-seam paired pilot  = PASS
+```
+
+The repaired route therefore satisfies the preregistered control-flow relation:
+
+```text
+constitutive_evaluations = 1 pre-loop + backtracking_attempts
+                         = 4
+```
+
+For this three-iteration case, the removed iteration-start evaluations are therefore three calls relative to the prior structural pattern, while Newton/backtracking behavior remains unchanged.
+
+Current qualification state:
+
+```text
+Q1 compile/runtime preservation = PASS
+Q2 physical identity            = PASS (P01-A)
+Q3 numerical-control identity   = PASS (P01-A + existing multi-iteration oracle behavior)
+Q4 call-count reduction         = PASS
+Q5 multi-iteration coverage     = PASS
+Q6 paired runtime               = NEXT
+Q7 cross-workstream drift       = PASS_SO_FAR
+```
+
+No admission claim is made before Q6 runtime measurement and final scope review.
