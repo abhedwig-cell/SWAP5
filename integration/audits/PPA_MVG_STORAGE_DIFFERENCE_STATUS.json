@@ -2,6 +2,7 @@
   "baseline": "55d430238",
   "production_opt_in": {
     "forcing_event_runtime": {
+      "post_event_sequence": "fe8a79528 extends WU04C to three windows: unmarked / marked changed forcing / unmarked unchanged forcing. O0/O2 PASS, 328891 identical lines SHA256 28D88921496CB074CE77A202C35E570A997FA33B94BE27651AC0514217C7ABAA, build swap-ppa-wu01-7f671a56a3464c6e8574ec4c1eef9127. Callback counters assert zero event invocations in unmarked continued/restored windows and bounded first-trial event retries in the marked window, fewer than the accepted substep count. Materialized forcing does not retain the marker. Full state/history/provenance restart equality and prior event failure/replay gates remain green. No production changes.",
       "tested_commit": "69ea158d1",
       "status": "BOUNDED_CHANGING_WINDOWS_EVENT_ROLLBACK_RESTART_PASS_NOT_CANONICALLY_ADMITTED",
       "implementation": "61e244883 appends default-false time-stamped event marker to typed forcing and default-false indicator request flag. Backend validates boundary time/service/profile, clears interval configuration, forwards event only when trial t0 matches. Bound candidate callback uses read-only right-limit derivative only for that event; existing transactional history publication is unchanged. Generic reference indicator explicitly rejects event requests. 69ea158d1 narrows event admission to reference-only and rejects nonfinite event time.",

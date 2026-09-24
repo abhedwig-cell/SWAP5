@@ -647,22 +647,30 @@ contains
     type(vonhhbraden_parameters_t)::parameters
     type(vonhhbraden_result_t)::source_result
     real(real64)::start_time,end_time,amount(NTILE),restored_amount(NTILE),previous_flux
-    integer::window,tile,code
+    integer::window,tile,code,window_count
     logical::ok,marked_window
     parameters%cofab_cm=0.5_real64
     source%leaf_area_index=2.0_real64
     source%vegetation_cover_fraction=0.5_real64
     previous_flux=0.0_real64
-    do window=1,3
-      marked_window=window==2.or.(window==1.and.trim(test_scope)=='--gash-windows')
+    window_count=3
+    if(trim(test_scope)=='--gash-windows') window_count=4
+    do window=1,window_count
+      marked_window=window==2.or.((window==1.or.window==4).and.trim(test_scope)=='--gash-windows')
       start_time=T1+real(window-1,real64)*(T1-T0)
       end_time=start_time+(T1-T0)
       source%gross_rain_cm_per_day=0.20_real64-0.04_real64*real(min(window-1,1),real64)
       source%sprinkling_irrigation_cm_per_day=0.10_real64-0.02_real64*real(min(window-1,1),real64)
+      if(window==4) then
+        source%gross_rain_cm_per_day=0.04_real64
+        source%sprinkling_irrigation_cm_per_day=0.02_real64
+      end if
       call evaluate_vonhhbraden_source_window(parameters,source,0.1_real64,source_result)
       if(trim(test_scope)=='--gash-windows') call evaluate_gash_source_window(WINDOW_GASH,source, &
            source_result%source_window_interception_cm_per_day,source_result%status)
       call require(source_result%status==VONHHBRADEN_AVAILABLE,'changing source evaluated')
+      if(window==4) call require(abs(source_result%source_window_interception_cm_per_day-0.051_real64)< &
+           1.0e-15_real64,'Gash presaturation branch independent amount oracle')
       call owner%export_committed_restart(9902_int64,before,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'window boundary export')
       call fresh%initialize(profile,code)
@@ -682,7 +690,8 @@ contains
         call require(forcing(tile)%top_flux==restored_forcing(tile)%top_flux.and. &
              amount(tile)==restored_amount(tile),'restored window materialization identical')
       end do
-      if(window==2) call require(forcing(1)%top_flux/=previous_flux,'effective forcing changes between windows')
+      if(window==2.or.window==4) &
+           call require(forcing(1)%top_flux/=previous_flux,'effective forcing changes between windows')
       if(window==3) then
         call require(forcing(1)%top_flux==previous_flux,'post-event window retains physical forcing')
         call require(all(.not.forcing%temporal_forcing_event).and.all(.not.restored_forcing%temporal_forcing_event), &
