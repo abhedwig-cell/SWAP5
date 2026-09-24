@@ -483,3 +483,34 @@ H11 keeps the deep copy itself, because it is part of state isolation. It change
 No aliasing is introduced. Source and target remain independent deep states.
 
 Gates: clone isolation remains PASS, candidate/committed state remains independent, physical results remain bit-identical, and the existing PROFILE01 H02 clone microbenchmark is rerun to measure whether allocator reuse matters on repeated copies.
+
+
+## ZW01-H12 preregistration — avoid zero temporary source/sink direction arrays
+
+The accepted-direction service currently allocates two temporary length-N arrays on every eligible directional solve:
+
+- `source_direction(n)`
+- `sink_direction(n)`
+
+Both are immediately zero-filled. Optional incoming direction arrays are then copied over them when present.
+
+For the standard groundwater participant route:
+- accepted trajectory direction is requested;
+- `incoming_source_direction` is absent;
+- `incoming_sink_direction` is also absent unless smooth drainage-qbot projection is active.
+
+Therefore the common groundwater route pays two allocations plus two full zero writes per accepted directional evaluation merely to represent zero source/sink derivatives.
+
+H12 will:
+- preserve the existing array path when either incoming direction array is present;
+- use a no-allocation zero-direction branch when both are absent;
+- preserve all directional equations and signs exactly.
+
+Expected benefit: remove 2 allocations, 2 deallocations and 2*N real zero writes per eligible accepted-direction evaluation on the common no-directional-source/sink route.
+
+Gates:
+- accepted trajectory direction values bit-identical;
+- additional backsolve/Jacobian/nonlinear counts unchanged;
+- drainage smooth-projection route unchanged when incoming sink direction is present;
+- poison and FKT22 trajectory gates PASS;
+- paired directional runtime measured before broader claim.
