@@ -96,7 +96,7 @@ program test_ppa_free_drainage_owner
   call get_command_argument(1,test_scope)
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
-  if(trim(test_scope)=='--stable-windows') then
+  if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection') then
     config%storage_difference => evaluate_mvg_storage_difference_service
     ! A forcing discontinuity can require smaller first steps, not a larger error budget.
     config%numerical%transaction%max_retries=24
@@ -385,7 +385,8 @@ contains
     call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')
     if(trim(test_scope)=='--stable-receipts') &
          call verify_storage_receipt_restart(production_app,transient_profile,forcing_vector,receipts,interception_by_tile)
-    if(trim(test_scope)=='--stable-windows') call verify_changing_windows(production_app,transient_profile)
+    if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection') &
+         call verify_changing_windows(production_app,transient_profile)
     call production_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
     deallocate(forcing_vector)
@@ -671,6 +672,36 @@ contains
       call compare_restart_bundles(before,unchanged,'read-only window materialization')
       call owner%run_standalone_with_forcing_receipts(start_time,end_time,forcing,result,receipt,code)
       write(*,*) 'CHANGING_WINDOW_DIAG',window,code,result%kernel_status,result%accepted_substeps
+      if(window==2.and.trim(test_scope)=='--window-rejection') then
+        call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed).and. &
+             all(result%accepted_substeps==0),'forcing jump reproduces rejection without accepted steps')
+        call owner%export_committed_restart(9902_int64,continued,ok,code)
+        call require(ok.and.code==FMR_APP_BOOT_OK,'rejected window remains exportable')
+        call compare_restart_bundles(before,continued,'forcing jump rollback')
+        call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
+             restored_result,restored_receipt,code)
+        call require(code/=FMR_APP_BOOT_OK.and.all(.not.restored_result%committed).and. &
+             all(restored_result%kernel_status==result%kernel_status).and. &
+             all(restored_result%solver_headcalc_calls==result%solver_headcalc_calls), &
+             'restored forcing jump reproduces rejection')
+        call fresh%export_committed_restart(9902_int64,resumed,ok,code)
+        call require(ok.and.code==FMR_APP_BOOT_OK,'restored rejected window exportable')
+        call compare_restart_bundles(before,resumed,'restored forcing jump rollback')
+        do tile=1,NTILE
+          call fmr_initialize_vonhhbraden_source_window_progress(int(9800+10*window+tile,int64), &
+               start_time,end_time,amount(tile),progress,code,profile%tiles(tile)%tile_id,top(tile)%revision)
+          call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'rejected source progress initialized')
+          call publish_ppa_wu04c_accepted_progress(progress,receipt(tile)%receipt,amount(tile),code)
+          call require(code/=PPA_WU04C_PUBLICATION_OK,'failed jump receipt cannot publish')
+          call publish_ppa_wu04c_accepted_progress(progress,restored_receipt(tile)%receipt,amount(tile),code)
+          call require(code/=PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==amount(tile), &
+               'both rejected runs leave source amount untouched')
+        end do
+        call fresh%close(code)
+        call require(code==FMR_APP_BOOT_OK,'rejected window fresh closes')
+        write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_WINDOW_REJECTION=PASS'
+        return
+      end if
       call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'changing window commits')
       call fresh%run_standalone_with_forcing_receipts(start_time,end_time,restored_forcing, &
            restored_result,restored_receipt,code)
