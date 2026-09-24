@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04",
+  "record": "UPSTREAM_MODERN_FULL_SWAP_ATTEMPT",
+  "status": "INVALID_RUNTIME_PATH_FOR_PDI_FULL_MODEL_QUALIFICATION",
+  "latest_workflow_run": 36055741864,
+  "latest_workflow_job": 107822062536,
+  "source": {
+    "repository": "SWAP-model/SWAP",
+    "commit": "c22bd832ddf3e53e330a552f5e31e74f183362d1"
+  },
+  "technical_progress": [
+    "control and candidate upstream source trees compile successfully",
+    "SWAP-009 signed-head correction and the candidate temperature correction can both be applied deterministically",
+    "the legacy vapor-on and NoVap qualification cases can be generated deterministically"
+  ],
+  "blocking_runtime_fact": "The modern upstream executable starts through the TOML-only production input pipeline and rejects the legacy swap.swp qualification case because swap.toml is absent.",
+  "additional_reachability_fact": "The current typed TOML soil-hydraulics schema exposes ordinary MvG parameter arrays but not the PDI model selector and vapor-specific parameters needed to activate model 8/10 vapor conductivity.",
+  "classification": "TECHNICAL_RUNTIME_REACHABILITY_BLOCKER_NOT_HYDRAULIC_FAILURE",
+  "decision": "Do not add PDI TOML/config plumbing inside this audit merely to manufacture a full-run. Use the historically qualified B1.6 legacy production path instead.",
+  "required_authority": "Exact SWAP 4.3.1 B0 source archive SWAP.ZIP with SHA256 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151, from which tools/vq/b1_6_reconstruct.py deterministically reconstructs B1.6.",
+  "external_access_blocker": "The official SWAP 4.3.1 download is behind registration requiring email, country and explicit license acceptance; those actions cannot be completed autonomously on the user's behalf.",
+  "scientific_result": "NO_NEGATIVE_RESULT_FROM_THIS_ATTEMPT"
+}
