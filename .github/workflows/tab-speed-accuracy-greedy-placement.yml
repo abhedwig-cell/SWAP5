@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/tab-speed-accuracy-greedy-placement.yml'
       - 'research/tabulated_hydraulics/TAB_SPEED_ACCURACY_P3B_TRIGGER.txt'
+      - 'research/tabulated_hydraulics/tab_p3b_generate_greedy_source.py'
   workflow_dispatch:
 
 permissions:
