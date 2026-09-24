@@ -692,3 +692,23 @@ total ~= 1 pre-loop + nonlinear_iterations + backtracking_attempts
 ```
 
 The exact dynamic relation must be checked against the existing counters before it is used as measured evidence. No repair is authorized in PROFILE01.
+
+
+## H04 — constitutive provider tuple granularity
+
+Status: `NX_UNRESOLVED`.
+
+The current provider interface evaluates the full tuple `theta, K, C, dK/dh` for every provider call. Local call sites often consume only part of that tuple immediately:
+
+- pre-Newton call: `K` is consumed directly;
+- Newton-iteration start: `C` is consumed directly;
+- backtracking candidate call: `theta` is consumed directly.
+
+However, this does **not** establish that the remaining outputs are dead work. In particular, the latest `provider_k` can subsequently contribute to lower-boundary handling such as free drainage, and a capacity computed at an accepted candidate head could in principle be reusable by a subsequent Newton iteration.
+
+Therefore PROFILE01 separates two claims:
+
+- H03: repeat evaluation of the **same complete tuple at unchanged h** is bounded N4 redundancy;
+- H04: computing a complete tuple when a call site appears to need only a subset is an unresolved interface-granularity question, not yet a redundancy verdict.
+
+This distinction prevents performance work from prematurely splitting the constitutive API in a way that could conflict with F-AHL or solver semantics.
