@@ -1,8 +1,8 @@
 {
   "schema": "swap5.rom-practical.p6b.status.v1",
   "workstream": "ROM-PRACTICAL",
-  "date": "2026-09-23",
-  "status": "P6B_SM_REALISTIC_WORKLOAD_FROZEN_REFERENCE_TEMPORAL_AUTHORITY_QUEUED",
+  "date": "2026-09-24",
+  "status": "P6B_SM_REALISTIC_WORKLOAD_REFERENCE_AUTHORITY_BLOCKED",
   "completed": [
     "P5 robust fast RK4 dt=0.005 research policy qualified on 12/12 six-material purpose cases.",
     "P6A stable research execution interface qualified with exact direct-core trajectory identity on 12/12 cases.",
@@ -11,21 +11,17 @@
     "Compiled S4 candidate completed the observed B02 realistic workload before the Reference route blocked."
   ],
   "current_blocker": {
-    "type": "REFERENCE_NUMERICAL_AUTHORITY",
-    "observed": "R128_T32 fails closed for B02/HR72 around day 20.7 at LAREDYN0R total residual within pre-solve bound.",
-    "candidate_changed": false,
-    "forcing_changed": false,
-    "response_interpretation": "No candidate fidelity conclusion may be drawn until an independent Richards Reference temporal policy is qualified."
+    "type": "REALISTIC_DYNAMIC_TOP_RICHARDS_REFERENCE_AUTHORITY",
+    "conclusion": "RNP03 reached the preregistered stop condition: R16 still fails B02/B05/B06/B11/B12; only B16 completes without retries.",
+    "implication": "Six-material S4 hydrological fidelity under the realistic Hupsel net-atmospheric proxy cannot be adjudicated in this workstream.",
+    "candidate_advantage_claim": false
   },
   "reference_repair": {
-    "preregistration": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP01_PREREGISTRATION.json",
-    "ladder": [
-      "T64",
-      "T128"
-    ],
-    "workflow_run": 35921365064,
-    "status": "QUEUED",
-    "selection_rule": "T64 only if complete for all six; otherwise T128 only if complete for all six; no further ladder authorized."
+    "RNP01": "CLOSED_REFERENCE_HARNESS_POLICY_UNSUITABLE_FOR_REALISTIC_DAILY_FORCING",
+    "RNP02": "ADAPTIVE_REFERENCE_POLICY_BLOCKED",
+    "RNP03": "CLOSED_GENUINE_REFERENCE_SOLVER_FLOOR_REMAINS",
+    "selected_policy": null,
+    "further_retry_ceiling_escalation_authorized": false
   },
   "groundwater_realistic_workload": {
     "Hupsel_dynamic_groundwater_series_available": false,
@@ -35,5 +31,6 @@
   },
   "production_rom_authorized": false,
   "application_acceptance_adjudicated": false,
-  "P_ROM_ET_opened": false
+  "P_ROM_ET_opened": false,
+  "next_permitted_action": "Handoff the realistic-dynamic-top Reference problem to the independent numerical/reference architecture line. Keep the qualified S4/G8 research implementation frozen; do not tune it against the blocked Reference."
 }
