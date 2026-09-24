@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.sw_tri01.a.technical_amendment.v1",
+  "work_unit": "SW-TRI01-A",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-24",
+  "first_run": 35956208883,
+  "first_job": 107494965324,
+  "classification": "FIXTURE_HYDRAULIC_INITIALIZATION_REPAIR_BEFORE_ANY_VALID_CANDIDATE",
+  "observation": "Forcing composition and both materializers succeeded, but the backend returned no completed mass-complete candidate. The first fixture mapped interface head 0.40 m against a -1.0 m bottom elevation to +140 cm bottom pressure head while the initial pressure profile is -123 cm.",
+  "physical_result_observed": false,
+  "repair": {
+    "old_interface_head_m": 0.4,
+    "bottom_elevation_m": -1,
+    "old_bottom_pressure_head_cm": 140,
+    "new_interface_head_m": -2.23,
+    "new_bottom_pressure_head_cm": -123,
+    "rationale": "Start the prescribed-head boundary at the existing profile pressure head so TRI01-A isolates forcing/candidate composability instead of imposing an unrelated severe wetting transient."
+  },
+  "unchanged": [
+    "bottom_mode=5",
+    "single EXTENDED_SIGNED surface-water level",
+    "Ribasim positive and negative surface-exchange cases",
+    "single accepted origin/checkpoint",
+    "single backend trial",
+    "mass-complete candidate requirement",
+    "both groundwater and surface exchange availability requirements",
+    "O0/O2 identity requirement"
+  ],
+  "anti_retuning_rule": "If the matched-head fixture still fails before a joint candidate is produced, treat it as a genuine composition or numerical-policy blocker and diagnose the exact backend status before changing further physics."
+}
