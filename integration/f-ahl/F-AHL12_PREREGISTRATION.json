@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12",
+  "title": "Tight-envelope closure test",
+  "parent": "F-AHL11",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the six F-AHL10 wet/dry fidelity failures be closed by one further bounded tightening of the derivative-consistent retention and/or conductivity error envelope, without changing solver policy or response gates?",
+  "frozen_failed_cases": [
+    "B01_wet","B01_dry","B12_wet","B12_dry","O05_wet","O14_dry"
+  ],
+  "prospective_variants": [
+    {"id":"theta1","theta_span_tolerance":1e-6,"logK_tolerance":1e-2},
+    {"id":"k1","theta_span_tolerance":1e-5,"logK_tolerance":1e-3},
+    {"id":"both1","theta_span_tolerance":1e-6,"logK_tolerance":1e-3}
+  ],
+  "capacity_policy": "C remains the exact derivative of the same Hermite retention interpolant; independent logC ceiling remains 1e-2.",
+  "frozen_richards_gates": {
+    "same_nonlinear_iteration_count_as_analytical": true,
+    "same_backtracking_count_as_analytical": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "stop_rule": "If both1 does not close all six cases, stop global tolerance tightening and redesign the adaptive error metric around solver-relevant local response instead of adding more global knots.",
+  "hard_exclusions": [
+    "NO_FURTHER_POSTHOC_GLOBAL_DENSIFICATION_AFTER_BOTH1_WITHOUT_NEW_PREREGISTRATION",
+    "NO_GATE_RETUNING",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
