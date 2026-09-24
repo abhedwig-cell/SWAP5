@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25",
+  "phase": "BROADER_HYDRAULIC_MODEL_ENVELOPE_MODEL3_COMPLETE",
+  "status": "MODEL3_POSITIVE_PDI_REQUIRES_SEPARATE_ARCHITECTURE",
+  "source_authority": "corrected B1.10 MOD_MvG_functions SHA256 4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "model3_conclusion": {
+    "family": "bi-modal MvG",
+    "retention_capacity": "derivative-consistent logit(Se) Hermite representation generalizes; 20-25 support points in three stress parameterizations",
+    "conductivity": "requires family-specific tighter abs(logK)<=1e-4; 299-448 support points",
+    "Richards_fidelity": "9/9 PASS with identical nonlinear iteration/backtracking paths",
+    "complete_Richards_cpu_reduction_fraction_range": [0.352169,0.390877],
+    "matrix_median_cpu_reduction_fraction": 0.380194
+  },
+  "cross_family_scientific_result": "The theta/C derivative-consistency principle generalizes beyond unimodal MvG. Conductivity representation density does not transfer unchanged between hydraulic families and must be qualified family-specifically.",
+  "PDI_architecture_blocker": {
+    "models": [4,5,6,7,8,9,10,11],
+    "issue": "PDI conductivity can depend on soil temperature through vapor conductivity. A hydraulic-parameter-only immutable K table therefore does not preserve source semantics across changing temperature.",
+    "required_next_question": "Can PDI K be factorized into a frozen pressure-head/parameter component plus a cheap authoritative temperature-dependent component, or must temperature become an explicit representation coordinate?",
+    "reason_not_to_continue_blindly": "Choosing either factorization or a multidimensional h-temperature representation changes cache identity and representation architecture and requires separate source-level authority analysis."
+  },
+  "production_status": "RESEARCH_ONLY_NO_ADMISSION"
+}
