@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21A",
+  "title": "Prescribed-qbot perturbation envelope",
+  "parent": "F-AHL21",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "What is the strongest prospectively tested prescribed-qbot perturbation for which the analytical reference remains convergent and the adaptive representation preserves all frozen fidelity and nonlinear-path gates across all 12 material-regime cases?",
+  "frozen": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"],
+    "top_flux": "-K(initial)",
+    "bottom_mode": 2,
+    "candidate_representation": "same F-AHL16 selected representation as F-AHL21",
+    "gates": "identical to F-AHL21"
+  },
+  "prospective_bottom_flux_factors": [0.99,0.97,0.95],
+  "bottom_flux_definition": "-factor*K(initial)",
+  "selection_rule": "Select the smallest factor, hence the largest prospectively tested flux imbalance, for which the analytical reference converges and all 12 candidate cases pass. Do not reinterpret F-AHL21 0.90 as a passing level.",
+  "diagnostics": [
+    "bottom-node head response magnitude",
+    "candidate-reference bottom-node head delta",
+    "iteration/backtracking identity",
+    "reference convergence"
+  ],
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_SURFACE_SWITCH",
+    "NO_MODFLOW_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
