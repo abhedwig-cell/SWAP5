@@ -61,8 +61,12 @@ def main():
         exe=json.loads((a.root/f"p6a_{material}_execution.json").read_text())
         assert exe["scientific_trace_identity"] and exe["trace_complete"]
         rows=parse(a.root/f"p6a_{material}_o0.txt")
-        if len(rows)!=3072:
-            raise RuntimeError((material,len(rows)))
+        # P6A logs every T8 transaction while the prescribed-head boundary is
+        # active. G21/G22 contribute 704 observation intervals each and
+        # G23/G24 contribute 832 each, with 8 transactions per interval.
+        expected_rows=8*(704+704+832+832)
+        if len(rows)!=expected_rows:
+            raise RuntimeError((material,len(rows),expected_rows))
         target=[]; lagged=[]; current=[]
         for r in rows:
             g=(r["post_h"]-r["hbot"])/DELTA+1.0
@@ -70,7 +74,7 @@ def main():
             lagged.append(k_from_head(material,r["pre_h"])*g)
             current.append(k_from_head(material,r["post_h"])*g)
         lm=metrics(lagged,target); cm=metrics(current,target)
-        gate=(lm["count"]==3072 and
+        gate=(lm["count"]==8*(704+704+832+832) and
               lm["rmse_cm_per_day"]<=float(pre["oracle"]["rmse_gate_cm_per_day"]) and
               lm["max_abs_error_cm_per_day"]<=float(pre["oracle"]["max_abs_gate_cm_per_day"]) and
               lm["sign_mismatch_count"]==int(pre["oracle"]["sign_mismatch_gate"]))
