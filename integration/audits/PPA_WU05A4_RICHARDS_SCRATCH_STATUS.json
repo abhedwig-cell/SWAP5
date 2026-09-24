@@ -25,7 +25,8 @@
     "fix": "Reject short output before branch arithmetic. Existing supplied output extent is zeroed and neighboring caller elements remain untouched. Valid source formulas are unchanged.",
     "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_surface.ps1",
     "scope": "Dependency robustness for future surface integration; no production scope expansion.",
-    "test_result": "Pending persisted replay"
+    "recovery_point": "98d5e6997",
+    "test_result": "Persisted 98d5e6997 surface source-oracle gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps; short-output regression included"
   },
   "bounded_regression_bundle": {
     "baseline": "945ae1585",
