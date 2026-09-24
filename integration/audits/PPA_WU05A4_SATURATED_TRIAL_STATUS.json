@@ -17,7 +17,8 @@
     "implementation": "src/solver/mod_ppa_wu05a4_reduction_policy.f90",
     "contract": "Pure proposal routines preserve input history. Retry increments reduction up to three and remembers dt without resetting the source step counter. Recovery clears retry flag and reduces one decade after ten converged steps or increased dt. Caller owns timestep-vs-exchange retry selection and physical acceptance.",
     "scope": "Numerical-history component only; not connected to production owner or restart. Validity requires nonnegative bounded counters and finite positive current dt.",
-    "test_result": "Pending persisted replay"
+    "recovery_point": "9e3a11ff2",
+    "test_result": "Persisted 9e3a11ff2 Richards scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks. Three retries, ceiling, nine/ten-step recovery, larger-dt recovery, input immutability and invalid input rejection tested."
   },
   "trial_reduction_contract": {
     "baseline": "e10464322",
