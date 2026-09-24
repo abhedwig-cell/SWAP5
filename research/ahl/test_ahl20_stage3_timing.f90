@@ -110,6 +110,7 @@ program test_ahl20_stage3_timing
     write(*,'(A,1X,I0,1X,ES18.10,1X,ES18.10,1X,F10.6)') 'AHL20S3_PAIR',r,ref_times(r),candidate_times(r),ratios(r)
   end do
   call sort7(ratios)
+  call sort7(candidate_times)
 
   write(*,'(A,1X,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6)') &
        'AHL20S3_FIDELITY MAX_DH=',max_dh,'MAX_DTHETA=',max_dw,'DTOP=',dtop,'DBOTTOM=',dbottom,'MASS=',mass
