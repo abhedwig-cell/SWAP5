@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.rom-practical.p7-surface-boundary.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P7-SB01",
+  "date": "2026-09-24",
+  "title": "Targeted practical surface-boundary repair",
+  "central_question": "Can frozen S4 be given a minimal mass-conservative surface-boundary process that admits authentic rainfall without changing its vertical representation or hydraulic closure?",
+  "trigger": "P6B realistic forcing localized fixed-flux top-boundary semantics as the dominant practical defect.",
+  "frozen_core": {
+    "representation": "S4 [0,20,40,80,160] cm",
+    "closure": "CURRENT_LAYER_FACE",
+    "integrator": "RK4",
+    "dt_day": 0.005,
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ]
+  },
+  "repair_scope": {
+    "allowed": [
+      "one explicit surface store/ponding accounting variable outside the four hydraulic states",
+      "rainfall input as external mass",
+      "infiltration limited by a physically defined surface-to-first-layer hydraulic capacity",
+      "excess rainfall retained as ponding and/or explicit runoff according to one preregistered bounded rule",
+      "mass ledger including surface storage and runoff"
+    ],
+    "forbidden": [
+      "changing S4 layer placement",
+      "adding subsurface states",
+      "material-specific calibration",
+      "empirical rainfall bias correction",
+      "root uptake",
+      "ETref extraction",
+      "application acceptance",
+      "production admission"
+    ]
+  },
+  "candidate_variants": [
+    {
+      "id": "SB0",
+      "definition": "existing fixed-flux boundary",
+      "role": "known failing baseline"
+    },
+    {
+      "id": "SB1",
+      "definition": "single surface store with rainfall mass input; infiltration flux bounded by first-layer hydraulic intake; excess remains in surface store up to a fixed zero-calibration capacity, then explicit runoff",
+      "role": "targeted repair"
+    }
+  ],
+  "qualification_order": [
+    "derive SB1 equations and mass signs from existing SWAP top-boundary semantics where possible",
+    "unit mass-conservation tests",
+    "replay authentic 60-day Hupsel rainfall workload",
+    "only if numerically complete, compare storage/profile timing against Richards with semantically matching rainfall/surface handling"
+  ],
+  "no_parameter_fitting": true,
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
