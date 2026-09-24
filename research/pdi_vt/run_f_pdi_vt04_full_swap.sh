@@ -21,6 +21,24 @@ git clone -q https://github.com/SWAP-model/SWAP.git "$BUILDROOT/control-src"
 git -C "$BUILDROOT/control-src" checkout -q "$SRC_SHA"
 cp -a "$BUILDROOT/control-src" "$BUILDROOT/candidate-src"
 
+pin_build_deps () {
+  local src="$1"
+  cat > "$src/subprojects/toml-f.wrap" <<'EOF'
+[wrap-git]
+directory = toml-f
+url = https://github.com/toml-f/toml-f
+revision = f9ff54793b2d1a3edca7d6890548d18d48c98e36
+EOF
+  cat > "$src/subprojects/test-drive.wrap" <<'EOF'
+[wrap-git]
+directory = test-drive
+url = https://github.com/fortran-lang/test-drive.git
+revision = v0.4.0
+EOF
+}
+pin_build_deps "$BUILDROOT/control-src"
+pin_build_deps "$BUILDROOT/candidate-src"
+
 git clone -q https://github.com/SWAP-model/swap-testcases.git "$BUILDROOT/cases-src"
 git -C "$BUILDROOT/cases-src" checkout -q "$CASE_SHA"
 
