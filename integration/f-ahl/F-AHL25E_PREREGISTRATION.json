@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25E",
+  "title": "Bi-modal Richards component attribution",
+  "parent": "F-AHL25D",
+  "phase": "PREREGISTERED_ATTRIBUTION",
+  "failed_cases": ["M3_SEPARATED:wet","M3_DOMINANT_SECOND:dry"],
+  "question": "Are the strict bottom-flux failures controlled by retention/capacity approximation or by conductivity approximation?",
+  "variants": [
+    "selected lookup theta/C + selected lookup K",
+    "selected lookup theta/C + exact analytical K",
+    "exact analytical theta/C + selected lookup K"
+  ],
+  "frozen_gates": "identical to F-AHL25D",
+  "decision_rule": "Attribute the failed observable to a component only when restoring that component analytically closes the frozen bottom-flux gate without changing the nonlinear path. If both matter, record mixed attribution.",
+  "hard_exclusions": ["NO_GATE_RETUNING","NO_TIMING","NO_PRODUCTION_ADMISSION"]
+}
