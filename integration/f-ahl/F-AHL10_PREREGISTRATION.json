@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10",
+  "title": "Cross-material cross-regime Richards falsification",
+  "parent": "F-AHL09R",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the derivative-consistent adaptive hydraulic representation preserve Richards fidelity and the analytical nonlinear path across materially distinct soils and wet-to-dry hydraulic states?",
+  "materials": ["B01","B12","O05","O14"],
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0,"bottom_head_cm":-7.5},
+    {"id":"mid","initial_head_cm":-75.0,"bottom_head_cm":-50.0},
+    {"id":"dry","initial_head_cm":-500.0,"bottom_head_cm":-400.0}
+  ],
+  "case_count": 12,
+  "forcing_policy": "For each case the fixed top flux is set from the authoritative analytical initial conductivity, matching the controlled F-AHL04A construction; bottom mode remains prescribed head.",
+  "representation": "F-AHL09 derivative-consistent cubic-Hermite z=logit(Se) retention, C obtained from the same interpolant derivative, log(K) linear lookup, exact authoritative handling for h>-1 cm.",
+  "gates_per_case": {
+    "candidate_converged": true,
+    "same_nonlinear_iteration_count_as_analytical": true,
+    "same_backtracking_count_as_analytical": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "Advance to broad timing only if all 12 prospectively defined cases pass all gates. Failures are classified by material, hydraulic regime and observable; gates are not retuned.",
+  "hard_exclusions": [
+    "NO_PERFORMANCE_CLAIM_FROM_THIS_FIDELITY_MATRIX",
+    "NO_BOTTOM_BOUNDARY_GENERALIZATION",
+    "NO_SURFACE_REGIME_REDESIGN",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
