@@ -1,0 +1,30 @@
+name: F-PDI-VT04 full SWAP vapor-on regression
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'research/pdi_vt/f_pdi_vt04_make_case.py'
+      - 'research/pdi_vt/f_pdi_vt04_compare.py'
+      - 'research/pdi_vt/run_f_pdi_vt04_full_swap.sh'
+      - 'integration/f-pdi-vt/F-PDI-VT04_PREREGISTRATION.json'
+      - '.github/workflows/f-pdi-vt04-full-swap.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/pdi_vt/run_f_pdi_vt04_full_swap.sh /tmp/f_pdi_vt04.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-pdi-vt04-${{ github.run_id }}
+          path: |
+            /tmp/f_pdi_vt04.json
+            /tmp/fpdivt04-vap-case-hash.txt
+            /tmp/fpdivt04-novap-case-hash.txt
+            /tmp/control_vap.log
+            /tmp/candidate_vap.log
+            /tmp/control_novap.log
+            /tmp/candidate_novap.log
