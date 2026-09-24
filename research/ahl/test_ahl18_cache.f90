@@ -10,7 +10,7 @@ program test_ahl18_cache
   type(b110_default_mvg_parameters_t),target :: hp,hp2
   type(b110_default_mvg_provider_t) :: provider,provider2
   type(ahl18_cache_t) :: cache
-  type(ahl18_cache_key_t) :: key,key2,key_policy
+  type(ahl18_cache_key_t) :: key,key2,key_policy,key_branch,key_model
   type(ahl17_table_t) :: table,table_ref
   real(real64) :: cof(24,1),cof2(24,1),t0,t1,hit_elapsed
   logical :: hit,ok
@@ -38,6 +38,15 @@ program test_ahl18_cache
   end do
   call cpu_time(t1);hit_elapsed=(t1-t0)/real(NREPEAT,real64)
 
+  ! Returned tables are value copies. Deliberately mutate one and prove that
+  ! a subsequent cache hit returns the original immutable cached content.
+  table=table_ref
+  table%x(1)=nearest(table%x(1),1.0_real64)
+  call cache%get_or_build(key,hp,provider,table,hit,ok)
+  call require(ok.and.hit,'post-mutation request is hit')
+  call require(all(table%x==table_ref%x),'caller mutation cannot alter cached x')
+  call require(all(table%z==table_ref%z),'caller mutation cannot alter cached z')
+
   cof2=cof
   cof2(4,1)=nearest(cof2(4,1),1.0_real64)
   call initialize_b110_default_mvg_parameters(hp2,cof2)
@@ -53,11 +62,21 @@ program test_ahl18_cache
   call require(ok,'changed policy builds')
   call require(.not.hit,'changed policy misses')
 
+  key_branch=make_ahl18_key(hp,'B110_MVG',1,2)
+  call cache%get_or_build(key_branch,hp,provider,table,hit,ok)
+  call require(ok,'changed branch policy builds')
+  call require(.not.hit,'changed branch policy misses')
+
+  key_model=make_ahl18_key(hp,'B110_MVG_ALT',1,1)
+  call cache%get_or_build(key_model,hp,provider,table,hit,ok)
+  call require(ok,'changed model identity builds')
+  call require(.not.hit,'changed model identity misses')
+
   call cache%stats(builds,hits,misses,entries)
-  call require(builds==3,'three builds expected')
-  call require(hits==NREPEAT,'repeat hit count')
-  call require(misses==3,'three misses expected')
-  call require(entries==3,'three entries expected')
+  call require(builds==5,'five unique keys build exactly five times')
+  call require(hits==NREPEAT+1,'repeat plus mutation-check hit count')
+  call require(misses==5,'five misses expected')
+  call require(entries==5,'five entries expected')
 
   write(*,'(A,1X,A,Z16.16)') 'AHL18_FINGERPRINT_BASE','0x',key%fingerprint
   write(*,'(A,1X,A,ES16.8)') 'AHL18_HIT_TIME','SECONDS=',hit_elapsed
