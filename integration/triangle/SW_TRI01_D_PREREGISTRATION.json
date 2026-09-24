@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.sw_tri01.d.preregistration.v1",
+  "work_unit": "SW-TRI01-D",
+  "date": "2026-09-24",
+  "title": "Minimal live SWAP5 + MODFLOW6 + Ribasim three-model window",
+  "status": "PREREGISTERED_BLOCKED_ON_TRI01_C_PASS",
+  "prerequisites": {
+    "tri01a": "PASS_SINGLE_JOINT_SWAP_CANDIDATE",
+    "tri01b": "PASS_JOINT_TRANSACTION_PARTICIPANT",
+    "tri01c": "REQUIRED_PASS_BEFORE_EXECUTION"
+  },
+  "product_pins": {
+    "modflow6": {
+      "version": "6.8.0",
+      "authority": "F-GC49C/F-GC49D live admitted product line"
+    },
+    "ribasim": {
+      "version": "2026.1.2",
+      "sha": "eae77424a4078497d40d8197237cb83e3aba6a83",
+      "authority": "ADM01-G6/G7"
+    }
+  },
+  "topology": {
+    "swap_columns": 1,
+    "groundwater_cells": 1,
+    "ribasim_basins": 1,
+    "surface_exchange_levels": 1,
+    "drainage_variant": "EXTENDED_SIGNED",
+    "swap_bottom_mode": 5
+  },
+  "execution_contract": [
+    "Use one real FMR/SWAP joint trial from a frozen accepted origin for every coupling iterate.",
+    "Use one live MODFLOW6 prepared solve for the whole coupling window.",
+    "Use a fresh real Ribasim model instance from the same accepted Ribasim origin for every surface receipt trial.",
+    "Never merge independently executed SWAP candidates.",
+    "Ribasim receipt mismatch updates the surface coupling iterate and causes same-origin SWAP/Ribasim recomposition before publication.",
+    "Groundwater flux mismatch updates the MODFLOW boundary term and continues the same prepared solve.",
+    "Convergence requires MODFLOW nonlinear convergence, groundwater interface flux residual within tolerance, and Ribasim requested-versus-realized surface transfer within tolerance.",
+    "No model publishes accepted state before TRI01-C publication preflight is satisfied."
+  ],
+  "qualification_strategy": {
+    "swap_bridge": "qualification-only same-origin joint-participant bridge or executable; no production ABI claim",
+    "groundwater": "live Modflow6PreparedSolveSession",
+    "surface_water": "real Ribasim same-origin candidate realization based on ADM01-G7 semantics"
+  },
+  "required_cases": [
+    "D1 positive drainage to Ribasim with coupled groundwater response",
+    "D2 negative infiltration with sufficient Ribasim availability",
+    "D3 availability-limited infiltration requiring at least one same-origin surface recomposition"
+  ],
+  "required_evidence": [
+    "one prepared MODFLOW solve per window",
+    "real SWAP joint candidate on every coupling iterate",
+    "real Ribasim receipt on every coupling iterate",
+    "no early MODFLOW timestep publication",
+    "no early Ribasim accepted-state publication",
+    "groundwater and surface residual histories",
+    "mass closure for SWAP groundwater interface and Ribasim surface transfer",
+    "exactly one final SWAP transaction commit under TRI01-B authority"
+  ],
+  "nonclaims": [
+    "no multi-column or multi-basin topology",
+    "no automatic SWMAN=2",
+    "no surface-water allocation competition",
+    "no multilevel drainage",
+    "no production admission"
+  ],
+  "production_admission": false
+}
