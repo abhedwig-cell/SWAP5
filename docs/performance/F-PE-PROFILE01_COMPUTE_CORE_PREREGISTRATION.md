@@ -655,3 +655,40 @@ The bounded safe interpretation is:
 > The first Newton iteration can reuse the constitutive tuple already evaluated immediately before the iteration loop, provided the implementation preserves all currently consumed K/C/dKdh/theta semantics and does not change legacy non-provider behavior.
 
 No repair is authorized in PROFILE01. Later repair must prove result identity across SWKIMPL modes and relevant boundary routes, because subsequent Newton iterations legitimately require fresh constitutive evaluation after head updates.
+
+
+## H03 refinement — constitutive tuple reuse across Newton iterations
+
+Further control-flow inspection shows that H03 is not limited to the first Newton iteration.
+
+For the explicit constitutive-provider route the current pattern is:
+
+```text
+pre-loop: evaluate constitutive tuple at h_k
+iteration start: evaluate constitutive tuple again at unchanged h_k
+...
+backtracking trial: update h -> evaluate complete tuple at candidate h
+accepted backtracking trial leaves that tuple in provider scratch
+next Newton iteration start: evaluate complete tuple again at the same accepted h
+```
+
+Therefore:
+
+- iteration 1 start duplicates the pre-loop constitutive evaluation;
+- for every subsequent Newton iteration, its start evaluation duplicates the complete tuple already produced by the accepted backtracking evaluation of the previous iteration, provided no intervening operation changes `state%h`;
+- rejected backtracking attempts remain legitimate fresh evaluations because their candidate `h` differs;
+- the final accepted backtracking evaluation is not redundant merely because the solve then converges: its `theta` result is part of evaluating the accepted candidate state.
+
+This supports the bounded source-derived estimate:
+
+```text
+avoidable constitutive evaluations per solve ~= nonlinear_iterations
+```
+
+for the inspected explicit provider route, while total provider evaluations are structurally:
+
+```text
+total ~= 1 pre-loop + nonlinear_iterations + backtracking_attempts
+```
+
+The exact dynamic relation must be checked against the existing counters before it is used as measured evidence. No repair is authorized in PROFILE01.
