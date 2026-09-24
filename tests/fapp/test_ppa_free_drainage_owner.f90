@@ -51,6 +51,8 @@ program test_ppa_free_drainage_owner
   use mod_ppa_wu04c_runtime_publication, only: publish_ppa_wu04c_accepted_progress, PPA_WU04C_PUBLICATION_OK
   use mod_ppa_free_drainage_temporal_indicator, only: evaluate_free_drainage_temporal_indicator
   use mod_ppa_mvg_storage_binding, only: evaluate_mvg_storage_difference_service
+  use mod_ppa_forcing_event_derivative, only: evaluate_forcing_event_derivative
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
@@ -757,11 +759,11 @@ contains
     type(fixed_flux_top_boundary_provider_t),target::top_provider
     type(reference_richards_legacy_solver_t)::solver
     type(reference_richards_legacy_workspace_t)::workspace
-    type(soil_water_solve_request_t)::request
+    type(soil_water_solve_request_t)::request,invalid
     type(soil_water_solve_result_t)::result
     type(soil_water_temporal_indicator_request_t)::old_history,event_history
     type(soil_water_temporal_indicator_result_t)::old_bound,event_bound
-    real(real64),allocatable::history(:),event_derivative(:),heads_before(:),water_before(:)
+    real(real64),allocatable::history(:),event_derivative(:),heads_before(:),water_before(:),computed(:)
     real(real64)::dt,ledger
     integer::exponent,converged,rejected,event_eligible
     logical::ok
@@ -806,6 +808,46 @@ contains
     request%evaluation%source_sink=>sink
     request%evaluation%top_boundary=>top_provider
     request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
+    allocate(computed(p%active_nodes))
+    call bind_b110_default_mvg_provider(provider,hydraulics,T1-T0)
+    call evaluate_forcing_event_derivative(request,computed,ok)
+    call require(ok.and.maxval(abs(computed-event_derivative))<= &
+         1.0e-12_real64*max(1.0_real64,maxval(abs(event_derivative))),'guarded event derivative matches oracle')
+    do exponent=1,8
+      invalid=request
+      select case(exponent)
+      case(1)
+        invalid%boundary%bottom_mode=2
+      case(2)
+        invalid%numerical%conductivity_mean_method=2
+      case(3)
+        invalid%numerical%conductivity_implicit_mode=1
+      case(4)
+        nullify(invalid%evaluation%constitutive)
+      case(5)
+        invalid%base_state%water_content(1)=nearest(invalid%base_state%water_content(1),1.0_real64)
+      case(6)
+        invalid%boundary%top_flux=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(7)
+        invalid%base_state%active_nodes=0
+      case(8)
+        nullify(invalid%evaluation%source_sink)
+      end select
+      computed=12345.0_real64
+      call evaluate_forcing_event_derivative(invalid,computed,ok)
+      call require(.not.ok.and.all(computed==0.0_real64),'event derivative rejection is atomic')
+    end do
+    geometry%dz(1)=0.0_real64
+    call evaluate_forcing_event_derivative(request,computed,ok)
+    call require(.not.ok.and.all(computed==0.0_real64),'event derivative rejects zero geometry')
+    geometry%dz=p%dz
+    hydraulics%ksatexm_extension_enabled=.true.
+    call evaluate_forcing_event_derivative(request,computed,ok)
+    call require(.not.ok.and.all(computed==0.0_real64),'event derivative rejects extension')
+    hydraulics%ksatexm_extension_enabled=.false.
+    call evaluate_forcing_event_derivative(request,computed(1:1),ok)
+    call require(.not.ok,'event derivative rejects output shape')
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_EVENT_DERIVATIVE=PASS'
     converged=0; rejected=0; event_eligible=0
     do exponent=13,23
       dt=0.5_real64/2.0_real64**exponent
