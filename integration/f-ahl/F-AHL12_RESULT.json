@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12",
+  "phase": "TIGHT_ENVELOPE_BUILD_ATTEMPT",
+  "status": "STOP_GLOBAL_DENSIFICATION_ERROR_METRIC_PATHOLOGY",
+  "workflow_run": 36043460468,
+  "workflow_job": 107781055932,
+  "completed_before_block": {
+    "theta1_tables": {
+      "B01_points": 32,
+      "B12_points": 29,
+      "O05_points": 30,
+      "O14_points": 33
+    },
+    "k1_partial_tables": {
+      "B01_points": 83,
+      "B12_points": 59
+    }
+  },
+  "blocker": {
+    "material": "O05",
+    "variant": "k1",
+    "symptom": "adaptive recursion reached depth 40 while attempting to enforce abs(log K interpolation error)<=1e-3 in the extreme dry tail",
+    "classification": "ERROR_METRIC_NUMERICAL_PATHOLOGY_NOT_EVIDENCE_OF_REQUIRED_PHYSICAL_RESOLUTION"
+  },
+  "interpretation": "At extremely small conductivity, a uniform log-relative K accuracy requirement drives refinement against floating-point sensitivity in the analytical conductivity evaluation. Continuing to add global knots would violate the preregistered stop rule and would not be a physically justified response.",
+  "decision": "STOP_GLOBAL_TOLERANCE_TIGHTENING",
+  "next_action": "Replace the pure logK error criterion by a prospectively defined floor-scaled relative conductivity metric that remains relative where K is hydrologically relevant and becomes absolute below a fixed conductivity floor.",
+  "nonclaims": [
+    "No AHL12 Richards closure result exists because the prospective table set could not be generated.",
+    "The AHL09 representation is not rejected by this builder pathology."
+  ]
+}
