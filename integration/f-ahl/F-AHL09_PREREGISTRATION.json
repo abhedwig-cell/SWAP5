@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL09",
+  "title": "Derivative-consistent adaptive retention interpolant",
+  "parent": "F-AHL08",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can a shared smooth retention interpolant provide both theta(h) and C(h)=dtheta/dh consistently, while K is represented separately, so that Richards retains its analytical convergence path without losing the runtime advantage of tabulated hydraulics?",
+  "representation": {
+    "independent_coordinate": "x = log10(-h)",
+    "retention_coordinate": "z = logit(Se)",
+    "retention_interpolant": "cubic Hermite in z(x)",
+    "knot_slopes": "derived from authoritative analytical C through dz/dx",
+    "theta_runtime": "reconstruct Se from z, then theta",
+    "capacity_runtime": "differentiate the same Hermite interpolant and apply the chain rule to obtain dtheta/dh",
+    "conductivity_runtime": "separate log(K) lookup on the same knot support",
+    "near_saturation": "authoritative exact handling for h > -1 cm"
+  },
+  "stage_1": {
+    "materials": ["B01","B12","O05","O14"],
+    "constitutive_error_gates": {
+      "theta_span_normalized_abs": 1e-5,
+      "abs_log_capacity": 1e-2,
+      "abs_log_conductivity": 1e-2
+    },
+    "runtime_rule": "candidate must be faster than full analytical theta+C+K for all tested materials"
+  },
+  "stage_2": {
+    "fixture": "F-AHL04A nonlinear Richards fixture",
+    "required_convergence": "same nonlinear iteration and backtracking counts as analytical",
+    "fidelity_gates": {
+      "max_abs_pressure_head_delta_cm": 0.05,
+      "max_abs_water_content_delta": 1e-4,
+      "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+      "mass_residual_abs_cm": 1e-12
+    }
+  },
+  "scientific_rationale": "F-AHL07 showed that independently approximating C while theta is exact changes the Newton path, consistent with Jacobian/residual inconsistency. F-AHL08 showed that keeping theta and C fully analytical and looking up only K has no useful speed benefit. The next candidate therefore approximates theta and C together as one derivative-consistent object.",
+  "hard_exclusions": [
+    "NO_INDEPENDENT_THETA_AND_C_TABLES",
+    "NO_GATE_RETUNING",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
