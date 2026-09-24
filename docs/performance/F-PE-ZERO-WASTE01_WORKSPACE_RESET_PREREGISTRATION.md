@@ -393,3 +393,20 @@ On the next normal TRIDAG solve:
 Therefore the compact-array zero-fill is overwrite-before-read and may be removed without changing the release semantics or the compact allocation policy.
 
 H9 intentionally does not yet retain the expanded 2n allocation across solves. Retaining capacity could avoid repeated allocation/deallocation, but current `reference_tridag` infers capture mode from array size, so capacity and behavior are coupled. Decoupling those is a separate design/performance work item.
+
+
+## ZW01-H10 preregistration — retain TRIDAG capture capacity, decouple capacity from capture mode
+
+The current sensitivity path grows `tridag_gamma` from n to 2n in `prepare_reference_tridag_factorization_capture` and shrinks it back to n in `release_reference_tridag_factorization_capture`. Repeated sensitivity solves therefore allocate/deallocate twice per solve even when active node count is unchanged.
+
+H10 separates storage capacity from solver behavior:
+
+- add an explicit workspace boolean `tridag_factorization_capture_active`;
+- preparation ensures 2n capacity only when not already available, then sets capture active;
+- release only sets capture inactive and retains 2n capacity for reuse;
+- `reference_tridag` accepts an optional explicit capture-mode argument; existing callers retain historical size-based behavior when the argument is absent;
+- `HeadCalc` passes the workspace capture-active flag, so retained 2n capacity does not cause unwanted beta-factor writes on normal solves.
+
+Expected effect after first sensitivity solve at fixed n: zero further n↔2n allocation/deallocation churn for factorization capture.
+
+Gates: accepted-direction/sensitivity outputs remain bit-identical, no additional beta capture on normal solves, H7 poison gate PASS, FKT22 trajectory gate PASS, and no change in nonlinear/Jacobian counts.
