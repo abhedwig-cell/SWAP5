@@ -1,6 +1,6 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
+param([ValidateSet('HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
 if ($Scope -eq 'Atm02Dense' -and !$StableStorage) { throw 'Atm02Dense requires explicit StableStorage' }
 if ($Scope -eq 'Atm02Events' -and !$StableStorage) { throw 'Atm02Events requires explicit StableStorage' }
@@ -67,6 +67,7 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Link failed $opt $test" }
             $testArguments = @()
             if ($Scope -eq 'Guards') { $testArguments = @('--guards') }
+            if ($Scope -eq 'HydraulicCopy') { $testArguments = @('--hydraulic-copy') }
             if ($StableStorage) {
                 $testArguments = @('--stable-storage')
                 if ($Scope -eq 'Guards') { $testArguments = @('--stable-guards') }
@@ -96,6 +97,7 @@ try {
             } else {
                 $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
                 if ($Scope -eq 'Guards') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS' }
+                if ($Scope -eq 'HydraulicCopy') { $requiredMarker = 'PPA_OWNER_HYDRAULIC_COPY=PASS' }
                 if ($Scope -eq 'Receipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS' }
                 if ($Scope -eq 'GashReceipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GASH_SOURCE_RECEIPT_RESTART=PASS' }
                 if ($Scope -eq 'Atm02') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_ATM02=PASS' }

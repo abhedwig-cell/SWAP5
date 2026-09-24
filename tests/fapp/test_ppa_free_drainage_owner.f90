@@ -10,6 +10,7 @@ program test_ppa_free_drainage_owner
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_commit_receipt_record_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, fmr_committed_top_state_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+  use mod_fmr_production_application_bootstrap, only: fmr_committed_hydraulic_state_t
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK
@@ -110,6 +111,11 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
+  if(trim(test_scope)=='--hydraulic-copy') then
+    call verify_hydraulic_copy(config)
+    write(*,'(a)') 'PPA_OWNER_HYDRAULIC_COPY=PASS'
+    stop
+  end if
   if(trim(test_scope)=='--atm02'.or.trim(test_scope)=='--atm02-events'.or.trim(test_scope)=='--atm02-dense') then
     config%storage_difference => evaluate_mvg_storage_difference_service
     config%numerical%transaction%retry_scale=0.8_real64
@@ -138,6 +144,54 @@ program test_ppa_free_drainage_owner
   call verify_wu04c_production_composition(config)
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
+  subroutine verify_hydraulic_copy(profile)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_committed_hydraulic_state_t),allocatable::copied(:),again(:)
+    type(fmr_committed_restart_bundle_t)::bundle
+    integer::code,tile
+    logical::ok
+    call owner%copy_committed_hydraulic_states(copied,code)
+    if(code==FMR_APP_BOOT_OK.or.allocated(copied)) error stop 'uninitialized hydraulic copy'
+    call owner%initialize(profile,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy initialize'
+    call owner%copy_committed_hydraulic_states(copied,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy status'
+    if(size(copied)/=NTILE.or..not.all(copied%available)) error stop 'hydraulic copy tiles'
+    do tile=1,NTILE
+      if(size(copied(tile)%water_content)/=profile%tiles(tile)%initial_state%active_nodes) &
+           error stop 'hydraulic copy active size'
+      if(any(abs(copied(tile)%water_content-profile%tiles(tile)%initial_state%water_content)>0.0_real64)) &
+           error stop 'hydraulic copy water'
+      if(any(abs(copied(tile)%pressure_head_cm-profile%tiles(tile)%initial_state%pressure_head)>0.0_real64)) &
+           error stop 'hydraulic copy pressure'
+    end do
+    call owner%export_committed_restart(92001_int64,bundle,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy export'
+    copied(1)%water_content=-99.0_real64
+    copied(1)%pressure_head_cm=99.0_real64
+    call owner%copy_committed_hydraulic_states(again,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'hydraulic isolation copy'
+    if(any(abs(again(1)%water_content-profile%tiles(1)%initial_state%water_content)>0.0_real64)) &
+         error stop 'hydraulic copy aliases water owner'
+    if(any(abs(again(1)%pressure_head_cm-profile%tiles(1)%initial_state%pressure_head)>0.0_real64)) &
+         error stop 'hydraulic copy aliases pressure owner'
+    call owner%restore_committed_restart(bundle,92001_int64,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy restore'
+    call owner%copy_committed_hydraulic_states(again,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy again'
+    do tile=1,NTILE
+      if(any(abs(again(tile)%water_content-profile%tiles(tile)%initial_state%water_content)>0.0_real64)) &
+           error stop 'hydraulic copy isolation water'
+      if(any(abs(again(tile)%pressure_head_cm-profile%tiles(tile)%initial_state%pressure_head)>0.0_real64)) &
+           error stop 'hydraulic copy isolation pressure'
+      if(again(tile)%revision/=copied(tile)%revision) error stop 'hydraulic copy revision'
+      if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) error stop 'hydraulic copy time'
+    end do
+    call owner%close(code)
+    call owner%copy_committed_hydraulic_states(again,code)
+    if(code==FMR_APP_BOOT_OK.or.allocated(again)) error stop 'closed hydraulic copy'
+  end subroutine verify_hydraulic_copy
   subroutine verify_atm02_owner(profile,events)
     type(fmr_production_application_config_t),intent(in)::profile
     logical,intent(in)::events

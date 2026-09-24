@@ -86,6 +86,13 @@ module mod_fmr_production_application_bootstrap
     real(real64) :: ponding_depth_cm = 0.0_real64
   end type fmr_committed_top_state_t
 
+  type, public :: fmr_committed_hydraulic_state_t
+    logical :: available = .false.
+    integer(int64) :: revision = 0_int64
+    real(real64) :: committed_time = 0.0_real64
+    real(real64), allocatable :: pressure_head_cm(:), water_content(:)
+  end type fmr_committed_hydraulic_state_t
+
   type, public :: fmr_production_application_bootstrap_t
     private
     procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
@@ -117,6 +124,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
     procedure, public :: copy_committed_top_states => production_application_copy_committed_top_states
+    procedure, public :: copy_committed_hydraulic_states => production_application_copy_committed_hydraulic_states
     procedure, public :: export_committed_restart => production_application_export_committed_restart
     procedure, public :: restore_committed_restart => production_application_restore_committed_restart
     procedure, public :: close => production_application_close
@@ -572,6 +580,46 @@ contains
     end do
     status = FMR_APP_BOOT_OK
   end subroutine production_application_copy_committed_top_states
+
+  subroutine production_application_copy_committed_hydraulic_states(self, states, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    type(fmr_committed_hydraulic_state_t), allocatable, intent(out) :: states(:)
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: available, time_available
+    integer :: i,n
+
+    status=FMR_APP_BOOT_NOT_READY
+    if (.not.self%ready()) return
+    allocate(states(size(self%committed)))
+    do i=1,size(self%committed)
+      call self%committed(i)%snapshot(snapshot,available)
+      if (.not.available) exit
+      select type (physical=>snapshot)
+      class is (fmr_b110_physical_state_t)
+        n=physical%active_nodes
+        if(n<=0) exit
+        if(.not.allocated(physical%pressure_head).or..not.allocated(physical%water_content)) exit
+        if(size(physical%pressure_head)<n.or.size(physical%water_content)<n) exit
+        if(.not.all(ieee_is_finite(physical%pressure_head(1:n)))) exit
+        if(.not.all(ieee_is_finite(physical%water_content(1:n)))) exit
+        states(i)%pressure_head_cm=physical%pressure_head(1:n)
+        states(i)%water_content=physical%water_content(1:n)
+      class default
+        exit
+      end select
+      call self%committed(i)%current_time(states(i)%committed_time,time_available)
+      if(.not.time_available) exit
+      if(.not.ieee_is_finite(states(i)%committed_time)) exit
+      states(i)%revision=self%committed(i)%current_revision()
+      states(i)%available=.true.
+    end do
+    if(.not.all(states%available)) then
+      deallocate(states)
+      return
+    end if
+    status=FMR_APP_BOOT_OK
+  end subroutine production_application_copy_committed_hydraulic_states
 
   subroutine production_application_export_committed_restart(self, parameter_set_identity, bundle, exported, status)
     class(fmr_production_application_bootstrap_t), intent(in) :: self
