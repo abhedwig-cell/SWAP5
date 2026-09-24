@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04C",
+  "phase": "PREREGISTER",
+  "purpose": "Finite-control full-model qualification with an explicit physically meaningful soil-temperature path.",
+  "case": {
+    "base": "official grassgrowth legacy case at a839e2e905f34dd264ad0c739f638454b3023def",
+    "initial_head": "-1.0E5 cm uniformly over profile",
+    "heat_flow": "SWHEA=1, retaining the official numerical heat parameters and positive TSOIL profile (15,12,10,9 deg C)",
+    "vapor_on": "SWVAPOR=1",
+    "negative_control": "SWVAPOR=0"
+  },
+  "gates": [
+    "all four runs normal completion",
+    "control Vapor-on BFO finite",
+    "candidate Vapor-on BFO finite",
+    "Vapor-on control and candidate numerically different",
+    "NoVap control and candidate numerically identical",
+    "CRITDEVMASBAL=1e-6 remains enforced"
+  ],
+  "forbidden": ["No physics changes","No gate relaxation","No AHL changes"]
+}
