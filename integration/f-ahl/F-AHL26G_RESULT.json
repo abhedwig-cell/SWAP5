@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26G",
+  "phase": "PDI10_COMPONENT_ATTRIBUTION_AND_DRY_REFERENCE_ENVELOPE_COMPLETE",
+  "status": "MIXED_COMPONENT_ATTRIBUTION_DRY_DT_0_125_SELECTED",
+  "workflow_run": 36053054765,
+  "workflow_job": 107813157141,
+  "wet": {
+    "selected_dbottom": 1.089100e-5,
+    "exact_K_dbottom": 2.411139e-7,
+    "exact_retention_dbottom": 1.089105e-5,
+    "cause": "conductivity representation"
+  },
+  "mid": {
+    "selected_dbottom": 1.201178e-5,
+    "exact_K_dbottom": 1.223579e-5,
+    "exact_retention_dbottom": 2.726558e-7,
+    "cause": "retention/capacity representation"
+  },
+  "dry_reference_envelope": {
+    "0.125_day": "REFERENCE_CONVERGED",
+    "0.0625_day": "REFERENCE_NONCONVERGENCE",
+    "0.03125_day": "REFERENCE_CONVERGED_BUT_EXACT_BOTH_CANDIDATE_REPLAY_DID_NOT_CONVERGE",
+    "selected_largest_reference_valid_dt_day": 0.125
+  },
+  "finding": "PDI10 strict endpoint fidelity is regime-dependent: wet sensitivity is K-controlled, mid sensitivity is theta/C-controlled. A single uniform constitutive error target is therefore not automatically optimal even within one hydraulic family.",
+  "next_action": "F-AHL26H independently tighten the controlling representation component for wet and mid, then freeze the loosest successful pair and rerun the full six-case NoVap matrix using dt=0.125 day for PDI10 dry.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_VAPOR_ENABLED_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
