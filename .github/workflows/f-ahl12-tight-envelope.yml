@@ -1,0 +1,25 @@
+name: F-AHL12 tight-envelope closure
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl12_generate_variants.py'
+      - 'research/ahl/run_ahl12_tight_envelope.sh'
+      - 'integration/f-ahl/F-AHL12_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl12-tight-envelope.yml'
+  workflow_dispatch:
+
+jobs:
+  closure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tight-envelope closure test
+        run: |
+          bash research/ahl/run_ahl12_tight_envelope.sh /tmp/ahl12_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl12-${{ github.run_id }}
+          path: /tmp/ahl12_result.txt
