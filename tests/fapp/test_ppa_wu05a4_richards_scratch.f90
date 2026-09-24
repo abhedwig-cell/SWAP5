@@ -204,6 +204,23 @@ contains
     call account_candidate_mass(checkpoint,candidate,1.0_real64,[0.0_real64],exchange, &
         [0.0_real64,0.0_real64],matrix,1.e-13_real64,account,status)
     call check(status/=0.and..not.account%valid,138)
+    call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
+        checkpoint,1.e-13_real64,candidate,account,valid)
+    call check(valid.and.candidate%valid.and.account%valid,140)
+    call check(abs(candidate%payload%domain_water_storage(1)-end_store)<1.e-13_real64,141)
+    checkpoint%revision=1
+    call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
+        checkpoint,1.e-13_real64,candidate,account,valid)
+    call check(.not.valid.and..not.candidate%valid.and..not.account%valid,142)
+    checkpoint%revision=0
+    checkpoint%payload%pore_water(1,:)=[0.25_real64,0.125_real64]
+    call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
+        checkpoint,1.e-13_real64,candidate,account,valid)
+    call check(.not.valid.and..not.candidate%valid,143)
+    checkpoint%payload%pore_water(1,:)=[0.125_real64,0.25_real64]
+    call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
+        checkpoint,1.e-13_real64,candidate,account,valid)
+    call check(valid,144)
     call ppa_wu05a2_discard_candidate(candidate)
     call check(initial%revision==0.and.abs(initial%payload%domain_water_storage(1)-start_store)<1.e-14_real64,139)
     call release_reference_workspace(scratch)

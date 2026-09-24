@@ -1,6 +1,10 @@
 ! Opt-in scratch adapter only: not called by production HeadCalc yet.
 module mod_ppa_wu05a4_richards_scratch_binding
   use, intrinsic::iso_fortran_env,only:real64,int64
+  use, intrinsic::ieee_arithmetic,only:ieee_is_finite
+  use mod_ppa_wu05a2_macropore_state
+  use mod_ppa_wu05a3_interval_candidate,only:prepare_macropore_interval_candidate
+  use mod_ppa_wu05a3_candidate_mass,only:candidate_mass_account,account_candidate_mass
   use mod_reference_richards_workspace,only:reference_richards_workspace_t
   use mod_ppa_wu05a4_saturated_trial,only:saturated_domain_inputs,evaluate_saturated_system, &
       evaluate_saturated_residual
@@ -14,10 +18,12 @@ module mod_ppa_wu05a4_richards_scratch_binding
     integer::nodes=0
     real(real64)::begin_storage=0,candidate_storage=0
     type(macro_used_exchange)::used
+    type(saturated_domain_inputs)::geometry
   end type
   public::apply_saturated_reference_scratch,copy_reference_transfer,discard_reference_transfer
   public::apply_saturated_reference_residual,apply_reference_trial_diagonal
   public::copy_reference_budget
+  public::prepare_reference_interval
 contains
   ! Caller rebuilds the ordinary matrix residual before each evaluation and uses
   ! a new evaluation key for changed heads. No diagonal is touched here.
@@ -44,7 +50,52 @@ contains
       used%nodes=workspace%active_nodes
       used%begin_storage=input%storage
       used%candidate_storage=storage_candidate
+      used%geometry=input
     end if
+  end subroutine
+
+  ! Proposed single-domain bridge. All outputs remain tentative; no owner commit.
+  subroutine prepare_reference_interval(workspace,record,key,head,dt,checkpoint,tolerance,candidate,account,ok)
+    type(reference_richards_workspace_t),intent(in)::workspace
+    type(reference_trial_transfer),intent(inout)::record
+    type(macro_trial_key),intent(in)::key
+    real(real64),intent(in)::head(:),dt,tolerance
+    type(ppa_wu05a2_macropore_checkpoint_t),intent(in)::checkpoint
+    type(ppa_wu05a2_macropore_candidate_t),intent(out)::candidate
+    type(candidate_mass_account),intent(out)::account
+    logical,intent(out)::ok
+    type(ppa_wu05a2_macropore_candidate_t)::trial
+    type(candidate_mass_account)::trial_account
+    real(real64),allocatable::amount(:),exchange(:,:),zeros(:),profile(:),faces(:,:),balance(:)
+    real(real64)::begin_store,end_store,representation_tol
+    integer::n,status
+    ok=.false.
+    if(.not.ieee_is_finite(tolerance))return
+    if(tolerance<0)return
+    if(checkpoint%lineage_id/=key%lineage.or.checkpoint%revision/=key%revision)return
+    if(.not.checkpoint%payload%ready())return
+    n=size(head)
+    if(checkpoint%payload%n_domains/=1.or.checkpoint%payload%n_compartments/=n)return
+    if(checkpoint%payload%bottom_domain(1)/=n)return
+    call copy_reference_budget(workspace,record,key,head,dt,amount,begin_store,end_store,ok)
+    if(.not.ok)return
+    ok=.false.
+    representation_tol=32*epsilon(1.0_real64)*max(1.0_real64,begin_store)
+    if(abs(checkpoint%payload%domain_water_storage(1)-begin_store)>representation_tol)return
+    if(any(abs(checkpoint%payload%pore_volume(1,:)-record%geometry%volume)>representation_tol))return
+    profile=record%geometry%volume*max(0.0_real64,min(1.0_real64, &
+        (record%geometry%pore_level-record%geometry%z+0.5_real64*record%geometry%dz)/record%geometry%dz))
+    if(any(abs(checkpoint%payload%pore_water(1,:)-profile)>representation_tol))return
+    allocate(exchange(1,n),zeros(n)); zeros=0
+    exchange(1,:)=amount/dt
+    call prepare_macropore_interval_candidate(checkpoint,dt,checkpoint%payload%pore_volume, &
+        [0.0_real64],[0.0_real64],exchange,zeros,record%geometry%dz,[record%geometry%bottom], &
+        tolerance,trial,faces,balance,status)
+    if(status/=0)return
+    if(abs(trial%payload%domain_water_storage(1)-end_store)>tolerance)return
+    call account_candidate_mass(checkpoint,trial,dt,[0.0_real64],exchange,zeros,amount,tolerance,trial_account,status)
+    if(status/=0)return
+    candidate=trial; account=trial_account; ok=.true.
   end subroutine
 
   ! Consume the residual's captured derivative after the ordinary diagonal is
@@ -143,6 +194,7 @@ contains
       used%nodes=workspace%active_nodes
       used%begin_storage=input%storage
       used%candidate_storage=storage_candidate
+      used%geometry=input
     end if
   end subroutine
 end module
