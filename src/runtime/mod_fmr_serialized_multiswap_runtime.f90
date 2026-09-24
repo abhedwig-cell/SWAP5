@@ -194,12 +194,11 @@ contains
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
     active_physical_calls = 0
     dispatch_status = FMR_SERIAL_DISPATCH_OK
-    if (present(commit_receipts)) allocate(commit_receipts(0))
-
     ! Receipt requests are optional feature-scoped runtime metadata. Validate
     ! the complete sparse request before backend initialization or any physical
     ! trial so every expected request error is transactionally precommit.
     if (present(receipt_column_ids) .neqv. present(commit_receipts)) then
+      if (present(commit_receipts)) allocate(commit_receipts(0))
       dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
       call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
       call build_aggregate(columns, diagnostics, 0, aggregate)
@@ -209,6 +208,7 @@ contains
     end if
     if (present(receipt_column_ids)) then
       if (.not. receipt_request_valid(columns, receipt_column_ids)) then
+        allocate(commit_receipts(0))
         dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
         call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
         call build_aggregate(columns, diagnostics, 0, aggregate)
@@ -216,7 +216,6 @@ contains
         if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
         return
       end if
-      deallocate(commit_receipts)
       allocate(commit_receipts(size(receipt_column_ids)))
       do receipt_slot = 1, size(receipt_column_ids)
         commit_receipts(receipt_slot)%column_id = receipt_column_ids(receipt_slot)
