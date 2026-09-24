@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25D",
+  "title": "Bi-modal MvG Richards falsification",
+  "parent": "F-AHL25C",
+  "phase": "PREREGISTERED_RICHARDS_RESEARCH",
+  "question": "Does the source-bound model-3 derivative-consistent theta/C plus independently controlled log(K) representation preserve the analytical Richards solution and nonlinear path across the three preregistered bimodal stress parameterizations and wet-mid-dry regimes?",
+  "materials": ["M3_BALANCED","M3_SEPARATED","M3_DOMINANT_SECOND"],
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0,"bottom_head_cm":-7.5},
+    {"id":"mid","initial_head_cm":-75.0,"bottom_head_cm":-50.0},
+    {"id":"dry","initial_head_cm":-500.0,"bottom_head_cm":-400.0}
+  ],
+  "case_count": 9,
+  "reference": "research-only analytical model-3 provider transcribed from and fail-closed bound to corrected source SHA 4bb79730...",
+  "candidate": "F-AHL25B derivative-consistent retention/capacity plus F-AHL25C-R1 independent log(K), analytical fallback outside h=-1..-1e6 cm",
+  "forcing_policy": "same controlled prescribed-head-bottom F-AHL10 construction: top flux = -K(initial), bottom_mode=5, dt=0.25 day",
+  "gates_per_case": {
+    "candidate_converged": true,
+    "same_nonlinear_iteration_count_as_analytical": true,
+    "same_backtracking_count_as_analytical": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "PASS only if all 9 cases pass all frozen gates. No timing unless 9/9 closes.",
+  "hard_exclusions": ["NO_GATE_RETUNING","NO_TIMING_BEFORE_FIDELITY","NO_PRODUCTION_ADMISSION"]
+}
