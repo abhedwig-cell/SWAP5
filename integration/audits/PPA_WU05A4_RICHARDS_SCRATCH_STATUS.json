@@ -23,7 +23,8 @@
     "baseline": "77aff4b39",
     "checks": "Wrong lineage, changed beginning storage, changed pore volume, shortened domain bottom, missing water-profile allocation, negative tolerance and NaN tolerance all reject. Outputs are seeded with valid prior candidate/account to verify failure clears their validity. Existing successful bridge and restart continuation remain in the gate.",
     "scope": "Verification of existing bounded adapter guards, not added physical capability or production admission.",
-    "test_result": "Pending persisted replay"
+    "recovery_point": "173c6f20e",
+    "test_result": "Persisted 173c6f20e Richards scratch gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
   },
   "isolated_restart_bridge_verification": {
     "baseline": "4087e25db",
