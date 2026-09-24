@@ -1,53 +1,50 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "workstream": "F-AHL",
-  "status": "RESEARCH_CLOSED_ENGINEERING_QUALIFICATION_NEXT",
+  "status": "ENGINEERING_QUALIFICATION_ACTIVE",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "completed_through": "F-AHL16",
-  "current_candidate": {
-    "representation": "auto-generated cubic Hermite logit(Se) over log10(-h), with C derived from the same interpolant and floor-scaled log(K) interpolation on shared adaptive support",
+  "completed_through": "F-AHL18",
+  "selected_research_candidate": {
+    "representation": "auto-generated derivative-consistent cubic Hermite logit(Se) retention with C derived from the same interpolant and separately controlled conductivity accuracy",
     "theta_span_normalized_error_limit": 1e-5,
     "log_capacity_error_limit": 1e-2,
-    "conductivity_metric": "abs(log(max(K_interp,1e-10))-log(max(K_true,1e-10)))",
-    "conductivity_error_limit": 3e-4,
-    "support_points": {
-      "B01": 164,
-      "B12": 104,
-      "O05": 160,
-      "O14": 169
+    "conductivity_relevance": {
+      "dry_tail_floor_scaled_metric": "do not over-refine numerically irrelevant extreme-dry conductivity/storage tails",
+      "historical_storage_relevance_scale": "raw C around 1e-13 in the extremely dry O05 regime",
+      "near_saturation": "authoritative analytical handling above h=-1 cm"
     },
-    "near_saturation": "authoritative analytical for h > -1 cm",
     "runtime_refinement": false
   },
-  "scientific_evidence": {
-    "fidelity_matrix_run": 36044316960,
-    "fidelity_cases_passed": "12/12",
-    "analytical_nonlinear_path_preserved": true,
-    "paired_cross_regime_timing_run": 36044880081,
-    "paired_complete_richards_cpu_reduction_fraction_range": [0.213339,0.265035],
-    "all_12_timing_cases_below_ratio_0_98": true
+  "research_evidence": {
+    "F_AHL16_cross_material_regime": {
+      "cases": 12,
+      "fidelity_pass": "12/12",
+      "same_iteration_and_backtracking_path": "12/12",
+      "paired_complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290]
+    },
+    "F_AHL17_internal_builder": {
+      "status": "PASS",
+      "build_seconds_per_unique_parameterization_range": [0.00071197,0.00111333]
+    },
+    "F_AHL18_cache": {
+      "status": "PASS",
+      "repeated_identical_hits": 10000,
+      "measured_mean_hit_seconds": 4.264e-7,
+      "identity_rule": "fingerprint plus mandatory full exact key comparison"
+    }
   },
   "key_learnings": [
-    "Independent approximation of theta and C can preserve endpoint state yet change Newton convergence; theta and C must remain derivative-consistent.",
-    "The original 23-30 point F-AHL09 representation was fast but K accuracy was insufficient in several wet/dry extremes.",
-    "Exact K closes fidelity but loses end-to-end speed.",
-    "Pure global log(K) tightening becomes pathological in the extreme dry tail because the authoritative floating-point K expression becomes numerically rough.",
-    "A floor-scaled K metric tied to B110_HCON_VSMALL avoids irrelevant dry-tail over-refinement.",
-    "At conductivity metric 3e-4 the shared-support candidate closes all tested fidelity cases and retains broad complete-Richards speed benefit."
-  ],
-  "superseded_or_rejected_routes": [
-    "full independent theta/C/K lookup",
-    "exact theta plus lookup C/K",
-    "exact theta+C plus lookup K",
-    "derivative-consistent retention plus analytical K as speed route",
-    "pure unfloored global log(K) densification"
+    "theta and C must remain derivative-consistent; independent approximation can change Newton convergence despite small endpoint error",
+    "conductivity accuracy controls wet/dry endpoint fidelity and should be controlled independently of retention support",
+    "extreme-dry refinement needs a relevance stop; the historical O05 C~1e-13 storage scale must not be confused with a K cutoff",
+    "self-generation from the authoritative provider is feasible and cheap enough to amortize",
+    "cache reuse can make build cost effectively once-per-unique-parameterization rather than once-per-column"
   ],
   "next_phase": [
-    "auto-generation implementation from arbitrary supported hydraulic parameters",
-    "fingerprinted immutable cache and reuse across columns",
-    "table-build cost and amortization",
-    "production-runtime integration behind existing hydraulic provider contract",
+    "accepted-trajectory and multi-column amortization",
+    "bind builder/cache behind the research hydraulic-provider contract",
+    "prescribed-flux lower-boundary qualification",
     "broader hydraulic-model-family qualification before any admission"
   ],
   "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
