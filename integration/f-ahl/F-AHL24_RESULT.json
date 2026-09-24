@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL24",
+  "phase": "BOUNDARY_CONTRACT_FALLBACK_QUALIFICATION_COMPLETE",
+  "status": "SELECT_FULL_ANALYTICAL_QBOT_FALLBACK",
+  "stage_1_fidelity": {
+    "workflow_run": 36048905655,
+    "passed_cases": 12,
+    "total_cases": 12,
+    "candidate": "exact authoritative theta/C plus selected lookup K",
+    "same_nonlinear_and_backtracking_path": "12/12"
+  },
+  "stage_2_timing": {
+    "workflow_run": 36049027277,
+    "workflow_job": 107799637475,
+    "B01_wet_median_candidate_over_analytical": 1.002601,
+    "O05_dry_median_candidate_over_analytical": 0.993863,
+    "decision_band": {
+      "faster": "<0.98",
+      "equivocal": "0.98..1.02",
+      "slower": ">1.02"
+    },
+    "classification": "EQUIVOCAL_NO_MEANINGFUL_SPEED_BENEFIT"
+  },
+  "decision": "For prescribed-qbot in the strict F-AHL architecture, use the fully analytical authoritative hydraulic provider rather than a hybrid exact-retention/lookup-K provider.",
+  "rationale": [
+    "Exact theta/C is sufficient to restore 12/12 strict nonlinear-path fidelity.",
+    "Keeping lookup K adds representation complexity but no robust measured speed benefit in the two preregistered timing cases.",
+    "The fully analytical qbot fallback avoids material-specific or fragile state-dependent trigger logic."
+  ],
+  "selected_boundary_policy": {
+    "qualified_prescribed_head": "auto-generated derivative-consistent AHL representation",
+    "prescribed_qbot": "fully analytical authoritative hydraulics"
+  },
+  "nonclaims": [
+    "Other lower-boundary modes are not assigned by this result.",
+    "No whole-SWAP speedup is claimed.",
+    "No production admission is implied."
+  ]
+}
