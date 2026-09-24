@@ -1,0 +1,21 @@
+name: F-PDI-VT05 historical B1 binding
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'research/pdi_vt/f_pdi_vt05_bind_b1.py'
+      - 'integration/f-pdi-vt/F-PDI-VT05_PREREGISTRATION.json'
+      - '.github/workflows/f-pdi-vt05-b1-binding.yml'
+  workflow_dispatch:
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 research/pdi_vt/f_pdi_vt05_bind_b1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pdi-vt05-${{ github.run_id }}
+          path: |
+            /tmp/F-PDI-VT05_RESULT.json
+            /tmp/F-PDI-VT05_B1_11_FIXED_SOURCE_MANIFEST.sha256
