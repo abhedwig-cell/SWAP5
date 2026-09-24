@@ -9,7 +9,7 @@ module mod_reference_richards_accepted_step_directional_service
        SW_STEP_DIRECTION_FAILED, SW_STEP_CONTROL_BOTTOM_FLUX, SW_STEP_CONTROL_BOTTOM_HEAD
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
-  use mod_reference_richards_workspace, only: initialize_reference_workspace, &
+  use mod_reference_richards_workspace, only: ensure_reference_workspace_shape, &
        prepare_reference_tridag_factorization_capture, release_reference_tridag_factorization_capture
   use mod_reference_linear_solver, only: reference_tridag_backsolve
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
@@ -64,7 +64,7 @@ contains
 
           ! Expanded factorization storage is worker scratch only. The physical
           ! solve is still executed exactly once and remains the sole candidate.
-          call initialize_reference_workspace(ref_ws%richards, n)
+          call ensure_reference_workspace_shape(ref_ws%richards, n)
           call prepare_reference_tridag_factorization_capture(ref_ws%richards)
           call ref_solver%solve(request, ref_ws, solve_result)
 
