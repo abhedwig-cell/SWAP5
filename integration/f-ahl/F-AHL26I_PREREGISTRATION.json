@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26I",
+  "title": "PDI NoVap paired Richards timing",
+  "parent": "F-AHL26H",
+  "phase": "PREREGISTERED_PERFORMANCE_RESEARCH",
+  "candidate": "F-AHL26H final NoVap PDI representation",
+  "cases": "same six F-AHL26H cases",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks",
+    "replays_per_batch": 16384,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical",
+    "table_generation_and binding": "outside timed batches",
+    "primary_statistic": "per-case median candidate/analytical complete-Richards CPU ratio"
+  },
+  "decision_rule": {
+    "useful_speed_candidate": "matrix median ratio <0.98 and no individual case median >1.02",
+    "otherwise": "do not claim PDI NoVap acceleration"
+  },
+  "hard_exclusions": ["NO_VAPOR_ENABLED_ROUTE","NO_WHOLE_SWAP_SPEEDUP_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
