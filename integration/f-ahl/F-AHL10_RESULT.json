@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10",
+  "phase": "BLIND_MULTI_MATERIAL_MULTI_REGIME_COMPLETE",
+  "status": "FAIL",
+  "workflow_run": 36042952033,
+  "workflow_job": 107779356663,
+  "passed_cases": [
+    "B01:mid",
+    "B12:mid",
+    "O05:mid",
+    "O05:dry",
+    "O14:wet",
+    "O14:mid"
+  ],
+  "failed_cases": {
+    "B01:wet": {"max_head_delta_cm":0.01131989,"max_theta_delta":1.819235e-5,"bottom_flux_delta_cm_per_day":1.038436e-4,"reason":"BOTTOM_FLUX"},
+    "B01:dry": {"max_head_delta_cm":0.07118950,"max_theta_delta":9.000543e-6,"bottom_flux_delta_cm_per_day":7.284418e-5,"reason":"HEAD_AND_BOTTOM_FLUX"},
+    "B12:wet": {"max_head_delta_cm":0.01480218,"max_theta_delta":8.584714e-6,"bottom_flux_delta_cm_per_day":4.500818e-5,"reason":"BOTTOM_FLUX"},
+    "B12:dry": {"max_head_delta_cm":0.06919694,"max_theta_delta":5.414700e-6,"bottom_flux_delta_cm_per_day":5.912089e-5,"reason":"HEAD_AND_BOTTOM_FLUX"},
+    "O05:wet": {"max_head_delta_cm":0.01440191,"max_theta_delta":1.601805e-5,"bottom_flux_delta_cm_per_day":9.131574e-5,"reason":"BOTTOM_FLUX"},
+    "O14:dry": {"max_head_delta_cm":0.02833544,"max_theta_delta":6.960803e-6,"bottom_flux_delta_cm_per_day":6.216003e-5,"reason":"BOTTOM_FLUX"}
+  },
+  "global_observation": {
+    "all_12_iteration_deltas_zero": true,
+    "all_12_backtracking_deltas_zero": true,
+    "all_mass_residuals_within_gate_except_none": true
+  },
+  "interpretation": [
+    "Derivative consistency generalizes across the tested matrix in the sense that every candidate follows the analytical nonlinear iteration and backtracking counts.",
+    "The frozen F-AHL09 representation does not yet meet the endpoint fidelity gates across wet and dry regimes.",
+    "Mid-regime performance generalizes across all four tested materials.",
+    "The next question is representation-error attribution, not solver convergence."
+  ],
+  "decision": "DO_NOT_ADVANCE_TO_BROAD_TIMING_YET",
+  "next_action": "Preregister failed-case attribution separating retention-interpolant error from conductivity-lookup error without changing F-AHL10 gates."
+}
