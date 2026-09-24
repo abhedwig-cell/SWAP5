@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL08",
+  "title": "Derivative-consistent retention plus conductivity lookup",
+  "parent": "F-AHL07",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can authoritative theta(h) and C(h)=dtheta/dh combined with frozen K(h) lookup preserve the analytical Richards convergence path while retaining meaningful constitutive and end-to-end speed benefit?",
+  "candidate": "exact authoritative theta and C; adaptive lookup K for h<=-1 cm; exact authoritative near-saturation handling",
+  "rationale": "F-AHL07 identified C approximation as the cause of the additional nonlinear iteration when theta was exact. K approximation affected only a very small endpoint discrepancy.",
+  "stage_1": {
+    "materials": ["B01","B12","O05","O14"],
+    "test": "optimized Fortran constitutive cost",
+    "advance_rule": "candidate faster than full analytical evaluation for all tested materials"
+  },
+  "stage_2": {
+    "fixture": "F-AHL04A controlled nonlinear Richards fixture",
+    "required_convergence": "same nonlinear iteration and backtracking counts as analytical",
+    "fidelity_gates": {
+      "max_abs_pressure_head_delta_cm": 0.05,
+      "max_abs_water_content_delta": 1e-4,
+      "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+      "mass_residual_abs_cm": 1e-12
+    },
+    "performance_rule": "median complete-solve CPU lower than analytical"
+  },
+  "hard_exclusions": [
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_TOLERANCE_RETUNING",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
