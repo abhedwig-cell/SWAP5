@@ -1,11 +1,11 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "workstream": "F-AHL",
   "status": "BOUNDED_ARCHITECTURE_DECISION_REQUIRED",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "research_head_at_update": "3fb5d5b1320746aac9475371e5dcecdd34c7ca0b",
-  "completed_through": "F-AHL21D",
+  "research_head_at_update": "a4923372cf6e94129e0466fbcd99f352421f0fc6",
+  "completed_through": "F-AHL21E",
   "selected_research_candidate": {
     "representation": "auto-generated derivative-consistent cubic Hermite logit(Se) retention with C derived from the same interpolant and separately controlled conductivity accuracy",
     "lifecycle": "authoritative parameters -> generate -> qualify -> immutable exact-key cache -> bind once -> solve",
@@ -14,11 +14,23 @@
   },
   "closed_positive_evidence": {
     "prescribed_head_matrix": {
-      "materials": ["B01","B12","O05","O14"],
-      "regimes": ["wet","mid","dry"],
+      "materials": [
+        "B01",
+        "B12",
+        "O05",
+        "O14"
+      ],
+      "regimes": [
+        "wet",
+        "mid",
+        "dry"
+      ],
       "fidelity_pass": "12/12",
       "same_iteration_and_backtracking_path": "12/12",
-      "paired_complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290]
+      "paired_complete_Richards_cpu_reduction_fraction_range": [
+        0.205364,
+        0.24229
+      ]
     },
     "self_building_provider": {
       "external_table_files_required": false,
@@ -29,7 +41,10 @@
     },
     "cache_and_amortization": {
       "immutable_exact_key_cache": "PASS",
-      "build_seconds_per_unique_parameterization_range": [0.00071197,0.00111333],
+      "build_seconds_per_unique_parameterization_range": [
+        0.00071197,
+        0.00111333
+      ],
       "single_column_build_break_even_solve_count_order": "several hundred to about one thousand",
       "multi_column_reuse": "rapidly amortizes when hydraulic parameterizations are shared"
     }
@@ -63,8 +78,9 @@
       "selected_K": "FAIL path identity",
       "global_tight_K": "FAIL path identity",
       "exact_K": "FAIL path identity",
-      "exact_theta_C_plus_lookup_K": "RESTORES analytical path in diagnostic replay",
-      "cause_classification": "retention/capacity representation, not conductivity resolution"
+      "exact_theta_C_plus_lookup_K": "PASS_IDENTICAL_TO_ANALYTICAL_PATH_CONFIRMED_F_AHL21E",
+      "cause_classification": "retention/capacity representation, not conductivity resolution",
+      "bottom_head_candidate_minus_reference_cm": 0.000001490119
     }
   },
   "falsified_repair_strategies": [
@@ -83,7 +99,8 @@
       "prospectively test a different retention representation family designed around solver-local Jacobian fidelity",
       "prospectively define and qualify a bounded exact-retention fallback policy with an authority-based trigger"
     ],
-    "reason_to_stop": "This is now a genuine representation-architecture choice, not a technical repair implied uniquely by existing authority."
+    "reason_to_stop": "This is now a genuine representation-architecture choice, not a technical repair implied uniquely by existing authority.",
+    "confirmed_by": "F-AHL21E"
   },
   "production_boundary": "RESEARCH_ONLY_NO_ADMISSION",
   "production_admission_still_requires": [
