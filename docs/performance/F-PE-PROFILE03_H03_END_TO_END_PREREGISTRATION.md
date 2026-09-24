@@ -1,0 +1,125 @@
+# F-PE-PROFILE03-H03 — End-to-end runtime attribution
+
+Date: 2026-09-25
+
+Status: `PREREGISTERED_ACTIVE`
+
+## Purpose
+
+Measure how much the qualified H03 constitutive-reuse repair changes runtime above the focused Reference-solve microbenchmark, without converting the 35.77% local solver result into an unsupported whole-SWAP claim.
+
+Protocol:
+
+`RECONCILE -> BIND WORKLOAD -> PREREGISTER -> PAIRED EXECUTION -> ATTRIBUTE -> QUALIFY -> PERSIST -> CLOSE`
+
+## Source identities
+
+Qualified H03 candidate:
+
+- branch: `work/f-pe-profile02-h03`
+- closeout commit: `91f73a32dba236bb2b776900f7f1d8a089bac0a4`
+- repair production source: `src/legacy/b1_10_port/headcalc.f90`
+
+H03 baseline for paired comparison:
+
+- PROFILE01 split point: `0b373c6cdaed53e26a1acb917f096bf20256f12a`
+
+Canonical authority at the original split:
+
+- `integration/f-ci-canonical@506c36aab6f84b74dffdf5c37fe572c1e0b46610`
+
+## Existing runtime evidence
+
+PROFILE02 Q6 established, for the qualified three-Newton-iteration Reference solve:
+
+- baseline constitutive evaluations: 7
+- candidate constitutive evaluations: 4
+- identical physical checksum
+- identical nonlinear iterations
+- paired mean candidate/baseline runtime ratio: 0.642283280
+- paired mean local Reference-solve speedup: 35.771672%
+- paired N: 8
+
+This is local solver evidence only.
+
+## Workload reconciliation
+
+The existing MP catalog identifies `MP-B01-HUPSEL-SINGLE` as the intended single-column cost-decomposition workload and records it as `shadow-executable`.
+
+That status is sufficient for legacy/shadow performance infrastructure, but it is not by itself proof that the current SWAP5 Reference application stack can execute the same complete Hupsel production case with the H03 code path active.
+
+Therefore PROFILE03 separates two levels:
+
+### E1 — accepted-interval / application-host attribution
+
+Use an already-qualified SWAP5 Reference application/runtime route containing the real H03 `headcalc` path. Compare baseline and H03 candidate on identical accepted computational work, with paired alternating order.
+
+This level may quantify the fraction of accepted compute runtime saved by H03 before a complete external-input/output SWAP application executable is available.
+
+### E2 — complete SWAP application runtime
+
+Use a full executable single-column production workload from input preparation through final model state, with input and output time reported separately from dynamic compute time.
+
+Preferred workload is Hupsel because:
+- exact Hupsel source/fixture authority has been restored in F-APP03;
+- MP-B01 already names Hupsel as the representative single-column benchmark;
+- the workload has long enough temporal extent to amortize startup noise.
+
+E2 is admissible only when the selected executable demonstrably routes through the current SWAP5 Reference Richards/H03 implementation. A legacy B0 shadow executable cannot establish H03 whole-SWAP speedup because it does not contain the candidate repair.
+
+## Metrics
+
+For each paired variant report:
+
+- wall runtime;
+- child CPU runtime where available;
+- dynamic compute runtime where available;
+- accepted interval count;
+- Reference solve count;
+- nonlinear iterations;
+- constitutive evaluations;
+- retries/rejected trials;
+- normalized physical output identity;
+- timing variance and paired ratio.
+
+Primary H03 attribution:
+
+`whole_compute_saving = 1 - candidate_compute / baseline_compute`
+
+Secondary attribution:
+
+`H03_share_of_total = removed_constitutive_cost / baseline_compute`
+
+The secondary value is diagnostic and must reconcile directionally with the directly measured paired result.
+
+## Gates
+
+1. Baseline and candidate must execute identical physical forcing, process configuration and numerical policy.
+2. Physical/model outputs must satisfy the existing qualification criterion for the selected workload.
+3. H03 candidate must retain the preregistered constitutive-call reduction.
+4. No timing-only instrumentation may alter accepted/rejected trial structure.
+5. Paired execution order must alternate.
+6. No post-hoc timing outlier deletion.
+7. Full-run claims require E2. E1 results must be labelled accepted-interval/application-host attribution.
+8. Input and output time must not be conflated with compute-core saving.
+9. If no current full SWAP5 application executable routes through H03, persist that as an application-integration blocker rather than substituting a legacy executable.
+
+## Current reconciliation result
+
+The repository currently provides:
+- a qualified H03 Reference path;
+- paired solver timing;
+- MP controlled CPU measurement tooling;
+- Hupsel fixture/source authority;
+- a legacy/shadow Hupsel benchmark lineage.
+
+What is not yet established by this workunit is a single complete current SWAP5 Hupsel executable proven to route through H03. PROFILE03 must identify or construct that binding before making an E2 whole-SWAP claim.
+
+```text
+RECONCILE              = COMPLETE
+BIND H03 AUTHORITY      = COMPLETE
+PREREGISTER             = COMPLETE
+E1 RUNTIME              = NEXT
+E2 WHOLE SWAP           = PENDING_EXECUTABLE_BINDING
+WHOLE-SWAP SPEEDUP      = NOT_YET_CLAIMED
+```
