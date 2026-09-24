@@ -1,0 +1,27 @@
+name: F-AHL04C asymmetric representation
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl04c_asymmetric_provider.f90'
+      - 'research/ahl/run_ahl04c_asymmetric_provider.sh'
+      - 'research/ahl/mod_ahl04_hybrid_lookup_provider.f90'
+      - 'integration/f-ahl/F-AHL04C_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl04c-asymmetric-representation.yml'
+  workflow_dispatch:
+
+jobs:
+  asymmetric:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run preregistered asymmetric sweep
+        run: |
+          bash research/ahl/run_ahl04c_asymmetric_provider.sh /tmp/ahl04c_result.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl04c-${{ github.run_id }}
+          path: /tmp/ahl04c_result.txt
