@@ -6,7 +6,7 @@ module mod_reference_richards_legacy_binding
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
        SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request
-  use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
+  use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
        prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
   use mod_reference_linear_solver, only: reference_tridag_backsolve
@@ -137,7 +137,7 @@ contains
        call a23bu_reset_attempt_control(ws%legacy_worker)
        reset_calls_before = ws%richards%profile_full_reset_calls
        reset_bytes_before = ws%richards%profile_zeroed_bytes
-       call initialize_reference_workspace(ws%richards, n)
+       call ensure_reference_workspace_shape(ws%richards, n)
 
        ! F-KT owns the committed/base state. F-SI materializes only this solve's
        ! explicit candidate state and lets HeadCalc rebuild reconstructible
