@@ -3,6 +3,15 @@
   "work_unit": "PPA-WU04-D",
   "title": "Gash source-window interception",
   "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
+  "bounded_source_window_successor": {
+    "tested_commit": "a299c01bf",
+    "preservation_replay": "After the initial full GashWindows gate at 1d67d2b87, reran both Windows and GashWindows arguments on the persisted a299c01bf O0/O2 executables from swap-ppa-wu01-cddac965f6a44e4187c34b10c5c06da8. All four replays pass and exactly match the prior full transcript hashes recorded below. Logs: O0/O2/replay-windows.txt and replay-gash.txt. No rebuild or production change needed between argument-selected scopes.",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashWindows",
+    "result": "PASS O0/O2: three Gash source windows at rain/irrigation rates 0.20/0.10, 0.16/0.08, 0.16/0.08 cm/day, from owner-issued committed-top snapshots. Explicit events on first two windows, none on third; callback counter proves no event derivative in unmarked continuation. Full physical/history/provenance equality after fresh in-memory restore at every boundary. Wrong/nonfinite event times and missing callback reject; failed and partially accepted marked attempts roll back and replay exactly; accepted source amounts consumed once in cm.",
+    "transcript": "395432 identical lines SHA256 C4E52C5804BD4F914AAA42959193523AC4305860112223EC3C549588760B3EC1, build swap-ppa-wu01-c3a2afb304c14e8db96b93d09149fa73. WU04C sequence also rerun unchanged: 328891 lines SHA256 28D88921496CB074CE77A202C35E570A997FA33B94BE27651AC0514217C7ABAA, build swap-ppa-wu01-b5046885b4cd4feeac8e163570b9ecbc.",
+    "scope": "Branch-local explicit storage/temporal/event opt-ins, fixed-flux mode-7 envelope, post-saturation Gash formula branch only. Starts from hydraulically evolved WU04C fixture boundary. Not canonical admission, general weather ingestion, disk restart or mid-source-window Gash restart qualification.",
+    "low_rain_probe": "d49504def adds a fourth source window with rain/irrigation 0.04/0.02 and independent presaturation interception-rate oracle 0.051 cm/day. It reaches seven internally accepted substeps per tile then fails: last available temporal bound 1.1276379511113596e-5 at dt 1.5257159247994423e-5 exceeds 1e-5 budget. No successful low-rain continuation claim. At a299c01bf separate GashBranchRejection gate PASS O0/O2: 395971 identical lines SHA256 934E0B537D1EF8F02467F0318991D31BEE742A0E566F6532563E6361A65D378C, build swap-ppa-wu01-cddac965f6a44e4187c34b10c5c06da8. Both original and restored owners reproduce rejection, with full physical/history/provenance unchanged and no accepted source publication. Do not reapply the event derivative on later accepted substeps to hide this failure."
+  },
   "authority": {
     "scientific_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
     "legacy_source": "SWAP 4.3.1 B1.11 MOD_meteo.f90:Gash",
@@ -24,7 +33,9 @@
     "The source-window aggregate is closed exactly once after the restored continuation commits."
   ],
   "remaining_qualification": [
-    "full SWAP hydraulic/dynamic-top production replay combining Gash evaluation, accepted receipts, changed-dt retry and source-window restart"
+    "real hydraulic Gash restart inside a partially consumed source window (boundary-to-boundary replay is covered by the bounded successor)",
+    "successful low-rain presaturation production continuation beyond the isolated seven-substep failure",
+    "broader dynamic-top regimes and non-opt-in production admission"
   ],
   "nonclaims": ["general weather-table ingestion", "canopy-loss mass-ledger redesign", "WU04C admission"]
 }

@@ -9,9 +9,9 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "latest_storage_owner_checkpoint": {
-    "tested_commit": "69ea158d1",
+    "tested_commit": "a299c01bf",
     "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
-    "scope": "Explicit mode-7 storage accuracy and time-bound forcing-event options: WU04C two changing source windows from committed-top snapshots complete with exact in-memory restart replay at O0/O2. Wrong/nonfinite time and unbound service reject; actual failed and partially internally accepted marked intervals publish nothing; restored retry matches uninterrupted full state/history. Source amounts dimensionally correct and consumed once. Unmarked transcript and default canonical output preserved. WU04D strong composition retained, not yet changing-window qualified. Branch-local bounded qualification, not whole migration or canonical closure."
+    "scope": "Explicit mode-7 storage/temporal/event options: three-window WU04C and post-saturation Gash/WU04D sequences pass O0/O2 with exact in-memory restart and accepted-only source amounts. Callback counters prove no event invocation in subsequent unmarked windows. Wrong/nonfinite time, unbound service and failed/partially accepted event rollback/replay covered. Additional low-rain Gash branch fails after seven internal accepts; only its rollback/restart preservation is qualified, not successful continuation. Mid-source-window Gash hydraulic restart remains next. Default production surface unchanged in these test-only checkpoints. Branch-local bounded evidence, not canonical or whole migration closure."
   },
   "register": "docs/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_REGISTER.md",
   "scope": "Evidence-based SWAP 4.3.1 corrected-reference capability coverage; this record does not widen frozen Status-A.",
