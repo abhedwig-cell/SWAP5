@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21C",
+  "phase": "QUALIFIED_PRESCRIBED_QBOT_MATRIX_COMPLETE",
+  "status": "FAIL_11_OF_12",
+  "workflow_run": 36047608558,
+  "workflow_job": 107794928087,
+  "frozen_conditions": {
+    "bottom_flux_factor": 0.99,
+    "step_duration_day": 0.0625,
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"]
+  },
+  "passed_cases": [
+    "B01:wet","B01:mid","B01:dry",
+    "B12:wet","B12:mid","B12:dry",
+    "O05:wet","O05:mid",
+    "O14:wet","O14:mid","O14:dry"
+  ],
+  "failed_cases": {
+    "O05:dry": "candidate violates frozen nonlinear-iteration identity gate while the analytical reference converges"
+  },
+  "finding": "After bringing the wet cases inside the analytical timestep envelope, the prescribed-qbot matrix closes 11 of 12 cases. O05-dry is the only remaining representation-specific failure.",
+  "interpretation": "The lower-boundary generalization is therefore nearly closed but cannot be claimed complete under the strict F-AHL nonlinear-path invariant.",
+  "next_action": "Keep O05-dry as an explicit failure regime; do not relax the gate. Complete cost characterization and decide whether a different retention representation or bounded exact fallback is scientifically justified.",
+  "nonclaims": ["NO_GENERAL_QBOT_QUALIFICATION","NO_GATE_RETUNING","NO_PRODUCTION_ADMISSION"]
+}
