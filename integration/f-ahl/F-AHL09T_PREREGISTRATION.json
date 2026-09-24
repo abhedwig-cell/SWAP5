@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL09T",
+  "title": "Derivative-consistent end-to-end Richards timing",
+  "parent": "F-AHL09",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the derivative-consistent Hermite retention representation reduce total Reference Richards solve CPU while preserving the analytical nonlinear path?",
+  "frozen_candidate": "Hermite logit(Se) retention with C derived from the same interpolant; log(K) lookup; exact h>-1 cm",
+  "frozen_fixture": "F-AHL04A nonlinear Richards fixture",
+  "prior_fidelity": {
+    "workflow_run": 36042429946,
+    "same_nonlinear_iterations": true,
+    "same_backtracking_count": true,
+    "bottom_flux_delta_cm_per_day": 1.366970e-7
+  },
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical",
+    "primary_statistic": "median paired candidate/analytical CPU ratio",
+    "provider_binding_and_table_generation": "outside timed solve batches",
+    "same_initial_state_request_and_solver_policy": true
+  },
+  "decision_rule": {
+    "advance": "median paired ratio < 0.98 and fidelity remains PASS",
+    "equivocal": "0.98 <= median paired ratio <= 1.02",
+    "reject_speed_claim": "median paired ratio > 1.02"
+  },
+  "hard_exclusions": ["NO_SOLVER_POLICY_CHANGE","NO_GATE_RETUNING","NO_WHOLE_SWAP_SPEEDUP_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
