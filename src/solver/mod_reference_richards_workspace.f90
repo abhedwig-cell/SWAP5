@@ -154,12 +154,9 @@ contains
          error stop 'TRIDAG factorization capture requires initialized workspace'
     if (size(workspace%tridag_gamma) /= 2*n) then
        allocate(expanded(2*n))
-       expanded = 0.0_real64
        deallocate(workspace%tridag_gamma)
        call move_alloc(expanded, workspace%tridag_gamma)
        workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
-    else
-       workspace%tridag_gamma = 0.0_real64
     end if
   end subroutine prepare_reference_tridag_factorization_capture
 
