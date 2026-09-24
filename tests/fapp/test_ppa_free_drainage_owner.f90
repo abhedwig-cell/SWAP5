@@ -51,6 +51,12 @@ program test_ppa_free_drainage_owner
   use mod_ppa_wu04c_runtime_publication, only: publish_ppa_wu04c_accepted_progress, PPA_WU04C_PUBLICATION_OK
   use mod_ppa_free_drainage_temporal_indicator, only: evaluate_free_drainage_temporal_indicator
   use mod_ppa_mvg_storage_binding, only: evaluate_mvg_storage_difference_service
+  use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
+       reference_richards_legacy_workspace_t
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_soil_water_solver_contract, only: SW_SOLVE_CONVERGED
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fmr_runtime_core, only: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   implicit none
@@ -670,6 +676,14 @@ contains
       call owner%export_committed_restart(9902_int64,unchanged,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'materialization leaves owner exportable')
       call compare_restart_bundles(before,unchanged,'read-only window materialization')
+      if(window==2.and.trim(test_scope)=='--window-rejection') then
+        select type(state=>before%records(1)%physical_state)
+        type is(fmr_b110_temporal_indicator_state_t)
+          call diagnose_window_jump(profile%tiles(1)%parameters,state,forcing(1))
+        class default
+          call require(.false.,'window diagnostic requires temporal state')
+        end select
+      end if
       call owner%run_standalone_with_forcing_receipts(start_time,end_time,forcing,result,receipt,code)
       write(*,*) 'CHANGING_WINDOW_DIAG',window,code,result%kernel_status,result%accepted_substeps
       if(window==2.and.trim(test_scope)=='--window-rejection') then
@@ -730,6 +744,100 @@ contains
       call require(code==FMR_APP_BOOT_OK,'window fresh closes')
     end do
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS'
+  end subroutine
+
+  subroutine diagnose_window_jump(p,state,forcing)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    type(fmr_b110_temporal_indicator_state_t),intent(in)::state
+    type(fmr_b110_physical_forcing_t),target,intent(in)::forcing
+    type(soil_water_parameter_set_t),target::geometry
+    type(b110_default_mvg_parameters_t),target::hydraulics
+    type(b110_default_mvg_provider_t),target::provider
+    type(b110_source_sink_provider_t),target::sink
+    type(fixed_flux_top_boundary_provider_t),target::top_provider
+    type(reference_richards_legacy_solver_t)::solver
+    type(reference_richards_legacy_workspace_t)::workspace
+    type(soil_water_solve_request_t)::request
+    type(soil_water_solve_result_t)::result
+    type(soil_water_temporal_indicator_request_t)::old_history,event_history
+    type(soil_water_temporal_indicator_result_t)::old_bound,event_bound
+    real(real64),allocatable::history(:),event_derivative(:),heads_before(:),water_before(:)
+    real(real64)::dt,ledger
+    integer::exponent,converged,rejected,event_eligible
+    logical::ok
+    geometry%parameter_set_id=p%parameter_set_id
+    geometry%active_nodes=p%active_nodes
+    geometry%z=p%z; geometry%dz=p%dz; geometry%node_distance=p%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics,p%cofgen)
+    call bind_b110_source_sink_provider(sink,forcing%drainage_flux_by_level, &
+         forcing%subsurface_irrigation_source,forcing%root_extraction_sink)
+    call state%temporal_history_snapshot(history,ok)
+    call require(ok,'jump diagnostic committed history')
+    allocate(event_derivative(p%active_nodes))
+    call seed_initial_derivative(p,state,forcing,event_derivative)
+    old_history%previous_right_derivative_available=.true.
+    old_history%previous_right_derivative=history
+    event_history%previous_right_derivative_available=.true.
+    event_history%previous_right_derivative=event_derivative
+    heads_before=state%pressure_head; water_before=state%water_content
+    request%parameters=>geometry
+    request%base_state%active_nodes=p%active_nodes
+    request%base_state%pressure_head=state%pressure_head
+    request%base_state%water_content=state%water_content
+    request%base_state%ponding_depth=state%ponding_depth
+    request%base_state%groundwater_level=state%groundwater_level
+    request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
+    request%boundary%bottom_mode=7
+    request%boundary%top_flux=forcing%top_flux
+    request%boundary%top_head=forcing%top_head
+    request%boundary%bottom_flux=forcing%bottom_flux
+    request%boundary%bottom_head=forcing%bottom_head
+    request%numerical%max_iterations=p%max_iterations
+    request%numerical%max_backtracking=p%max_backtracking
+    request%numerical%conductivity_implicit_mode=p%swkimpl
+    request%numerical%conductivity_mean_method=p%swkmean
+    request%numerical%min_step_duration=p%min_step_duration
+    request%numerical%compartment_balance_tolerance=p%compartment_balance_tolerance
+    request%numerical%total_balance_tolerance=p%total_balance_tolerance
+    request%numerical%head_abs_tolerance=p%head_abs_tolerance
+    request%numerical%head_rel_tolerance=p%head_rel_tolerance
+    request%numerical%ponding_tolerance=p%ponding_tolerance
+    request%evaluation%constitutive=>provider
+    request%evaluation%source_sink=>sink
+    request%evaluation%top_boundary=>top_provider
+    request%evaluation%storage_difference=>evaluate_mvg_storage_difference_service
+    converged=0; rejected=0; event_eligible=0
+    do exponent=13,23
+      dt=0.5_real64/2.0_real64**exponent
+      request%step_duration=dt
+      call bind_b110_default_mvg_provider(provider,hydraulics,dt)
+      call solver%solve(request,workspace,result)
+      write(*,'(a,i0,a,i0,a,es23.15,a,l1,a,l1)') 'JUMP_SOLVE exponent=',exponent,':status=',result%status, &
+           ':residual=',maxval(abs(workspace%richards%residual)), &
+           ':balance=',any(workspace%richards%nonconverged_balance),':head=',any(workspace%richards%nonconverged_head)
+      if(result%status==SW_SOLVE_CONVERGED) then
+        converged=converged+1
+        ledger=sum((result%candidate_state%water_content-state%water_content)*p%dz)+ &
+             dt*(result%top_flux-result%bottom_flux+sum(forcing%drainage_flux_by_level)+ &
+             sum(forcing%root_extraction_sink)-sum(forcing%subsurface_irrigation_source))
+        call require(abs(ledger)<=HARD_MASS_GATE,'jump diagnostic independent mass')
+        call evaluate_free_drainage_temporal_indicator(request,result,old_history,old_bound)
+        call evaluate_free_drainage_temporal_indicator(request,result,event_history,event_bound)
+        call require(old_bound%available.and.event_bound%available,'jump diagnostic certificates available')
+        write(*,'(a,i0,2(a,es23.15))') 'JUMP_HISTORY exponent=',exponent, &
+             ':committed_bound=',old_bound%head_inf_bound,':event_bound=',event_bound%head_inf_bound
+        if(old_bound%head_inf_bound>1.0e-5_real64.and.event_bound%head_inf_bound<=1.0e-5_real64) &
+             event_eligible=event_eligible+1
+      else
+        rejected=rejected+1
+      end if
+    end do
+    call require(converged>0.and.rejected>0,'jump diagnostic both solver outcomes')
+    call require(event_eligible>0,'event derivative enables bounded certificate without changing solve')
+    call state%temporal_history_snapshot(event_derivative,ok)
+    call require(ok.and.all(event_derivative==history).and.all(state%pressure_head==heads_before).and. &
+         all(state%water_content==water_before),'jump diagnostic leaves authoritative state unchanged')
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_JUMP_DIAGNOSIS=PASS'
   end subroutine
 
   subroutine build_window_forcing(profile,tile,top,source,source_result,forcing,amount_cm)
