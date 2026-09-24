@@ -1853,8 +1853,7 @@ contains
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
     type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
-    real(real64), allocatable, target :: source_sink_root_zero(:)
-    real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
+    real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: step_drainage_exchange
