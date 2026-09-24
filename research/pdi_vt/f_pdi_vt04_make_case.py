@@ -37,7 +37,7 @@ def main():
         text,n=re.subn(pat,"  HTB =\n    -0.5 -100000.0\n  -600.0 -100000.0\n* End of table",text,count=1)
     if n!=1: raise RuntimeError('initial head table replacement failed')
     # Replace the hydraulic parameter table by a five-layer model-8 PDI vapor-on setup.
-    pat=r'(?ms)^\s*(?:IHWCKMODEL\s+)?ORES\s+OSAT\s+ALFA\s+NPAR\s+LEXP.*?^\* End of table'
+    pat=r'(?ms)^\s*(?:IHWCKMODEL\s+)?ORES\s+OSAT\s+ALFA\s+NPAR.*?^\* End of table'
     rows=f''' IHWCKMODEL ORES OSAT ALFA NPAR LEXP H_ENPR KSATFIT KSATEXM BDENS H0 HA APAR OMEGA_K SWVAPOR
  8 0.02 0.433878 0.021645 1.34877 7.202077 0.0 83.24164 83.24164 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
  8 0.02 0.433878 0.021645 1.34877 7.202077 0.0 83.24164 83.24164 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
