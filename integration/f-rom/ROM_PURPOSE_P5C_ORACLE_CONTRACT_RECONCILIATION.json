@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.rom-purpose.p5c.oracle-contract-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P5C-GW-BOUNDARY-INTERFACE-CARRIER",
+  "date": "2026-09-24",
+  "status": "P5C_OPERATOR_ORACLE_GATE_INVALID_FOR_EXACT_FLUX_IDENTITY",
+  "source_result": "integration/f-rom/ROM_PURPOSE_P5C_RESULT.json",
+  "source_route_run": 35923634779,
+  "source_analysis_recovery_run": 35955576973,
+  "evidence": {
+    "reference_binding": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "prescribed_head_flux_materialization": [
+      "For bottom_mode=5, after HeadCalc convergence the adapter calls materialize_prescribed_head_bottom_flux.",
+      "That routine sets qbot by exact B1.10 watstor()+fluxes() arithmetic: qtop + root sinks + drainage sinks + storage-rate change - sources.",
+      "result%bottom_flux is then state_binding%qbot."
+    ],
+    "runtime_sign_mapping": [
+      "bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration",
+      "terminal_bottom_outward_flux_native = -solve_result%bottom_flux"
+    ],
+    "headcalc_boundary_operator": [
+      "The prescribed-head Darcy face term is used inside the final compartment residual.",
+      "With finite accepted nonlinear tolerances, it need not equal the separately materialized exact mass-accounting qbot bitwise or to roundoff."
+    ]
+  },
+  "observed_after_sign_repair": {
+    "B01_oracle_rmse_cm_per_day": 0.001503372495399587,
+    "B01_oracle_max_abs_cm_per_day": 0.06465918510244073,
+    "B01_sign_mismatches": 0,
+    "B14_oracle_rmse_cm_per_day": 0.0008024779105277531,
+    "B14_oracle_max_abs_cm_per_day": 0.028204491238815077,
+    "B14_sign_mismatches": 0
+  },
+  "interpretation": [
+    "The sign error is repaired, but the preregistered FINE_ORACLE roundoff gate still asks two non-identical quantities to be equal: a Darcy face reconstruction versus the accepted exact mass-accounting bottom flux.",
+    "Therefore P5C cannot adjudicate reduced carrier quality against that oracle gate.",
+    "The candidate improvements visible after sign repair are descriptive only and receive no downstream authority."
+  ],
+  "disposition": {
+    "p5c_result_retained_for_provenance": true,
+    "p5c_carrier_screen_scientific_authority": false,
+    "dynamic_carrier_validation_authorized": false,
+    "next_phase": "Independent boundary-flux observable reconciliation must define which quantity a reduced boundary carrier is intended to preserve before any new carrier test."
+  },
+  "scientific_firewall": {
+    "carrier_selected": false,
+    "new_closure_family_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false,
+    "p4_reopened": false
+  }
+}
