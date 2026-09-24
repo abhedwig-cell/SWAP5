@@ -208,6 +208,8 @@ module mod_kernel_transactions
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
     real(real64) :: max_temporal_indicator = 0.0_real64
     real(real64) :: min_accepted_substep_duration = huge(0.0_real64)
@@ -1058,6 +1060,8 @@ contains
     diagnostics%linear_solves = runtime_diagnostics%linear_solves
     diagnostics%backtracking_attempts = runtime_diagnostics%backtracking_attempts
     diagnostics%alternative_solver_calls = runtime_diagnostics%alternative_solver_calls
+    diagnostics%workspace_full_resets = runtime_diagnostics%workspace_full_resets
+    diagnostics%workspace_zeroed_bytes = runtime_diagnostics%workspace_zeroed_bytes
     diagnostics%max_abs_step_mass_residual = runtime_diagnostics%max_abs_step_mass_residual
     diagnostics%max_temporal_indicator = runtime_diagnostics%max_temporal_indicator
     diagnostics%min_accepted_substep_duration = runtime_diagnostics%min_accepted_substep_duration

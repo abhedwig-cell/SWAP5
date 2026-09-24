@@ -1,0 +1,862 @@
+# F-PE-PROFILE01 — Compute-core baseline and runtime attribution
+
+Date: 2026-09-24
+
+Status: `PREREGISTERED_ACTIVE`
+
+## Scope
+
+This workunit establishes a reproducible compute-core performance baseline for SWAP5 and determines where execution time is spent between input and output.
+
+Protocol:
+
+`RECONCILE -> PREREGISTER -> BASELINE -> PROFILE -> ATTRIBUTE -> NECESSITY_AUDIT -> QUALIFY -> PERSIST -> CLOSE`
+
+The primary research question is:
+
+> Where does SWAP5 compute time go between completed input preparation and output emission, why is that work executed, and which measured costs are inherent physics/numerics versus avoidable implementation overhead or redundant work?
+
+This workunit does **not** optimize production code yet. No hotspot may be repaired before the baseline and attribution evidence are frozen.
+
+## Canonical authority at start
+
+- repository: `abhedwig-cell/SWAP5`
+- branch: `integration/f-ci-canonical`
+- commit: `506c36aab6f84b74dffdf5c37fe572c1e0b46610`
+- tree: `97e6b7c361c4cda8a150373a375b55e2c1297449`
+
+Work branch:
+
+- `work/f-pe-profile01`
+
+## Relation to existing performance work
+
+F-PE-PROFILE01 reuses the existing MP measurement architecture rather than defining an incompatible profiler.
+
+Existing MP evidence already provides:
+
+- semantic timing categories for constitutive, residual, Jacobian, linear solve, Newton control, process physics, transaction, runtime batching, diagnostics and other kernel work;
+- a workload catalog with Hupsel single-column, scaling, difficult hydraulic and optional-physics benchmark families;
+- repeatability and observer-overhead methodology;
+- a controlled CPU-baseline protocol;
+- tooling under `tools/performance/`.
+
+However, current MP records do not yet provide a complete production SWAP5 compute-core attribution and do not explicitly classify redundant or unnecessary work. F-PE-PROFILE01 adds that necessity layer.
+
+## Timing boundary
+
+Runtime is administratively decomposed as:
+
+```text
+T_total = T_input + T_compute + T_output
+```
+
+The primary metric is `T_compute`.
+
+Definitions:
+
+- `T_input`: external input loading, parsing and run preparation before the first computational interval is ready;
+- `T_compute`: model execution from the ready initial state through the final accepted computational state, excluding external output emission;
+- `T_output`: external output formatting and file emission after or around accepted model execution.
+
+I/O must be measured and reported where possible, but it must not be mixed into the compute-core attribution.
+
+For coupling-oriented workloads, in-memory API or coupling exchange is not automatically classified as file I/O. Its cost must be attributed according to actual semantics, e.g. transaction, runtime orchestration, coupling adapter or data movement.
+
+## Compute-core attribution taxonomy
+
+The initial stable attribution classes are:
+
+1. `constitutive`
+   - theta(h), C(h), K(h), dK/dh, hydraulic interpolation/table evaluation and required constitutive derivatives;
+
+2. `residual`
+   - nonlinear residual assembly/evaluation excluding constitutive work where exclusive timing is available;
+
+3. `jacobian`
+   - Jacobian/coefficient construction excluding linear solve;
+
+4. `linear_solve`
+   - tridiagonal or alternative linear-system solution;
+
+5. `newton_control`
+   - nonlinear convergence checks, backtracking and solver control;
+
+6. `soil_water_other`
+   - remaining soil-water solver work not yet assigned above;
+
+7. `process_physics`
+   - surface/atmosphere, ET/root uptake, drainage/irrigation, macropore, thermal, solute, crop and nutrient processes, with subcategories retained when available;
+
+8. `timestep_control`
+   - trial construction, timestep selection, reductions, retries and step-doubling control outside solver-internal work;
+
+9. `transaction`
+   - checkpoint, capture, restore, rollback, commit and accepted/trial-state administration;
+
+10. `data_movement`
+    - array/state copies, packing/unpacking, conversions and other measured movement of data not already charged to a required physical operation;
+
+11. `allocation_memory`
+    - dynamic allocation/deallocation, scratch resizing and repeated initialization where separately observable;
+
+12. `runtime_orchestration`
+    - wrappers, dispatch, runtime classification, scheduling and control-flow overhead;
+
+13. `diagnostics_accounting`
+    - balances, diagnostics and measurement/runtime bookkeeping;
+
+14. `other_kernel`
+    - compute-core work not yet attributable.
+
+The existing MP category names remain authoritative where they overlap. New subcategories are diagnostic refinements and must reconcile back to the MP top-level accounting.
+
+## Necessity classification
+
+Every material hotspot must receive one of these classifications before an optimization is proposed:
+
+- `N1_REQUIRED`: physically or numerically required work;
+- `N2_REQUIRED_EXPENSIVE_IMPLEMENTATION`: required result, but implementation may be unnecessarily costly;
+- `N3_CONDITIONALLY_REQUIRED`: valid work, but execution appears broader or more frequent than needed;
+- `N4_REDUNDANT`: duplicate or avoidable repeated work whose result is already available or unnecessary on the current path;
+- `N5_DEAD_OR_NONCONTRIBUTING`: executed work that cannot affect accepted model state or required diagnostics for the qualified configuration;
+- `NX_UNRESOLVED`: evidence insufficient to classify.
+
+N4/N5 status requires call-path and state-dependency evidence. Wall-clock prominence alone is insufficient.
+
+## Optimization ordering for later workunits
+
+No repair is performed in PROFILE01, but later work must prefer:
+
+1. do not execute unnecessary work;
+2. execute necessary work less often;
+3. move or initialize less data;
+4. execute the same required computation more efficiently;
+5. approximation only in separately governed approximate-model workstreams.
+
+Approximation is outside F-PE-PROFILE.
+
+## Measurements required
+
+The baseline must combine:
+
+### Sampling or low-intrusion profiling
+Used to identify whole-program hotspots without requiring dense timers everywhere.
+
+### Semantic timers
+Used for stable top-level and major compute categories. Timers must state whether they are inclusive or exclusive.
+
+### Counters
+At minimum where technically available:
+
+- accepted computational intervals;
+- nonlinear iterations;
+- residual evaluations;
+- Jacobian builds;
+- linear solves;
+- backtracking attempts;
+- timestep reductions;
+- retries/rejected trials;
+- constitutive evaluations;
+- process call counts for expensive or optional processes;
+- checkpoint captures;
+- checkpoint restores/replays;
+- commits;
+- major state/array copies when observable;
+- dynamic allocations or scratch resizes where observable.
+
+High call count is evidence for investigation, not by itself evidence of redundancy.
+
+## Baseline workload matrix
+
+PROFILE01 starts with four workload roles. Existing qualified or already versioned fixtures are preferred; no undocumented physical defaults may be invented merely to fill the matrix.
+
+### P01-A — simple hydraulic/reference workload
+
+Purpose: expose the reference Richards path with minimal optional-physics interference.
+
+Candidate source: existing SWAP5 reference-mode test/fixture selected after execution-path reconciliation.
+
+### P01-B — representative production workload
+
+Purpose: characterize normal SWAP execution with realistic process composition.
+
+Preferred starting candidate: Hupsel lineage where the current SWAP5 application path is qualified and executable.
+
+### P01-C — numerically difficult hydraulic workload
+
+Purpose: amplify nonlinear iterations, retries or known difficult hydraulic behavior.
+
+The existing MP-B04 B12 row is parameter-locked but not a complete executable fixture. PROFILE01 must not invent the missing forcing/boundary/process configuration. If no qualified difficult production fixture is available, this slot remains explicitly blocked rather than fabricated.
+
+### P01-D — physics-rich workload
+
+Purpose: expose non-solver process costs and detect repeated process work, including ET/root uptake and, where qualified, oxygen stress or other expensive optional physics.
+
+A fixture is admitted only when its current canonical path and expected outputs are already sufficiently qualified.
+
+A later coupling-like short-window workload may be added, but it is not required to close the first single-column baseline.
+
+## Repeatability and environment
+
+Reuse the existing MP controlled-baseline principles:
+
+- exact code commit;
+- compiler and version;
+- optimization flags;
+- CPU/host information;
+- worker/thread count;
+- affinity where available;
+- warm-up policy;
+- repeated measurements;
+- balanced or interleaved comparison order where variants are compared;
+- no post-hoc deletion of timing outliers;
+- physical-output identity or qualified numerical-equivalence check.
+
+PROFILE01 may produce diagnostic timing on shared CI hosts, but fine-grained percentage claims below the measured noise/resolution floor must not be presented as resolved effects.
+
+## Hard scientific/technical gates
+
+1. Instrumentation must not change accepted physical state.
+2. Instrumentation must not change solver/timestep acceptance policy.
+3. Instrumented versus uninstrumented runs must preserve the applicable VQ physical and mass-balance criteria.
+4. Rejected trials may contribute cost but may not contaminate committed physical history.
+5. Category totals must reconcile to the measured compute region within an explicitly reported unattributed remainder.
+6. Call counters must reconcile with known control flow on at least one inspectable case.
+7. Profiling overhead must be measured or bounded before fine-grained conclusions are used.
+8. No production optimization is admitted in PROFILE01.
+9. No solver, physics, tolerance, fallback or approximation change is permitted for performance.
+10. I/O performance observations are persisted separately and are not used to claim compute-core speedup.
+
+## Explicit audit targets
+
+PROFILE01 must actively inspect for:
+
+- duplicate process calls;
+- repeated constitutive evaluations with unchanged inputs;
+- repeated initialization or zeroing;
+- loops over inactive/unneeded ranges;
+- work performed for disabled physics;
+- full-state copies when only a subset is required;
+- repeated allocate/deallocate or scratch resizing inside hot paths;
+- pack/unpack or representation conversions;
+- repeated diagnostics or balance assembly;
+- wrapper/control paths that recompute already available quantities;
+- transaction capture/restore costs and their semantic necessity.
+
+These are hypotheses, not predeclared defects.
+
+## Predeclared interpretation rules
+
+- A large solver share does not prove the solver should be changed.
+- A large transaction/data-movement share does not prove copying is unnecessary.
+- A high call count does not prove redundancy.
+- A local speedup does not imply the same total-runtime speedup.
+- A measured local fraction `f` and local fractional improvement `r` imply at most an approximate first-order total compute saving `f*r` before secondary effects; the actual whole-run result must still be measured.
+- Negative findings are retained. If suspected redundancy is semantically necessary, that is a valid result.
+
+## PROFILE01 deliverables
+
+Before closeout:
+
+1. frozen source identity and environment;
+2. selected executable workload set with qualification provenance;
+3. explicit compute-region boundaries;
+4. whole-program sampling profile where technically available;
+5. semantic timing decomposition;
+6. call/counter evidence;
+7. unattributed compute fraction;
+8. hotspot table;
+9. first necessity classification for material hotspots;
+10. list of suspected redundancies with evidence status;
+11. observer-overhead/noise statement;
+12. recommendation for bounded PROFILE02 audit targets;
+13. no production optimization patch.
+
+## Initial reconciliation result
+
+Current canonical already contains substantial MP measurement design and tooling. This workunit therefore **extends rather than replaces** MP.
+
+Known starting facts:
+
+- `benchmarks/performance/workload-catalog.json` defines MP-B01 Hupsel single-column as shadow-executable and identifies B12 as parameter-locked rather than a complete executable case;
+- `docs/performance/mp-5-repeatability-overhead.md` demonstrates why measurement noise and observer overhead must be treated explicitly;
+- `tests/fpe/run_fpe11_paired_surface_evaporation_timing.sh` provides a useful paired same-runner timing pattern for a bounded microbenchmark, but it is not a whole-compute profile;
+- current runtime diagnostics already expose counts such as checkpoint captures/replays, attempts and retries, providing potential hooks for attribution;
+- the full production SWAP5 compute path is not yet semantically timed at the granularity required here.
+
+## Current status
+
+```text
+RECONCILE       = COMPLETE_FOR_START
+PREREGISTER     = COMPLETE
+BASELINE        = NEXT
+PROFILE         = NOT_STARTED
+ATTRIBUTE       = NOT_STARTED
+NECESSITY_AUDIT = NOT_STARTED
+REPAIR          = FORBIDDEN_IN_PROFILE01
+CLOSE           = OPEN
+```
+
+
+## Initial source-path audit
+
+The first source-path reconciliation identified an immediately testable baseline candidate and one concrete redundancy hypothesis.
+
+### P01-A candidate selected for first instrumentation pass
+
+`tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90` is a suitable first inspectable SWAP5 compute-path workload because it:
+
+- executes the current serialized reference backend and real reference Richards/HeadCalc route;
+- has an existing production-runtime gate at O0 and O2;
+- checks completed status, hard mass balance, accepted/rejected trajectory semantics and physical identity;
+- already exposes diagnostic counts for retries and linear solves;
+- deliberately contains a discarded full trial alongside accepted half trials, making it useful for separating useful accepted work from real but rejected numerical work.
+
+It is not yet a representative full production/Hupsel workload, so it is admitted only as P01-A, not P01-B.
+
+### H01 — repeated Richards workspace reset/zeroing
+
+Status: `SUSPECTED_N4_REDUNDANCY_UNMEASURED`.
+
+Observed current path:
+
+1. `mod_reference_richards_legacy_binding.f90` calls `initialize_reference_workspace(ws%richards, n)`;
+2. immediately afterwards the same binding calls `reset_reference_workspace(ws%richards)`;
+3. `initialize_reference_workspace()` itself already calls `reset_reference_workspace()` even when the workspace is already allocated at the correct size;
+4. the subsequent `headcalc(..., fsi_workspace=ws%richards, ...)` path calls `initialize_reference_workspace(fsi_ws, numnod)` again;
+5. that third initialization again invokes `reset_reference_workspace()`.
+
+Because `reset_reference_workspace()` zeroes a substantial set of node-sized work arrays, matrices, integer/logical arrays, warm-start storage and diagnostics, the current route appears capable of performing multiple full-workspace zeroing passes per solve.
+
+This is **not yet classified as a defect**. Before any repair, PROFILE01 must establish:
+
+- exact reset count per solve/trial;
+- whether any of the resets are semantically required for scratch independence or poison-safety;
+- bytes/elements written per reset as a function of node count;
+- measured contribution to compute time at representative node counts;
+- physical/result identity for any later bounded removal experiment.
+
+No source change is permitted in PROFILE01 on the basis of this observation alone.
+
+### Existing counters
+
+`a23bu_solver_diagnostics_t` already records:
+
+- `headcalc_calls`;
+- `nonlinear_iterations`;
+- `jacobian_builds`;
+- `linear_solves`;
+- `backtracking_attempts`;
+- `alternative_solver_calls`;
+- `internal_retries`.
+
+These should be reused rather than duplicated. PROFILE01 instrumentation should add only missing counts/times needed for attribution and redundancy diagnosis.
+
+## Updated status
+
+```text
+RECONCILE       = COMPLETE_FOR_START
+PREREGISTER     = COMPLETE
+BASELINE        = P01-A_PATH_SELECTED
+PROFILE         = INSTRUMENTATION_DESIGN_NEXT
+ATTRIBUTE       = INITIAL_H01_HYPOTHESIS_RECORDED
+NECESSITY_AUDIT = H01_PENDING_MEASUREMENT
+REPAIR          = FORBIDDEN_IN_PROFILE01
+CLOSE           = OPEN
+```
+
+
+## Technical qualification failure TQ-01
+
+The first PROFILE01 CI execution on PR #599 did not reach the new observer assertion. The clean FKT22 build failed while compiling `mod_reference_richards_temporal_indicator.f90` because `mod_b110_root_sink_provider.mod` had not yet been built.
+
+Classification:
+
+- `TECHNICAL_TEST_HARNESS_FAILURE`;
+- not a production-physics failure;
+- not evidence for or against H01;
+- caused by source ordering in `tests/fkt/run_fkt22_fmr_runtime_gate.sh` that could be masked in environments containing stale module files.
+
+Repair:
+
+- move `src/solver/mod_b110_root_sink_provider.f90` before `src/solver/mod_reference_richards_temporal_indicator.f90` in the clean compile list;
+- no production source semantics changed by this repair.
+
+The failed run is retained as evidence and the observation gate is re-run from the repaired harness.
+
+
+### H02 — transaction state clone/data-movement cost
+
+Status: `N1_OR_N2_PENDING_MEASUREMENT`.
+
+The current transaction path deliberately clones physical state to preserve accepted/trial isolation. For external full/half stepping, the reference transaction creates a checkpoint clone and then trial clones for the full and half routes. The B1.10 physical-state clone currently allocates and copies the pressure-head and water-content arrays and, when active, copies optional snow and soil-temperature state.
+
+This copying is **not preregistered as redundant**. Transactional isolation is a scientific invariant. PROFILE01 must instead measure:
+
+- physical-state clone count per requested interval and per accepted interval;
+- allocated/copied bytes by state family;
+- fraction associated with rejected/discarded trials;
+- whether repeated allocate/deallocate is a measurable implementation cost;
+- whether later implementation alternatives can preserve exact accepted/trial isolation without changing ownership semantics.
+
+Pointers, aliasing or move-based alternatives are not authorized merely because copying is measured as expensive. Any later repair must prove that committed state cannot be mutated by speculative work.
+
+
+## Instrumentation qualification log
+
+### Q01 — first observation compile attempt
+
+Result: `FAIL_EXPECTED_REPAIRABLE_OBSERVER_PLUMBING`.
+
+The first P01-A workflow attempt failed at compile time because reset counters were accumulated in `transaction_result_t` code paths before the corresponding result fields had been added to the type. No model execution occurred and no physics evidence was produced.
+
+Repair: add the missing total and accepted reset/byte fields to `transaction_result_t` and retain the same preregistered observation semantics.
+
+### Q02 — canonical diagnostics propagation compile attempt
+
+Result: `FAIL_EXPECTED_REPAIRABLE_OBSERVER_PLUMBING`.
+
+After Q01 repair, compilation progressed to `mod_kernel_transactions.f90` and failed because the new reset counters were mapped from `canonical_run_diagnostics_t` before that canonical diagnostics type and its transaction accumulator exposed the fields.
+
+Repair: add `workspace_full_resets` and `workspace_zeroed_bytes` to `canonical_run_diagnostics_t` and accumulate the corresponding `transaction_result_t` totals in `mod_canonical_interval_runtime`.
+
+These failures are observer-plumbing defects only. Neither attempt reached model execution; neither is evidence about SWAP performance or physics.
+
+
+### Q03 — P01-A runner dependency closure
+
+Result: `FAIL_TEST_RUNNER_DEPENDENCY_DRIFT`.
+
+After observer-plumbing compilation progressed, the existing FKT22 runtime runner failed before model execution because the current serialized backend imports modules that were not present in the runner's explicit source list. The first missing module was `mod_b110_smooth_freatic_projection`; after adding it, the next missing module was `mod_fmr_drainage_qbot_directional_binding`, whose ordering also had to follow the smooth-projection module.
+
+These failures are test-runner source-closure drift caused by the current backend dependency graph. They do not indicate a physics, solver or profiling defect. The bounded repair is limited to completing and ordering the runner compile list.
+
+### H01 static quantitative prediction before runtime observation
+
+For the current P01-A four-node workspace, `reference_workspace_payload_bytes()` accounts for the node-sized real, integer and logical workspace payload touched by a full reset. From the current layout this is approximately 812 bytes per full reset on the GNU runner representation used by the gate.
+
+The source path predicts three full reset calls for each Reference solve:
+
+1. reset inside `initialize_reference_workspace()` called by the legacy binding;
+2. immediate explicit `reset_reference_workspace()` in that binding;
+3. reset inside the second `initialize_reference_workspace()` call in `HeadCalc`.
+
+Because the P01-A external full/half transaction normally evaluates one full trial plus two half trials, the preregistered source-level prediction is:
+
+```text
+predicted workspace resets per requested interval = 9
+predicted reset payload touched at n=4       ~= 7308 bytes
+```
+
+This remains a prediction until the runtime observer passes. A mismatch is evidence to investigate, not a reason to alter the counter or gate after observation.
+
+
+## First measured result — H01 per-solve reset observation
+
+Workflow run 36061582716 completed successfully on GNU Fortran 13.3.0 after bounded runner dependency repair.
+
+Observed for the P01-A Reference solve path, identically at O0 and O2:
+
+```text
+workspace_full_resets_per_solve = 3
+workspace_zeroed_bytes_per_solve = 2436
+runtime_gate_O0 = PASS
+runtime_gate_O2 = PASS
+O0_O2_semantic_identity = PASS
+production_runtime_gate = PASS
+```
+
+The byte result implies 812 bytes of workspace payload are touched by each full reset for the four-node P01-A workspace. This matches the preregistered source-level workspace-layout calculation.
+
+Interpretation:
+
+- H01's existence claim is **confirmed**: the current Reference solve path performs three full workspace reset passes per solve;
+- the observation remains a **redundancy candidate**, not yet a removal authorization;
+- physical/runtime semantics remained qualified under the existing FKT22 gate at O0 and O2;
+- the time significance of the repeated reset is still unmeasured and must be established before prioritizing a repair.
+
+Current necessity classification: `N4_CANDIDATE_CONFIRMED_BEHAVIOR_COST_UNMEASURED`.
+
+
+## First measured result — H01 workspace reset multiplicity
+
+A successful P01-A runtime execution on GNU Fortran 13.3.0 reached the existing FKT22 production runtime oracle and preserved:
+
+- rejected-trial isolation: PASS;
+- physical identity: PASS;
+- serialized runtime gate: PASS.
+
+The observer measured for one Reference solve:
+
+```text
+workspace_full_resets = 3
+workspace_zeroed_bytes = 2436
+```
+
+For the four-node P01-A workspace, one reset therefore corresponds to 812 bytes of zeroing under the current GNU storage sizes. The measured multiplicity confirms the source-path hypothesis that the same solver workspace is fully reset three times in one Reference solve.
+
+H01 status is therefore advanced from `SUSPECTED_N4_REDUNDANCY_UNMEASURED` to:
+
+`MEASURED_TRIPLE_RESET_NECESSITY_NOT_YET_ADJUDICATED`.
+
+This is not yet an N4 verdict. PROFILE01 still has to establish which reset(s) are semantically required and measure the time contribution before a repair is authorized.
+
+The external full/half transaction source path performs one full and two half Reference solves per successful no-retry interval. Current diagnostic assertions expect nine aggregate resets for that interval, but the interval-level value remains pending a successful run of the latest observer plumbing and must not be treated as measured evidence until that run passes.
+
+
+## H01 necessity adjudication — first bounded verdict
+
+Source-path inspection after the measured triple-reset result separates the three reset events:
+
+1. `reference_richards_legacy_solve -> initialize_reference_workspace(ws%richards,n)`:
+   - this call both ensures allocation/shape and performs a full reset;
+   - one clean-scratch establishment at solve start is semantically defensible;
+   - classification: `N1_REQUIRED_OR_RELOCATABLE` pending timing/design choice.
+
+2. the immediately following explicit `reset_reference_workspace(ws%richards)`:
+   - no workspace mutation occurs between reset 1 and reset 2;
+   - it repeats the complete zeroing performed by `initialize_reference_workspace`;
+   - classification for the current explicit Reference route: `N4_REDUNDANT_CONFIRMED`.
+
+3. `HeadCalc -> initialize_reference_workspace(fsi_ws,numnod)`:
+   - on P01-A, between reset 2 and this call only the separate state binding is initialized; it does not modify the Richards workspace;
+   - on the optional interface-sensitivity route, `prepare_reference_tridag_factorization_capture` may resize `tridag_gamma`, but it explicitly zero-initializes the new/expanded storage itself;
+   - no evidence was found that a second complete workspace zeroing is required before HeadCalc begins;
+   - classification for the currently inspected explicit route: `N4_REDUNDANT_CONFIRMED_BOUNDED`.
+
+Thus the current evidence supports a bounded statement:
+
+> Of the three full workspace resets measured per explicit Reference solve, two are redundant on the inspected SWAP5 route. One full clean-scratch establishment remains semantically justified unless a later ownership design proves otherwise.
+
+This does not yet authorize repair in PROFILE01. A later repair workunit must remove resets one at a time, preserve poison/scratch independence tests, preserve sensitivity-capture behavior, and demonstrate physical/result identity before claiming runtime benefit.
+
+
+### H02 source-path decomposition
+
+The current P01-A setup exposes several distinct physical-state copy sites before any optimization claim is made:
+
+- explicit checkpoint capture clones committed physical state once before the trial;
+- `kernel_advance_interval` clones the supplied checkpoint into its working state;
+- `execute_reference_interval` clones that working committed state into a transaction checkpoint;
+- the external full/half transaction clones that checkpoint into the full-trial state;
+- it separately clones the checkpoint into the half-route state, which is then advanced through half1 and half2.
+
+Thus the simple P01-A path contains at least five full physical-state clone operations when checkpoint creation is included, of which four lie from kernel trial entry onward. The full-trial state is later discarded when the two-half route is accepted. This does not make the full-trial clone redundant: under the current temporal-error algorithm it supplies the full-step comparator. It does show why clone/allocation cost must be measured separately from solver time.
+
+The base B1.10 physical-state clone allocates and copies at least the pressure-head and water-content arrays plus scalar ponding/groundwater state; optional state families add their own payload. Any later data-movement optimization must preserve trial isolation and lineage authority exactly.
+
+
+### H03 — constitutive provider duplicate/over-evaluation
+
+Status: `N3_N4_CANDIDATE_PENDING_COUNTER_EVIDENCE`.
+
+Current typed Reference HeadCalc source shows two distinct efficiency concerns.
+
+1. Before the Newton loop, the constitutive provider evaluates the complete current head vector to obtain conductivity. No head update occurs before the first Newton iteration. At the start of that first iteration the same provider is called again with the same head vector, while only the capacity output is consumed. This is a source-level candidate for one duplicate full constitutive evaluation per HeadCalc call.
+
+2. The current provider ABI always returns water content, conductivity, capacity and dK/dh together. In several call sites HeadCalc consumes only one subset of these outputs. The default MvG provider nevertheless loops over all nodes and computes theta, C and K on every call. For the currently admitted swkimpl=0 route, dK/dh is reserved and zeroed. This is an over-evaluation candidate even where the provider call itself is semantically necessary.
+
+These findings must be separated from F-AHL/tabulation. PROFILE01 asks whether calls/calculations are necessary; F-AHL asks how necessary constitutive evaluations are represented/evaluated. No provider API change is authorized here before call-count and timing evidence exist.
+
+
+## H01 byte-scaling derivation
+
+For the currently allocated Reference Richards workspace, `reference_workspace_payload_bytes()` counts:
+
+- real payload: `23*n + 2` values;
+- integer payload: `n` values;
+- logical payload: `2*n + 3` values.
+
+Under the GNU Fortran representation used by the current qualification runner (8-byte `real64`, 4-byte default integer and 4-byte default logical), one full reset writes:
+
+```text
+B_reset(n) = 8*(23*n + 2) + 4*n + 4*(2*n + 3)
+           = 196*n + 28 bytes
+```
+
+The P01-A measurement at `n=4` gives 812 bytes/reset, matching this derivation exactly.
+
+With two of the three full resets classified as redundant on the inspected explicit Reference route, the source-derived avoidable zeroing volume is:
+
+```text
+B_avoidable_per_solve(n) = 2*(196*n + 28)
+                         = 392*n + 56 bytes
+```
+
+Illustrative byte volumes, not timing claims:
+
+| Nodes | One full reset | Two redundant resets / solve | Three-solve full/half interval if no retry |
+| ---: | ---: | ---: | ---: |
+| 4 | 812 B | 1,624 B | 4,872 B |
+| 20 | 3,948 B | 7,896 B | 23,688 B |
+| 60 | 11,788 B | 23,576 B | 70,728 B |
+| 200 | 39,228 B | 78,456 B | 235,368 B |
+| 1000 | 196,028 B | 392,056 B | 1,176,168 B |
+
+The final column assumes one full plus two half Reference solves and no retry. It remains a source-derived volume estimate until interval-level observer qualification passes. Runtime significance is left to the preregistered reset microbenchmark and later whole-run attribution.
+
+
+## H02 source-derived clone accounting
+
+For the current external full/half route with a supplied reusable kernel checkpoint, one successful no-retry compute interval performs the following physical-state deep clones inside the compute boundary:
+
+1. `kernel_advance_interval`: checkpoint physical state -> `working`;
+2. `execute_reference_interval`: `working` -> transaction `checkpoint`;
+3. transaction full trial: transaction checkpoint -> `full_state`;
+4. transaction half route: transaction checkpoint -> `half_state`.
+
+The second half-step advances the existing `half_state` in place and therefore does not create another physical-state clone.
+
+Thus:
+
+```text
+base deep clones per successful full/half interval = 4
+additional deep clones per retry attempt          = 2
+```
+
+A reusable checkpoint itself is created by a separate `kernel_capture_checkpoint` clone. That cost belongs to checkpoint preparation and must be attributed according to how often a coupling/application workflow reuses the checkpoint; it is not silently folded into every compute interval.
+
+For the base `fmr_b110_physical_state_t`, each clone allocates and copies at least:
+
+- `pressure_head(n)`;
+- `water_content(n)`;
+- two scalar `real64` fields;
+- optional snow and soil-temperature state when active.
+
+Ignoring allocator metadata and optional-state payload, the minimum copied physical payload is:
+
+```text
+B_state_clone_min(n) = 16*n + 16 bytes
+B_four_clones_min(n) = 64*n + 64 bytes per no-retry full/half interval
+```
+
+Each base-state clone also performs two array allocations. The no-retry route therefore causes at least eight profile-array allocations inside the interval, before optional-state allocations.
+
+Necessity status remains `N1_OR_N2_PENDING_MEASUREMENT`. The four-clone route is structurally real, but transactional accepted/trial isolation is authoritative. Later work may investigate whether one or more implementation-level clones can be eliminated without aliasing committed state or weakening rollback semantics; PROFILE01 makes no such assumption.
+
+
+## H03 — duplicate constitutive provider evaluation at first Newton iteration
+
+Status: `N4_REDUNDANT_CONFIRMED_BOUNDED` for the explicit constitutive-provider route.
+
+In current `HeadCalc`:
+
+1. before the Newton loop, `evaluation_context%constitutive%evaluate(state%h,...)` computes the complete provider tuple `theta, K, C, dK/dh` at the current pressure-head vector;
+2. only `provider_k` is consumed immediately to reset conductivity and construct `kmean`;
+3. no assignment to `state%h` occurs between that evaluation and entry to Newton iteration 1;
+4. at the start of Newton iteration 1, the same constitutive provider is called again with the same `state%h` vector, now to consume `provider_capacity`;
+5. the first call had already produced that same capacity array.
+
+Thus one whole-profile constitutive provider call per Reference solve is duplicated before any head update occurs. This is stronger than a generic caching hypothesis because the input vector is source-identical and no intervening operation mutates it.
+
+The bounded safe interpretation is:
+
+> The first Newton iteration can reuse the constitutive tuple already evaluated immediately before the iteration loop, provided the implementation preserves all currently consumed K/C/dKdh/theta semantics and does not change legacy non-provider behavior.
+
+No repair is authorized in PROFILE01. Later repair must prove result identity across SWKIMPL modes and relevant boundary routes, because subsequent Newton iterations legitimately require fresh constitutive evaluation after head updates.
+
+
+## H03 refinement — constitutive tuple reuse across Newton iterations
+
+Further control-flow inspection shows that H03 is not limited to the first Newton iteration.
+
+For the explicit constitutive-provider route the current pattern is:
+
+```text
+pre-loop: evaluate constitutive tuple at h_k
+iteration start: evaluate constitutive tuple again at unchanged h_k
+...
+backtracking trial: update h -> evaluate complete tuple at candidate h
+accepted backtracking trial leaves that tuple in provider scratch
+next Newton iteration start: evaluate complete tuple again at the same accepted h
+```
+
+Therefore:
+
+- iteration 1 start duplicates the pre-loop constitutive evaluation;
+- for every subsequent Newton iteration, its start evaluation duplicates the complete tuple already produced by the accepted backtracking evaluation of the previous iteration, provided no intervening operation changes `state%h`;
+- rejected backtracking attempts remain legitimate fresh evaluations because their candidate `h` differs;
+- the final accepted backtracking evaluation is not redundant merely because the solve then converges: its `theta` result is part of evaluating the accepted candidate state.
+
+This supports the bounded source-derived estimate:
+
+```text
+avoidable constitutive evaluations per solve ~= nonlinear_iterations
+```
+
+for the inspected explicit provider route, while total provider evaluations are structurally:
+
+```text
+total ~= 1 pre-loop + nonlinear_iterations + backtracking_attempts
+```
+
+The exact dynamic relation must be checked against the existing counters before it is used as measured evidence. No repair is authorized in PROFILE01.
+
+
+## H04 — constitutive provider tuple granularity
+
+Status: `NX_UNRESOLVED`.
+
+The current provider interface evaluates the full tuple `theta, K, C, dK/dh` for every provider call. Local call sites often consume only part of that tuple immediately:
+
+- pre-Newton call: `K` is consumed directly;
+- Newton-iteration start: `C` is consumed directly;
+- backtracking candidate call: `theta` is consumed directly.
+
+However, this does **not** establish that the remaining outputs are dead work. In particular, the latest `provider_k` can subsequently contribute to lower-boundary handling such as free drainage, and a capacity computed at an accepted candidate head could in principle be reusable by a subsequent Newton iteration.
+
+Therefore PROFILE01 separates two claims:
+
+- H03: repeat evaluation of the **same complete tuple at unchanged h** is bounded N4 redundancy;
+- H04: computing a complete tuple when a call site appears to need only a subset is an unresolved interface-granularity question, not yet a redundancy verdict.
+
+This distinction prevents performance work from prematurely splitting the constitutive API in a way that could conflict with F-AHL or solver semantics.
+
+
+## Measured P01-A interval aggregation and microbenchmark costs
+
+The current P01-A observation now passes on GNU Fortran 13.3.0 with the existing serialized runtime gate and reports:
+
+```text
+workspace_full_resets_per_solve     = 3
+workspace_zeroed_bytes_per_solve    = 2436
+constitutive_evaluations_per_solve  = 3
+nonlinear_iterations_per_solve      = 1
+workspace_full_resets_per_interval  = 9
+workspace_zeroed_bytes_per_interval = 7308
+serialized_runtime_gate             = PASS
+```
+
+The interval-level reset aggregation therefore matches the preregistered full + half1 + half2 prediction exactly for the no-retry P01-A route.
+
+For the same solve, three constitutive provider evaluations occur with one nonlinear iteration. Source analysis attributes these as:
+
+1. pre-loop evaluation at the initial head;
+2. duplicate iteration-start evaluation at the unchanged initial head;
+3. backtracking/candidate evaluation at the updated head.
+
+Thus P01-A dynamically confirms one bounded redundant constitutive call for its one Newton iteration.
+
+### Reset microbenchmark
+
+GNU Fortran 13.3.0, O2, shared GitHub-hosted runner:
+
+| Nodes | Bytes/reset | ns/reset |
+| ---: | ---: | ---: |
+| 4 | 812 | 78.66 |
+| 20 | 3,948 | 93.30 |
+| 60 | 11,788 | 148.78 |
+| 200 | 39,228 | 496.34 |
+| 1000 | 196,028 | 2,705.01 |
+
+The measured effective write bandwidth is approximately 67–74 GiB/s for the larger profiles. These values are diagnostic shared-runner timings, not portable production baselines.
+
+With two redundant resets per Reference solve, the direct microbenchmark cost estimate is therefore about:
+
+| Nodes | avoidable reset time / solve |
+| ---: | ---: |
+| 4 | 0.157 us |
+| 20 | 0.187 us |
+| 60 | 0.298 us |
+| 200 | 0.993 us |
+| 1000 | 5.410 us |
+
+### Constitutive provider microbenchmark
+
+GNU Fortran 13.3.0, O2, same shared-runner class:
+
+| Nodes | ns/full provider call |
+| ---: | ---: |
+| 4 | 455.17 |
+| 20 | 2,230.20 |
+| 60 | 6,672.45 |
+| 200 | 22,279.89 |
+| 1000 | 111,397.53 |
+
+These timings measure one complete default B1.10 MvG provider evaluation over the whole profile and are likewise diagnostic rather than portable hardware claims.
+
+### First measured priority comparison
+
+For one redundant event at 1000 nodes:
+
+```text
+full constitutive provider call ~= 111.4 us
+full workspace reset             ~=   2.7 us
+ratio                            ~=  41.2 x
+```
+
+At 200 nodes the corresponding ratio is about 44.9x. Across the measured larger profiles, redundant constitutive evaluation is therefore roughly forty-to-forty-five times more expensive per occurrence than one redundant full workspace reset on this runner class.
+
+This does **not** imply a forty-fold whole-model speedup. It establishes repair priority within the observed redundant-work candidates:
+
+1. H03 duplicate constitutive evaluation: higher expected payoff;
+2. H01 duplicate workspace resets: real but materially smaller per event;
+3. H02 deep-copy route: still pending direct timing and necessity adjudication.
+
+No production repair is admitted by these measurements.
+
+
+## H02 measured clone cost
+
+The focused base-state clone microbenchmark completed successfully on GNU Fortran 13.3.0, O2, shared GitHub-hosted runner:
+
+| Nodes | ns/deep clone |
+| ---: | ---: |
+| 4 | 37.88 |
+| 20 | 45.65 |
+| 60 | 62.29 |
+| 200 | 174.64 |
+| 1000 | 552.65 |
+
+For the source-derived four-clone no-retry full/half interval, this implies a focused base-state clone cost of approximately:
+
+| Nodes | four-clone cost / interval |
+| ---: | ---: |
+| 4 | 0.152 us |
+| 20 | 0.183 us |
+| 60 | 0.249 us |
+| 200 | 0.699 us |
+| 1000 | 2.211 us |
+
+This excludes the separately created reusable checkpoint clone and excludes optional-state payloads such as snow or soil-temperature state. Retries add two more state clones per retry attempt.
+
+Interpretation:
+
+- H02 is a real implementation/data-movement cost;
+- for the base physical-state route measured here, its focused cost is smaller than the already-confirmed H03 constitutive redundancy and also smaller than the two-reset H01 avoidable cost at 1000 nodes;
+- H02 remains `N1_OR_N2`, not N4, because the clones implement accepted/trial-state isolation;
+- no aliasing/pointer optimization is justified by this measurement alone.
+
+## PROFILE01 first-phase synthesis
+
+Measured/shared-runner priority at 1000 nodes for the currently isolated events:
+
+| Candidate | Necessity class | Focused avoidable / attributable cost |
+| --- | --- | ---: |
+| H03 duplicate constitutive evaluation | N4 confirmed bounded | ~111.4 us per redundant provider call; ~one redundant call per Newton iteration on inspected route |
+| H01 two duplicate workspace resets | N4 confirmed bounded | ~5.41 us per Reference solve |
+| H02 four base-state deep clones | N1/N2 | ~2.21 us per no-retry full/half interval, not presently classified avoidable |
+| H04 provider tuple granularity | NX unresolved | not isolated |
+
+The dominant bounded repair target among confirmed redundant work is therefore H03.
+
+This ranking is local and diagnostic. It is not a whole-SWAP speedup claim. Whole-run attribution on representative production workloads remains required before any program-level performance percentage is reported.
+
+## PROFILE01 phase-1 closeout status
+
+```text
+RECONCILE        = COMPLETE
+PREREGISTER      = COMPLETE
+P01-A BASELINE   = COMPLETE
+COUNTER PROFILE  = COMPLETE_FOR_P01-A
+H01 ATTRIBUTE    = COMPLETE_BOUNDED
+H02 ATTRIBUTE    = COMPLETE_BASE_STATE_BOUNDED
+H03 ATTRIBUTE    = COMPLETE_BOUNDED
+H04 ATTRIBUTE    = UNRESOLVED
+REPAIR           = NONE_IN_PROFILE01
+PHASE1 VERDICT   = CLOSED_MEASURED_PRIORITY
+NEXT              = PROFILE02_H03_REPAIR_QUALIFICATION + broader production attribution
+```
+
+PROFILE01 phase 1 closes the focused redundancy screen, not the entire SWAP5 performance programme. P01-B/P01-C/P01-D representative workload attribution and whole-program sampling remain open programme work and must not be implied by the P01-A microbenchmarks.

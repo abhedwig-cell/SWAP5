@@ -1,0 +1,23 @@
+name: F-PE-PROFILE02 H03 multi-iteration qualification
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile02-h03
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90'
+      - 'tests/publication/run_pub_p2e01_e0_paired_pilot.sh'
+      - '.github/workflows/f-pe-profile02-h03-multi.yml'
+  workflow_dispatch:
+
+jobs:
+  h03-multi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run existing three-iteration Reference oracle
+        run: bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh
