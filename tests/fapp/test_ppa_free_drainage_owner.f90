@@ -454,7 +454,8 @@ contains
     end do
     call owner%export_committed_restart(9901_int64,bundle,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'strong owner restart exported')
-    call verify_failed_interval_replay(profile,forcing,interception,bundle)
+    call verify_failed_interval_replay(profile,forcing,interception,bundle,.false.)
+    call verify_failed_interval_replay(profile,forcing,interception,bundle,.true.)
     call fresh%initialize(profile,code)
     call require(code==FMR_APP_BOOT_OK,'fresh owner explicit numerical bindings')
     bad_bundle=bundle
@@ -520,11 +521,12 @@ contains
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS'
   end subroutine verify_storage_receipt_restart
 
-  subroutine verify_failed_interval_replay(profile,forcing,interception,expected)
+  subroutine verify_failed_interval_replay(profile,forcing,interception,expected,partial_progress)
     type(fmr_production_application_config_t),intent(in)::profile
     type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
     real(real64),intent(in)::interception(:)
     type(fmr_committed_restart_bundle_t),intent(in)::expected
+    logical,intent(in)::partial_progress
     type(fmr_production_application_config_t)::limited
     type(fmr_production_application_bootstrap_t)::retry_owner
     type(fmr_committed_restart_bundle_t)::before,after,replayed
@@ -532,13 +534,16 @@ contains
     type(fmr_serialized_commit_receipt_record_t),allocatable::attempt_receipts(:)
     type(fmr_vonhhbraden_source_window_progress_t)::progress(NTILE)
     type(fmr_vonhhbraden_source_window_restart_t)::progress_record
-    real(real64),allocatable::history_a(:),history_b(:)
     logical::ok
     integer::code,tile
     ! Original strong forcing and tolerances, but no controller retries: the
     ! half-day principal solve is a real, reproducible nonconverged attempt.
     limited=profile
-    limited%numerical%transaction%max_retries=0
+    if(partial_progress) then
+      limited%numerical%max_committed_substeps=1
+    else
+      limited%numerical%transaction%max_retries=0
+    end if
     call retry_owner%initialize(limited,code)
     call require(code==FMR_APP_BOOT_OK,'limited retry owner initialized')
     call retry_owner%export_committed_restart(9910_int64,before,ok,code)
@@ -549,11 +554,15 @@ contains
       call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'retry source progress initialized')
     end do
     call retry_owner%run_standalone_with_forcing_receipts(T0,T1,forcing,attempt_results,attempt_receipts,code)
-    call require(code/=FMR_APP_BOOT_OK,'actual strong hydraulic attempt fails without retries')
+    call require(code/=FMR_APP_BOOT_OK,'actual strong interval exhausts execution budget')
     call require(all(.not.attempt_results%completed).and.all(.not.attempt_results%committed), &
          'failed hydraulic attempt commits no column')
-    call require(all(attempt_results%solver_headcalc_calls>0).and.all(attempt_results%accepted_substeps==0), &
-         'failure exercised real HeadCalc without accepted substep')
+    call require(all(attempt_results%solver_headcalc_calls>0),'failure exercised real HeadCalc')
+    if(partial_progress) then
+      call require(all(attempt_results%accepted_substeps==1),'failure after one internally accepted substep')
+    else
+      call require(all(attempt_results%accepted_substeps==0),'failure without accepted substep')
+    end if
     call require(size(attempt_receipts)==NTILE,'failed receipt slots returned')
     do tile=1,NTILE
       call require(.not.attempt_receipts(tile)%receipt%ready(),'failed hydraulic attempt has no ready receipt')
@@ -563,9 +572,10 @@ contains
       call require(ok.and.progress_record%accepted_through_time==T0.and. &
            progress_record%accepted_interception_cm==0.0_real64.and. &
            progress_record%expected_origin_revision==0_int64,'failed trial leaves all source progress unchanged')
-      write(*,'(a,i0,a,i0,a,i0)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_ATTEMPT tile=',tile, &
+      write(*,'(a,i0,a,i0,a,i0,a,i0)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_ATTEMPT tile=',tile, &
            ' headcalc=',attempt_results(tile)%solver_headcalc_calls, &
-           ' nonlinear=',attempt_results(tile)%solver_nonlinear_iterations
+           ' nonlinear=',attempt_results(tile)%solver_nonlinear_iterations, &
+           ' accepted_internal=',attempt_results(tile)%accepted_substeps
     end do
     call retry_owner%export_committed_restart(9910_int64,after,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'failed owner remains exportable')
@@ -591,7 +601,11 @@ contains
     call compare_restart_bundles(expected,replayed,'retry and uninterrupted result identical')
     call retry_owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'replayed owner closes')
-    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS'
+    if(partial_progress) then
+      write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_PARTIAL_REPLAY_NO_PUBLICATION=PASS'
+    else
+      write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS'
+    end if
   end subroutine
 
   subroutine compare_restart_bundles(a,b,label)

@@ -87,6 +87,9 @@ try {
                 if ($Scope -eq 'Receipts' -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS')) {
                     throw 'Missing actual failed hydraulic replay marker'
                 }
+                if ($Scope -eq 'Receipts' -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_PARTIAL_REPLAY_NO_PUBLICATION=PASS')) {
+                    throw 'Missing partially accepted interval rollback marker'
+                }
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'
             }
             $stable["$test-$opt"] = (@($output | Where-Object { $_ -match $prefix }) -join "`n")
