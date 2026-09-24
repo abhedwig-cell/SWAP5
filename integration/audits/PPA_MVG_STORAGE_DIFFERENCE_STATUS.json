@@ -2,7 +2,9 @@
   "baseline": "55d430238",
   "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
   "provider_binding": {
-    "status": "IMPLEMENTED_PERSISTED_REPLAY_PENDING",
+    "status": "BOUNDED_PROVIDER_BINDING_PASS_NOT_INTEGRATED",
+    "tested_commit": "1b8638c9c",
+    "replay": "run_ppa_mvg_storage_difference.ps1 PASS O0/O2 identical, binding guards and all 80 real128 oracle cases; build swap-mvg-difference-2aeee7e4-7d70-43a8-991e-de7fc43f72c0.",
     "contract": "Read-only initialized MvG provider binding, standard c9>-0.01 branch only; exact rounded base-water equality to reference watcon grouping required. Shape, finite coefficient, physical storage range and extension guards. Vector result is atomic: zero and unavailable on any unsupported node. No HeadCalc call site or fallback that repairs base state.",
     "tests": "Two-node actual initialized-provider test; one-ULP base-water mismatch, unsupported second-node branch, Ksatexm extension and unbound provider rejection. Original 80 independent real128 oracle cases retained."
   },
