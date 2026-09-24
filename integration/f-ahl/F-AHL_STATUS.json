@@ -1,26 +1,28 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-AHL",
-  "status": "ACTIVE_RESEARCH_STAGE_A_PASSED",
+  "status": "ACTIVE_RESEARCH_F_AHL04A_FAIL_BOTTOM_FLUX",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "completed": [
     "F-AHL01 adaptive constitutive screen",
     "F-AHL02 transformed-representation screen",
     "F-AHL03 optimized Fortran constitutive runtime screen",
-    "F-AHL04A nonlinear Reference Richards provider replay"
+    "F-AHL04A nonlinear Reference Richards provider replay executed against frozen contract"
   ],
   "current_evidence": {
     "constitutive_ci_run": 36036616652,
     "runtime_ci_run": 36036859381,
-    "richards_stage_a_ci_run": 36039788025,
-    "adaptive_stage_a_pass": true,
+    "richards_stage_a_authority_run": 36039942353,
+    "adaptive_stage_a_contract_verdict": "FAIL_BOTTOM_FLUX_ONLY",
     "adaptive_stage_a_max_head_delta_cm": 0.0003415032,
     "adaptive_stage_a_max_theta_delta": 0.000003215794,
     "adaptive_stage_a_bottom_flux_delta_cm_per_day": 0.00002951951,
+    "adaptive_stage_a_bottom_flux_gate_cm_per_day": 0.00001,
     "adaptive_stage_a_mass_residual_cm": 3.4521e-16
   },
   "candidate_architecture": "BUILD_ONCE_QUALIFY_FREEZE_RUN; exact semantic branch logic plus adaptive smooth-core representation; representation coordinate selected by measured error and cost, not support count alone",
-  "next": "F-AHL04B fast-provider timing and broader multi-material/multi-case Richards replay; include one-time build cost and total solve CPU.",
-  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
+  "next": "Execute preregistered F-AHL04B constitutive-error attribution sweep. Do not proceed to timing or broadened application qualification until the remaining bottom-flux discrepancy is understood.",
+  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION",
+  "supersession_note": "Earlier status text describing F-AHL04A as PASS is superseded by F-AHL04A_RESULT.json, which binds the earlier frozen 1e-5 cm/day bottom-flux gate and records FAIL_BOTTOM_FLUX."
 }
