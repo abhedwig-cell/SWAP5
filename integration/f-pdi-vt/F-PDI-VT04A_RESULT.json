@@ -1,17 +1,39 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PDI-VT",
   "work_unit": "F-PDI-VT04A",
-  "status": "FAIL_CONTROL_NONFINITE",
-  "workflow_run": 36060013962,
-  "finding": "The prior VT04 comparator checked finite numerical content only for the candidate Vapor-on BFO. Preserved raw outputs show the Vapor-on control contains NaN fields while the candidate is finite.",
-  "gate_effect": "The preregistered full-model gate required finite outputs for both executables. Therefore F-PDI-VT04 cannot be treated as a complete PASS under that gate, despite normal completion and the valid NoVap identity result.",
-  "preserved_valid_evidence": {
+  "status": "DIAGNOSTIC_FINDING_CONTROL_NONFINITE",
+  "workflow_runs": [36060013962, 36060444775],
+  "authority_note": "The original F-PDI-VT04_PREREGISTRATION.json required candidate_outputs_finite, not control_outputs_finite. Therefore this finding does not retroactively fail or rewrite the original VT04 gate.",
+  "finding": "Preserved raw BFO output shows that the Vapor-on control contains non-finite hydrological fields while the temperature-repaired candidate is finite. NoVap remains identical.",
+  "semantic_diagnostics_run": 36060444775,
+  "semantic_findings": {
+    "records": 2,
+    "nodes": 28,
+    "candidate_all_hydraulic_arrays_finite": true,
+    "control_has_nonfinite_hydraulic_values": true,
+    "control_pressure_head_nonfinite_per_record": 28,
+    "control_water_content_nonfinite_per_record": 28,
+    "control_vertical_flux_nonfinite_per_record": 28,
+    "candidate_pressure_head_nonfinite_per_record": 0,
+    "candidate_water_content_nonfinite_per_record": 0,
+    "candidate_vertical_flux_nonfinite_per_record": 0,
+    "candidate_water_balance": -0.0,
+    "control_water_balance": "NaN",
+    "candidate_bottom_flux_m_d": -0.0,
+    "control_bottom_flux_m_d": -0.0,
+    "candidate_soil_evaporation_m_d": 0.0003,
+    "control_soil_evaporation_m_d": 0.0003,
+    "candidate_storage_m_record_1": 0.07592862,
+    "candidate_storage_m_record_2": 0.076229105
+  },
+  "preserved_original_VT04_evidence": {
+    "all_four_runs_normal_completion": true,
     "candidate_vapor_on_finite": true,
     "vapor_on_control_candidate_different": true,
     "novap_control_candidate_identical": true,
-    "all_four_runs_reported_normal_completion": true
+    "CRITDEVMASBAL": 1e-6
   },
-  "repair_rule": "Do not weaken or rewrite the gate. Add a separate representative dry case in which both control and candidate remain finite, while retaining enough vapor contribution to produce a measurable difference.",
-  "nonclaim": "This failure does not invalidate the confirmed Celsius/Kelvin defect or the function-level qualification."
+  "follow_up": "A separate stronger finite-control case may be preregistered, but the original VT04 gate is not changed after execution.",
+  "nonclaim": "This diagnostic does not by itself identify which individual state variable first becomes non-finite inside the nonlinear solve."
 }
