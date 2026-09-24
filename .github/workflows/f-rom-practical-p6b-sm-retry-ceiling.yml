@@ -1,0 +1,89 @@
+name: F-ROM Practical P6B SM retry ceiling qualification
+on:
+  push:
+    branches: [work/f-rom-practical]
+    paths:
+      - integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP03_PREREGISTRATION.json
+      - tools/rom/materialize_rom_practical_p6b_sm_retry_ceiling_reference.py
+      - tools/rom/qualify_rom_practical_p6b_sm_retry_ceiling.py
+      - .github/workflows/f-rom-practical-p6b-sm-retry-ceiling.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: rom-practical-p6b-sm-retry-ceiling-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  material:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B02, B05, B06, B11, B12, B16]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical
+          fetch-depth: 1
+      - name: Bind frozen sources
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-rom-purpose
+          mkdir -p ext evidence
+          git cat-file blob b2df7793d3f56f5d8d1d121636d2eb1a0952e271 > ext/rom_purpose_p1_surface_b01_source.f90
+          git cat-file blob 31060946d233ba80e88ca42e43c90f512dc890de > ext/materialize_rom_purpose_p3_surface_reference.py
+          test "$(git hash-object tools/rom/materialize_rom_practical_p6b_sm_retry_ceiling_reference.py)" = 03b176430b559fc922f8ba907cf513165c4b4033
+          test "$(git hash-object tools/rom/qualify_rom_practical_p6b_sm_retry_ceiling.py)" = aefe15698f5d5769301c717ce3ddfa7e1dd73a66
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+      - name: Materialize realistic base
+        run: |
+          set -euo pipefail
+          python3 tools/rom/materialize_rom_practical_p2a_reference.py             --purpose SURF_P --material '${{ matrix.material }}'             --materials integration/f-rom/ROM_PRACTICAL_P2A_MATERIALS.json             --surface-source ext/rom_purpose_p1_surface_b01_source.f90             --surface-materializer ext/materialize_rom_purpose_p3_surface_reference.py             --output /tmp/rnp3_base.f90 --manifest evidence/base_materialization.json
+          python3 tools/rom/prepare_rom_practical_p3_reference.py             --purpose SURF_P --source /tmp/rnp3_base.f90 --output /tmp/rnp3_p3.f90
+          python3 tools/rom/materialize_rom_practical_p6b_sm_reference.py             --source /tmp/rnp3_p3.f90             --workload integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json             --output /tmp/rnp3_realistic.f90
+      - name: Execute R12 and R16
+        run: |
+          set -euo pipefail
+          for retries in 12 16; do
+            id="R$retries"
+            python3 tools/rom/materialize_rom_practical_p6b_sm_retry_ceiling_reference.py               --source /tmp/rnp3_realistic.f90 --max-step-day 0.015625 --max-retries "$retries"               --output canonical/tests/rom/test_p6b_sm_rnp03.f90
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output canonical/p6b_sm_rnp03_stubs.f90 --nodes 128 --dz-cm 1.25
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub p6b_sm_rnp03_stubs.f90               --target tests/rom/test_p6b_sm_rnp03.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/rnp3_$id" --opt 2
+            set +e
+            "/tmp/rnp3_$id/rom0_test" > "evidence/$id.txt" 2>&1
+            echo "$?" > "evidence/$id.exit"
+            set -e
+          done
+          python3 tools/rom/qualify_rom_practical_p6b_sm_retry_ceiling.py case             --material '${{ matrix.material }}' --dir evidence
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-practical-p6b-sm-rnp03-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+  aggregate:
+    needs: material
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rom-practical-p6b-sm-rnp03-*
+          path: /tmp/rnp03
+      - run: |
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
+          python3 tools/rom/qualify_rom_practical_p6b_sm_retry_ceiling.py aggregate             --input-dir /tmp/rnp03 --output integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP03_RESULT.json
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP03_RESULT.json
+          git commit -m 'ROM-PRACTICAL P6B-SM: persist retry-ceiling diagnosis' || exit 0
+          git push origin HEAD:work/f-rom-practical
