@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT02",
+  "phase": "DIRECT_ABSOLUTE_TEMPERATURE_CORRECTION_QUALIFICATION_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36054071926,
+  "workflow_job": 107816560403,
+  "tested_temperatures_C": [
+    -20,
+    -5,
+    0,
+    5,
+    20,
+    35,
+    50
+  ],
+  "tested_heads_cm": [
+    -1000,
+    -100000,
+    -10000000
+  ],
+  "candidate_rule": "TK=TempC+273.15 used consistently in MgRT, Da and Rho_sv; SWAP-009 signed h retained",
+  "findings": [
+    "candidate matches the independent absolute-temperature formula to floating-point roundoff at all 21 temperature/head combinations",
+    "old expression is non-finite at -5 C and 0 C in the direct test",
+    "the proposed correction changes only the temperature conversion in the vapor term; NoVap liquid/film semantics are unchanged by construction"
+  ],
+  "classification": "CONFIRMED_CELSIUS_KELVIN_IMPLEMENTATION_BUG_AT_FUNCTION_LEVEL",
+  "next_action": "Construct a pinned source patch dossier and run actual-source Fortran/function qualification. Then attempt representative full-SWAP vapor-on qualification if an exact reconstructable source preimage is available.",
+  "production_status": "NOT_ADMITTED"
+}
