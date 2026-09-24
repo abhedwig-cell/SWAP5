@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21E",
+  "title": "O05-dry retention-pair convergence attribution",
+  "parent": "F-AHL21D",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Is the remaining O05-dry prescribed-qbot iteration-path drift caused by the derivative-consistent theta/C interpolant rather than K?",
+  "frozen_case": {
+    "material": "O05",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "bottom_mode": 2,
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.99*K(initial)"
+  },
+  "variants": [
+    "selected interpolated theta/C plus selected K",
+    "analytical theta/C plus selected K",
+    "fully analytical reference"
+  ],
+  "decision_rule": "Attribute the path drift to retention/capacity approximation if analytical theta/C plus the same selected K restores analytical iteration and backtracking counts.",
+  "hard_exclusions": [
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_TIMESTEP_CHANGE",
+    "NO_K_POLICY_CHANGE",
+    "NO_GATE_RETUNING"
+  ]
+}
