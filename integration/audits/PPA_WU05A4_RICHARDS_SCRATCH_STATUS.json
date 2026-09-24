@@ -19,6 +19,15 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "production_preservation_windows_gate": {
+    "baseline": "9746298d2",
+    "runner": "tests/fapp/run_ppa_wu01_production_application_bootstrap.ps1",
+    "contract": "Replay existing owner gate from PowerShell, extracting unchanged static Python assertions, MODULE_SRC order and COMMON compiler options from its shell runner. Execute bootstrap and canonical-output tests at O0/O2; require original markers and stable-line identity. No production source changes.",
+    "reason": "Prepare executable local production preservation before introducing HeadCalc call-site changes; bash is not on this host PATH.",
+    "status": "IMPLEMENTED_REPLAY_PENDING",
+    "scope": "Production application preservation harness only, not macropore admission. Existing uncommitted binding/bootstrap files remain unstaged; replay uses their current working-tree contents.",
+    "next_action": "Persist runner then run production baseline gate"
+  },
   "reference_final_state_bridge": {
     "baseline": "2379ef5ea",
     "implementation": "src/adapter/mod_ppa_wu05a4_reference_finish.f90",
