@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL15R",
+  "title": "Critical B01-wet paired timing",
+  "parent": "F-AHL15",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the 12-of-12 qualified locally refined representation retain complete-Richards CPU benefit in B01-wet, the critical case that required extra wet-range conductivity support?",
+  "frozen_case": {
+    "material": "B01",
+    "initial_head_cm": -10.0,
+    "bottom_head_cm": -7.5,
+    "duration_day": 0.25
+  },
+  "representation": "F-AHL15: global floor-scaled K tolerance 1e-3, local -25 to -1 cm K tolerance 3e-4, derivative-consistent theta/C",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical",
+    "primary_statistic": "median paired candidate/analytical CPU ratio",
+    "table_generation_and_binding": "outside timed batches"
+  },
+  "fidelity": {
+    "same_nonlinear_iteration_count_as_analytical": true,
+    "same_backtracking_count_as_analytical": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "advance": "median paired ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "reject_speed_candidate": "ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
