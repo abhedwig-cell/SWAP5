@@ -640,3 +640,16 @@ Audit of `run_fpe_zero_waste01_paired_runtime.sh` found that its baseline initia
 That design is sufficient for H1-H10 solver-local attribution but cannot measure H12A/H12B/H13-H17, because those changes live in the directional service and serialized backend and would be present on both sides of the pair.
 
 The harness is therefore expanded before using it for bundle-level claims: baseline builds must also use the pinned baseline versions of `mod_reference_richards_accepted_step_directional_service.f90` and `mod_fmr_serialized_reference_backend.f90`; candidate builds use current branch versions. Physical checksum, nonlinear iteration count and constitutive evaluation count remain equality gates.
+
+
+## ZW01-H18 preregistration — move drainage sink direction into request
+
+`compose_fmr_qbot_drainage_sink_direction` already materializes an allocatable `drainage_sink_direction`. The runtime then allocates a second vector of identical length in `direction_request%incoming_sink_direction` and copies every element into it. The temporary is not read afterwards.
+
+H18 replaces allocate+copy with `move_alloc(drainage_sink_direction, direction_request%incoming_sink_direction)` when the composed direction is available.
+
+Expected effect: remove one allocation, one full length-N copy and one later temporary deallocation per eligible smooth drainage-qbot directional solve.
+
+Semantics are unchanged: ownership of the already-computed vector moves into the request; values and shape are identical and no alias remains.
+
+Gates: drainage directional values bit-identical, accepted-direction result bit-identical, no change in backsolve/Jacobian/nonlinear counts, existing groundwater/drainage directional qualification PASS.
