@@ -1,0 +1,19 @@
+name: F-AHL24 qbot fallback timing
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/test_ahl24_qbot_timing.f90'
+      - 'research/ahl/run_ahl24_qbot_timing.sh'
+      - '.github/workflows/f-ahl24-qbot-fallback-timing.yml'
+  workflow_dispatch:
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl24_qbot_timing.sh /tmp/ahl24_timing.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl24-timing-${{ github.run_id }}
+          path: /tmp/ahl24_timing.txt
