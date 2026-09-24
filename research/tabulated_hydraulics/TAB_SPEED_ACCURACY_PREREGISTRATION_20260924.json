@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.research_preregistration.v1",
+  "workunit": "TAB-SPEED-ACCURACY",
+  "date": "2026-09-24",
+  "branch": "research/tab-speed-accuracy",
+  "question": "How much additional whole-application speed can be obtained by deliberately cheaper generated hydraulic tables while retaining hydrologically relevant accuracy?",
+  "frozen_baseline": {
+    "table_rows": 400,
+    "coordinate": "log-spaced raw negative pressure head from -1e7 cm to the K-saturation branch, plus saturated endpoint",
+    "ordinates": ["theta", "log(K)"],
+    "interpolation": "existing TSPACK-based generated provider",
+    "whole_hupsel_median_delta_pct": -8.878181712,
+    "whole_hupsel_F5_note": "Only two printed signed-zero balance-deviation fields differ under the strict historical text-identity gate; this is not the acceptance metric for this research workunit."
+  },
+  "hypotheses": {
+    "H1": "The 400-row representation is over-resolved for practical hydrological fidelity.",
+    "H2": "Reducing row count lowers lookup and cache cost enough to increase whole-Hupsel speed beyond the 400-row baseline.",
+    "H3": "A non-uniform purpose-aware grid can dominate a same-size naive log grid on the speed-accuracy frontier."
+  },
+  "phase_1": {
+    "purpose": "isolate row-count effect before changing interpolation family or node-placement algorithm",
+    "variants": [400, 200, 100, 50, 25],
+    "fixed": [
+      "same analytical authority",
+      "same raw-head/log(K) representation",
+      "same TSPACK interpolation",
+      "same wet continuation and saturation handling",
+      "same bounded F-SI39 KSATEXM semantics",
+      "same solver, timestep, retry and tolerance policies"
+    ]
+  },
+  "accuracy_metrics": {
+    "constitutive": ["theta max abs", "K relative/log error", "capacity error"],
+    "dynamic_richards": ["pressure-head max abs", "theta max abs", "mass-residual difference", "nonlinear iterations", "linear solves", "retries"],
+    "whole_hupsel": [
+      "normal completion",
+      "accepted interval count",
+      "retry count",
+      "route census",
+      "result.bal numeric fields",
+      "result.blc numeric fields",
+      "cumulative water-balance components"
+    ],
+    "signed_zero_policy": "Signed zero is compared numerically as zero for TAB-SPEED-ACCURACY only. This does not amend or supersede the frozen F-TAB02-F historical preservation contract."
+  },
+  "performance_metrics": {
+    "paired_balanced_timing": true,
+    "report": ["provider time", "Reference-Richards time", "serialized time", "whole-Hupsel wall time", "table initialization cost", "estimated table bytes"],
+    "claim_policy": "No minimum speed is assumed prospectively; report measured frontier."
+  },
+  "decision_rule": "Do not choose a winner before measurements. Identify Pareto-nondominated variants by measured runtime and hydrological error. Only after Phase 1 may a purpose-aware/non-uniform grid be designed prospectively.",
+  "production_effect": "NONE. Research branch only; no canonical admission or F-TAB02-F normalization change."
+}
