@@ -2,6 +2,8 @@ program test_ppa_mvg_storage_difference
   use, intrinsic :: iso_fortran_env, only: real64,real128
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_ppa_mvg_storage_difference
+  use mod_ppa_mvg_storage_binding
+  use mod_b110_default_mvg_provider
   implicit none
   real(real64) :: h,hnew,dtheta,back,expected,naive,alpha,n,m,amplitude
   real(real128) :: qbefore,qafter,qa,qn,qm,qr
@@ -41,10 +43,53 @@ program test_ppa_mvg_storage_difference
   call require(.not.ok,'branch crossing rejected')
   call local_mvg_storage_difference(amplitude,alpha,n,m,ieee_value(h,ieee_quiet_nan),h,dtheta,ok)
   call require(.not.ok,'nonfinite rejected')
+  call check_binding()
   write(*,'(a,i0)') 'MVG_STORAGE_CASES=',cases
   write(*,'(a,i0)') 'MVG_STORAGE_IMPROVED=',improved
   write(*,'(a)') 'MVG_STORAGE_QUAD_ORACLE=PASS'
 contains
+  subroutine check_binding()
+    type(b110_default_mvg_parameters_t),target::hp
+    type(b110_default_mvg_provider_t)::provider,unbound
+    real(real64)::raw(24,2),before(2),after(2),water(2),k(2),c(2),dk(2),diff(2),expected
+    logical::available
+    integer::i
+    raw=0
+    do i=1,2
+      raw(1,i)=.032_real64; raw(2,i)=.423_real64; raw(3,i)=4.75_real64
+      raw(4,i)=.0135_real64; raw(5,i)=.365_real64; raw(6,i)=1.455_real64
+      raw(7,i)=1-1/raw(6,i); raw(8,i)=raw(4,i); raw(10,i)=raw(3,i)
+      raw(11,i)=.999_real64; raw(12,i)=.99_real64*raw(3,i)
+      raw(22,i)=-1.0e6_real64; raw(23,i)=1.0e-12_real64
+    end do
+    call initialize_b110_default_mvg_parameters(hp,raw)
+    call bind_b110_default_mvg_provider(provider,hp,0.01_real64)
+    before=[-75.0_real64,-500.0_real64]
+    after=before+1.0e-8_real64
+    call provider%evaluate(before,water,k,c,dk)
+    call evaluate_bound_mvg_storage_difference(provider,before,water,after,diff,available)
+    call require(available,'provider-bound difference available')
+    do i=1,2
+      call local_mvg_storage_difference(hp%cofgen(25,i),raw(4,i),raw(6,i),raw(7,i), &
+           before(i),after(i),expected,available)
+      call require(available.and.diff(i)==expected,'binding preserves local oracle')
+    end do
+    water(2)=nearest(water(2),1.0_real64)
+    call evaluate_bound_mvg_storage_difference(provider,before,water,after,diff,available)
+    call require(.not.available.and.all(diff==0),'one-ulp base mismatch rejects atomically')
+    call provider%evaluate(before,water,k,c,dk)
+    hp%cofgen(9,2)=-1.0_real64
+    call evaluate_bound_mvg_storage_difference(provider,before,water,after,diff,available)
+    call require(.not.available.and.all(diff==0),'unsupported second-node branch rejects atomically')
+    hp%cofgen(9,2)=0
+    hp%ksatexm_extension_enabled=.true.
+    call evaluate_bound_mvg_storage_difference(provider,before,water,after,diff,available)
+    call require(.not.available,'extension rejected')
+    call evaluate_bound_mvg_storage_difference(unbound,before,water,after,diff,available)
+    call require(.not.available,'unbound provider rejected')
+    write(*,'(a)') 'MVG_STORAGE_PROVIDER_BINDING=PASS'
+  end subroutine
+
   subroutine require(condition,message)
     logical,intent(in)::condition
     character(len=*),intent(in)::message

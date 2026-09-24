@@ -1,6 +1,11 @@
 {
   "baseline": "55d430238",
   "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
+  "provider_binding": {
+    "status": "IMPLEMENTED_PERSISTED_REPLAY_PENDING",
+    "contract": "Read-only initialized MvG provider binding, standard c9>-0.01 branch only; exact rounded base-water equality to reference watcon grouping required. Shape, finite coefficient, physical storage range and extension guards. Vector result is atomic: zero and unavailable on any unsupported node. No HeadCalc call site or fallback that repairs base state.",
+    "tests": "Two-node actual initialized-provider test; one-ULP base-water mismatch, unsupported second-node branch, Ksatexm extension and unbound provider rejection. Original 80 independent real128 oracle cases retained."
+  },
   "tested_commit": "a83f0b800",
   "replay": "tests/fsi/run_ppa_mvg_storage_difference.ps1 PASS at persisted commit; O0/O2 identical, bounds/FPE checks, 80/80 improvements. Build swap-mvg-difference-497c89c0-c93c-4991-bd56-0e657f66f986.",
   "workstream": "PPA free drainage small-step residual accuracy",
@@ -8,5 +13,5 @@
   "contract": "Standard smooth MvG retention branch only: theta=theta_r+A/(1+abs(alpha*h)^n)^m. Return theta(h_after)-theta(h_before) through local log1p/expm1 series, avoiding subtraction of rounded full water contents. Both heads strictly below -0.01 cm and no drier than -1e6 cm; relative head increment <=1e-3; A in (0,1], alpha in (0,100], n in (1,10], m in (0,1). Other inputs unavailable. Caller must establish actual constitutive branch and consistency of committed water content before integration.",
   "verification": "80 bidirectional perturbations on four heads, relative increments 1e-4 through 1e-13; independent real128 direct-formula oracle with exact promoted real64 inputs. Relative error <=2e-13, antisymmetry, identity, rejection of nonlocal/branch-crossing/nonfinite input. O0/O2 preliminary PASS; all 80 errors improve by >100x over naive full-theta subtraction.",
   "invariants": [3,7,13,23,25],
-  "next": "Qualify persisted replay, then add provider-bound branch/base-water validation before experimenting with opt-in residual integration. Preserve independent rounded-state mass ledger; no WU04C closure implied."
+  "next": "Qualify provider-bound replay, then experiment with explicit opt-in residual integration and unchanged independent rounded-state mass ledger. Unsupported branches and inconsistent committed water must not silently use stable subtraction. No WU04C closure implied."
 }
