@@ -467,3 +467,19 @@ Required gates:
 - no change to direction eligibility, tangent equations or state ownership.
 
 This is pure ownership cleanup: the wrapper ensures capacity, the solver prepares a solve.
+
+
+## ZW01-H11 preregistration — shape-stable physical-state copy allocation reuse
+
+`copy_b110_physical_state` currently deallocates `target%pressure_head` and `target%water_content` on every copy and immediately reallocates them to the source shape. For shape-stable MultiSWAP columns this creates allocator churn without changing transaction semantics or copy semantics.
+
+H11 keeps the deep copy itself, because it is part of state isolation. It changes only storage reuse:
+
+- if source array is allocated and target is allocated with identical shape, copy into existing target storage;
+- if shapes differ, reallocate target;
+- if source array is unallocated, deallocate target to preserve exact allocation-state semantics;
+- apply the same principle to optional snow and soil-temperature state where type/shape permits safe reuse.
+
+No aliasing is introduced. Source and target remain independent deep states.
+
+Gates: clone isolation remains PASS, candidate/committed state remains independent, physical results remain bit-identical, and the existing PROFILE01 H02 clone microbenchmark is rerun to measure whether allocator reuse matters on repeated copies.
