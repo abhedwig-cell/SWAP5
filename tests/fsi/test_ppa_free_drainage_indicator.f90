@@ -41,6 +41,7 @@ program test_ppa_free_drainage_indicator
   write(*,'(A,I0)') 'FREE_DRAINAGE_MODE2_CASES=', mode2_cases
   write(*,'(A,I0)') 'FREE_DRAINAGE_WRONG_DIRICHLET_SEPARATIONS=', wrong_dirichlet_separations
   write(*,'(A)') 'FREE_DRAINAGE_MASS_LEDGER_AND_RETRY=PASS'
+  write(*,'(A)') 'FREE_DRAINAGE_EXPLICIT_TEMPORAL_ORACLE=PASS'
 
 contains
 
@@ -237,6 +238,10 @@ contains
          'unowned bottom mode fails closed at boundary envelope')
 
     call check_mode7_indicator(unsupported_request,comparison_result,indicator_request,constitutive,conductivity)
+    hydraulic_parameters%ksatexm_extension_enabled = .true.
+    call evaluate_free_drainage_temporal_indicator(unsupported_request,comparison_result,indicator_request,unsupported)
+    call require(.not.unsupported%available,'Ksatexm temporal extension unavailable')
+    hydraulic_parameters%ksatexm_extension_enabled = .false.
     unsupported_request%numerical%max_iterations = 1
     unsupported_request%boundary%top_flux = -1.0_real64
     call solver%solve(unsupported_request, comparison_workspace, comparison_result)
