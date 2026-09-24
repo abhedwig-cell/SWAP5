@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL16",
+  "title": "Cross-material cross-regime paired performance characterization",
+  "parent": "F-AHL15",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the F-AHL15 representation retain a complete-Richards CPU benefit across the same four materials and wet-mid-dry regimes for which fidelity has already closed 12/12?",
+  "materials": ["B01","B12","O05","O14"],
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0,"bottom_head_cm":-7.5},
+    {"id":"mid","initial_head_cm":-75.0,"bottom_head_cm":-50.0},
+    {"id":"dry","initial_head_cm":-500.0,"bottom_head_cm":-400.0}
+  ],
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 16384,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical",
+    "primary_statistic_per_case": "median paired candidate/analytical CPU ratio",
+    "table_generation_and_binding": "outside timed batches"
+  },
+  "classification_per_case": {
+    "speed_benefit": "median ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "slower": "ratio > 1.02"
+  },
+  "broad_claim_rule": "A broad Richards speed claim requires all 12 cases to retain the frozen fidelity gates and have median paired ratio < 0.98.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
