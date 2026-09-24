@@ -1,0 +1,25 @@
+name: F-AHL20 self-built Stage 3 timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl20_stage3_timing.f90'
+      - 'research/ahl/run_ahl20_stage3_timing.sh'
+      - 'research/ahl/mod_ahl20_self_built_provider.f90'
+      - '.github/workflows/f-ahl20-stage3-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run self-built paired timing
+        run: |
+          bash research/ahl/run_ahl20_stage3_timing.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl20-stage3-${{ github.run_id }}
+          path: /tmp/ahl20_stage3.txt
