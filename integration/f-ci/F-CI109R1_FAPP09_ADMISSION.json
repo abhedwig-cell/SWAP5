@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-ci109r1.fapp09-current-canonical-admission.v1",
   "workunit": "F-CI109R1",
-  "phase": "CURRENT_CANONICAL_RECONCILIATION",
+  "phase": "CLOSED_CANONICAL_ADMISSION",
   "branch": "integration/f-ci109r1-fapp09-current-canonical-admission",
   "canonical_source": "43577e083ae1e315d86cafd55f971d80279db27c",
   "predecessor": "F-CI109@dd7ec9983e6e99602c04a7d94a736cf1c18c8c0d",
@@ -25,6 +25,15 @@
     }
   },
   "scope": "Exact F-APP09 V1 single-level external Ribasim surface-water owner profile. No live Ribasim network claim, no multilevel profile, no SWMAN2 runtime, no MODFLOW triangle claim.",
-  "gate": "Replay exact F-APP09 owner and F-VQ128 independent qualification against current canonical-derived postimage without changing any production blob.",
-  "canonical_admission": false
+  "gate": "Completed: PR #593 merged the exact bounded F-APP09 V1 admission path after F-CI109R1 and F-VQ128 replay authority passed.",
+  "canonical_admission": true,
+  "canonical_admission_authority": {
+    "pr": 593,
+    "pr_title": "F-CI109: admit bounded F-APP09 external Ribasim surface-water profile",
+    "merged_at": "2026-09-24T04:23:57Z",
+    "merge_commit": "f2b6af0dc9e7be65fea3956a7c576e5a62c6a9d9",
+    "current_canonical_observed": "879945f9b994db91bca2cacd1cb85ff381f45f39",
+    "admitted_profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+    "scope_note": "Single-level external Ribasim surface-water owner profile only; exclusions from PR #593 remain unchanged."
+  }
 }

@@ -6,7 +6,7 @@
   "canonical_parent": "43577e083ae1e315d86cafd55f971d80279db27c",
   "evidence_run": 35919344950,
   "evidence_job": 107379000224,
-  "decision": "PASS_CURRENT_CANONICAL_RECONCILIATION",
+  "decision": "PASS_CURRENT_CANONICAL_RECONCILIATION__CANONICALLY_ADMITTED",
   "checks": {
     "exact_five_file_production_delta": "PASS",
     "frozen_FAPP09_FVQ128_postimages": "PASS",
@@ -24,6 +24,15 @@
   },
   "reconciliation": "The current canonical adds only Ribasim-management governance documents relative to the original F-CI109 base and does not change any pre-existing src file touched by F-APP09. The exact independently qualified five production postimages replay unchanged.",
   "production_candidate_unchanged": true,
-  "canonical_admission": false,
-  "next_action": "Use this result as current-canonical reconciliation authority for existing PR #593. Do not open a competing F-APP09 production PR."
+  "canonical_admission": true,
+  "next_action": "Canonical admission completed by merged PR #593. Preserve this record as reconciliation/admission authority; any scope broadening requires a new qualified work unit.",
+  "canonical_admission_authority": {
+    "pr": 593,
+    "pr_title": "F-CI109: admit bounded F-APP09 external Ribasim surface-water profile",
+    "merged_at": "2026-09-24T04:23:57Z",
+    "merge_commit": "f2b6af0dc9e7be65fea3956a7c576e5a62c6a9d9",
+    "current_canonical_observed": "879945f9b994db91bca2cacd1cb85ff381f45f39",
+    "admitted_profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+    "scope_note": "Single-level external Ribasim surface-water owner profile only; exclusions from PR #593 remain unchanged."
+  }
 }
