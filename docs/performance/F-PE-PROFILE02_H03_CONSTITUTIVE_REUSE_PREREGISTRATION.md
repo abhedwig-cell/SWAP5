@@ -339,3 +339,30 @@ Q7 cross-workstream drift       = PASS_SO_FAR
 MEASURE                          = COMPLETE_FOCUSED
 CLOSE                            = PENDING_FINAL_SCOPE_REVIEW
 ```
+
+## Final closeout
+
+Final branch-delta review against the PROFILE01 split point `0b373c6cdaed53e26a1acb917f096bf20256f12a` confirms that the only production-source change in PROFILE02-H03 is `src/legacy/b1_10_port/headcalc.f90`. All other PROFILE02-H03 changes are qualification workflows, qualification/test instrumentation, the paired timing harness, or this evidence record.
+
+No F-AHL source, RossFast source, transaction architecture, constitutive formula, solver tolerance, timestep policy, fallback policy, or approximate-mode implementation changed in this workunit.
+
+Therefore Q7 is closed as `PASS_BOUNDED_SCOPE`.
+
+Final qualification:
+
+```text
+Q1 compile/runtime preservation = PASS
+Q2 physical identity            = PASS
+Q3 numerical-control identity   = PASS
+Q4 call-count reduction         = PASS
+Q5 multi-iteration coverage     = PASS
+Q6 paired runtime               = PASS
+Q7 cross-workstream drift       = PASS_BOUNDED_SCOPE
+
+F-PE-PROFILE02-H03              = CLOSED_QUALIFIED_CANDIDATE
+CANONICAL_ADMISSION             = NOT_YET_CLAIMED
+WHOLE-SWAP_SPEEDUP              = NOT_YET_MEASURED
+NEXT                            = F-PE-PROFILE03-H03 end-to-end attribution
+```
+
+The bounded repair is qualified for admission review. The measured 35.77% speedup applies only to the focused three-iteration Reference-solve benchmark and must not be propagated as a whole-SWAP performance claim.
