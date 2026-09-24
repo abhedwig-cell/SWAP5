@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL09",
+  "phase": "STAGE1_CONSTITUTIVE_AND_RUNTIME_COMPLETE",
+  "status": "PASS_STAGE1",
+  "workflow_run": 36042076637,
+  "workflow_job": 107776425451,
+  "representation": "cubic Hermite z=logit(Se) over x=log10(-h); C derived from the same interpolant; log(K) linear on the same support",
+  "materials": {
+    "B01": {"points":28,"theta_span_error":9.400420732975482e-6,"log_capacity_error":4.6486954124702606e-4,"log_conductivity_error":9.104630687679305e-3,"analytical_s_per_eval":1.3101291656e-7,"candidate_s_per_eval":6.5865516663e-8},
+    "B12": {"points":23,"theta_span_error":5.5574454288177065e-6,"log_capacity_error":2.442358528327304e-4,"log_conductivity_error":7.325299848752742e-3,"analytical_s_per_eval":1.3207530975e-7,"candidate_s_per_eval":6.4664840698e-8},
+    "O05": {"points":28,"theta_span_error":4.179414403292877e-6,"log_capacity_error":1.9520686050356062e-3,"log_conductivity_error":9.661114386148473e-3,"analytical_s_per_eval":1.3213109970e-7,"candidate_s_per_eval":6.5726280212e-8},
+    "O14": {"points":30,"theta_span_error":4.702288625149972e-6,"log_capacity_error":4.4966967923798506e-4,"log_conductivity_error":8.674914316656485e-3,"analytical_s_per_eval":1.3108968735e-7,"candidate_s_per_eval":6.5876960754e-8}
+  },
+  "finding": "The derivative-consistent retention representation passes all preregistered constitutive gates using only 23-30 support points and is approximately twice as fast as full analytical theta+C+K evaluation on the four-material optimized Fortran screen.",
+  "next_gate": "F-AHL09 Stage 2: nonlinear Richards replay requiring the analytical iteration/backtracking path plus frozen fidelity gates, followed only after PASS by robust paired solve timing.",
+  "nonclaims": ["No end-to-end Richards speedup is established by Stage 1.","No production admission is implied."]
+}
