@@ -16,7 +16,16 @@ for tag,tol in TOLS:
     dc.OUT=out
     rows={}
     for mid,p in dc.base.MATERIALS.items():
-        knots=dc.build(p)
+        boundaries=[dc.HMAX,dc.HMIN]
+        kswitch=dc.base.conductivity_switch_head(p)
+        if dc.HMIN < kswitch < dc.HMAX:
+            boundaries.append(kswitch)
+        boundaries=sorted(set(boundaries), reverse=True)
+        knots=[]
+        for h0,h1 in zip(boundaries[:-1],boundaries[1:]):
+            segment=dc.refine(h0,h1,p)
+            knots.extend(segment[:-1])
+        knots.append(boundaries[-1])
         err=dc.validate(knots,p)
         dc.write_table(mid,p,knots)
         rows[mid]={
