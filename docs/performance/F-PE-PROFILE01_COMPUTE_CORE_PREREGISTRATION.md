@@ -558,3 +558,40 @@ Current typed Reference HeadCalc source shows two distinct efficiency concerns.
 2. The current provider ABI always returns water content, conductivity, capacity and dK/dh together. In several call sites HeadCalc consumes only one subset of these outputs. The default MvG provider nevertheless loops over all nodes and computes theta, C and K on every call. For the currently admitted swkimpl=0 route, dK/dh is reserved and zeroed. This is an over-evaluation candidate even where the provider call itself is semantically necessary.
 
 These findings must be separated from F-AHL/tabulation. PROFILE01 asks whether calls/calculations are necessary; F-AHL asks how necessary constitutive evaluations are represented/evaluated. No provider API change is authorized here before call-count and timing evidence exist.
+
+
+## H01 byte-scaling derivation
+
+For the currently allocated Reference Richards workspace, `reference_workspace_payload_bytes()` counts:
+
+- real payload: `23*n + 2` values;
+- integer payload: `n` values;
+- logical payload: `2*n + 3` values.
+
+Under the GNU Fortran representation used by the current qualification runner (8-byte `real64`, 4-byte default integer and 4-byte default logical), one full reset writes:
+
+```text
+B_reset(n) = 8*(23*n + 2) + 4*n + 4*(2*n + 3)
+           = 196*n + 28 bytes
+```
+
+The P01-A measurement at `n=4` gives 812 bytes/reset, matching this derivation exactly.
+
+With two of the three full resets classified as redundant on the inspected explicit Reference route, the source-derived avoidable zeroing volume is:
+
+```text
+B_avoidable_per_solve(n) = 2*(196*n + 28)
+                         = 392*n + 56 bytes
+```
+
+Illustrative byte volumes, not timing claims:
+
+| Nodes | One full reset | Two redundant resets / solve | Three-solve full/half interval if no retry |
+| ---: | ---: | ---: | ---: |
+| 4 | 812 B | 1,624 B | 4,872 B |
+| 20 | 3,948 B | 7,896 B | 23,688 B |
+| 60 | 11,788 B | 23,576 B | 70,728 B |
+| 200 | 39,228 B | 78,456 B | 235,368 B |
+| 1000 | 196,028 B | 392,056 B | 1,176,168 B |
+
+The final column assumes one full plus two half Reference solves and no retry. It remains a source-derived volume estimate until interval-level observer qualification passes. Runtime significance is left to the preregistered reset microbenchmark and later whole-run attribution.
