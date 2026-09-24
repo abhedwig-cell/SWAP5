@@ -1,9 +1,8 @@
 # Candidate forcing-event temporal continuation
 
-Baseline: ea8354e6a. Status: derivative component implemented; runtime event
-forwarding remains a design, not implemented or admitted.
-Derivative component: candidate module at 235a71d03; runtime event forwarding is
-still unimplemented. The component deliberately restricts the numerical envelope
+Baseline: ea8354e6a. Status: explicit runtime event forwarding implemented at
+61e244883, bounded Windows and rollback qualification at 69ea158d1; not canonically admitted.
+Derivative component: candidate module at 235a71d03. The component deliberately restricts the numerical envelope
 further: head >= -1e4 cm, alpha in [1e-8,1], n in (1,3], m >= 0.1,
 lambda in [0,1], Ksat <= 1e6, and finite bounded geometry/source rates.
 It requires initialized standard MvG coefficients and exact committed-water
@@ -78,3 +77,27 @@ forcing amplitude, restart payload or canonical admission boundary. Disk restart
 arbitrary within-window forcing, and dynamic top-regime switching remain outside
 this bounded implementation. Local checkpoint qualification is not migration
 closure.
+
+## Bounded implementation evidence
+
+At 69ea158d1, Windows passes O0/O2 with all 300241 transcript lines identical.
+Both new half-day windows are composed from owner-issued committed-top snapshots;
+the second changes rain/irrigation from 0.20/0.10 to 0.16/0.08 cm/day. The
+explicit marker is set only for that second window. Continued and restored runs
+have identical full physical state, temporal history and provenance. Each source
+amount is published once. Hard mass and temporal budgets are unchanged.
+
+Wrong and nonfinite event times leave the owner unchanged. An unbound event
+service rejects before HeadCalc. Zero-retry failure and failure after one internal
+accepted substep roll back completely; explicitly rebound restored replay equals
+the uninterrupted result and consumes source progress once. The generic reference
+indicator rejects event requests explicitly; it cannot silently ignore the marker.
+
+The unmarked WindowRejection gate retains the exact pre-integration transcript
+hash E4B98E0F37967776725844E67A47AC5822F234FA656D93E5BBB09F3034031280 at O0/O2.
+Mode-2/5 indicator preservation passes at d6371fcfe (its dependency surface is
+unchanged by the subsequent backend-only envelope guard). CanonicalOutput passes
+again at 69ea158d1. Build paths and hashes are recorded in the storage status file.
+
+This qualifies the specified two-window in-memory continuation, not arbitrary
+event trains, disk restart, all top regimes, or other interception options.

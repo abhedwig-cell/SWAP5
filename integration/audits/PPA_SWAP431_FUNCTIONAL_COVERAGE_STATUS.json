@@ -9,9 +9,9 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "latest_storage_owner_checkpoint": {
-    "tested_commit": "468e2f4ad",
+    "tested_commit": "69ea158d1",
     "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
-    "scope": "Explicit mode-7 storage accuracy option; strong WU04C/WU04D owner composition and WU04C accepted source-progress/in-memory restart continuation pass O0/O2. Actual failed and partially internally accepted intervals publish nothing; restored retry-enabled replay matches uninterrupted state/history exactly. Default reference and hard mass preserved. Branch-local bounded qualification, not whole migration or canonical closure."
+    "scope": "Explicit mode-7 storage accuracy and time-bound forcing-event options: WU04C two changing source windows from committed-top snapshots complete with exact in-memory restart replay at O0/O2. Wrong/nonfinite time and unbound service reject; actual failed and partially internally accepted marked intervals publish nothing; restored retry matches uninterrupted full state/history. Source amounts dimensionally correct and consumed once. Unmarked transcript and default canonical output preserved. WU04D strong composition retained, not yet changing-window qualified. Branch-local bounded qualification, not whole migration or canonical closure."
   },
   "register": "docs/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_REGISTER.md",
   "scope": "Evidence-based SWAP 4.3.1 corrected-reference capability coverage; this record does not widen frozen Status-A.",

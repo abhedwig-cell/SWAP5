@@ -2,6 +2,12 @@
   "schema": "swap5.ppa_wu04c.retry_replay_status.v1",
   "work_unit": "PPA-WU04C-R1",
   "parent_work_unit": "PPA-WU04C",
+  "changing_window_event_successor": {
+    "tested_commit": "69ea158d1",
+    "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Windows",
+    "result": "PASS O0/O2: explicitly time-marked changed forcing, process-evaluated interception, independent source-window identities, exactly-once cm amounts, full physical/history/provenance in-memory restart equality. Wrong/nonfinite times and missing service reject; zero-retry and one-internal-accept failures publish nothing; restored replay equals uninterrupted run. Hard mass and unmarked default preserved. No canonical admission, disk restart or arbitrary top-regime claim."
+  },
   "current_bounded_richards_successor": {
     "tested_commit": "4f5454181",
     "units_correction": "Requalified at 4f5454181: convert adapter interception rate cm/day to interval amount cm (0.03 cm per half day). Previous 468e2f4ad evidence was transactionally valid but used incorrect source amount units. Corrected gate passes O0/O2 including independent 0.03 cm assertion; full transcript unchanged. Details in linked storage status record.",
