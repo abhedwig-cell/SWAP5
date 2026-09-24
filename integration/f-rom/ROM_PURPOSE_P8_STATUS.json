@@ -1,0 +1,21 @@
+{
+  "current_gate": "P8B_BIND_FROZEN_COEFFICIENTS",
+  "date": "2026-09-24",
+  "next_actions": [
+    "Bind exact P8A coefficients to preregistered fresh P8B workload before any validation response."
+  ],
+  "p8a_coefficients": "integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json",
+  "p8a_execution_sha": "5360bf781c738f18419ec969ef588754049607ad",
+  "p8a_source_workflow_run": 35957350171,
+  "schema": "swap5.rom-purpose.p8.status.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "candidate_family_changed_after_training": false,
+    "coefficients_refit_on_validation": false,
+    "p8b_validation_response_seen": false,
+    "production_rom_authorized": false
+  },
+  "status": "P8A_DERIVATION_COMPLETE_P8B_NOT_EXECUTED",
+  "work_unit": "ROM-PURPOSE-P8",
+  "workstream": "ROM-PURPOSE"
+}
