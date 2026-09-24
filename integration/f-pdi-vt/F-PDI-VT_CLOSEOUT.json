@@ -1,32 +1,37 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PDI-VT",
-  "record": "CLOSEOUT",
-  "status": "FIX_QUALIFIED_READY_FOR_GOVERNED_ADMISSION",
-  "defect": "PDI vapor saturated-density equation used runtime Celsius directly where the authoritative equation requires absolute Kelvin.",
-  "minimal_fix": "Introduce TK=Temp+273.15 and use TK consistently in MgRT, Da and Rho_sv. Preserve signed unsaturated h in the Kelvin term from SWAP-009.",
-  "evidence": {
+  "record": "CLOSEOUT_STATE",
+  "status": "CORE_FIX_QUALIFIED_COLD_FULLMODEL_RERUN_QUEUED_PRODUCTION_ADMISSION_BLOCKED",
+  "defect": "PDI Kvap_func receives Temp in degrees Celsius while the saturated-vapor-density expression requires absolute Kelvin and used Temp directly.",
+  "minimal_fix": "Define TK=Temp+273.15d0 and use TK consistently in MgRT, Da and Rho_sv while preserving SWAP-009 signed unsaturated h in the Kelvin relative-humidity factor.",
+  "qualified_evidence": {
     "theory_documentation_code_reconciliation": "PASS",
     "independent_formula_gate": "PASS",
     "actual_source_fortran_gate": "21/21 PASS",
-    "full_model_vapor_on_gate": "PASS",
-    "NoVap_noninterference_gate": "PASS"
+    "SWAP_009_signed_head_regression": "PASS",
+    "VT04C_finite_control_full_model": "PASS",
+    "NoVap_noninterference": "PASS in qualified VT04C gate",
+    "water_balance": "CRITDEVMASBAL=1e-6 retained",
+    "historical_binding_B0_through_B1_11": "PASS"
   },
-  "negative_or_technical_evidence_preserved": [
-    "F-AHL26D0 original source-domain failure",
-    "F-PDI-VT03 cancellation-limited initial attempt",
-    "F-PDI-VT04 technical host/build/case attempts"
-  ],
-  "remaining_before_production_admission": [
-    "bind the fix to the exact intended historical or production source authority in the canonical admission chain",
-    "apply source-identity preimage checks for that target",
-    "run canonical CI/regression suite including SWAP-009 Kelvin-sign evidence",
-    "admit through SWAP5 governance rather than from this research branch"
-  ],
-  "nonclaims": [
-    "No change to PDI retention, capacity, capillary conductivity or film conductivity",
-    "No change to NoVap behavior",
-    "No reversal of the SWAP-009 signed-head fix",
-    "No production admission has occurred"
-  ]
+  "preserved_negative_evidence": {
+    "VT04A": "SWHEA=0 diagnostic exposed non-finite buggy-control hydraulic output while repaired candidate remained finite.",
+    "VT04B": "Reducing initial dryness to -1e4 cm did not recover finite buggy-control output.",
+    "VT06A": "5C colder full-model case remained finite but failed activation because normalized Vapor-on control and candidate were indistinguishable at BFO precision.",
+    "VT06B_attempt1": "Moderately colder case activated Vapor-on difference but failed NoVap comparison because Generated-at metadata had not yet been normalized; comparator was repaired without changing numerical gates."
+  },
+  "pending_evidence": {
+    "VT06B_rerun": "queued in GitHub Actions with timestamp-normalized comparator"
+  },
+  "external_authority_blocker": {
+    "missing": [
+      "exact canonical repaired B1.11 WC_K_models_04_11.f90 postimage SHA256",
+      "exact repaired B1.11 full source-manifest SHA256"
+    ],
+    "reason": "Exact canonical B0/B1.11 source bytes are not reconstructable from the GitHub repository. Replay-verified identities and ordered patches are present, but the upstream legacy-capable host is not byte-identical and cannot substitute for the deterministic historical chain."
+  },
+  "production_status": "NOT_ADMITTED",
+  "F_AHL_status": "REMAINS_CLOSED",
+  "next_after_upstream_admission": "F-AHL-PDI-VAPOR-REQUAL only; do not repeat the complete F-AHL study."
 }
