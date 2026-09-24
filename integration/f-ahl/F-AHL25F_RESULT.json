@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25F",
+  "phase": "BIMODAL_K_TIGHTENING_AND_RICHARDS_CLOSURE_COMPLETE",
+  "status": "PASS_9_OF_9",
+  "workflow_run": 36050798051,
+  "workflow_job": 107805538449,
+  "stage_1": {
+    "abs_logK_3e_4": {
+      "M3_SEPARATED_wet": "PASS",
+      "M3_DOMINANT_SECOND_dry": "FAIL"
+    },
+    "abs_logK_1e_4": {
+      "M3_SEPARATED_wet": "PASS",
+      "M3_DOMINANT_SECOND_dry": "PASS"
+    },
+    "selected_abs_logK_limit": 0.0001
+  },
+  "selected_support_points": {
+    "M3_BALANCED": {"retention":20,"conductivity":299},
+    "M3_SEPARATED": {"retention":25,"conductivity":396},
+    "M3_DOMINANT_SECOND": {"retention":22,"conductivity":448}
+  },
+  "stage_2_full_matrix": {
+    "passed_cases": 9,
+    "total_cases": 9,
+    "same_nonlinear_and_backtracking_path": "9/9"
+  },
+  "finding": "The strict derivative-consistent AHL concept generalizes to source-authoritative bi-modal MvG Richards behaviour, but model-3 conductivity requires materially tighter and denser representation than retention/capacity to satisfy the same strict bottom-flux fidelity gate.",
+  "scientific_implication": "Representation complexity is family- and observable-dependent. The state/derivative invariant generalizes cleanly, whereas conductivity support density is not transferable from unimodal MvG.",
+  "next_action": "F-AHL25G paired complete-Richards performance characterization before any claim that model-3 AHL is computationally beneficial.",
+  "nonclaims": ["NO_SPEEDUP_CLAIM_YET","NO_PRODUCTION_ADMISSION"]
+}
