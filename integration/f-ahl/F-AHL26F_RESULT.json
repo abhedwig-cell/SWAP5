@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26F",
+  "phase": "PDI_NOVAP_RICHARDS_FALSIFICATION_COMPLETE",
+  "status": "PARTIAL_3_OF_6_WITH_TWO_ENDPOINT_FAILURES_AND_ONE_REFERENCE_ENVELOPE_FAILURE",
+  "workflow_run": 36052831546,
+  "workflow_job": 107812382778,
+  "PDI8_REFERENCE": {
+    "wet":"PASS","mid":"PASS","dry":"PASS",
+    "same_nonlinear_path":"3/3"
+  },
+  "PDI10_BIMODAL": {
+    "wet":{"status":"FAIL_BOTTOM_FLUX","bottom_flux_delta":1.089100e-5,"iteration_delta":0,"backtracking_delta":0},
+    "mid":{"status":"FAIL_BOTTOM_FLUX","bottom_flux_delta":1.201178e-5,"iteration_delta":0,"backtracking_delta":0},
+    "dry":{"status":"ANALYTICAL_REFERENCE_NONCONVERGENCE"}
+  },
+  "finding": "PDI8 closes the strict NoVap matrix directly. PDI10 wet/mid preserve solver path and miss only the strict bottom-flux gate by small margins. PDI10 dry lies outside the current analytical fixture convergence envelope at dt=0.25 day.",
+  "next_action": "F-AHL26G: exact-component attribution for PDI10 wet/mid and independent analytical timestep-envelope qualification for PDI10 dry.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_PDI10_FAILURE_ATTRIBUTION_YET","NO_VAPOR_ENABLED_CLAIM"]
+}
