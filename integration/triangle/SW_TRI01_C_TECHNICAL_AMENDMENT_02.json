@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.sw_tri01.c.technical_amendment.v2",
+  "work_unit": "SW-TRI01-C",
+  "amendment": "TECHNICAL_AMENDMENT_02",
+  "date": "2026-09-24",
+  "evidence_run": 35956980263,
+  "evidence_job": 107497287444,
+  "classification": "QUALIFIED_DEPENDENCY_ENVIRONMENT_REPAIR",
+  "failure": "Existing admitted dependency modflow6_prepared_solve_session.py imports numpy; TRI01-C workflow did not install it.",
+  "authority": "Canonical F-GC49C deterministic workflow installs numpy before the same groundwater application-service dependency chain.",
+  "repair": "Install numpy in SW-TRI01-C workflow before executing the deterministic gate.",
+  "unchanged": [
+    "triangle service source",
+    "all four frozen cases",
+    "all transaction and publication ordering",
+    "all tolerances and expected decisions"
+  ],
+  "transaction_result_observed": false
+}
