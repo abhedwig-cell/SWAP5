@@ -384,3 +384,20 @@ Repair:
 - no production source semantics changed by this repair.
 
 The failed run is retained as evidence and the observation gate is re-run from the repaired harness.
+
+
+### H02 — transaction state clone/data-movement cost
+
+Status: `N1_OR_N2_PENDING_MEASUREMENT`.
+
+The current transaction path deliberately clones physical state to preserve accepted/trial isolation. For external full/half stepping, the reference transaction creates a checkpoint clone and then trial clones for the full and half routes. The B1.10 physical-state clone currently allocates and copies the pressure-head and water-content arrays and, when active, copies optional snow and soil-temperature state.
+
+This copying is **not preregistered as redundant**. Transactional isolation is a scientific invariant. PROFILE01 must instead measure:
+
+- physical-state clone count per requested interval and per accepted interval;
+- allocated/copied bytes by state family;
+- fraction associated with rejected/discarded trials;
+- whether repeated allocate/deallocate is a measurable implementation cost;
+- whether later implementation alternatives can preserve exact accepted/trial isolation without changing ownership semantics.
+
+Pointers, aliasing or move-based alternatives are not authorized merely because copying is measured as expensive. Any later repair must prove that committed state cannot be mutated by speculative work.
