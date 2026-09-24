@@ -1,0 +1,23 @@
+name: F-PE-PROFILE03 H03 E2 preflight
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile03-h03-e2e
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'tools/vq/b1_11_reconstruct.py'
+      - 'tests/fpe/run_fpe_profile03_h03_e2_preflight.sh'
+      - '.github/workflows/f-pe-profile03-h03-e2-preflight.yml'
+  workflow_dispatch:
+
+jobs:
+  e2-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify H03 whole-Hupsel route and public fixture identity
+        run: bash tests/fpe/run_fpe_profile03_h03_e2_preflight.sh
