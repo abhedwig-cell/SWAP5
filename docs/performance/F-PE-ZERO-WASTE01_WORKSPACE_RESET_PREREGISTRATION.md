@@ -746,3 +746,16 @@ The same routine already performs a nested `i/j` column loop to reject duplicate
 Expected effect: remove one length-|states| allocation, deallocation and logical zero-fill per serialized MultiSWAP dispatch.
 
 Semantics are unchanged: duplicate state ownership remains rejected before physical execution, and no public diagnostics/interface type changes.
+
+
+## ZW01-H22 preregistration — sum committed ledger directly from snapshots
+
+`committed_ledger_total` currently allocates a temporary real array `values(size(snapshots))`, copies `committed_swap_outward_exchange_m` from every snapshot into it, and then calls the stable ordered summation routine.
+
+The temporary array carries no independent semantics. H22 performs the same compensated summation directly in canonical `order` over:
+
+`snapshots(order(k))%committed_swap_outward_exchange_m`.
+
+Expected effect: remove one length-N real allocation, copy, and deallocation per committed-ledger total evaluation.
+
+The summation order and compensation arithmetic remain identical, so bitwise result identity is expected.
