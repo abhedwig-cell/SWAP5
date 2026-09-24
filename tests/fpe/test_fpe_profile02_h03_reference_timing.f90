@@ -61,7 +61,7 @@ program test_fpe_profile02_h03_reference_timing
     call solver%solve(request, workspace, result)
     if (result%status /= SW_SOLVE_CONVERGED) error stop 'PROFILE02 measured solve failed'
     checksum=checksum + result%candidate_state%pressure_head(1) + result%candidate_state%water_content(n) + &
-         real(result%diagnostics%nonlinear_iterations,real64) + 1.0e-3_real64*real(result%diagnostics%constitutive_evaluations,real64)
+         real(result%diagnostics%nonlinear_iterations,real64)
   end do
   call system_clock(c1)
   seconds=real(c1-c0,real64)/real(rate,real64)
