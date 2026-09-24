@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL03",
+  "title": "Fortran constitutive runtime-cost screen",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "parent": "F-AHL02",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the adaptive lookup remain computationally attractive after paying nonuniform interval search and transformed-value reconstruction costs in optimized Fortran?",
+  "candidates": [
+    "analytical B1.10/MvG smooth-core evaluation",
+    "adaptive direct-theta + log(C) + log(K) lookup",
+    "adaptive logit(Se) + log(C) + log(K) lookup"
+  ],
+  "benchmark_policy": {
+    "compiler_optimization": "-O3",
+    "heads_precomputed_outside_timed_loop": true,
+    "lookup_interval_search_included": true,
+    "exp/logistic_reconstruction_included": true,
+    "table_build_and_file_io_excluded_from_timed_loop": true,
+    "materials": ["B01", "B12", "O05", "O14"],
+    "minimum_repetitions_per_candidate": 3,
+    "interpretation": "screen only; end-to-end Richards runtime remains required"
+  },
+  "decision_rule": "Do not advance a representation solely because it uses fewer support points. Advance only candidates whose measured optimized-Fortran evaluation cost is competitive with direct analytical evaluation and whose constitutive screen remains PASS.",
+  "hard_exclusions": [
+    "NO_END_TO_END_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_BUILD_COST_OMISSION_IN_LATER_END_TO_END_ACCOUNTING",
+    "NO_RETUNING_CONSTITUTIVE_TOLERANCES_FROM_TIMING_RESULT"
+  ]
+}
