@@ -26,7 +26,8 @@
     "contract": "Explicit static pore volume input; do not substitute total volume including dynamic cracks. Positive finite layer thickness, static volume in [0,dz], matching nonempty shapes. Failed evaluation returns no fraction array.",
     "scope": "Source-equation component for future typed HeadCalc geometry input, not yet wired into HeadCalc or inferred from the restricted domain's total-volume field. No shared ABI change or physical admission.",
     "tests": "Zero, partial and full static volume; excess/negative volume, zero thickness, shape mismatch and NaN rejection.",
-    "test_result": "Pending persisted replay"
+    "recovery_point": "6e6b61259",
+    "test_result": "Persisted 6e6b61259 Richards scratch gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
   },
   "candidate_rejection_verification": {
     "baseline": "77aff4b39",
