@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.sw_rib_admission.convergence.v1",
+  "date": "2026-09-23",
+  "decision": "ADM01_PRIMARY_APPLICATION_ADMISSION__FAPP09_PRIMARY_SWAP_SIDE_AUTHORITY__PA01_SUPERSEDED_AS_GENERAL_PROFILE",
+  "authorities": {
+    "research": "SW-RIB-SWM01 closeout",
+    "swap_side_candidate": "F-APP09 + F-VQ128 + F-CI109",
+    "live_ribasim_application": "SW-RIB-ADM01",
+    "legacy_geometry_emulation": "SW-RIB-PA01 retained only as pre-resolved-head/Q1H migration evidence"
+  },
+  "rules": [
+    "Do not independently canonical-admit PA01 as the general coupled profile.",
+    "Use F-APP09 for SWAP-side owner-XOR, typed external-head materialization and transaction participant.",
+    "Use ADM01 for live Ribasim realization, origin-bound receipt semantics, provenance and application-level admission.",
+    "Primary production geometry is RIBASIM_NATIVE_GEOMETRY_V1.",
+    "Q1H epsilon=1e-5 is a separately named legacy-emulation option, not the default coupled geometry."
+  ],
+  "production_admission": false
+}
