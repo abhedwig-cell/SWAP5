@@ -2,18 +2,31 @@ program test_saturated_trial
   use, intrinsic::iso_fortran_env,only:real64,int64
   use mod_ppa_wu05a4_saturated_trial
   use mod_ppa_wu05a4_trial_exchange
+  use mod_ppa_wu05a4_matrix_level
   implicit none
   type(saturated_domain_inputs)::input
   type(macro_exchange_evaluation)::e
   type(macro_trial_key)::key
   type(macro_used_exchange)::slot
-  real(real64)::storage,residual(2),diagonal(2)
+  real(real64)::storage,residual(2),diagonal(2),level
+  integer::zone_top
   real(real64),allocatable::amount(:)
   logical::ok
   input%z=[-0.5_real64,-1.5_real64]; input%dz=[1.0_real64,1.0_real64]
   input%volume=[0.25_real64,0.25_real64]; input%resistance_inverse=[0.25_real64,0.25_real64]
   input%matrix_top=2; input%pore_saturated_top=1; input%saturated_fraction=0.5_real64
   input%bottom=-2; input%matrix_level=-1; input%pore_level=-0.5_real64; input%storage=0.375_real64
+  call matrix_level_from_heads([-0.5_real64,0.5_real64],input%z,input%dz,0.0_real64,level,zone_top,ok)
+  call check(ok.and.abs(level+1.0_real64)<1.e-14_real64.and.zone_top==1,37)
+  ! Source nodlev puts a water level exactly on a cell bottom in that upper cell.
+  call matrix_level_from_heads([-0.5_real64,0.25_real64],input%z,input%dz,0.0_real64,level,zone_top,ok)
+  call check(ok.and.abs(level+7.0_real64/6.0_real64)<1.e-14_real64.and.zone_top==2,38)
+  call matrix_level_from_heads([-0.5_real64,-0.25_real64],input%z,input%dz,0.0_real64,level,zone_top,ok)
+  call check(ok.and.abs(level-999.0_real64)<1.e-14_real64.and.zone_top==3,39)
+  call matrix_level_from_heads([0.5_real64,-0.25_real64],input%z,input%dz,0.0_real64,level,zone_top,ok)
+  call check(.not.ok,40)
+  call matrix_level_from_heads([0.5_real64,1.5_real64],input%z,input%dz,0.125_real64,level,zone_top,ok)
+  call check(ok.and.abs(level-0.125_real64)<1.e-14_real64.and.zone_top==1,41)
   key=macro_trial_key(5_int64,0_int64,1_int64,1_int64)
   call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
   call check(ok,1)
@@ -107,6 +120,7 @@ program test_saturated_trial
   print '(a)','PPA_WU05A4_SATURATED_RESIDUAL_REEVALUATION=PASS'
   print '(a)','PPA_WU05A4_SATURATED_GEOMETRY_CONSISTENCY=PASS'
   print '(a)','PPA_WU05A4_SATURATED_SYSTEM_ATOMIC=PASS'
+  print '(a)','PPA_WU05A4_MATRIX_LEVEL_HEAD_BRANCHES=PASS'
 contains
   subroutine check(condition,code)
     logical,intent(in)::condition

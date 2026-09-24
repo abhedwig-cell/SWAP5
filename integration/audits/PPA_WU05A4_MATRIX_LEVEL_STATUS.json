@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-WU05-A4-MATRIX-LEVEL",
+  "baseline": "06933d582",
+  "source": "B1.11 calcgwl.f90, bottom-connected groundwater search, gwlevel option 1 and nodlev; SHA256 d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+  "implementation": "src/process/mod_ppa_wu05a4_matrix_level.f90",
+  "scope": "Restricted zero-critical-unsaturated-volume matrix water-level candidate from heads, elevations and thicknesses. All-negative profile returns source sentinel 999 and n+1; one bottom-connected saturated zone interpolates the zero head; full saturation uses source pond branch. Perched/multiple saturated zones are rejected.",
+  "important_finding": "Source nodlev uses strict cell-bottom > level comparison. At exactly -1 cm on the two-cell fixture boundary it returns cell 1, not cell 2. Earlier restricted evaluator tests supplied matrix_top=2 manually; they remain bounded component tests and must not be presented as CALCGWL-consistent complete trials.",
+  "gate": "tests/fapp/run_ppa_wu05a4_saturated_trial.ps1",
+  "tests": "Exact layer-boundary node selection, interior zero-head interpolation, dry-profile sentinel, perched-profile rejection and fully saturated ponded case. Existing evaluator tests retained without silently changing their input contract.",
+  "limits": "No perched-water-table algorithm, positive CritUndSatVol filtering, warnings, prescribed-groundwater special cases or production binding. Node distance is derived from supplied elevations; full grid consistency belongs to the restricted adapter. Extreme finite arithmetic unqualified.",
+  "production_admitted": false,
+  "next_action": "Bind derived matrix level/top into the restricted trial on every head evaluation; reconcile wet-pore branch guards when the containing cell center is unsaturated and source SATFLOW skips it."
+}
