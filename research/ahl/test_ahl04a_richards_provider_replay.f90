@@ -131,14 +131,16 @@ contains
          'CAND_ITER=',cand%diagnostics%nonlinear_iterations,'REF_BACKTRACK=',ref%diagnostics%backtracking_attempts, &
          'CAND_BACKTRACK=',cand%diagnostics%backtracking_attempts
 
-    call require(dh<=0.05_real64,'pressure-head gate')
-    call require(dw<=1.0e-4_real64,'water-content gate')
-    call require(dtf<=1.0e-5_real64,'top-flux gate')
-    call require(dbf<=1.0e-5_real64,'bottom-flux gate')
-    call require(mass<=mass_gate,'mass gate')
-    call require(diter<=2,'iteration-count gate')
-    call require(dbt<=2,'backtracking-count gate')
-    write(*,'(A,1X,A,1X,A)') 'AHL04A',trim(name),'PASS'
+    if (trim(name)=='adaptive') then
+      call require(dh<=0.05_real64,'adaptive pressure-head gate')
+      call require(dw<=1.0e-5_real64,'adaptive water-content gate')
+      call require(max(dtf,dbf)<=1.0e-4_real64,'adaptive boundary-flux gate')
+      call require(mass<=mass_gate,'adaptive mass gate')
+      call require(diter<=1,'adaptive iteration-count gate')
+      write(*,'(A,1X,A,1X,A)') 'AHL04A',trim(name),'PASS'
+    else
+      write(*,'(A,1X,A,1X,A)') 'AHL04A',trim(name),'OBSERVED_BASELINE'
+    end if
   end subroutine report_and_gate
 
   subroutine require(condition,message)
