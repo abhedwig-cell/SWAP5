@@ -112,6 +112,16 @@ program test_ppa_free_drainage_owner
   end do
   call get_command_argument(1,test_scope)
   if(trim(test_scope)=='--hydraulic-copy'.or.trim(test_scope)=='--irrigation-source') then
+    if(trim(test_scope)=='--irrigation-source') then
+      config%storage_difference => evaluate_mvg_storage_difference_service
+      config%numerical%transaction%retry_scale=0.8_real64
+      config%numerical%transaction%max_retries=64
+      do i=1,NTILE
+        config%tiles(i)%base_forcing%top_flux=0.0_real64
+        call seed_initial_derivative(config%tiles(i)%parameters,config%tiles(i)%initial_state, &
+             config%tiles(i)%base_forcing,config%tiles(i)%initial_right_derivative)
+      end do
+    end if
     call verify_hydraulic_copy(config)
     write(*,'(a)') 'PPA_OWNER_HYDRAULIC_COPY=PASS'
     stop
@@ -260,6 +270,8 @@ contains
         selected_amount(tile)=flux%external_inflow_amount
         irrigation_forcing(tile)=profile%tiles(tile)%base_forcing
         irrigation_forcing(tile)%top_flux=0.0_real64
+        irrigation_forcing(tile)%temporal_forcing_event=.true.
+        irrigation_forcing(tile)%temporal_forcing_event_time=request%t0
         irrigation_forcing(tile)%subsurface_irrigation_source=flux%subsurface_source
       end do
       control_forcing=irrigation_forcing
@@ -287,7 +299,9 @@ contains
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation source interval failed'
       if(maxval(abs(irrigation_result%mass%residual))>HARD_MASS_GATE) error stop 'irrigation source mass'
       do tile=1,NTILE
-        if(abs(irrigation_result(tile)%mass%total_in-selected_amount(tile))>HARD_MASS_GATE) &
+        expected=selected_amount(tile)+sum(max(-irrigation_forcing(tile)%drainage_flux_by_level,0.0_real64))*irrigation_dt
+        write(*,*) 'IRRIGATION_INFLOW',tile,irrigation_result(tile)%mass%total_in,expected
+        if(abs(irrigation_result(tile)%mass%total_in-expected)>HARD_MASS_GATE) &
              error stop 'irrigation source accepted inflow'
       end do
       write(*,'(a)') 'PPA_OWNER_DCS1_SOURCE_ACCEPTED_MASS=PASS'
