@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06B-COLD",
+  "phase": "PREREGISTER",
+  "purpose": "Moderately colder full-model regression after VT06A was finite but failed the activation gate because Vapor-on outputs were numerically identical.",
+  "case_delta_from_VT04C": {
+    "initial_TSOIL_C": [10.0, 9.0, 8.0, 7.0],
+    "meteorology_Tmin_C": 10.0,
+    "meteorology_Tmax_C": 15.0
+  },
+  "unchanged": [
+    "initial head -1e5 cm",
+    "SWHEA=1",
+    "PDI model 8",
+    "host and testcase commits",
+    "SWAP-009 signed-head control",
+    "candidate absolute-temperature repair",
+    "CRITDEVMASBAL=1e-6"
+  ],
+  "gates": [
+    "all four runs normal completion",
+    "both Vapor-on BFO files finite",
+    "Vapor-on control and candidate numerically different",
+    "NoVap control and candidate numerically identical"
+  ],
+  "preserved_negative_result": "VT06A at TSOIL=5C and Tmin/Tmax=5/10C failed only the Vapor-on activation-difference gate.",
+  "no_gate_retuning": true
+}
