@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "DRY_TAIL_AUTHORITY_NOTE",
+  "source_context": "Earlier O05 dry-end stabilization research",
+  "clarification": {
+    "threshold": "dt * 1e-13",
+    "quantity": "Jacobian capacity floor C_J, not a physical K cutoff",
+    "scope": "extremely dry standard MvG route",
+    "O05_onset_approx_head_cm": -800000,
+    "O05_theta_minus_theta_r_approx": 1.7e-9
+  },
+  "interpretation_for_AHL": [
+    "Adaptive lookup generation should not keep adding resolution indefinitely in the extreme dry tail once storage response is numerically negligible.",
+    "The threshold must not be reinterpreted as a physical truncation of theta(h) or K(h).",
+    "A dry-tail termination/asymptotic rule requires its own prospective continuity and solver-response qualification.",
+    "The F-AHL10/F-AHL12 dry regimes around hundreds of cm are ordinary dry conditions and are not covered by this extreme-tail rule."
+  ],
+  "status": "BOUND_AS_DESIGN_CONSTRAINT_NOT_YET_IMPLEMENTED"
+}
