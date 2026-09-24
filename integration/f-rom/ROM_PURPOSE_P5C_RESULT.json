@@ -8,11 +8,11 @@
   "materials": {
     "B01": {
       "HM17_vs_BASE16": {
-        "componentwise_noninferior": false,
+        "componentwise_noninferior": true,
         "delta": {
-          "bottom_flux_sign_mismatch_count": 1.0,
-          "history_signed_bottom_flux_bias_cm_per_day": -0.003624513829185716,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.00383511206306153
+          "bottom_flux_sign_mismatch_count": -1.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0035828206692795767,
+          "instantaneous_bottom_flux_rmse_cm_per_day": -0.07579986515013248
         },
         "strict_gain": true
       },
@@ -20,57 +20,57 @@
         "componentwise_noninferior": false,
         "delta": {
           "bottom_flux_sign_mismatch_count": 0.0,
-          "history_signed_bottom_flux_bias_cm_per_day": 1.2523680984699581e-05,
-          "instantaneous_bottom_flux_rmse_cm_per_day": -0.000511459038278872
+          "history_signed_bottom_flux_bias_cm_per_day": 5.421684088978938e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.0011492407793355155
         },
-        "strict_gain": true
+        "strict_gain": false
       },
       "SPLIT17_vs_BASE16": {
-        "componentwise_noninferior": false,
+        "componentwise_noninferior": true,
         "delta": {
-          "bottom_flux_sign_mismatch_count": 1.0,
-          "history_signed_bottom_flux_bias_cm_per_day": -0.0036370375101704155,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.004346571101340402
+          "bottom_flux_sign_mismatch_count": -1.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.003637037510169366,
+          "instantaneous_bottom_flux_rmse_cm_per_day": -0.076949105929468
         },
         "strict_gain": true
       },
       "metrics": {
         "BASE16": {
-          "bottom_flux_sign_mismatch_count": 3071,
-          "history_signed_bottom_flux_bias_cm_per_day": 9.598123249705592,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 11.85270144302967,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 31.93221543762968,
+          "bottom_flux_sign_mismatch_count": 1,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.00823374405650231,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.11624862589323345,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 3.878227584148739,
           "scored_observation_count": 3072
         },
         "FINE_ORACLE": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 9.589806651870134,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 11.856126500147639,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 33.14877533954949,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 8.285377895553938e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.001503372495399587,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 0.06465918510244073,
           "scored_observation_count": 3072
         },
         "HM17": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 9.594498735876407,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 11.856536555092731,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 32.94298191142484,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0046509233872227326,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.04044876074310096,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 1.363001576230543,
           "scored_observation_count": 3072
         },
         "SPLIT17": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 9.594486212195422,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 11.85704801413101,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 32.98335450224364,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.004596706546332943,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.03929951996376545,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 1.3795473315230549,
           "scored_observation_count": 3072
         }
       },
       "oracle": {
         "max_abs_gate_cm_per_day": 1e-08,
         "metrics": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 9.589806651870134,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 11.856126500147639,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 33.14877533954949,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 8.285377895553938e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.001503372495399587,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 0.06465918510244073,
           "scored_observation_count": 3072
         },
         "pass": false,
@@ -79,69 +79,69 @@
     },
     "B14": {
       "HM17_vs_BASE16": {
-        "componentwise_noninferior": false,
+        "componentwise_noninferior": true,
         "delta": {
-          "bottom_flux_sign_mismatch_count": 3.0,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.001710909177072839,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.022684918128615894
+          "bottom_flux_sign_mismatch_count": -3.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0025936038982422474,
+          "instantaneous_bottom_flux_rmse_cm_per_day": -0.025349662759079142
         },
-        "strict_gain": false
+        "strict_gain": true
       },
       "HM17_vs_SPLIT17": {
         "componentwise_noninferior": false,
         "delta": {
-          "bottom_flux_sign_mismatch_count": 1.0,
-          "history_signed_bottom_flux_bias_cm_per_day": -6.848899716055401e-06,
-          "instantaneous_bottom_flux_rmse_cm_per_day": -0.0009374572199809528
+          "bottom_flux_sign_mismatch_count": -1.0,
+          "history_signed_bottom_flux_bias_cm_per_day": 5.493211092750627e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.0013995232825861417
         },
         "strict_gain": true
       },
       "SPLIT17_vs_BASE16": {
-        "componentwise_noninferior": false,
+        "componentwise_noninferior": true,
         "delta": {
-          "bottom_flux_sign_mismatch_count": 2.0,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.0017177580767888945,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.023622375348596847
+          "bottom_flux_sign_mismatch_count": -2.0,
+          "history_signed_bottom_flux_bias_cm_per_day": -0.0026485360091697534,
+          "instantaneous_bottom_flux_rmse_cm_per_day": -0.026749186041665284
         },
-        "strict_gain": false
+        "strict_gain": true
       },
       "metrics": {
         "BASE16": {
-          "bottom_flux_sign_mismatch_count": 3069,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.07121465645666525,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.2709632246043426,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 2.741083974337854,
+          "bottom_flux_sign_mismatch_count": 3,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.004544120062957222,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.0766696643671435,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 1.6745851101664497,
           "scored_observation_count": 3072
         },
         "FINE_ORACLE": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.07406802773036415,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.32683846309282655,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 4.110287452875289,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 5.208693649286932e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.0008024779105277531,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 0.028204491238815077,
           "scored_observation_count": 3072
         },
         "HM17": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.07292556563373809,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.2936481427329585,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 3.1917204126417915,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.001950516164714975,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.05132000160806435,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 1.3250938030173633,
           "scored_observation_count": 3072
         },
         "SPLIT17": {
-          "bottom_flux_sign_mismatch_count": 3071,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.07293241453345414,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.2945855999529394,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 3.2321772025217097,
+          "bottom_flux_sign_mismatch_count": 1,
+          "history_signed_bottom_flux_bias_cm_per_day": 0.0018955840537874687,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.04992047832547821,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 1.3130469423418913,
           "scored_observation_count": 3072
         }
       },
       "oracle": {
         "max_abs_gate_cm_per_day": 1e-08,
         "metrics": {
-          "bottom_flux_sign_mismatch_count": 3072,
-          "history_signed_bottom_flux_bias_cm_per_day": 0.07406802773036415,
-          "instantaneous_bottom_flux_rmse_cm_per_day": 0.32683846309282655,
-          "maximum_absolute_bottom_flux_error_cm_per_day": 4.110287452875289,
+          "bottom_flux_sign_mismatch_count": 0,
+          "history_signed_bottom_flux_bias_cm_per_day": 5.208693649286932e-05,
+          "instantaneous_bottom_flux_rmse_cm_per_day": 0.0008024779105277531,
+          "maximum_absolute_bottom_flux_error_cm_per_day": 0.028204491238815077,
           "scored_observation_count": 3072
         },
         "pass": false,
