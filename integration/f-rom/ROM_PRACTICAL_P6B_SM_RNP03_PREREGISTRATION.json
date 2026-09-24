@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp03.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP03",
+  "date": "2026-09-24",
+  "phase": "PREREGISTERED_BEFORE_RETRY_CEILING_RESPONSE",
+  "title": "Adaptive Richards retry-ceiling diagnosis",
+  "central_question": "Is the remaining realistic-workload Reference failure caused only by the frozen eight-retry ceiling, or by a genuine solver/minimum-step floor?",
+  "authority": {
+    "rnp02_result": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_RESULT.json",
+    "observed_failure": "RNP02 retry budget on B02/B05/B06/B11/B12; B16 complete"
+  },
+  "frozen": {
+    "geometry_nodes": 128,
+    "max_step_day": 0.015625,
+    "retry_scale": 0.5,
+    "min_step_duration": "existing solver value 1e-8 day",
+    "mass_gate_cm": 1e-12,
+    "forcing": "P6B Hupsel net-atmospheric proxy unchanged",
+    "solver_tolerances_unchanged": true
+  },
+  "retry_ceiling_ladder": [
+    {
+      "id": "R12",
+      "max_retries": 12
+    },
+    {
+      "id": "R16",
+      "max_retries": 16
+    }
+  ],
+  "decision_rule": {
+    "qualify_R12": "R12 completes all six materials and both histories with hard mass gate preserved.",
+    "qualify_R16": "Only if R12 fails at least one material and R16 completes all six; record R12 failures explicitly.",
+    "genuine_floor": "R16 still fails at least one material, or minimum-step/domain failure appears before retry exhaustion."
+  },
+  "diagnostics": [
+    "first failing day/history",
+    "number of halvings at failure",
+    "minimum attempted step",
+    "maximum accepted retries per day",
+    "total retries",
+    "mass ledger"
+  ],
+  "candidate_firewall": "No S4 candidate evidence used for retry-ceiling selection.",
+  "forbidden": [
+    "forcing changes",
+    "solver tolerance relaxation",
+    "material-specific retry ceilings",
+    "state/closure changes",
+    "application acceptance"
+  ],
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
