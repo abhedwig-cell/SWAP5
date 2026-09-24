@@ -45,9 +45,52 @@ for opt in 0 2; do
   for candidate in fixed50 fixed100 adaptive; do
     "$OUT/test" "$BUILD/tables/${candidate}.dat" "$candidate" | tee -a "$OUT/output.txt"
   done
-  grep -Fq 'AHL04A fixed50 OBSERVED_BASELINE' "$OUT/output.txt"
-  grep -Fq 'AHL04A fixed100 OBSERVED_BASELINE' "$OUT/output.txt"
-  grep -Fq 'AHL04A adaptive PASS' "$OUT/output.txt"
+
+  python3 - "$OUT/output.txt" <<'PY'
+import re, sys
+path=sys.argv[1]
+limits={
+    "MAX_DH_CM":0.05,
+    "MAX_DTHETA":1e-4,
+    "DTOP":1e-5,
+    "DBOTTOM":1e-5,
+    "MASS":1e-12,
+    "ITER_DELTA":2,
+    "BACKTRACK_DELTA":2,
+}
+rows={}
+pat=re.compile(
+    r"AHL04A_METRIC\s+(fixed50|fixed100|adaptive)\s+"
+    r"MAX_DH_CM=\s*([0-9Ee+\-.]+)\s+"
+    r"MAX_DTHETA=\s*([0-9Ee+\-.]+)\s+"
+    r"DTOP=\s*([0-9Ee+\-.]+)\s+"
+    r"DBOTTOM=\s*([0-9Ee+\-.]+)\s+"
+    r"MASS=\s*([0-9Ee+\-.]+)\s+"
+    r"ITER_DELTA=([0-9]+)\s+BACKTRACK_DELTA=([0-9]+)"
+)
+for line in open(path):
+    m=pat.search(line)
+    if m:
+        rows[m.group(1)]=dict(zip(
+            ["MAX_DH_CM","MAX_DTHETA","DTOP","DBOTTOM","MASS","ITER_DELTA","BACKTRACK_DELTA"],
+            [float(x) for x in m.groups()[1:]]
+        ))
+missing=[c for c in ("fixed50","fixed100","adaptive") if c not in rows]
+if missing:
+    raise SystemExit("AHL04A missing candidate metrics: "+",".join(missing))
+failed=[]
+for name,row in rows.items():
+    violations={k:(row[k],v) for k,v in limits.items() if row[k] > v}
+    verdict="PASS" if not violations else "FAIL"
+    print(f"AHL04A_CONTRACT {name} {verdict} {row}")
+    if violations:
+        print(f"AHL04A_VIOLATIONS {name} {violations}")
+        failed.append(name)
+if failed:
+    raise SystemExit("AHL04A preregistered contract failed: "+",".join(failed))
+print("AHL04A_PREREGISTERED_CONTRACT=PASS")
+PY
+
   echo "AHL04A_O${opt}=PASS"
 done
 
