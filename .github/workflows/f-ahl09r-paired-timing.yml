@@ -1,0 +1,25 @@
+name: F-AHL09R paired derivative-consistent timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl09r_timing_reconciliation.f90'
+      - 'research/ahl/run_ahl09r_timing_reconciliation.sh'
+      - 'integration/f-ahl/F-AHL09R_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl09r-paired-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired derivative-consistent timing
+        run: |
+          bash research/ahl/run_ahl09r_timing_reconciliation.sh /tmp/ahl09r_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl09r-${{ github.run_id }}
+          path: /tmp/ahl09r_result.txt
