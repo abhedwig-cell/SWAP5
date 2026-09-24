@@ -39,7 +39,7 @@ def main():
       "P6A run-history declarations")
 
     old="""      call strict_first_sample(column,template,p,state,forcing,t0,t1,ok,mass,bex,bflux,status,route,nl,ir,back,fallback_used)
-      call require(ok,'LAREGW1 accepted history step')"""
+      call require(ok,'ROM1A accepted history step')"""
     new="""      call state%snapshot(pre_snap,got_pre)
       call require(got_pre,'LAREGW1 P6A pre-step snapshot')
       select type(pre=>pre_snap)
