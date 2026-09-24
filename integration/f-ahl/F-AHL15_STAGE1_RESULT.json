@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL15",
+  "phase": "STAGE1_12_CASE_MATRIX_COMPLETE",
+  "status": "PASS_STAGE1",
+  "workflow_run": 36044316960,
+  "workflow_job": 107783949984,
+  "support_points": {
+    "B01": 164,
+    "B12": 104,
+    "O05": 160,
+    "O14": 169
+  },
+  "conductivity_metric": {
+    "form": "abs(log(max(K_interp,1e-10))-log(max(K_true,1e-10)))",
+    "max": 3e-4
+  },
+  "matrix": {
+    "passed": 12,
+    "total": 12,
+    "all_iteration_deltas_zero": true,
+    "all_backtracking_deltas_zero": true
+  },
+  "finding": "The tight floor-scaled shared-support representation closes all frozen wet/mid/dry material-regime fidelity gates while preserving the analytical nonlinear path.",
+  "next_gate": "Long paired end-to-end Richards timing using the F-AHL09R protocol.",
+  "nonclaims": [
+    "No speed conclusion yet.",
+    "No whole-SWAP speedup claim.",
+    "No production admission."
+  ]
+}
