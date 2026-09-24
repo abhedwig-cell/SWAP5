@@ -80,3 +80,42 @@ The last item belongs to the separate SCALE scientific workstream. Technical N:1
 The next groundwater software capability may target **iMOD Coupler production integration**: compose the admitted F-GC49 production ABI with the actual iMOD Coupler driver lifecycle while preserving all ownership rules above. This must be a new workunit; F-GC49 itself is closed and has no Stage E.
 
 Any later numerical/physics-envelope expansion should follow as a different bounded capability after product integration, rather than being mixed into the driver integration work.
+
+
+## Current post-Status-A Ribasim surface-water capability
+
+Canonical now also contains a bounded live SWAP5-Ribasim surface-water application profile.
+
+The controlling authority chain is:
+
+1. SW-RIB-SWM01 research closeout for responsibility decomposition and retirement analysis;
+2. F-APP09 plus F-VQ128 for the SWAP-side external-surface-water transaction participant;
+3. F-CI109 canonical admission of that exact SWAP-side production postimage;
+4. SW-RIB-ADM01 G5B/G6/G7 for real Ribasim v2026.1.2 realization, provenance and live application qualification;
+5. canonical ADM01 application closeout at `c9c0352b2310d3f3b5ae2a29c3d62c72a0fbb5d0`.
+
+The admitted application profile is `RIBASIM_EXTERNAL_SECONDARY_STATE_V1`.
+
+Within that profile:
+
+- Ribasim is the sole accepted owner of the represented secondary surface-water storage and level;
+- SWAP5 receives one typed accepted external surface-water head for one `EXTENDED_SIGNED` drainage-response level;
+- SWAP5 retains the signed drainage/infiltration constitutive physics;
+- positive drainage and negative infiltration are supported;
+- a mismatch between requested and physically realized transfer prevents commit and requires discard/recomposition from the same accepted origins;
+- availability-limited infiltration is not accepted by clipping one side after SWAP acceptance;
+- exactly one final accepted commit is published for an accepted coupling window;
+- `RIBASIM_NATIVE_GEOMETRY_V1` is the default surface-water geometry contract.
+
+This admission does not remove the standalone F-CI52 restricted fixed-weir capability. The application profiles are mode-exclusive for the same physical surface-water store: internal SWAP fixed-weir state ownership and external Ribasim state ownership may not both be authoritative.
+
+The following remain outside the admitted Ribasim profile:
+
+- multilevel external surface-water exchange;
+- automatic `SWMAN=2` production runtime;
+- top-runoff and rapid-drainage production binding;
+- exact nonlinear legacy `SWQHR1` numerical parity;
+- whole-file retirement of `surfacewater.f90`;
+- combined SWAP5 + MODFLOW6 + Ribasim triangle admission.
+
+The legacy `STTAB` storage relation is not assumed to map exactly to a Ribasim Basin profile between its knots. Q1H provides a separately named epsilon-controlled legacy-emulation route, but the default coupled production profile uses Ribasim-native geometry because Ribasim owns the surface-water state.
