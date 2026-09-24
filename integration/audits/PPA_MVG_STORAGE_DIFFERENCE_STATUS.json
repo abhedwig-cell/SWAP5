@@ -1,6 +1,8 @@
 {
   "baseline": "55d430238",
-  "status": "IMPLEMENTED_PERSISTED_REPLAY_PENDING",
+  "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
+  "tested_commit": "a83f0b800",
+  "replay": "tests/fsi/run_ppa_mvg_storage_difference.ps1 PASS at persisted commit; O0/O2 identical, bounds/FPE checks, 80/80 improvements. Build swap-mvg-difference-497c89c0-c93c-4991-bd56-0e657f66f986.",
   "workstream": "PPA free drainage small-step residual accuracy",
   "scope": "Isolated candidate algebraic helper, no HeadCalc/provider/runtime call site. Does not change mass tolerance or physical state.",
   "contract": "Standard smooth MvG retention branch only: theta=theta_r+A/(1+abs(alpha*h)^n)^m. Return theta(h_after)-theta(h_before) through local log1p/expm1 series, avoiding subtraction of rounded full water contents. Both heads strictly below -0.01 cm and no drier than -1e6 cm; relative head increment <=1e-3; A in (0,1], alpha in (0,100], n in (1,10], m in (0,1). Other inputs unavailable. Caller must establish actual constitutive branch and consistency of committed water content before integration.",

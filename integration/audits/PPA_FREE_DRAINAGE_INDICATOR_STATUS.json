@@ -2,6 +2,7 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
+  "storage_accuracy_successor": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json: isolated cancellation-resistant local MvG difference passes 80 independent real128 oracle cases O0/O2 at a83f0b800. Not yet provider-bound or integrated into HeadCalc; strong owner failure remains unresolved.",
   "small_step_diagnosis": {
     "tested_commit": "b0c95387d",
     "gate": "tests/fsi/run_ppa_free_drainage_small_dt.ps1",
