@@ -2,6 +2,7 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
+  "runtime_design": "Add an explicit backend setter for a mode7-only temporal callback with the existing read-only solve/history signature. Default null preserves standard dispatch. Callback is execution configuration, not physical/restart state; caller must rebind it on backend reconstruction. Existing transaction-owned history remains sole owner. No automatic bootstrap activation or ABI serialization change. Qualification requires real backend certificate execution; restart activation remains separate.",
   "temporal_candidate": {
     "status": "BOUNDED_ORACLE_QUALIFICATION_PASS_NOT_RUNTIME_ADMITTED",
     "tested_commit": "84ad1fce0",

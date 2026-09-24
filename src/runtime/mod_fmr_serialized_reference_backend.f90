@@ -337,7 +337,19 @@ module mod_fmr_serialized_reference_backend
     type(accepted_trajectory_direction_t) :: trajectory_direction
   end type fmr_serialized_attempt_context_t
 
+  abstract interface
+    subroutine free_drainage_indicator_service(request, solution, history, result)
+      import soil_water_solve_request_t, soil_water_solve_result_t
+      import soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t
+      type(soil_water_solve_request_t), intent(in) :: request
+      type(soil_water_solve_result_t), intent(in) :: solution
+      type(soil_water_temporal_indicator_request_t), intent(in) :: history
+      type(soil_water_temporal_indicator_result_t), intent(out) :: result
+    end subroutine
+  end interface
+
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
@@ -449,6 +461,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_top_sensible_boundary_candidate_t) :: top_sensible_boundary_candidate
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
+    procedure, public :: set_free_drainage_indicator => set_free_drainage_indicator
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
@@ -472,6 +485,13 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_boesten_evaporation_committed_state
 
 contains
+
+  subroutine set_free_drainage_indicator(self, service)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    procedure(free_drainage_indicator_service), optional :: service
+    nullify(self%model%free_drainage_indicator)
+    if (present(service)) self%model%free_drainage_indicator => service
+  end subroutine
 
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
@@ -783,6 +803,7 @@ contains
     logical :: selection_ok
     integer :: selection_status
     self%initialized = .false.
+    nullify(self%model%free_drainage_indicator)
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
@@ -1760,7 +1781,11 @@ contains
       allocate(indicator_request%previous_right_derivative(n))
       indicator_request%previous_right_derivative = previous_derivative
     end if
-    call self%solver%evaluate_temporal_indicator(request, solve_result, indicator_request, self%workspace, indicator_result)
+    if (request%boundary%bottom_mode == 7 .and. associated(self%free_drainage_indicator)) then
+      call self%free_drainage_indicator(request, solve_result, indicator_request, indicator_result)
+    else
+      call self%solver%evaluate_temporal_indicator(request, solve_result, indicator_request, self%workspace, indicator_result)
+    end if
     self%last_observation%temporal_indicator_enabled = .true.
     self%last_observation%temporal_previous_derivative_available = previous_available
     self%last_observation%temporal_indicator_status = indicator_result%status
