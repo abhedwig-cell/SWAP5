@@ -96,7 +96,11 @@ program test_ppa_free_drainage_owner
   call get_command_argument(1,test_scope)
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
-  if(trim(test_scope)=='--stable-windows') config%storage_difference => evaluate_mvg_storage_difference_service
+  if(trim(test_scope)=='--stable-windows') then
+    config%storage_difference => evaluate_mvg_storage_difference_service
+    ! A forcing discontinuity can require smaller first steps, not a larger error budget.
+    config%numerical%transaction%max_retries=24
+  end if
   if(trim(test_scope)=='--guards'.or.trim(test_scope)=='--stable-guards') then
     call verify_opt_in_guards(config)
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS'
