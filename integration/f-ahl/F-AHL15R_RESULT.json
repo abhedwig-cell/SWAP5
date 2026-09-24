@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL15R",
+  "phase": "CRITICAL_B01_WET_PAIRED_TIMING_COMPLETE",
+  "status": "PASS_ADVANCE",
+  "workflow_run": 36044850293,
+  "workflow_job": 107785751727,
+  "case": {
+    "material": "B01",
+    "initial_head_cm": -10.0,
+    "bottom_head_cm": -7.5,
+    "duration_day": 0.25
+  },
+  "representation": {
+    "theta_C": "derivative-consistent cubic-Hermite logit(Se)",
+    "K": "linear log(K) shared-support lookup",
+    "global_floor_scaled_logK_tolerance": 1e-3,
+    "wet_range_cm": [-25.0,-1.0],
+    "wet_range_floor_scaled_logK_tolerance": 3e-4,
+    "K_floor_cm_per_day": 1e-10,
+    "B01_support_points": 121
+  },
+  "paired_ratios": [0.731670,0.732174,0.720476,0.709924,0.706260,0.754081,0.740335],
+  "median_candidate_over_analytical_ratio": 0.731670,
+  "median_reduction_fraction": 0.268330,
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 7.184539e-4,
+    "max_abs_water_content_delta": 1.155318e-6,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 6.594750e-6,
+    "mass_residual_abs_cm": 4.440892e-16,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "verdict": "PASS"
+  },
+  "finding": "The 12-of-12 qualified locally refined representation retains a substantial complete-Richards CPU benefit in the critical B01-wet case. Median paired solve CPU is about 26.8 percent lower than the analytical provider while all frozen fidelity and convergence-path gates pass.",
+  "decision": "ADVANCE_TO_BUILD_COST_AND_TRAJECTORY_AMORTIZATION",
+  "invalid_prior_run": {
+    "workflow_run": 36044517621,
+    "classification": "HARNESS_MISMATCH_NOT_F_AHL15R_EVIDENCE",
+    "reason": "Used FSI24-mid parameterization and global builder rather than preregistered B01-wet local-refinement case."
+  },
+  "nonclaims": [
+    "No whole-SWAP speedup is established yet.",
+    "No production admission is implied."
+  ]
+}
