@@ -25,8 +25,10 @@
     "interface": "New PPA-local finish_closed_static_attempt checks independent before/after volumetric water content against last residual transfer, weighted by static matrix fraction and dz, per cell and jointly with macropore storage. Failure and success both consume the attempt; no commit or shared ABI change.",
     "invariants": [3, 7, 13, 21],
     "tests": "Manufactured theta(h)=h closed exchange nonlinear solve uses attempt callbacks at dt=0.5,1,2; valid closure, wrong total, same-total wrong layer allocation, NaN and negative water content, consumed context and unchanged checkpoint.",
-    "status": "IMPLEMENTED_REPLAY_PENDING",
-    "next_action": "Persist and replay focused and nine-gate bounded regressions",
+    "status": "IMPLEMENTED_PERSISTED_BOUNDED_TESTS_PASS_NOT_PRODUCTION_ADMITTED",
+    "recovery_point": "1a3fe086b",
+    "test_result": "Persisted 1a3fe086b nine-gate bounded regression PASS O0/O2 with identical transcripts, bounds checks and floating-point traps. New closed-attempt storage guard exercised inside nonlinear iteration at three dt values.",
+    "next_action": "Extend candidate accounting to explicit matrix face fluxes and ordinary sources/sinks before connecting an active Richards production route",
     "limits": "Caller must supply independently computed theta; this guard cannot prove caller provenance or replace production constitutive physics. Existing macro-only finish remains explicitly candidate-only."
   },
   "attempt_lifecycle": {
