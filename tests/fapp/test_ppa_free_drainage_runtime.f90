@@ -20,6 +20,7 @@ program test_ppa_free_drainage_runtime
   use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, &
        fmr_export_committed_restart, fmr_restore_committed_restart, FMR_RESTART_OK
+  use mod_ppa_mvg_storage_binding, only: evaluate_mvg_storage_difference_service
   implicit none
 
   real(real64), parameter :: H0_CM = -75.0_real64
@@ -37,7 +38,12 @@ program test_ppa_free_drainage_runtime
   type(fixed_flux_top_boundary_provider_t), target :: top
   real(real64) :: qref
   integer :: i
+  integer :: storage_calls=0, available_storage_calls=0
+  character(len=32) :: storage_option
+  logical :: use_stable_storage
 
+  call get_command_argument(1,storage_option)
+  use_stable_storage=trim(storage_option)=='--stable-storage'
   call initialize_parameters(base_parameters)
   call initialize_column_template(column, template)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, base_parameters%cofgen)
@@ -51,6 +57,17 @@ program test_ppa_free_drainage_runtime
   write(*,'(a)') 'PPA_FREE_DRAINAGE_RUNTIME_D2_TEMPORAL_DIAG_COMPLETE=PASS'
 
 contains
+
+  subroutine traced_storage(provider,before,water_before,after,difference,available)
+    use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+    class(constitutive_hydraulics_provider_t),intent(in)::provider
+    real(real64),intent(in)::before(:),water_before(:),after(:)
+    real(real64),intent(out)::difference(:)
+    logical,intent(out)::available
+    storage_calls=storage_calls+1
+    call evaluate_mvg_storage_difference_service(provider,before,water_before,after,difference,available)
+    if(available) available_storage_calls=available_storage_calls+1
+  end subroutine
 
   subroutine diagnose_model_certificate_routes()
     type(kernel_result_t) :: root_result, generic_result
@@ -141,6 +158,7 @@ contains
     call require(ok, 'D2 temporal checkpoint capture')
     call backend%initialize(top)
     call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+    if(use_stable_storage) call backend%set_storage_difference(traced_storage)
     if(present(enable_service)) then
       if(.not.enable_service) call backend%set_free_drainage_indicator()
     end if
@@ -199,6 +217,11 @@ contains
     call require(ok.and.status==FMR_RESTART_OK,'restore committed temporal restart')
     call history_snapshot(restored(1),resumed)
     call require(all(accepted==resumed),'restart history exact identity')
+    if(use_stable_storage) then
+      call require(available_storage_calls>0,'storage service evaluated supported trial')
+      call fresh%set_storage_difference(traced_storage)
+      storage_calls=0
+    end if
     call fresh%initialize(top)
     call fmr_capture_checkpoint(state,checkpoint,ok)
     call require(ok,'continued checkpoint')
@@ -207,9 +230,11 @@ contains
     call fresh%run_trial(column,profile,parameters,restored(1),forcing,numerical, &
          0.1_real64,0.2_real64,restored_checkpoint,restored_result,restored_candidate,restored_diag)
     call require(.not.restored_result%completed,'restored backend requires explicit service rebinding')
+    if(use_stable_storage) call require(storage_calls==0,'initialize clears storage service; restart does not serialize it')
     call history_snapshot(restored(1),resumed)
     call require(all(accepted==resumed),'rejected restored trial preserves committed history')
     call fresh%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+    if(use_stable_storage) call fresh%set_storage_difference(traced_storage)
     call backend%run_trial(column,profile,parameters,state,forcing,numerical, &
          0.1_real64,0.2_real64,checkpoint,next_result,next_candidate,next_diag)
     call fresh%run_trial(column,profile,parameters,restored(1),forcing,numerical, &
@@ -225,6 +250,7 @@ contains
     call history_snapshot(restored(1),resumed)
     call require(all(accepted==resumed),'continued committed history exact identity')
     write(*,'(a)') 'PPA_FREE_DRAINAGE_RUNTIME_RESTART_HISTORY_CONTINUATION=PASS'
+    if(use_stable_storage) write(*,'(a)') 'PPA_FREE_DRAINAGE_RUNTIME_STORAGE_REBIND=PASS'
   end subroutine
 
   subroutine initialize_temporal_committed_state(state, previous_derivative)

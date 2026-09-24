@@ -2,11 +2,14 @@
   "baseline": "55d430238",
   "production_opt_in": {
     "baseline": "4a8117e9f6c6a2cb49227cbc5218ab0a11d3352e",
-    "status": "IMPLEMENTED_NOT_TESTED_NOT_ADMITTED",
+    "status": "DIRECT_OWNER_AND_DEFAULT_PRESERVATION_PASS_RESTART_GUARDS_PENDING_NOT_ADMITTED",
+    "tested_commit": "bc98a67ac",
+    "evidence": "Stable 20-step sweep O0/O2 matches frozen experiment exactly (17 converged), default matches pre-integration exactly (14), unavailable nonzero service output matches default exactly. Strong WU04C/WU04D owner full transcript O0/O2 matches frozen experiment SHA256 D583252F96E9BC376DF069C3567835CF348905167C88BDE91F52EFDC77652E6C. Mode-2 FSI38/mode-5 FSI25 and 45-case mode-7 indicator gate PASS; 80-case real128 storage oracle/provider guards PASS.",
+    "builds": ["swap-free-drainage-1afac73c-9436-41df-9c96-9a072af91c91", "swap-free-drainage-344222b0-d6e7-4dc5-987b-3f28589a5921", "swap-free-drainage-32f7bb0b-e4cd-4f3c-82fe-3b0d2e515702", "swap-ppa-wu01-4129b39b4f4247268ce210864139c386", "swap-free-drainage-2b503586-eec5-41eb-a05f-642fdea0dd69", "swap-mvg-difference-47bf1e9d-fc76-48a0-962f-d9d6d1e9ed50"],
     "contract": "integration/audits/PPA_MVG_STORAGE_OPT_IN.md",
-    "next": "Persist then run direct stable/default/unavailable O0/O2 sweeps, mode-2/5 preservation and strong owner opt-in/guards. Restart and receipt qualification still required."
+    "next": "Run run_ppa_free_drainage_runtime.ps1 -StableStorage and run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Guards. Restart harness now instruments actual supported service use, initialization clearing and exact physical/history continuation after explicit rebinding. Then qualify accepted source-window receipts."
   },
-  "status": "BOUNDED_ALGEBRAIC_ORACLE_PASS_NOT_INTEGRATED",
+  "status": "EXPLICIT_OPT_IN_INTEGRATED_BOUNDED_GATES_PASS_NOT_ADMITTED",
   "residual_experiment": {
     "baseline": "f05760c6d8e2daf379814df4415a51dcf6e1c5be",
     "status": "SMALL_DT_AND_OWNER_EXPERIMENT_PASS_NOT_PRODUCTION_INTEGRATED",
@@ -31,9 +34,9 @@
   "tested_commit": "a83f0b800",
   "replay": "tests/fsi/run_ppa_mvg_storage_difference.ps1 PASS at persisted commit; O0/O2 identical, bounds/FPE checks, 80/80 improvements. Build swap-mvg-difference-497c89c0-c93c-4991-bd56-0e657f66f986.",
   "workstream": "PPA free drainage small-step residual accuracy",
-  "scope": "Isolated candidate algebraic helper, no HeadCalc/provider/runtime call site. Does not change mass tolerance or physical state.",
+  "scope": "Explicit default-null numerical service now forwarded through application/backend to bounded HeadCalc mode-7 residual evaluation. No mass tolerance or physical/restart state change. Historical experiment/provider evidence retained below; current integration status is production_opt_in.",
   "contract": "Standard smooth MvG retention branch only: theta=theta_r+A/(1+abs(alpha*h)^n)^m. Return theta(h_after)-theta(h_before) through local log1p/expm1 series, avoiding subtraction of rounded full water contents. Both heads strictly below -0.01 cm and no drier than -1e6 cm; relative head increment <=1e-3; A in (0,1], alpha in (0,100], n in (1,10], m in (0,1). Other inputs unavailable. Caller must establish actual constitutive branch and consistency of committed water content before integration.",
   "verification": "80 bidirectional perturbations on four heads, relative increments 1e-4 through 1e-13; independent real128 direct-formula oracle with exact promoted real64 inputs. Relative error <=2e-13, antisymmetry, identity, rejection of nonlocal/branch-crossing/nonfinite input. O0/O2 preliminary PASS; all 80 errors improve by >100x over naive full-theta subtraction.",
   "invariants": [3,7,13,23,25],
-  "next": "Qualify provider-bound replay, then experiment with explicit opt-in residual integration and unchanged independent rounded-state mass ledger. Unsupported branches and inconsistent committed water must not silently use stable subtraction. No WU04C closure implied."
+  "next": "Complete production_opt_in restart/guard/receipt qualification; no canonical admission or complete WU04C source-window closure implied."
 }
