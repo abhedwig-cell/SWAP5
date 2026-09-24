@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26",
+  "phase": "PDI_FAMILY_RESEARCH_CLOSEOUT",
+  "status": "NOVAP_POSITIVE_VAPOR_ON_BLOCKED_UPSTREAM",
+  "architecture": {
+    "retention_capacity": "PDI-specific derivative-consistent x=log10(-h), z=logit(theta/theta_s) Hermite representation; C from the same interpolant derivative",
+    "static_conductivity": "independent log(Kliq) representation",
+    "temperature_factorization": "source equation factorizes exactly as Ktotal=Kliq(h)+Kvap(theta,h,T); temperature need not enter the static cache key",
+    "runtime_refinement": false
+  },
+  "NoVap_evidence": {
+    "retention_support_points": {"PDI8":47,"PDI10":52},
+    "conductivity_support_points": {"PDI8":186,"PDI10":179},
+    "selected_gates": {"theta_over_theta_s_abs":3e-6,"abs_logC":0.003,"abs_logK":0.0003},
+    "Richards_matrix": "6/6 PASS",
+    "same_nonlinear_and_backtracking_path": "6/6",
+    "complete_Richards_cpu_reduction_fraction_range": [0.533837,0.655556],
+    "six_case_median_cpu_reduction_fraction": 0.6083635
+  },
+  "vapor_enabled_blocker": {
+    "finding": "authoritative Kvap source is not numerically valid across the documented negative-C tsoil domain",
+    "evidence": "F-AHL26D0",
+    "policy": "do not repair or reinterpret vapor physics inside F-AHL",
+    "required_upstream_work": "independent theory-documentation-code reconciliation of PDI vapor conductivity temperature semantics before vapor-enabled AHL qualification"
+  },
+  "cross_family_conclusion": "The derivative-consistent representation principle generalizes across default MvG, bi-modal MvG and PDI NoVap, but the appropriate transformed retention state and conductivity accuracy are family-specific.",
+  "production_status": "RESEARCH_ONLY_NO_ADMISSION"
+}
