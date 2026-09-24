@@ -1,65 +1,61 @@
 {
-  "schema_version": 11,
+  "schema_version": 12,
   "workstream": "F-AHL",
-  "status": "STRICT_RESEARCH_ARCHITECTURE_CLOSED_WITH_PDI_ARCHITECTURE_BLOCKER",
+  "status": "STRICT_RESEARCH_CLOSED_BROAD_FAMILY_ENVELOPE",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "completed_through": "F-AHL25G",
+  "completed_through": "F-AHL26I",
   "selected_research_architecture": {
-    "default_MvG_prescribed_head_like": "auto-generated derivative-consistent theta/C plus independently controlled K lookup",
-    "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent theta/C concept with family-specific tighter K support",
+    "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
+    "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
+    "PDI_NoVap_prescribed_head_like": "PDI-specific derivative-consistent logit(theta/theta_s) retention/capacity plus independently controlled static Kliq lookup",
     "prescribed_qbot": "fully analytical authoritative hydraulics",
-    "near_saturation_h_gt_minus_1_cm": "authoritative analytical handling where applicable",
+    "near_saturation": "authoritative analytical handling where required by family semantics",
     "runtime_refinement": false,
     "external_user_tables": false,
     "cache": "immutable exact-key internal cache"
   },
   "positive_evidence": {
     "default_MvG": {
-      "matrix": "12/12 PASS",
+      "Richards_matrix": "12/12 PASS",
       "same_nonlinear_path": "12/12",
       "complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290],
       "self_built_stage3_reduction_fraction": 0.200401
     },
     "bi_modal_MvG_model3": {
-      "source_authority_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
-      "retention_support_points_range": [20,25],
-      "selected_abs_logK_limit": 0.0001,
-      "conductivity_support_points_range": [299,448],
       "Richards_matrix": "9/9 PASS",
       "same_nonlinear_path": "9/9",
+      "retention_support_points_range": [20,25],
+      "conductivity_support_points_range": [299,448],
+      "selected_abs_logK_limit": 0.0001,
       "complete_Richards_cpu_reduction_fraction_range": [0.352169,0.390877],
       "matrix_median_cpu_reduction_fraction": 0.380194
     },
-    "prescribed_qbot_policy": {
-      "strict_lookup_failure_localized": true,
-      "selected_policy": "fully analytical authoritative hydraulics"
+    "PDI_NoVap_models_8_10": {
+      "Richards_matrix": "6/6 PASS",
+      "same_nonlinear_path": "6/6",
+      "retention_transform": "logit(theta/theta_s)",
+      "selected_theta_over_theta_s_abs": 3e-6,
+      "selected_abs_logC": 0.003,
+      "selected_abs_logK": 0.0003,
+      "retention_support_points": {"PDI8":47,"PDI10":52},
+      "conductivity_support_points": {"PDI8":186,"PDI10":179},
+      "complete_Richards_cpu_reduction_fraction_range": [0.533837,0.655556],
+      "six_case_median_cpu_reduction_fraction": 0.6083635
     }
   },
-  "cross_family_scientific_conclusion": "The theta/C derivative-consistency principle generalizes beyond unimodal MvG to source-authoritative bi-modal MvG. Conductivity resolution is strongly family-dependent: model 3 requires much denser K support for the same strict flux fidelity, yet remains substantially faster because analytical bi-modal evaluation is more expensive.",
-  "dry_tail_authority": {
-    "raw_capacity_relevance_scale": "C=dtheta/dh around 1e-13 in earlier O05 extreme-dry analysis",
-    "historical_jacobian_regularization": "C_J=max(C,dt*1e-13)",
-    "not_a_K_cutoff": true,
-    "not_a_physical_theta_or_K_truncation": true,
-    "explicit_tail_termination": "not yet qualified"
+  "boundary_and_failure_policy": {
+    "prescribed_qbot": "fully analytical fallback",
+    "vapor_enabled_PDI": "not qualified because upstream authoritative Kvap temperature formula fails across documented negative-C tsoil domain",
+    "dry_tail": "do not over-refine into numerically negligible storage tail; explicit tail termination still separately unqualified"
   },
-  "remaining_architecture_blocker": {
-    "family": "PDI models 4-11",
-    "reason": "PDI conductivity may include temperature-dependent vapor conductivity, so the current parameter-only immutable K representation identity is not semantically sufficient.",
-    "choice_required": [
-      "source-authoritatively factor dynamic temperature-dependent conductivity from a frozen pressure-head representation",
-      "or qualify a multidimensional pressure-head x temperature representation and extend cache identity"
-    ],
-    "status": "NO_EXISTING_AUTHORITY_SELECTS_BETWEEN_THESE_ARCHITECTURES"
-  },
+  "cross_family_scientific_conclusion": "Preserving state-derivative consistency is a cross-family numerical invariant, but the transformed retention coordinate and conductivity accuracy must respect each hydraulic family's source semantics. The best strict acceleration is therefore family-aware rather than one universal table policy.",
   "production_admission_still_requires": [
-    "production implementation behind the typed hydraulic-provider contract",
+    "production implementation behind typed hydraulic-provider contracts",
     "whole-SWAP accepted-trajectory and application timing",
-    "lower-boundary modes beyond current qualified envelopes",
-    "SWKIMPL=1/dKdh qualification if included in target",
+    "lower-boundary modes beyond the current qualified envelopes",
+    "SWKIMPL=1/dKdh qualification if included",
     "dry-tail termination qualification if implemented",
-    "family-specific qualification for any additional hydraulic models",
+    "upstream reconciliation of vapor-enabled PDI temperature semantics",
     "canonical regression and governance admission"
   ],
   "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
