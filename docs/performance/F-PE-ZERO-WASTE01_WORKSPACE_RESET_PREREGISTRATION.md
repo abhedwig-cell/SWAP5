@@ -410,3 +410,29 @@ H10 separates storage capacity from solver behavior:
 Expected effect after first sensitivity solve at fixed n: zero further n↔2n allocation/deallocation churn for factorization capture.
 
 Gates: accepted-direction/sensitivity outputs remain bit-identical, no additional beta capture on normal solves, H7 poison gate PASS, FKT22 trajectory gate PASS, and no change in nonlinear/Jacobian counts.
+
+
+## ZW01-H10 preregistration — skip macropore-only convergence diagnostic arrays on swmacro=0
+
+Exact HeadCalc use audit finds that `nonconverged_balance` and `nonconverged_head` are written during every Newton convergence check but are read only inside the later macropore-specific block guarded by `swmacro == 1`.
+
+Current behavior on the standard explicit Reference/MultiSWAP path:
+
+- explicit physical configuration rejects active macropores;
+- therefore `swmacro=0`;
+- both diagnostic arrays are nevertheless fully cleared each Newton iteration;
+- individual entries are then written true when balance/head criteria fail;
+- none of those array values are read on `swmacro=0`.
+
+H10 removes those clears and per-node diagnostic writes when `swmacro=0`, while preserving the scalar `flnonconv` convergence decision exactly. For `swmacro=1`, existing array semantics remain unchanged.
+
+Expected benefit is O(N * nonlinear_iterations) logical-array writes removed on the standard explicit route.
+
+Gates:
+- physical state and mass identity;
+- unchanged nonlinear iteration count and accepted/rejected outcome;
+- poison workspace PASS;
+- macropore path source semantics unchanged;
+- no tolerance or convergence-rule change.
+
+This is a pure diagnostics-data-movement elimination, not a numerical approximation.
