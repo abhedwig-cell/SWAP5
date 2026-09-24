@@ -1,40 +1,44 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "work_unit": "F-AHL16",
-  "phase": "CROSS_MATERIAL_CROSS_REGIME_PAIRED_PERFORMANCE_COMPLETE",
+  "phase": "CORRECTED_CROSS_MATERIAL_CROSS_REGIME_PAIRED_PERFORMANCE_COMPLETE",
   "status": "PASS_BROAD_RICHARDS_RESEARCH_CLAIM",
-  "workflow_run": 36044880081,
-  "workflow_job": 107785854756,
+  "workflow_run": 36045036182,
+  "workflow_job": 107786399995,
+  "representation": "Selected F-AHL15 local wet-range refinement: global floor-scaled logK tolerance 1e-3, local -25..-1 cm tolerance 3e-4, derivative-consistent theta/C.",
   "cases": {
-    "B01_wet": {"median_ratio":0.749041,"cpu_reduction_fraction":0.250959},
-    "B01_mid": {"median_ratio":0.743779,"cpu_reduction_fraction":0.256221},
-    "B01_dry": {"median_ratio":0.744841,"cpu_reduction_fraction":0.255159},
-    "B12_wet": {"median_ratio":0.749327,"cpu_reduction_fraction":0.250673},
-    "B12_mid": {"median_ratio":0.734965,"cpu_reduction_fraction":0.265035},
-    "B12_dry": {"median_ratio":0.748883,"cpu_reduction_fraction":0.251117},
-    "O05_wet": {"median_ratio":0.774964,"cpu_reduction_fraction":0.225036},
-    "O05_mid": {"median_ratio":0.765318,"cpu_reduction_fraction":0.234682},
-    "O05_dry": {"median_ratio":0.775156,"cpu_reduction_fraction":0.224844},
-    "O14_wet": {"median_ratio":0.786661,"cpu_reduction_fraction":0.213339},
-    "O14_mid": {"median_ratio":0.748322,"cpu_reduction_fraction":0.251678},
-    "O14_dry": {"median_ratio":0.785136,"cpu_reduction_fraction":0.214864}
+    "B01_wet": {"median_ratio":0.786522,"cpu_reduction_fraction":0.213478},
+    "B01_mid": {"median_ratio":0.779195,"cpu_reduction_fraction":0.220805},
+    "B01_dry": {"median_ratio":0.794636,"cpu_reduction_fraction":0.205364},
+    "B12_wet": {"median_ratio":0.761408,"cpu_reduction_fraction":0.238592},
+    "B12_mid": {"median_ratio":0.771278,"cpu_reduction_fraction":0.228722},
+    "B12_dry": {"median_ratio":0.778214,"cpu_reduction_fraction":0.221786},
+    "O05_wet": {"median_ratio":0.783528,"cpu_reduction_fraction":0.216472},
+    "O05_mid": {"median_ratio":0.759208,"cpu_reduction_fraction":0.240792},
+    "O05_dry": {"median_ratio":0.783158,"cpu_reduction_fraction":0.216842},
+    "O14_wet": {"median_ratio":0.757710,"cpu_reduction_fraction":0.242290},
+    "O14_mid": {"median_ratio":0.794322,"cpu_reduction_fraction":0.205678},
+    "O14_dry": {"median_ratio":0.782068,"cpu_reduction_fraction":0.217932}
   },
   "summary": {
     "fidelity_pass_cases": 12,
-    "timed_cases": 12,
+    "same_iteration_and_backtracking_path_cases": 12,
     "cases_with_median_ratio_below_0_98": 12,
-    "cpu_reduction_fraction_range": [0.213339,0.265035]
+    "cpu_reduction_fraction_range": [0.205364,0.242290]
   },
-  "finding": "The F-AHL15 derivative-consistent, floor-scaled shared-support representation preserves the frozen Richards fidelity gates and yields a paired complete-solve CPU reduction in every tested material-regime combination.",
-  "research_claim": "Within the tested four-material, wet-mid-dry prescribed-head-bottom Richards matrix, auto-generated derivative-consistent hydraulic lookup reduces complete Richards solve CPU by approximately 21-27% while preserving the analytical nonlinear iteration/backtracking path and the preregistered response gates.",
+  "research_claim": "Within the tested four-material, wet-mid-dry prescribed-head-bottom Richards matrix, the selected auto-generated derivative-consistent hydraulic representation reduces complete Richards solve CPU by approximately 20.5-24.2 percent while preserving the analytical nonlinear iteration/backtracking path and all preregistered response gates.",
+  "supersedes_prior_result_run": {
+    "workflow_run": 36044880081,
+    "reason": "Prior timing accidentally used the global-tight F-AHL15 builder rather than the selected local wet-range representation."
+  },
   "limits": [
-    "The matrix uses four selected unimodal materials and prescribed-head lower boundaries.",
-    "This is a Richards-solver result, not yet a whole-SWAP application runtime result.",
-    "Build cost, cache reuse and many-column amortization are not yet included.",
-    "Other hydraulic model families and SWKIMPL=1/dKdh are outside current authority.",
-    "Surface-boundary redesign and groundwater-coupling tangent behavior remain separate future questions."
+    "Prescribed-head lower boundaries only.",
+    "Four selected unimodal materials.",
+    "This is a Richards solver result, not yet whole-SWAP application runtime.",
+    "Build cost and cache reuse are excluded from timed solve batches.",
+    "Other hydraulic families and SWKIMPL=1/dKdh are not qualified."
   ],
-  "next_phase": "Engineering qualification of auto-generation, fingerprinted immutable caching, build-cost amortization and production-runtime integration without changing hydraulic science.",
+  "next_phase": "Auto-generation build-cost, fingerprinted immutable cache and full accepted-trajectory amortization.",
   "production_status": "NOT_ADMITTED"
 }
