@@ -497,6 +497,20 @@ contains
       call require(saved(tile)%accepted_interception_cm==interception(tile),'source interception not double counted')
       call fmr_restore_vonhhbraden_source_window_progress(saved(tile),resumed(tile),ok,code)
       call require(ok.and.code==FMR_VONHHBRADEN_PROGRESS_OK,'source progress restored')
+      call resumed(tile)%export_restart(final_progress,ok)
+      call require(ok,'restored source identity export')
+      call require(final_progress%source_window_id==saved(tile)%source_window_id.and. &
+           final_progress%source_t0==saved(tile)%source_t0.and. &
+           final_progress%source_t1==saved(tile)%source_t1.and. &
+           final_progress%aggregate_aintc_cm==saved(tile)%aggregate_aintc_cm.and. &
+           final_progress%accepted_through_time==saved(tile)%accepted_through_time.and. &
+           final_progress%accepted_interception_cm==saved(tile)%accepted_interception_cm.and. &
+           final_progress%receipt_lineage_id==saved(tile)%receipt_lineage_id.and. &
+           final_progress%expected_origin_revision==saved(tile)%expected_origin_revision.and. &
+           (final_progress%receipt_binding_ready.eqv.saved(tile)%receipt_binding_ready), &
+           'all partially consumed source restart fields preserved exactly')
+      call require(resumed(tile)%remaining_interception()==interception(tile), &
+           'restart retains exactly the unconsumed half-window aggregate')
     end do
     call owner%export_committed_restart(9901_int64,bundle,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'strong owner restart exported')
@@ -532,6 +546,7 @@ contains
     call require(ok.and.code==FMR_APP_BOOT_OK,'continued state exported')
     call fresh%export_committed_restart(9901_int64,resumed_bundle,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'resumed state exported')
+    call compare_restart_bundles(continued_bundle,resumed_bundle,'mid-source-window full owner restart')
     do tile=1,NTILE
       call publish_ppa_wu04c_accepted_progress(progress(tile),next_receipts(tile)%receipt,interception(tile),code)
       call require(code==PPA_WU04C_PUBLICATION_OK,'continued source progress published')
