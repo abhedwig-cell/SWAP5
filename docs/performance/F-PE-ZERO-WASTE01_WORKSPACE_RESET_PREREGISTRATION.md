@@ -173,3 +173,39 @@ Therefore:
 - a global abstract-provider ABI split is not authorized by this audit.
 
 Next H04 work, if pursued, must instrument component demand by phase and convergence outcome before changing the provider contract.
+
+
+## ZW01-H5 preregistration — overwrite-before-read zeroing
+
+Exact-source audit identified two whole-array clears in `HeadCalc` that are stronger zero-waste candidates than reset-dependent duplication.
+
+### H5a residual preclear
+
+Immediately before the first `vector_F(1)`, `fsi_ws%residual = 0` clears the complete array. `vector_F` then assigns:
+
+- element 1 explicitly;
+- elements 2 through NN-1 explicitly;
+- element NN explicitly;
+
+before residual is consumed by the subsequent dot product/convergence logic. Additional boundary/macropore terms modify already assigned active entries. Therefore prior residual content is irrelevant for the active `1:NN` range.
+
+Hypothesis: remove the preclear without changing any observable result.
+
+### H5b provider_root_sink preclear
+
+`fsi_ws%provider_root_sink = 0` is executed before optional root-sink provider evaluation.
+
+- if the provider is active, the provider interface has `intent(out)` for the complete root-sink array and overwrites it before use;
+- if the provider is inactive, `root_sink_term()` returns literal zero and does not read `provider_root_sink`.
+
+Therefore the preclear is not needed for either control path.
+
+### H5 gates
+
+- existing FKT22 O0/O2 physical/runtime oracle PASS;
+- PROFILE01 compute observation PASS;
+- no changes in H03 constitutive counts, nonlinear iterations, solver status or accepted state;
+- no relaxation of poison/scratch tests;
+- no claim yet for `dfdh_upper/lower` clears, because linear-solver boundary indexing must be proved separately.
+
+H5 is a pure removal of overwrite-before-read memory writes. No physics or numerical policy change is authorized.
