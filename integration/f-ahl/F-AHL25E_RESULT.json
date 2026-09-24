@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25E",
+  "phase": "BIMODAL_COMPONENT_ATTRIBUTION_COMPLETE",
+  "status": "CONDUCTIVITY_CONTROLS_FAILED_ENDPOINT_FLUX",
+  "workflow_run": 36050647532,
+  "workflow_job": 107805041032,
+  "cases": {
+    "M3_SEPARATED:wet": {
+      "selected_dbottom": 2.550375e-5,
+      "exact_K_dbottom": 7.319009e-6,
+      "exact_retention_dbottom": 3.282721e-5,
+      "iteration_path_unchanged": true
+    },
+    "M3_DOMINANT_SECOND:dry": {
+      "selected_dbottom": 2.731523e-5,
+      "exact_K_dbottom": 1.780568e-6,
+      "exact_retention_dbottom": 2.909594e-5,
+      "iteration_path_unchanged": true
+    }
+  },
+  "finding": "The two F-AHL25D bottom-flux failures are conductivity-resolution controlled. Exact K closes the frozen flux gate in both cases while exact retention/capacity does not.",
+  "next_action": "F-AHL25F: prospectively tighten only model-3 K representation, leaving the qualified derivative-consistent retention representation unchanged.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_TIMING","NO_PRODUCTION_ADMISSION"]
+}
