@@ -454,6 +454,7 @@ contains
     end do
     call owner%export_committed_restart(9901_int64,bundle,ok,code)
     call require(ok.and.code==FMR_APP_BOOT_OK,'strong owner restart exported')
+    call verify_failed_interval_replay(profile,forcing,interception,bundle)
     call fresh%initialize(profile,code)
     call require(code==FMR_APP_BOOT_OK,'fresh owner explicit numerical bindings')
     bad_bundle=bundle
@@ -518,6 +519,111 @@ contains
     call require(code==FMR_APP_BOOT_OK,'fresh owner closes')
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS'
   end subroutine verify_storage_receipt_restart
+
+  subroutine verify_failed_interval_replay(profile,forcing,interception,expected)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
+    real(real64),intent(in)::interception(:)
+    type(fmr_committed_restart_bundle_t),intent(in)::expected
+    type(fmr_production_application_config_t)::limited
+    type(fmr_production_application_bootstrap_t)::retry_owner
+    type(fmr_committed_restart_bundle_t)::before,after,replayed
+    type(fmr_serialized_column_result_t),allocatable::attempt_results(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::attempt_receipts(:)
+    type(fmr_vonhhbraden_source_window_progress_t)::progress(NTILE)
+    type(fmr_vonhhbraden_source_window_restart_t)::progress_record
+    real(real64),allocatable::history_a(:),history_b(:)
+    logical::ok
+    integer::code,tile
+    ! Original strong forcing and tolerances, but no controller retries: the
+    ! half-day principal solve is a real, reproducible nonconverged attempt.
+    limited=profile
+    limited%numerical%transaction%max_retries=0
+    call retry_owner%initialize(limited,code)
+    call require(code==FMR_APP_BOOT_OK,'limited retry owner initialized')
+    call retry_owner%export_committed_restart(9910_int64,before,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'pre-failure state snapshot')
+    do tile=1,NTILE
+      call fmr_initialize_vonhhbraden_source_window_progress(9800_int64+int(tile,int64),T0,T1, &
+           interception(tile),progress(tile),code,profile%tiles(tile)%tile_id,0_int64)
+      call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'retry source progress initialized')
+    end do
+    call retry_owner%run_standalone_with_forcing_receipts(T0,T1,forcing,attempt_results,attempt_receipts,code)
+    call require(code/=FMR_APP_BOOT_OK,'actual strong hydraulic attempt fails without retries')
+    call require(all(.not.attempt_results%completed).and.all(.not.attempt_results%committed), &
+         'failed hydraulic attempt commits no column')
+    call require(all(attempt_results%solver_headcalc_calls>0).and.all(attempt_results%accepted_substeps==0), &
+         'failure exercised real HeadCalc without accepted substep')
+    call require(size(attempt_receipts)==NTILE,'failed receipt slots returned')
+    do tile=1,NTILE
+      call require(.not.attempt_receipts(tile)%receipt%ready(),'failed hydraulic attempt has no ready receipt')
+      call publish_ppa_wu04c_accepted_progress(progress(tile),attempt_receipts(tile)%receipt,interception(tile),code)
+      call require(code/=PPA_WU04C_PUBLICATION_OK,'failed hydraulic receipt cannot publish progress')
+      call progress(tile)%export_restart(progress_record,ok)
+      call require(ok.and.progress_record%accepted_through_time==T0.and. &
+           progress_record%accepted_interception_cm==0.0_real64.and. &
+           progress_record%expected_origin_revision==0_int64,'failed trial leaves all source progress unchanged')
+      write(*,'(a,i0,a,i0,a,i0)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_ATTEMPT tile=',tile, &
+           ' headcalc=',attempt_results(tile)%solver_headcalc_calls, &
+           ' nonlinear=',attempt_results(tile)%solver_nonlinear_iterations
+    end do
+    call retry_owner%export_committed_restart(9910_int64,after,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'failed owner remains exportable')
+    call compare_restart_bundles(before,after,'failed attempt unchanged')
+    call retry_owner%close(code)
+    call require(code==FMR_APP_BOOT_OK,'failed owner closes')
+    ! Reconfigure execution retry policy, restoring exactly the unchanged physical
+    ! boundary. No physical initialisation from a rejected candidate is permitted.
+    call retry_owner%initialize(profile,code)
+    call require(code==FMR_APP_BOOT_OK,'retry-enabled owner initialized')
+    call retry_owner%restore_committed_restart(after,9910_int64,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'retry restores unchanged accepted boundary')
+    call retry_owner%run_standalone_with_forcing_receipts(T0,T1,forcing,attempt_results,attempt_receipts,code)
+    call require(code==FMR_APP_BOOT_OK.and.all(attempt_results%committed),'replayed interval commits')
+    call require(maxval(abs(attempt_results%mass%residual))<=HARD_MASS_GATE,'replay hard mass')
+    do tile=1,NTILE
+      call publish_ppa_wu04c_accepted_progress(progress(tile),attempt_receipts(tile)%receipt,interception(tile),code)
+      call require(code==PPA_WU04C_PUBLICATION_OK.and.progress(tile)%remaining_interception()==0.0_real64, &
+           'only accepted replay consumes source aggregate')
+    end do
+    call retry_owner%export_committed_restart(9901_int64,replayed,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'replayed boundary exported')
+    call compare_restart_bundles(expected,replayed,'retry and uninterrupted result identical')
+    call retry_owner%close(code)
+    call require(code==FMR_APP_BOOT_OK,'replayed owner closes')
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS'
+  end subroutine
+
+  subroutine compare_restart_bundles(a,b,label)
+    type(fmr_committed_restart_bundle_t),intent(in)::a,b
+    character(len=*),intent(in)::label
+    real(real64),allocatable::ha(:),hb(:)
+    logical::ok
+    integer::tile
+    call require(size(a%records)==size(b%records),label//' record count')
+    do tile=1,size(a%records)
+      call require(a%records(tile)%revision==b%records(tile)%revision.and. &
+           a%records(tile)%lineage_id==b%records(tile)%lineage_id.and. &
+           a%records(tile)%committed_time==b%records(tile)%committed_time.and. &
+           (a%records(tile)%time_bound.eqv.b%records(tile)%time_bound),label//' provenance')
+      select type(sa=>a%records(tile)%physical_state)
+      type is(fmr_b110_temporal_indicator_state_t)
+        select type(sb=>b%records(tile)%physical_state)
+        type is(fmr_b110_temporal_indicator_state_t)
+          call require(all(sa%pressure_head==sb%pressure_head).and.all(sa%water_content==sb%water_content).and. &
+               sa%ponding_depth==sb%ponding_depth.and.sa%groundwater_level==sb%groundwater_level,label//' physical')
+          call sa%temporal_history_snapshot(ha,ok)
+          call require(ok,label//' history A')
+          call sb%temporal_history_snapshot(hb,ok)
+          call require(ok.and.all(ha==hb),label//' history identical')
+        class default
+          call require(.false.,label//' state B type')
+        end select
+      class default
+        call require(.false.,label//' state A type')
+      end select
+    end do
+  end subroutine
 
   subroutine seed_initial_derivative(p,state,forcing,derivative)
     type(fmr_b110_physical_parameters_t), intent(in) :: p
