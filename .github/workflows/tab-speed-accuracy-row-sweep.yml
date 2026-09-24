@@ -13,6 +13,7 @@ on:
       - 'tests/fsi/run_ftab02e_generated_provider_performance.sh'
       - 'tests/fsi/test_ftab02e_provider_richards_performance.f90'
       - 'tests/fsi/test_ftab02e_serialized_runtime_performance.f90'
+      - 'research/tabulated_hydraulics/TAB_SPEED_ACCURACY_TRIGGER.txt'
   workflow_dispatch:
 
 permissions:
