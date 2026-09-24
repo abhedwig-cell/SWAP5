@@ -1,7 +1,8 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('Composition','Guards')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
+param([ValidateSet('Composition','Guards','Receipts')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
+if ($Scope -eq 'Receipts' -and !$StableStorage) { throw 'Receipts qualification requires explicit StableStorage' }
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
 $static = [regex]::Match($script, "(?ms)^python3 - <<'PY'\r?\n(.*?)^PY\r?$")
@@ -61,6 +62,7 @@ try {
             if ($StableStorage) {
                 $testArguments = @('--stable-storage')
                 if ($Scope -eq 'Guards') { $testArguments = @('--stable-guards') }
+                if ($Scope -eq 'Receipts') { $testArguments = @('--stable-receipts') }
             }
             $output = @(& $exe @testArguments 2>&1)
             if ($LASTEXITCODE -ne 0) { throw "Runtime failed $opt $test : $($output -join "`n")" }
@@ -75,6 +77,7 @@ try {
             } else {
                 $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
                 if ($Scope -eq 'Guards') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS' }
+                if ($Scope -eq 'Receipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS' }
                 if (!$textOutput.Contains($requiredMarker)) {
                     throw "Missing bootstrap success marker $opt"
                 }

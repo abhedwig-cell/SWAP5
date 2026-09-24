@@ -42,6 +42,8 @@ program test_ppa_free_drainage_owner
   use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
        materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
+  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
   use mod_fmr_vonhhbraden_source_window_progress, only: fmr_vonhhbraden_source_window_progress_t, &
        fmr_vonhhbraden_source_window_restart_t, fmr_initialize_vonhhbraden_source_window_progress, &
        fmr_restore_vonhhbraden_source_window_progress, FMR_VONHHBRADEN_PROGRESS_OK
@@ -91,7 +93,7 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
-  if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards') &
+  if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
   if(trim(test_scope)=='--guards'.or.trim(test_scope)=='--stable-guards') then
     call verify_opt_in_guards(config)
@@ -292,6 +294,8 @@ contains
     type(fmr_b110_physical_forcing_t), allocatable :: forcing_vector(:)
     type(fmr_production_application_bootstrap_t) :: production_app
     type(fmr_serialized_column_result_t), allocatable :: production_results(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable :: receipts(:)
+    real(real64) :: interception_by_tile(NTILE)
     type(ppa_wu04c_production_forcing_diagnostics_t) :: diagnostics
     type(ppa_wu04d_production_forcing_diagnostics_t) :: gash_diagnostics
     type(gash_parameters_t) :: gash
@@ -349,6 +353,7 @@ contains
       call materialize_ppa_wu04c_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, source, &
            0.12_real64, 0.20_real64, 0.10_real64, forcing_vector(tile), interception, diagnostics)
       call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK, 'WU04C tile forcing composition')
+      interception_by_tile(tile)=interception
       call seed_initial_derivative(transient_profile%tiles(tile)%parameters, &
            transient_profile%tiles(tile)%initial_state,forcing_vector(tile), &
            transient_profile%tiles(tile)%initial_right_derivative)
@@ -356,7 +361,11 @@ contains
     end do
     call production_app%initialize(transient_profile, local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner initialize')
-    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    if(trim(test_scope)=='--stable-receipts') then
+      call production_app%run_standalone_with_forcing_receipts(T0,T1,forcing_vector,production_results,receipts,local_status)
+    else
+      call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    end if
     do tile=1,NTILE
       write(*,*) 'OWNER_DIAG',tile,local_status,production_results(tile)%kernel_status, &
            production_results(tile)%accepted_substeps,production_results(tile)%solver_headcalc_calls, &
@@ -365,6 +374,8 @@ contains
     call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
          'WU04C production owner commit')
     call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')
+    if(trim(test_scope)=='--stable-receipts') &
+         call verify_storage_receipt_restart(production_app,transient_profile,forcing_vector,receipts,interception_by_tile)
     call production_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
     deallocate(forcing_vector)
@@ -401,6 +412,96 @@ contains
     call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner close')
     deallocate(forcing_vector)
   end subroutine verify_wu04c_production_composition
+
+  subroutine verify_storage_receipt_restart(owner,profile,forcing,receipts,interception)
+    type(fmr_production_application_bootstrap_t),intent(inout)::owner
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
+    type(fmr_serialized_commit_receipt_record_t),intent(in)::receipts(:)
+    real(real64),intent(in)::interception(:)
+    type(fmr_production_application_bootstrap_t)::fresh
+    type(fmr_committed_restart_bundle_t)::bundle,continued_bundle,resumed_bundle
+    type(fmr_vonhhbraden_source_window_progress_t)::progress(NTILE),resumed(NTILE)
+    type(fmr_vonhhbraden_source_window_restart_t)::saved(NTILE),final_progress
+    type(fmr_accepted_commit_receipt_t)::unready
+    type(fmr_serialized_commit_receipt_record_t),allocatable::next_receipts(:),resumed_receipts(:)
+    type(fmr_serialized_column_result_t),allocatable::next_results(:),resumed_results(:)
+    real(real64),allocatable::history_a(:),history_b(:)
+    real(real64)::t2
+    integer::tile,code
+    logical::ok
+    t2=T1+(T1-T0)
+    call require(size(receipts)==NTILE,'one aggregate accepted receipt per tile')
+    do tile=1,NTILE
+      call fmr_initialize_vonhhbraden_source_window_progress(9700_int64+int(tile,int64),T0,t2, &
+           2.0_real64*interception(tile),progress(tile),code,profile%tiles(tile)%tile_id,0_int64)
+      call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'strong source progress initialize')
+      call publish_ppa_wu04c_accepted_progress(progress(tile),unready,interception(tile),code)
+      call require(code/=PPA_WU04C_PUBLICATION_OK,'uncommitted progress rejected')
+      call publish_ppa_wu04c_accepted_progress(progress(tile),receipts(3-tile)%receipt,interception(tile),code)
+      call require(code/=PPA_WU04C_PUBLICATION_OK,'foreign tile receipt rejected')
+      call require(progress(tile)%remaining_interception()==2.0_real64*interception(tile), &
+           'rejected receipt leaves aggregate untouched')
+      call publish_ppa_wu04c_accepted_progress(progress(tile),receipts(tile)%receipt,interception(tile),code)
+      call require(code==PPA_WU04C_PUBLICATION_OK,'strong accepted source progress')
+      call publish_ppa_wu04c_accepted_progress(progress(tile),receipts(tile)%receipt,interception(tile),code)
+      call require(code/=PPA_WU04C_PUBLICATION_OK,'duplicate accepted receipt rejected')
+      call progress(tile)%export_restart(saved(tile),ok)
+      call require(ok.and.saved(tile)%accepted_through_time==T1,'source progress time persisted')
+      call require(saved(tile)%accepted_interception_cm==interception(tile),'source interception not double counted')
+      call fmr_restore_vonhhbraden_source_window_progress(saved(tile),resumed(tile),ok,code)
+      call require(ok.and.code==FMR_VONHHBRADEN_PROGRESS_OK,'source progress restored')
+    end do
+    call owner%export_committed_restart(9901_int64,bundle,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'strong owner restart exported')
+    call fresh%initialize(profile,code)
+    call require(code==FMR_APP_BOOT_OK,'fresh owner explicit numerical bindings')
+    call fresh%restore_committed_restart(bundle,9901_int64,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'fresh owner restart restored')
+    call owner%run_standalone_with_forcing_receipts(T1,t2,forcing,next_results,next_receipts,code)
+    call require(code==FMR_APP_BOOT_OK.and.all(next_results%committed),'continued owner commits')
+    call fresh%run_standalone_with_forcing_receipts(T1,t2,forcing,resumed_results,resumed_receipts,code)
+    call require(code==FMR_APP_BOOT_OK.and.all(resumed_results%committed),'restored owner commits')
+    call require(maxval(abs(next_results%mass%residual))<=HARD_MASS_GATE,'continued owner hard mass')
+    call require(maxval(abs(resumed_results%mass%residual))<=HARD_MASS_GATE,'restored owner hard mass')
+    call owner%export_committed_restart(9901_int64,continued_bundle,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'continued state exported')
+    call fresh%export_committed_restart(9901_int64,resumed_bundle,ok,code)
+    call require(ok.and.code==FMR_APP_BOOT_OK,'resumed state exported')
+    do tile=1,NTILE
+      call publish_ppa_wu04c_accepted_progress(progress(tile),next_receipts(tile)%receipt,interception(tile),code)
+      call require(code==PPA_WU04C_PUBLICATION_OK,'continued source progress published')
+      call publish_ppa_wu04c_accepted_progress(resumed(tile),resumed_receipts(tile)%receipt,interception(tile),code)
+      call require(code==PPA_WU04C_PUBLICATION_OK,'restored source progress published')
+      call require(progress(tile)%remaining_interception()==0.0_real64.and. &
+           resumed(tile)%remaining_interception()==0.0_real64,'source aggregate exhausted exactly once')
+      call resumed(tile)%export_restart(final_progress,ok)
+      call require(ok.and.final_progress%accepted_through_time==t2.and. &
+           final_progress%expected_origin_revision==2_int64,'restored source lineage advances')
+      call require(continued_bundle%records(tile)%revision==resumed_bundle%records(tile)%revision.and. &
+           continued_bundle%records(tile)%committed_time==resumed_bundle%records(tile)%committed_time, &
+           'strong owner restart provenance identical')
+      select type(a=>continued_bundle%records(tile)%physical_state)
+      type is(fmr_b110_temporal_indicator_state_t)
+        select type(b=>resumed_bundle%records(tile)%physical_state)
+        type is(fmr_b110_temporal_indicator_state_t)
+          call require(all(a%pressure_head==b%pressure_head).and.all(a%water_content==b%water_content), &
+               'strong owner restart full physical arrays identical')
+          call a%temporal_history_snapshot(history_a,ok)
+          call require(ok,'continued owner history available')
+          call b%temporal_history_snapshot(history_b,ok)
+          call require(ok.and.all(history_a==history_b),'strong owner restart history identical')
+        class default
+          call require(.false.,'restored temporal state type')
+        end select
+      class default
+        call require(.false.,'continued temporal state type')
+      end select
+    end do
+    call fresh%close(code)
+    call require(code==FMR_APP_BOOT_OK,'fresh owner closes')
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS'
+  end subroutine verify_storage_receipt_restart
 
   subroutine seed_initial_derivative(p,state,forcing,derivative)
     type(fmr_b110_physical_parameters_t), intent(in) :: p
