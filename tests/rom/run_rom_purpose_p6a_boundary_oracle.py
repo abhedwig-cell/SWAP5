@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import argparse,json,pathlib,subprocess,sys
+
+def run(cmd): subprocess.run(cmd,check=True)
+
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--material",required=True,choices=("B01","B14"))
+    ap.add_argument("--canonical-root",required=True,type=pathlib.Path)
+    ap.add_argument("--output-dir",required=True,type=pathlib.Path)
+    a=ap.parse_args()
+    a.output_dir.mkdir(parents=True,exist_ok=True)
+    generated=a.canonical_root/"tests/rom/test_p6a_boundary_oracle.f90"
+    manifest=a.output_dir/"materialization.json"
+    run([
+      sys.executable,"tests/rom/materialize_rom_purpose_p6a_boundary_oracle.py",
+      "--c5a-materializer","tests/rom/rom_purpose_p1_base_b14_materializer.py",
+      "--c4z-materializer","tests/rom/rom_purpose_p1_base_c4z_materializer.py",
+      "--source","tests/rom/rom_purpose_p1_gw_source.f90",
+      "--material",a.material,"--output",str(generated),"--manifest",str(manifest)
+    ])
+    logs={}
+    for opt in (0,2):
+      stub=f"p6a_{a.material}_o{opt}_stubs.f90"
+      run([
+        sys.executable,str(a.canonical_root/"tests/rom/materialize_f_rom0_headcalc_stubs.py"),
+        "--source",str(a.canonical_root/"tests/fsi/fsi04_real_headcalc_stubs.f90"),
+        "--output",str(a.canonical_root/stub),"--nodes","512","--dz-cm","0.3125"
+      ])
+      build=pathlib.Path(f"/tmp/p6a_{a.material}_o{opt}")
+      run([
+        sys.executable,str(a.canonical_root/"tests/rom/compile_f_rom0_fortran_closure.py"),
+        "--root",str(a.canonical_root),"--stub",stub,"--target","tests/rom/test_p6a_boundary_oracle.f90",
+        "--external-source","src/legacy/b1_10_port/headcalc.f90","--build",str(build),"--opt",str(opt)
+      ])
+      log=a.output_dir/f"p6a_{a.material}_o{opt}.txt"
+      with log.open("w") as fh:
+        cp=subprocess.run([str(build/"rom0_test")],stdout=fh,stderr=subprocess.STDOUT)
+      if cp.returncode!=0: raise SystemExit(cp.returncode)
+      txt=log.read_text(errors="strict")
+      if txt.count("ROMPURP_P6A_BOUNDARY_ORACLE|")<=0: raise SystemExit("P6A oracle marker missing")
+      logs[opt]=log
+    if logs[0].read_bytes()!=logs[2].read_bytes():
+      raise SystemExit("P6A O0/O2 trace identity mismatch")
+    out={
+      "schema":"swap5.rom-purpose.p6a.execution.v1","material":a.material,
+      "route":"R512_T8","optimization_modes":[0,2],
+      "scientific_trace_identity":True,"trace_complete":True,
+      "solver_or_physics_changed":False,"numerical_policy_changed":False,
+      "tolerance_changed":False
+    }
+    (a.output_dir/f"p6a_{a.material}_execution.json").write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
+
+if __name__=="__main__": main()
