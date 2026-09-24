@@ -1,0 +1,20 @@
+name: F-AHL26I PDI NoVap paired timing
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/test_ahl26i_pdi_timing.f90'
+      - 'research/ahl/run_ahl26i_pdi_timing.sh'
+      - 'integration/f-ahl/F-AHL26I_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl26i-pdi-timing.yml'
+  workflow_dispatch:
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl26i_pdi_timing.sh /tmp/ahl26i.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl26i-${{ github.run_id }}
+          path: /tmp/ahl26i.txt
