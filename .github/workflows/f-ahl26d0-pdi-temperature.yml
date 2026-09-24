@@ -1,0 +1,20 @@
+name: F-AHL26D0 PDI vapor temperature domain
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/ahl26d0_pdi_vapor_temperature_domain.py'
+      - 'research/ahl/run_ahl26d0_pdi_vapor_temperature_domain.sh'
+      - 'integration/f-ahl/F-AHL26D0_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl26d0-pdi-temperature.yml'
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl26d0_pdi_vapor_temperature_domain.sh /tmp/ahl26d0.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl26d0-${{ github.run_id }}
+          path: /tmp/ahl26d0.json
