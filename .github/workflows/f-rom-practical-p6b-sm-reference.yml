@@ -40,6 +40,7 @@ jobs:
           git cat-file blob 31060946d233ba80e88ca42e43c90f512dc890de > ext/materialize_rom_purpose_p3_surface_reference.py
           test "$(git hash-object tools/rom/refine_rom_practical_p6b_sm_reference.py)" = 79a1e4c47a46a2aef4a96f9d221edac52d7f5351
           test "$(git hash-object tools/rom/qualify_rom_practical_p6b_sm_reference.py)" = f6e9f72042880f7117d2856c73803c587a86322c
+          python3 -m pip install --disable-pip-version-check 'numpy==2.5.3'
       - name: Materialize realistic Reference base
         run: |
           set -euo pipefail
