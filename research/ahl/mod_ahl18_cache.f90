@@ -6,13 +6,14 @@ module mod_ahl18_cache
   private
 
   integer, parameter, public :: AHL18_MAX_CACHE=32
-  integer, parameter :: NCOEF=24
+  integer, parameter :: NCOEF=42
 
   type, public :: ahl18_cache_key_t
     character(len=32) :: model_id=''
     integer :: policy_version=0
     integer :: branch_policy_version=0
     real(real64) :: coeff(NCOEF)=0.0_real64
+    logical :: ksatexm_extension_enabled=.false.
     integer(int64) :: fingerprint=0_int64
   end type ahl18_cache_key_t
 
@@ -50,13 +51,16 @@ contains
     key%model_id(1:min(len_trim(model_id),len(key%model_id)))=model_id(1:min(len_trim(model_id),len(key%model_id)))
     key%policy_version=policy_version
     key%branch_policy_version=branch_policy_version
+    if(size(parameters%cofgen,1)<NCOEF) error stop 'AHL18 key: incomplete initialized cofgen'
     key%coeff=parameters%cofgen(1:NCOEF,1)
+    key%ksatexm_extension_enabled=parameters%ksatexm_extension_enabled
 
     h=transfer(key%coeff(1),h)
     do i=2,NCOEF
       bits=transfer(key%coeff(i),bits)
       h=ieor(ishftc(h,7),bits)
     end do
+    if(key%ksatexm_extension_enabled) h=ieor(ishftc(h,13),int(z'5A17E1',int64))
     h=ieor(h,int(policy_version,int64))
     h=ieor(ishftc(h,11),int(branch_policy_version,int64))
     do i=1,len_trim(key%model_id)
@@ -67,11 +71,15 @@ contains
 
   logical function same_key(a,b) result(equal)
     type(ahl18_cache_key_t),intent(in)::a,b
+    integer(int64) :: abit(NCOEF), bbit(NCOEF)
+    abit=transfer(a%coeff,abit)
+    bbit=transfer(b%coeff,bbit)
     equal = a%fingerprint==b%fingerprint .and. &
          a%policy_version==b%policy_version .and. &
          a%branch_policy_version==b%branch_policy_version .and. &
+         a%ksatexm_extension_enabled .eqv. b%ksatexm_extension_enabled .and. &
          trim(a%model_id)==trim(b%model_id) .and. &
-         all(a%coeff==b%coeff)
+         all(abit==bbit)
   end function same_key
 
   subroutine ahl18_get_or_build(self,key,parameters,provider,table,was_hit,ok)
