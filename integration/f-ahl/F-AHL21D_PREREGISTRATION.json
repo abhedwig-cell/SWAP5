@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21D",
+  "title": "O05-dry prescribed-qbot K attribution",
+  "parent": "F-AHL21C",
+  "phase": "PREREGISTERED_RESEARCH",
+  "frozen_case": {
+    "material": "O05",
+    "regime": "dry",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.99*K(initial)",
+    "bottom_mode": 2
+  },
+  "shared_retention": "F-AHL09 derivative-consistent theta/C representation",
+  "candidates": [
+    {
+      "id": "selected",
+      "K_policy": "F-AHL15/F-AHL16 global floor-scaled logK 1e-3 plus wet-local 3e-4"
+    },
+    {
+      "id": "global_k03",
+      "K_policy": "F-AHL11 independent adaptive logK with global abs logK error 3e-4"
+    },
+    {
+      "id": "exact_K",
+      "K_policy": "authoritative analytical B1.10 K with interpolated derivative-consistent theta/C"
+    }
+  ],
+  "primary_observable": "nonlinear iteration and backtracking identity versus fully analytical reference",
+  "fidelity_gates": "identical to F-AHL21C",
+  "decision_rule": "Attribute the O05-dry path drift to K resolution only if global_k03 and/or exact_K restore the analytical path without violating fidelity gates. Do not change solver policy or timestep.",
+  "hard_exclusions": [
+    "NO_TIMESTEP_RETUNING",
+    "NO_SOLVER_TOLERANCE_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
