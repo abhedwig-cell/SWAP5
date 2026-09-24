@@ -25,7 +25,8 @@
     "fixture": "One domain, two cells, initial profile [0.125,0.25] cm, fixed pore volumes 0.25 cm per cell, heads [-0.5,0.25], dt=1. Generated transfer is consumed without reevaluating the flow law. Reconstructed scalar/profile storage must match the captured candidate storage.",
     "checks": "Candidate preparation and per-cell/domain mass checks succeed; perturbing one matrix transfer by 0.01 cm rejects accounting. Candidate is discarded and initial owner revision/storage remain unchanged.",
     "limits": "A3 conservative flux reconstruction remains a proposed reference correction, not canonically qualified. No complete continuation physics, joint matrix commit, HeadCalc call site or runtime restart. This test establishes component composition only.",
-    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+    "recovery_point": "c9c566e56",
+    "test_result": "Persisted c9c566e56 Richards scratch and A3 interval candidate gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
   },
   "paired_storage_contract": {
     "baseline": "0cd824efb",
