@@ -845,6 +845,13 @@ contains
     call evaluate_forcing_event_derivative(request,computed,ok)
     call require(.not.ok.and.all(computed==0.0_real64),'event derivative rejects extension')
     hydraulics%ksatexm_extension_enabled=.false.
+    provider%step_duration=0.0_real64
+    call evaluate_forcing_event_derivative(request,computed,ok)
+    call require(.not.ok.and.all(computed==0.0_real64),'event derivative rejects zero provider duration')
+    provider%step_duration=ieee_value(0.0_real64,ieee_quiet_nan)
+    call evaluate_forcing_event_derivative(request,computed,ok)
+    call require(.not.ok.and.all(computed==0.0_real64),'event derivative rejects nonfinite provider duration')
+    call bind_b110_default_mvg_provider(provider,hydraulics,T1-T0)
     call evaluate_forcing_event_derivative(request,computed(1:1),ok)
     call require(.not.ok,'event derivative rejects output shape')
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_EVENT_DERIVATIVE=PASS'

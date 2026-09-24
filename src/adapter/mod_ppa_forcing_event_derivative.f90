@@ -49,6 +49,8 @@ contains
     allocate(water(n),k(n),capacity(n),dk(n),source(n),sink(n),flux(n+1),trial(n))
     select type(provider=>request%evaluation%constitutive)
     type is(b110_default_mvg_provider_t)
+      if(.not.ieee_is_finite(provider%step_duration))return
+      if(provider%step_duration<=0.0_real64)return
       call evaluate_bound_mvg_storage_difference(provider,request%base_state%pressure_head, &
            request%base_state%water_content,request%base_state%pressure_head,trial,compatible)
       if(.not.compatible)return
