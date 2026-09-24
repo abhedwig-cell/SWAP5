@@ -1,0 +1,21 @@
+name: F-AHL25E bimodal component attribution
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/test_ahl25e_attribution.f90'
+      - 'research/ahl/run_ahl25e_attribution.sh'
+      - 'research/ahl/mod_ahl25d_model3_lookup.f90'
+      - 'integration/f-ahl/F-AHL25E_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl25e-attribution.yml'
+  workflow_dispatch:
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl25e_attribution.sh /tmp/ahl25e.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl25e-${{ github.run_id }}
+          path: /tmp/ahl25e.txt
