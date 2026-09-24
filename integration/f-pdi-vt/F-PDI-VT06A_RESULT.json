@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06A",
+  "status": "FAIL_NO_OBSERVABLE_VAPOR_DIFFERENCE",
+  "workflow_run": 36061528663,
+  "case": {
+    "initial_TSOIL_C": [5.0,5.0,5.0,5.0],
+    "meteorology_Tmin_C": 5.0,
+    "meteorology_Tmax_C": 10.0,
+    "initial_head_cm": -100000.0,
+    "heat_flow": true
+  },
+  "gates": {
+    "all_four_runs_normal_completion": true,
+    "control_vapor_finite": true,
+    "candidate_vapor_finite": true,
+    "vapor_control_candidate_different": false,
+    "novap_control_candidate_identical": true,
+    "CRITDEVMASBAL": 1e-6
+  },
+  "hashes": {
+    "control_vapor_bfo": "a5157ea15052e5a4526d169b9fd251e07bce419603d1b920699405692f4d25e4",
+    "candidate_vapor_bfo": "a5157ea15052e5a4526d169b9fd251e07bce419603d1b920699405692f4d25e4",
+    "control_novap_bfo": "a5157ea15052e5a4526d169b9fd251e07bce419603d1b920699405692f4d25e4",
+    "candidate_novap_bfo": "a5157ea15052e5a4526d169b9fd251e07bce419603d1b920699405692f4d25e4"
+  },
+  "interpretation": "At this cold 5 C short full-model case the repaired Vapor-on contribution is not observable at BFO numerical precision. The preregistered activation gate therefore fails and is not changed.",
+  "next_action": "Preregister a separate moderately colder full-model case. Do not retune VT06A."
+}
