@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL14A",
+  "phase": "B01_WET_LOCAL_DIAGNOSIS_COMPLETE",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "workflow_run": 36044272916,
+  "workflow_job": 107783801879,
+  "accepted_head_envelope_cm": {
+    "analytical_min": -7.5062003054,
+    "analytical_max": -7.5018607860,
+    "candidate_min": -7.5034918515,
+    "candidate_max": -7.5014438630
+  },
+  "relevant_B01_K_interval_cm": [-7.7736503024,-6.9783058486],
+  "dense_local_diagnosis": {
+    "representative_head_cm": -7.503,
+    "analytical_K_cm_per_day_approx": 16.8711,
+    "lookup_relative_K_error_approx": -6.10e-4,
+    "lookup_log_K_error_approx": -6.10e-4,
+    "retention_error_in_theta_approx": -1.63e-10
+  },
+  "finding": "The remaining B01-wet failure is localized to a high-conductivity wet interval. The floor-scaled log-K gate is satisfied, but a roughly 0.061 percent relative K error at K about 16.87 cm/day corresponds to a non-negligible absolute conductivity error. Retention error in the same interval is negligible.",
+  "design_implication": "A robust K metric should control both relative/floor-scaled error in dry conditions and Ksat-normalized absolute error in wet high-K conditions.",
+  "nonclaims": [
+    "No B01-specific production knot is justified.",
+    "The proposed mixed metric still requires prospective qualification."
+  ]
+}
