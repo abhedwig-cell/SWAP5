@@ -14,7 +14,7 @@ dump_logs () {
 trap dump_logs ERR
 trap 'rm -rf "$BUILDROOT"' EXIT
 
-SRC_SHA="c22bd832ddf3e53e330a552f5e31e74f183362d1"
+SRC_SHA="68b6d8d4e53af2586d009d77245543e908ecdac5"
 CASE_SHA="a839e2e905f34dd264ad0c739f638454b3023def"
 
 git clone -q https://github.com/SWAP-model/SWAP.git "$BUILDROOT/control-src"
