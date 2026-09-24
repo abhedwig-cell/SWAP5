@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL14A",
+  "title": "B01 wet local conductivity-response diagnosis",
+  "parent": "F-AHL14",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Why does B01-wet remain outside the frozen bottom-flux gate after the floor-scaled K metric closes the other eleven cases?",
+  "frozen_case": {
+    "material": "B01",
+    "initial_head_cm": -10.0,
+    "bottom_head_cm": -7.5,
+    "duration_day": 0.25,
+    "solver_policy": "identical to F-AHL10/F-AHL14"
+  },
+  "diagnostic_scope": [
+    "record analytical and candidate accepted head extrema",
+    "record all final candidate node heads",
+    "evaluate dense local K interpolation error over the actually visited head envelope",
+    "identify whether the dominant K interpolation error is concentrated near an endpoint or inside an interval"
+  ],
+  "prospective_local_test": {
+    "only_if_local_error_is_identified": true,
+    "allowed_change": "add a local mandatory K support point or local K error subcriterion within the identified visited wet interval",
+    "global_error_targets_unchanged": true,
+    "frozen_response_gate_unchanged": true
+  },
+  "hard_exclusions": [
+    "NO_GLOBAL_K_TIGHTENING",
+    "NO_GATE_RETUNING",
+    "NO_MATERIAL_SPECIFIC_PRODUCTION_SPECIAL_CASE",
+    "NO_PERFORMANCE_CLAIM"
+  ]
+}
