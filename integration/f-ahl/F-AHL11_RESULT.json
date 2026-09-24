@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11",
+  "phase": "WET_DRY_ATTRIBUTION_COMPLETE",
+  "status": "DIAGNOSTIC_COMPLETE_NO_VARIANT_FULLY_CLOSES_FAILED_SET",
+  "workflow_run": 36043215539,
+  "workflow_job": 107780238899,
+  "finding": [
+    "All tested variants preserve the analytical nonlinear iteration and backtracking path in all six previously failing cases.",
+    "Wet-regime response error is strongly reduced by tighter conductivity accuracy; tightening retention alone has little or no effect in B01-wet, B12-wet and O05-wet.",
+    "Dry-regime errors improve when knot density increases, but the shared support means the theta-versus-K attribution is not clean because a tighter K criterion also improves retention interpolation."
+  ],
+  "selected_examples": {
+    "B01_wet_base_dbottom": 1.038436e-4,
+    "B01_wet_theta3_dbottom": 1.038436e-4,
+    "B01_wet_k3_dbottom": 2.682643e-5,
+    "B12_wet_base_dbottom": 4.500818e-5,
+    "B12_wet_k3_dbottom": 1.099554e-5,
+    "O05_wet_base_dbottom": 9.131574e-5,
+    "O05_wet_k3_dbottom": 2.447696e-5,
+    "B01_dry_base_max_dh_cm": 7.118950e-2,
+    "B01_dry_k3_max_dh_cm": 3.409175e-2,
+    "B12_dry_base_max_dh_cm": 6.919694e-2,
+    "B12_dry_k3_max_dh_cm": 3.052353e-2,
+    "O14_dry_base_dbottom": 6.216003e-5,
+    "O14_dry_k3_dbottom": 2.227350e-5
+  },
+  "important_caveat": "Because theta/C and K currently share knot locations, tightening one component can improve the other component indirectly. F-AHL11 therefore identifies regime sensitivity but does not provide fully orthogonal component attribution in dry cases.",
+  "next_action": "Prospectively test 1e-3 retention and/or logK accuracy on the frozen six cases. If those gates still fail, redesign the error metric rather than continuing arbitrary global densification.",
+  "nonclaims": [
+    "No F-AHL10 response gate is relaxed.",
+    "No performance or production claim follows from this attribution."
+  ]
+}
