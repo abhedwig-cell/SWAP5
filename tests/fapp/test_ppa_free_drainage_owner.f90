@@ -755,10 +755,76 @@ contains
       call fresh%export_committed_restart(9902_int64,resumed,ok,code)
       call require(ok.and.code==FMR_APP_BOOT_OK,'window resumed export')
       call compare_restart_bundles(continued,resumed,'changing window restart equivalence')
+      if(window==2.and.trim(test_scope)=='--stable-windows') &
+           call verify_event_rollback(profile,before,continued,forcing,amount,start_time,end_time)
       call fresh%close(code)
       call require(code==FMR_APP_BOOT_OK,'window fresh closes')
     end do
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS'
+  end subroutine
+
+  subroutine verify_event_rollback(profile,before,expected,forcing,amount,t_start,t_end)
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(fmr_committed_restart_bundle_t),intent(in)::before,expected
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing(:)
+    real(real64),intent(in)::amount(:),t_start,t_end
+    type(fmr_production_application_config_t)::limited
+    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_committed_restart_bundle_t)::after,replayed
+    type(fmr_serialized_column_result_t),allocatable::result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:)
+    type(fmr_vonhhbraden_source_window_progress_t)::progress(NTILE)
+    integer::variant,code,tile
+    logical::ok
+    do variant=0,2
+      limited=profile
+      if(variant==0) nullify(limited%free_drainage_indicator)
+      if(variant==1) limited%numerical%transaction%max_retries=0
+      if(variant==2) limited%numerical%max_committed_substeps=1
+      call owner%initialize(limited,code)
+      call require(code==FMR_APP_BOOT_OK,'event failure owner initialize')
+      call owner%restore_committed_restart(before,9902_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'event failure initial boundary restored')
+      do tile=1,NTILE
+        call fmr_initialize_vonhhbraden_source_window_progress(int(9990+tile,int64),t_start,t_end, &
+             amount(tile),progress(tile),code,profile%tiles(tile)%tile_id,before%records(tile)%revision)
+        call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'event failure source initialized')
+      end do
+      call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,code)
+      call require(code/=FMR_APP_BOOT_OK.and.all(.not.result%committed),'bounded event attempt rejects')
+      if(variant==0) call require(all(result%solver_headcalc_calls==0),'unbound event service rejects before solve')
+      if(variant==1) call require(all(result%solver_headcalc_calls>0).and. &
+           all(result%accepted_substeps==0),'event real failed attempt without accepts')
+      if(variant==2) call require(all(result%accepted_substeps==1),'event failure after internal acceptance')
+      do tile=1,NTILE
+        call publish_ppa_wu04c_accepted_progress(progress(tile),receipt(tile)%receipt,amount(tile),code)
+        call require(code/=PPA_WU04C_PUBLICATION_OK.and.progress(tile)%remaining_interception()==amount(tile), &
+             'failed event cannot advance source progress')
+      end do
+      call owner%export_committed_restart(9902_int64,after,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'event failure remains exportable')
+      call compare_restart_bundles(before,after,'event rollback preserves physical history provenance')
+      call owner%close(code)
+      call require(code==FMR_APP_BOOT_OK,'event limited owner closes')
+      call owner%initialize(profile,code)
+      call require(code==FMR_APP_BOOT_OK,'event replay owner initialize')
+      call owner%restore_committed_restart(after,9902_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'event replay restores accepted boundary')
+      call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,code)
+      call require(code==FMR_APP_BOOT_OK.and.all(result%committed),'event replay commits')
+      call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE,'event replay hard mass')
+      do tile=1,NTILE
+        call publish_ppa_wu04c_accepted_progress(progress(tile),receipt(tile)%receipt,amount(tile),code)
+        call require(code==PPA_WU04C_PUBLICATION_OK.and.progress(tile)%remaining_interception()==0.0_real64, &
+             'accepted event replay consumes source once')
+      end do
+      call owner%export_committed_restart(9902_int64,replayed,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'event replay export')
+      call compare_restart_bundles(expected,replayed,'event retry equals uninterrupted execution')
+      call owner%close(code)
+      call require(code==FMR_APP_BOOT_OK,'event replay owner closes')
+    end do
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_EVENT_ROLLBACK_REPLAY=PASS'
   end subroutine
 
   subroutine diagnose_window_jump(p,state,forcing)

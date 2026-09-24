@@ -32,6 +32,11 @@ contains
     real(real64), allocatable :: mass_weight(:), lower(:), diagonal(:), upper(:), rhs(:), delta(:), gamma(:), e_raw(:)
 
     indicator_result = soil_water_temporal_indicator_result_t()
+    if (indicator_request%forcing_event_at_start) then
+       indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+       indicator_result%route = 'forcing-event-unsupported'
+       return
+    end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'candidate-not-converged'
