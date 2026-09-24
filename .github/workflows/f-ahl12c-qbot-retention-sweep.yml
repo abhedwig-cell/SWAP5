@@ -1,0 +1,27 @@
+name: F-AHL12C qbot retention sweep
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl12c_generate_retention_sweep.py'
+      - 'research/ahl/run_ahl12c_retention_sweep.sh'
+      - 'integration/f-ahl/F-AHL12C_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl12c-qbot-retention-sweep.yml'
+  workflow_dispatch:
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run prescribed-qbot retention sweep
+        run: |
+          bash research/ahl/run_ahl12c_retention_sweep.sh /tmp/ahl12c_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl12c-${{ github.run_id }}
+          path: |
+            /tmp/ahl12c_result.txt
+            /tmp/ahl12c_tables.txt
