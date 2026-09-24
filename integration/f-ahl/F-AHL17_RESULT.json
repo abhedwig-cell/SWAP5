@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL17",
+  "phase": "SELF_BUILDING_FORTRAN_REPRESENTATION_COMPLETE",
+  "status": "PASS_STAGE1_BUILD",
+  "workflow_run": 36045823542,
+  "workflow_job": 107788997828,
+  "materials": {
+    "B01": {"support_points":121,"max_theta_error":8.619117e-7,"max_logC_error":4.898555e-4,"max_logK_error":9.524872e-4,"mean_build_seconds":1.10817e-3},
+    "B12": {"support_points":79,"max_theta_error":5.557445e-6,"max_logC_error":2.486629e-4,"max_logK_error":9.291830e-4,"mean_build_seconds":7.1197e-4},
+    "O05": {"support_points":123,"max_theta_error":2.325282e-7,"max_logC_error":1.356049e-4,"max_logK_error":9.470781e-4,"mean_build_seconds":1.11333e-3},
+    "O14": {"support_points":108,"max_theta_error":1.556657e-6,"max_logC_error":1.401833e-4,"max_logK_error":9.825848e-4,"mean_build_seconds":9.7628e-4}
+  },
+  "finding": "The Fortran runtime builder can construct and independently validate the selected adaptive representation directly from the authoritative B1.10 provider for all four tested materials.",
+  "build_cost_range_seconds_per_unique_parameterization": [7.1197e-4,1.11333e-3],
+  "design_implication": "Build cost is small in absolute terms but should be amortized through a fingerprinted immutable cache and paid once per unique hydraulic parameterization/policy identity, not once per column or solve.",
+  "next_action": "Qualify deterministic fingerprinting, cache hit/miss semantics, immutable reuse, and amortized cost over repeated columns and accepted trajectories.",
+  "production_status": "RESEARCH_ONLY_NO_ADMISSION"
+}
