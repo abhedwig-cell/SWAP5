@@ -1,0 +1,122 @@
+name: F-ROM-PURPOSE P6A lagged boundary operator oracle
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P6A_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p6a-lagged-boundary-operator
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Verify P6A authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/materialize_rom_purpose_p6a_boundary_oracle.py tests/rom/run_rom_purpose_p6a_boundary_oracle.py tests/rom/analyze_rom_purpose_p6a_boundary_oracle.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P6A_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P6A_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_BEFORE_ANY_P6A_RESPONSE'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P6A_RESPONSE'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  routes:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute lagged-boundary oracle route
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p6a_boundary_oracle.py --material "${{ matrix.material }}" --canonical-root canonical --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p6a-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: routes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'p6a-*', path: /tmp/p6a, merge-multiple: true}
+      - name: Analyze lagged boundary oracle
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p6a_boundary_oracle.py --prereg integration/f-rom/ROM_PURPOSE_P6A_PREREGISTRATION.json --root /tmp/p6a --output result/ROM_PURPOSE_P6A_RESULT.json | tee result/runner.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p6a-result
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p6a-result, path: /tmp/result}
+      - name: Persist P6A
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P6A_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P6A_RESULT.json'))
+          s={
+            'schema':'swap5.rom-purpose.p6.status.v1','workstream':'ROM-PURPOSE','work_unit':'ROM-PURPOSE-P6','date':'2026-09-24',
+            'status':'P6A_'+r['decision'],
+            'current_gate':('P6B_MEMORY_CARRIER_DESIGN' if r['oracle_gate_pass'] else 'P6_CLOSED_ORACLE_NOT_CONFIRMED'),
+            'p6a_result':'integration/f-rom/ROM_PURPOSE_P6A_RESULT.json',
+            'p6a_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p6a_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':(['Preregister reduced lagged-conductivity memory-carrier test.'] if r['oracle_gate_pass'] else []),
+            'scientific_firewall':{
+              'solver_or_physics_changed':False,'numerical_policy_changed':False,'tolerance_changed':False,
+              'application_acceptance_adjudicated':False,'production_rom_authorized':False
+            }
+          }
+          pathlib.Path('integration/f-rom/ROM_PURPOSE_P6_STATUS.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P6A_RESULT.json integration/f-rom/ROM_PURPOSE_P6_STATUS.json
+          git commit -m "ROM-PURPOSE P6A: persist lagged boundary oracle" || exit 0
+          git push origin HEAD:work/f-rom-purpose
