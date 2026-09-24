@@ -1,0 +1,23 @@
+name: F-AHL25B model3 retention representation
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl25b_model3_retention.py'
+      - 'research/ahl/run_ahl25b_model3_retention.sh'
+      - 'integration/f-ahl/F-AHL25B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl25b-model3-retention.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run model3 retention qualification
+        run: bash research/ahl/run_ahl25b_model3_retention.sh /tmp/ahl25b_result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl25b-${{ github.run_id }}
+          path: /tmp/ahl25b_result.json
