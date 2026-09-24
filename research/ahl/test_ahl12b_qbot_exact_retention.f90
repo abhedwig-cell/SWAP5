@@ -10,7 +10,8 @@ program test_ahl12b_qbot_exact_retention
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
-  use mod_ahl08_klookup_provider, only: ahl08_klookup_provider_t, bind_ahl08_klookup_provider
+  use mod_ahl12b_exact_retention_klookup_provider, only: ahl12b_exact_retention_klookup_provider_t, &
+       bind_ahl12b_exact_retention_klookup_provider
   implicit none
 
   real(real64), parameter :: total_dt=0.01_real64, mass_gate=1.0e-12_real64
@@ -18,7 +19,7 @@ program test_ahl12b_qbot_exact_retention
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: hp
   type(b110_default_mvg_provider_t), target :: analytical
-  type(ahl08_klookup_provider_t), target :: lookup
+  type(ahl12b_exact_retention_klookup_provider_t), target :: lookup
   type(b110_source_sink_provider_t), target :: source_sink
   type(fmr04_fixed_flux_top_provider_t), target :: top_provider
   type(soil_water_physical_state_t) :: initial_state
@@ -116,7 +117,7 @@ program test_ahl12b_qbot_exact_retention
   call solver_ref%solve(request,workspace_ref,reference_result)
   call require(reference_result%status==SW_SOLVE_CONVERGED,'analytical solve converged')
 
-  call bind_ahl08_klookup_provider(lookup,hp,total_dt,trim(ktable_path),valid)
+  call bind_ahl12b_exact_retention_klookup_provider(lookup,hp,total_dt,trim(ktable_path),valid)
   call require(valid,'lookup provider bound')
   request%evaluation%constitutive=>lookup
   request%base_state=initial_state
