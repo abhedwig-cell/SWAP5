@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12F",
+  "title": "Prescribed-qbot paired timing characterization",
+  "parent": "F-AHL12E",
+  "phase": "PREREGISTERED_RESEARCH",
+  "status_context": "F-AHL12 remains FAIL under its exact nonlinear-path gate. F-AHL12F does not replace or relax that result.",
+  "question": "Despite one additional nonlinear iteration in the lookup solve, is the F-AHL11 baseline representation faster or slower than the analytical provider for the frozen B01:wet prescribed-qbot case?",
+  "case": {
+    "material":"B01",
+    "regime":"wet",
+    "top_initial_head_cm":-10.0,
+    "bottom_mode":2,
+    "qbot_cm_per_day":1e-6,
+    "step_duration_day":0.01
+  },
+  "candidate": "F-AHL11 baseline: derivative-consistent 28-point retention/capacity support plus independent K support at abs logK <=3e-4",
+  "known_path": {
+    "analytical_nonlinear_iterations":2,
+    "candidate_nonlinear_iterations":3,
+    "analytical_backtracking":2,
+    "candidate_backtracking":3
+  },
+  "fidelity_precondition": {
+    "max_abs_pressure_head_delta_cm":0.05,
+    "max_abs_water_content_delta":1e-4,
+    "prescribed_qbot_exact_identity":true,
+    "mass_residual_abs_cm":1e-12
+  },
+  "timing_policy": {
+    "compiler":"gfortran -O3 without runtime checks",
+    "replays_per_batch":32768,
+    "paired_repetitions":7,
+    "order":"alternate analytical->candidate and candidate->analytical",
+    "primary_statistic":"median paired candidate/analytical CPU ratio",
+    "table_generation_and_binding":"outside timed batches"
+  },
+  "decision_rule": {
+    "faster":"median ratio <0.98",
+    "equivocal":"0.98 <= median ratio <=1.02",
+    "slower":"median ratio >1.02"
+  },
+  "hard_exclusions": [
+    "DOES_NOT_SUPERSEDE_AHL12_PATH_FAILURE",
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
