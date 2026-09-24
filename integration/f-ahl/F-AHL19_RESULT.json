@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL19",
+  "phase": "MULTI_COLUMN_AMORTIZATION_COMPLETE",
+  "status": "PASS_BOUNDED_AMORTIZATION",
+  "workflow_run": 36046370728,
+  "workflow_job": 107790817405,
+  "evidence_policy": "Conservative: minimum measured absolute F-AHL16 solve saving per material, strengthened F-AHL17 build costs, and strengthened F-AHL18 cache-acquisition cost are all included.",
+  "measured_inputs": {
+    "build_seconds_per_unique_parameterization": {
+      "B01": 0.00110817,
+      "B12": 0.00071197,
+      "O05": 0.00111333,
+      "O14": 0.00097628
+    },
+    "cache_acquisition_seconds_per_column": 5.006e-7,
+    "conservative_complete_Richards_saving_seconds_per_solve": {
+      "B01": 1.2136230469e-6,
+      "B12": 1.2667846679e-6,
+      "O05": 1.2270507813e-6,
+      "O14": 1.1199951172e-6
+    }
+  },
+  "selected_break_even_examples": {
+    "one_column_one_material_solves_per_column": 914,
+    "ten_columns_one_material_solves_per_column": 92,
+    "ten_columns_four_materials_solves_per_column": 325,
+    "one_hundred_columns_one_material_solves_per_column": 10,
+    "one_hundred_columns_four_materials_solves_per_column": 33,
+    "one_thousand_columns_one_material_solves_per_column": 2,
+    "one_thousand_columns_four_materials_solves_per_column": 4,
+    "ten_thousand_columns_one_material_solves_per_column": 1,
+    "ten_thousand_columns_four_materials_solves_per_column": 1
+  },
+  "finding": "Self-build cost is material for a single very short column run but rapidly amortizes when representations are shared across columns or when trajectories contain hundreds to thousands of Richards solves.",
+  "design_implication": "The target architecture should acquire one immutable cached representation at column/model initialization and retain that binding across the trajectory. Cache lookup must not occur in the constitutive inner loop.",
+  "next_action": "Build an internal self-building cached research provider that removes the external table-file dependency and verify end-to-end equivalence with the selected F-AHL15/F-AHL16 representation.",
+  "nonclaims": [
+    "No whole-SWAP wall-time claim is made.",
+    "The analysis uses controlled Richards solve savings, not full application runtime.",
+    "No production admission is implied."
+  ]
+}
