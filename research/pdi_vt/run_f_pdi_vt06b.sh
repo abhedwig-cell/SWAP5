@@ -9,3 +9,5 @@ chmod +x "$TMP"
 bash "$TMP" /tmp/f_pdi_vt06b_base.json
 # Comparator normalization repair: Generated-at metadata is ignored by f_pdi_vt04_compare.py.
 # Vapor-on activation comparison is also metadata-normalized.
+
+# Gate implementation: comparator must verify both Vapor-on control and candidate finiteness.
