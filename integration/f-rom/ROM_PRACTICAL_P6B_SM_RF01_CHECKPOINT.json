@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm.rf01.checkpoint.v1",
+  "date": "2026-09-24",
+  "status": "TARGETED_REPAIR_TRIGGERED_BY_REALISTIC_TOP_BOUNDARY",
+  "finding": [
+    "The earlier Rain-ETref fixed-flux proxy was rejected because unlimited atmospheric extraction is not supply-limited.",
+    "The rainfall-only test now independently shows the complementary problem: for at least B06 the frozen S4 fixed-flux candidate fails under authentic rainfall before fidelity qualification.",
+    "Together these results identify the practical dominant defect as top-boundary process semantics, not S4 state placement or RK4 dt=0.005."
+  ],
+  "attribution": {
+    "representation_change_needed": false,
+    "numerical_policy_change_needed": false,
+    "closure_family_change_needed": "not yet",
+    "boundary_process_support_needed": true,
+    "missing_processes": [
+      "infiltration-capacity handling",
+      "surface ponding/runoff or equivalent rejected-rain accounting",
+      "supply-limited atmospheric extraction for later ET work"
+    ]
+  },
+  "targeted_repair_rule_satisfied": true,
+  "decision": "Do not tune S4 or shrink dt. Open a bounded surface-boundary repair before further realistic atmospheric fidelity benchmarking.",
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
