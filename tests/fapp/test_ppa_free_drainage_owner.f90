@@ -26,7 +26,8 @@ program test_ppa_free_drainage_owner
        ppa_atm02_meteo_provenance_t
   use mod_pmdirect_swetr0_process, only: pmdirect_swetr0_site_t, pmdirect_swetr0_canopy_t
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
-  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
+       soil_water_solve_result_t, soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_result_t, B110_DYN_TOP_AVAILABLE, &
        B110_DYN_TOP_REGIME_FLUX
@@ -75,7 +76,7 @@ program test_ppa_free_drainage_owner
   real(real64) :: reference_head_m
 
   call initialize_application_config(config)
-  config%free_drainage_indicator => evaluate_free_drainage_temporal_indicator
+  config%free_drainage_indicator => traced_indicator
   config%numerical%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
   config%numerical%transaction%max_retries = 16
   config%numerical%max_committed_substeps = 16384
@@ -90,6 +91,14 @@ program test_ppa_free_drainage_owner
   call verify_wu04c_production_composition(config)
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
+  subroutine traced_indicator(request,solution,history,certificate)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solution
+    type(soil_water_temporal_indicator_request_t), intent(in) :: history
+    type(soil_water_temporal_indicator_result_t), intent(out) :: certificate
+    call evaluate_free_drainage_temporal_indicator(request,solution,history,certificate)
+    write(*,*) 'OWNER_CERT',request%step_duration,trim(certificate%route),certificate%head_inf_bound
+  end subroutine
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
     real(real64) :: conductivity0
@@ -211,6 +220,7 @@ contains
 
   subroutine verify_wu04c_production_composition(value)
     type(fmr_production_application_config_t), intent(in) :: value
+    type(fmr_production_application_config_t) :: transient_profile
     type(soil_water_parameter_set_t) :: geometry
     type(b110_default_mvg_parameters_t) :: hydraulics
     type(b110_dynamic_top_boundary_request_t) :: request
@@ -225,6 +235,7 @@ contains
     real(real64) :: interception
     integer :: tile, local_status
 
+    transient_profile = value
     geometry%parameter_set_id = value%tiles(1)%parameters%parameter_set_id
     geometry%active_nodes = value%tiles(1)%parameters%active_nodes
     allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
@@ -275,9 +286,12 @@ contains
       call materialize_ppa_wu04c_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, source, &
            0.12_real64, 0.20_real64, 0.10_real64, forcing_vector(tile), interception, diagnostics)
       call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK, 'WU04C tile forcing composition')
+      call seed_initial_derivative(transient_profile%tiles(tile)%parameters, &
+           transient_profile%tiles(tile)%initial_state,forcing_vector(tile), &
+           transient_profile%tiles(tile)%initial_right_derivative)
       deallocate(geometry%z, geometry%dz, geometry%node_distance)
     end do
-    call production_app%initialize(value, local_status)
+    call production_app%initialize(transient_profile, local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner initialize')
     call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
     do tile=1,NTILE
@@ -309,9 +323,12 @@ contains
       call materialize_ppa_wu04d_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, gash, source, &
            0.20_real64, 0.10_real64, forcing_vector(tile), interception, gash_diagnostics)
       call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK, 'WU04D tile forcing composition')
+      call seed_initial_derivative(transient_profile%tiles(tile)%parameters, &
+           transient_profile%tiles(tile)%initial_state,forcing_vector(tile), &
+           transient_profile%tiles(tile)%initial_right_derivative)
       deallocate(geometry%z, geometry%dz, geometry%node_distance)
     end do
-    call production_app%initialize(value, local_status)
+    call production_app%initialize(transient_profile, local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner initialize')
     call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
@@ -321,6 +338,32 @@ contains
     call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner close')
     deallocate(forcing_vector)
   end subroutine verify_wu04c_production_composition
+
+  subroutine seed_initial_derivative(p,state,forcing,derivative)
+    type(fmr_b110_physical_parameters_t), intent(in) :: p
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    real(real64), intent(out) :: derivative(:)
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t) :: provider
+    real(real64) :: water(p%active_nodes), k(p%active_nodes), c(p%active_nodes), dk(p%active_nodes)
+    real(real64) :: flux(p%active_nodes+1)
+    integer :: j,n
+    n=p%active_nodes
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+    call bind_b110_default_mvg_provider(provider,hp,T1-T0)
+    call provider%evaluate(state%pressure_head,water,k,c,dk)
+    flux(1)=forcing%top_flux
+    do j=2,n
+      flux(j)=-0.5_real64*(k(j-1)+k(j))* &
+           ((state%pressure_head(j-1)-state%pressure_head(j))/p%node_distance(j)+1.0_real64)
+    end do
+    flux(n+1)=-k(n)
+    do j=1,n
+      derivative(j)=(flux(j+1)-flux(j)+forcing%subsurface_irrigation_source(j) &
+           -sum(forcing%drainage_flux_by_level(:,j))-forcing%root_extraction_sink(j))/(c(j)*p%dz(j))
+    end do
+  end subroutine
 
   subroutine require(condition, message)
     logical, intent(in) :: condition

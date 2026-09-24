@@ -175,7 +175,7 @@ contains
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, free_drainage_indicator)
-    procedure(free_drainage_indicator_service), pointer, intent(in), optional :: free_drainage_indicator
+    procedure(free_drainage_indicator_service), optional :: free_drainage_indicator
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -252,7 +252,7 @@ contains
 
     call backend%initialize(top_boundary)
     if(present(free_drainage_indicator)) then
-      if(associated(free_drainage_indicator)) call backend%set_free_drainage_indicator(free_drainage_indicator)
+      call backend%set_free_drainage_indicator(free_drainage_indicator)
     end if
     call fmr_build_execution_order(columns, order)
     batches = 0
