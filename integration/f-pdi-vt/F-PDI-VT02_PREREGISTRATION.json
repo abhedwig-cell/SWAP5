@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT02",
+  "title": "Minimal absolute-temperature correction qualification",
+  "phase": "PREREGISTERED_FIX_QUALIFICATION",
+  "candidate_fix": "Define TK=Temp+273.15 C-to-K once in Kvap_func and use TK in MgRT, Da and Rho_sv; preserve signed h.",
+  "temperatures_C": [
+    -20,
+    -5,
+    0,
+    5,
+    20,
+    35,
+    50
+  ],
+  "heads_cm": [
+    -1000,
+    -100000,
+    -10000000
+  ],
+  "direct_gates": {
+    "candidate_finite": true,
+    "candidate_nonnegative": true,
+    "relative_error_vs_independent_absolute_temperature_formula": 1e-12,
+    "NoVap_difference": 0
+  },
+  "decision_rule": "Only if all direct gates pass may the fix proceed to representative full-SWAP PDI vapor-on qualification. No alternate constants or empirical tuning are allowed.",
+  "hard_exclusions": [
+    "NO_CHANGE_TO_SIGNED_H_FIX",
+    "NO_CHANGE_TO_PDI_LIQUID_OR_FILM_TERMS",
+    "NO_TOLERANCE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
