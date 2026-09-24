@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04",
+  "title": "End-to-end Richards provider replay",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can a frozen hybrid hydraulic lookup replace only the constitutive evaluation layer of the Reference Richards solve while preserving accepted hydrological behavior and reducing total solve cost?",
+  "baseline_authority": "integration/f-ahl/F-AHL_FIXED_TABLE_BASELINE_RECONCILIATION.json",
+  "design_refinement": {
+    "lookup_domain": "h <= -1 cm",
+    "exact_analytic_domain": "h > -1 cm",
+    "reason": [
+      "B1.10 capacity has a timestep-dependent near-saturation floor for h > -1 cm.",
+      "Keeping h > -1 cm analytical makes the frozen lookup independent of timestep/retry changes.",
+      "Near-saturation and branch-switch semantics remain exact rather than interpolated."
+    ],
+    "lifecycle": ["BUILD_FROM_AUTHORITY", "FREEZE", "BIND_CURRENT_STEP", "RUN"],
+    "runtime_refinement": false
+  },
+  "candidates": [
+    "authoritative analytical B1.10 provider",
+    "fixed 50-point log-head lookup with exact h > -1 cm fallback",
+    "fixed 100-point log-head lookup with exact h > -1 cm fallback",
+    "adaptive error-controlled lookup with exact h > -1 cm fallback"
+  ],
+  "stage_A": {
+    "fixture": "FSI24 Gate-C nonlinear B1.10 Richards case",
+    "purpose": "solver-response identity/fidelity screen before broad timing",
+    "required_observables": [
+      "solve status",
+      "nonlinear iterations",
+      "jacobian builds",
+      "linear solves",
+      "backtracking attempts",
+      "candidate pressure head",
+      "candidate water content",
+      "top and bottom flux",
+      "integrated/native mass diagnostics"
+    ]
+  },
+  "stage_B_after_stage_A_pass": {
+    "purpose": "runtime and trajectory comparison on multiple materials/cases",
+    "required_fixed_baselines": [50,100],
+    "required_accounting": [
+      "one-time build cost",
+      "provider evaluation cost",
+      "total Richards solve CPU",
+      "iterations and retries",
+      "accepted trajectory",
+      "mass balance"
+    ]
+  },
+  "acceptance_policy": {
+    "no_bit_identity_requirement": true,
+    "reason": "The lookup is an approximation and must be judged against preregistered physical/numerical error gates rather than falsely requiring identical floating-point arithmetic.",
+    "mass_gate_cm": 1e-12,
+    "no_solver_policy_change": true,
+    "no_tolerance_retuning": true
+  },
+  "hard_exclusions": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_SURFACE_BOUNDARY_REDESIGN",
+    "NO_MODFLOW_TANGENT_CLAIM",
+    "NO_DKDH_OR_SWKIMPL1_EXTENSION",
+    "NO_RUNTIME_TABLE_REFINEMENT",
+    "NO_INTERPOLATION_ACROSS_H_GREATER_THAN_MINUS_1_NEAR_SATURATION_REGION"
+  ]
+}
