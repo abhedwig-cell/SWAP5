@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12A",
+  "title": "Prescribed-qbot convergence attribution",
+  "parent": "F-AHL12",
+  "phase": "PREREGISTERED_RESEARCH",
+  "observed_case": "B01:wet",
+  "observation": {
+    "max_abs_pressure_head_delta_cm": 1.476859e-6,
+    "max_abs_water_content_delta": 2.964982e-9,
+    "bottom_flux_delta": 0.0,
+    "mass_residual_abs_cm": 5.551115e-17,
+    "analytical_iterations": 2,
+    "candidate_iterations": 3,
+    "analytical_backtracking": 2,
+    "candidate_backtracking": 3
+  },
+  "question": "Is the one-extra-iteration prescribed-qbot path caused by conductivity approximation rather than by the derivative-consistent retention/capacity representation?",
+  "variants": [
+    "decoupled theta/C interpolant plus K lookup at abs logK <=3e-4",
+    "same derivative-consistent theta/C interpolant plus exact analytical K"
+  ],
+  "decision_rule": "Attribute K as convergence-controlling only if exact K restores the analytical iteration and backtracking counts while preserving the already-small state and mass differences.",
+  "hard_exclusions": [
+    "NO_SOLVER_TOLERANCE_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_BOTTOM_BOUNDARY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
