@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp01.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP01",
+  "date": "2026-09-24",
+  "status": "CLOSED_REFERENCE_HARNESS_POLICY_UNSUITABLE_FOR_REALISTIC_DAILY_FORCING",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP01_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP01_RESULT.json",
+    "workflow_run": 35955370897
+  },
+  "outcome": {
+    "T64_all_materials_complete": false,
+    "T128_all_materials_complete": false,
+    "only_material_completing_both": "B16",
+    "blocked_materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12"
+    ]
+  },
+  "diagnosis": {
+    "failing_contract": "strict_first_sample prospective representation bound",
+    "bound_definition": "sum_i 0.5*(spacing(theta_s)+spacing(theta_i))*dz_i",
+    "semantic_role": "authorization gate for the pre-existing short-horizon residual fallback, not a physical Richards-domain criterion",
+    "observed_pattern": [
+      "Failures cluster at realistic daily forcing transitions.",
+      "B12 fails immediately after a forcing change near day 4 even at T128.",
+      "B02 fails later in HR72 even after temporal refinement.",
+      "Pre-failure accepted states retain tiny reported mass residuals and finite states."
+    ],
+    "interpretation": "Temporal refinement alone does not repair the failure because the gating condition is tied to a representation-floor residual allowance inherited from the short synthetic ROM-purpose harness.",
+    "not_concluded": [
+      "Richards equations cannot solve the realistic workload",
+      "S4 is more robust than Richards",
+      "candidate fidelity is acceptable",
+      "the representation-bound gate should simply be relaxed"
+    ]
+  },
+  "decision": {
+    "no_further_fixed_temporal_ladder": true,
+    "no_tolerance_relaxation": true,
+    "candidate_changes_authorized": false,
+    "next_work_unit": "ROM-PRACTICAL-P6B-SM-RNP02",
+    "next_question": "Can the same R128 Richards physics be exercised under an independently appropriate transaction/adaptive-step policy for realistic dynamic-top forcing, without the short-horizon representation-floor fallback gate?"
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
