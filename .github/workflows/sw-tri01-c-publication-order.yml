@@ -1,0 +1,36 @@
+name: SW-TRI01-C dual external publication ordering
+
+on:
+  push:
+    branches:
+      - work/sw-tri01-minimal-real-three-model-composition
+    paths:
+      - 'src/adapter/modflow6_ribasim_triangle_application_service.py'
+      - 'tests/triangle/test_sw_tri01_c_publication_order.py'
+      - 'tests/triangle/run_sw_tri01_c_publication_order.sh'
+      - 'integration/triangle/SW_TRI01_C_*'
+      - '.github/workflows/sw-tri01-c-publication-order.yml'
+  pull_request:
+    paths:
+      - 'src/adapter/modflow6_ribasim_triangle_application_service.py'
+      - 'tests/triangle/test_sw_tri01_c_publication_order.py'
+      - 'tests/triangle/run_sw_tri01_c_publication_order.sh'
+      - 'integration/triangle/SW_TRI01_C_*'
+      - '.github/workflows/sw-tri01-c-publication-order.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deterministic dual-external ordering gate
+        run: bash tests/triangle/run_sw_tri01_c_publication_order.sh
