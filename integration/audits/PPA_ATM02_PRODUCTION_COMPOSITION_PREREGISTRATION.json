@@ -2,6 +2,16 @@
   "schema_version": "1.0",
   "work_unit": "PPA-ATM-02-PRODUCTION-COMPOSITION",
   "state": "RESTRICTED_TWO_INTERVAL_RESTART_OWNER_QUALIFIED",
+  "prescribed_root_event_successor": {
+    "candidate_commit": "d234a4524",
+    "status": "OWNER_EVENT_AND_ROLLBACK_QUALIFICATION_PENDING",
+    "component": "46982aee0 direct oracle/guard gate PASS O0/O2, all 45 cases, exact no-root delta and eight atomic rejection cases; mode-2/5 preservation PASS. Build swap-free-drainage-1bf65088-cde8-41c1-a946-87134e07ee7e. Exact concrete prescribed-root provider only; embedded root remains zero.",
+    "implementation": "c84152f2c removes only the root-active event rejection from the backend; all other event guards remain. Default-false marker, committed-state ownership and tolerances unchanged.",
+    "initial_experiment": "c84152f2c O0 completes original then changed-weather half-day intervals with 4052/8924 accepted substeps per tile on both continued and restored owners; radiation changes from 18e6 to 20e6 J/m2/day and both top flux/root vector must change. Third unchanged-weather half-day fails after 7351 internal accepts per tile (application status 10, kernel status 2). Build swap-ppa-wu01-d8a712c72d1741fd84d851349a1eb422. The failed whole gate is NOT an O0/O2 success claim; forcing and tolerances are not reduced.",
+    "required_gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Atm02Events: exact changed-weather owner/restart and root amounts; unbound-service, zero-retry and one-internal-accept failure cases; exact restored replay after partial failure; third-interval diagnosed rejection with full rollback and no root amount/ready receipt. Third interval is explicitly NOT qualified continuation success.",
+    "preservation": "c84152f2c CanonicalOutput PASS O0/O2, build swap-ppa-wu01-01b4f787426c44748801eba494708176. Root-inactive Windows O0 replay passes, O2 replay pending. No additional production changes at d234a4524.",
+    "next": "Complete O0/O2 event rollback gate and root-inactive preservation before expanding qualified scope. Retain late unmarked continuation failure as an open numerical boundary; no dynamic root law, disk restart, general weather or canonical admission claim."
+  },
   "explicit_numerical_owner_successor": {
     "tested_commit": "0dc7b93a3",
     "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Atm02",
