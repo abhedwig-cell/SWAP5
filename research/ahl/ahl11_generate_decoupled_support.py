@@ -53,7 +53,11 @@ for mid,p in dc.base.MATERIALS.items():
     dc.write_table(f"{mid}_ret",p,rknots)
     print("AHL11_RET",mid,"points",len(rknots))
     for name,tol in K_VARIANTS.items():
-        knots=build_k(p,tol)
+        try:
+            knots=build_k(p,tol)
+        except RuntimeError as exc:
+            print("AHL11_K_BUILD_FAIL",mid,name,"reason",str(exc))
+            continue
         worst=max(kerr(a,b,p) for a,b in zip(knots[:-1],knots[1:]))
         write_k(mid,name,p,knots)
         print("AHL11_K",mid,name,"points",len(knots),"max_logK",f"{worst:.12e}","tol",tol)
