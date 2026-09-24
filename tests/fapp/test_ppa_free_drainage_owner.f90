@@ -145,12 +145,23 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
+    use mod_irrigation_process
+    use mod_ppa_irr_dcs1_composition, only: evaluate_profile_scheduled_irrigation
+    use mod_process_hydraulic_view, only: process_hydraulic_view_t
     type(fmr_production_application_config_t),intent(in)::profile
     type(fmr_production_application_bootstrap_t)::owner
     type(fmr_committed_hydraulic_state_t),allocatable::copied(:),again(:)
     type(fmr_committed_restart_bundle_t)::bundle
     integer::code,tile
     logical::ok
+    type(scheduled_irrigation_parameters_t)::irrigation
+    type(scheduled_irrigation_request_t)::request
+    type(irrigation_state_t)::base,candidate
+    type(irrigation_flux_result_t)::flux
+    type(irrigation_diagnostics_t)::diagnostics
+    type(process_hydraulic_view_t)::hydraulic
+    real(real64)::selected_amount(NTILE),expected,thickness
+    integer::pass
     call owner%copy_committed_hydraulic_states(copied,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(copied)) error stop 'uninitialized hydraulic copy'
     call owner%initialize(profile,code)
@@ -180,6 +191,44 @@ contains
     if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy restore'
     call owner%copy_committed_hydraulic_states(again,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy again'
+    ! Consume the actual owner's detached profile, before/after another restart.
+    irrigation%scheduled_irrigation_enabled=.true.
+    irrigation%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+    irrigation%sensor_node=1; irrigation%single_ssdi_node=1
+    irrigation%tcs7_knot_count=2
+    irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%tcs7_pressure_head(1:2)=0.0_real64
+    irrigation%dcs1_knot_count=2
+    irrigation%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+    request%selection_opportunity=.true.; request%irrigation_enabled=.true.
+    request%schedule_enabled=.true.; request%crop_emerged=.true.; request%irrigation_window_open=.true.
+    do pass=1,2
+      if(pass==2) then
+        call owner%restore_committed_restart(bundle,92001_int64,ok,code)
+        if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation profile restore'
+        call owner%copy_committed_hydraulic_states(again,code)
+        if(code/=FMR_APP_BOOT_OK) error stop 'irrigation profile recopy'
+      end if
+      do tile=1,NTILE
+        hydraulic%active_nodes=size(again(tile)%water_content)
+        hydraulic%pressure_head=again(tile)%pressure_head_cm
+        hydraulic%water_content=again(tile)%water_content
+        irrigation%active_nodes=hydraulic%active_nodes
+        request%t0=again(tile)%committed_time; request%t1=request%t0+1.0_real64
+        thickness=profile%tiles(tile)%parameters%dz(1)
+        call evaluate_profile_scheduled_irrigation(irrigation,base,request,hydraulic,1,[1],[thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             candidate,flux,diagnostics)
+        if(diagnostics%status/=IRRIGATION_OK.or..not.flux%applied) error stop 'owner profile DCS1 selection'
+        expected=0.8_real64*thickness*0.5_real64-hydraulic%water_content(1)*thickness*0.5_real64
+        if(abs(flux%external_inflow_amount-expected)>8.0_real64*epsilon(expected)*max(1.0_real64,expected)) &
+             error stop 'owner profile DCS1 source amount'
+        if(pass==1) selected_amount(tile)=flux%external_inflow_amount
+        if(abs(flux%external_inflow_amount-selected_amount(tile))>0.0_real64) &
+             error stop 'owner profile DCS1 restart identity'
+      end do
+    end do
+    write(*,'(a)') 'PPA_OWNER_PROFILE_DCS1_SELECTION_RESTART_IDENTITY=PASS'
     do tile=1,NTILE
       if(any(abs(again(tile)%water_content-profile%tiles(tile)%initial_state%water_content)>0.0_real64)) &
            error stop 'hydraulic copy isolation water'
