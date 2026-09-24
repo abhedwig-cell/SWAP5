@@ -19,6 +19,12 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "linear_storage_composition": {
+    "baseline": "112c6637e",
+    "scope": "Manufactured closed-exchange matrix storage law dtheta/dh=1, weighted by explicit static matrix fraction and layer thickness. Real bounded macropore residual/derivative callbacks are iterated at dt=0.5,1,2. Not full Richards or production physics qualification.",
+    "checks": "Converged head independently determines matrix storage change; it matches captured transfer and cancels macropore storage change. Deliberately omitting matrix fraction gives a detectable balance error. No owner commit or source equation changes.",
+    "test_result": "Pending persisted replay"
+  },
   "static_matrix_fraction_component": {
     "baseline": "a614afcf8",
     "source": "Exact B1.11 macropore.f90 line 386: FrArMtrx = 1 - VlMpStCp / Dz",

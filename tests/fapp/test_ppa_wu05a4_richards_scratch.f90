@@ -159,10 +159,59 @@ program test_scratch_binding
   call nonlinear_callback_sequence()
   call interval_handoff()
   call check_matrix_fraction()
+  call coupled_storage_check()
+  print '(a)','PPA_WU05A4_LINEAR_MATRIX_MACRO_STORAGE_BALANCE=PASS'
   print '(a)','PPA_WU05A4_STATIC_MATRIX_FRACTION=PASS'
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  ! Closed exchange with a manufactured linear matrix storage law, no vertical
+  ! flow. Exercises physical volume weighting but is NOT full Richards.
+  subroutine coupled_storage_check()
+    type(reference_richards_workspace_t),allocatable::scratch
+    type(reference_trial_transfer)::capture
+    type(macro_trial_key)::identity
+    real(real64),allocatable::fraction(:),transfer(:)
+    real(real64)::h,dt,capacity,store,initial_store,final_store,matrix_change
+    logical::valid,converged
+    integer::j,k
+    allocate(scratch)
+    call initialize_reference_workspace(scratch,2)
+    call static_matrix_fraction([0.25_real64,0.25_real64],input%dz,fraction,valid)
+    call check(valid,190)
+    capacity=fraction(2)*input%dz(2) ! dtheta/dh = 1 for this test law
+    do j=1,3
+      dt=0.5_real64*2.0_real64**(j-1)
+      h=0.25_real64; converged=.false.
+      identity=macro_trial_key(95_int64,0_int64,int(j,int64),1_int64)
+      do k=1,100
+        identity%evaluation=int(k,int64)
+        scratch%residual=[0.0_real64,capacity*(h-0.2_real64)/dt]
+        call apply_saturated_reference_residual(input,[-0.5_real64,h],0.0_real64,dt, &
+            identity,scratch%generation,scratch,capture,store,valid)
+        call check(valid,191)
+        if(abs(scratch%residual(2))<1.e-13_real64)then
+          converged=.true.; exit
+        end if
+        scratch%dfdh_main=capacity/dt
+        call apply_reference_trial_diagonal(scratch,capture,identity,.true.,valid,[-0.5_real64,h])
+        call check(valid,192)
+        h=h-scratch%residual(2)/scratch%dfdh_main(2)
+      end do
+      call check(converged,193)
+      call copy_reference_budget(scratch,capture,identity,[-0.5_real64,h],dt, &
+          transfer,initial_store,final_store,valid)
+      call check(valid,194)
+      matrix_change=capacity*(h-0.2_real64)
+      call check(abs(matrix_change-sum(transfer))<3.e-13_real64,195)
+      call check(abs(matrix_change+final_store-initial_store)<3.e-13_real64,196)
+      ! Omitting the static-pore fraction would measurably violate this balance.
+      call check(abs(input%dz(2)*(h-0.2_real64)+final_store-initial_store)>1.e-3_real64,197)
+      call discard_reference_transfer(capture)
+    end do
+    call release_reference_workspace(scratch)
+  end subroutine
+
   subroutine check_matrix_fraction()
     real(real64),allocatable::fraction(:)
     logical::valid
