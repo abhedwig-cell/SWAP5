@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL02",
+  "phase": "PRELIMINARY_PREFLIGHT_RESULT",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "prototype_commit": "ff6f20514cd874b88ff595ce0ffa8208f45e3037",
+  "evidence_class": "analytical research preflight; not CI qualification and not production evidence",
+  "comparison": "F-AHL01 direct theta versus transformed logit(Se), with log(C) and log(K) unchanged",
+  "materials": {
+    "B01": {
+      "direct_theta_points": 392,
+      "logit_se_points": 160,
+      "reduction_fraction": 0.5918367347,
+      "logit_se_errors": {
+        "theta_span": 9.986614397621618e-6,
+        "log_capacity": 1.4240246107597443e-3,
+        "log_conductivity": 6.693790113724507e-3
+      },
+      "pass": true
+    },
+    "B12": {
+      "direct_theta_points": 199,
+      "logit_se_points": 182,
+      "reduction_fraction": 0.0854271357,
+      "logit_se_errors": {
+        "theta_span": 9.9854472745378e-6,
+        "log_capacity": 2.6467020667357843e-3,
+        "log_conductivity": 9.323739239280204e-3
+      },
+      "pass": true
+    },
+    "O05": {
+      "direct_theta_points": 415,
+      "logit_se_points": 115,
+      "reduction_fraction": 0.7228915663,
+      "logit_se_errors": {
+        "theta_span": 9.903046320396185e-6,
+        "log_capacity": 2.4426999545950068e-3,
+        "log_conductivity": 5.110956925501231e-3
+      },
+      "pass": true
+    },
+    "O14": {
+      "direct_theta_points": 416,
+      "logit_se_points": 187,
+      "reduction_fraction": 0.5504807692,
+      "logit_se_errors": {
+        "theta_span": 9.68498656639091e-6,
+        "log_capacity": 1.4611688874541784e-3,
+        "log_conductivity": 7.461920735778671e-3
+      },
+      "pass": true
+    }
+  },
+  "finding": "The physically transformed retention coordinate reduces support materially for three of four materials and modestly for B12 while preserving all preregistered error limits.",
+  "interpretation": "Representation coordinate is a stronger lever than simply raising interpolation order in this preflight. This supports investigating a compact transformed hybrid representation before any end-to-end Richards integration.",
+  "nonclaims": [
+    "No solver speedup is established.",
+    "No end-to-end hydrological equivalence is established.",
+    "No claim is made outside the four tested unimodal materials and the smooth h <= Hcrit core.",
+    "No production admission is implied."
+  ],
+  "next_gate": "Measure lookup-search plus reconstruction cost against direct constitutive evaluation and fixed-table alternatives; independently validate dense off-grid errors before Richards replay."
+}
