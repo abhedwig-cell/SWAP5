@@ -135,8 +135,8 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        'rejected full-trial tangent work absent from publication')
   write(*,'(A)') 'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS'
 
-  call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
-       'reference solve performs three full workspace resets on current path')
+  call require(observation_off%solver_diagnostics%workspace_full_resets == 2, &
+       'reference solve performs two full workspace resets after ZW01-H1 removal')
   call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
        'workspace reset observer records positive zeroed byte volume')
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_SOLVE=', &
@@ -151,8 +151,8 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
-  call require(diagnostics_off%workspace_full_resets == 9, &
-       'external full-half interval aggregates three resets across three Reference solves')
+  call require(diagnostics_off%workspace_full_resets == 6, &
+       'external full-half interval aggregates two resets across three Reference solves')
   call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
        observation_off%solver_diagnostics%workspace_zeroed_bytes, &
        'interval reset bytes equal three Reference-solve reset payloads')
