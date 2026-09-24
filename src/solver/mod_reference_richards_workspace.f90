@@ -36,6 +36,8 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: warm_start_head(:)
      logical :: has_warm_start = .false.
      type(soil_water_solver_diagnostics_t) :: diagnostics
+     integer :: profile_full_reset_calls = 0
+     integer(int64) :: profile_zeroed_bytes = 0_int64
   end type reference_richards_workspace_t
 
   public :: initialize_reference_workspace
@@ -75,9 +77,13 @@ contains
 
   subroutine reset_reference_workspace(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
+    integer(int64) :: reset_bytes
 
     if (workspace%active_nodes <= 0) return
     if (.not. allocated(workspace%residual)) return
+    reset_bytes = reference_workspace_payload_bytes(workspace)
+    workspace%profile_full_reset_calls = workspace%profile_full_reset_calls + 1
+    workspace%profile_zeroed_bytes = workspace%profile_zeroed_bytes + reset_bytes
     workspace%dfdh_lower = 0.0_real64
     workspace%dfdh_main = 0.0_real64
     workspace%dfdh_upper = 0.0_real64
@@ -209,6 +215,8 @@ contains
     workspace%has_warm_start = .false.
     workspace%unsaturated_flags = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
+    workspace%profile_full_reset_calls = 0
+    workspace%profile_zeroed_bytes = 0_int64
   end subroutine release_reference_workspace
 
   function reference_workspace_payload_bytes(workspace) result(nbytes)
