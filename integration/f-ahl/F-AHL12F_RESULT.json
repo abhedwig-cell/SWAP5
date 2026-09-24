@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12F",
+  "phase": "PAIRED_QBOT_TIMING_COMPLETE",
+  "status": "SLOWER",
+  "workflow_run": 36047729903,
+  "workflow_job": 107795334173,
+  "paired_candidate_over_analytical_ratios": [
+    1.136023,
+    1.134775,
+    1.141634,
+    1.158462,
+    1.157551,
+    1.149933,
+    1.132646
+  ],
+  "median_paired_ratio": 1.141634,
+  "median_cpu_change_fraction": 0.141634,
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 0.000001476859,
+    "max_abs_water_content_delta": 2.964982e-9,
+    "top_flux_delta_cm_per_day": 0,
+    "bottom_flux_delta_cm_per_day": 0,
+    "mass_residual_abs_cm": 5.551115e-17,
+    "verdict": "PASS"
+  },
+  "known_nonlinear_path": {
+    "analytical_iterations": 2,
+    "candidate_iterations": 3,
+    "analytical_backtracking": 2,
+    "candidate_backtracking": 3
+  },
+  "finding": "For the frozen B01 wet prescribed-qbot case, the F-AHL11 lookup candidate is consistently slower than analytical despite extremely small state error. The additional nonlinear iteration has a real end-to-end cost.",
+  "implication": "The prescribed-head speed result cannot be generalized to a prescribed-flux lower boundary. Further global densification is not justified by F-AHL12C/E; a different solver-facing retention/capacity representation is required.",
+  "nonclaims": [
+    "This is one prescribed-qbot case, not a complete flux-boundary matrix.",
+    "The numerical fidelity remains excellent.",
+    "No production admission is implied."
+  ]
+}
