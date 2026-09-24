@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26G",
+  "title": "PDI10 NoVap endpoint attribution and dry reference envelope",
+  "parent": "F-AHL26F",
+  "phase": "PREREGISTERED_RESEARCH",
+  "attribution_cases": ["PDI10_BIMODAL:wet","PDI10_BIMODAL:mid"],
+  "attribution_variants": [
+    "selected theta/C + selected K",
+    "selected theta/C + exact analytical K",
+    "exact analytical theta/C + selected K"
+  ],
+  "attribution_rule": "A component controls the endpoint failure only if restoring it closes the frozen bottom-flux gate while preserving the reference nonlinear path.",
+  "dry_case": {"material":"PDI10_BIMODAL","initial_head_cm":-100000.0,"bottom_head_cm":-80000.0},
+  "prospective_dry_dt_day": [0.125,0.0625,0.03125],
+  "dry_selection_rule": "Select the largest prospectively tested timestep at which the analytical reference converges. Candidate qualification at that dt is a subsequent stage; do not change iteration limits or tolerances.",
+  "hard_exclusions": ["NO_GATE_RETUNING","NO_ITERATION_LIMIT_CHANGE","NO_VAPOR_ENABLED_ROUTE","NO_PRODUCTION_ADMISSION"]
+}
