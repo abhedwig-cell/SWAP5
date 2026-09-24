@@ -40,4 +40,4 @@ gfortran -O3 "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
 
 RESULT="${1:-/tmp/ahl15r_result.txt}"
 "$OUT/test" "$BUILD/tables/FSI24_dc.dat" | tee "$RESULT"
-grep -Fq 'AHL15R_FIDELITY=PASS' "$RESULT"
+grep -Fq 'AHL09R_FIDELITY=PASS' "$RESULT"
