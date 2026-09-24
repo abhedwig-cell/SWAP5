@@ -27,8 +27,10 @@
     "contract": "One static surface-connected domain. Derive pore water level, saturated top and wet fraction from checkpoint storage using existing B1.11 MACROSTATE section-D helper. Validate checkpoint profile against source reconstruction and volume against static geometry. Return geometry and evaluator inputs atomically; matrix metadata remains unset for per-head derivation; reduction policy remains caller-owned.",
     "source": "B1.11 macropore.f90 lines 1358-1396; existing mod_ppa_wu05a3_macrostate_wetting_candidate",
     "tests": "Checkpoint to source-derived input to real workspace residual to accounted interval candidate; half-full and exact cell boundary metadata; immutable checkpoint; reject same-total wrong vertical profile, invalid lineage, shortened domain, noncontiguous centers, NaN resistance, mismatched volume, invalid diameter, overcapacity storage and missing payload allocation.",
-    "test_status": "Focused initial O0/O2 check passed; expanded cases and persisted regression pending",
-    "next_action": "Run nine-gate bounded regression against checkpoint plus MPVOLUME surface gate",
+    "recovery_point": "a02019303",
+    "test_status": "Persisted a02019303 nine-gate bounded regression plus MPVOLUME surface gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps",
+    "continuation_extension": "Replace manual fixture water-level/fraction reconstruction on both continuous and restored DTO legs with checkpoint translation; focused postimage replay pending.",
+    "next_action": "Replay checkpoint-derived restart continuation gate",
     "limits": "No production HeadCalc invocation, top forcing, dynamic geometry or canonical commit. Interval candidate retains its separately documented proposed conservative-flux policy. No remote push requested."
   },
   "static_geometry_composition": {

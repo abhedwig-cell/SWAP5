@@ -405,6 +405,7 @@ contains
     type(ppa_wu05a2_macropore_checkpoint_t)::restored_checkpoint
     type(ppa_wu05a2_macropore_candidate_t)::replayed
     type(saturated_domain_inputs)::next_input
+    type(static_macro_geometry)::next_geometry
     type(ppa_wu05a2_macropore_checkpoint_t)::checkpoint
     type(ppa_wu05a2_macropore_candidate_t)::candidate
     type(candidate_mass_account)::account
@@ -478,12 +479,9 @@ contains
     call check(valid,148)
     call ppa_wu05a2_capture_checkpoint(restored,restored_checkpoint,valid)
     call check(valid,149)
-    next_input=input
-    next_input%storage=continued%payload%domain_water_storage(1)
-    ! This fixture's new water surface is inside the bottom cell.
-    next_input%pore_level=-2.0_real64+next_input%storage/0.25_real64
-    next_input%pore_saturated_top=2
-    next_input%saturated_fraction=next_input%storage/0.25_real64
+    call prepare_static_checkpoint_input(checkpoint,input%z,input%dz,input%volume, &
+        [1.0_real64,1.0_real64],input%resistance_inverse,next_input,next_geometry,valid)
+    call check(valid.and.next_input%pore_saturated_top==2,249)
     identity%revision=continued%revision; identity%attempt=2; identity%evaluation=1
     scratch%residual=0
     call apply_saturated_reference_residual(next_input,[-0.5_real64,0.1_real64],0.0_real64,1.0_real64, &
@@ -494,9 +492,9 @@ contains
     call check(valid,151)
     call discard_reference_transfer(capture)
     call reset_reference_workspace(scratch)
-    next_input%storage=restored%payload%domain_water_storage(1)
-    next_input%pore_level=-2.0_real64+next_input%storage/0.25_real64
-    next_input%saturated_fraction=next_input%storage/0.25_real64
+    call prepare_static_checkpoint_input(restored_checkpoint,input%z,input%dz,input%volume, &
+        [1.0_real64,1.0_real64],input%resistance_inverse,next_input,next_geometry,valid)
+    call check(valid,250)
     call apply_saturated_reference_residual(next_input,[-0.5_real64,0.1_real64],0.0_real64,1.0_real64, &
         identity,scratch%generation,scratch,capture,diagnostic,valid)
     call check(valid,152)
