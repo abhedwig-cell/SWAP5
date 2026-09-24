@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25D",
+  "phase": "BIMODAL_RICHARDS_FALSIFICATION_COMPLETE",
+  "status": "FAIL_7_OF_9_ENDPOINT_FLUX",
+  "workflow_run": 36050439957,
+  "workflow_job": 107804347537,
+  "passed_cases": [
+    "M3_BALANCED:wet","M3_BALANCED:mid","M3_BALANCED:dry",
+    "M3_SEPARATED:mid","M3_SEPARATED:dry",
+    "M3_DOMINANT_SECOND:wet","M3_DOMINANT_SECOND:mid"
+  ],
+  "failed_cases": {
+    "M3_SEPARATED:wet": {
+      "max_head_delta_cm": 0.001805344,
+      "max_theta_delta": 5.151503e-6,
+      "bottom_flux_delta_cm_per_day": 2.550375e-5,
+      "iteration_delta": 0,
+      "backtracking_delta": 0,
+      "failure": "bottom_flux"
+    },
+    "M3_DOMINANT_SECOND:dry": {
+      "max_head_delta_cm": 0.008405924,
+      "max_theta_delta": 2.590437e-6,
+      "bottom_flux_delta_cm_per_day": 2.731523e-5,
+      "iteration_delta": 0,
+      "backtracking_delta": 0,
+      "failure": "bottom_flux"
+    }
+  },
+  "global_observation": "All 9 cases preserve the analytical nonlinear iteration and backtracking path. The only failures are strict endpoint bottom-flux fidelity.",
+  "next_action": "F-AHL25E component attribution on the two failed cases using exact K with interpolated derivative-consistent retention and exact retention/capacity with lookup K. Do not alter gates.",
+  "nonclaims": ["NO_MODEL3_PERFORMANCE_CLAIM","NO_GATE_RETUNING","NO_PRODUCTION_ADMISSION"]
+}
