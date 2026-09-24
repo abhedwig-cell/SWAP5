@@ -583,3 +583,14 @@ Required follow-up:
 - free-drainage SWKIMPL=0 poison case;
 - existing SWKIMPL=1 preservation;
 - no change to other bottom modes.
+
+
+## ZW01-H14 preregistration — persistent zero direction for smooth drainage-qbot projection
+
+The smooth drainage-qbot projection path currently allocates `projection_zero_direction(n)` and fills it with zero on every physical solve. The vector represents an invariant zero perturbation and depends only on active-node shape.
+
+H14 stores one zero-direction vector on the serialized model and prepares it once per interval/shape when smooth drainage-qbot projection is active. The projection routine receives the same all-zero values, but full/half/retry solves no longer allocate and initialize a temporary vector individually.
+
+Expected effect: remove one allocation, one deallocation and N real zero writes per physical solve on the smooth drainage-qbot projection route. This route is directly relevant to coupled groundwater execution.
+
+Gates: projected groundwater level bit-identical, drainage response diagnostics unchanged, accepted-direction drainage route unchanged, and existing groundwater/drainage qualification remains green.
