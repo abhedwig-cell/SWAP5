@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12E",
+  "title": "Prescribed-qbot capacity-controlled retention support",
+  "parent": "F-AHL12D",
+  "phase": "PREREGISTERED_RESEARCH",
+  "diagnosis": "F-AHL12D showed that prescribed-qbot Newton-path sensitivity tracks local C/Jacobian error more directly than the global theta error target. The original 28-point support had local |dlogC| of order 1e-6 to 5e-6 and required one extra iteration; theta-only refinement accidentally worsened local C error to order 1e-5 to 5e-5.",
+  "question": "Can a timestep-independent derivative-consistent retention interpolant controlled directly by relative/log capacity error recover the analytical prescribed-qbot Newton path?",
+  "frozen_case": "B01:wet, bottom_mode=2, qbot=1e-6 cm/day, dt=0.01 day",
+  "representation": "cubic Hermite z=logit(Se), C derived from the same interpolant derivative; conductivity support remains independently fixed at F-AHL11 k03",
+  "prospective_variants": [
+    {"id":"c1e6","theta_span_error_limit":1e-5,"abs_logC_error_limit":1e-6},
+    {"id":"c3e7","theta_span_error_limit":1e-5,"abs_logC_error_limit":3e-7}
+  ],
+  "conductivity_does_not_drive_retention_support": true,
+  "decision_rule": "Select the loosest prospectively tested C limit that restores analytical iteration and backtracking counts while passing frozen state and mass gates. If neither passes, stop density tuning and change representation family or solver-facing error metric.",
+  "hard_exclusions": [
+    "NO_TIMESTEP_DEPENDENT_TABLE_BUILD",
+    "NO_K_DRIVEN_RETENTION_KNOTS",
+    "NO_GATE_RETUNING",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
