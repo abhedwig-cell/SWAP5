@@ -11,7 +11,16 @@ wrong count/shape, negative, NaN, oversized, unsupported extension and duplicate
 embedded roots. Existing mode-2 FSI38 and mode-5 FSI25 preservation passes.
 The initial duplicate-root fixture incorrectly invoked a rejecting binding API;
 46982aee0 fixes the fixture by corrupting its target only after valid binding.
-Runtime changed-weather qualification remains separate and pending.
+Runtime successor at d234a4524 passes the bounded Atm02Events O0/O2 gate:
+3,840,522 identical lines, SHA256
+`8C9980AE4862BAC6957E302881EABB385FC911A17C0A8A0FD051AEE214BF4585`.
+Original then changed-weather half-days complete with exact owner/restart and
+root amounts; unbound-service, failed/partial attempts and restored replay
+preserve committed state and accepted-only publication. The third unmarked
+half-day still fails after 7351 internal accepts and rolls back exactly: this
+is not third-period completion. Root-inactive Windows and canonical output
+preservation pass. Full evidence and remaining scope are recorded in
+`PPA_ATM02_PRODUCTION_COMPOSITION_PREREGISTRATION.json`.
 
 Baseline: 543955b9a. Bounded implementation is authorized first in the read-only
 derivative component, then in runtime forwarding only after direct oracle/guard

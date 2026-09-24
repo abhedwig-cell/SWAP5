@@ -15,7 +15,7 @@ confirmed B0 defects are not migration targets.
 | Core Richards, dynamic top and mass accounting | B1; Status-A traceability; PPA-TOP-01 | CANONICALLY_ADMITTED | Status-A scientific/numerical preservation; transaction and mass invariants | Preserve; do not reopen without dependency overlap |
 | Typed production bootstrap, mode 7 standalone / all-mode-5 groundwater | PPA-WU01 | CANONICALLY_ADMITTED | PPA-WU01 owner, O0/O2 and preservation gates | Hold fixed; mixed 5/7 remains fail-closed |
 | Resolved forcing, SWETR=1, SWINTER=0 and resolved irrigation | PPA-WU03 / PPA-ATM-03 | CANONICALLY_ADMITTED | PPA-WU03 owner/independent/preservation gates | Extend only through a separate ingestion slice |
-| Legacy weather files, calendars and complete meteorological preprocessing | B1 `MOD_meteo`, `readswap`, `timecontrol`; PPA-ATM-02 | PARTIAL | Decoded daily records, generic-time coverage and PMdirect/SWINTER=0 pure composition are qualified; file/date decoding and accepted production publication remain open | Define transaction/mass/restart composition before production binding |
+| Legacy weather files, calendars and complete meteorological preprocessing | B1 `MOD_meteo`, `readswap`, `timecontrol`; PPA-ATM-02 | PARTIAL | Branch-local PMdirect/SWINTER=0 prescribed-root owner, marked weather transition, accepted uptake, exact restart and failed/partial rollback pass O0/O2 under explicit numerical options; third-period completion, file/date decoding and canonical admission remain open | Diagnose the late unmarked continuation failure; broaden ingestion only within the existing owner contract |
 | PMdirect normal-input derivation | B1 `MOD_meteo`; PPA-ET-00 | PARTIAL | Restricted typed Hupsel composition admitted | Bind ordinary input derivation without changing ET physics |
 | Dynamic top: head/flux/ponding/linear runoff | B1 `boundtop`; PPA-TOP-01 | IMPLEMENTED_NOT_FULLY_QUALIFIED | Restricted profile only | Broaden only with option-specific authority |
 | SWINTER=0 / Rutter SWINTER=3 | PPA-INT-00 / PPA-INT-03 | CANONICALLY_ADMITTED | Bounded typed applications | Preserve profile bounds |
@@ -56,7 +56,13 @@ confirmed B0 defects are not migration targets.
 3. **PPA-LOW01 / PPA-LOW08** now have pure input/regime/profile/row-term oracles, but their stateful lower-boundary slices remain open; do not conflate them with production migration.
 4. **PPA-WU05 remaining root family** has exact-equation oracles but no qualified multi-stressor or MICRO stateful runtime owner.
 
-No production-admission candidate is currently `READY`: PPA-ATM-02 reached the pure typed-ingress and PMdirect/SWINTER=0 composition boundary, but accepted production publication requires an explicit transaction/mass/restart contract. PPA-WU04-C/D required the exact B1.11
+No production-admission candidate is currently `READY`. PPA-ATM-02 now has
+bounded branch-local owner/restart/accepted-uptake evidence at d234a4524, including
+a changed-weather event and failed/partial rollback. A later unmarked interval
+still fails and is qualified only for exact rollback, not completion. The
+explicit numerical profile does not establish broad weather ingress or canonical
+admission; see `PPA_ATM02_PRODUCTION_COMPOSITION_PREREGISTRATION.json` in the
+integration audit records. For PPA-WU04-C/D, the required exact B1.11
 `MOD_meteo.f90` equation oracle has been reconstructed and verified from the
 byte-exact distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`. Local

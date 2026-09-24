@@ -9,9 +9,9 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "latest_atm02_owner_checkpoint": {
-    "tested_commit": "0dc7b93a3",
+    "tested_commit": "d234a4524",
     "record": "integration/audits/PPA_ATM02_PRODUCTION_COMPOSITION_PREREGISTRATION.json",
-    "scope": "Explicit storage/temporal/dense-retry profile completes two unchanged-weather PMdirect intervals with active prescribed roots, exact fresh hydraulic/history restart, accepted root amount and hard mass. O0/O2 full transcripts match. Not the historical non-opt-in profile, changed-weather event support, general weather decoding or canonical admission."
+    "scope": "Explicit storage/temporal/dense-retry profile completes original then changed-weather PMdirect intervals with active prescribed roots and marked event, exact fresh hydraulic/history restart, accepted root amount and hard mass. Failed/partial attempts publish nothing; restored replay is exact. O0/O2 full transcripts match, direct oracle/guards and root-inactive/default preservation pass. Third unmarked interval still fails after 7351 internal accepts and is qualified only for exact rollback. Not general weather decoding, dynamic root stress or canonical admission."
   },
   "latest_storage_owner_checkpoint": {
     "tested_commit": "206dbf73e",
