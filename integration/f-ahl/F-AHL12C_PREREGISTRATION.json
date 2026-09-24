@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12C",
+  "title": "Prescribed-qbot retention-resolution sweep",
+  "parent": "F-AHL12B",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "How much additional derivative-consistent retention/capacity resolution is required to recover the analytical prescribed-qbot Newton path without reverting theta and C to full analytical evaluation?",
+  "frozen_case": "B01:wet, bottom_mode=2, qbot=1e-6 cm/day, dt=0.01 day",
+  "conductivity": "F-AHL11 independent K support fixed at abs logK <=3e-4",
+  "retention_capacity": {
+    "representation": "cubic Hermite z=logit(Se), C from exact derivative of same interpolant",
+    "baseline_theta_error_limit": 1e-5,
+    "prospective_theta_error_limits": [3e-6,1e-6],
+    "logC_error_limit": 1e-2,
+    "K_error_not_used_to_refine_retention_support": true
+  },
+  "gates": {
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "prescribed_qbot_exact_identity": true,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "Select the loosest prospectively tested theta error limit that restores the analytical 2-iteration/2-backtracking path. If neither does, redesign the retention error metric rather than extending an arbitrary density sweep.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_K_SUPPORT_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
