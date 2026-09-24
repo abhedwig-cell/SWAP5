@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04D",
+  "phase": "RUNTIME_SCREEN_COMPLETE",
+  "status": "PASS_SCREEN",
+  "workflow_run": 36040658446,
+  "workflow_job": 107771722495,
+  "seconds_per_evaluation": {
+    "full_analytical": 1.0772609711e-7,
+    "lookup_all": 5.9778213501e-8,
+    "exact_theta_lookup_C_K": 7.9042434692e-8
+  },
+  "reduction_vs_full_analytical_fraction": {
+    "lookup_all": 0.4450906966,
+    "exact_theta_lookup_C_K": 0.2662647510
+  },
+  "finding": "The asymmetric exact-retention candidate remains materially cheaper than full analytical constitutive evaluation in the optimized Fortran screen while F-AHL04C showed near-analytical nonlinear Richards response.",
+  "tradeoff": "Exact retention gives up part of the maximum full-lookup speed gain but retains about 26.6 percent constitutive evaluation reduction in this screen.",
+  "nonclaims": [
+    "This is not an end-to-end SWAP or Richards speedup.",
+    "Build cost is excluded.",
+    "The result is one material/fixture and requires broader material and trajectory qualification."
+  ],
+  "next_gate": "Implement a genuinely optimized split research provider that computes theta analytically without first computing full analytical C/K, then run multi-material end-to-end Richards trajectory and total-cost qualification."
+}
