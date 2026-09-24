@@ -1,0 +1,31 @@
+name: F-AHL04D exact-retention runtime
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl04d_runtime_screen.f90'
+      - 'research/ahl/ahl04b_generate_attribution_tables.py'
+      - 'integration/f-ahl/F-AHL04D_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl04d-exact-retention-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build table and benchmark
+        run: |
+          mkdir -p /tmp/ahl04d
+          python3 research/ahl/ahl04b_generate_attribution_tables.py /tmp/ahl04d >/tmp/ahl04d_tables.json
+          gfortran -O3 -std=f2008 -ffree-line-length-none research/ahl/ahl04d_runtime_screen.f90 -o /tmp/ahl04d_bench
+          /tmp/ahl04d_bench /tmp/ahl04d/base.dat | tee /tmp/ahl04d_result.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl04d-${{ github.run_id }}
+          path: |
+            /tmp/ahl04d_result.txt
+            /tmp/ahl04d_tables.json
