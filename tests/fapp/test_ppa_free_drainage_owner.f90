@@ -100,11 +100,6 @@ program test_ppa_free_drainage_owner
     config%storage_difference => evaluate_mvg_storage_difference_service
     ! A forcing discontinuity can require smaller first steps, not a larger error budget.
     config%numerical%transaction%max_retries=24
-    if(trim(test_scope)=='--stable-windows') then
-      do i=1,NTILE
-        config%tiles(i)%parameters%min_step_duration=1.0e-8_real64
-      end do
-    end if
   end if
   if(trim(test_scope)=='--guards'.or.trim(test_scope)=='--stable-guards') then
     call verify_opt_in_guards(config)
