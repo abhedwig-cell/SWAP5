@@ -1,0 +1,28 @@
+name: F-AHL04B attribution sweep
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl04b_generate_attribution_tables.py'
+      - 'research/ahl/run_ahl04b_attribution_sweep.sh'
+      - 'research/ahl/test_ahl04a_richards_provider_replay.f90'
+      - 'research/ahl/mod_ahl04_hybrid_lookup_provider.f90'
+      - 'integration/f-ahl/F-AHL04B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl04b-attribution-sweep.yml'
+  workflow_dispatch:
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run preregistered attribution sweep
+        run: |
+          bash research/ahl/run_ahl04b_attribution_sweep.sh /tmp/ahl04b_result.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl04b-${{ github.run_id }}
+          path: /tmp/ahl04b_result.txt
