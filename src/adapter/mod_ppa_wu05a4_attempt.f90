@@ -24,6 +24,7 @@ module mod_ppa_wu05a4_attempt
   end type
   public::begin_static_attempt,evaluate_static_attempt,diagonal_static_attempt
   public::finish_static_attempt,discard_static_attempt
+  public::finish_closed_static_attempt
 contains
   subroutine discard_static_attempt(attempt)
     type(static_macro_attempt),intent(out)::attempt
@@ -83,6 +84,48 @@ contains
     if(.not.attempt%active)return
     call apply_reference_trial_diagonal(workspace,attempt%transfer,attempt%key,enabled,ok,head)
     if(.not.ok)call discard_static_attempt(attempt)
+  end subroutine
+
+  ! Closed exchange only: no matrix intercell flux, sinks, top/bottom inputs,
+  ! pond change or other stores. Caller supplies independently evaluated theta,
+  ! not a theta reconstructed from the captured transfer to force closure.
+  subroutine finish_closed_static_attempt(attempt,workspace,head,theta_before,theta_after, &
+      tolerance,candidate,account,ok)
+    type(static_macro_attempt),intent(inout)::attempt
+    type(reference_richards_workspace_t),intent(in)::workspace
+    real(real64),intent(in)::head(:),theta_before(:),theta_after(:),tolerance
+    type(ppa_wu05a2_macropore_candidate_t),intent(out)::candidate
+    type(candidate_mass_account),intent(out)::account
+    logical,intent(out)::ok
+    real(real64),allocatable::amount(:),change(:)
+    real(real64)::begin_store,end_store
+    logical::valid
+    integer::n
+    ok=.false.
+    if(.not.attempt%active)return
+    ! A failed guard consumes the attempt, just like failed final extraction.
+    n=size(attempt%input%dz)
+    valid=.false.
+    guard: block
+      if(size(theta_before)/=n.or.size(theta_after)/=n)exit guard
+      if(.not.ieee_is_finite(tolerance))exit guard
+      if(tolerance<0)exit guard
+      if(.not.all(ieee_is_finite(theta_before)).or..not.all(ieee_is_finite(theta_after)))exit guard
+      if(any(theta_before<0).or.any(theta_before>1).or.any(theta_after<0).or.any(theta_after>1))exit guard
+      call copy_reference_budget(workspace,attempt%transfer,attempt%key,head,attempt%dt, &
+          amount,begin_store,end_store,valid)
+      if(.not.valid)exit guard
+      valid=.false.
+      change=(theta_after-theta_before)*(1.0_real64-attempt%input%volume/attempt%input%dz)*attempt%input%dz
+      if(.not.all(ieee_is_finite(change)))exit guard
+      if(any(abs(change-amount)>tolerance))exit guard
+      if(abs(sum(change)+end_store-begin_store)>tolerance)exit guard
+      valid=.true.
+    end block guard
+    if(.not.valid)then
+      call discard_static_attempt(attempt); return
+    end if
+    call finish_static_attempt(attempt,workspace,head,tolerance,candidate,account,ok)
   end subroutine
 
   subroutine finish_static_attempt(attempt,workspace,head,tolerance,candidate,account,ok)

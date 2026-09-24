@@ -174,11 +174,82 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_REDUCTION_BEFORE_STORAGE_LIMIT=PASS'
   print '(a)','PPA_WU05A4_REDUCTION_POLICY=PASS'
   call coupled_storage_check()
+  call closed_attempt_check()
+  print '(a)','PPA_WU05A4_CLOSED_ATTEMPT_STORAGE_GUARD=PASS'
   print '(a)','PPA_WU05A4_LINEAR_MATRIX_MACRO_STORAGE_BALANCE=PASS'
   print '(a)','PPA_WU05A4_STATIC_MATRIX_FRACTION=PASS'
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine closed_attempt_check()
+    type(static_macro_attempt)::attempt
+    type(static_macro_geometry)::geometry
+    type(ppa_wu05a2_macropore_checkpoint_t)::cp
+    type(ppa_wu05a2_macropore_candidate_t)::candidate
+    type(candidate_mass_account)::account
+    type(reference_richards_workspace_t),allocatable::scratch
+    real(real64)::h,dt,capacity,theta(2),bad_theta(2)
+    integer::j,k,mode
+    logical::valid,converged
+    call ppa_wu05a2_initialize_payload(1,2,cp%payload,valid)
+    call check(valid,300)
+    cp%lineage_id=96; cp%revision=0; cp%payload%bottom_domain=2
+    cp%payload%pore_volume=0.25_real64; cp%payload%domain_water_storage=0.375_real64
+    cp%payload%pore_water(1,:)=[0.125_real64,0.25_real64]
+    allocate(scratch)
+    call initialize_reference_workspace(scratch,2)
+    do j=1,3
+      dt=0.5_real64*2.0_real64**(j-1)
+      do mode=0,4
+        call begin_static_attempt(cp,input%z,input%dz,input%volume,[1.0_real64,1.0_real64], &
+            input%resistance_inverse,dt,int(10*j+mode,int64),0,scratch,attempt,geometry,valid)
+        call check(valid,301)
+        capacity=geometry%matrix_fraction(2)*input%dz(2)
+        h=0.25_real64; converged=.false.
+        do k=1,100
+          scratch%residual=[0.0_real64,capacity*(h-0.2_real64)/dt]
+          call evaluate_static_attempt(attempt,scratch,[-0.5_real64,h],0.0_real64,valid)
+          call check(valid,302)
+          if(abs(scratch%residual(2))<1.e-13_real64)then
+            converged=.true.; exit
+          end if
+          scratch%dfdh_main=capacity/dt
+          call diagonal_static_attempt(attempt,scratch,[-0.5_real64,h],.true.,valid)
+          call check(valid,303)
+          h=h-scratch%residual(2)/scratch%dfdh_main(2)
+        end do
+        call check(converged,304)
+        ! Independent manufactured constitutive law, theta(h)=h in cell 2.
+        theta=[0.2_real64,h]; bad_theta=theta
+        select case(mode)
+        case(1)
+          bad_theta(2)=theta(2)+0.01_real64
+        case(2)
+          ! Total unchanged, but wrong per-cell allocation must still fail.
+          bad_theta=theta+[0.01_real64,-0.01_real64]
+        case(3)
+          bad_theta(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+        case(4)
+          bad_theta(1)=-0.1_real64
+        end select
+        call finish_closed_static_attempt(attempt,scratch,[-0.5_real64,h],[0.2_real64,0.2_real64], &
+            bad_theta,1.e-12_real64,candidate,account,valid)
+        if(mode==0)then
+          call check(valid.and.candidate%valid.and.account%valid,305)
+          call check(abs(sum((theta-0.2_real64)*geometry%matrix_fraction*input%dz) &
+              +candidate%payload%domain_water_storage(1)-0.375_real64)<1.e-12_real64,306)
+        else
+          call check(.not.valid.and..not.candidate%valid.and..not.account%valid,307)
+        end if
+        call finish_closed_static_attempt(attempt,scratch,[-0.5_real64,h],[0.2_real64,0.2_real64], &
+            theta,1.e-12_real64,candidate,account,valid)
+        call check(.not.valid,308)
+      end do
+    end do
+    call check(abs(cp%payload%domain_water_storage(1)-0.375_real64)<tiny(1.0_real64),309)
+    call release_reference_workspace(scratch)
+  end subroutine
+
   subroutine check_attempt_lifecycle()
     type(static_macro_attempt)::attempt
     type(static_macro_geometry)::geometry
