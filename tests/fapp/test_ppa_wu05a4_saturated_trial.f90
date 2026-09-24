@@ -131,6 +131,19 @@ program test_saturated_trial
       key,e,storage,ok)
   call check(.not.ok.and..not.allocated(e%rate),49)
   input%matrix_top=2; input%matrix_level=-1
+  input%pore_saturated_top=3
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),50)
+  input%pore_saturated_top=0
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),51)
+  input%pore_saturated_top=1
+  input%resistance_inverse(1)=-1
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(.not.ok.and..not.allocated(e%rate),52)
+  input%resistance_inverse(1)=0.25_real64
+  call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
+  call check(ok,53)
   input%pore_level=-2
   call prepare_saturated_trial(input,[-0.5_real64,0.5_real64],1.0_real64,key,e,storage,ok)
   call check(.not.ok.and..not.allocated(e%rate),11)
@@ -141,6 +154,7 @@ program test_saturated_trial
   print '(a)','PPA_WU05A4_SATURATED_SYSTEM_ATOMIC=PASS'
   print '(a)','PPA_WU05A4_MATRIX_LEVEL_HEAD_BRANCHES=PASS'
   print '(a)','PPA_WU05A4_DERIVED_MATRIX_TRIAL=PASS'
+  print '(a)','PPA_WU05A4_UNUSED_PORE_METADATA_VALIDATION=PASS'
 contains
   subroutine check(condition,code)
     logical,intent(in)::condition

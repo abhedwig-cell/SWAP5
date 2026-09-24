@@ -11,6 +11,12 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "pore_metadata_validation": {
+    "baseline": "94b884c91",
+    "contract": "Restricted wet-pore adapter requires pore_saturated_top in 1:n, finite saturation fraction in [0,1], and nonnegative reciprocal resistance in every cell, including cells skipped by saturated exchange. This is adapter input validation, not a reference formula correction or a general empty-domain contract.",
+    "tests": "Reject top 0 and n+1 and negative resistance in the skipped unsaturated cell; restoring valid inputs succeeds. Saturated trial and nonlinear scratch gates pass O0/O2 in working tree.",
+    "limits": "Does not derive wet-wall fraction from continuation state or prove supplied pore metadata consistent with complete source history. Production remains unbound."
+  },
   "derived_matrix_extension": {
     "baseline": "693ae02fa",
     "interface": "prepare_saturated_from_heads copies input and derives matrix_level/matrix_top from current heads and pond at each call before preparation. Caller matrix metadata is ignored by this entry point, but never overwritten.",

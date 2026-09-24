@@ -149,6 +149,12 @@ contains
         .or.size(input%resistance_inverse)/=n)return
     if(.not.all(ieee_is_finite(head)))return
     if(.not.consistent_pore_geometry(input))return
+    ! This bounded wet-pore domain requires a real containing compartment.
+    ! Validate even when its flow branch would otherwise leave metadata unused.
+    if(input%pore_saturated_top<1.or.input%pore_saturated_top>n)return
+    if(.not.ieee_is_finite(input%saturated_fraction))return
+    if(input%saturated_fraction<0.or.input%saturated_fraction>1)return
+    if(any(input%resistance_inverse<0))return
     total_volume=sum(input%volume)
     call domain_storage_bounds(input%bottom,n,input%dz,input%volume,total_volume,input%storage, &
         input%matrix_level,input%bottom,.false.,ground,minimum,valid)
