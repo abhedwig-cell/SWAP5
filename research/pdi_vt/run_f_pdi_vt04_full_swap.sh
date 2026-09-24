@@ -78,9 +78,9 @@ patch_temp "$BUILDROOT/candidate-src"
 
 python3 -m pip install -q meson ninja
 
-meson setup "$BUILDROOT/control-build" "$BUILDROOT/control-src" >/tmp/fpdivt04-control-meson.log
+meson setup "$BUILDROOT/control-build" "$BUILDROOT/control-src" -Denable_pfunit=false >/tmp/fpdivt04-control-meson.log
 meson compile -C "$BUILDROOT/control-build" >/tmp/fpdivt04-control-build.log
-meson setup "$BUILDROOT/candidate-build" "$BUILDROOT/candidate-src" >/tmp/fpdivt04-candidate-meson.log
+meson setup "$BUILDROOT/candidate-build" "$BUILDROOT/candidate-src" -Denable_pfunit=false >/tmp/fpdivt04-candidate-meson.log
 meson compile -C "$BUILDROOT/candidate-build" >/tmp/fpdivt04-candidate-build.log
 
 mkdir -p "$BUILDROOT/control-vap" "$BUILDROOT/candidate-vap" "$BUILDROOT/control-novap" "$BUILDROOT/candidate-novap"
