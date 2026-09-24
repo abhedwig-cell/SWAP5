@@ -54,22 +54,18 @@ contains
     class(ahl06_split_provider_t), intent(in) :: self
     real(real64), intent(in) :: pressure_head(:)
     real(real64), intent(out) :: water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
-    real(real64), allocatable :: h_exact(:),w_exact(:),k_exact(:),c_exact(:),d_exact(:)
+    real(real64) :: w_exact(size(pressure_head)), k_exact(size(pressure_head)), &
+         c_exact(size(pressure_head)), d_exact(size(pressure_head))
     real(real64) :: xv,f
-    integer :: i,idx,n
+    integer :: i,idx
 
     if (.not.self%ready .or. .not.associated(self%cofgen)) error stop 'AHL06 provider not ready'
-    n=size(pressure_head)
-    allocate(h_exact(n),w_exact(n),k_exact(n),c_exact(n),d_exact(n))
-    h_exact=pressure_head
 
     ! Exact analytical fallback is evaluated only when at least one node lies
     ! outside the frozen lookup domain. For the lookup-domain nodes theta is
     ! evaluated directly from the authoritative B1.10 retention relation.
     if (any(pressure_head>LOOKUP_H_MAX) .or. any(pressure_head < -1.0e6_real64)) then
       call self%analytical%evaluate(pressure_head,w_exact,k_exact,c_exact,d_exact)
-    else
-      w_exact=0.0_real64; k_exact=0.0_real64; c_exact=0.0_real64; d_exact=0.0_real64
     end if
 
     do i=1,n
