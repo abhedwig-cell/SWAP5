@@ -9,6 +9,7 @@ module mod_reference_richards_workspace
      integer :: active_nodes = 0
      integer(int64) :: generation = 0_int64
      logical :: poisoned = .false.
+     logical :: tridag_factorization_capture_active = .false.
      real(real64), allocatable :: dfdh_lower(:)
      real(real64), allocatable :: dfdh_main(:)
      real(real64), allocatable :: dfdh_upper(:)
@@ -152,26 +153,19 @@ contains
     n = workspace%active_nodes
     if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) &
          error stop 'TRIDAG factorization capture requires initialized workspace'
-    if (size(workspace%tridag_gamma) /= 2*n) then
+    if (size(workspace%tridag_gamma) < 2*n) then
        allocate(expanded(2*n))
        deallocate(workspace%tridag_gamma)
        call move_alloc(expanded, workspace%tridag_gamma)
        workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
     end if
+    workspace%tridag_factorization_capture_active = .true.
   end subroutine prepare_reference_tridag_factorization_capture
 
   subroutine release_reference_tridag_factorization_capture(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
-    real(real64), allocatable :: compact(:)
-    integer :: n
 
-    n = workspace%active_nodes
-    if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) return
-    if (size(workspace%tridag_gamma) == n) return
-    allocate(compact(n))
-    deallocate(workspace%tridag_gamma)
-    call move_alloc(compact, workspace%tridag_gamma)
-    workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
+    workspace%tridag_factorization_capture_active = .false.
   end subroutine release_reference_tridag_factorization_capture
 
   subroutine poison_reference_workspace(workspace)
@@ -208,6 +202,7 @@ contains
     workspace%warm_start_head = qnan
     workspace%has_warm_start = .true.
     workspace%diagnostics%route = 'poisoned'
+    workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .true.
   end subroutine poison_reference_workspace
 
@@ -240,6 +235,7 @@ contains
     if (allocated(workspace%warm_start_head)) deallocate(workspace%warm_start_head)
     workspace%active_nodes = 0
     workspace%poisoned = .false.
+    workspace%tridag_factorization_capture_active = .false.
     workspace%has_warm_start = .false.
     workspace%unsaturated_flags = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
