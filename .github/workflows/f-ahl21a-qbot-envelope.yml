@@ -1,0 +1,25 @@
+name: F-AHL21A qbot perturbation envelope
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl21a_qbot_envelope.f90'
+      - 'research/ahl/run_ahl21a_qbot_envelope.sh'
+      - 'integration/f-ahl/F-AHL21A_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl21a-qbot-envelope.yml'
+  workflow_dispatch:
+
+jobs:
+  envelope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run qbot perturbation envelope
+        run: |
+          bash research/ahl/run_ahl21a_qbot_envelope.sh /tmp/ahl21a_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl21a-${{ github.run_id }}
+          path: /tmp/ahl21a_result.txt
