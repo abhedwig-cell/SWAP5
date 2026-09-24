@@ -711,3 +711,12 @@ H19 removes these duplicate metadata allocations on the primary path:
 - retain `fmr_count_templates` only as fallback for callers without an execution order.
 
 Expected effect for N columns: remove two N-integer allocations/copies plus one N-int64 temporary allocation from end-of-batch aggregation on the normal serialized MultiSWAP path. No column execution order or diagnostics semantics change.
+
+
+## ZW01-H20 preregistration — avoid zero-length commit-receipt allocation on valid requests
+
+`fmr_run_serialized_physical_multiswap` currently allocates `commit_receipts(0)` whenever the optional output is present. On a valid receipt request it then immediately deallocates that zero-length array and allocates the requested final size.
+
+H20 preserves the empty allocated result on rejected receipt-request paths, but on a valid receipt request allocates the final-size array directly once.
+
+Expected effect: remove one allocation and one deallocation per valid receipt-enabled serialized MultiSWAP call. Receipt validation, ordering and returned values remain unchanged.
