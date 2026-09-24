@@ -1,0 +1,80 @@
+name: F-ROM-PURPOSE P6B interval-balance boundary oracle
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P6B_EXECUTION_BINDING.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify P6B authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p6b_interval_balance.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P6B_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P6B_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_ANALYSIS_ONLY_BEFORE_ANY_P6B_ANALYSIS'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P6B_ANALYSIS'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Recover exact fresh P5C traces
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/source /tmp/p6b
+          gh run download 35923634779 --repo abhedwig-cell/SWAP5 -p 'p5c-*' -D /tmp/source
+          find /tmp/source -type f -name 'p5c_*_o0.txt' -exec cp {} /tmp/p6b/ \;
+          find /tmp/source -type f -name 'p5c_*_o2.txt' -exec cp {} /tmp/p6b/ \;
+          find /tmp/source -type f -name 'p5c_*_execution.json' -exec cp {} /tmp/p6b/ \;
+      - name: Analyze interval-balance operator
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p6b_interval_balance.py             --prereg integration/f-rom/ROM_PURPOSE_P6B_PREREGISTRATION.json             --root /tmp/p6b             --output result/ROM_PURPOSE_P6B_RESULT.json | tee result/runner.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p6b-result
+          path: result/
+          if-no-files-found: error
+      - name: Persist P6B
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P6B_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P6B_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P6_STATUS.json')
+          if p.exists(): s=json.load(open(p))
+          else: s={'schema':'swap5.rom-purpose.p6.status.v1','workstream':'ROM-PURPOSE','work_unit':'ROM-PURPOSE-P6','date':'2026-09-24','scientific_firewall':{}}
+          s.update({
+            'p6b_result':'integration/f-rom/ROM_PURPOSE_P6B_RESULT.json',
+            'p6b_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p6b_execution_sha':os.environ['SOURCE_SHA'],
+            'p6b_decision':r['decision']
+          })
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P6B_RESULT.json integration/f-rom/ROM_PURPOSE_P6_STATUS.json
+          git commit -m "ROM-PURPOSE P6B: persist interval-balance boundary oracle" || exit 0
+          git push origin HEAD:work/f-rom-purpose
