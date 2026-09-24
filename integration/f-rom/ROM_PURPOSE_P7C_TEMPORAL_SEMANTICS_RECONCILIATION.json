@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.rom-purpose.p7c.temporal-semantics-reconciliation.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P7C-GW-EXCHANGE-TEMPORAL-SEMANTICS",
+  "date": "2026-09-24",
+  "status": "RETROSPECTIVE_CROSS_METHOD_RECONCILIATION_COMPLETE",
+  "evidence_class": "RESPONSE_EXPOSED_EXISTING_P4_EVIDENCE",
+  "authority": {
+    "p7b_contracts": "integration/f-rom/ROM_PURPOSE_P7B_PURPOSE_CONTRACTS.json",
+    "p7a_result": "integration/f-rom/ROM_PURPOSE_P7A_RESULT.json",
+    "p4_layer_result": "integration/f-rom/ROM_PURPOSE_P4_LAYER_FRONTIER_RESULT.json",
+    "p4_matched_result": "integration/f-rom/ROM_PURPOSE_P4_MATCHED_RICHARDS_RESULT.json"
+  },
+  "findings": {
+    "B01": {
+      "layer_rom_G12_to_G16": {
+        "cumulative_exchange_rmse_fraction": 0.6944620620721207,
+        "total_storage_rmse_fraction": 0.6944620622409761,
+        "interval_flux_rmse_fraction": 0.9998525072333236
+      },
+      "matched_richards_G12_to_G16": {
+        "cumulative_exchange_rmse_fraction": 0.8219336935096098,
+        "total_storage_rmse_fraction": 0.8219336936731194,
+        "interval_flux_rmse_fraction": 0.9999716972551698
+      }
+    },
+    "B14": {
+      "layer_rom_G12_to_G16": {
+        "cumulative_exchange_rmse_fraction": 1.000146501048299,
+        "total_storage_rmse_fraction": 1.0001465010674444,
+        "interval_flux_rmse_fraction": 0.9999994683620883
+      },
+      "matched_richards_G12_to_G16": {
+        "cumulative_exchange_rmse_fraction": 1.0001427222412373,
+        "total_storage_rmse_fraction": 1.000142722342067,
+        "interval_flux_rmse_fraction": 0.9999994900016915
+      }
+    }
+  },
+  "interpretation": [
+    "GW_EXCHANGE_CUMULATIVE and GW_EXCHANGE_INTERVAL are distinct fidelity purposes even though both derive from the same exact interval water-balance identity.",
+    "For B01, added G12-to-G16 information improves long-horizon storage/exchange fidelity but leaves interval-scale storage-transition/flux error essentially unchanged in both Layer-ROM and matched Richards.",
+    "For B14, G12-to-G16 is a plateau for both temporal purposes.",
+    "Because the interval plateau occurs in matched conventional Richards on the same partitions, it cannot be attributed specifically to Layer-ROM propagation closure."
+  ],
+  "revised_purpose_map": {
+    "GW_EXCHANGE_CUMULATIVE": {
+      "target": "cumulative recharge/capillary exchange and long-horizon drift",
+      "information_need": "accurate storage level evolution over the evaluation horizon",
+      "p4_p7_status": "state-count/material dependent; B01 still benefits from G12-to-G16, B14 does not"
+    },
+    "GW_EXCHANGE_INTERVAL": {
+      "target": "interval-average exchange flux, sign/reversal and event-scale response",
+      "information_need": "accurate storage increments at the reporting interval",
+      "p4_p7_status": "G12-to-G16 plateau in both tested methods/materials; additional count in the tested placement family does not add useful interval-transition information"
+    }
+  },
+  "next_scientific_question": "Which physically interpretable transition-memory carrier, rather than additional cells in the tested G-family, distinguishes next-interval total-storage change under lower-head forcing?",
+  "scientific_firewall": {
+    "new_blind_validation_claimed": false,
+    "minimum_state_count_adjudicated": false,
+    "closure_deficit_adjudicated": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
