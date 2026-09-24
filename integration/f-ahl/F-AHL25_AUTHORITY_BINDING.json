@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25",
+  "title": "Broader hydraulic-family authority binding",
+  "phase": "AUTHORITY_BOUND",
+  "current_closed_scope": "default B1.10 MvG prescribed-head-like envelope, analytical fallback for prescribed-qbot",
+  "historical_catalogue_authority": {
+    "model_1": "default MvG",
+    "model_2": "exponential",
+    "model_3": "bi-modal MvG",
+    "models_4_to_11": "PDI family variants",
+    "source": "immutable corrected SWAP4.3.1/B1 authority and soil-hydraulic parameter provenance"
+  },
+  "selected_first_extension": {
+    "model": 3,
+    "family": "bi-modal MvG",
+    "reason": [
+      "genuinely different retention/capacity family",
+      "corrected source authority and inverse qualification exist",
+      "does not require temperature as an additional runtime constitutive coordinate",
+      "therefore directly tests whether derivative-consistent auto-generated representation generalizes beyond unimodal MvG"
+    ]
+  },
+  "deferred_family": {
+    "models": [4,5,6,7,8,9,10,11],
+    "family": "PDI variants",
+    "reason": "PDI conductivity can include temperature-dependent vapor conductivity, so a parameter-only immutable K representation is not automatically semantically valid. PDI requires a separate factorization/identity study."
+  },
+  "model3_authority_notes": [
+    "cofgen rows 13:17 are active for model 3",
+    "rows 13,14,15 and 16 have source-bound aliases alfa_2, n_2, m_2 and omega_1",
+    "the corrected SWAP-012 inverse round-trip gate passes model 3 at 60/60 points",
+    "F-AHL25 does not yet claim that the current B1.10 production provider implements model 3"
+  ],
+  "next_action": "Build a research-only model-3 authoritative sampling harness from the corrected legacy source, then test whether one shared derivative-consistent interpolation family can represent theta and C while preserving model-3 branch semantics. No Richards timing before constitutive qualification.",
+  "hard_exclusions": [
+    "NO_MODEL3_PRODUCTION_ADMISSION",
+    "NO_PDI_GENERALIZATION",
+    "NO_ASSUMED_SHARED_K_ARCHITECTURE",
+    "NO_USER_SUPPLIED_TABLES"
+  ]
+}
