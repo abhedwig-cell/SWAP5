@@ -19,6 +19,12 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "candidate_rejection_verification": {
+    "baseline": "77aff4b39",
+    "checks": "Wrong lineage, changed beginning storage, changed pore volume, shortened domain bottom, missing water-profile allocation, negative tolerance and NaN tolerance all reject. Outputs are seeded with valid prior candidate/account to verify failure clears their validity. Existing successful bridge and restart continuation remain in the gate.",
+    "scope": "Verification of existing bounded adapter guards, not added physical capability or production admission.",
+    "test_result": "Pending persisted replay"
+  },
   "isolated_restart_bridge_verification": {
     "baseline": "4087e25db",
     "scope": "Test-only A2 DTO commit/export/restore after an accounted captured-transfer candidate. The next interval is reevaluated independently for continuous and restored checkpoints, with old numerical capture discarded and workspace reset.",

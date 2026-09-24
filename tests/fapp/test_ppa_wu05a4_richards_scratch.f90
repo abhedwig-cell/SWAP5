@@ -1,5 +1,6 @@
 program test_scratch_binding
   use, intrinsic::iso_fortran_env,only:real64,int64
+  use, intrinsic::ieee_arithmetic,only:ieee_value,ieee_quiet_nan
   use mod_reference_richards_workspace
   use mod_ppa_wu05a4_richards_scratch_binding
   use mod_ppa_wu05a4_saturated_trial
@@ -225,6 +226,7 @@ contains
     call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
         checkpoint,1.e-13_real64,candidate,account,valid)
     call check(valid,144)
+    call bridge_rejection_checks(scratch,capture,identity,checkpoint,candidate,account)
     ! Isolated DTO commit/restart only, not a joint Richards physical commit.
     continued=initial
     call ppa_wu05a2_commit_candidate(candidate,continued,valid)
@@ -270,6 +272,43 @@ contains
     call check(initial%revision==0.and.abs(initial%payload%domain_water_storage(1)-start_store)<1.e-14_real64,139)
     call release_reference_workspace(scratch)
   end subroutine
+    subroutine bridge_rejection_checks(scratch,capture,identity,checkpoint,candidate,account)
+      type(reference_richards_workspace_t),intent(in)::scratch
+      type(reference_trial_transfer),intent(inout)::capture
+      type(macro_trial_key),intent(in)::identity
+      type(ppa_wu05a2_macropore_checkpoint_t),intent(in)::checkpoint
+      type(ppa_wu05a2_macropore_candidate_t),intent(in)::candidate
+      type(candidate_mass_account),intent(in)::account
+      type(ppa_wu05a2_macropore_checkpoint_t)::bad
+      type(ppa_wu05a2_macropore_candidate_t)::rejected
+      type(candidate_mass_account)::bad_account
+      real(real64)::tol
+      integer::case_id
+      logical::valid
+      do case_id=1,7
+        bad=checkpoint; tol=1.e-13_real64
+        select case(case_id)
+        case(1)
+          bad%lineage_id=checkpoint%lineage_id+1
+        case(2)
+          bad%payload%domain_water_storage=0.4_real64
+        case(3)
+          bad%payload%pore_volume(1,1)=0.3_real64
+        case(4)
+          bad%payload%bottom_domain=1
+        case(5)
+          deallocate(bad%payload%pore_water)
+        case(6)
+          tol=-1
+        case(7)
+          tol=ieee_value(0.0_real64,ieee_quiet_nan)
+        end select
+        rejected=candidate; bad_account=account
+        call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
+            bad,tol,rejected,bad_account,valid)
+        call check(.not.valid.and..not.rejected%valid.and..not.bad_account%valid,160+case_id)
+      end do
+    end subroutine
 
   ! Manufactured scalar matrix residual, NOT the full Richards equation.
   ! The macro part is the real bounded evaluator, including head-derived caps.
