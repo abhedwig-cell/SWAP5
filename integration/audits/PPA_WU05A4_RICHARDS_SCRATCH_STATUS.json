@@ -23,7 +23,8 @@
     "baseline": "0cd824efb",
     "design": "Capture beginning and candidate scalar macropore storage in the private reference transfer record after successful residual/system assembly. Add copy_reference_budget requiring heads and duration, returning transfer and both captured stores together only on successful identity checks. Failure returns no amount and zero scalar outputs.",
     "scope": "Restricted single-domain candidate budget only, not an A2 continuation payload or whole-column physical acceptance. No committed owner, frozen provider ABI or production HeadCalc changes.",
-    "test_result": "Pending"
+    "recovery_point": "560380b2a",
+    "test_result": "Persisted 560380b2a Richards scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks. Both assembly paths capture storage; later mutable-input changes leave the paired budget unchanged; invalid capture returns no amount and zero storage outputs."
   },
   "backtracking_verification": {
     "baseline": "3bc88886e",
