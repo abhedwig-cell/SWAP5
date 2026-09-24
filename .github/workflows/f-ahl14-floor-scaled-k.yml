@@ -1,0 +1,26 @@
+name: F-AHL14 floor-scaled K matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl14_floor_scaled_k.py'
+      - 'research/ahl/run_ahl14_matrix.sh'
+      - 'integration/f-ahl/F-AHL14_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl14-floor-scaled-k.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run floor-scaled K matrix
+        run: |
+          bash research/ahl/run_ahl14_matrix.sh /tmp/ahl14_matrix.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl14-${{ github.run_id }}
+          path: /tmp/ahl14_matrix.txt
