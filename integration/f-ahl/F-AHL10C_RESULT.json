@@ -2,20 +2,24 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL10C",
-  "phase": "VERY_DRY_CONDUCTIVITY_ARITHMETIC_RECONCILED",
-  "status": "PASS",
+  "phase": "VERY_DRY_K_ARITHMETIC_RECONCILIATION_COMPLETE",
+  "status": "PASS_DIAGNOSTIC",
   "workflow_run": 36045519641,
   "workflow_job": 107787984478,
-  "finding": "The O05 tight-K refinement floor is caused by floating-point cancellation in the standard evaluation of 1-(1-u)^m at very small u, not by unresolved constitutive curvature.",
-  "stable_expression": "-expm1(m*log1p(-u))",
-  "agreement": {
-    "B01_max_relative_difference_over_sampled_domain": 7.302846085019605e-9,
-    "B12_max_relative_difference_over_sampled_domain": 2.813565775122565e-11,
-    "O05_relative_difference_at_h_minus_1e4_cm": 1.4980227341063615e-9,
-    "O05_relative_difference_at_h_minus_5e5_cm": 2.0087526848465453e-4,
-    "O05_relative_difference_at_h_minus_1e6_cm": 1.4313384900058658e-3
+  "finding": "The O05 very-dry conductivity refinement blocker is caused in part by floating-point cancellation in the standard Mualem bracket evaluation. A stable algebraically equivalent expm1/log1p form removes the arithmetic pathology without changing the intended constitutive relation.",
+  "O05_dry_end": {
+    "maximum_relative_difference_standard_vs_stable": 0.0014313384900058658,
+    "representative_K_magnitudes_cm_per_day": [1.4085064918959603e-24,8.74195887151971e-26,2.3360938807718844e-26]
   },
-  "interpretation": "The stable expression is algebraically equivalent and removes a dry-end floating-point cancellation floor that prevented an error-controlled table builder from converging. The production B1.10 provider is unchanged.",
-  "decision": "ALLOW_STABLE_EXPRESSION_AS_RESEARCH_TABLE_CONSTRUCTION_ORACLE",
-  "hard_boundary": "NO_CHANGE_TO_B110_PRODUCTION_PROVIDER"
+  "normal_domain": {
+    "agreement": "negligible",
+    "interpretation": "The stable form is algebraically equivalent where cancellation is not active."
+  },
+  "important_scope_limit": "Arithmetic stabilization alone is not sufficient design justification for refining the entire extreme-dry tail. The earlier O05 dry-end storage-relevance result places the scientifically useful representation domain above part of this cancellation-dominated tail.",
+  "next_action": "Preregister a dry-end relevance stop and resume the F-AHL10B K-tolerance selection only over the hydraulically relevant domain.",
+  "nonclaims": [
+    "No production-provider arithmetic is changed by this work unit.",
+    "No Richards gate is changed.",
+    "No K tolerance is selected yet."
+  ]
 }
