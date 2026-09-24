@@ -19,6 +19,17 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "attempt_lifecycle": {
+    "baseline": "abf37c531",
+    "status": "IMPLEMENTED_PERSISTED_REPLAY_PENDING",
+    "implementation": "src/adapter/mod_ppa_wu05a4_attempt.f90",
+    "owned_surface": "PPA-local disposable attempt context; existing solver/provider ABI, HeadCalc and canonical state owners held fixed",
+    "invariants": [3, 5, 7, 13, 23],
+    "contract": "Capture a deep immutable checkpoint and validated static inputs at begin, fix dt and reduction policy for the attempt, generate monotonically increasing residual evaluation keys, and consume only the last captured residual for diagonal and candidate accounting. Reject/discard erases all context. Successful candidate extraction also consumes context; it is not a commit. Caller retains workspace association and rebuilds ordinary residual/diagonal before each callback.",
+    "limits": "Restricted single static domain with no external pore input. No production activation or canonical whole-column acceptance. Same-generation workspace reset still requires explicit attempt discard.",
+    "tests": "Initial focused O0/O2 pass: checkpoint mutation isolation, consumed candidate, explicit discard, changed-dt retry and stale-head finalization. Added guards cover diagonal before residual, changed workspace generation, and mismatched diagonal heads; persisted replay pending.",
+    "next_action": "Run nine-gate bounded regression on persisted attempt postimage"
+  },
   "checkpoint_derived_input": {
     "baseline": "6e868d276f48f3fcebf7a3c953bba6dea9203351",
     "implementation": "src/adapter/mod_ppa_wu05a4_checkpoint_input.f90",

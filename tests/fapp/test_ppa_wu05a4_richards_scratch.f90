@@ -8,6 +8,7 @@ program test_scratch_binding
   use mod_ppa_wu05a4_matrix_fraction
   use mod_ppa_wu05a4_static_geometry
   use mod_ppa_wu05a4_checkpoint_input
+  use mod_ppa_wu05a4_attempt
   use mod_ppa_wu05a4_reduction_policy
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
@@ -164,6 +165,8 @@ program test_scratch_binding
   call check_matrix_fraction()
   call check_static_geometry()
   call check_checkpoint_input()
+  call check_attempt_lifecycle()
+  print '(a)','PPA_WU05A4_STATIC_ATTEMPT_LIFECYCLE=PASS'
   print '(a)','PPA_WU05A4_CHECKPOINT_DERIVED_INPUT=PASS'
   print '(a)','PPA_WU05A4_STATIC_GEOMETRY_COMPOSITION=PASS'
   call check_reduction_policy()
@@ -176,6 +179,105 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine check_attempt_lifecycle()
+    type(static_macro_attempt)::attempt
+    type(static_macro_geometry)::geometry
+    type(ppa_wu05a2_macropore_checkpoint_t)::cp
+    type(ppa_wu05a2_macropore_candidate_t)::candidate
+    type(candidate_mass_account)::account
+    type(reference_richards_workspace_t)::local_ws
+    real(real64)::z(2),dz(2),volume(2),diameter(2),resistance(2),head(2),first_store
+    logical::valid
+    z=[-0.5_real64,-1.5_real64]; dz=1; volume=0.25_real64; diameter=1; resistance=0.25_real64
+    head=[-0.5_real64,0.25_real64]
+    call ppa_wu05a2_initialize_payload(1,2,cp%payload,valid)
+    call check(valid,260)
+    cp%lineage_id=91; cp%revision=0; cp%payload%bottom_domain=2
+    cp%payload%pore_volume=0.25_real64; cp%payload%domain_water_storage=0.375_real64
+    cp%payload%pore_water(1,:)=[0.125_real64,0.25_real64]
+    call initialize_reference_workspace(local_ws,2)
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,1.0_real64,1_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid.and.geometry%valid,261)
+    ! Caller-side mutations cannot change the captured beginning state.
+    cp%payload%domain_water_storage=0.1_real64
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(valid,262)
+    local_ws%dfdh_main=1
+    call diagonal_static_attempt(attempt,local_ws,head,.true.,valid)
+    call check(valid,263)
+    call finish_static_attempt(attempt,local_ws,head,1.e-12_real64,candidate,account,valid)
+    call check(valid.and.candidate%valid.and.account%valid,264)
+    first_store=candidate%payload%domain_water_storage(1)
+    call check(abs(first_store-5.0_real64/24)<1.e-14_real64,265)
+    call finish_static_attempt(attempt,local_ws,head,1.e-12_real64,candidate,account,valid)
+    call check(.not.valid.and..not.candidate%valid.and..not.account%valid,266)
+    cp%payload%domain_water_storage=0.375_real64
+    ! Discard and changed-dt retry always start from the same checkpoint.
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,1.0_real64,2_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid,267)
+    local_ws%residual=0
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(valid,268)
+    call discard_static_attempt(attempt)
+    call finish_static_attempt(attempt,local_ws,head,1.e-12_real64,candidate,account,valid)
+    call check(.not.valid.and..not.candidate%valid,269)
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,0.1_real64,3_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid,270)
+    local_ws%residual=0
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(valid,271)
+    call finish_static_attempt(attempt,local_ws,head,1.e-12_real64,candidate,account,valid)
+    call check(valid,272)
+    call check(abs(candidate%payload%domain_water_storage(1)-0.35625_real64)<1.e-14_real64,273)
+    ! Changed heads replace the last capture; finishing with old heads rejects.
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,0.1_real64,4_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid,274)
+    local_ws%residual=0
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(valid,275)
+    local_ws%residual=0
+    call evaluate_static_attempt(attempt,local_ws,[-0.5_real64,0.1_real64],0.0_real64,valid)
+    call check(valid,276)
+    call finish_static_attempt(attempt,local_ws,head,1.e-12_real64,candidate,account,valid)
+    call check(.not.valid.and..not.candidate%valid,277)
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(.not.valid,278)
+    ! Invalid begin must clear previous state, and cannot publish geometry.
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,0.0_real64,5_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(.not.valid.and..not.geometry%valid,279)
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,0.1_real64,6_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid,280)
+    local_ws%dfdh_main=7
+    call diagonal_static_attempt(attempt,local_ws,head,.true.,valid)
+    call check(.not.valid.and.maxval(abs(local_ws%dfdh_main-7))<tiny(1.0_real64),281)
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(.not.valid,282)
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,0.1_real64,7_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid,283)
+    call initialize_reference_workspace(local_ws,2)
+    local_ws%residual=8
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(.not.valid.and.maxval(abs(local_ws%residual-8))<tiny(1.0_real64),284)
+    call begin_static_attempt(cp,z,dz,volume,diameter,resistance,0.1_real64,8_int64,0, &
+        local_ws,attempt,geometry,valid)
+    call check(valid,285)
+    local_ws%residual=0
+    call evaluate_static_attempt(attempt,local_ws,head,0.0_real64,valid)
+    call check(valid,286)
+    call diagonal_static_attempt(attempt,local_ws,[-0.5_real64,0.1_real64],.true.,valid)
+    call check(.not.valid,287)
+    call finish_static_attempt(attempt,local_ws,head,1.e-12_real64,candidate,account,valid)
+    call check(.not.valid.and..not.candidate%valid,288)
+    call release_reference_workspace(local_ws)
+  end subroutine
+
   subroutine check_checkpoint_input()
     type(ppa_wu05a2_macropore_checkpoint_t)::cp,bad_cp
     type(saturated_domain_inputs)::derived
