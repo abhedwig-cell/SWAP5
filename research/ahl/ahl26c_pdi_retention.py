@@ -7,6 +7,7 @@ HMIN=-1.0e7
 HMAX=-1.0
 THETA_TOL=1e-5
 LOGC_TOL=1e-2
+DENSE_FRACS=tuple(j/50 for j in range(1,50))
 LN10=math.log(10.0)
 
 def xh(h): return math.log10(-h)
@@ -38,7 +39,7 @@ def interp(h,h0,h1,p):
     c=p["ts"]*q*(1-q)*dzdx/(h*LN10)
     return theta,max(c,1e-300)
 
-def interval_error(h0,h1,p,fracs=(0.125,0.25,0.5,0.75,0.875)):
+def interval_error(h0,h1,p,fracs=DENSE_FRACS):
     mt=mc=0.0
     for f in fracs:
         h=hx(xh(h0)+f*(xh(h1)-xh(h0)))
