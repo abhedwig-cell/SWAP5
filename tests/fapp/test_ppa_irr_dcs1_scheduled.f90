@@ -12,11 +12,13 @@ program test_ppa_irr_dcs1_scheduled
   type(irrigation_diagnostics_t)::d
   type(process_hydraulic_view_t)::h
   real(real64)::correction,raw,expected,oracle,oracle_correction,rate,duration,amount,nan
-  integer::i,code
+  integer::i,code,timing
   p%scheduled_irrigation_enabled=.true.; p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
   p%active_nodes=2; p%sensor_node=1; p%single_ssdi_node=2
   p%tcs7_knot_count=2; p%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
   p%tcs7_pressure_head(1:2)=-1.0_real64
+  p%tcs8_knot_count=2; p%tcs8_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%tcs8_water_content(1:2)=0.25_real64
   p%dcs1_knot_count=2; p%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
   p%rain_threshold_cm=0.5_real64
   p%solute_enabled=.true.; p%solute_overirrigation_enabled=.true.
@@ -27,6 +29,8 @@ program test_ppa_irr_dcs1_scheduled
   r%t0=0.0_real64
   r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
   r%crop_emerged=.true.; r%irrigation_window_open=.true.
+  do timing=IRRIGATION_TIMING_TCS7_PRESSURE_HEAD,IRRIGATION_TIMING_TCS8_WATER_CONTENT
+  p%timing_criterion=timing
   do i=1,100000
     r%dvs=real(modulo(i,129),real64)/64.0_real64
     r%deficit_cm=real(modulo(3*i,257),real64)/64.0_real64-1.0_real64
@@ -73,7 +77,9 @@ program test_ppa_irr_dcs1_scheduled
     end if
     call require(.not.base%active_event,'committed input unchanged')
   end do
+  end do
   write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_SOURCE_ORACLE_100000=PASS'
+  write(*,'(a)') 'PPA_IRR_DCS1_TCS7_TCS8_200000=PASS'
 
   p%dcs1_correction_mm=0.0_real64; p%depth_limit_enabled=.false.; p%solute_enabled=.false.
   p%irr_rate_cm_per_day=0.0_real64; r%deficit_cm=1.0_real64; r%rainfall_cm=0.5_real64
@@ -92,6 +98,18 @@ program test_ppa_irr_dcs1_scheduled
   write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_RAIN_RETRY_CONTINUATION=PASS'
 
   r%t0=0.0_real64; r%t1=1.0_real64; r%dvs=1.0_real64
+  r%deficit_cm=1.0_real64; r%rainfall_cm=0.0_real64
+  h%water_content=0.25_real64
+  call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and.d%triggered.and.f%applied,'TCS8 equality selects DCS1')
+  h%water_content=nearest(0.25_real64,1.0_real64)
+  r%deficit_cm=nan; r%rainfall_cm=nan
+  call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+  call require(d%status==IRRIGATION_OK.and..not.d%triggered.and..not.f%applied, &
+       'TCS8 above threshold skips invalid inactive demand')
+  h%water_content=0.2_real64
+  write(*,'(a)') 'PPA_IRR_DCS1_TCS8_THRESHOLD_CONTINUATION=PASS'
+  p%timing_criterion=IRRIGATION_TIMING_TCS7_PRESSURE_HEAD
   saved=p
   do i=1,10
     p=saved; r%deficit_cm=1.0_real64; r%rainfall_cm=0.0_real64
