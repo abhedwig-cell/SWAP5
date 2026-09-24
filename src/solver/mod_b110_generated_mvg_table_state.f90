@@ -76,7 +76,7 @@ contains
     real(real64), allocatable :: lo(:), hi(:), mid(:), target(:)
     real(real64), allocatable :: hvec(:), theta(:), conductivity(:), capacity(:), dkdh(:)
     real(real64), allocatable :: ext_lo(:), ext_hi(:), ext_mid(:), relsat(:)
-    real(real64) :: frac, u0
+    real(real64) :: frac, grid_frac, u0
     integer :: i, j, n
     logical :: ok
 
@@ -162,12 +162,11 @@ contains
         if (j == B110_GENERATED_MVG_TABLE_N - 1) then
           hvec(i) = lo(i)
         else if (B110_GENERATED_MVG_CURVATURE_GRID) then
-          ! Research-only deterministic sparse placement.  The smoothstep
-          ! transform concentrates rows toward both dry and wet ends of the
-          ! log-head interval, where theta/log(K) curvature and branch
-          ! transitions are strongest, without changing interpolation.
-          frac = frac*frac*(3.0_real64-2.0_real64*frac)
-          hvec(i) = -10.0_real64**(u0 + frac * (log10(-lo(i)) - u0))
+          ! Research-only deterministic sparse placement.  Smoothstep has a
+          ! smaller derivative at both ends of [0,1], so equal index spacing
+          ! allocates more rows near both dry and wet ends of log-head space.
+          grid_frac = frac*frac*(3.0_real64-2.0_real64*frac)
+          hvec(i) = -10.0_real64**(u0 + grid_frac * (log10(-lo(i)) - u0))
         else
           hvec(i) = -10.0_real64**(u0 + frac * (log10(-lo(i)) - u0))
         end if
