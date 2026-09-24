@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26A",
+  "title": "PDI conductivity factorization authority",
+  "phase": "SOURCE_AUTHORITY_BOUND",
+  "historical_family": "PDI models 8-11",
+  "authority_chain": [
+    "corrected SWAP-009 PDI vapor-sign evidence and exact patch",
+    "corrected B1.10 MOD_MvG caller authority",
+    "SWAP-model/SWAP source at c22bd832ddf3e53e330a552f5e31e74f183362d1 as secondary source corroboration for function decomposition"
+  ],
+  "source_equation": {
+    "total_conductivity": "K = Ksat*((1-OmegaK)*Kcap(h) + OmegaK*Kfilm(h)) + Kvap_func(theta(h),h,T)*Conv",
+    "corrected_vapor_head_semantics": "signed unsaturated pressure head h is passed to Kvap_func; the stored SWAP-009 patch corrects the historical abs(h) defect",
+    "static_component": "K_liq(h)=Ksat*((1-OmegaK)*Kcap(h)+OmegaK*Kfilm(h))",
+    "dynamic_component": "K_vap(theta,h,T)=Kvap_func(theta(h),h,T)*Conv"
+  },
+  "dependency_classification": {
+    "theta": ["hydraulic parameters","pressure head"],
+    "capacity": ["hydraulic parameters","pressure head"],
+    "Kcap": ["hydraulic parameters","pressure head"],
+    "Kfilm": ["hydraulic parameters","pressure head"],
+    "Kvap": ["theta(h)","pressure head","soil temperature"],
+    "only_temperature_dependent_term": "Kvap"
+  },
+  "architecture_decision": "Use exact source factorization rather than a multidimensional K(h,T) representation. Auto-generate and freeze derivative-consistent retention/capacity plus the static liquid/film conductivity component. Evaluate the authoritative vapor term analytically at runtime using current temperature and represented/authoritative theta according to the qualified contract.",
+  "cache_identity_implication": "Temperature is not part of the immutable static representation key. The static key remains hydraulic model identity + hydraulic parameters + representation policy. Temperature remains runtime state for the dynamic vapor addend.",
+  "scientific_advantage": "This preserves exact source temperature semantics while avoiding a second lookup dimension and avoids rebuilding hydraulic representations as temperature changes.",
+  "next_action": "F-AHL26B numerical identity and error-propagation qualification of the factorized PDI route before any Richards test.",
+  "nonclaims": ["NO_PDI_SPEEDUP_CLAIM","NO_PDI_RICHARDS_QUALIFICATION","NO_PRODUCTION_ADMISSION"]
+}
