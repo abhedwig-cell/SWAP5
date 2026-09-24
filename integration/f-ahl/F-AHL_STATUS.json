@@ -1,57 +1,54 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-AHL",
-  "status": "ACTIVE_RESEARCH_F_AHL09T_ADVANCE",
+  "status": "RESEARCH_CLOSED_ENGINEERING_QUALIFICATION_NEXT",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "completed": [
-    "F-AHL01 adaptive constitutive screen",
-    "F-AHL02 transformed-representation screen",
-    "F-AHL03 optimized Fortran constitutive runtime screen",
-    "F-AHL04A strict nonlinear Richards replay",
-    "F-AHL04B constitutive-error attribution",
-    "F-AHL04C asymmetric representation decomposition",
-    "F-AHL05 split exact-retention constitutive runtime screen",
-    "F-AHL06/F-AHL06R fast split end-to-end timing and reconciliation",
-    "F-AHL07 convergence attribution",
-    "F-AHL08/F-AHL08R exact theta+C plus K-lookup rejection as speed route",
-    "F-AHL09 derivative-consistent adaptive retention Stage 1",
-    "F-AHL09 Stage 2 nonlinear Richards replay",
-    "F-AHL09T long paired end-to-end Richards timing"
-  ],
+  "completed_through": "F-AHL16",
   "current_candidate": {
-    "representation": "cubic Hermite logit(Se) over log10(-h), with C derived from the same interpolant and log(K) lookup",
-    "support_points_tested_range": [
-      23,
-      30
-    ],
+    "representation": "auto-generated cubic Hermite logit(Se) over log10(-h), with C derived from the same interpolant and floor-scaled log(K) interpolation on shared adaptive support",
+    "theta_span_normalized_error_limit": 1e-5,
+    "log_capacity_error_limit": 1e-2,
+    "conductivity_metric": "abs(log(max(K_interp,1e-10))-log(max(K_true,1e-10)))",
+    "conductivity_error_limit": 3e-4,
+    "support_points": {
+      "B01": 164,
+      "B12": 104,
+      "O05": 160,
+      "O14": 169
+    },
     "near_saturation": "authoritative analytical for h > -1 cm",
     "runtime_refinement": false
   },
-  "current_evidence": {
-    "constitutive_materials": [
-      "B01",
-      "B12",
-      "O05",
-      "O14"
-    ],
-    "constitutive_stage1_run": 36042076637,
-    "richards_stage2_run": 36042429946,
-    "paired_timing_run": 36042581016,
-    "stage2_max_head_delta_cm": 0.000008225771,
-    "stage2_max_theta_delta": 2.836443e-8,
-    "stage2_bottom_flux_delta_cm_per_day": 1.36697e-7,
-    "stage2_mass_residual_cm": 8.933826e-17,
-    "nonlinear_iteration_delta": 0,
-    "backtracking_delta": 0,
-    "median_paired_candidate_over_analytical_cpu_ratio": 0.72987,
-    "median_complete_richards_cpu_reduction_fraction": 0.27013
+  "scientific_evidence": {
+    "fidelity_matrix_run": 36044316960,
+    "fidelity_cases_passed": "12/12",
+    "analytical_nonlinear_path_preserved": true,
+    "paired_cross_regime_timing_run": 36044880081,
+    "paired_complete_richards_cpu_reduction_fraction_range": [0.213339,0.265035],
+    "all_12_timing_cases_below_ratio_0_98": true
   },
-  "superseded_candidates": [
-    "full lookup: constitutively fast but failed frozen F-AHL04A bottom-flux fidelity gate",
-    "exact theta plus lookup C/K: high fidelity but robust paired Richards timing about 7.4% slower",
-    "exact theta+C plus lookup K: analytical convergence path but robust paired timing about 8.0% slower"
+  "key_learnings": [
+    "Independent approximation of theta and C can preserve endpoint state yet change Newton convergence; theta and C must remain derivative-consistent.",
+    "The original 23-30 point F-AHL09 representation was fast but K accuracy was insufficient in several wet/dry extremes.",
+    "Exact K closes fidelity but loses end-to-end speed.",
+    "Pure global log(K) tightening becomes pathological in the extreme dry tail because the authoritative floating-point K expression becomes numerically rough.",
+    "A floor-scaled K metric tied to B110_HCON_VSMALL avoids irrelevant dry-tail over-refinement.",
+    "At conductivity metric 3e-4 the shared-support candidate closes all tested fidelity cases and retains broad complete-Richards speed benefit."
   ],
-  "next": "Preregister blind multi-material and multi-regime Richards qualification using the frozen F-AHL09 representation policy; then quantify table-build amortization and full SWAP trajectory runtime.",
+  "superseded_or_rejected_routes": [
+    "full independent theta/C/K lookup",
+    "exact theta plus lookup C/K",
+    "exact theta+C plus lookup K",
+    "derivative-consistent retention plus analytical K as speed route",
+    "pure unfloored global log(K) densification"
+  ],
+  "next_phase": [
+    "auto-generation implementation from arbitrary supported hydraulic parameters",
+    "fingerprinted immutable cache and reuse across columns",
+    "table-build cost and amortization",
+    "production-runtime integration behind existing hydraulic provider contract",
+    "broader hydraulic-model-family qualification before any admission"
+  ],
   "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
 }
