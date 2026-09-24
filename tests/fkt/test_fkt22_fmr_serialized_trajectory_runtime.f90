@@ -135,10 +135,10 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        'rejected full-trial tangent work absent from publication')
   write(*,'(A)') 'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS'
 
-  call require(observation_off%solver_diagnostics%workspace_full_resets == 1, &
-       'reference solve performs one full workspace reset after ZW01-H2 removal')
-  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
-       'workspace reset observer records positive zeroed byte volume')
+  call require(observation_off%solver_diagnostics%workspace_full_resets == 0, &
+       'Reference solve performs no full workspace reset after ZW01-H7 minimal preparation')
+  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes == 0_int64, &
+       'minimal solve preparation records no full-reset zeroed-byte volume')
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
@@ -151,11 +151,10 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
-  call require(diagnostics_off%workspace_full_resets == 3, &
-       'external full-half interval aggregates one reset across three Reference solves')
-  call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
-       observation_off%solver_diagnostics%workspace_zeroed_bytes, &
-       'interval reset bytes equal three Reference-solve reset payloads')
+  call require(diagnostics_off%workspace_full_resets == 0, &
+       'external full-half interval performs no full workspace resets')
+  call require(diagnostics_off%workspace_zeroed_bytes == 0_int64, &
+       'interval records no full-reset zeroed-byte volume')
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_INTERVAL=', diagnostics_off%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_INTERVAL=', diagnostics_off%workspace_zeroed_bytes
 
