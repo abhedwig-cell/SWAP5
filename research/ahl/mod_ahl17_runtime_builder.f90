@@ -5,8 +5,7 @@ module mod_ahl17_runtime_builder
   private
 
   integer, parameter :: MAX_SUPPORT=4096
-  integer, parameter :: NSAMPLE=5
-  real(real64), parameter :: SAMPLE_F(NSAMPLE)=[0.125_real64,0.25_real64,0.5_real64,0.75_real64,0.875_real64]
+  integer, parameter :: NSAMPLE=15
   real(real64), parameter :: H_MIN=-1.0e6_real64, H_MAX=-1.0_real64
   real(real64), parameter :: THETA_TOL=1.0e-5_real64, LOGC_TOL=1.0e-2_real64
   real(real64), parameter :: K_TOL_GLOBAL=1.0e-3_real64, K_TOL_WET=3.0e-4_real64
@@ -83,7 +82,7 @@ contains
     x0=x_from_head(h0);x1=x_from_head(h1)
     mt=0.0_real64;mc=0.0_real64;mk=0.0_real64
     do j=1,NSAMPLE
-      f=SAMPLE_F(j);xx=x0+f*(x1-x0);h=head_from_x(xx)
+      f=real(j,real64)/real(NSAMPLE+1,real64);xx=x0+f*(x1-x0);h=head_from_x(xx)
       call sample_authority(h,provider,tr,ts,zi,dz,ki,th,c,k,dk,qt)
       if(.not.qt)then;ok=.false.;score=huge(1.0_real64);return;end if
       call hermite_value_derivative(xx,x0,x1,z0,z1,m0,m1,zi,dz)
