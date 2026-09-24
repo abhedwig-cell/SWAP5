@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25G",
+  "phase": "BIMODAL_PAIRED_RICHARDS_TIMING_COMPLETE",
+  "status": "PASS_USEFUL_SPEED_CANDIDATE",
+  "workflow_run": 36051010993,
+  "workflow_job": 107806245916,
+  "fidelity_precondition": "F-AHL25F 9/9 PASS with identical nonlinear/backtracking path",
+  "case_median_candidate_over_analytical_ratios": {
+    "M3_BALANCED:wet": 0.625143,
+    "M3_BALANCED:mid": 0.609123,
+    "M3_BALANCED:dry": 0.619806,
+    "M3_SEPARATED:wet": 0.618886,
+    "M3_SEPARATED:mid": 0.618288,
+    "M3_SEPARATED:dry": 0.647831,
+    "M3_DOMINANT_SECOND:wet": 0.615665,
+    "M3_DOMINANT_SECOND:mid": 0.625637,
+    "M3_DOMINANT_SECOND:dry": 0.637559
+  },
+  "matrix_median_ratio": 0.619806,
+  "matrix_median_cpu_reduction_fraction": 0.380194,
+  "cpu_reduction_fraction_range": [0.352169,0.390877],
+  "finding": "The strict derivative-consistent AHL architecture is computationally beneficial for the qualified bi-modal MvG model-3 family. All nine paired complete-Richards cases are materially faster than the source-bound analytical model-3 provider.",
+  "important_design_result": "Model-3 retention/capacity remains compact at 20-25 support points, while strict conductivity fidelity requires approximately 299-448 support points at abs(logK)<=1e-4. The denser K representation nevertheless remains substantially faster than analytical model-3 evaluation in the tested Richards matrix.",
+  "limits": [
+    "three preregistered model-3 stress parameterizations",
+    "prescribed-head-bottom controlled Richards fixtures",
+    "research-only source-bound model-3 providers",
+    "no whole-SWAP application timing"
+  ],
+  "nonclaims": ["NO_PRODUCTION_ADMISSION","NO_PDI_GENERALIZATION"]
+}
