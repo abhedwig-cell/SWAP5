@@ -169,7 +169,6 @@ contains
     if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) return
     if (size(workspace%tridag_gamma) == n) return
     allocate(compact(n))
-    compact = 0.0_real64
     deallocate(workspace%tridag_gamma)
     call move_alloc(compact, workspace%tridag_gamma)
     workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
