@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp03.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP03",
+  "date": "2026-09-24",
+  "status": "CLOSED_GENUINE_REFERENCE_SOLVER_FLOOR_REMAINS",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP03_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP03_RESULT.json",
+    "workflow_run": 35956012048
+  },
+  "findings": {
+    "R12_all_materials_complete": false,
+    "R16_all_materials_complete": false,
+    "B16": {
+      "R12": "COMPLETE",
+      "R16": "COMPLETE",
+      "R12_vs_R16": "daily outputs identical within persisted metrics",
+      "retries": 0
+    },
+    "blocked_materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12"
+    ],
+    "blocked_failure_class": "retry ceiling reached under both R12 and R16",
+    "minimum_step_failure_observed": false,
+    "mass_gate_relaxed": false,
+    "solver_tolerances_relaxed": false
+  },
+  "interpretation": [
+    "Increasing the solver-failure retry ceiling from 12 to 16 is insufficient for five of six materials.",
+    "The remaining blocker is therefore not the prior eight-retry ceiling.",
+    "Within the prospectively bounded rollback/halving research policy, a genuine Richards Reference solver floor remains for this realistic net-atmospheric workload.",
+    "B16 is numerically benign and produces identical R12/R16 daily metrics, but it cannot supply a six-material Reference authority."
+  ],
+  "stop_decision": [
+    "Do not extend the retry ceiling beyond R16 in this workstream.",
+    "Do not relax solver or mass tolerances.",
+    "Do not change the Hupsel forcing to rescue the Reference.",
+    "Do not interpret candidate completion as evidence of superior hydrological fidelity."
+  ],
+  "next_authority_need": "A separately qualified realistic-dynamic-top Richards reference architecture, likely at the canonical transaction/application level, is required before six-material P6B-SM fidelity can be adjudicated.",
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
