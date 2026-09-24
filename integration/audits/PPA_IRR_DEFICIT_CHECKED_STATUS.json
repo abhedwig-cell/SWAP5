@@ -1,0 +1,14 @@
+{
+  "work_unit": "PPA-IRR-DEFICIT-CHECKED",
+  "tested_commit": "163834dca",
+  "status": "BOUNDED_CHECKED_PROCESS_PASS_NOT_PRODUCTION_BOUND",
+  "preregistration": "integration/audits/PPA_IRR_DEFICIT_CHECKED_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_irr_water_deficit.f90::evaluate_root_zone_water_deficit_checked",
+  "gate": "tests/fapp/run_ppa_irr_dcs1_scheduled.ps1",
+  "result": "PASS O0/O2 with bounds and FPE traps and exact transcript identity. 100000 bitwise comparisons of all four root-zone accounting outputs through both unchecked and checked entry points against the independent source equation; twelve invalid-input cases return invalid status and zero outputs.",
+  "build": "swap-irr-dcs1-scheduled-7454b9654e2e470a8cee7745d1087f67",
+  "preservation": "Same persisted-postimage runner passes scheduled DCS1 TCS7/TCS8 200000 cases, timing/eligibility/continuation guards and independent DCS1 depth oracle at O0/O2. Original unchecked accounting body is unchanged.",
+  "ownership": "Pure supplied-input calculation; no model state, acceptance, flux publication or restart changes. Invariants 3,7,13,29 preserved.",
+  "limits": "Bounded ingestion constraints are not full geometry consistency checks or physical model changes. No crop-root geometry derivation, production hydraulic-state binding, accepted water booking or canonical admission.",
+  "next": "Compose checked deficit with DCS1 using supplied geometry and the existing hydraulic view, then qualify the production owner boundary separately."
+}

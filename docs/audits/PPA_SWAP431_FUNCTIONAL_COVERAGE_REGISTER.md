@@ -45,6 +45,15 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
+At 163834dca, root-zone accounting gains a checked supplied-input entry:
+array extents and layer indices are checked before access, and finite bounded
+contents, thickness and final rooted fraction are required before division.
+All four accounting outputs match 100,000 source vectors bitwise at O0/O2;
+twelve invalid-input cases return zero outputs with an explicit error status.
+The scheduled DCS1 suite also remains green. This is not a production
+hydraulic-state binding or accepted water booking. Evidence:
+`integration/audits/PPA_IRR_DEFICIT_CHECKED_STATUS.json`.
+
 At 728085a6e, explicit DCS1 selection joins the existing scheduled single-node
 SSDI candidate route. The 100,000-case TCS7 integration gate and independent
 DCS1 oracle pass O0/O2, including source-ordered limits, solute increment,

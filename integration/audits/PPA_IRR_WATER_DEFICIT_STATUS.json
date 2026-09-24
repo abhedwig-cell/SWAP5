@@ -38,7 +38,8 @@
     "transcript_sha256": "ff8d3aca838598760606487c10464fc4be4cab0b97af5321b3d7ddda778f9b2c"
   },
   "qualification_status": "NOT_QUALIFIED; equation oracle only; derivation and ownership of root-zone geometry, retention values and actual water contents remain unproven",
-  "next_action": "Continue source-bound irrigation eligibility/depth composition while preserving existing water-content and source-mass ownership.",
+  "successor": "PPA_IRR_DEFICIT_CHECKED_STATUS.json adds a checked supplied-input entry at 163834dca without changing the original accounting body or production admission.",
+  "next_action": "Compose checked deficit with DCS1 while preserving existing water-content and source-mass ownership.",
   "recovery_point": "completed scheduled-window checkpoint 25a66d9dc",
   "blockers": ["B1.11 derives root-zone geometry and actual water content from crop, layer and hydraulic state that have no qualified irrigation-owned ingestion route; this oracle accepts those source values as inputs."]
 }
