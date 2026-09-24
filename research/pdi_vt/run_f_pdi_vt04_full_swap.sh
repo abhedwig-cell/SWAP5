@@ -95,9 +95,10 @@ run_swap () {
   (cd "$dir" && "$exe") >"/tmp/${label}.log" 2>&1
   rc=$?
   set -e
+  echo "$label rc=$rc"
+  tail -120 "/tmp/${label}.log"
   if [[ "$rc" -ne 0 && "$rc" -ne 100 ]]; then
     echo "$label unexpected rc=$rc"
-    tail -100 "/tmp/${label}.log"
     return 1
   fi
   grep -q "Swap normal completion" "/tmp/${label}.log"
