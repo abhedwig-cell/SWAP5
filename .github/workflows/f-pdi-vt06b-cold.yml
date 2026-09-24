@@ -1,0 +1,22 @@
+name: F-PDI-VT06B moderately colder regression
+on:
+  push:
+    branches: [work/f-pdi-vapor-temperature-audit]
+    paths:
+      - 'integration/f-pdi-vt/F-PDI-VT06B-COLD_PREREGISTRATION.json'
+      - 'research/pdi_vt/f_pdi_vt06b_cold_case.py'
+      - 'research/pdi_vt/run_f_pdi_vt06b.sh'
+      - '.github/workflows/f-pdi-vt06b-cold.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/pdi_vt/run_f_pdi_vt06b.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-pdi-vt06b-${{ github.run_id }}
+          path: /tmp/f_pdi_vt06b_base.json
