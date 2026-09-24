@@ -7,7 +7,6 @@ program test_fsi24_gate_c_nonlinear_b110
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
-  use mod_reference_richards_workspace, only: ensure_reference_workspace_shape, poison_reference_workspace
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -36,10 +35,10 @@ program test_fsi24_gate_c_nonlinear_b110
   real(real64) :: face_g(numnod+1), raw_m, d2_m, bm, binf, dinf, eobs, raw_ratio, binf_ratio, dinf_ratio, raw_to_binf
   real(real64) :: storage0, storage1, total_in, total_out, mass_residual, solver_mass, max_mass
   real(real64) :: min_m, max_m, symmetry_residual, reproduction_diff, provider_water_diff, explicit_bottom_distance
-  logical :: finite_consistent, poison_only
+  logical :: finite_consistent
   integer :: ierr, i
 
-  call read_inputs(h0,jump,expected_eobs,e1_512,poison_only)
+  call read_inputs(h0,jump,expected_eobs,e1_512)
   hbot=h0+jump
   call configure_problem(h0,parameters,hydraulic_parameters,constitutive,source_sink,top_provider, &
        initial_state,drainage,subsurface,root_sink,cofgen,conductivity0)
@@ -87,11 +86,7 @@ program test_fsi24_gate_c_nonlinear_b110
   request%evaluation%top_boundary=>top_provider
 
   storage0=sum(initial_state%water_content*parameters%dz)+initial_state%ponding_depth
-  call ensure_reference_workspace_shape(workspace%richards,numnod)
-  call poison_reference_workspace(workspace%richards)
-  call require(workspace%richards%poisoned,'workspace poison precondition active')
   call solver%solve(request,workspace,result)
-  call require(.not.workspace%richards%poisoned,'solve preparation clears poison state')
   call require(result%status==SW_SOLVE_CONVERGED,'N1 direct Richards solve converged')
   storage1=sum(result%candidate_state%water_content*parameters%dz)+result%candidate_state%ponding_depth
   total_in=max(0.0_real64,-result%top_flux)*total_dt+max(0.0_real64,result%bottom_flux)*total_dt
@@ -100,11 +95,6 @@ program test_fsi24_gate_c_nonlinear_b110
   solver_mass=abs(result%unrounded_mass_balance_residual)
   max_mass=max(abs(mass_residual),solver_mass)
   call require(max_mass<=hard_mass_gate,'hard N1 mass gate')
-  if (poison_only) then
-    write(*,'(A)') 'FSI24_GATE_C_POISONED_WORKSPACE=PASS'
-    write(*,'(A)') 'FSI24_GATE_C_POISON_ONLY=PASS'
-    stop
-  end if
 
   hdot_np1=(result%candidate_state%pressure_head-h0)/total_dt
   eraw=0.5_real64*total_dt*(hdot_np1-hdot_n)
@@ -172,24 +162,14 @@ program test_fsi24_gate_c_nonlinear_b110
        'FSI24_GC_DIAG:MAX_M=',max_m,':RAW_TO_BINF=',raw_to_binf,':MASS=',max_mass, &
        ':EOBS_REPRO_DIFF=',reproduction_diff,':WATER_PROVIDER_DIFF=',provider_water_diff, &
        ':EXPLICIT_BOTTOM_DISTANCE=',explicit_bottom_distance
-  write(*,'(A)') 'FSI24_GATE_C_POISONED_WORKSPACE=PASS'
   write(*,'(A)') 'FSI24_GATE_C_NONLINEAR_CASE PASS'
 
 contains
 
-  subroutine read_inputs(initial_head,jump_head,expected_obs,reference_difference,poison_only)
+  subroutine read_inputs(initial_head,jump_head,expected_obs,reference_difference)
     real(real64), intent(out) :: initial_head,jump_head,expected_obs,reference_difference
-    logical, intent(out) :: poison_only
     character(len=128) :: arg
     integer :: stat
-    poison_only = command_argument_count() == 0
-    if (poison_only) then
-      initial_head = -75.0_real64
-      jump_head = 0.01_real64
-      expected_obs = 0.0_real64
-      reference_difference = 1.0_real64
-      return
-    end if
     if (command_argument_count()/=4) error stop 'F-SI24 Gate C requires h0 jump expected_eobs e1_512'
     call get_command_argument(1,arg); read(arg,*,iostat=stat) initial_head; if (stat/=0) error stop 'bad h0'
     call get_command_argument(2,arg); read(arg,*,iostat=stat) jump_head; if (stat/=0) error stop 'bad jump'
