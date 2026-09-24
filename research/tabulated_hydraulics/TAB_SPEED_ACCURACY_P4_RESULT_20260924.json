@@ -1,0 +1,24 @@
+{
+  "schema":"swap5.research_result.v1",
+  "workunit":"TAB-SPEED-ACCURACY-P4",
+  "date":"2026-09-24",
+  "branch":"research/tab-speed-accuracy",
+  "controlling_run":36036233257,
+  "result":"PRACTICAL_KNEE_CHARACTERIZED",
+  "variants":[
+    {"rows":50,"max_richards_head_abs_cm":0.000638125946274215,"max_richards_theta_abs":0.0000019279282057471647,"serialized_delta_pct_range":[-14.65943339,-12.43978805]},
+    {"rows":60,"max_richards_head_abs_cm":0.0010778745048867222,"max_richards_theta_abs":0.000020663358053285563,"serialized_delta_pct_range":[-15.84827228,-15.43701799]},
+    {"rows":75,"max_richards_head_abs_cm":0.00023805132374832283,"max_richards_theta_abs":0.000008374352425732923,"serialized_delta_pct_range":[-13.22364412,-11.97427016]},
+    {"rows":100,"max_richards_head_abs_cm":0.00010131200004082075,"max_richards_theta_abs":0.00000035202416948099113,"serialized_delta_pct_range":[-15.61493018,-11.20793672]}
+  ],
+  "common":{"iterations":"unchanged","serialized_retries":"0 analytical / 0 generated"},
+  "interpretation":[
+    "Error is not monotonic with row count under TSPACK; knot locations interact with constitutive curvature.",
+    "60 rows is faster in this run but less accurate than 50 and 75 on the worst tested metrics, so row count alone is not a smooth fidelity control.",
+    "75 rows materially improves worst head error relative to 50, but its worst theta error is larger because the coarse profile dominates.",
+    "100 rows provides the strongest overall fidelity of these practical candidates while retaining substantial serialized acceleration.",
+    "50 remains attractive when modest bounded constitutive error is acceptable; 100 is the conservative practical candidate."
+  ],
+  "decision":"Do not declare a universal row-count optimum from these fixtures. Carry 50 and 100 as two purpose points; optionally 75 for diagnostic knot-placement research, not as default.",
+  "production_effect":"NONE"
+}
