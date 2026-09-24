@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26D0",
+  "phase": "PDI_VAPOR_SOURCE_TEMPERATURE_DOMAIN_CHECK_COMPLETE",
+  "status": "UPSTREAM_SOURCE_SEMANTICS_FAILURE",
+  "workflow_run": 36052349503,
+  "workflow_job": 107810756915,
+  "authority": {
+    "tsoil_unit": "degrees Celsius",
+    "accepted_initial_input_range_C": [-50.0,50.0],
+    "PDI_caller": "passes tsoil(node) directly as Temp"
+  },
+  "observations": {
+    "-5C": "Kvap source formula overflows",
+    "5C": "Rho_sv underflows to zero in the tested source formula",
+    "20C": "finite but extremely small Rho_sv and Kvap",
+    "35C": "finite but extremely small Rho_sv and Kvap"
+  },
+  "finding": "The existing PDI vapor-conductivity source formula is not numerically valid over the documented negative-C soil-temperature domain, even though tsoil is a Celsius runtime state and negative values are allowed elsewhere in SWAP.",
+  "classification": "UPSTREAM_HYDRAULICS_SOURCE_AUTHORITY_BLOCKER",
+  "F_AHL_policy": "Do not modify or reinterpret Kvap physics in F-AHL. Qualify only the source-authoritative NoVap PDI route and keep vapor-enabled PDI outside the strict AHL envelope until the upstream formula is independently reconciled.",
+  "nonclaims": [
+    "No corrected vapor formula is proposed here.",
+    "No Kelvin or saturation-vapor-density physics is changed.",
+    "No vapor-enabled PDI acceleration claim is permitted."
+  ]
+}
