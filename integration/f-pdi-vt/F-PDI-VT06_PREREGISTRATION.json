@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT06",
+  "phase": "PREREGISTER",
+  "purpose": "Final regression/admission dossier without weakening historical source-identity requirements.",
+  "required_evidence": [
+    "function-level temperature sweep",
+    "SWAP-009 signed-head preservation",
+    "NoVap identity",
+    "finite-control Vapor-on full-model regression",
+    "colder-temperature coverage",
+    "water-balance/convergence evidence",
+    "historical B1 binding",
+    "exact historical repair postimage and source manifest before production admission"
+  ],
+  "decision_rule": {
+    "scientific_fix_qualification": "PASS only if all behavioral and source-semantic gates pass",
+    "production_admission": "READY only if exact historical postimage and repaired source-manifest identities are available and verified; otherwise BLOCKED"
+  },
+  "no_retroactive_gate_changes": true
+}
