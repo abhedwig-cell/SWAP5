@@ -1,0 +1,41 @@
+name: F-AHL10D relevance-bounded build
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl10d_build_relevance_bounded.py'
+      - 'integration/f-ahl/F-AHL10D_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl10d-relevance-bounded-build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build relevance-bounded tables
+        run: |
+          mkdir -p /tmp/ahl10d
+          PYTHONPATH=research/ahl python3 research/ahl/ahl10d_build_relevance_bounded.py /tmp/ahl10d | tee /tmp/ahl10d_result.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/ahl10d_result.json'))
+          bad=[]
+          for tag,v in d['variants'].items():
+              for mid,row in v['materials'].items():
+                  if not row['pass']:
+                      bad.append((tag,mid,row))
+          if bad:
+              raise SystemExit(f'F-AHL10D build gates failed: {bad}')
+          o05=d['variants']['k03']['materials']['O05']['dry_lookup_bound_cm']
+          if not (-3e5 < o05 < -2e5):
+              raise SystemExit(f'unexpected O05 relevance bound: {o05}')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl10d-${{ github.run_id }}
+          path: |
+            /tmp/ahl10d_result.json
+            /tmp/ahl10d/**
