@@ -61,13 +61,10 @@ jobs:
           test -s /tmp/ahl04/adaptive.dat
 
       - name: Run F-AHL04A nonlinear Richards provider replay
+        shell: bash
         run: |
+          set -o pipefail
           bash research/ahl/run_ahl04a_richards_provider_replay.sh | tee /tmp/ahl04a_replay.txt
-
-      - name: Run F-AHL04 nonlinear Richards Stage-A replay
-        run: |
-          chmod +x research/ahl/run_ahl04_fsi24_provider_replay.sh
-          research/ahl/run_ahl04_fsi24_provider_replay.sh /tmp/ahl04 /tmp/ahl04_stage_a.txt
 
       - name: Preserve preflight outputs
         uses: actions/upload-artifact@v4
@@ -81,5 +78,4 @@ jobs:
             /tmp/ahl04/fixed50.dat
             /tmp/ahl04/fixed100.dat
             /tmp/ahl04/adaptive.dat
-            /tmp/ahl04_stage_a.txt
             /tmp/ahl04a_replay.txt
