@@ -624,3 +624,10 @@ H16 reuses existing storage when the required layout is unchanged:
 - deallocate only when the feature becomes absent or array shape changes.
 
 No control value is cached across intervals. This only removes allocator churn.
+
+
+## ZW01-H17 preregistration — reuse scalar soil-temperature forcing storage
+
+`soil_temperature_forcing` is an allocatable scalar object that is deallocated at every interval start and reallocated immediately when soil temperature remains active. Its values must change with forcing, but its storage need not.
+
+H17 retains the allocated object while the feature remains active, overwrites it from current forcing each interval, and deallocates only when the feature becomes inactive. No forcing value is retained implicitly.
