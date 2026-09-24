@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.rom-purpose.p8b.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P8B-BLIND-TRANSITION-MEMORY-VALIDATION",
+  "date": "2026-09-24",
+  "phase": "PREREGISTERED_BEFORE_ANY_P8B_REFERENCE_OR_VALIDATION_RESPONSE",
+  "central_question": "Does one-step storage-transition memory carry blind predictive information about next-interval total-storage change beyond static storage summaries under prescribed-head groundwater forcing?",
+  "derivation_authority": {
+    "contract": "integration/f-rom/ROM_PURPOSE_P8A_DERIVATION_CONTRACT.json",
+    "coefficient_source_rule": "Use the exact persisted P8A coefficient artifact produced from G21-G24 before any P8B route is executed. No refitting, rescaling or candidate pruning on P8B data."
+  },
+  "fresh_workload": {
+    "histories": {
+      "G25": {
+        "initial_effective_saturation": 0.75,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_RISE",
+            288
+          ],
+          [
+            "BOTTOM_HEAD_FALL",
+            672
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      },
+      "G26": {
+        "initial_effective_saturation": 0.83,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_FALL",
+            352
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            736
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      },
+      "G27": {
+        "initial_effective_saturation": 0.89,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_RISE",
+            416
+          ],
+          [
+            "BOTTOM_HEAD_FALL",
+            800
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      },
+      "G28": {
+        "initial_effective_saturation": 0.95,
+        "sequence": [
+          [
+            "BOTTOM_HEAD_FALL",
+            480
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            864
+          ],
+          [
+            "HOLD",
+            1024
+          ]
+        ]
+      }
+    },
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "spatial_route": "R512",
+    "temporal_factor": 8,
+    "observation_count": 1024,
+    "observation_dt_day": 0.0008,
+    "bottom_head_multipliers": {
+      "BOTTOM_HEAD_RISE": 0.9,
+      "BOTTOM_HEAD_FALL": 1.1
+    },
+    "top_boundary": "gravity-equilibrium flux",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "O0_O2_identity_required": true,
+    "mass_gate_cm": 1e-12
+  },
+  "frozen_candidates": {
+    "STORAGE": [
+      "current total storage",
+      "next-interval bottom head"
+    ],
+    "STORAGE_LOWER80": [
+      "current total storage",
+      "current 80-160 cm storage",
+      "next-interval bottom head"
+    ],
+    "STORAGE_MEMORY1": [
+      "current total storage",
+      "previous interval total-storage change",
+      "next-interval bottom head"
+    ],
+    "STORAGE_LOWER80_MEMORY1": [
+      "current total storage",
+      "current 80-160 cm storage",
+      "previous interval total-storage change",
+      "next-interval bottom head"
+    ]
+  },
+  "target": "next observation-interval total-storage change",
+  "scoring_domain": "Transitions whose next interval uses prescribed-head bottom mode; first transition requiring unavailable previous memory is excluded.",
+  "metrics": {
+    "primary": "pooled one-step storage-change RMSE by material and candidate",
+    "secondary": [
+      "per-history RMSE",
+      "signed mean error",
+      "event-switch subset RMSE"
+    ],
+    "no_primary_scalar_across_materials": true
+  },
+  "hypotheses": {
+    "H1": "STORAGE_MEMORY1 has lower pooled RMSE than STORAGE for both B01 and B14.",
+    "H2": "STORAGE_MEMORY1 has lower pooled RMSE than STORAGE_LOWER80 for both B01 and B14.",
+    "H3": "The direction of the STORAGE_MEMORY1 versus STORAGE improvement is reported for every blind history; no history-level exclusion is permitted.",
+    "H4": "STORAGE_LOWER80_MEMORY1 is diagnostic only; no preregistered directional claim versus STORAGE_MEMORY1."
+  },
+  "interpretation_boundary": [
+    "Support means transition memory carries response-relevant information for this one-step purpose under the tested workload.",
+    "Support does not establish a production ROM, universal memory order, or application acceptance.",
+    "Failure does not invalidate P6B/P7A conservation-law identities."
+  ],
+  "scientific_firewall": {
+    "validation_response_seen": false,
+    "coefficients_refit_on_validation": false,
+    "candidate_family_changed_after_training": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
