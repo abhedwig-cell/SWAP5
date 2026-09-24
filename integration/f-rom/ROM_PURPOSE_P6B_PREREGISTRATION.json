@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.rom-purpose.p6b.preregistration.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P6B-INTERVAL-BALANCE-BOUNDARY-OPERATOR",
+  "date": "2026-09-24",
+  "phase": "PREREGISTERED_BEFORE_ANY_P6B_ANALYSIS",
+  "central_question": "For prescribed-head groundwater boundary transactions, is the published bottom-outward exchange exactly the interval water-balance operator rather than a terminal local Darcy-face operator?",
+  "authority": {
+    "adapter": "src/adapter/mod_reference_richards_legacy_binding.f90@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "backend": "src/runtime/mod_fmr_serialized_reference_backend.f90@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "source_route_run": 35923634779,
+    "histories": [
+      "G21",
+      "G22",
+      "G23",
+      "G24"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ]
+  },
+  "operator_contract": {
+    "prescribed_head_materialization": "qbot = qtop + (S_end-S_start)/dt - source_terms + sink_terms",
+    "test_workload_sources_and_sinks": "zero",
+    "published_exchange": "bottom_outward_exchange = -qbot * dt",
+    "oracle_formula": "E_bottom_out_hat = -TOP_EXCHANGE - (TOTAL_STORAGE_end - TOTAL_STORAGE_start)",
+    "first_transaction_per_history": "excluded because the preceding seeded storage is not serialized in the trace",
+    "domain": "BOTTOM_MODE=5 only"
+  },
+  "metrics": {
+    "rmse_exchange_cm": 1e-12,
+    "max_abs_exchange_error_cm": 1e-11,
+    "sign_mismatch_gate": 0
+  },
+  "hypotheses": {
+    "H1": "The interval-balance oracle closes to floating/serialization scale for both materials.",
+    "H2": "The P5C terminal Darcy oracle is therefore the wrong target operator for the published boundary exchange."
+  },
+  "downstream_rule": "If H1 passes, future reduced groundwater-response work must treat previous storage plus current storage and external interval fluxes as part of the boundary-exchange closure; local terminal boundary shape alone is not the authoritative published operator.",
+  "scientific_firewall": {
+    "simulations_rerun": false,
+    "p5c_candidate_metrics_used": false,
+    "solver_or_physics_changed": false,
+    "numerical_policy_changed": false,
+    "tolerance_changed": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
