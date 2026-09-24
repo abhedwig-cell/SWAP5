@@ -1,0 +1,29 @@
+name: F-AHL13 constitutive runtime
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl13_runtime_screen.f90'
+      - '.github/workflows/f-ahl13-constitutive-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run four-material exact-K runtime screen
+        run: |
+          mkdir -p /tmp/ahl13
+          PYTHONPATH=research/ahl python3 research/ahl/ahl09_derivative_consistent.py /tmp/ahl13 >/tmp/ahl13_summary.json
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -pedantic             research/ahl/ahl13_runtime_screen.f90 -o /tmp/ahl13_bench
+          : > /tmp/ahl13_runtime.txt
+          for m in B01 B12 O05 O14; do
+            /tmp/ahl13_bench /tmp/ahl13/${m}_dc.dat ${m} | tee -a /tmp/ahl13_runtime.txt
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl13-runtime-${{ github.run_id }}
+          path: /tmp/ahl13_runtime.txt
