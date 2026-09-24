@@ -1,0 +1,51 @@
+name: TAB P4 practical knee
+
+on:
+  push:
+    branches: [research/tab-speed-accuracy]
+    paths:
+      - '.github/workflows/tab-speed-accuracy-practical-knee.yml'
+      - 'research/tabulated_hydraulics/TAB_SPEED_ACCURACY_P4_TRIGGER.txt'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  knee:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        rows: [50, 60, 75, 100]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Bind naive log-head row count
+        shell: bash
+        run: |
+          python3 - "${{ matrix.rows }}" <<'PY'
+          from pathlib import Path
+          import re,sys
+          p=Path('src/solver/mod_b110_generated_mvg_table_state.f90'); s=p.read_text(); n=int(sys.argv[1])
+          s,k=re.subn(r'integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = [0-9]+',f'integer, parameter, public :: B110_GENERATED_MVG_TABLE_N = {n}',s,count=1)
+          assert k==1
+          s=s.replace('B110_GENERATED_MVG_CURVATURE_GRID = .true.','B110_GENERATED_MVG_CURVATURE_GRID = .false.')
+          p.write_text(s)
+          PY
+      - name: Characterize
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fsi/run_ftab02e_generated_provider_performance.sh | tee TAB-P4-${{ matrix.rows }}.log
+          cp F-TAB02-E_SUMMARY.tsv TAB-P4-${{ matrix.rows }}.tsv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tab-p4-${{ matrix.rows }}
+          path: |
+            TAB-P4-${{ matrix.rows }}.log
+            TAB-P4-${{ matrix.rows }}.tsv
+          if-no-files-found: warn
