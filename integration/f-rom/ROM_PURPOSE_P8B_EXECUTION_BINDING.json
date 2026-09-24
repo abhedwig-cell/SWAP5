@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.rom-purpose.p8b.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P8B-BLIND-TRANSITION-MEMORY-VALIDATION",
+  "date": "2026-09-24",
+  "status": "BOUND_AFTER_P8A_COEFFICIENT_FREEZE_BEFORE_P8B_RESPONSE",
+  "scientific_backend": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "coefficients": "integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json@0dc5c38554f0617f48adc1fe091adeccd57f1ec5",
+  "preregistration": "integration/f-rom/ROM_PURPOSE_P8B_PREREGISTRATION.json@ecb72386b475a7be84947c7639707d93d6308e7e",
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p8b.yml": "625247be40011d32a8534a9caaf5d4e3c9423249",
+    "integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json": "0dc5c38554f0617f48adc1fe091adeccd57f1ec5",
+    "integration/f-rom/ROM_PURPOSE_P8B_PREREGISTRATION.json": "ecb72386b475a7be84947c7639707d93d6308e7e",
+    "tests/rom/materialize_rom_purpose_p8b_gw_reference.py": "3ba0b0448905189f8f95f30e8c157467666a22ec",
+    "tests/rom/run_rom_purpose_p8b_reference.py": "d3d14a6d7a1f3577cef0f1eb5a7bf26c99988026",
+    "tests/rom/analyze_rom_purpose_p8b_transition_memory.py": "dec98a80b083009918243020e79a020f349a5f33"
+  },
+  "scientific_firewall": {
+    "validation_response_seen_before_binding": false,
+    "coefficients_refit_on_validation": false,
+    "candidate_family_changed_after_training": false,
+    "material_or_history_exclusion_after_training": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
