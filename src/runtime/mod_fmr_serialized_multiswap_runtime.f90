@@ -495,8 +495,17 @@ contains
     type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
 
     integer :: state_index, parameter_index, forcing_index, template_index
+    logical :: routable
 
-    if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
+    template_index = find_template_index(column%template_id, templates)
+    routable = template_index > 0 .and. column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
+         column%parameter_ref >= 1_int64 .and. &
+         column%parameter_ref <= int(size(parameter_registry), int64) .and. &
+         column%forcing_handle >= 1_int64 .and. &
+         column%forcing_handle <= int(size(forcing_registry), int64)
+    if (routable) routable = templates(template_index)%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
+
+    if (.not. routable) then
       output%admission_status = 'ROUTING_REJECTED'
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'ROUTING_REJECTED'
@@ -507,7 +516,6 @@ contains
     state_index = int(column%state_handle)
     parameter_index = int(column%parameter_ref)
     forcing_index = int(column%forcing_handle)
-    template_index = find_template_index(column%template_id, templates)
 
     if (present(commit_receipt)) then
       call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
