@@ -774,7 +774,7 @@ contains
     call state%temporal_history_snapshot(history,ok)
     call require(ok,'jump diagnostic committed history')
     allocate(event_derivative(p%active_nodes))
-    call seed_initial_derivative(p,state,forcing,event_derivative)
+    call seed_initial_derivative(p,state%fmr_b110_physical_state_t,forcing,event_derivative)
     old_history%previous_right_derivative_available=.true.
     old_history%previous_right_derivative=history
     event_history%previous_right_derivative_available=.true.
