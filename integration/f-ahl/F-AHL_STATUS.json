@@ -1,114 +1,60 @@
 {
-  "schema_version": 9,
+  "schema_version": 10,
   "workstream": "F-AHL",
-  "status": "BOUNDED_ARCHITECTURE_DECISION_REQUIRED",
+  "status": "CURRENT_B1_10_BOUNDARY_ARCHITECTURE_CLOSED",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "research_head_at_update": "a4923372cf6e94129e0466fbcd99f352421f0fc6",
-  "completed_through": "F-AHL21E",
-  "selected_research_candidate": {
-    "representation": "auto-generated derivative-consistent cubic Hermite logit(Se) retention with C derived from the same interpolant and separately controlled conductivity accuracy",
-    "lifecycle": "authoritative parameters -> generate -> qualify -> immutable exact-key cache -> bind once -> solve",
-    "near_saturation": "authoritative analytical handling for h > -1 cm",
-    "runtime_refinement": false
+  "completed_through": "F-AHL24",
+  "selected_research_architecture": {
+    "prescribed_head_like_qualified_envelope": "auto-generated derivative-consistent AHL representation",
+    "prescribed_qbot": "fully analytical authoritative hydraulics",
+    "near_saturation_h_gt_minus_1_cm": "authoritative analytical handling",
+    "runtime_refinement": false,
+    "external_table_files": false,
+    "cache": "immutable exact-key internal cache"
   },
-  "closed_positive_evidence": {
+  "positive_evidence": {
     "prescribed_head_matrix": {
-      "materials": [
-        "B01",
-        "B12",
-        "O05",
-        "O14"
-      ],
-      "regimes": [
-        "wet",
-        "mid",
-        "dry"
-      ],
+      "materials": ["B01","B12","O05","O14"],
+      "regimes": ["wet","mid","dry"],
       "fidelity_pass": "12/12",
       "same_iteration_and_backtracking_path": "12/12",
-      "paired_complete_Richards_cpu_reduction_fraction_range": [
-        0.205364,
-        0.24229
-      ]
+      "complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290]
     },
-    "self_building_provider": {
-      "external_table_files_required": false,
-      "self_built_matrix_pass": "12/12",
-      "steady_paired_median_candidate_over_analytical_ratio": 0.799599,
-      "steady_cpu_reduction_fraction": 0.200401,
+    "self_built_provider": {
+      "matrix_pass": "12/12",
+      "median_complete_Richards_cpu_reduction_fraction": 0.200401,
       "cold_bind_seconds": 0.001029
     },
-    "cache_and_amortization": {
-      "immutable_exact_key_cache": "PASS",
-      "build_seconds_per_unique_parameterization_range": [
-        0.00071197,
-        0.00111333
-      ],
-      "single_column_build_break_even_solve_count_order": "several hundred to about one thousand",
-      "multi_column_reuse": "rapidly amortizes when hydraulic parameterizations are shared"
+    "prescribed_qbot_analytical_fallback": {
+      "hybrid_exact_retention_lookup_K_fidelity": "12/12 PASS",
+      "B01_wet_hybrid_timing_ratio": 1.002601,
+      "O05_dry_hybrid_timing_ratio": 0.993863,
+      "classification": "EQUIVOCAL_NO_MEANINGFUL_SPEED_BENEFIT",
+      "selected_policy": "fully analytical authoritative hydraulics"
     }
   },
+  "falsified_or_rejected": [
+    "independent theta and C lookup channels",
+    "K-only lookup as general speed strategy",
+    "global theta or C densification as qbot Newton-path repair",
+    "K tightening or exact K as O05-dry qbot repair",
+    "accepted-state scalar storage-Jacobian threshold as a general fallback trigger",
+    "hybrid exact-retention plus lookup-K for qbot as a meaningful speed optimization"
+  ],
+  "scientific_conclusion": "Derivative-consistent theta/C representation provides robust acceleration in the qualified prescribed-head B1.10 envelope, but boundary-sensitive prescribed-flux cases can amplify tiny retention/capacity representation differences into extra nonlinear work. No reliable material-independent scalar pre-solve trigger was found. The strict architecture therefore accelerates only the qualified envelope and falls back to authoritative analytical hydraulics for prescribed-qbot.",
   "dry_tail_authority": {
     "raw_capacity_relevance_scale": "C=dtheta/dh around 1e-13 in earlier O05 extreme-dry analysis",
     "historical_jacobian_regularization": "C_J=max(C,dt*1e-13)",
     "not_a_K_cutoff": true,
     "not_a_physical_theta_or_K_truncation": true,
-    "current_provider_note": "the current authoritative B1.10 provider contains its own near-saturation capacity floor dt*1e-7 for h>-1 cm; the dry-tail dt*1e-13 item is bound from earlier dry-end Newton-conditioning research, not exposed as a current physical constitutive cutoff",
-    "design_rule": "do not spend adaptive support resolving an extreme-dry storage tail already judged numerically negligible; any tail termination/asymptotic handling needs prospective qualification"
+    "design_rule": "do not refine indefinitely into numerically negligible extreme-dry storage tails; any explicit tail termination remains separately qualifiable"
   },
-  "prescribed_qbot_evidence": {
-    "reference_valid_wet_timestep_envelope": {
-      "bottom_flux_factor": 0.99,
-      "largest_qualified_step_duration_day": 0.0625,
-      "wet_cases_pass": "3/3"
-    },
-    "full_matrix_at_dt_0_0625": {
-      "pass": "11/12",
-      "remaining_failure": "O05:dry nonlinear iteration identity"
-    },
-    "B01_wet_path_sensitive_timing": {
-      "endpoint_fidelity": "PASS",
-      "analytical_iterations": 2,
-      "candidate_iterations": 3,
-      "median_candidate_over_analytical_cpu_ratio": 1.141634,
-      "classification": "SLOWER"
-    },
-    "O05_dry_attribution": {
-      "selected_K": "FAIL path identity",
-      "global_tight_K": "FAIL path identity",
-      "exact_K": "FAIL path identity",
-      "exact_theta_C_plus_lookup_K": "PASS_IDENTICAL_TO_ANALYTICAL_PATH_CONFIRMED_F_AHL21E",
-      "cause_classification": "retention/capacity representation, not conductivity resolution",
-      "bottom_head_candidate_minus_reference_cm": 0.000001490119
-    }
-  },
-  "falsified_repair_strategies": [
-    "independent theta and C tables",
-    "K-only lookup as speed strategy",
-    "uniform global logK densification into the extreme dry tail",
-    "global theta-error densification for prescribed-qbot path recovery",
-    "global C-error densification down to abs logC 3e-7 for prescribed-qbot path recovery",
-    "further K tightening or exact K for O05-dry prescribed-qbot path recovery"
+  "next_research_scope": [
+    "broader hydraulic-model-family envelope",
+    "SWKIMPL=1/dKdh qualification if included in target admission",
+    "whole-SWAP accepted-trajectory performance",
+    "prospective dry-tail termination/asymptotic continuity qualification"
   ],
-  "scientific_conclusion_so_far": "Preserving theta/C derivative consistency is necessary for nonlinear robustness but not sufficient for universal nonlinear-path invariance. In boundary-sensitive prescribed-flux regimes, trajectory-local retention/capacity representation error can add nonlinear work even when endpoint hydraulic error is tiny, and that extra work can reverse the speed benefit.",
-  "open_architecture_decision": {
-    "question": "How should the strict candidate handle the remaining retention-sensitive qbot regime without weakening the frozen scientific gates?",
-    "authority_gap": "Existing evidence supports exact retention/capacity as a diagnostic repair but does not yet define a general, material-independent and boundary-safe trigger for a bounded exact fallback, nor select a replacement interpolation family.",
-    "admissible_next_options": [
-      "prospectively test a different retention representation family designed around solver-local Jacobian fidelity",
-      "prospectively define and qualify a bounded exact-retention fallback policy with an authority-based trigger"
-    ],
-    "reason_to_stop": "This is now a genuine representation-architecture choice, not a technical repair implied uniquely by existing authority.",
-    "confirmed_by": "F-AHL21E"
-  },
-  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION",
-  "production_admission_still_requires": [
-    "resolve or explicitly bound prescribed-qbot retention-sensitive failure regimes",
-    "qualify broader hydraulic model families beyond the current unimodal B1.10 envelope",
-    "qualify SWKIMPL=1/dKdh if included in admission scope",
-    "whole-SWAP trajectory/application performance evidence",
-    "prospective dry-tail continuity/solver-response qualification",
-    "production integration and regression evidence"
-  ]
+  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION"
 }
