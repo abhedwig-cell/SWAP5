@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.sw_rib_adm01.canonical_application_closeout.v1",
+  "work_unit": "SW-RIB-ADM01",
+  "date": "2026-09-24",
+  "canonical_base": "f2b6af0dc9e7be65fea3956a7c576e5a62c6a9d9",
+  "decision": "ADMIT_BOUNDED_LIVE_RIBASIM_APPLICATION_PROFILE",
+  "profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+  "production_source_authority": {
+    "canonical_commit": "f2b6af0dc9e7be65fea3956a7c576e5a62c6a9d9",
+    "source_admission": "F-CI109 / F-APP09",
+    "source_files_changed_by_this_closeout": 0
+  },
+  "live_ribasim_authority": {
+    "release": "v2026.1.2",
+    "git_sha": "eae77424a4078497d40d8197237cb83e3aba6a83",
+    "provenance": "PASS_COHERENT_RELEASE_REQUALIFIED",
+    "application_gate": "ADM01-G7 PASS",
+    "evidence_run": 35902473388,
+    "evidence_job": 107321855529
+  },
+  "admitted_scope": [
+    "Ribasim is sole accepted owner of the represented secondary surface-water storage and level.",
+    "SWAP5 receives a typed accepted external surface-water head for exactly one EXTENDED_SIGNED drainage-response level.",
+    "Positive soil-to-surface-water drainage and negative surface-water-to-soil infiltration are supported.",
+    "Realized-transfer mismatch prevents commit and triggers same-origin discard/recomposition.",
+    "Availability-limited infiltration is resolved using live Ribasim receipt semantics; accept-with-clip is forbidden.",
+    "Exactly one SWAP accepted outer substep and exactly one final commit occur per accepted coupling window.",
+    "RIBASIM_NATIVE_GEOMETRY_V1 is the default production geometry contract for this profile."
+  ],
+  "explicit_exclusions": [
+    "multilevel external surface-water exchange",
+    "automatic SWMAN=2 production runtime",
+    "top-runoff and rapid-drainage production binding",
+    "nonlinear legacy SWQHR1 numerical parity",
+    "whole surfacewater.f90 deletion",
+    "full SWAP5 + MODFLOW6 + Ribasim triangle admission"
+  ],
+  "migration_options": {
+    "legacy_sttab_emulation": "Q1H epsilon-controlled representation remains a separately named migration/emulation option and is not the default production geometry."
+  },
+  "authority_chain": [
+    "SW-RIB-SWM01 research closeout",
+    "F-APP09 owner qualification",
+    "F-VQ128 independent qualification",
+    "F-CI109 canonical SWAP-side admission",
+    "ADM01-G5B exact Ribasim realization",
+    "ADM01-G6 coherent v2026.1.2 provenance",
+    "ADM01-G7 live application qualification"
+  ],
+  "production_application_admission": true,
+  "whole_legacy_retirement_authority": false
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.sw_rib_adm01.g5b.result.v1",
+  "work_unit": "SW-RIB-ADM01-G5B",
+  "date": "2026-09-23",
+  "tested_head": "82057cf074c94c2b2fec3e5f1b429cc4dd8f2a17",
+  "evidence_run": 35892401977,
+  "evidence_job": 107288075790,
+  "ribasim_release": {
+    "tag": "v2026.1.2",
+    "sha": "eae77424a4078497d40d8197237cb83e3aba6a83",
+    "version": "2026.1.2"
+  },
+  "decision": "PASS_EXACT_RELEASE_REALIZATION_AND_ORIGIN_BOUND_TRANSACTION",
+  "cases": {
+    "E1_POSITIVE_DRAINAGE": {
+      "accepted_head_cm": -49.99999999998843,
+      "requested_volume_m3": 0.01,
+      "realized_volume_m3": 0.01,
+      "mass_residual_m3": -1.1567656554856143e-13,
+      "transaction": "COMMIT_READY",
+      "result": "PASS"
+    },
+    "E2_NEGATIVE_INFILTRATION_SUFFICIENT": {
+      "accepted_head_cm": -50.000000000005784,
+      "requested_volume_m3": -0.005,
+      "realized_volume_m3": -0.005,
+      "mass_residual_m3": 5.783828277428071e-14,
+      "transaction": "COMMIT_READY",
+      "result": "PASS"
+    },
+    "E3_NEGATIVE_INFILTRATION_LIMITED": {
+      "accepted_head_cm": -99.80000000000001,
+      "requested_volume_m3": -0.0051,
+      "realized_volume_m3": -0.000006010919266526314,
+      "mass_residual_m3": 6.965151925272112e-17,
+      "transaction": "FIRST_PASS_RECOMPOSITION_REQUIRED__SAME_ORIGIN_REALIZED_REQUEST_COMMIT_READY",
+      "result": "PASS"
+    }
+  },
+  "checks": {
+    "exact_git_pin": "PASS",
+    "python_version": "PASS_2026.1.2",
+    "core_version": "PASS_2026.1.2",
+    "generated_model_metadata": "PASS_2026.1.2",
+    "direct_realization": "PASS",
+    "receipt_to_production_transaction": "PASS",
+    "availability_limited_recomposition": "PASS"
+  },
+  "interpretation": [
+    "Real Ribasim v2026.1.2 supplies the physical realized transfer used by the production transaction contract.",
+    "Availability-limited infiltration is not clipped after SWAP acceptance; it causes recomposition from the same accepted origins.",
+    "The coherent release removes the v2026.1.1 Python/core version-seam blocker."
+  ],
+  "production_admission": false
+}
