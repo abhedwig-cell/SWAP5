@@ -294,6 +294,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  reset conductivities (state%k, state%kmean) to time level t
    if (provider_constitutive_active) then
+      ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
       call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
            fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
       state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
@@ -348,7 +349,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          fsi_ws%old_head(i) = state%h(i)
       end do
       if (provider_constitutive_active) then
-         call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+         ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+      call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
               fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
          state%dimoca(1:NN) = fsi_ws%provider_capacity(1:NN)
       else
@@ -417,7 +419,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        update state%theta
          if (provider_constitutive_active) then
-            call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+            ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+      call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
                  fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
             state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
          else
