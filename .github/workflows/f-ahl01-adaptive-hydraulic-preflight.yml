@@ -52,6 +52,14 @@ jobs:
               | tee -a /tmp/ahl03_runtime.txt
           done
 
+      - name: Prepare F-AHL04 FSI24 hybrid tables
+        run: |
+          mkdir -p /tmp/ahl04
+          python3 research/ahl/ahl04_generate_fsi24_tables.py /tmp/ahl04 | tee /tmp/ahl04_summary.json
+          test -s /tmp/ahl04/fixed50.dat
+          test -s /tmp/ahl04/fixed100.dat
+          test -s /tmp/ahl04/adaptive.dat
+
       - name: Preserve preflight outputs
         uses: actions/upload-artifact@v4
         with:
@@ -60,3 +68,7 @@ jobs:
             /tmp/ahl01.json
             /tmp/ahl02.json
             /tmp/ahl03_runtime.txt
+            /tmp/ahl04_summary.json
+            /tmp/ahl04/fixed50.dat
+            /tmp/ahl04/fixed100.dat
+            /tmp/ahl04/adaptive.dat
