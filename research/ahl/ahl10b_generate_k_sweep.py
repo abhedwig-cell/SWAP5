@@ -9,7 +9,18 @@ ROOT.mkdir(parents=True,exist_ok=True)
 TOLS=[("k3",3e-3),("k1",1e-3),("k03",3e-4),("k01",1e-4)]
 
 def logk(h,p):
-    return dc.node_values(h,p)[2]
+    # Algebraically equivalent but cancellation-stable Mualem conductivity.
+    tr,ts,a,n,ks,lam=p
+    m=1.0-1.0/n
+    theta,_,_=dc.base.evaluate_core(h,p)
+    se=(theta-tr)/(ts-tr)
+    if se>1.0-1.0e-6:
+        k=ks
+    else:
+        u=se**(1.0/m)
+        bracket=-__import__("math").expm1(m*__import__("math").log1p(-u))
+        k=min(ks*se**lam*bracket*bracket,ks)
+    return __import__("math").log(max(k,1e-300))
 
 def k_interval_error(h0,h1,p):
     x0,x1=dc.x_from_h(h0),dc.x_from_h(h1)
