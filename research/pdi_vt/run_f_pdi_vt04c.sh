@@ -9,7 +9,12 @@ chmod +x "$TMP"
 bash "$TMP" /tmp/f_pdi_vt04c_base.json
 BUILDROOT="$(find "${RUNNER_TEMP:-/tmp}" -maxdepth 1 -type d -name 'f-pdi-vt04-*' -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)"
 [[ -n "$BUILDROOT" && -d "$BUILDROOT" ]]
-for label in control-vap candidate-vap control-novap candidate-novap; do cp "$BUILDROOT/$label/result.bfo" "/tmp/${label}.bfo"; done
+for label in control-vap candidate-vap control-novap candidate-novap; do
+  cp "$BUILDROOT/$label/result.bfo" "/tmp/${label}.bfo"
+  for ext in vap wba inc; do
+    if [[ -f "$BUILDROOT/$label/result.$ext" ]]; then cp "$BUILDROOT/$label/result.$ext" "/tmp/${label}.$ext"; fi
+  done
+done
 python3 - <<'PY'
 from pathlib import Path
 import json,re,hashlib
