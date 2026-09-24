@@ -144,6 +144,13 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_zeroed_bytes
   write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  call require(diagnostics_off%workspace_full_resets == 9, &
+       'external full-half interval aggregates three resets across three Reference solves')
+  call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
+       observation_off%solver_diagnostics%workspace_zeroed_bytes, &
+       'interval reset bytes equal three Reference-solve reset payloads')
+  write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_INTERVAL=', diagnostics_off%workspace_full_resets
+  write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_INTERVAL=', diagnostics_off%workspace_zeroed_bytes
 
   call candidate_off%snapshot(snapshot_off, available_off)
   call candidate_on%snapshot(snapshot_on, available_on)
