@@ -80,3 +80,37 @@ QUALIFY           = PENDING
 RUNTIME           = PENDING
 CANONICAL ADMIT   = NOT CLAIMED
 ```
+
+
+## ZW01-H2 preregistration — separate shape assurance from reset
+
+H1 removes only the immediately repeated explicit reset. The remaining second avoidable reset is caused by `HeadCalc` calling `initialize_reference_workspace` on a workspace that the owning Reference binding has already initialized and cleaned for the solve.
+
+The repair will make the existing ownership distinction explicit:
+
+- `ensure_reference_workspace_shape(workspace,n)`: ensure allocation/shape/payload metadata only; do not clear scratch;
+- `initialize_reference_workspace(workspace,n)`: preserve existing public semantics by calling shape assurance and then one full reset;
+- `HeadCalc` with a caller-supplied `fsi_workspace`: use shape assurance only;
+- `HeadCalc` with its own local workspace: retain full initialization/reset.
+
+This avoids weakening the general initialization contract and limits the optimization to the caller-owned workspace route whose pre-clean condition is already established by the binding.
+
+### H2 expected observation
+
+Provided-workspace Reference path:
+
+- full resets per solve: `2 -> 1`;
+- full resets per three-solve interval: `6 -> 3`.
+
+The one retained reset is the clean-scratch establishment at solve start in the owning binding.
+
+### H2 safety gates
+
+- existing FKT22 O0/O2 physical/runtime oracle PASS;
+- no change in pressure head, water content, nonlinear iteration count, solver status, accepted/rejected outcome, or H03 constitutive counts;
+- local-workspace `HeadCalc` path still performs full initialization/reset;
+- shape mismatch/reallocation remains supported;
+- poison/scratch independence remains qualified;
+- runtime attribution only after semantic gates pass.
+
+H2 is forbidden from changing transaction ownership or relying on dirty scratch from a prior solve.
