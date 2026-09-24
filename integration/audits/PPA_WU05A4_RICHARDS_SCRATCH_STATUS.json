@@ -24,7 +24,8 @@
     "runner": "tests/fapp/run_ppa_wu05a4_regression.ps1",
     "scope": "Seven A4 gates (trial exchange, saturated trial, Richards scratch, redistribution, rate composition, outflow, inflow) plus A3 interval candidate and candidate mass. Each child runs O0/O2 with runtime/FPE checks and transcript identity. Failures stop the bundle before its success marker.",
     "limits": "Cross-component regression only; no production HeadCalc call site, full Richards solve or new admission established.",
-    "test_result": "Individual nine-gate replay PASS at 945ae1585; bundle persisted replay pending"
+    "recovery_point": "4cd30fae6",
+    "test_result": "Persisted 4cd30fae6 bundle completed with exit 0 and PPA_WU05A4_BOUNDED_REGRESSION_NINE_GATES=PASS. All nine child gates PASS O0/O2 with identical transcripts."
   },
   "linear_storage_composition": {
     "baseline": "112c6637e",
