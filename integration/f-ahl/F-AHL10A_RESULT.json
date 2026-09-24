@@ -7,24 +7,9 @@
   "workflow_run": 36043247437,
   "workflow_job": 107780347763,
   "failed_cases_from_AHL10": ["B01:wet","B01:dry","B12:wet","B12:dry","O05:wet","O14:dry"],
-  "result": {
-    "base_dc_retention_plus_lookup_K": "6 of 6 remain failed",
-    "dc_retention_plus_exact_K": "6 of 6 pass original F-AHL10 gates",
-    "exact_retention_capacity_plus_lookup_K": "6 of 6 remain failed"
-  },
-  "representative_exact_K_results": {
-    "B01:wet": {"max_head_delta_cm":7.229600e-7,"bottom_flux_delta_cm_per_day":2.722199e-8},
-    "B01:dry": {"max_head_delta_cm":1.446117e-2,"bottom_flux_delta_cm_per_day":4.644778e-6},
-    "B12:wet": {"max_head_delta_cm":6.876463e-6,"bottom_flux_delta_cm_per_day":6.136296e-8},
-    "B12:dry": {"max_head_delta_cm":4.418081e-3,"bottom_flux_delta_cm_per_day":1.059327e-6},
-    "O05:wet": {"max_head_delta_cm":7.265482e-7,"bottom_flux_delta_cm_per_day":3.300095e-7},
-    "O14:dry": {"max_head_delta_cm":2.923437e-6,"bottom_flux_delta_cm_per_day":4.132463e-7}
-  },
-  "finding": "All six F-AHL10 extreme-regime fidelity failures are conductivity-lookup dominated under the frozen attribution design. Restoring exact K makes every failed case pass while retaining the derivative-consistent theta/C interpolant. Restoring exact theta/C while retaining lookup K does not resolve any of the six failures.",
-  "design_implication": "Do not globally refine the retention/capacity interpolant. Decouple support selection: retain compact derivative-consistent theta/C support and construct a separate adaptive conductivity representation with its own error target.",
-  "nonclaims": [
-    "The result does not establish the required K error tolerance.",
-    "It does not establish the best K interpolation family.",
-    "No production admission is implied."
-  ]
+  "finding": "All six failed F-AHL10 cases pass the frozen gates when K is restored to exact evaluation while derivative-consistent interpolated retention/capacity is retained. Restoring exact retention/capacity while retaining lookup K leaves the failures essentially unchanged.",
+  "classification": "K_LOOKUP_DOMINATED",
+  "important_secondary_finding": "The analytical nonlinear iteration and backtracking path was preserved in all base and attribution variants; the problem is endpoint-response fidelity, not convergence-path stability.",
+  "design_implication": "Retain the F-AHL09 derivative-consistent theta/C representation. Refine the shared support according to K error in the extreme regimes rather than abandoning the shared interpolant architecture.",
+  "next_action": "Prospectively sweep tighter log(K) interpolation error while keeping the theta/C construction and all Richards gates fixed."
 }
