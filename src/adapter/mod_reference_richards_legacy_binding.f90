@@ -1,6 +1,6 @@
 module mod_reference_richards_legacy_binding
   use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
