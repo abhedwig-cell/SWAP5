@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10C",
+  "title": "Very-dry Mualem conductivity arithmetic reconciliation",
+  "parent": "F-AHL10B",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Is the O05 tight-K refinement blocker caused by floating-point cancellation in the algebraic evaluation of the Mualem conductivity bracket rather than by irreducible constitutive curvature?",
+  "reference_expression": "1 - (1 - u)^m, where u = Se^(1/m)",
+  "stable_equivalent_expression": "-expm1(m*log1p(-u))",
+  "tests": [
+    "Compare standard-double and stable-double evaluations over the AHL lookup domain for B01, B12, O05 and O14.",
+    "Demonstrate convergence of linear log(K) interpolation under the preregistered F-AHL10B tolerances when the stable algebraic evaluation is used as the table-construction oracle.",
+    "Do not change the runtime Richards reference provider in this work unit."
+  ],
+  "acceptance": {
+    "normal_domain_agreement": "Differences must remain negligible where cancellation is not active.",
+    "dry_end_diagnosis": "Stable evaluation must remove the refinement floor responsible for O05 BUILD_FAIL.",
+    "no_physics_change": true
+  },
+  "hard_exclusions": [
+    "NO_CHANGE_TO_B110_PRODUCTION_PROVIDER",
+    "NO_RICHARDS_GATE_CHANGE",
+    "NO_K_TOLERANCE_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
