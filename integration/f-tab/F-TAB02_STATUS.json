@@ -2,7 +2,7 @@
   "schema": "swap5.workunit_status.v1",
   "workunit": "F-TAB02",
   "title": "Generated default-MvG K0 constitutive acceleration provider",
-  "date": "2026-09-23",
+  "date": "2026-09-24",
   "branch": "work/f-tab02-generated-k0-provider",
   "canonical_authority": "integration/f-ci-canonical@a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
   "qualified_postimage": {
@@ -21,9 +21,9 @@
   "canonical_relation_at_qualified_postimage": {
     "ahead_by": 78,
     "behind_by": 0,
-    "action": "No canonical admission or merge is authorized while F-TAB02-F remains blocked."
+    "action": "No canonical admission is performed by this status update. Bounded admission may be evaluated separately under F-TAB02_SCOPE_SPLIT_20260924.json while F remains an explicit open preservation obligation."
   },
-  "state": "IMPLEMENTATION_QUALIFIED_A_THROUGH_G_AND_F0__F_READY",
+  "state": "BOUNDED_TECHNICAL_QUALIFICATION_PASS__HISTORICAL_F_PRESERVATION_OPEN",
   "slices": {
     "A": {
       "status": "PASS",
@@ -49,11 +49,11 @@
       "confirmation_replay_run": 35824244178
     },
     "F": {
-      "status": "READY_TO_EXECUTE",
+      "status": "OPEN_PRESERVATION_GATE",
       "record": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json",
       "prerequisite": "F-TAB02-G PASS and F-TAB02-F0 PASS",
       "prerequisite_result": "PASS",
-      "next": "Execute preregistered exact M1-C3 whole-Hupsel generated-provider gate using verified SWAP_4.3.1.zip authority.",
+      "next": "Resume exact M1-C3 whole-Hupsel generated-provider preservation gate only when the previously verified exact authority bytes are materializable again; do not substitute public lineage copies.",
       "blocker_record": "integration/f-tab/F-TAB02_F_BLOCKER.json"
     },
     "G": {
@@ -142,20 +142,20 @@
     "authority": "canonical M1-C3 exact whole-Hupsel typed Task2 application route",
     "required_archive_name": "SWAP_4.3.1.zip",
     "required_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "exact_materializable_bytes_available": true,
+    "exact_materializable_bytes_available": false,
     "exact_asset_verified_date": "2026-09-23",
     "exact_asset_size_bytes": 8959314,
     "exact_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
     "exact_b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
-    "new_blocker": null,
+    "new_blocker": "EXACT_AUTHORITY_PREVIOUSLY_VERIFIED_BUT_NOT_CURRENTLY_REPOSITORY_RESIDENT_OR_RAW_MATERIALIZABLE; PUBLIC_LINEAGE_COPIES_NO_MATCH",
     "executable_probe_status": "SUPERSEDED_BY_F_TAB02_G_AND_F0",
     "executable_probe_symbol": null,
     "substitutions_authorized": false,
-    "resume_condition": "Execute exact M1-C3 whole-Hupsel generated-provider gate and compare accepted-interval/retry/route/mass/result.bal/result.blc evidence.",
+    "resume_condition": "Exact official authority bytes matching the frozen SHA become materializable again; then execute the preregistered F gate without changing its acceptance contract.",
     "preregistration": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json"
   },
   "nonclaims": [
-    "canonical production admission",
+    "canonical production admission by this status record",
     "whole-Hupsel generated-provider equivalence",
     "generic SWSOPHY=1 production",
     "arbitrary user-supplied tabulated hydraulics",
@@ -163,5 +163,6 @@
     "portable whole-SWAP or MultiSWAP speedup",
     "F-TAB02-F0 implementation before G PASS",
     "generic generated-provider support for KSATEXM outside the bounded exact-Hupsel F-SI39 profile"
-  ]
+  ],
+  "scope_split_checkpoint": "integration/f-tab/F-TAB02_SCOPE_SPLIT_20260924.json"
 }
