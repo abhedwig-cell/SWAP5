@@ -142,6 +142,16 @@ program test_pub_p2e01_solver_seam_paired_pilot
   write(*,'(A,A)') 'PUB_P2E01_REFERENCE_SOLVER_ROUTE=', trim(reference_result%diagnostics%route)
   write(*,'(A,A)') 'PUB_P2E01_ALTERNATIVE_SOLVER_ROUTE=', trim(alternative_result%diagnostics%route)
   write(*,'(A,I0)') 'PUB_P2E01_REFERENCE_NONLINEAR_ITERATIONS=', reference_result%diagnostics%nonlinear_iterations
+  call require(reference_result%diagnostics%nonlinear_iterations > 1, &
+       'Reference multi-iteration H03 qualification case retained')
+  call require(reference_result%diagnostics%constitutive_evaluations == &
+       1 + reference_result%diagnostics%backtracking_attempts, &
+       'H03 reuse leaves one pre-loop plus one constitutive evaluation per backtracking attempt')
+  write(*,'(A,I0)') 'PUB_P2E01_REFERENCE_CONSTITUTIVE_EVALUATIONS=', &
+       reference_result%diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'PUB_P2E01_REFERENCE_BACKTRACKING_ATTEMPTS=', &
+       reference_result%diagnostics%backtracking_attempts
+  write(*,'(A)') 'PUB_P2E01_H03_MULTI_ITERATION_REUSE=PASS'
   write(*,'(A,I0)') 'PUB_P2E01_REFERENCE_LINEAR_SOLVES=', reference_result%diagnostics%linear_solves
   write(*,'(A,I0)') 'PUB_P2E01_ALTERNATIVE_LINEAR_SOLVES=', alternative_result%diagnostics%linear_solves
   write(*,'(A,I0)') 'PUB_P2E01_ALTERNATIVE_SOLVER_CALLS=', alternative_result%diagnostics%alternative_solver_calls
