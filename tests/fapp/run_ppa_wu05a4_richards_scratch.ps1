@@ -26,6 +26,10 @@ foreach ($opt in @('O0','O2')) {
     foreach ($source in @('src/solver/mod_soil_water_solver_contract.f90','src/solver/mod_reference_richards_workspace.f90','src/process/mod_ppa_wu05a3_volundr.f90','src/process/mod_ppa_wu05a4_storage_bounds.f90','src/process/mod_ppa_wu05a3_satflow_exchange.f90','src/process/mod_ppa_wu05a3_satflow_task1.f90','src/process/mod_ppa_wu05a3_satflow_derivative.f90','src/process/mod_ppa_wu05a4_inflow_limit.f90','src/process/mod_ppa_wu05a4_outflow_limit.f90','src/solver/mod_ppa_wu05a4_trial_exchange.f90','src/adapter/mod_ppa_wu05a4_saturated_trial.f90','src/adapter/mod_ppa_wu05a4_richards_scratch_binding.f90','tests/fapp/test_ppa_wu05a4_richards_scratch.f90')) {
         $arguments += (Join-Path $repo $source)
     }
+    $testSource = $arguments[-1]
+    $arguments = $arguments[0..($arguments.Count-2)]
+    $arguments += (Join-Path $repo 'src/adapter/mod_ppa_wu05a4_checkpoint_input.f90')
+    $arguments += $testSource
     $arguments += @('-o',$exe)
     & gfortran @arguments
     if ($LASTEXITCODE -ne 0) { throw 'Compilation failed' }

@@ -7,6 +7,7 @@ program test_scratch_binding
   use mod_ppa_wu05a4_trial_exchange
   use mod_ppa_wu05a4_matrix_fraction
   use mod_ppa_wu05a4_static_geometry
+  use mod_ppa_wu05a4_checkpoint_input
   use mod_ppa_wu05a4_reduction_policy
   use mod_ppa_wu05a2_macropore_state
   use mod_ppa_wu05a3_interval_candidate
@@ -162,6 +163,8 @@ program test_scratch_binding
   call interval_handoff()
   call check_matrix_fraction()
   call check_static_geometry()
+  call check_checkpoint_input()
+  print '(a)','PPA_WU05A4_CHECKPOINT_DERIVED_INPUT=PASS'
   print '(a)','PPA_WU05A4_STATIC_GEOMETRY_COMPOSITION=PASS'
   call check_reduction_policy()
   call check_reduction_composition()
@@ -173,6 +176,78 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_USED_TRANSFER_INTERVAL_HANDOFF=PASS'
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
+  subroutine check_checkpoint_input()
+    type(ppa_wu05a2_macropore_checkpoint_t)::cp,bad_cp
+    type(saturated_domain_inputs)::derived
+    type(static_macro_geometry)::geometry
+    type(reference_richards_workspace_t)::local_ws
+    type(reference_trial_transfer)::transfer
+    type(ppa_wu05a2_macropore_candidate_t)::candidate
+    type(candidate_mass_account)::account
+    real(real64)::candidate_storage
+    real(real64)::centers(2),resistance(2),volume(2),diameter(2)
+    integer::case_id
+    logical::valid
+    call ppa_wu05a2_initialize_payload(1,2,cp%payload,valid)
+    call check(valid,230)
+    cp%lineage_id=key%lineage; cp%revision=key%revision
+    cp%payload%bottom_domain=2
+    cp%payload%pore_volume=0.25_real64
+    cp%payload%domain_water_storage=0.375_real64
+    cp%payload%pore_water(1,:)=[0.125_real64,0.25_real64]
+    call prepare_static_checkpoint_input(cp,[-0.5_real64,-1.5_real64],[1.0_real64,1.0_real64], &
+        [0.25_real64,0.25_real64],[1.0_real64,1.0_real64],[0.25_real64,0.25_real64],derived,geometry,valid)
+    call check(valid.and.geometry%valid,231)
+    call check(derived%pore_saturated_top==1.and.derived%matrix_top==0,232)
+    call check(abs(derived%pore_level+0.5_real64)+abs(derived%saturated_fraction-0.5_real64)<1.e-14_real64,233)
+    call initialize_reference_workspace(local_ws,2)
+    call apply_saturated_reference_residual(derived,[-0.5_real64,0.25_real64],0.0_real64,1.0_real64, &
+        key,local_ws%generation,local_ws,transfer,candidate_storage,valid)
+    call check(valid,234)
+    call prepare_reference_interval(local_ws,transfer,key,[-0.5_real64,0.25_real64],1.0_real64, &
+        cp,1.e-12_real64,candidate,account,valid)
+    call check(valid.and.candidate%valid,235)
+    call check(abs(candidate_storage-5.0_real64/24)<1.e-14_real64,236)
+    call check(abs(cp%payload%domain_water_storage(1)-0.375_real64)<1.e-14_real64,237)
+    ! Same total but incompatible vertical distribution is not silently rebuilt.
+    cp%payload%pore_water(1,:)=[0.25_real64,0.125_real64]
+    call prepare_static_checkpoint_input(cp,[-0.5_real64,-1.5_real64],[1.0_real64,1.0_real64], &
+        [0.25_real64,0.25_real64],[1.0_real64,1.0_real64],[0.25_real64,0.25_real64],derived,geometry,valid)
+    call check(.not.valid.and..not.geometry%valid.and..not.allocated(derived%volume),238)
+    cp%payload%pore_water(1,:)=[0.0_real64,0.25_real64]
+    cp%payload%domain_water_storage=0.25_real64
+    call prepare_static_checkpoint_input(cp,[-0.5_real64,-1.5_real64],[1.0_real64,1.0_real64], &
+        [0.25_real64,0.25_real64],[1.0_real64,1.0_real64],[0.25_real64,0.25_real64],derived,geometry,valid)
+    call check(valid.and.derived%pore_saturated_top==2,239)
+    call check(abs(derived%pore_level+1)+abs(derived%saturated_fraction-1)<1.e-14_real64,240)
+    do case_id=1,8
+      bad_cp=cp; centers=[-0.5_real64,-1.5_real64]
+      resistance=0.25_real64; volume=0.25_real64; diameter=1
+      select case(case_id)
+      case(1)
+        bad_cp%lineage_id=0
+      case(2)
+        bad_cp%payload%bottom_domain=1
+      case(3)
+        centers(2)=-2
+      case(4)
+        resistance(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(5)
+        volume(1)=0.3_real64
+      case(6)
+        diameter(1)=0
+      case(7)
+        bad_cp%payload%domain_water_storage=0.6_real64
+      case(8)
+        deallocate(bad_cp%payload%pore_water)
+      end select
+      call prepare_static_checkpoint_input(bad_cp,centers,[1.0_real64,1.0_real64],volume,diameter, &
+          resistance,derived,geometry,valid)
+      call check(.not.valid.and..not.geometry%valid.and..not.allocated(derived%volume),240+case_id)
+    end do
+    call release_reference_workspace(local_ws)
+  end subroutine
+
   subroutine check_static_geometry()
     type(static_macro_geometry)::geometry
     logical::valid

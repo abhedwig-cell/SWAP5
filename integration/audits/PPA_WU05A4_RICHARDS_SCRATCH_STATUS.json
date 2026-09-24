@@ -19,6 +19,18 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "checkpoint_derived_input": {
+    "baseline": "6e868d276f48f3fcebf7a3c953bba6dea9203351",
+    "implementation": "src/adapter/mod_ppa_wu05a4_checkpoint_input.f90",
+    "owned_surface": "PPA-local input preparation; frozen solver ABI and production owners unchanged",
+    "invariants": [3, 5, 7, 13, 21, 23],
+    "contract": "One static surface-connected domain. Derive pore water level, saturated top and wet fraction from checkpoint storage using existing B1.11 MACROSTATE section-D helper. Validate checkpoint profile against source reconstruction and volume against static geometry. Return geometry and evaluator inputs atomically; matrix metadata remains unset for per-head derivation; reduction policy remains caller-owned.",
+    "source": "B1.11 macropore.f90 lines 1358-1396; existing mod_ppa_wu05a3_macrostate_wetting_candidate",
+    "tests": "Checkpoint to source-derived input to real workspace residual to accounted interval candidate; half-full and exact cell boundary metadata; immutable checkpoint; reject same-total wrong vertical profile, invalid lineage, shortened domain, noncontiguous centers, NaN resistance, mismatched volume, invalid diameter, overcapacity storage and missing payload allocation.",
+    "test_status": "Focused initial O0/O2 check passed; expanded cases and persisted regression pending",
+    "next_action": "Run nine-gate bounded regression against checkpoint plus MPVOLUME surface gate",
+    "limits": "No production HeadCalc invocation, top forcing, dynamic geometry or canonical commit. Interval candidate retains its separately documented proposed conservative-flux policy. No remote push requested."
+  },
   "static_geometry_composition": {
     "baseline": "9c57d3449",
     "implementation": "src/adapter/mod_ppa_wu05a4_static_geometry.f90",
