@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp02.preregistration.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP02",
+  "date": "2026-09-24",
+  "phase": "PREREGISTERED_BEFORE_ADAPTIVE_REFERENCE_RESPONSE",
+  "title": "Rollback-safe adaptive Richards research Reference for realistic daily forcing",
+  "central_question": "Can the same R128 Richards physics complete the frozen realistic Hupsel workload under rollback-safe solver-failure step halving, without the short-horizon representation-floor fallback gate?",
+  "authority": {
+    "rnp01_closeout": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP01_CLOSEOUT.json",
+    "transaction_semantics": "docs/numerics/transactional-time-stepping.md",
+    "reference_model_limitation": "src/adapter/mod_b1_10_reference_model.f90 remains not generally admitted because scalar temporal policy/recoverable-failure authority is incomplete"
+  },
+  "frozen_physics": {
+    "geometry_nodes": 128,
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "workload": "integration/f-rom/ROM_PRACTICAL_P6B_SM_HUPSEL_WORKLOAD.json",
+    "forcing_unchanged": true,
+    "constitutive_and_solver_tolerances_unchanged": true,
+    "mass_gate_cm": 1e-12
+  },
+  "policies": {
+    "A32": {
+      "max_step_day": 0.03125,
+      "retry_scale": 0.5,
+      "max_retries": 8,
+      "role": "primary adaptive research Reference candidate"
+    },
+    "A64": {
+      "max_step_day": 0.015625,
+      "retry_scale": 0.5,
+      "max_retries": 8,
+      "role": "temporal refinement comparator"
+    }
+  },
+  "retry_contract": [
+    "Each failed solver attempt starts from the bit-identical accepted origin of that subinterval.",
+    "Only solver failure authorizes step halving.",
+    "No failed candidate state is committed.",
+    "Accepted trial must satisfy the existing hard mass gate <=1e-12 cm.",
+    "No representation-floor residual gate is used because that gate belongs to the short-horizon fallback qualification, not solver acceptance.",
+    "No solver tolerance, constitutive law, forcing value or material parameter is altered."
+  ],
+  "qualification": {
+    "completion": "A32 and A64 must complete all six materials and both HR72/HR86 histories.",
+    "repeatability": "O2 repeated trajectory identity for each policy.",
+    "temporal_characterization": "Report A32-vs-A64 daily storage/profile metrics without imposing an application threshold.",
+    "reference_selection": "A32 may become P6B target only if complete/repeatable for all six. Otherwise A64 is not automatically promoted; close blocked."
+  },
+  "candidate_firewall": "S4 candidate output is not consumed during RNP02 selection.",
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
