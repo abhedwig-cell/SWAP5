@@ -720,3 +720,14 @@ Expected effect for N columns: remove two N-integer allocations/copies plus one 
 H20 preserves the empty allocated result on rejected receipt-request paths, but on a valid receipt request allocates the final-size array directly once.
 
 Expected effect: remove one allocation and one deallocation per valid receipt-enabled serialized MultiSWAP call. Receipt validation, ordering and returned values remain unchanged.
+
+
+## ZW01-H21 preregistration — eliminate duplicate template lookup per column
+
+`execute_column` currently calls `column_is_routable`, which performs `find_template_index`, and after success calls `find_template_index` again for the same column and template registry.
+
+H21 resolves `template_index` once in `execute_column` and uses that resolved index for both routability checks and dispatch.
+
+Expected effect: remove one linear template-registry scan per column per serialized MultiSWAP call. This is O(Ncolumns * Ntemplates) avoidable comparison work in the current path.
+
+No routing semantics change: backend id, parameter/forcing handle bounds and template compatibility checks remain identical.
