@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL01",
+  "phase": "PRELIMINARY_PREFLIGHT_RESULT",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "prototype_commit": "e16ff9c1fa1dd8a4edae10faa6a17346ec56131b",
+  "evidence_class": "analytical research preflight; not CI qualification and not production evidence",
+  "domain_cm": [-1000000.0, -0.01],
+  "representation": "hybrid exact semantic branches plus adaptive log-head lookup over the smooth unsaturated core",
+  "tolerances": {
+    "theta_span_normalized_abs": 1e-5,
+    "abs_log_capacity": 1e-2,
+    "abs_log_conductivity": 1e-2
+  },
+  "fixed_baseline_points": 401,
+  "materials": {
+    "B01": {
+      "adaptive_points": 392,
+      "adaptive_error": {
+        "theta_span": 9.911013347890353e-6,
+        "log_capacity": 5.280378156342636e-4,
+        "log_conductivity": 5.504609564229046e-3
+      },
+      "adaptive_pass": true,
+      "fixed_error": {
+        "theta_span": 5.000897657110234e-5,
+        "log_capacity": 2.8385435394895353e-4,
+        "log_conductivity": 6.211909329229659e-3
+      },
+      "fixed_pass": false
+    },
+    "B12": {
+      "adaptive_points": 199,
+      "adaptive_error": {
+        "theta_span": 9.968790850015812e-6,
+        "log_capacity": 8.666368564713668e-4,
+        "log_conductivity": 6.5397342316614315e-3
+      },
+      "adaptive_pass": true,
+      "fixed_error": {
+        "theta_span": 5.754066564471126e-6,
+        "log_capacity": 8.537732214453086e-5,
+        "log_conductivity": 8.407095660922792e-5
+      },
+      "fixed_pass": true
+    },
+    "O05": {
+      "adaptive_points": 415,
+      "adaptive_error": {
+        "theta_span": 9.960877035469103e-6,
+        "log_capacity": 3.5860103900198226e-4,
+        "log_conductivity": 9.539370245505502e-4
+      },
+      "adaptive_pass": true,
+      "fixed_error": {
+        "theta_span": 1.7566282513564537e-4,
+        "log_capacity": 9.128748607900803e-4,
+        "log_conductivity": 3.241464488631607e-3
+      },
+      "fixed_pass": false
+    },
+    "O14": {
+      "adaptive_points": 416,
+      "adaptive_error": {
+        "theta_span": 9.996435401318727e-6,
+        "log_capacity": 3.6748813408493675e-4,
+        "log_conductivity": 7.46192073577856e-3
+      },
+      "adaptive_pass": true,
+      "fixed_error": {
+        "theta_span": 4.072718020930603e-5,
+        "log_capacity": 2.3919718999199762e-4,
+        "log_conductivity": 7.564032245159891e-3
+      },
+      "fixed_pass": false
+    }
+  },
+  "interpretation": [
+    "All four adaptive representations satisfy the preregistered constitutive screen.",
+    "A fixed 401-point log-head grid fails the theta criterion for B01, O05 and O14.",
+    "Adaptive point count is strongly material-dependent: B12 needs roughly half the fixed support, while O05 and O14 need slightly more than 401 points to satisfy the same joint screen.",
+    "This supports material-specific error-controlled representation construction, but does not establish a runtime benefit."
+  ],
+  "important_design_observation": "Discontinuous or branch-switched constitutive semantics must not be approximated by interpolation across the switch. The target architecture is therefore hybrid: exact cheap branch logic plus frozen adaptive approximation only within qualified smooth regions.",
+  "next_gate": "F-AHL02 should compare interpolation families and point-search/runtime cost, then only the best candidate should enter end-to-end Richards replay."
+}
