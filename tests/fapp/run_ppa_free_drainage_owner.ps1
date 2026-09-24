@@ -1,6 +1,6 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('Composition','Guards')][string]$Scope = 'Composition')
+param([ValidateSet('Composition','Guards')][string]$Scope = 'Composition', [switch]$StableStorageExperiment)
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
@@ -17,6 +17,19 @@ $common = @($flags.Groups[1].Value -split '\s+' | Where-Object { $_ })
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-ppa-wu01-' + [guid]::NewGuid().ToString('N'))
 $stable = @{}
+if ($StableStorageExperiment) {
+    New-Item -ItemType Directory $build -Force | Out-Null
+    $candidate = Join-Path $build 'headcalc_storage_experiment.f90'
+    & (Join-Path $PSScriptRoot '../fsi/new_ppa_storage_experiment.ps1') `
+        -Source (Join-Path $repo 'src/legacy/b1_10_port/headcalc.f90') -Destination $candidate
+    $sourcePaths = @($sourcePaths | ForEach-Object {
+        if ($_ -eq 'src/legacy/b1_10_port/headcalc.f90') {
+            'src/solver/mod_ppa_mvg_storage_difference.f90'
+            'src/adapter/mod_ppa_mvg_storage_binding.f90'
+        }
+        $_
+    })
+}
 $tests = @('ppa_free_drainage_owner')
 if ($Scope -eq 'All') { $tests += 'ppa_wu01_production_application_bootstrap' }
 Push-Location $repo
@@ -30,7 +43,9 @@ try {
         foreach ($source in $sourcePaths) {
             $obj = Join-Path $dir (([IO.Path]::GetFileNameWithoutExtension($source)) + '.o')
             if ($objects -contains $obj) { throw "Duplicate object basename: $source" }
-            & gfortran @common "-$opt" -J $dir -I $dir -c (Join-Path $repo $source) -o $obj
+            $sourcePath = Join-Path $repo $source
+            if ($StableStorageExperiment -and $source -eq 'src/legacy/b1_10_port/headcalc.f90') { $sourcePath = $candidate }
+            & gfortran @common "-$opt" -J $dir -I $dir -c $sourcePath -o $obj
             if ($LASTEXITCODE -ne 0) { throw "Compile failed $opt $source" }
             $objects += $obj
         }

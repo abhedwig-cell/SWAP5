@@ -18,45 +18,9 @@ $sources = @($sources | ForEach-Object {
 $flags = @('-g','-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow')
 $tests = @('test_ppa_free_drainage_small_dt')
 if ($StableStorageExperiment) {
-    # Disposable numerical experiment: no production source or shared ABI edits.
-    $headcalc = Get-Content -Raw (Join-Path $root 'src/legacy/b1_10_port/headcalc.f90')
-    $headcalc = $headcalc.Replace('   use MOD_arrays,', @'
-   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
-   use mod_ppa_mvg_storage_binding, only: evaluate_bound_mvg_storage_difference
-   use MOD_arrays,
-'@)
-    $start = $headcalc.IndexOf('subroutine vector_F(iTask)')
-    $finish = $headcalc.IndexOf('end subroutine vector_F', $start)
-    if ($start -lt 0 -or $finish -lt 0) { throw 'Missing bounded vector_F region' }
-    $region = $headcalc.Substring($start,$finish-$start)
-    $pattern = '\(state%theta\((1|i|NN)\)\s*-\s*state%thetm1\(\1\)\)'
-    if ([regex]::Matches($region,$pattern).Count -ne 4) { throw 'Storage substitution count changed' }
-    $region = [regex]::Replace($region,$pattern,'storage_difference($1)')
-    $anchor = '   real(8)                    :: afgen'
-    if (-not $region.Contains($anchor)) { throw 'Missing residual declaration anchor' }
-    $region = $region.Replace($anchor, @'
-   real(8)                    :: afgen
-   real(8) :: storage_difference(numnod), trial_difference(numnod)
-   logical :: storage_available
-
-   storage_difference = state%theta(1:numnod)-state%thetm1(1:numnod)
-   if (provider_constitutive_active .and. .not. legacy_state_binding .and. swmacro == 0 .and. swbotb == 7) then
-      if (present(boundary_conditions)) then
-         if (boundary_conditions%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX) then
-            select type (provider => evaluation_context%constitutive)
-            type is (b110_default_mvg_provider_t)
-               call evaluate_bound_mvg_storage_difference(provider, state%hm1(1:numnod), &
-                    state%thetm1(1:numnod), state%h(1:numnod), trial_difference, storage_available)
-               if (storage_available) storage_difference = trial_difference
-            end select
-         end if
-      end if
-   end if
-'@)
-    $headcalc = $headcalc.Substring(0,$start)+$region+$headcalc.Substring($finish)
     $candidate = Join-Path $build 'headcalc_storage_experiment.f90'
-    # Mechanical bounded transformation of the tracked port, not a second source owner.
-    $headcalc | Set-Content $candidate
+    & (Join-Path $PSScriptRoot 'new_ppa_storage_experiment.ps1') `
+        -Source (Join-Path $root 'src/legacy/b1_10_port/headcalc.f90') -Destination $candidate
     $sources = @($sources | ForEach-Object {
         if ($_ -eq 'src/legacy/b1_10_port/headcalc.f90') {
             'src/solver/mod_ppa_mvg_storage_difference.f90'
