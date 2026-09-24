@@ -134,6 +134,8 @@ contains
        end if
        call a23bu_reset_attempt_diagnostics(ws%legacy_worker)
        call a23bu_reset_attempt_control(ws%legacy_worker)
+       reset_calls_before = ws%richards%profile_full_reset_calls
+       reset_bytes_before = ws%richards%profile_zeroed_bytes
        call initialize_reference_workspace(ws%richards, n)
        call reset_reference_workspace(ws%richards)
 
@@ -223,6 +225,8 @@ contains
        result%diagnostics%alternative_solver_calls = ws%legacy_worker%diagnostics%alternative_solver_calls
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
        result%diagnostics%interface_sensitivity_backsolves = interface_sensitivity_backsolves
+       result%diagnostics%workspace_full_resets = ws%richards%profile_full_reset_calls - reset_calls_before
+       result%diagnostics%workspace_zeroed_bytes = ws%richards%profile_zeroed_bytes - reset_bytes_before
 
        if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 
