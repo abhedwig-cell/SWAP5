@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL19",
+  "title": "Multi-column build/cache amortization",
+  "parent": "F-AHL18",
+  "phase": "PREREGISTERED_ENGINEERING_RESEARCH",
+  "question": "At what repeated-use scale does the one-time self-build and cache acquisition overhead become negligible relative to the measured complete-Richards solve savings of the selected adaptive representation?",
+  "authority": {
+    "build_cost_source": "F-AHL17 strengthened Stage-1 builder qualification",
+    "cache_hit_cost_source": "F-AHL18 strengthened immutable-cache qualification",
+    "solve_saving_source": "F-AHL16 corrected 12-case paired Richards timing"
+  },
+  "scenarios": {
+    "column_counts": [1,10,100,1000,10000],
+    "unique_material_counts": [1,4],
+    "richards_solves_per_column": [1,10,100,365,1000,3650]
+  },
+  "accounting": {
+    "startup_overhead": "one representation build per unique key plus one cache acquisition per column",
+    "runtime_benefit": "measured per-solve CPU saving from the corresponding F-AHL16 material/regime evidence",
+    "break_even": "smallest integer solve count for which accumulated solve saving exceeds build plus acquisition overhead"
+  },
+  "decision_rule": "Report the full amortization surface. Do not hide startup cost and do not extrapolate to whole-SWAP wall time.",
+  "hard_exclusions": [
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_ZERO_BUILD_COST_ASSUMPTION",
+    "NO_ZERO_CACHE_ACQUISITION_COST_ASSUMPTION",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
