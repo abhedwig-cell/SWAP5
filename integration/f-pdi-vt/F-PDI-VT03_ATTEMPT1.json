@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT03",
+  "record": "ATTEMPT1_TECHNICAL_MEASUREMENT_FAILURE",
+  "workflow_run": 36054364140,
+  "workflow_job": 107817528084,
+  "status": "INVALID_FOR_STRICT_RELATIVE_GATE_DUE_TO_CANCELLATION",
+  "observation": "Candidate total conductivity and NoVap conductivity were subtracted to recover Kvap. At low temperature and relatively wet head, Kvap is tiny compared with liquid/film conductivity, causing subtraction loss. Worst observed relative difference was about 1.45e-8 although direct formula qualification had already matched to roundoff.",
+  "repair": "Keep the 1e-11 relative scientific gate. Set Ksat=0 in the actual-source harness so total K equals the vapor addend exactly; this isolates the same source vapor code without changing it.",
+  "scientific_result": "NO_NEGATIVE_RESULT_FROM_ATTEMPT1"
+}
