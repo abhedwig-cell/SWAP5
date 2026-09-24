@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL12D",
+  "title": "Prescribed-qbot local Jacobian error diagnosis",
+  "parent": "F-AHL12C",
+  "phase": "PREREGISTERED_RESEARCH",
+  "motivation": "Global theta-tolerance tightening from 1e-5 to 3e-6 and 1e-6 did not recover the analytical B01:wet qbot Newton path and worsened iteration/backtracking counts. The representation error metric must therefore be diagnosed rather than globally densified.",
+  "question": "Which local retention/capacity interpolation error in the actually visited pressure-head range changes the prescribed-qbot Newton path?",
+  "frozen_case": "B01:wet, bottom_mode=2, qbot=1e-6 cm/day, dt=0.01 day",
+  "diagnostics": [
+    "analytical and candidate initial-node theta and C differences",
+    "analytical and candidate final-node theta and C differences",
+    "maximum theta and C differences over all nodes",
+    "head locations of maximum theta and C differences",
+    "distance of visited heads to the h=-1 cm lookup/fallback seam",
+    "mass weight C*dz/dt difference at each node",
+    "candidate support interval containing each visited lookup-domain head"
+  ],
+  "comparison_variants": [
+    "F-AHL11 baseline retention support",
+    "F-AHL12C theta3 retention support",
+    "F-AHL12C theta1 retention support",
+    "exact retention/capacity"
+  ],
+  "decision_rule": "Use the diagnosed local quantity to define the next error metric. Do not introduce another global point-density sweep without a localized mechanism.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_ARBITRARY_FURTHER_DENSIFICATION",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
