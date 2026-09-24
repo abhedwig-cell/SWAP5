@@ -1,0 +1,27 @@
+name: F-AHL12E qbot capacity sweep
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl12e_generate_capacity_support.py'
+      - 'research/ahl/run_ahl12e_capacity_sweep.sh'
+      - 'integration/f-ahl/F-AHL12E_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl12e-qbot-capacity-sweep.yml'
+  workflow_dispatch:
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run capacity-controlled qbot sweep
+        run: |
+          bash research/ahl/run_ahl12e_capacity_sweep.sh /tmp/ahl12e_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl12e-${{ github.run_id }}
+          path: |
+            /tmp/ahl12e_result.txt
+            /tmp/ahl12e_tables.txt
