@@ -354,6 +354,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     real(real64), pointer :: qrot_zero(:) => null()
+    real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
     integer :: swkmean = 1
@@ -1644,6 +1645,11 @@ contains
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
       self%qrot_zero = 0.0_real64
+      if (allocated(self%projection_zero_direction)) deallocate(self%projection_zero_direction)
+      if (self%drainage_qbot_smooth_freatic_projection) then
+        allocate(self%projection_zero_direction(n))
+        self%projection_zero_direction = 0.0_real64
+      end if
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
@@ -2035,10 +2041,10 @@ contains
 
     if (self%drainage_response_active) then
       if (self%drainage_qbot_smooth_freatic_projection) then
-        allocate(projection_zero_direction(hydraulic_start%active_nodes))
-        projection_zero_direction = 0.0_real64
+        if (.not. allocated(self%projection_zero_direction) .or. &
+            size(self%projection_zero_direction) /= hydraulic_start%active_nodes) return
         call evaluate_b110_smooth_freatic_projection(self%bottom_mode, .false., self%soil_parameters%z, &
-             self%soil_parameters%node_distance, hydraulic_start%pressure_head, projection_zero_direction, &
+             self%soil_parameters%node_distance, hydraulic_start%pressure_head, self%projection_zero_direction, &
              projected_groundwater_level, ignored_groundwater_direction, projection_diagnostics)
         if (projection_diagnostics%status /= B110_GWL_PROJECTION_OK .or. &
             .not. projection_diagnostics%value_defined) return
