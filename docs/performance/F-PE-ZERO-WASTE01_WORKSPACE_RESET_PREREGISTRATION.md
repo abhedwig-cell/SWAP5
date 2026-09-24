@@ -358,3 +358,25 @@ Gates:
 - FKT22 requested-trajectory path remains bit-identical;
 - no extra backsolve or Jacobian changes;
 - poison-workspace gate remains PASS.
+
+
+## H7 poison qualification result
+
+Dedicated workflow `F-PE-ZERO-WASTE01 poisoned workspace`, run `36069496764`, completed PASS.
+
+The oracle executed the same direct Reference solve twice:
+
+1. normal workspace;
+2. workspace first allocated and then poisoned with NaNs / invalid sentinels using `poison_reference_workspace`.
+
+Both solves:
+- converged;
+- produced bit-identical pressure head and water content;
+- produced bit-identical ponding, top flux and bottom flux;
+- retained identical nonlinear-iteration count;
+- reported zero full workspace resets;
+- reported zero full-reset payload bytes.
+
+Therefore the H7 minimal solve preparation is qualified for this direct Reference route against poisoned prior scratch. The evidence supports the overwrite-before-read classification for the tested path and falsifies dependence on zero-filled bulk scratch there.
+
+This remains bounded evidence, not a claim that every future solver path may omit arbitrary initialization.
