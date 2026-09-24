@@ -611,3 +611,16 @@ H15 changes only storage lifetime:
 This is not forcing caching. Values are refreshed every interval; only memory capacity is reused.
 
 Expected benefit: remove repeated deallocate/allocate operations from the normal fixed-layout MultiSWAP interval path.
+
+
+## ZW01-H16 preregistration — reuse interval control storage
+
+`fmr_serialized_prepare_interval` currently deallocates `drainage_response_controls` and `legacy_swbotb2_control` at every interval start, then reallocates them later in the same routine when the corresponding forcing is present.
+
+H16 reuses existing storage when the required layout is unchanged:
+
+- `drainage_response_controls`: retain allocation when length matches, overwrite every element from current forcing;
+- `legacy_swbotb2_control`: retain the allocated scalar control object when still present and assign current forcing values into it;
+- deallocate only when the feature becomes absent or array shape changes.
+
+No control value is cached across intervals. This only removes allocator churn.
