@@ -634,3 +634,24 @@ B_four_clones_min(n) = 64*n + 64 bytes per no-retry full/half interval
 Each base-state clone also performs two array allocations. The no-retry route therefore causes at least eight profile-array allocations inside the interval, before optional-state allocations.
 
 Necessity status remains `N1_OR_N2_PENDING_MEASUREMENT`. The four-clone route is structurally real, but transactional accepted/trial isolation is authoritative. Later work may investigate whether one or more implementation-level clones can be eliminated without aliasing committed state or weakening rollback semantics; PROFILE01 makes no such assumption.
+
+
+## H03 — duplicate constitutive provider evaluation at first Newton iteration
+
+Status: `N4_REDUNDANT_CONFIRMED_BOUNDED` for the explicit constitutive-provider route.
+
+In current `HeadCalc`:
+
+1. before the Newton loop, `evaluation_context%constitutive%evaluate(state%h,...)` computes the complete provider tuple `theta, K, C, dK/dh` at the current pressure-head vector;
+2. only `provider_k` is consumed immediately to reset conductivity and construct `kmean`;
+3. no assignment to `state%h` occurs between that evaluation and entry to Newton iteration 1;
+4. at the start of Newton iteration 1, the same constitutive provider is called again with the same `state%h` vector, now to consume `provider_capacity`;
+5. the first call had already produced that same capacity array.
+
+Thus one whole-profile constitutive provider call per Reference solve is duplicated before any head update occurs. This is stronger than a generic caching hypothesis because the input vector is source-identical and no intervening operation mutates it.
+
+The bounded safe interpretation is:
+
+> The first Newton iteration can reuse the constitutive tuple already evaluated immediately before the iteration loop, provided the implementation preserves all currently consumed K/C/dKdh/theta semantics and does not change legacy non-provider behavior.
+
+No repair is authorized in PROFILE01. Later repair must prove result identity across SWKIMPL modes and relevant boundary routes, because subsequent Newton iterations legitimately require fresh constitutive evaluation after head updates.
