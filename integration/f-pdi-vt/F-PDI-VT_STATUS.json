@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream": "F-PDI-VT",
   "branch": "work/f-pdi-vapor-temperature-audit",
-  "status": "CORE_SCIENTIFIC_FIX_QUALIFIED_VT06B_RERUN_QUEUED_HISTORICAL_ADMISSION_BLOCKED",
+  "status": "SCIENTIFIC_QUALIFICATION_CLOSED_PRODUCTION_ADMISSION_BLOCKED_ON_EXACT_HISTORICAL_BYTES",
   "completed": {
     "F-PDI-VT01": "CONFIRMED Celsius/Kelvin implementation bug",
     "F-PDI-VT02": "PASS independent formula sweep at 7 temperatures x 3 heads",
@@ -12,10 +12,8 @@
     "F-PDI-VT04B": "negative result: reduced dryness alone does not make buggy control finite",
     "F-PDI-VT04C": "PASS stronger finite-control full-model gate with official positive heat path",
     "F-PDI-VT05": "historical B0->B1.11 binding PASS; exact repaired postimage/manifest blocked on unavailable historical bytes",
-    "F-PDI-VT06A": "negative result: 5 C cold full-model case finite but no observable Vapor-on control/candidate difference"
-  },
-  "pending": {
-    "F-PDI-VT06B": "moderately colder full-model gate queued in GitHub Actions; latest rerun 36062174687 at d29000a0424caea24739f0c6ceca3cadbca28b1c"
+    "F-PDI-VT06A": "negative result: 5 C cold full-model case finite but no observable Vapor-on control/candidate difference",
+    "F-PDI-VT06B": "PASS moderately colder representative full-model gate; Vapor-on differs, NoVap identical, all runs normal, CRITDEVMASBAL=1e-6"
   },
   "confirmed_bug": {
     "location": "PDI Kvap_func saturated-vapor-density temperature handling",
@@ -31,13 +29,8 @@
     "B1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
   },
   "external_blocker": "GitHub contains replay-verified historical identities and ordered patch authority but not exact canonical B0/B1.11 source bytes from which the repaired B1.11 target postimage and repaired full source-manifest SHA256 can be derived. The legacy-capable upstream host is not byte-identical and is forbidden as a substitute.",
-  "production_status": "NOT_ADMITTED",
+  "production_status": "NOT_ADMITTED_HISTORICAL_BYTE_IDENTITY_BLOCKER",
   "F_AHL_reopened": false,
-  "execution_blocker": {
-    "classification": "EXTERNAL_CI_QUEUE",
-    "workflow_run": 36062174687,
-    "head_sha": "d29000a0424caea24739f0c6ceca3cadbca28b1c",
-    "state": "queued",
-    "note": "No further scientific or testcase change is justified while the identical preregistered rerun is waiting for a GitHub Actions runner."
-  }
+  "execution_blocker": null,
+  "closeout_state": "SCIENTIFIC_CLOSURE_REACHED; FORMAL_PRODUCTION_ADMISSION_BLOCKED"
 }
