@@ -100,8 +100,9 @@ contains
       case(7)
         request%evaluation%root_sink=>unsupported
       case(8)
-        embedded=1.0e-8_real64; drain_copy=drainage; irrigation_copy=irrigation
+        embedded=0.0_real64; drain_copy=drainage; irrigation_copy=irrigation
         call bind_b110_source_sink_provider(duplicate,drain_copy,irrigation_copy,embedded)
+        embedded=1.0e-8_real64
         request%evaluation%source_sink=>duplicate
       end select
       computed=12345.0_real64
