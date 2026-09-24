@@ -11,6 +11,13 @@
   "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
   "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
   "production_admitted": false,
+  "incoming_assembly_verification": {
+    "baseline": "f8633edd8",
+    "scope": "Verification of the existing bounded evaluator in the matrix-to-pore direction; no production code or admitted scope change.",
+    "oracle": "Pore level -0.75 gives beginning storage 0.3125. Heads [-0.5,2] give matrix level -0.7 and groundwater capacity 0.325. Darcy incoming potential rate is 0.3125; actual rate is min(0.3125,0.0125/dt), with source tangent -rate/1.25. Tested dt 0.01, 0.1 and 1.",
+    "checks": "Positive matrix residual contribution, paired diagonal, negative matrix transfer, storage increase and internal cancellation. Incoming gradient at bottom head 1 with capacity below initial storage suppresses all inflow and leaves stored water unchanged. Original storage remains unchanged across retries.",
+    "test_result": "Working-tree O0/O2 PASS; persisted replay pending"
+  },
   "pore_metadata_validation": {
     "baseline": "94b884c91",
     "contract": "Restricted wet-pore adapter requires pore_saturated_top in 1:n, finite saturation fraction in [0,1], and nonnegative reciprocal resistance in every cell, including cells skipped by saturated exchange. This is adapter input validation, not a reference formula correction or a general empty-domain contract.",

@@ -155,7 +155,44 @@ program test_saturated_trial
   print '(a)','PPA_WU05A4_MATRIX_LEVEL_HEAD_BRANCHES=PASS'
   print '(a)','PPA_WU05A4_DERIVED_MATRIX_TRIAL=PASS'
   print '(a)','PPA_WU05A4_UNUSED_PORE_METADATA_VALIDATION=PASS'
+  call incoming_trials()
+  print '(a)','PPA_WU05A4_MATRIX_TO_PORE_LIMITED_ASSEMBLY=PASS'
 contains
+  subroutine incoming_trials()
+    real(real64)::dt,expected_rate,expected_store
+    integer::j
+    input%pore_level=-0.75_real64; input%storage=0.3125_real64
+    input%saturated_fraction=0.25_real64
+    ! Matrix heads [-0.5,2] give water level -0.7 and capacity 0.325.
+    ! Pore head in cell 2 is 0.75: uncapped incoming rate is 0.3125.
+    do j=1,3
+      dt=10.0_real64**(j-3)
+      expected_rate=min(0.3125_real64,0.0125_real64/dt)
+      expected_store=0.3125_real64+expected_rate*dt
+      key%evaluation=100+j
+      residual=0; diagonal=1
+      call evaluate_saturated_system(input,[-0.5_real64,2.0_real64],dt,key,.true., &
+          residual,diagonal,slot,storage,ok,pond=0.0_real64)
+      call check(ok,60)
+      call check(abs(residual(2)-expected_rate)<1.e-14_real64,61)
+      call check(abs(diagonal(2)-(1+expected_rate/1.25_real64))<1.e-14_real64,62)
+      call check(abs(storage-expected_store)<1.e-14_real64,63)
+      call copy_matrix_transfer(slot,key,amount,ok,[-0.5_real64,2.0_real64],dt)
+      call check(ok,64)
+      call check(abs(sum(amount)+expected_rate*dt)<1.e-14_real64,65)
+      call check(abs(storage-input%storage+sum(amount))<1.e-14_real64,66)
+      call check(abs(input%storage-0.3125_real64)<1.e-14_real64,67)
+    end do
+    ! Incoming head gradient but groundwater capacity below existing storage:
+    ! source limiter suppresses all inflow rather than draining initial water.
+    key%evaluation=104; residual=0; diagonal=1
+    call evaluate_saturated_system(input,[-0.5_real64,1.0_real64],1.0_real64,key,.true., &
+        residual,diagonal,slot,storage,ok,pond=0.0_real64)
+    call check(ok,68)
+    call check(maxval(abs(residual))+maxval(abs(diagonal-1))<1.e-14_real64,69)
+    call check(abs(storage-input%storage)<1.e-14_real64,70)
+  end subroutine
+
   subroutine check(condition,code)
     logical,intent(in)::condition
     integer,intent(in)::code
