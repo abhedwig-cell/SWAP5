@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL09R",
+  "title": "Derivative-consistent Richards timing reconciliation",
+  "parent": "F-AHL09",
+  "phase": "PREREGISTERED_RESEARCH",
+  "motivation": "F-AHL09 Stage 2 passed the frozen nonlinear Richards fidelity gates and reproduced the analytical iteration/backtracking path. A robust paired timing protocol is now required before any end-to-end speed conclusion.",
+  "question": "Does the derivative-consistent adaptive theta/C interpolant plus K lookup reduce total Reference Richards solve CPU under a long paired timing protocol?",
+  "frozen_fixture": "F-AHL04A nonlinear fixture",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical by repetition",
+    "primary_statistic": "median paired candidate/analytical CPU ratio",
+    "provider_binding_and table_generation": "outside timed batches",
+    "same_request_solver_policy_initial_state": true
+  },
+  "fidelity": {
+    "required_iteration_delta": 0,
+    "required_backtracking_delta": 0,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "advance_as_end_to_end_speed_candidate": "median paired ratio < 0.98",
+    "timing_equivocal": "0.98 <= median paired ratio <= 1.02",
+    "reject_end_to_end_speed_candidate": "median paired ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
