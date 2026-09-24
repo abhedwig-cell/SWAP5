@@ -49,6 +49,7 @@ def compare_pair(control,candidate):
             "control_sha":sha(cp),
             "candidate_sha":sha(dp),
             "different":normalized_text(cp)!=normalized_text(dp),
+            "control_finite":finite_file(cp),
             "candidate_finite":finite_file(dp)
         }
     return evidence,produced
@@ -65,7 +66,7 @@ def main():
     novap,novap_count=compare_pair(a.novap_control,a.novap_candidate)
 
     diff_any=any(v.get("different",False) for v in vap.values())
-    finite_all=all(v.get("candidate_finite",True) for v in vap.values())
+    finite_all=all(v.get("control_finite",True) and v.get("candidate_finite",True) for v in vap.values())
 
     novap_same=True
     novap_detail={}
@@ -102,7 +103,7 @@ def main():
         "vapor_outputs":vap,
         "vapor_output_file_count":vap_count,
         "vapor_on_any_output_difference":diff_any,
-        "vapor_candidate_outputs_finite":finite_all,
+        "vapor_control_and_candidate_outputs_finite":finite_all,
         "novap_output_file_count":novap_count,
         "novap_normalized_identical":novap_same,
         "novap_outputs":novap_detail,
