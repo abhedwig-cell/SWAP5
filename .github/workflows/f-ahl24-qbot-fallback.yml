@@ -1,0 +1,22 @@
+name: F-AHL24 qbot exact-retention fallback
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/run_ahl24_qbot_exact_retention_matrix.sh'
+      - 'integration/f-ahl/F-AHL24_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl24-qbot-fallback.yml'
+  workflow_dispatch:
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run qbot exact-retention fallback matrix
+        run: bash research/ahl/run_ahl24_qbot_exact_retention_matrix.sh /tmp/ahl24_result.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl24-${{ github.run_id }}
+          path: /tmp/ahl24_result.txt
