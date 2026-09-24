@@ -393,7 +393,6 @@ contains
 
     ! band_aux(:,1) contains exact base-state dK at nodes. vertical_flux is
     ! reused after the physical solve as worker scratch for dKmean at faces.
-    ref_ws%richards%vertical_flux(1:n+1) = 0.0_real64
     do i = 2, n
        call hydraulic_mean_directional(request%numerical%conductivity_mean_method, &
             ref_ws%richards%provider_k(i-1), ref_ws%richards%provider_k(i), &
@@ -408,7 +407,6 @@ contains
     end do
     ref_ws%richards%vertical_flux(n+1) = ref_ws%richards%band_aux(n,1)
 
-    ref_ws%richards%head_gradient(1:n+1) = 0.0_real64
     do i = 2, n
        ref_ws%richards%head_gradient(i) = &
             (solve_result%candidate_state%pressure_head(i-1) - &
