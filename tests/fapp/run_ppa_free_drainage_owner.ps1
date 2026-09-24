@@ -1,7 +1,8 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
+param([ValidateSet('Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
+if ($Scope -eq 'GashReceipts' -and !$StableStorage) { throw 'GashReceipts requires explicit StableStorage' }
 if ($Scope -eq 'Receipts' -and !$StableStorage) { throw 'Receipts qualification requires explicit StableStorage' }
 if ($Scope -eq 'Windows' -and !$StableStorage) { throw 'Windows qualification requires explicit StableStorage' }
 if ($Scope -eq 'WindowRejection' -and !$StableStorage) { throw 'WindowRejection requires explicit StableStorage' }
@@ -67,6 +68,7 @@ try {
                 $testArguments = @('--stable-storage')
                 if ($Scope -eq 'Guards') { $testArguments = @('--stable-guards') }
                 if ($Scope -eq 'Receipts') { $testArguments = @('--stable-receipts') }
+                if ($Scope -eq 'GashReceipts') { $testArguments = @('--gash-receipts') }
                 if ($Scope -eq 'Windows') { $testArguments = @('--stable-windows') }
                 if ($Scope -eq 'WindowRejection') { $testArguments = @('--window-rejection') }
                 if ($Scope -eq 'GashWindows') { $testArguments = @('--gash-windows') }
@@ -89,6 +91,7 @@ try {
                 $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
                 if ($Scope -eq 'Guards') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GUARDS=PASS' }
                 if ($Scope -eq 'Receipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_SOURCE_RECEIPT_RESTART=PASS' }
+                if ($Scope -eq 'GashReceipts') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GASH_SOURCE_RECEIPT_RESTART=PASS' }
                 if ($Scope -eq 'Windows') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_CHANGING_WINDOWS=PASS' }
                 if ($Scope -eq 'WindowRejection') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_WINDOW_REJECTION=PASS' }
                 if ($Scope -eq 'GashWindows') { $requiredMarker = 'PPA_FREE_DRAINAGE_OWNER_GASH_WINDOWS=PASS' }
@@ -96,10 +99,10 @@ try {
                 if (!$textOutput.Contains($requiredMarker)) {
                     throw "Missing bootstrap success marker $opt"
                 }
-                if ($Scope -eq 'Receipts' -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS')) {
+                if ($Scope -in @('Receipts','GashReceipts') -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_FAILED_REPLAY_NO_PUBLICATION=PASS')) {
                     throw 'Missing actual failed hydraulic replay marker'
                 }
-                if ($Scope -eq 'Receipts' -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_PARTIAL_REPLAY_NO_PUBLICATION=PASS')) {
+                if ($Scope -in @('Receipts','GashReceipts') -and !$textOutput.Contains('PPA_FREE_DRAINAGE_OWNER_PARTIAL_REPLAY_NO_PUBLICATION=PASS')) {
                     throw 'Missing partially accepted interval rollback marker'
                 }
                 $prefix = '^PPA_FREE_DRAINAGE_OWNER_'

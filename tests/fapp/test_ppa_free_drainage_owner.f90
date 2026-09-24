@@ -107,6 +107,7 @@ program test_ppa_free_drainage_owner
   end do
   call get_command_argument(1,test_scope)
   is_gash=trim(test_scope)=='--gash-windows'.or.trim(test_scope)=='--gash-branch-rejection'
+  if(trim(test_scope)=='--gash-receipts') config%storage_difference => evaluate_mvg_storage_difference_service
   if(trim(test_scope)=='--stable-storage'.or.trim(test_scope)=='--stable-guards'.or.trim(test_scope)=='--stable-receipts') &
        config%storage_difference => evaluate_mvg_storage_difference_service
   if(trim(test_scope)=='--stable-windows'.or.trim(test_scope)=='--window-rejection'.or. &
@@ -407,6 +408,11 @@ contains
     call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
     deallocate(forcing_vector)
 
+    if(trim(test_scope)=='--gash-receipts') then
+      ! One frozen daily source aggregate; two half-day receipts partition it.
+      source%gross_rain_cm_per_day=0.20_real64
+      source%sprinkling_irrigation_cm_per_day=0.10_real64
+    end if
     allocate(forcing_vector(NTILE))
     do tile = 1, NTILE
       geometry%parameter_set_id = value%tiles(tile)%parameters%parameter_set_id
@@ -424,6 +430,11 @@ contains
       call materialize_ppa_wu04d_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, gash, source, &
            0.20_real64, 0.10_real64, forcing_vector(tile), interception, gash_diagnostics)
       call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK, 'WU04D tile forcing composition')
+      interception_by_tile(tile)=interception*(T1-T0)
+      if(trim(test_scope)=='--gash-receipts') &
+           call require(abs(2.0_real64*interception_by_tile(tile)- &
+           gash_diagnostics%source_aggregate_cm_per_day*2.0_real64*(T1-T0))<1.0e-15_real64, &
+           'Gash split receipts cover the full frozen source aggregate')
       call seed_initial_derivative(transient_profile%tiles(tile)%parameters, &
            transient_profile%tiles(tile)%initial_state,forcing_vector(tile), &
            transient_profile%tiles(tile)%initial_right_derivative)
@@ -431,10 +442,18 @@ contains
     end do
     call production_app%initialize(transient_profile, local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner initialize')
-    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    if(trim(test_scope)=='--gash-receipts') then
+      call production_app%run_standalone_with_forcing_receipts(T0,T1,forcing_vector,production_results,receipts,local_status)
+    else
+      call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    end if
     call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
          'WU04D production owner commit')
     call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04D production hard mass')
+    if(trim(test_scope)=='--gash-receipts') then
+      call verify_storage_receipt_restart(production_app,transient_profile,forcing_vector,receipts,interception_by_tile)
+      write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_SOURCE_RECEIPT_RESTART=PASS'
+    end if
     call production_app%close(local_status)
     call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner close')
     deallocate(forcing_vector)
