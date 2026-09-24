@@ -2,35 +2,27 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL10",
-  "phase": "CROSS_MATERIAL_REGIME_FALSIFICATION_COMPLETE",
-  "status": "FAIL_FIDELITY_MATRIX_PASS_CONVERGENCE_MATRIX",
-  "workflow_run": 36042952033,
-  "workflow_job": 107779356663,
-  "summary": {
-    "case_count": 12,
-    "all_gate_pass_count": 6,
-    "all_gate_fail_count": 6,
-    "same_nonlinear_iteration_count_count": 12,
-    "same_backtracking_count_count": 12
+  "phase": "CROSS_MATERIAL_REGIME_MATRIX_COMPLETE",
+  "status": "FAIL_PARTIAL",
+  "workflow_run": 36043017218,
+  "workflow_job": 107779575844,
+  "passed_cases": [
+    "B01:mid",
+    "B12:mid",
+    "O05:mid",
+    "O05:dry",
+    "O14:wet",
+    "O14:mid"
+  ],
+  "failed_cases": {
+    "B01:wet": {"max_head_delta_cm":0.01131989,"bottom_flux_delta_cm_per_day":1.038436e-4,"iteration_delta":0,"backtracking_delta":0,"failure":"bottom_flux"},
+    "B01:dry": {"max_head_delta_cm":0.07118950,"bottom_flux_delta_cm_per_day":7.284418e-5,"iteration_delta":0,"backtracking_delta":0,"failure":"head_and_bottom_flux"},
+    "B12:wet": {"max_head_delta_cm":0.01480218,"bottom_flux_delta_cm_per_day":4.500818e-5,"iteration_delta":0,"backtracking_delta":0,"failure":"bottom_flux"},
+    "B12:dry": {"max_head_delta_cm":0.06919694,"bottom_flux_delta_cm_per_day":5.912089e-5,"iteration_delta":0,"backtracking_delta":0,"failure":"head_and_bottom_flux"},
+    "O05:wet": {"max_head_delta_cm":0.01440191,"bottom_flux_delta_cm_per_day":9.131574e-5,"iteration_delta":0,"backtracking_delta":0,"failure":"bottom_flux"},
+    "O14:dry": {"max_head_delta_cm":0.02833544,"bottom_flux_delta_cm_per_day":6.216003e-5,"iteration_delta":0,"backtracking_delta":0,"failure":"bottom_flux"}
   },
-  "cases": {
-    "B01_wet": {"max_dh_cm":1.131989e-2,"max_dtheta":1.819235e-5,"dbottom_cm_per_day":1.038436e-4,"iter_delta":0,"backtrack_delta":0,"verdict":"FAIL_BOTTOM_FLUX"},
-    "B01_mid": {"max_dh_cm":1.336187e-5,"max_dtheta":1.566854e-7,"dbottom_cm_per_day":1.069031e-6,"iter_delta":0,"backtrack_delta":0,"verdict":"PASS"},
-    "B01_dry": {"max_dh_cm":7.118950e-2,"max_dtheta":9.000543e-6,"dbottom_cm_per_day":7.284418e-5,"iter_delta":0,"backtrack_delta":0,"verdict":"FAIL_HEAD_AND_BOTTOM_FLUX"},
-    "B12_wet": {"max_dh_cm":1.480218e-2,"max_dtheta":8.584714e-6,"dbottom_cm_per_day":4.500818e-5,"iter_delta":0,"backtrack_delta":0,"verdict":"FAIL_BOTTOM_FLUX"},
-    "B12_mid": {"max_dh_cm":3.005105e-4,"max_dtheta":9.531310e-8,"dbottom_cm_per_day":9.157338e-7,"iter_delta":0,"backtrack_delta":0,"verdict":"PASS"},
-    "B12_dry": {"max_dh_cm":6.919694e-2,"max_dtheta":5.414700e-6,"dbottom_cm_per_day":5.912089e-5,"iter_delta":0,"backtrack_delta":0,"verdict":"FAIL_HEAD_AND_BOTTOM_FLUX"},
-    "O05_wet": {"max_dh_cm":1.440191e-2,"max_dtheta":1.601805e-5,"dbottom_cm_per_day":9.131574e-5,"iter_delta":0,"backtrack_delta":0,"verdict":"FAIL_BOTTOM_FLUX"},
-    "O05_mid": {"max_dh_cm":6.805596e-5,"max_dtheta":1.641153e-7,"dbottom_cm_per_day":1.686255e-6,"iter_delta":0,"backtrack_delta":0,"verdict":"PASS"},
-    "O05_dry": {"max_dh_cm":6.708624e-3,"max_dtheta":9.623541e-9,"dbottom_cm_per_day":4.055677e-8,"iter_delta":0,"backtrack_delta":0,"verdict":"PASS"},
-    "O14_wet": {"max_dh_cm":9.038451e-3,"max_dtheta":7.146375e-7,"dbottom_cm_per_day":4.081761e-6,"iter_delta":0,"backtrack_delta":0,"verdict":"PASS"},
-    "O14_mid": {"max_dh_cm":3.477651e-5,"max_dtheta":7.459126e-9,"dbottom_cm_per_day":3.723941e-8,"iter_delta":0,"backtrack_delta":0,"verdict":"PASS"},
-    "O14_dry": {"max_dh_cm":2.833544e-2,"max_dtheta":6.960803e-6,"dbottom_cm_per_day":6.216003e-5,"iter_delta":0,"backtrack_delta":0,"verdict":"FAIL_BOTTOM_FLUX"}
-  },
-  "finding": "Derivative consistency is robust across the tested material/regime matrix: all 12 candidate solves follow the analytical nonlinear iteration and backtracking path. The fixed constitutive error envelope is not sufficient for uniform end-state fidelity: wet and some dry regimes amplify otherwise bounded constitutive approximation error.",
-  "next_action": "Prospective one-factor retention-versus-conductivity tolerance attribution on the six failed cases. Do not relax the Richards response gates.",
-  "nonclaims": [
-    "F-AHL09 is not yet broadly qualified.",
-    "No production admission or whole-SWAP speed claim follows from this matrix."
-  ]
+  "global_observation": "All 12 cases preserve the analytical nonlinear iteration and backtracking counts. Failures are endpoint-response fidelity failures, not nonlinear-path failures.",
+  "interpretation": "Derivative consistency generalizes across the tested matrix, but the 23-30 point representation is not yet uniformly accurate enough in wet and dry extremes.",
+  "next_action": "Attribute failed extreme-regime cases by restoring exact K while retaining derivative-consistent interpolated theta/C. Do not retune gates before attribution."
 }
