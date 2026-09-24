@@ -1,0 +1,28 @@
+name: F-AHL12D local Jacobian diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl12d_local_jacobian_diagnostic.f90'
+      - 'research/ahl/run_ahl12d_local_jacobian_diagnostic.sh'
+      - 'integration/f-ahl/F-AHL12D_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl12d-local-jacobian-diagnostic.yml'
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run local Jacobian diagnostics
+        run: |
+          bash research/ahl/run_ahl12d_local_jacobian_diagnostic.sh /tmp/ahl12d_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl12d-${{ github.run_id }}
+          path: |
+            /tmp/ahl12d_result.txt
+            /tmp/ahl12d_base_tables.txt
+            /tmp/ahl12d_refined_tables.txt
