@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04",
+  "phase": "FULL_MODEL_VAPOR_ON_QUALIFICATION_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36058608294,
+  "workflow_job": 107831748382,
+  "host_reconciliation": "F-PDI-VT04R",
+  "source_authority": {
+    "PDI_git_blob_sha": "40c5b57fb6691c1f4b51ddf76675b435ca71b589",
+    "legacy_capable_host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+    "case_repository_commit": "a839e2e905f34dd264ad0c739f638454b3023def"
+  },
+  "control": "PDI source with SWAP-009 signed-head correction only",
+  "candidate": "same source plus TempK=TempC+273.15 consistently in MgRT, Da and Rho_sv",
+  "runs": {
+    "control_vapor_on": "NORMAL rc=100",
+    "candidate_vapor_on": "NORMAL rc=100",
+    "control_NoVap": "NORMAL rc=100",
+    "candidate_NoVap": "NORMAL rc=100"
+  },
+  "behavioral_evidence": {
+    "vapor_on_BFO_control_sha": "3062fd71398d8a93c0f502f0da74eba9318901cd8fccbc152225c06b6a4e02ae",
+    "vapor_on_BFO_candidate_sha": "4daac2cdd0e60414ed8d3786b27b87f7c546b91784bf657b9df31caeb260f946",
+    "vapor_on_output_difference": true,
+    "candidate_output_finite": true,
+    "NoVap_BFO_control_sha": "4daac2cdd0e60414ed8d3786b27b87f7c546b91784bf657b9df31caeb260f946",
+    "NoVap_BFO_candidate_sha": "4daac2cdd0e60414ed8d3786b27b87f7c546b91784bf657b9df31caeb260f946",
+    "NoVap_numerical_output_identical": true,
+    "mass_balance_gate": "CRITDEVMASBAL=1e-6 enforced by the model in all four normal-completion runs"
+  },
+  "scientific_interpretation": "The Celsius/Kelvin repair changes production PDI behavior only when vapor conductivity is enabled and leaves the NoVap hydraulic route unchanged in the tested full-model case. This is consistent with the source-level defect classification and the intended minimal scope of the fix.",
+  "qualification_chain": [
+    "F-PDI-VT01 theory-documentation-code defect confirmation",
+    "F-PDI-VT02 independent absolute-temperature equation gate",
+    "F-PDI-VT03 actual-source Fortran gate 21/21",
+    "F-PDI-VT04 full-model vapor-on behavioral gate"
+  ],
+  "production_status": "QUALIFIED_FIX_NOT_YET_ADMITTED"
+}
