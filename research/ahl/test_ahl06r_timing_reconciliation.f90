@@ -130,12 +130,57 @@ contains
     req%numerical%head_rel_tolerance=1.0e-12_real64;req%numerical%ponding_tolerance=1.0e-12_real64
     req%evaluation%source_sink=>sp;req%evaluation%top_boundary=>tp
   end subroutine
-  subroutine sort3(v)
-    real(real64),intent(inout)::v(3);real(real64)::tmp
-    if(v(1)>v(2))then;tmp=v(1);v(1)=v(2);v(2)=tmp;end if
-    if(v(2)>v(3))then;tmp=v(2);v(2)=v(3);v(3)=tmp;end if
-    if(v(1)>v(2))then;tmp=v(1);v(1)=v(2);v(2)=tmp;end if
-  end subroutine
+  subroutine time_reference_batch(req,state,provider,solver,workspace,result,elapsed)
+    type(soil_water_solve_request_t),intent(inout)::req
+    type(soil_water_physical_state_t),intent(in)::state
+    type(b110_default_mvg_provider_t),target,intent(in)::provider
+    type(reference_richards_legacy_solver_t),intent(inout)::solver
+    type(reference_richards_legacy_workspace_t),intent(inout)::workspace
+    type(soil_water_solve_result_t),intent(out)::result
+    real(real64),intent(out)::elapsed
+    real(real64)::a,b
+    integer::q
+    call cpu_time(a)
+    do q=1,NREPLAY
+      req%base_state=state;req%evaluation%constitutive=>provider
+      call solver%solve(req,workspace,result)
+      if(result%status/=SW_SOLVE_CONVERGED) error stop 'timed reference failure'
+    end do
+    call cpu_time(b);elapsed=(b-a)/real(NREPLAY,real64)
+  end subroutine time_reference_batch
+
+  subroutine time_split_batch(req,state,provider,solver,workspace,result,elapsed)
+    type(soil_water_solve_request_t),intent(inout)::req
+    type(soil_water_physical_state_t),intent(in)::state
+    type(ahl06_split_provider_t),target,intent(in)::provider
+    type(reference_richards_legacy_solver_t),intent(inout)::solver
+    type(reference_richards_legacy_workspace_t),intent(inout)::workspace
+    type(soil_water_solve_result_t),intent(out)::result
+    real(real64),intent(out)::elapsed
+    real(real64)::a,b
+    integer::q
+    call cpu_time(a)
+    do q=1,NREPLAY
+      req%base_state=state;req%evaluation%constitutive=>provider
+      call solver%solve(req,workspace,result)
+      if(result%status/=SW_SOLVE_CONVERGED) error stop 'timed split failure'
+    end do
+    call cpu_time(b);elapsed=(b-a)/real(NREPLAY,real64)
+  end subroutine time_split_batch
+
+  subroutine sort7(v)
+    real(real64),intent(inout)::v(7)
+    real(real64)::tmp
+    integer::a,b
+    do a=1,6
+      do b=a+1,7
+        if(v(b)<v(a))then
+          tmp=v(a);v(a)=v(b);v(b)=tmp
+        end if
+      end do
+    end do
+  end subroutine sort7
+
   subroutine require(ok,msg)
     logical,intent(in)::ok;character(len=*),intent(in)::msg
     if(.not.ok)then;write(*,'(A,1X,A)')'AHL06_FAIL',trim(msg);error stop 1;end if
