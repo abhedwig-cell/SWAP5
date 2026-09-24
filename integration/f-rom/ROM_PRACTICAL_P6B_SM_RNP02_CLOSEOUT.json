@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.rom-practical.p6b-sm-rnp02.closeout.v1",
+  "workstream": "ROM-PRACTICAL",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP02",
+  "date": "2026-09-24",
+  "status": "CLOSED_ADAPTIVE_REFERENCE_BLOCKED_WORKLOAD_SEMANTICS_REJECTED",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_PREREGISTRATION.json",
+    "result": "integration/f-rom/ROM_PRACTICAL_P6B_SM_RNP02_RESULT.json",
+    "workflow_run": 35955776661
+  },
+  "outcome": {
+    "A32_all_materials_complete": false,
+    "A64_all_materials_complete": false,
+    "only_material_completing_both": "B16",
+    "blocked_materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12"
+    ]
+  },
+  "diagnosis": {
+    "observed": [
+      "B02 HR72 accepts every substep without retry through day 20 under both A32 and A64, then exhausts eight successive halvings at the next interval.",
+      "Accepted pre-failure states are finite and mass residuals remain far inside the 1e-12 cm gate.",
+      "B05 and B06 fail later under the same imposed extraction-style boundary; failure day varies by material/state.",
+      "Changing maximum step from 1/32 to 1/64 day does not remove the eventual failure."
+    ],
+    "physical_interpretation": "The frozen Rain-ETref proxy imposes atmospheric reference demand as an unlimited fixed upward water flux at the soil surface. Under prolonged net demand this can become incompatible with the available hydraulic supply. Real SWAP evaporation/root uptake is supply-limited and process-partitioned; ETref is not itself an admissible fixed soil-water extraction flux.",
+    "conclusion": "The P6B-SM net-atmospheric proxy is not a defensible realistic Richards workload for fidelity adjudication. Its failure is a workload-semantics defect, not evidence against the Richards reference and not evidence for S4 robustness."
+  },
+  "decision": {
+    "reject_net_atmospheric_proxy_for_fidelity": true,
+    "preserve_as_stress_test_only": true,
+    "no_more_reference_repair_for_this_proxy": true,
+    "next_work_unit": "ROM-PRACTICAL-P6B-SM-RF01",
+    "next_workload": "Authentic Hupsel rainfall-only dynamic top flux with no ETref extraction, followed separately by a process-aware evaporation/root-demand workload when such forcing semantics are bound."
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false
+}
