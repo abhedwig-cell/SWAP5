@@ -1,0 +1,26 @@
+name: F-AHL11 decoupled Stage B
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/run_ahl11_decoupled_stage_b.sh'
+      - 'research/ahl/ahl11_generate_decoupled_support.py'
+      - 'research/ahl/mod_ahl11_decoupled_provider.f90'
+      - 'research/ahl/test_ahl11_decoupled_matrix.f90'
+      - '.github/workflows/f-ahl11-decoupled-stage-b.yml'
+  workflow_dispatch:
+
+jobs:
+  stage-b:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run full 12-case decoupled matrix
+        run: |
+          bash research/ahl/run_ahl11_decoupled_stage_b.sh /tmp/ahl11_stageb.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl11-stageb-${{ github.run_id }}
+          path: /tmp/ahl11_stageb.txt
