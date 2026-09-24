@@ -19,8 +19,7 @@
   ],
   "primary_observables": [
     "nonlinear_iterations",
-    "backtracking_attempts",
-    "total solve CPU"
+    "backtracking_attempts"
   ],
   "secondary_observables": [
     "bottom_flux_delta",
@@ -34,5 +33,8 @@
     "NO_LINE_SEARCH_POLICY_CHANGE",
     "NO_POSTHOC_GATE_CHANGE",
     "NO_PRODUCTION_ADMISSION"
+  ],
+  "diagnostic_observables": [
+    "total solve CPU (not used for component attribution because exact-component research variants may retain redundant analytical work)"
   ]
 }
