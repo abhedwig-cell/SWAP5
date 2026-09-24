@@ -23,7 +23,8 @@
     "baseline": "59ef5f385",
     "interface": "Optional trailing head vector on apply_macro_diagonal and apply_reference_trial_diagonal checks exact finite pressure-head identity against the captured residual before touching the diagonal. Existing callers without this argument retain key-only behavior; the nonlinear sequence supplies it.",
     "invariants": "No convergence tolerance substitutes for evaluation identity. A mismatch leaves diagonal unchanged and the reference adapter invalidates captured transfer. No solver or workspace ABI change, physical commit or production admission.",
-    "tests": "Nonlinear iterations supply matching heads. After convergence, changed heads with the same key reject the tangent and invalidate transfer. Persisted replay pending."
+    "tests": "Nonlinear iterations supply matching heads. After convergence, changed heads with the same key reject the tangent and invalidate transfer. Persisted fc15f6252 scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks.",
+    "recovery_point": "fc15f6252"
   },
   "reduced_nonlinear_gate": {
     "baseline": "df78af0b3",
