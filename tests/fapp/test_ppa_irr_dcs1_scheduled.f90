@@ -4,6 +4,7 @@ program test_ppa_irr_dcs1_scheduled
   use mod_irrigation_process
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_dcs1_depth, only: evaluate_dcs1_depth,IRR_DCS1_OK
+  use mod_ppa_irr_water_deficit, only: evaluate_root_zone_water_deficit_checked,IRR_DEFICIT_OK
   implicit none
   type(scheduled_irrigation_parameters_t)::p,saved
   type(scheduled_irrigation_request_t)::r
@@ -12,7 +13,8 @@ program test_ppa_irr_dcs1_scheduled
   type(irrigation_diagnostics_t)::d
   type(process_hydraulic_view_t)::h
   real(real64)::correction,raw,expected,oracle,oracle_correction,rate,duration,amount,nan
-  integer::i,code,timing
+  real(real64)::fraction,root_depth,awlh,awmh,awah,expected_deficit
+  integer::i,code,timing,demand_mode
   p%scheduled_irrigation_enabled=.true.; p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
   p%active_nodes=2; p%sensor_node=1; p%single_ssdi_node=2
   p%tcs7_knot_count=2; p%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
@@ -29,11 +31,26 @@ program test_ppa_irr_dcs1_scheduled
   r%t0=0.0_real64
   r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
   r%crop_emerged=.true.; r%irrigation_window_open=.true.
+  do demand_mode=1,2
   do timing=IRRIGATION_TIMING_TCS7_PRESSURE_HEAD,IRRIGATION_TIMING_TCS8_WATER_CONTENT
   p%timing_criterion=timing
   do i=1,100000
     r%dvs=real(modulo(i,129),real64)/64.0_real64
     r%deficit_cm=real(modulo(3*i,257),real64)/64.0_real64-1.0_real64
+    if(demand_mode==2) then
+      fraction=real(modulo(i,65),real64)/64.0_real64
+      root_depth=8.0_real64+16.0_real64*fraction
+      h%water_content(1)=real(modulo(i,17),real64)/64.0_real64
+      h%water_content(2)=real(modulo(7*i,65),real64)/64.0_real64
+      call evaluate_root_zone_water_deficit_checked(2,[1,1],[8.0_real64,16.0_real64], &
+           [0.0_real64,-8.0_real64],root_depth,[0.5_real64],[0.3_real64],[0.1_real64], &
+           h%water_content,awlh,awmh,awah,r%deficit_cm,code)
+      call require(code==IRR_DEFICIT_OK,'hydraulic-view deficit accepted')
+      expected_deficit=(0.5_real64*8.0_real64-h%water_content(1)*8.0_real64)+ &
+           (0.5_real64*16.0_real64*fraction-h%water_content(2)*16.0_real64*fraction)
+      call require(transfer(r%deficit_cm,0_int64)==transfer(expected_deficit,0_int64), &
+           'root-zone source-order deficit exact before DCS1')
+    end if
     r%rainfall_cm=real(modulo(i,5),real64)/4.0_real64
     r%sensor_solute_concentration=real(modulo(i,3),real64)
     p%dcs1_correction_mm(1)=real(modulo(i,201)-100,real64)
@@ -80,6 +97,9 @@ program test_ppa_irr_dcs1_scheduled
   end do
   write(*,'(a)') 'PPA_IRR_DCS1_SCHEDULED_SOURCE_ORACLE_100000=PASS'
   write(*,'(a)') 'PPA_IRR_DCS1_TCS7_TCS8_200000=PASS'
+  end do
+  write(*,'(a)') 'PPA_IRR_CHECKED_DEFICIT_DCS1_COMPOSITION_200000=PASS'
+  h%water_content=0.2_real64
 
   p%dcs1_correction_mm=0.0_real64; p%depth_limit_enabled=.false.; p%solute_enabled=.false.
   p%irr_rate_cm_per_day=0.0_real64; r%deficit_cm=1.0_real64; r%rainfall_cm=0.5_real64
