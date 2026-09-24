@@ -1,0 +1,35 @@
+name: F-AHL09 derivative-consistent retention
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl09_derivative_consistent.py'
+      - 'integration/f-ahl/F-AHL09_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl09-derivative-consistent.yml'
+  workflow_dispatch:
+
+jobs:
+  constitutive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate derivative-consistent tables
+        run: |
+          mkdir -p /tmp/ahl09
+          python3 research/ahl/ahl09_derivative_consistent.py /tmp/ahl09 | tee /tmp/ahl09_result.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/ahl09_result.json'))
+          bad=[k for k,v in d['materials'].items() if not v['pass']]
+          if bad:
+              raise SystemExit(f'F-AHL09 constitutive gate failed: {bad}')
+          PY
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl09-${{ github.run_id }}
+          path: |
+            /tmp/ahl09_result.json
+            /tmp/ahl09/*_dc.dat
