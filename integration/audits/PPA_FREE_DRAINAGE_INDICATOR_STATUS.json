@@ -1,11 +1,14 @@
 {
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
-  "status": "MASS_DIAGNOSTIC_45_CASES_IMPLEMENTED_FINAL_REPLAY_PENDING",
+  "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
   "contract": "Rejected hypothesis: mode7 is NOT equivalent to fixed base-qbot under SwKimpl=0. Proposed adapter removed before admission. No production changes or relaxed mass gates.",
-  "source": "headcalc.f90 lines 1001-1011 recomputes qbot from candidate provider_k; jacobian_F includes mode7 conductivity derivative. Legacy binding initializes mass diagnostic to NaN and publishes it only for modes 2 and 5.",
-  "tests": "74e39d73c: 15 cases O0/O2 PASS including independent ledger, forced-retry/no-publication/base immutability and unchanged FSI38/FSI25. Extended matrix: 45 cases (zero sources, subsurface irrigation, drainage plus separate root provider); final persisted replay pending.",
+  "source": "headcalc.f90 vector_F recomputes mode7 qbot from candidate provider_k; jacobian_F includes mode7 conductivity derivative. At baseline the legacy binding only published balance diagnostics for modes 2 and 5. Commit 74e39d73c adds bounded mode7 publication without changing qbot or the equation vector.",
+  "tested_commit": "9b4f6137e",
+  "tests": "tests/fsi/run_ppa_free_drainage_indicator.ps1 PASS at persisted 9b4f6137e: 45 cases per optimization (zero sources, irrigation, drainage plus separate root extraction), independent storage/flux ledger, native/integrated units, forced retries without diagnostics or base mutation. Unchanged FSI38 ten-case mode2 oracle and FSI25 mode5 seam PASS. O0/O2 transcripts identical; bounds/FPE checks enabled.",
+  "evidence_build": "C:/Users/Veldh012/AppData/Local/Temp/swap-free-drainage-45015f7e-bb78-4544-9c26-ce64d67fe409",
+  "production_replay": "Default PPA-WU01 PowerShell runner at 9b4f6137e still fails O0 WU04C production owner commit, matching the known baseline failure. The balance diagnostic extension alone does not fix principal convergence or temporal integration. O2 bootstrap not reached. No production-success claim.",
   "invariants": [3, 7, 13, 23, 25],
   "scope": "Mode7 explicit-flux-top converged solves now publish existing final native residual and time-integrated residual. No equation, flux, budget, continuation schema, committed-state or temporal indicator admission change. Modes -2 and dynamic top remain outside this extension.",
-  "next_action": "Implement and qualify explicit mode7 residual publication with independent storage/flux ledger, then derive candidate-dependent bottom stiffness for an opt-in temporal service. Replay unchanged FSI38 and FSI25 O0/O2. Do not replace the failed mass gate or equate mode7 to fixed base flux."
+  "next_action": "Derive and independently qualify candidate-dependent bottom stiffness for an opt-in temporal service. Mode7 default temporal indicator remains unavailable. This diagnostic qualification does not close WU04C runtime/restart acceptance."
 }
