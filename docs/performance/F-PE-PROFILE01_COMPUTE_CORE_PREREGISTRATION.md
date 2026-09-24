@@ -401,3 +401,24 @@ This copying is **not preregistered as redundant**. Transactional isolation is a
 - whether later implementation alternatives can preserve exact accepted/trial isolation without changing ownership semantics.
 
 Pointers, aliasing or move-based alternatives are not authorized merely because copying is measured as expensive. Any later repair must prove that committed state cannot be mutated by speculative work.
+
+
+## Instrumentation qualification log
+
+### Q01 — first observation compile attempt
+
+Result: `FAIL_EXPECTED_REPAIRABLE_OBSERVER_PLUMBING`.
+
+The first P01-A workflow attempt failed at compile time because reset counters were accumulated in `transaction_result_t` code paths before the corresponding result fields had been added to the type. No model execution occurred and no physics evidence was produced.
+
+Repair: add the missing total and accepted reset/byte fields to `transaction_result_t` and retain the same preregistered observation semantics.
+
+### Q02 — canonical diagnostics propagation compile attempt
+
+Result: `FAIL_EXPECTED_REPAIRABLE_OBSERVER_PLUMBING`.
+
+After Q01 repair, compilation progressed to `mod_kernel_transactions.f90` and failed because the new reset counters were mapped from `canonical_run_diagnostics_t` before that canonical diagnostics type and its transaction accumulator exposed the fields.
+
+Repair: add `workspace_full_resets` and `workspace_zeroed_bytes` to `canonical_run_diagnostics_t` and accumulate the corresponding `transaction_result_t` totals in `mod_canonical_interval_runtime`.
+
+These failures are observer-plumbing defects only. Neither attempt reached model execution; neither is evidence about SWAP performance or physics.
