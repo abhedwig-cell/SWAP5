@@ -26,6 +26,25 @@ jobs:
           if bad:
               raise SystemExit(f'F-AHL09 constitutive gate failed: {bad}')
           PY
+      - name: Benchmark derivative-consistent representation
+        run: |
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -pedantic research/ahl/ahl09_runtime_screen.f90 -o /tmp/ahl09_bench
+          : > /tmp/ahl09_runtime.txt
+          for m in B01 B12 O05 O14; do
+            /tmp/ahl09_bench /tmp/ahl09/${m}_dc.dat ${m} | tee -a /tmp/ahl09_runtime.txt
+          done
+          python3 - <<'PY'
+          import re
+          rows={}
+          for line in open('/tmp/ahl09_runtime.txt'):
+              m=re.search(r'RESULT\s+(\S+)\s+(analytical|dc_hybrid)\s+([0-9.E+-]+)',line)
+              if m:
+                  rows.setdefault(m.group(1),{})[m.group(2)]=float(m.group(3))
+          bad=[k for k,v in rows.items() if v.get('dc_hybrid',1e99) >= v.get('analytical',0)]
+          if len(rows)!=4 or bad:
+              raise SystemExit(f'F-AHL09 runtime gate failed: rows={rows}, bad={bad}')
+          PY
+
       - name: Preserve result
         uses: actions/upload-artifact@v4
         with:
@@ -33,3 +52,4 @@ jobs:
           path: |
             /tmp/ahl09_result.json
             /tmp/ahl09/*_dc.dat
+            /tmp/ahl09_runtime.txt
