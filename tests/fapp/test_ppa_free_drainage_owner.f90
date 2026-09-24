@@ -719,7 +719,8 @@ contains
     request%conductivity_mean_method=profile%tiles(tile)%parameters%swkmean
     request%pressure_head_top_cm=top%pressure_head_top_cm
     request%water_content_top=top%water_content_top
-    request%ponding_depth_cm=top%ponding_depth_cm
+    request%candidate_ponding_depth_cm=top%ponding_depth_cm
+    request%previous_ponding_depth_cm=top%ponding_depth_cm
     request%step_duration_day=T1-T0
     request%ponding_max_cm=2.0_real64
     request%runoff_resistance_day=1.0_real64
