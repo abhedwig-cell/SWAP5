@@ -19,6 +19,13 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "isolated_restart_bridge_verification": {
+    "baseline": "4087e25db",
+    "scope": "Test-only A2 DTO commit/export/restore after an accounted captured-transfer candidate. The next interval is reevaluated independently for continuous and restored checkpoints, with old numerical capture discarded and workspace reset.",
+    "fixture": "One fixed-volume domain, two cells. First head pair [-0.5,0.25], next [-0.5,0.1]. After first interval the water surface is in the bottom cell; fixture derives its level and wet fraction from restored scalar storage. Both subsequent candidate profiles and scalar stores must match exactly.",
+    "limits": "Not production restart, joint matrix/macropore commit or full physical continuation qualification. Inherits A3 proposed conservative-flux limitation; no accepted owner interface changes.",
+    "test_result": "Pending persisted replay"
+  },
   "exact_rate_extension": {
     "baseline": "ec6ff0c86",
     "contract": "Optional captured-rate output on transfer/budget extraction returns the original residual rate alongside its integrated amount after the same identity checks. Failed extraction returns neither array. Candidate preparation now uses this rate directly instead of amount/dt.",

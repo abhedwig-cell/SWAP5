@@ -160,7 +160,11 @@ program test_scratch_binding
   print '(a)','PPA_WU05A4_REDUCED_NONLINEAR_CALLBACK_RETRY=PASS'
 contains
   subroutine interval_handoff()
-    type(ppa_wu05a2_macropore_committed_t)::initial
+    type(ppa_wu05a2_macropore_committed_t)::initial,continued,restored
+    type(ppa_wu05a2_macropore_restart_t)::restart
+    type(ppa_wu05a2_macropore_checkpoint_t)::restored_checkpoint
+    type(ppa_wu05a2_macropore_candidate_t)::replayed
+    type(saturated_domain_inputs)::next_input
     type(ppa_wu05a2_macropore_checkpoint_t)::checkpoint
     type(ppa_wu05a2_macropore_candidate_t)::candidate
     type(candidate_mass_account)::account
@@ -221,6 +225,47 @@ contains
     call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.25_real64],1.0_real64, &
         checkpoint,1.e-13_real64,candidate,account,valid)
     call check(valid,144)
+    ! Isolated DTO commit/restart only, not a joint Richards physical commit.
+    continued=initial
+    call ppa_wu05a2_commit_candidate(candidate,continued,valid)
+    call check(valid,145)
+    call ppa_wu05a2_export_restart(continued,restart,valid)
+    call check(valid,146)
+    call ppa_wu05a2_restore_restart(restart,restored,valid)
+    call check(valid,147)
+    call ppa_wu05a2_capture_checkpoint(continued,checkpoint,valid)
+    call check(valid,148)
+    call ppa_wu05a2_capture_checkpoint(restored,restored_checkpoint,valid)
+    call check(valid,149)
+    next_input=input
+    next_input%storage=continued%payload%domain_water_storage(1)
+    ! This fixture's new water surface is inside the bottom cell.
+    next_input%pore_level=-2.0_real64+next_input%storage/0.25_real64
+    next_input%pore_saturated_top=2
+    next_input%saturated_fraction=next_input%storage/0.25_real64
+    identity%revision=continued%revision; identity%attempt=2; identity%evaluation=1
+    scratch%residual=0
+    call apply_saturated_reference_residual(next_input,[-0.5_real64,0.1_real64],0.0_real64,1.0_real64, &
+        identity,scratch%generation,scratch,capture,diagnostic,valid)
+    call check(valid,150)
+    call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.1_real64],1.0_real64, &
+        checkpoint,1.e-13_real64,candidate,account,valid)
+    call check(valid,151)
+    call discard_reference_transfer(capture)
+    call reset_reference_workspace(scratch)
+    next_input%storage=restored%payload%domain_water_storage(1)
+    next_input%pore_level=-2.0_real64+next_input%storage/0.25_real64
+    next_input%saturated_fraction=next_input%storage/0.25_real64
+    call apply_saturated_reference_residual(next_input,[-0.5_real64,0.1_real64],0.0_real64,1.0_real64, &
+        identity,scratch%generation,scratch,capture,diagnostic,valid)
+    call check(valid,152)
+    call prepare_reference_interval(scratch,capture,identity,[-0.5_real64,0.1_real64],1.0_real64, &
+        restored_checkpoint,1.e-13_real64,replayed,account,valid)
+    call check(valid,153)
+    call check(maxval(abs(candidate%payload%pore_water-replayed%payload%pore_water))<tiny(1.0_real64),154)
+    call check(maxval(abs(candidate%payload%domain_water_storage-replayed%payload%domain_water_storage)) &
+        <tiny(1.0_real64),155)
+    call ppa_wu05a2_discard_candidate(replayed)
     call ppa_wu05a2_discard_candidate(candidate)
     call check(initial%revision==0.and.abs(initial%payload%domain_water_storage(1)-start_store)<1.e-14_real64,139)
     call release_reference_workspace(scratch)
