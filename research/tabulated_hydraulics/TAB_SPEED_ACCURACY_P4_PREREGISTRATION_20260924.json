@@ -1,0 +1,13 @@
+{
+  "schema":"swap5.research_preregistration.v1",
+  "workunit":"TAB-SPEED-ACCURACY-P4",
+  "date":"2026-09-24",
+  "branch":"research/tab-speed-accuracy",
+  "question":"Within the robust naive log-head family, where is the practical knee between the proven 50 and 100 row candidates?",
+  "motivation":"P1 shows 50 rows is still highly accurate while 25 rows degrades sharply; P3A/P3B provide no evidence that sparse placement heuristics beat naive log-head spacing.",
+  "variants":[50,60,75,100],
+  "fixed":["naive log-head placement","existing TSPACK interpolation","same analytical authority","same solver/timestep/retry/tolerance policy"],
+  "primary_metrics":["Richards head max abs","Richards theta max abs","mass residual difference","iterations","retries","provider runtime","serialized runtime"],
+  "decision":"Identify the knee without prespecifying a winner. 60 and 75 rows are interpolation points between already-observed 50 and 100 behavior, not post-hoc tuning of acceptance thresholds.",
+  "production_effect":"NONE"
+}
