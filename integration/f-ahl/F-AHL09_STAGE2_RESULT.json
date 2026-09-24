@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL09",
+  "phase": "STAGE2_RICHARDS_REPLAY_COMPLETE",
+  "status": "PASS_STAGE2",
+  "workflow_run": 36042429946,
+  "workflow_job": 107777605784,
+  "fixture": {
+    "support_points": 29,
+    "theta_span_error": 8.297006006935464e-6,
+    "log_capacity_error": 2.748228121181029e-4,
+    "log_conductivity_error": 9.626964629018797e-3
+  },
+  "richards_response": {
+    "max_abs_pressure_head_delta_cm": 8.225771e-6,
+    "max_abs_water_content_delta": 2.836443e-8,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 1.366970e-7,
+    "mass_residual_abs_cm": 8.933826e-17,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "finding": "The derivative-consistent Hermite retention representation preserves the analytical nonlinear iteration and backtracking path while satisfying all frozen F-AHL09 Stage-2 fidelity gates.",
+  "interpretation": "This supports the F-AHL07 diagnosis that theta and C must be represented as one derivative-consistent object. The previous extra Newton iteration was not an unavoidable consequence of lookup hydraulics.",
+  "next_gate": "Robust paired end-to-end Richards timing under an O3 no-runtime-check protocol.",
+  "nonclaims": [
+    "No end-to-end speedup is established by this Stage-2 replay.",
+    "No whole-SWAP speedup is implied.",
+    "No production admission is implied."
+  ]
+}
