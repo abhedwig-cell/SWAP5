@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL05",
+  "title": "Split exact-retention runtime screen",
+  "parent": "F-AHL04C",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does exact theta(h) plus frozen lookup of C(h) and K(h) retain a meaningful constitutive runtime advantage over full analytical evaluation?",
+  "candidates": [
+    "full analytical theta+C+K",
+    "full adaptive lookup theta+C+K",
+    "split exact theta plus lookup C+K"
+  ],
+  "materials": ["B01","B12","O05","O14"],
+  "benchmark_policy": {
+    "optimized_fortran": "-O3",
+    "lookup_search_included": true,
+    "log_head_transform_included": true,
+    "exp_reconstruction_for_C_K_included": true,
+    "analytical_theta_cost_included": true,
+    "table_build_cost_excluded_from_inner_loop": true,
+    "minimum_repetitions": 3
+  },
+  "decision_rule": "Advance the split representation only if it remains faster than full analytical evaluation for all tested materials and is not materially slower than the full lookup candidate without a compensating fidelity advantage.",
+  "hard_exclusions": [
+    "NO_END_TO_END_SWAPP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_RETUNING_AFTER_TIMING"
+  ]
+}
