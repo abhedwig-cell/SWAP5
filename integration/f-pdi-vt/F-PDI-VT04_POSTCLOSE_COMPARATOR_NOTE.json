@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04-POSTCLOSE-COMPARATOR-NOTE",
+  "workflow_run": 36062811045,
+  "status": "EXPECTED_FAILURE_UNDER_STRONGER_POSTCLOSE_COMPARATOR",
+  "finding": "The generic comparator was later hardened to require both Vapor-on control and candidate outputs finite. Re-running the original pathological VT04 case then fails because control_finite=false and candidate_finite=true.",
+  "authority": "The frozen original F-PDI-VT04 preregistration required candidate finiteness, Vapor-on activation and NoVap identity; it did not require control finiteness. Therefore this post-close rerun does not retroactively change or fail VT04.",
+  "supporting_evidence": {
+    "all_four_runs_normal_completion": true,
+    "control_vapor_finite": false,
+    "candidate_vapor_finite": true,
+    "vapor_on_different": true,
+    "novap_identical": true
+  },
+  "gate_policy": "No retroactive gate change."
+}
