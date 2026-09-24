@@ -1,0 +1,34 @@
+name: SW-TRI01-A joint SWAP candidate composition
+
+on:
+  push:
+    branches:
+      - work/sw-tri01-minimal-real-three-model-composition
+    paths:
+      - 'tests/triangle/**'
+      - 'integration/triangle/SW_TRI01_A_*'
+      - '.github/workflows/sw-tri01-a-joint-candidate.yml'
+  pull_request:
+    paths:
+      - 'tests/triangle/**'
+      - 'integration/triangle/SW_TRI01_A_*'
+      - '.github/workflows/sw-tri01-a-joint-candidate.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Joint SWAP candidate composition
+        run: bash tests/triangle/run_sw_tri01_a_joint_forcing_candidate.sh
