@@ -321,3 +321,40 @@ H7 candidate:       0 full-reset payload bytes per solve
 ```
 
 At n=1000 this is about 588 kB of avoidable bulk writes per Reference solve. This is a data-movement statement, not yet a whole-model speedup claim.
+
+
+## ZW01-H8 preregistration — tridiagonal factorization-capture overwrite elimination
+
+Exact control-flow audit of `prepare_reference_tridag_factorization_capture` and `reference_tridag` identifies additional overwrite-before-read bulk writes.
+
+### H8a capture preparation
+
+When sensitivity capture expands `tridag_gamma` from n to 2n, the new array is currently zero-filled. When an already-expanded array is reused, it is also zero-filled.
+
+For the capture path, `reference_tridag` subsequently writes:
+- `gamma(2:n)` during forward elimination;
+- `gamma(n+1:2*n)` as the complete beta-factor capture.
+
+`gamma(1)` is not consumed by the backsolve; `reference_tridag_backsolve` uses `gamma(i+1)`.
+
+Therefore bulk zero-fill during capture preparation is not required for the factorization result.
+
+### H8b reference_tridag capture preclear
+
+When `size(gamma) >= 2*n`, `reference_tridag` currently clears `gamma(n+1:2*n)` before immediately assigning:
+- `gamma(n+1)` from the first beta;
+- `gamma(n+i)` for every i=2..n.
+
+This is a complete overwrite-before-read and may be removed.
+
+### H8c optional beta_factor preclear
+
+When the optional separate `beta_factor` is present, the routine clears `beta_factor(1:n)` and then assigns every entry 1..n before successful return. The clear is redundant on the successful factorization path. Because early singular return can leave a partial factorization, H8c is deferred unless callers explicitly treat output as unavailable on nonzero ierror.
+
+H8 implementation in this workunit is limited to H8a/H8b. H8c remains audit-only.
+
+Gates:
+- existing sensitivity/accepted-direction tests remain PASS;
+- FKT22 requested-trajectory path remains bit-identical;
+- no extra backsolve or Jacobian changes;
+- poison-workspace gate remains PASS.
