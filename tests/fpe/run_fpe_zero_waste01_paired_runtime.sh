@@ -102,13 +102,22 @@ compile_variant candidate
 
 CALLS=5000
 PAIRS=10
+TIMING_MODE="${TIMING_MODE:-reference}"
+if [[ "$TIMING_MODE" != "reference" && "$TIMING_MODE" != "directional" ]]; then
+  echo "invalid TIMING_MODE=$TIMING_MODE" >&2
+  exit 1
+fi
 RESULTS="$BUILD/results.csv"
 echo 'pair,order,variant,seconds,ns_per_interval,nonlinear_iterations_per_solve,constitutive_evaluations_per_solve,checksum' > "$RESULTS"
 
 run_one() {
   local pair="$1" order="$2" variant="$3"
   local line
-  line="$("$BUILD/$variant/test" "$CALLS" | grep '^PROFILE03_E1_TIMING')"
+  if [[ "$TIMING_MODE" == "directional" ]]; then
+    line="$("$BUILD/$variant/test" "$CALLS" directional | grep '^PROFILE03_E1_TIMING')"
+  else
+    line="$("$BUILD/$variant/test" "$CALLS" | grep '^PROFILE03_E1_TIMING')"
+  fi
   python3 - "$pair" "$order" "$variant" "$line" "$RESULTS" <<'PY'
 import sys,re,csv
 pair,order,variant,line,path=sys.argv[1:]
@@ -147,10 +156,12 @@ for _,v in sorted(pairs.items()):
     if v['baseline']['constitutive_evaluations_per_solve'] != v['candidate']['constitutive_evaluations_per_solve']:
         raise SystemExit('constitutive count drift')
     ratios.append(c/b); deltas.append(c-b)
-print(f'FPE_ZERO_WASTE01_PAIRED_MEAN_RATIO={statistics.mean(ratios):.9f}')
-print(f'FPE_ZERO_WASTE01_PAIRED_MEDIAN_RATIO={statistics.median(ratios):.9f}')
-print(f'FPE_ZERO_WASTE01_PAIRED_MEAN_SPEEDUP_PERCENT={(1-statistics.mean(ratios))*100:.6f}')
-print(f'FPE_ZERO_WASTE01_PAIRED_MEAN_DELTA_NS_PER_INTERVAL={statistics.mean(deltas):.6f}')
-print(f'FPE_ZERO_WASTE01_PAIRED_N={len(ratios)}')
-print('FPE_ZERO_WASTE01_PAIRED_RUNTIME=PASS')
+import os
+mode = os.environ.get('TIMING_MODE','reference').upper()
+print(f'FPE_ZERO_WASTE01_{mode}_PAIRED_MEAN_RATIO={statistics.mean(ratios):.9f}')
+print(f'FPE_ZERO_WASTE01_{mode}_PAIRED_MEDIAN_RATIO={statistics.median(ratios):.9f}')
+print(f'FPE_ZERO_WASTE01_{mode}_PAIRED_MEAN_SPEEDUP_PERCENT={(1-statistics.mean(ratios))*100:.6f}')
+print(f'FPE_ZERO_WASTE01_{mode}_PAIRED_MEAN_DELTA_NS_PER_INTERVAL={statistics.mean(deltas):.6f}')
+print(f'FPE_ZERO_WASTE01_{mode}_PAIRED_N={len(ratios)}')
+print(f'FPE_ZERO_WASTE01_{mode}_PAIRED_RUNTIME=PASS')
 PY
