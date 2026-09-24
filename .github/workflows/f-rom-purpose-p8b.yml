@@ -1,0 +1,120 @@
+name: F-ROM-PURPOSE P8B blind transition-memory validation
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P8B_EXECUTION_BINDING.json'
+
+permissions:
+  contents: write
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Verify blind P8B authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile             tests/rom/materialize_rom_purpose_p8b_gw_reference.py             tests/rom/run_rom_purpose_p8b_reference.py             tests/rom/analyze_rom_purpose_p8b_transition_memory.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P8B_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/ROM_PURPOSE_P8B_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json'))
+          assert b['status']=='BOUND_AFTER_P8A_COEFFICIENT_FREEZE_BEFORE_P8B_RESPONSE'
+          assert p['phase']=='PREREGISTERED_BEFORE_ANY_P8B_REFERENCE_OR_VALIDATION_RESPONSE'
+          assert c['status']=='P8A_DERIVATION_COMPLETE_COEFFICIENTS_FROZEN_FOR_P8B'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+
+  routes:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with: {ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5, path: canonical, fetch-depth: 0}
+      - name: Execute fresh blind Reference trace
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tests/rom/run_rom_purpose_p8b_reference.py             --material "${{ matrix.material }}"             --canonical-root canonical             --output-dir evidence
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p8b-${{ matrix.material }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: routes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'p8b-*', path: /tmp/p8b, merge-multiple: true}
+      - name: Apply frozen coefficients to blind histories
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p8b_transition_memory.py             --prereg integration/f-rom/ROM_PURPOSE_P8B_PREREGISTRATION.json             --coefficients integration/f-rom/ROM_PURPOSE_P8A_COEFFICIENTS.json             --root /tmp/p8b             --output result/ROM_PURPOSE_P8B_RESULT.json | tee result/runner.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p8b-result
+          path: result/
+          if-no-files-found: error
+
+  persist:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: work/f-rom-purpose, fetch-depth: 0}
+      - uses: actions/download-artifact@v4
+        with: {name: rom-purpose-p8b-result, path: /tmp/result}
+      - name: Persist P8B blind result
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp /tmp/result/ROM_PURPOSE_P8B_RESULT.json integration/f-rom/
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P8B_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P8_STATUS.json')
+          s=json.load(open(p))
+          s.update({
+            'status':'P8B_'+r['decision'],
+            'current_gate':'P8_CLOSEOUT',
+            'p8b_result':'integration/f-rom/ROM_PURPOSE_P8B_RESULT.json',
+            'p8b_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p8b_execution_sha':os.environ['SOURCE_SHA'],
+            'next_actions':['Close P8 representation-information result without application admission.']
+          })
+          s['scientific_firewall']['p8b_validation_response_seen']=True
+          s['scientific_firewall']['coefficients_refit_on_validation']=False
+          s['scientific_firewall']['candidate_family_changed_after_training']=False
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P8B_RESULT.json integration/f-rom/ROM_PURPOSE_P8_STATUS.json
+          git commit -m "ROM-PURPOSE P8B: persist blind transition-memory validation" || exit 0
+          git push origin HEAD:work/f-rom-purpose
