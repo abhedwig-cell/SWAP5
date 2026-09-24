@@ -530,3 +530,18 @@ Thus the current evidence supports a bounded statement:
 > Of the three full workspace resets measured per explicit Reference solve, two are redundant on the inspected SWAP5 route. One full clean-scratch establishment remains semantically justified unless a later ownership design proves otherwise.
 
 This does not yet authorize repair in PROFILE01. A later repair workunit must remove resets one at a time, preserve poison/scratch independence tests, preserve sensitivity-capture behavior, and demonstrate physical/result identity before claiming runtime benefit.
+
+
+### H02 source-path decomposition
+
+The current P01-A setup exposes several distinct physical-state copy sites before any optimization claim is made:
+
+- explicit checkpoint capture clones committed physical state once before the trial;
+- `kernel_advance_interval` clones the supplied checkpoint into its working state;
+- `execute_reference_interval` clones that working committed state into a transaction checkpoint;
+- the external full/half transaction clones that checkpoint into the full-trial state;
+- it separately clones the checkpoint into the half-route state, which is then advanced through half1 and half2.
+
+Thus the simple P01-A path contains at least five full physical-state clone operations when checkpoint creation is included, of which four lie from kernel trial entry onward. The full-trial state is later discarded when the two-half route is accepted. This does not make the full-trial clone redundant: under the current temporal-error algorithm it supplies the full-step comparator. It does show why clone/allocation cost must be measured separately from solver time.
+
+The base B1.10 physical-state clone allocates and copies at least the pressure-head and water-content arrays plus scalar ponding/groundwater state; optional state families add their own payload. Any later data-movement optimization must preserve trial isolation and lineage authority exactly.
