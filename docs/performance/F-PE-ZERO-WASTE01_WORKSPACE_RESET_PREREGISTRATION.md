@@ -146,3 +146,30 @@ publication immutable-workunit guards  = EXPECTED_SCOPE_FAILURES
 ```
 
 No canonical-admission or whole-model speedup claim is made at this checkpoint.
+
+
+## H04 zero-waste audit checkpoint — provider tuple granularity
+
+A fresh exact-source audit of the H03 postimage shows that H04 must not be treated as a simple "split the provider" repair.
+
+Current explicit-provider use is phase dependent:
+
+1. Pre-Newton evaluation:
+   - conductivity `K` is consumed immediately;
+   - capacity `C` is retained and, after H03, reused at the first Newton iteration;
+   - water content `theta` is not immediately consumed;
+   - `dK/dh` is reserved by the common ABI and the admitted swkimpl=0 default provider merely zeroes it.
+
+2. Candidate/backtracking evaluation after `h` changes:
+   - `theta` is consumed immediately;
+   - `C` is retained for a subsequent Newton iteration if the candidate has not converged;
+   - `K` can still be relevant to boundary handling, including the provider-backed free-drainage lower boundary;
+   - `dK/dh` remains reserved/zero for the admitted default route.
+
+Therefore:
+- H04 is not presently N4 redundancy at the whole-call level;
+- unconditional `dK/dh` array zeroing is a bounded zero-work candidate for the admitted swkimpl=0 route, but expected payoff is small;
+- lazy or phase-specific theta/K/C evaluation could save work, especially on a final converged candidate where no next-iteration capacity is needed, but that requires control-flow-aware measurement and cannot be inferred safely from local use alone;
+- a global abstract-provider ABI split is not authorized by this audit.
+
+Next H04 work, if pursued, must instrument component demand by phase and convergence outcome before changing the provider contract.
