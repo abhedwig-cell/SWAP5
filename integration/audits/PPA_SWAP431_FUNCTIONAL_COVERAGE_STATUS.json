@@ -9,9 +9,9 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "latest_storage_owner_checkpoint": {
-    "tested_commit": "7da13c19e",
+    "tested_commit": "67990fccf",
     "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
-    "scope": "Adds Gash mid-source-window hydraulic restart: one frozen daily aggregate, two half-day receipts, every source continuation field and full hydraulic/history/provenance equality, failed/partial replay and exactly-once closure, O0/O2 identical. Earlier three-window WU04C/Gash and event rollback evidence remains in its exact-ref records. Additional low-rain Gash branch still fails after seven internal accepts; next diagnose that separate numerical limitation. Default production surface unchanged in these test-only checkpoints. Branch-local explicit mode-7 storage/temporal options, in-memory restart only; not canonical or whole migration closure."
+    "scope": "Low-rain Gash full-window continuation now passes O0/O2 under explicit existing retry_scale=0.8/max_retries=64, with 1566 accepted substeps per tile, exact fresh pre-window restart replay and once-only source closure. Binary-halving seven-substep rejection remains reproduced. Intermediate-duration probes identify a feasible band skipped by halving; no forcing/tolerance/history reseeding used. Earlier Gash mid-window and WU04C/Gash sequence evidence remains at its exact refs. Next: unmarked low-rain continuation and marked return to post-saturation forcing. Test-only changes, default production surface unchanged, not canonical or whole migration closure."
   },
   "register": "docs/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_REGISTER.md",
   "scope": "Evidence-based SWAP 4.3.1 corrected-reference capability coverage; this record does not widen frozen Status-A.",

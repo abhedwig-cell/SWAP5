@@ -3,6 +3,21 @@
   "work_unit": "PPA-WU04-D",
   "title": "Gash source-window interception",
   "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
+  "low_rain_dense_retry_successor": {
+    "tested_commit": "67990fccf",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashBranchRejection",
+    "result": "PASS O0/O2, 604157 identical lines SHA256 0EDDE2DC16A6278D459043529371B99B2102F1C2E65C2AF732DCB8E57F6BC3F8, build swap-ppa-wu01-c23be204f63a427ebfd7e87ee1e63806. Gate retains the binary-halving seven-substep rejection and rollback proof, then requires successful full fourth-window continuation using explicit retry_scale=0.8/max_retries=64. Both tiles accept 1566 internal substeps. Two independently initialized owners restore the same pre-window bundle and end with exactly equal complete hydraulic/history/provenance bundles. Source amount is consumed once; duplicate receipts reject. Event callback counts remain limited to initial-boundary retries.",
+    "invariants": "Forcing 0.04/0.02 cm/day, presaturation aggregate 0.051 cm/day, original pre-window hydraulic state/history, 1e-12 hard mass, 1e-5 temporal budget, native solver criteria and max internal substeps unchanged. Only explicit existing numerical retry configuration differs. No repeated event reseeding, second state owner, production source change or default policy change.",
+    "scope": "Bounded branch-local low-rain Gash continuation and in-memory pre-window restart replay now qualified. Does not establish a universally suitable retry factor, default production admission, disk restart, low-rain-to-high-rain transition or arbitrary dynamic-top regimes.",
+    "next": "Extend the dense-policy owner to a subsequent unmarked low-rain window and then a marked return to post-saturation forcing, with owner snapshots, exact restart and accepted-only source closure. Keep numerical-policy selection explicit and separate from interception physics."
+  },
+  "low_rain_internal_boundary_diagnosis": {
+    "tested_commit": "5147b83a8",
+    "scope": "Test-only copied values from the final tile's last temporal callback in the fourth source window, after seven accepted internal substeps. Borrowed callback pointers do not escape. Isolated solver probes run after outer rollback with fresh provider bindings and workspace; no trial state is published or used to repair the owner.",
+    "evidence": "84463d86f full GashBranchRejection O0/O2 gate passes; original transcript exactly preserved when LOW_RAIN diagnostic lines are removed. At 5147b83a8 recompiled only the changed test against unchanged qualified module objects at both optimization levels: 396002 identical lines SHA256 A426008B210F8042EDB11A0805AF2B55A170F9D26CDC6BC71020B6015ABB2349. Build swap-ppa-wu01-83365cd8bc7a439a8e702dab54573a12, O0/O2/probe-fractional.txt.",
+    "finding": "At dt 1.525715924799442e-5 the native solver converges but temporal bound 1.127637951111360e-5 exceeds 1e-5. Halving gives nonconvergence (residual 6.110667527536862e-13); still smaller durations increase the residual. Intermediate fractions 0.925 through 0.75 all converge with available temporal bounds below 1e-5 and independent mass residual below 1e-12. This demonstrates a locally viable duration band skipped by binary halving, not successful full-window continuation or a general precision-floor proof.",
+    "successor": "The explicit 0.8/64 full-window experiment passes at 5859e09be; strengthened completion/restart gate at 67990fccf is recorded separately in low_rain_dense_retry_successor. Default policy remains unchanged."
+  },
   "mid_source_window_hydraulic_restart": {
     "tested_commit": "7da13c19e",
     "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashReceipts",
@@ -42,7 +57,7 @@
     "The source-window aggregate is closed exactly once after the restored continuation commits."
   ],
   "remaining_qualification": [
-    "successful low-rain presaturation production continuation beyond the isolated seven-substep failure",
+    "unmarked low-rain continuation followed by a marked return to post-saturation forcing under the explicit dense retry profile",
     "broader dynamic-top regimes and non-opt-in production admission"
   ],
   "nonclaims": ["general weather-table ingestion", "canopy-loss mass-ledger redesign", "WU04C admission"]
