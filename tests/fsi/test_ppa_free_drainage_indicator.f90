@@ -20,7 +20,7 @@ program test_ppa_free_drainage_indicator
   real(real64), parameter :: compare_scale = 32768.0_real64*epsilon(1.0_real64)
   real(real64), parameter :: q_values(5) = [-1.0e-6_real64, -1.0e-10_real64, 0.0_real64, &
                                              1.0e-10_real64,  1.0e-6_real64]
-  real(real64), parameter :: dt_values(2) = [1.0e-2_real64, 1.0e-4_real64]
+  real(real64), parameter :: dt_values(3) = [1.0e-2_real64, 1.0e-4_real64, 1.0_real64]
   integer :: iq, idt, mode2_cases, wrong_dirichlet_separations
 
   mode2_cases = 0
@@ -125,6 +125,15 @@ contains
     end if
     call require(ieee_is_finite(comparison_result%unrounded_mass_balance_residual), 'mode7 finite mass diagnostic')
     call require(abs(comparison_result%unrounded_mass_balance_residual)<=hard_mass_gate, 'mode7 mass gate')
+    call require(comparison_result%native_balance_rate_residual_available, 'mode7 native residual available')
+    call require(comparison_result%integrated_mass_balance_residual_available, 'mode7 integrated residual available')
+    storage1 = sum(comparison_result%candidate_state%water_content*parameters%dz)
+    ledger_residual = storage1-storage0-step_dt*(comparison_result%bottom_flux-comparison_result%top_flux)
+    call require(abs(ledger_residual)<=hard_mass_gate, 'independent mode7 storage flux ledger')
+    call require(abs(ledger_residual-comparison_result%integrated_mass_balance_residual_cm)<=hard_mass_gate, &
+         'mode7 integrated equation agrees with independent ledger')
+    call require(comparison_result%integrated_mass_balance_residual_cm == &
+         step_dt*comparison_result%native_balance_rate_residual_cm_per_day, 'mode7 residual units')
     call require(result%status == SW_SOLVE_CONVERGED, 'prescribed-qbot principal solve converged')
     call require(transfer(result%bottom_flux,0_int64) == transfer(-conductivity(numnod),0_int64), 'prescribed qbot exact identity')
     storage1 = sum(result%candidate_state%water_content*parameters%dz) + result%candidate_state%ponding_depth
@@ -208,6 +217,15 @@ contains
     call require(trim(unsupported%route) == 'boundary-envelope-deferred', &
          'unowned bottom mode fails closed at boundary envelope')
 
+    unsupported_request%numerical%max_iterations = 1
+    unsupported_request%boundary%top_flux = -1.0_real64
+    call solver%solve(unsupported_request, comparison_workspace, comparison_result)
+    call require(comparison_result%status /= SW_SOLVE_CONVERGED, 'forced retry does not converge')
+    call require(.not.comparison_result%native_balance_rate_residual_available, 'retry has no native diagnostic')
+    call require(.not.comparison_result%integrated_mass_balance_residual_available, 'retry has no integrated diagnostic')
+    call require(.not.ieee_is_finite(comparison_result%unrounded_mass_balance_residual), 'retry compatibility field unavailable')
+    call require(all(request%base_state%pressure_head == heads), 'retry preserves committed base heads')
+    call require(all(request%base_state%water_content == water), 'retry preserves committed base water')
     completed_cases = completed_cases + 1
     write(*,'(A,ES16.8E3,A,ES16.8E3,A,ES26.17E3,A,ES26.17E3,A,A)') &
          'FREE_DRAINAGE_MODE2_ROW q=',q,':dt=',step_dt,':BINF=',indicator%head_inf_bound, &

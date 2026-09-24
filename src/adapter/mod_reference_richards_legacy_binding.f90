@@ -184,6 +184,20 @@ contains
                request%step_duration * result%unrounded_mass_balance_residual
        end if
 
+       ! Free drainage retains its candidate-dependent qbot. Publish only the
+       ! final equation residual; never reconstruct qbot from a closure identity.
+       ! This bounded diagnostic extension does not enable a temporal certificate.
+       if (request%boundary%bottom_mode == 7 .and. &
+           request%boundary%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. &
+           .not. state_binding%fldecdt .and. .not. ws%legacy_worker%control%request_dt_reduction) then
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = &
+               request%step_duration * result%unrounded_mass_balance_residual
+       end if
+
        ! Native SWAP prescribed-qbot enters the implemented bottom residual as
        ! F_N(...,qbot)=...-qbot. Therefore dF/dqbot=-e_N and implicit
        ! differentiation gives J * dh/dqbot = +e_N. Reuse the final normal
