@@ -1,5 +1,25 @@
 # Candidate forcing-event temporal continuation
 
+## Prescribed-root successor design (2026-09-24)
+
+Baseline: 543955b9a. Bounded implementation is authorized first in the read-only
+derivative component, then in runtime forwarding only after direct oracle/guard
+qualification. Accept exactly `b110_root_sink_provider_t`, not extensions or
+other root policies. Its node count and associated vector must match geometry;
+all entries must be finite, nonnegative and at most 1e6 cm/day. Preserve the
+existing requirement that the source/sink provider's embedded root vector is
+zero, preventing double subtraction. Add the prescribed vector once to the
+physical sink in the existing C*dz divergence formula. No derivative of a
+head-dependent or stateful root response is introduced.
+
+Unbound, wrong-sized, negative, nonfinite, oversized and duplicate-root inputs
+remain atomically unavailable with all-zero output. No-root behavior, physical
+state, accepted-only history, mass ledger, tolerances and default-false events
+remain unchanged. The backend's root-event rejection stays in place during
+component qualification. Runtime widening subsequently requires changed-weather
+owner/restart, failed/partial rollback, root amount accounting, and root-inactive
+preservation gates. This design is not itself runtime qualification or admission.
+
 Baseline: ea8354e6a. Status: explicit runtime event forwarding implemented at
 61e244883, bounded Windows and rollback qualification at 69ea158d1; not canonically admitted.
 Derivative component: candidate module at 235a71d03. The component deliberately restricts the numerical envelope

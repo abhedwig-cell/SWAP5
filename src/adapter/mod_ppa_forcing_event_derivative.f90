@@ -6,6 +6,7 @@ module mod_ppa_forcing_event_derivative
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_ppa_mvg_storage_binding, only: evaluate_bound_mvg_storage_difference
   implicit none
@@ -27,7 +28,7 @@ contains
     if(request%boundary%top_mode/=FSI_TOP_MODE_EXPLICIT_FLUX.or.request%boundary%bottom_mode/=7)return
     if(request%numerical%conductivity_mean_method/=1.or.request%numerical%conductivity_implicit_mode/=0)return
     if(request%physical%macropore_active.or.associated(request%evaluation%macropore))return
-    if(associated(request%evaluation%root_sink).or.associated(request%evaluation%dynamic_top_boundary))return
+    if(associated(request%evaluation%dynamic_top_boundary))return
     if(.not.associated(request%evaluation%constitutive).or..not.associated(request%evaluation%source_sink).or. &
          .not.associated(request%evaluation%top_boundary))return
     select type(top=>request%evaluation%top_boundary)
@@ -89,6 +90,21 @@ contains
     class default
       return
     end select
+    if(associated(request%evaluation%root_sink)) then
+      select type(provider=>request%evaluation%root_sink)
+      type is(b110_root_sink_provider_t)
+        if(provider%active_nodes/=n)return
+        if(.not.associated(provider%root_extraction_sink))return
+        if(size(provider%root_extraction_sink)/=n)return
+        if(.not.all(ieee_is_finite(provider%root_extraction_sink)))return
+        if(any(provider%root_extraction_sink<0.0_real64).or.any(provider%root_extraction_sink>1.0e6_real64))return
+        ! The embedded source-sink root vector was required to be zero above.
+        ! This concrete provider is prescribed, not a head-dependent root law.
+        sink=sink+provider%root_extraction_sink
+      class default
+        return
+      end select
+    end if
     flux(1)=request%boundary%top_flux
     do j=2,n
       flux(j)=-0.5_real64*(k(j-1)+k(j))* &

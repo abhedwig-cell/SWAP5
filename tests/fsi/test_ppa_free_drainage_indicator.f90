@@ -1,5 +1,5 @@
 program test_ppa_free_drainage_indicator
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_value, ieee_quiet_nan
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
@@ -16,7 +16,10 @@ program test_ppa_free_drainage_indicator
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_ppa_free_drainage_stiffness, only: evaluate_free_drainage_stiffness
   use mod_ppa_free_drainage_temporal_indicator, only: evaluate_free_drainage_temporal_indicator
+  use mod_ppa_forcing_event_derivative, only: evaluate_forcing_event_derivative
   implicit none
+  type,extends(b110_root_sink_provider_t)::unsupported_root_t
+  end type
 
   real(real64), parameter :: h0 = -75.0_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
@@ -44,6 +47,69 @@ program test_ppa_free_drainage_indicator
   write(*,'(A)') 'FREE_DRAINAGE_EXPLICIT_TEMPORAL_ORACLE=PASS'
 
 contains
+  subroutine check_event_root_derivative(original,k,capacity,drainage,irrigation,root)
+    type(soil_water_solve_request_t),intent(in)::original
+    real(real64),intent(in)::k(:),capacity(:),drainage(:,:),irrigation(:),root(:)
+    type(soil_water_solve_request_t)::request
+    type(b110_root_sink_provider_t),target::provider
+    type(unsupported_root_t),target::unsupported
+    type(b110_source_sink_provider_t),target::duplicate
+    real(real64),target::values(size(root)),embedded(size(root)),drain_copy(size(drainage,1),size(root))
+    real(real64),target::irrigation_copy(size(root))
+    real(real64)::expected(size(root)),computed(size(root)),flux(size(root)+1),base(size(root))
+    integer::j,n,guard
+    logical::ok
+    n=size(root); request=original
+    values=root
+    call bind_b110_root_sink_provider(provider,values)
+    request%evaluation%root_sink=>provider
+    flux(1)=request%boundary%top_flux
+    do j=2,n
+      flux(j)=-0.5_real64*(k(j-1)+k(j))* &
+           ((request%base_state%pressure_head(j-1)-request%base_state%pressure_head(j))/ &
+           request%parameters%node_distance(j)+1.0_real64)
+    end do
+    flux(n+1)=-k(n)
+    expected=(flux(2:n+1)-flux(1:n)+irrigation-sum(drainage,dim=1)-root)/(capacity*request%parameters%dz)
+    call evaluate_forcing_event_derivative(request,computed,ok)
+    call require(ok.and.maxval(abs(computed-expected))<=1.0e-12_real64*max(1.0_real64,maxval(abs(expected))), &
+         'prescribed-root event derivative independent flux/source oracle')
+    nullify(request%evaluation%root_sink)
+    call evaluate_forcing_event_derivative(request,base,ok)
+    call require(ok,'no-root event baseline remains available')
+    call require(maxval(abs(computed-base+root/(capacity*request%parameters%dz)))<1.0e-12_real64, &
+         'prescribed root is subtracted exactly once')
+    do guard=1,8
+      request=original
+      values=root
+      call bind_b110_root_sink_provider(provider,values)
+      request%evaluation%root_sink=>provider
+      select case(guard)
+      case(1)
+        nullify(provider%root_extraction_sink)
+      case(2)
+        provider%active_nodes=n+1
+      case(3)
+        provider%root_extraction_sink=>values(1:n-1)
+      case(4)
+        values(n)=-1.0_real64
+      case(5)
+        values(n)=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(6)
+        values(n)=1.0e6_real64+1.0_real64
+      case(7)
+        request%evaluation%root_sink=>unsupported
+      case(8)
+        embedded=1.0e-8_real64; drain_copy=drainage; irrigation_copy=irrigation
+        call bind_b110_source_sink_provider(duplicate,drain_copy,irrigation_copy,embedded)
+        request%evaluation%source_sink=>duplicate
+      end select
+      computed=12345.0_real64
+      call evaluate_forcing_event_derivative(request,computed,ok)
+      call require(.not.ok.and.all(computed==0.0_real64),'prescribed-root event guard atomic rejection')
+    end do
+    write(*,'(a)') 'PRESCRIBED_ROOT_EVENT_ORACLE_AND_GUARDS=PASS'
+  end subroutine
 
   subroutine run_mode2_case(q, step_dt, source_case, completed_cases, separated_cases)
     real(real64), intent(in) :: q, step_dt
@@ -129,6 +195,7 @@ contains
     storage0 = sum(request%base_state%water_content*parameters%dz) + request%base_state%ponding_depth
     unsupported_request = request
     unsupported_request%boundary%bottom_mode = 7
+    call check_event_root_derivative(unsupported_request,conductivity,capacity,drainage,irrigation,root_sink)
     call solver%solve(unsupported_request, comparison_workspace, comparison_result)
     call require(comparison_result%status == SW_SOLVE_CONVERGED, 'real free drainage solve converged')
     call solver%solve(request, workspace, result)
