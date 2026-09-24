@@ -16,7 +16,12 @@
       "Keeping h > -1 cm analytical makes the frozen lookup independent of timestep/retry changes.",
       "Near-saturation and branch-switch semantics remain exact rather than interpolated."
     ],
-    "lifecycle": ["BUILD_FROM_AUTHORITY", "FREEZE", "BIND_CURRENT_STEP", "RUN"],
+    "lifecycle": [
+      "BUILD_FROM_AUTHORITY",
+      "FREEZE",
+      "BIND_CURRENT_STEP",
+      "RUN"
+    ],
     "runtime_refinement": false
   },
   "candidates": [
@@ -38,11 +43,23 @@
       "candidate water content",
       "top and bottom flux",
       "integrated/native mass diagnostics"
-    ]
+    ],
+    "acceptance_thresholds": {
+      "adaptive_max_abs_pressure_head_delta_cm": 0.05,
+      "adaptive_max_abs_water_content_delta": 0.00001,
+      "adaptive_max_abs_boundary_flux_delta_cm_per_day": 0.0001,
+      "adaptive_nonlinear_iteration_delta_max": 1,
+      "adaptive_mass_gate_cm": 1e-12,
+      "fixed_50_and_100": "comparison baselines; record outcomes without retuning thresholds"
+    },
+    "failure_rule": "Adaptive candidate fails Stage A if solve status changes, mass gate fails, or any preregistered adaptive delta threshold is exceeded."
   },
   "stage_B_after_stage_A_pass": {
     "purpose": "runtime and trajectory comparison on multiple materials/cases",
-    "required_fixed_baselines": [50,100],
+    "required_fixed_baselines": [
+      50,
+      100
+    ],
     "required_accounting": [
       "one-time build cost",
       "provider evaluation cost",
