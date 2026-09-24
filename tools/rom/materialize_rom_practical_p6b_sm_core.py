@@ -9,7 +9,7 @@ def main():
     ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
     w=json.loads(a.workload.read_text())
-    vals=[float(x["net_atmospheric_proxy_cm_per_day"]) for x in w["records"]]
+    vals=[float(x["rain_cm_per_day"] if "rain_cm_per_day" in x else x["net_atmospheric_proxy_cm_per_day"]) for x in w["records"]]
     if len(vals)!=60: raise SystemExit("expected 60 daily forcing values")
     t=a.source.read_text()
     t=t.replace("integer, parameter :: MAXN=8, NDAYS=60","integer, parameter :: MAXN=8, NDAYS=60")
