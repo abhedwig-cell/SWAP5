@@ -292,7 +292,7 @@ contains
     type(soil_water_accepted_step_direction_result_t), intent(inout) :: direction_result
 
     integer :: n, i, tangent_ierror
-    logical :: mean_ok, constitutive_direction_ok, top_direction_ok
+    logical :: mean_ok, constitutive_direction_ok, top_direction_ok, source_sink_direction_present
     character(len=64) :: constitutive_direction_route, top_direction_route, result_route
     real(real64) :: bottom_distance, bdir, grad_bottom
     real(real64) :: top_flux_direction, outgoing_ponding_direction
@@ -300,16 +300,18 @@ contains
 
     n = request%parameters%active_nodes
     direction_result%control_coordinate = direction_request%control_coordinate
-    allocate(source_direction(n), sink_direction(n))
-    source_direction = 0.0_real64
-    sink_direction = 0.0_real64
-    if (allocated(direction_request%incoming_source_direction)) &
-         source_direction = direction_request%incoming_source_direction
-    if (allocated(direction_request%incoming_sink_direction)) &
-         sink_direction = direction_request%incoming_sink_direction
-    direction_result%source_sink_direction_covered = &
-         allocated(direction_request%incoming_source_direction) .or. &
+    source_sink_direction_present = allocated(direction_request%incoming_source_direction) .or. &
          allocated(direction_request%incoming_sink_direction)
+    if (source_sink_direction_present) then
+       allocate(source_direction(n), sink_direction(n))
+       source_direction = 0.0_real64
+       sink_direction = 0.0_real64
+       if (allocated(direction_request%incoming_source_direction)) &
+            source_direction = direction_request%incoming_source_direction
+       if (allocated(direction_request%incoming_sink_direction)) &
+            sink_direction = direction_request%incoming_sink_direction
+    end if
+    direction_result%source_sink_direction_covered = source_sink_direction_present
     direction_result%root_sink_direction_covered = .false.
     if (associated(request%evaluation%root_sink)) then
        select type (root => request%evaluation%root_sink)
@@ -415,25 +417,41 @@ contains
 
     ! Assemble B_k*s_k + r_p at fixed accepted h. HeadCalc's residual owns
     ! external source/sink signs as +sink-source, so their direct directions
-    ! enter with exactly the same signs here. Absent optional direction arrays
-    ! are materialized as exact zero above, preserving all earlier callers.
+    ! enter with exactly the same signs here. When neither optional direction
+    ! array is present, skip temporary vector allocation and omit exact zero terms.
     ! For the admitted dynamic surface-flux subset dqtop is a direct
     ! previous-ponding contribution; the capacity-limited branch is rejected.
     ref_ws%richards%band_rhs(1:n) = 0.0_real64
-    bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
-           sink_direction(1) - source_direction(1) + &
-           ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2) + top_flux_direction
+    if (source_sink_direction_present) then
+       bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
+              sink_direction(1) - source_direction(1) + &
+              ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2) + top_flux_direction
+    else
+       bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
+              ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2) + top_flux_direction
+    end if
     ref_ws%richards%band_rhs(1) = -bdir
     do i = 2, n-1
-       bdir = -direction_request%incoming_water_content(i) * request%parameters%dz(i) / request%step_duration + &
-              sink_direction(i) - source_direction(i) - &
-              ref_ws%richards%vertical_flux(i) * ref_ws%richards%head_gradient(i) + &
-              ref_ws%richards%vertical_flux(i+1) * ref_ws%richards%head_gradient(i+1)
+       if (source_sink_direction_present) then
+          bdir = -direction_request%incoming_water_content(i) * request%parameters%dz(i) / request%step_duration + &
+                 sink_direction(i) - source_direction(i) - &
+                 ref_ws%richards%vertical_flux(i) * ref_ws%richards%head_gradient(i) + &
+                 ref_ws%richards%vertical_flux(i+1) * ref_ws%richards%head_gradient(i+1)
+       else
+          bdir = -direction_request%incoming_water_content(i) * request%parameters%dz(i) / request%step_duration - &
+                 ref_ws%richards%vertical_flux(i) * ref_ws%richards%head_gradient(i) + &
+                 ref_ws%richards%vertical_flux(i+1) * ref_ws%richards%head_gradient(i+1)
+       end if
        ref_ws%richards%band_rhs(i) = -bdir
     end do
-    bdir = -direction_request%incoming_water_content(n) * request%parameters%dz(n) / request%step_duration + &
-           sink_direction(n) - source_direction(n) - &
-           ref_ws%richards%vertical_flux(n) * ref_ws%richards%head_gradient(n)
+    if (source_sink_direction_present) then
+       bdir = -direction_request%incoming_water_content(n) * request%parameters%dz(n) / request%step_duration + &
+              sink_direction(n) - source_direction(n) - &
+              ref_ws%richards%vertical_flux(n) * ref_ws%richards%head_gradient(n)
+    else
+       bdir = -direction_request%incoming_water_content(n) * request%parameters%dz(n) / request%step_duration - &
+              ref_ws%richards%vertical_flux(n) * ref_ws%richards%head_gradient(n)
+    end if
 
     select case (request%boundary%bottom_mode)
     case (SW_STEP_CONTROL_BOTTOM_FLUX)
