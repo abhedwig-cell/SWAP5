@@ -545,3 +545,16 @@ The current P01-A setup exposes several distinct physical-state copy sites befor
 Thus the simple P01-A path contains at least five full physical-state clone operations when checkpoint creation is included, of which four lie from kernel trial entry onward. The full-trial state is later discarded when the two-half route is accepted. This does not make the full-trial clone redundant: under the current temporal-error algorithm it supplies the full-step comparator. It does show why clone/allocation cost must be measured separately from solver time.
 
 The base B1.10 physical-state clone allocates and copies at least the pressure-head and water-content arrays plus scalar ponding/groundwater state; optional state families add their own payload. Any later data-movement optimization must preserve trial isolation and lineage authority exactly.
+
+
+### H03 — constitutive provider duplicate/over-evaluation
+
+Status: `N3_N4_CANDIDATE_PENDING_COUNTER_EVIDENCE`.
+
+Current typed Reference HeadCalc source shows two distinct efficiency concerns.
+
+1. Before the Newton loop, the constitutive provider evaluates the complete current head vector to obtain conductivity. No head update occurs before the first Newton iteration. At the start of that first iteration the same provider is called again with the same head vector, while only the capacity output is consumed. This is a source-level candidate for one duplicate full constitutive evaluation per HeadCalc call.
+
+2. The current provider ABI always returns water content, conductivity, capacity and dK/dh together. In several call sites HeadCalc consumes only one subset of these outputs. The default MvG provider nevertheless loops over all nodes and computes theta, C and K on every call. For the currently admitted swkimpl=0 route, dK/dh is reserved and zeroed. This is an over-evaluation candidate even where the provider call itself is semantically necessary.
+
+These findings must be separated from F-AHL/tabulation. PROFILE01 asks whether calls/calculations are necessary; F-AHL asks how necessary constitutive evaluations are represented/evaluated. No provider API change is authorized here before call-count and timing evidence exist.
