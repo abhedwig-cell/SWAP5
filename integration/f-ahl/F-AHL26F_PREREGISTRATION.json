@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26F",
+  "title": "PDI NoVap Richards falsification",
+  "parent": "F-AHL26E",
+  "phase": "PREREGISTERED_RICHARDS_RESEARCH",
+  "models": ["PDI8_REFERENCE","PDI10_BIMODAL"],
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0,"bottom_head_cm":-7.5},
+    {"id":"mid","initial_head_cm":-1000.0,"bottom_head_cm":-800.0},
+    {"id":"dry","initial_head_cm":-100000.0,"bottom_head_cm":-80000.0}
+  ],
+  "case_count": 6,
+  "reference": "research-only analytical NoVap PDI provider bound to source equations",
+  "candidate": "F-AHL26C derivative-consistent PDI theta/C plus F-AHL26E static K lookup",
+  "forcing": "top flux=-K(initial), prescribed-head bottom mode, dt=0.25 day",
+  "gates": {
+    "same_nonlinear_iterations": true,
+    "same_backtracking": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "PASS only if all 6 cases pass unchanged gates. Timing is prohibited until 6/6 closes.",
+  "hard_exclusions": ["NO_VAPOR_ENABLED_ROUTE","NO_GATE_RETUNING","NO_TIMING_BEFORE_FIDELITY","NO_PRODUCTION_ADMISSION"]
+}
