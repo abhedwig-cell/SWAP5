@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL04C",
+  "title": "Asymmetric constitutive representation decomposition",
+  "parent": "F-AHL04B",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the compact 178-point adaptive representation recover the preregistered Richards bottom-flux fidelity when retention is kept exact while capacity and conductivity remain lookup-based?",
+  "fixture": "Identical to F-AHL04A/B",
+  "frozen_lookup": {
+    "source": "F-AHL04B base",
+    "theta_tolerance": 1e-5,
+    "logC_tolerance": 1e-2,
+    "logK_tolerance": 1e-2,
+    "expected_support_points": 178
+  },
+  "variants": [
+    "lookup_all",
+    "exact_theta_lookup_C_K",
+    "lookup_theta_exact_C_lookup_K",
+    "lookup_theta_lookup_C_exact_K"
+  ],
+  "primary_observable": "absolute bottom-flux delta versus fully analytical provider",
+  "reference_gate_cm_per_day": 1e-5,
+  "interpretation_rule": "If exact theta alone collapses the response error while exact C or exact K does not, prefer a split representation over globally tightening the joint lookup.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
