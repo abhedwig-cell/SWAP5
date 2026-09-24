@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL15",
+  "title": "Tight floor-scaled conductivity closure",
+  "parent": "F-AHL14",
+  "phase": "PREREGISTERED_RESEARCH",
+  "motivation": "F-AHL14 closed 11/12 frozen material-regime cases with a floor-scaled K metric at 1e-3. Only B01-wet failed the bottom-flux gate. Independent F-AHL11 Stage-A evidence showed B01-wet passes at approximately 3e-4 K accuracy.",
+  "candidate": {
+    "theta_span_normalized_abs_error_max": 1e-5,
+    "abs_log_capacity_error_max": 1e-2,
+    "conductivity_metric": "abs(log(max(K_interp,K_floor))-log(max(K_true,K_floor)))",
+    "conductivity_metric_max": 3e-4,
+    "K_floor_cm_per_day": 1e-10,
+    "shared_support": true
+  },
+  "stage_1": {
+    "scope": "all 12 frozen F-AHL10 material-regime cases",
+    "gates": "identical to F-AHL10",
+    "advance_rule": "12/12 pass with zero nonlinear iteration and backtracking deltas"
+  },
+  "stage_2_if_pass": {
+    "scope": "long paired FSI24-style Richards timing",
+    "protocol": "7 alternating paired batches of 32768 solves",
+    "decision_rule": {
+      "advance": "median candidate/analytical ratio < 0.98",
+      "equivocal": "0.98 <= ratio <= 1.02",
+      "reject": "ratio > 1.02"
+    }
+  },
+  "stop_rule": "Do not tighten K further inside this work unit.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_FURTHER_K_TIGHTENING",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
