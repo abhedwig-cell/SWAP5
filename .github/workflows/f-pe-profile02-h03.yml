@@ -1,0 +1,33 @@
+name: F-PE-PROFILE02 H03 constitutive reuse qualification
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile02-h03
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'docs/performance/F-PE-PROFILE02_H03_CONSTITUTIVE_REUSE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-profile02-h03.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'docs/performance/F-PE-PROFILE02_H03_CONSTITUTIVE_REUSE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-profile02-h03.yml'
+  workflow_dispatch:
+
+jobs:
+  h03-p01a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run FKT22 production runtime oracle with H03 reuse gate
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
