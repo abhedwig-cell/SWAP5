@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26D",
+  "title": "PDI factorized conductivity constitutive qualification",
+  "parent": "F-AHL26C",
+  "phase": "PREREGISTERED_CONSTITUTIVE_RESEARCH",
+  "models": ["PDI8_REFERENCE","PDI10_BIMODAL"],
+  "temperatures_C": [-5.0,5.0,20.0,35.0],
+  "lookup_domain_cm": [-10000000.0,-1.0],
+  "candidate": {
+    "theta_C": "qualified F-AHL26C derivative-consistent logit(theta/theta_s) representation",
+    "static_K": "adaptive log(Kliq(h)) representation of Ksat*((1-OmegaK)*Kcap + OmegaK*Kfilm)",
+    "dynamic_Kvap": "authoritative corrected Kelvin vapor term evaluated analytically at runtime using candidate theta, signed h, and current temperature",
+    "total_K": "Kliq_lookup + Kvap(candidate_theta,h,T)"
+  },
+  "prospective_static_K_limits_abs_log": [0.001,0.0003],
+  "selection_rule": "Choose the loosest static-K limit for which both models pass total-conductivity gates at all preregistered temperatures. If 1e-3 passes, do not test/select 3e-4 as necessary.",
+  "gates": {
+    "max_abs_log_total_K_error": 0.001,
+    "max_abs_theta_over_theta_s_error": 1e-5,
+    "max_abs_log_capacity_error": 1e-2
+  },
+  "factorization_identity_control": "With exact theta and exact Kliq, reconstructed Kliq+Kvap must agree with the monolithic corrected source formula to floating-point roundoff.",
+  "hard_exclusions": ["NO_TEMPERATURE_IN_STATIC_CACHE_KEY","NO_2D_K_TABLE","NO_GATE_RETUNING","NO_RICHARDS_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
