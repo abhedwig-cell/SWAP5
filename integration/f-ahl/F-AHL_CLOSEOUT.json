@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "CLOSEOUT",
+  "status": "RESEARCH_CLOSED_PRODUCTION_NOT_ADMITTED",
+  "research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "canonical_bound_at_start": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "answers": {
+    "1_derivative_consistent_representation": "Yes, within the qualified default B1.10/unimodal four-material prescribed-head wet-mid-dry envelope. It passes 12/12 frozen fidelity cases and preserves analytical nonlinear iterations and backtracking in all 12.",
+    "2_domain_that_must_be_represented": "Near saturation h>-1 cm remains authoritative analytical. The ordinary lookup domain can cover the scientifically relevant unsaturated range, but adaptive refinement must not chase the extreme-dry storage tail indefinitely. For O05 the authoritative raw C=1e-13 crossing is about h=-264277.5 cm. The historical dt*1e-13 item is Jacobian regularization, not a K or theta cutoff. An explicit dry-tail termination/asymptotic rule remains separately unqualified.",
+    "3_robust_end_to_end_Richards_speedup": "Across B01,B12,O05,O14 and wet,mid,dry prescribed-head fixtures, complete Richards CPU reduction is about 20.5-24.2 percent. The self-built cached provider retains about 20.0 percent median reduction in its Stage-3 paired timing. These are controlled Richards results, not whole-SWAP wall-time claims.",
+    "4_numerical_invariants": [
+      "theta and C must come from one derivative-consistent representation",
+      "near-saturation branch semantics must remain analytical",
+      "representation is generated before solve and immutable during Newton/retry",
+      "nonlinear iteration and backtracking path is a strict qualification invariant",
+      "conductivity accuracy is controlled independently from retention support",
+      "parameter/policy identity controls exact immutable cache reuse",
+      "boundary mode is part of the qualified representation envelope"
+    ],
+    "5_failure_regimes": [
+      "independent theta/C approximation can add Newton iterations",
+      "K-only lookup preserves path but is not a useful speed strategy",
+      "global dry-tail logK accuracy produces numerical over-refinement/pathology",
+      "prescribed-qbot can amplify tiny retention/capacity representation errors into extra nonlinear work",
+      "no reliable scalar accepted-state fallback trigger was found",
+      "the strict derivative-consistent lookup is therefore not qualified as a universal prescribed-qbot provider"
+    ],
+    "6_recommended_automatic_architecture": {
+      "input": "ordinary SWAP hydraulic parameters only",
+      "generation": "authoritative constitutive sampler builds adaptive representation automatically",
+      "retention": "cubic Hermite z=logit(Se) over x=log10(-h), with C analytically differentiated from the same interpolant",
+      "conductivity": "separately controlled adaptive log(K) support using a relevance-aware floor-scaled metric",
+      "near_saturation": "authoritative analytical for h>-1 cm",
+      "prescribed_qbot": "fully analytical authoritative hydraulic provider",
+      "cache": "fingerprint plus mandatory full exact key comparison, immutable representation, bind once per column/model identity",
+      "runtime_refinement": false,
+      "external_user_tables": false
+    },
+    "7_needed_for_production_admission": [
+      "production integration behind the hydraulic-provider contract without research-only file/table paths",
+      "whole-SWAP accepted-trajectory and application runtime qualification",
+      "broader lower-boundary mode qualification beyond the tested prescribed-head and prescribed-qbot cases",
+      "broader hydraulic-model-family authority: the current typed production provider is explicitly limited to the default MvG/B1.10 profile",
+      "SWKIMPL=1/dKdh qualification if that mode is included in the production target",
+      "prospective dry-tail termination/asymptotic continuity and solver-response qualification if an explicit bounded tail is implemented",
+      "regression and governance admission against current canonical"
+    ]
+  },
+  "central_scientific_answer": "An automatically generated, branch-aware and derivative-consistent hydraulic representation can materially reduce Richards computational cost while preserving scientifically relevant solution and nonlinear convergence behaviour, but only within a qualified solver/boundary envelope. Derivative consistency is necessary and strongly beneficial, yet not sufficient for universal Newton-path invariance under boundary-sensitive prescribed-flux conditions.",
+  "hypothesis_outcome": "Supported but refined: preserving mathematical state-derivative consistency is more important than independently minimizing interpolation error, but solver-facing trajectory sensitivity and boundary semantics can still dominate once derivative consistency is satisfied.",
+  "broader_model_envelope_blocker": "The current typed authoritative production provider is deliberately limited to the default MvG/B1.10 profile. Historical SWAP contains exponential, bimodal MvG and PDI families, but extending F-AHL across them requires a separately qualified authoritative provider/family contract before a strict cross-family representation claim can be made.",
+  "production_status": "NOT_ADMITTED"
+}
