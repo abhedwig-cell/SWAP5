@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04R",
+  "title": "Full-model host reconciliation for legacy PDI qualification case",
+  "parent": "F-PDI-VT04",
+  "phase": "PREREGISTERED_TECHNICAL_HOST_REBINDING",
+  "reason": "The originally pinned upstream host commit c22bd832... has retired the legacy .swp runtime path and its TOML adapter hard-codes iHWCKmodel=1, so it cannot execute a PDI legacy qualification case without changing unrelated configuration semantics.",
+  "replacement_host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+  "authority_equivalence": {
+    "PDI_source_path": "src/soil/WC_K_models_04_11.f90",
+    "replacement_host_PDI_git_blob_sha": "40c5b57fb6691c1f4b51ddf76675b435ca71b589",
+    "original_host_PDI_git_blob_sha": "40c5b57fb6691c1f4b51ddf76675b435ca71b589",
+    "identical_PDI_source_blob": true,
+    "replacement_runtime": "production swap() still calls ReadSwap()"
+  },
+  "unchanged": [
+    "F-PDI-VT04 physical case design",
+    "control = identical PDI source plus SWAP-009 signed-head correction only",
+    "candidate = control plus absolute-temperature rho_sv repair",
+    "all F-PDI-VT04 behavioural gates",
+    "testcase repository and case origin"
+  ],
+  "hard_exclusions": [
+    "NO_CHANGE_TO_PDI_SOURCE_AUTHORITY",
+    "NO_GATE_RETUNING",
+    "NO_TOML_PDI_PORT_AS_PART_OF_THIS_FIX",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
