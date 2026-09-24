@@ -1,0 +1,76 @@
+{
+  "A32_all_materials_complete": false,
+  "A64_all_materials_complete": false,
+  "candidate_evidence_used_for_selection": false,
+  "cases": [
+    {
+      "A32_status": "FAILED",
+      "A32_vs_A64": null,
+      "A64_status": "FAILED",
+      "material": "B11",
+      "retry_summary": {},
+      "schema": "swap5.rom-practical.p6b-sm-rnp02.case.v1"
+    },
+    {
+      "A32_status": "COMPLETE",
+      "A32_vs_A64": {
+        "daily_storage_extremum_timing_error_days": 0,
+        "final_total_storage_bias_cm": 5.684341886080802e-14,
+        "mapped_10cm_theta_rmse": 4.5982948895761575e-05,
+        "root_zone_0_40_storage_rmse_cm": 0.0013611797577702835,
+        "surface_0_20_storage_rmse_cm": 0.001577256031366504,
+        "total_storage_rmse_cm": 6.06949359166652e-14,
+        "upper_0_80_storage_rmse_cm": 0.0009049824552823607
+      },
+      "A64_status": "COMPLETE",
+      "material": "B16",
+      "retry_summary": {
+        "A32": {
+          "days_with_retry": 0,
+          "max_cumulative_retries": 0
+        },
+        "A64": {
+          "days_with_retry": 0,
+          "max_cumulative_retries": 0
+        }
+      },
+      "schema": "swap5.rom-practical.p6b-sm-rnp02.case.v1"
+    },
+    {
+      "A32_status": "FAILED",
+      "A32_vs_A64": null,
+      "A64_status": "FAILED",
+      "material": "B05",
+      "retry_summary": {},
+      "schema": "swap5.rom-practical.p6b-sm-rnp02.case.v1"
+    },
+    {
+      "A32_status": "FAILED",
+      "A32_vs_A64": null,
+      "A64_status": "FAILED",
+      "material": "B12",
+      "retry_summary": {},
+      "schema": "swap5.rom-practical.p6b-sm-rnp02.case.v1"
+    },
+    {
+      "A32_status": "FAILED",
+      "A32_vs_A64": null,
+      "A64_status": "FAILED",
+      "material": "B06",
+      "retry_summary": {},
+      "schema": "swap5.rom-practical.p6b-sm-rnp02.case.v1"
+    },
+    {
+      "A32_status": "FAILED",
+      "A32_vs_A64": null,
+      "A64_status": "FAILED",
+      "material": "B02",
+      "retry_summary": {},
+      "schema": "swap5.rom-practical.p6b-sm-rnp02.case.v1"
+    }
+  ],
+  "schema": "swap5.rom-practical.p6b-sm-rnp02.result.v1",
+  "selected_policy": null,
+  "status": "ADAPTIVE_REFERENCE_POLICY_BLOCKED",
+  "work_unit": "ROM-PRACTICAL-P6B-SM-RNP02"
+}
