@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL07",
+  "title": "Nonlinear-iteration convergence attribution",
+  "parent": "F-AHL06",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "With theta kept exact, which approximation component in C or K causes the one-extra-iteration Richards path observed for the split provider?",
+  "fixture": "F-AHL04A controlled nonlinear Richards fixture",
+  "frozen_reference": {
+    "analytical_nonlinear_iterations": 4,
+    "analytical_backtracking_attempts": 4
+  },
+  "variants": [
+    "exact_theta_lookup_C_lookup_K",
+    "exact_theta_exact_C_lookup_K",
+    "exact_theta_lookup_C_exact_K",
+    "exact_theta_exact_C_exact_K"
+  ],
+  "primary_observables": [
+    "nonlinear_iterations",
+    "backtracking_attempts",
+    "total solve CPU"
+  ],
+  "secondary_observables": [
+    "bottom_flux_delta",
+    "pressure_head_delta",
+    "water_content_delta",
+    "mass residual"
+  ],
+  "decision_rule": "Identify a component as convergence-controlling only if restoring it to exact evaluation recovers the analytical nonlinear-iteration/backtracking path without violating the frozen fidelity gates.",
+  "hard_exclusions": [
+    "NO_SOLVER_TOLERANCE_CHANGE",
+    "NO_LINE_SEARCH_POLICY_CHANGE",
+    "NO_POSTHOC_GATE_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
