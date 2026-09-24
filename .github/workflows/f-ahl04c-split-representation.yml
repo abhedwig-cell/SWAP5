@@ -1,0 +1,27 @@
+name: F-AHL04C split representation sweep
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/mod_ahl04c_split_lookup_provider.f90'
+      - 'research/ahl/test_ahl04c_split_provider_replay.f90'
+      - 'research/ahl/run_ahl04c_split_sweep.sh'
+      - 'integration/f-ahl/F-AHL04C_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl04c-split-representation.yml'
+  workflow_dispatch:
+
+jobs:
+  split-sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run preregistered split sweep
+        run: |
+          bash research/ahl/run_ahl04c_split_sweep.sh /tmp/ahl04c_result.txt
+      - name: Preserve result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl04c-${{ github.run_id }}
+          path: /tmp/ahl04c_result.txt
