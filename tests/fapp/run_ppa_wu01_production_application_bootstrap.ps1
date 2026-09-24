@@ -59,6 +59,11 @@ try {
             "$test $opt=PASS"
         }
     }
+    & git diff --check -- src/runtime/mod_fmr_production_application_bootstrap.f90 `
+        tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 `
+        tests/fapp/run_ppa_wu01_production_application_bootstrap.sh `
+        tests/fapp/run_ppa_wu01_production_application_bootstrap.ps1
+    if ($LASTEXITCODE -ne 0) { throw 'Owner gate diff check failed' }
     'PPA_OUTPUT_CANON_APPLICATION_O0_O2_IDENTITY=PASS'
     'PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS'
     'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS'

@@ -24,9 +24,12 @@
     "runner": "tests/fapp/run_ppa_wu01_production_application_bootstrap.ps1",
     "contract": "Replay existing owner gate from PowerShell, extracting unchanged static Python assertions, MODULE_SRC order and COMMON compiler options from its shell runner. Execute bootstrap and canonical-output tests at O0/O2; require original markers and stable-line identity. No production source changes.",
     "reason": "Prepare executable local production preservation before introducing HeadCalc call-site changes; bash is not on this host PATH.",
-    "status": "IMPLEMENTED_REPLAY_PENDING",
+    "status": "RUNNER_PERSISTED_EXISTING_PRODUCTION_BASELINE_FAILS_O0",
+    "recovery_point": "d6b61fd0b",
+    "test_result": "Static ownership/profile checks PASS; complete O0 module build and canonical-output identity/read-only test PASS. Existing bootstrap fails at PPA_WU01_FAIL WU04C production owner commit. O2 not reached; no preservation PASS claimed.",
+    "diagnosis": "Read-only shadow instrumentation outside repository: owner status 10 (runtime failed), both tiles ADMITTED but kernel status 2 (transaction failed), zero accepted substeps. Each tile reports 3 solver rejections, 2 retries, 24 nonlinear iterations and 3 HeadCalc calls; mass and temporal rejections both zero. Production source was not changed. Existing tracked dirty files have no content diff under git diff --numstat.",
     "scope": "Production application preservation harness only, not macropore admission. Existing uncommitted binding/bootstrap files remain unstaged; replay uses their current working-tree contents.",
-    "next_action": "Persist runner then run production baseline gate"
+    "next_action": "Diagnose pre-existing WU04C solver nonconvergence before changing production HeadCalc; retain new candidate adapter work and do not relax mass, iteration or acceptance requirements solely to turn this gate green"
   },
   "reference_final_state_bridge": {
     "baseline": "2379ef5ea",
