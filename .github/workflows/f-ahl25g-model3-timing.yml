@@ -1,0 +1,20 @@
+name: F-AHL25G bimodal paired timing
+on:
+  push:
+    branches: [work/f-ahl01-adaptive-hydraulic-lookup]
+    paths:
+      - 'research/ahl/test_ahl25g_model3_timing.f90'
+      - 'research/ahl/run_ahl25g_model3_timing.sh'
+      - 'integration/f-ahl/F-AHL25G_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl25g-model3-timing.yml'
+  workflow_dispatch:
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash research/ahl/run_ahl25g_model3_timing.sh /tmp/ahl25g.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl25g-${{ github.run_id }}
+          path: /tmp/ahl25g.txt
