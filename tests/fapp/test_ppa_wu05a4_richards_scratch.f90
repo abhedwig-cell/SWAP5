@@ -186,7 +186,7 @@ contains
           converged=.true.; exit
         end if
         trial_ws%dfdh_main=1
-        call apply_reference_trial_diagonal(trial_ws,capture,trial_key,.true.,valid)
+        call apply_reference_trial_diagonal(trial_ws,capture,trial_key,.true.,valid,[-0.5_real64,h])
         call check(valid,104)
         step=trial_ws%residual(2)/trial_ws%dfdh_main(2)
         h=h-step
@@ -208,6 +208,12 @@ contains
       old_key%attempt=old_key%attempt+1
       call copy_reference_transfer(trial_ws,capture,old_key,transfer,valid)
       call check(.not.valid.and..not.allocated(transfer),111)
+      ! Reusing a key with changed heads must not consume a stale tangent.
+      trial_ws%dfdh_main=1
+      call apply_reference_trial_diagonal(trial_ws,capture,trial_key,.true.,valid,[-0.5_real64,h+0.01_real64])
+      call check(.not.valid.and.maxval(abs(trial_ws%dfdh_main-1))<1.e-14_real64,112)
+      call copy_reference_transfer(trial_ws,capture,trial_key,transfer,valid)
+      call check(.not.valid.and..not.allocated(transfer),113)
     end do
     call discard_reference_transfer(capture)
     call release_reference_workspace(trial_ws)

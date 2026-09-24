@@ -45,12 +45,13 @@ contains
 
   ! Consume the residual's captured derivative after the ordinary diagonal is
   ! rebuilt. Failure invalidates capture; the owner must reject the trial.
-  subroutine apply_reference_trial_diagonal(workspace,record,key,enabled,ok)
+  subroutine apply_reference_trial_diagonal(workspace,record,key,enabled,ok,head)
     type(reference_richards_workspace_t),intent(inout)::workspace
     type(reference_trial_transfer),intent(inout)::record
     type(macro_trial_key),intent(in)::key
     logical,intent(in)::enabled
     logical,intent(out)::ok
+    real(real64),optional,intent(in)::head(:)
     ok=.false.
     if(.not.workspace_matches(workspace,record))then
       call discard_reference_transfer(record)
@@ -60,7 +61,7 @@ contains
       call discard_reference_transfer(record)
       return
     end if
-    call apply_macro_diagonal(record%used,key,enabled,workspace%dfdh_main,ok)
+    call apply_macro_diagonal(record%used,key,enabled,workspace%dfdh_main,ok,head)
     if(.not.ok)call discard_reference_transfer(record)
   end subroutine
 

@@ -96,15 +96,21 @@ contains
 
   ! Use the derivative paired with the residual evaluation, not a later provider
   ! call. The caller supplies the source branch's derivative-enabled decision.
-  subroutine apply_macro_diagonal(slot,key,enabled,diagonal,ok)
+  subroutine apply_macro_diagonal(slot,key,enabled,diagonal,ok,head)
     type(macro_used_exchange), intent(in) :: slot
     type(macro_trial_key), intent(in) :: key
     logical, intent(in) :: enabled
     real(real64), intent(inout) :: diagonal(:)
     logical, intent(out) :: ok
+    real(real64), optional, intent(in) :: head(:)
     ok = .false.
     if (.not. slot%valid) return
     if (.not. same_key(slot%used%key,key)) return
+    if (present(head)) then
+      if (size(head) /= size(slot%used%head)) return
+      if (.not. all(ieee_is_finite(head))) return
+      if (any(head < slot%used%head) .or. any(head > slot%used%head)) return
+    end if
     if (size(diagonal) /= size(slot%used%rate)) return
     if (.not. all(ieee_is_finite(diagonal))) return
     if (enabled) then
