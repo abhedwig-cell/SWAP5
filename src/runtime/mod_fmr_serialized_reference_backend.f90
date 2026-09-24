@@ -353,6 +353,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
+    real(real64), pointer :: qrot_zero(:) => null()
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
     integer :: swkmean = 1
@@ -1629,6 +1630,7 @@ contains
       if (associated(self%qdra)) deallocate(self%qdra)
       if (associated(self%qssdi)) deallocate(self%qssdi)
       if (associated(self%qrot)) deallocate(self%qrot)
+      if (associated(self%qrot_zero)) deallocate(self%qrot_zero)
       if (self%drainage_response_active) then
         allocate(self%qdra(size(self%drainage_response_levels),n))
         self%qdra = 0.0_real64
@@ -1638,9 +1640,10 @@ contains
         allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
         self%qdra = forcing%drainage_flux_by_level
       end if
-      allocate(self%qssdi(n), self%qrot(n))
+      allocate(self%qssdi(n), self%qrot(n), self%qrot_zero(n))
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
+      self%qrot_zero = 0.0_real64
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
@@ -2053,9 +2056,8 @@ contains
     end if
 
     if (self%root_extraction_active) then
-      allocate(source_sink_root_zero(size(self%qrot)))
-      source_sink_root_zero = 0.0_real64
-      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, source_sink_root_zero)
+      if (.not. associated(self%qrot_zero) .or. size(self%qrot_zero) /= size(self%qrot)) return
+      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot_zero)
       call bind_b110_root_sink_provider(self%root_sink, self%qrot)
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
