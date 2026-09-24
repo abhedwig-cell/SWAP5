@@ -9,7 +9,7 @@ def main():
     ap.add_argument("--output",required=True,type=pathlib.Path)
     a=ap.parse_args()
     w=json.loads(a.workload.read_text())
-    vals=[float(x["net_atmospheric_proxy_cm_per_day"]) for x in w["records"]]
+    vals=[float(x["rain_cm_per_day"] if "rain_cm_per_day" in x else x["net_atmospheric_proxy_cm_per_day"]) for x in w["records"]]
     if len(vals)!=60: raise SystemExit("expected 60 values")
     t=a.source.read_text()
     arr=", &\n       ".join(f"{v:.17e}_real64" for v in vals)
