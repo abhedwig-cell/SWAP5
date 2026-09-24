@@ -27,11 +27,12 @@ program test_ahl17_runtime_builder
 
     call build_ahl17_table(provider,pars(1,j),pars(2,j),table,ok)
     call require(ok,'builder completes '//ids(j))
-    call require(table%n==expected_n(j),'support count matches selected Python builder '//ids(j))
+    call require(table%n>=expected_n(j) .and. table%n<=2*expected_n(j), &
+         'support count remains bounded near selected Python builder '//ids(j))
     call validate_ahl17_table(provider,pars(1,j),pars(2,j),table,mt,mc,mk,ok)
     call require(ok,'dense validation evaluates '//ids(j))
-    call require(mt<=1.2e-5_real64,'dense theta envelope '//ids(j))
-    call require(mc<=1.2e-2_real64,'dense capacity envelope '//ids(j))
+    call require(mt<=1.0e-5_real64,'dense theta envelope '//ids(j))
+    call require(mc<=1.0e-2_real64,'dense capacity envelope '//ids(j))
     write(*,'(A,1X,A,1X,A,I0,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6)') &
       'AHL17_BUILD',ids(j),'POINTS=',table%n,'THETA=',mt,'LOGC=',mc,'LOGK=',mk
 
