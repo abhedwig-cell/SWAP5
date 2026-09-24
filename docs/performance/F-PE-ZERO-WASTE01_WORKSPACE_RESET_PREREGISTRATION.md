@@ -485,7 +485,7 @@ No aliasing is introduced. Source and target remain independent deep states.
 Gates: clone isolation remains PASS, candidate/committed state remains independent, physical results remain bit-identical, and the existing PROFILE01 H02 clone microbenchmark is rerun to measure whether allocator reuse matters on repeated copies.
 
 
-## ZW01-H12 preregistration — avoid zero temporary source/sink direction arrays
+## ZW01-H12A preregistration — avoid zero temporary source/sink direction arrays
 
 The accepted-direction service currently allocates two temporary length-N arrays on every eligible directional solve:
 
@@ -525,7 +525,7 @@ The H11 production edit was reverted. This is retained as a negative result: opt
 Future state-copy performance work should target ownership/lifetime of reusable carriers or avoid unnecessary snapshots, while preserving deep-copy transaction isolation. The clone semantics themselves remain N1/N2 and are not classified as waste.
 
 
-## ZW01-H12 preregistration — persistent zero-root source/sink buffer
+## ZW01-H12B preregistration — persistent zero-root source/sink buffer
 
 When root extraction is active, each physical solve currently allocates `source_sink_root_zero(size(self%qrot))`, fills it with zero, binds it into the generic source/sink provider, and separately binds the real root sink through the root-sink provider. The zero vector is shape-invariant across the interval and contains no state-dependent information.
 
