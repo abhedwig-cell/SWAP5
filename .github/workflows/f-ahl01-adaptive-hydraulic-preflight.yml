@@ -40,6 +40,18 @@ jobs:
               raise SystemExit(f'F-AHL02 transformed screen failed: {failed}')
           PY
 
+      - name: Run F-AHL03 optimized Fortran runtime screen
+        run: |
+          mkdir -p /tmp/ahl03
+          python3 research/ahl/ahl03_generate_tables.py /tmp/ahl03
+          gfortran -O3 -std=f2008 -Wall -Wextra -pedantic \
+            research/ahl/ahl03_runtime_screen.f90 -o /tmp/ahl03_runtime_screen
+          : > /tmp/ahl03_runtime.txt
+          for m in B01 B12 O05 O14; do
+            /tmp/ahl03_runtime_screen /tmp/ahl03/${m}_direct.dat /tmp/ahl03/${m}_logit.dat ${m} \
+              | tee -a /tmp/ahl03_runtime.txt
+          done
+
       - name: Preserve preflight outputs
         uses: actions/upload-artifact@v4
         with:
@@ -47,3 +59,4 @@ jobs:
           path: |
             /tmp/ahl01.json
             /tmp/ahl02.json
+            /tmp/ahl03_runtime.txt
