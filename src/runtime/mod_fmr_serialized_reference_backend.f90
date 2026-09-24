@@ -1628,27 +1628,53 @@ contains
         if (allocated(forcing%boesten_evaporation)) return
       end if
 
-      if (associated(self%qdra)) deallocate(self%qdra)
-      if (associated(self%qssdi)) deallocate(self%qssdi)
-      if (associated(self%qrot)) deallocate(self%qrot)
-      if (associated(self%qrot_zero)) deallocate(self%qrot_zero)
       if (self%drainage_response_active) then
-        allocate(self%qdra(size(self%drainage_response_levels),n))
+        if (associated(self%qdra)) then
+          if (size(self%qdra,1) /= size(self%drainage_response_levels) .or. size(self%qdra,2) /= n) then
+            deallocate(self%qdra)
+          end if
+        end if
+        if (.not. associated(self%qdra)) allocate(self%qdra(size(self%drainage_response_levels),n))
         self%qdra = 0.0_real64
         allocate(self%drainage_response_controls(size(forcing%drainage_response_controls)))
         self%drainage_response_controls = forcing%drainage_response_controls
       else
-        allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
+        if (associated(self%qdra)) then
+          if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n) then
+            deallocate(self%qdra)
+          end if
+        end if
+        if (.not. associated(self%qdra)) allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
         self%qdra = forcing%drainage_flux_by_level
       end if
-      allocate(self%qssdi(n), self%qrot(n), self%qrot_zero(n))
+
+      if (associated(self%qssdi)) then
+        if (size(self%qssdi) /= n) deallocate(self%qssdi)
+      end if
+      if (.not. associated(self%qssdi)) allocate(self%qssdi(n))
+
+      if (associated(self%qrot)) then
+        if (size(self%qrot) /= n) deallocate(self%qrot)
+      end if
+      if (.not. associated(self%qrot)) allocate(self%qrot(n))
+
+      if (associated(self%qrot_zero)) then
+        if (size(self%qrot_zero) /= n) deallocate(self%qrot_zero)
+      end if
+      if (.not. associated(self%qrot_zero)) allocate(self%qrot_zero(n))
+
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
       self%qrot_zero = 0.0_real64
-      if (allocated(self%projection_zero_direction)) deallocate(self%projection_zero_direction)
+
       if (self%drainage_qbot_smooth_freatic_projection) then
-        allocate(self%projection_zero_direction(n))
+        if (allocated(self%projection_zero_direction)) then
+          if (size(self%projection_zero_direction) /= n) deallocate(self%projection_zero_direction)
+        end if
+        if (.not. allocated(self%projection_zero_direction)) allocate(self%projection_zero_direction(n))
         self%projection_zero_direction = 0.0_real64
+      else if (allocated(self%projection_zero_direction)) then
+        deallocate(self%projection_zero_direction)
       end if
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
