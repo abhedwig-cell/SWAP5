@@ -123,3 +123,44 @@ E1 RUNTIME              = NEXT
 E2 WHOLE SWAP           = PENDING_EXECUTABLE_BINDING
 WHOLE-SWAP SPEEDUP      = NOT_YET_CLAIMED
 ```
+
+## E1 result — accepted-interval/application-host attribution
+
+Workflow run `36066386431` completed successfully on GNU Fortran 13.3.0, O2.
+
+The E1 harness executes the real FMR serialized Reference application-host path for an external full-half interval. Each interval performs three Reference solves under the transaction/runtime layer. Baseline and candidate were built from the same branch state except that the baseline used `headcalc.f90` from PROFILE01 split commit `0b373c6cdaed53e26a1acb917f096bf20256f12a` and the candidate used the qualified H03 repair.
+
+Eight alternating-order baseline/candidate pairs were measured, 4000 application-host intervals per timing sample.
+
+```text
+baseline constitutive evaluations / Reference solve = 3
+candidate constitutive evaluations / Reference solve = 2
+nonlinear iterations / Reference solve               = 1
+physical checksum                                    = identical
+paired mean candidate/baseline                       = 0.877376763
+paired median candidate/baseline                     = 0.872214271
+paired mean speedup                                   = 12.262324 %
+paired mean delta                                     = -1711.798219 ns/interval
+paired N                                              = 8
+E1 paired runtime                                     = PASS
+```
+
+Observed baseline interval timings were approximately 13.77-14.23 us per external full-half interval. Candidate timings were approximately 12.10-12.92 us. One candidate sample was visibly slower than the other candidate samples, but it was retained under the preregistered no-post-hoc-outlier-deletion rule.
+
+Interpretation:
+
+- H03 remains materially visible after transaction and application-host overhead are included.
+- The local three-iteration Reference-solve Q6 speedup of 35.77% does not transfer one-to-one to the broader interval layer.
+- On this simple one-iteration-per-solve accepted-interval route, the directly measured broader speedup is 12.26%.
+- This is still not a complete SWAP application or Hupsel end-to-end result. Input parsing, full process composition, long temporal evolution and output emission are not represented by E1.
+
+Current state:
+
+```text
+E1 APPLICATION-HOST RUNTIME = PASS
+E1 MEAN SPEEDUP             = 12.262324 %
+E1 PHYSICAL IDENTITY        = PASS
+E1 CALL REDUCTION           = 3 -> 2 per Reference solve
+E2 WHOLE SWAP               = NEXT_BIND_EXECUTABLE
+WHOLE-SWAP SPEEDUP CLAIM    = NOT YET PERMITTED
+```
