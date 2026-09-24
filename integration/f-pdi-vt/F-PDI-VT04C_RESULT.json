@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04C",
+  "status": "PASS",
+  "qualified_commit": "b86eef35cc5d5a31ba0f916e81d8ef0bb6ceb025",
+  "workflow_run": 36060706618,
+  "case": {
+    "host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+    "testcase_commit": "a839e2e905f34dd264ad0c739f638454b3023def",
+    "initial_head": "-1e5 cm",
+    "heat_flow": "SWHEA=1 with official positive TSOIL profile 15,12,10,9 deg C"
+  },
+  "gates": {
+    "all_four_runs_normal_completion": true,
+    "control_vapor_finite": true,
+    "candidate_vapor_finite": true,
+    "vapor_control_candidate_different": true,
+    "novap_control_candidate_identical": true,
+    "CRITDEVMASBAL": 1e-6
+  },
+  "hashes": {
+    "control_vapor_bfo": "c5d552e387e7e169333b315c6087945c12164e6f28ed638ddaf3a71e8a3cc5c9",
+    "candidate_vapor_bfo": "89d85f4f52968c07b41cbaa6fa0cd694009340ec835a41fae8a49d320ad09373",
+    "control_novap_bfo": "c5d552e387e7e169333b315c6087945c12164e6f28ed638ddaf3a71e8a3cc5c9",
+    "candidate_novap_bfo": "c5d552e387e7e169333b315c6087945c12164e6f28ed638ddaf3a71e8a3cc5c9"
+  },
+  "interpretation": "With an explicit physically meaningful positive soil-temperature path, both buggy control and repaired candidate are finite, Vapor-on activates the repaired term, and NoVap remains exactly unchanged.",
+  "qualification_boundary": "Later diagnostic-output edits on the branch failed for technical adapter reasons and do not supersede this already-passed preregistered VT04C gate."
+}
