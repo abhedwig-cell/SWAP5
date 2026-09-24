@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PDI-VT",
+  "work_unit": "F-PDI-VT04A",
+  "phase": "PREREGISTER",
+  "purpose": "Augment the already-passed VT04 behavioral gate with variable-level full-model diagnostics. Do not alter or reopen VT04 gates.",
+  "frozen_authority": {
+    "host_commit": "68b6d8d4e53af2586d009d77245543e908ecdac5",
+    "case_commit": "a839e2e905f34dd264ad0c739f638454b3023def",
+    "control": "SWAP-009 signed-head correction only",
+    "candidate": "same control plus absolute-temperature repair"
+  },
+  "diagnostics": [
+    "preserve raw BFO outputs for control/candidate vapor-on and NoVap",
+    "quantify available pressure-head and water-content trajectories",
+    "quantify available top/evaporation and bottom fluxes",
+    "quantify available storage/water-balance diagnostics",
+    "inspect timestep/nonlinear diagnostics where emitted"
+  ],
+  "gates": {
+    "vapor_on_must_remain_different": true,
+    "novap_must_remain_numerically_identical": true,
+    "all_runs_normal_completion": true
+  },
+  "nonclaims": [
+    "No new physics",
+    "No gate changes",
+    "No AHL requalification",
+    "No production admission"
+  ]
+}
