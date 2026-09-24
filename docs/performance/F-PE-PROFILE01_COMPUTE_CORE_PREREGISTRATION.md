@@ -297,3 +297,71 @@ NECESSITY_AUDIT = NOT_STARTED
 REPAIR          = FORBIDDEN_IN_PROFILE01
 CLOSE           = OPEN
 ```
+
+
+## Initial source-path audit
+
+The first source-path reconciliation identified an immediately testable baseline candidate and one concrete redundancy hypothesis.
+
+### P01-A candidate selected for first instrumentation pass
+
+`tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90` is a suitable first inspectable SWAP5 compute-path workload because it:
+
+- executes the current serialized reference backend and real reference Richards/HeadCalc route;
+- has an existing production-runtime gate at O0 and O2;
+- checks completed status, hard mass balance, accepted/rejected trajectory semantics and physical identity;
+- already exposes diagnostic counts for retries and linear solves;
+- deliberately contains a discarded full trial alongside accepted half trials, making it useful for separating useful accepted work from real but rejected numerical work.
+
+It is not yet a representative full production/Hupsel workload, so it is admitted only as P01-A, not P01-B.
+
+### H01 — repeated Richards workspace reset/zeroing
+
+Status: `SUSPECTED_N4_REDUNDANCY_UNMEASURED`.
+
+Observed current path:
+
+1. `mod_reference_richards_legacy_binding.f90` calls `initialize_reference_workspace(ws%richards, n)`;
+2. immediately afterwards the same binding calls `reset_reference_workspace(ws%richards)`;
+3. `initialize_reference_workspace()` itself already calls `reset_reference_workspace()` even when the workspace is already allocated at the correct size;
+4. the subsequent `headcalc(..., fsi_workspace=ws%richards, ...)` path calls `initialize_reference_workspace(fsi_ws, numnod)` again;
+5. that third initialization again invokes `reset_reference_workspace()`.
+
+Because `reset_reference_workspace()` zeroes a substantial set of node-sized work arrays, matrices, integer/logical arrays, warm-start storage and diagnostics, the current route appears capable of performing multiple full-workspace zeroing passes per solve.
+
+This is **not yet classified as a defect**. Before any repair, PROFILE01 must establish:
+
+- exact reset count per solve/trial;
+- whether any of the resets are semantically required for scratch independence or poison-safety;
+- bytes/elements written per reset as a function of node count;
+- measured contribution to compute time at representative node counts;
+- physical/result identity for any later bounded removal experiment.
+
+No source change is permitted in PROFILE01 on the basis of this observation alone.
+
+### Existing counters
+
+`a23bu_solver_diagnostics_t` already records:
+
+- `headcalc_calls`;
+- `nonlinear_iterations`;
+- `jacobian_builds`;
+- `linear_solves`;
+- `backtracking_attempts`;
+- `alternative_solver_calls`;
+- `internal_retries`.
+
+These should be reused rather than duplicated. PROFILE01 instrumentation should add only missing counts/times needed for attribution and redundancy diagnosis.
+
+## Updated status
+
+```text
+RECONCILE       = COMPLETE_FOR_START
+PREREGISTER     = COMPLETE
+BASELINE        = P01-A_PATH_SELECTED
+PROFILE         = INSTRUMENTATION_DESIGN_NEXT
+ATTRIBUTE       = INITIAL_H01_HYPOTHESIS_RECORDED
+NECESSITY_AUDIT = H01_PENDING_MEASUREMENT
+REPAIR          = FORBIDDEN_IN_PROFILE01
+CLOSE           = OPEN
+```
