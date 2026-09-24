@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.ribasim_management.closeout.canonical_reconciliation_addendum.v1",
+  "work_unit": "RM29-CANONICAL-RECONCILIATION",
+  "date": "2026-09-24",
+  "research_closeout": "RM29@183d1d6ba452316c5ec6ea3c5e1f94a613cb1b61",
+  "current_canonical": "879945f9b994db91bca2cacd1cb85ff381f45f39",
+  "relation": {
+    "research_branch_ahead_by": 246,
+    "research_branch_behind_by": 32,
+    "decision": "DO_NOT_WHOLESALE_MERGE_RESEARCH_BRANCH"
+  },
+  "canonical_convergence": {
+    "management_closeout_present": "integration/ribasim-management/RM_CANONICAL_BOUNDED_CLOSEOUT_STATUS.json",
+    "active_irrigation_blocker_present": "integration/ribasim-management/RM_CANONICAL_ACTIVE_IRRIGATION_BLOCKER.md",
+    "transfer_ownership_matrix_present": "integration/ribasim-management/RM_CANONICAL_TRANSFER_OWNERSHIP_MATRIX.md",
+    "source_closeout_commit_bound": "183d1d6ba452316c5ec6ea3c5e1f94a613cb1b61"
+  },
+  "current_canonical_surface_water_authority": {
+    "swap_side": "F-APP09 / F-CI109R1 current-canonical admission chain",
+    "live_ribasim_application": "SW-RIB-ADM01",
+    "production_profile": "RIBASIM_EXTERNAL_SECONDARY_STATE_V1",
+    "ribasim_release": "v2026.1.2",
+    "production_application_admission": true,
+    "triangle_admission": false
+  },
+  "research_only_or_superseded_modules": [
+    {
+      "path": "src/runtime/mod_fmr_hupsel_management_transaction.f90",
+      "research_sha": "5daf04ca177f5bada7ee473fd0c2119110a520cb",
+      "canonical_present": false,
+      "disposition": "RESEARCH_QUALIFICATION_AUTHORITY_ONLY__DO_NOT_CHERRY_PICK_AS_PRODUCTION"
+    },
+    {
+      "path": "src/runtime/mod_fmr_ribasim_management_binding.f90",
+      "research_sha": "4c29a76dd388ab320c3d883081555e549da89238",
+      "canonical_present": false,
+      "disposition": "RESEARCH_QUALIFICATION_AUTHORITY_ONLY__DO_NOT_CHERRY_PICK_AS_PRODUCTION"
+    },
+    {
+      "path": "src/runtime/mod_fmr_ribasim_management_scheduler.f90",
+      "research_sha": "46fd01b270b2122bc4373b262f63309e9f352546",
+      "canonical_present": false,
+      "disposition": "RESEARCH_CLOCK_EVIDENCE_ONLY__CANONICAL_PRODUCT_ROUTE_GOVERNED_BY_CURRENT_ADMISSION_CHAIN"
+    },
+    {
+      "path": "tests/ribasim-management/support/mod_rm13_management_c_bridge.f90",
+      "research_sha": "c4e32dbe5d4ac439ed46ea0332e05ffe770c07ca",
+      "canonical_present": false,
+      "disposition": "QUALIFICATION_HOST_ONLY"
+    },
+    {
+      "path": "tests/ribasim-management/support/rm13_ribasim_process.py",
+      "research_sha": "83608d0ebb114c391db15311fd57a1957fd81ff4",
+      "canonical_present": false,
+      "disposition": "QUALIFICATION_PROCESS_ISOLATION_HOST_ONLY"
+    },
+    {
+      "path": "tests/ribasim-management/support/rm13_ribasim_worker.py",
+      "research_sha": "5aa118e3930c6506a5ad2cebdcee6d34b5ab388f",
+      "canonical_present": false,
+      "disposition": "QUALIFICATION_PROCESS_ISOLATION_HOST_ONLY"
+    }
+  ],
+  "preserved_scientific_authority": [
+    "RM08 allocation-versus-physical-realization falsification",
+    "RM09 bounded full-realization evidence",
+    "RM11/RM12 fixed-allocation scheduler evidence",
+    "RM13B-RM28 active-irrigation temporal characterization",
+    "RM29 single remaining blocker ACTIVE_IRRIGATION_TEMPORAL_FIDELITY_REQUIREMENT"
+  ],
+  "integration_decision": {
+    "merge_246_commit_research_history_into_canonical": false,
+    "cherry_pick_research_runtime_modules_into_canonical": false,
+    "canonical_governance_representation_sufficient": true,
+    "reopen_research": false,
+    "production_triangle_admission": false
+  },
+  "reopen_condition": "Only an independent active-irrigation temporal-fidelity requirement, or a newly preregistered application-specific requirement, can reopen the three-model production-admission question."
+}
