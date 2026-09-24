@@ -1,0 +1,25 @@
+name: F-AHL21C qualified qbot matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/run_ahl21c_qbot_matrix.sh'
+      - 'research/ahl/test_ahl21b_wet_dt_envelope.f90'
+      - 'integration/f-ahl/F-AHL21C_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl21c-qbot-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run qualified prescribed qbot matrix
+        run: |
+          bash research/ahl/run_ahl21c_qbot_matrix.sh /tmp/ahl21c_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl21c-${{ github.run_id }}
+          path: /tmp/ahl21c_result.txt
