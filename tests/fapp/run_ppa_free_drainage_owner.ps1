@@ -3,7 +3,7 @@
 param([ValidateSet('IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
 $ErrorActionPreference = 'Stop'
 if ($Scope -in @('HydraulicCopy','IrrigationSource') -and ($StableStorage -or $StableStorageExperiment)) {
-    throw 'HydraulicCopy uses the unchanged default storage profile'
+    throw 'HydraulicCopy/IrrigationSource select their numerical profile inside the test; do not override with storage flags'
 }
 if ($Scope -eq 'Atm02Dense' -and !$StableStorage) { throw 'Atm02Dense requires explicit StableStorage' }
 if ($Scope -eq 'Atm02Events' -and !$StableStorage) { throw 'Atm02Events requires explicit StableStorage' }
