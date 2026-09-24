@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL18",
+  "title": "Fingerprint cache and amortization qualification",
+  "parent": "F-AHL17",
+  "phase": "PREREGISTERED_ENGINEERING_RESEARCH",
+  "question": "Can auto-generated hydraulic representations be reused safely across columns through a deterministic immutable cache so that construction cost is paid once per unique hydraulic authority/policy key?",
+  "key_contract": {
+    "hydraulic_model_id": "B1.10 default MvG research path",
+    "key_fields": [
+      "authoritative hydraulic coefficient vector required by the builder",
+      "lookup policy version",
+      "hydraulic model identity",
+      "branch-policy identity"
+    ],
+    "fingerprint_role": "fast index and provenance only",
+    "hit_validation": "full exact key comparison is mandatory; fingerprint equality alone is insufficient",
+    "mutable_runtime_state_in_key": false
+  },
+  "cache_contract": {
+    "representation_after_insert": "immutable",
+    "same_key": "must return the same cached representation without rebuilding",
+    "changed_hydraulic_parameter": "must miss",
+    "changed_policy_version": "must miss",
+    "changed_model_or_branch_policy": "must miss",
+    "capacity": "bounded research cache with explicit failure when full; no silent eviction in this qualification"
+  },
+  "qualification": {
+    "repeated_hit_count": 10000,
+    "requirements": [
+      "first request builds exactly once",
+      "all repeated identical requests are hits",
+      "one-coefficient perturbation causes a miss",
+      "policy-version change causes a miss",
+      "cached support arrays remain byte-identical across hits",
+      "reported build and lookup costs are measured separately"
+    ]
+  },
+  "hard_exclusions": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_HASH_ONLY_IDENTITY",
+    "NO_RUNTIME_REFINEMENT_DURING_SOLVE",
+    "NO_SILENT_CACHE_EVICTION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
