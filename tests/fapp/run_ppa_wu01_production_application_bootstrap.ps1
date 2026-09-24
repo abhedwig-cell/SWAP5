@@ -1,5 +1,6 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
+param([ValidateSet('All','CanonicalOutput')][string]$Scope = 'All')
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
@@ -15,6 +16,8 @@ $common = @($flags.Groups[1].Value -split '\s+' | Where-Object { $_ })
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-ppa-wu01-' + [guid]::NewGuid().ToString('N'))
 $stable = @{}
+$tests = @('ppa_output_canon_application_binding')
+if ($Scope -eq 'All') { $tests += 'ppa_wu01_production_application_bootstrap' }
 Push-Location $repo
 try {
     & python -c $static.Groups[1].Value
@@ -30,7 +33,7 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Compile failed $opt $source" }
             $objects += $obj
         }
-        foreach ($test in @('ppa_output_canon_application_binding','ppa_wu01_production_application_bootstrap')) {
+        foreach ($test in $tests) {
             $obj = Join-Path $dir "$test.o"
             $exe = Join-Path $dir "$test.exe"
             & gfortran @common "-$opt" -J $dir -I $dir -c (Join-Path $PSScriptRoot "test_$test.f90") -o $obj
@@ -65,8 +68,10 @@ try {
         tests/fapp/run_ppa_wu01_production_application_bootstrap.ps1
     if ($LASTEXITCODE -ne 0) { throw 'Owner gate diff check failed' }
     'PPA_OUTPUT_CANON_APPLICATION_O0_O2_IDENTITY=PASS'
-    'PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS'
-    'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS'
+    if ($Scope -eq 'All') {
+        'PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS'
+        'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS'
+    }
 } finally {
     Pop-Location
     "Build artifacts retained at $build"
