@@ -2,6 +2,13 @@
   "work_unit": "PPA-FREE-DRAINAGE-TEMPORAL",
   "baseline": "93f4eeae4",
   "status": "MASS_DIAGNOSTIC_BOUNDED_QUALIFICATION_PASS",
+  "application_opt_in": {
+    "baseline": "61cac830a",
+    "status": "IMPLEMENTED_OWNER_QUALIFICATION_PENDING",
+    "contract": "Nullable procedure binding in production application config; default remains unchanged. Only homogeneous mode7 with Richards temporal-history layout may bind it. Owner initialization delegates binding to existing backend. Callback remains configuration, never restart physical payload.",
+    "profile": "Separate owner test retains original WU04C/WU04D forcing composition and hard 1e-12 mass gate; explicitly chooses model-certificate budget 1e-5 cm, 40 nonlinear iterations, 16 retries, maximum 16384 committed substeps and zero initial derivative. Original bootstrap fixture is not modified or claimed repaired.",
+    "next": "Test full half-day owner composition, check default/canonical preservation and invalid opt-in configuration. No admission until persisted replay passes."
+  },
   "restart_continuation_evidence": {
     "tested_commit": "f3a472593",
     "gate": "tests/fapp/run_ppa_free_drainage_runtime.ps1",

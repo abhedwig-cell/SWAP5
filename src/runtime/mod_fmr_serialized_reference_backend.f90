@@ -347,6 +347,7 @@ module mod_fmr_serialized_reference_backend
       type(soil_water_temporal_indicator_result_t), intent(out) :: result
     end subroutine
   end interface
+  public :: free_drainage_indicator_service
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
     procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()

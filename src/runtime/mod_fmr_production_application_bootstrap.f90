@@ -12,7 +12,7 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state
+       fmr_new_b110_boesten_evaporation_committed_state, free_drainage_indicator_service
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_serialized_commit_receipt_record_t, &
@@ -69,6 +69,7 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     real(real64) :: initial_time = 0.0_real64
     type(canonical_numerical_config_t) :: numerical
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
@@ -165,6 +166,19 @@ contains
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
+    if (associated(config%free_drainage_indicator)) then
+      if (.not.standalone_profile) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+      do i=1,n
+        if (config%tiles(i)%template%numerical_continuation_layout_id /= &
+             FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      end do
+    end if
     if (groundwater_profile) then
       do i = 1, n
         if (config%tiles(i)%ledger_id <= 0_int64) then
@@ -187,6 +201,8 @@ contains
     self%numerical = config%numerical
 
     call self%backend%initialize(self%top_boundary)
+    if (associated(config%free_drainage_indicator)) &
+         call self%backend%set_free_drainage_indicator(config%free_drainage_indicator)
 
     if (groundwater_profile) then
       allocate(self%participant_handles(n), self%materializers(n), self%ledgers(n), self%registry)
