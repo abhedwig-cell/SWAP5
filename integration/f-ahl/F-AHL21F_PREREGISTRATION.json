@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21F",
+  "title": "O05-dry prescribed-qbot derivative-consistent retention resolution sweep",
+  "parent": "F-AHL21E",
+  "phase": "PREREGISTERED_RESEARCH",
+  "frozen_case": {
+    "material": "O05",
+    "regime": "dry",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "top_flux": "-K(initial)",
+    "bottom_flux": "-0.99*K(initial)",
+    "bottom_mode": 2
+  },
+  "frozen_K": "identical selected F-AHL15/F-AHL16 K support and values for every variant",
+  "retention_capacity_variants": [
+    {"id":"selected","theta_span_tolerance":1e-5,"abs_logC_tolerance":1e-2},
+    {"id":"ret3","theta_span_tolerance":3e-6,"abs_logC_tolerance":3e-3},
+    {"id":"ret1","theta_span_tolerance":1e-6,"abs_logC_tolerance":1e-3}
+  ],
+  "representation": "same cubic-Hermite logit(Se) representation with C derived from the same interpolant",
+  "primary_observable": "nonlinear iteration and backtracking identity versus fully analytical reference",
+  "secondary_observables": [
+    "retention support point count",
+    "profile pressure-head delta",
+    "bottom-node head delta",
+    "water-content delta",
+    "mass residual"
+  ],
+  "selection_rule": "Select the loosest prospectively tested derivative-consistent retention/capacity tolerance that restores the analytical nonlinear and backtracking path while satisfying all frozen F-AHL21C fidelity gates.",
+  "hard_exclusions": [
+    "NO_K_SUPPORT_OR_VALUE_CHANGE_BETWEEN_VARIANTS",
+    "NO_TIMESTEP_CHANGE",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
