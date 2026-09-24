@@ -1,0 +1,16 @@
+diff --git a/src/soil/WC_K_models_04_11.f90 b/src/soil/WC_K_models_04_11.f90
+--- a/src/soil/WC_K_models_04_11.f90
++++ b/src/soil/WC_K_models_04_11.f90
+@@
+-real(8)                :: fKvap, Da, MgRT, Rho_sv
++real(8)                :: fKvap, Da, MgRT, Rho_sv, TK
+@@
+-MgRT      = MgR/(Temp+273.15d0)
++TK        = Temp + 273.15d0
++MgRT      = MgR/TK
+@@
+-Da        = 2.14d-5*((Temp+273.15d0)/273.15d0)**2
++Da        = 2.14d-5*(TK/273.15d0)**2
+@@
+-Rho_sv    = 1.0d-3*dexp(31.3716d0 - 6014.79d0/Temp - 7.92495d-3*Temp)/Temp
++Rho_sv    = 1.0d-3*dexp(31.3716d0 - 6014.79d0/TK - 7.92495d-3*TK)/TK
