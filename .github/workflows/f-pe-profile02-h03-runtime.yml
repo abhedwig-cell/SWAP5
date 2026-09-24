@@ -1,0 +1,25 @@
+name: F-PE-PROFILE02 H03 paired runtime
+
+on:
+  push:
+    branches:
+      - work/f-pe-profile02-h03
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fpe/test_fpe_profile02_h03_reference_timing.f90'
+      - 'tests/fpe/run_fpe_profile02_h03_paired_runtime.sh'
+      - '.github/workflows/f-pe-profile02-h03-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  paired-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run paired baseline-candidate timing
+        run: bash tests/fpe/run_fpe_profile02_h03_paired_runtime.sh
