@@ -1,0 +1,105 @@
+name: F-ROM-PURPOSE P5C sign-semantics analysis recovery
+
+on:
+  push:
+    branches: [work/f-rom-purpose]
+    paths:
+      - 'integration/f-rom/ROM_PURPOSE_P5C_ANALYSIS_RECOVERY_BINDING.json'
+
+concurrency:
+  group: f-rom-purpose-p5c-sign-recovery
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify P5C recovery authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/analyze_rom_purpose_p5c_gw_interface.py
+          python3 - <<'PY'
+          import json,subprocess
+          b=json.load(open('integration/f-rom/ROM_PURPOSE_P5C_ANALYSIS_RECOVERY_BINDING.json'))
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P5C_ORACLE_SIGN_SEMANTICS_REPAIR.json'))
+          assert b['status']=='BOUND_ANALYSIS_ONLY_AFTER_TRACE_SIGN_RECONCILIATION'
+          assert b['source_route_run']==35923634779
+          assert r['status']=='ORIGINAL_P5C_SCIENTIFIC_AUTHORITY_SUPERSEDED_BY_TRACE_SIGN_SEMANTICS_ERROR'
+          for path,expected in b['blobs'].items():
+              got=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert got==expected,(path,got,expected)
+          PY
+      - name: Recover exact P5C route artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/source /tmp/p5c
+          gh run download 35923634779 --repo abhedwig-cell/SWAP5 -p 'p5c-*' -D /tmp/source
+          find /tmp/source -type f -name 'p5c_*_o0.txt' -exec cp {} /tmp/p5c/ \;
+          find /tmp/source -type f -name 'p5c_*_o2.txt' -exec cp {} /tmp/p5c/ \;
+          find /tmp/source -type f -name 'p5c_*_execution.json' -exec cp {} /tmp/p5c/ \;
+          test -f /tmp/p5c/p5c_B01_o0.txt
+          test -f /tmp/p5c/p5c_B14_o0.txt
+          test -f /tmp/p5c/p5c_B01_execution.json
+          test -f /tmp/p5c/p5c_B14_execution.json
+      - name: Reanalyze oracle-gated carrier screen
+        run: |
+          set -euo pipefail
+          mkdir -p result
+          python3 tests/rom/analyze_rom_purpose_p5c_gw_interface.py             --prereg integration/f-rom/ROM_PURPOSE_P5C_PREREGISTRATION.json             --root /tmp/p5c             --output result/ROM_PURPOSE_P5C_RESULT.json | tee result/runner.txt
+          cp integration/f-rom/ROM_PURPOSE_P5C_ANALYSIS_RECOVERY_BINDING.json result/
+          sha256sum result/* > result/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rom-purpose-p5c-sign-recovered
+          path: result/
+          if-no-files-found: error
+      - name: Persist corrected P5C result
+        env:
+          SOURCE_RUN: ${{ github.run_id }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin work/f-rom-purpose
+          cp result/ROM_PURPOSE_P5C_RESULT.json integration/f-rom/ROM_PURPOSE_P5C_RESULT.json
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.load(open('integration/f-rom/ROM_PURPOSE_P5C_RESULT.json'))
+          p=pathlib.Path('integration/f-rom/ROM_PURPOSE_P5_STATUS.json')
+          s=json.load(open(p))
+          d=r['decision']
+          if r['oracle_gate_pass'] and d in ('HYDRAULIC_SHAPE_SIGNAL','STORAGE_SPLIT_SIGNAL','BOTH_SIGNAL'):
+              gate='P5C_FRESH_DYNAMIC_VALIDATION_DESIGN'
+              nxt=['Preregister a fresh dynamic blind validation for only the P5C-screened carrier(s).']
+          else:
+              gate='P5_CLOSED'
+              nxt=[]
+          s.update({
+            'status':'P5C_SCREEN_COMPLETE_'+d,
+            'current_gate':gate,
+            'p5c_result':'integration/f-rom/ROM_PURPOSE_P5C_RESULT.json',
+            'p5c_source_workflow_run':int(os.environ['SOURCE_RUN']),
+            'p5c_execution_sha':os.environ['SOURCE_SHA'],
+            'p5c_route_source_run':35923634779,
+            'p5c_sign_semantics_repair':'integration/f-rom/ROM_PURPOSE_P5C_ORACLE_SIGN_SEMANTICS_REPAIR.json',
+            'next_actions':nxt
+          })
+          s['scientific_firewall']['any_p5c_response_seen']=True
+          s['scientific_firewall']['new_closure_family_authorized']=False
+          s['scientific_firewall']['application_acceptance_adjudicated']=False
+          s['scientific_firewall']['production_rom_authorized']=False
+          p.write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/ROM_PURPOSE_P5C_RESULT.json integration/f-rom/ROM_PURPOSE_P5_STATUS.json
+          git commit -m "ROM-PURPOSE P5C: persist sign-corrected carrier screen" || exit 0
+          git push origin HEAD:work/f-rom-purpose
