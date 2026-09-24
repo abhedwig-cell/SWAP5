@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL01",
+  "title": "Auto-generated adaptive hydraulic lookup preflight",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can a self-generated branch-aware hydraulic representation reduce repeated constitutive evaluation cost while preserving the authoritative B1.10 hydraulic response closely enough for a later end-to-end Richards qualification?",
+  "hypothesis": "A build-once, freeze-for-run representation can concentrate support points where theta, capacity and conductivity are difficult, use exact cheap branches where lookup adds no value, and therefore outperform a uniformly resolved lookup at comparable constitutive error.",
+  "architecture": {
+    "lifecycle": ["BUILD_ONCE", "QUALIFY", "FREEZE", "RUN"],
+    "runtime_self_modification": false,
+    "authoritative_source": "src/solver/mod_b110_default_mvg_provider.f90",
+    "representation": "HYBRID_EXACT_BRANCHES_PLUS_ADAPTIVE_SMOOTH_LOOKUP",
+    "solver_ownership_change": false,
+    "transaction_semantics_change": false
+  },
+  "preflight_scope": {
+    "materials": ["B01", "B12", "O05", "O14"],
+    "initial_domain_cm": [-1000000.0, -0.01],
+    "mandatory_semantic_boundaries": [
+      "B110_H_CRIT",
+      "conductivity saturation switch when inside the represented interval",
+      "capacity-floor kink when inside the represented interval"
+    ],
+    "direct_exact_regions": [
+      "h >= 0 saturated branch",
+      "near-saturation branch Hcrit < h < 0 in this preflight"
+    ],
+    "lookup_coordinates": {
+      "independent": "log10(-h)",
+      "theta": "linear theta",
+      "capacity": "linear log(capacity)",
+      "conductivity": "linear log(conductivity)"
+    }
+  },
+  "preregistered_constitutive_screen": {
+    "theta_span_normalized_abs_error_max": 1e-5,
+    "abs_log_capacity_error_max": 1e-2,
+    "abs_log_conductivity_error_max": 1e-2,
+    "validation_samples_per_interval": [0.25, 0.5, 0.75],
+    "adaptive_point_count_must_not_be_worse_than_fixed_baseline_without_error_advantage": true
+  },
+  "later_required_gates_before_any_production_consideration": [
+    "independent dense constitutive validation including one-sided branch limits",
+    "comparison against the current fixed-table research baseline",
+    "end-to-end Richards hydrological equivalence on the hydraulic test bank",
+    "build-cost plus solve-cost wall/CPU accounting",
+    "O0/O2 reproducibility",
+    "fingerprinted immutable cache semantics",
+    "explicit qualification of any additional hydraulic model family"
+  ],
+  "hard_exclusions": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_RUNTIME_REFINEMENT_DURING_SOLVE",
+    "NO_RICHARDS_SOLVER_CHANGE",
+    "NO_ROSSFAST_TABLE_REPLACEMENT",
+    "NO_DKDH_OR_SWKIMPL1_CLAIM",
+    "NO_HYDRAULIC_MODEL_GENERALIZATION_FROM_FOUR_MATERIALS",
+    "NO_PERFORMANCE_CLAIM_FROM_MICROBENCHMARK_ONLY"
+  ],
+  "decision_rule": "Advance only if the adaptive/hybrid representation shows a material reduction in representation work or point count at comparable error and remains suitable for a later end-to-end solver benchmark."
+}
