@@ -2,7 +2,17 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILDROOT="${RUNNER_TEMP:-/tmp}/f-pdi-vt04-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILDROOT"; trap 'rm -rf "$BUILDROOT"' EXIT
+mkdir -p "$BUILDROOT"
+dump_logs () {
+  rc=$?
+  echo "F-PDI-VT04 technical failure rc=$rc"
+  for x in /tmp/fpdivt04-*.log; do
+    if [[ -f "$x" ]]; then echo "===== $x ====="; tail -200 "$x"; fi
+  done
+  exit $rc
+}
+trap dump_logs ERR
+trap 'rm -rf "$BUILDROOT"' EXIT
 
 SRC_SHA="c22bd832ddf3e53e330a552f5e31e74f183362d1"
 CASE_SHA="a839e2e905f34dd264ad0c739f638454b3023def"
