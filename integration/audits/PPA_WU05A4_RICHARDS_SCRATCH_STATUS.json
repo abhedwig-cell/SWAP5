@@ -19,6 +19,16 @@
     "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
   },
   "production_admitted": false,
+  "matrix_flux_balance": {
+    "baseline": "2be21a72e",
+    "interface": "PPA-local finish_matrix_static_attempt accepts upward-positive face rates and separate nonnegative ordinary source, drainage sink and root sink rates. Matrix storage change equals captured macro amount plus dt*(lower face-upper face+source-sink-root). Global balance telescopes internal faces and cancels internal macro transfer. Closed guard delegates with zero rates.",
+    "source": "src/legacy/b1_10_port/headcalc.f90 vector_F lines 905, 932, 937, 988, 1032",
+    "scope": "Candidate matrix plus static macro accounting only; no pond/crop/snow storage or canonical commit; caller must supply actual final solver face and ordinary rates without including macro exchange twice",
+    "tests": "Three-dt nonlinear manufactured storage solve includes top input, bottom output, internal face flow, source, sink and root uptake. Reverse face signs must reject. Existing closed guards retained.",
+    "status": "IMPLEMENTED_REPLAY_PENDING",
+    "invariants": [3, 7, 13, 21],
+    "next_action": "Persist and replay the nine-gate bounded regression"
+  },
   "closed_attempt_balance": {
     "baseline": "c68917b98",
     "scope": "Candidate-only closed matrix/macropore exchange guard; no vertical matrix flow, external inputs/sinks, pond changes or other stores. Not canonical whole-column accounting.",

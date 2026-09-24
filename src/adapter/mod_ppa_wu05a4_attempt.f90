@@ -25,6 +25,7 @@ module mod_ppa_wu05a4_attempt
   public::begin_static_attempt,evaluate_static_attempt,diagonal_static_attempt
   public::finish_static_attempt,discard_static_attempt
   public::finish_closed_static_attempt
+  public::finish_matrix_static_attempt
 contains
   subroutine discard_static_attempt(attempt)
     type(static_macro_attempt),intent(out)::attempt
@@ -97,8 +98,27 @@ contains
     type(ppa_wu05a2_macropore_candidate_t),intent(out)::candidate
     type(candidate_mass_account),intent(out)::account
     logical,intent(out)::ok
-    real(real64),allocatable::amount(:),change(:)
-    real(real64)::begin_store,end_store
+    real(real64)::zero(size(head)),faces(size(head)+1)
+    zero=0; faces=0
+    call finish_matrix_static_attempt(attempt,workspace,head,theta_before,theta_after,faces,zero,zero,zero, &
+        tolerance,candidate,account,ok)
+  end subroutine
+
+  ! Richards convention: faces are upward-positive rates, ordered top to bottom.
+  ! source/sink/root are separate nonnegative per-cell rates (cm/day). Internal
+  ! macro exchange is captured, never supplied again through ordinary sources.
+  ! This accounts matrix + macro only, not pond/crop/snow or canonical commit.
+  subroutine finish_matrix_static_attempt(attempt,workspace,head,theta_before,theta_after, &
+      faces,source,sink,root,tolerance,candidate,account,ok)
+    type(static_macro_attempt),intent(inout)::attempt
+    type(reference_richards_workspace_t),intent(in)::workspace
+    real(real64),intent(in)::head(:),theta_before(:),theta_after(:),tolerance
+    real(real64),intent(in)::faces(:),source(:),sink(:),root(:)
+    type(ppa_wu05a2_macropore_candidate_t),intent(out)::candidate
+    type(candidate_mass_account),intent(out)::account
+    logical,intent(out)::ok
+    real(real64),allocatable::amount(:),change(:),ordinary(:),local_input(:)
+    real(real64)::begin_store,end_store,external
     logical::valid
     integer::n
     ok=.false.
@@ -108,6 +128,10 @@ contains
     valid=.false.
     guard: block
       if(size(theta_before)/=n.or.size(theta_after)/=n)exit guard
+      if(size(faces)/=n+1.or.size(source)/=n.or.size(sink)/=n.or.size(root)/=n)exit guard
+      if(.not.all(ieee_is_finite(faces)).or..not.all(ieee_is_finite(source)))exit guard
+      if(.not.all(ieee_is_finite(sink)).or..not.all(ieee_is_finite(root)))exit guard
+      if(any(source<0).or.any(sink<0).or.any(root<0))exit guard
       if(.not.ieee_is_finite(tolerance))exit guard
       if(tolerance<0)exit guard
       if(.not.all(ieee_is_finite(theta_before)).or..not.all(ieee_is_finite(theta_after)))exit guard
@@ -118,8 +142,12 @@ contains
       valid=.false.
       change=(theta_after-theta_before)*(1.0_real64-attempt%input%volume/attempt%input%dz)*attempt%input%dz
       if(.not.all(ieee_is_finite(change)))exit guard
-      if(any(abs(change-amount)>tolerance))exit guard
-      if(abs(sum(change)+end_store-begin_store)>tolerance)exit guard
+      ordinary=source-sink-root
+      local_input=(faces(2:n+1)-faces(1:n)+ordinary)*attempt%dt
+      external=(faces(n+1)-faces(1)+sum(ordinary))*attempt%dt
+      if(.not.all(ieee_is_finite(local_input)).or..not.ieee_is_finite(external))exit guard
+      if(any(abs(change-amount-local_input)>tolerance))exit guard
+      if(abs(sum(change)+end_store-begin_store-external)>tolerance)exit guard
       valid=.true.
     end block guard
     if(.not.valid)then
