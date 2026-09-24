@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.rom-purpose.p8a.execution-binding.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P8A-TRANSITION-CARRIER-DERIVATION",
+  "date": "2026-09-24",
+  "status": "BOUND_DERIVATION_ONLY_RESPONSE_EXPOSED",
+  "source_run": 35923634779,
+  "blobs": {
+    ".github/workflows/f-rom-purpose-p8a.yml": "b6c2a4f3fae97764524e0ad8d8a7d847c5ff3d08",
+    "integration/f-rom/ROM_PURPOSE_P8A_DERIVATION_CONTRACT.json": "dbe9911bfc690b9e0a260c7934895dc47cd78fa9",
+    "integration/f-rom/ROM_PURPOSE_P8B_PREREGISTRATION.json": "ecb72386b475a7be84947c7639707d93d6308e7e",
+    "tests/rom/derive_rom_purpose_p8a_transition_carriers.py": "d27338e4c52d5b740422cacf973c194dbd480534"
+  },
+  "scientific_firewall": {
+    "derivation_response_exposed": true,
+    "validation_histories_seen": false,
+    "candidate_family_pruned": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
