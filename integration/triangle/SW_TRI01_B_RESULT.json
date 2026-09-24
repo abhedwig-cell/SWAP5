@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.sw_tri01.b.result.v1",
+  "work_unit": "SW-TRI01-B",
+  "date": "2026-09-24",
+  "decision": "PASS_JOINT_TRANSACTION_PARTICIPANT",
+  "tested_head": "71b7789bd03976ab2461eb0ea9b0d3b615034353",
+  "evidence_run": 35956618370,
+  "evidence_job": 107496196244,
+  "cases": {
+    "B1_POSITIVE_MATCHED_COMMIT": "PASS",
+    "B2_NEGATIVE_MATCHED_COMMIT": "PASS",
+    "B3_MISMATCH_DISCARD_REPLAY": "PASS",
+    "B4_STALE_ORIGIN_FAIL_CLOSED": "PASS"
+  },
+  "checks": [
+    "single accepted SWAP origin and checkpoint",
+    "single joint candidate contains both groundwater and surface-water responses",
+    "positive and negative surface exchange preserve direction",
+    "matched realized surface transfer permits exactly one SWAP commit",
+    "surface-transfer mismatch blocks commit and leaves accepted revision unchanged",
+    "discard retains accepted origin and same-origin replay reproduces both interface responses",
+    "stale accepted origin fails closed",
+    "O0/O2 stable output identity"
+  ],
+  "interpretation": [
+    "The triangle requires a joint participant rather than composition of the existing separate groundwater and surface-water participants.",
+    "A Ribasim receipt mismatch can be resolved before SWAP commit without disturbing groundwater response provenance.",
+    "External publication ordering remains unqualified; TRI01-C must keep MODFLOW and Ribasim reversible until joint publication readiness."
+  ],
+  "production_admission": false
+}
