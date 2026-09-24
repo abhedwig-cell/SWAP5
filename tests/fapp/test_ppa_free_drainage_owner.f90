@@ -303,10 +303,104 @@ contains
              'dense retry failed aggregate untouched')
       end if
     end do
+    if(replay==2) call verify_dense_followups(owner,dense,t_end)
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'dense retry owner closed')
     end do
     write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_LOW_RAIN_DENSE_RESTART=PASS'
+  end subroutine
+  subroutine verify_dense_followups(owner,profile,t_begin)
+    type(fmr_production_application_bootstrap_t),intent(inout)::owner
+    type(fmr_production_application_config_t),intent(in)::profile
+    real(real64),intent(in)::t_begin
+    type(fmr_production_application_bootstrap_t)::fresh
+    type(fmr_committed_restart_bundle_t)::before,after,resumed
+    type(fmr_committed_top_state_t),allocatable::top(:),fresh_top(:)
+    type(fmr_b110_physical_forcing_t)::forcing(NTILE),fresh_forcing(NTILE)
+    type(fmr_serialized_column_result_t),allocatable::result(:),fresh_result(:)
+    type(fmr_serialized_commit_receipt_record_t),allocatable::receipt(:),fresh_receipt(:)
+    type(vonhhbraden_source_window_t)::source
+    type(vonhhbraden_result_t)::source_result
+    type(fmr_vonhhbraden_source_window_progress_t)::progress
+    real(real64)::t_start,t_end,amount(NTILE),fresh_amount(NTILE)
+    integer::window,tile,code,pass
+    logical::ok,marked
+    source%leaf_area_index=2.0_real64
+    source%vegetation_cover_fraction=0.5_real64
+    do window=1,3
+      marked=window==2
+      t_start=t_begin+real(window-1,real64)*(T1-T0)
+      t_end=t_start+(T1-T0)
+      source%gross_rain_cm_per_day=0.04_real64
+      source%sprinkling_irrigation_cm_per_day=0.02_real64
+      if(window>=2) then
+        source%gross_rain_cm_per_day=0.16_real64
+        source%sprinkling_irrigation_cm_per_day=0.08_real64
+      end if
+      call evaluate_gash_source_window(WINDOW_GASH,source, &
+           source_result%source_window_interception_cm_per_day,source_result%status)
+      call require(source_result%status==VONHHBRADEN_AVAILABLE,'dense successor source available')
+      call owner%export_committed_restart(9902_int64,before,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'dense successor pre-window export')
+      call fresh%initialize(profile,code)
+      call require(code==FMR_APP_BOOT_OK,'dense successor fresh initialize')
+      call fresh%restore_committed_restart(before,9902_int64,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'dense successor fresh restore')
+      call owner%copy_committed_top_states(top,code)
+      call require(code==FMR_APP_BOOT_OK,'dense successor owner top snapshot')
+      call fresh%copy_committed_top_states(fresh_top,code)
+      call require(code==FMR_APP_BOOT_OK,'dense successor restored top snapshot')
+      do tile=1,NTILE
+        call build_window_forcing(profile,tile,top(tile),source,source_result,forcing(tile),amount(tile))
+        call build_window_forcing(profile,tile,fresh_top(tile),source,source_result,fresh_forcing(tile),fresh_amount(tile))
+        call require(amount(tile)==fresh_amount(tile).and.forcing(tile)%top_flux==fresh_forcing(tile)%top_flux, &
+             'dense successor forcing reproduced from restored owner')
+        forcing(tile)%temporal_forcing_event=marked
+        fresh_forcing(tile)%temporal_forcing_event=marked
+        if(marked) then
+          forcing(tile)%temporal_forcing_event_time=t_start
+          fresh_forcing(tile)%temporal_forcing_event_time=t_start
+        end if
+      end do
+      do pass=1,2
+        observed_event_calls=0
+        if(pass==1) then
+          call owner%run_standalone_with_forcing_receipts(t_start,t_end,forcing,result,receipt,code)
+        else
+          call fresh%run_standalone_with_forcing_receipts(t_start,t_end,fresh_forcing,fresh_result,fresh_receipt,code)
+          result=fresh_result
+          receipt=fresh_receipt
+        end if
+        write(*,*) 'DENSE_SUCCESSOR_WINDOW',window,pass,code,result%kernel_status,result%accepted_substeps
+        call require(code==FMR_APP_BOOT_OK.and.all(result%completed).and.all(result%committed), &
+             'dense successor window commits')
+        call require(maxval(abs(result%mass%residual))<=HARD_MASS_GATE,'dense successor hard mass')
+        if(marked) then
+          call require(observed_event_calls>0.and.observed_event_calls<=NTILE*65.and. &
+               sum(result%accepted_substeps)>observed_event_calls,'dense successor marked boundary only')
+        else
+          call require(observed_event_calls==0,'dense successor unmarked continuation retains history')
+        end if
+        do tile=1,NTILE
+          call fmr_initialize_vonhhbraden_source_window_progress(int(10000+10*window+tile,int64), &
+               t_start,t_end,amount(tile),progress,code,profile%tiles(tile)%tile_id,before%records(tile)%revision)
+          call require(code==FMR_VONHHBRADEN_PROGRESS_OK,'dense successor source initialized')
+          call publish_ppa_wu04c_accepted_progress(progress,receipt(tile)%receipt,amount(tile),code)
+          call require(code==PPA_WU04C_PUBLICATION_OK.and.progress%remaining_interception()==0.0_real64, &
+               'dense successor source closes exactly once')
+          call publish_ppa_wu04c_accepted_progress(progress,receipt(tile)%receipt,amount(tile),code)
+          call require(code/=PPA_WU04C_PUBLICATION_OK,'dense successor duplicate receipt rejected')
+        end do
+      end do
+      call owner%export_committed_restart(9902_int64,after,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'dense successor final export')
+      call fresh%export_committed_restart(9902_int64,resumed,ok,code)
+      call require(ok.and.code==FMR_APP_BOOT_OK,'dense successor restored final export')
+      call compare_restart_bundles(after,resumed,'dense successor exact full restart continuation')
+      call fresh%close(code)
+      call require(code==FMR_APP_BOOT_OK,'dense successor fresh closes')
+    end do
+    write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_GASH_LOW_HIGH_SEQUENCE=PASS'
   end subroutine
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
