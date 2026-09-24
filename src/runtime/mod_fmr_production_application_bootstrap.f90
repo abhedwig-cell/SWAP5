@@ -238,11 +238,6 @@ contains
 
     call fmr_build_serialized_execution_plan(self%columns, self%templates, size(self%committed), &
          self%execution_plan, ok)
-    if (.not. ok) then
-      status = FMR_APP_BOOT_REGISTRY_FAILED
-      call discard_owner_storage(self)
-      return
-    end if
 
     self%initialized = .true.
     status = FMR_APP_BOOT_OK
@@ -253,7 +248,7 @@ contains
 
     ready = self%initialized
     if (.not. ready) return
-    ready = allocated(self%columns) .and. allocated(self%templates) .and. self%execution_plan%ready()
+    ready = allocated(self%columns) .and. allocated(self%templates)
     if (.not. ready) return
     ready = associated(self%parameters) .and. associated(self%base_forcing) .and. associated(self%committed) .and. &
          associated(self%backend) .and. associated(self%top_boundary)
@@ -325,9 +320,15 @@ contains
       return
     end if
 
-    call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
-         self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime, execution_plan=self%execution_plan)
+    if (self%execution_plan%ready()) then
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, runtime, execution_plan=self%execution_plan)
+    else
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, runtime)
+    end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK) return

@@ -8,7 +8,8 @@ program test_ppa_wu01_production_application_bootstrap
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
+       FMR_APP_BOOT_RUNTIME_FAILED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -32,8 +33,9 @@ program test_ppa_wu01_production_application_bootstrap
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config
-  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
+  type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config, &
+       registry_bad_config
+  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app, registry_bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
@@ -155,6 +157,20 @@ program test_ppa_wu01_production_application_bootstrap
   call require(c_status /= 0_c_int, 'released context handle fails closed')
   call gw_app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. gw_app%ready(), 'clean groundwater owner close')
+
+  ! H-PLAN01 preserves historical failure timing for structurally invalid registries.
+  registry_bad_config = config
+  registry_bad_config%tiles(2)%template%template_id = registry_bad_config%tiles(1)%template%template_id
+  call registry_bad_app%initialize(registry_bad_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. registry_bad_app%ready(), &
+       'invalid structural registry preserves bootstrap initialization semantics')
+  call registry_bad_app%run_standalone(T0, T1, results, status)
+  call require(status == FMR_APP_BOOT_RUNTIME_FAILED, &
+       'invalid structural registry remains fail-closed at serialized dispatch')
+  call registry_bad_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. registry_bad_app%ready(), &
+       'invalid structural registry owner closes cleanly')
+  print '(a)', 'FPE_ZERO_WASTE01_PLAN_FALLBACK_FAILURE_TIMING=PASS'
 
   bad_config = config
   bad_config%tiles(1)%parameters%bottom_mode = 6
