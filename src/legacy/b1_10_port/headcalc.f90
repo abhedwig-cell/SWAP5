@@ -227,7 +227,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
       fsi_ws%source(1:numnod) = qssdi(1:numnod)
    end if
-   fsi_ws%provider_root_sink = 0.0d0
    if (provider_root_sink_active) then
       call evaluation_context%root_sink%evaluate(state%h(1:numnod), state%theta(1:numnod), &
            fsi_ws%provider_root_sink(1:numnod))
@@ -330,7 +329,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end do
 
 !  calculate vector fsi_ws%residual (first time)
-   fsi_ws%residual = 0.0d0
    call vector_F(1)
 
 !  initial estimate of fsi_ws%residual inner product
