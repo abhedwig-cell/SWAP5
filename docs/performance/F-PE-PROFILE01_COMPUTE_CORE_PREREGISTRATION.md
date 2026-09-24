@@ -365,3 +365,22 @@ NECESSITY_AUDIT = H01_PENDING_MEASUREMENT
 REPAIR          = FORBIDDEN_IN_PROFILE01
 CLOSE           = OPEN
 ```
+
+
+## Technical qualification failure TQ-01
+
+The first PROFILE01 CI execution on PR #599 did not reach the new observer assertion. The clean FKT22 build failed while compiling `mod_reference_richards_temporal_indicator.f90` because `mod_b110_root_sink_provider.mod` had not yet been built.
+
+Classification:
+
+- `TECHNICAL_TEST_HARNESS_FAILURE`;
+- not a production-physics failure;
+- not evidence for or against H01;
+- caused by source ordering in `tests/fkt/run_fkt22_fmr_runtime_gate.sh` that could be masked in environments containing stale module files.
+
+Repair:
+
+- move `src/solver/mod_b110_root_sink_provider.f90` before `src/solver/mod_reference_richards_temporal_indicator.f90` in the clean compile list;
+- no production source semantics changed by this repair.
+
+The failed run is retained as evidence and the observation gate is re-run from the repaired harness.
