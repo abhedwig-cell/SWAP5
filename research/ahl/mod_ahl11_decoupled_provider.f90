@@ -12,20 +12,23 @@ module mod_ahl11_decoupled_provider
     real(real64),pointer::cofgen(:,:)=>null()
     real(real64),allocatable::xr(:),z(:),dzdx(:),xk(:),logk(:)
     logical::ready=.false.
+    logical::exact_k=.false.
   contains
     procedure::evaluate=>eval
   end type
   public::bind_ahl11_decoupled_provider
 contains
-  subroutine bind_ahl11_decoupled_provider(provider,parameters,step_duration,ret_path,k_path,valid)
+  subroutine bind_ahl11_decoupled_provider(provider,parameters,step_duration,ret_path,k_path,valid,exact_k)
     type(ahl11_decoupled_provider_t),intent(out)::provider
     type(b110_default_mvg_parameters_t),target,intent(in)::parameters
     real(real64),intent(in)::step_duration
     character(len=*),intent(in)::ret_path,k_path
     logical,intent(out)::valid
+    logical,intent(in),optional::exact_k
     integer::u,ios,n,i
     real(real64)::ignore6(6),ignore
-    valid=.false.;provider%ready=.false.
+    valid=.false.;provider%ready=.false.;provider%exact_k=.false.
+    if(present(exact_k))provider%exact_k=exact_k
     call bind_b110_default_mvg_provider(provider%analytical,parameters,step_duration)
     if(.not.allocated(parameters%cofgen))return
     provider%cofgen=>parameters%cofgen
@@ -57,7 +60,8 @@ contains
     real(real64)::xv,f,dx,t,h00,h10,h01,h11,dh00,dh10,dh01,dh11,zz,dzx,se,span
     integer::i,ir,ik
     if(.not.self%ready)error stop 'AHL11 provider not ready'
-    if(any(pressure_head>LOOKUP_H_MAX).or.any(pressure_head < -1.0e6_real64)) call self%analytical%evaluate(pressure_head,wa,ka,ca,da)
+    if(self%exact_k .or. any(pressure_head>LOOKUP_H_MAX).or.any(pressure_head < -1.0e6_real64)) &
+      call self%analytical%evaluate(pressure_head,wa,ka,ca,da)
     do i=1,size(pressure_head)
       if(pressure_head(i)<=LOOKUP_H_MAX.and.pressure_head(i)>=-1.0e6_real64)then
         xv=log10(-pressure_head(i))
@@ -70,8 +74,12 @@ contains
         span=self%cofgen(2,i)-self%cofgen(1,i)
         water_content(i)=self%cofgen(1,i)+span*se
         capacity(i)=(span*se*(1-se)*dzx)/(pressure_head(i)*LN10)
-        call locate(self%xk,xv,ik,f)
-        conductivity(i)=exp(self%logk(ik)+f*(self%logk(ik+1)-self%logk(ik)))
+        if(self%exact_k)then
+          conductivity(i)=ka(i)
+        else
+          call locate(self%xk,xv,ik,f)
+          conductivity(i)=exp(self%logk(ik)+f*(self%logk(ik+1)-self%logk(ik)))
+        end if
         dconductivity_dhead(i)=0.0_real64
       else
         water_content(i)=wa(i);conductivity(i)=ka(i);capacity(i)=ca(i);dconductivity_dhead(i)=da(i)
