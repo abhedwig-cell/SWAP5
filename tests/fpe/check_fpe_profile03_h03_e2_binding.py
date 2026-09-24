@@ -22,7 +22,8 @@ checks = {
         "provider_tuple_valid" in headcalc,
     "h03_iteration_reuse_present":
         "provider_tuple_valid = .true." in headcalc
-        and "if (provider_tuple_valid)" in headcalc,
+        and "if (.not. provider_tuple_valid)" in headcalc
+        and "provider_tuple_valid = .false." in headcalc,
 }
 
 for name, ok in checks.items():
