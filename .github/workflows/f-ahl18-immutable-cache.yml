@@ -1,0 +1,34 @@
+name: F-AHL18 immutable cache
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/mod_ahl18_cache.f90'
+      - 'research/ahl/test_ahl18_cache.f90'
+      - 'integration/f-ahl/F-AHL18_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl18-immutable-cache.yml'
+  workflow_dispatch:
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and qualify immutable cache
+        run: |
+          BUILD=/tmp/ahl18
+          mkdir -p "$BUILD"
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -J "$BUILD" -I "$BUILD"             -c src/solver/mod_soil_water_solver_contract.f90 -o "$BUILD/contract.o"
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -J "$BUILD" -I "$BUILD"             -c src/solver/mod_b110_default_mvg_provider.f90 -o "$BUILD/b110.o"
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -J "$BUILD" -I "$BUILD"             -c research/ahl/mod_ahl17_runtime_builder.f90 -o "$BUILD/builder.o"
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -J "$BUILD" -I "$BUILD"             -c research/ahl/mod_ahl18_cache.f90 -o "$BUILD/cache.o"
+          gfortran -O3 -std=f2008 -ffree-line-length-none -Wall -Wextra -J "$BUILD" -I "$BUILD"             -c research/ahl/test_ahl18_cache.f90 -o "$BUILD/test.o"
+          gfortran -O3 "$BUILD/contract.o" "$BUILD/b110.o" "$BUILD/builder.o" "$BUILD/cache.o" "$BUILD/test.o" -o "$BUILD/test"
+          "$BUILD/test" | tee /tmp/ahl18_result.txt
+          grep -Fq 'AHL18_CACHE=PASS' /tmp/ahl18_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl18-${{ github.run_id }}
+          path: /tmp/ahl18_result.txt
