@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import argparse,hashlib,json
+import argparse,hashlib,json,difflib
 
 EXTS=(".bal",".blc",".bfo")
 
@@ -79,8 +79,10 @@ def main():
             novap_detail[ext]={"produced":True,"identical":False}
             novap_same=False
             continue
-        same=normalized_text(cp)==normalized_text(dp)
-        novap_detail[ext]={
+        ctext=normalized_text(cp)
+        dtext=normalized_text(dp)
+        same=ctext==dtext
+        detail={
             "produced":True,
             "control_name":cp.name,
             "candidate_name":dp.name,
@@ -88,6 +90,12 @@ def main():
             "control_sha":sha(cp),
             "candidate_sha":sha(dp)
         }
+        if not same:
+            detail["first_diff_lines"]=list(difflib.unified_diff(
+                ctext.splitlines(), dtext.splitlines(),
+                fromfile="control", tofile="candidate", n=2
+            ))[:40]
+        novap_detail[ext]=detail
         novap_same &= same
 
     evidence={
