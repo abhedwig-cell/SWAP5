@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10D",
+  "phase": "RELEVANCE_BOUNDED_BUILD_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36045828363,
+  "workflow_job": 107789009834,
+  "dry_end_policy": {
+    "raw_capacity_stop": 1e-13,
+    "tail_semantics": "authoritative analytical fallback outside represented domain"
+  },
+  "material_bounds_cm": {
+    "B01": -1000000.0,
+    "B12": -1000000.0,
+    "O05": -264277.52309014817,
+    "O14": -1000000.0
+  },
+  "build_results": {
+    "logK_1e-3_points": {"B01":83,"B12":59,"O05":79,"O14":86},
+    "logK_3e-4_points": {"B01":151,"B12":104,"O05":130,"O14":157},
+    "logK_1e-4_points": {"B01":267,"B12":175,"O05":236,"O14":260}
+  },
+  "finding": "All four materials now build successfully at all three frozen K tolerances. The previous O05 dry-end refinement blocker disappears when the representation stops at the previously qualified negligible-storage boundary while preserving analytical fallback beyond it.",
+  "interpretation": "The O05 failure was not evidence that the adaptive representation required unlimited dry-end resolution. It arose from combining an unnecessarily extended representation domain with cancellation-sensitive conductivity arithmetic.",
+  "next_action": "Resume the frozen F-AHL10B Richards selection matrix for logK tolerances 1e-3, 3e-4 and 1e-4 using the relevance-bounded tables and analytical dry-tail fallback.",
+  "nonclaims": [
+    "No K tolerance is selected by the build result alone.",
+    "No physics is truncated or zeroed.",
+    "No production admission is implied."
+  ]
+}
