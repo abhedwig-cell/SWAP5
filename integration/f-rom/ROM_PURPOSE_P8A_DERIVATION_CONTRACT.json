@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.rom-purpose.p8a.derivation-contract.v1",
+  "workstream": "ROM-PURPOSE",
+  "work_unit": "ROM-PURPOSE-P8A-TRANSITION-CARRIER-DERIVATION",
+  "date": "2026-09-24",
+  "status": "DERIVATION_ONLY_RESPONSE_EXPOSED",
+  "authority": {
+    "p7_closeout": "integration/f-rom/ROM_PURPOSE_P7_CLOSEOUT.json",
+    "source_run": 35923634779,
+    "histories": [
+      "G21",
+      "G22",
+      "G23",
+      "G24"
+    ]
+  },
+  "target": "Next observation-interval total-storage change under prescribed-head lower-boundary forcing.",
+  "predictor_class": "Separate standardized ordinary least-squares information probe per material and representation; intercept included; no regularization or hyperparameter tuning.",
+  "common_forcing_information": [
+    "next-interval prescribed bottom head"
+  ],
+  "representations": {
+    "STORAGE": [
+      "current total storage"
+    ],
+    "STORAGE_LOWER80": [
+      "current total storage",
+      "current 80-160 cm storage"
+    ],
+    "STORAGE_MEMORY1": [
+      "current total storage",
+      "previous interval total-storage change"
+    ],
+    "STORAGE_LOWER80_MEMORY1": [
+      "current total storage",
+      "current 80-160 cm storage",
+      "previous interval total-storage change"
+    ]
+  },
+  "training_domain": "Transitions with prescribed-head bottom mode in the next interval; first memory-unavailable transition excluded.",
+  "role": "Candidate-family and coefficient derivation only. Training performance is not scientific validation and cannot select away any of the four frozen P8B candidates.",
+  "scientific_firewall": {
+    "validation_histories_seen": false,
+    "candidate_family_pruned_from_training_score": false,
+    "application_acceptance_adjudicated": false,
+    "production_rom_authorized": false
+  }
+}
