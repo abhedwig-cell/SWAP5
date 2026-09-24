@@ -26,8 +26,10 @@
     "scope": "Explicit flux boundaries with caller-materialized final qtop/qbot, full column n>=2, provider root path only. Reject prescribed-head top and special unsaturated flags. No shared ABI change or production call site yet; no pond or canonical commit.",
     "invariants": [3, 5, 7, 13, 21],
     "tests": "Three-dt nonlinear manufactured storage fixture populates actual state/workspace types. NaN in unrelated vertical_flux must not contaminate result. Reject prescribed top head, wrong internal Darcy sign, special branch flag, negative conductivity and stale final head.",
-    "status": "IMPLEMENTED_REPLAY_PENDING",
-    "next_action": "Persist and replay focused and nine-gate bounded regressions"
+    "status": "IMPLEMENTED_PERSISTED_BOUNDED_TESTS_PASS_NOT_PRODUCTION_ADMITTED",
+    "recovery_point": "91aea91eb",
+    "test_result": "Persisted 91aea91eb nine-gate bounded regression PASS O0/O2 with identical transcripts, runtime bounds checks and floating-point traps",
+    "next_action": "Add opt-in call-site integration with full inactive-path preservation; retain explicit boundary and branch restrictions and compose pond accounting before broader activation"
   },
   "matrix_flux_balance": {
     "baseline": "2be21a72e",
