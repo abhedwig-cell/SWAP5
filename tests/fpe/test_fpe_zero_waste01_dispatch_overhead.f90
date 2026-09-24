@@ -46,6 +46,7 @@ program test_fpe_zero_waste01_dispatch_overhead
   call benchmark_order(work_columns, 'mixed', quad_reps)
 
   call benchmark_diagnostics(columns, linear_reps)
+  call benchmark_diagnostics_lean(columns, linear_reps)
   call benchmark_receipt_validation(columns, receipt_ids, quad_reps)
   call benchmark_receipt_lookup(columns, receipt_ids, quad_reps)
   call benchmark_template_lookup(columns, templates, linear_reps)
@@ -255,6 +256,30 @@ contains
     call system_clock(c1)
     call emit('diagnostics_worker_init','worker_assignments_len1',size(cols),reps,c0,c1,rate,checksum,int(size(cols),int64))
   end subroutine benchmark_diagnostics
+
+  subroutine benchmark_diagnostics_lean(cols, reps)
+    type(fmr_logical_column_t), intent(in) :: cols(:)
+    integer, intent(in) :: reps
+    type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
+    integer(int64) :: c0, c1, rate, checksum
+    integer :: r, i
+    checksum = 0_int64
+    call system_clock(c0, rate)
+    do r = 1, reps
+      allocate(diagnostics(size(cols)))
+      do i = 1, size(cols)
+        diagnostics(i)%column_id = cols(i)%column_id
+        diagnostics(i)%template_id = cols(i)%template_id
+        diagnostics(i)%backend = cols(i)%backend_id
+        diagnostics(i)%execution_class = cols(i)%execution_class
+      end do
+      checksum = checksum + diagnostics(size(cols))%column_id
+      deallocate(diagnostics)
+    end do
+    call system_clock(c1)
+    call emit('diagnostics_worker_init','no_worker_assignment_materialization',size(cols),reps, &
+         c0,c1,rate,checksum,int(size(cols),int64))
+  end subroutine benchmark_diagnostics_lean
 
   subroutine benchmark_receipt_validation(cols, ids, reps)
     type(fmr_logical_column_t), intent(in) :: cols(:)
