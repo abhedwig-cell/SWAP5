@@ -84,9 +84,9 @@ meson setup "$BUILDROOT/candidate-build" "$BUILDROOT/candidate-src" -Denable_pfu
 meson compile -C "$BUILDROOT/candidate-build" >/tmp/fpdivt04-candidate-build.log
 
 mkdir -p "$BUILDROOT/control-vap" "$BUILDROOT/candidate-vap" "$BUILDROOT/control-novap" "$BUILDROOT/candidate-novap"
-python3 "$ROOT/research/pdi_vt/f_pdi_vt04_make_case.py" "$BUILDROOT/cases-src/cases/grassgrowth/legacy" "$BUILDROOT/control-vap" --swvapor 1 | tee /tmp/fpdivt04-vap-case-hash.txt
+python3 "$ROOT/research/pdi_vt/f_pdi_vt04_case_v2.py" "$BUILDROOT/cases-src/cases/grassgrowth/legacy" "$BUILDROOT/control-vap" --swvapor 1 | tee /tmp/fpdivt04-vap-case-hash.txt
 cp -a "$BUILDROOT/control-vap/." "$BUILDROOT/candidate-vap/"
-python3 "$ROOT/research/pdi_vt/f_pdi_vt04_make_case.py" "$BUILDROOT/cases-src/cases/grassgrowth/legacy" "$BUILDROOT/control-novap" --swvapor 0 | tee /tmp/fpdivt04-novap-case-hash.txt
+python3 "$ROOT/research/pdi_vt/f_pdi_vt04_case_v2.py" "$BUILDROOT/cases-src/cases/grassgrowth/legacy" "$BUILDROOT/control-novap" --swvapor 0 | tee /tmp/fpdivt04-novap-case-hash.txt
 cp -a "$BUILDROOT/control-novap/." "$BUILDROOT/candidate-novap/"
 
 run_swap () {
