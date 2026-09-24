@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26C",
+  "title": "PDI derivative-consistent retention representation",
+  "parent": "F-AHL26B",
+  "phase": "PREREGISTERED_CONSTITUTIVE_RESEARCH",
+  "models": ["PDI8_REFERENCE","PDI10_BIMODAL"],
+  "representation": "x=log10(-h), z=logit(theta/theta_s), cubic Hermite z(x), C analytically derived from the same interpolant",
+  "lookup_domain_cm": [-10000000.0,-1.0],
+  "near_saturation_policy": "h>-1 cm remains authoritative analytical",
+  "prospective_gates": {
+    "max_abs_theta_over_theta_s_error": 1e-5,
+    "max_abs_log_capacity_error": 1e-2,
+    "C_positive": true
+  },
+  "decision_rule": "PASS only if both preregistered PDI stress sets satisfy all gates on independent dense validation points without clamping theta or transformed state.",
+  "hard_exclusions": ["NO_CLAMPING","NO_K_CLAIM","NO_RICHARDS_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
