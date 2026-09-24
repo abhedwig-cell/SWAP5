@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL25C",
+  "phase": "BIMODAL_CONDUCTIVITY_CONSTITUTIVE_QUALIFICATION_ATTEMPT",
+  "status": "FAIL_BUILDER_UNDERSAMPLING",
+  "workflow_run": 36049933430,
+  "workflow_job": 107802670500,
+  "frozen_gate_abs_logK": 0.001,
+  "cases": {
+    "M3_BALANCED": {"support_points":99,"max_abs_logK_error":0.0009957432650771203,"pass":true},
+    "M3_SEPARATED": {"support_points":118,"max_abs_logK_error":0.001073483933902275,"pass":false},
+    "M3_DOMINANT_SECOND": {"support_points":148,"max_abs_logK_error":0.0009739759282194616,"pass":true}
+  },
+  "classification": "TECHNICAL_ADAPTIVE_REFINEMENT_SAMPLING_MISS",
+  "reason": "The builder tested only five interior fractions per interval, whereas the independent dense validator found a larger interior error for M3_SEPARATED. The fixed scientific gate itself is not changed.",
+  "repair_rule": "Use the same dense interior sampling in refinement that is used for independent validation, retain abs(logK)<=1e-3 and the 500-point ceiling, then rerun all preregistered parameterizations.",
+  "nonclaims": ["NO_GATE_RETUNING","NO_RICHARDS_CLAIM","NO_TIMING_CLAIM","NO_PRODUCTION_ADMISSION"]
+}
