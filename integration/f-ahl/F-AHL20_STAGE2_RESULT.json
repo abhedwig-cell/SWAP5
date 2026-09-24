@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL20",
+  "phase": "STAGE2_SELF_BUILT_MATRIX_COMPLETE",
+  "status": "PASS_STAGE2",
+  "workflow_run": 36046963204,
+  "workflow_job": 107792777365,
+  "case_count": 12,
+  "passed_cases": 12,
+  "same_nonlinear_iteration_count_cases": 12,
+  "same_backtracking_count_cases": 12,
+  "largest_observed_max_head_delta_cm": 0.006715563,
+  "largest_observed_bottom_flux_delta_cm_per_day": 6.594750e-6,
+  "external_table_file_used": false,
+  "finding": "The self-building cached in-memory provider reproduces the selected F-AHL15/F-AHL16 response envelope across all four materials and wet-mid-dry regimes without external lookup-table assets.",
+  "next_gate": "Stage 3 paired complete-Richards timing with cold build, warm cache acquisition and steady solve CPU reported separately.",
+  "production_status": "RESEARCH_ONLY_NO_ADMISSION"
+}
