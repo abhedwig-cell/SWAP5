@@ -1,0 +1,25 @@
+name: F-AHL10B conductivity tolerance sweep
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl10b_generate_k_sweep.py'
+      - 'research/ahl/run_ahl10b_k_sweep.sh'
+      - 'integration/f-ahl/F-AHL10B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl10b-k-sweep.yml'
+  workflow_dispatch:
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run conductivity tolerance sweep
+        run: |
+          bash research/ahl/run_ahl10b_k_sweep.sh /tmp/ahl10b_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl10b-${{ github.run_id }}
+          path: /tmp/ahl10b_result.txt
