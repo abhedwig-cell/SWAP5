@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26E",
+  "title": "PDI NoVap static conductivity qualification",
+  "parent": "F-AHL26D0",
+  "phase": "PREREGISTERED_CONSTITUTIVE_RESEARCH",
+  "scope": "source-authoritative NoVap route for PDI8_REFERENCE and PDI10_BIMODAL",
+  "candidate": {
+    "theta_C": "F-AHL26C qualified derivative-consistent logit(theta/theta_s) representation",
+    "K": "adaptive log(Kliq(h)) where Kliq=Ksat*((1-OmegaK)*Kcap+OmegaK*Kfilm)"
+  },
+  "lookup_domain_cm": [-10000000.0,-1.0],
+  "prospective_K_limits_abs_log": [0.001,0.0003,0.0001],
+  "selection_rule": "Choose the loosest K limit that satisfies total NoVap K abs(logK)<=1e-3 for both preregistered PDI sets on dense validation. Do not alter retention gates.",
+  "decision_rule": "If a qualified static K representation exists, proceed to a controlled NoVap Richards matrix. Vapor-enabled PDI remains blocked regardless of this result.",
+  "hard_exclusions": ["NO_KVAP","NO_VAPOR_SPEEDUP_CLAIM","NO_GATE_RETUNING","NO_PRODUCTION_ADMISSION"]
+}
