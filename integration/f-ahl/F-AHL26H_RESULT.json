@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL26H",
+  "phase": "PDI_NOVAP_COMPONENT_TIGHTENING_AND_MATRIX_CLOSURE_COMPLETE",
+  "status": "PASS_6_OF_6",
+  "workflow_run": 36053287743,
+  "workflow_job": 107813950540,
+  "selected_representation": {
+    "theta_over_theta_s_abs": 3e-6,
+    "abs_logC": 0.003,
+    "abs_logK": 0.0003
+  },
+  "support_points": {
+    "PDI8_REFERENCE": {"retention":47,"conductivity":186},
+    "PDI10_BIMODAL": {"retention":52,"conductivity":179}
+  },
+  "matrix": {
+    "PDI8_dt_day": 0.25,
+    "PDI10_wet_mid_dt_day": 0.25,
+    "PDI10_dry_dt_day": 0.125,
+    "passed_cases": 6,
+    "total_cases": 6,
+    "same_nonlinear_and_backtracking_path": "6/6"
+  },
+  "finding": "The source-authoritative PDI NoVap route can be represented strictly with a PDI-specific derivative-consistent retention transform and moderately tightened, separately controlled conductivity support.",
+  "next_action": "F-AHL26I paired complete-Richards timing for the final six-case NoVap PDI matrix.",
+  "vapor_enabled_status": "BLOCKED_BY_F_AHL26D0"
+}
