@@ -29,6 +29,47 @@ def main():
     else:
         marker=next(ln for ln in text.splitlines() if ln.lstrip().startswith('SWHEADER ='))
         text=text.replace(marker,marker+'\n  CRITDEVMASBAL = 1.0E-6',1)
+    # Host-commit legacy reader requires an explicit vertical-discretization switch.
+    # The source case uses its authored fixed discretization, so the authority-preserving value is 0.
+    if re.search(r'(?mi)^\s*SWDISCRVERT\s*=',text):
+        text=scalar(text,'SWDISCRVERT','0')
+    else:
+        m=re.search(r'(?mi)^\s*SWSOPHY\s*=.*    text,n=re.subn(r'(?mi)^\s*GWLI\s*=.*$',"  HTB =\n    -0.5 -100000.0\n  -600.0 -100000.0\n* End of table",text,count=1)
+    if n!=1:
+        # Newer templates may already use HTB. Replace its table block.
+        pat=r'(?ms)^\s*HTB\s*=\s*\n.*?^\* End of table'
+        text,n=re.subn(pat,"  HTB =\n    -0.5 -100000.0\n  -600.0 -100000.0\n* End of table",text,count=1)
+    if n!=1: raise RuntimeError('initial head table replacement failed')
+    # Replace the hydraulic parameter table by a five-layer model-8 PDI vapor-on setup.
+    pat=r'(?ms)^\s*(?:IHWCKMODEL\s+)?ORES\s+OSAT\s+ALFA\s+NPAR.*?^\* End of table'
+    rows=f''' IHWCKMODEL ORES OSAT ALFA NPAR LEXP H_ENPR KSATFIT KSATEXM BDENS H0 HA APAR OMEGA_K SWVAPOR
+ 8 0.02 0.433878 0.021645 1.34877 7.202077 0.0 83.24164 83.24164 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
+ 8 0.02 0.433878 0.021645 1.34877 7.202077 0.0 83.24164 83.24164 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
+ 8 0.02 0.433878 0.021645 1.34877 7.202077 0.0 83.24164 83.24164 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
+ 8 0.01 0.364074 0.013642 1.48844 2.179397 0.0 25.81471 25.81471 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
+ 8 0.01 0.364074 0.013642 1.48844 2.179397 0.0 25.81471 25.81471 1300.0 -10000000.0 -10000.0 -1.5 0.01 {a.swvapor}
+* End of table'''
+    text,n=re.subn(pat,rows,text,count=1)
+    if n!=1: raise RuntimeError('hydraulic table replacement failed')
+    # Force zero bottom flux. Insert SWBOTB=6 next to BBCFIL if needed.
+    if re.search(r'(?mi)^\s*SWBOTB\s*=',text):
+        text=scalar(text,'SWBOTB','6')
+    else:
+        m=re.search(r'(?mi)^\s*BBCFIL\s*=.*$',text)
+        if not m: raise RuntimeError('BBCFIL not found')
+        text=text[:m.end()]+'\n\n  SWBOTB = 6'+text[m.end():]
+    p.write_text(text)
+    (a.dst/'pdi.met').write_text(
+      "Station,DD,MM,YYYY,Rad,Tmin,Tmax,Hum,Wind,Rain,ETref,Wet\n"
+      "'999',01,01,1980,18000.0,15.0,28.0,1.0,2.0,0.0,5.0,0.0\n"
+      "'999',02,01,1980,18000.0,15.0,28.0,1.0,2.0,0.0,5.0,0.0\n"
+    )
+    print('swap.swp',sha(p));print('pdi.met',sha(a.dst/'pdi.met'))
+if __name__=='__main__': main()
+,text)
+        if not m: raise RuntimeError('SWSOPHY not found for SWDISCRVERT insertion')
+        text=text[:m.end()]+'\n  SWDISCRVERT = 0'+text[m.end():]
+
     # Uniform very dry initial pressure head through HTB table.
     text,n=re.subn(r'(?mi)^\s*GWLI\s*=.*$',"  HTB =\n    -0.5 -100000.0\n  -600.0 -100000.0\n* End of table",text,count=1)
     if n!=1:
