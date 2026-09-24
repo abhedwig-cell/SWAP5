@@ -2139,8 +2139,7 @@ contains
            drainage_groundwater_direction, drainage_direction_status, drainage_direction_route)
       drainage_direction_available = drainage_direction_status == FMR_QBOT_DRAIN_DIRECTION_OK
       if (drainage_direction_available) then
-        allocate(direction_request%incoming_sink_direction(size(drainage_sink_direction)))
-        direction_request%incoming_sink_direction = drainage_sink_direction
+        call move_alloc(drainage_sink_direction, direction_request%incoming_sink_direction)
       end if
     end if
 
