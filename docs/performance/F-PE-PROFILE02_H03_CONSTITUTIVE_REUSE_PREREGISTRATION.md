@@ -251,3 +251,50 @@ Q7 cross-workstream drift       = PASS_SO_FAR
 ```
 
 No admission claim is made before Q6 runtime measurement and final scope review.
+
+
+## Q6 paired runtime result
+
+The paired runtime gate initially failed because the timing checksum incorrectly included `constitutive_evaluations`, which is the diagnostic intentionally changed by H03. That harness defect was repaired in commit `4915fd41fabf7f74e7ef1a3ad117fd6f63388426` by restricting the checksum to physical state plus unchanged nonlinear-iteration count.
+
+Workflow run `36065753603` then completed successfully on GNU Fortran 13.3.0, O2, shared GitHub-hosted runner.
+
+Eight balanced baseline/candidate pairs were measured, each over 3000 repeated three-iteration Reference solves.
+
+Observed:
+
+```text
+baseline constitutive evaluations = 7
+candidate constitutive evaluations = 4
+nonlinear iterations              = 3 / 3
+physical/control checksum         = identical
+paired mean runtime ratio         = 0.642283280
+paired median runtime ratio       = 0.641670404
+paired mean speedup               = 35.771672 %
+paired mean delta                 = -6843.407333 ns/solve
+paired N                          = 8
+Q6                               = PASS
+```
+
+Typical measured solve times in the paired samples were about 19.1 us for the baseline and 12.3 us for the candidate.
+
+Interpretation is deliberately bounded: this is a focused Reference-solve benchmark on the qualified three-iteration case. It demonstrates that eliminating the three redundant constitutive evaluations produces a large local runtime reduction. It is not a whole-SWAP or production-workload speedup claim.
+
+## Final bounded qualification state
+
+```text
+Q1 compile/runtime preservation = PASS
+Q2 physical identity            = PASS
+Q3 numerical-control identity   = PASS
+Q4 call-count reduction         = PASS
+Q5 multi-iteration coverage     = PASS
+Q6 paired runtime               = PASS
+Q7 cross-workstream drift       = PASS_BOUNDED
+REPAIR                           = QUALIFIED
+MEASURE                          = COMPLETE
+CLOSE                            = READY_FOR_ADMISSION_REVIEW
+```
+
+Q7 scope review found no intended change to F-AHL representation/lookup logic, RossFast, transaction architecture, approximate-mode behavior, constitutive formulas, solver tolerances, timestep policy or fallback policy. The production change remains the local Reference HeadCalc reuse of an already valid constitutive tuple at an unchanged pressure-head vector.
+
+No whole-program performance percentage is claimed. Representative P01-B/P01-C/P01-D attribution remains separate programme work.
