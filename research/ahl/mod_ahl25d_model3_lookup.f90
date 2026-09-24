@@ -39,32 +39,32 @@ contains
     call bind_model3_analytical_provider(provider%analytical,provider%p)
     provider%ready=.true.;ok=.true.
   end subroutine
-  subroutine eval_lookup(self,h,theta,k,c,dkdh)
+  subroutine eval_lookup(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(model3_lookup_provider_t),intent(in)::self
-    real(real64),intent(in)::h(:)
-    real(real64),intent(out)::theta(:),k(:),c(:),dkdh(:)
-    real(real64)::ta(size(h)),ka(size(h)),ca(size(h)),da(size(h))
+    real(real64),intent(in)::pressure_head(:)
+    real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+    real(real64)::ta(size(pressure_head)),ka(size(pressure_head)),ca(size(pressure_head)),da(size(pressure_head))
     real(real64)::x,f,dx,t,H00,H10,H01,H11,dH00,dH10,dH01,dH11,z,dzdx,se,span
     integer::i,ir,ik
     if(.not.self%ready)error stop 'model3 lookup not ready'
-    if(any(h>HMAX).or.any(h<HMIN))call self%analytical%evaluate(h,ta,ka,ca,da)
+    if(any(pressure_head>HMAX).or.any(pressure_head<HMIN))call self%analytical%evaluate(pressure_head,ta,ka,ca,da)
     span=self%p%ts-self%p%tr
-    do i=1,size(h)
-      if(h(i)<=HMAX.and.h(i)>=HMIN)then
-        x=log10(-h(i))
+    do i=1,size(pressure_head)
+      if(pressure_head(i)<=HMAX.and.pressure_head(i)>=HMIN)then
+        x=log10(-pressure_head(i))
         call locate(self%xr,x,ir,f);dx=self%xr(ir+1)-self%xr(ir);t=f
         H00=2*t**3-3*t**2+1;H10=t**3-2*t**2+t;H01=-2*t**3+3*t**2;H11=t**3-t**2
         z=H00*self%zr(ir)+H10*dx*self%mr(ir)+H01*self%zr(ir+1)+H11*dx*self%mr(ir+1)
         dH00=6*t*t-6*t;dH10=3*t*t-4*t+1;dH01=-6*t*t+6*t;dH11=3*t*t-2*t
         dzdx=(dH00*self%zr(ir)+dH10*dx*self%mr(ir)+dH01*self%zr(ir+1)+dH11*dx*self%mr(ir+1))/dx
         if(z>=0.0_real64)then;se=1/(1+exp(-z));else;se=exp(z)/(1+exp(z));end if
-        theta(i)=self%p%tr+span*se
-        c(i)=span*se*(1-se)*dzdx/(h(i)*LN10)
+        water_content(i)=self%p%tr+span*se
+        capacity(i)=span*se*(1-se)*dzdx/(pressure_head(i)*LN10)
         call locate(self%xk,x,ik,f)
-        k(i)=exp(self%lk(ik)+f*(self%lk(ik+1)-self%lk(ik)))
-        dkdh(i)=0.0_real64
+        conductivity(i)=exp(self%lk(ik)+f*(self%lk(ik+1)-self%lk(ik)))
+        dconductivity_dhead(i)=0.0_real64
       else
-        theta(i)=ta(i);k(i)=ka(i);c(i)=ca(i);dkdh(i)=da(i)
+        water_content(i)=ta(i);conductivity(i)=ka(i);capacity(i)=ca(i);dconductivity_dhead(i)=da(i)
       end if
     end do
   end subroutine
