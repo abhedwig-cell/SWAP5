@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.workunit_qualification.v1",
+  "workunit": "F-TAB02-F",
+  "title": "Exact-asset whole-Hupsel generated-provider application gate - first concrete blocker",
+  "date": "2026-09-24",
+  "branch": "work/f-tab02-generated-k0-provider",
+  "result": "FAIL_CLOSED_F5_OUTPUT_IDENTITY",
+  "preregistration": "integration/f-tab/F-TAB02_F_PREREGISTRATION.json",
+  "authority": {
+    "uploaded_archive_name": "SWAP_4.3.1(7).zip",
+    "archive_size_bytes": 8959314,
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "hupsel_case": "SWAP_4.3.1/cases/1.hupselbrook",
+    "exact_asset_identity": "PASS"
+  },
+  "execution": {
+    "environment": "local qualification container, GNU Fortran 14.2.0, OMP_NUM_THREADS=1, OMP_DYNAMIC=false",
+    "source_snapshot": "F-TAB02-F source snapshot from production head 52a455d45fabc6499ad54b89b7e930b02b66ff51; later branch changes before this record are workflow/evidence only",
+    "legacy_application_source": "exact official B0 source from uploaded distribution, using the previously qualified GNU standalone preprocessing/TTUTIL build route",
+    "legacy_output_control_normalization": "SWCSV=1 to SWCSV=0, inherited from exact F-VQ99/M1 GNU Hupsel execution route; no hydrological input, solver tolerance, timestep or retry mutation",
+    "candidate_composition": "production typed Task2 adapter and generated provider source from the F-TAB02 snapshot; analytical default versus explicit standalone generated opt-in",
+    "reference_binding": "The analytical candidate reproduces the frozen exact B1.11/M1 whole-Hupsel normalized BAL/BLC oracle hashes exactly before generated comparison.",
+    "normal_completion": {
+      "analytical": true,
+      "generated": true,
+      "process_returncode": 100
+    }
+  },
+  "reference_reproduction": {
+    "analytical_result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "analytical_result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "frozen_M1_B1_11_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "frozen_M1_B1_11_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "identity": "PASS_EXACT"
+  },
+  "generated_comparison": {
+    "normalization": "remove only nondeterministic Generated at: line",
+    "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "result_blc_normalized_sha256": "1b5705b2166e3fb1e619189b707bce42c5592ad8b6ab80ec2f3537c4ab6df71a",
+    "result_bal_exact_identity": true,
+    "result_blc_exact_identity": false,
+    "observed_blc_differences": [
+      "2003 balance-deviation field: analytical +0.00 versus generated -0.00",
+      "2004 final balance-deviation field: analytical -0.00 versus generated +0.00"
+    ],
+    "other_observed_normalized_blc_text_difference": "NONE",
+    "classification": "SIGNED_ZERO_ONLY_AT_PRINTED_BALANCE_DEVIATION_FIELDS"
+  },
+  "performance_characterization": {
+    "paired_balanced_rounds": 10,
+    "analytical_wall_median_s": 1.538337437,
+    "generated_wall_median_s": 1.401761044,
+    "generated_delta_pct": -8.878181712,
+    "interpretation": "whole-Hupsel acceleration sign is present in this local execution, but F fails on frozen output identity and this timing is characterization only"
+  },
+  "frozen_gate_assessment": {
+    "F1_exact_authority": "PASS_FOR_UPLOADED_DISTRIBUTION_AND_HUPSEL; B1.11 identity inherited from frozen qualified reconstruction authority",
+    "F2_normal_completion": "PASS",
+    "F3_trajectory": "NOT_PROMOTED_TO_PASS_IN_THIS_RUN; no fresh route/accepted-interval instrumentation was added after first concrete F5 blocker was observed",
+    "F4_mass_and_state": "NO_HARD_MASS_FAILURE_OBSERVED; not promoted beyond existing bounded qualification",
+    "F5_outputs": "FAIL",
+    "F6_default_preservation": "PASS_BY_EXISTING_F0_AND_ANALYTICAL_REFERENCE_REPRODUCTION",
+    "F7_scope": "PASS"
+  },
+  "verdict": "FAIL_CLOSED_FIRST_CONCRETE_BLOCKER_F5",
+  "governance_effect": {
+    "canonical_admission": "NOT_AUTHORIZED",
+    "do_not_broaden_normalization": true,
+    "do_not_relabel_signed_zero_as_F_PASS": true,
+    "research_reopen": "BOUNDED_DIAGNOSIS_ALLOWED_ONLY_TO_ESTABLISH_ORIGIN_OF_SIGNED_ZERO_AND_WHETHER A REPRESENTATION-PRESERVING REPAIR EXISTS"
+  },
+  "nonclaims": [
+    "F-TAB02-F PASS",
+    "bitwise internal-state identity",
+    "portable whole-SWAP speedup",
+    "generic table production"
+  ]
+}
