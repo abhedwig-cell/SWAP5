@@ -1,0 +1,22 @@
+name: F-PE-ZERO-WASTE01 H04 multi-iteration demand
+
+on:
+  pull_request:
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_h04_multi_iteration.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h04_multi_iteration.sh'
+      - '.github/workflows/f-pe-zero-waste01-h04-multi.yml'
+  workflow_dispatch:
+
+jobs:
+  h04-multi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Characterize exact multi-iteration constitutive demand
+        run: bash tests/fpe/run_fpe_zero_waste01_h04_multi_iteration.sh
