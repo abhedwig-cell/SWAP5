@@ -17,3 +17,19 @@ jobs:
       - uses: actions/checkout@v4
       - name: Measure participant handle resolution scaling
         run: bash tests/fpe/run_fpe_zero_waste01_gwreg_resolution.sh
+
+  gwreg-semantics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran python3-numpy
+      - name: F-GC49B registry lifecycle
+        run: bash tests/fgc/run_fgc49b_fmr_participant_registry.sh
+      - name: FGC49D production context
+        run: bash tests/fgc/run_fgc49d_production_application_context.sh
