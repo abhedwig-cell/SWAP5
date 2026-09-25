@@ -2,7 +2,7 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL31",
-  "phase": "MEMORY_BUILD_CHARACTERIZATION_COMPLETE",
+  "phase": "MEMORY_BUILD_COST_CHARACTERIZATION_COMPLETE",
   "status": "PASS_CHARACTERIZATION",
   "workflow_run": 36079907166,
   "workflow_job": 107899383592,
@@ -13,27 +13,30 @@
       "median": 145,
       "mean": 144.992,
       "max": 171
+    },
+    "payload_memory": {
+      "total_bytes_256": 1187776,
+      "mean_bytes_per_representation": 4640,
+      "projected_mean_bytes_10000": 46397500,
+      "projected_max_bytes_10000": 54720000,
+      "scope": "x,z,dzdx,logk real64 arrays only"
+    },
+    "build_cpu": {
+      "mean_seconds_per_unique_representation": 0.0012455195312,
+      "median_seconds_per_unique_representation": 0.001353,
+      "max_seconds_per_unique_representation": 0.001773
     }
   },
-  "payload": {
-    "total_bytes_256": 1187776,
-    "mean_bytes_per_representation": 4640,
-    "projected_mean_bytes_10000": 46397500,
-    "projected_max_bytes_10000": 54720000
+  "finding": "The representation payload is small enough that retaining thousands of unique immutable tables for run lifetime is plausible. The one-time build cost is material but far cheaper than repeated rebuilding inside a long MultiSWAP time loop.",
+  "transparent_extrapolation": {
+    "10000_unique_mean_payload_mb_decimal": 46.3975,
+    "10000_unique_sample_max_payload_mb_decimal": 54.72,
+    "10000_unique_mean_build_cpu_seconds": 12.4552
   },
-  "build_cpu_seconds": {
-    "mean": 0.0012455195312,
-    "median": 0.001353,
-    "max": 0.001773
-  },
-  "interpretation": [
-    "Qualified adaptive representations are small in raw array payload, averaging about 4.64 kB in this synthetic four-family perturbation set.",
-    "Even 10000 unique representations project to roughly 46-55 MB of array payload, excluding fixed metadata and allocator overhead.",
-    "One-time build cost is around 1.25 ms per unique representation, making repeated uncached rebuilding materially more expensive than retaining representations."
-  ],
-  "decision": "ADVANCE_TO_EXPLICIT_RUN_LIFETIME_REGISTRY_POLICY",
+  "design_implication": "Investigate a bounded-memory run-lifetime exact-key representation registry with correctness-preserving uncached fallback beyond the qualified memory budget. Avoid per-advance key search/copy by binding profiles to stable representation handles during setup where possible.",
   "nonclaims": [
-    "Synthetic perturbations are not a measured national soil distribution.",
-    "No application speedup is inferred directly from memory characterization."
+    "The 256 deterministic perturbations are not a measured national soil distribution.",
+    "Fixed metadata and allocator overhead are not included in the payload estimate.",
+    "No registry implementation is admitted by this characterization."
   ]
 }
