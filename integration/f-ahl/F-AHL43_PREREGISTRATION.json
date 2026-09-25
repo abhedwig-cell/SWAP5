@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL43",
+  "title": "Surgical production admission",
+  "branch": "work/f-ahl43-production-admission",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "phase": "PREREGISTERED_ADMISSION",
+  "purpose": "Admit only the final production-shaped adaptive hydraulic implementation and durable regression authority. The 900+ commit research history is explicitly excluded from canonical admission.",
+  "production_scope": {
+    "hydraulic_family": "B110 default MvG",
+    "solver_route": "Reference Richards",
+    "adaptive_activation": "explicit opt-in only",
+    "default": "OFF",
+    "qualified_bottom_mode": 5,
+    "prescribed_qbot_mode_2": "authoritative analytical fallback with zero adaptive cache/build side effects",
+    "accepted_trajectory_directional": "authoritative analytical fallback",
+    "swkimpl": 0,
+    "policy_version": 4,
+    "branch_policy_version": 1,
+    "K_tolerance_global": 1e-4,
+    "K_tolerance_wet": 1e-4,
+    "K_floor_cm_per_day": 1e-10,
+    "raw_capacity_relevance_floor": 1e-13,
+    "dry_tail": "authoritative analytical fallback, never truncation"
+  },
+  "admitted_code": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "minimal AHL-specific patch to src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "required_gates": [
+    "production provider self-build and exact-key immutable cache reuse",
+    "36-material wet-mid-dry prescribed-head matrix: 108/108 PASS with identical nonlinear/backtracking path",
+    "policy-version 3 versus 4 exact-key and fingerprint separation",
+    "serialized FMR opt-in route passes at O0 and O2 with semantic identity",
+    "prescribed-qbot opt-in falls back analytically and does not touch adaptive cache",
+    "accepted-trajectory directional route remains analytical",
+    "default-off serialized route retains prior behavior",
+    "git diff contains no research/ahl files or research workflows"
+  ],
+  "hard_exclusions": [
+    "NO_RESEARCH_BRANCH_WHOLESALE_MERGE",
+    "NO_DEFAULT_ON",
+    "NO_PRESCRIBED_QBOT_ACCELERATION",
+    "NO_ACCEPTED_TRAJECTORY_DIRECTIONAL_ACCELERATION",
+    "NO_SWKIMPL1_OR_DKDH_CLAIM",
+    "NO_OTHER_HYDRAULIC_MODEL_FAMILY_ADMISSION",
+    "NO_WHOLE_SWAP_OR_MULTISWAP_SPEEDUP_CLAIM"
+  ],
+  "decision_rule": "Canonical admission is ready only if every required gate passes on this clean canonical-derived branch. Otherwise remain blocked and do not weaken gates."
+}
