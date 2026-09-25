@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11A",
+  "phase": "FULL_CATALOG_BUILD_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36080259207,
+  "workflow_job": 107900446733,
+  "catalog_count": 36,
+  "constitutive_pass_count": 36,
+  "selected_logK_tolerance": 3e-4,
+  "raw_capacity_relevance_threshold": 1e-13,
+  "support_point_range": [96,187],
+  "dry_relevance_bounds": {
+    "O05_cm": -264277.52309014817,
+    "all_other_35_materials_cm": -1000000.0
+  },
+  "finding": "All 36 Staringreeks catalog materials build and satisfy the derivative-consistent theta/C and log(K) constitutive gates with the selected F-AHL10F policy.",
+  "dry_tail_interpretation": "Only O05 crosses the raw C=1e-13 relevance threshold inside the nominal -1e6 cm domain. The O05 lookup therefore ends at about -2.6428e5 cm and authoritative analytical hydraulics is used beyond it; no dry-tail physics is zeroed or truncated.",
+  "next_action": "F-AHL11B 108-case wet-mid-dry Richards matrix across all 36 materials.",
+  "nonclaims": [
+    "Build success alone is not Richards qualification.",
+    "No production admission is implied."
+  ]
+}
