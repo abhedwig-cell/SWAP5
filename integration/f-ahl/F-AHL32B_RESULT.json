@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32B",
+  "phase": "EXACT_KEY_COLLISION_REPAIR_QUALIFIED",
+  "status": "PASS",
+  "workflow_run": 36080869065,
+  "workflow_job": 107902315199,
+  "root_cause": "Unparenthesized .eqv. inside an .and. chain allowed Fortran logical precedence to break the intended field-by-field exact-key conjunction when extension flags were false.",
+  "repair": "Parenthesize the ksatexm_extension_enabled equivalence comparison.",
+  "forced_collision_gate": {
+    "same_fingerprint": true,
+    "exact_key_equal": false,
+    "first_key": {"ok": true, "hit": false},
+    "second_distinct_key": {"ok": true, "hit": false},
+    "exact_first_key_retrieval_hit": true,
+    "builds": 2,
+    "hits": 1,
+    "misses": 2,
+    "entries": 2
+  },
+  "regression_context": {
+    "registry_10000_reuse": "PASS",
+    "hash_quality": "PASS",
+    "capacity_plus_one_fallback": "PASS"
+  },
+  "finding": "Fingerprint collisions no longer weaken exact hydraulic-key authority. Distinct exact keys sharing a fingerprint remain separate registry entries.",
+  "decision": "RETAIN_CORRECTNESS_REPAIR",
+  "nonclaims": [
+    "The repair does not change the fingerprint algorithm.",
+    "No hydraulic representation or performance claim follows from this correctness repair."
+  ]
+}
