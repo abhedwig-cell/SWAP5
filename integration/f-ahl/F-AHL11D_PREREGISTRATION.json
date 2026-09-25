@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11D",
+  "title": "O09-dry full-catalog boundary attribution",
+  "parent": "F-AHL11B",
+  "phase": "PREREGISTERED_RESEARCH",
+  "trigger": {
+    "case": "O09:dry",
+    "observed_bottom_flux_delta_cm_per_day": 1.039457e-5,
+    "frozen_gate_cm_per_day": 1e-5,
+    "other_gates": "PASS",
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "question": "Is the first F-AHL11B full-catalog failure dominated by conductivity interpolation, retention/capacity interpolation, or neither?",
+  "variants": [
+    "base selected F-AHL11A representation",
+    "derivative-consistent theta/C plus exact K",
+    "exact theta/C plus lookup K"
+  ],
+  "fixture": {
+    "material": "O09",
+    "initial_head_cm": -500.0,
+    "bottom_head_cm": -400.0,
+    "lower_boundary": "prescribed head",
+    "solver_policy": "unchanged from F-AHL11B"
+  },
+  "gates": "identical to F-AHL11B; no gate is retuned",
+  "decision_rule": "Classify a constitutive component as dominant only if restoring that component to authoritative analytical evaluation closes the frozen O09-dry failure while the alternative attribution does not.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_GLOBAL_TOLERANCE_CHANGE_BEFORE_ATTRIBUTION",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
