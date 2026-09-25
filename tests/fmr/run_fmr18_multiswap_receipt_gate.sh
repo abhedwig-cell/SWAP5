@@ -39,13 +39,21 @@ for forbidden in ['wofost', 'snow_process', 'irrigation_process', 'root_water_up
 start = runtime.index('type, public :: fmr_serialized_column_result_t')
 end = runtime.index('end type fmr_serialized_column_result_t', start)
 assert 'receipt' not in runtime[start:end], 'receipt state leaked into every column result'
-for required in [
+base_required = [
     'receipt_column_ids', 'commit_receipts', 'fmr_commit_candidate_with_receipt',
-    'fmr_commit_candidate(transaction_control', 'fmr_serial_dispatch_receipt_request_rejected',
-    'receipt_request_valid', 'find_receipt_slot'
-]:
+    'fmr_commit_candidate(transaction_control', 'fmr_serial_dispatch_receipt_request_rejected'
+]
+for required in base_required:
     assert required in runtime, f'missing Gate C runtime token: {required}'
-assert runtime.index('receipt_request_valid') < runtime.index('call backend%initialize'), 'receipt validation must precede backend init'
+semantic_only = __import__('os').environ.get('FPE_H09_SEMANTIC_ONLY','0') == '1'
+if semantic_only:
+    assert 'build_receipt_slot_map' in runtime, 'indexed receipt map missing'
+    assert runtime.index('build_receipt_slot_map') < runtime.index('call backend%initialize'),         'indexed receipt validation must precede backend init'
+    print('FPE_ZERO_WASTE01_H09_INDEXED_RECEIPT_STATIC=PASS')
+else:
+    for required in ['receipt_request_valid', 'find_receipt_slot']:
+        assert required in runtime, f'missing historical Gate C runtime token: {required}'
+    assert runtime.index('receipt_request_valid') < runtime.index('call backend%initialize'),         'receipt validation must precede backend init'
 print('FMR18C_GENERIC_RUNTIME_BOUNDARY=PASS')
 print('FMR18C_NO_PER_COLUMN_RECEIPT_STATE=PASS')
 print('FMR18C_NO_RECEIPT_COMMIT_ROUTE_RETAINED=PASS')
