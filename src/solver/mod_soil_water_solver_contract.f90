@@ -142,6 +142,10 @@ module mod_soil_water_solver_contract
      integer :: internal_retries = 0
      integer :: interface_sensitivity_backsolves = 0
      integer :: constitutive_evaluations = 0
+     integer :: constitutive_initial_full_evaluations = 0
+     integer :: constitutive_candidate_full_evaluations = 0
+     integer :: constitutive_candidate_terminal_evaluations = 0
+     integer :: constitutive_candidate_capacity_reuses = 0
      integer :: workspace_full_resets = 0
      integer(int64) :: workspace_zeroed_bytes = 0_int64
      character(len=32) :: route = 'not-run'
