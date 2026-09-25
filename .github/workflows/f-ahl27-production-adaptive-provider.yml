@@ -27,13 +27,19 @@ jobs:
           /tmp/fahl27_policy | tee /tmp/fahl27_policy.txt
           grep -Fq 'FAHL27_RUNTIME_POLICY=PASS' /tmp/fahl27_policy.txt
       - name: Compile serialized production backend
+        shell: bash
         run: |
+          set -o pipefail
           bash tests/fkt/run_fkt22_fmr_compile_gate.sh | tee /tmp/fahl27_backend_compile.txt
       - name: Run serialized production regression
+        shell: bash
         run: |
+          set -o pipefail
           bash tests/fkt/run_fkt22_fmr_runtime_gate.sh | tee /tmp/fahl27_backend_runtime.txt
       - name: Verify adaptive activation and qbot fallback
+        shell: bash
         run: |
+          set -o pipefail
           bash tests/ahl/run_fahl27_serialized_selection.sh | tee /tmp/fahl27_selection.txt
       - uses: actions/upload-artifact@v4
         with:
