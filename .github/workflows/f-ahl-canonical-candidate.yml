@@ -28,6 +28,10 @@ jobs:
         run: |
           bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh | tee /tmp/fahl_candidate_qbot.txt
 
+      - name: Accepted-trajectory analytical fallback
+        run: |
+          bash tests/fahl/run_fahl27_stage2_trajectory_fallback.sh | tee /tmp/fahl_candidate_trajectory.txt
+
       - name: Preserve review evidence
         uses: actions/upload-artifact@v4
         with:
@@ -37,3 +41,4 @@ jobs:
             /tmp/fahl_candidate_o09.txt
             /tmp/fahl_candidate_optin.txt
             /tmp/fahl_candidate_qbot.txt
+            /tmp/fahl_candidate_trajectory.txt
