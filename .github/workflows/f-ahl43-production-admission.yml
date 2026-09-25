@@ -1,0 +1,47 @@
+name: F-AHL43 production admission
+
+on:
+  push:
+    branches:
+      - work/f-ahl43-production-admission
+  workflow_dispatch:
+
+jobs:
+  provider-selfbuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production provider self-build and cache
+        run: bash tests/fahl/run_fahl27_production_provider_extract.sh
+
+  full-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Policy-v4 full catalog
+        run: bash tests/fahl/run_fahl43_production_catalog.sh /tmp/fahl43_catalog.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl43-catalog-${{ github.run_id }}
+          path: /tmp/fahl43_catalog.txt
+
+  serialized-opt-in:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Serialized runtime opt-in and default-off identity
+        run: bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
+
+  prescribed-qbot-fallback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qbot analytical fallback and zero cache side effects
+        run: bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
+
+  accepted-trajectory-fallback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Accepted trajectory remains analytical
+        run: bash tests/fahl/run_fahl27_stage2_trajectory_fallback.sh
