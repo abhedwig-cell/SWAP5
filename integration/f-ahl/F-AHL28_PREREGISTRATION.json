@@ -2,38 +2,38 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL28",
-  "title": "Adaptive provider binding and cache-hit overhead attribution",
-  "parent": "F-AHL27_STAGE2_TIMING3",
-  "phase": "PREREGISTERED_BEFORE_EXECUTION",
-  "motivation": "Production-shaped serialized reference-floor timing preserves fidelity but shows only 1.56% median CPU reduction, much less than isolated self-built Richards timing. The backend currently rebinds adaptive hydraulics on every prescribed-head physical advance.",
-  "question": "How much runtime is spent re-acquiring an already-built adaptive table and rebuilding binding metadata compared with reusing an already-bound immutable table/provider state?",
-  "current_hot_path": [
-    "bind analytical fallback for current step duration",
-    "construct one-node sampler parameter set from 42 initialized coefficients",
-    "bind sampler provider",
-    "construct exact cache key and fingerprint",
-    "scan cache and copy/acquire existing table"
+  "title": "Adaptive hydraulic provider lifecycle zero-waste audit",
+  "parent": "F-AHL27",
+  "phase": "PREREGISTERED_RESEARCH_REPAIR",
+  "motivation": "The strict Richards candidate shows material lower-level speed gains, while the production-shaped serialized Reference-floor timing is only equivocal (median adaptive/analytical ratio 0.984431). Code inspection shows adaptive representation acquisition is repeated on every physical advance.",
+  "code_authority_observations": [
+    "fmr_serialized_advance calls bind_b110_adaptive_hydraulic_provider on every prescribed-head adaptive advance.",
+    "b110_adaptive_hydraulic_cache_t%get_or_build returns a cache hit through intrinsic assignment table=self%entry(i)%table.",
+    "Because the table contains allocatable x,z,dzdx,logk arrays, that cache-hit assignment deep-copies the representation rather than lending immutable cached storage.",
+    "The analytical fallback inside the adaptive provider remains step-duration dependent, so table lifetime and step binding must be separated rather than blindly persisting the whole current provider."
   ],
-  "experiments": {
-    "A": "Warm-cache bind microbenchmark: repeatedly call bind_b110_adaptive_hydraulic_provider with identical authority and step duration; report time per bind and cache-stat deltas.",
-    "B": "Warm-provider constitutive benchmark: evaluate an already-bound adaptive provider over representative heads; report time per provider evaluation.",
-    "C": "Reference-floor cache accounting: record cache hit/build/miss deltas over a fixed number of repeated adaptive floor samples to prove whether one cache acquisition occurs per physical advance."
+  "question": "How much avoidable cost is caused by per-advance adaptive representation acquisition/deep-copy, and can immutable cached representation ownership be separated from cheap step-duration binding without changing hydraulics or routing semantics?",
+  "stage_1_baseline": {
+    "required_checks": [
+      "prove repeated cache hits occur across repeated physical samples",
+      "measure warm bind/cache-hit cost independently from table build",
+      "measure representation copy/allocation contribution where possible",
+      "retain exact existing F-AHL27 fidelity and fallback semantics"
+    ]
   },
-  "decision_rule": {
-    "binding_overhead_actionable": "warm-cache binding cost is material relative to one Richards physical advance and cache-hit count scales approximately one-for-one with repeated advances",
-    "binding_overhead_not_primary": "warm-cache binding cost is too small to explain the observed loss of end-to-end speed"
+  "repair_target": {
+    "representation_lifetime": "parameter/cache lifetime, immutable",
+    "step_dependent_state": "only authoritative analytical fallback binding and other genuine timestep-dependent state",
+    "cache_hit": "no deep copy of support arrays",
+    "runtime_refinement": false
   },
-  "repair_boundary_if_actionable": [
-    "Memoize immutable table acquisition by exact hydraulic key and policy version.",
-    "Do not memoize step-dependent analytical fallback semantics incorrectly.",
-    "Retain exact-key collision-safe equality.",
-    "No runtime table refinement."
-  ],
   "hard_exclusions": [
-    "NO_SEMANTIC_CHANGE",
-    "NO_CACHE_KEY_WEAKENING",
-    "NO_STEP_DURATION_ASSUMPTION_WITHOUT_PROOF",
-    "NO_GATE_RETUNING",
-    "NO_PRODUCTION_ADMISSION"
-  ]
+    "NO_CHANGE_TO_HYDRAULIC_ERROR_GATES",
+    "NO_CHANGE_TO_DRY_TAIL_RELEVANCE_FLOOR",
+    "NO_CHANGE_TO_DEFAULT_OFF_ROUTING",
+    "NO_CHANGE_TO_QBOT_OR_ACCEPTED_TRAJECTORY_FALLBACKS",
+    "NO_GENERAL_FMR_PARAMETER_LIFECYCLE_REFACTOR",
+    "NO_PRODUCTION_ADMISSION_FROM_MICROBENCHMARK"
+  ],
+  "decision_rule": "Repair only if repeated representation acquisition is demonstrated and the no-copy lifecycle preserves bitwise or frozen-gate-equivalent hydraulics while reducing measured bind/application overhead."
 }
