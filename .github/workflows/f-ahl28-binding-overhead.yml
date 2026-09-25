@@ -1,0 +1,25 @@
+name: F-AHL28 binding overhead
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl28_binding_overhead.f90'
+      - 'research/ahl/run_ahl28_binding_overhead.sh'
+      - 'integration/f-ahl/F-AHL28_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl28-binding-overhead.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run warm binding benchmark
+        run: |
+          bash research/ahl/run_ahl28_binding_overhead.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl28-binding-${{ github.run_id }}
+          path: /tmp/ahl28_binding.txt
