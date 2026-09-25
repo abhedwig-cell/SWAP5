@@ -7,6 +7,7 @@ mkdir -p "$BUILD/base" "$BUILD/candidate" "$BUILD/src"
 trap 'rm -rf "$BUILD"' EXIT
 BASE=f5ba657695156a936cb3dc8e14669f92d333753b
 
+git fetch --no-tags --depth=1 origin "$BASE"
 git show "$BASE:src/runtime/mod_fmr_runtime_core.f90" > "$BUILD/src/runtime_base.f90"
 
 compile_variant() {
