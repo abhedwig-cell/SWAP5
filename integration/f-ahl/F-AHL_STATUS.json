@@ -3,7 +3,7 @@
   "workstream": "F-AHL",
   "status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL42A",
+  "completed_through": "F-AHL42A + canonical handoff",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -243,6 +243,13 @@
   "post_f_ahl40_closeout": "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json",
   "next_owner": {
     "owner": "canonical governance/admission",
-    "action": "Extract the minimal production-shaped default-MvG prescribed-head patch including F-AHL42A policy-v4 K tolerance repair and retained regression evidence. Keep prescribed-qbot analytical fallback. Do not merge the full research branch wholesale."
+    "action": "Review draft PR #608 from clean canonical-derived branch review/f-ahl-policy-v4-candidate. Candidate CI run 36125003248 is green. Do not merge the F-AHL research branch wholesale."
+  },
+  "canonical_candidate": {
+    "draft_pr": 608,
+    "branch": "review/f-ahl-policy-v4-candidate",
+    "mergeable": true,
+    "candidate_ci_run": 36125003248,
+    "candidate_ci_result": "PASS"
   }
 }
