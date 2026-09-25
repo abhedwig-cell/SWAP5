@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_SINGLE_TIMING",
+  "title": "Serialized FMR single-trial paired timing repair",
+  "parent": "F-AHL27",
+  "phase": "PREREGISTERED_AFTER_INVALID_FIXTURE_BEFORE_EXECUTION",
+  "supersedes_invalid_fixture": "integration/f-ahl/F-AHL27_STAGE2_TIMING_INVALID.json",
+  "reason": "The original TX_TEMPORAL_EXTERNAL_FULL_HALF timing fixture rejected the analytical reference before adaptive comparison. This repair removes only that independently qualified temporal acceptance layer from the timing measurement and does not loosen any hydraulic or mass gate.",
+  "fixture": {
+    "hydraulics": "default unimodal MvG FSI-style parameterization",
+    "bottom_mode": 5,
+    "initial_head_cm": -75.0,
+    "bottom_head_cm": -50.0,
+    "duration_day": 0.25,
+    "top_flux": "negative authoritative initial conductivity",
+    "transaction_temporal_mode": "TX_TEMPORAL_NONE"
+  },
+  "comparison": "same serialized Reference backend with adaptive_hydraulics_active false versus true",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 8192,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->adaptive and adaptive->analytical",
+    "primary_statistic": "median paired adaptive/analytical CPU ratio",
+    "adaptive_representation_build": "one warm-up/build before timed batches",
+    "normal_cache_lookup": "included in timed backend calls"
+  },
+  "fidelity_gates": {
+    "both_trials_completed": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "application_speed_pass": "median paired ratio < 0.98",
+    "equivocal": "0.98 <= median paired ratio <= 1.02",
+    "application_speed_fail": "median paired ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_TEMPORAL_TOLERANCE_RELAXATION",
+    "NO_DEFAULT_ON",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION_FROM_TIMING_ALONE"
+  ]
+}
