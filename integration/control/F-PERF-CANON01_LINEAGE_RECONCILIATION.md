@@ -167,3 +167,49 @@ Reference solver seam:
 The next discriminator is byte/provenance matching against later admitted current-canonical capability records, not a blind replay of the 58 commits.
 
 A0 remains open, but its problem is now classified as `INHERITED_PRODUCTION_PROVENANCE_RECONCILIATION`, not `UNKNOWN_PERFORMANCE_PATCH`.
+
+
+## A0 resolved by byte-equivalent admitted postimage
+
+A decisive repository comparison resolves A0.
+
+Compare:
+`integration/f-ci81-rossfast-application-composition-admission`
+->
+PROFILE01 split point `0b373c6cdaed53e26a1acb917f096bf20256f12a`.
+
+Result:
+- split point is 2204 commits ahead in history;
+- **zero `src/**` file differences**.
+
+Compare the same F-CI81 authority to current canonical:
+- current canonical is 2146 commits ahead;
+- **zero `src/**` file differences**.
+
+Therefore the ten-file difference observed between current canonical and the PROFILE01 split point is not an unqualified semantic production delta. Both postimages are source-equivalent to the independently qualified/admitted F-CI81 production authority, while current canonical has later history/governance divergence.
+
+This is stronger than commit-history inference: the complete production source surface is byte-equivalent at the relevant authority comparison.
+
+### A0 decision
+
+`A0_PRE_PROFILE01_PRODUCTION_AUTHORITY = RESOLVED_SOURCE_EQUIVALENT_TO_F_CI81`
+
+No A0 production patch is required.
+
+No 58-commit replay is authorized or needed.
+
+The apparent current-canonical -> split-point source drift is a branch/history artifact relative to the named canonical ref, not a missing production capability that must be re-admitted.
+
+## Updated admission chain
+
+The bounded reconstruction can now start after A0:
+
+1. A0: no-op by source equivalence to F-CI81 authority;
+2. A1: PROFILE01 observation only, no production patch;
+3. A2: PROFILE02-H03 one-file `headcalc.f90` qualified repair;
+4. A3: reconcile PROFILE03-H03-E2E production scope;
+5. B: recompose only admitted ZERO-WASTE01 exact-P0 patches;
+6. C: PLANVALID01 one-file runtime-core delta;
+7. D: F-AHL50 six-file opt-in delta.
+
+The next active discriminator is A3.
