@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_TIMING",
+  "record": "INVALID_FIXTURE",
+  "workflow_runs": [36077816086,36077831024],
+  "classification": "REFERENCE_FAILS_BEFORE_ADAPTIVE_COMPARISON",
+  "failure": "The analytical default-off serialized trial does not complete under TX_TEMPORAL_EXTERNAL_FULL_HALF for the non-equilibrium prescribed-head transient h=-75 cm to bottom head=-50 cm.",
+  "interpretation": "This is not evidence against adaptive hydraulics. The timing fixture conflates hydraulic-provider timing with external full-versus-two-half temporal acceptance. The latter is independently qualified by FKT22 and adaptive accepted-trajectory/directional routes remain analytical fallback in F-AHL27.",
+  "scientific_result": "NONE",
+  "repair_rule": "Do not loosen temporal tolerances. Replace the invalid timing fixture prospectively with a serialized single-trial timing protocol using TX_TEMPORAL_NONE while preserving the same hydraulic transient, solver settings, default-off/on routing comparison and fidelity gates."
+}
