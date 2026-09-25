@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11E",
+  "phase": "GLOBAL_FULL_CATALOG_REPAIR_COMPLETE",
+  "status": "PASS_36_BUILD_108_RICHARDS",
+  "workflow_run": 36123173682,
+  "workflow_job": 108033189113,
+  "candidate": {
+    "theta_C": "F-AHL09 derivative-consistent cubic-Hermite logit(Se) representation with C derived from the same interpolant",
+    "conductivity": "global adaptive log(K) lookup with abs logK tolerance <= 1e-4",
+    "dry_relevance_threshold_raw_C": 1e-13,
+    "outside_loaded_table": "authoritative analytical fallback",
+    "near_saturation": "authoritative analytical handling for h > -1 cm"
+  },
+  "stage_A": {
+    "catalog_materials": 36,
+    "build_and_constitutive_pass": "36/36"
+  },
+  "stage_B": {
+    "richards_cases": 108,
+    "wet_mid_dry_per_material": true,
+    "pass": "108/108",
+    "same_nonlinear_iteration_and_backtracking_path_all_cases": true
+  },
+  "repaired_boundary_case": {
+    "case": "O09:dry",
+    "max_abs_pressure_head_delta_cm": 7.927128e-4,
+    "max_abs_water_content_delta": 1.527134e-7,
+    "bottom_flux_delta_cm_per_day": 1.374285e-6,
+    "mass_residual_abs_cm": 2.710505e-17,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "finding": "A single global conductivity tolerance of 1e-4 closes the first full-catalog O09-dry failure and passes the complete 36-material wet/mid/dry prescribed-head Richards matrix without material-specific tuning.",
+  "dry_tail_semantics": "The raw C=1e-13 threshold limits representation work only where storage response is negligible; constitutive physics remains authoritative through analytical fallback outside the loaded table.",
+  "next_gate": "Prescribed-flux lower-boundary qualification using bottom_mode=2, with bottom-head response and interface sensitivity observed explicitly before any broad timing claim.",
+  "nonclaims": [
+    "No whole-SWAP or MultiSWAP speedup claim follows from the 108-case fidelity matrix.",
+    "Prescribed-flux lower-boundary behavior is not covered by this result.",
+    "No production admission is implied."
+  ]
+}
