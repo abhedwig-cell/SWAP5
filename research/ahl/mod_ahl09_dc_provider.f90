@@ -61,12 +61,12 @@ contains
     integer::i,idx
 
     if(.not.self%ready.or..not.associated(self%cofgen))error stop 'AHL09 provider not ready'
-    if(any(pressure_head>LOOKUP_H_MAX).or.any(pressure_head < -1.0e6_real64))then
+    if(any(.not.in_lookup_domain(self,pressure_head)))then
       call self%analytical%evaluate(pressure_head,wa,ka,ca,da)
     end if
 
     do i=1,size(pressure_head)
-      if(pressure_head(i)<=LOOKUP_H_MAX.and.pressure_head(i)>=-1.0e6_real64)then
+      if(in_lookup_domain_scalar(self,pressure_head(i)))then
         xv=log10(-pressure_head(i))
         call locate(self%x,xv,idx,f)
         dx=self%x(idx+1)-self%x(idx);t=f
@@ -89,6 +89,26 @@ contains
       end if
     end do
   end subroutine dc_evaluate
+
+  pure elemental logical function in_lookup_domain_scalar(self,head) result(ok)
+    class(ahl09_dc_provider_t),intent(in)::self
+    real(real64),intent(in)::head
+    real(real64)::xv
+    ok=.false.
+    if(head>LOOKUP_H_MAX .or. head>=0.0_real64) return
+    xv=log10(-head)
+    ok=(xv>=self%x(1) .and. xv<=self%x(size(self%x)))
+  end function in_lookup_domain_scalar
+
+  pure function in_lookup_domain(self,heads) result(mask)
+    class(ahl09_dc_provider_t),intent(in)::self
+    real(real64),intent(in)::heads(:)
+    logical::mask(size(heads))
+    integer::j
+    do j=1,size(heads)
+      mask(j)=in_lookup_domain_scalar(self,heads(j))
+    end do
+  end function in_lookup_domain
 
   pure subroutine locate(x,value,idx,fraction)
     real(real64),intent(in)::x(:),value
