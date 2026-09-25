@@ -38,8 +38,17 @@ if "src/process/mod_drainage_extended_exchange.f90" not in s:
     if needle not in s:
         raise SystemExit("HDIR02 harness repair: drainage compile anchor missing")
     s=s.replace(needle,addition,1)
+
+root_needle="  src/solver/mod_b110_source_sink_provider.f90\n"
+root_addition=root_needle+"  src/solver/mod_b110_root_sink_provider.f90\n"
+if "src/solver/mod_b110_root_sink_provider.f90" not in s:
+    if root_needle not in s:
+        raise SystemExit("HDIR02 harness repair: root-sink compile anchor missing")
+    s=s.replace(root_needle,root_addition,1)
+
 p.write_text(s,encoding="utf-8")
 print("FPE_ZERO_WASTE01_HDIR02_HISTORICAL_DEPENDENCY_REPAIRED=PASS")
+print("FPE_ZERO_WASTE01_HDIR02_ROOT_SINK_DEPENDENCY_REPAIRED=PASS")
 PY
 
 bash tests/fgc/run_fgc31_active_drainage_production_tangent.sh > "$BUILD/out.txt" 2>&1 || {
