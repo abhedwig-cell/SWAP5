@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "CANONICAL_GOVERNANCE_REVIEW",
+  "date": "2026-09-25",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "candidate_pr": 608,
+  "finding": {
+    "classification": "ADMISSION_BLOCKER_FOUND_AND_BOUNDED_REPAIR_APPLIED",
+    "issue": "The policy-v4 production candidate built and keyed one immutable hydraulic representation from initialized cofgen(:,1), then applied that representation to every active node. Existing qualification matrices varied material between homogeneous profiles and therefore did not qualify layered or heterogeneous within-profile hydraulics.",
+    "reproducer_run": 36126806240,
+    "reproducer_observations": {
+      "node1_theta_delta": 4.385381e-15,
+      "node2_theta_delta": 1.387389e-1,
+      "node2_K_delta": 4.870219e-1,
+      "node2_C_delta": 1.294518e-3
+    }
+  },
+  "repair": {
+    "policy": "AHL remains admitted only when all active nodes have bit-identical initialized 42-coefficient hydraulic authority. Heterogeneous/layered profiles fall back fully to the authoritative analytical provider.",
+    "provider_api": "Direct adaptive-provider binding fails closed for heterogeneous profiles.",
+    "runtime": "Profile homogeneity is evaluated once during parameter configuration and cached as a boolean; no O(nodes) authority scan is added to the solve hot path.",
+    "lifecycle": "Unsupported adaptive provider state is released; shared immutable cache remains unaffected.",
+    "regression": "Candidate CI now requires an O0/O2 heterogeneous-profile fallback test with bit-identical analytical state/flux behavior and zero AHL cache activity."
+  },
+  "dry_domain_note": {
+    "raw_C_relevance_floor": 1e-13,
+    "meaning": "representation-work relevance bound, not a physical theta or K cutoff",
+    "outside_domain": "authoritative analytical fallback"
+  },
+  "admission_state": "PENDING_CURRENT_HEAD_CANDIDATE_CI",
+  "nonclaims": [
+    "Layered AHL is not qualified or admitted.",
+    "Older green candidate runs do not qualify the repaired head."
+  ]
+}
