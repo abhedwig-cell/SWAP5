@@ -1,0 +1,26 @@
+name: F-AHL41B prescribed-qbot attribution
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/mod_ahl41b_attribution_provider.f90'
+      - 'research/ahl/test_ahl41b_qbot_attribution.f90'
+      - 'research/ahl/run_ahl41b_qbot_attribution.sh'
+      - 'integration/f-ahl/F-AHL41B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl41b-qbot-attribution.yml'
+  workflow_dispatch:
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run qbot component attribution
+        run: |
+          bash research/ahl/run_ahl41b_qbot_attribution.sh /tmp/ahl41b_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl41b-${{ github.run_id }}
+          path: /tmp/ahl41b_result.txt
