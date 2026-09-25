@@ -104,6 +104,13 @@ participant_anchor = '''    if (.not. accepted_whole_window(self%trial_result, s
       if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
 '''
 participant_replacement = '''    if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_result_status=', self%trial_result%status
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_solver_rejections=', self%diagnostics%solver_rejections
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_temporal_rejections=', self%diagnostics%temporal_rejections
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_mass_rejections=', self%diagnostics%mass_rejections
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_admission_rejections=', self%diagnostics%admission_rejections
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_attempts=', self%diagnostics%attempts
+      write(*,'(A,I0)') 'FGC49D_TRACE trial_retries=', self%diagnostics%retries
       write(*,'(A,L1)') 'FGC49D_TRACE trial_result_completed=', self%trial_result%completed
       write(*,'(A,L1)') 'FGC49D_TRACE trial_candidate_ready=', self%candidate%ready()
       write(*,'(A,L1)') 'FGC49D_TRACE trial_bottom_exchange_available=', self%trial_result%bottom_interface_exchange_available
