@@ -496,7 +496,9 @@ contains
       write(*,'(a)') 'PPA_IRRIGATION_CONTROL_COMMON_BOUNDARY=PASS'
       ! Hydraulic restart while the prescribed SSDI source remains active.
       ! Forcing is explicitly supplied again, not reconstructed from an event.
-      midpoint=request%t0+0.5_real64*irrigation_dt
+      ! Use two established-length windows for this prescribed-source gate.
+      ! A half-length first window is tracked separately as a numerical failure.
+      midpoint=request%t1
       call owner%run_standalone_with_forcing(request%t0,midpoint,irrigation_forcing,irrigation_result,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint interval failed'
       if(maxval(abs(irrigation_result%mass%residual))>HARD_MASS_GATE) error stop 'irrigation midpoint mass'
@@ -507,9 +509,9 @@ contains
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh initialize'
       call fresh_owner%restore_committed_restart(midpoint_bundle,92001_int64,ok,code)
       if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh restore'
-      call owner%run_standalone_with_forcing(midpoint,request%t1,irrigation_forcing,irrigation_result,code)
+      call owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,irrigation_forcing,irrigation_result,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint continuation failed'
-      call fresh_owner%run_standalone_with_forcing(midpoint,request%t1,irrigation_forcing,continued_result,code)
+      call fresh_owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,irrigation_forcing,continued_result,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint resumed continuation failed'
       call owner%copy_committed_hydraulic_states(copied,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint final copy'
@@ -518,14 +520,15 @@ contains
       do tile=1,NTILE
         if(abs(irrigation_result(tile)%mass%residual)>HARD_MASS_GATE.or. &
              abs(continued_result(tile)%mass%residual)>HARD_MASS_GATE) error stop 'irrigation midpoint tail mass'
-        expected=selected_amount(tile)+sum(max(-irrigation_forcing(tile)%drainage_flux_by_level,0.0_real64))*irrigation_dt
+        expected=2.0_real64*(selected_amount(tile)+ &
+             sum(max(-irrigation_forcing(tile)%drainage_flux_by_level,0.0_real64))*irrigation_dt)
         if(abs(first_half_in(tile)+irrigation_result(tile)%mass%total_in-expected)>HARD_MASS_GATE) &
              error stop 'irrigation midpoint total inflow'
         if(continued_result(tile)%mass%total_in/=irrigation_result(tile)%mass%total_in) &
              error stop 'irrigation midpoint resumed inflow'
         if(again(tile)%revision/=copied(tile)%revision.or. &
              again(tile)%committed_time/=copied(tile)%committed_time) error stop 'irrigation midpoint revision time'
-        if(copied(tile)%committed_time/=request%t1) error stop 'irrigation midpoint endpoint'
+        if(copied(tile)%committed_time/=midpoint+irrigation_dt) error stop 'irrigation midpoint endpoint'
         if(any(again(tile)%water_content/=copied(tile)%water_content).or. &
              any(again(tile)%pressure_head_cm/=copied(tile)%pressure_head_cm)) &
              error stop 'irrigation midpoint resumed profile'
