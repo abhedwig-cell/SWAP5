@@ -1,0 +1,25 @@
+name: F-AHL49 production provider matrix
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'tests/fahl/run_fahl49_production_matrix.sh'
+      - '.github/workflows/f-ahl49-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production-provider 12-case matrix
+        run: |
+          bash tests/fahl/run_fahl49_production_matrix.sh | tee fahl49-matrix.txt
+          grep -Fq 'FAHL49_PRODUCTION_MATRIX=PASS' fahl49-matrix.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-matrix
+          path: fahl49-matrix.txt
