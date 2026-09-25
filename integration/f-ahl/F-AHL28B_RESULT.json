@@ -2,35 +2,52 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL28B",
-  "phase": "PROVIDER_RETENTION_SEMANTICS_COMPLETE",
-  "status": "PASS_SEMANTICS",
-  "valid_workflow_run": 36079626380,
-  "valid_workflow_job": 107898466712,
-  "prior_invalid_workflow_run": 36079491769,
-  "prior_invalid_run_classification": "HARNESS_FAILURE_ONLY",
-  "prior_invalid_run_detail": "Scientific executable emitted AHL28B_FMR_PROVIDER_RETENTION=PASS; workflow failed only because the runner grepped a stale output path.",
-  "serialized_fmr": {
-    "warmup_fidelity": "PASS",
-    "max_abs_pressure_head_delta_cm": 1.038717e-6,
-    "max_abs_water_content_delta": 1.143307e-9,
-    "bottom_flux_delta_cm_per_day": 4.617402e-9,
-    "nonlinear_iterations": 4,
-    "backtracking_attempts": 4,
-    "repeated_advances": 64,
-    "cache_before": {"builds":1,"hits":0,"misses":1,"entries":1},
-    "cache_after": {"builds":1,"hits":0,"misses":1,"entries":1},
-    "shared_cache_hit_delta": 0
+  "phase": "SAME_KEY_MEMOIZATION_REPAIR_QUALIFIED",
+  "status": "PASS_PRE_TIMING",
+  "microbenchmark": {
+    "workflow_run": 36079751834,
+    "workflow_job": 107898872857,
+    "frozen_baseline_seconds": 5.9575e-7,
+    "same_key_bind_seconds": 9.0645e-8,
+    "reduction_fraction": 0.847847,
+    "required_reduction_fraction": 0.75,
+    "verdict": "PASS"
   },
-  "semantics": [
-    "Same-key provider reuse bypasses shared-cache acquisition.",
-    "The immutable adaptive representation is retained locally.",
-    "The authoritative analytical fallback is rebound for current step duration.",
-    "Hydraulic-authority changes cannot take the local same-key path.",
-    "Disabling adaptive hydraulics still releases the retained provider."
-  ],
-  "decision": "RETAIN_PROVIDER_LIFETIME_MEMOIZATION_SUBJECT_TO_FULL_SEMANTIC_REGRESSION",
+  "semantic_gates": {
+    "authority_and_step_duration": {
+      "marker": "AHL28B_AUTHORITY_AND_DT_GATES=PASS",
+      "changed_authority_bypasses_local_fast_path": true,
+      "changed_step_duration_reuses_table": true,
+      "changed_step_duration_rebinds_analytical_fallback": true
+    },
+    "serialized_provider_retention": {
+      "workflow_run": 36079626380,
+      "workflow_job": 107898466712,
+      "marker": "AHL28B_FMR_PROVIDER_RETENTION=PASS",
+      "shared_cache_hit_delta_over_64_repeated_advances": 0
+    },
+    "full_semantic_regression": {
+      "workflow_run": 36079629604,
+      "workflow_job": 107898475934,
+      "production_provider_extraction": "PASS",
+      "prescribed_head_matrix": "PASS",
+      "default_off_serialized_regression": "PASS",
+      "provider_retention_and_fidelity": "PASS",
+      "qbot_analytical_fallback": "PASS",
+      "accepted_trajectory_analytical_fallback": "PASS"
+    }
+  },
+  "cache_stats_after_authority_test": {
+    "builds": 2,
+    "hits": 1,
+    "misses": 2,
+    "entries": 2
+  },
+  "finding": "Provider-local exact-authority reuse removes the dominant repeated adaptive binding waste while preserving exact authority invalidation and step-duration-dependent analytical fallback semantics.",
+  "decision": "ADVANCE_TO_FROZEN_REFERENCE_FLOOR_PAIRED_TIMING",
+  "timing_gate": "Reuse F-AHL27_STAGE2_TIMING3 unchanged: PASS only if median adaptive/analytical ratio < 0.98.",
   "nonclaims": [
-    "Application-level speed improvement is not established by the retention gate alone.",
-    "No production admission is implied."
+    "Microbenchmark success is not an application-level speed claim.",
+    "No production admission follows until application timing and closeout gates pass."
   ]
 }
