@@ -1,0 +1,31 @@
+name: F-AHL49 application opt-in
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fahl/run_fahl49_application_optin.sh'
+      - '.github/workflows/f-ahl49-application.yml'
+  workflow_dispatch:
+
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python test dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-numpy
+      - name: Run production application opt-in gate
+        run: |
+          bash tests/fahl/run_fahl49_application_optin.sh | tee fahl49-application.txt
+          grep -Fq 'FAHL49_APPLICATION_GATE=PASS' fahl49-application.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-application
+          path: fahl49-application.txt

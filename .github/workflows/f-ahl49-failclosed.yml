@@ -1,0 +1,29 @@
+name: F-AHL49 fail-closed envelope
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fahl/test_fahl49_failclosed.f90'
+      - 'tests/fahl/run_fahl49_failclosed.sh'
+      - '.github/workflows/f-ahl49-failclosed.yml'
+  workflow_dispatch:
+
+jobs:
+  failclosed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run fail-closed envelope gate
+        run: |
+          bash tests/fahl/run_fahl49_failclosed.sh | tee fahl49-failclosed.txt
+          grep -Fq 'FAHL49_FAILCLOSED=PASS' fahl49-failclosed.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-failclosed
+          path: fahl49-failclosed.txt

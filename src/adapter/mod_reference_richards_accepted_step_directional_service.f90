@@ -20,6 +20,8 @@ module mod_reference_richards_accepted_step_directional_service
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction, &
        evaluate_b110_default_mvg_water_content_direction
+  use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, &
+       evaluate_b110_direct_retention_state_direction, evaluate_b110_direct_retention_water_content_direction
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
   use mod_b110_dynamic_top_boundary_directional_adapter, only: evaluate_b110_dynamic_surface_flux_direction
   implicit none
@@ -151,6 +153,8 @@ contains
     end if
     select type (hyd => request%evaluation%constitutive)
     type is (b110_default_mvg_provider_t)
+       continue
+    type is (b110_direct_retention_provider_t)
        continue
     class default
        route = 'constitutive-direction-unavailable'
@@ -341,6 +345,10 @@ contains
        call evaluate_b110_default_mvg_state_direction(hyd, request%base_state%pressure_head, &
             direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
             ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
+    type is (b110_direct_retention_provider_t)
+       call evaluate_b110_direct_retention_state_direction(hyd, request%base_state%pressure_head, &
+            direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
+            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
     class default
        constitutive_direction_ok = .false.
        constitutive_direction_route = 'constitutive-direction-unavailable'
@@ -515,6 +523,10 @@ contains
     select type (hyd => request%evaluation%constitutive)
     type is (b110_default_mvg_provider_t)
        call evaluate_b110_default_mvg_water_content_direction(hyd, solve_result%candidate_state%pressure_head, &
+            direction_result%outgoing_pressure_head, direction_result%outgoing_water_content, &
+            constitutive_direction_ok, constitutive_direction_route)
+    type is (b110_direct_retention_provider_t)
+       call evaluate_b110_direct_retention_water_content_direction(hyd, solve_result%candidate_state%pressure_head, &
             direction_result%outgoing_pressure_head, direction_result%outgoing_water_content, &
             constitutive_direction_ok, constitutive_direction_route)
     class default
