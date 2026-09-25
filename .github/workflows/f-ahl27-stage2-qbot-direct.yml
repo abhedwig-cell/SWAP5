@@ -1,0 +1,21 @@
+name: F-AHL27 Stage2 qbot direct
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fahl/test_fahl27_stage2_qbot_fallback_direct.f90'
+      - 'tests/fahl/run_fahl27_stage2_qbot_fallback_direct.sh'
+      - '.github/workflows/f-ahl27-stage2-qbot-direct.yml'
+  workflow_dispatch:
+
+jobs:
+  qbot-direct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run direct backend qbot fallback
+        run: |
+          bash tests/fahl/run_fahl27_stage2_qbot_fallback_direct.sh
