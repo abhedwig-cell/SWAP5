@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28",
+  "title": "Adaptive provider binding and cache-hit overhead attribution",
+  "parent": "F-AHL27_STAGE2_TIMING3",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "motivation": "Production-shaped serialized reference-floor timing preserves fidelity but shows only 1.56% median CPU reduction, much less than isolated self-built Richards timing. The backend currently rebinds adaptive hydraulics on every prescribed-head physical advance.",
+  "question": "How much runtime is spent re-acquiring an already-built adaptive table and rebuilding binding metadata compared with reusing an already-bound immutable table/provider state?",
+  "current_hot_path": [
+    "bind analytical fallback for current step duration",
+    "construct one-node sampler parameter set from 42 initialized coefficients",
+    "bind sampler provider",
+    "construct exact cache key and fingerprint",
+    "scan cache and copy/acquire existing table"
+  ],
+  "experiments": {
+    "A": "Warm-cache bind microbenchmark: repeatedly call bind_b110_adaptive_hydraulic_provider with identical authority and step duration; report time per bind and cache-stat deltas.",
+    "B": "Warm-provider constitutive benchmark: evaluate an already-bound adaptive provider over representative heads; report time per provider evaluation.",
+    "C": "Reference-floor cache accounting: record cache hit/build/miss deltas over a fixed number of repeated adaptive floor samples to prove whether one cache acquisition occurs per physical advance."
+  },
+  "decision_rule": {
+    "binding_overhead_actionable": "warm-cache binding cost is material relative to one Richards physical advance and cache-hit count scales approximately one-for-one with repeated advances",
+    "binding_overhead_not_primary": "warm-cache binding cost is too small to explain the observed loss of end-to-end speed"
+  },
+  "repair_boundary_if_actionable": [
+    "Memoize immutable table acquisition by exact hydraulic key and policy version.",
+    "Do not memoize step-dependent analytical fallback semantics incorrectly.",
+    "Retain exact-key collision-safe equality.",
+    "No runtime table refinement."
+  ],
+  "hard_exclusions": [
+    "NO_SEMANTIC_CHANGE",
+    "NO_CACHE_KEY_WEAKENING",
+    "NO_STEP_DURATION_ASSUMPTION_WITHOUT_PROOF",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
