@@ -1,28 +1,17 @@
 {
-  "schema_version":1,
-  "workstream":"F-AHL",
-  "work_unit":"F-AHL27A",
-  "phase":"PRODUCTION_DRY_TAIL_ALIGNMENT_COMPLETE",
-  "status":"PASS",
-  "workflow_run":36078071347,
-  "workflow_job":107893654376,
-  "repair":{
-    "builder":"material-specific lower representation bound from authoritative raw C=1e-13 relevance floor",
-    "provider":"lookup membership uses actual built table x bounds",
-    "cache_policy_version":2,
-    "outside_table":"authoritative analytical fallback"
-  },
-  "O05_checks":{
-    "represented_head_cm":-200000.0,
-    "fallback_head_cm":-500000.0,
-    "fallback_theta_authoritative":true,
-    "fallback_capacity_authoritative":true,
-    "fallback_conductivity_authoritative":true
-  },
-  "semantics":{
-    "physics_truncated":false,
-    "constant_tail_extrapolation":false,
-    "raw_capacity_relevance_floor":1e-13
-  },
-  "next_gate":"Rerun F-AHL27 production extraction and 12-case prescribed-head matrix after repair."
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27A",
+  "phase": "PRODUCTION_DRY_TAIL_REPAIR_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36078071347,
+  "raw_capacity_relevance_floor": 1e-13,
+  "o05_lower_relevance_bound_cm": -264277.52309014817,
+  "semantics": [
+    "The production builder uses material-specific dry-domain relevance.",
+    "Lookup membership follows the actual built table bounds.",
+    "Outside the table, theta, C and K fall back to the authoritative analytical provider.",
+    "No physical quantity is zeroed and no constant tail extrapolation is used."
+  ],
+  "marker": "FAHL27A_O05_PRODUCTION_DRY_TAIL=PASS"
 }
