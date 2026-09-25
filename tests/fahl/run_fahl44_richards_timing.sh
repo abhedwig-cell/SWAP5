@@ -8,9 +8,17 @@ trap 'rm -rf "$BUILD"' EXIT
 COMMON=(-std=f2008 -ffree-line-length-none -O3)
 SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
+  src/transaction/mod_transaction_reference.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
+  src/transaction/mod_accepted_trajectory_directional_publication.f90
+  src/transaction/mod_fkt_temporal_indicator_history.f90
+  src/runtime/mod_canonical_contracts.f90
+  src/runtime/mod_canonical_interval_runtime.f90
+  src/kernel/mod_kernel_transactions.f90
+  src/runtime/mod_fmr_runtime_core.f90
+  src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
@@ -33,6 +41,7 @@ SRC=(
   src/solver/mod_b110_adaptive_hydraulic_builder.f90
   src/solver/mod_b110_adaptive_hydraulic_cache.f90
   src/solver/mod_b110_adaptive_hydraulic_provider.f90
+  src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
@@ -43,6 +52,8 @@ SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
+  src/runtime/mod_rossfast_d3r_execution_policy.f90
+  src/runtime/mod_rossfast_d3r_model_binding.f90
 )
 objects=()
 for source in "${SRC[@]}"; do
