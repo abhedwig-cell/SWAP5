@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL35",
+  "title": "Warm-hit sampler elimination",
+  "parent": "F-AHL34",
+  "phase": "PREREGISTERED_REPAIR",
+  "motivation": "F-AHL34 measured one-node sampler initialization plus bind at 1.3686e-7 s, about 18.0% of the 7.6209e-7 s complete warm changed-authority bind. That sampler is only needed to build a representation after a registry miss, but is currently constructed before every shared-registry lookup.",
+  "repair": {
+    "cache_api": "add read-only exact-key lookup that returns the existing immutable table on hit and does not count a miss when absent",
+    "provider_path": "after exact local-reuse miss and key construction, query the shared registry first; only construct/bind the one-node authoritative sampler if the registry lookup misses",
+    "table_ownership": "unchanged provider-owned deep assignment",
+    "step_duration_fallback_rebind": "unchanged and performed before reuse/lookup",
+    "exact_key": "unchanged",
+    "hydraulic_representation": "unchanged"
+  },
+  "qualification": {
+    "correctness": [
+      "warm changed-authority registry hit performs no table build and no cache miss",
+      "warm hit increments shared hit accounting exactly once",
+      "changed hydraulic authority remains exact-key separated",
+      "step-duration analytical fallback remains current"
+    ],
+    "paired_microtiming": {
+      "operations_per_batch": 200000,
+      "paired_repetitions": 9,
+      "candidate": "new warm-hit provider path",
+      "baseline": "same candidate path plus the one-node sampler initialization/bind work removed by the repair",
+      "order": "alternate baseline->candidate and candidate->baseline",
+      "gate": "median candidate/baseline ratio <= 0.90"
+    },
+    "regression": [
+      "F-AHL28B semantic regression PASS",
+      "F-AHL32A/B registry collision and probe semantics PASS"
+    ]
+  },
+  "hard_exclusions": [
+    "NO_TABLE_POINTER_OR_HANDLE_OWNERSHIP_CHANGE",
+    "NO_KEY_WEAKENING",
+    "NO_CACHE_CAPACITY_CHANGE",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_DRY_TAIL_POLICY_CHANGE",
+    "NO_APPLICATION_SPEED_CLAIM_FROM_BIND_MICROBENCHMARK"
+  ]
+}
