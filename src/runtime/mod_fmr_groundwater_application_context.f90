@@ -1,9 +1,9 @@
 module mod_fmr_groundwater_application_context
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: int32, int64, real64
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_application_cell_plan_t, &
        GW_APP_PLAN_OK
-  use mod_groundwater_topology_composition, only: groundwater_topology_tile_t
+  use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t
   use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
   use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t, &
        evaluate_modflow6_linear_boundary_flux_density, reanchor_modflow6_linear_boundary_term, &
@@ -32,6 +32,12 @@ module mod_fmr_groundwater_application_context
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PREPARED_BUSY = 8
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PUBLICATION_FAILED = 9
 
+  type :: fmr_groundwater_context_cell_t
+    type(groundwater_topology_cell_t) :: topology
+    integer :: tile_begin = 0
+    integer :: tile_count = 0
+  end type fmr_groundwater_context_cell_t
+
   type, public :: fmr_groundwater_application_context_t
     private
     type(groundwater_application_plan_t), pointer :: plan => null()
@@ -40,7 +46,7 @@ module mod_fmr_groundwater_application_context
     integer(int64), allocatable :: participant_handles(:)
     integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
-    type(groundwater_application_cell_plan_t), allocatable :: cells(:)
+    type(fmr_groundwater_context_cell_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: current_terms(:)
     type(groundwater_swap_trial_t), allocatable :: trials(:)
@@ -57,6 +63,7 @@ module mod_fmr_groundwater_application_context
     procedure, public :: cell_count => application_context_cell_count
     procedure, public :: quiescent => application_context_quiescent
     procedure, public :: copy_plan_view => application_context_copy_plan_view
+    procedure, public :: export_plan_view => application_context_export_plan_view
     procedure, public :: copy_tile_view => application_context_copy_tile_view
     procedure, public :: capture_origins => application_context_capture_origins
     procedure, public :: evaluate_groundwater_fluxes => application_context_evaluate_groundwater_fluxes
@@ -90,7 +97,7 @@ contains
     type(modflow6_linear_boundary_term_t), allocatable :: terms(:)
     type(groundwater_interface_mass_snapshot_t) :: snapshot
     integer(int64) :: tile_id, lineage_id, revision
-    logical :: has_origin, has_candidate, available
+    logical :: has_origin, has_candidate, available, handles_strictly_increasing
     integer :: i, j, local_status
 
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
@@ -138,17 +145,30 @@ contains
       return
     end if
 
+    handles_strictly_increasing = .true.
+    if (size(participant_handles) > 0) then
+      if (participant_handles(1) <= 0_int64) handles_strictly_increasing = .false.
+      do i = 2, size(participant_handles)
+        if (participant_handles(i) <= 0_int64 .or. participant_handles(i) <= participant_handles(i-1)) then
+          handles_strictly_increasing = .false.
+          exit
+        end if
+      end do
+    end if
+
     do i = 1, size(tiles)
       if (participant_handles(i) <= 0_int64) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
       end if
-      do j = 1, i - 1
-        if (participant_handles(j) == participant_handles(i)) then
-          status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
-          return
-        end if
-      end do
+      if (.not. handles_strictly_increasing) then
+        do j = 1, i - 1
+          if (participant_handles(j) == participant_handles(i)) then
+            status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
+            return
+          end if
+        end do
+      end if
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
@@ -204,7 +224,11 @@ contains
     self%participant_handles = participant_handles
     self%expected_swap_origin_revisions = expected_swap_origin_revisions
     self%tiles = tiles
-    self%cells = cells
+    do i = 1, size(cells)
+      self%cells(i)%topology = cells(i)%topology
+      self%cells(i)%tile_begin = cells(i)%tile_begin
+      self%cells(i)%tile_count = cells(i)%tile_count
+    end do
     self%bindings = bindings
     self%current_terms = terms
     self%trial_valid = .false.
@@ -287,6 +311,36 @@ contains
     end do
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_copy_plan_view
+
+  subroutine application_context_export_plan_view(self, cell_ids, binding_cell_ids, package_slots, modflow_node_ids, &
+       term_cell_ids, term_hcof, term_rhs, status)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    integer(int64), intent(out) :: cell_ids(:), binding_cell_ids(:), term_cell_ids(:)
+    integer, intent(out) :: package_slots(:)
+    integer(int32), intent(out) :: modflow_node_ids(:)
+    real(real64), intent(out) :: term_hcof(:), term_rhs(:)
+    integer, intent(out) :: status
+
+    integer :: i, n
+
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    n = size(self%cells)
+    if (size(cell_ids) /= n .or. size(binding_cell_ids) /= n .or. size(package_slots) /= n .or. &
+        size(modflow_node_ids) /= n .or. size(term_cell_ids) /= n .or. size(term_hcof) /= n .or. &
+        size(term_rhs) /= n) return
+
+    do i = 1, n
+      cell_ids(i) = self%cells(i)%topology%groundwater_cell_id
+      binding_cell_ids(i) = self%bindings(i)%groundwater_cell_id
+      package_slots(i) = self%bindings(i)%package_slot
+      modflow_node_ids(i) = self%bindings(i)%modflow_node_id
+      term_cell_ids(i) = self%current_terms(i)%groundwater_cell_id
+      term_hcof(i) = self%current_terms(i)%hcof_m2_per_day
+      term_rhs(i) = self%current_terms(i)%rhs_m3_per_day
+    end do
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_export_plan_view
 
   subroutine application_context_copy_tile_view(self, tiles, participant_handles, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
