@@ -44,6 +44,7 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_PLAN_FAILED = 8
   integer, parameter, public :: FMR_APP_BOOT_CONTEXT_FAILED = 9
   integer, parameter, public :: FMR_APP_BOOT_RUNTIME_FAILED = 10
+  integer, parameter, public :: FMR_APP_BOOT_MODEL_SELECTION_FAILED = 11
 
   ! WU01 established serialized Reference mode 7 standalone and mode 5 groundwater profiles.
   ! PPA-WU02-A additionally admits homogeneous typed bottom_mode=2 prescribed-qbot applications.
@@ -66,6 +67,9 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_config_t
     real(real64) :: initial_time = 0.0_real64
     type(canonical_numerical_config_t) :: numerical
+    character(len=32) :: soil_water_model_key = ''
+    character(len=256) :: soil_water_asset_root = ''
+    character(len=3) :: soil_water_material_id = '---'
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
   end type fmr_production_application_config_t
 
@@ -160,6 +164,24 @@ contains
     self%numerical = config%numerical
 
     call self%backend%initialize(self%top_boundary)
+    if (.not. self%backend%ready()) then
+      status = FMR_APP_BOOT_MODEL_SELECTION_FAILED
+      call discard_owner_storage(self)
+      return
+    end if
+    if (len_trim(config%soil_water_model_key) > 0) then
+      if (len_trim(config%soil_water_asset_root) > 0 .or. trim(config%soil_water_material_id) /= '---') then
+        call self%backend%configure_soil_water_model(trim(config%soil_water_model_key), ok, local_status, &
+             asset_root=trim(config%soil_water_asset_root), material_id=trim(config%soil_water_material_id))
+      else
+        call self%backend%configure_soil_water_model(trim(config%soil_water_model_key), ok, local_status)
+      end if
+      if (.not. ok) then
+        status = FMR_APP_BOOT_MODEL_SELECTION_FAILED
+        call discard_owner_storage(self)
+        return
+      end if
+    end if
 
     if (groundwater_profile) then
       allocate(self%participant_handles(n), self%materializers(n), self%ledgers(n), self%registry)
