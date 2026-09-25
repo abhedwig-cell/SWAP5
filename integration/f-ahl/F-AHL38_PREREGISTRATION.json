@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL38",
+  "title": "Stable registry-slot handle repair",
+  "parent": "F-AHL37",
+  "phase": "PREREGISTERED_REPAIR",
+  "problem": "Warm changed-authority binds still deep-copy immutable adaptive support arrays from the run-lifetime registry into provider-owned storage.",
+  "repair": {
+    "handle": "integer stable registry slot",
+    "warm_exact_key_hit": "provider stores slot handle; no adaptive table deep assignment",
+    "evaluation": "provider reads the bracketing immutable support values through a registry slot sampling method",
+    "same_key_reuse": "provider-local exact-authority fast path remains",
+    "cache_miss": "existing build path remains; newly cached entries may subsequently bind by stable slot",
+    "full_registry_miss": "existing valid caller-owned uncached table fallback remains",
+    "eviction": "none",
+    "raw_pointers": "none"
+  },
+  "semantic_gates": [
+    "F-AHL32 collision-safe exact-key registry regression",
+    "F-AHL29 capacity-plus-one uncached fallback regression",
+    "F-AHL28B same-key memoization regression",
+    "F-AHL10E dry-tail analytical fallback regression",
+    "F-AHL27 default/reference-floor regression"
+  ],
+  "performance_gates": {
+    "changed_authority_64_key_switching": "median repaired/baseline bind ratio <= 0.80 versus F-AHL36",
+    "same_key_bind": "no more than 10% slower than F-AHL36 same-key reference",
+    "provider_evaluate": "no more than 5% slower than equivalent provider-owned-table evaluation on warm represented-domain calls"
+  },
+  "hard_exclusions": [
+    "NO_RAW_POINTER_TABLE_OWNERSHIP",
+    "NO_EVICTION",
+    "NO_KEY_OR_FINGERPRINT_CHANGE",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_DRY_TAIL_POLICY_CHANGE",
+    "NO_APPLICATION_SPEED_CLAIM_BEFORE_APPLICATION_TIMING"
+  ]
+}
