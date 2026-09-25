@@ -5,6 +5,8 @@ on:
     branches:
       - integration/f-ahl-canonical-admission
     paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
       - 'tests/fahl/test_fahl_admission_layered_authority.f90'
       - 'tests/fahl/run_fahl_admission_layered_authority.sh'
       - 'integration/f-ahl-admission/F-AHL_ADM_LAYER01_PREREGISTRATION.json'
