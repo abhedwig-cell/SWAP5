@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL40",
+  "phase": "ROBUST_SERIALIZED_MULTI_AUTHORITY_TIMING_COMPLETE",
+  "status": "PASS_MATERIAL_SPEED_BENEFIT_WITH_HARNESS_STATISTIC_REPAIR",
+  "workflow_run": 36104262128,
+  "workflow_job": 107973183466,
+  "fidelity": {
+    "cases_passed": 16,
+    "cases_total": 16,
+    "same_nonlinear_path_all_cases": true,
+    "max_observed_pressure_head_delta_cm": 1.155319e-6,
+    "max_observed_water_content_delta": 1.275244e-9,
+    "max_observed_bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "verdict": "PASS"
+  },
+  "paired_adaptive_over_analytical_ratios": [
+    0.941819,
+    0.954456,
+    0.954961,
+    0.954546,
+    0.954482,
+    0.970404,
+    0.955733,
+    0.964885,
+    0.953526
+  ],
+  "true_median_ratio": 0.954546,
+  "true_median_cpu_reduction_fraction": 0.045454,
+  "decision_rule": {
+    "material_speed_benefit": "median ratio < 0.98",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "negative": "median ratio > 1.02"
+  },
+  "decision": "PASS_MATERIAL_SPEED_BENEFIT",
+  "harness_reconciliation": {
+    "issue": "The executable printed ratios(5) as the median but accidentally used ratios(4) for the reduction line and speed-gate check.",
+    "scientific_effect": "The nine paired timing measurements and printed median are valid. Applying the preregistered rule to the actual median gives the same PASS classification.",
+    "repair": "F-AHL40R changes only reduction/gate indexing from sorted ratios(4) to ratios(5); workload and model implementation are unchanged.",
+    "confirmation_workflow_run": 36104423983
+  },
+  "finding": "Under the frozen 16-authority serialized FMR workload, the stable-slot adaptive route preserves all fidelity gates and shows a robust median CPU reduction of about 4.55% relative to analytical hydraulics.",
+  "closure_rule_application": "The binding-overhead micro-optimization subphase is scientifically complete. Do not open further micro-optimization work from timing noise alone.",
+  "nonclaims": [
+    "No whole-SWAP or national MultiSWAP speedup is implied.",
+    "No parallel thread-safety claim is made.",
+    "No canonical production admission follows from this result alone."
+  ]
+}
