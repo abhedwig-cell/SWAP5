@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL37",
+  "title": "Immutable registry-handle potential characterization",
+  "parent": "F-AHL36",
+  "phase": "PREREGISTERED_CHARACTERIZATION",
+  "question": "How much warm exact-key cache cost is attributable to deep assignment of the immutable adaptive hydraulic table, and what lower-cost bound is exposed by returning only the stable registry slot?",
+  "research_change": "Add a collision-safe cache find_slot method that returns the occupied registry slot for an exact-key hit without copying the table. It is not used by the production provider in F-AHL37.",
+  "benchmark": {
+    "registry_entries": 64,
+    "requests_per_batch": 200000,
+    "paired_repetitions": 9,
+    "order": "alternate copy-lookup and slot-lookup",
+    "keys_preconstructed_outside_timing": true,
+    "working_set": "64-key round robin, all warm"
+  },
+  "measurements": [
+    "seconds per current cache lookup with table deep assignment",
+    "seconds per exact-key slot lookup without table assignment",
+    "paired slot/copy ratio"
+  ],
+  "decision_rule": {
+    "ownership_repair_justified": "median slot/copy ratio < 0.75",
+    "ownership_repair_not_justified": "median slot/copy ratio >= 0.75"
+  },
+  "hard_exclusions": [
+    "NO_PROVIDER_POINTER_OR_HANDLE_USE_IN_F_AHL37",
+    "NO_TABLE_OWNERSHIP_CHANGE",
+    "NO_CACHE_IDENTITY_CHANGE",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_APPLICATION_SPEED_CLAIM"
+  ]
+}
