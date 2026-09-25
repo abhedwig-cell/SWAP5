@@ -1,0 +1,26 @@
+name: F-AHL50 ownership admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fahl/test_fahl49_multiapp_slot_stability.f90'
+      - 'tests/fahl/run_fahl49_multiapp_slot_stability.sh'
+      - '.github/workflows/f-ahl49-multiapp.yml'
+  workflow_dispatch:
+
+jobs:
+  falsification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify singleton multi-application ownership
+        run: |
+          bash tests/fahl/run_fahl49_multiapp_slot_stability.sh | tee fahl49-multiapp.txt
+          grep -Fq 'FAHL49_MULTIAPP_OWNERSHIP=PASS' fahl49-multiapp.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-multiapp
+          path: fahl49-multiapp.txt
