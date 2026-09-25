@@ -16,7 +16,8 @@ for line in src:
     out.append(line)
     if "Fmax = maxval(dabs(fsi_ws%residual(1:NN)))" in line and not inserted:
         out.append("          write(*,'(*(g0))') 'LINESEARCH01_CANDIDATE|ITER=',state%numbit,'|TRY=',itry,'|FACTOR=',factor, &")
-        out.append("               '|SUMOLD=',sumold,'|SUMP=',sump,'|FMAX=',Fmax,'|ACCEPT=',(sump < sumold .OR. Fmax < CritDevBalCp)")
+        out.append("               '|SUMOLD=',sumold,'|SUMP=',sump,'|FMAX=',Fmax,'|DHMAX=',maxval(dabs(state%h(1:NN)-fsi_ws%old_head(1:NN))), &")
+        out.append("               '|NCHANGED=',count(state%h(1:NN)/=fsi_ws%old_head(1:NN)),'|ACCEPT=',(sump < sumold .OR. Fmax < CritDevBalCp)")
         inserted=True
 if not inserted:
     raise SystemExit("trace insertion point not found")
