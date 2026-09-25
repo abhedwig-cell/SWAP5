@@ -1,0 +1,27 @@
+name: F-AHL45 direct-demand screen
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/F-AHL45_PREREGISTRATION.md'
+      - 'research/ahl/test_fahl45_direct_demand_screen.f90'
+      - 'research/ahl/run_fahl45_direct_demand_screen.sh'
+      - '.github/workflows/f-ahl45-direct-demand.yml'
+  workflow_dispatch:
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run direct-demand architecture screen
+        run: |
+          bash research/ahl/run_fahl45_direct_demand_screen.sh | tee fahl45-direct-demand.txt
+          grep -Fq 'FAHL45_DIRECT_DEMAND_SCREEN=PASS' fahl45-direct-demand.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl45-direct-demand
+          path: fahl45-direct-demand.txt
