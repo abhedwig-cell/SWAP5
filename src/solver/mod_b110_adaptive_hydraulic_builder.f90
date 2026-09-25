@@ -153,7 +153,7 @@ contains
     end if
     z=log(se/(1.0_real64-se))
     dzdx=((c/span)/(se*(1.0_real64-se)))*h*LN10
-    logk=log(max(k,K_ERROR_FLOOR))
+    logk=log(max(k,tiny(1.0_real64)))
     ok=.true.
   end subroutine sample_authority
 
