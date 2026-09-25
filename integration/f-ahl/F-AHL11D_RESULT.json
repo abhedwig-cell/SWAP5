@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11D",
+  "phase": "O09_DRY_ATTRIBUTION_COMPLETE",
+  "status": "PASS_DIAGNOSTIC",
+  "workflow_run": 36122739487,
+  "workflow_job": 108031801320,
+  "results": {
+    "base": {
+      "bottom_flux_delta_cm_per_day": 1.039457e-5,
+      "max_abs_pressure_head_delta_cm": 0.005995543,
+      "verdict": "FAIL_BOTTOM_FLUX"
+    },
+    "exact_K": {
+      "bottom_flux_delta_cm_per_day": 9.909806e-10,
+      "max_abs_pressure_head_delta_cm": 5.430933e-7,
+      "verdict": "PASS"
+    },
+    "exact_retention_capacity": {
+      "bottom_flux_delta_cm_per_day": 1.039568e-5,
+      "max_abs_pressure_head_delta_cm": 0.005995067,
+      "verdict": "FAIL_BOTTOM_FLUX"
+    }
+  },
+  "nonlinear_path": "All three variants retain identical analytical nonlinear iteration and backtracking counts.",
+  "finding": "The first full-catalog failure O09:dry is conductivity-lookup dominated. Restoring exact K closes the failure; restoring exact theta/C does not.",
+  "next_action": "Apply a global, not O09-specific, conductivity tolerance repair and rerun the entire 108-case matrix."
+}
