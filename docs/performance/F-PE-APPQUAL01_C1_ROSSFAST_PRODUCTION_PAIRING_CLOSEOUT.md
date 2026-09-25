@@ -109,3 +109,27 @@ These are workload-specific shared-runner observations.
 The RossFast production challenger is not rejected.
 
 The attempted direct production pairing is blocked by the current Reference temporal-control semantics.
+
+
+## Authority reconciliation: existing Reference temporal indicator is not yet a production tolerance authority
+
+A possible alternative was evaluated before opening new temporal work.
+
+Existing code and tests show that Reference already has a richer temporal-indicator path:
+
+- `FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY`;
+- `evaluate_temporal_history_service`;
+- a model temporal head budget;
+- a model-certificate route using the normalized indicator.
+
+FSI25 and FSI38 establish that the Reference indicator can be evaluated without an extra nonlinear trajectory and that prescribed-qbot mode has a valid indicator seam.
+
+However F-CI14 is explicit that no independently qualified numerical tolerance profile currently exists for production Reference temporal acceptance. Its endpoint limits are candidate-policy values only; `reference_execution_admitted()` remains false for that unqualified numeric profile.
+
+Therefore APPQUAL01 must not invent a temporal head budget merely to make the paired production benchmark pass.
+
+This strengthens the blocker classification:
+
+- the richer Reference temporal machinery exists technically;
+- the missing item is independent calibration/qualification of the production acceptance budget/profile;
+- until that exists, APPQUAL01 cannot claim a production-level Reference/RossFast speed ratio on a non-trivial transient workload.
