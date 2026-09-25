@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-ADMISSION",
+  "work_unit": "F-AHL-ADM-LAYER01",
+  "status": "FAIL_BLOCKING",
+  "workflow_run": 36120424176,
+  "workflow_job": 108024349981,
+  "fixture": "upper B01 nodes; lower O14 nodes; h=-75 cm",
+  "observed": {
+    "upper_B01": {
+      "abs_theta": 1.74305e-14,
+      "abs_logC": 1.953008e-9,
+      "abs_logK": 2.317802e-6
+    },
+    "lower_O14": {
+      "abs_theta": 0.1387389,
+      "abs_logC": 1.708583,
+      "abs_logK": 0.8305793
+    }
+  },
+  "root_cause": "The extracted provider/cache key and representation are based on initialized cofgen(:,1), while evaluation applies that representation to all nodes. Existing qualification varied authority between homogeneous profiles, not within one layered profile.",
+  "governance_effect": "PR 606 MUST REMAIN DRAFT. Current single-authority provider ownership is not admissible for general SWAP profiles.",
+  "repair_direction": "Represent every unique initialized hydraulic authority in the active profile separately and store a node-to-representation mapping. Preserve exact-key shared-cache semantics and analytical fallback outside each representation domain.",
+  "gates_after_repair": [
+    "two-authority B01/O14 constitutive diagnostic PASS",
+    "layered Richards replay against analytical provider",
+    "existing 12/12 homogeneous matrix still PASS",
+    "O05 dry-tail PASS",
+    "qbot analytical fallback O0/O2 PASS",
+    "same-key memoization PASS"
+  ]
+}
