@@ -17,8 +17,8 @@ jobs:
         run: bash tests/fahl/run_fahl27_stage2_matrix.sh
       - name: Dry-tail authority fallback
         run: bash tests/fahl/run_fahl27a_production_dry_tail.sh
-      - name: Paired same-key memoization
-        run: bash tests/fahl/run_fahl28c_paired_memoization_timing.sh
+      - name: Same-key reuse semantics
+        run: bash tests/fahl/run_fahl28b_same_key_semantics.sh
       - name: FMR opt-in runtime
         run: bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
       - name: Prescribed-qbot analytical fallback
