@@ -1,0 +1,27 @@
+name: F-AHL50 default-off admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fahl/run_fahl49_default_off_preservation.sh'
+      - '.github/workflows/f-ahl49-default-off.yml'
+  workflow_dispatch:
+
+jobs:
+  preservation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run existing PPA-WU01 default-off gate with F-AHL49 compile closure
+        run: |
+          bash tests/fahl/run_fahl49_default_off_preservation.sh | tee fahl49-default-off.txt
+          grep -Fq 'FAHL49_DEFAULT_OFF_PPA_WU01=PASS' fahl49-default-off.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-default-off
+          path: fahl49-default-off.txt
