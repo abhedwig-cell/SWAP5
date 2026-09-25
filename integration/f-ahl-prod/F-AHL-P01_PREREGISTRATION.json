@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-PROD",
+  "work_unit": "F-AHL-P01",
+  "title": "Default-MvG production provider binding",
+  "branch": "work/f-ahl-production-admission",
+  "research_authority_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "canonical_base_at_branch_creation": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "phase": "PREREGISTERED_ADMISSION_WORK",
+  "purpose": "Admit the already-qualified self-building adaptive hydraulic representation behind the existing constitutive_hydraulics_provider_t contract for the bounded default-MvG prescribed-head-like envelope.",
+  "frozen_research_authority": [
+    "integration/f-ahl/F-AHL_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL20_RESULT.json",
+    "integration/f-ahl/F-AHL24_RESULT.json"
+  ],
+  "production_scope": {
+    "hydraulic_family": "default_MvG_B1.10",
+    "conductivity_implicit_mode": 0,
+    "lower_boundary_policy": {
+      "prescribed_head_like": "adaptive provider eligible inside qualified envelope",
+      "prescribed_qbot": "authoritative analytical provider only",
+      "unrecognized_or_unqualified": "authoritative analytical provider only"
+    },
+    "near_saturation": "authoritative analytical branch handling",
+    "runtime_refinement": false,
+    "external_user_tables": false,
+    "cache": "immutable exact-key internal cache",
+    "solver_contract_change": false,
+    "solver_policy_change": false
+  },
+  "implementation_seam": {
+    "provider_interface": "src/solver/mod_soil_water_solver_contract.f90::constitutive_hydraulics_provider_t",
+    "analytical_authority": "src/solver/mod_b110_default_mvg_provider.f90",
+    "runtime_binding_target": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "rule": "provider selection occurs before solve; cache acquisition must not occur inside constitutive inner-loop evaluation"
+  },
+  "gates": [
+    "typed production provider has no research-file I/O dependency",
+    "exact cache-key identity covers hydraulic authority parameters and representation policy",
+    "first bind builds once; identical binds hit cache; non-identical keys do not alias",
+    "prescribed-qbot always selects analytical provider",
+    "SWKIMPL=1 always selects analytical provider until separately qualified",
+    "near-saturation exact branch semantics preserved",
+    "12-case default-MvG wet-mid-dry prescribed-head fidelity remains PASS",
+    "accepted nonlinear iteration/backtracking path remains identical to analytical in qualified cases",
+    "whole accepted-trajectory regression remains within frozen physical gates",
+    "production-path timing demonstrates non-negative value after cache warmup",
+    "O0/O2 semantic reproducibility",
+    "canonical governance admission only after all bounded gates pass"
+  ],
+  "hard_exclusions": [
+    "NO_BIMODAL_MODEL3_PRODUCTION_IN_P01",
+    "NO_PDI_PRODUCTION_IN_P01",
+    "NO_VAPOR_ENABLED_PDI",
+    "NO_PRESCRIBED_QBOT_ACCELERATION",
+    "NO_SWKIMPL1_DKDH_ACCELERATION",
+    "NO_DRY_TAIL_REPLACEMENT",
+    "NO_USER_SUPPLIED_LOOKUP_TABLES",
+    "NO_GATE_RETUNING"
+  ],
+  "decision_rule": "P01 may advance to production-admission readiness only if the bounded provider binding preserves analytical fallback semantics outside the qualified envelope and reproduces the frozen research fidelity and convergence-path evidence through the real runtime composition."
+}
