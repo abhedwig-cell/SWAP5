@@ -1917,9 +1917,10 @@ contains
       end select
     end if
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
-    ! Prescribed-head mode 5 is the qualified adaptive envelope. Prescribed-qbot
+    ! Prescribed-head mode 5 without accepted-trajectory direction is the qualified
+    ! adaptive envelope. Prescribed-qbot, accepted-trajectory directional service,
     ! and other lower-boundary modes remain analytical and do not build/touch AHL state.
-    if (self%adaptive_profile_supported .and. effective_bottom_mode == 5) then
+    if (self%adaptive_profile_supported .and. effective_bottom_mode == 5 .and. .not. self%trajectory_direction_requested) then
       if (.not. associated(self%adaptive_constitutive)) return
       call bind_b110_adaptive_hydraulic_provider(self%adaptive_constitutive, self%hydraulic_parameters, &
            step_duration, ahl_ok, ahl_cache_hit)
@@ -2094,7 +2095,7 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    if (self%adaptive_profile_supported .and. effective_bottom_mode == 5) then
+    if (self%adaptive_profile_supported .and. effective_bottom_mode == 5 .and. .not. self%trajectory_direction_requested) then
       request%evaluation%constitutive => self%adaptive_constitutive
     else
       request%evaluation%constitutive => self%constitutive
