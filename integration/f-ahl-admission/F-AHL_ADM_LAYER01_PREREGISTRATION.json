@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-ADMISSION",
+  "work_unit": "F-AHL-ADM-LAYER01",
+  "title": "Layered hydraulic authority falsification",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "integration/f-ahl-canonical-admission",
+  "motivation": "Source review found that the adaptive cache key and table construction use initialized cofgen(:,1), while SWAP profiles may contain node-varying hydraulic parameterizations. Existing admission matrices vary material between cases but use one material within each profile.",
+  "question": "Does the extracted adaptive provider reproduce the authoritative B1.10 constitutive response when one vertical profile contains two distinct hydraulic materials?",
+  "fixture": {
+    "upper_nodes": "B01 parameters",
+    "lower_nodes": "O14 parameters",
+    "pressure_head_cm": -75.0,
+    "step_duration_day": 0.25
+  },
+  "observables": [
+    "max absolute theta difference",
+    "max relative/log capacity difference",
+    "max relative/log conductivity difference",
+    "upper-material and lower-material differences separately"
+  ],
+  "decision_rule": "If the lower-material response is not within the existing constitutive tolerances, PR #606 remains draft and single-authority-per-provider ownership is rejected for canonical admission. Repair must represent each unique initialized hydraulic authority separately or explicitly restrict admission to homogeneous profiles; silent reuse of node-1 authority is not admissible.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_HOMOGENEOUS_PROFILE_ASSUMPTION_WITHOUT_EXPLICIT_SWAP_AUTHORITY",
+    "NO_PR_READY_STATE_BEFORE_THIS_GATE_IS_CLOSED"
+  ]
+}
