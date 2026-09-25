@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-ADMISSION",
+  "work_unit": "F-AHL-ADM-THREAD01",
+  "title": "Shared-cache isolation for parallel-safe evaluation ownership",
+  "status": "PREREGISTERED_BEFORE_REPAIR",
+  "branch": "integration/f-ahl-canonical-admission",
+  "observation": "The extracted provider can retain registry-slot handles into a mutable module-global shared cache and sample those slots during constitutive evaluation. Existing qualification is serial and explicitly carries no parallel thread-safety claim.",
+  "repair_contract": [
+    "shared cache may be accessed only during provider bind/acquisition",
+    "cache lookup/build is serialized by a named OpenMP critical section when OpenMP is enabled",
+    "each provider stores an immutable local table for every unique hydraulic authority used by its nodes",
+    "constitutive evaluate performs no shared-cache read or write",
+    "same-provider exact-authority rebind keeps bypassing shared-cache work",
+    "qbot and default-off paths remain unchanged"
+  ],
+  "gates": [
+    "layered two-authority constitutive gate PASS",
+    "12/12 homogeneous Richards matrix PASS",
+    "O05 dry-tail PASS",
+    "qbot O0/O2 analytical fallback PASS",
+    "same-key memoization PASS",
+    "provider source audit confirms no sample_slot call in evaluate"
+  ],
+  "nonclaim": "This repair removes shared mutable cache state from the solve-time path; it is not by itself a complete MultiSWAP parallel performance qualification."
+}
