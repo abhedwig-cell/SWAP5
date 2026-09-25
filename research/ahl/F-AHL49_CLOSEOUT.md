@@ -4,7 +4,7 @@ Date: 2026-09-25
 
 Status: `QUALIFICATION_PENDING_RUNNER_CAPACITY`
 
-Parent authority: F-AHL48 closed shared immutable ownership, 64 intervals per decade.
+Parent authority: F-AHL48 closed shared immutable ownership, 128 intervals per decade.
 
 PR: #619.
 
@@ -16,7 +16,7 @@ F-AHL49 extracts the F-AHL48 direct-retention architecture into production modul
 
 Representation:
 
-- 64 intervals per decade over |h| = 1..1e6 cm;
+- 128 intervals per decade over |h| = 1..1e6 cm;
 - direct decade selection;
 - direct interval arithmetic;
 - cubic Hermite theta representation;
@@ -81,8 +81,8 @@ F-AHL47 research provider:
 
 F-AHL48 shared immutable ownership:
 
-- 64 intervals/decade passes the same 12-case matrix;
-- raw theta+C payload = 6,240 bytes per unique hydraulic authority;
+- 128 intervals/decade passes the same 12-case matrix;
+- raw theta+C payload = 12,384 bytes per unique hydraulic authority;
 - 10,000 same-authority providers share one table;
 - frozen OpenMP reads qualified;
 - shared-provider 12-case median ratio about 0.725.
@@ -111,7 +111,7 @@ The following current-head workflows are authoritative once executed:
 6. `F-AHL49 application scale qualification`
    - paired analytical/direct application initialization and interval timing at N=1,100,1000,10000;
    - solver counters and mass remain aligned;
-   - same-authority opt-in uses exactly one 6,240-byte representation.
+   - same-authority opt-in uses exactly one 12,384-byte representation.
 
 7. `F-AHL49 multi-application ownership`
    - active-owner reset protection;
