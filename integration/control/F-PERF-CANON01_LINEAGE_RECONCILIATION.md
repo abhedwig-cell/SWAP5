@@ -243,3 +243,53 @@ Tranche A is now decomposed completely:
 Thus the only production capability that must be carried forward from Tranche A is the bounded H03 HeadCalc repair.
 
 Next active work is Tranche B: decompose ZERO-WASTE01 into admitted exact-P0 production patches and exclude rejected/rolled-back/measurement-only experiments.
+
+
+## Tranche-B decomposition rule
+
+ZERO-WASTE01 is a long-lived branch with 291 commits after the measurement-only PROFILE03 parent and 24 changed production files. The branch must not be admitted by final-tree diff alone.
+
+The authoritative closeout provides the admission filter.
+
+### Explicitly admitted late large-N capabilities
+
+The closeout names exactly five admitted large-N groundwater-context P0 capabilities:
+
+- `GWPLAN01 = ADMITTED_EXACT_P0_LARGE_N_STRUCTURAL_FAST_PATH`;
+- `GWTOPO01 = ADMITTED_EXACT_P0_LARGE_N_STRUCTURAL_FAST_PATH`;
+- `GWCTX01 = ADMITTED_EXACT_P0_LINEAR_HANDLE_UNIQUENESS_PROOF`;
+- `GWCTX03 = ADMITTED_EXACT_P0_COMPACT_CONTEXT_CELL_VIEW`;
+- `GWVIEW01 = ADMITTED_EXACT_P0_DIRECT_CONTEXT_VIEW_EXPORT`.
+
+These are eligible for bounded recomposition, subject to exact source-patch recovery and preservation replay.
+
+### Explicit exclusions from recomposition
+
+The same closeout explicitly rejects or withholds several explored changes:
+
+- H-DIR04 `move_alloc` ownership transfer: rolled back;
+- persistent groundwater-forcing reuse candidates: rejected without a generation contract;
+- initial full-constitutive replacement by K+C: rejected because slower;
+- H17A request/result adapter-vector reuse: measurement only / low priority;
+- directional attempt-context removal: rejected as not pure waste;
+- fresh full/half transaction states: retained as required.
+
+These must not appear in a canonical ZERO-WASTE reconstruction even if historical commits exist on the branch.
+
+### Important branch-history rule
+
+The ZERO-WASTE final tree also contains production evolution needed by later qualified application/coupling gates. Presence in the final tree is not equivalent to ZERO-WASTE admission.
+
+For every candidate patch, canonical recomposition requires both:
+1. a closeout/admission classification;
+2. an exact source change attributable to that capability.
+
+If either is missing, the patch remains provenance-pending.
+
+## Tranche-B current state
+
+`B_ZERO_WASTE_ADMISSION_FILTER = ESTABLISHED`
+
+`B_EXACT_PATCH_RECOVERY = IN_PROGRESS`
+
+The next task is exact patch recovery for the admitted capabilities, beginning with the small structural groundwater fast paths and the original H01 duplicate-work removal. This is safer than copying the 24-file final ZERO-WASTE tree.
