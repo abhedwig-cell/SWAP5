@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "phase": "STAGE1_PRODUCTION_SHAPED_EXTRACTION_COMPLETE",
+  "status": "PASS_STAGE1",
+  "workflow_run": 36076278421,
+  "workflow_job": 107888080554,
+  "provider_location": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90"
+  ],
+  "runtime_routing_changed": false,
+  "richards_replay": {
+    "max_abs_pressure_head_delta_cm": 2.071933e-6,
+    "max_abs_water_content_delta": 2.367780e-9,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 8.756861e-9,
+    "mass_residual_abs_cm": 1.240327e-16,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "cache": {
+    "builds": 1,
+    "hits": 1,
+    "misses": 1,
+    "entries": 1
+  },
+  "decision": "ADVANCE_TO_STAGE2_EXPLICIT_OPT_IN_ROUTING",
+  "hard_boundary": "Default analytical behavior remains unchanged until Stage 2 closes all routing, regression, qbot fallback, transactional replay and application-level timing gates."
+}
