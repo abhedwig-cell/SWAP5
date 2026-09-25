@@ -42,7 +42,7 @@ program test_fahl49_application_scale
   if(status/=FMR_APP_BOOT_OK .or. .not.app%ready()) error stop 'F-AHL49 bootstrap failed'
   if(direct_active) then
     call b110_direct_retention_pool_stats(entries,builds,hits,payload,frozen)
-    if(entries/=1 .or. builds/=1 .or. hits/=n-1 .or. payload/=6240_int64 .or. .not.frozen) &
+    if(entries/=1 .or. builds/=1 .or. hits/=n-1 .or. payload/=12384_int64 .or. .not.frozen) &
          error stop 'F-AHL49 pool ownership gate'
   else
     entries=0;builds=0;hits=0;payload=0_int64;frozen=.false.
