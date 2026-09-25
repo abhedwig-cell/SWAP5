@@ -86,6 +86,10 @@ contains
       provider%ready=.false.
       return
     end if
+    if(.not.b110_adaptive_hydraulic_profile_supported(parameters))then
+      provider%ready=.false.
+      return
+    end if
 
     ! Step-dependent analytical semantics are always rebound. Only the immutable
     ! adaptive representation may survive a same-key rebind.
