@@ -1,5 +1,5 @@
 module mod_contextual_transaction_test
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference
   implicit none
   private
