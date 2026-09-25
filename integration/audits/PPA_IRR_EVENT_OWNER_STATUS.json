@@ -1,0 +1,11 @@
+{
+  "work_unit": "PPA-IRR-EVENT-OWNER",
+  "tested_commit": "9995ee67f",
+  "status": "ISOLATED_CARRIER_CLONE_PASS_NOT_REGISTERED_OR_ADMITTED",
+  "preregistration": "PPA_IRR_EVENT_OWNER_PREREGISTRATION.json",
+  "implementation": "src/runtime/mod_ppa_irrigation_event_state.f90 extends the existing temporal-indicator physical state with irrigation_state_t. Own clone uses sourced allocation to retain dynamic type, inherited private temporal history and deep physical arrays. No new authoritative owner is created.",
+  "result": "HydraulicCopy PASS O0/O2 with identical full transcripts. Carrier initialized from real exported temporal state preserves event start/end/rate/origin, physical arrays and temporal derivative snapshot through clone. Mutating cloned water/event leaves original unchanged. Existing BASE restart template rejects unregistered carrier. Existing --guards and --irrigation-source suites also PASS O0/O2; source transcripts identical.",
+  "build": "swap-ppa-wu01-ec3921adba054816973d3f351600021e",
+  "scope": "Carrier/clone foundation only. Optional layout is deliberately not registered yet; production dispatch and restart matching remain fail-closed. No pending event is committed, restored or automatically advanced by production runtime.",
+  "next": "Register a distinct optional-state contract and explicit clone/restart matching tests, then implement accepted candidate publication and source mapping jointly. Preserve BASE and exact-type dispatch; do not admit this carrier merely through generic inheritance."
+}
