@@ -1,0 +1,21 @@
+name: F-PE-ZERO-WASTE01 H04 characterization
+
+on:
+  pull_request:
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_h04_characterization.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h04_characterization.sh'
+      - '.github/workflows/f-pe-zero-waste01-h04-characterization.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Characterize multi-iteration and free-drainage constitutive demand
+        run: bash tests/fpe/run_fpe_zero_waste01_h04_characterization.sh
