@@ -1,0 +1,34 @@
+name: F-PE-PROFILE02 component cost refresh
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'tests/fpe/test_fpe_profile01_constitutive_timing.f90'
+      - 'tests/fpe/run_fpe_profile01_constitutive_timing.sh'
+      - 'tests/fpe/test_fpe_zero_waste01_h04_component_cost.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h04_component_cost.sh'
+      - '.github/workflows/f-pe-profile02-component-cost.yml'
+  workflow_dispatch:
+
+jobs:
+  component-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Refresh constitutive component costs on current postimage
+        run: |
+          bash tests/fpe/run_fpe_profile01_constitutive_timing.sh | tee profile02-constitutive.txt
+          grep -Fq 'PROFILE01_CONSTITUTIVE_MICROBENCHMARK=PASS' profile02-constitutive.txt
+          bash tests/fpe/run_fpe_zero_waste01_h04_component_cost.sh | tee profile02-h04-components.txt
+          grep -Fq 'FPE_ZERO_WASTE01_H04_COMPONENT_COST=PASS' profile02-h04-components.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: profile02-component-cost
+          path: |
+            profile02-constitutive.txt
+            profile02-h04-components.txt
