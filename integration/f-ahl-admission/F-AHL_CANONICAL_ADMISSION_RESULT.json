@@ -2,7 +2,7 @@
   "schema_version": 1,
   "workstream": "F-AHL-ADMISSION",
   "title": "Minimal canonical admission extraction result",
-  "status": "READY_FOR_CANONICAL_REVIEW",
+  "status": "REQUALIFICATION_REQUIRED_AFTER_LAYERED_AUTHORITY_REPAIR",
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "branch": "integration/f-ahl-canonical-admission",
   "qualification_workflow": {
@@ -46,5 +46,12 @@
     "id": "F-AHL27B",
     "description": "Nontrivial serialized full-half prescribed-head execution on current canonical is rejected by external temporal-acceptance semantics before solver execution; this is not repaired or bypassed by the AHL admission patch."
   },
-  "decision": "OPEN_CANONICAL_REVIEW_PR; DO_NOT_MERGE_AUTOMATICALLY"
+  "decision": "DO_NOT_MARK_READY_OR_MERGE_UNTIL_FULL_ADMISSION_GATE_RERUN_PASSES",
+  "layered_authority_reconciliation": {
+    "initial_run": 36120424176,
+    "initial_result": "FAIL on single node-1 representation ownership",
+    "repair": "per-unique initialized hydraulic authority representation with node-to-representation mapping",
+    "repair_diagnostic": "PASS; B01/O14 both within constitutive gates",
+    "required_next": "full canonical admission workflow on repaired head"
+  }
 }
