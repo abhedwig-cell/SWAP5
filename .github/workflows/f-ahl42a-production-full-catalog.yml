@@ -1,0 +1,27 @@
+name: F-AHL42A production full catalog matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'research/ahl/test_ahl42a_production_full_catalog.f90'
+      - 'research/ahl/run_ahl42a_production_full_catalog.sh'
+      - 'integration/f-ahl/F-AHL42A_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl42a-production-full-catalog.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production-shaped 108-case matrix
+        run: |
+          bash research/ahl/run_ahl42a_production_full_catalog.sh /tmp/ahl42a_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl42a-${{ github.run_id }}
+          path: /tmp/ahl42a_result.txt
