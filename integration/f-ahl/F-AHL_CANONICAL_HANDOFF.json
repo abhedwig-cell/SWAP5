@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream": "F-AHL",
   "record": "CANONICAL_GOVERNANCE_HANDOFF",
-  "status": "READY_FOR_MINIMAL_PATCH_EXTRACTION_AFTER_F_AHL42A",
+  "status": "DRAFT_PR_608_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "reviewed_research_state": "44eef38c6a10b8e8e0781f4bc8350d114b6467c4",
   "research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
@@ -98,5 +98,27 @@
       "backtracking_delta": 0
     },
     "cache_identity": "Policy 3 versus 4 exact-key equality and fingerprints are distinct."
+  },
+  "clean_candidate": {
+    "branch": "review/f-ahl-policy-v4-candidate",
+    "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+    "draft_pr": 608,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/608",
+    "mergeable": true,
+    "production_source_files": 4,
+    "compact_review_test_files_and_workflow": 9,
+    "changed_files_total": 13,
+    "candidate_ci": {
+      "run": 36125003248,
+      "job": 108038970572,
+      "conclusion": "success",
+      "gates": [
+        "12-case provider matrix PASS",
+        "O09-dry policy-v4 regression PASS",
+        "Serialized Reference opt-in/default-off PASS",
+        "prescribed-qbot analytical fallback PASS"
+      ]
+    },
+    "governance_state": "DRAFT_REVIEW_ONLY_NOT_MERGED"
   }
 }
