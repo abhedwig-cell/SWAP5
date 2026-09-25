@@ -1129,7 +1129,8 @@ contains
     use mod_kernel_transactions, only: kernel_committed_state_t
     use mod_transaction_reference, only: transaction_state_t
     use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t, &
-         irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+         irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY, &
+         IRRIGATION_TIMING_TCS7_PRESSURE_HEAD,IRRIGATION_TIMING_TCS8_WATER_CONTENT
     use mod_ppa_irrigation_source_binding, only: evaluate_ppa_committed_profile_irrigation_source
     type(ppa_irrigation_event_state_t),intent(in)::source
     real(real64),intent(in)::boundary
@@ -1145,13 +1146,15 @@ contains
     class(transaction_state_t),allocatable::snapshot
     real(real64)::expected,depth(2),thickness
     logical::ok
-    integer::path,attempt
+    integer::path,attempt,timing
     parameters%scheduled_irrigation_enabled=.true.
     parameters%active_nodes=source%active_nodes
     parameters%sensor_node=1; parameters%single_ssdi_node=1
     parameters%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
     parameters%tcs7_knot_count=2; parameters%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
     parameters%tcs7_pressure_head=0.0_real64
+    parameters%tcs8_knot_count=2; parameters%tcs8_dvs(1:2)=[0.0_real64,2.0_real64]
+    parameters%tcs8_water_content=0.8_real64
     parameters%dcs1_knot_count=2; parameters%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
     request%t0=boundary; request%t1=boundary+1.0_real64
     request%selection_opportunity=.true.; request%irrigation_enabled=.true.
@@ -1159,6 +1162,8 @@ contains
     allocate(previous%subsurface_irrigation_source(source%active_nodes))
     previous%subsurface_irrigation_source=0.0_real64
     expected=(0.8_real64-source%water_content(1))*0.5_real64
+    do timing=IRRIGATION_TIMING_TCS7_PRESSURE_HEAD,IRRIGATION_TIMING_TCS8_WATER_CONTENT
+    parameters%timing_criterion=timing
     do path=1,2
       do attempt=1,3
         thickness=1.0_real64
@@ -1187,7 +1192,20 @@ contains
       end select
     end do
     if(depth(1)/=depth(2)) error stop 'committed profile restart selection differs'
+    end do
+    ! The restored sensor must also suppress selection above the threshold;
+    ! checking only a generous trigger would miss use of a zero/default view.
+    parameters%tcs8_water_content=0.0_real64
+    do path=1,2
+      call evaluate_ppa_committed_profile_irrigation_source(parameters,owners(path),template,request, &
+           1,[1],[1.0_real64],[0.0_real64],0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+           previous,candidate,flux,diagnostics,forcing,ok)
+      if(.not.ok.or.flux%applied.or.diagnostics%triggered) error stop 'committed TCS8 ignored sensor threshold'
+      if(.not.diagnostics%selection_evaluated) error stop 'committed TCS8 selection skipped'
+      if(any(forcing%subsurface_irrigation_source/=0.0_real64)) error stop 'untriggered TCS8 retained source'
+    end do
     write(*,'(a)') 'PPA_IRR_COMMITTED_PROFILE_SELECTION_RESTART_IDENTITY=PASS'
+    write(*,'(a)') 'PPA_IRR_COMMITTED_TCS8_SENSOR_SELECTION=PASS'
   end subroutine verify_committed_profile_selection
   subroutine verify_restored_irrigation_delivery(original,resumed,boundary,template,owners)
     use mod_transaction_reference, only: transaction_state_t
