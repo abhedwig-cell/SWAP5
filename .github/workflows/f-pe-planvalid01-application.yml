@@ -1,0 +1,27 @@
+name: F-PE-PLANVALID01 application timing
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'tests/fpe/test_fpe_planvalid01_application_timing.f90'
+      - 'tests/fpe/run_fpe_planvalid01_application_timing.sh'
+      - '.github/workflows/f-pe-planvalid01-application.yml'
+  workflow_dispatch:
+
+jobs:
+  application-timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run paired application setup timing
+        run: |
+          bash tests/fpe/run_fpe_planvalid01_application_timing.sh | tee planvalid01-application.txt
+          grep -Fq 'PLANVALID01_APP_PAIRED=PASS' planvalid01-application.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: planvalid01-application
+          path: planvalid01-application.txt

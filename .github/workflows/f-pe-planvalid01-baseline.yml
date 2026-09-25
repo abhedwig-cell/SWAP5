@@ -1,0 +1,28 @@
+name: F-PE-PLANVALID01 execution-plan baseline
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'tests/fpe/test_fpe_planvalid01_baseline.f90'
+      - 'tests/fpe/run_fpe_planvalid01_baseline.sh'
+      - 'docs/performance/F-PE-PLANVALID01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-planvalid01-baseline.yml'
+  workflow_dispatch:
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Measure execution-plan construction
+        run: |
+          bash tests/fpe/run_fpe_planvalid01_baseline.sh | tee planvalid01-baseline.txt
+          test "$(grep -c '^PLANVALID01_BASELINE=PASS$' planvalid01-baseline.txt)" -eq 4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: planvalid01-baseline
+          path: planvalid01-baseline.txt

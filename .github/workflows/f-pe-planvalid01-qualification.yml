@@ -1,0 +1,29 @@
+name: F-PE-PLANVALID01 qualification
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'tests/fpe/test_fpe_planvalid01_baseline.f90'
+      - 'tests/fpe/test_fpe_planvalid01_semantics.f90'
+      - 'tests/fpe/run_fpe_planvalid01_qualification.sh'
+      - 'docs/performance/F-PE-PLANVALID01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-planvalid01-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run semantic and paired qualification
+        run: |
+          bash tests/fpe/run_fpe_planvalid01_qualification.sh | tee planvalid01-qualification.txt
+          grep -Fq 'PLANVALID01_QUALIFICATION=PASS' planvalid01-qualification.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: planvalid01-qualification
+          path: planvalid01-qualification.txt
