@@ -1,0 +1,28 @@
+name: F-AHL50 provider admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'tests/fahl/test_fahl49_provider_extraction.f90'
+      - 'tests/fahl/run_fahl49_provider_extraction.sh'
+      - '.github/workflows/f-ahl49-provider.yml'
+  workflow_dispatch:
+
+jobs:
+  provider:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify production provider extraction
+        run: |
+          bash tests/fahl/run_fahl49_provider_extraction.sh | tee fahl49-provider.txt
+          grep -Fq 'FAHL49_PROVIDER_EXTRACTION=PASS' fahl49-provider.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-provider
+          path: fahl49-provider.txt
