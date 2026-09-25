@@ -24,6 +24,13 @@ PY
 mv tests/fgc/.run_fgc49d_asan_PLACEHOLDER.sh "$TMP_RUNNER"
 chmod +x "$TMP_RUNNER"
 
+ASAN_LIB="$(gcc -print-file-name=libasan.so)"
+if [[ ! -f "$ASAN_LIB" ]]; then
+  echo "FGC49D_ASAN_FAIL libasan not found: $ASAN_LIB" >&2
+  exit 1
+fi
+export LD_PRELOAD="$ASAN_LIB${LD_PRELOAD:+:$LD_PRELOAD}"
 export ASAN_OPTIONS="detect_leaks=0:abort_on_error=1:symbolize=1:fast_unwind_on_malloc=0"
 export UBSAN_OPTIONS="print_stacktrace=1:halt_on_error=1"
+echo "FGC49D_ASAN_PRELOAD=$ASAN_LIB"
 bash "$TMP_RUNNER"
