@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41B",
+  "phase": "PRESCRIBED_QBOT_COMPONENT_ATTRIBUTION_COMPLETE",
+  "status": "RETENTION_CAPACITY_CONTROLS_NONLINEAR_PATH",
+  "workflow_run": 36107069003,
+  "workflow_job": 107981932629,
+  "frozen_case": {
+    "material": "B01",
+    "regime": "wet",
+    "top_initial_head_cm": -10.0,
+    "qbot_cm_per_day": -1e-6,
+    "step_duration_day": 0.01
+  },
+  "variants": {
+    "current_adaptive_all": {
+      "max_abs_profile_head_delta_cm": 7.057462e-9,
+      "bottom_node_head_delta_cm": 6.897872e-9,
+      "max_abs_water_content_delta": 1.008499e-11,
+      "bottom_flux_delta_cm_per_day": 0.0,
+      "analytical_iterations": 2,
+      "candidate_iterations": 3,
+      "analytical_backtracking": 2,
+      "candidate_backtracking": 3
+    },
+    "exact_retention_capacity_plus_adaptive_K": {
+      "max_abs_profile_head_delta_cm": 1.896616e-11,
+      "bottom_node_head_delta_cm": 1.074341e-11,
+      "max_abs_water_content_delta": 3.630429e-14,
+      "bottom_flux_delta_cm_per_day": 0.0,
+      "analytical_iterations": 2,
+      "candidate_iterations": 2,
+      "analytical_backtracking": 2,
+      "candidate_backtracking": 2
+    },
+    "adaptive_retention_capacity_plus_exact_K": {
+      "max_abs_profile_head_delta_cm": 7.038489e-9,
+      "bottom_node_head_delta_cm": 6.908628e-9,
+      "max_abs_water_content_delta": 1.010153e-11,
+      "bottom_flux_delta_cm_per_day": 0.0,
+      "analytical_iterations": 2,
+      "candidate_iterations": 3,
+      "analytical_backtracking": 2,
+      "candidate_backtracking": 3
+    },
+    "fully_analytical": {
+      "max_abs_profile_head_delta_cm": 0.0,
+      "bottom_node_head_delta_cm": 0.0,
+      "max_abs_water_content_delta": 0.0,
+      "bottom_flux_delta_cm_per_day": 0.0,
+      "analytical_iterations": 2,
+      "candidate_iterations": 2,
+      "analytical_backtracking": 2,
+      "candidate_backtracking": 2
+    }
+  },
+  "finding": "Restoring authoritative retention and capacity recovers the analytical prescribed-qbot nonlinear path while keeping adaptive conductivity. Restoring conductivity alone does not. The current qbot path drift is therefore controlled by the adaptive retention/capacity representation.",
+  "relation_to_prior_evidence": "This confirms on the current production-shaped provider the earlier F-AHL12D conclusion that qbot nonlinear-path sensitivity is retention/capacity controlled and not repaired by exact K.",
+  "nonclaims": [
+    "The current adaptive qbot route is not qualified.",
+    "No qbot performance claim is made.",
+    "No gate is retuned."
+  ]
+}
