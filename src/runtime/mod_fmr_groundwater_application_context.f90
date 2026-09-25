@@ -1,6 +1,6 @@
 module mod_fmr_groundwater_application_context
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: int32, int64, real64
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_application_cell_plan_t, &
        GW_APP_PLAN_OK
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t
@@ -63,6 +63,7 @@ module mod_fmr_groundwater_application_context
     procedure, public :: cell_count => application_context_cell_count
     procedure, public :: quiescent => application_context_quiescent
     procedure, public :: copy_plan_view => application_context_copy_plan_view
+    procedure, public :: export_plan_view => application_context_export_plan_view
     procedure, public :: copy_tile_view => application_context_copy_tile_view
     procedure, public :: capture_origins => application_context_capture_origins
     procedure, public :: evaluate_groundwater_fluxes => application_context_evaluate_groundwater_fluxes
@@ -310,6 +311,36 @@ contains
     end do
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_copy_plan_view
+
+  subroutine application_context_export_plan_view(self, cell_ids, binding_cell_ids, package_slots, modflow_node_ids, &
+       term_cell_ids, term_hcof, term_rhs, status)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    integer(int64), intent(out) :: cell_ids(:), binding_cell_ids(:), term_cell_ids(:)
+    integer, intent(out) :: package_slots(:)
+    integer(int32), intent(out) :: modflow_node_ids(:)
+    real(real64), intent(out) :: term_hcof(:), term_rhs(:)
+    integer, intent(out) :: status
+
+    integer :: i, n
+
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    n = size(self%cells)
+    if (size(cell_ids) /= n .or. size(binding_cell_ids) /= n .or. size(package_slots) /= n .or. &
+        size(modflow_node_ids) /= n .or. size(term_cell_ids) /= n .or. size(term_hcof) /= n .or. &
+        size(term_rhs) /= n) return
+
+    do i = 1, n
+      cell_ids(i) = self%cells(i)%topology%groundwater_cell_id
+      binding_cell_ids(i) = self%bindings(i)%groundwater_cell_id
+      package_slots(i) = self%bindings(i)%package_slot
+      modflow_node_ids(i) = self%bindings(i)%modflow_node_id
+      term_cell_ids(i) = self%current_terms(i)%groundwater_cell_id
+      term_hcof(i) = self%current_terms(i)%hcof_m2_per_day
+      term_rhs(i) = self%current_terms(i)%rhs_m3_per_day
+    end do
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_export_plan_view
 
   subroutine application_context_copy_tile_view(self, tiles, participant_handles, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
