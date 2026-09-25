@@ -386,3 +386,30 @@ The B1 production recomposition surface is 22 source files: the 20 initially ide
 `B1_CORE_P0_RECOMPOSITION = QUALIFIED_ON_CURRENT_CANONICAL_BASE`
 
 This qualifies the recomposed B1 postimage as the base for B2. It does not yet authorize direct canonical merge of PR #622; B2, PLANVALID01 and F-AHL50 remain separate bounded tranches.
+
+
+## B2 large-N recomposition qualification
+
+Execution PR: #623.
+
+B2 layers only the four production modules containing the five explicitly admitted large-N capabilities on top of qualified B1.
+
+Focused qualification on head `40f4e7c2b9c0dce3c7f4cb1e0f4addd9ac31c47a` is fully green.
+
+Evidence:
+- GWPLAN01 direct/current gate: PASS;
+- GWPLAN01 paired N=10,000: parent mean `0.317651717667 s`, candidate mean `0.004592624 s`, ratio `0.0144580486885`, reduction approximately 98.55%;
+- GWTOPO01 paired N=10,000: parent mean `0.218718961667 s`, candidate mean `0.000941865333333 s`, ratio `0.00430628111141`, reduction approximately 99.57%;
+- GWCTX01 linear uniqueness N=10,000: pairwise `0.035908053 s`, linear `0.000007050 s`, ratio approximately `0.000196`;
+- GWCTX03 compact cells N=10,000: compact/full ratio approximately `0.037986`;
+- GWVIEW01 N=10,000: direct/current ratio approximately `0.127953`.
+
+The initial paired failures were shallow-checkout harness failures because historical baseline SHAs were unavailable. Setting `fetch-depth: 0` for the paired jobs closed them without production changes.
+
+### B2 status
+
+`B2_LARGE_N_GROUNDWATER_RECOMPOSITION = QUALIFIED_ON_B1_POSTIMAGE`
+
+Tranche B is now technically reconstructed and qualified as B1 + B2.
+
+Next tranche: C, PLANVALID01. Recompose only its narrow admitted execution-plan delta on the B2 postimage and replay its qualification/preservation gates.
