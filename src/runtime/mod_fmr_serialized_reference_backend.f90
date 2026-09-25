@@ -252,6 +252,8 @@ module mod_fmr_serialized_reference_backend
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
+    real(real64) :: trial_t0 = 0.0_real64
+    real(real64) :: trial_t1 = 0.0_real64
     logical :: solver_executed = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
@@ -1910,6 +1912,8 @@ contains
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%last_observation%trial_t0 = t0
+    self%last_observation%trial_t1 = t1
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()

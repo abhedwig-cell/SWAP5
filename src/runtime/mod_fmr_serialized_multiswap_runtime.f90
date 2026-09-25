@@ -50,6 +50,9 @@ module mod_fmr_serialized_multiswap_runtime
     logical :: completed = .false.
     logical :: committed = .false.
     logical :: solver_executed = .false.
+    integer :: last_solver_status = 0
+    real(real64) :: last_trial_t0 = 0.0_real64
+    real(real64) :: last_trial_t1 = 0.0_real64
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
     integer :: accepted_substeps = 0
@@ -651,6 +654,9 @@ contains
     if (kernel_diag%transaction_calls > 0) then
       observation = backend%observation()
       output%solver_executed = observation%solver_executed
+      output%last_solver_status = observation%solver_status
+      output%last_trial_t0 = observation%trial_t0
+      output%last_trial_t1 = observation%trial_t1
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
       runtime%snow_event_evaluation_calls = runtime%snow_event_evaluation_calls + &
