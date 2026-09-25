@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27B",
+  "title": "Canonical prescribed-head FMR timing-fixture qualification",
+  "parent": "F-AHL27_STAGE2_TIMING",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "motivation": "The frozen h0=-75 cm, hbot=-50 cm full-half timing fixture is canonically rejected for both analytical and adaptive hydraulics through temporal rejection. The timing gate itself is therefore blocked, not failed.",
+  "fixed_context": {
+    "initial_head_cm": -75.0,
+    "duration_day": 0.25,
+    "bottom_mode": 5,
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 1e-6,
+    "mass_tolerance": 1e-12,
+    "top_flux": "negative authoritative initial conductivity"
+  },
+  "prospective_bottom_head_candidates_cm": [-74.999,-74.99,-74.9,-74.0,-70.0,-50.0],
+  "selection_rule": "Using analytical/default-off execution only, select the accepted candidate with the largest absolute bottom-head perturbation from -75 cm. Accepted means canonical status COMPLETED, completed=true, at least one accepted substep, zero solver rejections and zero mass rejections.",
+  "after_selection": "Freeze the selected fixture, then execute a separate adaptive-vs-analytical paired timing workflow. Do not use adaptive outcome or timing data to select the fixture.",
+  "hard_exclusions": [
+    "NO_TEMPORAL_TOLERANCE_RETUNING",
+    "NO_SELECTION_BY_SPEED",
+    "NO_SELECTION_BY_ADAPTIVE_FIDELITY",
+    "NO_POSTHOC_CANDIDATE_INSERTION",
+    "NO_DEFAULT_ON_CHANGE"
+  ]
+}
