@@ -67,6 +67,7 @@ program test_fpe_zero_waste01_dispatch_overhead
   call benchmark_runtime_finalize(columns, templates, linear_reps)
   call benchmark_receipt_validation(columns, receipt_ids, quad_reps)
   call benchmark_receipt_lookup(columns, receipt_ids, quad_reps)
+  call benchmark_receipt_indexed(columns, receipt_ids, linear_reps)
   call benchmark_template_lookup(columns, templates, linear_reps)
 
 contains
@@ -177,6 +178,67 @@ contains
       end if
     end do
   end function find_receipt_slot_mirror
+
+  subroutine build_receipt_slot_map_mirror(cols, ids, slot_by_column, valid)
+    type(fmr_logical_column_t), intent(in) :: cols(:)
+    integer(int64), intent(in) :: ids(:)
+    integer, allocatable, intent(out) :: slot_by_column(:)
+    logical, intent(out) :: valid
+    integer(int64), allocatable :: hash_keys(:)
+    integer, allocatable :: hash_column_index(:)
+    integer :: table_size, i, slot, start_slot, column_index
+
+    allocate(slot_by_column(size(cols)))
+    slot_by_column = 0
+    valid = .false.
+    if (size(ids) == 0) then
+      valid = .true.; return
+    end if
+    if (size(cols) == 0) return
+    table_size = 1
+    do while (table_size < 2*size(cols) + 1)
+      table_size = 2*table_size
+    end do
+    allocate(hash_keys(table_size), hash_column_index(table_size))
+    hash_keys = 0_int64
+    hash_column_index = 0
+    do i = 1, size(cols)
+      if (cols(i)%column_id <= 0_int64) cycle
+      slot = 1 + int(modulo(cols(i)%column_id, int(table_size,int64)))
+      start_slot = slot
+      do
+        if (hash_keys(slot) == 0_int64) then
+          hash_keys(slot) = cols(i)%column_id
+          hash_column_index(slot) = i
+          exit
+        end if
+        if (hash_keys(slot) == cols(i)%column_id) exit
+        slot = slot + 1
+        if (slot > table_size) slot = 1
+        if (slot == start_slot) return
+      end do
+    end do
+    do i = 1, size(ids)
+      if (ids(i) <= 0_int64) return
+      slot = 1 + int(modulo(ids(i), int(table_size,int64)))
+      start_slot = slot
+      column_index = 0
+      do
+        if (hash_keys(slot) == 0_int64) exit
+        if (hash_keys(slot) == ids(i)) then
+          column_index = hash_column_index(slot)
+          exit
+        end if
+        slot = slot + 1
+        if (slot > table_size) slot = 1
+        if (slot == start_slot) exit
+      end do
+      if (column_index == 0) return
+      if (slot_by_column(column_index) /= 0) return
+      slot_by_column(column_index) = i
+    end do
+    valid = .true.
+  end subroutine build_receipt_slot_map_mirror
 
   integer function find_template_index_mirror(template_id, tmpls) result(index)
     integer(int64), intent(in) :: template_id
@@ -471,6 +533,28 @@ contains
     approx_checks = int(size(cols),int64)*int(size(cols)+1,int64)/2_int64
     call emit('receipt_lookup','R_equals_N',size(cols),reps,c0,c1,rate,checksum,approx_checks)
   end subroutine benchmark_receipt_lookup
+
+  subroutine benchmark_receipt_indexed(cols, ids, reps)
+    type(fmr_logical_column_t), intent(in) :: cols(:)
+    integer(int64), intent(in) :: ids(:)
+    integer, intent(in) :: reps
+    integer, allocatable :: slot_by_column(:)
+    integer(int64) :: c0, c1, rate, checksum
+    integer :: r, i
+    logical :: valid
+    checksum = 0_int64
+    call system_clock(c0, rate)
+    do r = 1, reps
+      call build_receipt_slot_map_mirror(cols, ids, slot_by_column, valid)
+      if (.not. valid) error stop 'indexed receipt map unexpectedly invalid'
+      do i = 1, size(cols)
+        checksum = checksum + int(slot_by_column(i),int64)
+      end do
+    end do
+    call system_clock(c1)
+    call emit('receipt_indexed','R_equals_N',size(cols),reps,c0,c1,rate,checksum, &
+         2_int64*int(size(cols),int64) + int(size(ids),int64))
+  end subroutine benchmark_receipt_indexed
 
   subroutine benchmark_template_lookup(cols, tmpls, reps)
     type(fmr_logical_column_t), intent(in) :: cols(:)
