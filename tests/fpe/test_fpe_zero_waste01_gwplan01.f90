@@ -21,14 +21,22 @@ program test_fpe_zero_waste01_gwplan01
   type(groundwater_tile_predictor_input_t), allocatable :: predictors(:)
   type(groundwater_cell_area_input_t), allocatable :: areas(:)
   type(groundwater_topology_t) :: topology
+  type :: gwctx03_compact_cell_t
+    type(groundwater_topology_cell_t) :: topology
+    integer :: tile_begin = 0
+    integer :: tile_count = 0
+  end type gwctx03_compact_cell_t
+
   type(groundwater_application_plan_t) :: plan
   type(groundwater_topology_tile_t), allocatable :: copy_tiles(:)
   integer(int64), allocatable :: copy_revisions(:)
   type(groundwater_application_cell_plan_t), allocatable :: copy_cells(:)
+  type(gwctx03_compact_cell_t), allocatable :: compact_source(:), compact_copy(:)
   type(modflow6_api_slot_binding_t), allocatable :: copy_api(:)
   type(modflow6_linear_boundary_term_t), allocatable :: copy_terms(:)
   real(real64) :: seconds, ns_total, checksum, topology_seconds, topology_ns_total, copy_seconds
   real(real64) :: copy_tiles_seconds, copy_revisions_seconds, copy_cells_seconds, copy_api_seconds, copy_terms_seconds
+  real(real64) :: compact_cells_seconds
 
   call get_command_argument(1,arg)
   read(arg,*) n
@@ -119,6 +127,26 @@ program test_fpe_zero_waste01_gwplan01
        ',cells_per_bind=',copy_cells_seconds/real(copy_reps,real64), &
        ',api_per_bind=',copy_api_seconds/real(copy_reps,real64), &
        ',terms_per_bind=',copy_terms_seconds/real(copy_reps,real64)
+
+  allocate(compact_source(size(copy_cells)))
+  do i=1,size(copy_cells)
+    compact_source(i)%topology=copy_cells(i)%topology
+    compact_source(i)%tile_begin=copy_cells(i)%tile_begin
+    compact_source(i)%tile_count=copy_cells(i)%tile_count
+  end do
+  call system_clock(c0,rate)
+  do rep=1,copy_reps
+    if(allocated(compact_copy)) deallocate(compact_copy)
+    allocate(compact_copy(size(compact_source)))
+    compact_copy=compact_source
+  end do
+  call system_clock(c1)
+  compact_cells_seconds=real(c1-c0,real64)/real(rate,real64)
+  write(*,'(A,I0,A,I0,A,ES24.16,A,ES24.16,A,F12.6)') &
+       'GWCTX03_COMPACT,n=',n,',reps=',copy_reps, &
+       ',full_cells_per_bind=',copy_cells_seconds/real(copy_reps,real64), &
+       ',compact_cells_per_bind=',compact_cells_seconds/real(copy_reps,real64), &
+       ',ratio=',compact_cells_seconds/copy_cells_seconds
 
 contains
 
