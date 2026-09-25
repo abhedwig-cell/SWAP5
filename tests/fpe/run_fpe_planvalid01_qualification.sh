@@ -10,7 +10,9 @@ BASE=f5ba657695156a936cb3dc8e14669f92d333753b
 git show "$BASE:src/runtime/mod_fmr_runtime_core.f90" > "$BUILD/src/runtime_base.f90"
 
 compile_variant() {
-  local name="$1" source="$2" out="$BUILD/$name"
+  local name="$1"
+  local source="$2"
+  local out="$BUILD/$name"
   gfortran -std=f2008 -ffree-line-length-none -O2 -J "$out" -I "$out" -c "$source" -o "$out/runtime.o"
   gfortran -std=f2008 -ffree-line-length-none -O2 -J "$out" -I "$out" -c tests/fpe/test_fpe_planvalid01_baseline.f90 -o "$out/test.o"
   gfortran -O2 "$out/runtime.o" "$out/test.o" -o "$out/test"
