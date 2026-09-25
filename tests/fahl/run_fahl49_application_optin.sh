@@ -64,8 +64,9 @@ runner=Path("tests/fapp/run_ppa_wu01_production_application_bootstrap.sh").read_
 runner=runner.replace("tests/fapp/test_ppa_wu01_production_application_bootstrap.f90",sys.argv[1])
 needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
 insert=needle+"  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n"
-if needle not in runner: raise SystemExit("compile seam missing")
-runner=runner.replace(needle,insert,1)
+if "src/solver/mod_b110_direct_retention_core.f90" not in runner:
+    if needle not in runner: raise SystemExit("compile seam missing")
+    runner=runner.replace(needle,insert,1)
 Path(sys.argv[1].replace("test.f90","run.sh")).write_text(runner)
 PY
 chmod +x "$BUILD/run.sh"
