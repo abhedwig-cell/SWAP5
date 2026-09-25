@@ -2,41 +2,31 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL33",
-  "phase": "MULTI_KEY_BIND_CHARACTERIZATION_COMPLETE",
-  "status": "ACTIONABLE_OVERHEAD_CHARACTERIZED",
+  "phase": "MULTI_KEY_SWITCHING_CHARACTERIZATION_COMPLETE",
+  "status": "PASS_CHARACTERIZATION",
   "workflow_run": 36080690679,
-  "workflow_job": 107901741664,
-  "measurements": {
-    "same_key": {
-      "unique_parameterizations": 1,
-      "seconds_per_bind": 1.47495e-7,
-      "build_delta": 0,
-      "hit_delta": 0,
-      "miss_delta": 0
-    },
-    "switch_16": {
-      "unique_parameterizations": 16,
-      "seconds_per_bind": 7.1674e-7,
-      "build_delta": 0,
-      "hit_delta": 200000,
-      "miss_delta": 0,
-      "ratio_to_same_key": 4.8594
-    },
-    "switch_64": {
-      "unique_parameterizations": 64,
-      "seconds_per_bind": 7.58895e-7,
-      "build_delta": 0,
-      "hit_delta": 200000,
-      "miss_delta": 0,
-      "ratio_to_same_key": 5.1452
-    }
+  "workflow_job": 107901351710,
+  "seconds_per_bind": {
+    "same_key": 1.47495e-7,
+    "switch_16": 7.1674e-7,
+    "switch_64": 7.58895e-7
   },
-  "finding": "After table-build and cache-miss overhead are removed, alternating among already-built authorities remains about five times more expensive than provider-local same-key reuse.",
-  "interpretation": "The remaining cost is on the warm authority-switch path: exact-key registry lookup plus provider representation transfer/rebinding. F-AHL33 does not establish which subcomponent dominates.",
-  "decision": "CHARACTERIZE_NEXT_BEFORE_OWNERSHIP_REPAIR",
-  "next_action": "After F-AHL32 registry qualification closes, decompose warm multi-key switching into registry lookup, table transfer/copy, and analytical fallback rebinding before changing representation ownership.",
+  "ratio_to_same_key": {
+    "switch_16": 4.8594189634,
+    "switch_64": 5.1452252619
+  },
+  "cache_accounting": {
+    "timed_build_delta": 0,
+    "timed_miss_delta": 0,
+    "switch_16_hit_delta": 200000,
+    "switch_64_hit_delta": 200000,
+    "entries": 64
+  },
+  "finding": "Changing among already-built hydraulic authorities is roughly five times more expensive than provider-local same-key reuse even when every changed authority is a warm exact-key registry hit. The remaining overhead is therefore in changed-authority binding and immutable-table transfer/provider state replacement, not table construction or cache misses.",
+  "decision": "ADVANCE_TO_OWNERSHIP_TRANSFER_CHARACTERIZATION",
+  "next_question": "How much of warm multi-key bind cost comes from deep copying the four adaptive support arrays, and can a stable immutable registry handle remove that copy without weakening lifetime or exact-key semantics?",
   "nonclaims": [
-    "No application-level slowdown is inferred from this bind microbenchmark.",
-    "No pointer or handle ownership repair is admitted by F-AHL33."
+    "This is a bind-level characterization, not an application speed claim.",
+    "No pointer or ownership repair is admitted by F-AHL33."
   ]
 }
