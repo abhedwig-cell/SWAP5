@@ -46,7 +46,7 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_provider_t, &
-       bind_b110_adaptive_hydraulic_provider
+       bind_b110_adaptive_hydraulic_provider, b110_adaptive_hydraulic_profile_supported
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -1349,24 +1349,6 @@ contains
     end select
   end subroutine fmr_serialized_restore_attempt_context
 
-  pure logical function fmr_raw_adaptive_profile_supported(parameters) result(supported)
-    type(fmr_b110_physical_parameters_t),intent(in)::parameters
-    integer :: i,j
-
-    supported=.false.
-    if(.not.parameters%adaptive_hydraulics_active)return
-    if(parameters%ksatexm_extension_active)return
-    if(parameters%active_nodes<1 .or. .not.allocated(parameters%cofgen))return
-    if(size(parameters%cofgen,1)<24 .or. size(parameters%cofgen,2)/=parameters%active_nodes)return
-
-    do i=2,parameters%active_nodes
-      do j=1,24
-        if(transfer(parameters%cofgen(j,i),0_int64)/=transfer(parameters%cofgen(j,1),0_int64))return
-      end do
-    end do
-    supported=.true.
-  end function fmr_raw_adaptive_profile_supported
-
   logical function fmr_serialized_execution_admitted(self, parameters, numerical_config)
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(kernel_parameters_t), intent(in) :: parameters
@@ -1392,10 +1374,10 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
-      if (fmr_raw_adaptive_profile_supported(parameters)) then
-        ! Only a genuinely supported AHL request receives the bounded AHL
-        ! admission restrictions. Unsupported requests fall back analytically
-        ! and retain the ordinary analytical admission envelope.
+      if (parameters%adaptive_hydraulics_active) then
+        ! An AHL request is admitted only in the bounded Reference/no-history
+        ! envelope. Within that envelope unsupported hydraulic authorities
+        ! (for example layered profiles or KSATEXM) fall back analytically.
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              .not. self%temporal_indicator_history_enabled
       end if
@@ -1479,7 +1461,8 @@ contains
       self%soil_parameters%node_distance = parameters%node_distance
       call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active)
-      self%adaptive_profile_supported = fmr_raw_adaptive_profile_supported(parameters)
+      self%adaptive_profile_supported = self%adaptive_hydraulics_active .and. &
+           b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)
       if (self%adaptive_profile_supported) then
         if (.not. associated(self%adaptive_constitutive)) allocate(self%adaptive_constitutive)
       else
