@@ -1,0 +1,21 @@
+name: F-AHL27 Stage2 qbot fallback
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fahl/test_fahl27_stage2_qbot_fallback.f90'
+      - 'tests/fahl/run_fahl27_stage2_qbot_fallback.sh'
+      - '.github/workflows/f-ahl27-stage2-qbot-fallback.yml'
+  workflow_dispatch:
+
+jobs:
+  qbot-fallback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run qbot analytical fallback gate
+        run: |
+          bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
