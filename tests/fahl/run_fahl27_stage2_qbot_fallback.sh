@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
+# rerun after qbot routing boundary
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fkt22-fmr-runtime-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fahl27-s2-qbot-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-fail(){ echo "FKT22_FMR_RUNTIME_FAIL $*" >&2; exit 1; }
-
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -26,7 +25,6 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
-  src/solver/mod_b110_smooth_freatic_projection.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
   src/process/mod_drainage_hooghoudt_equivalent_depth.f90
@@ -38,6 +36,7 @@ MODULE_SRC=(
   src/process/mod_drainage_multilevel_aggregation.f90
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
+  src/solver/mod_b110_smooth_freatic_projection.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
@@ -71,41 +70,26 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
+  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
-
 for opt in 0 2; do
-  OUT="$BUILD/o$opt"
-  mkdir -p "$OUT"
-  objects=()
+  OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
   for source in "${MODULE_SRC[@]}"; do
     obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90 -o "$OUT/test.o" || fail "compile O$opt runtime oracle"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt runtime oracle"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime oracle O$opt"; }
-  for marker in \
-    'FKT22_FMR_TRAJECTORY_DEFAULT_OFF=PASS' \
-    'FKT22_FMR_TRAJECTORY_ACCEPTED_ROUTE=PASS' \
-    'FKT22_FMR_TRAJECTORY_PROVENANCE=PASS' \
-    'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS' \
-    'FKT22_FMR_TRAJECTORY_PHYSICAL_IDENTITY=PASS' \
-    'FKT22_FMR_SERIALIZED_RUNTIME_GATE=PASS'; do
-    grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
-  done
-  cat "$OUT/output.txt"
-  echo "FKT22_FMR_RUNTIME_O${opt}=PASS"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fahl/test_fahl27_stage2_qbot_fallback.f90 -o "$OUT/test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+  "$OUT/test" | tee "$OUT/output.txt"
+  grep -Fq 'FAHL27_QBOT_EQUILIBRIUM_TRANSACTION=PASS' "$OUT/output.txt"
+  grep -Fq 'FAHL27_QBOT_CACHE BUILDS=0 HITS=0 MISSES=0 ENTRIES=0' "$OUT/output.txt"
+  grep -Fq 'FAHL27_QBOT_ANALYTICAL_FALLBACK=PASS' "$OUT/output.txt"
 done
-
-cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
-  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
-  fail 'O0/O2 semantic drift'
-}
-
-git diff --check -- tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90 \
-  tests/fkt/run_fkt22_fmr_runtime_gate.sh
-
-echo 'FKT22_FMR_RUNTIME_O0_O2_IDENTITY=PASS'
-echo 'FKT22_FMR_PRODUCTION_RUNTIME_GATE=PASS'
+echo 'FAHL27_STAGE2_QBOT_FALLBACK=PASS'
