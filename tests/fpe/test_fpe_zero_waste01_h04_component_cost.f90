@@ -61,6 +61,15 @@ program test_fpe_zero_waste01_h04_component_cost
   checksum=0.0_real64
   call system_clock(c0,rate)
   do r=1,reps
+    call mirror_theta_k_capacity(hydraulic%cofgen,head,theta_m,kval_m,cap_m)
+    checksum=checksum+theta_m(1)+kval_m(n)+cap_m(1)
+  end do
+  call system_clock(c1)
+  call emit('full_no_dkdh_shadow',n,reps,c0,c1,rate,checksum)
+
+  checksum=0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
     call provider%evaluate_demand(head,CONSTITUTIVE_DEMAND_WATER_CONTENT,theta_only,kval_m,cap_m,dkdh)
     checksum=checksum+theta_only(1)
   end do
@@ -147,6 +156,17 @@ contains
     theta_bottom=watcon(c(:,j),h(j))
     kbottom=hconduc(c(:,j),h(j),theta_bottom)
   end subroutine mirror_bottom_k
+
+  subroutine mirror_theta_k_capacity(c,h,t,k,capacity)
+    real(real64), intent(in) :: c(:,:),h(:)
+    real(real64), intent(out) :: t(:),k(:),capacity(:)
+    integer :: j
+    do j=1,size(h)
+      t(j)=watcon(c(:,j),h(j))
+      capacity(j)=moiscap(c(:,j),h(j))
+      k(j)=hconduc(c(:,j),h(j),t(j))
+    end do
+  end subroutine mirror_theta_k_capacity
 
   subroutine mirror_theta_k(c,h,t,k)
     real(real64), intent(in) :: c(:,:),h(:)
