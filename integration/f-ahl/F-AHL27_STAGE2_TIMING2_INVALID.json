@@ -1,11 +1,21 @@
 {
-  "schema_version":1,
-  "workstream":"F-AHL",
-  "work_unit":"F-AHL27_STAGE2_TIMING2",
-  "record":"INVALID_FIXTURE",
-  "workflow_run":36078079645,
-  "classification":"UNSUPPORTED_TEMPORAL_MODE_FOR_SERIALIZED_REFERENCE_OWNER",
-  "failure":"TX_TEMPORAL_NONE does not execute the serialized Reference trial; both analytical and adaptive routes return transaction failure before solver execution.",
-  "scientific_result":"NONE",
-  "repair_rule":"Keep the existing serialized owner contract. Prospectively qualify a mild prescribed-head transient under TX_TEMPORAL_EXTERNAL_FULL_HALF, select the first predefined analytical-complete fixture, then use that fixed fixture for off/on fidelity and paired timing."
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_TIMING2",
+  "record": "INVALID_FIXTURE",
+  "workflow_run": 36078079645,
+  "workflow_job": 107893680929,
+  "classification": "CANONICAL_TRANSACTION_POLICY_REJECTS_TX_TEMPORAL_NONE",
+  "observed": {
+    "default_off_status": 2,
+    "default_off_completed": false,
+    "default_off_solver_executed": false,
+    "adaptive_on_status": 2,
+    "adaptive_on_completed": false,
+    "adaptive_on_solver_executed": false
+  },
+  "root_cause": "mod_transaction_reference.valid_policy admits only TX_TEMPORAL_EXTERNAL_FULL_HALF and TX_TEMPORAL_MODEL_CERTIFICATE. TX_TEMPORAL_NONE is not a valid canonical transaction policy for run_trial.",
+  "scientific_result": "NONE",
+  "repair_rule": "Do not broaden transaction-policy semantics for a performance test. Use the existing serialized-backend reference-floor single-physical-trial route, which measures FMR parameter/provider routing and one Richards physical advance without temporal acceptance overhead.",
+  "gate_policy": "All hydraulic fidelity and paired timing gates remain frozen."
 }
