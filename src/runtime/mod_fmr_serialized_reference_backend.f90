@@ -489,6 +489,7 @@ contains
     prepared = .false.
     parameters%prepared_default_mvg_available = .false.
     parameters%prepared_default_mvg = b110_default_mvg_parameters_t()
+    parameters%prepared_direct_retention_slot = 0
 
     if (parameters%active_nodes <= 0) return
     if (.not. allocated(parameters%cofgen)) return
@@ -508,6 +509,19 @@ contains
     call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
          enable_ksatexm_extension=parameters%ksatexm_extension_active)
     parameters%prepared_default_mvg_available = .true.
+
+    if (parameters%direct_retention_active) then
+      if (parameters%bottom_mode /= 5 .or. parameters%swkimpl /= 0 .or. &
+          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active .or. &
+          parameters%ksatexm_extension_active) return
+      if (parameters%active_nodes > 1) then
+        if (any(parameters%prepared_default_mvg%cofgen(:,2:parameters%active_nodes) /= &
+             spread(parameters%prepared_default_mvg%cofgen(:,1),2,parameters%active_nodes-1))) return
+      end if
+      call acquire_b110_direct_retention_slot(parameters%prepared_default_mvg, &
+           parameters%prepared_direct_retention_slot, prepared, was_hit=.false.)
+      if (.not. prepared) return
+    end if
     prepared = .true.
   end subroutine prepare_fmr_b110_default_mvg
 
