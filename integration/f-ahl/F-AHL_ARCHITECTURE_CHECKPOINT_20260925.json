@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "F-AHL_ARCHITECTURE_CHECKPOINT_20260925",
+  "date": "2026-09-25",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "prescribed_head_route": {
+    "status": "QUALIFIED_RESEARCH_SPEED_CANDIDATE",
+    "representation": {
+      "theta_C": "derivative-consistent cubic-Hermite logit(Se) representation; C derived from the same interpolant",
+      "K": "linear log(K) lookup with selected floor-scaled/local wet-range error policy",
+      "near_saturation": "authoritative analytical",
+      "extreme_dry_tail": "relevance-bounded support with authoritative analytical fallback",
+      "build": "internal authoritative sampling",
+      "cache": "fingerprinted exact-key immutable reuse"
+    },
+    "fidelity": "12/12 B01/B12/O05/O14 wet-mid-dry prescribed-head cases pass with analytical nonlinear/backtracking path",
+    "paired_complete_Richards_cpu_reduction_range_fraction": [0.205364,0.242290],
+    "self_built_cached_fixture_reduction_fraction": 0.200401
+  },
+  "prescribed_qbot_route": {
+    "status": "PREFER_FULLY_ANALYTICAL",
+    "qualified_exact_retention_plus_K_lookup_matrix": "12/12 fidelity PASS",
+    "performance": "0 positive, 3 equivocal, 9 slower cases under paired timing",
+    "runtime_fallback_indicator": "FALSIFIED in F-AHL23",
+    "decision": "Do not use adaptive hydraulic acceleration for SWBOTB=2 in the current architecture."
+  },
+  "dry_tail_authority": {
+    "quantity": "C=dtheta/dh relevance scale",
+    "historical_scale": 1e-13,
+    "O05_lookup_bound_cm_approx": -264277.52309014817,
+    "physical_cutoff": false,
+    "outside_representation": "authoritative analytical fallback"
+  },
+  "remaining_research_envelope": [
+    "other hydraulic model families",
+    "SWKIMPL=1 / dKdh",
+    "other lower-boundary modes 7 and -2",
+    "full SWAP application runtime and accepted trajectories",
+    "production admission"
+  ],
+  "production_status": "NOT_ADMITTED"
+}
