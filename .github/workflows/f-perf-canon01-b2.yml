@@ -22,11 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: bash tests/fpe/run_fpe_zero_waste01_gwplan01_paired.sh
   gwtopo-paired:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: bash tests/fpe/run_fpe_zero_waste01_gwtopo01_paired.sh
   gwctx:
     runs-on: ubuntu-latest
