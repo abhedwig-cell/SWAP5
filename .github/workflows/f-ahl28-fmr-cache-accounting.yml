@@ -1,0 +1,24 @@
+name: F-AHL28 FMR cache accounting
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl28_fmr_cache_accounting.f90'
+      - 'research/ahl/run_ahl28_fmr_cache_accounting.sh'
+      - '.github/workflows/f-ahl28-fmr-cache-accounting.yml'
+  workflow_dispatch:
+
+jobs:
+  accounting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run FMR cache accounting
+        run: |
+          bash research/ahl/run_ahl28_fmr_cache_accounting.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl28-fmr-cache-${{ github.run_id }}
+          path: /tmp/ahl28_fmr_cache.txt
