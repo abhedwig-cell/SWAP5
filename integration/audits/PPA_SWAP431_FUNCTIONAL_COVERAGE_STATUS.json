@@ -9,9 +9,10 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "latest_irrigation_checkpoint": {
-    "tested_commit": "728085a6e",
-    "record": "integration/audits/PPA_IRR_DCS1_SCHEDULED_STATUS.json",
-    "scope": "Explicit DCS1 scheduled single-node SSDI candidate selection, shared limits/solute/rate pipeline and copied-event continuation pass 100000 source comparisons O0/O2. DCS2 bundle and F-APP07 exact 110-interval preservation pass. No parser/calendar, whole-column acceptance or canonical admission."
+    "tested_commit": "e4b8eb968",
+    "record": "integration/audits/PPA_IRR_SOURCE_ACCEPTANCE_STATUS.json",
+    "scope": "Bounded DCS1 selected-source application acceptance, hard mass balance, per-tile rollback, fresh-owner physical-profile restart and explicit stopped-source continuation pass O0/O2 under the recorded numerical profile. Checked deficit and process composition, detached committed hydraulic profile and invalid-state/interval guards are implemented. Pending event-state persistence, automatic accepted-only event publication, mid-event restart and canonical admission remain open.",
+    "next_work_unit": "integration/audits/PPA_IRR_EVENT_OWNER_PREREGISTRATION.json"
   },
   "latest_atm02_owner_checkpoint": {
     "tested_commit": "d234a4524",

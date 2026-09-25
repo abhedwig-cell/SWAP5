@@ -45,6 +45,26 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
+Current branch-local irrigation progress extends beyond the historical process
+checkpoints below. The bounded DCS1 selected-source test now passes accepted
+water accounting, per-tile rollback, fresh-owner physical-profile restart and
+explicit stopped-source continuation at O0/O2 (8b5920a2d). Total inflow includes
+both selected SSDI and the fixture's incoming prescribed drainage. The test uses
+stable storage differences, seeded initial derivatives, explicit forcing events
+and a 0.8/64 retry profile; mass and temporal limits are unchanged. The zero-source
+initial control still fails on one tile, so this is not general numerical
+robustness or whole-batch atomicity. Evidence:
+`integration/audits/PPA_IRR_SOURCE_ACCEPTANCE_STATUS.json`.
+
+The production owner exposes detached, revision/time-tagged hydraulic profiles;
+checked profile-to-DCS1 composition is callable but application scheduling remains
+test-controlled. Active-state and nonfinite-interval rejection are covered by
+`integration/audits/PPA_IRR_CONTINUATION_GUARDS_STATUS.json`.
+Pending event-state persistence and automatic accepted-only publication are
+the next implementation phase, preregistered in
+`integration/audits/PPA_IRR_EVENT_OWNER_PREREGISTRATION.json`.
+That phase is **not implemented** by the profile-copy or source-acceptance tests.
+
 At 163834dca, root-zone accounting gains a checked supplied-input entry:
 array extents and layer indices are checked before access, and finite bounded
 contents, thickness and final rooted fraction are required before division.
