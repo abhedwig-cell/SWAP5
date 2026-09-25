@@ -1,0 +1,25 @@
+name: F-AHL28C paired memoization timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl28c_paired_memoization_timing.f90'
+      - 'research/ahl/run_ahl28c_paired_memoization_timing.sh'
+      - 'integration/f-ahl/F-AHL28C_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl28c-paired-memoization-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired memoization timing
+        run: |
+          bash research/ahl/run_ahl28c_paired_memoization_timing.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl28c-${{ github.run_id }}
+          path: /tmp/ahl28c_result.txt
