@@ -166,6 +166,31 @@ This is an isolated operation/workload result, not a portable whole-application 
 
 Classification: `GWTOPO01 = ADMITTED_EXACT_P0_LARGE_N_STRUCTURAL_FAST_PATH`.
 
+### GWCTX01 application-context handle uniqueness
+
+`GWCTX01` is admitted as an exact linear uniqueness proof for participant handles.
+
+The production context bind route previously performed a pairwise duplicate-handle scan. At N=10,000 that is 49,995,000 equality checks before registry/ledger validation.
+
+The admitted path first proves at runtime that handles are positive and strictly increasing. Only under that proof is the duplicate scan omitted. Any proof failure keeps the historical duplicate validation and failure semantics unchanged.
+
+Qualification:
+- FGC49D O0 PASS;
+- FGC49D O2 PASS;
+- FGC49D O0/O2 output identity PASS;
+- production application context ABI gate PASS;
+- explicit duplicate-handle fallback fail-closed;
+- PPA-WU01 O0/O2 PASS.
+
+Isolated N=10,000 scan observations:
+- pairwise duplicate scan: about 30–42 ms on the shared runners used;
+- strict-increase proof: about 6–14 microseconds;
+- this is an isolated structural validation result, not a portable whole-application speed claim.
+
+Classification: `GWCTX01 = ADMITTED_EXACT_P0_LINEAR_HANDLE_UNIQUENESS_PROOF`.
+
+After GWPLAN01, GWTOPO01 and GWCTX01, the remaining application-context bind work is linear and must be remeasured before further production edits.
+
 ## Remaining current P0 interpretation
 
 After the current tranche, no large, high-confidence pure-waste hotspot remains on the qualified H03 / production-bootstrap Reference route.
