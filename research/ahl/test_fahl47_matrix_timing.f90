@@ -227,4 +227,4 @@ contains
     end if
   end subroutine require
 
-end program test_fahl47_matrix
+end program test_fahl47_matrix_timing
