@@ -1,21 +1,23 @@
 {
   "schema_version": 1,
   "workstream": "F-AHL",
-  "work_unit": "F-AHL27_STAGE2_TIMING2",
-  "record": "INVALID_FIXTURE",
+  "work_unit": "F-AHL27_STAGE2_SINGLE_TIMING",
+  "phase": "EXECUTION_RECONCILED",
+  "status": "INVALID_TRANSACTION_POLICY",
   "workflow_run": 36078079645,
   "workflow_job": 107893680929,
-  "classification": "CANONICAL_TRANSACTION_POLICY_REJECTS_TX_TEMPORAL_NONE",
   "observed": {
-    "default_off_status": 2,
-    "default_off_completed": false,
-    "default_off_solver_executed": false,
-    "adaptive_on_status": 2,
-    "adaptive_on_completed": false,
-    "adaptive_on_solver_executed": false
+    "analytical_canonical_status": 2,
+    "analytical_completed": false,
+    "adaptive_canonical_status": 2,
+    "adaptive_completed": false,
+    "solver_executed": false
   },
-  "root_cause": "mod_transaction_reference.valid_policy admits only TX_TEMPORAL_EXTERNAL_FULL_HALF and TX_TEMPORAL_MODEL_CERTIFICATE. TX_TEMPORAL_NONE is not a valid canonical transaction policy for run_trial.",
+  "authority": "src/transaction/mod_transaction_reference.f90::valid_policy",
+  "cause": "TX_TEMPORAL_NONE is not an admitted execute_reference_interval policy; only TX_TEMPORAL_EXTERNAL_FULL_HALF and TX_TEMPORAL_MODEL_CERTIFICATE are valid.",
   "scientific_result": "NONE",
-  "repair_rule": "Do not broaden transaction-policy semantics for a performance test. Use the existing serialized-backend reference-floor single-physical-trial route, which measures FMR parameter/provider routing and one Richards physical advance without temporal acceptance overhead.",
-  "gate_policy": "All hydraulic fidelity and paired timing gates remain frozen."
+  "governance": [
+    "Do not interpret this run as hydraulic or performance evidence.",
+    "Do not change transaction semantics for the purpose of obtaining an AHL timing result."
+  ]
 }
