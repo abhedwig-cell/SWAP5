@@ -6,6 +6,8 @@ on:
       - work/f-ahl01-adaptive-hydraulic-lookup
     paths:
       - 'research/ahl/test_ahl28_binding_overhead.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
       - 'research/ahl/run_ahl28_binding_overhead.sh'
       - 'integration/f-ahl/F-AHL28_PREREGISTRATION.json'
       - '.github/workflows/f-ahl28-binding-overhead.yml'
