@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # rerun after qbot routing boundary
+# dependency-complete rerun
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fahl27-fmr-optin-${GITHUB_RUN_ID:-local}-$$"
