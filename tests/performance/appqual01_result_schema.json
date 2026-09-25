@@ -1,0 +1,54 @@
+{
+  "schema": "swap5-appqual01-v1",
+  "required_run_fields": [
+    "run_id",
+    "source_commit",
+    "candidate_family",
+    "candidate_config",
+    "workload_id",
+    "swap_columns",
+    "modflow_interface_cells",
+    "modflow_version",
+    "compiler",
+    "optimization_flags"
+  ],
+  "performance_metrics": [
+    "total_seconds",
+    "swap_seconds",
+    "modflow_seconds",
+    "coupling_seconds",
+    "swap_trial_solves",
+    "swap_accepted_solves",
+    "swap_rejected_solves",
+    "nonlinear_iterations",
+    "constitutive_evaluations",
+    "modflow_solve_calls",
+    "coupling_outer_iterations"
+  ],
+  "hydrology_metrics": [
+    "groundwater_head",
+    "groundwater_drawdown",
+    "interface_exchange",
+    "cumulative_interface_exchange",
+    "actual_evapotranspiration",
+    "drainage",
+    "irrigation_demand",
+    "water_balance_residual"
+  ],
+  "error_metrics": [
+    "signed_bias",
+    "mean_absolute_error",
+    "maximum_absolute_error",
+    "relative_error",
+    "cumulative_bias",
+    "extreme_timing_error"
+  ],
+  "candidate_families": [
+    "REFERENCE",
+    "CODE",
+    "ROSSFAST",
+    "ROM",
+    "COARSE",
+    "HYBRID"
+  ]
+}
