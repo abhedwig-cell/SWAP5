@@ -18,7 +18,8 @@ module mod_reference_richards_accepted_step_directional_service
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
-  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction
+  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction, &
+       evaluate_b110_default_mvg_water_content_direction
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
   use mod_b110_dynamic_top_boundary_directional_adapter, only: evaluate_b110_dynamic_surface_flux_direction
   implicit none
@@ -513,9 +514,9 @@ contains
 
     select type (hyd => request%evaluation%constitutive)
     type is (b110_default_mvg_provider_t)
-       call evaluate_b110_default_mvg_state_direction(hyd, solve_result%candidate_state%pressure_head, &
+       call evaluate_b110_default_mvg_water_content_direction(hyd, solve_result%candidate_state%pressure_head, &
             direction_result%outgoing_pressure_head, direction_result%outgoing_water_content, &
-            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
+            constitutive_direction_ok, constitutive_direction_route)
     class default
        constitutive_direction_ok = .false.
        constitutive_direction_route = 'accepted-constitutive-direction-unavailable'

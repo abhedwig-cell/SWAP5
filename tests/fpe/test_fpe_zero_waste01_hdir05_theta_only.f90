@@ -3,7 +3,8 @@ program test_fpe_zero_waste01_hdir05_theta_only
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction
+  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction, &
+       evaluate_b110_default_mvg_water_content_direction
   implicit none
 
   integer, parameter :: n=60
@@ -32,7 +33,7 @@ program test_fpe_zero_waste01_hdir05_theta_only
       do id=1,size(dirs)
         dh=dirs(id)
         call evaluate_b110_default_mvg_state_direction(provider,h,dh,old_theta,old_k,old_ok,old_route)
-        call theta_only_mirror(hp,h,dh,new_theta,new_ok,new_route)
+        call evaluate_b110_default_mvg_water_content_direction(provider,h,dh,new_theta,new_ok,new_route)
         cases=cases+1
         if (old_ok .neqv. new_ok) then
           mismatches=mismatches+1
@@ -74,7 +75,7 @@ program test_fpe_zero_waste01_hdir05_theta_only
   checksum=0_int64
   call system_clock(c0)
   do r=1,reps
-    call theta_only_mirror(hp,h,dh,new_theta,new_ok,new_route)
+    call evaluate_b110_default_mvg_water_content_direction(provider,h,dh,new_theta,new_ok,new_route)
     if (new_ok) checksum=checksum+transfer(new_theta(1),0_int64)
   end do
   call system_clock(c1)
