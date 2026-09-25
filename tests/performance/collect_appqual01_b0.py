@@ -21,9 +21,9 @@ def integer(key: str) -> int:
     return int(round(number(key)))
 
 required_markers = [
-    "FGC47_REAL_MIXED_TOPOLOGY_END_TO_END=PASS",
-    "FGC47_CONJUNCTIVE_MIXED_TOPOLOGY_CONVERGENCE=PASS",
-    "FGC47_PER_CELL_LEDGER_CLOSURE=PASS",
+    "F-GC49D LIVE PRODUCTION APPLICATION CONTEXT ABI GATE PASS",
+    "FGC49D_LIVE_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS",
+    "FGC49D_LIVE_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS",
 ]
 for marker in required_markers:
     if marker not in transcript:
@@ -40,22 +40,15 @@ record = {
     "modflow_interface_cells": 2,
     "modflow_version": "6.8.0",
     "performance": {
-        "coupling_seconds": number("FGC47_COUPLING_SECONDS"),
-        "coupling_outer_iterations": integer("FGC47_COUPLING_OUTER_ITERATIONS"),
-        "modflow_solve_calls": integer("FGC47_MODFLOW_SOLVE_CALLS"),
+        "coupling_seconds": number("FGC49D_LIVE_COUPLING_SECONDS"),
+        "coupling_outer_iterations": integer("FGC49D_LIVE_ITERATIONS"),
+        "modflow_solve_calls": integer("FGC49D_LIVE_MODFLOW_SOLVE_CALLS"),
     },
     "hydrology": {
-        "groundwater_head_m": [
-            number("FGC47_FINAL_HEAD1_M"),
-            number("FGC47_FINAL_HEAD2_M"),
-        ],
-        "interface_exchange_m_per_s": [
-            number("FGC47_FINAL_QCELL1_M_PER_S"),
-            number("FGC47_FINAL_QCELL2_M_PER_S"),
-        ],
+        "groundwater_head_m": [],
+        "interface_exchange_m_per_s": [],
         "coupling_residual_m_per_s": [
-            number("FGC47_FINAL_R1"),
-            number("FGC47_FINAL_R2"),
+            number("FGC49D_LIVE_MAX_CELL_RESIDUAL_M_PER_S")
         ],
     },
     "semantic_gates": {
