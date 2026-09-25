@@ -3,6 +3,7 @@ module mod_fmr_serialized_multiswap_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
+  use mod_irrigation_process, only: irrigation_state_t
   use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
@@ -181,6 +182,7 @@ module mod_fmr_serialized_multiswap_runtime
   public :: fmr_run_serialized_physical_multiswap
   public :: fmr_execute_serialized_physical_column
   public :: fmr_execute_serialized_resolved_physical_column
+  public :: fmr_execute_serialized_irrigation_resolved_column
   public :: fmr_execute_serialized_column_with_bottom_energy
 
 contains
@@ -394,6 +396,39 @@ contains
          bottom_energy_publication=energy_publication)
   end subroutine fmr_execute_serialized_column_with_bottom_energy
 
+  ! Explicit opt-in for the restricted water-only SSDI carrier. All publication
+  ! remains in the ordinary resolved executor; backend validates the context.
+  subroutine fmr_execute_serialized_irrigation_resolved_column(backend, transaction_control, column, template, &
+       parameters, effective_forcing, committed_state, numerical_config, single_ssdi_node, t0, t1, &
+       output, diagnostic, runtime, active_physical_calls, selected_event)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_executor_t), intent(inout) :: transaction_control
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing
+    type(kernel_committed_state_t), intent(inout) :: committed_state
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    integer, intent(in) :: single_ssdi_node
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(inout) :: active_physical_calls
+    type(irrigation_state_t), intent(in), optional :: selected_event
+
+    if (.not. resolved_column_is_routable(column, template)) then
+      output%admission_status = 'ROUTING_REJECTED'
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'ROUTING_REJECTED'
+      call update_committed_provenance(committed_state, output, diagnostic)
+      return
+    end if
+    call execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
+         committed_state, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
+         irrigation_node=single_ssdi_node, selected_irrigation_event=selected_event)
+  end subroutine fmr_execute_serialized_irrigation_resolved_column
+
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     real(real64), intent(in) :: t0, t1
@@ -555,7 +590,8 @@ contains
   subroutine execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
                                      committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
                                      active_physical_calls, commit_receipt, bottom_energy_parameters, &
-                                     bottom_thermal_provider, bottom_energy_publication)
+                                     bottom_thermal_provider, bottom_energy_publication, irrigation_node, &
+                                     selected_irrigation_event)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -573,6 +609,8 @@ contains
     type(liquid_water_sensible_enthalpy_parameters_t), intent(in), optional :: bottom_energy_parameters
     procedure(fmr_external_bottom_thermal_provider_i), optional :: bottom_thermal_provider
     type(fmr_serialized_bottom_energy_publication_t), intent(out), optional :: bottom_energy_publication
+    integer, intent(in), optional :: irrigation_node
+    type(irrigation_state_t), intent(in), optional :: selected_irrigation_event
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -614,8 +652,14 @@ contains
     simultaneous_physical_calls = active_physical_calls
     !$omp end atomic
     if (energy_requested) call backend%set_bottom_thermal_carrier_enabled(.true.)
-    call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
-         numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
+    if (present(irrigation_node)) then
+      call backend%run_pending_irrigation_trial(column, template, parameters, committed_state, effective_forcing, &
+           numerical_config, irrigation_node, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
+           selected_irrigation_event)
+    else
+      call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
+           numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
+    end if
     if (energy_requested) then
       thermal_candidate = backend%bottom_thermal_snapshot()
       ! The snapshot is now local to this transaction call. Clear backend

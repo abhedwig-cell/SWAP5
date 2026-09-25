@@ -1227,6 +1227,10 @@ contains
     call verify_pending_mixed_columns(profile,source,template,.true.,.false.)
     call verify_pending_mixed_columns(profile,source,template,.false.,.true.)
     call verify_pending_mixed_columns(profile,source,template,.true.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.false.,.false.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.true.,.false.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.false.,.true.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.)
     do timing=7,8
       call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
@@ -1360,8 +1364,14 @@ contains
     if(timing==8) write(*,'(a)') 'PPA_IRR_TCS8_HYDRAULIC_SELECTION_RESTART=PASS'
   end subroutine verify_new_irrigation_selection_trial
 
-  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order,select_gift)
-    use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial
+  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order,select_gift,resolved_runtime)
+    use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial, &
+         evaluate_ppa_committed_irrigation_source
+    use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
+         fmr_serialized_column_result_t,fmr_serialized_batch_diagnostics_t
+    use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
+    use mod_kernel_transactions, only: kernel_executor_t
+    use mod_irrigation_process, only: irrigation_flux_result_t,IRRIGATION_EVENT_SCHEDULED
     use mod_irrigation_process, only: irrigation_state_t,scheduled_irrigation_parameters_t, &
          scheduled_irrigation_request_t,irrigation_diagnostics_t
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
@@ -1376,6 +1386,16 @@ contains
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
     logical,intent(in)::reverse_order,select_gift
+    logical,intent(in),optional::resolved_runtime
+    logical::use_runtime
+    type(kernel_executor_t)::control
+    type(fmr_serialized_column_result_t)::outputs(2)
+    type(fmr_column_diagnostics_t)::column_diagnostics(2)
+    type(fmr_serialized_batch_diagnostics_t)::runtime
+    type(irrigation_state_t)::proposed,selected
+    type(irrigation_flux_result_t)::flux
+    type(fmr_b110_physical_forcing_t),allocatable::prepared
+    integer::active_calls
     type(fmr_serialized_reference_backend_t)::backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(kernel_committed_state_t)::owners(2),restored(2)
@@ -1395,6 +1415,9 @@ contains
     real(real64)::finish,time
     logical::ok
     integer::i,position,code,index
+    use_runtime=.false.
+    if(present(resolved_runtime)) use_runtime=resolved_runtime
+    active_calls=0
     finish=T0+1.0_real64/1024.0_real64
     seed=source; seed%irrigation%active_event_end=finish
     if(select_gift) seed%irrigation=irrigation_state_t()
@@ -1429,7 +1452,25 @@ contains
       if(reverse_order) i=3-position
       numerical=profile%numerical
       if(i==2) numerical%max_committed_substeps=1
-      if(select_gift) then
+      if(use_runtime) then
+        request%selection_opportunity=select_gift
+        call evaluate_ppa_committed_irrigation_source(irrigation,owners(i),template,request,forcing, &
+             proposed,flux,process_diagnostics,prepared,ok)
+        if(.not.ok) error stop 'resolved irrigation preparation failed'
+        if(select_gift) then
+          selected=irrigation_state_t()
+          selected%active_event=.true.; selected%active_event_origin=IRRIGATION_EVENT_SCHEDULED
+          selected%active_event_start=T0; selected%active_event_end=T0+flux%event_duration
+          selected%active_event_rate=flux%subsurface_source(1)
+          call fmr_execute_serialized_irrigation_resolved_column(backend,control,columns(i),template, &
+               profile%tiles(1)%parameters,prepared,owners(i),numerical,1,T0,finish,outputs(i), &
+               column_diagnostics(i),runtime,active_calls,selected)
+        else
+          call fmr_execute_serialized_irrigation_resolved_column(backend,control,columns(i),template, &
+               profile%tiles(1)%parameters,prepared,owners(i),numerical,1,T0,finish,outputs(i), &
+               column_diagnostics(i),runtime,active_calls)
+        end if
+      else if(select_gift) then
         call run_ppa_pending_irrigation_source_trial(backend,columns(i),template,profile%tiles(1)%parameters,irrigation, &
              owners(i),forcing,numerical,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i), &
              process_diagnostics,request)
@@ -1438,6 +1479,18 @@ contains
              forcing,numerical,1,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i))
       end if
     end do
+    if(use_runtime) then
+      if(.not.outputs(1)%completed.or..not.outputs(1)%committed) error stop 'resolved irrigation not committed'
+      if(outputs(2)%completed.or.outputs(2)%committed) error stop 'resolved failure committed'
+      if(outputs(2)%accepted_substeps<1) error stop 'resolved failure without internal progress'
+      if(.not.outputs(1)%mass%complete.or.abs(outputs(1)%mass%residual)>1.0e-12_real64) &
+           error stop 'resolved irrigation hard mass'
+      if(active_calls/=0.or.runtime%max_simultaneous_real_physical_solves/=1) error stop 'resolved solve accounting'
+      if(column_diagnostics(1)%accepted/=1.or.column_diagnostics(2)%rejected/=1) &
+           error stop 'resolved acceptance accounting'
+      if(outputs(1)%final_committed_time/=finish.or.outputs(2)%final_committed_time/=T0) &
+           error stop 'resolved endpoint provenance'
+    else
     if(.not.result(1)%completed.or..not.candidate(1)%ready()) error stop 'mixed successful irrigation failed'
     if(result(2)%completed.or.candidate(2)%ready()) error stop 'mixed failed irrigation produced candidate'
     if(diagnostics(2)%accepted_substeps<1) error stop 'mixed failure did not exercise internal progress'
@@ -1447,6 +1500,7 @@ contains
     ! shared backend may last have executed the other (failed) column.
     call backend%commit_trial_candidate(owners(1),candidate(1),diagnostics(1),ok,code)
     if(.not.ok) error stop 'mixed successful candidate commit failed'
+    end if
     call fmr_export_committed_restart(columns,[template],owners,92001_int64,bundle,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'mixed irrigation export'
     call fmr_restore_committed_restart(bundle,92001_int64,columns,[template],restored,ok,code)
@@ -1483,6 +1537,7 @@ contains
          error stop 'mixed irrigation failed revision changed'
     write(*,'(a,l1)') 'PPA_IRR_PENDING_MIXED_PUBLICATION_RESTART_PASS_REVERSED=',reverse_order
     if(select_gift) write(*,'(a)') 'PPA_IRR_NEW_SELECTION_MIXED_PUBLICATION_RESTART=PASS'
+    if(use_runtime) write(*,'(a)') 'PPA_IRR_RESOLVED_RUNTIME_MIXED_PUBLICATION_RESTART=PASS'
   end subroutine verify_pending_mixed_columns
 
   subroutine verify_pending_irrigation_restart(profile,committed,backend,column,template,initial_forcing,midpoint)
