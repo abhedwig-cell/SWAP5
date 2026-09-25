@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "phase": "STAGE2_DEFAULT_OFF_REGRESSION_COMPLETE",
+  "status": "PASS_DEFAULT_UNCHANGED",
+  "workflow_run": 36077999564,
+  "markers": [
+    "FKT22_FMR_TRAJECTORY_DEFAULT_OFF=PASS",
+    "FKT22_FMR_TRAJECTORY_ACCEPTED_ROUTE=PASS",
+    "FKT22_FMR_TRAJECTORY_PROVENANCE=PASS",
+    "FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS",
+    "FKT22_FMR_TRAJECTORY_PHYSICAL_IDENTITY=PASS",
+    "FKT22_FMR_SERIALIZED_RUNTIME_GATE=PASS",
+    "FKT22_FMR_RUNTIME_O0_O2_IDENTITY=PASS",
+    "FKT22_FMR_PRODUCTION_RUNTIME_GATE=PASS"
+  ],
+  "finding": "Adding the production-shaped adaptive hydraulic modules and opt-in routing does not change the existing default-off serialized FMR trajectory behavior."
+}
