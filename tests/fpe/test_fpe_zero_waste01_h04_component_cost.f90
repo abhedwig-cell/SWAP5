@@ -2,7 +2,8 @@ program test_fpe_zero_waste01_h04_component_cost
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_soil_water_solver_contract, only: CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
+  use mod_soil_water_solver_contract, only: CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+       CONSTITUTIVE_DEMAND_CAPACITY
   implicit none
 
   real(real64), parameter :: H_CRIT=-1.0e-2_real64, HCON_VSMALL=1.0e-10_real64
@@ -65,6 +66,16 @@ program test_fpe_zero_waste01_h04_component_cost
   end do
   call system_clock(c1)
   call emit('theta_only',n,reps,c0,c1,rate,checksum)
+
+  checksum=0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    call provider%evaluate_demand(head,ior(CONSTITUTIVE_DEMAND_CONDUCTIVITY,CONSTITUTIVE_DEMAND_CAPACITY), &
+         theta_only,kval_m,cap_m,dkdh)
+    checksum=checksum+kval_m(n)+cap_m(1)
+  end do
+  call system_clock(c1)
+  call emit('conductivity_capacity',n,reps,c0,c1,rate,checksum)
 
   checksum=0.0_real64
   call system_clock(c0,rate)
