@@ -155,7 +155,8 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
-    use mod_ppa_irrigation_source_binding, only: bind_ppa_irrigation_source,evaluate_ppa_irrigation_source
+    use mod_ppa_irrigation_source_binding, only: bind_ppa_irrigation_source,evaluate_ppa_irrigation_source, &
+         evaluate_ppa_profile_irrigation_source
     use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT, &
          build_irrigation_event_candidate
@@ -548,15 +549,14 @@ contains
         irrigation%active_nodes=hydraulic%active_nodes
         request%t0=again(tile)%committed_time; request%t1=request%t0+irrigation_dt
         thickness=profile%tiles(tile)%parameters%dz(1)
-        call evaluate_profile_scheduled_irrigation(irrigation,base,request,hydraulic,1,[1],[thickness], &
-             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
-             candidate,flux,diagnostics)
-        if(diagnostics%status/=IRRIGATION_OK.or..not.flux%event_finished) error stop 'irrigation gift selection'
-        selected_amount(tile)=flux%external_inflow_amount
         irrigation_forcing(tile)=profile%tiles(tile)%base_forcing
         irrigation_forcing(tile)%top_flux=0.0_real64
-        call bind_ppa_irrigation_source(irrigation_forcing(tile),flux,diagnostics,request%t0,bound_forcing,ok)
-        if(.not.ok) error stop 'irrigation initial source binding'
+        call evaluate_ppa_profile_irrigation_source(irrigation,base,request,hydraulic,1,[1],[thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             irrigation_forcing(tile),candidate,flux,diagnostics,bound_forcing,ok)
+        if(.not.ok) error stop 'profile irrigation source composition'
+        if(diagnostics%status/=IRRIGATION_OK.or..not.flux%event_finished) error stop 'irrigation gift selection'
+        selected_amount(tile)=flux%external_inflow_amount
         irrigation_forcing(tile)=bound_forcing
       end do
       control_forcing=irrigation_forcing
