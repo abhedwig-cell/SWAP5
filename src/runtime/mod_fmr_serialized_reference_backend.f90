@@ -1446,11 +1446,17 @@ contains
       if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
       if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
       if (associated(self%constitutive)) deallocate(self%constitutive)
-      if (associated(self%adaptive_constitutive)) deallocate(self%adaptive_constitutive)
+      ! F-AHL28B: retain only the adaptive provider object across repeated
+      ! adaptive configurations so it can reuse an exact same-key immutable
+      ! representation. Its analytical fallback and cofgen pointer are rebound
+      ! before every physical advance. Disablement still releases the provider.
+      if (associated(self%adaptive_constitutive) .and. .not. parameters%adaptive_hydraulics_active) &
+           deallocate(self%adaptive_constitutive)
       if (associated(self%source_sink)) deallocate(self%source_sink)
       if (associated(self%root_sink)) deallocate(self%root_sink)
       allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
-      if (parameters%adaptive_hydraulics_active) allocate(self%adaptive_constitutive)
+      if (parameters%adaptive_hydraulics_active .and. .not. associated(self%adaptive_constitutive)) &
+           allocate(self%adaptive_constitutive)
       self%adaptive_hydraulics_active = parameters%adaptive_hydraulics_active
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
