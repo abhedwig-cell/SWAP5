@@ -1,0 +1,25 @@
+name: F-AHL41A FSI38-bound qbot matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl41a_fsi38_prescribed_qbot.f90'
+      - 'research/ahl/run_ahl41a_fsi38_prescribed_qbot.sh'
+      - 'integration/f-ahl/F-AHL41A_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl41a-fsi38-qbot.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run FSI38-bound prescribed-qbot matrix
+        run: |
+          bash research/ahl/run_ahl41a_fsi38_prescribed_qbot.sh /tmp/ahl41a_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl41a-${{ github.run_id }}
+          path: /tmp/ahl41a_result.txt
