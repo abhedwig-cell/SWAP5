@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10E",
+  "phase": "DRY_TAIL_FALLBACK_REPAIR_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36077438146,
+  "workflow_job": 107891713159,
+  "repair": "Lookup-domain membership is now determined by the loaded table coordinate bounds rather than the global nominal head domain.",
+  "O05_test": {
+    "represented_side_head_cm": -200000.0,
+    "analytical_fallback_head_cm": -500000.0,
+    "fallback_theta_matches_authoritative": true,
+    "fallback_capacity_matches_authoritative": true,
+    "fallback_conductivity_matches_authoritative": true
+  },
+  "dry_end_semantics": {
+    "raw_capacity_relevance_threshold": 1e-13,
+    "O05_lookup_bound_cm_approx": -264277.52309014817,
+    "outside_lookup_domain": "authoritative analytical provider",
+    "physics_truncated": false,
+    "constant_tail_extrapolation": false
+  },
+  "finding": "The relevance-bounded representation now implements the preregistered semantics: no wasted adaptive refinement in the negligible-storage dry tail and no artificial constitutive truncation beyond the table.",
+  "next_action": "Run robust paired end-to-end timing across the frozen 12-case B01/B12/O05/O14 wet-mid-dry Richards matrix."
+}
