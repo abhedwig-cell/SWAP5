@@ -1,0 +1,24 @@
+name: F-AHL governance heterogeneous profile reproducer
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_fahl_governance_heterogeneous_profile.f90'
+      - 'research/ahl/run_fahl_governance_heterogeneous_profile.sh'
+      - '.github/workflows/f-ahl-governance-heterogeneous-profile.yml'
+  workflow_dispatch:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce heterogeneous-profile first-node leakage
+        run: |
+          bash research/ahl/run_fahl_governance_heterogeneous_profile.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl-governance-hetero-${{ github.run_id }}
+          path: /tmp/fahl_governance_hetero.txt
