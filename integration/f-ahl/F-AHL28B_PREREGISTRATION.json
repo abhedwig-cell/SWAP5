@@ -2,34 +2,44 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL28B",
-  "title": "Provider-local exact-authority fast reuse",
-  "parent": "F-AHL28A",
+  "title": "Same-key adaptive provider memoization",
+  "parent": "F-AHL28",
   "phase": "PREREGISTERED_REPAIR",
-  "motivation": "F-AHL28A removed deep-copy cost but warm bind remains about 0.39 microseconds because every bind reconstructs sampler state, exact cache key and performs a shared-cache lookup. F-AHL28 proved FMR currently performs one such acquisition per adaptive physical advance.",
+  "motivation": "F-AHL28 confirmed one adaptive cache acquisition per physical advance and measured warm adaptive bind near 0.6 microseconds. F-AHL28A showed that removing only the support-array deep copy reduced bind cost by about 31 percent, below its frozen 50 percent retention gate, so that repair was reverted. Code authority shows the serialized backend also destroys and recreates the adaptive provider on every parameter configuration.",
   "repair": {
-    "table_ownership": "retain F-AHL28A immutable shared-cache table borrowing",
-    "provider_local_identity": "store exact initialized coefficient bits and ksatexm extension state alongside an already acquired table",
-    "fast_reuse": "when the same provider instance is rebound against bit-identical hydraulic authority and policy, rebind only the analytical fallback for the current step duration and reuse the already-associated immutable table",
-    "changed_authority": "fall through to the existing exact-key cache acquisition path",
-    "step_duration": "never used to validate table identity; analytical fallback is rebound every call because h>-1 capacity semantics remain step-duration dependent"
+    "provider_lifetime": "retain the adaptive provider object across repeated serialized parameter configurations while adaptive_hydraulics_active remains true",
+    "representation_identity": "store the exact adaptive representation cache key in the provider",
+    "same_key_rebind": "rebind only the step-duration-dependent authoritative analytical fallback and current cofgen pointer; reuse the existing immutable provider-owned table without shared-cache acquisition",
+    "different_key_rebind": "use the existing exact-key shared cache and replace the provider-owned table only after successful acquisition",
+    "adaptive_disabled": "deallocate retained adaptive provider and preserve analytical default route"
   },
+  "frozen_semantics": [
+    "exact cache key equality, not fingerprint-only equality",
+    "same builder, support points, error tolerances and policy versions",
+    "same dry-tail C=1e-13 relevance floor and analytical fallback",
+    "same near-saturation analytical fallback",
+    "same qbot and accepted-trajectory analytical fallbacks",
+    "default adaptive_hydraulics_active remains false",
+    "no shared mutable representation"
+  ],
   "qualification": {
-    "warm_bind": "median warm rebind must be at least 50% faster than the original F-AHL28 baseline of 5.82725e-7 s",
-    "shared_cache_accounting": "provider-local repeated rebinds with unchanged authority must not increment shared-cache hits after first acquisition",
-    "changed_key": "a bitwise coefficient or extension change must bypass fast reuse and acquire/build the correct representation",
-    "stage1": "production provider extraction PASS",
-    "dry_tail": "O05 production dry-tail PASS",
-    "matrix": "prescribed-head 12/12 PASS with identical nonlinear/backtracking routes",
-    "fallbacks": "qbot and accepted-trajectory analytical fallback PASS",
-    "application_timing": "repeat F-AHL27 reference-floor paired timing with unchanged <0.98 PASS gate"
+    "warm_bind_baseline_seconds": 5.9575e-7,
+    "required_warm_bind_reduction_fraction": 0.75,
+    "cache_accounting": "after first acquisition, repeated same-key provider binds must not increment shared-cache hits",
+    "production_provider_extraction": "PASS",
+    "prescribed_head_matrix": "12/12 PASS with same nonlinear/backtracking path",
+    "default_off_regression": "PASS",
+    "qbot_fallback": "PASS",
+    "reference_floor_fidelity": "PASS",
+    "reference_floor_timing": "remeasure after all semantic gates pass"
   },
+  "decision_rule": "Retain the repair only if same-key warm bind falls by at least 75 percent from the frozen F-AHL28 baseline and all semantic/regression gates pass.",
   "hard_exclusions": [
-    "NO_APPROXIMATE_PARAMETER_MATCH",
     "NO_CACHE_KEY_WEAKENING",
-    "NO_TABLE_REUSE_AFTER_AUTHORITY_CHANGE",
-    "NO_MEMOIZATION_OF_STEP_DEPENDENT_ANALYTICAL_FALLBACK",
-    "NO_RUNTIME_REFINEMENT",
-    "NO_GATE_RETUNING",
+    "NO_HYDRAULIC_RETUNING",
+    "NO_GENERAL_FMR_PARAMETER_LIFECYCLE_REFACTOR",
+    "NO_MUTABLE_SHARED_TABLE",
+    "NO_DEFAULT_ON_CHANGE",
     "NO_PRODUCTION_ADMISSION_FROM_MICROBENCHMARK"
   ]
 }
