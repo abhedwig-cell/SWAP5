@@ -1225,11 +1225,13 @@ contains
     call verify_pending_irrigation_restart(profile,committed,backend,column,template,forcing,finish)
     call verify_pending_mixed_columns(profile,source,template,.false.)
     call verify_pending_mixed_columns(profile,source,template,.true.)
-    call verify_new_irrigation_selection_trial(profile,source,template,.false.)
-    call verify_new_irrigation_selection_trial(profile,source,template,.true.)
+    call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.)
+    call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.)
+    call verify_new_irrigation_selection_trial(profile,source,template,.false.,.true.)
+    call verify_new_irrigation_selection_trial(profile,source,template,.true.,.true.)
   end subroutine verify_pending_irrigation_trial
 
-  subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection)
+  subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window)
     use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
@@ -1244,7 +1246,7 @@ contains
     type(fmr_production_application_config_t),intent(in)::profile
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
-    logical,intent(in)::profile_selection
+    logical,intent(in)::profile_selection,finish_in_window
     type(fmr_serialized_reference_backend_t)::backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(kernel_committed_state_t)::owner
@@ -1280,7 +1282,8 @@ contains
     irrigation%tcs7_knot_count=2; irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_knot_count=2; irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_depth_cm=0.01_real64*2.0_real64/1024.0_real64
-    root_depth=(0.01_real64*2.0_real64/1024.0_real64)/(0.8_real64-source%water_content(1))
+    if(finish_in_window) irrigation%dcs2_depth_cm=0.01_real64/1024.0_real64
+    root_depth=irrigation%dcs2_depth_cm(1)/(0.8_real64-source%water_content(1))
     if(profile_selection) then
       irrigation%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
       irrigation%dcs1_knot_count=2; irrigation%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
@@ -1336,7 +1339,7 @@ contains
     if(.not.ok) error stop 'new irrigation accepted snapshot'
     select type(snapshot)
     type is(ppa_irrigation_event_state_t)
-      if(.not.snapshot%irrigation%active_event.or..not.snapshot%matches_candidate(template,finish)) &
+      if((snapshot%irrigation%active_event.eqv.finish_in_window).or..not.snapshot%matches_candidate(template,finish)) &
            error stop 'new irrigation selected event not committed'
     class default
       error stop 'new irrigation committed type lost'
@@ -1345,6 +1348,7 @@ contains
     call verify_pending_irrigation_restart(profile,owner,backend,column,template,forcing,finish)
     write(*,'(a)') 'PPA_IRR_NEW_SELECTION_HYDRAULIC_COMMIT_RESTART=PASS'
     if(profile_selection) write(*,'(a)') 'PPA_IRR_DCS1_PROFILE_HYDRAULIC_COMMIT_RESTART=PASS'
+    if(finish_in_window) write(*,'(a)') 'PPA_IRR_NEW_SELECTION_EXACT_END_COMMIT_RESTART=PASS'
   end subroutine verify_new_irrigation_selection_trial
 
   subroutine verify_pending_mixed_columns(profile,source,template,reverse_order)
