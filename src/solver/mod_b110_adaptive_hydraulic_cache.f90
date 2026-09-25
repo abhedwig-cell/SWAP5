@@ -108,7 +108,15 @@ contains
     end do
 
     self%misses=self%misses+1
-    if(slot==0)return
+    if(slot==0)then
+      ! F-AHL29: cache capacity is an optimization bound, never a correctness
+      ! bound. Build a valid uncached representation when all slots are occupied.
+      call build_b110_adaptive_hydraulic_table(provider,parameters%cofgen(1,1),parameters%cofgen(2,1),table,build_ok)
+      if(.not.build_ok)return
+      self%builds=self%builds+1
+      ok=.true.
+      return
+    end if
     call build_b110_adaptive_hydraulic_table(provider,parameters%cofgen(1,1),parameters%cofgen(2,1),table,build_ok)
     if(.not.build_ok)return
     self%entry(slot)%occupied=.true.
