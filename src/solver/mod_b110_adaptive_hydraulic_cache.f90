@@ -158,6 +158,22 @@ contains
     end do
   end subroutine b110_ahl_stats
 
+  pure integer function registry_start_slot(fingerprint) result(slot)
+    integer(int64),intent(in)::fingerprint
+    integer(int64)::mixed,mask
+    ! The exact-key fingerprint is authority, not a slot number. Fold its high
+    ! bits into the low bits before indexing the power-of-two registry so
+    ! nearby/correlated hydraulic keys do not form long primary clusters.
+    mixed=fingerprint
+    mixed=ieor(mixed,shiftr(mixed,33))
+    mixed=ieor(mixed,ishft(mixed,11))
+    mixed=ieor(mixed,shiftr(mixed,17))
+    mixed=ieor(mixed,ishft(mixed,7))
+    mixed=ieor(mixed,shiftr(mixed,13))
+    mask=int(B110_AHL_MAX_CACHE-1,int64)
+    slot=1+int(iand(mixed,mask))
+  end function registry_start_slot
+
   subroutine b110_ahl_probe_stats(self,total_probes,max_probes)
     class(b110_adaptive_hydraulic_cache_t),intent(in)::self
     integer(int64),intent(out)::total_probes
