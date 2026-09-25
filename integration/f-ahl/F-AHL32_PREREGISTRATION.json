@@ -13,7 +13,9 @@
     "replacement": "none",
     "full_registry_miss": "retain F-AHL29 valid uncached-build fallback",
     "lifetime": "process/run lifetime",
-    "hydraulic_representation": "unchanged"
+    "hydraulic_representation": "unchanged",
+    "indexing": "open addressing from the existing 64-bit fingerprint; linear probing only for collision resolution",
+    "collision_authority": "fingerprint selects candidate slot, but a cache hit requires unchanged full collision-safe exact-key equality"
   },
   "rationale": {
     "target_scale": "comfortably exceeds a 10000-profile all-unique synthetic case while remaining finite",
@@ -49,7 +51,16 @@
       "F-AHL29 postrepair semantics PASS",
       "F-AHL28B semantic regression PASS",
       "default-off route unchanged"
-    ]
+    ],
+    "hash_observables": [
+      "mean probes on first-pass insertion",
+      "mean probes on second-pass hit",
+      "maximum probes"
+    ],
+    "hash_gate": {
+      "mean_second_pass_probes_max": 4,
+      "maximum_probes_max": 128
+    }
   },
   "decision_rule": "Retain only if all correctness/cache-accounting gates pass and memory remains bounded by the fixed 16384-entry registry plus per-entry adaptive payload. No application speed claim is made from this synthetic registry qualification.",
   "hard_exclusions": [
