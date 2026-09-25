@@ -1,9 +1,9 @@
 {
-  "schema_version": 21,
+  "schema_version": 22,
   "workstream": "F-AHL",
-  "status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
+  "status": "CLOSED_TECHNICALLY_QUALIFIED_CANONICAL_GOVERNANCE_BLOCKED_PENDING_EXACT_HEAD_CI",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL42A + canonical handoff",
+  "completed_through": "F-AHL42A + canonical candidate governance audit",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -38,7 +38,11 @@
     "wet_abs_logK_tolerance": 0.0001,
     "representation_policy_version": 4,
     "full_catalog_prescribed_head_matrix": "36 materials x wet/mid/dry = 108/108 PASS; F-AHL42A",
-    "O09_dry_reconciliation": "F-AHL42 reproduced production failure at policy v3; F-AHL42A v4 repair PASS, bottom-flux delta 1.374285e-6 cm/day"
+    "O09_dry_reconciliation": "F-AHL42 reproduced production failure at policy v3; F-AHL42A v4 repair PASS, bottom-flux delta 1.374285e-6 cm/day",
+    "heterogeneous_profile_policy": "AHL only for bit-identical initialized 42-coefficient hydraulic authority across active nodes; layered/heterogeneous profiles fall back analytical",
+    "ksatexm_policy": "B1.11 KSATEXM remains analytical until separately qualified with AHL",
+    "accepted_trajectory_policy": "accepted-trajectory directional requests remain analytical, including prescribed-head mode 5",
+    "candidate_workflow_fail_closed": "candidate workflow uses pipefail; older green runs before this repair are not admission evidence"
   },
   "performance_evidence": {
     "default_MvG": {
@@ -111,11 +115,13 @@
     "reference_floor_provider_timing": "PASS after F-AHL28B lifecycle repair; median ratio 0.933855. Canonical transient full-half timing remains blocked by temporal-acceptance semantics."
   },
   "production_admission_still_requires": [
-    "canonical governance admission",
+    "exact-head fail-closed canonical candidate CI PASS on current PR #608 head",
+    "canonical governance admission after that exact-head evidence",
     "a canonically valid transient or whole-application timing surface if a broader whole-SWAP/MultiSWAP performance claim is desired",
     "separate new research only if lower-boundary modes beyond prescribed-head are intentionally reopened; current prescribed-qbot policy is analytical fallback",
     "SWKIMPL=1/dKdh qualification if included",
-    "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration"
+    "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration",
+    "separate thread-safety qualification before any future concurrent mutation/use of the shared AHL cache by parallel/OpenMP workers"
   ],
   "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_READY_FOR_CANONICAL_GOVERNANCE_REVIEW; DEFAULT-MVG PRESCRIBED-HEAD PRODUCTION PROVIDER NOW QUALIFIED ON 36-MATERIAL 108-CASE MATRIX; QBOT REMAINS ANALYTICAL",
   "f_ahl27_closeout": "integration/f-ahl/F-AHL27_CLOSEOUT.json",
@@ -243,13 +249,16 @@
   "post_f_ahl40_closeout": "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json",
   "next_owner": {
     "owner": "canonical governance/admission",
-    "action": "Review draft PR #608 from clean canonical-derived branch review/f-ahl-policy-v4-candidate. Candidate CI run 36125003248 is green. Do not merge the F-AHL research branch wholesale."
+    "action": "Do not merge or mark PR #608 ready until the fail-closed candidate gate succeeds on the exact current PR head. Earlier candidate run 36125003248 is superseded as admission evidence by later governance findings (heterogeneous first-node leakage, trajectory fallback boundary, KSATEXM boundary, pipefail repair)."
   },
   "canonical_candidate": {
     "draft_pr": 608,
     "branch": "review/f-ahl-policy-v4-candidate",
-    "mergeable": true,
-    "candidate_ci_run": 36125003248,
-    "candidate_ci_result": "PASS"
+    "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+    "current_head": "e043d61bbbb9f772560442fb8c21c8d876f5dd4b",
+    "exact_head_candidate_gate_run": 36128865464,
+    "exact_head_candidate_gate_status": "QUEUED",
+    "admission_state": "BLOCKED_PENDING_EXACT_HEAD_FAIL_CLOSED_CI",
+    "older_green_run_36125003248": "SUPERSEDED_FOR_ADMISSION"
   }
 }
