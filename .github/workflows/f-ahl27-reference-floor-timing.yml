@@ -1,0 +1,25 @@
+name: F-AHL27 reference-floor paired timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'tests/fahl/test_fahl27_reference_floor_timing.f90'
+      - 'tests/fahl/run_fahl27_reference_floor_timing.sh'
+      - 'integration/f-ahl/F-AHL27_STAGE2_REFERENCE_FLOOR_TIMING_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl27-reference-floor-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run serialized reference-floor paired timing
+        run: |
+          bash tests/fahl/run_fahl27_reference_floor_timing.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27-reference-floor-${{ github.run_id }}
+          path: /tmp/fahl27_reference_floor_timing.txt
