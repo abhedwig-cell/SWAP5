@@ -155,7 +155,7 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
-    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT
     use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
     use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
     use mod_transaction_reference, only: transaction_state_t
@@ -170,6 +170,7 @@ contains
     logical::ok
     logical::history_available,clone_history_available
     type(ppa_irrigation_event_state_t)::carrier
+    type(fmr_template_t)::event_template
     class(transaction_state_t),allocatable::carrier_copy
     real(real64),allocatable::history(:),clone_history(:)
     type(scheduled_irrigation_parameters_t)::irrigation
@@ -213,6 +214,18 @@ contains
     carrier%irrigation%active_event_start=T0
     carrier%irrigation%active_event_end=T0+0.5_real64
     carrier%irrigation%active_event_rate=0.01_real64
+    event_template=profile%tiles(1)%template
+    if(carrier%matches_candidate(event_template,T0)) error stop 'candidate accepts BASE identity'
+    event_template%optional_state_layout_id=PPA_IRRIGATION_EVENT_LAYOUT
+    if(.not.carrier%matches_candidate(event_template,T0)) error stop 'valid event candidate rejected'
+    if(carrier%matches_candidate(event_template,T0-0.5_real64)) error stop 'event before start accepted'
+    if(carrier%matches_candidate(event_template,T0+0.5_real64)) error stop 'ended active event accepted'
+    event_template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    if(carrier%matches_candidate(event_template,T0)) error stop 'event without history layout accepted'
+    event_template=profile%tiles(1)%template
+    event_template%optional_state_layout_id=PPA_IRRIGATION_EVENT_LAYOUT
+    if(fmr_restart_state_matches_template(carrier,event_template)) error stop 'candidate production restart admitted'
+    write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_LAYOUT_TIME_GUARDS=PASS'
     call carrier%clone(carrier_copy)
     select type(cloned=>carrier_copy)
     type is(ppa_irrigation_event_state_t)
