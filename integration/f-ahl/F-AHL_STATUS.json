@@ -1,19 +1,19 @@
 {
-  "schema_version": 14,
+  "schema_version": 15,
   "workstream": "F-AHL",
-  "status": "F_AHL27_CLOSED_TECHNICALLY_QUALIFIED_APPLICATION_SPEED_EQUIVOCAL",
+  "status": "RESEARCH_CLOSED_THROUGH_F_AHL29_TECHNICALLY_QUALIFIED_APPLICATION_SPEED_EQUIVOCAL",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL27",
+  "completed_through": "F-AHL29",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
     "PDI_NoVap_prescribed_head_like": "PDI-specific derivative-consistent transformed retention/capacity plus independently controlled static Kliq lookup",
     "prescribed_qbot": "fully analytical authoritative hydraulics",
     "near_saturation": "authoritative analytical handling where required by family semantics",
-    "dry_tail": "material-specific relevance bound using raw capacity floor 1e-13; analytical fallback outside the built domain",
+    "dry_tail": "material-specific relevance bound using raw capacity floor 1e-13; authoritative analytical fallback outside the built domain; no physics truncation",
     "runtime_refinement": false,
     "external_user_tables": false,
-    "cache": "immutable exact-key internal cache"
+    "cache": "immutable exact-key internal cache with provider-local same-key reuse; bounded shared cache is optimization-only, with valid uncached build on full-cache miss"
   },
   "production_shaped_default_MvG": {
     "modules": [
@@ -31,7 +31,9 @@
     "accepted_trajectory_qbot_fallback": "PASS",
     "dry_tail_production_alignment": "PASS",
     "post_dry_tail_extraction_replay": "PASS",
-    "post_dry_tail_prescribed_head_matrix": "12/12 PASS"
+    "post_dry_tail_prescribed_head_matrix": "12/12 PASS",
+    "same_key_memoization": "PASS paired timing; 75.91854% bind/acquisition reduction",
+    "cache_full_miss_fallback": "PASS; cache capacity no longer a correctness limit"
   },
   "performance_evidence": {
     "default_MvG": {
@@ -101,5 +103,28 @@
     "post_dry_tail_extraction": "PASS workflow 36078529950",
     "post_dry_tail_matrix": "12/12 PASS workflow 36078531988",
     "reference_floor_timing": "two valid runs; both inside preregistered equivocal band"
+  },
+  "post_closeout_engineering": {
+    "F_AHL28": {
+      "finding": "Repeated warm adaptive acquisition is material serialized-FMR overhead.",
+      "warm_bind_seconds": 5.82725e-7,
+      "cache_acquisition_per_advance": true
+    },
+    "F_AHL28A": {
+      "finding": "No-copy ownership reduced warm bind cost by about one third but failed its standalone 50% reduction gate.",
+      "status": "FAILED_STANDALONE_REPAIR_GATE"
+    },
+    "F_AHL28B_C": {
+      "finding": "Provider-local exact same-key memoization preserves authority and step-duration semantics and clears the original 75% reduction gate under paired timing.",
+      "paired_median_ratio": 0.2408146,
+      "paired_reduction_fraction": 0.7591854,
+      "decision": "RETAIN"
+    },
+    "F_AHL29": {
+      "finding": "The bounded 32-entry cache is no longer a correctness limit; full-cache misses build a valid uncached representation.",
+      "capacity": 32,
+      "postrepair_stage1": "40/40 unique requests successful",
+      "amortization": "16 builds, 9984 hits on 10000 requests"
+    }
   }
 }
