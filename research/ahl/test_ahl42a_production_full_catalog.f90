@@ -29,15 +29,16 @@ program test_ahl42a_production_full_catalog
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
   real(real64) :: k0, h0, hbot, tr, ts, alpha, nvg, ksat, lambda, pfile(6)
-  character(len=512) :: label, material, arg
+  character(len=512) :: table_path, label, material, arg
   logical :: valid, was_hit
   integer :: k
 
-  if (command_argument_count() /= 4) error stop 'usage: test MATERIAL REGIME H0 HBOT'
-  call get_command_argument(1,material)
-  call get_command_argument(2,label)
-  call get_command_argument(3,arg); read(arg,*) h0
-  call get_command_argument(4,arg); read(arg,*) hbot
+  if (command_argument_count() /= 5) error stop 'usage: test PARAM_TABLE MATERIAL REGIME H0 HBOT'
+  call get_command_argument(1,table_path)
+  call get_command_argument(2,material)
+  call get_command_argument(3,label)
+  call get_command_argument(4,arg); read(arg,*) h0
+  call get_command_argument(5,arg); read(arg,*) hbot
 
   call read_material_from_table(trim(table_path),pfile)
   tr=pfile(1); ts=pfile(2); alpha=pfile(3); nvg=pfile(4); ksat=pfile(5); lambda=pfile(6)
