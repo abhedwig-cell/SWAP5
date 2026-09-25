@@ -155,7 +155,7 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
-    use mod_ppa_irrigation_source_binding, only: bind_ppa_irrigation_source
+    use mod_ppa_irrigation_source_binding, only: bind_ppa_irrigation_source,evaluate_ppa_irrigation_source
     use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT, &
          build_irrigation_event_candidate
@@ -388,11 +388,33 @@ contains
     hydraulic%pressure_head=carrier%pressure_head
     hydraulic%water_content=carrier%water_content
     base=carrier%irrigation
+    control_forcing(1)=profile%tiles(1)%base_forcing
+    control_forcing(1)%subsurface_irrigation_source=0.0_real64
+    control_forcing(1)%temporal_forcing_event=.false.
+    request%t0=T0; request%t1=T0+0.75_real64
+    call evaluate_ppa_irrigation_source(irrigation,base,request,hydraulic,control_forcing(1), &
+         candidate,flux,diagnostics,bound_forcing,ok)
+    if(ok.or.allocated(bound_forcing).or.flux%applied) error stop 'split composition exposed source'
+    if(diagnostics%status/=IRRIGATION_SPLIT_REQUIRED) error stop 'split composition lost diagnostic'
+    if(.not.candidate%active_event.or.candidate%active_event_end/=base%active_event_end) &
+         error stop 'split composition advanced event'
+    request%t1=T0+0.5_real64
+    irrigation%concentration=1.0_real64
+    call evaluate_ppa_irrigation_source(irrigation,base,request,hydraulic,control_forcing(1), &
+         candidate,flux,diagnostics,bound_forcing,ok)
+    if(ok.or.allocated(bound_forcing).or.flux%applied) error stop 'unsupported composition exposed source'
+    if(.not.candidate%active_event.or.candidate%active_event_rate/=base%active_event_rate) &
+         error stop 'binding rejection cleared completed process candidate'
+    irrigation%concentration=0.0_real64
     expected=0.0_real64
     do pass=1,2
       request%t0=T0+real(pass-1,real64)*0.25_real64
       request%t1=T0+real(pass,real64)*0.25_real64
-      call evaluate_scheduled_irrigation_interval(irrigation,base,request,hydraulic,candidate,flux,diagnostics)
+      call evaluate_ppa_irrigation_source(irrigation,base,request,hydraulic,control_forcing(1), &
+           candidate,flux,diagnostics,bound_forcing,ok)
+      if(.not.ok) error stop 'carrier process/source composition failed'
+      if(bound_forcing%temporal_forcing_event.neqv.(pass==1)) error stop 'composed source event lifecycle'
+      control_forcing(1)=bound_forcing
       if(diagnostics%status/=IRRIGATION_OK) error stop 'carrier process continuation failed'
       call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
            candidate,event_template,request%t1,assembled,ok)
@@ -407,7 +429,12 @@ contains
     end do
     if(abs(expected-0.005_real64)>1.0e-15_real64) error stop 'carrier split gift amount'
     request%t0=T0+0.5_real64; request%t1=T0+0.75_real64
-    call evaluate_scheduled_irrigation_interval(irrigation,base,request,hydraulic,candidate,flux,diagnostics)
+    call evaluate_ppa_irrigation_source(irrigation,base,request,hydraulic,control_forcing(1), &
+         candidate,flux,diagnostics,bound_forcing,ok)
+    if(.not.ok) error stop 'completed event source composition failed'
+    if(.not.bound_forcing%temporal_forcing_event.or.any(bound_forcing%subsurface_irrigation_source/=0.0_real64)) &
+         error stop 'completed event source not stopped'
+    write(*,'(a)') 'PPA_IRR_PROCESS_SOURCE_COMPOSITION_ROLLBACK=PASS'
     if(diagnostics%status/=IRRIGATION_OK.or.flux%applied) error stop 'carrier duplicate completed gift'
     ! A failed assembly must not leave a stale previously valid output behind.
     call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &

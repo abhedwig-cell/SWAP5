@@ -1,14 +1,45 @@
-! Candidate SSDI binding; no scheduling, commit, or restart ownership.
+! Candidate scheduled SSDI composition; no commit or restart ownership.
 module mod_ppa_irrigation_source_binding
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_irrigation_process, only: irrigation_flux_result_t, irrigation_diagnostics_t, &
-       IRRIGATION_OK, IRRIGATION_APPLICATION_SSDI
+       IRRIGATION_OK, IRRIGATION_APPLICATION_SSDI, scheduled_irrigation_parameters_t, &
+       scheduled_irrigation_request_t, irrigation_state_t, evaluate_scheduled_irrigation_interval
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_forcing_t
   implicit none
   private
   public :: bind_ppa_irrigation_source
+  public :: evaluate_ppa_irrigation_source
 contains
+  subroutine evaluate_ppa_irrigation_source(parameters,base,request,hydraulic,previous, &
+       candidate,flux,diagnostics,forcing,ok)
+    type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    type(irrigation_state_t), intent(in) :: base
+    type(scheduled_irrigation_request_t), intent(in) :: request
+    type(process_hydraulic_view_t), intent(in) :: hydraulic
+    type(fmr_b110_physical_forcing_t), intent(in) :: previous
+    type(irrigation_state_t), intent(out) :: candidate
+    type(irrigation_flux_result_t), intent(out) :: flux
+    type(irrigation_diagnostics_t), intent(out) :: diagnostics
+    type(fmr_b110_physical_forcing_t), allocatable, intent(out) :: forcing
+    logical, intent(out) :: ok
+    type(irrigation_state_t) :: proposed
+    type(irrigation_flux_result_t) :: proposed_flux
+    ! All outputs remain tentative. In particular ok is NOT hydraulic acceptance.
+    ! On failure preserve the base event and expose no actionable source/flux.
+    candidate=base
+    flux=irrigation_flux_result_t()
+    ok=.false.
+    call evaluate_scheduled_irrigation_interval(parameters,base,request,hydraulic, &
+         proposed,proposed_flux,diagnostics)
+    if(diagnostics%status/=IRRIGATION_OK) return
+    call bind_ppa_irrigation_source(previous,proposed_flux,diagnostics,request%t0,forcing,ok)
+    if(.not.ok) return
+    candidate=proposed
+    flux=proposed_flux
+  end subroutine
+
   subroutine bind_ppa_irrigation_source(previous,flux,diagnostics,t0,forcing,ok)
     type(fmr_b110_physical_forcing_t), intent(in) :: previous
     type(irrigation_flux_result_t), intent(in) :: flux
