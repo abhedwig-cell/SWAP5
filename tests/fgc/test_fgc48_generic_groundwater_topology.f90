@@ -264,7 +264,7 @@ contains
     bad_cells=cells
     bad_cells(1)%groundwater_cell_id=cells(2)%groundwater_cell_id
     bad_cells(2)%package_slot=0
-    call expect_status(tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_CELL_ID,'duplicate cell precedes later invalid cell')
+    call expect_status(tiles,bad_cells,GW_TOPOLOGY_INVALID_CELL,'invalid duplicate cell preserves local validity precedence')
 
     bad_cells=cells; bad_cells(2)%coupling_id=bad_cells(1)%coupling_id
     call expect_status(tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_COUPLING_ID,'duplicate coupling')
