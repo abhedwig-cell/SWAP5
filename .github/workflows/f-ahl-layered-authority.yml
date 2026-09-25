@@ -18,12 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Test two-authority vertical profile
+      - name: Test two-authority constitutive profile
         run: |
           bash tests/fahl/run_fahl_admission_layered_authority.sh
           grep -Fq 'FAHL_LAYERED_AUTHORITY=PASS' /tmp/fahl_layered_authority.txt
+      - name: Test two-authority Richards profile
+        run: bash tests/fahl/run_fahl_admission_layered_richards.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: f-ahl-layered-authority-${{ github.run_id }}
-          path: /tmp/fahl_layered_authority.txt
+          path: |
+            /tmp/fahl_layered_authority.txt
+            /tmp/fahl_layered_richards.txt
