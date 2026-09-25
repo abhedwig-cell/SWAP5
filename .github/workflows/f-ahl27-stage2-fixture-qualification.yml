@@ -1,0 +1,27 @@
+name: F-AHL27 Stage2 fixture qualification
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'tests/fahl/test_fahl27_stage2_fixture_qualification.f90'
+      - 'tests/fahl/run_fahl27_stage2_fixture_qualification.sh'
+      - 'integration/f-ahl/F-AHL27_STAGE2_FIXTURE_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl27-stage2-fixture-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify preregistered resolved FMR fixture
+        run: |
+          bash tests/fahl/run_fahl27_stage2_fixture_qualification.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27-stage2-fixture-${{ github.run_id }}
+          path: |
+            /tmp/fahl27_stage2_fixture_qualification.txt
+            /tmp/fahl27_stage2_fixture_selected.json
