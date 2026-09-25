@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32",
+  "phase": "BOUNDED_RUN_LIFETIME_REGISTRY_QUALIFIED",
+  "status": "PASS",
+  "workflow_run": 36080197438,
+  "workflow_job": 107900259323,
+  "registry": {
+    "capacity_entries": 16384,
+    "entry_storage": "lazy allocated",
+    "lookup": "fingerprint-based open addressing with collision-safe exact-key verification",
+    "replacement": "none",
+    "full_registry_miss": "correct uncached build fallback"
+  },
+  "qualification": {
+    "stage1_10000_unique": {
+      "failures": 0,
+      "builds": 10000,
+      "hits": 0,
+      "misses": 10000,
+      "entries": 10000
+    },
+    "stage2_second_pass_same_10000": {
+      "failures": 0,
+      "cumulative_builds": 10000,
+      "cumulative_hits": 10000,
+      "cumulative_misses": 10000,
+      "entries": 10000,
+      "new_builds": 0,
+      "new_hits": 10000,
+      "new_misses": 0
+    },
+    "stage3_capacity_plus_one": {
+      "unique_requests": 16385,
+      "failures": 0,
+      "last_request_ok": true,
+      "last_request_hit": false,
+      "builds": 16385,
+      "hits": 0,
+      "misses": 16385,
+      "entries": 16384
+    },
+    "f_ahl29_regression_on_registry": {
+      "workflow_run": 36080174100,
+      "stage1_40_unique_failures": 0,
+      "stage1_entries": 40,
+      "stage2_10000_over_16_builds": 16,
+      "stage2_hits": 9984,
+      "status": "PASS"
+    }
+  },
+  "finding": "A bounded 16384-entry run-lifetime registry removes the 32-entry MultiSWAP working-set limitation. Ten thousand unique hydraulic authorities can be built once and reused exactly, while capacity overflow remains correctness-safe through the F-AHL29 uncached fallback.",
+  "memory_context": {
+    "F_AHL31_mean_payload_projection_10000_bytes": 46397500,
+    "F_AHL31_sample_max_payload_projection_10000_bytes": 54720000,
+    "F_AHL31_max_based_projection_16384_bytes": 89653248
+  },
+  "nonclaims": [
+    "The registry qualification is synthetic and does not establish national MultiSWAP runtime.",
+    "Metadata and allocator overhead are additional to support-array payload.",
+    "No application speed claim follows from registry correctness alone."
+  ],
+  "next_action": "Reconcile provider-local same-key memoization from F-AHL28B and then measure the combined lifecycle path rather than cache lookup in isolation."
+}
