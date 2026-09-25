@@ -53,6 +53,13 @@ module mod_fmr_serialized_multiswap_runtime
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
     integer :: accepted_substeps = 0
+    ! Observational counters only; these never participate in acceptance.
+    integer :: transaction_attempts = 0
+    integer :: transaction_retries = 0
+    integer :: solver_rejections = 0
+    integer :: temporal_rejections = 0
+    integer :: temporal_unavailable_rejections = 0
+    integer :: mass_rejections = 0
     integer :: solver_nonlinear_iterations = 0
     integer :: solver_internal_retries = 0
     integer :: solver_headcalc_calls = 0
@@ -614,6 +621,12 @@ contains
     diagnostic%attempts = kernel_diag%attempts
     diagnostic%retries = kernel_diag%retries
     output%accepted_substeps = kernel_diag%accepted_substeps
+    output%transaction_attempts = kernel_diag%attempts
+    output%transaction_retries = kernel_diag%retries
+    output%solver_rejections = kernel_diag%solver_rejections
+    output%temporal_rejections = kernel_diag%temporal_rejections
+    output%temporal_unavailable_rejections = kernel_diag%temporal_certificate_unavailable_rejections
+    output%mass_rejections = kernel_diag%mass_rejections
     output%solver_nonlinear_iterations = kernel_diag%nonlinear_iterations
     output%solver_internal_retries = kernel_diag%internal_retries
     output%solver_headcalc_calls = kernel_diag%headcalc_calls

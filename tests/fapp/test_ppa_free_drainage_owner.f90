@@ -523,6 +523,17 @@ contains
       do tile=1,NTILE
         if(continued_result(tile)%kernel_status/=irrigation_result(tile)%kernel_status) &
              error stop 'irrigation midpoint restart changed tile outcome'
+        write(*,*) 'IRRIGATION_ACTIVE_REJECTIONS',tile,irrigation_result(tile)%accepted_substeps, &
+             irrigation_result(tile)%transaction_attempts,irrigation_result(tile)%transaction_retries, &
+             irrigation_result(tile)%solver_rejections,irrigation_result(tile)%temporal_rejections, &
+             irrigation_result(tile)%temporal_unavailable_rejections,irrigation_result(tile)%mass_rejections
+        if(continued_result(tile)%transaction_attempts/=irrigation_result(tile)%transaction_attempts.or. &
+             continued_result(tile)%transaction_retries/=irrigation_result(tile)%transaction_retries.or. &
+             continued_result(tile)%solver_rejections/=irrigation_result(tile)%solver_rejections.or. &
+             continued_result(tile)%temporal_rejections/=irrigation_result(tile)%temporal_rejections.or. &
+             continued_result(tile)%temporal_unavailable_rejections/=irrigation_result(tile)%temporal_unavailable_rejections.or. &
+             continued_result(tile)%mass_rejections/=irrigation_result(tile)%mass_rejections) &
+             error stop 'irrigation restart rejection counters differ'
         if(again(tile)%revision/=copied(tile)%revision.or. &
              again(tile)%committed_time/=copied(tile)%committed_time) error stop 'irrigation midpoint revision time'
         if(any(again(tile)%water_content/=copied(tile)%water_content).or. &
