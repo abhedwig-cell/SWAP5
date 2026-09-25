@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21H",
+  "phase": "QUALIFIED_QBOT_EXACT_RETENTION_MATRIX_COMPLETE",
+  "status": "PASS_12_OF_12",
+  "workflow_run": 36105926224,
+  "workflow_job": 107978297520,
+  "candidate": "authoritative analytical theta/C plus unchanged selected F-AHL15/F-AHL16 K lookup",
+  "matrix": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"],
+    "case_count": 12,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "passed_cases": 12,
+  "same_nonlinear_iteration_path_cases": 12,
+  "same_backtracking_path_cases": 12,
+  "selected_bottom_head_candidate_minus_reference_cm": {
+    "B01:wet": 2.385965e-4,
+    "B01:mid": 4.942044e-6,
+    "B01:dry": 4.858725e-5,
+    "B12:wet": 8.131034e-5,
+    "B12:mid": 1.249945e-6,
+    "B12:dry": 6.993365e-5,
+    "O05:wet": 3.081150e-4,
+    "O05:mid": 3.011911e-6,
+    "O05:dry": 1.490119e-6,
+    "O14:wet": 1.817176e-4,
+    "O14:mid": 5.833871e-6,
+    "O14:dry": 1.871647e-4
+  },
+  "finding": "The boundary-mode-specific exact-retention/capacity fallback closes the full qualified prescribed-qbot matrix while retaining the selected conductivity lookup and preserving the analytical nonlinear path.",
+  "next_action": "Run paired complete-Richards timing over all 12 qualified qbot cases to decide whether partial acceleration is worthwhile or whether qbot should remain fully analytical.",
+  "nonclaims": [
+    "No prescribed-qbot speedup claim is established by the fidelity matrix.",
+    "No MODFLOW coupling claim is made.",
+    "No production admission is implied."
+  ]
+}
