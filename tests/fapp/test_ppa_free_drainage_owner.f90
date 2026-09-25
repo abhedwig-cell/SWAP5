@@ -1037,14 +1037,19 @@ contains
          fmr_committed_restart_bundle_t,FMR_RESTART_OK,FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
-    type(kernel_committed_state_t)::committed(2),restored(2)
+    type(kernel_committed_state_t)::committed(2),restored(2),unbound(2)
     type(fmr_logical_column_t)::columns(2)
     type(fmr_committed_restart_bundle_t)::saved,invalid
     class(transaction_state_t),allocatable::input,snapshot
     real(real64),allocatable::expected_history(:),actual_history(:)
-    real(real64)::observed_time
+    real(real64)::observed_time,checkpoint_time
     logical::ok,available
     integer::i,pass,code
+    ! Seed a detached fixture at mid-event (or after completion). This tests
+    ! persistence, not hydraulic evolution from the original event start.
+    checkpoint_time=T0+0.5_real64
+    if(source%irrigation%active_event) checkpoint_time=source%irrigation%active_event_start+ &
+         0.5_real64*(source%irrigation%active_event_end-source%irrigation%active_event_start)
     do i=1,2
       columns(i)%column_id=int(i,int64)
       columns(i)%template_id=template%template_id
@@ -1052,11 +1057,17 @@ contains
       columns(i)%state_handle=int(i,int64)
       columns(i)%backend_id=template%compatible_backend_id
       call source%clone(input)
-      call committed(i)%initialize(int(404100+i,int64),input,ok,T0)
+      call committed(i)%initialize(int(404100+i,int64),input,ok,checkpoint_time)
       if(.not.ok) error stop 'irrigation restart fixture initialization'
+      call unbound(i)%initialize(int(404100+i,int64),input,ok)
+      if(.not.ok) error stop 'irrigation unbound fixture initialization'
     end do
     call fmr_export_committed_restart(columns,[template],committed,92001_int64,saved,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'irrigation restart export failed'
+    invalid=saved
+    call fmr_export_committed_restart(columns,[template],unbound,92001_int64,invalid,ok,code)
+    if(ok.or.code/=FMR_RESTART_KERNEL_PERSISTENCE_REJECTED) error stop 'unbound irrigation export accepted'
+    if(allocated(invalid%records)) error stop 'failed irrigation export retained old bundle'
     ! Corrupt only the second record. The first reconstructed candidate must
     ! never be published when a later record fails validation.
     do pass=1,3
@@ -1086,12 +1097,12 @@ contains
       if(restored(i)%current_lineage_id()/=committed(i)%current_lineage_id().or. &
            restored(i)%current_revision()/=committed(i)%current_revision()) error stop 'irrigation restart provenance'
       call restored(i)%current_time(observed_time,available)
-      if(.not.available.or.observed_time/=T0) error stop 'irrigation restart time'
+      if(.not.available.or.observed_time/=checkpoint_time) error stop 'irrigation restart time'
       call restored(i)%snapshot(snapshot,available)
       if(.not.available) error stop 'irrigation restart snapshot missing'
       select type(snapshot)
       type is(ppa_irrigation_event_state_t)
-        if(.not.snapshot%matches_candidate(template,T0)) error stop 'irrigation restored payload invalid'
+        if(.not.snapshot%matches_candidate(template,checkpoint_time)) error stop 'irrigation restored payload invalid'
         if(snapshot%irrigation%active_event.neqv.source%irrigation%active_event) error stop 'irrigation restored activation'
         if(snapshot%irrigation%active_event_start/=source%irrigation%active_event_start.or. &
              snapshot%irrigation%active_event_end/=source%irrigation%active_event_end.or. &
