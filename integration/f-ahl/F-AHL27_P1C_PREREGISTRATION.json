@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27-P1C",
+  "title": "Serialized backend cache persistence and capacity qualification",
+  "parent": "F-AHL27-P1B",
+  "phase": "PREREGISTERED_REPAIR_AND_QUALIFICATION",
+  "runtime_lifecycle_authority": "fmr_run_serialized_physical_multiswap creates one serialized backend and reuses it across dispatched columns.",
+  "requirements": {
+    "provider_cache_survives_parameter_reconfiguration": true,
+    "cache_key_remains_exact_initialized_authority_identity": true,
+    "cache_capacity": "dynamic growth, not fixed 32-entry research ceiling",
+    "eviction": "none in Stage 1",
+    "fallback_on_build_failure": "analytical",
+    "global_mutable_state": false
+  },
+  "qualification": [
+    "more than 32 unique hydraulic authorities can be cached without analytical fallback caused by capacity alone",
+    "second pass over the same authorities produces hits and no new builds",
+    "backend configure_parameters does not destroy the adaptive provider cache",
+    "heterogeneous-profile and serialized selection gates remain green"
+  ],
+  "hard_exclusions": [
+    "NO_APPROXIMATE_CACHE_KEYS",
+    "NO_LRU_OR_EVICTION_POLICY_IN_STAGE1",
+    "NO_GLOBAL_SHARED_MUTABLE_CACHE",
+    "NO_GATE_RETUNING"
+  ]
+}
