@@ -1,0 +1,20 @@
+{
+  "schema_version":1,
+  "workstream":"F-AHL",
+  "work_unit":"F-AHL27",
+  "phase":"STAGE2_ACCEPTED_TRAJECTORY_FALLBACK_COMPLETE",
+  "status":"PASS",
+  "workflow_run":36077622995,
+  "workflow_job":107892290097,
+  "routing":"accepted-trajectory directional/tangent route remains authoritative analytical",
+  "cache":{"builds":0,"hits":0,"misses":0,"entries":0},
+  "gates":{
+    "trajectory_default_off":"PASS",
+    "accepted_route":"PASS",
+    "provenance":"PASS",
+    "physical_identity":"PASS",
+    "O0_O2_identity":"PASS"
+  },
+  "finding":"Accepted-trajectory and directional publication remain on the analytical route; the adaptive cache is untouched and existing provenance and identity semantics are preserved.",
+  "production_boundary":"NO_ADAPTIVE_TANGENT_OR_ACCEPTED_TRAJECTORY_ROUTING_IN_F-AHL27"
+}
