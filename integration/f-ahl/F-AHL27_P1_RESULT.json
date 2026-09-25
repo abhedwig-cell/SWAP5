@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "phase": "P1_PRODUCTION_PORT_EQUIVALENCE_COMPLETE",
+  "status": "PASS",
+  "branch": "work/f-ahl27-production-admission",
+  "workflow_run": 36078126304,
+  "workflow_job": 107893828416,
+  "production_source_paths": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/runtime/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_mvg_provider.f90"
+  ],
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 2.071933e-6,
+    "max_abs_water_content_delta": 2.367780e-9,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 8.756861e-9,
+    "mass_residual_abs_cm": 1.240327e-16,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "cache": {
+    "builds": 1,
+    "hits": 1,
+    "misses": 1,
+    "entries": 1
+  },
+  "finding": "The production-source port of the qualified default-MvG self-building adaptive representation reproduces the bounded research provider fidelity and cache semantics before runtime activation.",
+  "runtime_activation": false,
+  "next_gate": "P2 bounded serialized-backend selection with explicit analytical fallback outside the qualified family/boundary/numerical envelope."
+}
