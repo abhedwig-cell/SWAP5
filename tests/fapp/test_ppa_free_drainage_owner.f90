@@ -567,6 +567,38 @@ contains
              any(again(tile)%pressure_head_cm/=copied(tile)%pressure_head_cm)) &
              error stop 'irrigation midpoint resumed profile'
       end do
+      ! End the prolonged prescribed source at an explicit new forcing event.
+      do tile=1,NTILE
+        control_forcing(tile)%subsurface_irrigation_source=0.0_real64
+        control_forcing(tile)%temporal_forcing_event=.true.
+        control_forcing(tile)%temporal_forcing_event_time=midpoint+irrigation_dt
+      end do
+      call owner%run_standalone_with_forcing(midpoint+irrigation_dt,midpoint+2.0_real64*irrigation_dt, &
+           control_forcing,irrigation_result,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'active-source sequence stop failed'
+      call fresh_owner%run_standalone_with_forcing(midpoint+irrigation_dt,midpoint+2.0_real64*irrigation_dt, &
+           control_forcing,continued_result,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'active-source sequence resumed stop failed'
+      call owner%copy_committed_hydraulic_states(copied,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'active-source sequence stop copy'
+      call fresh_owner%copy_committed_hydraulic_states(again,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'active-source sequence resumed stop copy'
+      do tile=1,NTILE
+        expected=sum(max(-control_forcing(tile)%drainage_flux_by_level,0.0_real64))*irrigation_dt
+        if(abs(irrigation_result(tile)%mass%total_in-expected)>HARD_MASS_GATE) &
+             error stop 'prolonged source duplicated after stop'
+        if(abs(irrigation_result(tile)%mass%residual)>HARD_MASS_GATE.or. &
+             abs(continued_result(tile)%mass%residual)>HARD_MASS_GATE) error stop 'active-source stop mass'
+        if(continued_result(tile)%mass%total_in/=irrigation_result(tile)%mass%total_in) &
+             error stop 'active-source stop restart inflow'
+        if(again(tile)%revision/=copied(tile)%revision.or. &
+             again(tile)%committed_time/=copied(tile)%committed_time) error stop 'active-source stop identity'
+        if(copied(tile)%committed_time/=midpoint+2.0_real64*irrigation_dt) error stop 'active-source stop endpoint'
+        if(any(again(tile)%water_content/=copied(tile)%water_content).or. &
+             any(again(tile)%pressure_head_cm/=copied(tile)%pressure_head_cm)) &
+             error stop 'active-source stop restart profile'
+      end do
+      write(*,'(a)') 'PPA_IRRIGATION_START_CONTINUE_STOP_RESTART_SEQUENCE=PASS'
       call fresh_owner%close(code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh close'
       call owner%restore_committed_restart(bundle,92001_int64,ok,code)
