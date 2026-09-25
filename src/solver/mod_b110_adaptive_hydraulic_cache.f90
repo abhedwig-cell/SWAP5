@@ -32,6 +32,7 @@ module mod_b110_adaptive_hydraulic_cache
   contains
     procedure :: lookup => b110_ahl_lookup
     procedure :: find_slot => b110_ahl_find_slot
+    procedure :: sample_slot => b110_ahl_sample_slot
     procedure :: get_or_build => b110_ahl_get_or_build
     procedure :: stats => b110_ahl_stats
     procedure :: probe_stats => b110_ahl_probe_stats
@@ -87,14 +88,18 @@ contains
          all(abit==bbit)
   end function b110_adaptive_hydraulic_keys_equal
 
-  subroutine b110_ahl_find_slot(self,key,slot,was_hit)
+  subroutine b110_ahl_find_slot(self,key,slot,was_hit,count_hit)
     class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
     integer,intent(out)::slot
     logical,intent(out)::was_hit
+    logical,intent(in),optional::count_hit
     integer::i,current
+    logical::do_count
 
     slot=0;was_hit=.false.
+    do_count=.true.
+    if(present(count_hit))do_count=count_hit
     if(.not.allocated(self%entry)) return
 
     current=b110_ahl_initial_slot(key%fingerprint)
@@ -104,7 +109,7 @@ contains
       if(.not.self%entry(current)%occupied) return
       if(self%entry(current)%key%fingerprint==key%fingerprint)then
         if(b110_adaptive_hydraulic_keys_equal(self%entry(current)%key,key))then
-          self%hits=self%hits+1
+          if(do_count)self%hits=self%hits+1
           slot=current
           was_hit=.true.
           return
@@ -114,6 +119,51 @@ contains
       if(current>B110_AHL_MAX_CACHE) current=1
     end do
   end subroutine b110_ahl_find_slot
+
+  subroutine b110_ahl_sample_slot(self,slot,xv,inside,x0,x1,z0,z1,m0,m1,k0,k1)
+    class(b110_adaptive_hydraulic_cache_t),intent(in)::self
+    integer,intent(in)::slot
+    real(real64),intent(in)::xv
+    logical,intent(out)::inside
+    real(real64),intent(out)::x0,x1,z0,z1,m0,m1,k0,k1
+    integer::lo,hi,mid,n
+
+    inside=.false.
+    x0=0.0_real64;x1=0.0_real64;z0=0.0_real64;z1=0.0_real64
+    m0=0.0_real64;m1=0.0_real64;k0=0.0_real64;k1=0.0_real64
+    if(.not.allocated(self%entry))return
+    if(slot<1 .or. slot>size(self%entry))return
+    if(.not.self%entry(slot)%occupied)return
+    n=self%entry(slot)%table%n
+    if(n<2 .or. .not.allocated(self%entry(slot)%table%x))return
+    if(xv<self%entry(slot)%table%x(1) .or. xv>self%entry(slot)%table%x(n))return
+
+    if(xv<=self%entry(slot)%table%x(1))then
+      lo=1
+    else if(xv>=self%entry(slot)%table%x(n))then
+      lo=n-1
+    else
+      lo=1;hi=n
+      do while(hi-lo>1)
+        mid=(lo+hi)/2
+        if(self%entry(slot)%table%x(mid)<=xv)then
+          lo=mid
+        else
+          hi=mid
+        end if
+      end do
+    end if
+
+    x0=self%entry(slot)%table%x(lo)
+    x1=self%entry(slot)%table%x(lo+1)
+    z0=self%entry(slot)%table%z(lo)
+    z1=self%entry(slot)%table%z(lo+1)
+    m0=self%entry(slot)%table%dzdx(lo)
+    m1=self%entry(slot)%table%dzdx(lo+1)
+    k0=self%entry(slot)%table%logk(lo)
+    k1=self%entry(slot)%table%logk(lo+1)
+    inside=.true.
+  end subroutine b110_ahl_sample_slot
 
   subroutine b110_ahl_lookup(self,key,table,was_hit)
     class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
