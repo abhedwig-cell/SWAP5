@@ -1,0 +1,28 @@
+name: F-AHL47 direct-retention Richards screen
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/F-AHL47_PREREGISTRATION.md'
+      - 'research/ahl/mod_ahl47_direct_retention_provider.f90'
+      - 'research/ahl/test_fahl47_richards_timing.f90'
+      - 'research/ahl/run_fahl47_richards_timing.sh'
+      - '.github/workflows/f-ahl47-richards.yml'
+  workflow_dispatch:
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run direct-retention Richards screen
+        run: |
+          bash research/ahl/run_fahl47_richards_timing.sh | tee fahl47-richards.txt
+          grep -Fq 'FAHL47_RICHARDS_TIMING=PASS' fahl47-richards.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl47-richards
+          path: fahl47-richards.txt
