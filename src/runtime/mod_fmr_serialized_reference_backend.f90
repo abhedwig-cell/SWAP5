@@ -45,6 +45,8 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
+  use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -185,6 +187,8 @@ module mod_fmr_serialized_reference_backend
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
+    logical :: direct_retention_active = .false.
+    integer :: prepared_direct_retention_slot = 0
     ! F-SI39: explicit opt-in to the exact B1.11 near-saturated KSATEXM
     ! conductivity extension. Default false preserves all pre-F-SI39 routes.
     logical :: ksatexm_extension_active = .false.
@@ -340,6 +344,9 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
+    logical :: direct_retention_active = .false.
+    integer :: direct_retention_slot = 0
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
