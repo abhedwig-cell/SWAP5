@@ -53,6 +53,10 @@ module mod_fmr_serialized_multiswap_runtime
     integer :: last_solver_status = 0
     real(real64) :: last_trial_t0 = 0.0_real64
     real(real64) :: last_trial_t1 = 0.0_real64
+    logical :: first_solver_failure_available = .false.
+    real(real64) :: first_solver_failure_t0 = 0.0_real64
+    real(real64) :: first_solver_failure_t1 = 0.0_real64
+    integer :: first_solver_failure_iterations = 0
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
     integer :: accepted_substeps = 0
@@ -657,6 +661,10 @@ contains
       output%last_solver_status = observation%solver_status
       output%last_trial_t0 = observation%trial_t0
       output%last_trial_t1 = observation%trial_t1
+      output%first_solver_failure_available=observation%first_solver_failure_available
+      output%first_solver_failure_t0=observation%first_solver_failure_t0
+      output%first_solver_failure_t1=observation%first_solver_failure_t1
+      output%first_solver_failure_iterations=observation%first_solver_failure_iterations
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
       runtime%snow_event_evaluation_calls = runtime%snow_event_evaluation_calls + &

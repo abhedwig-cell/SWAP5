@@ -659,6 +659,9 @@ contains
         write(*,*) 'IRRIGATION_LAST_TRIAL',tile,irrigation_result(tile)%solver_executed, &
              irrigation_result(tile)%last_solver_status,irrigation_result(tile)%last_trial_t0, &
              irrigation_result(tile)%last_trial_t1,trim(irrigation_result(tile)%solver_route)
+        write(*,*) 'IRRIGATION_FIRST_SOLVER_FAILURE',tile,irrigation_result(tile)%first_solver_failure_available, &
+             irrigation_result(tile)%first_solver_failure_t0,irrigation_result(tile)%first_solver_failure_t1, &
+             irrigation_result(tile)%first_solver_failure_iterations
       end do
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint interval failed'
       if(maxval(abs(irrigation_result%mass%residual))>HARD_MASS_GATE) error stop 'irrigation midpoint mass'

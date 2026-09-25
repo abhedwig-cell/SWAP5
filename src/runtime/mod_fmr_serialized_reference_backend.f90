@@ -254,6 +254,10 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_serialized_physical_observation_t
     real(real64) :: trial_t0 = 0.0_real64
     real(real64) :: trial_t1 = 0.0_real64
+    logical :: first_solver_failure_available = .false.
+    real(real64) :: first_solver_failure_t0 = 0.0_real64
+    real(real64) :: first_solver_failure_t1 = 0.0_real64
+    integer :: first_solver_failure_iterations = 0
     logical :: solver_executed = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
@@ -1909,8 +1913,23 @@ contains
     integer :: effective_bottom_mode, swbotb2_status
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
+    logical :: prior_failure_available
+    real(real64) :: prior_failure_t0,prior_failure_t1
+    integer :: prior_failure_iterations
     outcome = trial_outcome_t()
+    ! Disposable observation only: retain the first solver failure while retries
+    ! share the same start time. A new substep or backend window resets it.
+    prior_failure_available=self%last_observation%first_solver_failure_available
+    prior_failure_t0=self%last_observation%first_solver_failure_t0
+    prior_failure_t1=self%last_observation%first_solver_failure_t1
+    prior_failure_iterations=self%last_observation%first_solver_failure_iterations
     self%last_observation = fmr_serialized_physical_observation_t()
+    if(prior_failure_available.and.same_real_bits(prior_failure_t0,t0)) then
+      self%last_observation%first_solver_failure_available=.true.
+      self%last_observation%first_solver_failure_t0=prior_failure_t0
+      self%last_observation%first_solver_failure_t1=prior_failure_t1
+      self%last_observation%first_solver_failure_iterations=prior_failure_iterations
+    end if
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%trial_t0 = t0
     self%last_observation%trial_t1 = t1
@@ -2213,6 +2232,12 @@ contains
 
     self%last_observation%solver_executed = .true.
     self%last_observation%solver_status = solve_result%status
+    if(solve_result%status/=SW_SOLVE_CONVERGED.and..not.self%last_observation%first_solver_failure_available) then
+      self%last_observation%first_solver_failure_available=.true.
+      self%last_observation%first_solver_failure_t0=t0
+      self%last_observation%first_solver_failure_t1=t1
+      self%last_observation%first_solver_failure_iterations=solve_result%diagnostics%nonlinear_iterations
+    end if
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
     self%last_observation%solver_diagnostics = solve_result%diagnostics
