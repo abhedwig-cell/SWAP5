@@ -167,7 +167,7 @@ contains
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
-                                                    materialize_worker_assignments)
+                                                    materialize_worker_assignments, materialize_summary_diagnostics)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -186,16 +186,19 @@ contains
     type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
     type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
     logical, intent(in), optional :: materialize_worker_assignments
+    logical, intent(in), optional :: materialize_summary_diagnostics
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     integer, allocatable :: order(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
-    logical :: do_worker_assignments
+    logical :: do_worker_assignments, do_summary_diagnostics
 
     do_worker_assignments = .true.
     if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
+    do_summary_diagnostics = .true.
+    if (present(materialize_summary_diagnostics)) do_summary_diagnostics = materialize_summary_diagnostics
     call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
     active_physical_calls = 0
@@ -299,12 +302,14 @@ contains
     end do
 
     local_runtime%deterministic_collection = .true.
-    if (present(execution_plan)) then
-      call build_aggregate(columns, diagnostics, batches, aggregate, execution_plan=execution_plan)
-      call finalize_runtime_diagnostics(results, local_runtime, execution_plan=execution_plan)
-    else
-      call build_aggregate(columns, diagnostics, batches, aggregate, execution_order=order)
-      call finalize_runtime_diagnostics(results, local_runtime, execution_order=order)
+    if (do_summary_diagnostics) then
+      if (present(execution_plan)) then
+        call build_aggregate(columns, diagnostics, batches, aggregate, execution_plan=execution_plan)
+        call finalize_runtime_diagnostics(results, local_runtime, execution_plan=execution_plan)
+      else
+        call build_aggregate(columns, diagnostics, batches, aggregate, execution_order=order)
+        call finalize_runtime_diagnostics(results, local_runtime, execution_order=order)
+      end if
     end if
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
   end subroutine fmr_run_serialized_physical_multiswap

@@ -301,7 +301,6 @@ contains
 
     type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t) :: aggregate
-    type(fmr_serialized_batch_diagnostics_t) :: runtime
     integer :: dispatch_status
 
     if (allocated(results)) deallocate(results)
@@ -323,11 +322,13 @@ contains
     if (self%execution_plan%ready()) then
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-           aggregate, dispatch_status, runtime, execution_plan=self%execution_plan, materialize_worker_assignments=.false.)
+           aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+           materialize_summary_diagnostics=.false.)
     else
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-           aggregate, dispatch_status, runtime, materialize_worker_assignments=.false.)
+           aggregate, dispatch_status, materialize_worker_assignments=.false., &
+           materialize_summary_diagnostics=.false.)
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
