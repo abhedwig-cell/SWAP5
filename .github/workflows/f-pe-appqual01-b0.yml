@@ -15,8 +15,11 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Validate benchmark schema
-        run: python3 tests/performance/validate_appqual01_manifest.py
+      - name: Validate benchmark schema and B1 topology generator
+        run: |
+          python3 tests/performance/validate_appqual01_manifest.py
+          python3 tests/performance/test_appqual01_b1_generator.py
+          python3 tests/performance/generate_appqual01_b1.py --workload B1-S10000 --output appqual01-b1-s10000.json
       - name: Install Python coupling dependencies
         run: python3 -m pip install --disable-pip-version-check numpy flopy xmipy
       - name: Run real mixed-topology SWAP5 + MODFLOW6 seed
@@ -30,3 +33,4 @@ jobs:
           path: |
             appqual01-b0.txt
             appqual01-b0.json
+            appqual01-b1-s10000.json
