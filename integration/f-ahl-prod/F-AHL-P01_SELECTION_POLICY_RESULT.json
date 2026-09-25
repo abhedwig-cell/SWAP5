@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-PROD",
+  "work_unit": "F-AHL-P01",
+  "phase": "SELECTION_POLICY_GATE_COMPLETE",
+  "status": "PASS_STAGE0",
+  "branch": "work/f-ahl-production-admission",
+  "workflow_run": 36076262386,
+  "workflow_job": 107888034873,
+  "policy": {
+    "adaptive_eligible_only_when": {
+      "hydraulic_family": "default B1.10 MvG",
+      "bottom_mode": 5,
+      "swkimpl": 0,
+      "ksatexm_extension_active": false
+    },
+    "analytical_fallback": [
+      "prescribed qbot bottom_mode=2",
+      "all other lower-boundary modes",
+      "SWKIMPL != 0",
+      "KSATEXM active",
+      "unsupported hydraulic families"
+    ]
+  },
+  "verification": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "selection_policy": "PASS"
+  },
+  "finding": "The first production-admission seam is now explicitly fail-closed. Eligibility can be tested independently from provider implementation and does not alter the existing constitutive provider ABI.",
+  "next_action": "Introduce the production self-built default-MvG provider and cache behind this policy without changing runtime behavior outside the bounded route, then replay the frozen research matrix through the real serialized runtime composition.",
+  "production_status": "NOT_ADMITTED"
+}
