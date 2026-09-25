@@ -3,7 +3,7 @@ module mod_fmr_groundwater_application_context
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_application_cell_plan_t, &
        GW_APP_PLAN_OK
-  use mod_groundwater_topology_composition, only: groundwater_topology_tile_t
+  use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t
   use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
   use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t, &
        evaluate_modflow6_linear_boundary_flux_density, reanchor_modflow6_linear_boundary_term, &
