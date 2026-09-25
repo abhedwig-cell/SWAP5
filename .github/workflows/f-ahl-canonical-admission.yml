@@ -1,5 +1,9 @@
 name: F-AHL canonical admission gates
 
+concurrency:
+  group: f-ahl-canonical-admission
+  cancel-in-progress: true
+
 on:
   push:
     branches:
