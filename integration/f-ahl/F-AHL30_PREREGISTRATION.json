@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL30",
+  "title": "Over-capacity adaptive representation reuse",
+  "parent": "F-AHL29",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "How does the bounded 32-entry adaptive-hydraulic cache behave when a MultiSWAP-like workload repeatedly uses more unique hydraulic parameterizations than the cache can hold?",
+  "frozen_current_semantics": {
+    "cache_capacity": 32,
+    "full_cache_miss": "correct uncached build",
+    "eviction": "none",
+    "hydraulic_representation": "unchanged from F-AHL29"
+  },
+  "workloads": [
+    {
+      "id": "round_robin_64",
+      "requests": 10000,
+      "unique_parameterizations": 64,
+      "sequence": "strict cyclic 1..64"
+    },
+    {
+      "id": "grouped_64",
+      "requests_per_parameterization": 128,
+      "unique_parameterizations": 64,
+      "sequence": "128 consecutive requests for key 1, then key 2, etc."
+    }
+  ],
+  "measurements": [
+    "builds",
+    "hits",
+    "misses",
+    "entries",
+    "correctness_failures",
+    "CPU per request"
+  ],
+  "interpretation": {
+    "no_repair_if": "uncached rebuild overhead is negligible relative to application cost",
+    "consider_eviction_if": "grouped/locality workload is dominated by repeated uncached rebuilds and bounded replacement can remove them",
+    "consider_registry_or_larger_capacity_if": "round-robin workload is dominated by rebuilds, because LRU alone cannot solve a working set larger than cache capacity"
+  },
+  "hard_exclusions": [
+    "NO_HYDRAULIC_GATE_CHANGE",
+    "NO_UNBOUNDED_CACHE_GROWTH_WITHOUT_MEMORY_ACCOUNTING",
+    "NO_LRU_IMPLEMENTATION_BEFORE_CHARACTERIZATION",
+    "NO_MULTI_SWAP_SPEEDUP_CLAIM_FROM_SYNTHETIC_CACHE_WORKLOAD"
+  ]
+}
