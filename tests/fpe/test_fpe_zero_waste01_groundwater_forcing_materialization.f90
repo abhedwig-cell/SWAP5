@@ -15,6 +15,7 @@ program test_fpe_zero_waste01_groundwater_forcing_materialization
   class(canonical_forcing_t), allocatable :: polymorphic_forcing
   integer(int64) :: c0, c1, rate
   integer :: n, reps, r, status
+  integer(int64) :: generation_before, generation_after
   real(real64) :: current_seconds, reused_seconds, current_ns, reused_ns
   real(real64) :: current_checksum, reused_checksum, h, a_head, b_head, a_bottom_first, a_bottom_second
   character(len=32) :: arg
@@ -53,7 +54,10 @@ program test_fpe_zero_waste01_groundwater_forcing_materialization
   call system_clock(c1)
   current_seconds = real(c1-c0,real64)/real(rate,real64)
 
-  reusable = base
+  call materializer%initialize_reusable(reusable,status)
+  if (status /= GW_SWAP_FORCING_OK) error stop 'H-GWFORCE01 reusable initialization failed'
+  generation_before = materializer%current_generation()
+  if (generation_before <= 0_int64) error stop 'H-GWFORCE01 invalid initial generation'
   reused_checksum = 0.0_real64
   call system_clock(c0)
   do r=1,reps
@@ -62,7 +66,7 @@ program test_fpe_zero_waste01_groundwater_forcing_materialization
     else
       h = b_head
     end if
-    call materialize_reused_head(h,datum,reusable,status)
+    call materializer%materialize_reused(h,datum,reusable,status)
     if (status /= GW_SWAP_FORCING_OK) error stop 'H-GWFORCE01 reused materialization failed'
     reused_checksum = reused_checksum + reusable%bottom_head + reusable%top_flux + &
          reusable%drainage_flux_by_level(1,n) + reusable%subsurface_irrigation_source(n) + reusable%root_extraction_sink(n)
@@ -71,16 +75,27 @@ program test_fpe_zero_waste01_groundwater_forcing_materialization
   reused_seconds = real(c1-c0,real64)/real(rate,real64)
 
   call require_base_fields_preserved(base,reusable)
-  call materialize_reused_head(a_head,datum,reusable,status)
+  call materializer%materialize_reused(a_head,datum,reusable,status)
   if (status /= GW_SWAP_FORCING_OK) error stop 'H-GWFORCE01 A1 failed'
   a_bottom_first = reusable%bottom_head
-  call materialize_reused_head(b_head,datum,reusable,status)
+  call materializer%materialize_reused(b_head,datum,reusable,status)
   if (status /= GW_SWAP_FORCING_OK .or. same_bits(reusable%bottom_head,a_bottom_first)) &
        error stop 'H-GWFORCE01 B did not replace bottom head'
-  call materialize_reused_head(a_head,datum,reusable,status)
+  call materializer%materialize_reused(a_head,datum,reusable,status)
   if (status /= GW_SWAP_FORCING_OK) error stop 'H-GWFORCE01 A2 failed'
   a_bottom_second = reusable%bottom_head
   if (.not. same_bits(a_bottom_first,a_bottom_second)) error stop 'H-GWFORCE01 A-B-A bottom head drift'
+  call require_base_fields_preserved(base,reusable)
+
+  base%top_flux = base%top_flux + 0.125_real64
+  call materializer%initialize(base)
+  generation_after = materializer%current_generation()
+  if (generation_after <= generation_before) error stop 'H-GWFORCE01 generation did not advance'
+  call materializer%initialize_reusable(reusable,status)
+  if (status /= GW_SWAP_FORCING_OK) error stop 'H-GWFORCE01 generation refresh failed'
+  call require_base_fields_preserved(base,reusable)
+  call materializer%materialize_reused(a_head,datum,reusable,status)
+  if (status /= GW_SWAP_FORCING_OK) error stop 'H-GWFORCE01 refreshed materialization failed'
   call require_base_fields_preserved(base,reusable)
 
   current_ns = 1.0e9_real64*current_seconds/real(reps,real64)
@@ -90,6 +105,7 @@ program test_fpe_zero_waste01_groundwater_forcing_materialization
        ',reused_ns_per_materialization=',reused_ns,',ratio=',reused_ns/current_ns, &
        ',current_checksum=',current_checksum,',reused_checksum=',reused_checksum
   write(*,'(A,I0,A)') 'GWFORCE01_ABA_AND_BASE_PRESERVATION,n=',n,',PASS'
+  write(*,'(A,I0,A)') 'GWFORCE01_GENERATION_REFRESH,n=',n,',PASS'
   write(*,'(A)') 'FPE_ZERO_WASTE01_GWFORCE01=PASS'
 
 contains
@@ -109,21 +125,7 @@ contains
     value%root_extraction_sink = 0.0_real64
   end subroutine initialize_base_forcing
 
-  subroutine materialize_reused_head(interface_head_m,datum_value,forcing,status_value)
-    real(real64), intent(in) :: interface_head_m
-    type(groundwater_head_datum_t), intent(in) :: datum_value
-    type(fmr_b110_physical_forcing_t), intent(inout) :: forcing
-    integer, intent(out) :: status_value
-    real(real64) :: pressure_head_cm
-    integer :: mapping_status
 
-    status_value = 1
-    if (.not. ieee_is_finite(interface_head_m) .or. .not. datum_value%valid()) return
-    call interface_head_m_to_swap_bottom_pressure_head_cm(interface_head_m,datum_value,pressure_head_cm,mapping_status)
-    if (mapping_status /= GW_INTERFACE_OK .or. .not. ieee_is_finite(pressure_head_cm)) return
-    forcing%bottom_head = pressure_head_cm
-    status_value = GW_SWAP_FORCING_OK
-  end subroutine materialize_reused_head
 
   subroutine require_base_fields_preserved(reference,value)
     type(fmr_b110_physical_forcing_t), intent(in) :: reference,value

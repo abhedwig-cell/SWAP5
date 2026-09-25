@@ -86,3 +86,26 @@ gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" 60 100000
 "$BUILD/test" 200 30000
 "$BUILD/test" 1000 10000
+
+python3 - <<'PY'
+from pathlib import Path
+adapter = Path("src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90").read_text(encoding="utf-8").lower()
+participant = Path("src/runtime/mod_fmr_groundwater_swap_participant.f90").read_text(encoding="utf-8").lower()
+for token in [
+    "current_generation",
+    "initialize_reusable",
+    "materialize_reused",
+    "self%generation = self%generation + 1_int64",
+]:
+    assert token in adapter, token
+for token in [
+    "reusable_forcing",
+    "forcing_materializer_generation",
+    "typed_materializer%current_generation()",
+    "typed_materializer%initialize_reusable",
+    "typed_materializer%materialize_reused",
+    "call materializer%materialize",
+]:
+    assert token in participant, token
+print("FPE_ZERO_WASTE01_GWFORCE02_PRODUCTION_WIRING_STATIC=PASS")
+PY
