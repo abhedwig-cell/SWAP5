@@ -1,0 +1,22 @@
+name: F-PE-ZERO-WASTE01 parameter configuration reuse
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'docs/performance/F-PE-ZERO-WASTE01_H21_PARAMETER_CONFIGURATION_REUSE.md'
+      - '.github/workflows/f-pe-zero-waste01-parameter-config-reuse.yml'
+  workflow_dispatch:
+
+jobs:
+  parameter-config-reuse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run production application bootstrap gate
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+      - name: Run FKT22 serialized runtime gate
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
