@@ -6,7 +6,8 @@ cd "$ROOT"
 TMP_FIX="tests/fgc/support/.fahl49_direct_context_fixture_$.f90"
 TMP_RUN="tests/fgc/.run_fahl49_direct_context_$.sh"
 TMP_PY="tests/fgc/.test_fahl49_direct_context_$.py"
-trap 'rm -f "$TMP_FIX" "$TMP_RUN" "$TMP_PY"' EXIT
+TMP_OUT="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/fahl49-application-context-$.txt"
+trap 'rm -f "$TMP_FIX" "$TMP_RUN" "$TMP_PY" "$TMP_OUT"' EXIT
 
 python3 - "$TMP_FIX" <<'PY'
 from pathlib import Path
@@ -281,10 +282,9 @@ PY
 
 chmod +x "$TMP_RUN"
 
-bash "$TMP_RUN" | tee /tmp/fahl49-application-context-$.txt
-grep -Fq 'FGC49D_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS' /tmp/fahl49-application-context-$$.txt
-grep -Fq 'F-GC49D PRODUCTION APPLICATION CONTEXT ABI GATE PASS' /tmp/fahl49-application-context-$$.txt
-rm -f /tmp/fahl49-application-context-$$.txt
+bash "$TMP_RUN" | tee "$TMP_OUT"
+grep -Fq 'FGC49D_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS' "$TMP_OUT"
+grep -Fq 'F-GC49D PRODUCTION APPLICATION CONTEXT ABI GATE PASS' "$TMP_OUT"
 
 echo 'FAHL49_APPLICATION_OPTIN=PASS'
 echo 'FAHL49_APPLICATION_GATE=PASS'
