@@ -128,9 +128,13 @@ contains
     type(fmr_serialized_execution_plan_t), intent(out) :: plan
     logical, intent(out) :: valid
     integer :: i
+    logical :: canonical_identity
 
     valid = .false.
-    if (.not. execution_plan_registry_valid(columns, templates, state_count)) return
+    canonical_identity = execution_plan_canonical_identity(columns, templates, state_count)
+    if (.not. canonical_identity) then
+      if (.not. execution_plan_registry_valid(columns, templates, state_count)) return
+    end if
     allocate(plan%column_ids(size(columns)), plan%column_template_ids(size(columns)), &
          plan%state_handles(size(columns)), plan%template_indices(size(columns)), &
          plan%template_ids(size(templates)))
@@ -141,10 +145,18 @@ contains
       plan%max_state_handle = maxval(columns%state_handle)
     end if
     if (size(templates) > 0) plan%template_ids = templates%template_id
-    call fmr_build_execution_order(columns, plan%order)
-    do i = 1, size(columns)
-      plan%template_indices(i) = execution_plan_find_template(columns(i)%template_id, templates)
-    end do
+    if (canonical_identity) then
+      allocate(plan%order(size(columns)))
+      do i = 1, size(columns)
+        plan%order(i) = i
+        plan%template_indices(i) = i
+      end do
+    else
+      call fmr_build_execution_order(columns, plan%order)
+      do i = 1, size(columns)
+        plan%template_indices(i) = execution_plan_find_template(columns(i)%template_id, templates)
+      end do
+    end if
     plan%initialized = .true.
     valid = .true.
   end subroutine fmr_build_serialized_execution_plan
@@ -213,6 +225,29 @@ contains
     self%max_state_handle = 0_int64
     self%initialized = .false.
   end subroutine execution_plan_clear
+
+  logical function execution_plan_canonical_identity(columns, templates, state_count) result(canonical)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer, intent(in) :: state_count
+    integer :: i
+
+    canonical = .false.
+    if (state_count < 0) return
+    if (size(columns) /= size(templates)) return
+    do i = 1, size(columns)
+      if (templates(i)%template_id <= 0_int64) return
+      if (columns(i)%column_id <= 0_int64) return
+      if (columns(i)%state_handle < 1_int64 .or. columns(i)%state_handle > int(state_count,int64)) return
+      if (columns(i)%template_id /= templates(i)%template_id) return
+      if (i > 1) then
+        if (templates(i)%template_id <= templates(i-1)%template_id) return
+        if (columns(i)%column_id <= columns(i-1)%column_id) return
+        if (columns(i)%state_handle <= columns(i-1)%state_handle) return
+      end if
+    end do
+    canonical = .true.
+  end function execution_plan_canonical_identity
 
   logical function execution_plan_registry_valid(columns, templates, state_count) result(valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
