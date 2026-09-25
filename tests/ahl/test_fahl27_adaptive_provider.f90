@@ -18,7 +18,7 @@ program test_fahl27_adaptive_provider
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: hp
   type(b110_default_mvg_provider_t), target :: analytical
-  type(b110_adaptive_mvg_provider_t), target :: lookup, lookup2
+  type(b110_adaptive_mvg_provider_t), target :: lookup
   type(b110_source_sink_provider_t), target :: source_sink
   type(fmr04_fixed_flux_top_provider_t), target :: top_provider
   type(soil_water_physical_state_t) :: initial_state
@@ -96,10 +96,10 @@ program test_fahl27_adaptive_provider
   call bind_b110_adaptive_mvg_provider(lookup,hp,total_dt,valid,hit1)
   call require(valid,'first self-built provider bound')
   call require(.not.hit1,'first bind builds')
-  call bind_b110_adaptive_mvg_provider(lookup2,hp,total_dt,valid,hit2)
-  call require(valid,'second self-built provider bound')
-  call require(hit2,'second bind hits cache')
-  call b110_adaptive_mvg_cache_stats(builds,hits,misses,entries)
+  call bind_b110_adaptive_mvg_provider(lookup,hp,total_dt,valid,hit2)
+  call require(valid,'second self-built provider bind')
+  call require(hit2,'second bind hits provider-local cache')
+  call b110_adaptive_mvg_cache_stats(lookup,builds,hits,misses,entries)
   call require(builds==1,'one self-build')
   call require(hits==1,'one cache hit')
   call require(misses==1,'one cache miss')
