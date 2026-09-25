@@ -1,7 +1,7 @@
 {
   "schema_version": 14,
   "workstream": "F-AHL",
-  "status": "F_AHL27_CLOSED_TECHNICALLY_QUALIFIED_PERFORMANCE_NOT_ADMITTED",
+  "status": "F_AHL27_CLOSED_TECHNICALLY_QUALIFIED_APPLICATION_SPEED_EQUIVOCAL",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "completed_through": "F-AHL27",
   "selected_research_architecture": {
@@ -63,11 +63,21 @@
       "six_case_median_cpu_reduction_fraction": 0.6083635
     },
     "serialized_reference_floor": {
+      "valid_runs": [
+        {
+          "workflow_run": 36078431061,
+          "median_ratio": 0.984431,
+          "reduction_fraction": 0.015569
+        },
+        {
+          "workflow_run": 36078524613,
+          "median_ratio": 1.012523,
+          "reduction_fraction": -0.012523
+        }
+      ],
+      "classification": "EQUIVOCAL_REPEATED",
       "fidelity": "PASS",
-      "median_adaptive_over_analytical_ratio": 0.984431,
-      "median_reduction_fraction": 0.015569,
-      "classification": "EQUIVOCAL under preregistered <0.98 application/provider speed gate",
-      "workflow_run": 36078431061
+      "admission_use": "NONE"
     }
   },
   "external_blocker": {
@@ -85,5 +95,11 @@
     "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration"
   ],
   "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_NO_PERFORMANCE_ADMISSION",
-  "f_ahl27_closeout": "integration/f-ahl/F-AHL27_CLOSEOUT.json"
+  "f_ahl27_closeout": "integration/f-ahl/F-AHL27_CLOSEOUT.json",
+  "f_ahl27": {
+    "closeout": "CLOSED_TECHNICALLY_QUALIFIED_PERFORMANCE_NOT_ADMITTED",
+    "post_dry_tail_extraction": "PASS workflow 36078529950",
+    "post_dry_tail_matrix": "12/12 PASS workflow 36078531988",
+    "reference_floor_timing": "two valid runs; both inside preregistered equivocal band"
+  }
 }
