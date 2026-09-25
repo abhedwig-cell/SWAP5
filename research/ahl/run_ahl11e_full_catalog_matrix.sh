@@ -35,7 +35,7 @@ for source in "${SRC[@]}"; do
   gfortran "${COMMON[@]}" -O2 -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
   objects+=("$obj")
 done
-gfortran "${COMMON[@]}" -O2 -J "$OUT" -I "$OUT" -c research/ahl/test_ahl11e_full_catalog_matrix.f90 -o "$OUT/test.o"
+gfortran "${COMMON[@]}" -O2 -J "$OUT" -I "$OUT" -c research/ahl/test_ahl11b_full_catalog_matrix.f90 -o "$OUT/test.o"
 gfortran -O2 "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
 
 RESULT="${1:-/tmp/ahl11e_result.txt}"
