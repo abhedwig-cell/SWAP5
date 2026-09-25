@@ -48,31 +48,31 @@ contains
     end do
     self%ready=.true.;ok=.true.
   end subroutine
-  subroutine ahl47_evaluate(self,h,w,k,c,d)
+  subroutine ahl47_evaluate(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(ahl47_provider_t),intent(in)::self
-    real(real64),intent(in)::h(:)
-    real(real64),intent(out)::w(:),k(:),c(:),d(:)
+    real(real64),intent(in)::pressure_head(:)
+    real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
     if(.not.self%ready)error stop 'AHL47 provider not ready'
-    call self%analytical%evaluate(h,w,k,c,d)
+    call self%analytical%evaluate(pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
   end subroutine
-  subroutine ahl47_evaluate_demand(self,h,mask,w,k,c,d)
+  subroutine ahl47_evaluate_demand(self,pressure_head,demand_mask,water_content,conductivity,capacity,dconductivity_dhead)
     class(ahl47_provider_t),intent(in)::self
-    real(real64),intent(in)::h(:)
-    integer,intent(in)::mask
-    real(real64),intent(out)::w(:),k(:),c(:),d(:)
+    real(real64),intent(in)::pressure_head(:)
+    integer,intent(in)::demand_mask
+    real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
     integer::i
     real(real64)::tt,cc
     if(.not.self%ready)error stop 'AHL47 provider not ready'
-    if(mask/=CONSTITUTIVE_DEMAND_WATER_CONTENT .and. mask/=CONSTITUTIVE_DEMAND_CAPACITY)then
-      call self%analytical%evaluate_demand(h,mask,w,k,c,d);return
+    if(demand_mask/=CONSTITUTIVE_DEMAND_WATER_CONTENT .and. demand_mask/=CONSTITUTIVE_DEMAND_CAPACITY)then
+      call self%analytical%evaluate_demand(pressure_head,demand_mask,water_content,conductivity,capacity,dconductivity_dhead);return
     end if
-    do i=1,size(h)
-      if(h(i)>-1.0_real64 .or. h(i)<-1.0e6_real64)then
-        call self%analytical%evaluate_demand(h(i:i),mask,w(i:i),k(i:i),c(i:i),d(i:i))
+    do i=1,size(pressure_head)
+      if(pressure_head(i)>-1.0_real64 .or. pressure_head(i)<-1.0e6_real64)then
+        call self%analytical%evaluate_demand(pressure_head(i:i),demand_mask,water_content(i:i),conductivity(i:i),capacity(i:i),dconductivity_dhead(i:i))
       else
-        call direct_eval(h(i),self%theta_tab,self%c_tab,tt,cc)
-        if(mask==CONSTITUTIVE_DEMAND_WATER_CONTENT)w(i)=tt
-        if(mask==CONSTITUTIVE_DEMAND_CAPACITY)c(i)=cc
+        call direct_eval(pressure_head(i),self%theta_tab,self%c_tab,tt,cc)
+        if(demand_mask==CONSTITUTIVE_DEMAND_WATER_CONTENT)water_content(i)=tt
+        if(demand_mask==CONSTITUTIVE_DEMAND_CAPACITY)capacity(i)=cc
       end if
     end do
   end subroutine
