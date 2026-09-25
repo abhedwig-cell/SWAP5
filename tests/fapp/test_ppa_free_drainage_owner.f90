@@ -312,6 +312,16 @@ contains
     event_template=profile%tiles(1)%template
     event_template%optional_state_layout_id=PPA_IRRIGATION_EVENT_LAYOUT
     if(fmr_restart_state_matches_template(carrier,event_template)) error stop 'candidate production restart admitted'
+    if(.not.fmr_restart_state_matches_template(carrier,event_template,T0)) &
+         error stop 'timed irrigation restart candidate rejected'
+    if(fmr_restart_state_matches_template(carrier,event_template,T0-0.5_real64)) &
+         error stop 'irrigation restart before event accepted'
+    if(fmr_restart_state_matches_template(carrier,event_template,T0+0.5_real64)) &
+         error stop 'irrigation restart at completed event accepted'
+    if(fmr_restart_state_matches_template(carrier,event_template,ieee_value(0.0_real64,ieee_quiet_nan))) &
+         error stop 'irrigation restart nonfinite time accepted'
+    if(fmr_restart_state_matches_template(bundle%records(1)%physical_state,event_template,T0)) &
+         error stop 'irrigation restart accepted temporal parent without event'
     write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_LAYOUT_TIME_GUARDS=PASS'
     ! Restore the valid snapshot before every mutation: rejection must not rely
     ! on a preceding invalid field or leak changes into the source carrier.
@@ -361,6 +371,8 @@ contains
         invalid_carrier%irrigation%active_event_index=1
       end select
       if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'invalid event carrier accepted'
+      if(fmr_restart_state_matches_template(invalid_carrier,event_template,T0)) &
+           error stop 'timed restart accepted invalid event carrier'
       if(.not.carrier%matches_candidate(event_template,T0)) error stop 'carrier validation mutated source'
     end do
     if(carrier%matches_candidate(event_template,ieee_value(0.0_real64,ieee_quiet_nan))) &
@@ -386,6 +398,8 @@ contains
         invalid_carrier%irrigation%active_event_rate=0.01_real64
       end select
       if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'inactive stale event payload accepted'
+      if(fmr_restart_state_matches_template(invalid_carrier,event_template,T0)) &
+           error stop 'timed restart accepted stale inactive payload'
       ! Start each rejection from an allocated valid result: failure must
       ! consume that output, not accidentally expose a previous candidate.
       call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
@@ -398,6 +412,11 @@ contains
     end do
     invalid_carrier=carrier
     invalid_carrier%irrigation=irrigation_state_t()
+    if(.not.fmr_restart_state_matches_template(invalid_carrier,event_template,T0+0.5_real64)) &
+         error stop 'timed restart rejected cleared completed event'
+    if(fmr_restart_state_matches_template(invalid_carrier,event_template)) &
+         error stop 'untimed restart accepted inactive irrigation carrier'
+    write(*,'(a)') 'PPA_IRR_EVENT_TIMED_RESTART_CONTRACT=PASS'
     call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
          invalid_carrier%irrigation,event_template,T0,assembled,ok)
     if(.not.ok.or..not.allocated(assembled)) error stop 'valid inactive assembly after rejection failed'

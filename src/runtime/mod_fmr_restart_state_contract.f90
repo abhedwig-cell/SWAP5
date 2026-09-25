@@ -1,4 +1,5 @@
 module mod_fmr_restart_state_contract
+  use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
@@ -8,7 +9,7 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
-       fmr_b110_boesten_evaporation_state_t
+       fmr_b110_boesten_evaporation_state_t, ppa_irrigation_event_state_t, PPA_IRRIGATION_EVENT_LAYOUT
   implicit none
   private
 
@@ -16,14 +17,28 @@ module mod_fmr_restart_state_contract
 
 contains
 
-  logical function fmr_restart_state_matches_template(state, template) result(matches)
+  logical function fmr_restart_state_matches_template(state, template, committed_time) result(matches)
     class(transaction_state_t), intent(in) :: state
     type(fmr_template_t), intent(in) :: template
+    real(real64), intent(in), optional :: committed_time
 
     matches = .false.
 
     select case (template%compatible_backend_id)
     case (FMR_BACKEND_SERIALIZED_REFERENCE)
+      if (template%optional_state_layout_id == PPA_IRRIGATION_EVENT_LAYOUT) then
+        ! Restricted candidate contract only. Legacy two-argument callers
+        ! must not admit a pending event without its checkpoint time. Layout
+        ! registration and production execution remain separate gates.
+        if (.not.present(committed_time)) return
+        select type (state)
+        type is (ppa_irrigation_event_state_t)
+          matches = state%matches_candidate(template,committed_time)
+        class default
+          matches = .false.
+        end select
+        return
+      end if
       if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER) then
         ! D7 is deliberately a separate physical optional-state topology.  It
         ! cannot be inferred from a payload or combined with Richards temporal
