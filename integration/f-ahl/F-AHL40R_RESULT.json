@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL40R",
+  "phase": "MEDIAN_STATISTIC_REPAIR_CONFIRMATION_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36104423983,
+  "workflow_job": 107973676540,
+  "fidelity": {
+    "cases_passed": 16,
+    "cases_total": 16,
+    "same_nonlinear_path_all_cases": true,
+    "max_observed_pressure_head_delta_cm": 1.155319e-6,
+    "max_observed_water_content_delta": 1.273033e-9,
+    "max_observed_bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "verdict": "PASS"
+  },
+  "paired_adaptive_over_analytical_ratios": [
+    0.970812,
+    0.971258,
+    0.967214,
+    0.963940,
+    0.971560,
+    0.964558,
+    0.971570,
+    0.972048,
+    0.969202
+  ],
+  "median_ratio": 0.970812,
+  "median_cpu_reduction_fraction": 0.029188,
+  "decision_rule": {
+    "material_speed_benefit": "median ratio < 0.98",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "negative": "median ratio > 1.02"
+  },
+  "decision": "PASS_MATERIAL_SPEED_BENEFIT",
+  "reconciliation_with_F_AHL40": {
+    "original_run_median_ratio": 0.954546,
+    "repaired_rerun_median_ratio": 0.970812,
+    "robust_effect_direction": "POSITIVE_IN_BOTH_RUNS",
+    "observed_cpu_reduction_fraction_range": [0.029188,0.045454],
+    "interpretation": "The speed direction is robust, while the precise effect magnitude should be reported as a small positive range rather than a single exact percentage."
+  },
+  "closure": "BINDING_OVERHEAD_MICRO_OPTIMIZATION_SUBPHASE_CLOSED",
+  "nonclaims": [
+    "No whole-SWAP or national MultiSWAP speedup is implied.",
+    "No parallel thread-safety claim is made.",
+    "No further bind/cache micro-optimization is justified from timing noise alone."
+  ]
+}
