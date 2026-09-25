@@ -134,6 +134,19 @@ contains
     ok=.true.
   end subroutine b110_ahl_get_or_build
 
+  pure integer function b110_ahl_initial_slot(fingerprint) result(slot)
+    integer(int64),intent(in)::fingerprint
+    integer(int64)::h
+    ! F-AHL32A: preserve the stored fingerprint and exact-key authority.
+    ! Fold high-order fingerprint information into the low bits used by the
+    ! fixed power-of-two registry capacity before open-addressed probing.
+    h=fingerprint
+    h=ieor(h,ishft(h,-32))
+    h=ieor(h,ishft(h,-16))
+    h=ieor(h,ishft(h,-8))
+    slot=1+int(iand(h,int(B110_AHL_MAX_CACHE-1,int64)))
+  end function b110_ahl_initial_slot
+
   subroutine b110_ahl_stats(self,builds,hits,misses,entries)
     class(b110_adaptive_hydraulic_cache_t),intent(in)::self
     integer,intent(out)::builds,hits,misses,entries
