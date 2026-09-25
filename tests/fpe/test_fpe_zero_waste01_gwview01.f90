@@ -1,14 +1,35 @@
 program test_fpe_zero_waste01_gwview01
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
-  use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t
   implicit none
+
+  type :: gwview_binding_t
+    integer(int64) :: groundwater_cell_id = 0_int64
+    integer :: package_slot = 0
+    integer :: modflow_node_id = 0
+  end type gwview_binding_t
+
+  type :: gwview_term_t
+    integer :: status = 0
+    logical :: valid = .false.
+    integer(int64) :: groundwater_cell_id = 0_int64
+    integer(int64) :: coupling_id = 0_int64
+    integer(int64) :: groundwater_service_id = 0_int64
+    integer(int64) :: groundwater_lineage_id = 0_int64
+    integer(int64) :: groundwater_origin_revision = -1_int64
+    real(real64) :: cell_area_m2 = 0.0_real64
+    real(real64) :: reference_head_m = 0.0_real64
+    real(real64) :: q_u_at_reference_m_per_s = 0.0_real64
+    real(real64) :: dq_u_dh_per_s = 0.0_real64
+    real(real64) :: reference_volume_flux_m3_per_day = 0.0_real64
+    real(real64) :: hcof_m2_per_day = 0.0_real64
+    real(real64) :: rhs_m3_per_day = 0.0_real64
+  end type gwview_term_t
 
   integer :: n, reps, rep, i
   integer(int64) :: c0, c1, rate
   character(len=32) :: arg
-  type(modflow6_api_slot_binding_t), allocatable :: bindings(:), tmp_bindings(:)
-  type(modflow6_linear_boundary_term_t), allocatable :: terms(:), tmp_terms(:)
+  type(gwview_binding_t), allocatable :: bindings(:), tmp_bindings(:)
+  type(gwview_term_t), allocatable :: terms(:), tmp_terms(:)
   integer(int64), allocatable :: cell_ids(:), tmp_ids(:)
   integer(int64), allocatable :: out_cell_ids(:), out_binding_ids(:), out_term_ids(:)
   integer, allocatable :: out_slots(:), out_nodes(:)
