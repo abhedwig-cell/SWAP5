@@ -4,10 +4,10 @@ program test_fpe_zero_waste01_parameter_preprocess
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
   implicit none
 
-  type(b110_default_mvg_parameters_t) :: hydraulic
+  type(b110_default_mvg_parameters_t) :: hydraulic, prepared, copied
   type(soil_water_parameter_set_t) :: soil
   real(real64), allocatable :: cofgen(:,:), z(:), dz(:), disnod(:)
-  real(real64) :: checksum_hydraulic, checksum_geometry
+  real(real64) :: checksum_hydraulic, checksum_geometry, checksum_copy
   integer(int64) :: c0, c1, rate
   integer :: n, reps, r
   character(len=32) :: arg
@@ -27,6 +27,33 @@ program test_fpe_zero_waste01_parameter_preprocess
   end do
   call system_clock(c1)
   call emit('mvg_preprocess',n,reps,c0,c1,rate,checksum_hydraulic)
+
+  prepared = hydraulic
+
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    if (allocated(copied%cofgen)) deallocate(copied%cofgen)
+    copied = prepared
+    checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
+  end do
+  call system_clock(c1)
+  call emit('prepared_copy_fresh',n,reps,c0,c1,rate,checksum_copy)
+
+  if (allocated(copied%cofgen)) deallocate(copied%cofgen)
+  copied%active_nodes = prepared%active_nodes
+  copied%ksatexm_extension_enabled = prepared%ksatexm_extension_enabled
+  allocate(copied%cofgen(size(prepared%cofgen,1),size(prepared%cofgen,2)))
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    copied%active_nodes = prepared%active_nodes
+    copied%ksatexm_extension_enabled = prepared%ksatexm_extension_enabled
+    copied%cofgen = prepared%cofgen
+    checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
+  end do
+  call system_clock(c1)
+  call emit('prepared_copy_reuse',n,reps,c0,c1,rate,checksum_copy)
 
   checksum_geometry = 0.0_real64
   call system_clock(c0,rate)
