@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_REFERENCE_FLOOR_TIMING",
+  "title": "Serialized Reference-floor application/provider paired timing",
+  "parent": "F-AHL27",
+  "phase": "PREREGISTERED_AFTER_TWO_INVALID_TIMING_FIXTURES_BEFORE_EXECUTION",
+  "supersedes_invalid_fixtures": [
+    "integration/f-ahl/F-AHL27_STAGE2_TIMING_INVALID.json",
+    "integration/f-ahl/F-AHL27_STAGE2_TIMING2_INVALID.json"
+  ],
+  "reason": "The canonical transaction layer cannot provide a valid single-physical-advance prescribed-head timing fixture without either external full-half acceptance or changing transaction semantics. The existing serialized backend reference-floor entrypoint executes one physical Reference advance through normal FMR parameter configuration, adaptive opt-in routing, provider binding and cache without temporal acceptance overhead.",
+  "measurement_layer": "fmr_serialized_reference_backend_t%run_reference_floor_sample",
+  "fixture": {
+    "hydraulics": "default unimodal MvG FSI-style parameterization",
+    "bottom_mode": 5,
+    "initial_head_cm": -75.0,
+    "bottom_head_cm": -50.0,
+    "duration_day": 0.25,
+    "top_flux": "negative authoritative initial conductivity",
+    "optional_state_layout": "BASE",
+    "numerical_continuation_layout": "NONE"
+  },
+  "comparison": "same serialized Reference backend physical advance with adaptive_hydraulics_active false versus true",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 8192,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->adaptive and adaptive->analytical",
+    "primary_statistic": "median paired adaptive/analytical CPU ratio",
+    "adaptive_representation_build": "one untimed adaptive warm-up/sample before timed batches",
+    "normal_parameter_configuration_provider_binding_and_cache_lookup": "included in every timed sample"
+  },
+  "fidelity_gates": {
+    "both_reference_floor_samples_status_ok": true,
+    "both_candidates_ready": true,
+    "both_mass_ledgers_complete": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "application_provider_speed_pass": "median paired ratio < 0.98",
+    "equivocal": "0.98 <= median paired ratio <= 1.02",
+    "application_provider_speed_fail": "median paired ratio > 1.02"
+  },
+  "interpretation_boundary": "Measures serialized FMR routing plus one physical Reference advance. It is not canonical transaction timing and not a whole-SWAP or MultiSWAP speed claim.",
+  "hard_exclusions": [
+    "NO_TRANSACTION_SEMANTICS_CHANGE",
+    "NO_TEMPORAL_TOLERANCE_RELAXATION",
+    "NO_DEFAULT_ON",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION_FROM_TIMING_ALONE"
+  ]
+}
