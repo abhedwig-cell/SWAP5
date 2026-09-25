@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28B",
+  "phase": "APPLICATION_TIMING_COMPLETE",
+  "status": "PASS",
+  "application_timing": {
+    "workflow_run": 36079850457,
+    "workflow_job": 107899192499,
+    "route": "serialized FMR reference-floor physical advance",
+    "paired_adaptive_over_analytical_ratios": [
+      0.933855,
+      0.927950,
+      0.924477,
+      0.928706,
+      1.048344,
+      0.936689,
+      0.936657
+    ],
+    "median_ratio": 0.933855,
+    "median_cpu_reduction_fraction": 0.066145,
+    "frozen_speed_gate": "median ratio < 0.98",
+    "verdict": "PASS"
+  },
+  "pre_repair_comparison": {
+    "work_unit": "F-AHL27_STAGE2_TIMING3",
+    "pre_repair_median_ratio": 0.984431,
+    "pre_repair_cpu_reduction_fraction": 0.015569,
+    "post_repair_median_ratio": 0.933855,
+    "post_repair_cpu_reduction_fraction": 0.066145,
+    "recovered_cpu_reduction_fraction_points": 0.050576
+  },
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 1.038717e-6,
+    "max_abs_water_content_delta": 1.143307e-9,
+    "bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "nonlinear_iterations_analytical": 4,
+    "nonlinear_iterations_adaptive": 4,
+    "backtracking_analytical": 4,
+    "backtracking_adaptive": 4,
+    "verdict": "PASS"
+  },
+  "repair_qualification": {
+    "same_key_bind_seconds": 9.0645e-8,
+    "warm_bind_reduction_fraction": 0.847847,
+    "required_warm_bind_reduction_fraction": 0.75,
+    "authority_and_step_duration_gates": "PASS",
+    "serialized_provider_retention": "PASS",
+    "full_semantic_regression": "PASS"
+  },
+  "finding": "Provider-local exact-authority reuse converts a previously timing-equivocal production-shaped FMR adaptive route into a preregistered application-speed PASS without changing hydraulic or nonlinear-solver semantics.",
+  "interpretation": "Repeated representation acquisition was genuine lifecycle waste. Removing key hashing, sampler construction and shared-cache lookup from identical successive binds recovers about five percentage points of complete FMR physical-advance CPU benefit in this fixture.",
+  "boundary": "The result remains a controlled serialized reference-floor physical-advance benchmark, not a whole-SWAP or MultiSWAP speedup claim.",
+  "decision": "CLOSE_F_AHL28B_SUCCESS_AND_RETAIN_REPAIR"
+}
