@@ -206,7 +206,7 @@ contains
          any(bound_forcing%root_extraction_sink/=control_forcing(1)%root_extraction_sink).or. &
          any(bound_forcing%drainage_flux_by_level/=control_forcing(1)%drainage_flux_by_level)) &
          error stop 'binding changed unrelated forcing'
-    do pass=1,5
+    do pass=1,9
       diagnostics=irrigation_diagnostics_t()
       flux=irrigation_flux_result_t()
       control_forcing(1)%temporal_forcing_event_time=T0
@@ -223,6 +223,14 @@ contains
       case(5)
         flux%subsurface_source=control_forcing(1)%subsurface_irrigation_source
         flux%subsurface_source(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(6)
+        flux%surface_gross_rate=0.01_real64
+      case(7)
+        flux%concentration=0.01_real64
+      case(8)
+        flux%surface_gross_rate=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(9)
+        flux%concentration=ieee_value(0.0_real64,ieee_quiet_nan)
       end select
       call bind_ppa_irrigation_source(control_forcing(1),flux,diagnostics,T0,bound_forcing,ok)
       if(ok.or.allocated(bound_forcing)) error stop 'invalid binding retained output'

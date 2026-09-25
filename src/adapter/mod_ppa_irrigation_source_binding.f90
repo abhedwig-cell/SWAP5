@@ -22,6 +22,11 @@ contains
     ok=.false.
     if(diagnostics%status/=IRRIGATION_OK.or.diagnostics%split_required) return
     if(.not.ieee_is_finite(t0)) return
+    ! This route binds water-only SSDI. Do not silently discard a surface
+    ! delivery or solute concentration carried by a broader process result.
+    if(.not.ieee_is_finite(flux%surface_gross_rate)) return
+    if(.not.ieee_is_finite(flux%concentration)) return
+    if(flux%surface_gross_rate/=0.0_real64.or.flux%concentration/=0.0_real64) return
     if(.not.allocated(previous%subsurface_irrigation_source)) return
     n=size(previous%subsurface_irrigation_source)
     if(n<1) return
