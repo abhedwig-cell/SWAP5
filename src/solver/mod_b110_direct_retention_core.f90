@@ -34,14 +34,14 @@ contains
     logical,intent(out)::ok
     ok=.false.
     if(application_owner_active)return
-    call reset_b110_direct_retention_pool()
+    call clear_b110_direct_retention_pool()
     application_owner_active=.true.
     ok=.true.
   end subroutine begin_b110_direct_retention_application
 
   subroutine end_b110_direct_retention_application()
     if(.not.application_owner_active)return
-    call reset_b110_direct_retention_pool()
+    call clear_b110_direct_retention_pool()
     application_owner_active=.false.
   end subroutine end_b110_direct_retention_application
 
@@ -174,11 +174,16 @@ contains
   end subroutine freeze_b110_direct_retention_pool
 
   subroutine reset_b110_direct_retention_pool()
+    if(application_owner_active)return
+    call clear_b110_direct_retention_pool()
+  end subroutine reset_b110_direct_retention_pool
+
+  subroutine clear_b110_direct_retention_pool()
     if(allocated(pool))deallocate(pool)
     frozen=.false.
     build_count=0
     hit_count=0
-  end subroutine reset_b110_direct_retention_pool
+  end subroutine clear_b110_direct_retention_pool
 
   subroutine b110_direct_retention_pool_stats(entries,builds,hits,payload_bytes,is_frozen)
     integer,intent(out)::entries,builds,hits
