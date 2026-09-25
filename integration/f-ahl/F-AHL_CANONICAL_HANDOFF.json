@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "record": "CANONICAL_GOVERNANCE_HANDOFF",
-  "status": "READY_FOR_MINIMAL_PATCH_EXTRACTION",
+  "status": "READY_FOR_MINIMAL_PATCH_EXTRACTION_AFTER_F_AHL42A",
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "reviewed_research_state": "c314d0f72f5014d69de86495ac08cc6545ef6bb4",
+  "reviewed_research_state": "44eef38c6a10b8e8e0781f4bc8350d114b6467c4",
   "research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "central_result": "Auto-generated derivative-consistent hydraulic representations are technically qualified as an explicit opt-in for bounded prescribed-head-like Reference Richards execution. Retention and capacity are one mathematical object; conductivity is represented independently; unsupported modes fall back to authoritative analytical hydraulics.",
   "minimal_production_shaped_candidate_files": [
@@ -14,17 +14,17 @@
     "src/runtime/mod_fmr_serialized_reference_backend.f90"
   ],
   "required_governance_action": [
-    "Extract and review only the production-shaped delta and its transitive compile dependencies.",
+    "Create a clean candidate branch from canonical base 506c36a..., not from the F-AHL research branch.",
+    "Add the three production-shaped adaptive hydraulic solver modules at the policy-v4 qualified state.",
+    "Extract only the F-AHL semantic hunks from mod_fmr_serialized_reference_backend.f90: explicit opt-in field, provider ownership/reuse, Reference-route admission, bottom_mode=5 adaptive binding/routing, and analytical fallback for qbot and accepted-trajectory directional execution.",
     "Do not merge the research branch wholesale.",
-    "Verify default-off behavior and explicit opt-in routing against canonical.",
-    "Retain prescribed-qbot analytical fallback.",
-    "Retain near-saturation and dry-domain analytical fallbacks.",
-    "Re-run the minimal retained regression set after rebasing/extracting onto canonical."
+    "Re-run default-off identity, prescribed-head production provider matrix, qbot fallback, trajectory fallback, cache-policy identity, and the full-catalog 108-case qualification after extraction onto canonical.",
+    "Do not admit broader whole-SWAP or MultiSWAP performance claims from this handoff."
   ],
   "selected_architecture": {
     "retention_capacity": "family-valid transformed cubic-Hermite representation; C is derived by differentiating the same interpolant",
     "conductivity": "independently controlled log(K) representation with family-specific gates",
-    "default_MvG_global_abs_logK_tolerance": 0.0003,
+    "default_MvG_global_abs_logK_tolerance": 0.0001,
     "near_saturation": "authoritative analytical handling above the represented core",
     "dry_domain": {
       "relevance_quantity": "raw C=dtheta/dh",
@@ -35,7 +35,10 @@
     },
     "runtime_refinement": false,
     "external_user_tables": false,
-    "cache": "finite non-evicting exact-key registry with stable integer slot handles and valid uncached overflow fallback"
+    "cache": "finite non-evicting exact-key registry with stable integer slot handles and valid uncached overflow fallback",
+    "default_MvG_wet_abs_logK_tolerance": 0.0001,
+    "default_MvG_K_floor_cm_per_day": 1e-10,
+    "default_MvG_representation_policy_version": 4
   },
   "retained_core_evidence": [
     "integration/f-ahl/F-AHL09R_RESULT.json",
@@ -50,12 +53,20 @@
     "integration/f-ahl/F-AHL40_RESULT.json",
     "integration/f-ahl/F-AHL40R_RESULT.json",
     "integration/f-ahl/F-AHL41_CLOSEOUT.json",
-    "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json"
+    "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL42_RESULT.json",
+    "integration/f-ahl/F-AHL42A_RESULT.json"
   ],
   "bounded_performance_evidence": {
-    "strict_default_MvG_Richards_cpu_reduction_fraction_range": [0.205364, 0.24229],
+    "strict_default_MvG_Richards_cpu_reduction_fraction_range": [
+      0.205364,
+      0.24229
+    ],
     "serialized_reference_floor_post_memoization_reduction_fraction": 0.066145,
-    "serialized_16_authority_reconciled_reduction_fraction_range": [0.029188, 0.045454],
+    "serialized_16_authority_reconciled_reduction_fraction_range": [
+      0.029188,
+      0.045454
+    ],
     "interpretation": "These are bounded workload results. Do not translate them into a whole-SWAP or national MultiSWAP speed claim."
   },
   "explicit_exclusions": [
@@ -72,5 +83,20 @@
     "attribution": "retention/capacity controlled; exact retention+capacity restores analytical path, exact K does not",
     "decision": "keep fully analytical authoritative hydraulics"
   },
-  "canonical_admission_gate": "No production admission is granted by this handoff. Canonical governance must independently review the minimal source delta, retained evidence and rebase effects before admission."
+  "canonical_admission_gate": "No production admission is granted by this handoff. Canonical governance must independently review and extract the minimal policy-v4 source delta, then re-run retained gates on a clean canonical-derived branch.",
+  "production_policy_reconciliation": {
+    "falsification_record": "integration/f-ahl/F-AHL42_RESULT.json",
+    "repair_record": "integration/f-ahl/F-AHL42A_RESULT.json",
+    "issue": "Policy v3 with 3e-4 K tolerance failed O09:dry prescribed-head bottom-flux gate at 1.039457e-5 cm/day.",
+    "repair": "Global default-MvG production K tolerance tightened to 1e-4; K floor 1e-10 and raw-C relevance floor 1e-13 unchanged; policy identity bumped 3->4.",
+    "qualification": "Production-shaped 36-material wet/mid/dry matrix 108/108 PASS with identical nonlinear iteration/backtracking paths.",
+    "O09_dry_after_repair": {
+      "max_abs_pressure_head_delta_cm": 0.0007927128,
+      "max_abs_water_content_delta": 1.527134e-7,
+      "bottom_flux_delta_cm_per_day": 0.000001374285,
+      "nonlinear_iteration_delta": 0,
+      "backtracking_delta": 0
+    },
+    "cache_identity": "Policy 3 versus 4 exact-key equality and fingerprints are distinct."
+  }
 }
