@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "title": "Adaptive hydraulic lookup post-F-AHL40 technical closeout",
+  "status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "scientific_conclusion": "An automatically generated hydraulic representation can materially reduce Reference Richards cost without changing the qualified nonlinear solution path when retention and capacity are represented as one derivative-consistent object and conductivity is controlled independently.",
+  "selected_architecture": {
+    "retention_capacity": "auto-generated cubic-Hermite representation of transformed retention; C is obtained by differentiating the same interpolant",
+    "conductivity": "independently controlled log(K) lookup with qualified global abs-logK tolerance 3e-4 for the default-MvG prescribed-head envelope",
+    "near_saturation": "authoritative analytical handling where required by constitutive semantics",
+    "dry_tail": {
+      "relevance_quantity": "raw moisture capacity C=dtheta/dh",
+      "relevance_floor": 1e-13,
+      "O05_lower_lookup_bound_cm": -264277.52309014817,
+      "outside_lookup_domain": "authoritative analytical fallback",
+      "physics_truncated": false,
+      "important_clarification": "The 1e-13 rule is not a K cutoff and not a theta truncation. Historical C_J=max(C,dt*1e-13) is Jacobian conditioning authority, distinct from the raw-C representation relevance bound."
+    },
+    "runtime_refinement": false,
+    "external_user_tables": false
+  },
+  "qualified_scope": {
+    "default_unimodal_MvG_prescribed_head_like": "PASS; 12/12 Richards matrix, same nonlinear path",
+    "bi_modal_MvG_model3_prescribed_head_like": "PASS; 9/9 Richards matrix, same nonlinear path",
+    "PDI_NoVap_models_8_10_prescribed_head_like": "PASS; 6/6 Richards matrix, same nonlinear path",
+    "prescribed_qbot": "analytical fallback only",
+    "near_saturation": "analytical fallback as qualified",
+    "vapor_enabled_PDI": "NOT_ADMITTED; temperature-semantics reconciliation remains external"
+  },
+  "performance_evidence": {
+    "default_MvG_complete_Richards_cpu_reduction_fraction_range": [0.205364,0.24229],
+    "default_MvG_12_case_matrix_median_cpu_reduction_fraction": 0.1512,
+    "bi_modal_model3_matrix_median_cpu_reduction_fraction": 0.380194,
+    "PDI_NoVap_six_case_median_cpu_reduction_fraction": 0.6083635,
+    "serialized_reference_floor_post_memoization_cpu_reduction_fraction": 0.066145,
+    "serialized_16_authority_FMR": {
+      "F_AHL39_formal_median_cpu_reduction_fraction": 0.027671,
+      "F_AHL40_true_median_cpu_reduction_fraction": 0.045454,
+      "F_AHL40R_repaired_rerun_median_cpu_reduction_fraction": 0.029188,
+      "robust_interpretation": "positive direction confirmed; report small positive effect range rather than a single precise percentage"
+    }
+  },
+  "retained_engineering": [
+    "production-shaped default-MvG adaptive builder/provider/cache behind explicit opt-in",
+    "default analytical route remains default-off adaptive",
+    "material-specific raw-C dry-domain bound with analytical fallback",
+    "provider-local exact same-key reuse",
+    "bounded/run-lifetime exact-key immutable registry as qualified",
+    "stable integer registry-slot handle for warm changed-authority hits",
+    "valid uncached fallback when registry capacity is exhausted"
+  ],
+  "binding_overhead_subphase": {
+    "status": "CLOSED",
+    "reason": "F-AHL40/F-AHL40R show application-level benefit survives repeated authority switching; further micro-optimization is excluded by the preregistered closure rule.",
+    "do_not_reopen_from": "small timing noise or speculative cache/bind micro-optimizations"
+  },
+  "not_for_upstream_admission_without_separate_governance": [
+    "research/ahl experimental harnesses and one-off prototypes unless explicitly required as retained evidence",
+    "prescribed-qbot adaptive hydraulics",
+    "SWKIMPL=1 or dK/dh adaptive extension",
+    "vapor-enabled PDI acceleration",
+    "parallel/thread-safety claims",
+    "whole-SWAP, national MultiSWAP or canonical transient speed claims"
+  ],
+  "external_blocker": {
+    "id": "F-AHL27B",
+    "owner": "F-KT/FMR temporal-acceptance semantics",
+    "effect": "Canonical nontrivial prescribed-head transient timing remains structurally blocked by the current external full-half temporal contract."
+  },
+  "canonical_governance_next_action": [
+    "Audit the production-shaped source/runtime delta separately from research-only evidence.",
+    "Define the minimal upstream patch set and retained regression evidence.",
+    "Run canonical governance/admission gates on that minimal patch.",
+    "Do not merge the full research branch wholesale."
+  ],
+  "closure": "NO_OPEN_LOCAL_F_AHL_TECHNICAL_REPAIR_AFTER_F_AHL40R. Further work belongs to canonical admission/governance or separately scoped model-family/lower-boundary research."
+}
