@@ -516,6 +516,7 @@ contains
       control_forcing%temporal_forcing_event=.false.
       call owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,control_forcing,irrigation_result,code)
       original_status=code
+      if(original_status/=FMR_APP_BOOT_OK) error stop 'unchanged active-source continuation failed'
       call fresh_owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,control_forcing,continued_result,code)
       if(code/=original_status) error stop 'irrigation midpoint restart changed outcome'
       write(*,*) 'IRRIGATION_ACTIVE_SOURCE_OUTCOME',original_status,irrigation_result%kernel_status
@@ -571,6 +572,7 @@ contains
       call owner%restore_committed_restart(bundle,92001_int64,ok,code)
       if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint reset'
       write(*,'(a)') 'PPA_IRRIGATION_ACTIVE_SOURCE_RESTART_OUTCOME_ROLLBACK_IDENTITY=PASS'
+      write(*,'(a)') 'PPA_IRRIGATION_ACTIVE_SOURCE_RESTART_ACCEPTED_IDENTITY=PASS'
       call owner%run_standalone_with_forcing(request%t0,request%t1,irrigation_forcing,irrigation_result,code)
       write(*,*) 'IRRIGATION_SOURCE_STATUS',code,irrigation_result%kernel_status,irrigation_result%accepted_substeps
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation source interval failed'
