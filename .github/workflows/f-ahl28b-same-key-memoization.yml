@@ -1,0 +1,28 @@
+name: F-AHL28B same-key memoization
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl28b_same_key_memoization.f90'
+      - 'research/ahl/run_ahl28b_same_key_memoization.sh'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'integration/f-ahl/F-AHL28B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl28b-same-key-memoization.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run same-key memoization benchmark
+        run: |
+          bash research/ahl/run_ahl28b_same_key_memoization.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl28b-${{ github.run_id }}
+          path: /tmp/ahl28b_memoization.txt
