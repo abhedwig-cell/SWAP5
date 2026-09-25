@@ -106,7 +106,7 @@ order=["H74_D001","H725_D001","H70_D001","H74_D005","H725_D005"]
 pat=re.compile(
  r"FAHL27_FIXTURE\s+(\S+)\s+HBOT=\s*([0-9.Ee+\-]+)\s+DT=\s*([0-9.Ee+\-]+)\s+"
  r"COMPLETED=([TF])\s+COMMITTED=([TF])\s+KERNEL=([0-9]+)\s+SUBSTEPS=([0-9]+)\s+"
- r"MASS=\s*([0-9.Ee+\-]+)\s+RETRIES=([0-9]+)\s+REJECTED=([0-9]+)"
+ r"MASS_COMPLETE=([TF])\s+MASS=\s*([0-9.Ee+\-]+)\s+RETRIES=([0-9]+)\s+REJECTED=([0-9]+)"
 )
 rows={}
 for line in open(path):
@@ -115,8 +115,9 @@ for line in open(path):
         rows[m.group(1)]={
           "id":m.group(1),"bottom_head_cm":float(m.group(2)),"duration_day":float(m.group(3)),
           "completed":m.group(4)=="T","committed":m.group(5)=="T","kernel_status":int(m.group(6)),
-          "accepted_substeps":int(m.group(7)),"mass_residual_abs_cm":float(m.group(8)),
-          "retries":int(m.group(9)),"rejected":int(m.group(10))
+          "accepted_substeps":int(m.group(7)),"mass_complete":m.group(8)=="T",
+          "mass_residual_abs_cm":float(m.group(9)),
+          "retries":int(m.group(10)),"rejected":int(m.group(11))
         }
 missing=[x for x in order if x not in rows]
 if missing:
@@ -124,7 +125,7 @@ if missing:
 selected=None
 for case_id in order:
     r=rows[case_id]
-    if r["completed"] and r["committed"] and r["accepted_substeps"]>=1 and r["mass_residual_abs_cm"]<=1e-12:
+    if r["completed"] and r["committed"] and r["accepted_substeps"]>=1 and r["mass_complete"] and r["mass_residual_abs_cm"]<=1e-12:
         selected=r
         break
 out={"work_unit":"F-AHL27_STAGE2_FIXTURE","candidates":[rows[x] for x in order],"selected":selected,
