@@ -3,6 +3,8 @@ name: F-PE-ZERO-WASTE01 atomic tracking
 on:
   pull_request:
     paths:
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
       - 'tests/fpe/test_fpe_zero_waste01_atomic_tracking.f90'
       - 'tests/fpe/run_fpe_zero_waste01_atomic_tracking.sh'
       - '.github/workflows/f-pe-zero-waste01-atomic-tracking.yml'
