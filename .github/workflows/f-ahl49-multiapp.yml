@@ -1,4 +1,4 @@
-name: F-AHL49 multi-application ownership falsification
+name: F-AHL49 multi-application ownership
 
 on:
   pull_request:
@@ -16,10 +16,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Reproduce multi-application slot invalidation
+      - name: Qualify singleton multi-application ownership
         run: |
           bash tests/fahl/run_fahl49_multiapp_slot_stability.sh | tee fahl49-multiapp.txt
-          grep -Fq 'FAHL49_MULTIAPP_FALSIFICATION_REPRODUCED=PASS' fahl49-multiapp.txt
+          grep -Fq 'FAHL49_MULTIAPP_OWNERSHIP=PASS' fahl49-multiapp.txt
       - uses: actions/upload-artifact@v4
         with:
           name: fahl49-multiapp
