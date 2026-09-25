@@ -23,8 +23,8 @@
   "representation": {
     "retention_capacity": "auto-generated derivative-consistent Hermite representation; capacity is the derivative of the same retention interpolant",
     "conductivity": "separately controlled log(K) lookup",
-    "global_abs_logK_tolerance": 3e-4,
-    "wet_abs_logK_tolerance": 3e-4,
+    "global_abs_logK_tolerance": 0.0003,
+    "wet_abs_logK_tolerance": 0.0003,
     "near_saturation": "authoritative analytical fallback above the represented core",
     "dry_tail": "material-specific lower lookup bound at authoritative raw-C relevance floor 1e-13; analytical fallback outside; no physics truncation",
     "cache": "immutable exact-key internal cache",
@@ -33,11 +33,21 @@
   "performance_evidence": {
     "lower_level_Richards": "strong positive paired evidence retained from the strict research line",
     "serialized_reference_floor": {
-      "workflow_run": 36078431061,
-      "fidelity": "PASS",
-      "median_adaptive_over_analytical_ratio": 0.984431,
-      "median_reduction_fraction": 0.015569,
-      "classification": "EQUIVOCAL under preregistered 0.98 pass threshold"
+      "classification": "EQUIVOCAL under preregistered 0.98 pass threshold",
+      "fidelity": "PASS in both valid runs",
+      "valid_runs": [
+        {
+          "workflow_run": 36078431061,
+          "median_adaptive_over_analytical_ratio": 0.984431,
+          "median_reduction_fraction": 0.015569
+        },
+        {
+          "workflow_run": 36078524613,
+          "median_adaptive_over_analytical_ratio": 1.012523,
+          "median_reduction_fraction": -0.012523
+        }
+      ],
+      "interpretation": "Opposite timing signs inside the same preregistered equivocal band show that the residual application/provider-layer effect is too small relative to serialized FMR overhead and runner variability for an application-speed admission claim."
     },
     "canonical_prescribed_head_transient_timing": {
       "classification": "STRUCTURALLY_BLOCKED",
@@ -55,8 +65,9 @@
     "Do retain the production-shaped opt-in implementation as technically qualified research code within the prescribed-head default-MvG envelope.",
     "Do not change the default analytical route.",
     "Do not extend adaptive hydraulics to prescribed-qbot, accepted-trajectory directional execution, SWKIMPL=1/dKdh, vapor-enabled PDI or other unqualified families through this work unit.",
-    "A future production admission must use a workload where net application or whole-SWAP benefit can be measured without changing transaction semantics."
+    "Treat serialized Reference-floor timing as equivocal, not positive or negative application-speed evidence.",
+    "A future production admission must use a workload where material net application or whole-SWAP benefit can be measured without changing transaction semantics."
   ],
   "research_conclusion": "The scientific AHL hypothesis is supported: an automatically built derivative-consistent hydraulic representation can substantially reduce strict Richards cost while preserving physical and nonlinear-solver behavior. The production-shaped FMR wrapper adds enough overhead in the tested single-column reference-floor sample that its net application-layer gain is only equivocal.",
-  "closure": "NO_OPEN_TECHNICAL_REPAIR_WITHIN_F_AHL27; remaining issue is production-level performance evidence and broader admission scope, not correctness of the qualified opt-in implementation."
+  "closure": "NO_OPEN_TECHNICAL_REPAIR_WITHIN_F_AHL27; correctness and routing are closed for the qualified opt-in envelope. Remaining work is external performance/overhead evidence and broader admission scope."
 }
