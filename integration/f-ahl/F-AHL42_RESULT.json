@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "phase": "PRODUCTION_POLICY_RECONCILIATION_EXECUTED",
+  "status": "FAIL_CONFIRMED_PRODUCTION_GAP",
+  "workflow_run": 36123646860,
+  "workflow_job": 108034689080,
+  "fixture": "O09:dry prescribed-head Richards, h0=-500 cm, hbot=-400 cm, dt=0.25 d",
+  "production_policy_under_test": {
+    "K_TOL_GLOBAL": 3e-4,
+    "K_TOL_WET": 3e-4,
+    "K_FLOOR_cm_per_day": 1e-10,
+    "C_RELEVANCE_FLOOR": 1e-13,
+    "POLICY_VERSION": 3
+  },
+  "observed": {
+    "max_abs_pressure_head_delta_cm": 5.995543e-3,
+    "max_abs_water_content_delta": 1.154785e-6,
+    "bottom_flux_delta_cm_per_day": 1.039457e-5,
+    "mass_residual_abs_cm": 8.998878e-17,
+    "reference_iterations": 5,
+    "candidate_iterations": 5,
+    "reference_backtracking": 5,
+    "candidate_backtracking": 5
+  },
+  "failed_gate": "bottom_flux_delta_cm_per_day <= 1e-5",
+  "finding": "The production-shaped floor-scaled builder reproduces the O09-dry boundary failure. The later full-catalog research result therefore exposes a real production-policy gap, not merely a difference between research error metrics.",
+  "decision": "ADVANCE_TO_F-AHL42A_GLOBAL_K_POLICY_REPAIR_WITH_POLICY_VERSION_BUMP"
+}
