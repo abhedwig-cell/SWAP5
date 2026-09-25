@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "DRY_TAIL_AUTHORITY_RECONCILIATION",
+  "date": "2026-09-25",
+  "source_context": "historical O05 dry-end Newton regularisation investigation",
+  "reconciled_finding": {
+    "remembered_scale": "about 1e-13",
+    "quantity": "capacity C=dtheta/dh in the Newton/Jacobian tangent",
+    "historical_candidate": "C_J = max(C, dt * 1e-13)",
+    "not_a_physical_cutoff_for": ["theta","K"],
+    "observed_O05_raw_C_extreme_dry_order": "approximately 1e-25 to 1e-30",
+    "historical_effect": "stabilised dry-end Newton conditioning and removed nonconvergence in the tested O05 case"
+  },
+  "ahl_design_implication": [
+    "Do not spend adaptive support density merely to resolve a storage tail whose physical response is negligible relative to the numerical conditioning scale.",
+    "Do not reinterpret the historical Jacobian floor as a physical conductivity or retention cutoff.",
+    "Any explicit lookup-tail truncation or asymptotic compression must be prospectively qualified against analytical Richards response before admission."
+  ],
+  "current_status": "BOUND_AS_RESEARCH_DESIGN_CONSTRAINT_NOT_PRODUCTION_RULE"
+}
