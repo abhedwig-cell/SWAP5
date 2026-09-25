@@ -63,26 +63,29 @@ contains
       provider%ready=.false.
       return
     end if
-    if(.not.b110_adaptive_hydraulic_profile_homogeneous(parameters))then
-      provider%ready=.false.
-      return
-    end if
-
     ! Step-dependent analytical semantics are always rebound. Only the immutable
     ! adaptive representation may survive a same-key rebind.
     call bind_b110_default_mvg_provider(provider%analytical,parameters,step_duration)
     provider%cofgen=>parameters%cofgen
 
-    ! Same-provider reuse does not need to rebuild/hash the shared-cache key.
-    ! Compare the exact initialized hydraulic authority directly. The full
-    ! collision-safe cache key is constructed only when this fast path misses.
+    ! The same-provider fast path simultaneously proves exact representation
+    ! identity and profile homogeneity. This avoids scanning node 1 twice while
+    ! still rejecting a changed hydraulic authority in any later node.
     same_representation = provider%ready .and. provider%representation_key_valid .and. &
          (provider%registry_handle_active .or. allocated(provider%table%x)) .and. &
-         same_local_authority(provider%representation_key,parameters)
+         same_homogeneous_local_authority(provider%representation_key,parameters)
     if(same_representation)then
       provider%acquired_from_cache=.true.
       was_hit=.true.
       ok=.true.
+      return
+    end if
+
+    ! A changed/new representation may only enter the shared cache after the
+    ! complete active profile has independently passed the homogeneous-envelope
+    ! admission rule.
+    if(.not.b110_adaptive_hydraulic_profile_homogeneous(parameters))then
+      provider%ready=.false.
       return
     end if
 
@@ -156,19 +159,24 @@ contains
     homogeneous=.true.
   end function b110_adaptive_hydraulic_profile_homogeneous
 
-  pure logical function same_local_authority(key,parameters) result(equal)
+  pure logical function same_homogeneous_local_authority(key,parameters) result(equal)
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
     type(b110_default_mvg_parameters_t),intent(in)::parameters
     integer(int64) :: key_bits(42), parameter_bits(42)
+    integer :: i
 
     equal=.false.
     if(.not.allocated(parameters%cofgen))return
-    if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42)return
+    if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42 .or. &
+         size(parameters%cofgen,2)/=parameters%active_nodes)return
     if(key%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_enabled)return
     key_bits=transfer(key%coeff,key_bits)
-    parameter_bits=transfer(parameters%cofgen(1:42,1),parameter_bits)
-    equal=all(key_bits==parameter_bits)
-  end function same_local_authority
+    do i=1,parameters%active_nodes
+      parameter_bits=transfer(parameters%cofgen(1:42,i),parameter_bits)
+      if(any(key_bits/=parameter_bits))return
+    end do
+    equal=.true.
+  end function same_homogeneous_local_authority
 
   subroutine b110_adaptive_hydraulic_evaluate(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(b110_adaptive_hydraulic_provider_t),intent(in)::self

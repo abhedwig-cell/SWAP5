@@ -18,8 +18,8 @@ on:
       - 'tests/fahl/test_fahl27_stage2_qbot_fallback.f90'
       - 'tests/fahl/run_fahl27a_production_dry_tail.sh'
       - 'tests/fahl/test_fahl27a_production_dry_tail.f90'
-      - 'tests/fahl/run_fahl28b_same_key_memoization.sh'
-      - 'tests/fahl/test_fahl28b_same_key_memoization.f90'
+      - 'tests/fahl/run_fahl42_paired_same_key_memoization.sh'
+      - 'tests/fahl/test_fahl42_paired_same_key_memoization.f90'
       - 'integration/f-ahl/F-AHL42_PREREGISTRATION.json'
       - 'integration/f-ahl/F-AHL42_RESULT.json'
       - '.github/workflows/f-ahl42-canonical-admission.yml'
@@ -40,8 +40,8 @@ jobs:
         run: bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
       - name: O05 dry-tail semantics
         run: bash tests/fahl/run_fahl27a_production_dry_tail.sh
-      - name: Same-key provider memoization
-        run: bash tests/fahl/run_fahl28b_same_key_memoization.sh
+      - name: Same-key provider paired memoization
+        run: bash tests/fahl/run_fahl42_paired_same_key_memoization.sh
       - name: Preserve compact evidence
         uses: actions/upload-artifact@v4
         with:
@@ -50,4 +50,4 @@ jobs:
             /tmp/fahl27_stage1.txt
             /tmp/fahl42_matrix.txt
             /tmp/fahl27a_dry_tail.txt
-            /tmp/fahl28b_provider.txt
+            /tmp/fahl42_paired_memoization.txt

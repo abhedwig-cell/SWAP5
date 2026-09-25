@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42F",
+  "title": "Canonical memoization timing-authority reconciliation",
+  "parent": "F-AHL42",
+  "phase": "PREREGISTERED_GOVERNANCE_RECONCILIATION",
+  "problem": "The F-AHL42 admission workflow used the historical F-AHL28B single absolute warm-bind timing gate. F-AHL28B itself classified that single-run gate as narrowly failed and explicitly deferred timing authority to a paired reconciliation. F-AHL28C subsequently passed the unchanged 75 percent reduction requirement using nine paired batches.",
+  "frozen_performance_gate": {
+    "minimum_reduction_fraction": 0.75,
+    "maximum_memoized_over_baseline_ratio": 0.25
+  },
+  "qualified_timing_method": {
+    "authority": "F-AHL28C",
+    "paired_batches": 9,
+    "operations_per_batch": 200000,
+    "alternating_order": true,
+    "primary_statistic": "median memoized/fresh-warm-cache bind ratio"
+  },
+  "bounded_code_repair": "Combine exact same-key authority comparison with hydraulic-profile homogeneity verification in one fast-path scan. On any mismatch, independently verify full profile homogeneity before cache acquisition.",
+  "semantic_gates": [
+    "changed step duration still rebinds analytical fallback",
+    "same-key reuse does not touch shared-cache accounting",
+    "change in any active node invalidates the fast path",
+    "heterogeneous profiles remain fail-closed"
+  ],
+  "hard_exclusions": [
+    "NO_LOWERING_OF_75_PERCENT_GATE",
+    "NO_WEAKENING_OF_EXACT_AUTHORITY_IDENTITY",
+    "NO_REMOVAL_OF_HETEROGENEITY_GUARD",
+    "NO_APPLICATION_SPEED_CLAIM_FROM_BIND_MICROBENCHMARK"
+  ]
+}
