@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11A",
+  "title": "Full 36-material representation build and constitutive qualification",
+  "parent": "F-AHL10F",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the selected derivative-consistent, relevance-bounded adaptive representation build and satisfy its constitutive gates for the complete 36-material Staringreeks catalog used by SWAP5/RossFast?",
+  "catalog_authority": "src/runtime/mod_rossfast_d3r_model_binding.f90::rossfast_d3r_material_from_id",
+  "materials_expected": 36,
+  "representation": {
+    "retention_capacity": "cubic Hermite z=logit(Se) over x=log10(-h), with C derived from the same interpolant",
+    "conductivity": "linear log(K) lookup",
+    "logK_tolerance": 3e-4,
+    "theta_span_normalized_abs_tolerance": 1e-5,
+    "abs_log_capacity_tolerance": 1e-2,
+    "dry_relevance_quantity": "raw authoritative C=dtheta/dh",
+    "dry_relevance_threshold": 1e-13,
+    "outside_represented_domain": "authoritative analytical fallback",
+    "near_saturation": "authoritative analytical handling for h>-1 cm"
+  },
+  "acceptance": [
+    "exactly 36 catalog materials are parsed",
+    "every material builds successfully",
+    "every material satisfies theta, C and K constitutive gates over its represented domain",
+    "material-specific dry bounds are recorded",
+    "no material requires support beyond the nominal -1e6 cm dry limit"
+  ],
+  "hard_exclusions": [
+    "NO_RICHARDS_GENERALIZATION_FROM_BUILD_ONLY",
+    "NO_ZEROING_OR_TRUNCATION_OF_DRY_TAIL_PHYSICS",
+    "NO_PRODUCTION_ADMISSION"
+  ],
+  "next_if_pass": "F-AHL11B 36-material wet/mid/dry Richards falsification matrix."
+}
