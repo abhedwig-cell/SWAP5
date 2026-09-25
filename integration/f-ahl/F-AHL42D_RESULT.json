@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42D",
+  "phase": "FULL_CATALOG_REPAIR_COMPLETE",
+  "status": "PASS_108_OF_108",
+  "selected_candidate": {
+    "global_abs_logK_tolerance": 1e-4,
+    "wet_abs_logK_tolerance": 3e-4,
+    "selection_rule": "loosest preregistered candidate yielding 108/108 PASS"
+  },
+  "stage1_2e4": {
+    "workflow_run": 36114632372,
+    "pass_count": 107,
+    "fail_count": 1,
+    "only_failure": "O17:dry",
+    "bottom_flux_delta_cm_per_day": 1.329480e-5,
+    "decision": "FAIL_ADVANCE_TO_1E4"
+  },
+  "stage2_1e4": {
+    "workflow_run": 36115244864,
+    "workflow_job": 108007691830,
+    "pass_count": 108,
+    "fail_count": 0,
+    "O17_dry": {
+      "max_abs_pressure_head_delta_cm": 6.171272e-4,
+      "max_abs_water_content_delta": 1.657141e-7,
+      "bottom_flux_delta_cm_per_day": 1.760035e-6,
+      "mass_residual_abs_cm": 1.465841e-16,
+      "nonlinear_iteration_delta": 0,
+      "backtracking_delta": 0
+    },
+    "verdict": "PASS"
+  },
+  "decision": "SELECT_1E4_AND_STOP_TIGHTENING",
+  "unused_preregistered_candidate": 3e-5,
+  "reason_unused": "The preregistered selection rule stops at the first complete 108/108 PASS.",
+  "nonclaims": [
+    "No whole-SWAP performance claim follows from the fidelity matrix.",
+    "The selected tolerance still requires final-head application timing after all admission-scope repairs are composed."
+  ]
+}
