@@ -218,12 +218,15 @@ contains
     if (canonical_input) then
       cell_index = 1
       do i = 1, size(tiles)
-        do while (cell_index <= size(cells) .and. &
-             cells(cell_index)%groundwater_cell_id < tiles(i)%groundwater_cell_id)
+        do while (cell_index <= size(cells))
+          if (cells(cell_index)%groundwater_cell_id >= tiles(i)%groundwater_cell_id) exit
           cell_index = cell_index + 1
         end do
-        if (cell_index > size(cells) .or. &
-            cells(cell_index)%groundwater_cell_id /= tiles(i)%groundwater_cell_id) then
+        if (cell_index > size(cells)) then
+          status = GW_TOPOLOGY_TILE_CELL_MISSING
+          return
+        end if
+        if (cells(cell_index)%groundwater_cell_id /= tiles(i)%groundwater_cell_id) then
           status = GW_TOPOLOGY_TILE_CELL_MISSING
           return
         end if
