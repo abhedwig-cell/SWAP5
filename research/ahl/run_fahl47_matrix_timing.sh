@@ -71,4 +71,21 @@ for material in B01 B12 O05 O14; do
   done
 done
 test "$(grep -c 'FAHL47_MATRIX .* PASS' "$RESULT")" -eq 12
-echo 'FAHL47_MATRIX_12_OF_12=PASS'
+python3 - "$RESULT" <<'PY'
+import re, statistics, sys
+rows={}
+for line in open(sys.argv[1]):
+    m=re.search(r'FAHL47_TIMING_MEDIAN\|CASE=([^|]+)\|RATIO=([0-9Ee+.-]+)', line)
+    if m:
+        rows[m.group(1)] = float(m.group(2))
+if len(rows) != 12:
+    raise SystemExit(f'expected 12 timing medians, got {len(rows)}')
+vals=sorted(rows.values())
+print(f'FAHL47_TIMING_MATRIX_MEDIAN={(vals[5]+vals[6])/2:.9f}')
+print(f'FAHL47_TIMING_MATRIX_MIN={min(vals):.9f}')
+print(f'FAHL47_TIMING_MATRIX_MAX={max(vals):.9f}')
+print('FAHL47_TIMING_POSITIVE_COUNT='+str(sum(v<0.98 for v in vals)))
+print('FAHL47_TIMING_NEGATIVE_COUNT='+str(sum(v>1.02 for v in vals)))
+print('FAHL47_TIMING_RATIOS='+','.join(f'{k}={v:.6f}' for k,v in sorted(rows.items())))
+PY
+echo 'FAHL47_MATRIX_TIMING_12_OF_12=PASS'
