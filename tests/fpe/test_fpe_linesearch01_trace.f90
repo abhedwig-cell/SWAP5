@@ -55,11 +55,6 @@ program test_fpe_linesearch01_trace
   call bind_b110_source_sink_provider(source_sink,drainage,irrigation,root_sink)
   call initialize_request(request,parameters,constitutive,source_sink,top_boundary,theta0,h0,top_factor*k0,bottom_factor*k0,dt)
 
-  do i=1,20
-    call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt)
-    call solver%solve(request,workspace,result)
-  end do
-
   checksum=0.0_real64
   do i=1,calls
     call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt)
