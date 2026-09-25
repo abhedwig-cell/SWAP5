@@ -7,6 +7,7 @@ module mod_b110_adaptive_hydraulic_builder
   integer, parameter :: MAX_SUPPORT=4096
   integer, parameter :: NSAMPLE=15
   real(real64), parameter :: H_MIN=-1.0e6_real64, H_MAX=-1.0_real64
+  real(real64), parameter :: C_RELEVANCE_FLOOR=1.0e-13_real64
   real(real64), parameter :: THETA_TOL=1.0e-5_real64, LOGC_TOL=1.0e-2_real64
   real(real64), parameter :: K_TOL_GLOBAL=1.0e-3_real64, K_TOL_WET=3.0e-4_real64
   real(real64), parameter :: WET_H_MIN=-25.0_real64, WET_H_MAX=-1.0_real64
@@ -27,20 +28,54 @@ contains
     real(real64),intent(in)::theta_r,theta_s
     type(b110_adaptive_hydraulic_table_t),intent(out)::table
     logical,intent(out)::ok
-    real(real64) :: tx(MAX_SUPPORT),tz(MAX_SUPPORT),tm(MAX_SUPPORT),tk(MAX_SUPPORT)
+    real(real64) :: tx(MAX_SUPPORT),tz(MAX_SUPPORT),tm(MAX_SUPPORT),tk(MAX_SUPPORT),h_lower
     integer :: n
     logical :: local_ok
 
     n=0;ok=.false.
-    call refine_interval(H_MAX,H_MIN,provider,theta_r,theta_s,0,tx,tz,tm,tk,n,local_ok)
+    call determine_relevance_lower_bound(provider,h_lower,local_ok)
     if(.not.local_ok)return
-    call append_node(H_MIN,provider,theta_r,theta_s,tx,tz,tm,tk,n,local_ok)
+    call refine_interval(H_MAX,h_lower,provider,theta_r,theta_s,0,tx,tz,tm,tk,n,local_ok)
+    if(.not.local_ok)return
+    call append_node(h_lower,provider,theta_r,theta_s,tx,tz,tm,tk,n,local_ok)
     if(.not.local_ok)return
     table%n=n
     allocate(table%x(n),table%z(n),table%dzdx(n),table%logk(n))
     table%x=tx(:n);table%z=tz(:n);table%dzdx=tm(:n);table%logk=tk(:n)
     ok=.true.
   end subroutine build_b110_adaptive_hydraulic_table
+
+  subroutine determine_relevance_lower_bound(provider,h_lower,ok)
+    type(b110_default_mvg_provider_t),intent(in)::provider
+    real(real64),intent(out)::h_lower
+    logical,intent(out)::ok
+    real(real64)::hh(1),ww(1),kk(1),cc(1),dd(1),lo,hi,mid,h
+    integer::i
+
+    ok=.false.;h_lower=H_MIN
+    hh(1)=H_MIN
+    call provider%evaluate(hh,ww,kk,cc,dd)
+    if(cc(1)>=C_RELEVANCE_FLOOR)then
+      ok=.true.;return
+    end if
+
+    ! Search in log10(-h) for the first dry-side crossing of the qualified
+    ! raw-capacity relevance floor. Physics beyond this bound is not truncated;
+    ! the provider falls back to the authoritative analytical relation there.
+    lo=log10(-H_MAX);hi=log10(-H_MIN)
+    do i=1,100
+      mid=0.5_real64*(lo+hi);h=-(10.0_real64**mid)
+      hh(1)=h
+      call provider%evaluate(hh,ww,kk,cc,dd)
+      if(cc(1)>C_RELEVANCE_FLOOR)then
+        lo=mid
+      else
+        hi=mid
+      end if
+    end do
+    h_lower=-(10.0_real64**(0.5_real64*(lo+hi)))
+    ok=.true.
+  end subroutine determine_relevance_lower_bound
 
   recursive subroutine refine_interval(h0,h1,provider,tr,ts,depth,x,z,m,lk,n,ok)
     real(real64),intent(in)::h0,h1,tr,ts
