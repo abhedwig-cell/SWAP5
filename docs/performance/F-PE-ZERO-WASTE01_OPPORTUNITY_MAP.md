@@ -60,11 +60,11 @@ Necessity classification remains the PROFILE01 taxonomy:
 | ZW-H01 | Reference Richards workspace reset | PROFILE01 observed three full resets per Reference solve. H1/H2 have already reduced the caller-owned route to one required reset. | AVOID / MOVE_LESS | N4 for removed resets | low | complete canonical qualification and persist runtime effect |
 | ZW-H03 | Constitutive tuple evaluation | PROFILE02-H03 qualified reuse of already-computed capacity across the first Newton iteration. | REUSE | N4 for duplicate recomputation under unchanged head | low | retain qualified postimage; include in end-to-end ledger |
 | ZW-H04 | Provider component granularity | Whole tuple is not globally redundant. Demand is phase-dependent: K, C and theta have different use moments; dK/dh is reserved/zero on admitted swkimpl=0 route. | FEWER / CHEAPER / REUSE | NX to N3 by component and phase | medium | instrument component demand by phase and convergence outcome before ABI change |
-| ZW-H05a | Residual whole-array preclear | Current H5 audit found residual active entries are fully assigned by vector_F before residual consumption. | AVOID / MOVE_LESS | N4 candidate | low | poisoned-array equivalence gate plus O0/O2 physical oracle |
-| ZW-H05b | provider_root_sink preclear | With provider active, intent(out) overwrites complete array; with provider inactive, root_sink_term returns zero and stored buffer is not required for physics. | AVOID / MOVE_LESS | N4 candidate | low | poison active/inactive routes and compare accepted trajectory |
+| ZW-H05a | Residual whole-array preclear | Removed on the active work branch. `vector_F` fully assigns the active residual range before consumption; poisoned-workspace testing is present. | AVOID / MOVE_LESS | N4 repair implemented | low | complete current CI qualification and persist exact source/result identity |
+| ZW-H05b | provider_root_sink preclear | Removed on the active work branch. With provider active the provider overwrites the array; with provider inactive `root_sink_term` returns zero. | AVOID / MOVE_LESS | N4 repair implemented | low | complete current CI qualification, including active/inactive route coverage |
 | ZW-H06 | Immutable hydraulic parameter preprocessing | Parameter preprocessing remains a hot-path candidate where immutable transformations can be hoisted from repeated solve/dispatch work. | PRECOMPUTE | N3 candidate | low-medium | measure call count per column/solve and prove invalidation contract |
-| ZW-H07 | Serialized registry validation | Current dispatch audit preregisters pairwise duplicate checks over registry metadata. For N columns, two duplicate comparisons per pair give N*(N-1) equality checks. At N=10,000: 99,990,000 checks before physical solve. | FEWER / PRECOMPUTE | N3 candidate | medium | bind registry lifetime/revision semantics; validate once per immutable revision |
-| ZW-H08 | Execution-order construction | Execution order is reconstructed per dispatch and includes order-sensitive insertion-sort work. | FEWER / PRECOMPUTE | N3 candidate | medium | persist validated execution plan keyed to registry revision; measure mixed/reverse order |
+| ZW-H07 | Serialized registry validation | The branch now contains an optional validated execution-plan path whose `matches` contract can bypass repeated full registry validation. Baseline pairwise validation remains available when no plan is supplied. | FEWER / PRECOMPUTE | N3 repair candidate implemented | medium | qualify invalidation/mismatch rejection and quantify dispatch-scale saving |
+| ZW-H08 | Execution-order construction | The branch now persists execution order inside `fmr_serialized_execution_plan_t` and consumes it when a plan is supplied, avoiding per-dispatch reconstruction. | FEWER / PRECOMPUTE | N3 repair candidate implemented | medium | qualify canonical/reverse/mixed order identity and plan mismatch fail-closed behavior |
 | ZW-H09 | Receipt validation and lookup | Receipt validation and slot lookup contain repeated linear/pairwise searches when requested receipts scale with N. | CHEAPER / PRECOMPUTE | N2/N3 candidate | medium | measure R~N scaling and compare indexed lookup preserving fail-closed semantics |
 | ZW-H10 | Per-column diagnostics allocation | Dispatch preregistration identifies per-column diagnostics initialization including `allocate(worker_assignments(1))`. | FEWER / MOVE_LESS | NX | low-medium | count allocations across N and test stack/fixed/persistent storage alternatives |
 | ZW-H11 | Atomic/concurrency tracking on serialized path | Dedicated microbenchmark exists for serialized concurrency counter overhead. | AVOID / CHEAPER | NX | medium | prove whether atomic semantics are required when execution is demonstrably serialized |
@@ -82,19 +82,18 @@ Necessity classification remains the PROFILE01 taxonomy:
 
 ### Tier A — bounded exact waste already evidenced
 
-1. finish H01 canonical qualification;
-2. execute H05a/H05b overwrite-before-read removal experiments;
-3. quantify and remove hot-path allocations/zeroing where overwrite-before-read or persistent-capacity proofs are available.
+1. finish H01/H05 current CI qualification and freeze their exact postimage;
+2. qualify H07/H08 execution-plan identity, invalidation and large-N saving;
+3. quantify and remove remaining hot-path allocations/zeroing where overwrite-before-read or persistent-capacity proofs are available.
 
 These are preferred because they do not require approximation and have narrow semantic surfaces.
 
 ### Tier B — structural MultiSWAP overhead
 
-4. H07 registry validation;
-5. H08 execution-order construction;
-6. H09 receipt lookup/validation;
-7. H10 diagnostics allocation;
-8. H11 serialized atomic tracking.
+4. H09 receipt lookup/validation;
+5. H10 diagnostics allocation/materialization;
+6. H11 serialized atomic tracking;
+7. reprofile structural dispatch overhead after the execution-plan tranche.
 
 This tier can dominate large-N coupled runs even if single-column profiling shows small effects.
 
@@ -168,7 +167,7 @@ Speedups must not be added arithmetically across independent experiments.
 
 The next bounded sequence for F-PE-ZERO-WASTE01 is:
 
-`H01 close -> H05 overwrite-before-read -> H07/H08 execution-plan contract -> H09 receipt indexing -> H10/H11 dispatch micro-overhead -> reprofile -> select next dominant exact-waste target`
+`H01/H05 qualify -> H07/H08 execution-plan qualify -> H09 receipt indexing -> H10/H11 dispatch micro-overhead -> reprofile -> select next dominant exact-waste target`
 
 After every material tranche, reprofile. Optimization changes the runtime distribution; stale hotspot rankings must not govern later work.
 
