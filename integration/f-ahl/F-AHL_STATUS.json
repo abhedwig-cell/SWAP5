@@ -1,9 +1,9 @@
 {
-  "schema_version": 17,
+  "schema_version": 18,
   "workstream": "F-AHL",
   "status": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_APPLICATION_SPEED_PASS_POST_CLOSEOUT_ENGINEERING_ACTIVE",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL35",
+  "completed_through": "F-AHL40",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -88,6 +88,14 @@
       },
       "fidelity": "PASS; same 4 nonlinear iterations and 4 backtracking attempts",
       "admission_use": "BOUNDED_APPLICATION_LEVEL_REFERENCE_FLOOR_EVIDENCE_ONLY"
+    },
+    "serialized_multi_authority": {
+      "unique_parameterizations": 16,
+      "fidelity": "16/16 PASS; same nonlinear path",
+      "robust_median_ratio": 0.954546,
+      "robust_cpu_reduction_fraction": 0.045454,
+      "classification": "PASS_MATERIAL_SPEED_BENEFIT",
+      "scope": "serialized FMR multi-authority reference-floor workload"
     }
   },
   "external_blocker": {
@@ -169,6 +177,37 @@
       "status": "PREREGISTERED_AND_QUEUED",
       "workflow_run": 36103004602,
       "objective": "Re-characterize 16/64-key switching after F-AHL35 and open ownership/handle work only if switch_64/same_key remains >= 2.0."
+    },
+    "F_AHL36": {
+      "finding": "Post-F-AHL35 changed-authority switching remained >4x same-key bind cost.",
+      "decision": "ADVANCE_TO_HANDLE_CHARACTERIZATION"
+    },
+    "F_AHL37": {
+      "finding": "Stable slot lookup avoids deep assignment and exposed ~65.6% cache-operation saving potential.",
+      "decision": "ADVANCE_TO_STABLE_SLOT_REPAIR"
+    },
+    "F_AHL38": {
+      "finding": "Stable integer registry-slot handle qualified; changed-authority bind median reduction 40.6861%, no raw pointers or eviction.",
+      "decision": "RETAIN_AND_STOP_FURTHER_OWNERSHIP_COMPLEXITY"
+    },
+    "F_AHL39": {
+      "finding": "16-authority serialized FMR application timing passed; first formal median ratio 0.972329 but effect-size magnitude required reconciliation.",
+      "decision": "ADVANCE_TO_ROBUST_TIMING_RECONCILIATION"
+    },
+    "F_AHL40": {
+      "finding": "Robust 9-pair 16-authority serialized FMR timing gives true median adaptive/analytical ratio 0.954546, about 4.5454% CPU reduction, with 16/16 fidelity and same nonlinear path.",
+      "harness_note": "Initial executable used sorted ratios(4) instead of ratios(5) only for reduction/gate lines; actual logged median ratios(5)=0.954546 also passes the frozen <0.98 rule. F-AHL40R repairs the harness indexing without implementation/workload changes.",
+      "decision": "CLOSE_BINDING_OVERHEAD_MICRO_OPTIMIZATION_SUBPHASE"
+    },
+    "binding_overhead_subphase": {
+      "status": "CLOSED_AFTER_F_AHL40",
+      "rule": "Do not open further cache/bind micro-optimization from timing noise alone.",
+      "retained_repairs": [
+        "provider-local same-key reuse",
+        "run-lifetime exact-key registry",
+        "stable integer registry-slot handle",
+        "uncached valid fallback on full-registry miss"
+      ]
     }
   }
 }
