@@ -1,8 +1,8 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-AHL",
   "record": "CLOSEOUT",
-  "status": "RESEARCH_CLOSED_THROUGH_F_AHL29_PRODUCTION_NOT_ADMITTED",
+  "status": "RESEARCH_CLOSED_THROUGH_F_AHL41_PRODUCTION_NOT_ADMITTED",
   "research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "central_scientific_answer": "Yes, automatically generated branch-aware derivative-consistent hydraulic representations can materially reduce strict Richards computational cost while preserving the scientifically relevant solution and nonlinear convergence behaviour, but the representation must be family-aware and boundary-aware.",
   "qualified_family_results": {
@@ -32,7 +32,7 @@
   },
   "boundary_policy": {
     "prescribed_head_like": "accelerated only within family-specific qualified envelopes",
-    "prescribed_qbot": "fully analytical authoritative hydraulics",
+    "prescribed_qbot": "fully analytical authoritative hydraulics; F-AHL41A/B reconfirmed adaptive qbot nonlinear-path drift is retention/capacity-controlled",
     "near_saturation": "analytical branch handling where source semantics require it"
   },
   "important_negative_results": [
@@ -40,7 +40,8 @@
     "K-only lookup is not a general speed strategy for default MvG",
     "global densification is not a universal repair for boundary-sensitive Newton-path differences",
     "a scalar accepted-state fallback trigger was prospectively falsified",
-    "vapor-enabled PDI cannot yet be strictly qualified because the authoritative Kvap temperature formula is not numerically valid across the documented negative-C tsoil domain"
+    "vapor-enabled PDI cannot yet be strictly qualified because the authoritative Kvap temperature formula is not numerically valid across the documented negative-C tsoil domain",
+    "current production-shaped adaptive prescribed-qbot execution can change nonlinear iteration/backtracking counts despite near-zero endpoint error; exact retention+capacity restores the analytical path while exact K does not"
   ],
   "dry_domain_answer": "The remembered ~1e-13 item is a capacity/storage relevance scale and historical Jacobian regularization C_J=max(C,dt*1e-13), not a physical K cutoff. For default MvG the adaptive builder now uses a material-specific raw-C=1e-13 relevance bound and authoritative analytical fallback outside the represented domain; no theta(h) or K(h) physics is truncated.",
   "recommended_automatic_architecture": {
@@ -56,12 +57,12 @@
   "production_admission_requirements": [
     "a canonically valid production workload or timing surface on which net application or whole-SWAP benefit can be measured without altering transaction semantics",
     "canonical governance admission",
-    "separate qualification for lower-boundary modes beyond the current prescribed-head envelope",
+    "preserve prescribed-qbot analytical fallback unless a separately scoped future research line establishes a new solver-facing representation with positive performance authority",
     "SWKIMPL=1/dKdh qualification if targeted",
     "upstream resolution of PDI vapor-temperature source semantics before vapor-on admission"
   ],
   "follow_up": "integration/f-ahl/MULTISWAP_APPROXIMATE_HYDRAULIC_ACCELERATION_PROMPT.md",
-  "production_status": "NOT_ADMITTED",
+  "production_status": "NOT_ADMITTED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW_WITH_QBOT_ANALYTICAL_FALLBACK",
   "post_closeout_engineering": {
     "F_AHL28": {
       "result": "ACTIONABLE_OVERHEAD_CONFIRMED",
@@ -82,6 +83,15 @@
       "finding": "The 32-entry shared cache is optimization-only after repair; a full-cache miss builds and returns a valid uncached representation.",
       "unique_over_capacity_test": "40/40 successful",
       "amortization_test": "16 builds and 9984 hits over 10000 requests"
+    },
+    "F_AHL41": {
+      "result": "CLOSED_KEEP_ANALYTICAL_FALLBACK",
+      "finding": "FSI38-bound qbot broadening failed nonlinear-path identity; current-provider attribution confirmed retention/capacity control.",
+      "evidence": [
+        "F-AHL41A",
+        "F-AHL41B",
+        "integration/f-ahl/F-AHL41_CLOSEOUT.json"
+      ]
     }
   }
 }
