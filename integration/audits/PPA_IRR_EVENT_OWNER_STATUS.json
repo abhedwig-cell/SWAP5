@@ -1,6 +1,7 @@
 {
   "work_unit": "PPA-IRR-EVENT-OWNER",
-  "tested_commit": "cb428602f1657ac11954add9441111d16520cc7b",
+  "tested_commit": "dbb55c69f",
+  "payload_validation_followup": "dbb55c69f rejects nonfinite ponding depth and groundwater level in addition to array and event checks. Twenty independent invalid payload/time vectors PASS, including NaN physical scalars, physical arrays and event fields; missing arrays, size mismatch, invalid indices, origin, rate and duration. A valid inactive carrier is accepted and the original valid carrier remains unchanged after every rejection. HydraulicCopy, guards and irrigation-source all PASS O0/O2 with identical full transcripts using rebuilt changed units and unchanged cached production objects; invalid/zero/overflow traps enabled. This is candidate validation, not production restart admission.",
   "status": "ISOLATED_CARRIER_LAYOUT_TIME_GUARDS_PASS_NOT_REGISTERED_OR_ADMITTED",
   "previous_carrier_checkpoint": "9995ee67f",
   "candidate_validation": "Reserved candidate identity 404101 is not registered in runtime core. matches_candidate requires serialized-reference Richards temporal history, finite correctly sized physical/history arrays, no snow or temperature payload, and a scheduled active event containing committed time in [start,end). BASE identity, wrong continuation layout, time before start and exact end are rejected. Production restart still rejects even the reserved candidate template.",
