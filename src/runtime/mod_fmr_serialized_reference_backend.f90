@@ -46,7 +46,7 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_provider_t, &
-       bind_b110_adaptive_hydraulic_provider
+       bind_b110_adaptive_hydraulic_provider, b110_adaptive_hydraulic_profile_supported
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -1913,7 +1913,8 @@ contains
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     ! Prescribed-head mode 5 is the qualified adaptive envelope. Prescribed-qbot
     ! and other lower-boundary modes remain analytical and do not build/touch AHL state.
-    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5) then
+    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5 .and. &
+        b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)) then
       if (.not. associated(self%adaptive_constitutive)) return
       call bind_b110_adaptive_hydraulic_provider(self%adaptive_constitutive, self%hydraulic_parameters, &
            step_duration, ahl_ok, ahl_cache_hit)
@@ -2088,7 +2089,8 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5) then
+    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5 .and. &
+        b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)) then
       request%evaluation%constitutive => self%adaptive_constitutive
     else
       request%evaluation%constitutive => self%constitutive
