@@ -3,9 +3,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-TMP_FIX="tests/fgc/support/.fahl49_direct_context_fixture_$$.f90"
-TMP_RUN="tests/fgc/.run_fahl49_direct_context_$$.sh"
-trap 'rm -f "$TMP_FIX" "$TMP_RUN"' EXIT
+TMP_FIX="tests/fgc/support/.fahl49_direct_context_fixture_$.f90"
+TMP_RUN="tests/fgc/.run_fahl49_direct_context_$.sh"
+TMP_PY="tests/fgc/.test_fahl49_direct_context_$.py"
+trap 'rm -f "$TMP_FIX" "$TMP_RUN" "$TMP_PY"' EXIT
 
 python3 - "$TMP_FIX" <<'PY'
 from pathlib import Path
@@ -49,11 +50,48 @@ src=src.replace(bind_old,bind_new)
 Path(sys.argv[1]).write_text(src)
 PY
 
+python3 - "$TMP_PY" <<'PY'
+from pathlib import Path
+import sys
+src=Path("tests/fgc/test_fgc49d_production_application_context.py").read_text()
+src=src.replace(
+"from modflow6_groundwater_application_service import (\n    GroundwaterApplicationServiceConfig,\n    GroundwaterApplicationServiceStatus,\n    run_groundwater_application_window,\n)",
+"from modflow6_groundwater_application_service import (\n    GroundwaterApplicationCorrectorBatch,\n    GroundwaterApplicationServiceConfig,\n    GroundwaterApplicationServiceStatus,\n    run_groundwater_application_window,\n)")
+needle="    print(\"FGC49D_TRACE runtime_method_wrappers_installed\", flush=True)\n"
+insert=r'''    _raw_trial = runtime._trial
+    _raw_tangents = runtime._trial_tangents
+    def _diagnostic_trial_cell_heads(cell_heads_m):
+        heads = runtime._double_array(cell_heads_m, runtime._ncell, "cell_heads_m")
+        fluxes = (ctypes.c_double * runtime._ncell)()
+        tangents = (ctypes.c_double * runtime._ncell)()
+        trial_status = int(_raw_trial(ctypes.c_int64(runtime.context_handle), ctypes.c_int(runtime._ncell), heads, fluxes))
+        print(f"FAHL49_RAW_TRIAL_STATUS={trial_status}", flush=True)
+        if trial_status != runtime.OK:
+            return GroundwaterApplicationCorrectorBatch(False, ())
+        tangent_status = int(_raw_tangents(ctypes.c_int64(runtime.context_handle), ctypes.c_int(runtime._ncell), tangents))
+        print(f"FAHL49_RAW_TANGENT_STATUS={tangent_status}", flush=True)
+        if tangent_status != runtime.OK:
+            return GroundwaterApplicationCorrectorBatch(False, ())
+        return GroundwaterApplicationCorrectorBatch(
+            True,
+            tuple(float(value) for value in fluxes),
+            tuple(float(value) for value in tangents),
+        )
+    runtime.trial_cell_heads = _diagnostic_trial_cell_heads
+    print("FGC49D_TRACE runtime_method_wrappers_installed", flush=True)
+'''
+if needle not in src:
+    raise SystemExit("python diagnostic seam missing")
+src=src.replace(needle,insert,1)
+Path(sys.argv[1]).write_text(src)
+PY
+
 python3 - "$TMP_RUN" "$TMP_FIX" <<'PY'
 from pathlib import Path
 import sys
 runner=Path("tests/fgc/run_fgc49d_production_application_context.sh").read_text()
 runner=runner.replace("tests/fgc/support/mod_fgc49d_application_context_fixture.f90",sys.argv[2])
+runner=runner.replace("tests/fgc/test_fgc49d_production_application_context.py","$TMP_PY")
 provider_needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
 directional_needle="  src/solver/mod_b110_default_mvg_directional_provider.f90\n"
 if "src/solver/mod_b110_direct_retention_core.f90" not in runner:
@@ -65,15 +103,6 @@ Path(sys.argv[1]).write_text(runner)
 PY
 
 chmod +x "$TMP_RUN"
-
-# Diagnostic probe runs in a separate process so its captured origin/candidate state
-# cannot affect the authoritative qualification process below.
-python3 - <<'PY'
-import ctypes, os, subprocess, tempfile
-# The generated FGC runner owns compilation/library location, so this probe is
-# intentionally deferred to the authoritative runner output if needed.
-print("FAHL49_FGC49D_RAW_STATUS_PROBE=DEFERRED_TO_CONTEXT_GATE")
-PY
 
 bash "$TMP_RUN" | tee /tmp/fahl49-application-context-$.txt
 grep -Fq 'FGC49D_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS' /tmp/fahl49-application-context-$$.txt
