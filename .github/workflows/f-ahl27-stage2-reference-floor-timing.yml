@@ -8,6 +8,10 @@ on:
       - 'tests/fahl/test_fahl27_stage2_reference_floor_timing.f90'
       - 'tests/fahl/run_fahl27_stage2_reference_floor_timing.sh'
       - 'integration/f-ahl/F-AHL27_STAGE2_TIMING3_PREREGISTRATION.json'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - '.github/workflows/f-ahl27-stage2-reference-floor-timing.yml'
   workflow_dispatch:
 
