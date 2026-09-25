@@ -1229,6 +1229,7 @@ contains
   end subroutine verify_pending_irrigation_trial
 
   subroutine verify_new_irrigation_selection_trial(profile,source,template)
+    use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
          kernel_result_t,kernel_diagnostics_t
@@ -1283,6 +1284,10 @@ contains
     call backend%initialize(top)
     call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
     call backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+    call run_ppa_pending_irrigation_source_trial(backend,column,template,profile%tiles(1)%parameters,irrigation, &
+         owner,forcing,profile%numerical,ieee_value(T0,ieee_quiet_nan),finish, &
+         checkpoint,result,candidate,diagnostics,process_diagnostics,request)
+    if(result%completed.or.candidate%ready()) error stop 'new selection accepted nonfinite outer start'
     do attempt=1,2
       numerical=profile%numerical
       if(attempt==1) numerical%max_committed_substeps=1
@@ -1295,6 +1300,8 @@ contains
       type is(ppa_irrigation_event_state_t)
         if(snapshot%irrigation%active_event.or.any(snapshot%water_content/=source%water_content)) &
              error stop 'new selection mutated original before commit'
+      class default
+        error stop 'new selection changed original dynamic type'
       end select
       if(attempt==1) then
         if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps<1) &

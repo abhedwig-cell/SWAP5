@@ -51,6 +51,9 @@ contains
     candidate=kernel_candidate_state_t()
     diagnostics=kernel_diagnostics_t()
     diagnostics%admission_rejections=1
+    irrigation_diagnostics=irrigation_diagnostics_t()
+    irrigation_diagnostics%status=IRRIGATION_INVALID_INTERVAL
+    if(.not.all(ieee_is_finite([t0,t1]))) return
     request%t0=t0; request%t1=t1
     if(present(selection_request)) then
       irrigation_diagnostics=irrigation_diagnostics_t()
@@ -59,8 +62,8 @@ contains
       if(selection_request%t0/=t0.or.selection_request%t1/=t1) return
       request=selection_request
     end if
-    ! No selection opportunity: only continue/finish a saved gift, or map
-    ! inactive state to zero source. The kernel alone creates physical trials.
+    ! Default: continue/finish a saved gift or map inactivity to zero source.
+    ! A supplied selection request still creates only a kernel-owned trial.
     call evaluate_ppa_committed_irrigation_source(irrigation_parameters,committed,template,request,previous, &
          proposed_event,flux,irrigation_diagnostics,forcing,ok)
     if(.not.ok) return
