@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28A",
+  "title": "No-copy immutable adaptive representation ownership",
+  "parent": "F-AHL28",
+  "phase": "PREREGISTERED_REPAIR",
+  "motivation": "F-AHL28 measured warm bind/cache-hit cost at 31.0722 percent of a 16-head adaptive constitutive evaluation, and code authority shows cache-hit intrinsic assignment deep-copies allocatable representation arrays.",
+  "repair": {
+    "cache_ownership": "shared cache owns one immutable allocated representation target per exact key",
+    "provider_ownership": "provider borrows a pointer/reference to the immutable cached representation",
+    "cache_hit": "pointer association only; no support-array copy or allocation",
+    "cache_miss": "allocate cache-owned representation once, build directly into it, publish entry only after successful build",
+    "step_dependent_state": "analytical fallback provider remains rebound per step_duration exactly as before",
+    "runtime_refinement": false
+  },
+  "frozen_semantics": [
+    "same exact cache key and fingerprint policy",
+    "same derivative-consistent builder and support arrays",
+    "same hydraulic error tolerances",
+    "same dry-tail C=1e-13 relevance bound and analytical fallback",
+    "same near-saturation analytical fallback",
+    "same prescribed-head adaptive opt-in envelope",
+    "same qbot and accepted-trajectory analytical fallbacks",
+    "default adaptive_hydraulics_active remains false"
+  ],
+  "qualification": {
+    "microbenchmark": "warm bind cost must materially decrease relative to F-AHL28 baseline",
+    "stage1_extraction": "PASS",
+    "prescribed_head_matrix": "12/12 PASS with same nonlinear/backtracking path",
+    "default_off_regression": "PASS",
+    "qbot_fallback": "PASS with cache untouched",
+    "reference_floor_fidelity": "PASS"
+  },
+  "decision_rule": "Retain repair only if all frozen semantics/regressions pass and warm bind cost decreases by at least 50 percent relative to 5.6449e-7 seconds. Application timing is measured separately and is not required to accept the lifecycle repair itself.",
+  "hard_exclusions": [
+    "NO_HYDRAULIC_RETUNING",
+    "NO_CACHE_KEY_WEAKENING",
+    "NO_MUTABLE_SHARED_REPRESENTATION",
+    "NO_GENERAL_FMR_LIFECYCLE_REFACTOR",
+    "NO_DEFAULT_ON_CHANGE",
+    "NO_PRODUCTION_ADMISSION_FROM_MICROBENCHMARK"
+  ]
+}
