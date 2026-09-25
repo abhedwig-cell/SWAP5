@@ -1,0 +1,27 @@
+name: F-PE-ZERO-WASTE01 GWTOPO01 isolated paired
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_topology_composition.f90'
+      - 'tests/fgc/test_fgc48_generic_groundwater_topology.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_gwplan01.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_gwplan01.sh'
+      - 'tests/fpe/run_fpe_zero_waste01_gwtopo01_paired.sh'
+      - '.github/workflows/f-pe-zero-waste01-gwtopo01-paired.yml'
+  workflow_dispatch:
+
+jobs:
+  paired:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify F-GC48 topology semantics
+        run: bash tests/fgc/run_fgc48_generic_groundwater_topology.sh
+      - name: Qualify downstream F-GC49A plan semantics
+        run: bash tests/fgc/run_fgc49a_groundwater_application_plan.sh
+      - name: Compare exact topology parent and candidate
+        run: bash tests/fpe/run_fpe_zero_waste01_gwtopo01_paired.sh
