@@ -86,4 +86,4 @@ done
 gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl39_fmr_multiauthority_timing.f90 -o "$BUILD/test.o"
 gfortran -fopenmp -O3 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" | tee /tmp/ahl39_result.txt
-grep -Fq 'AHL39_APPLICATION_TIMING=PASS' /tmp/fahl27_stage2_floor_timing.txt
+grep -Fq 'AHL39_APPLICATION_TIMING=PASS' /tmp/ahl39_result.txt
