@@ -386,10 +386,24 @@ contains
         invalid_carrier%irrigation%active_event_rate=0.01_real64
       end select
       if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'inactive stale event payload accepted'
+      ! Start each rejection from an allocated valid result: failure must
+      ! consume that output, not accidentally expose a previous candidate.
+      call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+           carrier%irrigation,event_template,T0,assembled,ok)
+      if(.not.ok.or..not.allocated(assembled)) error stop 'inactive rejection setup failed'
+      call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+           invalid_carrier%irrigation,event_template,T0,assembled,ok)
+      if(ok.or.allocated(assembled)) error stop 'inactive rejection retained stale candidate'
+      if(.not.carrier%matches_candidate(event_template,T0)) error stop 'inactive rejection mutated source'
     end do
     invalid_carrier=carrier
     invalid_carrier%irrigation=irrigation_state_t()
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         invalid_carrier%irrigation,event_template,T0,assembled,ok)
+    if(.not.ok.or..not.allocated(assembled)) error stop 'valid inactive assembly after rejection failed'
+    if(assembled%irrigation%active_event) error stop 'inactive assembly reactivated event'
     write(*,'(a)') 'PPA_IRR_EVENT_INACTIVE_CANONICAL_PAYLOAD=PASS'
+    write(*,'(a)') 'PPA_IRR_EVENT_INACTIVE_REJECTION_NO_STALE_CANDIDATE=PASS'
     write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_INVALID_PAYLOAD_20=PASS'
     call carrier%clone(carrier_copy)
     select type(cloned=>carrier_copy)
