@@ -342,6 +342,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
     type(b110_adaptive_hydraulic_provider_t), pointer :: adaptive_constitutive => null()
     logical :: adaptive_hydraulics_active = .false.
+    logical :: adaptive_profile_supported = .false.
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
@@ -1451,8 +1452,6 @@ contains
       if (associated(self%source_sink)) deallocate(self%source_sink)
       if (associated(self%root_sink)) deallocate(self%root_sink)
       allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
-      if (parameters%adaptive_hydraulics_active .and. .not. associated(self%adaptive_constitutive)) &
-           allocate(self%adaptive_constitutive)
       self%adaptive_hydraulics_active = parameters%adaptive_hydraulics_active
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
@@ -1462,6 +1461,10 @@ contains
       self%soil_parameters%node_distance = parameters%node_distance
       call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active)
+      self%adaptive_profile_supported = self%adaptive_hydraulics_active .and. &
+           b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)
+      if (self%adaptive_profile_supported .and. .not. associated(self%adaptive_constitutive)) &
+           allocate(self%adaptive_constitutive)
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
@@ -1913,8 +1916,7 @@ contains
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     ! Prescribed-head mode 5 is the qualified adaptive envelope. Prescribed-qbot
     ! and other lower-boundary modes remain analytical and do not build/touch AHL state.
-    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5 .and. &
-        b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)) then
+    if (self%adaptive_profile_supported .and. effective_bottom_mode == 5) then
       if (.not. associated(self%adaptive_constitutive)) return
       call bind_b110_adaptive_hydraulic_provider(self%adaptive_constitutive, self%hydraulic_parameters, &
            step_duration, ahl_ok, ahl_cache_hit)
@@ -2089,8 +2091,7 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5 .and. &
-        b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)) then
+    if (self%adaptive_profile_supported .and. effective_bottom_mode == 5) then
       request%evaluation%constitutive => self%adaptive_constitutive
     else
       request%evaluation%constitutive => self%constitutive
