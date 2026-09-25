@@ -3,7 +3,8 @@ program test_fahl_admission_layered_authority
   use MOD_grid, only: numnod
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
-  use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_provider_t, bind_b110_adaptive_hydraulic_provider
+  use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_provider_t, bind_b110_adaptive_hydraulic_provider, &
+       b110_adaptive_hydraulic_cache_stats
   implicit none
 
   real(real64), parameter :: dt=0.25_real64, h0=-75.0_real64
@@ -15,7 +16,7 @@ program test_fahl_admission_layered_authority
   real(real64) :: wl(numnod),kl(numnod),cl(numnod),dl(numnod)
   real(real64) :: theta_upper,theta_lower,logc_upper,logc_lower,logk_upper,logk_lower
   logical :: ok,hit
-  integer :: i,split
+  integer :: i,split,builds,hits,misses,entries
 
   allocate(cofgen(24,numnod));cofgen=0.0_real64
   split=max(1,numnod/2)
@@ -35,6 +36,7 @@ program test_fahl_admission_layered_authority
   h=h0
   call analytical%evaluate(h,wa,ka,ca,da)
   call adaptive%evaluate(h,wl,kl,cl,dl)
+  call b110_adaptive_hydraulic_cache_stats(builds,hits,misses,entries)
 
   theta_upper=maxval(abs(wl(:split)-wa(:split)))
   logc_upper=maxval(abs(log(max(cl(:split),tiny(1.0_real64)))-log(max(ca(:split),tiny(1.0_real64)))))
@@ -52,9 +54,14 @@ program test_fahl_admission_layered_authority
        'DTHETA=',theta_upper,'DLOGC=',logc_upper,'DLOGK=',logk_upper
   write(*,'(A,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6)') 'FAHL_LAYER lower', &
        'DTHETA=',theta_lower,'DLOGC=',logc_lower,'DLOGK=',logk_lower
+  write(*,'(A,4(1X,I0))') 'FAHL_LAYER_CACHE',builds,hits,misses,entries
 
   if(theta_lower<=1.0e-4_real64 .and. logc_lower<=1.0e-2_real64 .and. logk_lower<=1.0e-2_real64)then
-    write(*,'(A)') 'FAHL_LAYERED_AUTHORITY=PASS'
+    if(builds==2 .and. misses==2 .and. entries==2)then
+      write(*,'(A)') 'FAHL_LAYERED_AUTHORITY=PASS'
+    else
+      write(*,'(A)') 'FAHL_LAYERED_AUTHORITY=FAIL_CACHE_GROUPING'
+    end if
   else
     write(*,'(A)') 'FAHL_LAYERED_AUTHORITY=FAIL'
   end if
