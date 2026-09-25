@@ -2,12 +2,12 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL42",
-  "phase": "CANONICAL_MINIMAL_EXTRACTION_GATE_TIGHTENED_COMPLETE",
+  "phase": "CANONICAL_MINIMAL_EXTRACTION_CURRENT_HEAD_REPLAY_COMPLETE",
   "status": "PASS_READY_FOR_GOVERNANCE_REVIEW",
   "branch": "work/f-ahl42-canonical-admission",
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "workflow_run": 36112021580,
-  "workflow_job": 107997416623,
+  "workflow_run": 36112329593,
+  "workflow_job": 107998394188,
   "source_delta": [
     "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
     "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
@@ -30,13 +30,13 @@
     "near_saturation": "authoritative analytical fallback outside represented core",
     "dry_tail": "material-specific C=1e-13 representation bound with authoritative analytical fallback; no physics truncation"
   },
-  "decision": "READY_FOR_FINAL_ADMISSION_REPLAY_THEN_GOVERNANCE_REVIEW",
+  "decision": "CURRENT_HEAD_TECHNICALLY_READY_FOR_GOVERNANCE_REVIEW",
   "nonclaims": [
     "This result is not canonical production admission.",
     "No whole-SWAP or MultiSWAP performance claim is made.",
     "Unqualified hydraulic families and SWKIMPL=1/dKdh remain excluded."
   ],
-  "tested_head": "8a174da1d9a3c82e8448a1f383709725c98dda19",
+  "tested_head": "aff0550204de4f889377a87a3c12c0353dbac9f9",
   "integration_reconciliation": {
     "fross12_compile_and_runtime": {
       "status": "PASS",
@@ -58,5 +58,14 @@
       "workflow_run": 36112117180
     },
     "preservation_classification": "integration/f-ahl/F-AHL42_PRESERVATION_CLASSIFICATION.json"
+  },
+  "current_head_replay": {
+    "default_off_serialized_fmr_regression": "PASS",
+    "production_provider_extraction": "PASS",
+    "prescribed_head_12_case_matrix": "PASS",
+    "prescribed_qbot_analytical_fallback": "PASS_WITH_ZERO_ADAPTIVE_CACHE_ACTIVITY",
+    "O05_dry_tail_semantics": "PASS",
+    "same_key_provider_memoization": "PASS",
+    "artifact_id": 10853474006
   }
 }
