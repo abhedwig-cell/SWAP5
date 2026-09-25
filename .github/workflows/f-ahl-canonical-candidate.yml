@@ -37,6 +37,11 @@ jobs:
           set -o pipefail
           bash tests/fahl/run_fahl27_stage2_trajectory_fallback.sh | tee /tmp/fahl_candidate_trajectory.txt
 
+      - name: Prescribed-head trajectory analytical fallback
+        run: |
+          set -o pipefail
+          bash tests/fahl/run_fahl_governance_prescribed_head_trajectory_fallback.sh | tee /tmp/fahl_candidate_head_trajectory.txt
+
       - name: Heterogeneous-profile analytical fallback
         run: |
           set -o pipefail
@@ -57,5 +62,6 @@ jobs:
             /tmp/fahl_candidate_optin.txt
             /tmp/fahl_candidate_qbot.txt
             /tmp/fahl_candidate_trajectory.txt
+            /tmp/fahl_candidate_head_trajectory.txt
             /tmp/fahl_candidate_heterogeneous.txt
             /tmp/fahl_candidate_ksatexm.txt
