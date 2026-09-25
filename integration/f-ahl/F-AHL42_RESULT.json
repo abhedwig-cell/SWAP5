@@ -30,7 +30,7 @@
     "near_saturation": "authoritative analytical fallback outside represented core",
     "dry_tail": "material-specific C=1e-13 representation bound with authoritative analytical fallback; no physics truncation"
   },
-  "decision": "KEEP_DRAFT_UNTIL_DIRECT_BACKEND_INTEGRATION_RECHECKS_CLOSE",
+  "decision": "READY_FOR_FINAL_ADMISSION_REPLAY_THEN_GOVERNANCE_REVIEW",
   "nonclaims": [
     "This result is not canonical production admission.",
     "No whole-SWAP or MultiSWAP performance claim is made.",
@@ -38,10 +38,25 @@
   ],
   "tested_head": "8a174da1d9a3c82e8448a1f383709725c98dda19",
   "integration_reconciliation": {
-    "fross12_compile_closure": "REPAIRED_AND_RECHECKING_ON_LATEST_HEAD",
-    "fkt22_compile_closure": "PASS_IN_ADMISSION_RUN",
-    "fgc44_real_fmr_compile_closure": "REPAIRED_AND_RECHECKING_ON_LATEST_HEAD",
-    "fgc44_modflow_e2e_compile_closure": "REPAIRED_AND_RECHECKING_ON_LATEST_HEAD",
+    "fross12_compile_and_runtime": {
+      "status": "PASS",
+      "workflow_run": 36112117050,
+      "note": "Hand-maintained production compile list updated only for the new adaptive-hydraulic backend dependency."
+    },
+    "fkt22_default_off": {
+      "status": "PASS",
+      "workflow_run": 36112021580,
+      "workflow_job": 107997416623,
+      "note": "Existing serialized-FMR default-off trajectory/runtime oracle passed in the tightened AHL42 admission workflow."
+    },
+    "fgc44_real_fmr_participant": {
+      "status": "PASS",
+      "workflow_run": 36112117160
+    },
+    "fgc44_live_swap_modflow6_end_to_end": {
+      "status": "PASS",
+      "workflow_run": 36112117180
+    },
     "preservation_classification": "integration/f-ahl/F-AHL42_PRESERVATION_CLASSIFICATION.json"
   }
 }
