@@ -106,8 +106,8 @@ program test_ahl40_fmr_multiauthority_timing
   end do
   call sort9(ratios)
   write(*,'(A,1X,F10.6)') 'AHL40_MEDIAN_RATIO',ratios(5)
-  write(*,'(A,1X,F10.6)') 'AHL40_MEDIAN_REDUCTION',1.0_real64-ratios(4)
-  call require(ratios(4)<0.98_real64,'application speed gate')
+  write(*,'(A,1X,F10.6)') 'AHL40_MEDIAN_REDUCTION',1.0_real64-ratios(5)
+  call require(ratios(5)<0.98_real64,'application speed gate')
   write(*,'(A)') 'AHL40_APPLICATION_TIMING=PASS'
 
 contains
