@@ -88,17 +88,21 @@ contains
     integer :: k
 
     value%initial_time=0.0_real64
-    value%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
     value%numerical%transaction%temporal_tolerance=0.0_real64
-    value%numerical%transaction%retry_scale=ROSSFAST_D3R_RETRY_SCALE
-    value%numerical%transaction%max_retries=ROSSFAST_D3R_MAX_FULL_INDEX
     value%numerical%transaction%mass_tolerance=ROSSFAST_D3R_HARD_MASS_TOL_CM
     value%numerical%max_committed_substeps=32
     value%numerical%progress_tolerance=0.0_real64
     if(trim(route_name)=='ROSSFAST') then
+      value%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+      value%numerical%transaction%retry_scale=ROSSFAST_D3R_RETRY_SCALE
+      value%numerical%transaction%max_retries=ROSSFAST_D3R_MAX_FULL_INDEX
       value%soil_water_model_key=FMR_ROSSFAST_SOLVER_MODEL_KEY
       value%soil_water_asset_root='assets/rossfast/d3r'
       value%soil_water_material_id='B01'
+    else
+      value%numerical%transaction%temporal_mode=1
+      value%numerical%transaction%retry_scale=0.5_real64
+      value%numerical%transaction%max_retries=8
     end if
 
     allocate(value%tiles(count))
