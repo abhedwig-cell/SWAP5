@@ -98,7 +98,7 @@ contains
     was_hit=.false.;ok=.false.;slot=0
     if(.not.allocated(self%entry)) allocate(self%entry(B110_AHL_MAX_CACHE))
 
-    slot=1+int(modulo(key%fingerprint,int(B110_AHL_MAX_CACHE,int64)))
+    slot=b110_ahl_initial_slot(key%fingerprint)
     do i=1,B110_AHL_MAX_CACHE
       self%total_probes=self%total_probes+1_int64
       self%max_probes=max(self%max_probes,i)
