@@ -1329,6 +1329,8 @@ contains
   end subroutine verify_pending_mixed_columns
 
   subroutine verify_pending_irrigation_restart(profile,committed,backend,column,template,initial_forcing,midpoint)
+    use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial
+    use mod_irrigation_process, only: scheduled_irrigation_parameters_t,irrigation_diagnostics_t
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
          kernel_result_t,kernel_diagnostics_t
@@ -1352,6 +1354,8 @@ contains
     type(kernel_diagnostics_t)::diagnostics(2)
     type(fmr_committed_restart_bundle_t)::bundle
     type(fmr_b110_physical_forcing_t)::forcing
+    type(scheduled_irrigation_parameters_t)::irrigation
+    type(irrigation_diagnostics_t)::irrigation_diagnostics(2)
     class(transaction_state_t),allocatable::left,right
     real(real64),allocatable::left_history(:),right_history(:)
     real(real64)::start,finish,left_time,right_time
@@ -1366,21 +1370,26 @@ contains
     call fresh%set_storage_difference(evaluate_mvg_storage_difference_service)
     forcing=initial_forcing
     forcing%temporal_forcing_event=.false.
+    irrigation%scheduled_irrigation_enabled=.true.
+    irrigation%active_nodes=profile%tiles(1)%parameters%active_nodes
+    irrigation%sensor_node=1; irrigation%single_ssdi_node=1
+    irrigation%tcs7_knot_count=2; irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%dcs2_knot_count=2; irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
     start=midpoint
     do stage=1,2
       finish=start+1.0_real64/1024.0_real64
-      if(stage==2) then
-        forcing%subsurface_irrigation_source=0.0_real64
-        forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=start
-      end if
+      ! Keep the prior nonzero source even after gift completion: the adapter
+      ! must derive zero delivery and its stop marker from committed state.
       call committed%capture_checkpoint(checkpoint(1),ok)
       if(.not.ok) error stop 'original pending continuation checkpoint'
       call restored(1)%capture_checkpoint(checkpoint(2),ok)
       if(.not.ok) error stop 'restored pending continuation checkpoint'
-      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
-           profile%numerical,1,start,finish,checkpoint(1),result(1),candidate(1),diagnostics(1))
-      call fresh%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,restored(1),forcing, &
-           profile%numerical,1,start,finish,checkpoint(2),result(2),candidate(2),diagnostics(2))
+      call run_ppa_pending_irrigation_source_trial(backend,column,template,profile%tiles(1)%parameters,irrigation, &
+           committed,forcing,profile%numerical,start,finish,checkpoint(1), &
+           result(1),candidate(1),diagnostics(1),irrigation_diagnostics(1))
+      call run_ppa_pending_irrigation_source_trial(fresh,column,template,profile%tiles(1)%parameters,irrigation, &
+           restored(1),forcing,profile%numerical,start,finish,checkpoint(2), &
+           result(2),candidate(2),diagnostics(2),irrigation_diagnostics(2))
       if(.not.all(result%completed)) error stop 'pending hydraulic restart continuation failed'
       if(.not.all(result%mass%complete)) error stop 'pending hydraulic restart mass incomplete'
       if(any(abs(result%mass%residual)>1.0e-12_real64)) error stop 'pending hydraulic restart hard mass'

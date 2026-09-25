@@ -7,10 +7,13 @@ module mod_ppa_irrigation_source_binding
        scheduled_irrigation_request_t, irrigation_state_t, evaluate_scheduled_irrigation_interval
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_dcs1_composition, only: evaluate_profile_scheduled_irrigation
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_forcing_t,ppa_irrigation_event_state_t
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_forcing_t,ppa_irrigation_event_state_t, &
+       fmr_serialized_reference_backend_t,fmr_b110_physical_parameters_t
+  use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
+       kernel_result_t,kernel_diagnostics_t,KERNEL_STATUS_NOT_ADMITTED
+  use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_transaction_reference, only: transaction_state_t
-  use mod_fmr_runtime_core, only: fmr_template_t
+  use mod_fmr_runtime_core, only: fmr_template_t,fmr_logical_column_t
   implicit none
   private
   public :: bind_ppa_irrigation_source
@@ -18,7 +21,44 @@ module mod_ppa_irrigation_source_binding
   public :: evaluate_ppa_profile_irrigation_source
   public :: evaluate_ppa_committed_irrigation_source
   public :: evaluate_ppa_committed_profile_irrigation_source
+  public :: run_ppa_pending_irrigation_source_trial
 contains
+  subroutine run_ppa_pending_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
+       committed,previous,numerical,t0,t1,checkpoint,result,candidate,diagnostics,irrigation_diagnostics)
+    type(fmr_serialized_reference_backend_t),intent(inout)::backend
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_parameters_t),intent(in)::physical_parameters
+    type(scheduled_irrigation_parameters_t),intent(in)::irrigation_parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_b110_physical_forcing_t),intent(in)::previous
+    type(canonical_numerical_config_t),intent(in)::numerical
+    real(real64),intent(in)::t0,t1
+    type(kernel_checkpoint_t),intent(in)::checkpoint
+    type(kernel_result_t),intent(out)::result
+    type(kernel_candidate_state_t),intent(out)::candidate
+    type(kernel_diagnostics_t),intent(out)::diagnostics
+    type(irrigation_diagnostics_t),intent(out)::irrigation_diagnostics
+    type(scheduled_irrigation_request_t)::request
+    type(irrigation_state_t)::proposed_event
+    type(irrigation_flux_result_t)::flux
+    type(fmr_b110_physical_forcing_t),allocatable::forcing
+    logical::ok
+    result=kernel_result_t()
+    result%status=KERNEL_STATUS_NOT_ADMITTED
+    candidate=kernel_candidate_state_t()
+    diagnostics=kernel_diagnostics_t()
+    diagnostics%admission_rejections=1
+    request%t0=t0; request%t1=t1
+    ! No selection opportunity: only continue/finish a saved gift, or map
+    ! inactive state to zero source. The kernel alone creates physical trials.
+    call evaluate_ppa_committed_irrigation_source(irrigation_parameters,committed,template,request,previous, &
+         proposed_event,flux,irrigation_diagnostics,forcing,ok)
+    if(.not.ok) return
+    call backend%run_pending_irrigation_trial(column,template,physical_parameters,committed,forcing,numerical, &
+         irrigation_parameters%single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics)
+  end subroutine run_ppa_pending_irrigation_source_trial
+
   subroutine evaluate_ppa_committed_irrigation_source(parameters,committed,template,request,previous, &
        candidate,flux,diagnostics,forcing,ok)
     type(scheduled_irrigation_parameters_t),intent(in)::parameters
