@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27B",
+  "phase": "CANONICAL_TIMING_FIXTURE_QUALIFICATION_COMPLETE",
+  "status": "BLOCKED_NO_ACCEPTED_NONTRIVIAL_FIXTURE",
+  "workflow_run": 36078305485,
+  "fixed_context": {
+    "initial_head_cm": -75.0,
+    "duration_day": 0.25,
+    "bottom_mode": 5,
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 1e-6
+  },
+  "candidates": [
+    {"hbot_cm":-74.999,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
+    {"hbot_cm":-74.99,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
+    {"hbot_cm":-74.9,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
+    {"hbot_cm":-74.0,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
+    {"hbot_cm":-70.0,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
+    {"hbot_cm":-50.0,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0}
+  ],
+  "finding": "No preregistered nontrivial prescribed-head perturbation is canonically accepted under the frozen full-half temporal policy. The failure is temporal/transactional, not solver or mass-balance related.",
+  "consequence": "F-AHL27 application-level paired timing cannot be qualified in this canonical synthetic context without changing the transaction policy or inventing a new accepted fixture. Neither is permitted post hoc.",
+  "retained_evidence": "F-AHL09R and F-AHL16 already provide robust complete-Richards timing evidence below the FMR transaction layer.",
+  "production_decision": "DO_NOT_DEFAULT_ON_OR_CANONICALLY_ADMIT_F_AHL27_YET"
+}
