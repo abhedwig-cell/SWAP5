@@ -368,6 +368,28 @@ contains
     invalid_carrier=carrier
     invalid_carrier%irrigation=irrigation_state_t()
     if(.not.invalid_carrier%matches_candidate(event_template,T0)) error stop 'inactive event carrier rejected'
+    do pass=1,6
+      invalid_carrier=carrier
+      invalid_carrier%irrigation=irrigation_state_t()
+      select case(pass)
+      case(1)
+        invalid_carrier%irrigation%active_event_start=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(2)
+        invalid_carrier%irrigation%active_event_end=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(3)
+        invalid_carrier%irrigation%active_event_rate=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(4)
+        invalid_carrier%irrigation%active_event_start=T0
+      case(5)
+        invalid_carrier%irrigation%active_event_end=T0+0.5_real64
+      case(6)
+        invalid_carrier%irrigation%active_event_rate=0.01_real64
+      end select
+      if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'inactive stale event payload accepted'
+    end do
+    invalid_carrier=carrier
+    invalid_carrier%irrigation=irrigation_state_t()
+    write(*,'(a)') 'PPA_IRR_EVENT_INACTIVE_CANONICAL_PAYLOAD=PASS'
     write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_INVALID_PAYLOAD_20=PASS'
     call carrier%clone(carrier_copy)
     select type(cloned=>carrier_copy)

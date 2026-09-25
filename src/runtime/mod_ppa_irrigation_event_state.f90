@@ -82,6 +82,12 @@ contains
       if(committed_time<self%irrigation%active_event_start.or.committed_time>=self%irrigation%active_event_end) return
     else
       if(self%irrigation%active_event_origin/=IRRIGATION_EVENT_NONE.or.self%irrigation%active_event_index/=0) return
+      ! The process clears all event scalars when a gift ends. Require that
+      ! canonical inactive representation, including for restored candidates.
+      if(.not.all(ieee_is_finite([self%irrigation%active_event_start, &
+           self%irrigation%active_event_end,self%irrigation%active_event_rate]))) return
+      if(self%irrigation%active_event_start/=0.0_real64.or. &
+           self%irrigation%active_event_end/=0.0_real64.or.self%irrigation%active_event_rate/=0.0_real64) return
     end if
     matches=.true.
   end function
