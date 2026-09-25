@@ -43,23 +43,28 @@ module mod_b110_adaptive_hydraulic_cache
 
 contains
 
-  function make_b110_adaptive_hydraulic_key(parameters,model_id,policy_version,branch_policy_version) result(key)
+  function make_b110_adaptive_hydraulic_key(parameters,model_id,policy_version,branch_policy_version,node_index) result(key)
     type(b110_default_mvg_parameters_t),intent(in)::parameters
     character(len=*),intent(in)::model_id
     integer,intent(in)::policy_version,branch_policy_version
+    integer,intent(in),optional::node_index
     type(b110_adaptive_hydraulic_cache_key_t)::key
-    integer::i
+    integer::i,node
     integer(int64)::bits,h
 
     if(.not.allocated(parameters%cofgen)) error stop 'B110 AHL key: cofgen not allocated'
     if(parameters%active_nodes<1) error stop 'B110 AHL key: no active nodes'
+    node=1
+    if(present(node_index))node=node_index
+    if(node<1 .or. node>parameters%active_nodes) error stop 'B110 AHL key: invalid node index'
 
     key%model_id=''
     key%model_id(1:min(len_trim(model_id),len(key%model_id)))=model_id(1:min(len_trim(model_id),len(key%model_id)))
     key%policy_version=policy_version
     key%branch_policy_version=branch_policy_version
     if(size(parameters%cofgen,1)<NCOEF) error stop 'B110 AHL key: incomplete initialized cofgen'
-    key%coeff=parameters%cofgen(1:NCOEF,1)
+    if(size(parameters%cofgen,2)/=parameters%active_nodes) error stop 'B110 AHL key: invalid node shape'
+    key%coeff=parameters%cofgen(1:NCOEF,node)
     key%ksatexm_extension_enabled=parameters%ksatexm_extension_enabled
 
     h=transfer(key%coeff(1),h)
