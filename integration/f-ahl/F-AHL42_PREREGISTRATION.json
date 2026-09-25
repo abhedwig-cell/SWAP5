@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "title": "Production policy reconciliation against full-catalog O09 dry boundary case",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the current production-shaped B110 adaptive builder/provider, with floor-scaled K error and K tolerance 3e-4, already satisfy the O09-dry Richards case that falsified the later non-floored 3e-4 full-catalog research builder?",
+  "authority": {
+    "builder": "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "provider": "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "current_K_tolerance_global": 3e-4,
+    "current_K_tolerance_wet": 3e-4,
+    "K_floor_cm_per_day": 1e-10,
+    "dry_relevance_floor_raw_C": 1e-13,
+    "policy_version": 3
+  },
+  "fixture": {
+    "material": "O09",
+    "initial_head_cm": -500.0,
+    "bottom_mode": 5,
+    "bottom_head_cm": -400.0,
+    "step_duration_day": 0.25
+  },
+  "gates": {
+    "candidate_converged": true,
+    "same_nonlinear_iterations": true,
+    "same_backtracking_attempts": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "PASS": "retain current production K policy; do not change tolerance solely from non-floored research-builder evidence",
+    "FAIL": "prospectively repair production policy using a global tighter K tolerance and bump representation policy version before requalification"
+  },
+  "hard_exclusions": [
+    "NO_POSTHOC_GATE_RETUNING",
+    "NO_TOLERANCE_CHANGE_BEFORE_THIS_TEST",
+    "NO_PRODUCTION_ADMISSION_CHANGE_FROM_THIS_SINGLE_CASE"
+  ]
+}
