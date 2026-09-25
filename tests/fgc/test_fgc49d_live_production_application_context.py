@@ -4,6 +4,7 @@ import ctypes
 import os
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 import flopy
@@ -165,8 +166,11 @@ def main() -> None:
     require(libmf6.is_file(), "missing MODFLOW6 library")
     require(application_lib.is_file(), "missing F-GC49D production ABI library")
 
+    print('APPQUAL01_B0_STAGE=LOAD_BRIDGE', flush=True)
     bridge = ctypes.CDLL(str(application_lib))
+    print('APPQUAL01_B0_STAGE=FIXTURE_INITIALIZE_BEGIN', flush=True)
     handle, href1, href2 = fixture_initialize(bridge)
+    print('APPQUAL01_B0_STAGE=FIXTURE_INITIALIZE_DONE', flush=True)
     runtime = FmrGroundwaterApplicationRuntime(application_lib, handle)
     require(fixture_state(bridge) == (0, 0, 0, 0, 0, 0), "clean accepted origin")
     require(tuple(runtime.materialize_plan().cell_ids) == (7001, 7002), "canonical cell plan")
@@ -183,10 +187,14 @@ def main() -> None:
         publisher = Fgc34CtypesPublisher(application_lib)
         initialized = False
         try:
+            print('APPQUAL01_B0_STAGE=MF6_INITIALIZE_BEGIN', flush=True)
             raw.initialize()
             initialized = True
+            print('APPQUAL01_B0_STAGE=MF6_INITIALIZE_DONE', flush=True)
             require("6.8.0" in raw.get_version(), "wrong MODFLOW version")
+            print('APPQUAL01_B0_STAGE=MF6_PREPARE_TIMESTEP_BEGIN', flush=True)
             raw.prepare_time_step(0.0)
+            print('APPQUAL01_B0_STAGE=MF6_PREPARE_TIMESTEP_DONE', flush=True)
 
             session = Modflow6PreparedSolveSession(
                 kernel,
@@ -195,6 +203,8 @@ def main() -> None:
                 publisher,
                 solution_id=1,
             )
+            print('APPQUAL01_B0_STAGE=COUPLING_BEGIN', flush=True)
+            coupling_start = time.perf_counter()
             result = run_groundwater_application_window(
                 runtime,
                 session,
@@ -204,6 +214,8 @@ def main() -> None:
                 ),
             )
 
+            coupling_seconds = time.perf_counter() - coupling_start
+            print('APPQUAL01_B0_STAGE=COUPLING_DONE', flush=True)
             require(
                 result.status == GroundwaterApplicationServiceStatus.OK,
                 f"production ABI live service failed at {result.failure_stage}",
@@ -234,6 +246,8 @@ def main() -> None:
             runtime.release()
 
             print(f"FGC49D_LIVE_ITERATIONS={result.iterations}")
+            print(f"FGC49D_LIVE_MODFLOW_SOLVE_CALLS={kernel.solve_calls}")
+            print(f"FGC49D_LIVE_COUPLING_SECONDS={coupling_seconds:.17g}")
             print(
                 "FGC49D_LIVE_MAX_CELL_RESIDUAL_M_PER_S="
                 f"{max(abs(value) for value in result.final_residuals_m_per_s):.17g}"

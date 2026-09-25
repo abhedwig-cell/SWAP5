@@ -1,0 +1,81 @@
+name: F-PE-APPQUAL01 B0 live coupled benchmark
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fgc/test_fgc49d_live_production_application_context.py'
+      - 'tests/performance/appqual01_*'
+      - 'docs/performance/F-PE-APPQUAL01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-appqual01-b0.yml'
+  workflow_dispatch:
+
+jobs:
+  b0-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate benchmark schema and B1 topology generator
+        run: |
+          python3 tests/performance/validate_appqual01_manifest.py
+          python3 tests/performance/test_appqual01_b1_generator.py
+          python3 tests/performance/generate_appqual01_b1.py --workload B1-S10000 --output appqual01-b1-s10000.json
+      - name: Install Python coupling dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy flopy xmipy
+      - name: Run real mixed-topology SWAP5 + MODFLOW6 seed
+        run: |
+          bash tests/fgc/run_fgc49d_live_production_application_context.sh | tee appqual01-b0.txt
+          python3 tests/performance/collect_appqual01_b0.py appqual01-b0.txt "$GITHUB_SHA" appqual01-b0.json
+          cat appqual01-b0.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appqual01-b0-metrics
+          path: |
+            appqual01-b0.txt
+            appqual01-b0.json
+            appqual01-b1-s10000.json
+
+  b1-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run S100 S1000 S10000 cleaned Reference baseline
+        run: |
+          bash tests/performance/run_appqual01_b1_reference.sh | tee appqual01-b1-reference.txt
+          test "$(grep -c '^APPQUAL01_B1_REFERENCE=PASS$' appqual01-b1-reference.txt)" -eq 3
+          python3 tests/performance/collect_appqual01_b1_reference.py appqual01-b1-reference.txt "$GITHUB_SHA" appqual01-b1-reference.json
+          cat appqual01-b1-reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appqual01-b1-reference
+          path: |
+            appqual01-b1-reference.txt
+            appqual01-b1-reference.json
+
+  b1-rossfast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Characterize current paired production blocker
+        run: |
+          set +e
+          bash tests/performance/run_appqual01_b1_rossfast_paired.sh > appqual01-b1-rossfast.txt 2>&1
+          status=$?
+          set -e
+          cat appqual01-b1-rossfast.txt
+          test "$status" -ne 0
+          grep -Fq 'APPQUAL01_B1_STAGE,route=REFERENCE,init_status=0' appqual01-b1-rossfast.txt
+          grep -Fq 'run_status=10' appqual01-b1-rossfast.txt
+          grep -Fq 'admission=ADMITTED,kernel_status=2,accepted_substeps=0' appqual01-b1-rossfast.txt
+          grep -Fq 'solver_route=not-run' appqual01-b1-rossfast.txt
+          echo 'APPQUAL01_B1_ROSSFAST_PAIRING_BLOCKED_BY_REFERENCE_TEMPORAL_POLICY=PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appqual01-b1-rossfast-blocker
+          path: appqual01-b1-rossfast.txt
