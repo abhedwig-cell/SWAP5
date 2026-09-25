@@ -2,37 +2,31 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL28C",
-  "phase": "PAIRED_MEMOIZATION_TIMING_RECONCILIATION_COMPLETE",
+  "phase": "PAIRED_MEMOIZATION_TIMING_COMPLETE",
   "status": "PASS_RETAIN_F_AHL28B",
   "workflow_run": 36079921513,
   "workflow_job": 107899428618,
   "paired_memoized_over_baseline_ratios": [
     0.23349431,
     0.24206575,
-    0.23505960,
+    0.2350596,
     0.24171862,
     0.24044258,
-    0.24332600,
+    0.243326,
     0.24276445,
     0.23432845,
-    0.24081460
+    0.2408146
   ],
-  "median_ratio": 0.24081460,
-  "median_reduction_fraction": 0.75918540,
+  "median_ratio": 0.2408146,
+  "median_reduction_fraction": 0.7591854,
   "frozen_gate": {
-    "retain_if_ratio_le": 0.25,
-    "equivalent_required_reduction_fraction": 0.75
+    "maximum_ratio": 0.25,
+    "minimum_reduction_fraction": 0.75
   },
-  "decision": "RETAIN_F_AHL28B_SAME_KEY_MEMOIZATION",
-  "interpretation": "The conflicting single-run F-AHL28B timings were host-noise sensitive. The preregistered paired benchmark resolves the ambiguity without changing the threshold: provider-local same-key reuse clears the original 75 percent reduction requirement.",
-  "semantics": [
-    "same-key local reuse does not touch shared-cache accounting",
-    "step-duration-dependent analytical fallback remains rebound",
-    "changed hydraulic authority cannot take the local fast path",
-    "full exact-key cache semantics remain authoritative on acquisition"
-  ],
+  "decision": "RETAIN_PROVIDER_LOCAL_SAME_KEY_MEMOIZATION",
+  "interpretation": "Long-lived provider same-key reuse passes the preregistered paired timing gate and avoids shared-cache acquisition while preserving step-duration fallback rebinding.",
   "nonclaims": [
-    "No whole-SWAP speed claim.",
-    "No production admission from this microbenchmark."
+    "No whole-application speedup is inferred from this bind-level paired benchmark.",
+    "No production admission is implied."
   ]
 }
