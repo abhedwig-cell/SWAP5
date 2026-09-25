@@ -2,103 +2,61 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL27",
-  "title": "Production-shaped adaptive hydraulic provider closeout",
-  "status": "CLOSED_WITH_EXTERNAL_TRANSACTION_TIMING_BLOCKER",
-  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "scope": "Default unimodal MvG, Reference Richards, explicit opt-in, prescribed-head qualified envelope, prescribed-qbot analytical fallback.",
-  "production_shaped_implementation": {
-    "builder": "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
-    "cache": "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
-    "provider": "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
-    "serialized_runtime_routing": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "default_enabled": false,
-    "runtime_refinement": false,
-    "external_user_table_required": false
+  "title": "Production-shaped default-MvG opt-in closeout",
+  "status": "CLOSED_TECHNICALLY_QUALIFIED_PERFORMANCE_NOT_ADMITTED",
+  "scope": "Default unimodal MvG, Reference Richards, explicit adaptive_hydraulics_active opt-in, prescribed-head qualified envelope with analytical fallback outside it.",
+  "technical_qualification": {
+    "stage1_production_provider_extraction": "PASS",
+    "dry_tail_alignment": "F-AHL27A PASS",
+    "post_dry_tail_extraction_replay": {
+      "workflow_run": 36078529950,
+      "verdict": "PASS"
+    },
+    "post_dry_tail_prescribed_head_matrix": {
+      "workflow_run": 36078531988,
+      "verdict": "12/12 PASS"
+    },
+    "prescribed_qbot_fallback": "PASS analytical fallback",
+    "accepted_trajectory_directional_fallback": "PASS analytical fallback",
+    "default_off_behavior": "authoritative analytical route preserved"
   },
-  "passed_gates": {
-    "stage1_extraction": {
-      "workflow_run": 36076278421,
-      "max_abs_head_delta_cm": 2.071933e-6,
-      "max_abs_theta_delta": 2.367780e-9,
-      "bottom_flux_delta_cm_per_day": 8.756861e-9,
-      "nonlinear_iteration_delta": 0,
-      "backtracking_delta": 0,
-      "cache": {"builds":1,"hits":1,"misses":1,"entries":1}
+  "representation": {
+    "retention_capacity": "auto-generated derivative-consistent Hermite representation; capacity is the derivative of the same retention interpolant",
+    "conductivity": "separately controlled log(K) lookup",
+    "global_abs_logK_tolerance": 3e-4,
+    "wet_abs_logK_tolerance": 3e-4,
+    "near_saturation": "authoritative analytical fallback above the represented core",
+    "dry_tail": "material-specific lower lookup bound at authoritative raw-C relevance floor 1e-13; analytical fallback outside; no physics truncation",
+    "cache": "immutable exact-key internal cache",
+    "runtime_refinement": false
+  },
+  "performance_evidence": {
+    "lower_level_Richards": "strong positive paired evidence retained from the strict research line",
+    "serialized_reference_floor": {
+      "workflow_run": 36078431061,
+      "fidelity": "PASS",
+      "median_adaptive_over_analytical_ratio": 0.984431,
+      "median_reduction_fraction": 0.015569,
+      "classification": "EQUIVOCAL under preregistered 0.98 pass threshold"
     },
-    "prescribed_head_matrix": {
-      "workflow_run": 36076720021,
-      "cases": "12/12 PASS",
-      "same_nonlinear_path": "12/12",
-      "same_backtracking_path": "12/12",
-      "max_observed_bottom_flux_delta_cm_per_day": 6.594750e-6,
-      "max_observed_head_delta_cm": 6.715563e-3
+    "canonical_prescribed_head_transient_timing": {
+      "classification": "STRUCTURALLY_BLOCKED",
+      "reason": "fmr_serialized_temporal_identity returns zero only for bit-identical full-step and two-half-step base physical states; all six preregistered nontrivial prescribed-head perturbations were temporally rejected.",
+      "fixture_qualification_workflow_run": 36078305485
     },
-    "default_off_regression": {
-      "workflow_run": 36077999564,
-      "status": "FKT22 existing serialized runtime/trajectory gate PASS at O0 and O2 with O0/O2 identity"
-    },
-    "prescribed_qbot_fallback": {
-      "workflow_run": 36077688464,
-      "default_off_identity": true,
-      "analytical_fallback": true,
-      "adaptive_cache": {"builds":0,"hits":0,"misses":0,"entries":0},
-      "O0_O2_identity": true
-    },
-    "transactional_qbot_trajectory": {
-      "workflow_run": 36077622995,
-      "status": "PASS",
-      "adaptive_cache": {"builds":0,"hits":0,"misses":0,"entries":0},
-      "O0_O2_identity": true
-    },
-    "production_dry_tail": {
-      "workflow_run": 36078071347,
-      "raw_capacity_relevance_floor": 1e-13,
-      "O05_lower_bound_cm": -264277.52309014817,
-      "outside_table_semantics": "authoritative analytical fallback; no zeroing and no constant-tail extrapolation"
+    "invalid_temporal_none_attempt": {
+      "workflow_run": 36078079645,
+      "classification": "INVALID_POLICY",
+      "reason": "TX_TEMPORAL_NONE is not admitted by transaction_reference::valid_policy"
     }
   },
-  "retained_performance_evidence_below_FMR_transaction_layer": {
-    "F_AHL09R_controlled_Richards": {
-      "median_candidate_over_analytical_ratio": 0.720814,
-      "median_cpu_reduction_fraction": 0.279186,
-      "same_nonlinear_path": true
-    },
-    "F_AHL16_cross_material_matrix": {
-      "cpu_reduction_fraction_range": [0.205364,0.242290],
-      "same_nonlinear_path": "12/12"
-    },
-    "F_AHL20_self_built_cached_provider": {
-      "paired_complete_Richards_reduction_fraction": 0.200401
-    }
-  },
-  "application_timing_blocker": {
-    "frozen_fixture_run": 36078047458,
-    "analytical_status": "CANONICAL_STATUS_TRANSACTION_FAILED",
-    "adaptive_status": "CANONICAL_STATUS_TRANSACTION_FAILED",
-    "accepted_substeps": 0,
-    "retries": 8,
-    "solver_rejections": 0,
-    "temporal_rejections": 9,
-    "mass_rejections": 0,
-    "fixture_qualification_run": 36078305485,
-    "preregistered_hbot_candidates_cm": [-74.999,-74.99,-74.9,-74.0,-70.0,-50.0],
-    "accepted_candidates": 0,
-    "structural_cause": "fmr_serialized_temporal_identity returns 0 only for exactly identical full-step and half-step base physical states; otherwise huge(), so a nontrivial prescribed-head state change cannot pass the frozen external-full-half temporal route.",
-    "ownership": "canonical transaction/temporal semantics, not adaptive hydraulics"
-  },
-  "decision": {
-    "research_architecture": "QUALIFIED_WITHIN_BOUND_ENVELOPE",
-    "production_shaped_code": "QUALIFIED_DEFAULT_OFF_ON_RESEARCH_BRANCH",
-    "canonical_admission": "BLOCKED",
-    "default_on": false,
-    "application_level_speed_claim": "NOT_MADE"
-  },
-  "next_owner": "F-KT/FMR temporal-acceptance semantics or an independently qualified nontrivial prescribed-head serialized fixture.",
-  "do_not_reopen_without_new_evidence": [
-    "theta-C derivative consistency",
-    "default MvG 12-case prescribed-head matrix",
-    "qbot analytical fallback policy",
-    "O05 C_raw=1e-13 dry-tail relevance semantics",
-    "lower-level Richards speed evidence"
-  ]
+  "decision": [
+    "Do not admit F-AHL27 as an application-level performance optimization on current evidence.",
+    "Do retain the production-shaped opt-in implementation as technically qualified research code within the prescribed-head default-MvG envelope.",
+    "Do not change the default analytical route.",
+    "Do not extend adaptive hydraulics to prescribed-qbot, accepted-trajectory directional execution, SWKIMPL=1/dKdh, vapor-enabled PDI or other unqualified families through this work unit.",
+    "A future production admission must use a workload where net application or whole-SWAP benefit can be measured without changing transaction semantics."
+  ],
+  "research_conclusion": "The scientific AHL hypothesis is supported: an automatically built derivative-consistent hydraulic representation can substantially reduce strict Richards cost while preserving physical and nonlinear-solver behavior. The production-shaped FMR wrapper adds enough overhead in the tested single-column reference-floor sample that its net application-layer gain is only equivocal.",
+  "closure": "NO_OPEN_TECHNICAL_REPAIR_WITHIN_F_AHL27; remaining issue is production-level performance evidence and broader admission scope, not correctness of the qualified opt-in implementation."
 }
