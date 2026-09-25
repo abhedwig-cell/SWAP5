@@ -1,0 +1,18 @@
+name: F-PE-ZERO-WASTE01 GW registry resolution
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_zero_waste01_gwreg_resolution.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_gwreg_resolution.sh'
+      - '.github/workflows/f-pe-zero-waste01-gwreg-resolution.yml'
+  workflow_dispatch:
+
+jobs:
+  gwreg-resolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure participant handle resolution scaling
+        run: bash tests/fpe/run_fpe_zero_waste01_gwreg_resolution.sh
