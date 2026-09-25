@@ -5,7 +5,7 @@ module mod_b110_adaptive_hydraulic_cache
   implicit none
   private
 
-  integer, parameter, public :: B110_AHL_MAX_CACHE=32
+  integer, parameter :: INITIAL_CACHE_CAPACITY=32
   integer, parameter :: NCOEF=42
 
   type, public :: b110_adaptive_hydraulic_cache_key_t
@@ -25,7 +25,7 @@ module mod_b110_adaptive_hydraulic_cache
 
   type, public :: b110_adaptive_hydraulic_cache_t
     private
-    type(b110_adaptive_hydraulic_cache_entry_t) :: entry(B110_AHL_MAX_CACHE)
+    type(b110_adaptive_hydraulic_cache_entry_t), allocatable :: entry(:)
     integer :: builds=0, hits=0, misses=0
   contains
     procedure :: get_or_build => b110_adaptive_get_or_build
@@ -82,6 +82,25 @@ contains
          all(abit==bbit)
   end function b110_adaptive_same_key
 
+  subroutine ensure_capacity(self,minimum)
+    class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
+    integer,intent(in)::minimum
+    type(b110_adaptive_hydraulic_cache_entry_t),allocatable :: grown(:)
+    integer :: old_capacity,new_capacity
+
+    if(.not.allocated(self%entry))then
+      new_capacity=max(INITIAL_CACHE_CAPACITY,minimum)
+      allocate(self%entry(new_capacity))
+      return
+    end if
+    old_capacity=size(self%entry)
+    if(old_capacity>=minimum)return
+    new_capacity=max(minimum,max(INITIAL_CACHE_CAPACITY,2*old_capacity))
+    allocate(grown(new_capacity))
+    grown(1:old_capacity)=self%entry
+    call move_alloc(grown,self%entry)
+  end subroutine ensure_capacity
+
   subroutine b110_adaptive_get_or_build(self,key,parameters,provider,table,was_hit,ok)
     class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
@@ -93,7 +112,8 @@ contains
     logical::build_ok
 
     was_hit=.false.;ok=.false.;slot=0
-    do i=1,B110_AHL_MAX_CACHE
+    call ensure_capacity(self,1)
+    do i=1,size(self%entry)
       if(self%entry(i)%occupied)then
         if(self%entry(i)%key%fingerprint==key%fingerprint)then
           if(b110_adaptive_same_key(self%entry(i)%key,key))then
@@ -108,7 +128,17 @@ contains
     end do
 
     self%misses=self%misses+1
+    if(slot==0)then
+      call ensure_capacity(self,size(self%entry)+1)
+      do i=1,size(self%entry)
+        if(.not.self%entry(i)%occupied)then
+          slot=i
+          exit
+        end if
+      end do
+    end if
     if(slot==0)return
+
     call build_b110_adaptive_hydraulic_table(provider,parameters%cofgen(1,1),parameters%cofgen(2,1),table,build_ok)
     if(.not.build_ok)return
     self%entry(slot)%occupied=.true.
@@ -123,7 +153,8 @@ contains
     integer,intent(out)::builds,hits,misses,entries
     integer::i
     builds=self%builds;hits=self%hits;misses=self%misses;entries=0
-    do i=1,B110_AHL_MAX_CACHE
+    if(.not.allocated(self%entry))return
+    do i=1,size(self%entry)
       if(self%entry(i)%occupied)entries=entries+1
     end do
   end subroutine b110_adaptive_cache_stats
