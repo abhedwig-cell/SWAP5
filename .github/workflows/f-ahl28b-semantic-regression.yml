@@ -20,8 +20,10 @@ jobs:
         run: bash tests/fahl/run_fahl27_production_provider_extract.sh
       - name: Prescribed-head matrix
         run: bash tests/fahl/run_fahl27_stage2_matrix.sh
-      - name: Default-off and opt-in runtime
-        run: bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
+      - name: Default-off serialized trajectory regression
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+      - name: Serialized adaptive provider retention and fidelity
+        run: bash research/ahl/run_ahl28b_fmr_provider_retention.sh
       - name: qbot analytical fallback
         run: bash tests/fahl/run_fahl27_stage2_qbot_fallback_direct.sh
       - name: accepted-trajectory analytical fallback
