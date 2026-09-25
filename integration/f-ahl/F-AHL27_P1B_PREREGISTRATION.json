@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27-P1B",
+  "title": "Heterogeneous-profile and cache-ownership qualification",
+  "parent": "F-AHL27",
+  "phase": "PREREGISTERED_REPAIR_AND_QUALIFICATION",
+  "blockers": [
+    "The first production port built one adaptive table from cofgen(:,1) and applied it to all nodes, which is not valid for layered profiles with multiple hydraulic parameter sets.",
+    "The first production port used module-global SAVE cache state, which is not an acceptable unqualified ownership model for parallel MultiSWAP execution."
+  ],
+  "required_architecture": {
+    "cache_ownership": "provider/backend-instance local, no module-global mutable SAVE cache",
+    "material_identity": "exact initialized 42-coefficient authority identity plus policy identity",
+    "profile_mapping": "each node maps to a table built for its own exact hydraulic authority; equal materials share one unique table",
+    "analytical_fallback": "per-node authoritative analytical provider outside the lookup domain",
+    "bind_reuse": "provider-local cache survives repeated binds to the same backend instance"
+  },
+  "qualification": [
+    "homogeneous F-AHL27 P1 result remains within frozen gates",
+    "mixed B01/O05 constitutive vector matches separate authoritative analytical node evaluations within representation gates",
+    "mixed profile uses exactly two unique material tables",
+    "repeated bind produces cache hits without additional builds",
+    "no module-level SAVE cache remains in production AHL provider/cache modules",
+    "O0/O2 compile and runtime identity for the bounded serialized route"
+  ],
+  "hard_exclusions": [
+    "NO_APPROXIMATE_MATERIAL_CLUSTERING",
+    "NO_TOLERANCE_BASED_CACHE_KEYS",
+    "NO_GLOBAL_UNSYNCHRONIZED_MUTABLE_CACHE",
+    "NO_GATE_RETUNING"
+  ]
+}
