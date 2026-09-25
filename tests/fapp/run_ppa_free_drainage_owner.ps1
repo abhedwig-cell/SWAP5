@@ -1,7 +1,10 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('IrrigationHalfSource','IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage, [switch]$LocalOriginDiagnostic)
+param([ValidateSet('IrrigationHalfSource','IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage, [switch]$LocalOriginDiagnostic, [switch]$ConvergenceTrace)
 $ErrorActionPreference = 'Stop'
+if ($ConvergenceTrace -and $Scope -notin @('IrrigationSource','IrrigationHalfSource')) {
+    throw 'ConvergenceTrace is restricted to irrigation source diagnostics'
+}
 if ($LocalOriginDiagnostic -and $Scope -ne 'IrrigationHalfSource') {
     throw 'LocalOriginDiagnostic is restricted to IrrigationHalfSource'
 }
@@ -35,6 +38,12 @@ $sourcePaths += @('src/process/mod_irrigation_process.f90','src/process/mod_ppa_
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-ppa-wu01-' + [guid]::NewGuid().ToString('N'))
 $stable = @{}
+if ($ConvergenceTrace) {
+    New-Item -ItemType Directory $build -Force | Out-Null
+    $candidate = Join-Path $build 'headcalc_convergence_trace.f90'
+    & (Join-Path $PSScriptRoot '../fsi/new_ppa_convergence_trace.ps1') `
+        -Source (Join-Path $repo 'src/legacy/b1_10_port/headcalc.f90') -Destination $candidate
+}
 if ($StableStorageExperiment) {
     New-Item -ItemType Directory $build -Force | Out-Null
     $candidate = Join-Path $build 'headcalc_storage_experiment.f90'
@@ -63,6 +72,7 @@ try {
             if ($objects -contains $obj) { throw "Duplicate object basename: $source" }
             $sourcePath = Join-Path $repo $source
             if ($StableStorageExperiment -and $source -eq 'src/legacy/b1_10_port/headcalc.f90') { $sourcePath = $candidate }
+            if ($ConvergenceTrace -and $source -eq 'src/legacy/b1_10_port/headcalc.f90') { $sourcePath = $candidate }
             & gfortran @common "-$opt" -J $dir -I $dir -c $sourcePath -o $obj
             if ($LASTEXITCODE -ne 0) { throw "Compile failed $opt $source" }
             $objects += $obj
