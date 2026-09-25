@@ -1479,15 +1479,26 @@ contains
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
-      if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
-      if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
-      if (associated(self%constitutive)) deallocate(self%constitutive)
-      if (associated(self%source_sink)) deallocate(self%source_sink)
-      if (associated(self%root_sink)) deallocate(self%root_sink)
-      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
+      if (.not. associated(self%soil_parameters)) allocate(self%soil_parameters)
+      if (.not. associated(self%hydraulic_parameters)) allocate(self%hydraulic_parameters)
+      if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%source_sink)) allocate(self%source_sink)
+      if (.not. associated(self%root_sink)) allocate(self%root_sink)
+
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
-      allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
+      if (allocated(self%soil_parameters%z)) then
+        if (size(self%soil_parameters%z) /= n) deallocate(self%soil_parameters%z)
+      end if
+      if (allocated(self%soil_parameters%dz)) then
+        if (size(self%soil_parameters%dz) /= n) deallocate(self%soil_parameters%dz)
+      end if
+      if (allocated(self%soil_parameters%node_distance)) then
+        if (size(self%soil_parameters%node_distance) /= n) deallocate(self%soil_parameters%node_distance)
+      end if
+      if (.not. allocated(self%soil_parameters%z)) allocate(self%soil_parameters%z(n))
+      if (.not. allocated(self%soil_parameters%dz)) allocate(self%soil_parameters%dz(n))
+      if (.not. allocated(self%soil_parameters%node_distance)) allocate(self%soil_parameters%node_distance(n))
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
