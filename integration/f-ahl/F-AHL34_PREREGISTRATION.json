@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL34",
+  "title": "Changed-authority bind overhead decomposition",
+  "parent": "F-AHL33",
+  "phase": "PREREGISTERED_CHARACTERIZATION",
+  "question": "Which operations dominate the roughly fivefold cost increase of warm multi-key adaptive-provider binding relative to same-key local reuse?",
+  "frozen_authority": {
+    "registry": "F-AHL32A/B bounded exact-key registry",
+    "provider": "F-AHL28B provider-local same-key memoization",
+    "hydraulic_representation": "unchanged derivative-consistent adaptive table",
+    "dry_tail": "raw C relevance floor 1e-13 unchanged"
+  },
+  "workload": {
+    "requests_per_component": 200000,
+    "unique_parameterizations": 64,
+    "sequence": "round robin over already initialized/warm authorities",
+    "compiler": "gfortran -O3",
+    "repetitions": 5,
+    "reported_statistic": "median seconds per operation"
+  },
+  "components": [
+    "exact hydraulic cache-key construction and fingerprinting",
+    "one-node default-MvG sampler-parameter initialization plus bind",
+    "intrinsic deep assignment of an already-built adaptive table",
+    "complete changed-authority warm provider bind from F-AHL33-compatible path",
+    "same-key provider-local bind baseline"
+  ],
+  "measurements": [
+    "seconds per operation",
+    "component fraction relative to complete changed-authority bind",
+    "support-point count and payload of copied tables"
+  ],
+  "decision_rule": "Characterization only. The next repair must target the largest avoidable component and must not introduce pointer/handle ownership semantics unless table-copy cost is shown to be material.",
+  "hard_exclusions": [
+    "NO_PROVIDER_OR_CACHE_OWNERSHIP_CHANGE_IN_F_AHL34",
+    "NO_KEY_WEAKENING",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_APPLICATION_SPEED_CLAIM_FROM_COMPONENT_MICROBENCHMARK"
+  ]
+}
