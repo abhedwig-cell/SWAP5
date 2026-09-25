@@ -18,14 +18,32 @@ module mod_b110_direct_retention_core
   type(direct_retention_representation_t), allocatable, save :: pool(:)
   logical, save :: frozen=.false.
   integer, save :: build_count=0, hit_count=0
+  logical, save :: application_owner_active=.false.
 
   public :: acquire_b110_direct_retention_slot
   public :: sample_b110_direct_retention
   public :: freeze_b110_direct_retention_pool
   public :: reset_b110_direct_retention_pool
   public :: b110_direct_retention_pool_stats
+  public :: begin_b110_direct_retention_application
+  public :: end_b110_direct_retention_application
 
 contains
+
+  subroutine begin_b110_direct_retention_application(ok)
+    logical,intent(out)::ok
+    ok=.false.
+    if(application_owner_active)return
+    call reset_b110_direct_retention_pool()
+    application_owner_active=.true.
+    ok=.true.
+  end subroutine begin_b110_direct_retention_application
+
+  subroutine end_b110_direct_retention_application()
+    if(.not.application_owner_active)return
+    call reset_b110_direct_retention_pool()
+    application_owner_active=.false.
+  end subroutine end_b110_direct_retention_application
 
   subroutine acquire_b110_direct_retention_slot(parameters,slot,ok,was_hit)
     type(b110_default_mvg_parameters_t),intent(in)::parameters
