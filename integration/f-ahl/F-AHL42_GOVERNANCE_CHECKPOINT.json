@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "record": "CANONICAL_GOVERNANCE_CURRENT_HEAD_CHECKPOINT",
+  "admission_pr": 604,
+  "current_head": "7864ddc8c79d55dc35463b080b722d28f55a4693",
+  "parent_head": "c8ab95573b95917c50ffc97fbcc0fe14ffbf31c3",
+  "current_head_delta": {
+    "files": [
+      "tests/publication/run_pub_p1e02_postsolver_rollback.sh"
+    ],
+    "classification": "COMPILE_ORDER_ONLY",
+    "semantic_hydraulic_change": false
+  },
+  "hydraulic_admission_evidence": {
+    "current_source_delta_replay_head": "aff0550204de4f889377a87a3c12c0353dbac9f9",
+    "f_ahl42_workflow_run": 36112329593,
+    "status": "PASS",
+    "gates": [
+      "default-off serialized FMR regression",
+      "production provider extraction",
+      "prescribed-head 12-case matrix",
+      "prescribed-qbot analytical fallback with zero adaptive cache activity",
+      "O05 dry-tail semantics",
+      "same-key provider memoization"
+    ]
+  },
+  "direct_integration_evidence_on_parent_source_head": {
+    "fross12": {
+      "workflow_run": 36112337394,
+      "status": "PASS"
+    },
+    "fgc44_real_fmr": {
+      "workflow_run": 36112337416,
+      "status": "PASS"
+    },
+    "fgc44_live_swap_modflow6": {
+      "workflow_run": 36112337398,
+      "status": "PASS"
+    }
+  },
+  "current_head_pending": {
+    "publication_postsolver_rollback": 36112577197,
+    "fross12": 36112577471,
+    "fgc44_real_fmr": 36112577024,
+    "fgc44_live_swap_modflow6": 36112577058
+  },
+  "merge_rule": "Do not merge while the current-head compile/runtime replays are queued or failing. Historical frozen-postimage/exact-source-scope guards remain classification evidence and are not retuned. Any new semantic/runtime mismatch is a blocker.",
+  "scope_boundaries": [
+    "adaptive route remains explicit opt-in and default OFF",
+    "prescribed-head bottom mode 5 is the admitted adaptive envelope",
+    "prescribed-qbot remains authoritative analytical",
+    "raw C=1e-13 is a representation relevance bound, not a physical cutoff",
+    "dry-tail beyond the material-specific bound uses authoritative analytical fallback",
+    "no SWKIMPL=1/dKdh extension",
+    "no vapor-enabled PDI acceleration",
+    "no whole-SWAP or MultiSWAP performance claim"
+  ]
+}
