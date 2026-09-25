@@ -8,6 +8,8 @@ on:
     paths:
       - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
       - 'tests/fahl/run_fahl27_production_provider_extract.sh'
       - 'tests/fahl/test_fahl27_production_provider_extract.f90'
       - 'tests/fahl/run_fahl27_stage2_matrix.sh'
@@ -19,6 +21,7 @@ on:
       - 'tests/fahl/run_fahl28b_same_key_memoization.sh'
       - 'tests/fahl/test_fahl28b_same_key_memoization.f90'
       - 'integration/f-ahl/F-AHL42_PREREGISTRATION.json'
+      - 'integration/f-ahl/F-AHL42_RESULT.json'
       - '.github/workflows/f-ahl42-canonical-admission.yml'
   workflow_dispatch:
 
