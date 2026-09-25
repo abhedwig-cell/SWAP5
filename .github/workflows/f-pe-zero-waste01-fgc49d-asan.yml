@@ -23,5 +23,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install Python test dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-numpy
       - name: Run FGC49D with ASan/UBSan
         run: bash tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh
