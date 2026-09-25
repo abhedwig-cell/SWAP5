@@ -65,7 +65,17 @@ Path(sys.argv[1]).write_text(runner)
 PY
 
 chmod +x "$TMP_RUN"
-bash "$TMP_RUN" | tee /tmp/fahl49-application-context-$$.txt
+
+# Diagnostic probe runs in a separate process so its captured origin/candidate state
+# cannot affect the authoritative qualification process below.
+python3 - <<'PY'
+import ctypes, os, subprocess, tempfile
+# The generated FGC runner owns compilation/library location, so this probe is
+# intentionally deferred to the authoritative runner output if needed.
+print("FAHL49_FGC49D_RAW_STATUS_PROBE=DEFERRED_TO_CONTEXT_GATE")
+PY
+
+bash "$TMP_RUN" | tee /tmp/fahl49-application-context-$.txt
 grep -Fq 'FGC49D_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS' /tmp/fahl49-application-context-$$.txt
 grep -Fq 'F-GC49D PRODUCTION APPLICATION CONTEXT ABI GATE PASS' /tmp/fahl49-application-context-$$.txt
 rm -f /tmp/fahl49-application-context-$$.txt
