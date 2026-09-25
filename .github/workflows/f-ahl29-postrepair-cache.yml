@@ -1,0 +1,26 @@
+name: F-AHL29 postrepair cache semantics
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'research/ahl/test_ahl29_postrepair_cache_semantics.f90'
+      - 'research/ahl/run_ahl29_postrepair_cache_semantics.sh'
+      - 'integration/f-ahl/F-AHL29_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl29-postrepair-cache.yml'
+  workflow_dispatch:
+
+jobs:
+  postrepair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run postrepair cache semantics
+        run: |
+          bash research/ahl/run_ahl29_postrepair_cache_semantics.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl29-postrepair-${{ github.run_id }}
+          path: /tmp/ahl29_postrepair.txt
