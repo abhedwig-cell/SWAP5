@@ -1,0 +1,27 @@
+name: F-AHL27B timing fixture qualification
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'tests/fahl/test_fahl27b_fixture_qualification.f90'
+      - 'tests/fahl/run_fahl27b_fixture_qualification.sh'
+      - 'integration/f-ahl/F-AHL27B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl27b-fixture-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify canonical prescribed-head timing fixture
+        run: |
+          bash tests/fahl/run_fahl27b_fixture_qualification.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27b-${{ github.run_id }}
+          path: |
+            /tmp/fahl27b_fixture_sweep.txt
+            /tmp/fahl27b_selected.json
