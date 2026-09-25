@@ -4,7 +4,8 @@ program test_ahl32_registry
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_adaptive_hydraulic_builder, only: b110_adaptive_hydraulic_table_t
   use mod_b110_adaptive_hydraulic_cache, only: b110_adaptive_hydraulic_cache_t, &
-       b110_adaptive_hydraulic_cache_key_t, make_b110_adaptive_hydraulic_key, B110_AHL_MAX_CACHE
+       b110_adaptive_hydraulic_cache_key_t, make_b110_adaptive_hydraulic_key, &
+       b110_adaptive_hydraulic_keys_equal, B110_AHL_MAX_CACHE
   implicit none
 
   call stage12_ten_thousand()
@@ -106,10 +107,15 @@ contains
     ! key through model_id. A fingerprint match must therefore never be enough
     ! to produce a cache hit.
     kb%fingerprint=ka%fingerprint
+    write(*,'(A,1X,A,L1,1X,A,A,1X,A,A)') 'AHL32_COLLISION_PRECHECK', &
+         'EQUAL=',b110_adaptive_hydraulic_keys_equal(ka,kb),'A_MODEL=',trim(ka%model_id),'B_MODEL=',trim(kb%model_id)
+    call require(.not.b110_adaptive_hydraulic_keys_equal(ka,kb),'forced collision keys must remain exact-distinct')
 
     call registry%get_or_build(ka,p,provider,ta,hit,ok)
+    write(*,'(A,1X,A,L1,1X,A,L1)') 'AHL32_COLLISION_A','OK=',ok,'HIT=',hit
     call require(ok .and. .not.hit,'collision first key')
     call registry%get_or_build(kb,p,provider,tb,hit,ok)
+    write(*,'(A,1X,A,L1,1X,A,L1)') 'AHL32_COLLISION_B','OK=',ok,'HIT=',hit
     call require(ok .and. .not.hit,'collision distinct exact key')
     call registry%get_or_build(ka,p,provider,ta2,hit,ok)
     call require(ok .and. hit,'collision exact-key retrieval')
