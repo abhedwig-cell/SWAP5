@@ -1153,7 +1153,7 @@ contains
     class(transaction_state_t),allocatable::initial,snapshot
     real(real64)::finish,time
     logical::ok
-    integer::code
+    integer::code,timing
     finish=T0+1.0_real64/1024.0_real64
     seed=source; seed%irrigation%active_event_end=finish+1.0_real64/1024.0_real64
     call seed%clone(initial)
@@ -1223,15 +1223,19 @@ contains
     end select
     write(*,'(a)') 'PPA_IRR_PENDING_HYDRAULIC_TRIAL_COMMIT=PASS'
     call verify_pending_irrigation_restart(profile,committed,backend,column,template,forcing,finish)
-    call verify_pending_mixed_columns(profile,source,template,.false.)
-    call verify_pending_mixed_columns(profile,source,template,.true.)
-    call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.)
-    call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.)
-    call verify_new_irrigation_selection_trial(profile,source,template,.false.,.true.)
-    call verify_new_irrigation_selection_trial(profile,source,template,.true.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.false.,.false.)
+    call verify_pending_mixed_columns(profile,source,template,.true.,.false.)
+    call verify_pending_mixed_columns(profile,source,template,.false.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.true.,.true.)
+    do timing=7,8
+      call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
+      call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
+      call verify_new_irrigation_selection_trial(profile,source,template,.false.,.true.,timing)
+      call verify_new_irrigation_selection_trial(profile,source,template,.true.,.true.,timing)
+    end do
   end subroutine verify_pending_irrigation_trial
 
-  subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window)
+  subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window,timing)
     use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
@@ -1247,6 +1251,7 @@ contains
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
     logical,intent(in)::profile_selection,finish_in_window
+    integer,intent(in)::timing
     type(fmr_serialized_reference_backend_t)::backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(kernel_committed_state_t)::owner
@@ -1280,6 +1285,9 @@ contains
     irrigation%scheduled_irrigation_enabled=.true.; irrigation%active_nodes=source%active_nodes
     irrigation%sensor_node=1; irrigation%single_ssdi_node=1; irrigation%irr_rate_cm_per_day=0.01_real64
     irrigation%tcs7_knot_count=2; irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%timing_criterion=timing
+    irrigation%tcs8_knot_count=2; irrigation%tcs8_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%tcs8_water_content=0.8_real64
     irrigation%dcs2_knot_count=2; irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_depth_cm=0.01_real64*2.0_real64/1024.0_real64
     if(finish_in_window) irrigation%dcs2_depth_cm=0.01_real64/1024.0_real64
@@ -1349,9 +1357,13 @@ contains
     write(*,'(a)') 'PPA_IRR_NEW_SELECTION_HYDRAULIC_COMMIT_RESTART=PASS'
     if(profile_selection) write(*,'(a)') 'PPA_IRR_DCS1_PROFILE_HYDRAULIC_COMMIT_RESTART=PASS'
     if(finish_in_window) write(*,'(a)') 'PPA_IRR_NEW_SELECTION_EXACT_END_COMMIT_RESTART=PASS'
+    if(timing==8) write(*,'(a)') 'PPA_IRR_TCS8_HYDRAULIC_SELECTION_RESTART=PASS'
   end subroutine verify_new_irrigation_selection_trial
 
-  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order)
+  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order,select_gift)
+    use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial
+    use mod_irrigation_process, only: irrigation_state_t,scheduled_irrigation_parameters_t, &
+         scheduled_irrigation_request_t,irrigation_diagnostics_t
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
          kernel_result_t,kernel_diagnostics_t
@@ -1363,7 +1375,7 @@ contains
     type(fmr_production_application_config_t),intent(in)::profile
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
-    logical,intent(in)::reverse_order
+    logical,intent(in)::reverse_order,select_gift
     type(fmr_serialized_reference_backend_t)::backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(kernel_committed_state_t)::owners(2),restored(2)
@@ -1375,6 +1387,9 @@ contains
     type(canonical_numerical_config_t)::numerical
     type(fmr_b110_physical_forcing_t)::forcing
     type(ppa_irrigation_event_state_t)::seed
+    type(scheduled_irrigation_parameters_t)::irrigation
+    type(scheduled_irrigation_request_t)::request
+    type(irrigation_diagnostics_t)::process_diagnostics
     type(fmr_committed_restart_bundle_t)::bundle
     class(transaction_state_t),allocatable::initial,snapshot
     real(real64)::finish,time
@@ -1382,6 +1397,7 @@ contains
     integer::i,position,code,index
     finish=T0+1.0_real64/1024.0_real64
     seed=source; seed%irrigation%active_event_end=finish
+    if(select_gift) seed%irrigation=irrigation_state_t()
     call seed%clone(initial)
     do i=1,2
       call owners(i)%initialize(int(404200+i,int64),initial,ok,T0)
@@ -1395,6 +1411,15 @@ contains
     forcing=profile%tiles(1)%base_forcing
     forcing%subsurface_irrigation_source=0.0_real64
     forcing%subsurface_irrigation_source(1)=source%irrigation%active_event_rate
+    if(select_gift) forcing%subsurface_irrigation_source=0.0_real64
+    irrigation%scheduled_irrigation_enabled=.true.; irrigation%active_nodes=source%active_nodes
+    irrigation%sensor_node=1; irrigation%single_ssdi_node=1; irrigation%irr_rate_cm_per_day=0.01_real64
+    irrigation%tcs7_knot_count=2; irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%dcs2_knot_count=2; irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%dcs2_depth_cm=0.01_real64/1024.0_real64
+    request%t0=T0; request%t1=finish
+    request%selection_opportunity=.true.; request%irrigation_enabled=.true.
+    request%schedule_enabled=.true.; request%crop_emerged=.true.; request%irrigation_window_open=.true.
     forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
     call backend%initialize(top)
     call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
@@ -1404,8 +1429,14 @@ contains
       if(reverse_order) i=3-position
       numerical=profile%numerical
       if(i==2) numerical%max_committed_substeps=1
-      call backend%run_pending_irrigation_trial(columns(i),template,profile%tiles(1)%parameters,owners(i), &
-           forcing,numerical,1,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i))
+      if(select_gift) then
+        call run_ppa_pending_irrigation_source_trial(backend,columns(i),template,profile%tiles(1)%parameters,irrigation, &
+             owners(i),forcing,numerical,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i), &
+             process_diagnostics,request)
+      else
+        call backend%run_pending_irrigation_trial(columns(i),template,profile%tiles(1)%parameters,owners(i), &
+             forcing,numerical,1,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i))
+      end if
     end do
     if(.not.result(1)%completed.or..not.candidate(1)%ready()) error stop 'mixed successful irrigation failed'
     if(result(2)%completed.or.candidate(2)%ready()) error stop 'mixed failed irrigation produced candidate'
@@ -1435,11 +1466,12 @@ contains
         select type(snapshot)
         type is(ppa_irrigation_event_state_t)
           if(.not.snapshot%matches_candidate(template,time)) error stop 'mixed irrigation invalid payload'
-          if(snapshot%irrigation%active_event.neqv.(i==2)) error stop 'mixed irrigation wrong event publication'
+          if(snapshot%irrigation%active_event.neqv.(i==2.and..not.select_gift)) &
+               error stop 'mixed irrigation wrong event publication'
           if(i==2) then
             if(any(snapshot%pressure_head/=source%pressure_head).or.any(snapshot%water_content/=source%water_content)) &
                  error stop 'mixed failure changed physical state'
-            if(snapshot%irrigation%active_event_rate/=source%irrigation%active_event_rate) &
+            if(snapshot%irrigation%active_event_rate/=seed%irrigation%active_event_rate) &
                  error stop 'mixed failure changed gift'
           end if
         class default
@@ -1450,6 +1482,7 @@ contains
     if(owners(2)%current_revision()/=0_int64.or.restored(2)%current_revision()/=0_int64) &
          error stop 'mixed irrigation failed revision changed'
     write(*,'(a,l1)') 'PPA_IRR_PENDING_MIXED_PUBLICATION_RESTART_PASS_REVERSED=',reverse_order
+    if(select_gift) write(*,'(a)') 'PPA_IRR_NEW_SELECTION_MIXED_PUBLICATION_RESTART=PASS'
   end subroutine verify_pending_mixed_columns
 
   subroutine verify_pending_irrigation_restart(profile,committed,backend,column,template,initial_forcing,midpoint)
