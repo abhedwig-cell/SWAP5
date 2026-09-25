@@ -6,7 +6,7 @@ BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fahl49-provider-${GITHUB_RUN_ID:-lo
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 COMMON=(-std=f2008 -ffree-line-length-none -O3)
-for src in   src/solver/mod_soil_water_solver_contract.f90   src/solver/mod_b110_default_mvg_provider.f90   src/solver/mod_b110_direct_retention_core.f90   src/solver/mod_b110_direct_retention_provider.f90; do
+for src in   src/solver/mod_soil_water_solver_contract.f90   src/solver/mod_b110_default_mvg_provider.f90   src/solver/mod_b110_direct_retention_core.f90   src/solver/mod_b110_default_mvg_directional_provider.f90   src/solver/mod_b110_direct_retention_provider.f90; do
   obj="$BUILD/$(basename "${src%.*}").o"
   gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$src" -o "$obj"
 done
