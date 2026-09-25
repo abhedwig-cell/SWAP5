@@ -1,0 +1,25 @@
+name: F-AHL29 post-repair cache gates
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl29_postrepair_cache_semantics.f90'
+      - 'research/ahl/run_ahl29_postrepair_cache_semantics.sh'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - '.github/workflows/f-ahl29-postrepair.yml'
+  workflow_dispatch:
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run post-repair cache gates
+        run: |
+          bash research/ahl/run_ahl29_postrepair_cache_semantics.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl29-postrepair-${{ github.run_id }}
+          path: /tmp/ahl29_postrepair.txt
