@@ -16,9 +16,9 @@ if needle not in src:
 src = src.replace(needle, replacement, 1)
 src = src.replace('gfortran -shared -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/libfgc49d_application.so"',
                   'gfortran -shared -fopenmp -g -O0 -fsanitize=address,undefined -fno-omit-frame-pointer "${objects[@]}" -o "$OUT/libfgc49d_application.so"')
-src = src.replace('for opt in 0 2; do', 'for opt in 0; do', 1)
+src = src.replace('for opt in 0 2; do', 'for opt in 2; do', 1)
 src = src.replace('diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"', 'true # ASAN single-build diagnostic')
-src = src.replace("echo 'FGC49D_CONTEXT_O0_O2_OUTPUT_IDENTITY=PASS'", "echo 'FGC49D_ASAN_SINGLE_BUILD=PASS'")
+src = src.replace("echo 'FGC49D_CONTEXT_O0_O2_OUTPUT_IDENTITY=PASS'", "echo 'FGC49D_ASAN_O2_SINGLE_BUILD=PASS'")
 Path("tests/fgc/.run_fgc49d_asan_PLACEHOLDER.sh").write_text(src, encoding="utf-8")
 PY
 mv tests/fgc/.run_fgc49d_asan_PLACEHOLDER.sh "$TMP_RUNNER"
