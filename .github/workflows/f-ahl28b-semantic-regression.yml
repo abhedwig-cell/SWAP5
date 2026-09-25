@@ -7,6 +7,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
       - 'integration/f-ahl/F-AHL28B_PREREGISTRATION.json'
       - '.github/workflows/f-ahl28b-semantic-regression.yml'
   workflow_dispatch:
