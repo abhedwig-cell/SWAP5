@@ -1,21 +1,21 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-AHL",
   "record": "CANONICAL_GOVERNANCE_REVIEW",
   "date": "2026-09-25",
   "candidate_pr": 608,
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "candidate_head_reviewed": "9d2819b2581efda0fcc105446acab35e51716563",
-  "review_status": "ADMISSION_READY_PENDING_EXACT_HEAD_CI",
+  "candidate_head_reviewed": "0c02316ad4e4d03e17f39f54dc6a8788ea0ad978",
+  "review_status": "ADMISSION_BLOCKED_PENDING_EXACT_HEAD_FAIL_CLOSED_CI",
   "prior_blocker_and_repair": {
     "classification": "ADMISSION_BLOCKER_FOUND_AND_BOUNDED_REPAIR_APPLIED",
     "issue": "The earlier policy-v4 candidate built/keyed one representation from initialized cofgen(:,1) and could incorrectly apply it across heterogeneous within-profile hydraulics.",
     "reproducer_run": 36126806240,
     "reproducer_observations": {
       "node1_theta_delta": 4.385381e-15,
-      "node2_theta_delta": 1.387389e-1,
-      "node2_K_delta": 4.870219e-1,
-      "node2_C_delta": 1.294518e-3
+      "node2_theta_delta": 0.1387389,
+      "node2_K_delta": 0.4870219,
+      "node2_C_delta": 0.001294518
     },
     "repair": "AHL is supported only when all active nodes have bit-identical initialized 42-coefficient hydraulic authority; heterogeneous/layered profiles fall back fully analytical and do not touch adaptive cache state."
   },
@@ -46,7 +46,7 @@
   },
   "qualified_evidence": {
     "default_MvG_full_catalog": "36 materials x wet/mid/dry = 108/108 PASS under production policy v4",
-    "O09_dry_policy_v4_bottom_flux_delta_cm_per_day": 1.374285e-6,
+    "O09_dry_policy_v4_bottom_flux_delta_cm_per_day": 0.000001374285,
     "nonlinear_path": "preserved in admitted prescribed-head qualification",
     "bounded_serialized_multi_authority_speed": "positive but modest, reconciled about 2.9-4.5% CPU reduction",
     "whole_SWAP_or_MultiSWAP_speed_claim": false
@@ -58,11 +58,15 @@
     "Unsupported profile, lower-boundary and KSATEXM variants fail closed to analytical hydraulics."
   ],
   "current_blocker": {
-    "type": "EXACT_HEAD_CI_PENDING",
-    "candidate_gate_run": 36127776071,
+    "type": "EXACT_HEAD_FAIL_CLOSED_CI_PENDING",
+    "candidate_gate_run": 36128490121,
+    "candidate_head": "0c02316ad4e4d03e17f39f54dc6a8788ea0ad978",
+    "candidate_gate_status": "queued",
+    "candidate_gate_conclusion": null,
+    "exact_head_change": "Added set -o pipefail to every piped candidate-gate runner so scientific/compile failures propagate non-zero.",
     "github_mergeable": true,
     "github_mergeable_state": "unstable",
-    "rule": "Do not mark canonical admission complete or merge until exact-head candidate and required preservation checks are green."
+    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36128490121 on exact head 0c02316ad4e4d03e17f39f54dc6a8788ea0ad978 is completed successfully and its job log confirms all bounded AHL gates executed fail-closed."
   },
-  "decision": "NO_NEW_RESEARCH_BLOCKER; CANONICAL ADMISSION IS PENDING REPOSITORY GOVERNANCE CI ONLY"
+  "decision": "NO_NEW_RESEARCH_BLOCKER; DO_NOT_CHANGE_CANDIDATE_HEAD; WAITING_ONLY_FOR_EXACT_HEAD_FAIL_CLOSED_CI"
 }
