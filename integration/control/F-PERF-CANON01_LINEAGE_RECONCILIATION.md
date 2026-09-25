@@ -129,3 +129,41 @@ Only after A0-A3 may ZERO-WASTE01 be decomposed into its admitted exact-P0 produ
 `A0_PRE_PROFILE01_PRODUCTION_AUTHORITY_UNRESOLVED`
 
 This is now the first concrete canonical-governance question. F-AHL50 and PLANVALID01 do not need reopening while A0 is resolved.
+
+
+## A0 provenance interpretation
+
+The ten-file A0 source surface is not evidence that PROFILE01 itself changed production. PROFILE01 explicitly reports no repair. The source state at its split point is inherited production authority.
+
+A key provenance anchor is F-KT22:
+- PR #147 is an historical current-canonical recomposition surface;
+- it explicitly says its base was then-current canonical `64937452...`;
+- it overlaid already-qualified F-KT22 source while preserving admitted EB-I25 FMR changes;
+- it was not itself canonical admission;
+- later F-CI91 preservation records F-KT22 as the only relevant dependency change in that chain and states the final independent F-CI81 qualification had already been performed after it.
+
+This establishes that at least part of the A0 ten-file seam belongs to previously qualified transaction/runtime evolution, not performance experimentation.
+
+The present canonical head `506c36a...` is much later than the historical F-KT22 base, so the remaining discrepancy cannot be resolved by treating PR #147 as an admission patch. The correct task is current-postimage provenance reconciliation: identify which A0 blobs are already represented by admitted capabilities and which are genuinely unadmitted branch drift.
+
+## A0 file classification target
+
+The ten production files are now grouped by authority family:
+
+Transaction/runtime state:
+- `src/transaction/mod_transaction_reference.f90`
+- `src/kernel/mod_kernel_transactions.f90`
+- `src/runtime/mod_a23bu_worker_execution_context.f90`
+- `src/runtime/mod_canonical_contracts.f90`
+- `src/runtime/mod_canonical_interval_runtime.f90`
+
+Reference solver seam:
+- `src/legacy/b1_10_port/headcalc.f90`
+- `src/solver/mod_reference_richards_workspace.f90`
+- `src/solver/mod_soil_water_solver_contract.f90`
+- `src/adapter/mod_reference_richards_legacy_binding.f90`
+- `src/runtime/mod_fmr_serialized_reference_backend.f90`
+
+The next discriminator is byte/provenance matching against later admitted current-canonical capability records, not a blind replay of the 58 commits.
+
+A0 remains open, but its problem is now classified as `INHERITED_PRODUCTION_PROVENANCE_RECONCILIATION`, not `UNKNOWN_PERFORMANCE_PATCH`.
