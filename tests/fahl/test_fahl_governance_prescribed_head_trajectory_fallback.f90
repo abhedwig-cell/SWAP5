@@ -14,6 +14,7 @@ program test_fahl_governance_prescribed_head_trajectory_fallback
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
   use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_cache_stats
   implicit none
 
@@ -105,6 +106,7 @@ contains
     call initialize_column(column,template)
     call initialize_config(config)
     config%accepted_trajectory_direction%requested=.true.
+    config%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
 
     output=fmr_serialized_column_result_t()
     output%column_id=column_id;output%requested_t0=0.0_real64;output%requested_t1=dt
