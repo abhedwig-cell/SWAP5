@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_TIMING3",
+  "title": "Serialized FMR reference-floor paired timing",
+  "parent": "F-AHL27",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "motivation": "run_trial cannot represent a temporal-none single trial because canonical transaction policy does not admit TX_TEMPORAL_NONE. The serialized backend already exposes run_reference_floor_sample for one admitted physical Reference advance.",
+  "fixture": {
+    "hydraulics": "same default unimodal MvG production-shaped AHL parameterization",
+    "bottom_mode": 5,
+    "initial_head_cm": -75.0,
+    "bottom_head_cm": -50.0,
+    "duration_day": 0.25,
+    "top_flux": "negative authoritative initial conductivity",
+    "backend_route": "fmr_serialized_reference_backend.run_reference_floor_sample"
+  },
+  "comparison": "same serialized Reference backend and physical state, adaptive_hydraulics_active false versus true",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 16384,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->adaptive and adaptive->analytical",
+    "primary_statistic": "median paired adaptive/analytical CPU ratio",
+    "adaptive_provider_build": "one warm-up/build before timed batches",
+    "cache_lookup": "included in normal backend execution"
+  },
+  "fidelity_gates": {
+    "both_samples_valid": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": {
+    "application_speed_pass": "median paired ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "application_speed_fail": "median paired ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_TRANSACTION_POLICY_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION_FROM_TIMING_ALONE"
+  ]
+}
