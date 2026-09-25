@@ -33,22 +33,22 @@ runner_src = runner_src.replace(
 )
 
 test_src = Path("tests/fgc/test_fgc49d_production_application_context.py").read_text(encoding="utf-8")
-trace_anchor = '''        value = _original(*args, **kwargs)
-        print(f"FGC49D_TRACE {_name}_end", flush=True)
-        return value
+trace_anchor = '''            value = _original(*args, **kwargs)
+            print(f"FGC49D_TRACE {_name}_end", flush=True)
+            return value
 '''
-trace_replacement = '''        try:
-            value = _original(*args, **kwargs)
-        except Exception as exc:
-            print(
-                f"FGC49D_TRACE {_name}_exception={type(exc).__name__}:{exc}",
-                flush=True,
-            )
-            raise
-        if _name == "trial_cell_heads":
-            print(f"FGC49D_TRACE trial_cell_heads_value={value!r}", flush=True)
-        print(f"FGC49D_TRACE {_name}_end", flush=True)
-        return value
+trace_replacement = '''            try:
+                value = _original(*args, **kwargs)
+            except Exception as exc:
+                print(
+                    f"FGC49D_TRACE {_name}_exception={type(exc).__name__}:{exc}",
+                    flush=True,
+                )
+                raise
+            if _name == "trial_cell_heads":
+                print(f"FGC49D_TRACE trial_cell_heads_value={value!r}", flush=True)
+            print(f"FGC49D_TRACE {_name}_end", flush=True)
+            return value
 '''
 if trace_anchor not in test_src:
     raise SystemExit("FGC49D ASAN runner: trace wrapper anchor not found")
