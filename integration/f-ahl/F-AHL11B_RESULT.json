@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11B",
+  "phase": "FULL_CATALOG_MATRIX_EXECUTED",
+  "status": "FAIL_AT_O09_DRY",
+  "workflow_run": 36122572197,
+  "workflow_job": 108031254788,
+  "completed_before_failure": "All B01-B18 wet/mid/dry and O01-O08 wet/mid/dry passed; O09 wet and mid passed.",
+  "first_failed_case": {
+    "case": "O09:dry",
+    "max_abs_pressure_head_delta_cm": 0.005995543,
+    "max_abs_water_content_delta": 1.154785e-6,
+    "top_flux_delta_cm_per_day": 0.0,
+    "bottom_flux_delta_cm_per_day": 1.039457e-5,
+    "mass_residual_abs_cm": 4.531965e-17,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0,
+    "failed_gate": "bottom_flux_delta_cm_per_day <= 1e-5"
+  },
+  "interpretation": "The selected 3e-4 conductivity tolerance is not sufficient for all 36 catalog materials. The failure is marginal and does not alter the nonlinear path, but the preregistered 108/108 gate is not satisfied.",
+  "next_action": "F-AHL11D attribution, then only a global prospective repair."
+}
