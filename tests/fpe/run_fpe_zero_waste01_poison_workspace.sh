@@ -44,6 +44,8 @@ MODULE_SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
