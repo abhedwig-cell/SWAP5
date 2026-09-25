@@ -2,35 +2,46 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL29",
-  "phase": "POST_REPAIR_CACHE_SEMANTICS_COMPLETE",
+  "phase": "CACHE_CAPACITY_REPAIR_COMPLETE",
   "status": "PASS",
-  "workflow_run": 36079419013,
-  "workflow_job": 107897794077,
-  "stage1_over_capacity": {
-    "unique_requests": 40,
-    "failures": 0,
-    "builds": 40,
-    "hits": 0,
-    "misses": 40,
-    "entries": 32,
-    "finding": "Requests beyond the 32-slot cache capacity remain correct through caller-owned uncached table construction."
+  "characterization": {
+    "workflow_run": 36079206889,
+    "workflow_job": 107897124439,
+    "pre_repair_unique_requests": 40,
+    "pre_repair_successes": 32,
+    "pre_repair_first_failure": 33,
+    "pre_repair_entries": 32
   },
-  "stage2_amortization": {
-    "requests": 10000,
-    "unique_keys": 16,
-    "failures": 0,
-    "builds": 16,
-    "hits": 9984,
-    "misses": 16,
-    "entries": 16,
-    "finding": "Normal below-capacity exact-key reuse preserves one build per unique key and repeated cache hits."
+  "repair": {
+    "semantics": "on a full-cache miss, build a valid caller-owned adaptive table and return ok=true without inserting it into the full cache",
+    "cache_capacity_changed": false,
+    "eviction_added": false,
+    "hydraulic_representation_changed": false
   },
-  "decision": "RETAIN_MINIMUM_FULL_CACHE_FALLBACK_REPAIR",
-  "semantics": [
-    "Cache capacity is an optimization bound, not a correctness bound.",
-    "No cache-size increase or eviction policy is introduced.",
-    "No hydraulic representation, error gate or dry-tail policy is changed.",
-    "On full-cache miss the requested immutable representation is built and returned but not inserted."
-  ],
-  "next_action": "Complete provider-retention/FMR lifecycle gates and then reassess remaining application-level overhead."
+  "post_repair": {
+    "workflow_runs": [36079404471,36079419013],
+    "stage1_over_capacity": {
+      "unique_requests": 40,
+      "failures": 0,
+      "builds": 40,
+      "hits": 0,
+      "misses": 40,
+      "entries": 32
+    },
+    "stage2_amortization": {
+      "requests": 10000,
+      "unique_parameterizations": 16,
+      "failures": 0,
+      "builds": 16,
+      "hits": 9984,
+      "misses": 16,
+      "entries": 16
+    }
+  },
+  "finding": "The bounded adaptive-hydraulic cache is no longer a correctness limit. Capacity overflow degrades to uncached construction, while workloads whose unique working set fits in cache amortize exactly as intended.",
+  "remaining_performance_question": "Repeated over-capacity workloads may still rebuild uncached parameterizations frequently. This is a performance question, not a correctness issue, and requires a separately preregistered workload study before adding eviction or increasing cache size.",
+  "nonclaims": [
+    "No claim is made yet for workloads with more than 32 repeatedly reused unique hydraulic parameterizations.",
+    "No whole-SWAP or MultiSWAP speedup is implied."
+  ]
 }
