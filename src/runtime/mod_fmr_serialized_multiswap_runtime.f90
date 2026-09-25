@@ -195,8 +195,9 @@ contains
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     type(fmr_column_diagnostics_t) :: scratch_diagnostic
-    integer, allocatable :: order(:)
+    integer, allocatable :: order(:), receipt_slot_by_column(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
+    logical :: receipt_request_ok
     logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
     logical :: track_physical_concurrency
 
@@ -237,7 +238,8 @@ contains
       return
     end if
     if (present(receipt_column_ids)) then
-      if (.not. receipt_request_valid(columns, receipt_column_ids)) then
+      call build_receipt_slot_map(columns, receipt_column_ids, receipt_slot_by_column, receipt_request_ok)
+      if (.not. receipt_request_ok) then
         allocate(commit_receipts(0))
         dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
         call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
@@ -308,7 +310,7 @@ contains
         results(idx)%dispatch_ordinal = pos
         if (.not. do_column_diagnostics) scratch_diagnostic = fmr_column_diagnostics_t()
         receipt_slot = 0
-        if (present(receipt_column_ids)) receipt_slot = find_receipt_slot(columns(idx)%column_id, receipt_column_ids)
+        if (present(receipt_column_ids)) receipt_slot = receipt_slot_by_column(idx)
         if (receipt_slot > 0) then
           if (present(execution_plan)) then
             if (do_column_diagnostics) then
@@ -524,43 +526,73 @@ contains
     runtime%authoritative_aggregate_mass%missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
   end subroutine initialize_runtime_diagnostics
 
-  logical function receipt_request_valid(columns, receipt_column_ids) result(valid)
+  subroutine build_receipt_slot_map(columns, receipt_column_ids, receipt_slot_by_column, valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     integer(int64), intent(in) :: receipt_column_ids(:)
-    integer :: i, j
+    integer, allocatable, intent(out) :: receipt_slot_by_column(:)
+    logical, intent(out) :: valid
 
-    valid = .true.
-    do i = 1, size(receipt_column_ids)
-      if (receipt_column_ids(i) <= 0_int64) then
-        valid = .false.
-        return
-      end if
-      if (.not. any(columns%column_id == receipt_column_ids(i))) then
-        valid = .false.
-        return
-      end if
-      do j = i + 1, size(receipt_column_ids)
-        if (receipt_column_ids(j) == receipt_column_ids(i)) then
-          valid = .false.
-          return
+    integer(int64), allocatable :: hash_keys(:)
+    integer, allocatable :: hash_column_index(:)
+    integer :: table_size, i, slot, start_slot, column_index
+
+    allocate(receipt_slot_by_column(size(columns)))
+    receipt_slot_by_column = 0
+    valid = .false.
+
+    if (size(receipt_column_ids) == 0) then
+      valid = .true.
+      return
+    end if
+    if (size(columns) == 0) return
+
+    table_size = 1
+    do while (table_size < 2*size(columns) + 1)
+      table_size = 2*table_size
+    end do
+    allocate(hash_keys(table_size), hash_column_index(table_size))
+    hash_keys = 0_int64
+    hash_column_index = 0
+
+    do i = 1, size(columns)
+      if (columns(i)%column_id <= 0_int64) cycle
+      slot = 1 + int(modulo(columns(i)%column_id, int(table_size,int64)))
+      start_slot = slot
+      do
+        if (hash_keys(slot) == 0_int64) then
+          hash_keys(slot) = columns(i)%column_id
+          hash_column_index(slot) = i
+          exit
         end if
+        if (hash_keys(slot) == columns(i)%column_id) exit
+        slot = slot + 1
+        if (slot > table_size) slot = 1
+        if (slot == start_slot) return
       end do
     end do
-  end function receipt_request_valid
 
-  integer function find_receipt_slot(column_id, receipt_column_ids) result(slot)
-    integer(int64), intent(in) :: column_id
-    integer(int64), intent(in) :: receipt_column_ids(:)
-    integer :: i
-
-    slot = 0
     do i = 1, size(receipt_column_ids)
-      if (receipt_column_ids(i) == column_id) then
-        slot = i
-        return
-      end if
+      if (receipt_column_ids(i) <= 0_int64) return
+      slot = 1 + int(modulo(receipt_column_ids(i), int(table_size,int64)))
+      start_slot = slot
+      column_index = 0
+      do
+        if (hash_keys(slot) == 0_int64) exit
+        if (hash_keys(slot) == receipt_column_ids(i)) then
+          column_index = hash_column_index(slot)
+          exit
+        end if
+        slot = slot + 1
+        if (slot > table_size) slot = 1
+        if (slot == start_slot) exit
+      end do
+      if (column_index == 0) return
+      if (receipt_slot_by_column(column_index) /= 0) return
+      receipt_slot_by_column(column_index) = i
     end do
-  end function find_receipt_slot
+
+    valid = .true.
+  end subroutine build_receipt_slot_map
 
   logical function registry_structure_valid(columns, templates, states) result(valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
