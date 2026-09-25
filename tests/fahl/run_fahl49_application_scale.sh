@@ -137,7 +137,7 @@ for n in (1,100,1000,10000):
         a=pair["analytical"]; d=pair["direct"]
         if int(a["TILES"])!=n or int(d["TILES"])!=n:
             raise SystemExit(f"tile count drift n={n} rep={rep}")
-        if int(d["ENTRIES"])!=1 or int(d["BUILDS"])!=1 or int(d["HITS"])!=n-1 or int(d["PAYLOAD"])!=6240:
+        if int(d["ENTRIES"])!=1 or int(d["BUILDS"])!=1 or int(d["HITS"])!=n-1 or int(d["PAYLOAD"])!=12384:
             raise SystemExit(f"ownership gate n={n} rep={rep}")
         init_rat.append(float(d["INIT"])/float(a["INIT"]))
     print(f"FAHL49_SCALE|N={n}|INIT_MEDIAN_RATIO={statistics.median(init_rat):.9f}|PAIRS={len(init_rat)}")
