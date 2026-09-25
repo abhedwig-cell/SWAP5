@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL29",
+  "phase": "STAGE1_CAPACITY_CHARACTERIZATION_COMPLETE",
+  "status": "FAIL_CURRENT_CACHE_SEMANTICS",
+  "workflow_run": 36079206889,
+  "workflow_job": 107897124439,
+  "results": {
+    "unique_requests": 40,
+    "successful_requests": 32,
+    "first_failure_request": 33,
+    "builds": 32,
+    "hits": 0,
+    "misses": 40,
+    "entries": 32
+  },
+  "finding": "The current bounded cache is a correctness limit: the 33rd unique exact hydraulic key fails solely because all 32 cache slots are occupied.",
+  "repair": "On a full-cache miss, build the requested adaptive table into the caller-owned output and return ok=true without inserting it into the full cache.",
+  "governance": "No cache-size increase, eviction policy, hydraulic representation or error gate is changed by the minimum repair."
+}
