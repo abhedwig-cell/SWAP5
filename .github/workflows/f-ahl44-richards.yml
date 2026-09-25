@@ -1,0 +1,29 @@
+name: F-AHL44 current-postimage Richards timing
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'tests/fahl/test_fahl44_richards_timing.f90'
+      - 'tests/fahl/run_fahl44_richards_timing.sh'
+      - '.github/workflows/f-ahl44-richards.yml'
+  workflow_dispatch:
+
+jobs:
+  richards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Compare analytical and demand-aware adaptive Richards
+        run: |
+          bash tests/fahl/run_fahl44_richards_timing.sh | tee fahl44-richards.txt
+          grep -Fq 'FAHL44_RICHARDS_TIMING=PASS' fahl44-richards.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl44-richards
+          path: fahl44-richards.txt
