@@ -12,7 +12,7 @@ program test_fahl49_application_scale
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: T0=0.0_real64, T1=1.0e-4_real64, H0=-75.0_real64, TOL=1.0e-12_real64
+  real(real64), parameter :: T0=0.0_real64, T1=0.25_real64, H0=-75.0_real64, TOL=1.0e-12_real64
   type(fmr_production_application_config_t) :: config
   type(fmr_production_application_bootstrap_t) :: app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
@@ -125,12 +125,12 @@ contains
     allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod))
     p%z=z; p%dz=dz; p%node_distance=disnod(1:numnod); p%cofgen=0.0_real64
     do k=1,numnod
-      p%cofgen(1,k)=0.032_real64
-      p%cofgen(2,k)=0.423_real64
-      p%cofgen(3,k)=4.75_real64
-      p%cofgen(4,k)=0.0135_real64
-      p%cofgen(5,k)=0.365_real64
-      p%cofgen(6,k)=1.455_real64
+      p%cofgen(1,k)=0.02_real64
+      p%cofgen(2,k)=0.427494_real64
+      p%cofgen(3,k)=31.225016_real64
+      p%cofgen(4,k)=0.021659_real64
+      p%cofgen(5,k)=0.98087_real64
+      p%cofgen(6,k)=1.734737_real64
       p%cofgen(7,k)=1.0_real64-1.0_real64/p%cofgen(6,k)
       p%cofgen(8,k)=p%cofgen(4,k)
       p%cofgen(9,k)=0.0_real64
