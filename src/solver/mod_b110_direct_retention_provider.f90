@@ -54,7 +54,9 @@ contains
     real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
     integer::i
     real(real64)::theta_i,capacity_i
-    logical::inside
+    real(real64)::water_fallback(size(pressure_head)),conductivity_fallback(size(pressure_head))
+    real(real64)::capacity_fallback(size(pressure_head)),dkdh_fallback(size(pressure_head))
+    logical::inside,need_fallback
 
     if(.not.self%ready)error stop 'B110 direct-retention provider not ready'
 
@@ -64,11 +66,17 @@ contains
       return
     end if
 
+    need_fallback=any(pressure_head>-1.0_real64 .or. pressure_head< -1.0e6_real64)
+    if(need_fallback)then
+      call self%analytical%evaluate_demand(pressure_head,demand_mask,water_fallback,conductivity_fallback, &
+           capacity_fallback,dkdh_fallback)
+    end if
+
     do i=1,size(pressure_head)
       call sample_b110_direct_retention(self%slot,pressure_head(i),theta_i,capacity_i,inside)
       if(.not.inside)then
-        call self%analytical%evaluate_demand(pressure_head(i:i),demand_mask,water_content(i:i),conductivity(i:i), &
-             capacity(i:i),dconductivity_dhead(i:i))
+        if(demand_mask==CONSTITUTIVE_DEMAND_WATER_CONTENT)water_content(i)=water_fallback(i)
+        if(demand_mask==CONSTITUTIVE_DEMAND_CAPACITY)capacity(i)=capacity_fallback(i)
       else if(demand_mask==CONSTITUTIVE_DEMAND_WATER_CONTENT)then
         water_content(i)=theta_i
       else
