@@ -1,36 +1,68 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "record": "CANONICAL_GOVERNANCE_REVIEW",
   "date": "2026-09-25",
-  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "candidate_pr": 608,
-  "finding": {
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "candidate_head_reviewed": "9d2819b2581efda0fcc105446acab35e51716563",
+  "review_status": "ADMISSION_READY_PENDING_EXACT_HEAD_CI",
+  "prior_blocker_and_repair": {
     "classification": "ADMISSION_BLOCKER_FOUND_AND_BOUNDED_REPAIR_APPLIED",
-    "issue": "The policy-v4 production candidate built and keyed one immutable hydraulic representation from initialized cofgen(:,1), then applied that representation to every active node. Existing qualification matrices varied material between homogeneous profiles and therefore did not qualify layered or heterogeneous within-profile hydraulics.",
+    "issue": "The earlier policy-v4 candidate built/keyed one representation from initialized cofgen(:,1) and could incorrectly apply it across heterogeneous within-profile hydraulics.",
     "reproducer_run": 36126806240,
     "reproducer_observations": {
       "node1_theta_delta": 4.385381e-15,
       "node2_theta_delta": 1.387389e-1,
       "node2_K_delta": 4.870219e-1,
       "node2_C_delta": 1.294518e-3
-    }
+    },
+    "repair": "AHL is supported only when all active nodes have bit-identical initialized 42-coefficient hydraulic authority; heterogeneous/layered profiles fall back fully analytical and do not touch adaptive cache state."
   },
-  "repair": {
-    "policy": "AHL remains admitted only when all active nodes have bit-identical initialized 42-coefficient hydraulic authority. Heterogeneous/layered profiles fall back fully to the authoritative analytical provider.",
-    "provider_api": "Direct adaptive-provider binding fails closed for heterogeneous profiles.",
-    "runtime": "Profile homogeneity is evaluated once during parameter configuration and cached as a boolean; no O(nodes) authority scan is added to the solve hot path.",
-    "lifecycle": "Unsupported adaptive provider state is released; shared immutable cache remains unaffected.",
-    "regression": "Candidate CI now requires an O0/O2 heterogeneous-profile fallback test with bit-identical analytical state/flux behavior and zero AHL cache activity."
+  "scope_review": {
+    "production_source_files": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_provider.f90"
+    ],
+    "explicit_opt_in": true,
+    "default_on": false,
+    "qualified_route": "Reference Richards",
+    "qualified_bottom_mode": 5,
+    "prescribed_qbot": "authoritative analytical fallback",
+    "accepted_trajectory": "authoritative analytical fallback",
+    "heterogeneous_profiles": "authoritative analytical fallback; zero adaptive-cache activity",
+    "ksatexm_extension": "outside admitted AHL envelope; profile-supported predicate false; direct adaptive bind fails closed; zero adaptive-cache activity",
+    "swkimpl1_dkdh": "outside admitted AHL envelope",
+    "vapor_enabled_pdi": "outside admitted AHL envelope"
   },
-  "dry_domain_note": {
-    "raw_C_relevance_floor": 1e-13,
-    "meaning": "representation-work relevance bound, not a physical theta or K cutoff",
-    "outside_domain": "authoritative analytical fallback"
+  "dry_domain_authority": {
+    "raw_capacity_relevance_floor": 1e-13,
+    "meaning": "representation-work relevance bound on C=dtheta/dh, not a physical cutoff for theta or K",
+    "O05_material_lower_bound_cm_approx": -264277.52309014817,
+    "outside_built_domain": "authoritative analytical fallback",
+    "physics_truncated": false
   },
-  "admission_state": "PENDING_CURRENT_HEAD_CANDIDATE_CI",
-  "nonclaims": [
-    "Layered AHL is not qualified or admitted.",
-    "Older green candidate runs do not qualify the repaired head."
-  ]
+  "qualified_evidence": {
+    "default_MvG_full_catalog": "36 materials x wet/mid/dry = 108/108 PASS under production policy v4",
+    "O09_dry_policy_v4_bottom_flux_delta_cm_per_day": 1.374285e-6,
+    "nonlinear_path": "preserved in admitted prescribed-head qualification",
+    "bounded_serialized_multi_authority_speed": "positive but modest, reconciled about 2.9-4.5% CPU reduction",
+    "whole_SWAP_or_MultiSWAP_speed_claim": false
+  },
+  "static_governance_findings": [
+    "Candidate is a clean canonical-derived extraction, not a wholesale merge of the research branch.",
+    "No production-code scope broadening was found beyond the bounded provider and explicit runtime routing.",
+    "Non-AHL script modifications are compile/preservation plumbing needed because the new provider modules are dependencies of the serialized backend.",
+    "Unsupported profile, lower-boundary and KSATEXM variants fail closed to analytical hydraulics."
+  ],
+  "current_blocker": {
+    "type": "EXACT_HEAD_CI_PENDING",
+    "candidate_gate_run": 36127776071,
+    "github_mergeable": true,
+    "github_mergeable_state": "unstable",
+    "rule": "Do not mark canonical admission complete or merge until exact-head candidate and required preservation checks are green."
+  },
+  "decision": "NO_NEW_RESEARCH_BLOCKER; CANONICAL ADMISSION IS PENDING REPOSITORY GOVERNANCE CI ONLY"
 }
