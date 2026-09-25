@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "CANONICAL_ADMISSION_EXTRACTION",
+  "branch": "work/f-ahl-canonical-admission",
+  "base": "integration/f-ci-canonical",
+  "purpose": "Minimal production-shaped extraction from the closed F-AHL research branch for canonical governance review.",
+  "included_source": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "minimal opt-in seam in src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "runtime_contract": {
+    "adaptive_default": false,
+    "qualified_adaptive_bottom_mode": 5,
+    "prescribed_qbot": "authoritative analytical fallback",
+    "runtime_refinement": false,
+    "external_user_tables": false
+  },
+  "dry_tail_contract": {
+    "relevance_quantity": "raw moisture capacity C=dtheta/dh",
+    "relevance_floor": 1e-13,
+    "O05_lower_lookup_bound_cm_approx": -264277.52309014817,
+    "outside_lookup_domain": "authoritative analytical provider",
+    "physics_truncated": false,
+    "K_cutoff": false,
+    "note": "The historical dt*1e-13 Jacobian regularization is distinct from the raw-C representation relevance bound."
+  },
+  "retained_regressions": [
+    "self-built provider and immutable cache",
+    "12-case B01/B12/O05/O14 wet-mid-dry prescribed-head fidelity matrix",
+    "O05 production dry-tail analytical fallback",
+    "provider-local same-key reuse",
+    "serialized FMR opt-in runtime route",
+    "prescribed-qbot analytical fallback",
+    "existing FKT22 FMR compile/runtime regression"
+  ],
+  "explicitly_excluded": [
+    "research/ahl prototypes",
+    "research-only workflow history",
+    "adaptive prescribed-qbot hydraulics",
+    "SWKIMPL=1 or adaptive dK/dh",
+    "vapor-enabled PDI acceleration",
+    "whole-SWAP or MultiSWAP performance claims",
+    "the full F-AHL research branch"
+  ],
+  "admission_state": "EXTRACTED_PENDING_GATE_EXECUTION"
+}
