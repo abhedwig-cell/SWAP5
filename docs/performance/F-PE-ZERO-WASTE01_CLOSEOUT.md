@@ -191,6 +191,24 @@ Classification: `GWCTX01 = ADMITTED_EXACT_P0_LINEAR_HANDLE_UNIQUENESS_PROOF`.
 
 After GWPLAN01, GWTOPO01 and GWCTX01, the remaining application-context bind work is linear and must be remeasured before further production edits.
 
+### GWCTX03 compact application-context cell representation
+
+`GWCTX03` is admitted as an exact compact owned representation for application-context cells.
+
+The context previously copied full `groundwater_application_cell_plan_t` objects even though after bind it only consumed topology identity plus tile_begin/tile_count. The admitted representation stores only those fields. Mutable linear terms remain separately context-owned.
+
+Qualification:
+- FGC49D O0/O2 PASS;
+- FGC49D output identity PASS;
+- production application context ABI PASS;
+- PPA-WU01 O0/O2 PASS.
+
+At N=10,000, dedicated qualification measured the full cell-plan copy at about 1.274 ms versus about 0.056 ms for the compact representation on the same runner/workload.
+
+Classification: `GWCTX03 = ADMITTED_EXACT_P0_COMPACT_CONTEXT_CELL_VIEW`.
+
+Together, GWPLAN01, GWTOPO01, GWCTX01 and GWCTX03 remove the dominant measured large-N structural and representation waste from canonical groundwater context construction.
+
 ## Remaining current P0 interpretation
 
 After the current tranche, no large, high-confidence pure-waste hotspot remains on the qualified H03 / production-bootstrap Reference route.
