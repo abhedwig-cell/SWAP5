@@ -258,3 +258,21 @@ APPQUAL01 may build benchmark infrastructure in parallel, but no approximate can
 6. Attach coupling-purpose ROM as second challenger.
 7. Add deterministic spatial coarsening as third challenger.
 8. Evaluate hybrids only after individual lanes have interpretable failure envelopes.
+
+
+## RossFast fair-comparison clarification
+
+The first implementation attempted to force Reference and RossFast through an identical transaction temporal policy.
+
+That was rejected by evidence.
+
+Production RossFast is admitted with model-certificate temporal acceptance, whereas the Reference production route is admitted with external full/half temporal control. Forcing the RossFast policy onto Reference caused an admitted Reference column to fail transaction completion before any RossFast comparison was reached.
+
+APPQUAL01 therefore compares the same physical workload under each route's admitted production temporal policy:
+
+- Reference: external full/half;
+- RossFast: model certificate.
+
+This means the measured runtime difference is intentionally an application-level production-route comparison, not a pure inner-solver microbenchmark. That is appropriate for APPQUAL01 because the governing quantity is total production cost for a hydrologically qualified route.
+
+The physical workload remains common: material, discretization, initial state, forcing, outer interval, mass gate and production bootstrap population.
