@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fkt22-fmr-runtime-${GITHUB_RUN_ID:-local}-$$"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fahl49-failclosed-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-cd "$ROOT"
-
-fail(){ echo "FKT22_FMR_RUNTIME_FAIL $*" >&2; exit 1; }
-
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -O2 -fopenmp)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -20,8 +17,14 @@ MODULE_SRC=(
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
@@ -37,6 +40,8 @@ MODULE_SRC=(
   src/process/mod_drainage_multilevel_aggregation.f90
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
+  src/solver/mod_b110_smooth_freatic_projection.f90
+  src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
@@ -48,8 +53,6 @@ MODULE_SRC=(
   src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_b110_root_sink_provider.f90
-  src/solver/mod_b110_smooth_freatic_projection.f90
-  src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
@@ -70,41 +73,33 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+  src/runtime/mod_groundwater_coupling_contract.f90
+  src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
+  src/runtime/mod_groundwater_swap_forcing_adapter.f90
+  src/runtime/mod_groundwater_swap_transaction_participant.f90
+  src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
+  src/runtime/mod_fmr_groundwater_swap_participant.f90
+  src/runtime/mod_fmr_groundwater_participant_registry.f90
+  src/runtime/mod_groundwater_interface_mass_ledger.f90
+  src/runtime/mod_groundwater_tile_aggregation.f90
+  src/runtime/mod_groundwater_multiswap_types.f90
+  src/runtime/mod_modflow6_swap_predictor_response.f90
+  src/runtime/mod_modflow6_multiswap_cell_response.f90
+  src/runtime/mod_modflow6_linear_response_backend.f90
+  src/runtime/mod_modflow6_api_binding.f90
+  src/runtime/mod_groundwater_topology_composition.f90
+  src/runtime/mod_groundwater_application_plan.f90
+  src/runtime/mod_fmr_groundwater_application_context.f90
+  src/adapter/mod_fmr_groundwater_application_c_api.f90
+  src/runtime/mod_fmr_production_application_bootstrap.f90
 )
-
-for opt in 0 2; do
-  OUT="$BUILD/o$opt"
-  mkdir -p "$OUT"
-  objects=()
-  for source in "${MODULE_SRC[@]}"; do
-    obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
-    objects+=("$obj")
-  done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90 -o "$OUT/test.o" || fail "compile O$opt runtime oracle"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt runtime oracle"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime oracle O$opt"; }
-  for marker in \
-    'FKT22_FMR_TRAJECTORY_DEFAULT_OFF=PASS' \
-    'FKT22_FMR_TRAJECTORY_ACCEPTED_ROUTE=PASS' \
-    'FKT22_FMR_TRAJECTORY_PROVENANCE=PASS' \
-    'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS' \
-    'FKT22_FMR_TRAJECTORY_PHYSICAL_IDENTITY=PASS' \
-    'FKT22_FMR_SERIALIZED_RUNTIME_GATE=PASS'; do
-    grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
-  done
-  cat "$OUT/output.txt"
-  echo "FKT22_FMR_RUNTIME_O${opt}=PASS"
+objects=()
+for source in "${MODULE_SRC[@]}"; do
+  obj="$BUILD/$(basename "${source%.*}").o"
+  gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$source" -o "$obj"
+  objects+=("$obj")
 done
-
-cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
-  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
-  fail 'O0/O2 semantic drift'
-}
-
-git diff --check -- tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90 \
-  tests/fkt/run_fkt22_fmr_runtime_gate.sh
-
-echo 'FKT22_FMR_RUNTIME_O0_O2_IDENTITY=PASS'
-echo 'FKT22_FMR_PRODUCTION_RUNTIME_GATE=PASS'
+gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fahl/test_fahl49_failclosed.f90 -o "$BUILD/test.o"
+gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
+"$BUILD/test"
