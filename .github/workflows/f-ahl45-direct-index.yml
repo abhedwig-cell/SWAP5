@@ -1,0 +1,27 @@
+name: F-AHL45 direct-index screen
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fahl/test_fahl45_direct_index_screen.f90'
+      - 'tests/fahl/run_fahl45_direct_index_screen.sh'
+      - 'docs/performance/F-AHL45_DIRECT_INDEX_PREREGISTRATION.md'
+      - '.github/workflows/f-ahl45-direct-index.yml'
+  workflow_dispatch:
+
+jobs:
+  direct-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Screen direct-index derivative-consistent representation
+        run: |
+          bash tests/fahl/run_fahl45_direct_index_screen.sh | tee fahl45-direct-index.txt
+          grep -Fq 'FAHL45_DIRECT_INDEX_SCREEN=PASS' fahl45-direct-index.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl45-direct-index
+          path: fahl45-direct-index.txt
