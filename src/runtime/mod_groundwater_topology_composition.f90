@@ -120,7 +120,7 @@ contains
     type(groundwater_topology_cell_t), allocatable :: cells(:)
     real(real64) :: fraction_sum, compensation, y, t, scale
     integer :: i, j, cell_index, tile_count, tile_cursor
-    logical :: canonical_input
+    logical :: canonical_input, canonical_tiles, canonical_cells
 
     topology%materialized = .false.
     status = GW_TOPOLOGY_EMPTY
@@ -131,32 +131,19 @@ contains
     tiles = tile_contracts
     cells = cell_contracts
 
-    canonical_input = .true.
+    canonical_tiles = .true.
     do i = 1, size(tiles)
       status = GW_TOPOLOGY_INVALID_TILE
       if (.not. tiles(i)%valid()) return
       if (i > 1) then
-        if (tiles(i-1)%tile_id >= tiles(i)%tile_id) canonical_input = .false.
-        if (tiles(i-1)%swap_lineage_id >= tiles(i)%swap_lineage_id) canonical_input = .false.
-        if (tiles(i-1)%ledger_id >= tiles(i)%ledger_id) canonical_input = .false.
-        if (tiles(i-1)%groundwater_cell_id > tiles(i)%groundwater_cell_id) canonical_input = .false.
+        if (tiles(i-1)%tile_id >= tiles(i)%tile_id) canonical_tiles = .false.
+        if (tiles(i-1)%swap_lineage_id >= tiles(i)%swap_lineage_id) canonical_tiles = .false.
+        if (tiles(i-1)%ledger_id >= tiles(i)%ledger_id) canonical_tiles = .false.
+        if (tiles(i-1)%groundwater_cell_id > tiles(i)%groundwater_cell_id) canonical_tiles = .false.
       end if
     end do
 
-    do i = 1, size(cells)
-      status = GW_TOPOLOGY_INVALID_CELL
-      if (.not. cells(i)%valid()) return
-      if (cells(i)%package_slot > size(cells)) return
-      if (i > 1) then
-        if (cells(i-1)%groundwater_cell_id >= cells(i)%groundwater_cell_id) canonical_input = .false.
-        if (cells(i-1)%coupling_id >= cells(i)%coupling_id) canonical_input = .false.
-        if (cells(i-1)%groundwater_lineage_id >= cells(i)%groundwater_lineage_id) canonical_input = .false.
-        if (cells(i-1)%package_slot >= cells(i)%package_slot) canonical_input = .false.
-        if (cells(i-1)%modflow_node_id >= cells(i)%modflow_node_id) canonical_input = .false.
-      end if
-    end do
-
-    if (.not. canonical_input) then
+    if (.not. canonical_tiles) then
       do i = 1, size(tiles)
         do j = 1, i - 1
           if (tiles(j)%tile_id == tiles(i)%tile_id) then
@@ -173,7 +160,23 @@ contains
           end if
         end do
       end do
+    end if
 
+    canonical_cells = .true.
+    do i = 1, size(cells)
+      status = GW_TOPOLOGY_INVALID_CELL
+      if (.not. cells(i)%valid()) return
+      if (cells(i)%package_slot > size(cells)) return
+      if (i > 1) then
+        if (cells(i-1)%groundwater_cell_id >= cells(i)%groundwater_cell_id) canonical_cells = .false.
+        if (cells(i-1)%coupling_id >= cells(i)%coupling_id) canonical_cells = .false.
+        if (cells(i-1)%groundwater_lineage_id >= cells(i)%groundwater_lineage_id) canonical_cells = .false.
+        if (cells(i-1)%package_slot >= cells(i)%package_slot) canonical_cells = .false.
+        if (cells(i-1)%modflow_node_id >= cells(i)%modflow_node_id) canonical_cells = .false.
+      end if
+    end do
+
+    if (.not. canonical_cells) then
       do i = 1, size(cells)
         do j = 1, i - 1
           if (cells(j)%groundwater_cell_id == cells(i)%groundwater_cell_id) then
@@ -199,6 +202,7 @@ contains
         end do
       end do
     end if
+    canonical_input = canonical_tiles .and. canonical_cells
 
     if (canonical_input) then
       cell_index = 1
