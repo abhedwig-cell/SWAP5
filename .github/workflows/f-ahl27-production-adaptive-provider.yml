@@ -32,6 +32,9 @@ jobs:
       - name: Run serialized production regression
         run: |
           bash tests/fkt/run_fkt22_fmr_runtime_gate.sh | tee /tmp/fahl27_backend_runtime.txt
+      - name: Verify adaptive activation and qbot fallback
+        run: |
+          bash tests/ahl/run_fahl27_serialized_selection.sh | tee /tmp/fahl27_selection.txt
       - uses: actions/upload-artifact@v4
         with:
           name: f-ahl27-${{ github.run_id }}
@@ -40,3 +43,4 @@ jobs:
             /tmp/fahl27_policy.txt
             /tmp/fahl27_backend_compile.txt
             /tmp/fahl27_backend_runtime.txt
+            /tmp/fahl27_selection.txt
