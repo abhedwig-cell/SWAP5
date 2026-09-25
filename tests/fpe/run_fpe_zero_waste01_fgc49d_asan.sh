@@ -114,7 +114,25 @@ participant_replacement = '''    if (.not. accepted_whole_window(self%trial_resu
 '''
 if participant_anchor not in participant_src:
     raise SystemExit("FGC49D ASAN runner: participant trial-result anchor not found")
-participant_path.write_text(participant_src.replace(participant_anchor, participant_replacement, 1), encoding="utf-8")
+participant_src = participant_src.replace(participant_anchor, participant_replacement, 1)
+trajectory_anchor = '''    duration_day = window%t1 - window%t0
+'''
+trajectory_replacement = '''    write(*,'(A,L1)') 'FGC49D_TRACE trajectory_requested=', self%trial_result%accepted_trajectory_direction%requested
+    write(*,'(A,L1)') 'FGC49D_TRACE trajectory_available=', self%trial_result%accepted_trajectory_direction%available
+    write(*,'(A,I0)') 'FGC49D_TRACE trajectory_control_coordinate=', &
+         self%trial_result%accepted_trajectory_direction%control_coordinate
+    write(*,'(A,I0)') 'FGC49D_TRACE trajectory_accepted_steps=', &
+         self%trial_result%accepted_trajectory_direction%accepted_steps
+    write(*,'(A,I0)') 'FGC49D_TRACE trajectory_additional_nonlinear=', &
+         self%trial_result%accepted_trajectory_direction%additional_full_nonlinear_solves
+    write(*,'(A,A)') 'FGC49D_TRACE trajectory_route=', &
+         trim(self%trial_result%accepted_trajectory_direction%route)
+    duration_day = window%t1 - window%t0
+'''
+if trajectory_anchor not in participant_src:
+    raise SystemExit("FGC49D ASAN runner: trajectory anchor not found")
+participant_src = participant_src.replace(trajectory_anchor, trajectory_replacement, 1)
+participant_path.write_text(participant_src, encoding="utf-8")
 
 tmp_test = Path(os.environ["TMP_TEST"])
 tmp_test.write_text(test_src, encoding="utf-8")
