@@ -65,7 +65,7 @@ Necessity classification remains the PROFILE01 taxonomy:
 | ZW-H06 | Immutable hydraulic parameter preprocessing | Parameter preprocessing remains a hot-path candidate where immutable transformations can be hoisted from repeated solve/dispatch work. | PRECOMPUTE | N3 candidate | low-medium | measure call count per column/solve and prove invalidation contract |
 | ZW-H07 | Serialized registry validation | The branch now contains an optional validated execution-plan path whose `matches` contract can bypass repeated full registry validation. Baseline pairwise validation remains available when no plan is supplied. | FEWER / PRECOMPUTE | N3 repair candidate implemented | medium | qualify invalidation/mismatch rejection and quantify dispatch-scale saving |
 | ZW-H08 | Execution-order construction | The branch now persists execution order inside `fmr_serialized_execution_plan_t` and consumes it when a plan is supplied, avoiding per-dispatch reconstruction. | FEWER / PRECOMPUTE | N3 repair candidate implemented | medium | qualify canonical/reverse/mixed order identity and plan mismatch fail-closed behavior |
-| ZW-H09 | Receipt validation and lookup | Receipt validation and slot lookup contain repeated linear/pairwise searches when requested receipts scale with N. | CHEAPER / PRECOMPUTE | N2/N3 candidate | medium | measure R~N scaling and compare indexed lookup preserving fail-closed semantics |
+| ZW-H09 | Receipt validation and lookup | Baseline benchmark at N=R=10,000 measured ~44.7 ms validation plus ~37.8 ms lookup with ~200 million structural comparisons combined. H09 now builds one dispatch-local column-id index and direct `receipt_slot_by_column` map. | CHEAPER / PRECOMPUTE | N2/N3 repair implemented | medium | FMR18 receipt semantics PASS plus indexed scaling benchmark |
 | ZW-H10 | Per-column diagnostics allocation | Dispatch preregistration identifies per-column diagnostics initialization including `allocate(worker_assignments(1))`. | FEWER / MOVE_LESS | NX | low-medium | count allocations across N and test stack/fixed/persistent storage alternatives |
 | ZW-H11 | Atomic/concurrency tracking on serialized path | Dedicated microbenchmark exists for serialized concurrency counter overhead. | AVOID / CHEAPER | NX | medium | prove whether atomic semantics are required when execution is demonstrably serialized |
 | ZW-H12 | State capture capacity / transaction buffers | Capture-capacity lifecycle gate exists; transaction and state movement remain candidate overhead. | FEWER / MOVE_LESS / REUSE | NX to N3 | high | attribute bytes copied per trial/accepted step and prove minimal transaction state |
@@ -167,7 +167,7 @@ Speedups must not be added arithmetically across independent experiments.
 
 The next bounded sequence for F-PE-ZERO-WASTE01 is:
 
-`H01/H05 qualify -> H07/H08 execution-plan qualify -> H09 receipt indexing -> H10/H11 dispatch micro-overhead -> reprofile -> select next dominant exact-waste target`
+`H01/H05 qualify -> H07/H08 execution-plan qualify -> H09 receipt indexing qualify -> H10/H11 dispatch micro-overhead -> reprofile -> select next dominant exact-waste target`
 
 After every material tranche, reprofile. Optimization changes the runtime distribution; stale hotspot rankings must not govern later work.
 
