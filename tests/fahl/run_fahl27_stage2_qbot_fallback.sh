@@ -70,6 +70,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 for opt in 0 2; do
