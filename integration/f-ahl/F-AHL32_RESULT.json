@@ -3,63 +3,65 @@
   "workstream": "F-AHL",
   "work_unit": "F-AHL32",
   "phase": "BOUNDED_RUN_LIFETIME_REGISTRY_QUALIFIED",
-  "status": "PASS",
-  "workflow_run": 36080197438,
-  "workflow_job": 107900259323,
+  "status": "PASS_REPAIR",
+  "workflow_run": 36080869065,
+  "workflow_job": 107902315199,
   "registry": {
     "capacity_entries": 16384,
-    "entry_storage": "lazy allocated",
-    "lookup": "fingerprint-based open addressing with collision-safe exact-key verification",
-    "replacement": "none",
-    "full_registry_miss": "correct uncached build fallback"
+    "indexing": "mixed 64-bit fingerprint to power-of-two bucket with open-addressed linear probing",
+    "identity_authority": "full collision-safe exact-key equality",
+    "eviction": "none",
+    "full_registry_behavior": "valid uncached caller-owned build"
   },
-  "qualification": {
-    "stage1_10000_unique": {
-      "failures": 0,
-      "builds": 10000,
-      "hits": 0,
-      "misses": 10000,
-      "entries": 10000
-    },
-    "stage2_second_pass_same_10000": {
-      "failures": 0,
-      "cumulative_builds": 10000,
-      "cumulative_hits": 10000,
-      "cumulative_misses": 10000,
-      "entries": 10000,
-      "new_builds": 0,
-      "new_hits": 10000,
-      "new_misses": 0
-    },
-    "stage3_capacity_plus_one": {
-      "unique_requests": 16385,
-      "failures": 0,
-      "last_request_ok": true,
-      "last_request_hit": false,
-      "builds": 16385,
-      "hits": 0,
-      "misses": 16385,
-      "entries": 16384
-    },
-    "f_ahl29_regression_on_registry": {
-      "workflow_run": 36080174100,
-      "stage1_40_unique_failures": 0,
-      "stage1_entries": 40,
-      "stage2_10000_over_16_builds": 16,
-      "stage2_hits": 9984,
-      "status": "PASS"
-    }
+  "stage1_10000_unique": {
+    "failures": 0,
+    "builds": 10000,
+    "hits": 0,
+    "misses": 10000,
+    "entries": 10000,
+    "mean_probes": 1.8303,
+    "max_probes": 42,
+    "seconds_per_request": 1.3869368e-3
   },
-  "finding": "A bounded 16384-entry run-lifetime registry removes the 32-entry MultiSWAP working-set limitation. Ten thousand unique hydraulic authorities can be built once and reused exactly, while capacity overflow remains correctness-safe through the F-AHL29 uncached fallback.",
-  "memory_context": {
-    "F_AHL31_mean_payload_projection_10000_bytes": 46397500,
-    "F_AHL31_sample_max_payload_projection_10000_bytes": 54720000,
-    "F_AHL31_max_based_projection_16384_bytes": 89653248
+  "stage2_second_pass": {
+    "new_builds": 0,
+    "new_misses": 0,
+    "new_hits": 10000,
+    "entries": 10000,
+    "mean_probes": 1.8303,
+    "max_probes": 42,
+    "seconds_per_request": 1.0042e-6
   },
-  "nonclaims": [
-    "The registry qualification is synthetic and does not establish national MultiSWAP runtime.",
-    "Metadata and allocator overhead are additional to support-array payload.",
-    "No application speed claim follows from registry correctness alone."
+  "collision_gate": {
+    "forced_same_fingerprint_different_exact_key": true,
+    "exact_key_equal_precheck": false,
+    "builds": 2,
+    "hits": 1,
+    "misses": 2,
+    "entries": 2,
+    "verdict": "PASS"
+  },
+  "stage3_capacity_plus_one": {
+    "failures": 0,
+    "last_request_ok": true,
+    "last_request_hit": false,
+    "builds": 16385,
+    "hits": 0,
+    "misses": 16385,
+    "entries": 16384,
+    "full_miss_probes": 16384,
+    "verdict": "PASS_UNCACHED_FALLBACK"
+  },
+  "repair_findings": [
+    "Direct low-bit fingerprint indexing created a pathological maximum probe length of 413 at 10000 entries. Fingerprint bit mixing reduced the maximum to 42 while preserving exact identity.",
+    "The forced collision gate exposed an existing Fortran logical-precedence defect in exact-key equality: the ksatexm .eqv. expression lacked parentheses, allowing distinct keys with a common fingerprint to compare equal under the common false/false ksatexm case.",
+    "Explicit parenthesization of logical equivalence restored collision-safe exact-key authority."
   ],
-  "next_action": "Reconcile provider-local same-key memoization from F-AHL28B and then measure the combined lifecycle path rather than cache lookup in isolation."
+  "concurrency_boundary": "Current admitted multiworker physical route requires bottom_mode 7 while adaptive hydraulics is admitted only for bottom_mode 5; shared registry insertion is therefore outside the current admitted parallel overlap. Future overlap requires explicit synchronization qualification.",
+  "decision": "RETAIN_BOUNDED_RUN_LIFETIME_REGISTRY_AND_EXACT_KEY_PRECEDENCE_REPAIR",
+  "nonclaims": [
+    "No MultiSWAP application speedup is inferred from registry qualification.",
+    "No future parallel thread safety is claimed beyond the current non-overlapping admission envelopes.",
+    "No hydraulic representation or dry-tail policy was changed."
+  ]
 }
