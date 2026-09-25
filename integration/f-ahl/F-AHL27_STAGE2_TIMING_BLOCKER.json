@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_TIMING",
+  "phase": "FROZEN_FIXTURE_EXECUTED",
+  "status": "BLOCKED_BY_CANONICAL_TEMPORAL_ACCEPTANCE",
+  "workflow_run": 36078047458,
+  "analytical": {
+    "canonical_status": 2,
+    "completed": false,
+    "accepted_substeps": 0,
+    "retries": 8,
+    "solver_rejections": 0,
+    "temporal_rejections": 9,
+    "mass_rejections": 0
+  },
+  "adaptive": {
+    "canonical_status": 2,
+    "completed": false,
+    "accepted_substeps": 0,
+    "retries": 8,
+    "solver_rejections": 0,
+    "temporal_rejections": 9,
+    "mass_rejections": 0
+  },
+  "interpretation": "The preregistered h0=-75 cm to hbot=-50 cm full-half FMR fixture is not canonically accepted even for the analytical baseline. Therefore no application-level timing ratio can be interpreted from this fixture.",
+  "gate_policy": "Do not loosen temporal tolerance or alter the frozen fixture post hoc.",
+  "next_action": "Run a separately preregistered canonical fixture-qualification sweep using analytical acceptance only, then time the prospectively selected accepted nontrivial fixture."
+}
