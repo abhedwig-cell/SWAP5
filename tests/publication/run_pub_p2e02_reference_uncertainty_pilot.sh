@@ -68,6 +68,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
+  src/process/mod_irrigation_process.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
 

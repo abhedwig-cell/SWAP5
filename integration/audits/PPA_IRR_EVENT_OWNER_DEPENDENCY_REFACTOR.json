@@ -1,0 +1,11 @@
+{
+  "work_unit": "PPA-IRR-EVENT-OWNER",
+  "baseline": "d1f6ce128e66f7d9bddc39ad1acfe9182e530bca",
+  "status": "IMPLEMENTED_PENDING_CLEAN_VALIDATION",
+  "decision": "Locate ppa_irrigation_event_state_t, its clone, candidate validation and assembly beside the temporal parent in mod_fmr_serialized_reference_backend. Retain mod_ppa_irrigation_event_state as a compatibility re-export facade. The backend can subsequently use exact-type dispatch without importing a module that imports itself.",
+  "dependency": "The backend now explicitly imports the existing mod_irrigation_process. Compile it after mod_process_hydraulic_view and before the backend. Update explicit MODULE_SRC, REAL_SRC and RESTART_MODULES lists; remove the duplicate late process entry from the PowerShell owner runner. Historical reference hashes and admission assertions remain unchanged.",
+  "invariants": "State/parameter separation, single authoritative physical owner, deep clone and private temporal history remain unchanged. No generic inheritance admission, public history mutation, acceptance-threshold change, event scheduling or new owner.",
+  "scope": "Dependency placement only. Reserved layout 404101 is still not registered. Production dispatch and restart validation still reject it. The refactor is not completion of irrigation runtime integration.",
+  "validation_plan": "Clean owner build O0/O2, full transcript identity, active/inactive kernel checkpoint and invalid-payload gates, standard HydraulicCopy/guards, compilation-list ordering and shell syntax audit, documentation checks. Broader historical qualification is not claimed.",
+  "next": "Add explicit carrier temporal-history access and candidate materialization cases together with restricted restart matching; then accepted-only irrigation publication. Preserve BASE and fail closed until the required gates pass."
+}

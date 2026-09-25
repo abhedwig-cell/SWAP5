@@ -32,7 +32,7 @@ foreach ($source in $sourcePaths) {
 }
 $sourcePaths += @('src/adapter/mod_ppa_free_drainage_stiffness.f90', 'src/solver/mod_ppa_mvg_storage_difference.f90','src/adapter/mod_ppa_mvg_storage_binding.f90','src/adapter/mod_ppa_forcing_event_derivative.f90','src/adapter/mod_ppa_free_drainage_temporal_indicator.f90')
 $common = @($flags.Groups[1].Value -split '\s+' | Where-Object { $_ })
-$sourcePaths += @('src/process/mod_irrigation_process.f90','src/process/mod_ppa_irr_water_deficit.f90',
+$sourcePaths += @('src/process/mod_ppa_irr_water_deficit.f90',
     'src/process/mod_ppa_irr_dcs1_composition.f90','src/runtime/mod_ppa_irrigation_event_state.f90',
     'src/adapter/mod_ppa_irrigation_source_binding.f90')
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }

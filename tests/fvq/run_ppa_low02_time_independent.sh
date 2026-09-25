@@ -116,6 +116,7 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_table_provider.f90
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
+  src/process/mod_irrigation_process.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
 
