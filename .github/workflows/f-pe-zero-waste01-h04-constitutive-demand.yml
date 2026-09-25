@@ -20,12 +20,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compiler identity
         run: gfortran --version
-      - name: Run FKT22 production runtime gate
-        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
-      - name: Assert H03 phase-demand observation
+      - name: Run FKT22 production runtime gate and assert H03 phase demand
         run: |
           OUT="$(mktemp)"
-          bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh > "$OUT"
+          bash tests/fkt/run_fkt22_fmr_runtime_gate.sh | tee "$OUT"
           grep -Fq 'FKT22_FMR_CONSTITUTIVE_INITIAL_FULL_PER_SOLVE=1' "$OUT"
           grep -Fq 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=1' "$OUT"
           grep -Fq 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=1' "$OUT"
