@@ -1,0 +1,25 @@
+name: F-AHL41 prescribed qbot falsification
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl41_prescribed_qbot.f90'
+      - 'research/ahl/run_ahl41_prescribed_qbot.sh'
+      - 'integration/f-ahl/F-AHL41_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl41-prescribed-qbot.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run prescribed-qbot Richards matrix
+        run: |
+          bash research/ahl/run_ahl41_prescribed_qbot.sh /tmp/ahl41_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl41-${{ github.run_id }}
+          path: /tmp/ahl41_result.txt
