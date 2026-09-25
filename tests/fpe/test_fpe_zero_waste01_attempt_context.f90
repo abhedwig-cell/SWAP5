@@ -69,6 +69,27 @@ program test_fpe_zero_waste01_attempt_context
   seconds=real(c1-c0,real64)/real(rate,real64)
   call emit('inactive_capture_context',seconds,checksum)
 
+  ! Restore-only cost for the inactive specialized context. This mirrors the
+  ! serialized restore path after a context has already been captured.
+  allocate(mirror_attempt_context_t :: context)
+  checksum=0_int64
+  call system_clock(c0,rate)
+  do i=1_int64,reps
+    select type (typed => context)
+    type is (mirror_attempt_context_t)
+      call typed%bottom_thermal_carrier%restore_from(bottom_source)
+      call typed%top_sensible_boundary_carrier%restore_from(top_source)
+      typed%trajectory_direction=trajectory_source
+      if (typed%bottom_thermal_valid .and. typed%top_sensible_boundary_valid) checksum=checksum+1_int64
+    class default
+      error stop 'attempt context restore wrong dynamic type'
+    end select
+  end do
+  call system_clock(c1)
+  deallocate(context)
+  seconds=real(c1-c0,real64)/real(rate,real64)
+  call emit('inactive_restore_context',seconds,checksum)
+
   if(checksum /= reps) error stop 'attempt context checksum mismatch'
   print '(a)', 'FPE_ZERO_WASTE01_ATTEMPT_CONTEXT=PASS'
 
