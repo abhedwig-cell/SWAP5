@@ -27,6 +27,17 @@ module mod_contextual_transaction_test
     procedure :: restore_attempt_context => contextual_restore
   end type contextual_model_t
 
+  type, extends(transaction_model_t), public :: context_free_model_t
+    integer :: capture_count = 0
+  contains
+    procedure :: advance => context_free_advance
+    procedure :: storage => context_free_storage
+    procedure :: temporal_error => context_free_temporal_error
+    procedure :: storage_accounting_status => context_free_storage_accounting_status
+    procedure :: attempt_context_required => context_free_attempt_context_required
+    procedure :: capture_attempt_context => context_free_capture
+  end type context_free_model_t
+
 contains
 
   subroutine clone_context_state(self, copy)
@@ -110,6 +121,83 @@ contains
     missing_mask = TX_MASS_MISSING_NONE
   end subroutine contextual_storage_accounting_status
 
+  logical function context_free_attempt_context_required(self) result(required)
+    class(context_free_model_t), intent(in) :: self
+    if (self%capture_count < 0) error stop 'unreachable context-free model state'
+    required = .false.
+  end function context_free_attempt_context_required
+
+  subroutine context_free_capture(self, context)
+    class(context_free_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), allocatable, intent(out) :: context
+    self%capture_count = self%capture_count + 1
+    allocate(transaction_attempt_context_t :: context)
+  end subroutine context_free_capture
+
+  subroutine context_free_advance(self, state, t0, t1, outcome)
+    class(context_free_model_t), intent(inout) :: self
+    class(transaction_state_t), intent(inout) :: state
+    real(real64), intent(in) :: t0, t1
+    type(trial_outcome_t), intent(out) :: outcome
+    real(real64) :: delta
+    if (self%capture_count < 0) error stop 'unreachable context-free model state'
+    outcome = trial_outcome_t()
+    delta = t1-t0
+    select type (state)
+    type is (context_state_t)
+      state%water = state%water - delta
+    class default
+      error stop 'unexpected context-free state'
+    end select
+    outcome%mass_out = delta
+    outcome%mass_accounting_complete = .true.
+    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
+    outcome%solver_ok = .true.
+  end subroutine context_free_advance
+
+  function context_free_storage(self, state) result(value)
+    class(context_free_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    real(real64) :: value
+    if (self%capture_count < 0) error stop 'unreachable context-free model state'
+    select type (state)
+    type is (context_state_t)
+      value = state%water
+    class default
+      error stop 'unexpected context-free state'
+    end select
+  end function context_free_storage
+
+  subroutine context_free_storage_accounting_status(self, state, complete, missing_mask)
+    class(context_free_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+    if (self%capture_count < 0 .or. .not. same_type_as(state,state)) error stop 'unreachable context-free accounting'
+    complete = .true.
+    missing_mask = TX_MASS_MISSING_NONE
+  end subroutine context_free_storage_accounting_status
+
+  function context_free_temporal_error(self, full_state, half_state) result(value)
+    class(context_free_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    real(real64) :: value, a, b
+    if (self%capture_count < 0) error stop 'unreachable context-free model state'
+    select type (full_state)
+    type is (context_state_t)
+      a = full_state%water
+    class default
+      error stop 'unexpected context-free full state'
+    end select
+    select type (half_state)
+    type is (context_state_t)
+      b = half_state%water
+    class default
+      error stop 'unexpected context-free half state'
+    end select
+    value = abs(a-b)
+  end function context_free_temporal_error
+
   function contextual_temporal_error(self, full_state, half_state) result(value)
     class(contextual_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
@@ -139,6 +227,7 @@ program test_transaction_attempt_context
   implicit none
   class(transaction_state_t), allocatable :: state
   type(contextual_model_t) :: model
+  type(context_free_model_t) :: context_free_model
   type(transaction_policy_t) :: policy
   type(transaction_result_t) :: result
 
@@ -179,6 +268,24 @@ program test_transaction_attempt_context
   end select
   if (model%legacy_counter /= 0) error stop 'rejected attempt context leaked'
   if (model%capture_count /= 2) error stop 'rejected route performed redundant context capture'
+
+  deallocate(state)
+  allocate(context_state_t :: state)
+  select type (state)
+  type is (context_state_t)
+    state%water = 10.0_real64
+  end select
+  model%inject_mass_defect = .false.
+  call execute_reference_interval(context_free_model, state, 0.0_real64, 1.0_real64, policy, result)
+  if (result%status /= TX_STATUS_ACCEPTED) error stop 'context-free transaction not accepted'
+  select type (state)
+  type is (context_state_t)
+    if (abs(state%water-9.0_real64) > 1.0e-14_real64) error stop 'context-free accepted state wrong'
+  class default
+    error stop 'context-free state type lost'
+  end select
+  if (context_free_model%capture_count /= 0) error stop 'context-free route captured attempt context'
+  print *, 'FPE_ZERO_WASTE01_HCTX02_ZERO_CONTEXT PASS'
 
   print *, 'FPE_ZERO_WASTE01_HCTX01_CAPTURE_COUNT PASS'
   print *, 'FCI08_TRANSACTION_ATTEMPT_CONTEXT PASS'

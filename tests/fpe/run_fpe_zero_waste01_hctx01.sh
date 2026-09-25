@@ -13,6 +13,7 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     src/transaction/mod_transaction_reference.f90     tests/transaction/test_transaction_attempt_context.f90     -o "$OUT/test"
   "$OUT/test" > "$OUT/out.txt"
   grep -Fq 'FPE_ZERO_WASTE01_HCTX01_CAPTURE_COUNT PASS' "$OUT/out.txt"
+  grep -Fq 'FPE_ZERO_WASTE01_HCTX02_ZERO_CONTEXT PASS' "$OUT/out.txt"
   grep -Fq 'FCI08_TRANSACTION_ATTEMPT_CONTEXT PASS' "$OUT/out.txt"
   echo "FPE_ZERO_WASTE01_HCTX01_O${opt}=PASS"
 done

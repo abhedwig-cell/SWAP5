@@ -432,6 +432,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: storage => fmr_serialized_storage
     procedure :: storage_accounting_status => fmr_serialized_storage_accounting_status
     procedure :: temporal_error => fmr_serialized_temporal_identity
+    procedure :: attempt_context_required => fmr_serialized_attempt_context_required
     procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
     procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
     procedure :: accepted_trajectory_direction_snapshot => fmr_serialized_accepted_trajectory_direction_snapshot
@@ -1371,6 +1372,14 @@ contains
     type(fmr_serialized_physical_observation_t) :: obs
     obs = self%model%last_observation
   end function fmr_serialized_backend_observation
+
+  logical function fmr_serialized_attempt_context_required(self) result(required)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+
+    required = self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+         self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
+         self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
+  end function fmr_serialized_attempt_context_required
 
   subroutine fmr_serialized_capture_attempt_context(self, context)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
