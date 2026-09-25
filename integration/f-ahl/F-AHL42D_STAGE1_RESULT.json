@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42D",
+  "phase": "STAGE1_GLOBAL_K_2E4_COMPLETE",
+  "status": "FAIL_107_OF_108",
+  "workflow_run": 36114632372,
+  "workflow_job": 108005705875,
+  "candidate": {
+    "global_abs_logK_tolerance": 2e-4,
+    "wet_abs_logK_tolerance": 3e-4
+  },
+  "matrix": {
+    "pass_count": 107,
+    "fail_count": 1,
+    "total_count": 108,
+    "all_passing_cases_preserved_analytical_iteration_and_backtracking_path": true,
+    "only_failure": {
+      "case": "O17:dry",
+      "max_abs_pressure_head_delta_cm": 0.004661728,
+      "max_abs_water_content_delta": 1.251770e-6,
+      "top_flux_delta_cm_per_day": 0.0,
+      "bottom_flux_delta_cm_per_day": 1.329480e-5,
+      "mass_residual_abs_cm": 9.887924e-17,
+      "nonlinear_iteration_delta": 0,
+      "backtracking_delta": 0,
+      "failed_gate": "bottom_flux_delta_cm_per_day <= 1e-5"
+    }
+  },
+  "prior_failure_reconciliation": {
+    "O09_dry_at_3e4_bottom_flux_delta": 1.039457e-5,
+    "O09_dry_at_2e4_bottom_flux_delta": 1.374285e-6,
+    "status": "CLOSED"
+  },
+  "decision_rule_application": "2e-4 is not admitted because it is not 108/108. Advance to the prospectively listed 1e-4 global K tolerance without changing any physical or response gate.",
+  "next_candidate_global_abs_logK_tolerance": 1e-4,
+  "nonclaims": [
+    "No response gate is relaxed.",
+    "No performance claim follows from this fidelity matrix.",
+    "No canonical admission follows from 107/108."
+  ]
+}
