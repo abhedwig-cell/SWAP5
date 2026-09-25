@@ -1,53 +1,60 @@
-# F-AHL49 — production-shaped direct-retention extraction status
+# F-AHL49 — production-shaped direct-retention extraction closeout
 
 Date: 2026-09-25
 
-Status: `QUALIFICATION_PENDING_RUNNER_CAPACITY`
+Status: `READY_ADMISSION_CANDIDATE`
 
-Parent authority: F-AHL48 closed shared immutable ownership, 128 intervals per decade.
+PR: #619
 
-PR: #619.
+Current head: `fb8e4cf02f91d684d0073b6606eb181ce4eedd1a`
 
-Current head: `ce358bf43cab29d6c647a400078df55d80d11f2b`.
+Parent authority: F-AHL48 closed shared immutable ownership, resolution 128 intervals per decade.
 
-## Production-shaped architecture
+## Verdict
 
-F-AHL49 extracts the F-AHL48 direct-retention architecture into production modules.
+`F-AHL49 = READY_ADMISSION_CANDIDATE_OPT_IN`
+
+The production-shaped direct-retention architecture is qualified for an explicit opt-in admission decision inside its bounded envelope.
+
+It is not default-enabled and this closeout does not broaden the qualified physics envelope.
+
+## Production architecture
 
 Representation:
 
 - 128 intervals per decade over |h| = 1..1e6 cm;
-- direct decade selection;
-- direct interval arithmetic;
+- direct decade selection and direct interval arithmetic;
 - cubic Hermite theta representation;
 - C is the exact derivative of the same interpolant;
 - full hydraulic evaluation remains analytical;
 - K and point conductivity remain analytical;
 - analytical fallback outside the represented head domain.
 
-Routing is explicit opt-in and default OFF.
+Routing:
+
+- explicit opt-in only;
+- default OFF;
+- unsupported compositions fail closed.
 
 ## Ownership lifecycle
 
-The production-shaped representation pool is shared by exact hydraulic authority.
+The representation pool is shared by exact homogeneous hydraulic authority.
 
-Build/acquire occurs during parameter preprocessing. The persistent parameter object stores only the prepared representation slot. Trial-time provider binding receives that slot directly and performs no authority lookup or representation build in the solve hot path.
+Build/acquire occurs during persistent parameter preprocessing. The prepared integer slot is stored with the physical parameters. Trial-time provider binding receives that slot directly and performs no authority search or table build in the solve hot path.
 
-The first production extraction supports one active direct-retention application owner at a time:
+Supported production lifecycle:
 
 `single application owner -> serial acquire/build -> freeze -> immutable reads -> close`
 
-A second opt-in application while the first owner is alive must fail closed.
+The first extraction admits at most one active direct-retention production application owner at a time.
 
-The public research/test reset cannot clear the pool while an application owner is active.
+A second opt-in owner while the first is active fails closed. Closing the active owner releases and clears the pool so a later application can initialize safely.
 
-Application close releases the owner and clears the pool, after which a later application may initialize safely.
+Concurrent immutable reads are inherited from F-AHL48; concurrent pool mutation is not admitted.
 
-This singleton-owner boundary is explicit and intentional. Multi-application shared ownership is not admitted by F-AHL49.
+## Qualified envelope
 
-## Initial envelope
-
-Direct-retention routing is admitted for qualification only when all of the following hold:
+Required:
 
 - default B1.10 MvG hydraulic authority;
 - hydraulically homogeneous active profile;
@@ -57,7 +64,7 @@ Direct-retention routing is admitted for qualification only when all of the foll
 - no hysteresis;
 - no KSATEXM extension.
 
-The following remain outside the F-AHL49 envelope:
+Explicitly outside F-AHL49:
 
 - prescribed qbot;
 - standalone mode 7;
@@ -67,90 +74,176 @@ The following remain outside the F-AHL49 envelope:
 - tabulated hydraulics;
 - hysteresis;
 - default-on behavior;
-- analytical K replacement.
+- replacement of analytical K;
+- practical/approximate tolerance changes.
 
-Unsupported opt-in preprocessing must return not-prepared and leave `prepared_direct_retention_slot = 0`.
+## Derivative consistency and MODFLOW response tangent
 
-## Inherited evidence
+The production direct-retention provider now exposes accepted-step directional capability consistent with the actual constitutive route.
 
-F-AHL47 research provider:
+Within the represented domain:
 
-- 12/12 B01/B12/O05/O14 × wet/mid/dry path-identical;
-- 12/12 speed-positive;
-- median current-postimage solver ratio about 0.737.
+`dtheta = C_direct * dh`
 
-F-AHL48 shared immutable ownership:
+where `C_direct` is the exact derivative of the same cubic Hermite theta interpolant used by the physical solve.
 
-- 128 intervals/decade passes the same 12-case matrix;
-- raw theta+C payload = 12,384 bytes per unique hydraulic authority;
-- 10,000 same-authority providers share one table;
-- frozen OpenMP reads qualified;
-- shared-provider 12-case median ratio about 0.725.
+K remains analytical in F-AHL49, so conductivity directional sensitivity continues to use the analytical B1.10 MvG capability.
 
-These are prerequisite research authorities, not substitutes for F-AHL49 production-module qualification.
+Outside the represented theta/C domain, the directional route falls back to the analytical B1.10 capability.
 
-## F-AHL49 gates
+The accepted-trajectory directional service explicitly recognizes the direct-retention provider for:
 
-The following current-head workflows are authoritative once executed:
+- base-state constitutive direction;
+- accepted-state water-content direction;
+- MODFLOW-coupling response tangent publication.
 
-1. `F-AHL49 provider extraction`
-   - production provider semantics and pool ownership.
+This closes the production application response-tangent boundary discovered during F-GC49D qualification.
 
-2. `F-AHL49 default-off preservation`
-   - existing production application behavior remains unchanged with the feature OFF.
+## Production provider qualification
 
-3. `F-AHL49 application opt-in`
-   - production bootstrap can initialize, execute, commit and close the bounded direct-retention profile.
+Provider extraction: PASS.
 
-4. `F-AHL49 production provider matrix`
-   - production modules replay the 12-case fidelity/path matrix and paired timing.
+Current authority payload:
 
-5. `F-AHL49 fail-closed envelope`
-   - unsupported compositions do not retain prepared slots.
+- entries = 1;
+- builds = 1;
+- exact-key reuse hit = 1 in the provider gate;
+- raw theta+C payload = 12,384 bytes per unique hydraulic authority.
 
-6. `F-AHL49 application scale qualification`
-   - paired analytical/direct application initialization and interval timing at N=1,100,1000,10000;
-   - solver counters and mass remain aligned;
-   - same-authority opt-in uses exactly one 12,384-byte representation.
+The provider gate also qualifies the direct-retention directional capability.
 
-7. `F-AHL49 multi-application ownership`
-   - active-owner reset protection;
-   - second direct-retention owner rejected;
-   - first owner slot remains stable;
-   - new owner allowed after close.
+## 12-case production matrix
 
-8. Existing PPA-WU01 and relevant inherited integration gates
-   - manual compile closures include the new production modules;
-   - no default-off or application-owner regression.
+Matrix:
 
-## Current blocker
+- materials: B01, B12, O05, O14;
+- states: wet, mid, dry;
+- total: 12 cases.
 
-The current-head qualification jobs are queued in GitHub Actions and have not started.
+Result:
 
-This is a runner-capacity blocker only. It is not numerical evidence and must not be treated as a pass or failure.
+- fidelity/path PASS: 12/12;
+- nonlinear iteration deltas: 0/12;
+- backtracking deltas: 0/12;
+- speed-positive: 12/12;
+- speed-negative: 0/12.
 
-No additional production-code changes are justified until these current-head gates execute.
+Representative maximum observed deltas across the current matrix remain very small:
 
-## Admission rule
+- max |dh| approximately 1.05e-6 cm;
+- max |dtheta| approximately 7.25e-11;
+- mass residuals remain near machine precision.
 
-F-AHL49 may become a production admission candidate only when:
+Current-postimage paired timing:
 
-- all F-AHL49-specific gates pass on the same current head;
-- the large-N application gate confirms ownership and bounded setup cost;
-- the production 12-case matrix retains path/fidelity and material timing benefit;
-- default-off preservation passes;
-- inherited integration failures, if any, are reconciled as either F-AHL49-caused or external.
+- median candidate/analytical ratio: `0.849161499`;
+- minimum case ratio: `0.762394712`;
+- maximum case ratio: `0.971639657`;
+- positive cases: 12;
+- negative cases: 0.
 
-Until then:
+Interpretation:
 
-`F-AHL49 = NOT_ADMITTED_QUALIFICATION_PENDING`
+- median solver reduction is approximately 15.1%;
+- every matrix case remains speed-positive;
+- exact nonlinear/backtracking path is retained.
 
-## Next decision
+## Large-N application setup / ownership qualification
 
-If all gates pass:
+The scale gate measures production application initialization, shared representation ownership and memory scaling at:
 
-`F-AHL49 -> READY_ADMISSION_CANDIDATE`
+- N=1;
+- N=100;
+- N=1,000;
+- N=10,000.
 
-If any gate fails:
+Paired median direct/analytical initialization ratios:
 
-repair only the demonstrated failure and rerun the affected qualification boundary. Do not broaden physics or routing scope.
+- N=1: `4.115531093`;
+- N=100: `1.385333022`;
+- N=1,000: `1.100183655`;
+- N=10,000: `1.034537972`.
+
+Interpretation:
+
+- N=1 is dominated by the one-time table build;
+- setup overhead rapidly amortizes;
+- at N=10,000 the direct-retention setup overhead is approximately 3.45%.
+
+For a repeated single hydraulic authority:
+
+- unique representation entries = 1;
+- builds = 1;
+- hits = N-1;
+- payload = 12,384 bytes;
+- pool frozen before execution.
+
+Memory therefore scales with unique hydraulic authorities, not number of columns.
+
+## Default-off and fail-closed behavior
+
+PASS:
+
+- default-off production behavior is preserved;
+- unsupported opt-in combinations leave no valid prepared direct-retention slot;
+- second concurrent application owner is rejected;
+- active-owner reset is blocked;
+- first-owner slot remains stable;
+- a later owner can initialize after close.
+
+## Production groundwater application qualification
+
+The final application gate uses the existing F-GC49D production application context rather than an invalid standalone mode-5 execution path.
+
+Qualified behavior includes:
+
+- real production participant handles;
+- F-GC49D plan/context materialization;
+- direct-retention preprocessing and frozen ownership;
+- accepted-trajectory response tangent available;
+- two coupling iterations in the deterministic service;
+- real SWAP trial/corrector execution;
+- relinearization;
+- SWAP preflight;
+- external ledger preflight;
+- three real SWAP commits;
+- three real ledger commits;
+- one-window context reuse fails closed;
+- stale context handle fails closed;
+- O0/O2 stable output identity.
+
+Current-head application opt-in workflow: PASS.
+
+## Reconciled qualification failures
+
+Several intermediate red runs were harness or qualification-boundary defects and are not production failures:
+
+1. mode-5 groundwater applications were initially exercised incorrectly through `run_standalone()`;
+2. a generated runner lost its repository root after relocation;
+3. the F-GC49D Python test dependency `python3-numpy` was initially absent;
+4. compile lists initially ordered the direct-retention provider before its new directional dependency;
+5. the opt-in wrapper wrote and grepped different temporary output filenames.
+
+The real application-level gap discovered during this process was missing accepted-step directional support for the direct-retention constitutive provider. That gap was repaired in production code and subsequently qualified by provider and F-GC49D application gates.
+
+## Admission boundary
+
+F-AHL49 is ready for an admission decision as an opt-in production feature inside the exact bounded envelope above.
+
+This closeout does not authorize:
+
+- default-on activation;
+- qbot routing;
+- heterogeneous/layered hydraulic authorities;
+- SWKIMPL=1;
+- KSATEXM;
+- hysteresis;
+- tabulated hydraulics;
+- replacement of analytical K;
+- practical/approximate error budgets.
+
+Recommended admission state:
+
+`F-AHL49 = READY_ADMISSION_CANDIDATE_OPT_IN`
+
+A separate canonical admission step should preserve the same envelope and default-OFF policy.
