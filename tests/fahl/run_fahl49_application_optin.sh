@@ -86,12 +86,12 @@ src=src.replace(needle,insert,1)
 Path(sys.argv[1]).write_text(src)
 PY
 
-python3 - "$TMP_RUN" "$TMP_FIX" <<'PY'
+python3 - "$TMP_RUN" "$TMP_FIX" "$TMP_PY" <<'PY'
 from pathlib import Path
 import sys
 runner=Path("tests/fgc/run_fgc49d_production_application_context.sh").read_text()
 runner=runner.replace("tests/fgc/support/mod_fgc49d_application_context_fixture.f90",sys.argv[2])
-runner=runner.replace("tests/fgc/test_fgc49d_production_application_context.py","$TMP_PY")
+runner=runner.replace("tests/fgc/test_fgc49d_production_application_context.py",sys.argv[3])
 provider_needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
 directional_needle="  src/solver/mod_b110_default_mvg_directional_provider.f90\n"
 if "src/solver/mod_b110_direct_retention_core.f90" not in runner:
