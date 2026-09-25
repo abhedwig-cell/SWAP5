@@ -31,11 +31,12 @@
     "qualified_route": "Reference Richards",
     "qualified_bottom_mode": 5,
     "prescribed_qbot": "authoritative analytical fallback",
-    "accepted_trajectory": "authoritative analytical fallback",
+    "accepted_trajectory": "authoritative analytical fallback for qbot and prescribed-head requests; prescribed-head route repaired after static governance review",
     "heterogeneous_profiles": "authoritative analytical fallback; zero adaptive-cache activity",
     "ksatexm_extension": "outside admitted AHL envelope; profile-supported predicate false; direct adaptive bind fails closed; zero adaptive-cache activity",
     "swkimpl1_dkdh": "outside admitted AHL envelope",
-    "vapor_enabled_pdi": "outside admitted AHL envelope"
+    "vapor_enabled_pdi": "outside admitted AHL envelope",
+    "prescribed_head_trajectory": "authoritative analytical fallback; AHL bind/routing explicitly disabled when accepted trajectory is requested; dedicated cache-zero regression added"
   },
   "dry_domain_authority": {
     "raw_capacity_relevance_floor": 1e-13,
@@ -55,7 +56,10 @@
     "Candidate is a clean canonical-derived extraction, not a wholesale merge of the research branch.",
     "No production-code scope broadening was found beyond the bounded provider and explicit runtime routing.",
     "Non-AHL script modifications are compile/preservation plumbing needed because the new provider modules are dependencies of the serialized backend.",
-    "Unsupported profile, lower-boundary and KSATEXM variants fail closed to analytical hydraulics."
+    "Unsupported profile, lower-boundary and KSATEXM variants fail closed to analytical hydraulics.",
+    "Static review found an admitted-scope leak: prescribed-head accepted-trajectory requests could inherit the adaptive constitutive provider because the earlier fallback oracle covered qbot only.",
+    "Repair on review branch requires no accepted-trajectory request for AHL bind and request routing; a valid prescribed-head trajectory oracle now requires zero AHL cache activity.",
+    "Candidate gate is fail-closed with pipefail for every piped runner."
   ],
   "current_blocker": {
     "type": "EXACT_HEAD_FAIL_CLOSED_CI_PENDING",
@@ -63,11 +67,11 @@
     "candidate_head": "1739a0afc6fb294bc077528bc00d7dc63b5ac7d8",
     "candidate_gate_status": "queued",
     "candidate_gate_conclusion": null,
-    "candidate_head_delta": "Test-only correction: prescribed-head accepted-trajectory fallback oracle now supplies the valid bottom-flux control coordinate. Production admission semantics unchanged.",
-    "fail_closed_authority": "Candidate workflow uses set -o pipefail for piped gates; runners use explicit nonzero failure paths.",
-    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36129317371 on exact head 1739a0afc6fb294bc077528bc00d7dc63b5ac7d8 completes successfully and all bounded fallback/admission gates pass fail-closed."
+    "candidate_head_delta": "Adds the prescribed-head accepted-trajectory analytical fallback repair and a valid SW_STEP_CONTROL_BOTTOM_FLUX regression oracle, then gates it fail-closed in the canonical candidate workflow.",
+    "fail_closed_authority": "Candidate workflow uses set -o pipefail for piped gates; dedicated runners use set -euo pipefail and explicit nonzero failure paths.",
+    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36129317371 on exact head 1739a0afc6fb294bc077528bc00d7dc63b5ac7d8 completes successfully and its logs confirm all bounded AHL gates execute and pass."
   },
-  "decision": "NO_NEW_RESEARCH_BLOCKER; CURRENT EXACT-HEAD CANDIDATE IS SCOPE-BOUNDED; ADMISSION PENDING ONLY CURRENT-HEAD CI",
+  "decision": "NO_OPEN_SCIENTIFIC_BLOCKER; ONE TRAJECTORY SCOPE LEAK FOUND AND REPAIRED; EXACT-HEAD ADMISSION CI STILL PENDING",
   "parallelism_boundary": {
     "current_serialized_multiswap_execution": "fmr_run_serialized_physical_multiswap executes columns serially in the current canonical architecture",
     "shared_cache_thread_safety": "NOT_QUALIFIED_FOR_CONCURRENT_MUTATION",
