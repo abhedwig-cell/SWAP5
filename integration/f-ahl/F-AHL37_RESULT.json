@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL37",
+  "phase": "IMMUTABLE_HANDLE_POTENTIAL_CHARACTERIZATION_COMPLETE",
+  "status": "OWNERSHIP_REPAIR_JUSTIFIED",
+  "workflow_run": 36103286840,
+  "workflow_job": 107970228280,
+  "paired_slot_over_copy_ratios": [0.324079,0.352944,0.344393,0.349445,0.332154,0.356887,0.339734,0.345342,0.337810],
+  "median_slot_over_copy_ratio": 0.344393,
+  "median_copy_elimination_fraction": 0.655607,
+  "decision_rule": {
+    "ownership_repair_justified_below_ratio": 0.75
+  },
+  "decision": "ADVANCE_TO_STABLE_REGISTRY_SLOT_HANDLE_REPAIR",
+  "finding": "Returning only the collision-safe stable registry slot for a warm exact-key hit is roughly three times cheaper than current lookup plus intrinsic deep assignment of the immutable adaptive table. The measured gap is large enough to justify a bounded handle-based provider repair.",
+  "repair_direction": [
+    "Use integer stable registry slot handles, not raw pointers.",
+    "Registry entries remain immutable and non-evicting.",
+    "Warm hits bind by slot without copying support arrays.",
+    "Cache misses and full-registry fallback retain the existing caller-owned table path.",
+    "Exact-key identity and analytical fallback semantics remain authoritative."
+  ],
+  "nonclaims": [
+    "This is a cache-operation microbenchmark, not an application speed claim.",
+    "No provider handle repair is admitted by F-AHL37 itself."
+  ]
+}
