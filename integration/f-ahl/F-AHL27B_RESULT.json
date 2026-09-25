@@ -3,25 +3,31 @@
   "workstream": "F-AHL",
   "work_unit": "F-AHL27B",
   "phase": "CANONICAL_TIMING_FIXTURE_QUALIFICATION_COMPLETE",
-  "status": "BLOCKED_NO_ACCEPTED_NONTRIVIAL_FIXTURE",
+  "status": "BLOCKED_NO_ACCEPTED_PREREGISTERED_FIXTURE",
   "workflow_run": 36078305485,
-  "fixed_context": {
-    "initial_head_cm": -75.0,
-    "duration_day": 0.25,
-    "bottom_mode": 5,
-    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
-    "temporal_tolerance": 1e-6
-  },
-  "candidates": [
-    {"hbot_cm":-74.999,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
-    {"hbot_cm":-74.99,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
-    {"hbot_cm":-74.9,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
-    {"hbot_cm":-74.0,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
-    {"hbot_cm":-70.0,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0},
-    {"hbot_cm":-50.0,"status":2,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"mass_rejections":0}
+  "workflow_job": 107894369520,
+  "candidate_results": [
+    {"bottom_head_cm":-74.999,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"temporal_rejections":9,"mass_rejections":0},
+    {"bottom_head_cm":-74.99,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"temporal_rejections":9,"mass_rejections":0},
+    {"bottom_head_cm":-74.9,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"temporal_rejections":9,"mass_rejections":0},
+    {"bottom_head_cm":-74.0,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"temporal_rejections":9,"mass_rejections":0},
+    {"bottom_head_cm":-70.0,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"temporal_rejections":9,"mass_rejections":0},
+    {"bottom_head_cm":-50.0,"completed":false,"accepted_substeps":0,"retries":8,"solver_rejections":0,"temporal_rejections":9,"mass_rejections":0}
   ],
-  "finding": "No preregistered nontrivial prescribed-head perturbation is canonically accepted under the frozen full-half temporal policy. The failure is temporal/transactional, not solver or mass-balance related.",
-  "consequence": "F-AHL27 application-level paired timing cannot be qualified in this canonical synthetic context without changing the transaction policy or inventing a new accepted fixture. Neither is permitted post hoc.",
-  "retained_evidence": "F-AHL09R and F-AHL16 already provide robust complete-Richards timing evidence below the FMR transaction layer.",
-  "production_decision": "DO_NOT_DEFAULT_ON_OR_CANONICALLY_ADMIT_F_AHL27_YET"
+  "structural_diagnosis": {
+    "source": "src/runtime/mod_fmr_serialized_reference_backend.f90::fmr_serialized_temporal_identity",
+    "external_full_half_semantics": "For the base physical state, the temporal error is zero only if the full-step and two-half-step pressure-head and water-content states are exactly equal; otherwise it is huge().",
+    "implication": "A nontrivial prescribed-head perturbation is not a suitable timing fixture under this frozen external-full-half policy. Perturbation magnitude does not repair the acceptance route."
+  },
+  "governance": [
+    "No additional bottom-head candidates may be inserted after the preregistered sweep.",
+    "Do not loosen temporal tolerance.",
+    "Do not select a fixture using adaptive outcome or speed.",
+    "Application-level paired timing remains blocked unless an independently qualified prescribed-head serialized fixture with compatible temporal semantics already exists."
+  ],
+  "performance_evidence_retained": [
+    "F-AHL09R/F-AHL20 lower-level paired Richards timing remains valid lower-level evidence.",
+    "No application-level speed claim is made from the blocked F-AHL27 timing gate."
+  ],
+  "decision": "CLOSE_F_AHL27B_AS_STRUCTURAL_FIXTURE_BLOCKER"
 }
