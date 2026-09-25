@@ -1,0 +1,28 @@
+name: F-AHL canonical admission
+
+on:
+  push:
+    branches:
+      - admission/f-ahl-prescribed-head
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fahl/**'
+      - '.github/workflows/f-ahl-canonical-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  bounded-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production-shaped provider extraction
+        run: bash tests/fahl/run_fahl27_production_provider_extract.sh
+      - name: Prescribed-head 12-case fidelity matrix
+        run: bash tests/fahl/run_fahl27_stage2_matrix.sh
+      - name: Prescribed-qbot analytical fallback
+        run: bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
+      - name: O05 dry-tail analytical fallback
+        run: bash tests/fahl/run_fahl27a_production_dry_tail.sh
+      - name: Same-key provider memoization
+        run: bash tests/fahl/run_fahl28b_same_key_memoization.sh
