@@ -111,8 +111,9 @@ program test_ppa_free_drainage_owner
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
   call get_command_argument(1,test_scope)
-  if(trim(test_scope)=='--hydraulic-copy'.or.trim(test_scope)=='--irrigation-source') then
-    if(trim(test_scope)=='--irrigation-source') then
+  if(trim(test_scope)=='--hydraulic-copy'.or.trim(test_scope)=='--irrigation-source'.or. &
+       trim(test_scope)=='--irrigation-half-source') then
+    if(trim(test_scope)/='--hydraulic-copy') then
       config%storage_difference => evaluate_mvg_storage_difference_service
       config%numerical%transaction%retry_scale=0.8_real64
       config%numerical%transaction%max_retries=64
@@ -192,7 +193,9 @@ contains
     type(fmr_b110_physical_forcing_t),allocatable::bound_forcing
     type(fmr_serialized_column_result_t),allocatable::irrigation_result(:)
     type(fmr_serialized_column_result_t),allocatable::continued_result(:)
-    real(real64),parameter::irrigation_dt=1.0_real64/1024.0_real64
+    real(real64)::irrigation_dt
+    irrigation_dt=1.0_real64/1024.0_real64
+    if(trim(test_scope)=='--irrigation-half-source') irrigation_dt=0.5_real64*irrigation_dt
     control_forcing(1)=profile%tiles(1)%base_forcing
     control_forcing(1)%subsurface_irrigation_source=0.0_real64
     control_forcing(1)%temporal_forcing_event=.true.
@@ -537,7 +540,7 @@ contains
       if(again(tile)%revision/=copied(tile)%revision) error stop 'hydraulic copy revision'
       if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) error stop 'hydraulic copy time'
     end do
-    if(trim(test_scope)=='--irrigation-source') then
+    if(trim(test_scope)=='--irrigation-source'.or.trim(test_scope)=='--irrigation-half-source') then
       irrigation%depth_limit_enabled=.true.
       irrigation%minimum_depth_mm=0.01_real64*irrigation_dt*10.0_real64
       irrigation%maximum_depth_mm=irrigation%minimum_depth_mm
@@ -639,6 +642,13 @@ contains
       ! A half-length first window is tracked separately as a numerical failure.
       midpoint=request%t1
       call owner%run_standalone_with_forcing(request%t0,midpoint,irrigation_forcing,irrigation_result,code)
+      write(*,*) 'IRRIGATION_FIRST_WINDOW',irrigation_dt,code,irrigation_result%kernel_status
+      do tile=1,NTILE
+        write(*,*) 'IRRIGATION_FIRST_REJECTIONS',tile,irrigation_result(tile)%accepted_substeps, &
+             irrigation_result(tile)%transaction_attempts,irrigation_result(tile)%transaction_retries, &
+             irrigation_result(tile)%solver_rejections,irrigation_result(tile)%temporal_rejections, &
+             irrigation_result(tile)%temporal_unavailable_rejections,irrigation_result(tile)%mass_rejections
+      end do
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint interval failed'
       if(maxval(abs(irrigation_result%mass%residual))>HARD_MASS_GATE) error stop 'irrigation midpoint mass'
       first_half_in=irrigation_result%mass%total_in
