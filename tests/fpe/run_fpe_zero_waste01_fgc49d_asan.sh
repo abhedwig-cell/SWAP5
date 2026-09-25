@@ -84,6 +84,38 @@ if service_anchor not in test_src:
     raise SystemExit("FGC49D ASAN runner: service result anchor not found")
 test_src = test_src.replace(service_anchor, service_replacement, 1)
 
+# Testbuild-only Fortran observability. Production sources in the repository remain unchanged.
+registry_path = Path("src/runtime/mod_fmr_groundwater_participant_registry.f90")
+registry_src = registry_path.read_text(encoding="utf-8")
+registry_anchor = '''    if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
+      status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+'''
+registry_replacement = '''    write(*,'(A,I0)') 'FGC49D_TRACE registry_participant_status=', participant_status
+    if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
+      status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+'''
+if registry_anchor not in registry_src:
+    raise SystemExit("FGC49D ASAN runner: registry participant anchor not found")
+registry_path.write_text(registry_src.replace(registry_anchor, registry_replacement, 1), encoding="utf-8")
+
+participant_path = Path("src/runtime/mod_fmr_groundwater_swap_participant.f90")
+participant_src = participant_path.read_text(encoding="utf-8")
+participant_anchor = '''    if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then
+      if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
+'''
+participant_replacement = '''    if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then
+      write(*,'(A,L1)') 'FGC49D_TRACE trial_result_completed=', self%trial_result%completed
+      write(*,'(A,L1)') 'FGC49D_TRACE trial_candidate_ready=', self%candidate%ready()
+      write(*,'(A,L1)') 'FGC49D_TRACE trial_bottom_exchange_available=', self%trial_result%bottom_interface_exchange_available
+      write(*,'(A,ES24.16)') 'FGC49D_TRACE trial_requested_t0=', self%trial_result%requested_t0
+      write(*,'(A,ES24.16)') 'FGC49D_TRACE trial_requested_t1=', self%trial_result%requested_t1
+      write(*,'(A,ES24.16)') 'FGC49D_TRACE trial_completed_t=', self%trial_result%completed_t
+      if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
+'''
+if participant_anchor not in participant_src:
+    raise SystemExit("FGC49D ASAN runner: participant trial-result anchor not found")
+participant_path.write_text(participant_src.replace(participant_anchor, participant_replacement, 1), encoding="utf-8")
+
 tmp_test = Path(os.environ["TMP_TEST"])
 tmp_test.write_text(test_src, encoding="utf-8")
 runner_test_anchor = 'python3 tests/fgc/test_fgc49d_production_application_context.py'
