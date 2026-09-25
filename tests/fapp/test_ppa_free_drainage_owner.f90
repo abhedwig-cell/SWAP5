@@ -396,6 +396,7 @@ contains
          error stop 'unregistered carrier admitted as BASE'
     write(*,'(a)') 'PPA_IRR_EVENT_CARRIER_CLONE_BASE_REJECTION=PASS'
     call verify_irrigation_kernel_checkpoint(carrier,event_template)
+    call verify_irrigation_kernel_checkpoint(invalid_carrier,event_template)
     ! Exercise the actual process continuation with a detached physical snapshot.
     ! Hydraulic evolution/acceptance is not asserted by this assembly-only test.
     irrigation%scheduled_irrigation_enabled=.true.
@@ -906,6 +907,11 @@ contains
         select type(snapshot)
         type is(ppa_irrigation_event_state_t)
           if(.not.snapshot%matches_candidate(template,T0)) error stop 'irrigation snapshot invalid'
+          if(snapshot%irrigation%active_event.neqv.source%irrigation%active_event) &
+               error stop 'irrigation kernel activation changed'
+          if(snapshot%irrigation%active_event_origin/=source%irrigation%active_event_origin.or. &
+             snapshot%irrigation%active_event_index/=source%irrigation%active_event_index) &
+               error stop 'irrigation kernel event identity changed'
           if(snapshot%irrigation%active_event_rate/=source%irrigation%active_event_rate.or. &
              snapshot%irrigation%active_event_start/=source%irrigation%active_event_start.or. &
              snapshot%irrigation%active_event_end/=source%irrigation%active_event_end.or. &
@@ -913,6 +919,8 @@ contains
                error stop 'irrigation kernel event changed'
           if(any(snapshot%pressure_head/=source%pressure_head).or. &
              any(snapshot%water_content/=source%water_content)) error stop 'irrigation kernel physical state changed'
+          if(snapshot%ponding_depth/=source%ponding_depth.or.snapshot%groundwater_level/=source%groundwater_level) &
+               error stop 'irrigation kernel physical scalars changed'
           call snapshot%temporal_history_snapshot(actual_history,available)
           if(.not.available) error stop 'irrigation kernel history missing'
           if(size(actual_history)/=size(expected_history)) error stop 'irrigation kernel history shape changed'
