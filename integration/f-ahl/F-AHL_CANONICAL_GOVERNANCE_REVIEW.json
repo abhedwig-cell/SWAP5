@@ -1,11 +1,11 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-AHL",
   "record": "CANONICAL_GOVERNANCE_REVIEW",
   "date": "2026-09-25",
   "candidate_pr": 608,
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "candidate_head_reviewed": "4cad6b74f1a02d36abdde4322679abb2013d4faa",
+  "candidate_head_reviewed": "e043d61bbbb9f772560442fb8c21c8d876f5dd4b",
   "review_status": "ADMISSION_BLOCKED_PENDING_EXACT_HEAD_FAIL_CLOSED_CI",
   "prior_blocker_and_repair": {
     "classification": "ADMISSION_BLOCKER_FOUND_AND_BOUNDED_REPAIR_APPLIED",
@@ -59,13 +59,13 @@
   ],
   "current_blocker": {
     "type": "EXACT_HEAD_FAIL_CLOSED_CI_PENDING",
-    "candidate_gate_run": 36128815162,
-    "candidate_head": "4cad6b74f1a02d36abdde4322679abb2013d4faa",
+    "candidate_gate_run": 36128865464,
+    "candidate_head": "e043d61bbbb9f772560442fb8c21c8d876f5dd4b",
     "candidate_gate_status": "queued",
     "candidate_gate_conclusion": null,
-    "candidate_head_delta": "Adds prescribed-head accepted-trajectory analytical-fallback oracle only; no production-source broadening.",
-    "fail_closed_authority": "Previous head 0c02316ad4e4d03e17f39f54dc6a8788ea0ad978 added set -o pipefail to all piped candidate gates.",
-    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36128815162 on exact head 4cad6b74f1a02d36abdde4322679abb2013d4faa is completed successfully and the job log confirms all bounded AHL gates execute and pass fail-closed."
+    "candidate_head_delta": "Adds prescribed-head accepted-trajectory analytical-fallback oracle, its fail-closed runner, and wires that oracle into the canonical candidate gate. No production-source broadening.",
+    "fail_closed_authority": "Candidate workflow uses set -o pipefail for all piped gates; the new trajectory runner itself uses set -euo pipefail and explicit nonzero failure paths.",
+    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36128865464 on exact head e043d61bbbb9f772560442fb8c21c8d876f5dd4b is completed successfully and its log confirms all bounded AHL gates, including prescribed-head trajectory fallback, execute and pass fail-closed."
   },
-  "decision": "NO_NEW_RESEARCH_BLOCKER; ADMISSION PENDING ONLY EXACT-HEAD FAIL-CLOSED CI ON CURRENT PR HEAD"
+  "decision": "NO_NEW_RESEARCH_BLOCKER; CURRENT EXACT-HEAD CANDIDATE IS SCOPE-BOUNDED; ADMISSION PENDING ONLY RUN 36128865464"
 }
