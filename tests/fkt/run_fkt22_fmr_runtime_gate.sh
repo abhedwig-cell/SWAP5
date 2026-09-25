@@ -49,6 +49,7 @@ MODULE_SRC=(
   src/runtime/mod_b110_adaptive_runtime_policy.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
@@ -60,7 +61,6 @@ MODULE_SRC=(
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
