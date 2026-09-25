@@ -7,7 +7,7 @@ program test_fpe_zero_waste01_parameter_preprocess
   type(b110_default_mvg_parameters_t) :: hydraulic, prepared, copied
   type(b110_default_mvg_parameters_t), allocatable :: prepared_registry(:)
   type(soil_water_parameter_set_t) :: soil
-  real(real64), allocatable :: cofgen(:,:), raw_registry(:,:,:), z(:), dz(:), disnod(:)
+  real(real64), allocatable :: cofgen(:,:), raw_registry(:,:,:), compact_cache(:,:), z(:), dz(:), disnod(:)
   real(real64) :: checksum_hydraulic, checksum_geometry, checksum_copy
   integer(int64) :: c0, c1, rate
   integer :: n, reps, r, registry_count, registry_index, compat_count
@@ -55,6 +55,20 @@ program test_fpe_zero_waste01_parameter_preprocess
   end do
   call system_clock(c1)
   call emit('prepared_copy_reuse',n,reps,c0,c1,rate,checksum_copy)
+
+  allocate(compact_cache(4,n))
+  compact_cache(1,:) = prepared%cofgen(26,:)
+  compact_cache(2,:) = prepared%cofgen(28,:)
+  compact_cache(3,:) = prepared%cofgen(41,:)
+  compact_cache(4,:) = prepared%cofgen(42,:)
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    call refresh_from_compact_cache(cofgen, compact_cache, copied)
+    checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
+  end do
+  call system_clock(c1)
+  call emit('compact_derived_cache_refresh',n,reps,c0,c1,rate,checksum_copy)
 
   select case (n)
   case (1:4)
@@ -127,6 +141,45 @@ program test_fpe_zero_waste01_parameter_preprocess
   call emit('geometry_copy',n,reps,c0,c1,rate,checksum_geometry)
 
 contains
+
+  subroutine refresh_from_compact_cache(raw,cache,target)
+    real(real64), intent(in) :: raw(:,:), cache(:,:)
+    type(b110_default_mvg_parameters_t), intent(inout) :: target
+    integer :: i, nn
+
+    nn = size(raw,2)
+    if (allocated(target%cofgen)) deallocate(target%cofgen)
+    target%active_nodes = nn
+    target%ksatexm_extension_enabled = .false.
+    allocate(target%cofgen(42,nn))
+    target%cofgen = 0.0_real64
+    target%cofgen(1:min(size(raw,1),42),:) = raw(1:min(size(raw,1),42),:)
+
+    do i=1,nn
+      target%cofgen(25,i) = target%cofgen(2,i)-target%cofgen(1,i)
+      target%cofgen(26,i) = cache(1,i)
+      target%cofgen(27,i) = (target%cofgen(2,i)-target%cofgen(26,i))/1.0e-2_real64
+      target%cofgen(28,i) = cache(2,i)
+      target%cofgen(29,i) = target%cofgen(6,i)*target%cofgen(7,i)*target%cofgen(4,i)
+      target%cofgen(30,i) = target%cofgen(6,i)-1.0_real64
+      target%cofgen(31,i) = target%cofgen(7,i)+1.0_real64
+      target%cofgen(32,i) = 1.0_real64/target%cofgen(7,i)
+      target%cofgen(33,i) = target%cofgen(6,i)*(2.0_real64+target%cofgen(7,i)*target%cofgen(5,i))
+      target%cofgen(34,i) = target%cofgen(5,i)+2.0_real64
+      target%cofgen(35,i) = target%cofgen(7,i)-1.0_real64
+      target%cofgen(36,i) = target%cofgen(5,i)-1.0_real64
+      target%cofgen(37,i) = target%cofgen(14,i)*target%cofgen(15,i)*target%cofgen(13,i)
+      target%cofgen(38,i) = target%cofgen(14,i)-1.0_real64
+      target%cofgen(39,i) = target%cofgen(15,i)+1.0_real64
+      if (target%cofgen(15,i)>0.0_real64) then
+        target%cofgen(40,i)=1.0_real64/target%cofgen(15,i)
+      else
+        target%cofgen(40,i)=0.0_real64
+      end if
+      target%cofgen(41,i)=cache(3,i)
+      target%cofgen(42,i)=cache(4,i)
+    end do
+  end subroutine refresh_from_compact_cache
 
   subroutine initialize_fixture(c,zv,dzv,dv)
     real(real64), intent(out) :: c(:,:),zv(:),dzv(:),dv(:)
