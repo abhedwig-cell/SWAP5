@@ -66,8 +66,8 @@ program test_ppa_free_drainage_owner
   implicit none
 
   integer, parameter :: NTILE = 2
-  real(real64), parameter :: T0 = 4100.1875_real64
-  real(real64), parameter :: T1 = 4100.6875_real64
+  real(real64) :: T0 = 4100.1875_real64
+  real(real64) :: T1 = 4100.6875_real64
   real(real64), parameter :: H0_CM = -75.0_real64
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
@@ -91,12 +91,21 @@ program test_ppa_free_drainage_owner
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
   character(len=32) :: test_scope
+  character(len=32) :: origin_scope
   integer :: observed_event_calls=0
   logical :: is_gash=.false.
   logical :: capture_low_rain=.false.
   type(soil_water_solve_request_t) :: low_rain_request
   type(soil_water_temporal_indicator_request_t) :: low_rain_history
 
+  call get_command_argument(1,test_scope)
+  call get_command_argument(2,origin_scope)
+  if(len_trim(origin_scope)>0) then
+    if(trim(origin_scope)/='--local-origin'.or.trim(test_scope)/='--irrigation-half-source') &
+         error stop 'unsupported diagnostic origin option'
+    T0=0.1875_real64; T1=0.6875_real64
+    write(*,'(a)') 'PPA_IRR_HALF_LOCAL_ORIGIN_DIAGNOSTIC'
+  end if
   call initialize_application_config(config)
   config%free_drainage_indicator => traced_indicator
   config%numerical%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
@@ -110,7 +119,6 @@ program test_ppa_free_drainage_owner
     allocate(config%tiles(i)%initial_right_derivative(numnod))
     config%tiles(i)%initial_right_derivative = 0.0_real64
   end do
-  call get_command_argument(1,test_scope)
   if(trim(test_scope)=='--hydraulic-copy'.or.trim(test_scope)=='--irrigation-source'.or. &
        trim(test_scope)=='--irrigation-half-source') then
     if(trim(test_scope)/='--hydraulic-copy') then
