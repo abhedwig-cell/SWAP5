@@ -60,6 +60,17 @@ program test_fahl27_stage2_paired_timing
   call backend_on%run_trial(column,template,p_on,committed_on,forcing,config,0.0_real64,duration,cp_on, &
        result_on,cand_on,diag_on)
 
+  obs_off=backend_off%observation()
+  obs_on=backend_on%observation()
+  write(*,'(A,I0,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,L1,1X,A,I0)') &
+       'FAHL27_FMR_OFF_STATUS ',result_off%status,'completed=',result_off%completed, &
+       'retries=',diag_off%retries,'admission_rejections=',diag_off%admission_rejections, &
+       'solver_executed=',obs_off%solver_executed,'solver_status=',obs_off%solver_status
+  write(*,'(A,I0,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,L1,1X,A,I0)') &
+       'FAHL27_FMR_ON_STATUS ',result_on%status,'completed=',result_on%completed, &
+       'retries=',diag_on%retries,'admission_rejections=',diag_on%admission_rejections, &
+       'solver_executed=',obs_on%solver_executed,'solver_status=',obs_on%solver_status
+
   call require(result_off%status==CANONICAL_STATUS_COMPLETED .and. result_off%completed,'off complete')
   call require(result_on%status==CANONICAL_STATUS_COMPLETED .and. result_on%completed,'on complete')
   call require(result_off%mass%complete .and. result_on%mass%complete,'mass complete')
