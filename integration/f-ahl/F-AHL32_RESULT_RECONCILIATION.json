@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "F-AHL32_RESULT_RECONCILIATION",
+  "original_result": {
+    "workflow_run": 36080197438,
+    "classification": "PASS_REGISTRY_SEMANTICS_UNDER_ORIGINAL_CONTRACT",
+    "scope": "capacity, exact-key reuse and full-registry correctness fallback"
+  },
+  "amended_contract_result": {
+    "workflow_run": 36080254461,
+    "classification": "FAIL_HASH_QUALITY_UNDER_PROSPECTIVE_PROBE_GATE",
+    "stage1_entries": 10000,
+    "stage2_exact_key_hits": 10000,
+    "mean_second_pass_probes": 3.1741,
+    "maximum_probes": 413,
+    "frozen_maximum_probe_gate": 128
+  },
+  "reconciliation": "The bounded registry semantics are valid, but direct power-of-two bucket selection from the existing fingerprint has an unacceptable worst-case probe chain under the later preregistered hash-quality gate. The original semantic PASS remains valid within its original scope and is not reinterpreted as a hash-quality PASS.",
+  "next_action": "F-AHL32A bucket-index mixing repair using the unchanged exact hydraulic key and unchanged 64-bit fingerprint authority."
+}
