@@ -57,12 +57,6 @@ program test_fahl27_fmr_opt_in_runtime
   call backend_on%run_trial(column,template,p_on,committed_on,forcing,config,0.0_real64,duration,cp_on, &
        result_on,cand_on,diag_on)
 
-  write(*,'(A,I0,A,L1,A,I0,A,L1,A,I0)') 'FAHL27_FMR_OFF_DEBUG status=',result_off%status, &
-       ' completed=',result_off%completed,' admissions=',diag_off%admission_rejections, &
-       ' candidate_ready=',cand_off%ready(),' solver_status=',backend_off%observation()%solver_status
-  write(*,'(A,I0,A,L1,A,I0,A,L1,A,I0)') 'FAHL27_FMR_ON_DEBUG status=',result_on%status, &
-       ' completed=',result_on%completed,' admissions=',diag_on%admission_rejections, &
-       ' candidate_ready=',cand_on%ready(),' solver_status=',backend_on%observation()%solver_status
   call require(result_off%status==CANONICAL_STATUS_COMPLETED .and. result_off%completed,'off complete')
   call require(result_on%status==CANONICAL_STATUS_COMPLETED .and. result_on%completed,'on complete')
   call require(result_off%mass%complete .and. result_on%mass%complete,'mass complete')
