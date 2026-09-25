@@ -32,7 +32,7 @@ module mod_b110_adaptive_hydraulic_cache
     procedure :: stats => b110_ahl_stats
   end type b110_adaptive_hydraulic_cache_t
 
-  public :: make_b110_adaptive_hydraulic_key
+  public :: make_b110_adaptive_hydraulic_key, b110_adaptive_hydraulic_keys_equal
 
 contains
 
@@ -69,7 +69,7 @@ contains
     key%fingerprint=h
   end function make_b110_adaptive_hydraulic_key
 
-  logical function same_key(a,b) result(equal)
+  logical function b110_adaptive_hydraulic_keys_equal(a,b) result(equal)
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::a,b
     integer(int64) :: abit(NCOEF), bbit(NCOEF)
     abit=transfer(a%coeff,abit)
@@ -80,7 +80,7 @@ contains
          a%ksatexm_extension_enabled .eqv. b%ksatexm_extension_enabled .and. &
          trim(a%model_id)==trim(b%model_id) .and. &
          all(abit==bbit)
-  end function same_key
+  end function b110_adaptive_hydraulic_keys_equal
 
   subroutine b110_ahl_get_or_build(self,key,parameters,provider,table,was_hit,ok)
     class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
@@ -96,7 +96,7 @@ contains
     do i=1,B110_AHL_MAX_CACHE
       if(self%entry(i)%occupied)then
         if(self%entry(i)%key%fingerprint==key%fingerprint)then
-          if(same_key(self%entry(i)%key,key))then
+          if(b110_adaptive_hydraulic_keys_equal(self%entry(i)%key,key))then
             table=self%entry(i)%table
             self%hits=self%hits+1
             was_hit=.true.;ok=.true.;return
