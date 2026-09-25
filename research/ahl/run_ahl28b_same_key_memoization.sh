@@ -34,7 +34,7 @@ for source in "${SRC[@]}"; do
   gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c "$source" -o "$obj"
   objects+=("$obj")
 done
-gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl28b_memoization_overhead.f90 -o "$BUILD/test.o"
+gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl28b_same_key_memoization.f90 -o "$BUILD/test.o"
 gfortran -O3 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" | tee /tmp/ahl28b_memoization.txt
 grep -Fq 'AHL28B_MEMOIZATION_MICROBENCH=PASS' /tmp/ahl28b_memoization.txt
