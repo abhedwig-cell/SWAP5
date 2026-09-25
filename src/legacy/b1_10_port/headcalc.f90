@@ -73,7 +73,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
-   logical :: provider_tuple_valid
+   logical :: provider_tuple_valid, provider_tuple_from_candidate
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
@@ -174,6 +174,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_dynamic_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
    provider_tuple_valid = .false.
+   provider_tuple_from_candidate = .false.
    provider_source_sink_active = .false.
    provider_root_sink_active = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
@@ -295,9 +296,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !  reset conductivities (state%k, state%kmean) to time level t
    if (provider_constitutive_active) then
       ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+      ctx%diagnostics%constitutive_initial_full_evaluations = &
+           ctx%diagnostics%constitutive_initial_full_evaluations + 1
       call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
            fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
       provider_tuple_valid = .true.
+      provider_tuple_from_candidate = .false.
       state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
    else
       do i = 1, numnod
@@ -352,6 +356,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
                  fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
             provider_tuple_valid = .true.
+            provider_tuple_from_candidate = .false.
+         else if (provider_tuple_from_candidate) then
+            ctx%diagnostics%constitutive_candidate_capacity_reuses = &
+                 ctx%diagnostics%constitutive_candidate_capacity_reuses + 1
          end if
          state%dimoca(1:NN) = fsi_ws%provider_capacity(1:NN)
       else
@@ -423,9 +431,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (provider_constitutive_active) then
             provider_tuple_valid = .false.
             ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-      call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+            ctx%diagnostics%constitutive_candidate_full_evaluations = &
+                 ctx%diagnostics%constitutive_candidate_full_evaluations + 1
+            call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
                  fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
             provider_tuple_valid = .true.
+            provider_tuple_from_candidate = .true.
             state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
          else
             do i = 1, NN
@@ -567,6 +578,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       sumold = sump
 
       if (.NOT.flnonconv) then      ! convergence has been reached
+         if (provider_constitutive_active .and. provider_tuple_from_candidate) then
+            ctx%diagnostics%constitutive_candidate_terminal_evaluations = &
+                 ctx%diagnostics%constitutive_candidate_terminal_evaluations + 1
+         end if
      
 !        special case for macropores
          if (swmacro == 1) then
