@@ -80,7 +80,7 @@ contains
     equal = a%fingerprint==b%fingerprint .and. &
          a%policy_version==b%policy_version .and. &
          a%branch_policy_version==b%branch_policy_version .and. &
-         a%ksatexm_extension_enabled .eqv. b%ksatexm_extension_enabled .and. &
+         (a%ksatexm_extension_enabled .eqv. b%ksatexm_extension_enabled) .and. &
          trim(a%model_id)==trim(b%model_id) .and. &
          all(abit==bbit)
   end function b110_adaptive_hydraulic_keys_equal
