@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL38",
+  "phase": "STABLE_REGISTRY_SLOT_REPAIR_QUALIFIED",
+  "status": "PASS_RETAIN_REPAIR",
+  "workflow_run": 36103699293,
+  "workflow_job": 107971485305,
+  "repair": {
+    "warm_exact_key_hit": "provider stores stable integer registry slot; no adaptive support-array deep assignment",
+    "evaluation": "immutable bracketing support values are sampled directly from the non-evicting registry slot",
+    "full_registry_miss": "existing caller-owned uncached table fallback retained",
+    "raw_pointers": false,
+    "eviction": false
+  },
+  "semantic_gates": {
+    "F_AHL32_registry_collision_capacity": "PASS",
+    "F_AHL29_full_cache_fallback": "PASS",
+    "F_AHL28B_same_key_memoization": "PASS",
+    "F_AHL10E_O05_dry_tail_fallback": "PASS",
+    "handle_vs_copy_constitutive_identity": "PASS"
+  },
+  "performance": {
+    "paired_handle_over_copy_bind_ratios": [0.612471,0.566827,0.565179,0.593139,0.602049,0.611425,0.666768,0.584397,0.584748],
+    "median_handle_over_copy_bind_ratio": 0.593139,
+    "median_bind_reduction_fraction": 0.406861,
+    "median_same_key_seconds_per_bind": 9.7055e-8,
+    "paired_handle_over_copy_evaluate_ratios": [0.928502,0.954009,1.042709,0.927649,0.916311,0.932671,1.049432,0.954326,1.005351],
+    "median_handle_over_copy_evaluate_ratio": 0.954009
+  },
+  "postrepair_switching_interpretation": {
+    "approx_handle_changed_key_to_same_key_ratio": 2.57,
+    "frozen_stop_threshold": 3.0,
+    "decision": "STOP_FURTHER_OWNERSHIP_COMPLEXITY"
+  },
+  "finding": "Stable integer registry-slot binding removes a material fraction of changed-authority warm-hit overhead without pointer lifetime semantics, cache eviction, hydraulic representation changes or dry-tail changes.",
+  "decision": "RETAIN_STABLE_SLOT_REPAIR_AND_ADVANCE_TO_APPLICATION_LEVEL_TIMING",
+  "nonclaims": [
+    "This remains a bind/evaluate microbenchmark qualification.",
+    "No serialized MultiSWAP or whole-application speedup is claimed yet."
+  ]
+}
