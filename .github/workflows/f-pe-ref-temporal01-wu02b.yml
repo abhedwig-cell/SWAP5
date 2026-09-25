@@ -1,0 +1,29 @@
+name: F-PE-REF-TEMPORAL01 WU02B lower-margin mode5
+
+on:
+  pull_request:
+    paths:
+      - 'tests/performance/test_ref_temporal01_wu02b_mode5.f90'
+      - 'tests/performance/run_ref_temporal01_wu02b.sh'
+      - 'tests/performance/collect_ref_temporal01_wu02b.py'
+      - 'docs/performance/F-PE-REF-TEMPORAL01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-ref-temporal01-wu02b.yml'
+  workflow_dispatch:
+
+jobs:
+  lower-margin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run WU02B lower-margin and mode-5 matrix
+        run: |
+          bash tests/performance/run_ref_temporal01_wu02b.sh
+          python3 tests/performance/collect_ref_temporal01_wu02b.py ref-temporal01-wu02b.txt ref-temporal01-wu02b.json
+          cat ref-temporal01-wu02b.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref-temporal01-wu02b
+          path: |
+            ref-temporal01-wu02b.txt
+            ref-temporal01-wu02b.json
