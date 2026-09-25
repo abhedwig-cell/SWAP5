@@ -78,6 +78,8 @@ contains
       state%water = before - delta
       outcome%mass_out = delta
       if (self%inject_mass_defect) outcome%mass_out = outcome%mass_out + 1.0e-3_real64
+      outcome%mass_accounting_complete = .true.
+      outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
       outcome%solver_ok = .true.
     class default
       error stop 'unexpected contextual state'
