@@ -237,6 +237,21 @@ contains
     end do
     diagnostics=irrigation_diagnostics_t()
     flux=irrigation_flux_result_t()
+    control_forcing(1)%temporal_forcing_event=.false.
+    control_forcing(1)%subsurface_irrigation_source=0.01_real64
+    flux%applied=.true.
+    flux%application_type=IRRIGATION_APPLICATION_SSDI
+    flux%subsurface_source=control_forcing(1)%subsurface_irrigation_source
+    flux%subsurface_source(1)=0.02_real64
+    call bind_ppa_irrigation_source(control_forcing(1),flux,diagnostics,T0,bound_forcing,ok)
+    if(.not.ok) error stop 'changed source rate rejected'
+    if(.not.bound_forcing%temporal_forcing_event.or.bound_forcing%temporal_forcing_event_time/=T0) &
+         error stop 'changed source rate not marked'
+    if(any(bound_forcing%subsurface_irrigation_source/=flux%subsurface_source)) error stop 'binding changed source rate'
+    bound_forcing%subsurface_irrigation_source=-1.0_real64
+    if(any(control_forcing(1)%subsurface_irrigation_source/=0.01_real64)) error stop 'binding aliases previous source'
+    if(flux%subsurface_source(1)/=0.02_real64) error stop 'binding aliases process source'
+    flux=irrigation_flux_result_t()
     write(*,'(a)') 'PPA_IRR_SOURCE_BINDING_EVENT_LIFECYCLE_GUARDS=PASS'
     call owner%copy_committed_hydraulic_states(copied,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(copied)) error stop 'uninitialized hydraulic copy'
