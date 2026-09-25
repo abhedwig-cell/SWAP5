@@ -1,0 +1,26 @@
+name: F-AHL42D full catalog K tolerance repair
+on:
+  push:
+    branches:
+      - work/f-ahl42d-full-catalog-k-repair
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'research/ahl/fahl42d_materialize_catalog_params.py'
+      - 'research/ahl/test_fahl42d_full_catalog_matrix.f90'
+      - 'research/ahl/run_fahl42d_full_catalog_matrix.sh'
+      - 'integration/f-ahl/F-AHL42D_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl42d-full-catalog-k-repair.yml'
+  workflow_dispatch:
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production-provider 108-case matrix
+        run: |
+          bash research/ahl/run_fahl42d_full_catalog_matrix.sh /tmp/fahl42d_result.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl42d-${{ github.run_id }}
+          path: /tmp/fahl42d_result.txt

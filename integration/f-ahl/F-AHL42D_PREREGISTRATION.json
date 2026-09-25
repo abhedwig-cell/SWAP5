@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42D",
+  "title": "Full-catalog conductivity-tolerance repair",
+  "parent": "F-AHL42",
+  "phase": "PREREGISTERED_RESEARCH_REPAIR",
+  "trigger": {
+    "prior_workflow_run": 36080365723,
+    "prior_first_failure": "O09:dry",
+    "bottom_flux_delta_cm_per_day": 1.039457e-5,
+    "gate_cm_per_day": 1e-5,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "frozen_gates": {
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true
+  },
+  "candidate_policy": {
+    "wet_abs_logK_tolerance": 3e-4,
+    "global_abs_logK_candidates_in_order": [2e-4,1e-4,3e-5],
+    "selection_rule": "Choose the loosest prospectively listed global tolerance that yields 108/108 PASS. Do not continue tightening after the first complete PASS."
+  },
+  "stage_1_candidate": {
+    "global_abs_logK_tolerance": 2e-4,
+    "matrix": "36 Staringreeks materials x wet/mid/dry = 108 cases",
+    "provider": "production-shaped self-building adaptive provider",
+    "collection": "collect all cases even after individual failures"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_CHANGE_TO_THETA_OR_C_TOLERANCES",
+    "NO_CHANGE_TO_RAW_C_1E13_DRY_RELEVANCE_BOUND",
+    "NO_CHANGE_TO_WET_K_TOLERANCE",
+    "NO_PERFORMANCE_CLAIM_UNTIL_FIDELITY_MATRIX_PASSES"
+  ]
+}
