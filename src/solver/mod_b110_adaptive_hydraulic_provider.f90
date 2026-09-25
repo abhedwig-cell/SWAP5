@@ -1,5 +1,5 @@
 module mod_b110_adaptive_hydraulic_provider
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -61,10 +61,12 @@ contains
     ! adaptive representation may survive a same-key rebind.
     call bind_b110_default_mvg_provider(provider%analytical,parameters,step_duration)
     provider%cofgen=>parameters%cofgen
-    key=make_b110_adaptive_hydraulic_key(parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION)
 
+    ! Same-provider reuse does not need to rebuild/hash the shared-cache key.
+    ! Compare the exact initialized hydraulic authority directly. The full
+    ! collision-safe cache key is constructed only when this fast path misses.
     same_representation = provider%ready .and. provider%representation_key_valid .and. &
-         allocated(provider%table%x) .and. b110_adaptive_hydraulic_keys_equal(provider%representation_key,key)
+         allocated(provider%table%x) .and. same_local_authority(provider%representation_key,parameters)
     if(same_representation)then
       provider%acquired_from_cache=.true.
       was_hit=.true.
@@ -74,6 +76,7 @@ contains
 
     provider%ready=.false.
     provider%representation_key_valid=.false.
+    key=make_b110_adaptive_hydraulic_key(parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION)
 
     ! A miss or changed key is resolved by the existing shared exact-key cache.
     ! The one-node sampler is needed only on this acquisition path.
@@ -89,6 +92,20 @@ contains
     provider%acquired_from_cache=was_hit
     provider%ready=.true.
   end subroutine bind_b110_adaptive_hydraulic_provider
+
+  pure logical function same_local_authority(key,parameters) result(equal)
+    type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
+    type(b110_default_mvg_parameters_t),intent(in)::parameters
+    integer(int64) :: key_bits(42), parameter_bits(42)
+
+    equal=.false.
+    if(.not.allocated(parameters%cofgen))return
+    if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42)return
+    if(key%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_enabled)return
+    key_bits=transfer(key%coeff,key_bits)
+    parameter_bits=transfer(parameters%cofgen(1:42,1),parameter_bits)
+    equal=all(key_bits==parameter_bits)
+  end function same_local_authority
 
   subroutine b110_adaptive_hydraulic_evaluate(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(b110_adaptive_hydraulic_provider_t),intent(in)::self
