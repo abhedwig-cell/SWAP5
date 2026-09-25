@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "title": "Production admission authority binding",
+  "branch": "work/f-ahl27-production-admission",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "research_source_head": "8e1680b0d5de53098d6612c0db796a8ebadc6f72",
+  "phase": "AUTHORITY_BOUND",
+  "admission_scope_stage1": {
+    "hydraulic_family": "B110 default unimodal MvG",
+    "lower_boundary": "qualified prescribed-head-like routes only",
+    "retention_capacity": "auto-generated derivative-consistent representation; theta and C from the same interpolant",
+    "conductivity": "independently error-controlled log(K) representation",
+    "near_saturation": "authoritative analytical handling",
+    "dry_tail": "material-specific represented-domain bound; authoritative analytical fallback beyond it",
+    "runtime_refinement": false,
+    "external_user_table": false,
+    "cache": "immutable exact-key internal cache"
+  },
+  "explicit_fallbacks": {
+    "prescribed_qbot": "fully analytical authoritative hydraulics",
+    "unsupported_hydraulic_family": "fully analytical authoritative hydraulics",
+    "SWKIMPL_1_dKdh": "fully analytical until separately qualified",
+    "outside_represented_head_domain": "fully analytical authoritative hydraulics"
+  },
+  "bound_research_evidence": {
+    "default_MvG_self_build": "F-AHL20 PASS: 12/12 Richards, cache build/hit semantics, approximately 20.0% paired complete-Richards CPU reduction on its frozen case",
+    "default_MvG_broad_matrix": "F-AHL10F PASS: 12/12 wet-mid-dry cases, all speed-positive, matrix median ratio 0.848800",
+    "dry_tail": "F-AHL10E PASS: O05 analytical fallback beyond raw-C=1e-13 relevance boundary",
+    "qbot_policy": "F-AHL24 SELECT_FULL_ANALYTICAL_QBOT_FALLBACK",
+    "model3": "F-AHL25 positive research family, separate later production gate",
+    "PDI_NoVap": "F-AHL26 positive research family, separate later production gate",
+    "PDI_vapor": "blocked pending upstream vapor-temperature reconciliation"
+  },
+  "non_admitted_by_this_binding": [
+    "bi-modal MvG model 3",
+    "PDI models",
+    "vapor-enabled PDI",
+    "prescribed qbot acceleration",
+    "SWKIMPL=1/dKdh acceleration",
+    "whole-SWAP speedup claim"
+  ],
+  "governance_rule": "Production implementation must preserve the bound fallback policy. No research-only approximation may become reachable outside its qualified envelope."
+}
