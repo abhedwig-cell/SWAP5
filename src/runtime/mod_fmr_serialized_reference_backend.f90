@@ -1463,8 +1463,11 @@ contains
            enable_ksatexm_extension=parameters%ksatexm_extension_active)
       self%adaptive_profile_supported = self%adaptive_hydraulics_active .and. &
            b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)
-      if (self%adaptive_profile_supported .and. .not. associated(self%adaptive_constitutive)) &
-           allocate(self%adaptive_constitutive)
+      if (self%adaptive_profile_supported) then
+        if (.not. associated(self%adaptive_constitutive)) allocate(self%adaptive_constitutive)
+      else
+        if (associated(self%adaptive_constitutive)) deallocate(self%adaptive_constitutive)
+      end if
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
