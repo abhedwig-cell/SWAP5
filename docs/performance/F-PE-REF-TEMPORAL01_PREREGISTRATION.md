@@ -210,3 +210,77 @@ It may support later budget selection only if:
 5. a holdout set can still be reserved after any candidate budget is frozen.
 
 No production temporal budget may be chosen during WU02.
+
+
+## WU02B preregistration — lower-margin and mode-5 stress
+
+Status: `PREREGISTERED_BEFORE_EXECUTION`
+
+WU02B is targeted, not broad.
+
+### Motivation
+
+WU01 and WU02A produced no nonconservative valid cases. The smallest observed bound/error ratios were concentrated in nonuniform vertical-gradient cases with principal dt around 1e-2 day.
+
+WU02B therefore targets the lower-margin regime and extends to the already-qualified prescribed-head temporal-indicator boundary envelope.
+
+### Fixed scope
+
+Include:
+
+- nonuniform vertical pressure-head profiles only;
+- wet/intermediate starting states;
+- at least the default B110 and Hupsel hydraulic parameter sets;
+- principal dt values centered on 1e-2 to 5e-2 day;
+- stronger and asymmetric top forcing;
+- mode 2 prescribed qbot;
+- mode 5 prescribed bottom head;
+- warm-started previous right derivative;
+- refined Reference oracle over the same outer interval.
+
+### Mode-5 authority
+
+Mode 5 is in scope only because the existing Reference indicator explicitly supports bottom modes 2 and 5 and FSI25 provides a production-seam qualification for prescribed bottom head.
+
+No new boundary semantics are introduced here.
+
+### Oracle rule
+
+Do not use a fixed refinement factor if it causes an invalid oracle.
+
+WU02B uses convergence-by-refinement:
+
+- start with 8 substeps;
+- repeat with 16 and 32 substeps when valid;
+- the finest two valid refinements must agree within a preregistered oracle-stability threshold before the case can classify indicator conservativeness;
+- if stability cannot be established, classify `REFINED_REFERENCE_INVALID`.
+
+The oracle stability threshold is:
+
+- head-inf difference <= 1e-4 cm between the two finest valid refinements;
+- theta-inf difference <= 1e-8;
+- storage difference <= 1e-10 cm.
+
+These values are oracle-convergence criteria, not candidate production temporal budgets.
+
+### Required classifications
+
+Exactly:
+
+- `BOUND_VALID_CONSERVATIVE`;
+- `BOUND_VALID_NONCONSERVATIVE`;
+- `INDICATOR_UNAVAILABLE`;
+- `PRINCIPAL_REFERENCE_INVALID`;
+- `REFINED_REFERENCE_INVALID`;
+- `OUTSIDE_SCOPE`.
+
+### Decision rule
+
+WU02B can support moving toward budget selection only if:
+
+1. no valid in-scope case is nonconservative;
+2. the minimum bound/error ratio is identified with a stable oracle;
+3. mode-5 behavior does not create a new lower-margin regime;
+4. the remaining invalid cases are bounded and explained.
+
+No production temporal budget is selected in WU02B.
