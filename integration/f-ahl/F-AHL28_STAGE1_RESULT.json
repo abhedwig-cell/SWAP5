@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28",
+  "phase": "STAGE1_REPEATED_BIND_BASELINE_COMPLETE",
+  "status": "REPAIR_JUSTIFIED",
+  "workflow_run": 36078835759,
+  "workflow_job": 107896005578,
+  "cache_before": {"builds":1,"hits":0,"misses":1,"entries":1},
+  "cache_after_20000_warm_binds": {"builds":1,"hits":20000,"misses":1,"entries":1},
+  "timing_seconds_per_bind": {
+    "analytical": 2.7e-9,
+    "adaptive_warm_cache_hit": 5.9575e-7,
+    "ratio": 220.6481
+  },
+  "finding": "Every warm bind of the same adaptive representation performs another shared-cache lookup/hit and provider table assignment. The warm adaptive bind is orders of magnitude more expensive than the analytical step-duration bind.",
+  "code_interpretation": "The cache prevents table reconstruction but does not prevent repeated deep copying of allocatable representation arrays into the provider. This is avoidable lifecycle work.",
+  "repair": "Retain the representation inside the provider when the exact representation key is unchanged; refresh only step-dependent analytical fallback binding. Preserve shared-cache behavior for a distinct provider or changed key.",
+  "nonclaims": [
+    "This microbenchmark does not establish an application speedup.",
+    "The measured ratio is for bind overhead only."
+  ]
+}
