@@ -1,0 +1,27 @@
+name: F-AHL27A production dry-tail
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'tests/fahl/test_fahl27a_production_dry_tail.f90'
+      - 'tests/fahl/run_fahl27a_production_dry_tail.sh'
+      - 'integration/f-ahl/F-AHL27A_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl27a-production-dry-tail.yml'
+  workflow_dispatch:
+
+jobs:
+  dry-tail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production dry-tail gate
+        run: |
+          bash tests/fahl/run_fahl27a_production_dry_tail.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27a-${{ github.run_id }}
+          path: /tmp/fahl27a_dry_tail.txt
