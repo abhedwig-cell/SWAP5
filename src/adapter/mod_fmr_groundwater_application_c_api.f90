@@ -147,10 +147,7 @@ contains
     real(c_double), intent(out) :: term_hcof(*), term_rhs(*)
 
     type(fmr_groundwater_application_context_t), pointer :: context
-    type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
-    type(modflow6_linear_boundary_term_t), allocatable :: terms(:)
-    integer(int64), allocatable :: ids(:)
-    integer :: i, slot, status, n_local
+    integer :: slot, status, n_local
 
     n_local = int(n)
     call resolve_context(int(handle, int64), context, slot, status)
@@ -163,20 +160,12 @@ contains
       return
     end if
 
-    call context%copy_plan_view(bindings, terms, ids, status)
+    call context%export_plan_view(cell_ids(1:n_local), binding_cell_ids(1:n_local), package_slots(1:n_local), &
+         modflow_node_ids(1:n_local), term_cell_ids(1:n_local), term_hcof(1:n_local), term_rhs(1:n_local), status)
     if (status /= FMR_GW_APP_CONTEXT_OK) then
       c_status = int(status, c_int)
       return
     end if
-    do i = 1, n_local
-      cell_ids(i) = int(ids(i), c_int64_t)
-      binding_cell_ids(i) = int(bindings(i)%groundwater_cell_id, c_int64_t)
-      package_slots(i) = int(bindings(i)%package_slot, c_int)
-      modflow_node_ids(i) = int(bindings(i)%modflow_node_id, c_int)
-      term_cell_ids(i) = int(terms(i)%groundwater_cell_id, c_int64_t)
-      term_hcof(i) = real(terms(i)%hcof_m2_per_day, c_double)
-      term_rhs(i) = real(terms(i)%rhs_m3_per_day, c_double)
-    end do
     c_status = int(FMR_GW_APP_C_API_OK, c_int)
   end function fgc49d_plan_view_c
 
