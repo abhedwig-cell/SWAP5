@@ -164,11 +164,6 @@ contains
     self%numerical = config%numerical
 
     call self%backend%initialize(self%top_boundary)
-    if (.not. self%backend%ready()) then
-      status = FMR_APP_BOOT_MODEL_SELECTION_FAILED
-      call discard_owner_storage(self)
-      return
-    end if
     if (len_trim(config%soil_water_model_key) > 0) then
       if (len_trim(config%soil_water_asset_root) > 0 .or. trim(config%soil_water_material_id) /= '---') then
         call self%backend%configure_soil_water_model(trim(config%soil_water_model_key), ok, local_status, &
