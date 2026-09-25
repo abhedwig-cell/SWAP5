@@ -1,0 +1,22 @@
+name: F-AHL27 FMR opt-in runtime
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
+      - 'tests/fahl/test_fahl27_fmr_opt_in_runtime.f90'
+      - 'tests/fahl/run_fahl27_fmr_opt_in_runtime.sh'
+      - '.github/workflows/f-ahl27-fmr-opt-in-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run FMR opt-in runtime gate
+        run: |
+          bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
