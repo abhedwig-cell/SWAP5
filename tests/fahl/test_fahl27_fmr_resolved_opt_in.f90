@@ -30,6 +30,12 @@ program test_fahl27_fmr_resolved_opt_in
   call execute_case(.false.,off_result,off_obs,off_committed)
   call execute_case(.true.,on_result,on_obs,on_committed)
 
+  write(*,'(A,L1,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,A)') 'FAHL27_OFF_DEBUG completed=',off_result%completed, &
+       'committed=',off_result%committed,'kernel=',off_result%kernel_status,'substeps=',off_result%accepted_substeps, &
+       'admission=',trim(off_result%admission_status)
+  write(*,'(A,L1,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,A)') 'FAHL27_ON_DEBUG completed=',on_result%completed, &
+       'committed=',on_result%committed,'kernel=',on_result%kernel_status,'substeps=',on_result%accepted_substeps, &
+       'admission=',trim(on_result%admission_status)
   call require(off_result%completed .and. off_result%committed,'analytical resolved runtime completed')
   call require(on_result%completed .and. on_result%committed,'adaptive resolved runtime completed')
   call require(off_result%mass%complete .and. on_result%mass%complete,'mass ledgers complete')
