@@ -71,6 +71,14 @@ program test_fahl27_stage2_paired_timing
        'retries=',diag_on%retries,'admission_rejections=',diag_on%admission_rejections, &
        'solver_executed=',obs_on%solver_executed,'solver_status=',obs_on%solver_status
 
+  write(*,'(A,I0,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES14.6)') 'FAHL27_FMR_OFF_STATUS=',result_off%status, &
+       ' COMPLETED=',result_off%completed,' ACCEPTED=',diag_off%accepted_substeps,' RETRIES=',diag_off%retries, &
+       ' SOLVER_REJ=',diag_off%solver_rejections,' TEMP_REJ=',diag_off%temporal_rejections, &
+       ' MASS_REJ=',diag_off%mass_rejections,' MAX_TEMP=',diag_off%max_temporal_indicator
+  write(*,'(A,I0,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES14.6)') 'FAHL27_FMR_ON_STATUS=',result_on%status, &
+       ' COMPLETED=',result_on%completed,' ACCEPTED=',diag_on%accepted_substeps,' RETRIES=',diag_on%retries, &
+       ' SOLVER_REJ=',diag_on%solver_rejections,' TEMP_REJ=',diag_on%temporal_rejections, &
+       ' MASS_REJ=',diag_on%mass_rejections,' MAX_TEMP=',diag_on%max_temporal_indicator
   call require(result_off%status==CANONICAL_STATUS_COMPLETED .and. result_off%completed,'off complete')
   call require(result_on%status==CANONICAL_STATUS_COMPLETED .and. result_on%completed,'on complete')
   call require(result_off%mass%complete .and. result_on%mass%complete,'mass complete')
