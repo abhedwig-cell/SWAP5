@@ -1833,7 +1833,7 @@ contains
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, ahl_ok, ahl_cache_hit
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
@@ -1907,8 +1907,8 @@ contains
     if (self%adaptive_hydraulics_active) then
       if (.not. associated(self%adaptive_constitutive)) return
       call bind_b110_adaptive_hydraulic_provider(self%adaptive_constitutive, self%hydraulic_parameters, &
-           step_duration, context_ok, snow_event_applied_this_call)
-      if (.not. context_ok) return
+           step_duration, ahl_ok, ahl_cache_hit)
+      if (.not. ahl_ok) return
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
