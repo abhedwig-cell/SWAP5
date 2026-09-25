@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42A",
+  "phase": "PRODUCTION_CONDUCTIVITY_POLICY_REPAIR_COMPLETE",
+  "status": "CLOSED_PASS",
+  "repair": {
+    "K_TOL_GLOBAL": {"before":3e-4,"after":1e-4},
+    "K_TOL_WET": {"before":3e-4,"after":1e-4},
+    "K_FLOOR_cm_per_day": "UNCHANGED 1e-10",
+    "C_RELEVANCE_FLOOR": "UNCHANGED 1e-13",
+    "near_saturation_policy": "UNCHANGED",
+    "POLICY_VERSION": {"before":3,"after":4}
+  },
+  "qualification": {
+    "production_full_catalog": {
+      "workflow_run": 36124180932,
+      "workflow_job": 108036386221,
+      "materials": 36,
+      "wet_mid_dry_cases": 108,
+      "pass": "108/108",
+      "same_nonlinear_and_backtracking_path": "108/108"
+    },
+    "O09_dry_repair": {
+      "before_bottom_flux_delta_cm_per_day": 1.039457e-5,
+      "after_bottom_flux_delta_cm_per_day": 1.374285e-6,
+      "after_max_abs_pressure_head_delta_cm": 7.927128e-4,
+      "after_max_abs_water_content_delta": 1.527134e-7,
+      "after_mass_residual_abs_cm": 3.187554e-17,
+      "iteration_delta": 0,
+      "backtracking_delta": 0
+    },
+    "existing_production_matrix": {
+      "workflow_run": 36123877033,
+      "result": "12/12 PASS"
+    },
+    "semantic_regression": {
+      "workflow_run": 36123877096,
+      "production_provider_extraction": "PASS",
+      "prescribed_head_matrix": "PASS",
+      "default_off_serialized_trajectory": "PASS",
+      "serialized_provider_retention_and_fidelity": "PASS",
+      "prescribed_qbot_analytical_fallback": "PASS",
+      "accepted_trajectory_analytical_fallback": "PASS"
+    },
+    "cache_policy_identity": {
+      "marker": "F-AHL42A_POLICY_IDENTITY_3_VS_4=PASS",
+      "finding": "Policy 3 and policy 4 differ in stored policy version, exact-key equality and fingerprint."
+    }
+  },
+  "finding": "The minimal global conductivity-policy repair closes the full-catalog production gap without changing dry-tail relevance, K-floor semantics, near-saturation handling, qbot fallback, default-off behavior or nonlinear solver paths.",
+  "production_boundary": {
+    "prescribed_head_default_MvG_opt_in": "TECHNICALLY_QUALIFIED_36_MATERIAL_WET_MID_DRY_MATRIX",
+    "prescribed_qbot": "ANALYTICAL_FALLBACK",
+    "accepted_trajectory_directional": "ANALYTICAL_FALLBACK",
+    "default": "ADAPTIVE_HYDRAULICS_OFF"
+  },
+  "nonclaims": [
+    "No new whole-SWAP or MultiSWAP speedup claim is made by this repair.",
+    "No qbot scope broadening is implied.",
+    "No canonical admission is performed by this work unit."
+  ]
+}
