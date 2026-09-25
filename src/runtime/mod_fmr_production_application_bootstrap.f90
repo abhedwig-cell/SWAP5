@@ -16,7 +16,8 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
-  use mod_b110_direct_retention_core, only: reset_b110_direct_retention_pool, freeze_b110_direct_retention_pool
+  use mod_b110_direct_retention_core, only: begin_b110_direct_retention_application, end_b110_direct_retention_application, &
+       freeze_b110_direct_retention_pool
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
        FMR_GW_REGISTRY_OK
@@ -73,6 +74,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_bootstrap_t
     private
     logical :: initialized = .false.
+    logical :: direct_retention_owner_active = .false.
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
@@ -162,7 +164,14 @@ contains
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
-    if (direct_retention_requested) call reset_b110_direct_retention_pool()
+    if (direct_retention_requested) then
+      call begin_b110_direct_retention_application(ok)
+      if (.not. ok) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+      self%direct_retention_owner_active = .true.
+    end if
 
     allocate(self%columns(n), self%templates(n))
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
@@ -194,7 +203,6 @@ contains
       self%parameters(i) = config%tiles(i)%parameters
       call prepare_fmr_b110_default_mvg(self%parameters(i), hydraulic_prepared)
       if (self%parameters(i)%direct_retention_active .and. .not. hydraulic_prepared) then
-        call reset_b110_direct_retention_pool()
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         call discard_owner_storage(self)
         return
@@ -649,6 +657,10 @@ contains
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)
+    if (self%direct_retention_owner_active) then
+      call end_b110_direct_retention_application()
+      self%direct_retention_owner_active = .false.
+    end if
     self%initialized = .false.
   end subroutine discard_owner_storage
 
