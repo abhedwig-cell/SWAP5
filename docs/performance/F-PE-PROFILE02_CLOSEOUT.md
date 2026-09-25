@@ -413,7 +413,7 @@ Why selected:
 5. The gprof profile has coarse sampling resolution and mixes setup with repeated execution. It is supporting evidence only.
 6. PROFILE02 did not construct a new production oxygenstress workload because current repository authority does not justify one.
 7. PROFILE02 did not implement or benchmark a new approximate mode.
-8. The repository-wide F-CI canonical workflow currently has an unrelated moving-preservation failure reporting drift in `src/transaction/mod_transaction_reference.f90`. PROFILE02 did not modify that production file. All PROFILE02-specific measurement workflows used for this closeout passed. The PR should therefore remain measurement-closed but not be represented as a fully green canonical-production admission until the upstream/base preservation issue is reconciled.
+8. The repository-wide F-CI canonical workflow run `36147601740` failed only in `current-restricted-canonical-preservation`; all listed frozen historical authorities in that run passed. A direct compare from the production parent `f5ba657...` to the PROFILE02 closeout head contains only added `.github/workflows/`, `docs/performance/` and `tests/fpe/` files and no `src/` or `reference/` changes. PROFILE02 therefore did not introduce a production-source delta that can explain that preservation failure. The PR remains measurement-closed, not a canonical production admission; the moving-preservation failure belongs to upstream/base reconciliation.
 
 ## Final state
 
