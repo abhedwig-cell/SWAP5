@@ -1378,7 +1378,8 @@ contains
         ! Provider routing remains boundary-contract dependent; prescribed-qbot
         ! and unqualified modes use the authoritative analytical provider.
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
-             .not. self%temporal_indicator_history_enabled
+             .not. self%temporal_indicator_history_enabled .and. &
+             .not. parameters%ksatexm_extension_active
       end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &

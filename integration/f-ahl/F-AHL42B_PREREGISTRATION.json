@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42B",
+  "title": "Fail-closed exclusion of unqualified adaptive plus KSATEXM composition",
+  "parent": "F-AHL42",
+  "branch": "work/f-ahl42-canonical-admission",
+  "phase": "PREREGISTERED_SCOPE_CLOSURE",
+  "authority": "F-AHL27 production envelope: B110 default unimodal MvG only",
+  "problem": "The runtime admission predicate did not explicitly reject adaptive_hydraulics_active combined with ksatexm_extension_active. The cache key can distinguish that combination, but technical keying is not scientific qualification.",
+  "repair": "When adaptive hydraulics is requested, require ksatexm_extension_active=false. The independently qualified analytical KSATEXM route remains unchanged.",
+  "prospective_checks": [
+    "adaptive plus KSATEXM mode-5 configuration is rejected before solver execution",
+    "the rejected configuration does not build or hit the adaptive hydraulic cache",
+    "existing prescribed-qbot analytical fallback remains unchanged",
+    "F-AHL42 bounded admission replay remains green"
+  ],
+  "hard_exclusions": [
+    "NO_KSATEXM_ADAPTIVE_QUALIFICATION_IN_THIS_WORK_UNIT",
+    "NO_CHANGE_TO_ANALYTICAL_KSATEXM_ROUTE",
+    "NO_GATE_RETUNING",
+    "NO_DEFAULT_ON_CHANGE"
+  ]
+}

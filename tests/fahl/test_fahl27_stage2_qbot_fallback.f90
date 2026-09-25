@@ -34,6 +34,8 @@ program test_fahl27_stage2_qbot_fallback
 
   call verify_equilibrium_mode2(qeq)
   call verify_no_adaptive_cache_use()
+  call verify_adaptive_ksatexm_scope_rejected(qeq)
+  call verify_no_adaptive_cache_use()
   write(*,'(A,ES26.17E3)') 'FAHL27_QBOT_QEQ=', qeq
   write(*,'(A)') 'FAHL27_QBOT_ANALYTICAL_FALLBACK=PASS'
 
@@ -64,6 +66,18 @@ contains
     write(*,'(A,ES26.17E3)') 'FMR44R_MODE2_EQUILIBRIUM_MASS_RESIDUAL=', output%mass%residual
     write(*,'(A)') 'FAHL27_QBOT_EQUILIBRIUM_TRANSACTION=PASS'
   end subroutine verify_equilibrium_mode2
+
+  subroutine verify_adaptive_ksatexm_scope_rejected(q)
+    real(real64), intent(in) :: q
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    call execute_case(5, q, 0.0_real64, -50.0_real64, equilibrium_dt, .false., .false., output, observation, &
+         enable_ksatexm=.true.)
+    call require(.not. output%committed, 'adaptive plus KSATEXM must not commit')
+    call require(output%final_revision == 0_int64, 'adaptive plus KSATEXM revision unchanged')
+    call require(.not. observation%solver_executed, 'adaptive plus KSATEXM rejected before solver')
+    write(*,'(A)') 'FAHL42_ADAPTIVE_KSATEXM_FAIL_CLOSED=PASS'
+  end subroutine verify_adaptive_ksatexm_scope_rejected
 
   subroutine verify_positive_bottom_inflow(q)
     real(real64), intent(in) :: q
@@ -136,10 +150,12 @@ contains
     write(*,'(A)') 'FMR44R_NEARBY_BOTTOM_MODE_FAIL_CLOSED=PASS'
   end subroutine verify_unowned_mode_rejected
 
-  subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, output, observation)
+  subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, output, observation, &
+       enable_ksatexm)
     integer, intent(in) :: bottom_mode
     real(real64), intent(in) :: top_flux, bottom_flux, bottom_head, duration
     logical, intent(in) :: use_certificate, hydrostatic
+    logical, intent(in), optional :: enable_ksatexm
     type(fmr_serialized_column_result_t), intent(out) :: output
     type(fmr_serialized_physical_observation_t), intent(out) :: observation
     type(fmr_serialized_reference_backend_t) :: backend
@@ -156,7 +172,7 @@ contains
     integer :: active_physical_calls
     logical :: ok
 
-    call initialize_parameters(parameters, bottom_mode)
+    call initialize_parameters(parameters, bottom_mode, enable_ksatexm)
     if (use_certificate) then
       call initialize_temporal_committed(committed, parameters, hydrostatic, ok)
     else
@@ -218,9 +234,10 @@ contains
     observation = backend%observation()
   end subroutine execute_case
 
-  subroutine initialize_parameters(parameters, bottom_mode)
+  subroutine initialize_parameters(parameters, bottom_mode, enable_ksatexm)
     type(fmr_b110_physical_parameters_t), intent(out) :: parameters
     integer, intent(in) :: bottom_mode
+    logical, intent(in), optional :: enable_ksatexm
     integer :: k
     parameters%parameter_set_id = 440044_int64
     parameters%active_nodes = numnod
@@ -258,6 +275,13 @@ contains
     parameters%frost_active = .false.
     parameters%soil_temperature_active = .false.
     parameters%adaptive_hydraulics_active = .true.
+    parameters%ksatexm_extension_active = .false.
+    if (present(enable_ksatexm)) parameters%ksatexm_extension_active = enable_ksatexm
+    if (parameters%ksatexm_extension_active) then
+      parameters%cofgen(10,:) = 1.2_real64*parameters%cofgen(3,:)
+      parameters%cofgen(11,:) = 0.999_real64
+      parameters%cofgen(12,:) = 0.99_real64*parameters%cofgen(3,:)
+    end if
   end subroutine initialize_parameters
 
   subroutine initialize_committed(committed, parameters, hydrostatic, ok)
