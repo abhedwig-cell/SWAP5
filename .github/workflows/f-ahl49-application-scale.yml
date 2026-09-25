@@ -1,0 +1,30 @@
+name: F-AHL49 application scale qualification
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_direct_retention_core.f90'
+      - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fahl/test_fahl49_application_scale.f90'
+      - 'tests/fahl/run_fahl49_application_scale.sh'
+      - '.github/workflows/f-ahl49-application-scale.yml'
+  workflow_dispatch:
+
+jobs:
+  scale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run paired production application scale qualification
+        run: |
+          bash tests/fahl/run_fahl49_application_scale.sh | tee fahl49-application-scale.txt
+          grep -Fq 'FAHL49_APPLICATION_SCALE=PASS' fahl49-application-scale.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl49-application-scale
+          path: fahl49-application-scale.txt
