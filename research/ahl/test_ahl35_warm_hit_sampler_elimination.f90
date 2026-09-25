@@ -23,10 +23,16 @@ program test_ahl35_warm_hit_sampler_elimination
     call bind_b110_adaptive_hydraulic_provider(provider,p(i),0.25_real64,ok,hit)
     call require(ok,'warmup bind')
   end do
-  call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
-  call require(e0>=NKEY,'64 warm registry entries')
+  call require_registry_warm()
 
   call check_step_duration_fallback(provider,p)
+
+  ! Normalize the provider to the round-robin terminal key and start the timed
+  ! accounting only after the untimed semantic checks above.
+  call bind_b110_adaptive_hydraulic_provider(provider,p(NKEY),0.25_real64,ok,hit)
+  call require(ok,'timing normalization bind')
+  call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
+  call require(e0>=NKEY,'64 warm registry entries')
 
   do r=1,NPAIR
     if(mod(r,2)==1) then
@@ -54,6 +60,12 @@ program test_ahl35_warm_hit_sampler_elimination
   write(*,'(A)') 'AHL35_WARM_HIT_SAMPLER_ELIMINATION=PASS'
 
 contains
+
+  subroutine require_registry_warm()
+    integer :: bb,hh,mm,ee
+    call b110_adaptive_hydraulic_cache_stats(bb,hh,mm,ee)
+    call require(ee>=NKEY,'64 warm registry entries before semantic checks')
+  end subroutine require_registry_warm
 
   subroutine time_candidate(prov,param,elapsed)
     type(b110_adaptive_hydraulic_provider_t),intent(inout)::prov
