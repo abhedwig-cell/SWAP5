@@ -10,25 +10,30 @@ module mod_b110_adaptive_hydraulic_provider
   private
 
   real(real64), parameter :: LOOKUP_H_MAX=-1.0_real64
-  real(real64), parameter :: LOOKUP_H_MIN=-1.0e6_real64
   real(real64), parameter :: LN10=log(10.0_real64)
-  integer, parameter :: POLICY_VERSION=3, BRANCH_POLICY_VERSION=1
+  integer, parameter :: POLICY_VERSION=4, BRANCH_POLICY_VERSION=1
   character(len=*), parameter :: MODEL_ID='B110_DEFAULT_MVG'
 
   type(b110_adaptive_hydraulic_cache_t), save :: shared_cache
+
+  type :: b110_adaptive_hydraulic_representation_t
+    type(b110_adaptive_hydraulic_table_t) :: table
+    integer :: registry_slot=0
+    logical :: registry_handle_active=.false.
+    real(real64) :: registry_xmin=0.0_real64
+    real(real64) :: registry_xmax=0.0_real64
+    type(b110_adaptive_hydraulic_cache_key_t) :: key
+    logical :: key_valid=.false.
+  end type b110_adaptive_hydraulic_representation_t
 
   type, extends(constitutive_hydraulics_provider_t), public :: b110_adaptive_hydraulic_provider_t
     private
     type(b110_default_mvg_provider_t) :: analytical
     real(real64), pointer :: cofgen(:,:) => null()
-    type(b110_adaptive_hydraulic_table_t) :: table
-    integer :: registry_slot=0
-    logical :: registry_handle_active=.false.
-    real(real64) :: registry_xmin=0.0_real64, registry_xmax=0.0_real64
-    type(b110_adaptive_hydraulic_cache_key_t) :: representation_key
-    logical :: representation_key_valid=.false.
+    type(b110_adaptive_hydraulic_representation_t), allocatable :: representation(:)
+    integer, allocatable :: node_representation(:)
+    integer :: representation_count=0
     logical :: ready=.false.
-    logical :: acquired_from_cache=.false.
   contains
     procedure :: evaluate => b110_adaptive_hydraulic_evaluate
   end type b110_adaptive_hydraulic_provider_t
@@ -49,8 +54,8 @@ contains
     type(b110_default_mvg_provider_t) :: sampler
     type(b110_adaptive_hydraulic_cache_key_t) :: key
     real(real64) :: one_node_input(42,1)
-    logical :: same_representation,slot_ok,use_handle
-    integer :: slot
+    logical :: same_profile,slot_ok,use_handle,rep_hit,rep_ok,all_hit
+    integer :: slot,node,r,existing
 
     ok=.false.;was_hit=.false.
     use_handle=.true.
@@ -59,95 +64,136 @@ contains
       provider%ready=.false.
       return
     end if
-    if(size(parameters%cofgen,1)<42)then
+    if(size(parameters%cofgen,1)<42 .or. size(parameters%cofgen,2)/=parameters%active_nodes)then
       provider%ready=.false.
       return
     end if
 
-    ! Step-dependent analytical semantics are always rebound. Only the immutable
-    ! adaptive representation may survive a same-key rebind.
+    ! Step-dependent analytical semantics are always rebound. Only immutable
+    ! adaptive representations may survive a same-profile rebind.
     call bind_b110_default_mvg_provider(provider%analytical,parameters,step_duration)
     provider%cofgen=>parameters%cofgen
 
-    ! Same-provider reuse does not need to rebuild/hash the shared-cache key.
-    ! Compare the exact initialized hydraulic authority directly. The full
-    ! collision-safe cache key is constructed only when this fast path misses.
-    same_representation = provider%ready .and. provider%representation_key_valid .and. &
-         (provider%registry_handle_active .or. allocated(provider%table%x)) .and. &
-         same_local_authority(provider%representation_key,parameters)
-    if(same_representation)then
-      provider%acquired_from_cache=.true.
+    same_profile=provider%ready .and. same_profile_authority(provider,parameters)
+    if(same_profile)then
       was_hit=.true.
       ok=.true.
       return
     end if
 
     provider%ready=.false.
-    provider%representation_key_valid=.false.
-    provider%registry_handle_active=.false.
-    provider%registry_slot=0
-    provider%registry_xmin=0.0_real64
-    provider%registry_xmax=0.0_real64
-    key=make_b110_adaptive_hydraulic_key(parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION)
+    provider%representation_count=0
+    if(allocated(provider%representation))deallocate(provider%representation)
+    if(allocated(provider%node_representation))deallocate(provider%node_representation)
+    allocate(provider%representation(parameters%active_nodes))
+    allocate(provider%node_representation(parameters%active_nodes))
+    provider%node_representation=0
+    all_hit=.true.
 
-    ! F-AHL35: changed authority first queries the exact-key registry. The
-    ! one-node authoritative sampler is only required after a genuine registry
-    ! miss to construct a new immutable representation.
-    if(use_handle)then
-      call shared_cache%find_slot(key,slot,was_hit)
-      if(was_hit)then
-        call shared_cache%slot_bounds(slot,provider%registry_xmin,provider%registry_xmax,slot_ok)
-        if(.not.slot_ok)return
-        provider%registry_slot=slot
-        provider%registry_handle_active=.true.
-        ok=.true.
-      else
-        one_node_input(:,1)=parameters%cofgen(1:42,1)
-        call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
-             parameters%ksatexm_extension_enabled)
-        call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
-        call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
-        if(.not.ok)return
-        call shared_cache%find_slot(key,slot,slot_ok,.false.)
-        if(slot_ok)then
-          call shared_cache%slot_bounds(slot,provider%registry_xmin,provider%registry_xmax,slot_ok)
-          if(.not.slot_ok)return
-          provider%registry_slot=slot
-          provider%registry_handle_active=.true.
+    do node=1,parameters%active_nodes
+      key=make_b110_adaptive_hydraulic_key(parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION,node)
+
+      ! Reuse a representation already acquired for an identical authority in
+      ! this vertical profile. This is exact-key equality, not parameter
+      ! proximity or a material-name shortcut.
+      existing=0
+      do r=1,provider%representation_count
+        if(provider%representation(r)%key_valid)then
+          if(b110_adaptive_hydraulic_keys_equal(provider%representation(r)%key,key))then
+            existing=r
+            exit
+          end if
         end if
+      end do
+      if(existing>0)then
+        provider%node_representation(node)=existing
+        cycle
       end if
-    else
-      call shared_cache%lookup(key,provider%table,was_hit)
-      if(was_hit)then
-        ok=.true.
+
+      provider%representation_count=provider%representation_count+1
+      r=provider%representation_count
+      provider%node_representation(node)=r
+      provider%representation(r)%key=key
+      provider%representation(r)%key_valid=.true.
+      rep_hit=.false.;rep_ok=.false.;slot=0
+
+      if(use_handle)then
+        call shared_cache%find_slot(key,slot,rep_hit)
+        if(rep_hit)then
+          call shared_cache%slot_bounds(slot,provider%representation(r)%registry_xmin, &
+               provider%representation(r)%registry_xmax,slot_ok)
+          if(.not.slot_ok)return
+          provider%representation(r)%registry_slot=slot
+          provider%representation(r)%registry_handle_active=.true.
+          rep_ok=.true.
+        else
+          one_node_input(:,1)=parameters%cofgen(1:42,node)
+          call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
+               parameters%ksatexm_extension_enabled)
+          call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
+          call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%representation(r)%table,rep_hit,rep_ok)
+          if(.not.rep_ok)return
+          call shared_cache%find_slot(key,slot,slot_ok,.false.)
+          if(slot_ok)then
+            call shared_cache%slot_bounds(slot,provider%representation(r)%registry_xmin, &
+                 provider%representation(r)%registry_xmax,slot_ok)
+            if(.not.slot_ok)return
+            provider%representation(r)%registry_slot=slot
+            provider%representation(r)%registry_handle_active=.true.
+          end if
+        end if
       else
-        one_node_input(:,1)=parameters%cofgen(1:42,1)
-        call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
-             parameters%ksatexm_extension_enabled)
-        call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
-        call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
-        if(.not.ok)return
+        call shared_cache%lookup(key,provider%representation(r)%table,rep_hit)
+        if(rep_hit)then
+          rep_ok=.true.
+        else
+          one_node_input(:,1)=parameters%cofgen(1:42,node)
+          call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
+               parameters%ksatexm_extension_enabled)
+          call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
+          call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%representation(r)%table,rep_hit,rep_ok)
+        end if
+        if(.not.rep_ok)return
       end if
-    end if
-    provider%representation_key=key
-    provider%representation_key_valid=.true.
-    provider%acquired_from_cache=was_hit
+      all_hit=all_hit .and. rep_hit
+    end do
+
     provider%ready=.true.
+    was_hit=all_hit
+    ok=.true.
   end subroutine bind_b110_adaptive_hydraulic_provider
 
-  pure logical function same_local_authority(key,parameters) result(equal)
+  pure logical function same_profile_authority(provider,parameters) result(equal)
+    type(b110_adaptive_hydraulic_provider_t),intent(in)::provider
+    type(b110_default_mvg_parameters_t),intent(in)::parameters
+    integer::node,r
+    equal=.false.
+    if(.not.allocated(provider%representation) .or. .not.allocated(provider%node_representation))return
+    if(size(provider%node_representation)/=parameters%active_nodes)return
+    if(.not.allocated(parameters%cofgen) .or. size(parameters%cofgen,1)<42)return
+    do node=1,parameters%active_nodes
+      r=provider%node_representation(node)
+      if(r<1 .or. r>provider%representation_count)return
+      if(.not.provider%representation(r)%key_valid)return
+      if(.not.same_node_authority(provider%representation(r)%key,parameters,node))return
+    end do
+    equal=.true.
+  end function same_profile_authority
+
+  pure logical function same_node_authority(key,parameters,node) result(equal)
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
     type(b110_default_mvg_parameters_t),intent(in)::parameters
-    integer(int64) :: key_bits(42), parameter_bits(42)
+    integer,intent(in)::node
+    integer(int64)::key_bits(42),parameter_bits(42)
 
     equal=.false.
     if(.not.allocated(parameters%cofgen))return
-    if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42)return
+    if(node<1 .or. node>parameters%active_nodes .or. size(parameters%cofgen,1)<42)return
     if(key%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_enabled)return
     key_bits=transfer(key%coeff,key_bits)
-    parameter_bits=transfer(parameters%cofgen(1:42,1),parameter_bits)
+    parameter_bits=transfer(parameters%cofgen(1:42,node),parameter_bits)
     equal=all(key_bits==parameter_bits)
-  end function same_local_authority
+  end function same_node_authority
 
   subroutine b110_adaptive_hydraulic_evaluate(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(b110_adaptive_hydraulic_provider_t),intent(in)::self
@@ -157,36 +203,42 @@ contains
     real(real64) :: wa(size(pressure_head)),ka(size(pressure_head)),ca(size(pressure_head)),da(size(pressure_head))
     real(real64) :: xv,f,dx,t,h00,h10,h01,h11,dh00,h10d,dh01,dh11,zz,dz_x,se,span
     real(real64) :: x0,x1,z0,z1,m0,m1,k0,k1
-    integer :: i,idx
+    integer :: node,idx,r
     logical :: inside,need_fallback
 
     if(.not.self%ready .or. .not.associated(self%cofgen))error stop 'B110 adaptive hydraulic provider not ready'
+    if(.not.allocated(self%representation) .or. .not.allocated(self%node_representation)) &
+         error stop 'B110 adaptive hydraulic provider mapping missing'
+    if(size(pressure_head)/=size(self%node_representation))error stop 'B110 adaptive hydraulic provider shape mismatch'
 
     need_fallback=any(pressure_head>LOOKUP_H_MAX)
-    if(self%registry_handle_active)then
-      do i=1,size(pressure_head)
-        if(pressure_head(i)<=LOOKUP_H_MAX)then
-          xv=log10(-pressure_head(i))
-          if(xv<self%registry_xmin .or. xv>self%registry_xmax)need_fallback=.true.
-        end if
-      end do
-    else
-      if(.not.allocated(self%table%x))error stop 'B110 adaptive hydraulic provider table missing'
-      if(any(log10(max(-pressure_head,tiny(1.0_real64)))<self%table%x(1)) .or. &
-           any(log10(max(-pressure_head,tiny(1.0_real64)))>self%table%x(self%table%n)))need_fallback=.true.
-    end if
+    do node=1,size(pressure_head)
+      if(pressure_head(node)>LOOKUP_H_MAX)cycle
+      r=self%node_representation(node)
+      if(r<1 .or. r>self%representation_count)error stop 'B110 adaptive hydraulic provider invalid mapping'
+      xv=log10(-pressure_head(node))
+      if(self%representation(r)%registry_handle_active)then
+        if(xv<self%representation(r)%registry_xmin .or. xv>self%representation(r)%registry_xmax)need_fallback=.true.
+      else
+        if(.not.allocated(self%representation(r)%table%x))error stop 'B110 adaptive hydraulic provider table missing'
+        if(xv<self%representation(r)%table%x(1) .or. &
+             xv>self%representation(r)%table%x(self%representation(r)%table%n))need_fallback=.true.
+      end if
+    end do
     if(need_fallback)call self%analytical%evaluate(pressure_head,wa,ka,ca,da)
 
-    do i=1,size(pressure_head)
-      if(pressure_head(i)<=LOOKUP_H_MAX)then
-        xv=log10(-pressure_head(i))
+    do node=1,size(pressure_head)
+      r=self%node_representation(node)
+      if(pressure_head(node)<=LOOKUP_H_MAX)then
+        xv=log10(-pressure_head(node))
       else
         xv=0.0_real64
       end if
 
-      if(self%registry_handle_active)then
-        if(pressure_head(i)<=LOOKUP_H_MAX .and. xv>=self%registry_xmin .and. xv<=self%registry_xmax)then
-          call shared_cache%sample_slot(self%registry_slot,xv,inside,x0,x1,z0,z1,m0,m1,k0,k1)
+      if(self%representation(r)%registry_handle_active)then
+        if(pressure_head(node)<=LOOKUP_H_MAX .and. xv>=self%representation(r)%registry_xmin .and. &
+             xv<=self%representation(r)%registry_xmax)then
+          call shared_cache%sample_slot(self%representation(r)%registry_slot,xv,inside,x0,x1,z0,z1,m0,m1,k0,k1)
           if(.not.inside)error stop 'B110 adaptive hydraulic registry handle invalid'
           dx=x1-x0;f=(xv-x0)/dx;t=f
           h00=2*t**3-3*t**2+1;h10=t**3-2*t**2+t;h01=-2*t**3+3*t**2;h11=t**3-t**2
@@ -198,36 +250,40 @@ contains
           else
             se=exp(zz)/(1.0_real64+exp(zz))
           end if
-          span=self%cofgen(2,i)-self%cofgen(1,i)
-          water_content(i)=self%cofgen(1,i)+span*se
-          capacity(i)=(span*se*(1.0_real64-se)*dz_x)/(pressure_head(i)*LN10)
-          conductivity(i)=exp(k0+f*(k1-k0))
-          dconductivity_dhead(i)=0.0_real64
+          span=self%cofgen(2,node)-self%cofgen(1,node)
+          water_content(node)=self%cofgen(1,node)+span*se
+          capacity(node)=(span*se*(1.0_real64-se)*dz_x)/(pressure_head(node)*LN10)
+          conductivity(node)=exp(k0+f*(k1-k0))
+          dconductivity_dhead(node)=0.0_real64
         else
-          water_content(i)=wa(i);conductivity(i)=ka(i);capacity(i)=ca(i);dconductivity_dhead(i)=da(i)
+          water_content(node)=wa(node);conductivity(node)=ka(node)
+          capacity(node)=ca(node);dconductivity_dhead(node)=da(node)
         end if
       else
-        if(pressure_head(i)<=LOOKUP_H_MAX .and. xv>=self%table%x(1) .and. xv<=self%table%x(self%table%n))then
-          call locate(self%table%x,xv,idx,f)
-          dx=self%table%x(idx+1)-self%table%x(idx);t=f
+        if(pressure_head(node)<=LOOKUP_H_MAX .and. xv>=self%representation(r)%table%x(1) .and. &
+             xv<=self%representation(r)%table%x(self%representation(r)%table%n))then
+          call locate(self%representation(r)%table%x,xv,idx,f)
+          dx=self%representation(r)%table%x(idx+1)-self%representation(r)%table%x(idx);t=f
           h00=2*t**3-3*t**2+1;h10=t**3-2*t**2+t;h01=-2*t**3+3*t**2;h11=t**3-t**2
-          zz=h00*self%table%z(idx)+h10*dx*self%table%dzdx(idx)+ &
-             h01*self%table%z(idx+1)+h11*dx*self%table%dzdx(idx+1)
+          zz=h00*self%representation(r)%table%z(idx)+h10*dx*self%representation(r)%table%dzdx(idx)+ &
+             h01*self%representation(r)%table%z(idx+1)+h11*dx*self%representation(r)%table%dzdx(idx+1)
           dh00=6*t*t-6*t;h10d=3*t*t-4*t+1;dh01=-6*t*t+6*t;dh11=3*t*t-2*t
-          dz_x=(dh00*self%table%z(idx)+h10d*dx*self%table%dzdx(idx)+ &
-               dh01*self%table%z(idx+1)+dh11*dx*self%table%dzdx(idx+1))/dx
+          dz_x=(dh00*self%representation(r)%table%z(idx)+h10d*dx*self%representation(r)%table%dzdx(idx)+ &
+               dh01*self%representation(r)%table%z(idx+1)+dh11*dx*self%representation(r)%table%dzdx(idx+1))/dx
           if(zz>=0.0_real64)then
             se=1.0_real64/(1.0_real64+exp(-zz))
           else
             se=exp(zz)/(1.0_real64+exp(zz))
           end if
-          span=self%cofgen(2,i)-self%cofgen(1,i)
-          water_content(i)=self%cofgen(1,i)+span*se
-          capacity(i)=(span*se*(1.0_real64-se)*dz_x)/(pressure_head(i)*LN10)
-          conductivity(i)=exp(self%table%logk(idx)+f*(self%table%logk(idx+1)-self%table%logk(idx)))
-          dconductivity_dhead(i)=0.0_real64
+          span=self%cofgen(2,node)-self%cofgen(1,node)
+          water_content(node)=self%cofgen(1,node)+span*se
+          capacity(node)=(span*se*(1.0_real64-se)*dz_x)/(pressure_head(node)*LN10)
+          conductivity(node)=exp(self%representation(r)%table%logk(idx)+ &
+               f*(self%representation(r)%table%logk(idx+1)-self%representation(r)%table%logk(idx)))
+          dconductivity_dhead(node)=0.0_real64
         else
-          water_content(i)=wa(i);conductivity(i)=ka(i);capacity(i)=ca(i);dconductivity_dhead(i)=da(i)
+          water_content(node)=wa(node);conductivity(node)=ka(node)
+          capacity(node)=ca(node);dconductivity_dhead(node)=da(node)
         end if
       end if
     end do
