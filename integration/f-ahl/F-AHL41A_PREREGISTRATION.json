@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41A",
+  "title": "FSI38-bound prescribed-qbot adaptive Richards falsification",
+  "parent": "F-AHL41",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Under the already-qualified FSI38 Neumann construction, does the current derivative-consistent adaptive hydraulic provider preserve the authoritative Reference Richards solution, including the emergent bottom pressure head?",
+  "authority_fixture": {
+    "initial_profile": "hydrostatic predecessor profile generated from top pressure head and canonical node distances",
+    "top_mode": "explicit flux",
+    "bottom_mode": 2,
+    "top_flux": "exactly equal to prescribed qbot",
+    "bottom_flux": "prescribed qbot",
+    "step_duration_day": 0.01,
+    "qbot_values_cm_per_day": [-1e-6,-1e-10,0.0,1e-10,1e-6],
+    "lineage": "FSI38 prescribed-qbot temporal certificate"
+  },
+  "materials": ["B01","B12","O05","O14"],
+  "hydraulic_regimes": [
+    {"id":"wet","top_initial_head_cm":-10.0},
+    {"id":"mid","top_initial_head_cm":-75.0},
+    {"id":"dry","top_initial_head_cm":-500.0}
+  ],
+  "case_count": 60,
+  "candidate": "current self-built derivative-consistent adaptive B1.10 provider, including raw-C 1e-13 dry relevance bound, analytical fallback outside represented domain, run-lifetime registry and stable slot handle",
+  "gates_per_case": {
+    "analytical_and_candidate_converged": true,
+    "prescribed_qbot_exact_identity_in_both_arms": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_profile_pressure_head_delta_cm": 0.05,
+    "bottom_node_pressure_head_delta_cm": 0.02,
+    "max_abs_water_content_delta": 1e-4,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "diagnostic_outputs": [
+    "analytical and adaptive bottom-node pressure heads",
+    "bottom-node pressure-head delta",
+    "maximum profile pressure-head delta",
+    "qbot",
+    "nonlinear iteration and backtracking counts"
+  ],
+  "decision_rule": "Advance prescribed-qbot adaptive qualification only if all 60 cases pass without gate retuning.",
+  "hard_exclusions": [
+    "NO_PERFORMANCE_TIMING_UNLESS_60_OF_60_PASS",
+    "NO_MODFLOW_COUPLER_CLAIM",
+    "NO_SURFACE_BOUNDARY_REDESIGN",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_POSTHOC_GATE_RETUNING"
+  ]
+}
