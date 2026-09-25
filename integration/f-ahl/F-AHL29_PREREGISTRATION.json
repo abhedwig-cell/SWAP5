@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL29",
+  "title": "Adaptive hydraulic cache capacity and correctness semantics",
+  "parent": "F-AHL28",
+  "phase": "PREREGISTERED_RESEARCH_REPAIR",
+  "question": "Does the bounded adaptive-hydraulic cache remain a pure optimization when MultiSWAP encounters more unique hydraulic parameterizations than cache slots?",
+  "current_code_observation": {
+    "cache_capacity": 32,
+    "full_cache_miss_path": "b110_ahl_get_or_build returns ok=false when no free slot exists",
+    "risk": "the 33rd unique parameterization may fail solely because the performance cache is full"
+  },
+  "stage_1": {
+    "workload": "40 sequential unique default-MvG parameterizations through a fresh local cache",
+    "measurement": ["successful get_or_build requests","builds","hits","misses","entries"],
+    "expected_current_failure_point_if_code_observation_is_correct": 33
+  },
+  "repair_rule": {
+    "required_semantics": "cache capacity must never be a correctness limit",
+    "minimum_repair": "on a full-cache miss, build a valid uncached table and return ok=true rather than failing",
+    "optional_eviction": "not introduced unless separately justified by measured repeated over-capacity workloads"
+  },
+  "stage_2": {
+    "workload": "10000 requests cycling over 16 unique parameterizations",
+    "gates": {
+      "correctness_failures": 0,
+      "expected_cached_builds": 16,
+      "minimum_hits": 9984
+    }
+  },
+  "hard_exclusions": [
+    "NO_CHANGE_TO_HYDRAULIC_REPRESENTATION",
+    "NO_CHANGE_TO_ERROR_GATES",
+    "NO_CHANGE_TO_DRY_TAIL_POLICY",
+    "NO_UNBOUNDED_CACHE_GROWTH",
+    "NO_PRODUCTION_SPEED_CLAIM_FROM_CACHE_MICROBENCHMARK"
+  ]
+}
