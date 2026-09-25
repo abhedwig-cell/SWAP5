@@ -136,15 +136,20 @@ contains
       status = GW_TOPOLOGY_INVALID_TILE
       if (.not. tiles(i)%valid()) return
       if (i > 1) then
-        if (tiles(i-1)%tile_id >= tiles(i)%tile_id) canonical_tiles = .false.
-        if (tiles(i-1)%swap_lineage_id >= tiles(i)%swap_lineage_id) canonical_tiles = .false.
-        if (tiles(i-1)%ledger_id >= tiles(i)%ledger_id) canonical_tiles = .false.
-        if (tiles(i-1)%groundwater_cell_id > tiles(i)%groundwater_cell_id) canonical_tiles = .false.
+        if (tiles(i-1)%tile_id >= tiles(i)%tile_id .or. &
+            tiles(i-1)%swap_lineage_id >= tiles(i)%swap_lineage_id .or. &
+            tiles(i-1)%ledger_id >= tiles(i)%ledger_id .or. &
+            tiles(i-1)%groundwater_cell_id > tiles(i)%groundwater_cell_id) then
+          canonical_tiles = .false.
+          exit
+        end if
       end if
     end do
 
     if (.not. canonical_tiles) then
       do i = 1, size(tiles)
+        status = GW_TOPOLOGY_INVALID_TILE
+        if (.not. tiles(i)%valid()) return
         do j = 1, i - 1
           if (tiles(j)%tile_id == tiles(i)%tile_id) then
             status = GW_TOPOLOGY_DUPLICATE_TILE_ID
@@ -168,16 +173,22 @@ contains
       if (.not. cells(i)%valid()) return
       if (cells(i)%package_slot > size(cells)) return
       if (i > 1) then
-        if (cells(i-1)%groundwater_cell_id >= cells(i)%groundwater_cell_id) canonical_cells = .false.
-        if (cells(i-1)%coupling_id >= cells(i)%coupling_id) canonical_cells = .false.
-        if (cells(i-1)%groundwater_lineage_id >= cells(i)%groundwater_lineage_id) canonical_cells = .false.
-        if (cells(i-1)%package_slot >= cells(i)%package_slot) canonical_cells = .false.
-        if (cells(i-1)%modflow_node_id >= cells(i)%modflow_node_id) canonical_cells = .false.
+        if (cells(i-1)%groundwater_cell_id >= cells(i)%groundwater_cell_id .or. &
+            cells(i-1)%coupling_id >= cells(i)%coupling_id .or. &
+            cells(i-1)%groundwater_lineage_id >= cells(i)%groundwater_lineage_id .or. &
+            cells(i-1)%package_slot >= cells(i)%package_slot .or. &
+            cells(i-1)%modflow_node_id >= cells(i)%modflow_node_id) then
+          canonical_cells = .false.
+          exit
+        end if
       end if
     end do
 
     if (.not. canonical_cells) then
       do i = 1, size(cells)
+        status = GW_TOPOLOGY_INVALID_CELL
+        if (.not. cells(i)%valid()) return
+        if (cells(i)%package_slot > size(cells)) return
         do j = 1, i - 1
           if (cells(j)%groundwater_cell_id == cells(i)%groundwater_cell_id) then
             status = GW_TOPOLOGY_DUPLICATE_CELL_ID
