@@ -1123,6 +1123,7 @@ contains
     write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
   end subroutine verify_irrigation_restart_bundle
   subroutine verify_restored_irrigation_delivery(original,resumed,boundary,template,owners)
+    use mod_transaction_reference, only: transaction_state_t
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
     use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t, &
          irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_SPLIT_REQUIRED,IRRIGATION_OK
@@ -1133,6 +1134,8 @@ contains
     real(real64),intent(in)::boundary
     type(fmr_template_t),intent(in)::template
     type(kernel_committed_state_t),intent(in)::owners(2)
+    type(kernel_committed_state_t)::invalid_owners(3)
+    class(transaction_state_t),allocatable::initial
     type(scheduled_irrigation_parameters_t)::parameters
     type(scheduled_irrigation_request_t)::request
     type(irrigation_state_t)::base,candidate,completed
@@ -1153,6 +1156,19 @@ contains
     parameters%dcs2_knot_count=2; parameters%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
     allocate(previous%subsurface_irrigation_source(original%active_nodes))
     previous%subsurface_irrigation_source=0.0_real64
+    call original%clone(initial)
+    call invalid_owners(2)%initialize(50002_int64,initial,ok)
+    if(.not.ok) error stop 'unbound source owner fixture'
+    call original%fmr_b110_temporal_indicator_state_t%clone(initial)
+    call invalid_owners(3)%initialize(50003_int64,initial,ok,boundary)
+    if(.not.ok) error stop 'wrong source owner fixture'
+    request%t0=boundary; request%t1=original%irrigation%active_event_end
+    do path=1,3
+      call evaluate_ppa_committed_irrigation_source(parameters,invalid_owners(path),template,request,previous, &
+           candidate,flux,diagnostics,forcing,ok)
+      if(ok.or.allocated(forcing).or.flux%applied) error stop 'invalid committed source owner accepted'
+      if(candidate%active_event) error stop 'invalid owner exposed active event'
+    end do
     expected=(original%irrigation%active_event_end-boundary)*original%irrigation%active_event_rate
     do path=1,2
       base=original%irrigation
@@ -1207,6 +1223,7 @@ contains
     end do
     if(amount(1)/=amount(2).or.rate(1)/=rate(2)) error stop 'restored event delivery differs'
     write(*,'(a)') 'PPA_IRR_EVENT_RESTORED_PROCESS_SOURCE_REPLAY=PASS'
+    write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_SOURCE_GUARDS=PASS'
   end subroutine verify_restored_irrigation_delivery
   subroutine verify_atm02_owner(profile,events)
     type(fmr_production_application_config_t),intent(in)::profile
