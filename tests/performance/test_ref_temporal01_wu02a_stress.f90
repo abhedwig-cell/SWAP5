@@ -123,7 +123,7 @@ contains
     write(*,'(A,I0,A,I0,A,I0,A,ES16.8E3,A,ES16.8E3,A,ES16.8E3,A,ES16.8E3,A,ES16.8E3,A,A)') &
       'REF_TEMPORAL01_WU02A_ROW,case=',id,',mat=',imat,',profile=',iprof,',qfac=',qfac,',dt=',dt, &
       ',bound=',ind%head_inf_bound,',head_err=',head_err,',ratio=',ratio,',route=',trim(ind%route), &
-      ',classification=',merge('BOUND_VALID_CONSERVATIVE    ','BOUND_VALID_NONCONSERVATIVE',ind%head_inf_bound>=head_err)
+      ',classification=',merge('BOUND_VALID_CONSERVATIVE   ','BOUND_VALID_NONCONSERVATIVE',ind%head_inf_bound>=head_err)
     write(*,'(A,I0,A,ES16.8E3,A,ES16.8E3)') 'REF_TEMPORAL01_WU02A_AUX,case=',id, &
       ',theta_err=',theta_err,',storage_err=',storage_err
   end subroutine run_case
