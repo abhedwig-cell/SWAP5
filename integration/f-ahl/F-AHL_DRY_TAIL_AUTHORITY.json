@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "DRY_TAIL_AUTHORITY_BINDING",
+  "title": "Extreme-dry storage-tail interpretation",
+  "historical_finding": {
+    "material": "O05",
+    "quantity": "moisture capacity C=dtheta/dh",
+    "raw_capacity_reaches_order": "1e-13",
+    "historical_regularization": "C_J=max(C,dt*1e-13)",
+    "regularization_role": "Jacobian conditioning only",
+    "not_a_physical_cutoff_of": ["theta","K","retention relation"],
+    "representative_previous_case": {
+      "dt_day": 0.04,
+      "regularization_becomes_relevant_near_head_cm": -800000.0,
+      "theta_minus_theta_r_approx": 1.7e-9
+    }
+  },
+  "current_B110_authority": {
+    "physical_dry_1e-13_cutoff_present": false,
+    "near_saturation_capacity_floor": "dt*1e-7 for h>-1 cm",
+    "conductivity_vsmall_branch_head_cm": -1e14
+  },
+  "AHL_design_implication": [
+    "Do not interpret 1e-13 as a physical constitutive cutoff.",
+    "Do not spend adaptive support density resolving negligible extreme-dry storage response merely to reduce relative C error.",
+    "Any finite dry-tail representation boundary or regularized tail policy must be prospectively qualified against authoritative theta, flux, solver trajectory and mass balance.",
+    "Outside a qualified lookup domain, authoritative analytical fallback remains admissible."
+  ],
+  "status": "BOUND_AS_DESIGN_CONSTRAINT_NOT_PRODUCTION_RULE"
+}
