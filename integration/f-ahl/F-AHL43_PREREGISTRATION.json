@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL43",
+  "title": "Policy-4 full-catalog Richards performance requalification",
+  "parent": "F-AHL42A",
+  "phase": "PREREGISTERED_PERFORMANCE_REQUALIFICATION",
+  "question": "After tightening the production conductivity policy from abs(logK)<=3e-4 to 1e-4, does the production-shaped adaptive provider retain a material complete-Richards CPU benefit across the full 36-material default-MvG catalog?",
+  "frozen_policy": {
+    "policy_version": 4,
+    "global_abs_logK_tolerance": 1e-4,
+    "wet_abs_logK_tolerance": 1e-4,
+    "K_floor_cm_per_day": 1e-10,
+    "raw_capacity_dry_relevance_floor": 1e-13,
+    "near_saturation": "authoritative analytical fallback",
+    "prescribed_qbot": "analytical fallback"
+  },
+  "workload": {
+    "materials": "B01..B18 and O01..O18",
+    "regime": "mid",
+    "initial_head_cm": -75.0,
+    "bottom_head_cm": -50.0,
+    "step_duration_day": 0.25,
+    "bottom_mode": 5
+  },
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks",
+    "replays_per_batch": 4096,
+    "paired_repetitions": 5,
+    "order": "alternate analytical->adaptive and adaptive->analytical",
+    "primary_statistic_per_material": "median paired adaptive/analytical CPU ratio",
+    "table_build_and_first_bind": "outside timed solve batches"
+  },
+  "fidelity_gates_per_material": {
+    "candidate_converged": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "classification": {
+    "speed_positive": "median ratio < 0.98",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "speed_negative": "median ratio > 1.02"
+  },
+  "broad_decision_rule": "Policy 4 retains a broad Richards speed claim only if all 36 materials pass fidelity, at least 30 of 36 are speed-positive, no more than 3 are speed-negative, and the median of the 36 per-material medians is below 0.98.",
+  "hard_exclusions": [
+    "NO_POLICY_RETUNING",
+    "NO_HYDRAULIC_IMPLEMENTATION_CHANGE",
+    "NO_WHOLE_SWAP_OR_MULTISWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION_FROM_THIS_SOLVER_BENCHMARK"
+  ]
+}
