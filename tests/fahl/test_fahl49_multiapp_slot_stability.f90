@@ -1,11 +1,12 @@
 program test_fahl49_multiapp_slot_stability
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
-  use mod_b110_direct_retention_core, only: reset_b110_direct_retention_pool, acquire_b110_direct_retention_slot, &
+  use mod_b110_direct_retention_core, only: begin_b110_direct_retention_application, &
+       end_b110_direct_retention_application, acquire_b110_direct_retention_slot, &
        freeze_b110_direct_retention_pool, sample_b110_direct_retention
   implicit none
   type(b110_default_mvg_parameters_t) :: a,b
-  real(real64) :: ca(42,1),cb(42,1),ta,cap_a,t_before,c_before,t_after,c_after,t_b,c_b
+  real(real64) :: ca(42,1),cb(42,1),t_before,c_before,t_after,c_after
   integer :: slot_a,slot_b
   logical :: ok,hit,inside
 
@@ -14,35 +15,30 @@ program test_fahl49_multiapp_slot_stability
   call initialize_b110_default_mvg_parameters(a,ca)
   call initialize_b110_default_mvg_parameters(b,cb)
 
-  call reset_b110_direct_retention_pool()
+  call begin_b110_direct_retention_application(ok)
+  call require(ok,'first application owner admitted')
   call acquire_b110_direct_retention_slot(a,slot_a,ok,hit)
   call require(ok .and. slot_a==1,'authority A acquire')
   call freeze_b110_direct_retention_pool()
   call sample_b110_direct_retention(slot_a,-75.0_real64,t_before,c_before,inside)
-  call require(inside,'authority A sample before reset')
+  call require(inside,'authority A sample')
 
-  ! Mirrors initialization of a second direct-retention production application.
-  call reset_b110_direct_retention_pool()
-  call acquire_b110_direct_retention_slot(b,slot_b,ok,hit)
-  call require(ok .and. slot_b==1,'authority B acquire after reset')
-  call freeze_b110_direct_retention_pool()
-  call sample_b110_direct_retention(slot_b,-75.0_real64,t_b,c_b,inside)
-  call require(inside,'authority B sample')
+  call begin_b110_direct_retention_application(ok)
+  call require(.not.ok,'second application owner rejected while first active')
 
-  ! The old slot value from application A must remain bound to A for safe
-  ! multi-application ownership. The current module-global reset is expected
-  ! to falsify this requirement.
   call sample_b110_direct_retention(slot_a,-75.0_real64,t_after,c_after,inside)
-  call require(inside,'old slot still numerically addressable')
-  write(*,'(*(g0))') 'FAHL49_MULTIAPP|SLOT_A=',slot_a,'|SLOT_B=',slot_b, &
-       '|A_BEFORE=',t_before,'|A_AFTER=',t_after,'|B=',t_b, &
-       '|DELTA_OLD_SLOT=',abs(t_after-t_before)
-  if(t_after==t_before .and. c_after==c_before)then
-    write(*,'(A)') 'FAHL49_MULTIAPP_SLOT_STABILITY=PASS'
-  else
-    write(*,'(A)') 'FAHL49_MULTIAPP_SLOT_STABILITY=FALSIFIED'
-    error stop 2
-  end if
+  call require(inside .and. t_after==t_before .and. c_after==c_before,'first owner slot remains stable')
+
+  call end_b110_direct_retention_application()
+
+  call begin_b110_direct_retention_application(ok)
+  call require(ok,'new owner admitted after first close')
+  call acquire_b110_direct_retention_slot(b,slot_b,ok,hit)
+  call require(ok .and. slot_b==1,'authority B acquire after owner release')
+  call freeze_b110_direct_retention_pool()
+  call end_b110_direct_retention_application()
+
+  write(*,'(A)') 'FAHL49_MULTIAPP_SLOT_STABILITY=PASS'
 contains
   subroutine make_authority(c,tr,ts,alpha,n)
     real(real64),intent(out)::c(42,1)
