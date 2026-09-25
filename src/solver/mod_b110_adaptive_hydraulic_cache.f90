@@ -5,7 +5,7 @@ module mod_b110_adaptive_hydraulic_cache
   implicit none
   private
 
-  integer, parameter, public :: B110_AHL_MAX_CACHE=32
+  integer, parameter, public :: B110_AHL_MAX_CACHE=16384
   integer, parameter :: NCOEF=42
 
   type, public :: b110_adaptive_hydraulic_cache_key_t
@@ -25,7 +25,7 @@ module mod_b110_adaptive_hydraulic_cache
 
   type, public :: b110_adaptive_hydraulic_cache_t
     private
-    type(b110_adaptive_hydraulic_cache_entry_t) :: entry(B110_AHL_MAX_CACHE)
+    type(b110_adaptive_hydraulic_cache_entry_t), allocatable :: entry(:)
     integer :: builds=0, hits=0, misses=0
   contains
     procedure :: get_or_build => b110_ahl_get_or_build
@@ -93,6 +93,7 @@ contains
     logical::build_ok
 
     was_hit=.false.;ok=.false.;slot=0
+    if(.not.allocated(self%entry)) allocate(self%entry(B110_AHL_MAX_CACHE))
     do i=1,B110_AHL_MAX_CACHE
       if(self%entry(i)%occupied)then
         if(self%entry(i)%key%fingerprint==key%fingerprint)then
@@ -131,6 +132,7 @@ contains
     integer,intent(out)::builds,hits,misses,entries
     integer::i
     builds=self%builds;hits=self%hits;misses=self%misses;entries=0
+    if(.not.allocated(self%entry)) return
     do i=1,B110_AHL_MAX_CACHE
       if(self%entry(i)%occupied)entries=entries+1
     end do
