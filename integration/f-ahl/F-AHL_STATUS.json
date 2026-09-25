@@ -1,9 +1,9 @@
 {
-  "schema_version": 18,
+  "schema_version": 19,
   "workstream": "F-AHL",
-  "status": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_APPLICATION_SPEED_PASS_POST_CLOSEOUT_ENGINEERING_ACTIVE",
+  "status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL40",
+  "completed_through": "F-AHL40R",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -112,7 +112,7 @@
     "SWKIMPL=1/dKdh qualification if included",
     "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration"
   ],
-  "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_BOUNDED_APPLICATION_SPEED_PASS_NO_CANONICAL_PRODUCTION_ADMISSION",
+  "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_READY_FOR_CANONICAL_GOVERNANCE_REVIEW_NO_CANONICAL_PRODUCTION_ADMISSION",
   "f_ahl27_closeout": "integration/f-ahl/F-AHL27_CLOSEOUT.json",
   "f_ahl27": {
     "closeout": "CLOSED_TECHNICALLY_QUALIFIED_PERFORMANCE_NOT_ADMITTED",
@@ -200,7 +200,7 @@
       "decision": "CLOSE_BINDING_OVERHEAD_MICRO_OPTIMIZATION_SUBPHASE"
     },
     "binding_overhead_subphase": {
-      "status": "CLOSED_AFTER_F_AHL40",
+      "status": "CLOSED_CONFIRMED_BY_F_AHL40R",
       "rule": "Do not open further cache/bind micro-optimization from timing noise alone.",
       "retained_repairs": [
         "provider-local same-key reuse",
@@ -208,6 +208,16 @@
         "stable integer registry-slot handle",
         "uncached valid fallback on full-registry miss"
       ]
+    },
+    "F_AHL40R": {
+      "finding": "Corrected true-median harness rerun preserved 16/16 fidelity and produced median adaptive/analytical ratio 0.970812, a 2.9188% CPU reduction.",
+      "reconciliation": "F-AHL40 and F-AHL40R both favor adaptive; observed robust serialized 16-authority effect range is about 2.9-4.5% CPU reduction.",
+      "decision": "CLOSE_BINDING_OVERHEAD_MICRO_OPTIMIZATION_SUBPHASE"
     }
+  },
+  "post_f_ahl40_closeout": "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json",
+  "next_owner": {
+    "owner": "canonical governance/admission",
+    "action": "Extract minimal production-shaped source/runtime patch and retained regression evidence; do not merge the full research branch wholesale."
   }
 }
