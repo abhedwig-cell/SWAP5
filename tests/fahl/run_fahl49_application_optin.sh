@@ -13,6 +13,17 @@ from pathlib import Path
 import sys
 src=Path("tests/fgc/support/mod_fgc49d_application_context_fixture.f90").read_text()
 src=src.replace(
+"  use mod_canonical_contracts, only: canonical_numerical_config_t",
+"  use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t")
+src=src.replace(
+"  use mod_kernel_transactions, only: kernel_committed_state_t",
+"  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &\n"
+"       kernel_candidate_state_t, kernel_diagnostics_t")
+src=src.replace(
+"  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE",
+"  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE\n"
+"  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD")
+src=src.replace(
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state",
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state, &\n       prepare_fmr_b110_default_mvg")
 src=src.replace(
