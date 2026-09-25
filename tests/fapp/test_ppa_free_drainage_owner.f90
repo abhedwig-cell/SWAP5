@@ -395,6 +395,7 @@ contains
     if(fmr_restart_state_matches_template(carrier,profile%tiles(1)%template)) &
          error stop 'unregistered carrier admitted as BASE'
     write(*,'(a)') 'PPA_IRR_EVENT_CARRIER_CLONE_BASE_REJECTION=PASS'
+    call verify_irrigation_kernel_checkpoint(carrier,event_template)
     ! Exercise the actual process continuation with a detached physical snapshot.
     ! Hydraulic evolution/acceptance is not asserted by this assembly-only test.
     irrigation%scheduled_irrigation_enabled=.true.
@@ -855,6 +856,78 @@ contains
     call owner%copy_committed_hydraulic_states(again,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(again)) error stop 'closed hydraulic copy'
   end subroutine verify_hydraulic_copy
+  subroutine verify_irrigation_kernel_checkpoint(source,template)
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
+    use mod_transaction_reference, only: transaction_state_t
+    use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t
+    type(ppa_irrigation_event_state_t),intent(in)::source
+    type(fmr_template_t),intent(in)::template
+    type(kernel_committed_state_t)::committed
+    type(kernel_checkpoint_t)::checkpoint
+    class(transaction_state_t),allocatable::input,snapshot
+    real(real64),allocatable::expected_history(:),actual_history(:)
+    real(real64)::observed_time
+    logical::ok,available
+    integer::pass,origin
+    ! Generic kernel ownership only: this fixture does not register a layout,
+    ! invoke hydraulic acceptance, or bypass the production restart validator.
+    call source%clone(input)
+    call committed%initialize(404101_int64,input,ok,T0)
+    if(.not.ok) error stop 'irrigation kernel initialization failed'
+    select type(input)
+    type is(ppa_irrigation_event_state_t)
+      input%irrigation%active_event_rate=99.0_real64
+      input%water_content=-1.0_real64
+    class default
+      error stop 'irrigation kernel input type lost'
+    end select
+    call committed%capture_checkpoint(checkpoint,ok)
+    if(.not.ok.or..not.checkpoint%ready()) error stop 'irrigation checkpoint missing'
+    if(committed%current_lineage_id()/=404101_int64.or.checkpoint%current_lineage_id()/=404101_int64) &
+         error stop 'irrigation checkpoint lineage changed'
+    if(committed%current_revision()/=0_int64.or.checkpoint%origin_revision()/=0_int64) &
+         error stop 'irrigation checkpoint revision changed'
+    call committed%current_time(observed_time,ok)
+    if(.not.ok.or.observed_time/=T0) error stop 'irrigation committed time changed'
+    call checkpoint%current_time(observed_time,ok)
+    if(.not.ok.or.observed_time/=T0) error stop 'irrigation checkpoint time changed'
+    call source%temporal_history_snapshot(expected_history,ok)
+    if(.not.ok) error stop 'irrigation expected history missing'
+    ! Mutate each detached snapshot, then reread both independently. Neither
+    ! the checkpoint nor the live kernel state may alias any returned array.
+    do pass=1,2
+      do origin=1,2
+        if(origin==1) then
+          call committed%snapshot(snapshot,available)
+        else
+          call checkpoint%snapshot(snapshot,available)
+        end if
+        if(.not.available) error stop 'irrigation kernel snapshot missing'
+        select type(snapshot)
+        type is(ppa_irrigation_event_state_t)
+          if(.not.snapshot%matches_candidate(template,T0)) error stop 'irrigation snapshot invalid'
+          if(snapshot%irrigation%active_event_rate/=source%irrigation%active_event_rate.or. &
+             snapshot%irrigation%active_event_start/=source%irrigation%active_event_start.or. &
+             snapshot%irrigation%active_event_end/=source%irrigation%active_event_end.or. &
+             snapshot%irrigation%next_fixed_event_index/=source%irrigation%next_fixed_event_index) &
+               error stop 'irrigation kernel event changed'
+          if(any(snapshot%pressure_head/=source%pressure_head).or. &
+             any(snapshot%water_content/=source%water_content)) error stop 'irrigation kernel physical state changed'
+          call snapshot%temporal_history_snapshot(actual_history,available)
+          if(.not.available) error stop 'irrigation kernel history missing'
+          if(size(actual_history)/=size(expected_history)) error stop 'irrigation kernel history shape changed'
+          if(any(actual_history/=expected_history)) error stop 'irrigation kernel history changed'
+          snapshot%irrigation%active_event_rate=88.0_real64
+          snapshot%pressure_head=1.0_real64
+          snapshot%water_content=-2.0_real64
+          actual_history=99.0_real64
+        class default
+          error stop 'irrigation kernel sliced carrier type'
+        end select
+      end do
+    end do
+    write(*,'(a)') 'PPA_IRR_EVENT_KERNEL_CHECKPOINT_ISOLATION=PASS'
+  end subroutine verify_irrigation_kernel_checkpoint
   subroutine verify_atm02_owner(profile,events)
     type(fmr_production_application_config_t),intent(in)::profile
     logical,intent(in)::events
