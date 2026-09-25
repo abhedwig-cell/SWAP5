@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "handoff": "F-AHL27_TO_TRANSACTION_TEMPORAL_AUTHORITY",
+  "status": "OPEN_EXTERNAL_BLOCKER",
+  "source_workstream": "F-AHL",
+  "problem": "A nontrivial prescribed-head serialized Reference FMR trial cannot be used for application-level timing under the current TX_TEMPORAL_EXTERNAL_FULL_HALF route because fmr_serialized_temporal_identity accepts the base physical state only when full-step and two-half-step states are exactly identical.",
+  "evidence": {
+    "F_AHL27B_run": 36078305485,
+    "analytical_candidates_cm": [-74.999,-74.99,-74.9,-74.0,-70.0,-50.0],
+    "all_transaction_failed": true,
+    "all_accepted_substeps": 0,
+    "all_solver_rejections": 0,
+    "all_temporal_rejections": 9,
+    "all_mass_rejections": 0
+  },
+  "requested_future_question": "What is the intended canonical temporal-error semantics for a nontrivial prescribed-head Reference Richards physical state, and is there already an independently qualified serialized fixture that can be used without changing tolerances post hoc?",
+  "constraints": [
+    "Do not loosen temporal tolerance merely to admit AHL timing.",
+    "Do not change AHL numerical gates.",
+    "Do not infer an AHL failure from the current transaction rejection because analytical and adaptive routes fail identically."
+  ]
+}
