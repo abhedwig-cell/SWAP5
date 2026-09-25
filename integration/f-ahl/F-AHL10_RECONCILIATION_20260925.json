@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "F-AHL10_RECONCILIATION_20260925",
+  "date": "2026-09-25",
+  "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "reconciled_head_before_record": "f07675595fec60ddb13250d073efebf1d96d4421",
+  "purpose": "Bind the requested F-AHL10 cross-material/cross-regime falsification protocol to the already persisted execution chain on the active work branch, without duplicating experiments or altering frozen gates.",
+  "protocol_match": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": {
+      "wet": {"initial_head_cm": -10.0, "bottom_head_cm": -7.5},
+      "mid": {"initial_head_cm": -75.0, "bottom_head_cm": -50.0},
+      "dry": {"initial_head_cm": -500.0, "bottom_head_cm": -400.0}
+    },
+    "case_count": 12,
+    "observables": ["convergence","nonlinear_iterations","backtracking","max_pressure_head_delta","max_water_content_delta","top_flux_delta","bottom_flux_delta","mass_residual"],
+    "gates": "FROZEN_IN_F-AHL10_PREREGISTRATION",
+    "gate_retuning_after_results": false
+  },
+  "original_falsification": {
+    "workflow_run": 36043017218,
+    "workflow_head_sha": "9845477abafbffd5704c42a830c602f81d4c7a10",
+    "workflow_conclusion": "failure",
+    "failure_mechanism": "scientific fidelity gates returned non-zero; compile completed and the matrix step failed closed",
+    "passed_cases": 6,
+    "failed_cases": 6,
+    "failed_case_ids": ["B01:wet","B01:dry","B12:wet","B12:dry","O05:wet","O14:dry"],
+    "nonlinear_path": "iteration and backtracking counts matched analytical in all 12 cases"
+  },
+  "failure_localization_and_repair_chain": {
+    "F-AHL10A": "restoring exact K made all six failed cases pass while retaining derivative-consistent interpolated theta/C; classified K_LOOKUP_DOMINATED",
+    "F-AHL10B": "prospective logK tolerance sweep selected 3e-4 as the loosest tested level passing all 12 frozen Richards cases",
+    "F-AHL10C": "identified cancellation in very-dry standard Mualem arithmetic; stable algebraically equivalent evaluation used only as research table-construction oracle",
+    "F-AHL10D": "bounded adaptive support by dry-end storage relevance and retained authoritative analytical fallback outside represented domain",
+    "F-AHL10E": "repaired lookup-domain membership so the dry tail actually falls back analytically rather than extrapolating the table",
+    "F-AHL10F": "paired timing over all 12 frozen cases after fidelity qualification"
+  },
+  "dry_domain_authority": {
+    "remembered_scale": "approximately 1e-13",
+    "reconciled_quantity": "capacity C=dtheta/dh relevance/Jacobian-conditioning scale, historically appearing as C_J=max(C,dt*1e-13)",
+    "not_a_physical_cutoff_for": ["theta","K"],
+    "O05_raw_C_1e-13_crossing_head_cm_approx": -264277.5,
+    "representation_policy": "do not spend adaptive support below the qualified negligible-storage relevance boundary; use the authoritative analytical provider outside the represented domain",
+    "physics_truncated": false
+  },
+  "paired_timing": {
+    "workflow_run": 36077675160,
+    "workflow_conclusion": "success",
+    "positive_cases": 12,
+    "matrix_median_candidate_over_analytical_ratio": 0.8488,
+    "matrix_median_cpu_reduction_fraction": 0.1512,
+    "interpretation": "speed benefit generalizes across this controlled 12-case matrix but is materially smaller than the approximately 27.9 percent F-AHL09R single-fixture result"
+  },
+  "architectural_conclusion": [
+    "authoritative parameterization",
+    "semantic domain partitioning",
+    "exact branch and analytical-fallback regions",
+    "adaptive derivative-consistent smooth theta/C representation",
+    "separately controlled logK representation",
+    "qualification",
+    "freeze",
+    "reuse"
+  ],
+  "scope_status": "F-AHL10_REQUEST_SATISFIED_BY_RECONCILED_EXISTING_EVIDENCE",
+  "nonclaims": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_MODFLOW_TANGENT_CLAIM",
+    "NO_ROSSFAST_CHANGE",
+    "NO_SOLVER_POLICY_CHANGE"
+  ]
+}
