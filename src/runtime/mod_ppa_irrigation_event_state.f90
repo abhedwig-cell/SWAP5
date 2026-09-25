@@ -25,14 +25,22 @@ contains
     ! Combine trial outputs only. The caller must supply the hydraulic state
     ! and event from the same boundary; this routine neither proves hydraulic
     ! acceptance nor publishes committed state or changes the runtime registry.
-    type(fmr_b110_temporal_indicator_state_t), intent(in) :: physical
+    class(transaction_state_t), intent(in) :: physical
     type(irrigation_state_t), intent(in) :: event
     type(fmr_template_t), intent(in) :: template
     real(real64), intent(in) :: boundary_time
     type(ppa_irrigation_event_state_t), allocatable, intent(out) :: candidate
     logical, intent(out) :: ok
     type(ppa_irrigation_event_state_t) :: proposed
-    proposed%fmr_b110_temporal_indicator_state_t=physical
+    ok=.false.
+    ! Do not implicitly slice an extended physical option into its parent.
+    ! Only the explicitly supported temporal trial state can be assembled.
+    select type(physical)
+    type is(fmr_b110_temporal_indicator_state_t)
+      proposed%fmr_b110_temporal_indicator_state_t=physical
+    class default
+      return
+    end select
     proposed%irrigation=event
     ok=proposed%matches_candidate(template,boundary_time)
     if(.not.ok) return

@@ -349,11 +349,27 @@ contains
     call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
          carrier%irrigation,event_template,T0+0.5_real64,assembled,ok)
     if(ok.or.allocated(assembled)) error stop 'failed assembly retained stale candidate'
+    ! A polymorphic boundary must not silently strip optional-state payloads.
+    ! The caller must explicitly extract the temporal parent when appropriate.
+    call build_irrigation_event_candidate(carrier,carrier%irrigation,event_template,T0,assembled,ok)
+    if(ok.or.allocated(assembled)) error stop 'assembly implicitly sliced irrigation carrier'
+    call build_irrigation_event_candidate(profile%tiles(1)%initial_state, &
+         carrier%irrigation,event_template,T0,assembled,ok)
+    if(ok.or.allocated(assembled)) error stop 'assembly admitted plain physical state'
+    call build_irrigation_event_candidate(bundle%records(1)%physical_state, &
+         carrier%irrigation,event_template,T0,assembled,ok)
+    if(.not.ok.or..not.allocated(assembled)) error stop 'assembly rejected exact polymorphic temporal state'
+    assembled%water_content=-99.0_real64
+    assembled%irrigation%active_event_rate=99.0_real64
+    if(any(carrier%water_content/=profile%tiles(1)%initial_state%water_content)) &
+         error stop 'assembly aliases source physical state'
+    if(carrier%irrigation%active_event_rate/=0.01_real64) error stop 'assembly aliases event source'
     if(.not.carrier%irrigation%active_event) error stop 'assembly mutated source event'
     base=irrigation_state_t()
     irrigation=scheduled_irrigation_parameters_t()
     request=scheduled_irrigation_request_t()
     write(*,'(a)') 'PPA_IRR_EVENT_PROCESS_SPLIT_ASSEMBLY_NO_DUPLICATE=PASS'
+    write(*,'(a)') 'PPA_IRR_EVENT_ASSEMBLY_EXACT_TYPE_ISOLATION=PASS'
     copied(1)%water_content=-99.0_real64
     copied(1)%pressure_head_cm=99.0_real64
     call owner%copy_committed_hydraulic_states(again,code)
