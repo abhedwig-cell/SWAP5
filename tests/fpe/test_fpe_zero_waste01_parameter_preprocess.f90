@@ -7,10 +7,10 @@ program test_fpe_zero_waste01_parameter_preprocess
   type(b110_default_mvg_parameters_t) :: hydraulic, prepared, copied
   type(b110_default_mvg_parameters_t), allocatable :: prepared_registry(:)
   type(soil_water_parameter_set_t) :: soil
-  real(real64), allocatable :: cofgen(:,:), z(:), dz(:), disnod(:)
+  real(real64), allocatable :: cofgen(:,:), raw_registry(:,:,:), z(:), dz(:), disnod(:)
   real(real64) :: checksum_hydraulic, checksum_geometry, checksum_copy
   integer(int64) :: c0, c1, rate
-  integer :: n, reps, r, registry_count, registry_index
+  integer :: n, reps, r, registry_count, registry_index, compat_count
   character(len=32) :: arg
 
   call get_command_argument(1,arg); read(arg,*) n
@@ -66,10 +66,21 @@ program test_fpe_zero_waste01_parameter_preprocess
   case default
     registry_count = 60
   end select
-  allocate(prepared_registry(registry_count))
+  allocate(prepared_registry(registry_count), raw_registry(size(cofgen,1),n,registry_count))
   do r=1,registry_count
-    call initialize_b110_default_mvg_parameters(prepared_registry(r),cofgen)
+    raw_registry(:,:,r) = cofgen
+    call initialize_b110_default_mvg_parameters(prepared_registry(r),raw_registry(:,:,r))
   end do
+
+  compat_count = 0
+  call system_clock(c0,rate)
+  do r=1,reps
+    registry_index = 1 + mod(r-1,registry_count)
+    if (all(prepared_registry(registry_index)%cofgen(1:size(raw_registry,1),:) == &
+            raw_registry(:,:,registry_index))) compat_count = compat_count + 1
+  end do
+  call system_clock(c1)
+  call emit('prepared_registry_exact_scan',n,reps,c0,c1,rate,real(compat_count,real64))
 
   if (allocated(copied%cofgen)) deallocate(copied%cofgen)
   checksum_copy = 0.0_real64
