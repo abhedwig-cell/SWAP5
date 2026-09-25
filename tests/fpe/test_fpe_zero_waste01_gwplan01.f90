@@ -19,7 +19,7 @@ program test_fpe_zero_waste01_gwplan01
   type(groundwater_cell_area_input_t), allocatable :: areas(:)
   type(groundwater_topology_t) :: topology
   type(groundwater_application_plan_t) :: plan
-  real(real64) :: seconds, ns_total, checksum
+  real(real64) :: seconds, ns_total, checksum, topology_seconds, topology_ns_total
 
   call get_command_argument(1,arg)
   read(arg,*) n
@@ -36,8 +36,14 @@ program test_fpe_zero_waste01_gwplan01
     areas(i)%cell_area_m2=100.0_real64+real(mod(i,17),real64)
   end do
 
+  call system_clock(c0,rate)
   call materialize_groundwater_topology(tiles,cells,topology,status)
+  call system_clock(c1)
   if (status /= GW_TOPOLOGY_OK .or. .not. topology%ready()) error stop 'GWPLAN01 topology setup failed'
+  topology_seconds=real(c1-c0,real64)/real(rate,real64)
+  topology_ns_total=1.0e9_real64*topology_seconds
+  write(*,'(A,I0,A,ES24.16,A,ES24.16)') &
+       'GWTOPO01_CURRENT,n=',n,',seconds=',topology_seconds,',ns_total=',topology_ns_total
 
   call system_clock(c0,rate)
   call materialize_groundwater_application_plan(topology,predictors,areas,plan,status)
