@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32A",
+  "title": "Fingerprint bucket-mixing repair",
+  "parent": "F-AHL32",
+  "phase": "PREREGISTERED_REPAIR",
+  "motivation": "F-AHL32 preserved registry correctness and exact-key reuse, but the amended hash-quality gate failed because direct power-of-two indexing produced a 413-probe worst-case chain at 10000/16384 occupancy.",
+  "repair": {
+    "exact_key": "unchanged",
+    "fingerprint": "unchanged",
+    "bucket_index": "derive a bucket hash by folding higher fingerprint bits into lower bits before power-of-two masking",
+    "collision_resolution": "unchanged linear probing",
+    "capacity": 16384,
+    "replacement": "none",
+    "full_registry_fallback": "unchanged valid uncached build"
+  },
+  "frozen_workload": "identical F-AHL32 10000-unique plus second-pass exact-key replay",
+  "gates": {
+    "semantic_failures": 0,
+    "entries_after_first_pass": 10000,
+    "second_pass_new_builds": 0,
+    "second_pass_new_misses": 0,
+    "second_pass_hits": 10000,
+    "mean_second_pass_probes_max": 4.0,
+    "maximum_probes_max": 128
+  },
+  "capacity_plus_one": {
+    "required_entries": 16384,
+    "required_last_request_ok": true,
+    "required_last_request_hit": false
+  },
+  "hard_exclusions": [
+    "NO_KEY_WEAKENING",
+    "NO_GATE_RETUNING",
+    "NO_CAPACITY_CHANGE",
+    "NO_EVICTION",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_SPEED_CLAIM"
+  ]
+}
