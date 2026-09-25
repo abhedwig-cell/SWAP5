@@ -1,23 +1,28 @@
 {
-  "schema_version": 1,
-  "workstream": "F-AHL",
-  "work_unit": "F-AHL27A",
-  "phase": "PRODUCTION_DRY_TAIL_GATE_COMPLETE",
-  "status": "PASS",
-  "workflow_run": 36078071347,
-  "workflow_job": 107893654376,
-  "authority": "integration/f-ahl/F-AHL27_DRY_DOMAIN_AUTHORITY.json",
-  "material": "O05",
-  "raw_capacity_relevance_floor": 1e-13,
-  "qualified_relevance_lower_bound_cm": -264277.52309014817,
-  "checks": {
-    "outside_represented_domain_head_cm": -500000.0,
-    "outside_domain_behavior": "exact analytical fallback for theta, C and K",
-    "inside_represented_domain_head_cm": -200000.0,
-    "inside_domain_behavior": "adaptive representation remains active and positive"
+  "schema_version":1,
+  "workstream":"F-AHL",
+  "work_unit":"F-AHL27A",
+  "phase":"PRODUCTION_DRY_TAIL_ALIGNMENT_COMPLETE",
+  "status":"PASS",
+  "workflow_run":36078071347,
+  "workflow_job":107893654376,
+  "repair":{
+    "builder":"material-specific lower representation bound from authoritative raw C=1e-13 relevance floor",
+    "provider":"lookup membership uses actual built table x bounds",
+    "cache_policy_version":2,
+    "outside_table":"authoritative analytical fallback"
   },
-  "marker": "FAHL27A_O05_PRODUCTION_DRY_TAIL=PASS",
-  "finding": "The production-shaped adaptive provider does not extrapolate the lookup into the numerically irrelevant extreme-dry O05 tail. It falls back to the authoritative analytical hydraulics beyond the material-specific relevance boundary.",
-  "scientific_boundary": "The 1e-13 criterion is a capacity relevance bound, not a physical K cutoff and not a truncation of theta(h).",
-  "production_implication": "Adaptive support generation may stop at the bound relevance domain without changing extreme-dry physics."
+  "O05_checks":{
+    "represented_head_cm":-200000.0,
+    "fallback_head_cm":-500000.0,
+    "fallback_theta_authoritative":true,
+    "fallback_capacity_authoritative":true,
+    "fallback_conductivity_authoritative":true
+  },
+  "semantics":{
+    "physics_truncated":false,
+    "constant_tail_extrapolation":false,
+    "raw_capacity_relevance_floor":1e-13
+  },
+  "next_gate":"Rerun F-AHL27 production extraction and 12-case prescribed-head matrix after repair."
 }
