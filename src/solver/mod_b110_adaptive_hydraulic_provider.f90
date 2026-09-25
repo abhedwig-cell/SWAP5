@@ -34,9 +34,32 @@ module mod_b110_adaptive_hydraulic_provider
   end type b110_adaptive_hydraulic_provider_t
 
   public :: bind_b110_adaptive_hydraulic_provider
+  public :: b110_adaptive_hydraulic_profile_supported
   public :: b110_adaptive_hydraulic_cache_stats
 
 contains
+
+  pure logical function b110_adaptive_hydraulic_profile_supported(parameters) result(supported)
+    type(b110_default_mvg_parameters_t),intent(in)::parameters
+    integer(int64) :: reference_bits(42), node_bits(42)
+    integer :: i
+
+    supported=.false.
+    if(.not.allocated(parameters%cofgen))return
+    if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42) return
+    if(size(parameters%cofgen,2)<parameters%active_nodes) return
+
+    ! The admitted provider owns one immutable representation. Until layered
+    ! AHL is separately qualified, use it only when every active node has the
+    ! exact same initialized hydraulic authority. Heterogeneous profiles must
+    ! stay on the authoritative analytical provider.
+    reference_bits=transfer(parameters%cofgen(1:42,1),reference_bits)
+    do i=2,parameters%active_nodes
+      node_bits=transfer(parameters%cofgen(1:42,i),node_bits)
+      if(any(node_bits/=reference_bits))return
+    end do
+    supported=.true.
+  end function b110_adaptive_hydraulic_profile_supported
 
   subroutine bind_b110_adaptive_hydraulic_provider(provider,parameters,step_duration,ok,was_hit,prefer_registry_handle)
     type(b110_adaptive_hydraulic_provider_t),intent(inout)::provider
