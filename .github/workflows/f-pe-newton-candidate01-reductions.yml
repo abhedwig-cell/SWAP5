@@ -1,0 +1,26 @@
+name: F-PE-NEWTON-CANDIDATE01 reduction microbenchmark
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_newton_candidate01_reductions.f90'
+      - 'tests/fpe/run_fpe_newton_candidate01_reductions.sh'
+      - '.github/workflows/f-pe-newton-candidate01-reductions.yml'
+  workflow_dispatch:
+
+jobs:
+  reduction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Benchmark residual reductions
+        run: |
+          bash tests/fpe/run_fpe_newton_candidate01_reductions.sh | tee newton-candidate01-reductions.txt
+          grep -Fq 'NEWTON_CANDIDATE01_REDUCTION=PASS' newton-candidate01-reductions.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: newton-candidate01-reductions
+          path: newton-candidate01-reductions.txt
