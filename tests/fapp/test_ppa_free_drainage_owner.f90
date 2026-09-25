@@ -1223,7 +1223,110 @@ contains
     end select
     write(*,'(a)') 'PPA_IRR_PENDING_HYDRAULIC_TRIAL_COMMIT=PASS'
     call verify_pending_irrigation_restart(profile,committed,backend,column,template,forcing,finish)
+    call verify_pending_mixed_columns(profile,source,template,.false.)
+    call verify_pending_mixed_columns(profile,source,template,.true.)
   end subroutine verify_pending_irrigation_trial
+
+  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order)
+    use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
+    use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
+         kernel_result_t,kernel_diagnostics_t
+    use mod_fmr_runtime_core, only: fmr_logical_column_t
+    use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+    use mod_transaction_reference, only: transaction_state_t
+    use mod_canonical_contracts, only: canonical_numerical_config_t
+    use mod_fmr_committed_restart, only: fmr_export_committed_restart,fmr_restore_committed_restart,FMR_RESTART_OK
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(ppa_irrigation_event_state_t),intent(in)::source
+    type(fmr_template_t),intent(in)::template
+    logical,intent(in)::reverse_order
+    type(fmr_serialized_reference_backend_t)::backend
+    type(fixed_flux_top_boundary_provider_t),target::top
+    type(kernel_committed_state_t)::owners(2),restored(2)
+    type(kernel_checkpoint_t)::checkpoint(2)
+    type(kernel_candidate_state_t)::candidate(2)
+    type(kernel_result_t)::result(2)
+    type(kernel_diagnostics_t)::diagnostics(2)
+    type(fmr_logical_column_t)::columns(2)
+    type(canonical_numerical_config_t)::numerical
+    type(fmr_b110_physical_forcing_t)::forcing
+    type(ppa_irrigation_event_state_t)::seed
+    type(fmr_committed_restart_bundle_t)::bundle
+    class(transaction_state_t),allocatable::initial,snapshot
+    real(real64)::finish,time
+    logical::ok
+    integer::i,position,code,index
+    finish=T0+1.0_real64/1024.0_real64
+    seed=source; seed%irrigation%active_event_end=finish
+    call seed%clone(initial)
+    do i=1,2
+      call owners(i)%initialize(int(404200+i,int64),initial,ok,T0)
+      if(.not.ok) error stop 'mixed irrigation owner initialization'
+      call owners(i)%capture_checkpoint(checkpoint(i),ok)
+      if(.not.ok) error stop 'mixed irrigation checkpoint'
+      columns(i)%column_id=int(i,int64); columns(i)%template_id=template%template_id
+      columns(i)%parameter_ref=1_int64; columns(i)%state_handle=int(i,int64)
+      columns(i)%backend_id=template%compatible_backend_id
+    end do
+    forcing=profile%tiles(1)%base_forcing
+    forcing%subsurface_irrigation_source=0.0_real64
+    forcing%subsurface_irrigation_source(1)=source%irrigation%active_event_rate
+    forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
+    call backend%initialize(top)
+    call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+    call backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+    do position=1,2
+      i=position
+      if(reverse_order) i=3-position
+      numerical=profile%numerical
+      if(i==2) numerical%max_committed_substeps=1
+      call backend%run_pending_irrigation_trial(columns(i),template,profile%tiles(1)%parameters,owners(i), &
+           forcing,numerical,1,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i))
+    end do
+    if(.not.result(1)%completed.or..not.candidate(1)%ready()) error stop 'mixed successful irrigation failed'
+    if(result(2)%completed.or.candidate(2)%ready()) error stop 'mixed failed irrigation produced candidate'
+    if(diagnostics(2)%accepted_substeps<1) error stop 'mixed failure did not exercise internal progress'
+    if(.not.result(1)%mass%complete.or.abs(result(1)%mass%residual)>1.0e-12_real64) &
+         error stop 'mixed irrigation hard mass'
+    ! Publish only the successful column, after both outcomes are known. The
+    ! shared backend may last have executed the other (failed) column.
+    call backend%commit_trial_candidate(owners(1),candidate(1),diagnostics(1),ok,code)
+    if(.not.ok) error stop 'mixed successful candidate commit failed'
+    call fmr_export_committed_restart(columns,[template],owners,92001_int64,bundle,ok,code)
+    if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'mixed irrigation export'
+    call fmr_restore_committed_restart(bundle,92001_int64,columns,[template],restored,ok,code)
+    if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'mixed irrigation restore'
+    do index=1,2
+      do i=1,2
+        if(index==1) then
+          call owners(i)%current_time(time,ok)
+          call owners(i)%snapshot(snapshot,ok)
+        else
+          call restored(i)%current_time(time,ok)
+          call restored(i)%snapshot(snapshot,ok)
+        end if
+        if(.not.ok) error stop 'mixed irrigation snapshot missing'
+        if(i==1.and.time/=finish) error stop 'mixed success endpoint'
+        if(i==2.and.time/=T0) error stop 'mixed failure advanced endpoint'
+        select type(snapshot)
+        type is(ppa_irrigation_event_state_t)
+          if(.not.snapshot%matches_candidate(template,time)) error stop 'mixed irrigation invalid payload'
+          if(snapshot%irrigation%active_event.neqv.(i==2)) error stop 'mixed irrigation wrong event publication'
+          if(i==2) then
+            if(any(snapshot%pressure_head/=source%pressure_head).or.any(snapshot%water_content/=source%water_content)) &
+                 error stop 'mixed failure changed physical state'
+            if(snapshot%irrigation%active_event_rate/=source%irrigation%active_event_rate) &
+                 error stop 'mixed failure changed gift'
+          end if
+        class default
+          error stop 'mixed irrigation sliced state'
+        end select
+      end do
+    end do
+    if(owners(2)%current_revision()/=0_int64.or.restored(2)%current_revision()/=0_int64) &
+         error stop 'mixed irrigation failed revision changed'
+    write(*,'(a,l1)') 'PPA_IRR_PENDING_MIXED_PUBLICATION_RESTART_PASS_REVERSED=',reverse_order
+  end subroutine verify_pending_mixed_columns
 
   subroutine verify_pending_irrigation_restart(profile,committed,backend,column,template,initial_forcing,midpoint)
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
