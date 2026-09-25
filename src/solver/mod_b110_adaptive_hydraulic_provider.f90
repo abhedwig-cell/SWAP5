@@ -78,15 +78,20 @@ contains
     provider%representation_key_valid=.false.
     key=make_b110_adaptive_hydraulic_key(parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION)
 
-    ! A miss or changed key is resolved by the existing shared exact-key cache.
-    ! The one-node sampler is needed only on this acquisition path.
-    one_node_input(:,1)=parameters%cofgen(1:42,1)
-    call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
-         parameters%ksatexm_extension_enabled)
-    call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
-
-    call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
-    if(.not.ok)return
+    ! F-AHL35: changed authority first queries the exact-key registry. The
+    ! one-node authoritative sampler is only required after a genuine registry
+    ! miss to construct a new immutable representation.
+    call shared_cache%lookup(key,provider%table,was_hit)
+    if(was_hit)then
+      ok=.true.
+    else
+      one_node_input(:,1)=parameters%cofgen(1:42,1)
+      call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
+           parameters%ksatexm_extension_enabled)
+      call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
+      call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
+      if(.not.ok)return
+    end if
     provider%representation_key=key
     provider%representation_key_valid=.true.
     provider%acquired_from_cache=was_hit
