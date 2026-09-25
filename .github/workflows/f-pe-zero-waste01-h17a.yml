@@ -1,0 +1,16 @@
+name: F-PE-ZERO-WASTE01 H17A adapter vectors
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_zero_waste01_h17a_adapter_vectors.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h17a_adapter_vectors.sh'
+      - '.github/workflows/f-pe-zero-waste01-h17a.yml'
+  workflow_dispatch:
+jobs:
+  h17a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure solver adapter vector materialization
+        run: bash tests/fpe/run_fpe_zero_waste01_h17a_adapter_vectors.sh
