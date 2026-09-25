@@ -1,0 +1,25 @@
+name: F-AHL39 serialized multi-authority timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl39_fmr_multiauthority_timing.f90'
+      - 'research/ahl/run_ahl39_fmr_multiauthority_timing.sh'
+      - 'integration/f-ahl/F-AHL39_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl39-serialized-multiauthority.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run serialized multi-authority application timing
+        run: |
+          bash research/ahl/run_ahl39_fmr_multiauthority_timing.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl39-${{ github.run_id }}
+          path: /tmp/ahl39_result.txt
