@@ -46,7 +46,7 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_provider_t, &
-       bind_b110_adaptive_hydraulic_provider, b110_adaptive_hydraulic_profile_supported
+       bind_b110_adaptive_hydraulic_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -1479,8 +1479,7 @@ contains
       self%soil_parameters%node_distance = parameters%node_distance
       call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active)
-      self%adaptive_profile_supported = self%adaptive_hydraulics_active .and. &
-           b110_adaptive_hydraulic_profile_supported(self%hydraulic_parameters)
+      self%adaptive_profile_supported = fmr_raw_adaptive_profile_supported(parameters)
       if (self%adaptive_profile_supported) then
         if (.not. associated(self%adaptive_constitutive)) allocate(self%adaptive_constitutive)
       else
