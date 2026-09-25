@@ -391,6 +391,18 @@ contains
     control_forcing(1)=profile%tiles(1)%base_forcing
     control_forcing(1)%subsurface_irrigation_source=0.0_real64
     control_forcing(1)%temporal_forcing_event=.false.
+    irrigation%dcs2_depth_cm(1:2)=0.005_real64
+    irrigation%irr_rate_cm_per_day=0.01_real64
+    request%selection_opportunity=.true.; request%irrigation_enabled=.true.
+    request%schedule_enabled=.true.; request%crop_emerged=.true.; request%irrigation_window_open=.true.
+    request%t0=T0; request%t1=T0+0.25_real64
+    call evaluate_ppa_irrigation_source(irrigation,irrigation_state_t(),request,hydraulic,control_forcing(1), &
+         candidate,flux,diagnostics,bound_forcing,ok)
+    if(.not.ok) error stop 'new scheduled source composition failed'
+    if(.not.flux%event_started.or..not.candidate%active_event) error stop 'composed selection lost new event'
+    if(.not.bound_forcing%temporal_forcing_event) error stop 'new composed source unmarked'
+    if(abs(flux%external_inflow_amount-0.0025_real64)>1.0e-15_real64) error stop 'composed selection amount'
+    request=scheduled_irrigation_request_t()
     request%t0=T0; request%t1=T0+0.75_real64
     call evaluate_ppa_irrigation_source(irrigation,base,request,hydraulic,control_forcing(1), &
          candidate,flux,diagnostics,bound_forcing,ok)
