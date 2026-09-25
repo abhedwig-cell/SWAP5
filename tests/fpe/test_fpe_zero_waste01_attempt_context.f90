@@ -91,9 +91,89 @@ program test_fpe_zero_waste01_attempt_context
   call emit('inactive_restore_context',seconds,checksum)
 
   if(checksum /= reps) error stop 'attempt context checksum mismatch'
+
+  call benchmark_directional_context(60, 100000_int64)
+  call benchmark_directional_context(200, 30000_int64)
+  call benchmark_directional_context(1000, 5000_int64)
+
   print '(a)', 'FPE_ZERO_WASTE01_ATTEMPT_CONTEXT=PASS'
 
 contains
+  subroutine benchmark_directional_context(n, repetitions)
+    integer, intent(in) :: n
+    integer(int64), intent(in) :: repetitions
+    type(accepted_trajectory_direction_t) :: source, restored
+    class(transaction_attempt_context_t), allocatable :: local_context
+    integer(int64) :: j, start_clock, end_clock, clock_rate, local_checksum
+    real(real64) :: elapsed
+
+    source%requested = .true.
+    source%status = 1
+    source%worker_id = 17
+    source%generation = 23_int64
+    source%control_coordinate = 1
+    source%accepted_steps = 2
+    source%next_step_sequence = 3
+    source%origin_t0 = 100.0_real64
+    source%current_t1 = 100.5_real64
+    source%requested_t1 = 101.0_real64
+    allocate(source%pressure_head_direction(n), source%water_content_direction(n))
+    allocate(source%pending_pressure_head_direction(n), source%pending_water_content_direction(n))
+    source%pressure_head_direction = 1.0_real64
+    source%water_content_direction = 2.0_real64
+    source%pending_pressure_head_direction = 3.0_real64
+    source%pending_water_content_direction = 4.0_real64
+    source%pending = .true.
+    source%pending_available = .true.
+
+    local_checksum = 0_int64
+    call system_clock(start_clock,clock_rate)
+    do j=1_int64,repetitions
+      allocate(mirror_attempt_context_t :: local_context)
+      select type (typed => local_context)
+      type is (mirror_attempt_context_t)
+        typed%trajectory_direction = source
+        local_checksum = local_checksum + int(size(typed%trajectory_direction%pressure_head_direction),int64)
+      class default
+        error stop 'directional capture wrong dynamic type'
+      end select
+      deallocate(local_context)
+    end do
+    call system_clock(end_clock)
+    elapsed=real(end_clock-start_clock,real64)/real(clock_rate,real64)
+    write(*,'(a,i0,a,i0,a,es24.16,a,es24.16,a,i0)') &
+      'ZW_ATTEMPT_DIRECTIONAL,metric=capture,n=',n,',reps=',repetitions,',seconds=',elapsed, &
+      ',ns_per_context=',1.0e9_real64*elapsed/real(repetitions,real64),',checksum=',local_checksum
+
+    allocate(mirror_attempt_context_t :: local_context)
+    select type (typed => local_context)
+    type is (mirror_attempt_context_t)
+      typed%trajectory_direction = source
+    class default
+      error stop 'directional restore fixture wrong dynamic type'
+    end select
+    restored = source
+    local_checksum = 0_int64
+    call system_clock(start_clock)
+    do j=1_int64,repetitions
+      select type (typed => local_context)
+      type is (mirror_attempt_context_t)
+        restored = typed%trajectory_direction
+        local_checksum = local_checksum + int(size(restored%pressure_head_direction),int64)
+      class default
+        error stop 'directional restore wrong dynamic type'
+      end select
+    end do
+    call system_clock(end_clock)
+    elapsed=real(end_clock-start_clock,real64)/real(clock_rate,real64)
+    write(*,'(a,i0,a,i0,a,es24.16,a,es24.16,a,i0)') &
+      'ZW_ATTEMPT_DIRECTIONAL,metric=restore,n=',n,',reps=',repetitions,',seconds=',elapsed, &
+      ',ns_per_context=',1.0e9_real64*elapsed/real(repetitions,real64),',checksum=',local_checksum
+    deallocate(local_context)
+
+    if(local_checksum /= repetitions*int(n,int64)) error stop 'directional context checksum mismatch'
+  end subroutine benchmark_directional_context
+
   subroutine emit(metric,elapsed,sumv)
     character(len=*), intent(in) :: metric
     real(real64), intent(in) :: elapsed
