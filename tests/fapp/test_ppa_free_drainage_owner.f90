@@ -101,10 +101,17 @@ program test_ppa_free_drainage_owner
   call get_command_argument(1,test_scope)
   call get_command_argument(2,origin_scope)
   if(len_trim(origin_scope)>0) then
-    if(trim(origin_scope)/='--local-origin'.or.trim(test_scope)/='--irrigation-half-source') &
+    if(trim(test_scope)/='--irrigation-half-source') &
          error stop 'unsupported diagnostic origin option'
-    T0=0.1875_real64; T1=0.6875_real64
-    write(*,'(a)') 'PPA_IRR_HALF_LOCAL_ORIGIN_DIAGNOSTIC'
+    select case(trim(origin_scope))
+    case('--local-origin')
+      T0=0.1875_real64; T1=0.6875_real64
+      write(*,'(a)') 'PPA_IRR_HALF_LOCAL_ORIGIN_DIAGNOSTIC'
+    case('--double-iterations')
+      write(*,'(a)') 'PPA_IRR_HALF_80_ITERATIONS_DIAGNOSTIC'
+    case default
+      error stop 'unsupported diagnostic option'
+    end select
   end if
   call initialize_application_config(config)
   config%free_drainage_indicator => traced_indicator
@@ -115,6 +122,7 @@ program test_ppa_free_drainage_owner
   config%numerical%model_temporal_indicator_budget = 1.0e-5_real64
   do i=1,NTILE
     config%tiles(i)%parameters%max_iterations = 40
+    if(trim(origin_scope)=='--double-iterations') config%tiles(i)%parameters%max_iterations=80
     config%tiles(i)%template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     allocate(config%tiles(i)%initial_right_derivative(numnod))
     config%tiles(i)%initial_right_derivative = 0.0_real64
