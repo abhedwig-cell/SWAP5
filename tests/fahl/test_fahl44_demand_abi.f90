@@ -9,7 +9,7 @@ program test_fahl44_demand_abi
   real(real64), parameter :: dt=1.0e-4_real64
   type(b110_default_mvg_parameters_t),target :: hp
   type(b110_default_mvg_provider_t) :: analytical
-  type(b110_adaptive_hydraulic_provider_t) :: adaptive
+  type(b110_adaptive_hydraulic_provider_t) :: adaptive, adaptive_local
   real(real64) :: cofgen(42,n),h(n),wa(n),ka(n),ca(n),da(n),wd(n),kd(n),cd(n),dd(n)
   integer(int64) :: c0,c1,rate
   integer :: i,r
@@ -21,6 +21,8 @@ program test_fahl44_demand_abi
   call bind_b110_default_mvg_provider(analytical,hp,dt)
   call bind_b110_adaptive_hydraulic_provider(adaptive,hp,dt,ok,hit)
   call require(ok,'adaptive bind')
+  call bind_b110_adaptive_hydraulic_provider(adaptive_local,hp,dt,ok,hit,.false.)
+  call require(ok,'adaptive local bind')
 
   do i=1,n
     h(i)=-10.0_real64**(0.05_real64+5.7_real64*real(i-1,real64)/real(n-1,real64))
@@ -35,6 +37,8 @@ program test_fahl44_demand_abi
   wd=-999.0_real64;kd=-999.0_real64;cd=-999.0_real64;dd=-999.0_real64
   call adaptive%evaluate_demand(h,CONSTITUTIVE_DEMAND_CAPACITY,wd,kd,cd,dd)
   call require(same_bits_vector(ca,cd),'adaptive capacity demand equals full adaptive representation')
+  call adaptive_local%evaluate_demand(h,CONSTITUTIVE_DEMAND_WATER_CONTENT,wd,kd,cd,dd)
+  call require(same_bits_vector(wa,wd),'adaptive local water demand equals full adaptive representation')
   write(*,'(A)') 'FAHL44_DEMAND_SEMANTICS=PASS'
 
   h=-75.0_real64
@@ -58,6 +62,17 @@ program test_fahl44_demand_abi
   call system_clock(c1)
   seconds=real(c1-c0,real64)/real(rate,real64)
   write(*,'(*(g0))') 'FAHL44_TIMING|MODE=ADAPTIVE_THETA|N=',n,'|REPS=',reps,'|NS_PER=', &
+       1.0e9_real64*seconds/real(reps,real64),'|CHECKSUM=',checksum
+
+  checksum=0.0_real64
+  call system_clock(c0)
+  do r=1,reps
+    call adaptive_local%evaluate_demand(h,CONSTITUTIVE_DEMAND_WATER_CONTENT,wd,kd,cd,dd)
+    checksum=checksum+wd(1)+wd(n)
+  end do
+  call system_clock(c1)
+  seconds=real(c1-c0,real64)/real(rate,real64)
+  write(*,'(*(g0))') 'FAHL44_TIMING|MODE=ADAPTIVE_LOCAL_THETA|N=',n,'|REPS=',reps,'|NS_PER=', &
        1.0e9_real64*seconds/real(reps,real64),'|CHECKSUM=',checksum
 
   checksum=0.0_real64
