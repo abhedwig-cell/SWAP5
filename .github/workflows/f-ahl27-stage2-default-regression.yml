@@ -1,0 +1,22 @@
+name: F-AHL27 Stage2 default regression
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - '.github/workflows/f-ahl27-stage2-default-regression.yml'
+  workflow_dispatch:
+
+jobs:
+  default-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run existing FKT22 default-off regression
+        run: |
+          bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
