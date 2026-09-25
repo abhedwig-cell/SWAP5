@@ -15,12 +15,14 @@ program test_fgc48_generic_groundwater_topology
   call qualify_fgc46_multicell_equivalent()
   call qualify_fgc47_mixed_equivalent()
   call qualify_input_order_invariance()
+  call qualify_canonical_fastpath_equivalence()
   call qualify_fail_closed_validation()
 
   write(*,'(A)') 'FGC48_FGC45_N1_TOPOLOGY_REGRESSION=PASS'
   write(*,'(A)') 'FGC48_FGC46_MULTICELL_TOPOLOGY_REGRESSION=PASS'
   write(*,'(A)') 'FGC48_FGC47_MIXED_TOPOLOGY_REGRESSION=PASS'
   write(*,'(A)') 'FGC48_CANONICAL_ORDER_INVARIANCE=PASS'
+  write(*,'(A)') 'FGC48_CANONICAL_FASTPATH_EQUIVALENCE=PASS'
   write(*,'(A)') 'FGC48_GLOBAL_OWNERSHIP_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FGC48_PER_CELL_FRACTION_CLOSURE=PASS'
   write(*,'(A)') 'FGC48_API_SLOT_NODE_MAPPING=PASS'
@@ -161,6 +163,60 @@ contains
            'api order invariant values')
     end do
   end subroutine qualify_input_order_invariance
+
+  subroutine qualify_canonical_fastpath_equivalence()
+    type(groundwater_topology_tile_t) :: fast_tiles(3), generic_tiles(3)
+    type(groundwater_topology_cell_t) :: fast_cells(2), generic_cells(2)
+    type(groundwater_topology_t) :: fast_topology, generic_topology
+    type(groundwater_topology_tile_t), allocatable :: ft(:), gt(:)
+    type(groundwater_topology_cell_t), allocatable :: fc(:), gc(:)
+    type(modflow6_api_slot_binding_t), allocatable :: fa(:), ga(:)
+    integer :: status, i
+
+    call set_tile(fast_tiles(1),101_int64,1001_int64,2001_int64,7001_int64,0.4_real64)
+    call set_tile(fast_tiles(2),102_int64,1002_int64,2002_int64,7001_int64,0.6_real64)
+    call set_tile(fast_tiles(3),103_int64,1003_int64,2003_int64,7002_int64,1.0_real64)
+    call set_cell(fast_cells(1),7001_int64,8001_int64,9001_int64,9101_int64,1,2)
+    call set_cell(fast_cells(2),7002_int64,8002_int64,9001_int64,9102_int64,2,3)
+
+    generic_tiles=[fast_tiles(3),fast_tiles(1),fast_tiles(2)]
+    generic_cells=[fast_cells(2),fast_cells(1)]
+
+    call materialize_groundwater_topology(fast_tiles,fast_cells,fast_topology,status)
+    call require(status==GW_TOPOLOGY_OK .and. fast_topology%ready(),'topology fastpath candidate')
+    call materialize_groundwater_topology(generic_tiles,generic_cells,generic_topology,status)
+    call require(status==GW_TOPOLOGY_OK .and. generic_topology%ready(),'topology generic oracle')
+
+    call fast_topology%copy_tiles(ft,status); call require(status==GW_TOPOLOGY_OK,'fastpath copy fast tiles')
+    call generic_topology%copy_tiles(gt,status); call require(status==GW_TOPOLOGY_OK,'fastpath copy generic tiles')
+    call fast_topology%copy_cells(fc,status); call require(status==GW_TOPOLOGY_OK,'fastpath copy fast cells')
+    call generic_topology%copy_cells(gc,status); call require(status==GW_TOPOLOGY_OK,'fastpath copy generic cells')
+    call fast_topology%api_bindings(fa,status); call require(status==GW_TOPOLOGY_OK,'fastpath copy fast api')
+    call generic_topology%api_bindings(ga,status); call require(status==GW_TOPOLOGY_OK,'fastpath copy generic api')
+
+    call require(size(ft)==size(gt) .and. size(fc)==size(gc) .and. size(fa)==size(ga), &
+         'topology fastpath transcript shapes')
+    do i=1,size(ft)
+      call require(ft(i)%tile_id==gt(i)%tile_id .and. &
+           ft(i)%swap_lineage_id==gt(i)%swap_lineage_id .and. &
+           ft(i)%ledger_id==gt(i)%ledger_id .and. &
+           ft(i)%groundwater_cell_id==gt(i)%groundwater_cell_id .and. &
+           ft(i)%area_fraction==gt(i)%area_fraction, 'topology fastpath tile identity')
+    end do
+    do i=1,size(fc)
+      call require(fc(i)%groundwater_cell_id==gc(i)%groundwater_cell_id .and. &
+           fc(i)%coupling_id==gc(i)%coupling_id .and. &
+           fc(i)%groundwater_service_id==gc(i)%groundwater_service_id .and. &
+           fc(i)%groundwater_lineage_id==gc(i)%groundwater_lineage_id .and. &
+           fc(i)%package_slot==gc(i)%package_slot .and. &
+           fc(i)%modflow_node_id==gc(i)%modflow_node_id .and. &
+           fc(i)%storage_state_role==gc(i)%storage_state_role .and. &
+           fc(i)%drainage_owner==gc(i)%drainage_owner, 'topology fastpath cell identity')
+      call require(fa(i)%groundwater_cell_id==ga(i)%groundwater_cell_id .and. &
+           fa(i)%package_slot==ga(i)%package_slot .and. &
+           fa(i)%modflow_node_id==ga(i)%modflow_node_id, 'topology fastpath api identity')
+    end do
+  end subroutine qualify_canonical_fastpath_equivalence
 
   subroutine qualify_fail_closed_validation()
     type(groundwater_topology_tile_t) :: tiles(3), bad_tiles(3), two_tiles(2)
