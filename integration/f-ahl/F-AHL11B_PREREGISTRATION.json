@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11B",
+  "title": "Full 36-material wet-mid-dry Richards falsification matrix",
+  "parent": "F-AHL11A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the selected F-AHL10F derivative-consistent representation preserve Richards fidelity and the analytical nonlinear path for all 36 catalog materials across wet, mid and dry states?",
+  "materials": 36,
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0,"bottom_head_cm":-7.5},
+    {"id":"mid","initial_head_cm":-75.0,"bottom_head_cm":-50.0},
+    {"id":"dry","initial_head_cm":-500.0,"bottom_head_cm":-400.0}
+  ],
+  "case_count": 108,
+  "representation": {
+    "source": "F-AHL11A generated material tables",
+    "theta_C": "derivative-consistent Hermite z=logit(Se)",
+    "logK_tolerance": 3e-4,
+    "dry_relevance_threshold_raw_C": 1e-13,
+    "outside_loaded_table": "authoritative analytical fallback"
+  },
+  "gates_per_case": {
+    "candidate_converged": true,
+    "same_nonlinear_iteration_count_as_analytical": true,
+    "same_backtracking_count_as_analytical": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "candidate_mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "Advance only if all 108 prospectively defined cases pass every gate. Do not retune per material or regime.",
+  "hard_exclusions": [
+    "NO_SPEED_CLAIM_FROM_FIDELITY_MATRIX",
+    "NO_LOWER_BOUNDARY_GENERALIZATION_BEYOND_PRESCRIBED_HEAD",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
