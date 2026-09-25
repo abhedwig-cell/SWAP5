@@ -29,8 +29,13 @@
     "O05 dry-tail production alignment PASS",
     "12/12 prescribed-head Richards matrix PASS",
     "qbot analytical fallback O0/O2 identity PASS",
-    "serialized FMR opt-in/default-off routing PASS",
+    "serialized backend structural routing audit PASS; runtime backend compiled by qbot fallback gate",
     "same-key provider memoization regression PASS"
   ],
-  "admission_rule": "Only after all gates pass on this branch may a PR to integration/f-ci-canonical be opened. This branch does not itself constitute canonical admission."
+  "admission_rule": "Only after all gates pass on this branch may a PR to integration/f-ci-canonical be opened. This branch does not itself constitute canonical admission.",
+  "external_blocker": {
+    "id": "F-AHL27B",
+    "owner": "F-KT/FMR temporal-acceptance semantics",
+    "admission_effect": "Do not use nontrivial serialized full-half prescribed-head execution as an AHL gate on canonical 506c36a; it rejects before solver execution. Do not import unrelated FMR changes to make this gate pass."
+  }
 }
