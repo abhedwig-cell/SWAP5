@@ -1,9 +1,9 @@
 {
-  "schema_version": 16,
+  "schema_version": 17,
   "workstream": "F-AHL",
   "status": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_APPLICATION_SPEED_PASS_POST_CLOSEOUT_ENGINEERING_ACTIVE",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL31",
+  "completed_through": "F-AHL35",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -155,6 +155,20 @@
       "status": "PREREGISTERED",
       "registry_capacity_entries": 16384,
       "objective": "Eliminate repeated uncached representation builds for MultiSWAP-scale exact-key workloads while keeping memory finite and correctness-preserving fallback beyond capacity."
+    },
+    "F_AHL35": {
+      "finding": "Changed-authority warm exact-key hits now query the registry before constructing the one-node authoritative sampler; sampler construction is deferred until a genuine miss.",
+      "paired_median_ratio": 0.807385,
+      "paired_reduction_fraction": 0.192615,
+      "step_duration_fallback": "PASS",
+      "F_AHL28B_regression": "PASS",
+      "F_AHL32_regression": "PASS",
+      "decision": "RETAIN"
+    },
+    "F_AHL35A": {
+      "status": "PREREGISTERED_AND_QUEUED",
+      "workflow_run": 36103004602,
+      "objective": "Re-characterize 16/64-key switching after F-AHL35 and open ownership/handle work only if switch_64/same_key remains >= 2.0."
     }
   }
 }
