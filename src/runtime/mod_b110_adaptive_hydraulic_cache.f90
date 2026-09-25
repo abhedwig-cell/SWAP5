@@ -44,14 +44,14 @@ contains
     integer::i
     integer(int64)::bits,h
 
-    if(.not.allocated(parameters%cofgen)) error stop 'AHL18 key: cofgen not allocated'
-    if(parameters%active_nodes<1) error stop 'AHL18 key: no active nodes'
+    if(.not.allocated(parameters%cofgen)) error stop 'B110 adaptive cache key: cofgen not allocated'
+    if(parameters%active_nodes<1) error stop 'B110 adaptive cache key: no active nodes'
 
     key%model_id=''
     key%model_id(1:min(len_trim(model_id),len(key%model_id)))=model_id(1:min(len_trim(model_id),len(key%model_id)))
     key%policy_version=policy_version
     key%branch_policy_version=branch_policy_version
-    if(size(parameters%cofgen,1)<NCOEF) error stop 'AHL18 key: incomplete initialized cofgen'
+    if(size(parameters%cofgen,1)<NCOEF) error stop 'B110 adaptive cache key: incomplete initialized cofgen'
     key%coeff=parameters%cofgen(1:NCOEF,1)
     key%ksatexm_extension_enabled=parameters%ksatexm_extension_enabled
 
