@@ -49,9 +49,6 @@ for m in "${materials[@]}"; do
   "$OUT/test" "$BUILD/tables/${m}_dc.dat" "$m" mid -75 -50 | tee -a "$RESULT"
   "$OUT/test" "$BUILD/tables/${m}_dc.dat" "$m" dry -500 -400 | tee -a "$RESULT"
 done
-count=$(grep -c '^AHL11B .* PASS
-[[ "$count" -eq 108 ]]
-echo "AHL11E_MATRIX_108_OF_108=PASS" | tee -a "$RESULT"
- "$RESULT")
+count=$(grep -c '^AHL11B .* PASS$' "$RESULT")
 [[ "$count" -eq 108 ]]
 echo "AHL11E_MATRIX_108_OF_108=PASS" | tee -a "$RESULT"
