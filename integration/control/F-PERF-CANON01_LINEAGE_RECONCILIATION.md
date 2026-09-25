@@ -86,3 +86,46 @@ No branch in this lineage may be bulk-merged merely because all later work depen
 Reconcile Tranche A first. PR #600 is the first concrete candidate surface, but its 73-commit distance from canonical means its exact production patch must be identified before any canonical mutation.
 
 F-AHL50 remains technically closed while this governance work proceeds.
+
+
+## Tranche-A refinement: PROFILE01 is not the missing production admission
+
+Further repository reconciliation narrows the pre-ZERO-WASTE problem.
+
+PR #599 / F-PE-PROFILE01 is explicitly observation-only. Its final closeout states `PRODUCTION_REPAIR = NONE` and sends H03 to a separate repair branch. Therefore the 59-commit PR branch must not be admitted as a production tranche.
+
+PR #600 / F-PE-PROFILE02-H03 gives the exact split point:
+`0b373c6cdaed53e26a1acb917f096bf20256f12a`.
+
+Its own final closeout states that, relative to that split point, the only production-source change in the H03 repair is:
+`src/legacy/b1_10_port/headcalc.f90`.
+
+Direct repository compare confirms:
+- split point -> PR #600 head: 15 commits;
+- production source delta: exactly one file, `headcalc.f90`;
+- 11 added / 3 deleted lines in that file.
+
+So the H03 repair itself is bounded and separable.
+
+However, the split point is already 58 commits ahead of current canonical and differs in ten production files. Those changes predate the PROFILE01 observation work. They are the actual unresolved predecessor authority.
+
+This corrects the earlier broad statement that PR #600 itself was a ten-file production candidate. It is not. The ten-file difference is inherited ancestry; the H03 repair is one-file bounded.
+
+## Updated Tranche-A decomposition
+
+A0. Reconcile `integration/f-ci-canonical@506c36a...` -> PROFILE01 split point `0b373c6c...`.
+This is now the earliest unresolved production lineage.
+
+A1. Treat PR #599 as evidence/observation only; do not admit its branch wholesale.
+
+A2. Recompose the qualified PR #600 H03 repair as a one-file HeadCalc delta only after A0 is resolved.
+
+A3. Reconcile PROFILE03-H03-E2E. Determine whether it contains production repair or measurement only before using it as the ZERO-WASTE parent.
+
+Only after A0-A3 may ZERO-WASTE01 be decomposed into its admitted exact-P0 production patches.
+
+## Current blocker
+
+`A0_PRE_PROFILE01_PRODUCTION_AUTHORITY_UNRESOLVED`
+
+This is now the first concrete canonical-governance question. F-AHL50 and PLANVALID01 do not need reopening while A0 is resolved.
