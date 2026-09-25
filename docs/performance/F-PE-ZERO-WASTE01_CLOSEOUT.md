@@ -209,6 +209,28 @@ Classification: `GWCTX03 = ADMITTED_EXACT_P0_COMPACT_CONTEXT_CELL_VIEW`.
 
 Together, GWPLAN01, GWTOPO01, GWCTX01 and GWCTX03 remove the dominant measured large-N structural and representation waste from canonical groundwater context construction.
 
+### GWVIEW01 direct application-context view export
+
+`GWVIEW01` is admitted as an exact direct export path for the F-GC49D plan view.
+
+The C ABI previously requested typed temporary arrays from the context and then copied the same fields again into caller-provided primitive buffers. The admitted path exports those primitive fields directly from context-owned arrays into the existing ABI buffers. The typed Fortran `copy_plan_view` API remains unchanged for other callers.
+
+Qualification:
+- FGC49D O0/O2 PASS;
+- FGC49D O0/O2 output identity PASS;
+- production application context ABI PASS;
+- PPA-WU01 O0/O2 PASS.
+
+At N=10,000, dedicated qualification measured the temporary-array export pattern at about 0.224 ms for the benchmark aggregate versus about 0.033 ms direct, ratio about 0.147 on that runner/workload.
+
+Classification: `GWVIEW01 = ADMITTED_EXACT_P0_DIRECT_CONTEXT_VIEW_EXPORT`.
+
+### Final large-N groundwater context conclusion
+
+After GWPLAN01, GWTOPO01, GWCTX01, GWCTX03 and GWVIEW01, the canonical large-N groundwater context construction/export route no longer contains a measured material high-confidence pure-waste hotspot.
+
+Remaining work is linear, ownership-sensitive, or numerically necessary. Further production edits require fresh profile evidence and the same exact-semantics qualification discipline.
+
 ## Remaining current P0 interpretation
 
 After the current tranche, no large, high-confidence pure-waste hotspot remains on the qualified H03 / production-bootstrap Reference route.
@@ -248,6 +270,6 @@ P0 zero-waste remains the prerequisite, but it is no longer the dominant unexplo
 
 ## Closeout verdict
 
-`F-PE-ZERO-WASTE01 H03 / production-bootstrap P0 = CLOSED_WITH_REOPEN_CRITERIA`
+`F-PE-ZERO-WASTE01 H03 / production-bootstrap + canonical large-N groundwater-context P0 = CLOSED_WITH_REOPEN_CRITERIA`
 
 The broader SWAP5 codebase remains subject to the same zero-waste principle as new physics, workloads and coupling routes are admitted.
