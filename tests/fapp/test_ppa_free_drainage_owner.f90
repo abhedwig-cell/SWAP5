@@ -1116,12 +1116,79 @@ contains
         if(any(actual_history/=expected_history)) error stop 'irrigation restored history changed'
         if(source%irrigation%active_event) call verify_restored_irrigation_delivery(source,snapshot,checkpoint_time, &
              template,[committed(i),restored(i)])
+        if(.not.source%irrigation%active_event) call verify_committed_profile_selection(source,checkpoint_time, &
+             template,[committed(i),restored(i)])
       class default
         error stop 'irrigation restored dynamic type lost'
       end select
     end do
     write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
   end subroutine verify_irrigation_restart_bundle
+  subroutine verify_committed_profile_selection(source,boundary,template,owners)
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
+    use mod_kernel_transactions, only: kernel_committed_state_t
+    use mod_transaction_reference, only: transaction_state_t
+    use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t, &
+         irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+    use mod_ppa_irrigation_source_binding, only: evaluate_ppa_committed_profile_irrigation_source
+    type(ppa_irrigation_event_state_t),intent(in)::source
+    real(real64),intent(in)::boundary
+    type(fmr_template_t),intent(in)::template
+    type(kernel_committed_state_t),intent(in)::owners(2)
+    type(scheduled_irrigation_parameters_t)::parameters
+    type(scheduled_irrigation_request_t)::request
+    type(irrigation_state_t)::candidate
+    type(irrigation_flux_result_t)::flux
+    type(irrigation_diagnostics_t)::diagnostics
+    type(fmr_b110_physical_forcing_t)::previous
+    type(fmr_b110_physical_forcing_t),allocatable::forcing
+    class(transaction_state_t),allocatable::snapshot
+    real(real64)::expected,depth(2),thickness
+    logical::ok
+    integer::path,attempt
+    parameters%scheduled_irrigation_enabled=.true.
+    parameters%active_nodes=source%active_nodes
+    parameters%sensor_node=1; parameters%single_ssdi_node=1
+    parameters%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+    parameters%tcs7_knot_count=2; parameters%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    parameters%tcs7_pressure_head=0.0_real64
+    parameters%dcs1_knot_count=2; parameters%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+    request%t0=boundary; request%t1=boundary+1.0_real64
+    request%selection_opportunity=.true.; request%irrigation_enabled=.true.
+    request%schedule_enabled=.true.; request%crop_emerged=.true.; request%irrigation_window_open=.true.
+    allocate(previous%subsurface_irrigation_source(source%active_nodes))
+    previous%subsurface_irrigation_source=0.0_real64
+    expected=(0.8_real64-source%water_content(1))*0.5_real64
+    do path=1,2
+      do attempt=1,3
+        thickness=1.0_real64
+        if(attempt==2) thickness=-1.0_real64
+        call evaluate_ppa_committed_profile_irrigation_source(parameters,owners(path),template,request, &
+             1,[1],[thickness],[0.0_real64],0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             previous,candidate,flux,diagnostics,forcing,ok)
+        if(attempt==2) then
+          if(ok.or.allocated(forcing).or.flux%applied.or.candidate%active_event) &
+               error stop 'committed profile invalid geometry exposed source'
+        else
+          if(.not.ok.or..not.flux%applied) error stop 'committed profile selection failed'
+          if(abs(flux%external_inflow_amount-expected)>8.0_real64*epsilon(expected)) &
+               error stop 'committed profile deficit differs from snapshot'
+          depth(path)=flux%external_inflow_amount
+        end if
+      end do
+      call owners(path)%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'profile owner snapshot missing'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%irrigation%active_event.or.any(snapshot%water_content/=source%water_content)) &
+             error stop 'profile preparation mutated owner'
+      class default
+        error stop 'profile preparation changed owner type'
+      end select
+    end do
+    if(depth(1)/=depth(2)) error stop 'committed profile restart selection differs'
+    write(*,'(a)') 'PPA_IRR_COMMITTED_PROFILE_SELECTION_RESTART_IDENTITY=PASS'
+  end subroutine verify_committed_profile_selection
   subroutine verify_restored_irrigation_delivery(original,resumed,boundary,template,owners)
     use mod_transaction_reference, only: transaction_state_t
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t

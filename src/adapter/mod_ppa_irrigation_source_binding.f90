@@ -17,11 +17,10 @@ module mod_ppa_irrigation_source_binding
   public :: evaluate_ppa_irrigation_source
   public :: evaluate_ppa_profile_irrigation_source
   public :: evaluate_ppa_committed_irrigation_source
+  public :: evaluate_ppa_committed_profile_irrigation_source
 contains
   subroutine evaluate_ppa_committed_irrigation_source(parameters,committed,template,request,previous, &
        candidate,flux,diagnostics,forcing,ok)
-    use mod_irrigation_process, only: IRRIGATION_INVALID_STATE,IRRIGATION_INVALID_INTERVAL, &
-         IRRIGATION_INVALID_PARAMETERS
     type(scheduled_irrigation_parameters_t),intent(in)::parameters
     type(kernel_committed_state_t),intent(in)::committed
     type(fmr_template_t),intent(in)::template
@@ -32,13 +31,56 @@ contains
     type(irrigation_diagnostics_t),intent(out)::diagnostics
     type(fmr_b110_physical_forcing_t),allocatable,intent(out)::forcing
     logical,intent(out)::ok
-    class(transaction_state_t),allocatable::snapshot
+    type(irrigation_state_t)::base
     type(process_hydraulic_view_t)::hydraulic
+    flux=irrigation_flux_result_t()
+    call snapshot_irrigation_source(parameters,committed,template,request,base,hydraulic,diagnostics,ok)
+    candidate=base
+    if(.not.ok) return
+    call evaluate_ppa_irrigation_source(parameters,base,request,hydraulic,previous, &
+         candidate,flux,diagnostics,forcing,ok)
+  end subroutine evaluate_ppa_committed_irrigation_source
+
+  subroutine evaluate_ppa_committed_profile_irrigation_source(parameters,committed,template,request, &
+       noddrz,layer,dz,ztopcp,rd,wclos,wcmes,wchis,previous,candidate,flux,diagnostics,forcing,ok)
+    type(scheduled_irrigation_parameters_t),intent(in)::parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_template_t),intent(in)::template
+    type(scheduled_irrigation_request_t),intent(in)::request
+    integer,intent(in)::noddrz,layer(:)
+    real(real64),intent(in)::dz(:),ztopcp(:),rd,wclos(:),wcmes(:),wchis(:)
+    type(fmr_b110_physical_forcing_t),intent(in)::previous
+    type(irrigation_state_t),intent(out)::candidate
+    type(irrigation_flux_result_t),intent(out)::flux
+    type(irrigation_diagnostics_t),intent(out)::diagnostics
+    type(fmr_b110_physical_forcing_t),allocatable,intent(out)::forcing
+    logical,intent(out)::ok
+    type(irrigation_state_t)::base
+    type(process_hydraulic_view_t)::hydraulic
+    flux=irrigation_flux_result_t()
+    call snapshot_irrigation_source(parameters,committed,template,request,base,hydraulic,diagnostics,ok)
+    candidate=base
+    if(.not.ok) return
+    call evaluate_ppa_profile_irrigation_source(parameters,base,request,hydraulic, &
+         noddrz,layer,dz,ztopcp,rd,wclos,wcmes,wchis,previous,candidate,flux,diagnostics,forcing,ok)
+  end subroutine evaluate_ppa_committed_profile_irrigation_source
+
+  subroutine snapshot_irrigation_source(parameters,committed,template,request,candidate,hydraulic,diagnostics,ok)
+    use mod_irrigation_process, only: IRRIGATION_INVALID_STATE,IRRIGATION_INVALID_INTERVAL, &
+         IRRIGATION_INVALID_PARAMETERS
+    type(scheduled_irrigation_parameters_t),intent(in)::parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_template_t),intent(in)::template
+    type(scheduled_irrigation_request_t),intent(in)::request
+    type(irrigation_state_t),intent(out)::candidate
+    type(process_hydraulic_view_t),intent(out)::hydraulic
+    type(irrigation_diagnostics_t),intent(out)::diagnostics
+    logical,intent(out)::ok
+    class(transaction_state_t),allocatable::snapshot
     real(real64)::boundary
     logical::available
     ok=.false.
     candidate=irrigation_state_t()
-    flux=irrigation_flux_result_t()
     diagnostics=irrigation_diagnostics_t()
     diagnostics%status=IRRIGATION_INVALID_STATE
     call committed%current_time(boundary,available)
@@ -59,12 +101,12 @@ contains
       hydraulic%water_content=snapshot%water_content
       ! Detached outputs only: source evaluation never advances committed time
       ! or publishes the event candidate, even on successful evaluation.
-      call evaluate_ppa_irrigation_source(parameters,snapshot%irrigation,request,hydraulic,previous, &
-           candidate,flux,diagnostics,forcing,ok)
+      diagnostics%status=IRRIGATION_OK
+      ok=.true.
     class default
       return
     end select
-  end subroutine evaluate_ppa_committed_irrigation_source
+  end subroutine snapshot_irrigation_source
 
   subroutine evaluate_ppa_profile_irrigation_source(parameters,base,request,hydraulic, &
        noddrz,layer,dz,ztopcp,rd,wclos,wcmes,wchis,previous,candidate,flux,diagnostics,forcing,ok)
