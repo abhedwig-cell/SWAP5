@@ -24,7 +24,9 @@ jobs:
         run: bash tests/fahl/run_fahl27_production_provider_extract.sh
 
       - name: Layered hydraulic authority
-        run: bash tests/fahl/run_fahl_admission_layered_authority.sh
+        run: |
+          bash tests/fahl/run_fahl_admission_layered_authority.sh
+          bash tests/fahl/run_fahl_admission_layered_richards.sh
 
       - name: O05 dry-tail authority alignment
         run: bash tests/fahl/run_fahl27a_production_dry_tail.sh
@@ -52,6 +54,7 @@ jobs:
           path: |
             /tmp/fahl27_stage1.txt
             /tmp/fahl_layered_authority.txt
+            /tmp/fahl_layered_richards.txt
             /tmp/fahl27a_dry_tail.txt
             /tmp/fahl_admission_matrix.txt
             /tmp/fahl28b_provider.txt
