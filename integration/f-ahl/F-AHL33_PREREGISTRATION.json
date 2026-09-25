@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL33",
+  "title": "Multi-key adaptive-provider switching overhead",
+  "parent": "F-AHL32",
+  "phase": "PREREGISTERED_CHARACTERIZATION",
+  "question": "What binding cost remains when one serialized backend alternates among multiple already-built adaptive hydraulic authorities, so that F-AHL28B same-key memoization cannot fire but the F-AHL32 registry does hit?",
+  "runtime_authority": "Serialized MultiSWAP v1 uses one fmr_serialized_reference_backend_t across the deterministic column execution order.",
+  "current_path": "changed authority -> exact-key registry hit -> intrinsic assignment of immutable adaptive table into provider-owned table -> current-step analytical fallback rebind",
+  "workloads": [
+    {"id":"same_key","requests":200000,"unique_parameterizations":1},
+    {"id":"switch_16","requests":200000,"unique_parameterizations":16,"sequence":"round robin after untimed registry warmup"},
+    {"id":"switch_64","requests":200000,"unique_parameterizations":64,"sequence":"round robin after untimed registry warmup"}
+  ],
+  "measurements": [
+    "seconds per bind",
+    "shared registry build/hit/miss deltas",
+    "relative cost versus same-key provider-local memoized bind"
+  ],
+  "interpretation": "Characterization only. If multi-key switching is materially more expensive than same-key binding, a later work unit may compare stable registry handles/pointers or parameter-ref-local provider retention. No ownership change is made in F-AHL33.",
+  "hard_exclusions": [
+    "NO_POINTER_OWNERSHIP_REPAIR_IN_F_AHL33",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_KEY_WEAKENING",
+    "NO_APPLICATION_SPEED_CLAIM_FROM_BIND_MICROBENCHMARK"
+  ]
+}
