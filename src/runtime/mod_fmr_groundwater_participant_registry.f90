@@ -230,7 +230,7 @@ contains
          self%slots(idx)%template, self%slots(idx)%parameters, self%slots(idx)%committed, &
          self%slots(idx)%materializer, self%slots(idx)%numerical, self%slots(idx)%datum, window, &
          prescribed_head_m, trial, participant_status, &
-         trusted_prepared_parameters=self%slots(idx)%immutable_parameters)
+         trusted_prepared_parameters=self%slots(idx)%immutable_parameters, reuse_forcing_materialization=.true.)
     if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
       return
