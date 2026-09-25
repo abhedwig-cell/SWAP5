@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL39",
+  "phase": "SERIALIZED_MULTI_AUTHORITY_APPLICATION_TIMING_COMPLETE",
+  "status": "PASS_APPLICATION_SPEED",
+  "formal_workflow_run": 36104109578,
+  "formal_workflow_job": 107972725067,
+  "workload": {
+    "unique_parameterizations": 16,
+    "sequence": "round robin",
+    "serialized_backends": "one long-lived backend per analytical/adaptive arm",
+    "calls_per_batch": 16384,
+    "paired_repetitions": 7
+  },
+  "fidelity": {
+    "cases_passed": 16,
+    "cases_total": 16,
+    "max_observed_pressure_head_delta_cm": 1.155319e-6,
+    "max_observed_water_content_delta": 1.275244e-9,
+    "max_observed_bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "same_nonlinear_path_all_cases": true,
+    "verdict": "PASS"
+  },
+  "formal_paired_adaptive_over_analytical_ratios": [
+    0.953251,
+    0.976316,
+    0.972329,
+    0.973365,
+    1.000000,
+    0.972293,
+    0.970757
+  ],
+  "formal_median_ratio": 0.972329,
+  "formal_median_cpu_reduction_fraction": 0.027671,
+  "decision_rule": {
+    "pass_below": 0.98,
+    "equivocal_interval": [0.98,1.02],
+    "fail_above": 1.02
+  },
+  "decision": "PASS_APPLICATION_SPEED",
+  "evidence_reconciliation": {
+    "prior_false_red_run": 36104028013,
+    "prior_scientific_executable_status": "PASS",
+    "prior_median_ratio": 0.907412,
+    "workflow_failure_cause": "stale post-test grep path only",
+    "interpretation": "Both independent executions favor the adaptive multi-authority route and pass the frozen speed threshold, but the observed magnitude differs materially. Do not claim a precise application speedup percentage yet."
+  },
+  "finding": "The stable registry-slot repair preserves fidelity and produces a preregistered serialized FMR application-speed PASS under repeated hydraulic-authority switching.",
+  "next_action": "Longer paired timing reconciliation to stabilize the effect-size estimate before any broader performance statement.",
+  "nonclaims": [
+    "No whole-SWAP or national MultiSWAP speedup is implied.",
+    "The precise percentage gain is not yet considered robust.",
+    "No parallel thread-safety claim is made."
+  ]
+}
