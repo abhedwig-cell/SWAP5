@@ -40,6 +40,13 @@ for forbidden in [
 
 assert "tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
 assert "tile%parameters%bottom_mode /= 2" in src
+runtime_src = Path("src/runtime/mod_fmr_serialized_multiswap_runtime.f90").read_text().lower()
+assert "materialize_column_diagnostics" in runtime_src
+assert "allocate(diagnostics(0))" in runtime_src
+assert "summary diagnostics require column diagnostics" in runtime_src
+assert "runtime diagnostics require column diagnostics" in runtime_src
+assert "materialize_column_diagnostics=.false." in src
+print("FPE_ZERO_WASTE01_COLUMN_DIAGNOSTICS_OPTOUT_STATIC=PASS")
 assert "production_application_groundwater_ready" in src
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
 assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src

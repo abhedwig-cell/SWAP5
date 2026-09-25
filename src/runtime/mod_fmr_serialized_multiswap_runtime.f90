@@ -168,7 +168,7 @@ contains
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
                                                     materialize_worker_assignments, materialize_summary_diagnostics, &
-                                                    materialize_diagnostic_metadata)
+                                                    materialize_diagnostic_metadata, materialize_column_diagnostics)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -189,13 +189,15 @@ contains
     logical, intent(in), optional :: materialize_worker_assignments
     logical, intent(in), optional :: materialize_summary_diagnostics
     logical, intent(in), optional :: materialize_diagnostic_metadata
+    logical, intent(in), optional :: materialize_column_diagnostics
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
+    type(fmr_column_diagnostics_t) :: scratch_diagnostic
     integer, allocatable :: order(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
-    logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata
+    logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
 
     do_worker_assignments = .true.
     if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
@@ -203,7 +205,16 @@ contains
     if (present(materialize_summary_diagnostics)) do_summary_diagnostics = materialize_summary_diagnostics
     do_diagnostic_metadata = .true.
     if (present(materialize_diagnostic_metadata)) do_diagnostic_metadata = materialize_diagnostic_metadata
-    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments, do_diagnostic_metadata)
+    do_column_diagnostics = .true.
+    if (present(materialize_column_diagnostics)) do_column_diagnostics = materialize_column_diagnostics
+    if (.not. do_column_diagnostics) then
+      if (do_summary_diagnostics) error stop 'F-PE-ZERO-WASTE01: summary diagnostics require column diagnostics'
+      if (present(runtime_diagnostics)) error stop 'F-PE-ZERO-WASTE01: runtime diagnostics require column diagnostics'
+      do_worker_assignments = .false.
+      do_diagnostic_metadata = .false.
+    end if
+    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments, &
+         do_diagnostic_metadata, do_column_diagnostics)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
     active_physical_calls = 0
     dispatch_status = FMR_SERIAL_DISPATCH_OK
@@ -214,9 +225,13 @@ contains
       if (present(commit_receipts)) allocate(commit_receipts(0))
       dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
       call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
-      call build_aggregate(columns, diagnostics, 0, aggregate)
-      call finalize_runtime_diagnostics(results, local_runtime)
-      if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+      if (do_summary_diagnostics) then
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+      end if
       return
     end if
     if (present(receipt_column_ids)) then
@@ -224,9 +239,11 @@ contains
         allocate(commit_receipts(0))
         dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
         call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
-        call build_aggregate(columns, diagnostics, 0, aggregate)
-        call finalize_runtime_diagnostics(results, local_runtime)
-        if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
         return
       end if
       allocate(commit_receipts(size(receipt_column_ids)))
@@ -238,9 +255,13 @@ contains
     if (batch_size <= 0 .or. t1 <= t0) then
       dispatch_status = FMR_SERIAL_DISPATCH_INVALID_REQUEST
       call mark_all_rejected(diagnostics, 'INVALID_DISPATCH_REQUEST')
-      call build_aggregate(columns, diagnostics, 0, aggregate)
-      call finalize_runtime_diagnostics(results, local_runtime)
-      if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+      if (do_summary_diagnostics) then
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+      end if
       return
     end if
 
@@ -248,18 +269,22 @@ contains
       if (.not. execution_plan%matches(columns, templates, size(state_registry))) then
         dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
         call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
-        call build_aggregate(columns, diagnostics, 0, aggregate)
-        call finalize_runtime_diagnostics(results, local_runtime)
-        if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
         return
       end if
     else
       if (.not. registry_structure_valid(columns, templates, state_registry)) then
         dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
         call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
-        call build_aggregate(columns, diagnostics, 0, aggregate)
-        call finalize_runtime_diagnostics(results, local_runtime)
-        if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
         return
       end if
       call fmr_build_execution_order(columns, order)
@@ -279,27 +304,52 @@ contains
           template_index_hint = 0
         end if
         results(idx)%dispatch_ordinal = pos
+        if (.not. do_column_diagnostics) scratch_diagnostic = fmr_column_diagnostics_t()
         receipt_slot = 0
         if (present(receipt_column_ids)) receipt_slot = find_receipt_slot(columns(idx)%column_id, receipt_column_ids)
         if (receipt_slot > 0) then
           if (present(execution_plan)) then
-            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                 local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint)
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint)
+            end if
           else
-            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                 local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt)
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt)
+            end if
           end if
         else
           if (present(execution_plan)) then
-            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                 local_runtime, active_physical_calls, template_index_hint=template_index_hint)
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, template_index_hint=template_index_hint)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, template_index_hint=template_index_hint)
+            end if
           else
-            call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                 forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                 local_runtime, active_physical_calls)
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls)
+            end if
           end if
         end if
       end do
@@ -414,7 +464,7 @@ contains
   end subroutine fmr_execute_serialized_column_with_bottom_energy
 
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, materialize_worker_assignments, &
-       materialize_diagnostic_metadata)
+       materialize_diagnostic_metadata, materialize_column_diagnostics)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     real(real64), intent(in) :: t0, t1
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
@@ -422,23 +472,31 @@ contains
     type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
     logical, intent(in) :: materialize_worker_assignments
     logical, intent(in) :: materialize_diagnostic_metadata
+    logical, intent(in) :: materialize_column_diagnostics
     integer :: i
 
-    allocate(results(size(columns)), diagnostics(size(columns)))
+    allocate(results(size(columns)))
+    if (materialize_column_diagnostics) then
+      allocate(diagnostics(size(columns)))
+    else
+      allocate(diagnostics(0))
+    end if
     aggregate = fmr_aggregate_diagnostics_t()
     do i = 1, size(columns)
       results(i)%column_id = columns(i)%column_id
       results(i)%requested_t0 = t0
       results(i)%requested_t1 = t1
-      if (materialize_diagnostic_metadata) then
-        diagnostics(i)%column_id = columns(i)%column_id
-        diagnostics(i)%template_id = columns(i)%template_id
-        diagnostics(i)%backend = columns(i)%backend_id
-        diagnostics(i)%execution_class = columns(i)%execution_class
-      end if
-      if (materialize_worker_assignments) then
-        allocate(diagnostics(i)%worker_assignments(1))
-        diagnostics(i)%worker_assignments(1) = 1
+      if (materialize_column_diagnostics) then
+        if (materialize_diagnostic_metadata) then
+          diagnostics(i)%column_id = columns(i)%column_id
+          diagnostics(i)%template_id = columns(i)%template_id
+          diagnostics(i)%backend = columns(i)%backend_id
+          diagnostics(i)%execution_class = columns(i)%execution_class
+        end if
+        if (materialize_worker_assignments) then
+          allocate(diagnostics(i)%worker_assignments(1))
+          diagnostics(i)%worker_assignments(1) = 1
+        end if
       end if
     end do
   end subroutine initialize_outputs

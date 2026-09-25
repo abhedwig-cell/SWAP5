@@ -323,12 +323,14 @@ contains
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
-           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false.)
+           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+           materialize_column_diagnostics=.false.)
     else
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, materialize_worker_assignments=.false., &
-           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false.)
+           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+           materialize_column_diagnostics=.false.)
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
