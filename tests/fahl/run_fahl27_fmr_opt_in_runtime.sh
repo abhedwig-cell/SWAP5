@@ -72,6 +72,8 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 
 for opt in 0 2; do
@@ -84,12 +86,12 @@ for opt in 0 2; do
     objects+=("$obj")
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c tests/fahl/test_fahl27_fmr_opt_in_runtime.f90 -o "$OUT/test.o" || fail "compile O$opt runtime oracle"
+    -c tests/fahl/test_fahl27_fmr_resolved_opt_in.f90 -o "$OUT/test.o" || fail "compile O$opt runtime oracle"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt runtime oracle"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime oracle O$opt"; }
-  grep -Fq 'FAHL27_FMR_OPT_IN_RUNTIME=PASS' "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt opt-in marker"; }
+  grep -Fq 'FAHL27_FMR_RESOLVED_OPT_IN=PASS' "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt opt-in marker"; }
   cat "$OUT/output.txt"
-  echo "FAHL27_FMR_OPT_IN_O${opt}=PASS"
+  echo "FAHL27_FMR_RESOLVED_O${opt}=PASS"
 done
 
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
@@ -97,8 +99,8 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
   fail 'O0/O2 semantic drift'
 }
 
-git diff --check -- tests/fahl/test_fahl27_fmr_opt_in_runtime.f90 \
+git diff --check -- tests/fahl/test_fahl27_fmr_resolved_opt_in.f90 \
   tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
 
-echo 'FAHL27_FMR_OPT_IN_O0_O2_IDENTITY=PASS'
-echo 'FAHL27_FMR_OPT_IN_RUNTIME_GATE=PASS'
+echo 'FAHL27_FMR_RESOLVED_O0_O2_IDENTITY=PASS'
+echo 'FAHL27_FMR_RESOLVED_RUNTIME_GATE=PASS'
