@@ -37,5 +37,5 @@ done
 gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c tests/ahl/test_fahl27_adaptive_provider.f90 -o "$BUILD/test.o"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" | tee /tmp/fahl27_stage1.txt
-grep -Fq 'FAHL27 selfbuilt PASS' /tmp/ahl20_stage1.txt
-grep -Fq 'FAHL27_CACHE_STATS BUILDS=1 HITS=1 MISSES=1 ENTRIES=1' /tmp/ahl20_stage1.txt
+grep -Fq 'FAHL27 selfbuilt PASS' /tmp/fahl27_stage1.txt
+grep -Fq 'FAHL27_CACHE_STATS BUILDS=1 HITS=1 MISSES=1 ENTRIES=1' /tmp/fahl27_stage1.txt
