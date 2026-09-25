@@ -1374,7 +1374,12 @@ contains
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
       if (parameters%adaptive_hydraulics_active) then
-        ok = ok .and. parameters%bottom_mode == 5 .and. self%soil_water_selection%uses_reference() .and. &
+        ! F-AHL27 Stage 2: opt-in is admitted on the Reference route, but the
+        ! actual constitutive provider remains boundary-contract dependent.
+        ! Prescribed-head mode 5 may use AHL; prescribed-qbot and other
+        ! non-qualified lower-boundary modes fall back to authoritative
+        ! analytical hydraulics rather than being rejected or approximated.
+        ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              .not. self%temporal_indicator_history_enabled
       end if
       if (parameters%snow_active) then
@@ -2079,7 +2084,7 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    if (self%adaptive_hydraulics_active) then
+    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5) then
       request%evaluation%constitutive => self%adaptive_constitutive
     else
       request%evaluation%constitutive => self%constitutive
