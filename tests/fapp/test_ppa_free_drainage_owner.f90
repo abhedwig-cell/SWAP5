@@ -361,6 +361,11 @@ contains
     if(.not.ok.or..not.allocated(assembled)) error stop 'assembly rejected exact polymorphic temporal state'
     assembled%water_content=-99.0_real64
     assembled%irrigation%active_event_rate=99.0_real64
+    call build_irrigation_event_candidate(bundle%records(1)%physical_state, &
+         carrier%irrigation,event_template,T0,assembled,ok)
+    if(.not.ok.or..not.allocated(assembled)) error stop 'assembly source reread failed'
+    if(any(assembled%water_content/=carrier%water_content)) error stop 'assembly aliases restart physical source'
+    if(assembled%irrigation%active_event_rate/=0.01_real64) error stop 'assembly aliases reread event source'
     if(any(carrier%water_content/=profile%tiles(1)%initial_state%water_content)) &
          error stop 'assembly aliases source physical state'
     if(carrier%irrigation%active_event_rate/=0.01_real64) error stop 'assembly aliases event source'
