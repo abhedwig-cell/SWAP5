@@ -8,6 +8,7 @@ program test_ahl32_registry
   implicit none
 
   call stage12_ten_thousand()
+  call collision_safety()
   call stage3_capacity_plus_one()
   write(*,'(A)') 'AHL32_REGISTRY_ALL=PASS'
 
@@ -86,6 +87,39 @@ contains
     call require(max_probes2<=128,'stage2 maximum probe gate')
   end subroutine stage12_ten_thousand
 
+  subroutine collision_safety()
+    type(b110_adaptive_hydraulic_cache_t) :: registry
+    type(b110_default_mvg_parameters_t) :: pa,pb
+    type(b110_default_mvg_provider_t) :: prova,provb
+    type(b110_adaptive_hydraulic_table_t) :: ta,tb,ta2
+    type(b110_adaptive_hydraulic_cache_key_t) :: ka,kb
+    real(real64) :: ra(24,1),rb(24,1)
+    logical :: hit,ok
+    integer :: builds,hits,misses,entries
+
+    call make_raw(777,ra)
+    call make_raw(778,rb)
+    call initialize_b110_default_mvg_parameters(pa,ra)
+    call initialize_b110_default_mvg_parameters(pb,rb)
+    call bind_b110_default_mvg_provider(prova,pa,0.25_real64)
+    call bind_b110_default_mvg_provider(provb,pb,0.25_real64)
+    ka=make_b110_adaptive_hydraulic_key(pa,'AHL32COLL',1,1)
+    kb=make_b110_adaptive_hydraulic_key(pb,'AHL32COLL',1,1)
+    kb%fingerprint=ka%fingerprint
+
+    call registry%get_or_build(ka,pa,prova,ta,hit,ok)
+    call require(ok .and. .not.hit,'collision first key')
+    call registry%get_or_build(kb,pb,provb,tb,hit,ok)
+    call require(ok .and. .not.hit,'collision distinct exact key')
+    call registry%get_or_build(ka,pa,prova,ta2,hit,ok)
+    call require(ok .and. hit,'collision exact-key retrieval')
+    call registry%stats(builds,hits,misses,entries)
+    write(*,'(A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
+         'AHL32_COLLISION','BUILDS=',builds,'HITS=',hits,'MISSES=',misses,'ENTRIES=',entries
+    call require(builds==2 .and. hits==1 .and. misses==2 .and. entries==2,'collision accounting')
+    call require(ta2%n==ta%n,'collision returned wrong table')
+  end subroutine collision_safety
+
   subroutine stage3_capacity_plus_one()
     integer, parameter :: N=B110_AHL_MAX_CACHE+1
     type(b110_adaptive_hydraulic_cache_t) :: registry
@@ -95,10 +129,13 @@ contains
     type(b110_adaptive_hydraulic_cache_key_t) :: key
     real(real64) :: raw(24,1)
     logical :: hit,ok,last_ok,last_hit
-    integer :: i,failures,builds,hits,misses,entries
+    integer :: i,failures,builds,hits,misses,entries,max_before,max_after
+    integer(int64) :: probes_before,probes_after
 
     failures=0;last_ok=.false.;last_hit=.false.
+    probes_before=0_int64;probes_after=0_int64;max_before=0;max_after=0
     do i=1,N
+      if(i==N) call registry%probe_stats(probes_before,max_before)
       call make_raw(20000+i,raw)
       call initialize_b110_default_mvg_parameters(parameters,raw)
       call bind_b110_default_mvg_provider(provider,parameters,0.25_real64)
@@ -110,9 +147,12 @@ contains
       end if
     end do
     call registry%stats(builds,hits,misses,entries)
+    call registry%probe_stats(probes_after,max_after)
     write(*,'(A,1X,A,I0,1X,A,L1,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
          'AHL32_STAGE3','FAILURES=',failures,'LAST_OK=',last_ok,'LAST_HIT=',last_hit, &
          'BUILDS=',builds,'HITS=',hits,'MISSES=',misses,'ENTRIES=',entries
+    write(*,'(A,1X,A,I0,1X,A,I0)') 'AHL32_STAGE3_FULL_MISS', &
+         'PROBES=',int(probes_after-probes_before),'MAX_PROBES=',max_after
     call require(failures==0,'capacity plus one correctness')
     call require(last_ok .and. .not.last_hit,'capacity plus one uncached fallback')
     call require(entries==B110_AHL_MAX_CACHE,'registry remains bounded')
