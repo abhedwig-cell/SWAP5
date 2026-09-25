@@ -86,4 +86,4 @@ done
 gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl28_fmr_cache_accounting.f90 -o "$BUILD/test.o"
 gfortran -fopenmp -O3 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" | tee /tmp/ahl28_fmr_cache.txt
-grep -Fq 'AHL28_FMR_CACHE_ACCOUNTING=PASS' /tmp/fahl27_stage2_floor_timing.txt
+grep -Fq 'AHL28_FMR_CACHE_ACCOUNTING=PASS' /tmp/ahl28_fmr_cache.txt
