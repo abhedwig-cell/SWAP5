@@ -312,6 +312,7 @@ contains
     event_template=profile%tiles(1)%template
     event_template%optional_state_layout_id=PPA_IRRIGATION_EVENT_LAYOUT
     if(fmr_restart_state_matches_template(carrier,event_template)) error stop 'candidate production restart admitted'
+    if(trim(test_scope)=='--irrigation-source') call verify_pending_irrigation_trial(profile,carrier,event_template)
     if(.not.fmr_restart_state_matches_template(carrier,event_template,T0)) &
          error stop 'timed irrigation restart candidate rejected'
     if(fmr_restart_state_matches_template(carrier,event_template,T0-0.5_real64)) &
@@ -1124,6 +1125,83 @@ contains
     end do
     write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
   end subroutine verify_irrigation_restart_bundle
+  subroutine verify_pending_irrigation_trial(profile,source,template)
+    use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
+    use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
+         kernel_result_t,kernel_diagnostics_t
+    use mod_fmr_runtime_core, only: fmr_logical_column_t
+    use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+    use mod_transaction_reference, only: transaction_state_t
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(ppa_irrigation_event_state_t),intent(in)::source
+    type(fmr_template_t),intent(in)::template
+    type(fmr_serialized_reference_backend_t)::backend
+    type(fixed_flux_top_boundary_provider_t),target::top
+    type(kernel_committed_state_t)::committed
+    type(kernel_checkpoint_t)::checkpoint
+    type(kernel_candidate_state_t)::candidate
+    type(kernel_result_t)::result
+    type(kernel_diagnostics_t)::diagnostics
+    type(fmr_logical_column_t)::column
+    type(fmr_b110_physical_forcing_t)::forcing
+    type(ppa_irrigation_event_state_t)::seed
+    class(transaction_state_t),allocatable::initial,snapshot
+    real(real64)::finish,time
+    logical::ok
+    integer::code
+    finish=T0+1.0_real64/1024.0_real64
+    seed=source; seed%irrigation%active_event_end=finish
+    call seed%clone(initial)
+    call committed%initialize(404199_int64,initial,ok,T0)
+    if(.not.ok) error stop 'pending trial owner initialization'
+    call committed%capture_checkpoint(checkpoint,ok)
+    if(.not.ok) error stop 'pending trial checkpoint'
+    column%column_id=1_int64; column%template_id=template%template_id
+    column%parameter_ref=1_int64; column%state_handle=1_int64
+    column%backend_id=template%compatible_backend_id
+    forcing=profile%tiles(1)%base_forcing
+    forcing%subsurface_irrigation_source=0.0_real64
+    forcing%subsurface_irrigation_source(1)=source%irrigation%active_event_rate
+    forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
+    call backend%initialize(top)
+    call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+    call backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+    call backend%run_trial(column,template,profile%tiles(1)%parameters,committed,forcing,profile%numerical, &
+         T0,finish,checkpoint,result,candidate,diagnostics)
+    if(result%completed.or.candidate%ready()) error stop 'ordinary trial admitted pending carrier'
+    forcing%subsurface_irrigation_source(1)=2.0_real64*source%irrigation%active_event_rate
+    call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
+         profile%numerical,1,T0,finish,checkpoint,result,candidate,diagnostics)
+    if(result%completed.or.candidate%ready()) error stop 'pending trial accepted mismatched source'
+    forcing%subsurface_irrigation_source(1)=source%irrigation%active_event_rate
+    call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
+         profile%numerical,1,T0,finish,checkpoint,result,candidate,diagnostics)
+    if(.not.result%completed.or..not.candidate%ready()) error stop 'pending irrigation hydraulic trial failed'
+    call committed%snapshot(snapshot,ok)
+    if(.not.ok) error stop 'pending trial original missing'
+    select type(snapshot)
+    type is(ppa_irrigation_event_state_t)
+      if(.not.snapshot%irrigation%active_event.or.any(snapshot%water_content/=source%water_content)) &
+           error stop 'pending trial published before commit'
+    class default
+      error stop 'pending trial lost original type'
+    end select
+    call backend%commit_trial_candidate(committed,candidate,diagnostics,ok,code)
+    if(.not.ok) error stop 'pending irrigation candidate commit failed'
+    call committed%current_time(time,ok)
+    if(.not.ok.or.time/=finish) error stop 'pending irrigation committed time'
+    call committed%snapshot(snapshot,ok)
+    if(.not.ok) error stop 'pending irrigation committed snapshot'
+    select type(snapshot)
+    type is(ppa_irrigation_event_state_t)
+      if(snapshot%irrigation%active_event) error stop 'pending irrigation not cleared at end'
+      if(.not.snapshot%matches_candidate(template,finish)) error stop 'pending irrigation committed carrier invalid'
+    class default
+      error stop 'pending irrigation candidate sliced'
+    end select
+    write(*,'(a)') 'PPA_IRR_PENDING_HYDRAULIC_TRIAL_COMMIT=PASS'
+  end subroutine verify_pending_irrigation_trial
+
   subroutine verify_committed_profile_selection(source,boundary,template,owners)
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t

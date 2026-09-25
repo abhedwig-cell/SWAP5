@@ -416,6 +416,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
+    logical :: pending_irrigation_trial = .false.
     logical :: root_extraction_active = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
@@ -489,6 +490,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: set_storage_difference => set_storage_difference
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
+    procedure, public :: run_pending_irrigation_trial => run_pending_irrigation_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
     procedure, public :: discard_reference_floor_candidate => fmr_serialized_backend_discard_reference_floor_candidate
@@ -849,10 +851,20 @@ contains
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active) result(matches)
+                                                               boesten_evaporation_active, pending_irrigation) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
     logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
+    logical, intent(in) :: pending_irrigation
+    if(pending_irrigation) then
+      matches=.false.
+      select type(state)
+      type is(ppa_irrigation_event_state_t)
+        matches=temporal_history_enabled.and..not.fixed_weir_surface_water_active.and. &
+             .not.black_evaporation_active.and..not.boesten_evaporation_active
+      end select
+      return
+    end if
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
@@ -915,7 +927,7 @@ contains
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
-                                                           model%boesten_evaporation_active)) return
+                                                           model%boesten_evaporation_active,model%pending_irrigation_trial)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -953,6 +965,7 @@ contains
     logical :: selection_ok
     integer :: selection_status
     self%initialized = .false.
+    self%model%pending_irrigation_trial=.false.
     nullify(self%model%free_drainage_indicator)
     nullify(self%model%storage_difference)
     self%model%temporal_forcing_event = .false.
@@ -1294,6 +1307,64 @@ contains
          result, candidate, diagnostics)
   end subroutine fmr_serialized_backend_run_reference_floor_sample
 
+  subroutine run_pending_irrigation_trial(self,column,template,parameters,committed,forcing,config, &
+       single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing
+    type(canonical_numerical_config_t),intent(in)::config
+    integer,intent(in)::single_ssdi_node
+    real(real64),intent(in)::t0,t1
+    type(kernel_checkpoint_t),intent(in)::checkpoint
+    type(kernel_result_t),intent(out)::result
+    type(kernel_candidate_state_t),intent(out)::candidate
+    type(kernel_diagnostics_t),intent(out)::diagnostics
+    class(transaction_state_t),allocatable::snapshot
+    real(real64)::boundary,expected
+    logical::available
+    integer::node
+    self%model%pending_irrigation_trial=.false.
+    call reject_backend_trial(result,candidate,diagnostics)
+    if(.not.all(ieee_is_finite([t0,t1]))) return
+    if(t1<=t0.or.parameters%bottom_mode/=7) return
+    if(config%transaction%temporal_mode/=TX_TEMPORAL_MODEL_CERTIFICATE) return
+    if(parameters%snow_active.or.parameters%soil_temperature_active.or.parameters%black_evaporation_active.or. &
+         parameters%boesten_evaporation_active.or.parameters%drainage_response_active.or. &
+         self%model%fixed_weir_surface_water_active) return
+    if(single_ssdi_node<1.or.single_ssdi_node>parameters%active_nodes) return
+    if(.not.allocated(forcing%subsurface_irrigation_source)) return
+    if(size(forcing%subsurface_irrigation_source)/=parameters%active_nodes) return
+    if(.not.all(ieee_is_finite(forcing%subsurface_irrigation_source))) return
+    call committed%current_time(boundary,available)
+    if(.not.available) return
+    if(boundary/=t0) return
+    call committed%snapshot(snapshot,available)
+    if(.not.available) return
+    select type(snapshot)
+    type is(ppa_irrigation_event_state_t)
+      if(.not.snapshot%matches_candidate(template,t0)) return
+      if(snapshot%active_nodes/=parameters%active_nodes) return
+      if(snapshot%irrigation%active_event) then
+        if(t1>snapshot%irrigation%active_event_end) return
+      end if
+      do node=1,parameters%active_nodes
+        expected=0.0_real64
+        if(snapshot%irrigation%active_event.and.node==single_ssdi_node) expected=snapshot%irrigation%active_event_rate
+        if(forcing%subsurface_irrigation_source(node)/=expected) return
+      end do
+    class default
+      return
+    end select
+    ! Opt-in is call-local. Ordinary run_trial still rejects this reserved
+    ! layout, including after a failed or successful pending-event trial.
+    self%model%pending_irrigation_trial=.true.
+    call self%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
+    self%model%pending_irrigation_trial=.false.
+  end subroutine run_pending_irrigation_trial
+
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -1369,7 +1440,8 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end select
-    if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
+    if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id).and. &
+        .not.(self%model%pending_irrigation_trial.and.template%optional_state_layout_id==PPA_IRRIGATION_EVENT_LAYOUT)) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -2095,9 +2167,19 @@ contains
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
-                                                           self%boesten_evaporation_active)) return
+                                                           self%boesten_evaporation_active,self%pending_irrigation_trial)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
+    if(self%pending_irrigation_trial) then
+      select type(state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%irrigation%active_event) then
+          if(t0<state%irrigation%active_event_start.or.t1>state%irrigation%active_event_end) return
+        end if
+      class default
+        return
+      end select
+    end if
     effective_bottom_mode = self%bottom_mode
     effective_bottom_flux = self%bottom_flux
     if (allocated(self%legacy_swbotb2_control)) then
@@ -2504,6 +2586,13 @@ contains
     end if
     if (trajectory_stage_ok) then
       call accept_trajectory_step(self%trajectory_direction, trajectory_accept_ok)
+    end if
+    if(self%pending_irrigation_trial) then
+      select type(state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%irrigation%active_event.and.t1==state%irrigation%active_event_end) &
+             state%irrigation=irrigation_state_t(next_fixed_event_index=state%irrigation%next_fixed_event_index)
+      end select
     end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
