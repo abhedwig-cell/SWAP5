@@ -1,96 +1,70 @@
 {
   "schema_version": 13,
   "workstream": "F-AHL",
-  "status": "PRODUCTION_SHAPED_OPT_IN_QUALIFICATION_ACTIVE",
+  "status": "PRODUCTION_SHAPED_DEFAULT_OFF_QUALIFIED_EXTERNAL_TIMING_BLOCKER",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "completed_through": "F-AHL27B",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
-    "PDI_NoVap_prescribed_head_like": "PDI-specific derivative-consistent logit(theta/theta_s) retention/capacity plus independently controlled static Kliq lookup",
+    "PDI_NoVap_prescribed_head_like": "PDI-specific derivative-consistent transformed retention/capacity plus independently controlled static Kliq lookup",
     "prescribed_qbot": "fully analytical authoritative hydraulics",
     "near_saturation": "authoritative analytical handling where required by family semantics",
+    "dry_tail": "material-specific relevance bound using raw capacity floor 1e-13; analytical fallback outside the built domain",
     "runtime_refinement": false,
     "external_user_tables": false,
     "cache": "immutable exact-key internal cache"
   },
-  "positive_evidence": {
+  "production_shaped_default_MvG": {
+    "modules": [
+      "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_provider.f90"
+    ],
+    "runtime_seam": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "explicit_opt_in": true,
+    "default_on": false,
+    "stage1_extraction": "PASS",
+    "prescribed_head_matrix": "12/12 PASS",
+    "default_off_regression": "PASS",
+    "qbot_analytical_fallback": "PASS",
+    "accepted_trajectory_qbot_fallback": "PASS",
+    "dry_tail_production_alignment": "PASS"
+  },
+  "performance_evidence": {
     "default_MvG": {
       "Richards_matrix": "12/12 PASS",
       "same_nonlinear_path": "12/12",
-      "complete_Richards_cpu_reduction_fraction_range": [
-        0.205364,
-        0.24229
-      ],
+      "complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290],
+      "derivative_consistent_single_fixture_paired_reduction_fraction": 0.279186,
       "self_built_stage3_reduction_fraction": 0.200401
     },
     "bi_modal_MvG_model3": {
       "Richards_matrix": "9/9 PASS",
       "same_nonlinear_path": "9/9",
-      "retention_support_points_range": [
-        20,
-        25
-      ],
-      "conductivity_support_points_range": [
-        299,
-        448
-      ],
-      "selected_abs_logK_limit": 0.0001,
-      "complete_Richards_cpu_reduction_fraction_range": [
-        0.352169,
-        0.390877
-      ],
+      "complete_Richards_cpu_reduction_fraction_range": [0.352169,0.390877],
       "matrix_median_cpu_reduction_fraction": 0.380194
     },
     "PDI_NoVap_models_8_10": {
       "Richards_matrix": "6/6 PASS",
       "same_nonlinear_path": "6/6",
-      "retention_transform": "logit(theta/theta_s)",
-      "selected_theta_over_theta_s_abs": 0.000003,
-      "selected_abs_logC": 0.003,
-      "selected_abs_logK": 0.0003,
-      "retention_support_points": {
-        "PDI8": 47,
-        "PDI10": 52
-      },
-      "conductivity_support_points": {
-        "PDI8": 186,
-        "PDI10": 179
-      },
-      "complete_Richards_cpu_reduction_fraction_range": [
-        0.533837,
-        0.655556
-      ],
+      "complete_Richards_cpu_reduction_fraction_range": [0.533837,0.655556],
       "six_case_median_cpu_reduction_fraction": 0.6083635
     }
   },
-  "boundary_and_failure_policy": {
-    "prescribed_qbot": "fully analytical fallback",
-    "vapor_enabled_PDI": "not qualified because upstream authoritative Kvap temperature formula fails across documented negative-C tsoil domain",
-    "dry_tail": "Bound by authoritative raw C=1e-13 representation-relevance floor; adaptive support stops at the material-specific lower bound and authoritative analytical hydraulics are used outside it. Physics is not truncated.",
-    "application_timing": "BLOCKED under the frozen TX_TEMPORAL_EXTERNAL_FULL_HALF serialized prescribed-head fixture: fmr_serialized_temporal_identity accepts only bit-identical full-step and two-half-step physical states, so all six preregistered nontrivial prescribed-head perturbations are temporally rejected."
+  "external_blocker": {
+    "id": "F-AHL27B",
+    "owner": "F-KT/FMR temporal-acceptance semantics",
+    "description": "No preregistered nontrivial prescribed-head serialized Reference fixture is canonically accepted under the current external-full-half temporal identity route. Analytical and adaptive executions fail identically through temporal rejection.",
+    "application_level_speed_claim": "BLOCKED"
   },
-  "cross_family_scientific_conclusion": "Preserving state-derivative consistency is a cross-family numerical invariant, but the transformed retention coordinate and conductivity accuracy must respect each hydraulic family's source semantics. The best strict acceleration is therefore family-aware rather than one universal table policy.",
   "production_admission_still_requires": [
-    "production implementation behind typed hydraulic-provider contracts",
-    "whole-SWAP accepted-trajectory and application timing",
-    "lower-boundary modes beyond the current qualified envelopes",
+    "resolution of the prescribed-head serialized temporal-acceptance blocker or an independently qualified compatible fixture",
+    "successful application-level paired timing on such a fixture",
+    "canonical governance admission",
+    "separate qualification for lower-boundary modes beyond the current envelope",
     "SWKIMPL=1/dKdh qualification if included",
-    "dry-tail termination qualification if implemented",
-    "upstream reconciliation of vapor-enabled PDI temperature semantics",
-    "canonical regression and governance admission",
-    "post-F-AHL27A production-extraction replay PASS",
-    "post-F-AHL27A 12-case prescribed-head matrix replay PASS",
-    "application-level timing only if a canonically valid timing oracle exists; do not manufacture one by retuning temporal policy"
+    "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration"
   ],
-  "production_boundary": "RESEARCH_ONLY_NO_ADMISSION",
-  "f_ahl27": {
-    "stage1_pre_repair": "PASS",
-    "stage2_matrix_pre_repair": "12/12 PASS",
-    "qbot_fallback": "PASS",
-    "transactional_qbot_fallback": "PASS O0/O2 identity",
-    "dry_tail_alignment": "F-AHL27A PASS",
-    "timing_fixture_qualification": "F-AHL27B BLOCKED_NO_ACCEPTED_PREREGISTERED_FIXTURE",
-    "post_dry_tail_regression": "RUNNING: production extraction and 12-case prescribed-head matrix rerun triggered after F-AHL27A"
-  }
+  "production_boundary": "EXPLICIT_OPT_IN_ONLY_DEFAULT_OFF_NO_CANONICAL_ADMISSION"
 }
