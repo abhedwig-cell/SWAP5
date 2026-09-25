@@ -19,9 +19,23 @@ src=src.replace(
 "  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD",
 "  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD")
 src=src.replace(
+"  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD",
+"  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD")
+src=src.replace(
+"  use mod_canonical_contracts, only: canonical_numerical_config_t",
+"  use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t")
+src=src.replace(
+"  use mod_kernel_transactions, only: kernel_committed_state_t",
+"  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &\n"
+"       kernel_candidate_state_t, kernel_diagnostics_t")
+src=src.replace(
 "  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t",
 "  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t\n"
 "  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t")
+src=src.replace(
+"  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &\n       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",
+"  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &\n       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY\n"
+"  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD")
 src=src.replace(
 "  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t",
 "  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t\n"
@@ -63,7 +77,15 @@ probe = r'''
     integer(c_int), intent(out) :: registry_status, participant_status, trial_valid, tangent_available
     type(groundwater_coupling_window_t) :: window
     type(groundwater_swap_trial_t) :: trial
-    integer :: local_status, part_status, cleanup_status
+    type(groundwater_head_datum_t) :: probe_datum
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: direct_result
+    type(kernel_candidate_state_t) :: direct_candidate
+    type(kernel_diagnostics_t) :: direct_diagnostics
+    type(canonical_numerical_config_t) :: direct_numerical
+    class(canonical_forcing_t), allocatable :: probe_forcing
+    integer :: local_status, part_status, cleanup_status, forcing_status
+    logical :: checkpoint_ok
 
     c_status = 1_c_int
     registry_status = -1_c_int
@@ -89,6 +111,36 @@ probe = r'''
     if (trial%response_tangent_available) tangent_available = 1_c_int
     if (trial%valid) call registry%discard_candidate(handles(1),cleanup_status)
     call registry%abandon_origin(handles(1),cleanup_status)
+
+    call committed(1)%capture_checkpoint(checkpoint,checkpoint_ok)
+    probe_datum%available=.true.
+    probe_datum%datum_id=610049_int64
+    probe_datum%bottom_boundary_elevation_m=0.0_real64
+    call materializer%materialize(reference_head_m,probe_datum,probe_forcing,forcing_status)
+    direct_numerical=config
+    direct_numerical%accepted_trajectory_direction%requested=.true.
+    direct_numerical%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_HEAD
+    if (checkpoint_ok .and. allocated(probe_forcing)) then
+      select type(typed_forcing=>probe_forcing)
+      type is(fmr_b110_physical_forcing_t)
+        call backend%run_trial(columns(1),templates(1),parameters,committed(1),typed_forcing,direct_numerical, &
+             0.0_real64,DURATION_DAY,checkpoint,direct_result,direct_candidate,direct_diagnostics, &
+             trusted_prepared_parameters=.true.)
+        write(*,'(*(g0))') 'FAHL49_DIRECT_KERNEL_STATUS=',direct_result%status
+        write(*,'(*(g0))') 'FAHL49_DIRECT_COMPLETED=',direct_result%completed
+        write(*,'(*(g0))') 'FAHL49_DIRECT_CANDIDATE_READY=',direct_candidate%ready()
+        write(*,'(*(g0))') 'FAHL49_DIRECT_BOTTOM_AVAILABLE=',direct_result%bottom_interface_exchange_available
+        write(*,'(*(g0))') 'FAHL49_DIRECT_COMPLETED_T=',direct_result%completed_t
+        write(*,'(*(g0))') 'FAHL49_DIRECT_DIRECTION_REQUESTED=',direct_result%accepted_trajectory_direction%requested
+        write(*,'(*(g0))') 'FAHL49_DIRECT_DIRECTION_AVAILABLE=',direct_result%accepted_trajectory_direction%available
+        write(*,'(*(g0))') 'FAHL49_DIRECT_ACCEPTED_STEPS=',direct_result%accepted_trajectory_direction%accepted_steps
+      class default
+        write(*,'(A)') 'FAHL49_DIRECT_FORCING_TYPE=UNEXPECTED'
+      end select
+    else
+      write(*,'(*(g0))') 'FAHL49_DIRECT_CHECKPOINT_OK=',checkpoint_ok
+      write(*,'(*(g0))') 'FAHL49_DIRECT_FORCING_STATUS=',forcing_status
+    end if
     c_status = 0_c_int
   end function fgc49d_fixture_probe_trial_c
 '''
