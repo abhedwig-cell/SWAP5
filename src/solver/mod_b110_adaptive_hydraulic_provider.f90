@@ -38,20 +38,23 @@ module mod_b110_adaptive_hydraulic_provider
 
 contains
 
-  subroutine bind_b110_adaptive_hydraulic_provider(provider,parameters,step_duration,ok,was_hit)
+  subroutine bind_b110_adaptive_hydraulic_provider(provider,parameters,step_duration,ok,was_hit,prefer_registry_handle)
     type(b110_adaptive_hydraulic_provider_t),intent(inout)::provider
     type(b110_default_mvg_parameters_t),target,intent(in)::parameters
     real(real64),intent(in)::step_duration
     logical,intent(out)::ok,was_hit
+    logical,intent(in),optional::prefer_registry_handle
 
     type(b110_default_mvg_parameters_t),target :: sampler_parameters
     type(b110_default_mvg_provider_t) :: sampler
     type(b110_adaptive_hydraulic_cache_key_t) :: key
     real(real64) :: one_node_input(42,1)
-    logical :: same_representation,slot_ok
+    logical :: same_representation,slot_ok,use_handle
     integer :: slot
 
     ok=.false.;was_hit=.false.
+    use_handle=.true.
+    if(present(prefer_registry_handle))use_handle=prefer_registry_handle
     if(parameters%active_nodes<=0 .or. .not.allocated(parameters%cofgen))then
       provider%ready=.false.
       return
@@ -90,26 +93,40 @@ contains
     ! F-AHL35: changed authority first queries the exact-key registry. The
     ! one-node authoritative sampler is only required after a genuine registry
     ! miss to construct a new immutable representation.
-    call shared_cache%find_slot(key,slot,was_hit)
-    if(was_hit)then
-      call shared_cache%slot_bounds(slot,provider%registry_xmin,provider%registry_xmax,slot_ok)
-      if(.not.slot_ok)return
-      provider%registry_slot=slot
-      provider%registry_handle_active=.true.
-      ok=.true.
-    else
-      one_node_input(:,1)=parameters%cofgen(1:42,1)
-      call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
-           parameters%ksatexm_extension_enabled)
-      call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
-      call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
-      if(.not.ok)return
-      call shared_cache%find_slot(key,slot,slot_ok,.false.)
-      if(slot_ok)then
+    if(use_handle)then
+      call shared_cache%find_slot(key,slot,was_hit)
+      if(was_hit)then
         call shared_cache%slot_bounds(slot,provider%registry_xmin,provider%registry_xmax,slot_ok)
         if(.not.slot_ok)return
         provider%registry_slot=slot
         provider%registry_handle_active=.true.
+        ok=.true.
+      else
+        one_node_input(:,1)=parameters%cofgen(1:42,1)
+        call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
+             parameters%ksatexm_extension_enabled)
+        call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
+        call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
+        if(.not.ok)return
+        call shared_cache%find_slot(key,slot,slot_ok,.false.)
+        if(slot_ok)then
+          call shared_cache%slot_bounds(slot,provider%registry_xmin,provider%registry_xmax,slot_ok)
+          if(.not.slot_ok)return
+          provider%registry_slot=slot
+          provider%registry_handle_active=.true.
+        end if
+      end if
+    else
+      call shared_cache%lookup(key,provider%table,was_hit)
+      if(was_hit)then
+        ok=.true.
+      else
+        one_node_input(:,1)=parameters%cofgen(1:42,1)
+        call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
+             parameters%ksatexm_extension_enabled)
+        call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
+        call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
+        if(.not.ok)return
       end if
     end if
     provider%representation_key=key
