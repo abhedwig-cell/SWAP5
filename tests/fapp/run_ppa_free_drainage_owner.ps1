@@ -1,7 +1,10 @@
 # Windows replay of the existing owner gate; the shell runner remains the
 # single source of the static Python checks, compilation flags and source list.
-param([ValidateSet('IrrigationHalfSource','IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage)
+param([ValidateSet('IrrigationHalfSource','IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage, [switch]$LocalOriginDiagnostic)
 $ErrorActionPreference = 'Stop'
+if ($LocalOriginDiagnostic -and $Scope -ne 'IrrigationHalfSource') {
+    throw 'LocalOriginDiagnostic is restricted to IrrigationHalfSource'
+}
 if ($Scope -in @('HydraulicCopy','IrrigationSource','IrrigationHalfSource') -and ($StableStorage -or $StableStorageExperiment)) {
     throw 'HydraulicCopy/IrrigationSource select their numerical profile inside the test; do not override with storage flags'
 }
@@ -77,6 +80,7 @@ try {
             if ($Scope -eq 'IrrigationSource') { $testArguments = @('--irrigation-source') }
             # Diagnostic reproduction: currently fails; do not convert failure to PASS.
             if ($Scope -eq 'IrrigationHalfSource') { $testArguments = @('--irrigation-half-source') }
+            if ($LocalOriginDiagnostic) { $testArguments += '--local-origin' }
             if ($StableStorage) {
                 $testArguments = @('--stable-storage')
                 if ($Scope -eq 'Guards') { $testArguments = @('--stable-guards') }
