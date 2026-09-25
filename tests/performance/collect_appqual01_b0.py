@@ -31,11 +31,11 @@ for marker in required_markers:
 
 record = {
     "schema": "swap5-appqual01-v1",
-    "run_id": "B0-FGC47-MIXED-LIVE",
+    "run_id": "B0-FGC49D-PRODUCTION-LIVE",
     "source_commit": source_commit,
     "candidate_family": "REFERENCE",
     "candidate_config": "cleaned-reference-richards",
-    "workload_id": "B0-FGC47-MIXED-LIVE",
+    "workload_id": "B0-FGC49D-PRODUCTION-LIVE",
     "swap_columns": 3,
     "modflow_interface_cells": 2,
     "modflow_version": "6.8.0",
