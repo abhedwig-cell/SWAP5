@@ -27,5 +27,7 @@ jobs:
         run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
       - name: Production bootstrap owner gate
         run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+      - name: Groundwater Python dependency
+        run: python3 -m pip install numpy
       - name: Groundwater production context gate
         run: bash tests/fgc/run_fgc49d_production_application_context.sh
