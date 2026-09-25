@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL40R",
+  "title": "F-AHL40 median-statistic harness correction",
+  "parent": "F-AHL40",
+  "phase": "PREREGISTERED_HARNESS_REPAIR",
+  "problem": "F-AHL40 correctly printed the median paired ratio as sorted ratios(5) for nine pairs, but the speed gate and reported reduction accidentally used ratios(4).",
+  "frozen_evidence_from_F_AHL40": {
+    "workflow_run": 36104262128,
+    "fidelity_16_of_16": "PASS",
+    "printed_median_ratio": 0.954546,
+    "all_nine_ratios": [0.941819,0.954456,0.954961,0.954546,0.954482,0.970404,0.955733,0.964885,0.953526]
+  },
+  "repair": "Use sorted ratios(5) consistently for the primary statistic, reduction and speed gate. No workload, implementation, hydraulics, compiler, repetition count or acceptance threshold changes.",
+  "decision_rule": {
+    "material_speed_benefit": "median ratio < 0.98",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "negative": "median ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_IMPLEMENTATION_CHANGE",
+    "NO_WORKLOAD_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_NEW_MICRO_OPTIMIZATION"
+  ]
+}
