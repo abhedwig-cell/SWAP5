@@ -39,6 +39,13 @@ insert="""    call initialize_parameters(parameters)
 if needle not in src:
     raise SystemExit("fixture direct-retention insertion seam missing")
 src=src.replace(needle,insert,1)
+bind_old="""      call registry%bind(TILE_ID(i), backend, columns(i), templates(i), parameters, committed(i), materializer, &
+           config, datum, handles(i), status)"""
+bind_new="""      call registry%bind(TILE_ID(i), backend, columns(i), templates(i), parameters, committed(i), materializer, &
+           config, datum, handles(i), status, immutable_parameters=.true.)"""
+if bind_old not in src:
+    raise SystemExit("registry bind seam missing")
+src=src.replace(bind_old,bind_new)
 Path(sys.argv[1]).write_text(src)
 PY
 
