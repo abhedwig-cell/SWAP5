@@ -353,3 +353,36 @@ The safest canonical reconstruction is now:
 5. then F-AHL50.
 
 This avoids treating H17A measurement work or rejected ZERO-WASTE experiments as production authority.
+
+
+## B1 recomposition qualification
+
+Execution PR: #622.
+
+B1 was recomposed from current canonical using the ZERO-WASTE production-behavior authority `a03c964...`.
+
+Initial replay exposed one genuine dependency-closure omission:
+`mod_kernel_transactions` consumed the B1 diagnostics fields `workspace_full_resets` and `workspace_zeroed_bytes`, while the recomposition still had older canonical contracts. The exact B1 `mod_canonical_contracts` and `mod_canonical_interval_runtime` blobs were added.
+
+Two subsequent red jobs were missing test fixtures only:
+- PROFILE03 H03 application-host timing fixture;
+- ZERO-WASTE poison-workspace fixture.
+
+No production change was required for either.
+
+Current focused evidence:
+- FKT22 O0/O2 production runtime and physical identity: PASS;
+- PPA-WU01 production application bootstrap O0/O2 and output identity: PASS;
+- paired Reference runtime: PASS, mean candidate/baseline ratio `0.717335304`, mean improvement approximately 28.27%;
+- paired directional runtime: PASS, mean ratio `0.746223613`, mean improvement approximately 25.38%;
+- poison-workspace equivalence: PASS;
+- poison free-drainage: PASS;
+- poison O0/O2 identity: PASS.
+
+The B1 production recomposition surface is 22 source files: the 20 initially identified production-behavior files plus the two proven diagnostics dependency files.
+
+### B1 status
+
+`B1_CORE_P0_RECOMPOSITION = QUALIFIED_ON_CURRENT_CANONICAL_BASE`
+
+This qualifies the recomposed B1 postimage as the base for B2. It does not yet authorize direct canonical merge of PR #622; B2, PLANVALID01 and F-AHL50 remain separate bounded tranches.
