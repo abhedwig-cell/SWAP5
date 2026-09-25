@@ -4,6 +4,8 @@ module mod_b110_direct_retention_provider
        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        bind_b110_default_mvg_provider
+  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction, &
+       evaluate_b110_default_mvg_water_content_direction
   use mod_b110_direct_retention_core, only: sample_b110_direct_retention
   implicit none
   private
@@ -18,6 +20,8 @@ module mod_b110_direct_retention_provider
   end type b110_direct_retention_provider_t
 
   public :: bind_b110_direct_retention_provider
+  public :: evaluate_b110_direct_retention_state_direction
+  public :: evaluate_b110_direct_retention_water_content_direction
 
 contains
 
@@ -84,5 +88,84 @@ contains
       end if
     end do
   end subroutine direct_retention_evaluate_demand
+
+
+  subroutine evaluate_b110_direct_retention_state_direction(provider,pressure_head,pressure_head_direction, &
+                                                             water_content_direction,conductivity_direction, &
+                                                             available,route)
+    type(b110_direct_retention_provider_t),intent(in)::provider
+    real(real64),intent(in)::pressure_head(:),pressure_head_direction(:)
+    real(real64),intent(out)::water_content_direction(:),conductivity_direction(:)
+    logical,intent(out)::available
+    character(len=*),intent(out)::route
+    real(real64)::analytical_theta(size(pressure_head)),theta_i,capacity_i
+    logical::analytical_ok,inside
+    character(len=64)::analytical_route
+    integer::i
+
+    available=.false.
+    route='b110-direct-retention-direction-unavailable'
+    water_content_direction=0.0_real64
+    conductivity_direction=0.0_real64
+    if(.not.provider%ready)return
+    if(size(pressure_head_direction)/=size(pressure_head) .or. &
+       size(water_content_direction)/=size(pressure_head) .or. &
+       size(conductivity_direction)/=size(pressure_head))then
+      route='b110-direct-retention-direction-shape-invalid'
+      return
+    end if
+
+    call evaluate_b110_default_mvg_state_direction(provider%analytical,pressure_head,pressure_head_direction, &
+         analytical_theta,conductivity_direction,analytical_ok,analytical_route)
+    if(.not.analytical_ok)then
+      route=analytical_route
+      conductivity_direction=0.0_real64
+      return
+    end if
+    water_content_direction=analytical_theta
+    do i=1,size(pressure_head)
+      call sample_b110_direct_retention(provider%slot,pressure_head(i),theta_i,capacity_i,inside)
+      if(inside)water_content_direction(i)=capacity_i*pressure_head_direction(i)
+    end do
+    available=.true.
+    route='b110-direct-retention-consistent-direction'
+  end subroutine evaluate_b110_direct_retention_state_direction
+
+  subroutine evaluate_b110_direct_retention_water_content_direction(provider,pressure_head,pressure_head_direction, &
+                                                                     water_content_direction,available,route)
+    type(b110_direct_retention_provider_t),intent(in)::provider
+    real(real64),intent(in)::pressure_head(:),pressure_head_direction(:)
+    real(real64),intent(out)::water_content_direction(:)
+    logical,intent(out)::available
+    character(len=*),intent(out)::route
+    real(real64)::theta_i,capacity_i
+    logical::analytical_ok,inside
+    character(len=64)::analytical_route
+    integer::i
+
+    available=.false.
+    route='b110-direct-retention-direction-unavailable'
+    water_content_direction=0.0_real64
+    if(.not.provider%ready)return
+    if(size(pressure_head_direction)/=size(pressure_head) .or. &
+       size(water_content_direction)/=size(pressure_head))then
+      route='b110-direct-retention-direction-shape-invalid'
+      return
+    end if
+
+    call evaluate_b110_default_mvg_water_content_direction(provider%analytical,pressure_head,pressure_head_direction, &
+         water_content_direction,analytical_ok,analytical_route)
+    if(.not.analytical_ok)then
+      route=analytical_route
+      water_content_direction=0.0_real64
+      return
+    end if
+    do i=1,size(pressure_head)
+      call sample_b110_direct_retention(provider%slot,pressure_head(i),theta_i,capacity_i,inside)
+      if(inside)water_content_direction(i)=capacity_i*pressure_head_direction(i)
+    end do
+    available=.true.
+    route='b110-direct-retention-consistent-direction'
+  end subroutine evaluate_b110_direct_retention_water_content_direction
 
 end module mod_b110_direct_retention_provider
