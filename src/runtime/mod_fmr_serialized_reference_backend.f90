@@ -485,6 +485,7 @@ contains
     type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
     logical, intent(out) :: prepared
     integer :: i
+    logical :: direct_hit
 
     prepared = .false.
     parameters%prepared_default_mvg_available = .false.
@@ -519,7 +520,7 @@ contains
              spread(parameters%prepared_default_mvg%cofgen(:,1),2,parameters%active_nodes-1))) return
       end if
       call acquire_b110_direct_retention_slot(parameters%prepared_default_mvg, &
-           parameters%prepared_direct_retention_slot, prepared, was_hit=.false.)
+           parameters%prepared_direct_retention_slot, prepared, direct_hit)
       if (.not. prepared) return
     end if
     prepared = .true.
