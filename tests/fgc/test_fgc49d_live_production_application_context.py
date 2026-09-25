@@ -4,6 +4,7 @@ import ctypes
 import os
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 import flopy
@@ -195,6 +196,7 @@ def main() -> None:
                 publisher,
                 solution_id=1,
             )
+            coupling_start = time.perf_counter()
             result = run_groundwater_application_window(
                 runtime,
                 session,
@@ -204,6 +206,7 @@ def main() -> None:
                 ),
             )
 
+            coupling_seconds = time.perf_counter() - coupling_start
             require(
                 result.status == GroundwaterApplicationServiceStatus.OK,
                 f"production ABI live service failed at {result.failure_stage}",
@@ -234,6 +237,8 @@ def main() -> None:
             runtime.release()
 
             print(f"FGC49D_LIVE_ITERATIONS={result.iterations}")
+            print(f"FGC49D_LIVE_MODFLOW_SOLVE_CALLS={kernel.solve_calls}")
+            print(f"FGC49D_LIVE_COUPLING_SECONDS={coupling_seconds:.17g}")
             print(
                 "FGC49D_LIVE_MAX_CELL_RESIDUAL_M_PER_S="
                 f"{max(abs(value) for value in result.final_residuals_m_per_s):.17g}"
