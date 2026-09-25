@@ -226,6 +226,14 @@ contains
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
        result%diagnostics%interface_sensitivity_backsolves = interface_sensitivity_backsolves
        result%diagnostics%constitutive_evaluations = ws%legacy_worker%diagnostics%constitutive_evaluations
+       result%diagnostics%constitutive_initial_full_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_initial_full_evaluations
+       result%diagnostics%constitutive_candidate_full_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_full_evaluations
+       result%diagnostics%constitutive_candidate_terminal_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_terminal_evaluations
+       result%diagnostics%constitutive_candidate_capacity_reuses = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_capacity_reuses
        result%diagnostics%workspace_full_resets = ws%richards%profile_full_reset_calls - reset_calls_before
        result%diagnostics%workspace_zeroed_bytes = ws%richards%profile_zeroed_bytes - reset_bytes_before
 
