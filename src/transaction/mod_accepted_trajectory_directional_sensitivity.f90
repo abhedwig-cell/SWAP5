@@ -69,6 +69,7 @@ module mod_accepted_trajectory_directional_sensitivity
   public :: begin_or_continue_trajectory
   public :: build_trajectory_step_request
   public :: stage_trajectory_step_result
+  public :: stage_trajectory_step_result_consuming
   public :: accept_trajectory_step
   public :: discard_trajectory_step
   public :: finalize_trajectory_direction
@@ -266,6 +267,66 @@ contains
     ok = .true.
   end subroutine stage_trajectory_step_result
 
+  subroutine stage_trajectory_step_result_consuming(state, token, result, ok)
+    type(accepted_trajectory_direction_t), intent(inout) :: state
+    type(trajectory_step_token_t), intent(in) :: token
+    type(soil_water_accepted_step_direction_result_t), intent(inout) :: result
+    logical, intent(out) :: ok
+    real(real64) :: dt
+
+    ok = .false.
+    if (.not. token_matches(state, token) .or. state%pending) then
+      call fail_closed(state, 'stale-or-cross-candidate-step-result')
+      return
+    end if
+    dt = token%step_t1-token%step_t0
+    if (dt <= 0.0_real64) then
+      call fail_closed(state, 'invalid-step-duration')
+      return
+    end if
+
+    state%issued = .false.
+    state%issued_sequence = 0
+    state%issued_t0 = 0.0_real64
+    state%issued_t1 = 0.0_real64
+    state%pending = .true.
+    state%pending_sequence = token%step_sequence
+    state%pending_t0 = token%step_t0
+    state%pending_t1 = token%step_t1
+    state%pending_backsolves = result%additional_tridiagonal_backsolves
+    state%pending_jacobians = result%additional_jacobian_builds
+    state%pending_full_solves = result%additional_full_nonlinear_solves
+    state%pending_method = result%method
+    state%pending_route = result%route
+    state%pending_available = result%status == SW_STEP_DIRECTION_AVAILABLE .and. result%available
+    state%pending_source_sink_direction_covered = result%source_sink_direction_covered
+    state%pending_root_sink_direction_covered = result%root_sink_direction_covered
+
+    if (state%pending_available) then
+      if (.not. allocated(result%outgoing_pressure_head) .or. .not. allocated(result%outgoing_water_content)) then
+        call fail_closed(state, 'available-step-result-missing-vectors')
+        return
+      end if
+      if (size(result%outgoing_pressure_head) /= size(state%pressure_head_direction) .or. &
+          size(result%outgoing_water_content) /= size(state%water_content_direction)) then
+        call fail_closed(state, 'available-step-result-shape-mismatch')
+        return
+      end if
+      if (any(.not. ieee_is_finite(result%outgoing_pressure_head)) .or. &
+          any(.not. ieee_is_finite(result%outgoing_water_content)) .or. &
+          .not. ieee_is_finite(result%outgoing_ponding_depth) .or. &
+          .not. ieee_is_finite(result%bottom_flux_derivative)) then
+        call fail_closed(state, 'available-step-result-nonfinite')
+        return
+      end if
+      call move_alloc(result%outgoing_pressure_head, state%pending_pressure_head_direction)
+      call move_alloc(result%outgoing_water_content, state%pending_water_content_direction)
+      state%pending_ponding_direction = result%outgoing_ponding_depth
+      state%pending_bottom_exchange_derivative = dt*result%bottom_flux_derivative
+    end if
+    ok = .true.
+  end subroutine stage_trajectory_step_result_consuming
+
   subroutine accept_trajectory_step(state, ok)
     type(accepted_trajectory_direction_t), intent(inout) :: state
     logical, intent(out) :: ok
@@ -283,8 +344,8 @@ contains
 
     if (state%pending_available .and. state%status /= TRAJECTORY_DIRECTION_UNAVAILABLE .and. &
         state%status /= TRAJECTORY_DIRECTION_FAILED) then
-      state%pressure_head_direction = state%pending_pressure_head_direction
-      state%water_content_direction = state%pending_water_content_direction
+      call move_alloc(state%pending_pressure_head_direction, state%pressure_head_direction)
+      call move_alloc(state%pending_water_content_direction, state%water_content_direction)
       state%ponding_direction = state%pending_ponding_direction
       state%integrated_bottom_exchange_derivative = state%integrated_bottom_exchange_derivative + &
            state%pending_bottom_exchange_derivative
