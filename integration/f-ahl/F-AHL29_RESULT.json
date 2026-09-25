@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL29",
+  "phase": "POST_REPAIR_CACHE_SEMANTICS_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36079419013,
+  "workflow_job": 107897794077,
+  "stage1_over_capacity": {
+    "unique_requests": 40,
+    "failures": 0,
+    "builds": 40,
+    "hits": 0,
+    "misses": 40,
+    "entries": 32,
+    "finding": "Requests beyond the 32-slot cache capacity remain correct through caller-owned uncached table construction."
+  },
+  "stage2_amortization": {
+    "requests": 10000,
+    "unique_keys": 16,
+    "failures": 0,
+    "builds": 16,
+    "hits": 9984,
+    "misses": 16,
+    "entries": 16,
+    "finding": "Normal below-capacity exact-key reuse preserves one build per unique key and repeated cache hits."
+  },
+  "decision": "RETAIN_MINIMUM_FULL_CACHE_FALLBACK_REPAIR",
+  "semantics": [
+    "Cache capacity is an optimization bound, not a correctness bound.",
+    "No cache-size increase or eviction policy is introduced.",
+    "No hydraulic representation, error gate or dry-tail policy is changed.",
+    "On full-cache miss the requested immutable representation is built and returned but not inserted."
+  ],
+  "next_action": "Complete provider-retention/FMR lifecycle gates and then reassess remaining application-level overhead."
+}
