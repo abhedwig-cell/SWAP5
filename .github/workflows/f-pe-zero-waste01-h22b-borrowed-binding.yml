@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
       - 'docs/performance/F-PE-ZERO-WASTE01_H22B_BORROWED_PREPARED_BINDING.md'
       - '.github/workflows/f-pe-zero-waste01-h22b-borrowed-binding.yml'
   workflow_dispatch:
