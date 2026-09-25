@@ -6,7 +6,7 @@
   "candidate_pr": 608,
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "candidate_head_reviewed": "1739a0afc6fb294bc077528bc00d7dc63b5ac7d8",
-  "review_status": "ADMISSION_BLOCKED_PENDING_EXACT_HEAD_FAIL_CLOSED_CI",
+  "review_status": "ADMISSION_BLOCKED_PENDING_REPAIRED_EXACT_HEAD_CI",
   "prior_blocker_and_repair": {
     "classification": "ADMISSION_BLOCKER_FOUND_AND_BOUNDED_REPAIR_APPLIED",
     "issue": "The earlier policy-v4 candidate built/keyed one representation from initialized cofgen(:,1) and could incorrectly apply it across heterogeneous within-profile hydraulics.",
@@ -62,19 +62,31 @@
     "Candidate gate is fail-closed with pipefail for every piped runner."
   ],
   "current_blocker": {
-    "type": "EXACT_HEAD_FAIL_CLOSED_CI_PENDING",
+    "type": "REPAIRED_EXACT_HEAD_FAIL_CLOSED_CI_PENDING",
     "candidate_gate_run": 36129317371,
     "candidate_head": "1739a0afc6fb294bc077528bc00d7dc63b5ac7d8",
     "candidate_gate_status": "queued",
     "candidate_gate_conclusion": null,
-    "candidate_head_delta": "Adds the prescribed-head accepted-trajectory analytical fallback repair and a valid SW_STEP_CONTROL_BOTTOM_FLUX regression oracle, then gates it fail-closed in the canonical candidate workflow.",
-    "fail_closed_authority": "Candidate workflow uses set -o pipefail for piped gates; dedicated runners use set -euo pipefail and explicit nonzero failure paths.",
-    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36129317371 on exact head 1739a0afc6fb294bc077528bc00d7dc63b5ac7d8 completes successfully and its logs confirm all bounded AHL gates execute and pass."
+    "candidate_head_delta": "Two-line test-oracle repair only: imports SW_STEP_CONTROL_BOTTOM_FLUX and assigns it as the accepted-trajectory control coordinate. No production source change.",
+    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36129317371 on exact head 1739a0afc6fb294bc077528bc00d7dc63b5ac7d8 completes successfully and all bounded candidate gates execute fail-closed."
   },
-  "decision": "NO_OPEN_SCIENTIFIC_BLOCKER; ONE TRAJECTORY SCOPE LEAK FOUND AND REPAIRED; EXACT-HEAD ADMISSION CI STILL PENDING",
+  "decision": "NO_HYDRAULIC_RESEARCH_BLOCKER_IDENTIFIED_BY_FAILED_GATE; FIXTURE_CONFIGURATION_REPAIRED; ADMISSION PENDING REPAIRED EXACT-HEAD CI",
   "parallelism_boundary": {
     "current_serialized_multiswap_execution": "fmr_run_serialized_physical_multiswap executes columns serially in the current canonical architecture",
     "shared_cache_thread_safety": "NOT_QUALIFIED_FOR_CONCURRENT_MUTATION",
     "governance_rule": "Do not infer AHL cache thread safety from this admission. Any future OpenMP/parallel worker use that can bind/build AHL representations concurrently requires separate race/thread-safety qualification or synchronization/ownership redesign."
+  },
+  "prior_exact_head_failure": {
+    "head": "e043d61bbbb9f772560442fb8c21c8d876f5dd4b",
+    "workflow_run": 36128865464,
+    "conclusion": "failure",
+    "passed_before_failure": [
+      "provider_12_case_matrix",
+      "O09_dry_policy_v4_regression"
+    ],
+    "failed_gate": "Serialized Reference opt-in and default-off",
+    "observed_failure": "Both analytical and adaptive runtime oracles were KERNEL_REJECTED before solver execution because the accepted-trajectory request lacked a valid control coordinate.",
+    "classification": "GOVERNANCE_TEST_FIXTURE_CONFIGURATION_FAILURE_NOT_HYDRAULIC_REPRESENTATION_FAILURE",
+    "repair": "Set accepted_trajectory_direction control_coordinate to SW_STEP_CONTROL_BOTTOM_FLUX in the prescribed-head trajectory fallback oracle."
   }
 }
