@@ -1,0 +1,27 @@
+name: F-AHL layered authority falsification
+
+on:
+  push:
+    branches:
+      - integration/f-ahl-canonical-admission
+    paths:
+      - 'tests/fahl/test_fahl_admission_layered_authority.f90'
+      - 'tests/fahl/run_fahl_admission_layered_authority.sh'
+      - 'integration/f-ahl-admission/F-AHL_ADM_LAYER01_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl-layered-authority.yml'
+  workflow_dispatch:
+
+jobs:
+  layered:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test two-authority vertical profile
+        run: |
+          bash tests/fahl/run_fahl_admission_layered_authority.sh
+          grep -Fq 'FAHL_LAYERED_AUTHORITY=PASS' /tmp/fahl_layered_authority.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl-layered-authority-${{ github.run_id }}
+          path: /tmp/fahl_layered_authority.txt
