@@ -1,0 +1,25 @@
+name: F-AHL10F paired matrix timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl10f_matrix_timing.f90'
+      - 'research/ahl/run_ahl10f_matrix_timing.sh'
+      - 'integration/f-ahl/F-AHL10F_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl10f-paired-matrix-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired 12-case timing matrix
+        run: |
+          bash research/ahl/run_ahl10f_matrix_timing.sh /tmp/ahl10f_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl10f-${{ github.run_id }}
+          path: /tmp/ahl10f_result.txt
