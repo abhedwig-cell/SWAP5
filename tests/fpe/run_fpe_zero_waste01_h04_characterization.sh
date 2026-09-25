@@ -28,12 +28,13 @@ gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD"   -c tests/fpe/test_fpe_zero
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 
 : > "$BUILD/out.txt"
-for mode in 2 7; do
+for mode in 2 5 7; do
   for multiplier in 1.0 0.0 0.5 1.5 2.0 5.0; do
     "$BUILD/test" "$mode" "$multiplier" | tee -a "$BUILD/out.txt"
   done
 done
 
+grep -Fq 'H04_CASE,bottom_mode=5,flux_multiplier=' "$BUILD/out.txt"
 grep -Fq 'H04_CASE,bottom_mode=7,flux_multiplier=' "$BUILD/out.txt"
 python3 - "$BUILD/out.txt" <<'PY'
 from pathlib import Path
