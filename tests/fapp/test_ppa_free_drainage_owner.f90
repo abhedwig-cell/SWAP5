@@ -1142,6 +1142,9 @@ contains
     type(kernel_candidate_state_t)::candidate
     type(kernel_result_t)::result
     type(kernel_diagnostics_t)::diagnostics
+    type(kernel_candidate_state_t)::rejected_candidate
+    type(kernel_result_t)::rejected_result
+    type(kernel_diagnostics_t)::rejected_diagnostics
     type(fmr_logical_column_t)::column
     type(fmr_b110_physical_forcing_t)::forcing
     type(ppa_irrigation_event_state_t)::seed
@@ -1177,6 +1180,14 @@ contains
     call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
          profile%numerical,1,T0,finish,checkpoint,result,candidate,diagnostics)
     if(.not.result%completed.or..not.candidate%ready()) error stop 'pending irrigation hydraulic trial failed'
+    if(abs(result%mass%residual)>1.0e-12_real64) error stop 'pending irrigation hard mass'
+    call backend%run_trial(column,template,profile%tiles(1)%parameters,committed,forcing,profile%numerical, &
+         T0,finish,checkpoint,rejected_result,rejected_candidate,rejected_diagnostics)
+    if(rejected_result%completed.or.rejected_candidate%ready()) error stop 'pending opt-in leaked to ordinary trial'
+    call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
+         profile%numerical,1,T0,finish+1.0_real64/1024.0_real64,checkpoint, &
+         rejected_result,rejected_candidate,rejected_diagnostics)
+    if(rejected_result%completed.or.rejected_candidate%ready()) error stop 'pending trial crossed event end'
     call committed%snapshot(snapshot,ok)
     if(.not.ok) error stop 'pending trial original missing'
     select type(snapshot)
