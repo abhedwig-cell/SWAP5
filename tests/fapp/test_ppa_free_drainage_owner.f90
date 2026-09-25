@@ -194,7 +194,7 @@ contains
     type(ppa_irrigation_event_state_t),allocatable::assembled
     type(fmr_template_t)::event_template
     class(transaction_state_t),allocatable::carrier_copy
-    real(real64),allocatable::history(:),clone_history(:)
+    real(real64),allocatable::history(:),clone_history(:),trial_history(:)
     type(scheduled_irrigation_parameters_t)::irrigation
     type(scheduled_irrigation_request_t)::request
     type(irrigation_state_t)::base,candidate
@@ -531,6 +531,41 @@ contains
          error stop 'assembly aliases source physical state'
     if(carrier%irrigation%active_event_rate/=0.01_real64) error stop 'assembly aliases event source'
     if(.not.carrier%irrigation%active_event) error stop 'assembly mutated source event'
+    trial_history=history+1.0_real64
+    call build_irrigation_event_candidate(bundle%records(1)%physical_state, &
+         carrier%irrigation,event_template,T0,assembled,ok,trial_history)
+    if(.not.ok.or..not.allocated(assembled)) error stop 'trial history assembly failed'
+    call assembled%temporal_history_snapshot(clone_history,clone_history_available)
+    if(.not.clone_history_available) error stop 'trial history missing'
+    if(any(clone_history/=trial_history)) error stop 'trial history was not replaced'
+    trial_history=-99.0_real64
+    call assembled%temporal_history_snapshot(clone_history,clone_history_available)
+    if(any(clone_history/=history+1.0_real64)) error stop 'trial history aliases caller array'
+    do pass=1,3
+      call build_irrigation_event_candidate(bundle%records(1)%physical_state, &
+           carrier%irrigation,event_template,T0,assembled,ok)
+      if(.not.ok.or..not.allocated(assembled)) error stop 'history rejection setup failed'
+      select case(pass)
+      case(1)
+        trial_history=[0.0_real64]
+      case(2)
+        trial_history=history
+        trial_history(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(3)
+        deallocate(trial_history)
+        allocate(trial_history(0))
+      end select
+      call build_irrigation_event_candidate(bundle%records(1)%physical_state, &
+           carrier%irrigation,event_template,T0,assembled,ok,trial_history)
+      if(ok.or.allocated(assembled)) error stop 'invalid history retained candidate'
+    end do
+    call build_irrigation_event_candidate(bundle%records(1)%physical_state, &
+         carrier%irrigation,event_template,T0,assembled,ok)
+    if(.not.ok.or..not.allocated(assembled)) error stop 'history rejection recovery failed'
+    call assembled%temporal_history_snapshot(clone_history,clone_history_available)
+    if(.not.clone_history_available) error stop 'original history lost after rejection'
+    if(any(clone_history/=history)) error stop 'candidate history changed source'
+    write(*,'(a)') 'PPA_IRR_EVENT_TRIAL_HISTORY_ISOLATION=PASS'
     base=irrigation_state_t()
     irrigation=scheduled_irrigation_parameters_t()
     request=scheduled_irrigation_request_t()

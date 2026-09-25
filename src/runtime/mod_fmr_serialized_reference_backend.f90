@@ -511,7 +511,7 @@ module mod_fmr_serialized_reference_backend
 
 contains
 
-  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok)
+  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok,right_derivative)
     ! Combine trial outputs only. The caller must supply the hydraulic state
     ! and event from the same boundary; this routine neither proves hydraulic
     ! acceptance nor publishes committed state or changes the runtime registry.
@@ -521,7 +521,11 @@ contains
     real(real64), intent(in) :: boundary_time
     type(ppa_irrigation_event_state_t), allocatable, intent(out) :: candidate
     logical, intent(out) :: ok
+    ! Optional derivative must come from the same trial boundary as physical.
+    ! Replacement is confined to the detached candidate, never its source.
+    real(real64), intent(in), optional :: right_derivative(:)
     type(ppa_irrigation_event_state_t) :: proposed
+    logical :: replaced
     ok=.false.
     ! Do not implicitly slice an extended physical option into its parent.
     ! Only the explicitly supported temporal trial state can be assembled.
@@ -532,6 +536,10 @@ contains
       return
     end select
     proposed%irrigation=event
+    if(present(right_derivative)) then
+      call replace_supported_temporal_history(proposed,right_derivative,replaced)
+      if(.not.replaced) return
+    end if
     ok=proposed%matches_candidate(template,boundary_time)
     if(.not.ok) return
     allocate(candidate,source=proposed)
@@ -542,7 +550,7 @@ contains
     type(fmr_template_t), intent(in) :: template
     real(real64), intent(in) :: committed_time
     real(real64), allocatable :: history(:)
-    logical :: available
+    logical :: available,supported
     matches=.false.
     if(template%optional_state_layout_id/=PPA_IRRIGATION_EVENT_LAYOUT) return
     if(template%compatible_backend_id/=FMR_BACKEND_SERIALIZED_REFERENCE) return
@@ -554,7 +562,8 @@ contains
     if(.not.allocated(self%pressure_head).or..not.allocated(self%water_content)) return
     if(size(self%pressure_head)/=self%active_nodes.or.size(self%water_content)/=self%active_nodes) return
     if(.not.all(ieee_is_finite(self%pressure_head)).or..not.all(ieee_is_finite(self%water_content))) return
-    call self%temporal_history_snapshot(history,available)
+    call snapshot_supported_temporal_history(self,history,available,supported)
+    if(.not.supported) return
     if(.not.available) return
     if(.not.allocated(history)) return
     if(size(history)/=self%active_nodes) return
@@ -587,6 +596,37 @@ contains
     ! Intrinsic sourced allocation retains inherited private temporal history,
     ! dynamic type and deep copies of allocatable physical arrays.
     allocate(copy,source=self)
+  end subroutine
+
+  subroutine snapshot_supported_temporal_history(state,derivative,available,supported)
+    class(transaction_state_t), intent(in) :: state
+    real(real64), allocatable, intent(out) :: derivative(:)
+    logical, intent(out) :: available,supported
+    available=.false.
+    supported=.true.
+    select type(state)
+    type is(fmr_b110_temporal_indicator_state_t)
+      call state%temporal_history%snapshot(derivative,available)
+    type is(ppa_irrigation_event_state_t)
+      call state%temporal_history%snapshot(derivative,available)
+    class default
+      supported=.false.
+    end select
+  end subroutine
+
+  subroutine replace_supported_temporal_history(state,derivative,replaced)
+    class(transaction_state_t), intent(inout) :: state
+    real(real64), intent(in) :: derivative(:)
+    logical, intent(out) :: replaced
+    replaced=.false.
+    select type(state)
+    type is(fmr_b110_temporal_indicator_state_t)
+      if(size(derivative)/=state%active_nodes) return
+      call state%temporal_history%replace(derivative,replaced)
+    type is(ppa_irrigation_event_state_t)
+      if(size(derivative)/=state%active_nodes) return
+      call state%temporal_history%replace(derivative,replaced)
+    end select
   end subroutine
 
   subroutine set_storage_difference(self, service)
@@ -1893,18 +1933,14 @@ contains
     type(soil_water_temporal_indicator_result_t) :: indicator_result
     real(real64), allocatable :: previous_derivative(:)
     real(real64) :: normalized_indicator
-    logical :: previous_available, replaced
+    logical :: previous_available, replaced, history_supported
     integer :: n
     ok = .false.
     n = request%parameters%active_nodes
     previous_available = .false.
-    select type (physical => state)
-    type is (fmr_b110_temporal_indicator_state_t)
-      call physical%temporal_history%snapshot(previous_derivative, previous_available)
-      if (previous_available) previous_available = size(previous_derivative) == n .and. all(ieee_is_finite(previous_derivative))
-    class default
-      return
-    end select
+    call snapshot_supported_temporal_history(state,previous_derivative,previous_available,history_supported)
+    if (.not.history_supported) return
+    if (previous_available) previous_available = size(previous_derivative) == n .and. all(ieee_is_finite(previous_derivative))
     indicator_request%previous_right_derivative_available = previous_available
     indicator_request%forcing_event_at_start = self%temporal_forcing_event.and. &
          same_real_bits(trial_t0,self%temporal_forcing_event_time)
@@ -1935,13 +1971,8 @@ contains
     if (.not. allocated(indicator_result%current_right_derivative)) return
     if (size(indicator_result%current_right_derivative) /= n) return
     if (any(.not. ieee_is_finite(indicator_result%current_right_derivative))) return
-    select type (physical => state)
-    type is (fmr_b110_temporal_indicator_state_t)
-      call physical%temporal_history%replace(indicator_result%current_right_derivative, replaced)
-      if (.not. replaced) return
-    class default
-      return
-    end select
+    call replace_supported_temporal_history(state,indicator_result%current_right_derivative,replaced)
+    if (.not.replaced) return
     self%last_observation%temporal_current_derivative_available = .true.
 
     if (.not. previous_available) then
