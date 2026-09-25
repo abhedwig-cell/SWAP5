@@ -9,7 +9,7 @@ program test_fahl47_matrix
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
-  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_ahl47_direct_retention_provider, only: ahl47_provider_t, bind_ahl47_provider
   implicit none
 
@@ -19,7 +19,7 @@ program test_fahl47_matrix
   type(b110_default_mvg_provider_t), target :: analytical
   type(ahl47_provider_t), target :: lookup
   type(b110_source_sink_provider_t), target :: source_sink
-  type(fmr04_fixed_flux_top_provider_t), target :: top_provider
+  type(fixed_flux_top_boundary_provider_t), target :: top_provider
   type(soil_water_physical_state_t) :: initial_state
   type(soil_water_solve_request_t) :: request
   type(soil_water_solve_result_t) :: reference_result, candidate_result
