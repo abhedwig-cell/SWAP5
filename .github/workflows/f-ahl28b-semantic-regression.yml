@@ -1,0 +1,28 @@
+name: F-AHL28B semantic regression
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'integration/f-ahl/F-AHL28B_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl28b-semantic-regression.yml'
+  workflow_dispatch:
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production provider extraction
+        run: bash tests/fahl/run_fahl27_production_provider_extract.sh
+      - name: Prescribed-head matrix
+        run: bash tests/fahl/run_fahl27_stage2_matrix.sh
+      - name: Default-off and opt-in runtime
+        run: bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
+      - name: qbot analytical fallback
+        run: bash tests/fahl/run_fahl27_stage2_qbot_fallback_direct.sh
+      - name: accepted-trajectory analytical fallback
+        run: bash tests/fahl/run_fahl27_stage2_trajectory_fallback.sh
