@@ -77,6 +77,7 @@ Necessity classification remains the PROFILE01 taxonomy:
 | ZW-H18 | Scratch allocation/resizing | Repeated allocate/deallocate and scratch resizing inside hot paths are explicit audit targets. | PRECOMPUTE / REUSE | NX | low | allocation counters and capacity-reuse experiment |
 | ZW-H19 | Full solve avoidance under unchanged coupling state | Not yet qualified. In coupled SWAP5-MODFLOW6, a previously qualified response may remain reusable when interface state and all relevant forcing/state dependencies are unchanged within an explicit validity envelope. | AVOID / REUSE | research hypothesis only | high | separate preregistration; never infer from head equality alone |
 | ZW-H20 | Local response reuse / tangent-assisted coupling | Existing coupling work suggests response information may reduce repeated full column solves. This is not zero-waste until exact validity is established; otherwise it belongs to application-qualified acceleration. | REUSE / FEWER | NX | high | keep outside zero-waste unless exact dependency proof exists |
+| ZW-H21 | Serialized parameter configuration allocation | Kernel execution calls `configure_parameters` for every interval. The serialized backend previously destroyed and reallocated five model/provider objects and three geometry arrays on every call. H21 now retains object allocation and reuses equal-shape geometry capacity while still overwriting all values. | MOVE_LESS / CHEAPER | N2 repair implemented | low-medium | production bootstrap + FKT22 qualification; then paired runtime measurement |
 
 ## First-order priority
 
@@ -167,7 +168,7 @@ Speedups must not be added arithmetically across independent experiments.
 
 The next bounded sequence for F-PE-ZERO-WASTE01 is:
 
-`H01/H05 qualify -> H07/H08 execution-plan qualify -> H09 qualify -> H10/H11 production lean-route qualify -> reprofile -> select next dominant exact-waste target`
+`H01/H05 qualify -> H07/H08 qualify -> H09 qualify -> H10/H11 qualify -> H21 parameter allocation reuse qualify -> reprofile -> state-clone attribution`
 
 After every material tranche, reprofile. Optimization changes the runtime distribution; stale hotspot rankings must not govern later work.
 
