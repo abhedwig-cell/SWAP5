@@ -417,6 +417,8 @@ module mod_fmr_serialized_reference_backend
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: pending_irrigation_trial = .false.
+    logical :: irrigation_selection_prepared = .false.
+    type(irrigation_state_t) :: selected_irrigation_event
     logical :: root_extraction_active = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
@@ -1308,7 +1310,7 @@ contains
   end subroutine fmr_serialized_backend_run_reference_floor_sample
 
   subroutine run_pending_irrigation_trial(self,column,template,parameters,committed,forcing,config, &
-       single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics)
+       single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics,selected_event)
     class(fmr_serialized_reference_backend_t),intent(inout)::self
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -1322,11 +1324,14 @@ contains
     type(kernel_result_t),intent(out)::result
     type(kernel_candidate_state_t),intent(out)::candidate
     type(kernel_diagnostics_t),intent(out)::diagnostics
+    type(irrigation_state_t),intent(in),optional::selected_event
     class(transaction_state_t),allocatable::snapshot
     real(real64)::boundary,expected
     logical::available
     integer::node
     self%model%pending_irrigation_trial=.false.
+    self%model%irrigation_selection_prepared=.false.
+    self%model%selected_irrigation_event=irrigation_state_t()
     call reject_backend_trial(result,candidate,diagnostics)
     if(.not.all(ieee_is_finite([t0,t1]))) return
     if(t1<=t0.or.parameters%bottom_mode/=7) return
@@ -1347,6 +1352,14 @@ contains
     type is(ppa_irrigation_event_state_t)
       if(.not.snapshot%matches_candidate(template,t0)) return
       if(snapshot%active_nodes/=parameters%active_nodes) return
+      if(present(selected_event)) then
+        if(snapshot%irrigation%active_event.or..not.selected_event%active_event) return
+        if(.not.ieee_is_finite(selected_event%active_event_start)) return
+        if(selected_event%active_event_start/=t0) return
+        if(selected_event%next_fixed_event_index/=snapshot%irrigation%next_fixed_event_index) return
+        snapshot%irrigation=selected_event
+        if(.not.snapshot%matches_candidate(template,t0)) return
+      end if
       if(snapshot%irrigation%active_event) then
         if(t1>snapshot%irrigation%active_event_end) return
       end if
@@ -1361,8 +1374,14 @@ contains
     ! Opt-in is call-local. Ordinary run_trial still rejects this reserved
     ! layout, including after a failed or successful pending-event trial.
     self%model%pending_irrigation_trial=.true.
+    if(present(selected_event)) then
+      self%model%irrigation_selection_prepared=.true.
+      self%model%selected_irrigation_event=selected_event
+    end if
     call self%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
     self%model%pending_irrigation_trial=.false.
+    self%model%irrigation_selection_prepared=.false.
+    self%model%selected_irrigation_event=irrigation_state_t()
   end subroutine run_pending_irrigation_trial
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
@@ -2173,6 +2192,10 @@ contains
     if(self%pending_irrigation_trial) then
       select type(state)
       type is(ppa_irrigation_event_state_t)
+        if(self%irrigation_selection_prepared) then
+          if(t0==self%selected_irrigation_event%active_event_start.and..not.state%irrigation%active_event) &
+               state%irrigation=self%selected_irrigation_event
+        end if
         if(state%irrigation%active_event) then
           if(t0<state%irrigation%active_event_start.or.t1>state%irrigation%active_event_end) return
         end if

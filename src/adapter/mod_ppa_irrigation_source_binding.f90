@@ -24,7 +24,8 @@ module mod_ppa_irrigation_source_binding
   public :: run_ppa_pending_irrigation_source_trial
 contains
   subroutine run_ppa_pending_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
-       committed,previous,numerical,t0,t1,checkpoint,result,candidate,diagnostics,irrigation_diagnostics)
+       committed,previous,numerical,t0,t1,checkpoint,result,candidate,diagnostics,irrigation_diagnostics,selection_request)
+    use mod_irrigation_process, only: IRRIGATION_EVENT_SCHEDULED,IRRIGATION_INVALID_INTERVAL
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -39,6 +40,7 @@ contains
     type(kernel_candidate_state_t),intent(out)::candidate
     type(kernel_diagnostics_t),intent(out)::diagnostics
     type(irrigation_diagnostics_t),intent(out)::irrigation_diagnostics
+    type(scheduled_irrigation_request_t),intent(in),optional::selection_request
     type(scheduled_irrigation_request_t)::request
     type(irrigation_state_t)::proposed_event
     type(irrigation_flux_result_t)::flux
@@ -50,13 +52,33 @@ contains
     diagnostics=kernel_diagnostics_t()
     diagnostics%admission_rejections=1
     request%t0=t0; request%t1=t1
+    if(present(selection_request)) then
+      irrigation_diagnostics=irrigation_diagnostics_t()
+      irrigation_diagnostics%status=IRRIGATION_INVALID_INTERVAL
+      if(.not.all(ieee_is_finite([selection_request%t0,selection_request%t1]))) return
+      if(selection_request%t0/=t0.or.selection_request%t1/=t1) return
+      request=selection_request
+    end if
     ! No selection opportunity: only continue/finish a saved gift, or map
     ! inactive state to zero source. The kernel alone creates physical trials.
     call evaluate_ppa_committed_irrigation_source(irrigation_parameters,committed,template,request,previous, &
          proposed_event,flux,irrigation_diagnostics,forcing,ok)
     if(.not.ok) return
-    call backend%run_pending_irrigation_trial(column,template,physical_parameters,committed,forcing,numerical, &
-         irrigation_parameters%single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics)
+    if(flux%event_started) then
+      ! The process candidate may already be cleared at t1. Reconstruct the
+      ! selected start event from its checked flux for trial-local injection.
+      proposed_event%active_event=.true.
+      proposed_event%active_event_origin=IRRIGATION_EVENT_SCHEDULED
+      proposed_event%active_event_index=0
+      proposed_event%active_event_start=t0
+      proposed_event%active_event_end=t0+flux%event_duration
+      proposed_event%active_event_rate=flux%subsurface_source(irrigation_parameters%single_ssdi_node)
+      call backend%run_pending_irrigation_trial(column,template,physical_parameters,committed,forcing,numerical, &
+           irrigation_parameters%single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics,proposed_event)
+    else
+      call backend%run_pending_irrigation_trial(column,template,physical_parameters,committed,forcing,numerical, &
+           irrigation_parameters%single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics)
+    end if
   end subroutine run_ppa_pending_irrigation_source_trial
 
   subroutine evaluate_ppa_committed_irrigation_source(parameters,committed,template,request,previous, &
