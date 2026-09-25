@@ -1,0 +1,14 @@
+{
+  "schema_version":1,
+  "workstream":"F-AHL",
+  "work_unit":"F-AHL27",
+  "phase":"STAGE2_QBOT_FALLBACK_COMPLETE",
+  "status":"PASS",
+  "workflow_run":36077149176,
+  "workflow_job":107890802554,
+  "routing":"prescribed-qbot remains authoritative analytical",
+  "cache":{"builds":0,"hits":0,"misses":0,"entries":0},
+  "equilibrium_qbot_cm_per_day":-0.162639206421314603,
+  "finding":"The adaptive-hydraulics opt-in does not build or use an adaptive table on the prescribed-qbot route; the qualified analytical fallback is preserved.",
+  "production_boundary":"OPT_IN_ONLY_PRESCRIBED_HEAD; QBOT_ANALYTICAL_FALLBACK"
+}
