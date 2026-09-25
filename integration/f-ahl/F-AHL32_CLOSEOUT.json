@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32",
+  "phase": "CLOSEOUT",
+  "status": "CLOSED_PASS",
+  "qualified_architecture": {
+    "registry_capacity_entries": 16384,
+    "entry_storage": "lazy allocated",
+    "lookup": "fingerprint-derived open addressing with full collision-safe exact-key equality",
+    "replacement": "none",
+    "overflow": "correct uncached F-AHL29 fallback"
+  },
+  "evidence": {
+    "10000_unique_build_once": "PASS",
+    "10000_exact_second_pass_without_new_builds": "PASS",
+    "16385th_unique_request_correct_overflow": "PASS",
+    "F_AHL29_correctness_regression": "PASS",
+    "F_AHL28B_semantic_regression_on_hash_registry": "PASS"
+  },
+  "memory_authority": "F-AHL31 measured mean support-array payload 4.64 kB per representation and 46.4-54.7 MB projected payload for 10000 unique representations in the sampled envelope.",
+  "closure_statement": "The former 32-entry transient cache is replaced by a finite run-lifetime registry large enough for the 10000-profile all-unique qualification case. Cache capacity is no longer a correctness or routine working-set limitation, and overflow remains fail-safe.",
+  "remaining_question": "When authority alternates between different keys, a registry hit may still copy the immutable table into provider-owned storage. Characterize multi-key switching overhead before changing ownership semantics.",
+  "production_boundary": "No whole-MultiSWAP speed claim or default-on change is made by this closeout."
+}
