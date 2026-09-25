@@ -89,29 +89,29 @@ contains
 
   subroutine collision_safety()
     type(b110_adaptive_hydraulic_cache_t) :: registry
-    type(b110_default_mvg_parameters_t) :: pa,pb
-    type(b110_default_mvg_provider_t) :: prova,provb
+    type(b110_default_mvg_parameters_t) :: p
+    type(b110_default_mvg_provider_t) :: provider
     type(b110_adaptive_hydraulic_table_t) :: ta,tb,ta2
     type(b110_adaptive_hydraulic_cache_key_t) :: ka,kb
-    real(real64) :: ra(24,1),rb(24,1)
+    real(real64) :: raw(24,1)
     logical :: hit,ok
     integer :: builds,hits,misses,entries
 
-    call make_raw(777,ra)
-    call make_raw(778,rb)
-    call initialize_b110_default_mvg_parameters(pa,ra)
-    call initialize_b110_default_mvg_parameters(pb,rb)
-    call bind_b110_default_mvg_provider(prova,pa,0.25_real64)
-    call bind_b110_default_mvg_provider(provb,pb,0.25_real64)
-    ka=make_b110_adaptive_hydraulic_key(pa,'AHL32COLL',1,1)
-    kb=make_b110_adaptive_hydraulic_key(pb,'AHL32COLL',1,1)
+    call make_raw(777,raw)
+    call initialize_b110_default_mvg_parameters(p,raw)
+    call bind_b110_default_mvg_provider(provider,p,0.25_real64)
+    ka=make_b110_adaptive_hydraulic_key(p,'AHL32_COLL_A',1,1)
+    kb=make_b110_adaptive_hydraulic_key(p,'AHL32_COLL_B',1,1)
+    ! Force the bucket fingerprint to collide while retaining a distinct exact
+    ! key through model_id. A fingerprint match must therefore never be enough
+    ! to produce a cache hit.
     kb%fingerprint=ka%fingerprint
 
-    call registry%get_or_build(ka,pa,prova,ta,hit,ok)
+    call registry%get_or_build(ka,p,provider,ta,hit,ok)
     call require(ok .and. .not.hit,'collision first key')
-    call registry%get_or_build(kb,pb,provb,tb,hit,ok)
+    call registry%get_or_build(kb,p,provider,tb,hit,ok)
     call require(ok .and. .not.hit,'collision distinct exact key')
-    call registry%get_or_build(ka,pa,prova,ta2,hit,ok)
+    call registry%get_or_build(ka,p,provider,ta2,hit,ok)
     call require(ok .and. hit,'collision exact-key retrieval')
     call registry%stats(builds,hits,misses,entries)
     write(*,'(A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
