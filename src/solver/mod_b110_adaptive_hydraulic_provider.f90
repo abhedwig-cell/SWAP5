@@ -4,7 +4,8 @@ module mod_b110_adaptive_hydraulic_provider
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_adaptive_hydraulic_builder, only: b110_adaptive_hydraulic_table_t
-  use mod_b110_adaptive_hydraulic_cache, only: b110_adaptive_hydraulic_cache_t, b110_adaptive_hydraulic_cache_key_t, make_b110_adaptive_hydraulic_key
+  use mod_b110_adaptive_hydraulic_cache, only: b110_adaptive_hydraulic_cache_t, b110_adaptive_hydraulic_cache_key_t, &
+       make_b110_adaptive_hydraulic_key, b110_adaptive_hydraulic_keys_equal
   implicit none
   private
 
@@ -21,6 +22,8 @@ module mod_b110_adaptive_hydraulic_provider
     type(b110_default_mvg_provider_t) :: analytical
     real(real64), pointer :: cofgen(:,:) => null()
     type(b110_adaptive_hydraulic_table_t) :: table
+    type(b110_adaptive_hydraulic_cache_key_t) :: representation_key
+    logical :: representation_key_valid=.false.
     logical :: ready=.false.
     logical :: acquired_from_cache=.false.
   contains
@@ -33,7 +36,7 @@ module mod_b110_adaptive_hydraulic_provider
 contains
 
   subroutine bind_b110_adaptive_hydraulic_provider(provider,parameters,step_duration,ok,was_hit)
-    type(b110_adaptive_hydraulic_provider_t),intent(out)::provider
+    type(b110_adaptive_hydraulic_provider_t),intent(inout)::provider
     type(b110_default_mvg_parameters_t),target,intent(in)::parameters
     real(real64),intent(in)::step_duration
     logical,intent(out)::ok,was_hit
@@ -42,26 +45,47 @@ contains
     type(b110_default_mvg_provider_t) :: sampler
     type(b110_adaptive_hydraulic_cache_key_t) :: key
     real(real64) :: one_node_input(42,1)
+    logical :: same_representation
 
-    ok=.false.;was_hit=.false.;provider%ready=.false.
-    if(parameters%active_nodes<=0 .or. .not.allocated(parameters%cofgen))return
-    if(size(parameters%cofgen,1)<42)return
+    ok=.false.;was_hit=.false.
+    if(parameters%active_nodes<=0 .or. .not.allocated(parameters%cofgen))then
+      provider%ready=.false.
+      return
+    end if
+    if(size(parameters%cofgen,1)<42)then
+      provider%ready=.false.
+      return
+    end if
 
-    ! The full-column analytical provider remains the exact branch fallback.
+    ! Step-dependent analytical semantics are always rebound. Only the immutable
+    ! adaptive representation may survive a same-key rebind.
     call bind_b110_default_mvg_provider(provider%analytical,parameters,step_duration)
     provider%cofgen=>parameters%cofgen
+    key=make_b110_adaptive_hydraulic_key(parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION)
 
-    ! The builder samples exactly one unique initialized hydraulic authority.
-    ! Reinitializing the one-node sampler from the same 42-row coefficient
-    ! column preserves B1.10 as source authority while satisfying provider shape.
+    same_representation = provider%ready .and. provider%representation_key_valid .and. &
+         allocated(provider%table%x) .and. b110_adaptive_hydraulic_keys_equal(provider%representation_key,key)
+    if(same_representation)then
+      provider%acquired_from_cache=.true.
+      was_hit=.true.
+      ok=.true.
+      return
+    end if
+
+    provider%ready=.false.
+    provider%representation_key_valid=.false.
+
+    ! A miss or changed key is resolved by the existing shared exact-key cache.
+    ! The one-node sampler is needed only on this acquisition path.
     one_node_input(:,1)=parameters%cofgen(1:42,1)
     call initialize_b110_default_mvg_parameters(sampler_parameters,one_node_input, &
          parameters%ksatexm_extension_enabled)
     call bind_b110_default_mvg_provider(sampler,sampler_parameters,step_duration)
 
-    key=make_b110_adaptive_hydraulic_key(sampler_parameters,MODEL_ID,POLICY_VERSION,BRANCH_POLICY_VERSION)
     call shared_cache%get_or_build(key,sampler_parameters,sampler,provider%table,was_hit,ok)
     if(.not.ok)return
+    provider%representation_key=key
+    provider%representation_key_valid=.true.
     provider%acquired_from_cache=was_hit
     provider%ready=.true.
   end subroutine bind_b110_adaptive_hydraulic_provider
