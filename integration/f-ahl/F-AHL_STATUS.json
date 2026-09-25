@@ -1,9 +1,9 @@
 {
-  "schema_version": 20,
+  "schema_version": 21,
   "workstream": "F-AHL",
   "status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL41B",
+  "completed_through": "F-AHL42A",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -33,7 +33,12 @@
     "post_dry_tail_extraction_replay": "PASS",
     "post_dry_tail_prescribed_head_matrix": "12/12 PASS",
     "same_key_memoization": "PASS; warm same-key bind reduction 84.7847%, serialized reference-floor median CPU reduction 6.6145%",
-    "cache_full_miss_fallback": "PASS; cache capacity no longer a correctness limit"
+    "cache_full_miss_fallback": "PASS; cache capacity no longer a correctness limit",
+    "global_abs_logK_tolerance": 0.0001,
+    "wet_abs_logK_tolerance": 0.0001,
+    "representation_policy_version": 4,
+    "full_catalog_prescribed_head_matrix": "36 materials x wet/mid/dry = 108/108 PASS; F-AHL42A",
+    "O09_dry_reconciliation": "F-AHL42 reproduced production failure at policy v3; F-AHL42A v4 repair PASS, bottom-flux delta 1.374285e-6 cm/day"
   },
   "performance_evidence": {
     "default_MvG": {
@@ -112,7 +117,7 @@
     "SWKIMPL=1/dKdh qualification if included",
     "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration"
   ],
-  "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_READY_FOR_CANONICAL_GOVERNANCE_REVIEW_NO_CANONICAL_PRODUCTION_ADMISSION",
+  "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_READY_FOR_CANONICAL_GOVERNANCE_REVIEW; DEFAULT-MVG PRESCRIBED-HEAD PRODUCTION PROVIDER NOW QUALIFIED ON 36-MATERIAL 108-CASE MATRIX; QBOT REMAINS ANALYTICAL",
   "f_ahl27_closeout": "integration/f-ahl/F-AHL27_CLOSEOUT.json",
   "f_ahl27": {
     "closeout": "CLOSED_TECHNICALLY_QUALIFIED_PERFORMANCE_NOT_ADMITTED",
@@ -222,11 +227,22 @@
         "integration/f-ahl/F-AHL41B_RESULT.json",
         "integration/f-ahl/F-AHL41_CLOSEOUT.json"
       ]
+    },
+    "F_AHL42": {
+      "finding": "Production-shaped policy v3 with K tolerance 3e-4 reproduced the O09-dry full-catalog bottom-flux gate failure.",
+      "status": "CLOSED_BY_F_AHL42A"
+    },
+    "F_AHL42A": {
+      "finding": "Global production K tolerance tightened to 1e-4 with K floor 1e-10 and raw-C dry relevance floor 1e-13 unchanged; policy identity bumped 3->4.",
+      "production_full_catalog": "108/108 PASS with identical nonlinear iteration/backtracking paths",
+      "semantic_regression": "PASS including default-off, qbot analytical fallback and accepted-trajectory fallback",
+      "cache_policy_identity": "PASS policy 3 vs 4 exact equality and fingerprint distinct",
+      "decision": "RETAIN_REPAIR_READY_FOR_CANONICAL_GOVERNANCE_REVIEW"
     }
   },
   "post_f_ahl40_closeout": "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json",
   "next_owner": {
     "owner": "canonical governance/admission",
-    "action": "Extract minimal production-shaped prescribed-head patch and retained regression evidence. Keep prescribed-qbot analytical fallback. Do not merge the full research branch wholesale."
+    "action": "Extract the minimal production-shaped default-MvG prescribed-head patch including F-AHL42A policy-v4 K tolerance repair and retained regression evidence. Keep prescribed-qbot analytical fallback. Do not merge the full research branch wholesale."
   }
 }
