@@ -16,6 +16,9 @@ src=src.replace(
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state",
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state, &\n       prepare_fmr_b110_default_mvg")
 src=src.replace(
+"  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD",
+"  use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD")
+src=src.replace(
 "  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t",
 "  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t\n"
 "  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t")
@@ -53,7 +56,7 @@ if bind_old not in src:
 src=src.replace(bind_old,bind_new)
 src=src.replace(
 "  public :: fgc49d_fixture_state_c",
-"  public :: fgc49d_fixture_state_c\n  public :: fgc49d_fixture_probe_trial_c")
+"  public :: fgc49d_fixture_state_c\n  public :: fgc49d_fixture_probe_trial_c\n  public :: fgc49d_fixture_probe_backend_c")
 probe = r'''
   integer(c_int) function fgc49d_fixture_probe_trial_c(registry_status, participant_status, trial_valid, tangent_available) &
        bind(C, name="fgc49d_fixture_probe_trial_c") result(c_status)
@@ -89,10 +92,76 @@ probe = r'''
     c_status = 0_c_int
   end function fgc49d_fixture_probe_trial_c
 '''
+
+backend_probe = r'''
+  integer(c_int) function fgc49d_fixture_probe_backend_c() bind(C, name="fgc49d_fixture_probe_backend_c") result(c_status)
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    class(canonical_forcing_t), allocatable :: forcing
+    type(canonical_numerical_config_t) :: trial_numerical
+    type(groundwater_head_datum_t) :: local_datum
+    logical :: available
+    integer :: forcing_status, cleanup_status
+
+    c_status = 1_c_int
+    if (.not. initialized) return
+    call committed(1)%capture_checkpoint(checkpoint, available)
+    write(*,'(A,I0)') 'FAHL49_BACKEND_CHECKPOINT_READY=', merge(1,0,available .and. checkpoint%ready())
+    if (.not. available .or. .not. checkpoint%ready()) then
+      c_status = 0_c_int
+      return
+    end if
+
+    local_datum%available = .true.
+    local_datum%datum_id = 610049_int64
+    local_datum%bottom_boundary_elevation_m = 0.0_real64
+    call materializer%materialize(reference_head_m, local_datum, forcing, forcing_status)
+    write(*,'(A,I0)') 'FAHL49_BACKEND_FORCING_STATUS=', forcing_status
+    if (forcing_status /= 0 .or. .not. allocated(forcing)) then
+      c_status = 0_c_int
+      return
+    end if
+
+    trial_numerical = config
+    trial_numerical%accepted_trajectory_direction%requested = .true.
+    trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
+
+    select type (typed_forcing => forcing)
+    type is (fmr_b110_physical_forcing_t)
+      call backend%run_trial(columns(1), templates(1), parameters, committed(1), typed_forcing, trial_numerical, &
+           0.0_real64, DURATION_DAY, checkpoint, result, candidate, diagnostics, trusted_prepared_parameters=.true.)
+      write(*,'(A,I0)') 'FAHL49_BACKEND_RESULT_STATUS=', result%status
+      write(*,'(A,I0)') 'FAHL49_BACKEND_COMPLETED=', merge(1,0,result%completed)
+      write(*,'(A,I0)') 'FAHL49_BACKEND_CANDIDATE_READY=', merge(1,0,candidate%ready())
+      write(*,'(A,I0)') 'FAHL49_BACKEND_BOTTOM_AVAILABLE=', merge(1,0,result%bottom_interface_exchange_available)
+      write(*,'(A,ES24.16E3)') 'FAHL49_BACKEND_REQUESTED_T0=', result%requested_t0
+      write(*,'(A,ES24.16E3)') 'FAHL49_BACKEND_REQUESTED_T1=', result%requested_t1
+      write(*,'(A,ES24.16E3)') 'FAHL49_BACKEND_COMPLETED_T=', result%completed_t
+      write(*,'(A,I0)') 'FAHL49_BACKEND_TX_CALLS=', diagnostics%transaction_calls
+      write(*,'(A,I0)') 'FAHL49_BACKEND_ACCEPTED_SUBSTEPS=', diagnostics%accepted_substeps
+      write(*,'(A,I0)') 'FAHL49_BACKEND_ATTEMPTS=', diagnostics%attempts
+      write(*,'(A,I0)') 'FAHL49_BACKEND_RETRIES=', diagnostics%retries
+      write(*,'(A,I0)') 'FAHL49_BACKEND_SOLVER_REJECTIONS=', diagnostics%solver_rejections
+      write(*,'(A,I0)') 'FAHL49_BACKEND_TEMPORAL_REJECTIONS=', diagnostics%temporal_rejections
+      write(*,'(A,I0)') 'FAHL49_BACKEND_TEMPORAL_CERT_REJECTIONS=', diagnostics%temporal_certificate_unavailable_rejections
+      write(*,'(A,I0)') 'FAHL49_BACKEND_MASS_REJECTIONS=', diagnostics%mass_rejections
+      write(*,'(A,I0)') 'FAHL49_BACKEND_ADMISSION_REJECTIONS=', diagnostics%admission_rejections
+      write(*,'(A,I0)') 'FAHL49_BACKEND_NONLINEAR_ITER=', diagnostics%nonlinear_iterations
+      write(*,'(A,I0)') 'FAHL49_BACKEND_INTERNAL_RETRIES=', diagnostics%internal_retries
+      if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
+    class default
+      write(*,'(A)') 'FAHL49_BACKEND_FORCING_TYPE=INVALID'
+    end select
+    c_status = 0_c_int
+  end function fgc49d_fixture_probe_backend_c
+'''
+
 marker="  subroutine make_predictor(input, tile_id, swap_lineage, coupling_id, service_id, gw_lineage, h0, h1)"
 if marker not in src:
     raise SystemExit("probe insertion seam missing")
-src=src.replace(marker,probe+"\n"+marker,1)
+src=src.replace(marker,probe+"\n"+backend_probe+"\n"+marker,1)
 Path(sys.argv[1]).write_text(src)
 PY
 
@@ -115,6 +184,11 @@ probe.restype=ctypes.c_int
 probe.argtypes=[ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int)]
 rs=ctypes.c_int(); ps=ctypes.c_int(); tv=ctypes.c_int(); ta=ctypes.c_int()
 probe_status=int(probe(ctypes.byref(rs),ctypes.byref(ps),ctypes.byref(tv),ctypes.byref(ta)))
+backend_probe=lib.fgc49d_fixture_probe_backend_c
+backend_probe.restype=ctypes.c_int
+backend_probe.argtypes=[]
+backend_probe_status=int(backend_probe())
+print(f"FAHL49_BACKEND_PROBE_STATUS={backend_probe_status}",flush=True)
 print(f"FAHL49_PROBE_INIT_STATUS={init_status}",flush=True)
 print(f"FAHL49_PROBE_STATUS={probe_status}",flush=True)
 print(f"FAHL49_PROBE_REGISTRY_STATUS={rs.value}",flush=True)
