@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41",
+  "phase": "PRESCRIBED_QBOT_SCOPE_CLOSEOUT",
+  "status": "CLOSED_KEEP_ANALYTICAL_FALLBACK",
+  "evidence_chain": {
+    "F_AHL41A": "Current production-shaped adaptive provider preserves physical qbot solution to near-machine-small differences but changes nonlinear path on the first valid FSI38-bound case: 3 versus 2 iterations/backtracking.",
+    "F_AHL41B": "Exact retention+capacity with adaptive K restores the analytical nonlinear path; exact K with adaptive retention+capacity does not.",
+    "F_AHL12D_E": "Earlier qbot work showed the same retention/capacity control and falsified global retention/capacity densification as a repair strategy.",
+    "F_AHL08R": "Exact theta+C plus K lookup was robustly slower end-to-end under the paired timing protocol, so a qbot-specific K-only acceleration route has no positive speed authority."
+  },
+  "decision": [
+    "Do not broaden adaptive hydraulics to prescribed-qbot in the current F-AHL architecture.",
+    "Retain authoritative analytical hydraulics for prescribed-qbot execution.",
+    "Do not retune nonlinear-path gates because endpoint physical differences are tiny.",
+    "Do not reopen global retention/capacity densification.",
+    "Any future qbot acceleration must start from a genuinely different solver-facing representation or a demonstrated coupled-application need, not from further table refinement."
+  ],
+  "reasoning": "The remaining issue is not constitutive endpoint accuracy but solver-path sensitivity to the approximate retention/capacity representation. The only bounded variant that restores path identity removes the speed rationale. Additional complexity is therefore not justified inside this workstream.",
+  "retained_production_boundary": {
+    "prescribed_head": "adaptive opt-in technically qualified within its bounded envelope",
+    "prescribed_qbot": "analytical fallback",
+    "accepted_trajectory_directional": "analytical fallback",
+    "default": "adaptive hydraulics remains OFF unless explicitly selected"
+  },
+  "dry_domain_note": "The raw-C 1e-13 dry relevance rule remains a representation-domain bound only. Physics outside the represented dry domain is not truncated and continues through analytical fallback.",
+  "nonclaims": [
+    "This does not imply qbot coupling is physically problematic.",
+    "This does not imply the tiny endpoint differences are hydrologically material.",
+    "This is not a MODFLOW-coupler conclusion."
+  ]
+}
