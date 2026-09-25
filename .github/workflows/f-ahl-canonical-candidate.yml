@@ -14,30 +14,37 @@ jobs:
 
       - name: Provider 12-case matrix
         run: |
+          set -o pipefail
           bash tests/fahl/run_fahl27_stage2_matrix.sh /tmp/fahl_candidate_matrix.txt
 
       - name: O09 dry policy-v4 regression
         run: |
+          set -o pipefail
           bash tests/fahl/run_ahl42_production_o09_dry.sh /tmp/fahl_candidate_o09.txt
 
       - name: Serialized Reference opt-in and default-off
         run: |
+          set -o pipefail
           bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh | tee /tmp/fahl_candidate_optin.txt
 
       - name: Prescribed-qbot analytical fallback
         run: |
+          set -o pipefail
           bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh | tee /tmp/fahl_candidate_qbot.txt
 
       - name: Accepted-trajectory analytical fallback
         run: |
+          set -o pipefail
           bash tests/fahl/run_fahl27_stage2_trajectory_fallback.sh | tee /tmp/fahl_candidate_trajectory.txt
 
       - name: Heterogeneous-profile analytical fallback
         run: |
+          set -o pipefail
           bash tests/fahl/run_fahl_governance_heterogeneous_fallback.sh | tee /tmp/fahl_candidate_heterogeneous.txt
 
       - name: KSATEXM analytical fallback
         run: |
+          set -o pipefail
           bash tests/fahl/run_fahl_governance_ksatexm_fallback.sh | tee /tmp/fahl_candidate_ksatexm.txt
 
       - name: Preserve review evidence
