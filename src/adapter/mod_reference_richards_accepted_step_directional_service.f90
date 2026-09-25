@@ -2,7 +2,8 @@ module mod_reference_richards_accepted_step_directional_service
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
+       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED, &
+       CONSTITUTIVE_DEMAND_CONDUCTIVITY
   use mod_soil_water_accepted_step_direction_contract, only: &
        soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
        SW_STEP_DIRECTION_NOT_RUN, SW_STEP_DIRECTION_AVAILABLE, SW_STEP_DIRECTION_UNAVAILABLE, &
@@ -325,8 +326,8 @@ contains
     ! state for the exact frozen K values used by swkimpl=0. Its historical
     ! dconductivity_dhead output is deliberately reserved/zero, therefore the
     ! derivative comes only from the explicit B1.10 sibling capability.
-    call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, &
-         ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
+    call request%evaluation%constitutive%evaluate_demand(request%base_state%pressure_head, &
+         CONSTITUTIVE_DEMAND_CONDUCTIVITY, ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
          ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
     if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
