@@ -1,5 +1,5 @@
 program test_ahl32_registry
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_adaptive_hydraulic_builder, only: b110_adaptive_hydraulic_table_t
@@ -23,7 +23,9 @@ contains
     real(real64) :: raw(24,1)
     logical :: hit,ok
     integer :: i,failures,builds1,hits1,misses1,entries1
-    integer :: builds2,hits2,misses2,entries2
+    integer :: builds2,hits2,misses2,entries2,max_probes1,max_probes2
+    integer(int64) :: probes1,probes2
+    real(real64) :: mean_insert_probes,mean_hit_probes
 
     failures=0
     do i=1,N
@@ -35,9 +37,12 @@ contains
       if(.not.ok .or. hit) failures=failures+1
     end do
     call registry%stats(builds1,hits1,misses1,entries1)
+    call registry%probe_stats(probes1,max_probes1)
+    mean_insert_probes=real(probes1,real64)/real(N,real64)
     write(*,'(A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
          'AHL32_STAGE1','FAILURES=',failures,'BUILDS=',builds1,'HITS=',hits1, &
          'MISSES=',misses1,'ENTRIES=',entries1
+    write(*,'(A,1X,A,F10.4,1X,A,I0)') 'AHL32_STAGE1_PROBES','MEAN=',mean_insert_probes,'MAX=',max_probes1
     call require(failures==0,'stage1 unique request behavior')
     call require(builds1==N .and. hits1==0 .and. misses1==N .and. entries1==N,'stage1 accounting')
 
@@ -51,14 +56,19 @@ contains
       if(.not.ok .or. .not.hit) failures=failures+1
     end do
     call registry%stats(builds2,hits2,misses2,entries2)
+    call registry%probe_stats(probes2,max_probes2)
+    mean_hit_probes=real(probes2-probes1,real64)/real(N,real64)
     write(*,'(A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
          'AHL32_STAGE2','FAILURES=',failures,'BUILDS=',builds2,'HITS=',hits2, &
          'MISSES=',misses2,'ENTRIES=',entries2
+    write(*,'(A,1X,A,F10.4,1X,A,I0)') 'AHL32_STAGE2_PROBES','MEAN=',mean_hit_probes,'MAX=',max_probes2
     call require(failures==0,'stage2 exact-key reuse')
     call require(builds2-builds1==0,'stage2 no new builds')
     call require(misses2-misses1==0,'stage2 no new misses')
     call require(hits2-hits1==N,'stage2 ten thousand hits')
     call require(entries2==N,'stage2 stable entries')
+    call require(mean_hit_probes<=4.0_real64,'stage2 mean probe gate')
+    call require(max_probes2<=128,'maximum probe gate')
   end subroutine stage12_ten_thousand
 
   subroutine stage3_capacity_plus_one()
