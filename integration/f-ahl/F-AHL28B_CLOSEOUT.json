@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28B",
+  "phase": "CLOSEOUT",
+  "status": "CLOSED_PASS",
+  "repair": "provider-local exact-authority table reuse with current-step analytical fallback rebinding",
+  "qualified_evidence": {
+    "warm_bind_reduction_fraction": 0.847847,
+    "warm_bind_gate": 0.75,
+    "same_key_shared_cache_activity": "none",
+    "changed_authority_invalidation": "PASS",
+    "changed_step_duration_fallback_rebind": "PASS",
+    "serialized_provider_retention": "PASS",
+    "production_provider_extraction": "PASS",
+    "prescribed_head_matrix": "PASS",
+    "default_off_regression": "PASS",
+    "qbot_fallback": "PASS",
+    "accepted_trajectory_fallback": "PASS",
+    "reference_floor_median_ratio": 0.933855,
+    "reference_floor_cpu_reduction_fraction": 0.066145,
+    "reference_floor_speed_gate": "ratio < 0.98",
+    "reference_floor_fidelity": "PASS"
+  },
+  "before_after": {
+    "pre_repair_reference_floor_cpu_reduction_fraction": 0.015569,
+    "post_repair_reference_floor_cpu_reduction_fraction": 0.066145
+  },
+  "retained_boundaries": [
+    "adaptive default remains OFF",
+    "qbot and accepted-trajectory routes remain analytical",
+    "near-saturation h>-1 cm remains authoritative analytical",
+    "dry-tail outside material relevance domain remains authoritative analytical",
+    "exact hydraulic authority matching remains bitwise"
+  ],
+  "closure_statement": "Repeated identical adaptive table acquisition was confirmed lifecycle waste and is removed without changing hydraulic or solver semantics. The repair converts the production-shaped serialized reference-floor timing from equivocal to a preregistered speed PASS.",
+  "next_work_unit": "F-AHL31 residual serialized-backend overhead decomposition"
+}
