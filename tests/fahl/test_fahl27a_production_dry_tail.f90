@@ -42,9 +42,14 @@ program test_fahl27a_production_dry_tail
   call require(abs(kl(1)-ka(1))<=max(1.0e-30_real64,abs(ka(1))*1.0e-13_real64),'tail K analytical fallback')
 
   h(1)=-2.0e5_real64
+  call analytical%evaluate(h,wa,ka,ca,da)
   call adaptive%evaluate(h,wl,kl,cl,dl)
   call require(wl(1)>0.0_real64 .and. cl(1)>0.0_real64 .and. kl(1)>0.0_real64,'represented-domain positive')
+  call require(ka(1)<1.0e-15_real64,'represented-side authority is genuinely very dry')
+  call require(kl(1)<1.0e-15_real64,'represented-side K is not clamped to lookup error floor')
+  call require(abs(log(kl(1))-log(ka(1)))<=1.0_real64,'represented-side K remains in authoritative magnitude range')
 
+  write(*,'(A,1X,ES18.10,1X,ES18.10)') 'FAHL27A_O05_REPRESENTED_K',ka(1),kl(1)
   write(*,'(A)') 'FAHL27A_O05_PRODUCTION_DRY_TAIL=PASS'
 contains
   subroutine require(cond,msg)
