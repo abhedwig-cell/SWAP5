@@ -32,6 +32,12 @@ module mod_fmr_groundwater_application_context
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PREPARED_BUSY = 8
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PUBLICATION_FAILED = 9
 
+  type :: fmr_groundwater_context_cell_t
+    type(groundwater_topology_cell_t) :: topology
+    integer :: tile_begin = 0
+    integer :: tile_count = 0
+  end type fmr_groundwater_context_cell_t
+
   type, public :: fmr_groundwater_application_context_t
     private
     type(groundwater_application_plan_t), pointer :: plan => null()
@@ -40,7 +46,7 @@ module mod_fmr_groundwater_application_context
     integer(int64), allocatable :: participant_handles(:)
     integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
-    type(groundwater_application_cell_plan_t), allocatable :: cells(:)
+    type(fmr_groundwater_context_cell_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: current_terms(:)
     type(groundwater_swap_trial_t), allocatable :: trials(:)
@@ -217,7 +223,11 @@ contains
     self%participant_handles = participant_handles
     self%expected_swap_origin_revisions = expected_swap_origin_revisions
     self%tiles = tiles
-    self%cells = cells
+    do i = 1, size(cells)
+      self%cells(i)%topology = cells(i)%topology
+      self%cells(i)%tile_begin = cells(i)%tile_begin
+      self%cells(i)%tile_count = cells(i)%tile_count
+    end do
     self%bindings = bindings
     self%current_terms = terms
     self%trial_valid = .false.
