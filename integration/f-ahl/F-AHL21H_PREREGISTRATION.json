@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21H",
+  "title": "Qualified prescribed-qbot exact-retention fallback matrix",
+  "parent": "F-AHL21G",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does authoritative theta/C plus the selected K lookup preserve the analytical nonlinear path and frozen response gates across the full qualified prescribed-qbot matrix?",
+  "matrix": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"],
+    "case_count": 12,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "candidate": {
+    "retention_capacity": "authoritative analytical theta/C",
+    "conductivity": "unchanged selected F-AHL15/F-AHL16 K lookup",
+    "reason": "F-AHL21D falsified K as the O05-dry path cause; F-AHL21E/G show exact theta/C restores the path without material cost in the critical case."
+  },
+  "gates_per_case": {
+    "reference_and_candidate_converged": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_bottom_node_head_delta_cm": 0.05,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "decision_rule": "Advance to matrix timing only if all 12 cases pass without gate changes.",
+  "hard_exclusions": [
+    "NO_RETENTION_INTERPOLATION_IN_THIS_CANDIDATE",
+    "NO_K_SUPPORT_CHANGE",
+    "NO_TIMESTEP_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
