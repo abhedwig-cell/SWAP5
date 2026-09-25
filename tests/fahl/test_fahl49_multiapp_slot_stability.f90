@@ -3,7 +3,7 @@ program test_fahl49_multiapp_slot_stability
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
   use mod_b110_direct_retention_core, only: begin_b110_direct_retention_application, &
        end_b110_direct_retention_application, acquire_b110_direct_retention_slot, &
-       freeze_b110_direct_retention_pool, sample_b110_direct_retention
+       freeze_b110_direct_retention_pool, sample_b110_direct_retention, reset_b110_direct_retention_pool
   implicit none
   type(b110_default_mvg_parameters_t) :: a,b
   real(real64) :: ca(42,1),cb(42,1),t_before,c_before,t_after,c_after
@@ -22,6 +22,10 @@ program test_fahl49_multiapp_slot_stability
   call freeze_b110_direct_retention_pool()
   call sample_b110_direct_retention(slot_a,-75.0_real64,t_before,c_before,inside)
   call require(inside,'authority A sample')
+
+  call reset_b110_direct_retention_pool()
+  call sample_b110_direct_retention(slot_a,-75.0_real64,t_after,c_after,inside)
+  call require(inside .and. t_after==t_before .and. c_after==c_before,'active-owner reset is blocked')
 
   call begin_b110_direct_retention_application(ok)
   call require(.not.ok,'second application owner rejected while first active')
