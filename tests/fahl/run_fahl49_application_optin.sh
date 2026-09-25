@@ -39,7 +39,7 @@ insert="""    call initialize_parameters(parameters)
     call freeze_b110_direct_retention_pool()
     call b110_direct_retention_pool_stats(direct_entries,direct_builds,direct_hits,direct_payload,direct_frozen)
     if (direct_entries /= 1 .or. direct_builds /= 1 .or. direct_hits /= 0) return
-    if (direct_payload /= 6240_int64 .or. .not. direct_frozen) return
+    if (direct_payload /= 12384_int64 .or. .not. direct_frozen) return
     call initialize_forcing(base_forcing, PREDICTOR_QBOT)"""
 if needle not in src:
     raise SystemExit("fixture direct-retention insertion seam missing")
