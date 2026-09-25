@@ -61,6 +61,8 @@ python3 - "$BUILD/run.sh" "$BUILD/test.f90" <<'PY'
 from pathlib import Path
 import sys
 runner=Path("tests/fapp/run_ppa_wu01_production_application_bootstrap.sh").read_text()
+repo_root=str(Path.cwd())
+runner=runner.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"', 'ROOT="'+repo_root+'"')
 runner=runner.replace("tests/fapp/test_ppa_wu01_production_application_bootstrap.f90",sys.argv[2])
 needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
 insert=needle+"  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n"
