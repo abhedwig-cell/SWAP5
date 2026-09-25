@@ -1,0 +1,20 @@
+name: F-AHL27 Stage2 trajectory fallback
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'tests/fahl/test_fahl27_stage2_trajectory_fallback.f90'
+      - 'tests/fahl/run_fahl27_stage2_trajectory_fallback.sh'
+      - '.github/workflows/f-ahl27-stage2-trajectory-fallback.yml'
+  workflow_dispatch:
+
+jobs:
+  trajectory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run accepted-trajectory fallback gate
+        run: |
+          bash tests/fahl/run_fahl27_stage2_trajectory_fallback.sh
