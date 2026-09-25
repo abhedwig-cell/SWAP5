@@ -551,6 +551,18 @@ contains
         thickness=profile%tiles(tile)%parameters%dz(1)
         irrigation_forcing(tile)=profile%tiles(tile)%base_forcing
         irrigation_forcing(tile)%top_flux=0.0_real64
+        call evaluate_ppa_profile_irrigation_source(irrigation,base,request,hydraulic,1,[1],[-thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             irrigation_forcing(tile),candidate,flux,diagnostics,bound_forcing,ok)
+        if(ok.or.allocated(bound_forcing).or.flux%applied) error stop 'invalid profile exposed irrigation source'
+        if(candidate%active_event.neqv.base%active_event) error stop 'invalid profile changed event'
+        irrigation%concentration=1.0_real64
+        call evaluate_ppa_profile_irrigation_source(irrigation,base,request,hydraulic,1,[1],[thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             irrigation_forcing(tile),candidate,flux,diagnostics,bound_forcing,ok)
+        if(ok.or.allocated(bound_forcing).or.flux%applied) error stop 'profile solute rejection exposed source'
+        if(candidate%active_event.neqv.base%active_event) error stop 'profile binding rejection changed event'
+        irrigation%concentration=0.0_real64
         call evaluate_ppa_profile_irrigation_source(irrigation,base,request,hydraulic,1,[1],[thickness], &
              [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
              irrigation_forcing(tile),candidate,flux,diagnostics,bound_forcing,ok)
