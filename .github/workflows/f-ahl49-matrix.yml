@@ -5,6 +5,8 @@ on:
     paths:
       - 'src/solver/mod_b110_direct_retention_core.f90'
       - 'src/solver/mod_b110_direct_retention_provider.f90'
+      - 'tests/fahl/test_fahl49_matrix.f90'
+      - 'tests/fahl/run_fahl49_matrix.sh'
       - 'tests/fahl/run_fahl49_production_matrix.sh'
       - '.github/workflows/f-ahl49-matrix.yml'
   workflow_dispatch:
@@ -15,11 +17,17 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
-      - name: Run production-provider 12-case matrix
+      - name: Run fixed 12-case fidelity matrix
+        run: |
+          bash tests/fahl/run_fahl49_matrix.sh | tee fahl49-fidelity.txt
+          grep -Fq 'FAHL49_MATRIX_12_OF_12=PASS' fahl49-fidelity.txt
+      - name: Run paired production-provider timing matrix
         run: |
           bash tests/fahl/run_fahl49_production_matrix.sh | tee fahl49-matrix.txt
           grep -Fq 'FAHL49_PRODUCTION_MATRIX=PASS' fahl49-matrix.txt
       - uses: actions/upload-artifact@v4
         with:
           name: fahl49-matrix
-          path: fahl49-matrix.txt
+          path: |
+            fahl49-fidelity.txt
+            fahl49-matrix.txt
