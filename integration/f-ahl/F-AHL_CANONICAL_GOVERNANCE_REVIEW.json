@@ -1,11 +1,11 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-AHL",
   "record": "CANONICAL_GOVERNANCE_REVIEW",
   "date": "2026-09-25",
   "candidate_pr": 608,
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
-  "candidate_head_reviewed": "e043d61bbbb9f772560442fb8c21c8d876f5dd4b",
+  "candidate_head_reviewed": "1739a0afc6fb294bc077528bc00d7dc63b5ac7d8",
   "review_status": "ADMISSION_BLOCKED_PENDING_EXACT_HEAD_FAIL_CLOSED_CI",
   "prior_blocker_and_repair": {
     "classification": "ADMISSION_BLOCKER_FOUND_AND_BOUNDED_REPAIR_APPLIED",
@@ -59,15 +59,15 @@
   ],
   "current_blocker": {
     "type": "EXACT_HEAD_FAIL_CLOSED_CI_PENDING",
-    "candidate_gate_run": 36128865464,
-    "candidate_head": "e043d61bbbb9f772560442fb8c21c8d876f5dd4b",
+    "candidate_gate_run": 36129317371,
+    "candidate_head": "1739a0afc6fb294bc077528bc00d7dc63b5ac7d8",
     "candidate_gate_status": "queued",
     "candidate_gate_conclusion": null,
-    "candidate_head_delta": "Adds prescribed-head accepted-trajectory analytical-fallback oracle, its fail-closed runner, and wires that oracle into the canonical candidate gate. No production-source broadening.",
-    "fail_closed_authority": "Candidate workflow uses set -o pipefail for all piped gates; the new trajectory runner itself uses set -euo pipefail and explicit nonzero failure paths.",
-    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36128865464 on exact head e043d61bbbb9f772560442fb8c21c8d876f5dd4b is completed successfully and its log confirms all bounded AHL gates, including prescribed-head trajectory fallback, execute and pass fail-closed."
+    "candidate_head_delta": "Test-only correction: prescribed-head accepted-trajectory fallback oracle now supplies the valid bottom-flux control coordinate. Production admission semantics unchanged.",
+    "fail_closed_authority": "Candidate workflow uses set -o pipefail for piped gates; runners use explicit nonzero failure paths.",
+    "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36129317371 on exact head 1739a0afc6fb294bc077528bc00d7dc63b5ac7d8 completes successfully and all bounded fallback/admission gates pass fail-closed."
   },
-  "decision": "NO_NEW_RESEARCH_BLOCKER; CURRENT EXACT-HEAD CANDIDATE IS SCOPE-BOUNDED; ADMISSION PENDING ONLY RUN 36128865464",
+  "decision": "NO_NEW_RESEARCH_BLOCKER; CURRENT EXACT-HEAD CANDIDATE IS SCOPE-BOUNDED; ADMISSION PENDING ONLY CURRENT-HEAD CI",
   "parallelism_boundary": {
     "current_serialized_multiswap_execution": "fmr_run_serialized_physical_multiswap executes columns serially in the current canonical architecture",
     "shared_cache_thread_safety": "NOT_QUALIFIED_FOR_CONCURRENT_MUTATION",
