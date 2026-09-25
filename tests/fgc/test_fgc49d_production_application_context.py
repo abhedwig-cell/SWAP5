@@ -128,6 +128,31 @@ def main() -> None:
     require(before == (0, 0, 0, 0, 0, 0), "no committed mutation before service")
 
     groundwater = DeterministicPreparedSolve(href1.value, href2.value)
+    for _trace_name in (
+        "materialize_plan",
+        "capture_origins",
+        "evaluate_groundwater_fluxes",
+        "trial_cell_heads",
+        "discard_candidates",
+        "relinearize_terms",
+        "swap_preflight",
+        "prepare_ledgers",
+        "ledgers_preflight",
+        "abort_prepublication",
+        "commit_swaps",
+        "commit_ledgers",
+    ):
+        _trace_original = getattr(runtime, _trace_name)
+
+        def _trace_call(*args, _name=_trace_name, _original=_trace_original, **kwargs):
+            print(f"FGC49D_TRACE {_name}_begin", flush=True)
+            value = _original(*args, **kwargs)
+            print(f"FGC49D_TRACE {_name}_end", flush=True)
+            return value
+
+        setattr(runtime, _trace_name, _trace_call)
+    print("FGC49D_TRACE runtime_method_wrappers_installed", flush=True)
+
     print("FGC49D_TRACE service_begin", flush=True)
     result = run_groundwater_application_window(
         runtime,
