@@ -22,6 +22,7 @@ module mod_contextual_transaction_test
     procedure :: advance => contextual_advance
     procedure :: storage => contextual_storage
     procedure :: temporal_error => contextual_temporal_error
+    procedure :: storage_accounting_status => contextual_storage_accounting_status
     procedure :: capture_attempt_context => contextual_capture
     procedure :: restore_attempt_context => contextual_restore
   end type contextual_model_t
@@ -98,6 +99,16 @@ contains
       error stop 'unexpected contextual state'
     end select
   end function contextual_storage
+
+  subroutine contextual_storage_accounting_status(self, state, complete, missing_mask)
+    class(contextual_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+    if (.not. same_type_as(self,self) .or. .not. same_type_as(state,state)) error stop 'unreachable storage accounting'
+    complete = .true.
+    missing_mask = TX_MASS_MISSING_NONE
+  end subroutine contextual_storage_accounting_status
 
   function contextual_temporal_error(self, full_state, half_state) result(value)
     class(contextual_model_t), intent(in) :: self
