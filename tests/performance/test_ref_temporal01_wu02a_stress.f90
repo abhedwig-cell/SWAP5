@@ -71,20 +71,29 @@ contains
 
     call build_request(warmreq,p,cp,sp,tp,heads,theta,qtop,qbot,dt)
     call solver%solve(warmreq,ws_warm,warm)
-    call require(warm%status==SW_SOLVE_CONVERGED,'warmup solve')
+    if(warm%status/=SW_SOLVE_CONVERGED) then
+      call emit_invalid(id,imat,iprof,qfac,dt,'PRINCIPAL_REFERENCE_INVALID')
+      return
+    end if
     allocate(prev_derivative(numnod))
     prev_derivative=(warm%candidate_state%pressure_head-heads)/dt
 
     req=warmreq
     req%base_state=warm%candidate_state
     call solver%solve(req,ws_main,principal)
-    call require(principal%status==SW_SOLVE_CONVERGED,'principal solve')
+    if(principal%status/=SW_SOLVE_CONVERGED) then
+      call emit_invalid(id,imat,iprof,qfac,dt,'PRINCIPAL_REFERENCE_INVALID')
+      return
+    end if
 
     ireq%previous_right_derivative_available=.true.
     allocate(ireq%previous_right_derivative(numnod))
     ireq%previous_right_derivative=prev_derivative
     call solver%evaluate_temporal_indicator(req,principal,ireq,ws_main,ind)
-    call require(ind%status==SW_TEMPORAL_INDICATOR_AVAILABLE.and.ind%available,'indicator')
+    if(ind%status/=SW_TEMPORAL_INDICATOR_AVAILABLE .or. .not.ind%available) then
+      call emit_invalid(id,imat,iprof,qfac,dt,'INDICATOR_UNAVAILABLE')
+      return
+    end if
 
     subdt=dt/real(REFINE,real64)
     subreq=req
@@ -93,7 +102,10 @@ contains
     subreq%evaluation%constitutive=>cp
     do s=1,REFINE
       call solver%solve(subreq,ws_ref,subres)
-      call require(subres%status==SW_SOLVE_CONVERGED,'refined solve')
+      if(subres%status/=SW_SOLVE_CONVERGED) then
+        call emit_invalid(id,imat,iprof,qfac,dt,'REFINED_REFERENCE_INVALID')
+        return
+      end if
       subreq%base_state=subres%candidate_state
     end do
 
@@ -110,10 +122,20 @@ contains
 
     write(*,'(A,I0,A,I0,A,I0,A,ES16.8E3,A,ES16.8E3,A,ES16.8E3,A,ES16.8E3,A,ES16.8E3,A,A)') &
       'REF_TEMPORAL01_WU02A_ROW,case=',id,',mat=',imat,',profile=',iprof,',qfac=',qfac,',dt=',dt, &
-      ',bound=',ind%head_inf_bound,',head_err=',head_err,',ratio=',ratio,',route=',trim(ind%route)
+      ',bound=',ind%head_inf_bound,',head_err=',head_err,',ratio=',ratio,',route=',trim(ind%route), &
+      ',classification=',merge('BOUND_VALID_CONSERVATIVE    ','BOUND_VALID_NONCONSERVATIVE',ind%head_inf_bound>=head_err)
     write(*,'(A,I0,A,ES16.8E3,A,ES16.8E3)') 'REF_TEMPORAL01_WU02A_AUX,case=',id, &
       ',theta_err=',theta_err,',storage_err=',storage_err
   end subroutine run_case
+
+  subroutine emit_invalid(id,imat,iprof,qfac,dt,classification)
+    integer,intent(in)::id,imat,iprof
+    real(real64),intent(in)::qfac,dt
+    character(len=*),intent(in)::classification
+    write(*,'(A,I0,A,I0,A,I0,A,ES16.8E3,A,ES16.8E3,A,A)') &
+      'REF_TEMPORAL01_WU02A_INVALID,case=',id,',mat=',imat,',profile=',iprof,',qfac=',qfac,',dt=',dt, &
+      ',classification=',trim(classification)
+  end subroutine emit_invalid
 
   subroutine configure_material(imat,p,c)
     integer,intent(in)::imat
