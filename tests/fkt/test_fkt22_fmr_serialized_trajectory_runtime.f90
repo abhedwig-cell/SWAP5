@@ -11,7 +11,7 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -23,24 +23,32 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   real(real64), parameter :: mass_tolerance = 1.0e-12_real64
   integer(int64), parameter :: column_id = 440044_int64
 
-  type(fmr_b110_physical_parameters_t) :: parameters
+  type(fmr_b110_physical_parameters_t) :: parameters, mutated_stale, mutated_fresh
   type(fmr_b110_physical_forcing_t) :: forcing
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
   type(canonical_numerical_config_t) :: config_off, config_on
-  type(kernel_committed_state_t) :: committed_off, committed_on
-  type(kernel_checkpoint_t) :: checkpoint_off, checkpoint_on
-  type(kernel_result_t) :: result_off, result_on
-  type(kernel_candidate_state_t) :: candidate_off, candidate_on
-  type(kernel_diagnostics_t) :: diagnostics_off, diagnostics_on
-  type(fmr_serialized_reference_backend_t) :: backend_off, backend_on
+  type(kernel_committed_state_t) :: committed_off, committed_on, committed_trusted, &
+       committed_mutated_stale, committed_mutated_fresh
+  type(kernel_checkpoint_t) :: checkpoint_off, checkpoint_on, checkpoint_trusted, &
+       checkpoint_mutated_stale, checkpoint_mutated_fresh
+  type(kernel_result_t) :: result_off, result_on, result_trusted, result_mutated_stale, result_mutated_fresh
+  type(kernel_candidate_state_t) :: candidate_off, candidate_on, candidate_trusted, &
+       candidate_mutated_stale, candidate_mutated_fresh
+  type(kernel_diagnostics_t) :: diagnostics_off, diagnostics_on, diagnostics_trusted, &
+       diagnostics_mutated_stale, diagnostics_mutated_fresh
+  type(fmr_serialized_reference_backend_t) :: backend_off, backend_on, backend_trusted, &
+       backend_mutated_stale, backend_mutated_fresh
   type(fmr_serialized_physical_observation_t) :: observation_off
   type(fixed_flux_top_boundary_provider_t), target :: top
-  class(transaction_state_t), allocatable :: snapshot_off, snapshot_on
-  real(real64) :: k0, qeq
+  class(transaction_state_t), allocatable :: snapshot_off, snapshot_on, snapshot_trusted, &
+       snapshot_mutated_stale, snapshot_mutated_fresh
+  real(real64) :: k0, qeq, mutated_k0, mutated_qeq
   logical :: ok, available_off, available_on
 
   call initialize_parameters(parameters)
+  call prepare_fmr_b110_default_mvg(parameters, ok)
+  call require(ok, 'H22A baseline prepared hydraulics built')
   call determine_initial_conductivity(parameters, k0)
   qeq = -k0
   call initialize_forcing(forcing, qeq)
@@ -52,18 +60,26 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   call require(ok, 'default-off committed state initialized')
   call initialize_committed(committed_on, parameters, ok)
   call require(ok, 'requested committed state initialized')
+  call initialize_committed(committed_trusted, parameters, ok)
+  call require(ok, 'trusted prepared committed state initialized')
   call fmr_capture_checkpoint(committed_off, checkpoint_off, ok)
   call require(ok, 'default-off checkpoint captured')
   call fmr_capture_checkpoint(committed_on, checkpoint_on, ok)
   call require(ok, 'requested checkpoint captured')
+  call fmr_capture_checkpoint(committed_trusted, checkpoint_trusted, ok)
+  call require(ok, 'trusted prepared checkpoint captured')
 
   call backend_off%initialize(top)
   call backend_on%initialize(top)
+  call backend_trusted%initialize(top)
 
   call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
        0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
   call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
        0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  call backend_trusted%run_trial(column, template, parameters, committed_trusted, forcing, config_off, &
+       0.0_real64, duration, checkpoint_trusted, result_trusted, candidate_trusted, diagnostics_trusted, &
+       trusted_prepared_parameters=.true.)
   observation_off = backend_off%observation()
 
   call require(result_off%status == CANONICAL_STATUS_COMPLETED .and. result_off%completed, &
