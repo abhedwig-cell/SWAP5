@@ -45,6 +45,18 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
+At 1e1cb89a0 the prescribed-source runtime gate covers three windows: start,
+unchanged active source after a fresh-owner hydraulic restart, and explicit
+source stop. O0/O2 transcripts agree; pressure, water content, time, revision
+and inflow agree exactly between original and restored owners. Hard mass gates
+hold and the stop window contains no repeated SSDI inflow. The earlier
+second-window failure was caused by replaying an expired forcing-event marker
+in the test; the unchanged-source continuation now carries no new event.
+The separate half-length initial-window failure remains open. This is supplied
+forcing, not persisted irrigation scheduling. The isolated event carrier and
+its validation/clone/assembly are still unregistered; see
+`integration/audits/PPA_IRR_EVENT_OWNER_STATUS.json`.
+
 Current branch-local irrigation progress extends beyond the historical process
 checkpoints below. The bounded DCS1 selected-source test now passes accepted
 water accounting, per-tile rollback, fresh-owner physical-profile restart and
