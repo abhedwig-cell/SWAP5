@@ -16,6 +16,10 @@ src=src.replace(
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state",
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state, &\n       prepare_fmr_b110_default_mvg")
 src=src.replace(
+"  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t",
+"  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t\n"
+"  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t")
+src=src.replace(
 "  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t",
 "  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t\n"
 "  use mod_b110_direct_retention_core, only: reset_b110_direct_retention_pool, freeze_b110_direct_retention_pool, &\n"
@@ -47,43 +51,79 @@ bind_new="""      call registry%bind(TILE_ID(i), backend, columns(i), templates(
 if bind_old not in src:
     raise SystemExit("registry bind seam missing")
 src=src.replace(bind_old,bind_new)
+src=src.replace(
+"  public :: fgc49d_fixture_state_c",
+"  public :: fgc49d_fixture_state_c\n  public :: fgc49d_fixture_probe_trial_c")
+probe = r'''
+  integer(c_int) function fgc49d_fixture_probe_trial_c(registry_status, participant_status, trial_valid, tangent_available) &
+       bind(C, name="fgc49d_fixture_probe_trial_c") result(c_status)
+    integer(c_int), intent(out) :: registry_status, participant_status, trial_valid, tangent_available
+    type(groundwater_coupling_window_t) :: window
+    type(groundwater_swap_trial_t) :: trial
+    integer :: local_status, part_status, cleanup_status
+
+    c_status = 1_c_int
+    registry_status = -1_c_int
+    participant_status = -1_c_int
+    trial_valid = 0_c_int
+    tangent_available = 0_c_int
+    if (.not. initialized) return
+
+    call registry%capture_origin(handles(1), part_status, local_status)
+    registry_status = int(local_status,c_int)
+    participant_status = int(part_status,c_int)
+    if (local_status /= FMR_GW_REGISTRY_OK) then
+      c_status = 0_c_int
+      return
+    end if
+
+    window%t0 = 0.0_real64
+    window%t1 = DURATION_DAY
+    call registry%trial_from_origin(handles(1),window,reference_head_m,trial,part_status,local_status)
+    registry_status = int(local_status,c_int)
+    participant_status = int(part_status,c_int)
+    if (trial%valid) trial_valid = 1_c_int
+    if (trial%response_tangent_available) tangent_available = 1_c_int
+    if (trial%valid) call registry%discard_candidate(handles(1),cleanup_status)
+    call registry%abandon_origin(handles(1),cleanup_status)
+    c_status = 0_c_int
+  end function fgc49d_fixture_probe_trial_c
+'''
+marker="  subroutine make_predictor(input, tile_id, swap_lineage, coupling_id, service_id, gw_lineage, h0, h1)"
+if marker not in src:
+    raise SystemExit("probe insertion seam missing")
+src=src.replace(marker,probe+"\n"+marker,1)
 Path(sys.argv[1]).write_text(src)
 PY
 
 python3 - "$TMP_PY" <<'PY'
 from pathlib import Path
 import sys
-src=Path("tests/fgc/test_fgc49d_production_application_context.py").read_text()
-src=src.replace(
-"from modflow6_groundwater_application_service import (\n    GroundwaterApplicationServiceConfig,\n    GroundwaterApplicationServiceStatus,\n    run_groundwater_application_window,\n)",
-"from modflow6_groundwater_application_service import (\n    GroundwaterApplicationCorrectorBatch,\n    GroundwaterApplicationServiceConfig,\n    GroundwaterApplicationServiceStatus,\n    run_groundwater_application_window,\n)")
-needle="    print(\"FGC49D_TRACE runtime_method_wrappers_installed\", flush=True)\n"
-insert=r'''    _raw_trial = runtime._trial
-    _raw_tangents = runtime._trial_tangents
-    def _diagnostic_trial_cell_heads(cell_heads_m):
-        heads = runtime._double_array(cell_heads_m, runtime._ncell, "cell_heads_m")
-        fluxes = (ctypes.c_double * runtime._ncell)()
-        tangents = (ctypes.c_double * runtime._ncell)()
-        trial_status = int(_raw_trial(ctypes.c_int64(runtime.context_handle), ctypes.c_int(runtime._ncell), heads, fluxes))
-        print(f"FAHL49_RAW_TRIAL_STATUS={trial_status}", flush=True)
-        if trial_status != runtime.OK:
-            return GroundwaterApplicationCorrectorBatch(False, ())
-        tangent_status = int(_raw_tangents(ctypes.c_int64(runtime.context_handle), ctypes.c_int(runtime._ncell), tangents))
-        print(f"FAHL49_RAW_TANGENT_STATUS={tangent_status}", flush=True)
-        if tangent_status != runtime.OK:
-            return GroundwaterApplicationCorrectorBatch(False, ())
-        return GroundwaterApplicationCorrectorBatch(
-            True,
-            tuple(float(value) for value in fluxes),
-            tuple(float(value) for value in tangents),
-        )
-    runtime.trial_cell_heads = _diagnostic_trial_cell_heads
-    print("FGC49D_TRACE runtime_method_wrappers_installed", flush=True)
-'''
-if needle not in src:
-    raise SystemExit("python diagnostic seam missing")
-src=src.replace(needle,insert,1)
-Path(sys.argv[1]).write_text(src)
+Path(sys.argv[1]).write_text(r'''from __future__ import annotations
+import ctypes, os, subprocess, sys
+from pathlib import Path
+
+libpath=Path(os.environ["FGC49D_APPLICATION_LIB"]).resolve()
+lib=ctypes.CDLL(str(libpath))
+init=lib.fgc49d_fixture_initialize_c
+init.restype=ctypes.c_int
+init.argtypes=[ctypes.POINTER(ctypes.c_int64),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
+handle=ctypes.c_int64(); h1=ctypes.c_double(); h2=ctypes.c_double()
+init_status=int(init(ctypes.byref(handle),ctypes.byref(h1),ctypes.byref(h2)))
+probe=lib.fgc49d_fixture_probe_trial_c
+probe.restype=ctypes.c_int
+probe.argtypes=[ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int)]
+rs=ctypes.c_int(); ps=ctypes.c_int(); tv=ctypes.c_int(); ta=ctypes.c_int()
+probe_status=int(probe(ctypes.byref(rs),ctypes.byref(ps),ctypes.byref(tv),ctypes.byref(ta)))
+print(f"FAHL49_PROBE_INIT_STATUS={init_status}",flush=True)
+print(f"FAHL49_PROBE_STATUS={probe_status}",flush=True)
+print(f"FAHL49_PROBE_REGISTRY_STATUS={rs.value}",flush=True)
+print(f"FAHL49_PROBE_PARTICIPANT_STATUS={ps.value}",flush=True)
+print(f"FAHL49_PROBE_TRIAL_VALID={tv.value}",flush=True)
+print(f"FAHL49_PROBE_TANGENT_AVAILABLE={ta.value}",flush=True)
+env=os.environ.copy()
+raise SystemExit(subprocess.call([sys.executable,"tests/fgc/test_fgc49d_production_application_context.py"],env=env))
+''')
 PY
 
 python3 - "$TMP_RUN" "$TMP_FIX" "$TMP_PY" <<'PY'
