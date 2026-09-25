@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27A",
+  "phase": "PRODUCTION_DRY_TAIL_GATE_COMPLETE",
+  "status": "PASS",
+  "workflow_run": 36078071347,
+  "workflow_job": 107893654376,
+  "authority": "integration/f-ahl/F-AHL27_DRY_DOMAIN_AUTHORITY.json",
+  "material": "O05",
+  "raw_capacity_relevance_floor": 1e-13,
+  "qualified_relevance_lower_bound_cm": -264277.52309014817,
+  "checks": {
+    "outside_represented_domain_head_cm": -500000.0,
+    "outside_domain_behavior": "exact analytical fallback for theta, C and K",
+    "inside_represented_domain_head_cm": -200000.0,
+    "inside_domain_behavior": "adaptive representation remains active and positive"
+  },
+  "marker": "FAHL27A_O05_PRODUCTION_DRY_TAIL=PASS",
+  "finding": "The production-shaped adaptive provider does not extrapolate the lookup into the numerically irrelevant extreme-dry O05 tail. It falls back to the authoritative analytical hydraulics beyond the material-specific relevance boundary.",
+  "scientific_boundary": "The 1e-13 criterion is a capacity relevance bound, not a physical K cutoff and not a truncation of theta(h).",
+  "production_implication": "Adaptive support generation may stop at the bound relevance domain without changing extreme-dry physics."
+}
