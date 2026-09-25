@@ -1,5 +1,5 @@
 module mod_fmr_groundwater_head_forcing_adapter
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_canonical_contracts, only: canonical_forcing_t
   use mod_kernel_transactions, only: kernel_parameters_t
@@ -15,15 +15,11 @@ module mod_fmr_groundwater_head_forcing_adapter
   type, extends(groundwater_swap_forcing_materializer_t), public :: fmr_groundwater_head_forcing_materializer_t
     private
     logical :: initialized = .false.
-    integer(int64) :: generation = 0_int64
     type(fmr_b110_physical_forcing_t) :: base_forcing
   contains
     procedure, public :: initialize => fmr_groundwater_forcing_initialize
     procedure, public :: profile_admitted => fmr_groundwater_profile_admitted
     procedure, public :: materialize => fmr_groundwater_forcing_materialize
-    procedure, public :: current_generation => fmr_groundwater_forcing_generation
-    procedure, public :: initialize_reusable => fmr_groundwater_forcing_initialize_reusable
-    procedure, public :: materialize_reused => fmr_groundwater_forcing_materialize_reused
   end type fmr_groundwater_head_forcing_materializer_t
 
 contains
@@ -32,48 +28,9 @@ contains
     class(fmr_groundwater_head_forcing_materializer_t), intent(inout) :: self
     type(fmr_b110_physical_forcing_t), intent(in) :: base_forcing
 
-    if (self%generation == huge(0_int64)) error stop 'FMR groundwater forcing materializer generation exhausted'
     self%base_forcing = base_forcing
-    self%generation = self%generation + 1_int64
     self%initialized = .true.
   end subroutine fmr_groundwater_forcing_initialize
-
-  integer(int64) function fmr_groundwater_forcing_generation(self) result(value)
-    class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
-    value = 0_int64
-    if (self%initialized) value = self%generation
-  end function fmr_groundwater_forcing_generation
-
-  subroutine fmr_groundwater_forcing_initialize_reusable(self, forcing, status)
-    class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
-    type(fmr_b110_physical_forcing_t), intent(out) :: forcing
-    integer, intent(out) :: status
-
-    status = GW_SWAP_FORCING_NOT_READY
-    if (.not. self%initialized) return
-    forcing = self%base_forcing
-    status = GW_SWAP_FORCING_OK
-  end subroutine fmr_groundwater_forcing_initialize_reusable
-
-  subroutine fmr_groundwater_forcing_materialize_reused(self, interface_head_m, datum, forcing, status)
-    class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
-    real(real64), intent(in) :: interface_head_m
-    type(groundwater_head_datum_t), intent(in) :: datum
-    type(fmr_b110_physical_forcing_t), intent(inout) :: forcing
-    integer, intent(out) :: status
-    real(real64) :: pressure_head_cm
-    integer :: mapping_status
-
-    status = GW_SWAP_FORCING_NOT_READY
-    if (.not. self%initialized) return
-    forcing = self%base_forcing
-    status = GW_SWAP_FORCING_INVALID_HEAD
-    if (.not. ieee_is_finite(interface_head_m) .or. .not. datum%valid()) return
-    call interface_head_m_to_swap_bottom_pressure_head_cm(interface_head_m, datum, pressure_head_cm, mapping_status)
-    if (mapping_status /= GW_INTERFACE_OK .or. .not. ieee_is_finite(pressure_head_cm)) return
-    forcing%bottom_head = pressure_head_cm
-    status = GW_SWAP_FORCING_OK
-  end subroutine fmr_groundwater_forcing_materialize_reused
 
   logical function fmr_groundwater_profile_admitted(self, parameters) result(admitted)
     class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
