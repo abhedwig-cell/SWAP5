@@ -44,6 +44,12 @@ contains
     if(nunique==1)then
       call bind_b110_adaptive_hydraulic_provider(prov,params(1),0.25_real64,lok,lhit)
       call require(lok,'same-key setup')
+    else
+      ! Force the first timed key (1) to be a true authority switch. Key 64
+      ! is already warm in the registry and differs from the first timed key
+      ! for both switch_16 and switch_64.
+      call bind_b110_adaptive_hydraulic_provider(prov,params(NKEY),0.25_real64,lok,lhit)
+      call require(lok,'multi-key setup')
     end if
 
     call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
