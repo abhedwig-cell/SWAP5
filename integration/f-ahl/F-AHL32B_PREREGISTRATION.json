@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32B",
+  "title": "Exact-key logical-precedence collision repair",
+  "parent": "F-AHL32A",
+  "phase": "PREREGISTERED_CORRECTNESS_REPAIR",
+  "finding_before_repair": "The prospective forced-fingerprint-collision gate showed two keys with distinct model_id values comparing equal under b110_adaptive_hydraulic_keys_equal.",
+  "root_cause": "The ksatexm_extension_enabled .eqv. comparison was embedded without parentheses in an .and. chain. Fortran logical precedence allows the expression to group across .eqv., so with false extension flags the intended field-by-field conjunction is not preserved.",
+  "repair": "Parenthesize the .eqv. field comparison so every key field, including model_id and all 42 coefficient bit patterns, remains conjunctive.",
+  "gates": [
+    "forced equal-fingerprint distinct-model_id keys compare unequal",
+    "both forced-collision keys build as separate registry entries",
+    "subsequent exact-key retrieval hits the correct entry",
+    "F-AHL32A 10000-key probe gates remain mean<=4 and max<=128",
+    "F-AHL32 capacity-plus-one fallback remains correct",
+    "F-AHL29 and F-AHL28B semantic regressions remain PASS"
+  ],
+  "hard_exclusions": [
+    "NO_FINGERPRINT_CHANGE",
+    "NO_KEY_FIELD_REMOVAL",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_CACHE_CAPACITY_CHANGE",
+    "NO_PERFORMANCE_CLAIM_FROM_CORRECTNESS_REPAIR"
+  ]
+}
