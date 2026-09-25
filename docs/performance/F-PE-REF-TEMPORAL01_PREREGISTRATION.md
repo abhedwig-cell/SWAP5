@@ -130,3 +130,83 @@ Until then:
 `WU01 — indicator-vs-refined-reference calibration matrix`
 
 No production admission change is permitted in WU01.
+
+
+## WU02 preregistration — expanded conservativity and sharpness matrix
+
+Status: `PREREGISTERED_BEFORE_EXECUTION`
+
+WU02 expands the WU01 domain before any temporal budget is selected.
+
+### Purpose
+
+Test whether the WU01 conservativity result persists in more difficult and less symmetric Reference Richards states, and quantify where the indicator is unnecessarily conservative.
+
+### Fixed oracle
+
+The oracle remains a refined Reference trajectory. WU02 will not switch oracle after results are observed.
+
+For each principal interval:
+
+- one principal Reference solve;
+- one Reference temporal-indicator evaluation;
+- one independently refined Reference trajectory over the same outer interval;
+- endpoint comparison against the refined trajectory.
+
+### Preregistered dimensions
+
+At minimum include:
+
+- wetter/near-saturated states than WU01;
+- mid and dry states;
+- nonuniform vertical head profiles;
+- both upward and downward forcing;
+- unbalanced top and bottom flux;
+- stronger forcing than WU01;
+- principal dt values larger than 1e-2 day and smaller than 1e-3 day where stable;
+- multiple hydraulic parameter sets/materials;
+- prescribed-qbot mode 2;
+- prescribed-head mode 5 where the existing indicator envelope admits it.
+
+### Required outputs
+
+Per case:
+
+- principal and refined solver validity;
+- indicator availability and route;
+- head-inf bound;
+- endpoint head-inf error;
+- bound/error ratio;
+- endpoint theta-inf error;
+- storage error;
+- principal/refined mass residuals;
+- principal nonlinear iterations;
+- refined total nonlinear iterations;
+- classification.
+
+### Classification
+
+Use exactly:
+
+- `BOUND_VALID_CONSERVATIVE`;
+- `BOUND_VALID_NONCONSERVATIVE`;
+- `INDICATOR_UNAVAILABLE`;
+- `PRINCIPAL_REFERENCE_INVALID`;
+- `REFINED_REFERENCE_INVALID`;
+- `OUTSIDE_SCOPE`.
+
+No class may be dropped after seeing results.
+
+### WU02 decision gates
+
+WU02 is not a production-admission gate.
+
+It may support later budget selection only if:
+
+1. no unexplained nonconservative cases remain inside the claimed scope;
+2. any nonconservative cases are reproduced and physically/numerically classified;
+3. the lower tail of bound/error ratio is understood;
+4. indicator sharpness is quantified separately from conservativeness;
+5. a holdout set can still be reserved after any candidate budget is frozen.
+
+No production temporal budget may be chosen during WU02.
