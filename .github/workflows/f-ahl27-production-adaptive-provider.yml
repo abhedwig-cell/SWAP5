@@ -23,7 +23,7 @@ jobs:
           bash tests/ahl/run_fahl27_adaptive_provider.sh
       - name: Verify fail-closed runtime policy
         run: |
-          gfortran -std=f2008 -Wall -Wextra -Werror             src/runtime/mod_b110_adaptive_runtime_policy.f90             tests/ahl/test_fahl27_runtime_policy.f90             -o /tmp/fahl27_policy
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror             src/runtime/mod_b110_adaptive_runtime_policy.f90             tests/ahl/test_fahl27_runtime_policy.f90             -o /tmp/fahl27_policy
           /tmp/fahl27_policy | tee /tmp/fahl27_policy.txt
           grep -Fq 'FAHL27_RUNTIME_POLICY=PASS' /tmp/fahl27_policy.txt
       - name: Compile serialized production backend
