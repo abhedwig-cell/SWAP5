@@ -29,7 +29,7 @@ module mod_reference_richards_legacy_binding
   type, extends(soil_water_solver_workspace_base_t), public :: reference_richards_legacy_workspace_t
      type(reference_richards_workspace_t) :: richards
      type(a23bu_worker_context_t) :: legacy_worker
-  end type reference_richards_legacy_workspace_t
+   end type reference_richards_legacy_workspace_t
 
   type, extends(soil_water_solver_t), public :: reference_richards_legacy_solver_t
      integer :: reserved = 0
