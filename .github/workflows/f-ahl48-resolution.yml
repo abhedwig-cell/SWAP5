@@ -1,0 +1,28 @@
+name: F-AHL48 resolution matrix
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/F-AHL48_PREREGISTRATION.md'
+      - 'research/ahl/mod_ahl47_direct_retention_provider.f90'
+      - 'research/ahl/test_fahl48_resolution_matrix.f90'
+      - 'research/ahl/run_fahl48_resolution_matrix.sh'
+      - '.github/workflows/f-ahl48-resolution.yml'
+  workflow_dispatch:
+
+jobs:
+  resolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run 64 128 256 resolution matrix
+        run: |
+          bash research/ahl/run_fahl48_resolution_matrix.sh | tee fahl48-resolution.txt
+          grep -Fq 'FAHL48_RESOLUTION_MATRIX=PASS' fahl48-resolution.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl48-resolution
+          path: fahl48-resolution.txt
