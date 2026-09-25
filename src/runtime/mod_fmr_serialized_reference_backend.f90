@@ -1540,6 +1540,7 @@ contains
       if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
       nullify(self%hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
 
@@ -1572,6 +1573,8 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
+      self%direct_retention_active = parameters%direct_retention_active
+      self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
@@ -1989,6 +1992,7 @@ contains
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: direct_retention_ok
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
@@ -2058,7 +2062,13 @@ contains
         return
       end select
     end if
-    call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    if (self%direct_retention_active) then
+      call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
+           step_duration, self%direct_retention_slot, direct_retention_ok)
+      if (.not. direct_retention_ok) return
+    else
+      call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
     if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
@@ -2227,7 +2237,11 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    request%evaluation%constitutive => self%constitutive
+    if (self%direct_retention_active) then
+      request%evaluation%constitutive => self%direct_retention_constitutive
+    else
+      request%evaluation%constitutive => self%constitutive
+    end if
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
