@@ -1,0 +1,26 @@
+name: F-AHL32 bounded registry qualification
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'research/ahl/test_ahl32_registry.f90'
+      - 'research/ahl/run_ahl32_registry.sh'
+      - 'integration/f-ahl/F-AHL32_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl32-bounded-registry.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run bounded registry qualification
+        run: |
+          bash research/ahl/run_ahl32_registry.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl32-${{ github.run_id }}
+          path: /tmp/ahl32_result.txt
