@@ -57,11 +57,11 @@ program test_fpe_zero_waste01_parameter_preprocess
   call emit('prepared_copy_reuse',n,reps,c0,c1,rate,checksum_copy)
 
   select case (n)
-  case (:4)
+  case (1:4)
     registry_count = 10000
-  case (:60)
+  case (5:60)
     registry_count = 1000
-  case (:200)
+  case (61:200)
     registry_count = 300
   case default
     registry_count = 60
