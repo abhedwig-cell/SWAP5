@@ -1,0 +1,27 @@
+name: F-AHL48 shared Richards timing
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/mod_ahl48_shared_direct_retention_provider.f90'
+      - 'research/ahl/test_fahl48_shared_richards_timing.f90'
+      - 'research/ahl/run_fahl48_shared_richards_timing.sh'
+      - '.github/workflows/f-ahl48-shared-richards.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run shared-provider Richards timing
+        run: |
+          bash research/ahl/run_fahl48_shared_richards_timing.sh | tee fahl48-shared-richards.txt
+          grep -Fq 'FAHL48_SHARED_RICHARDS_TIMING=PASS' fahl48-shared-richards.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl48-shared-richards
+          path: fahl48-shared-richards.txt

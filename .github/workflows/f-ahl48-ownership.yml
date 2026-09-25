@@ -1,0 +1,27 @@
+name: F-AHL48 shared ownership
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/mod_ahl48_shared_direct_retention_provider.f90'
+      - 'research/ahl/test_fahl48_shared_ownership.f90'
+      - 'research/ahl/run_fahl48_shared_ownership.sh'
+      - '.github/workflows/f-ahl48-ownership.yml'
+  workflow_dispatch:
+
+jobs:
+  ownership:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify shared immutable ownership
+        run: |
+          bash research/ahl/run_fahl48_shared_ownership.sh | tee fahl48-ownership.txt
+          grep -Fq 'FAHL48_SHARED_OWNERSHIP=PASS' fahl48-ownership.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl48-ownership
+          path: fahl48-ownership.txt

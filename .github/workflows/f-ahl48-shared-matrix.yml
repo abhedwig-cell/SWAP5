@@ -1,0 +1,26 @@
+name: F-AHL48 shared 12-case timing
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/mod_ahl48_shared_direct_retention_provider.f90'
+      - 'research/ahl/run_fahl48_shared_matrix_timing.sh'
+      - '.github/workflows/f-ahl48-shared-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run shared 12-case timing
+        run: |
+          bash research/ahl/run_fahl48_shared_matrix_timing.sh | tee fahl48-shared-matrix.txt
+          grep -Fq 'FAHL48_SHARED_MATRIX_TIMING=PASS' fahl48-shared-matrix.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl48-shared-matrix
+          path: fahl48-shared-matrix.txt
