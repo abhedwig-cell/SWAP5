@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_FIXTURE",
+  "phase": "PREREGISTERED_RESOLVED_FIXTURE_QUALIFICATION_COMPLETE",
+  "status": "BLOCKED_NO_VALID_CASE",
+  "workflow_run": 36078756664,
+  "workflow_job": 107895764947,
+  "selection_rule": "first valid candidate in preregistered order",
+  "selected": null,
+  "candidates": [
+    {"id":"H74_D001","bottom_head_cm":-74.0,"duration_day":0.01,"completed":false,"committed":false,"kernel_status":2,"accepted_substeps":0,"mass_complete":false,"retries":8,"rejected":1},
+    {"id":"H725_D001","bottom_head_cm":-72.5,"duration_day":0.01,"completed":false,"committed":false,"kernel_status":2,"accepted_substeps":0,"mass_complete":false,"retries":8,"rejected":1},
+    {"id":"H70_D001","bottom_head_cm":-70.0,"duration_day":0.01,"completed":false,"committed":false,"kernel_status":2,"accepted_substeps":0,"mass_complete":false,"retries":8,"rejected":1},
+    {"id":"H74_D005","bottom_head_cm":-74.0,"duration_day":0.05,"completed":false,"committed":false,"kernel_status":2,"accepted_substeps":0,"mass_complete":false,"retries":8,"rejected":1},
+    {"id":"H725_D005","bottom_head_cm":-72.5,"duration_day":0.05,"completed":false,"committed":false,"kernel_status":2,"accepted_substeps":0,"mass_complete":false,"retries":8,"rejected":1}
+  ],
+  "finding": "No prospectively defined short-duration prescribed-head transient is canonically accepted by the analytical/default-off resolved FMR owner under the unchanged external full-half policy.",
+  "interpretation": "This independently confirms that canonical application-level timing is structurally blocked by the current full-half transaction/temporal contract for these nontrivial prescribed-head transients; it is not an adaptive-hydraulics failure.",
+  "governance": [
+    "Do not relax temporal or mass gates.",
+    "Do not invent a post-hoc timing fixture.",
+    "Do not use this blocker as evidence against AHL physical or solver fidelity."
+  ]
+}
