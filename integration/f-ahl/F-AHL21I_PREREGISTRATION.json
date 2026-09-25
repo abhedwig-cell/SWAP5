@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21I",
+  "title": "Prescribed-qbot exact-retention paired timing matrix",
+  "parent": "F-AHL21H",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Across the full qualified prescribed-qbot matrix, does authoritative theta/C plus selected K lookup provide a consistent complete-Richards CPU benefit over the fully analytical provider?",
+  "matrix": {
+    "materials": ["B01","B12","O05","O14"],
+    "regimes": ["wet","mid","dry"],
+    "case_count": 12,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "fidelity_precondition": "F-AHL21H 12/12 PASS with identical nonlinear iteration and backtracking path.",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical by repetition",
+    "primary_statistic_per_case": "median paired candidate/analytical CPU ratio"
+  },
+  "classification_per_case": {
+    "positive": "median ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "negative": "ratio > 1.02"
+  },
+  "decision_rule": "Retain partial qbot acceleration only if it is positive in most cases and introduces no materially negative cases; otherwise prefer fully analytical hydraulics for prescribed-qbot as the simpler bounded route.",
+  "hard_exclusions": [
+    "NO_FIDELITY_GATE_CHANGE",
+    "NO_K_SUPPORT_CHANGE",
+    "NO_RETENTION_INTERPOLATION",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
