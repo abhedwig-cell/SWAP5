@@ -16,7 +16,11 @@ program test_fahl27_fmr_resolved_opt_in
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
 
-  real(real64), parameter :: h0=-75.0_real64, hbot=-50.0_real64, dt=0.25_real64
+  ! F-AHL27 routing fixture intentionally uses stationary prescribed-head
+  ! conditions. Nonlinear head perturbations are qualified separately by the
+  ! frozen 12-case Stage-2 matrix; this test isolates resolved FMR routing,
+  ! commit semantics and default-off versus explicit-opt-in identity.
+  real(real64), parameter :: h0=-75.0_real64, hbot=-75.0_real64, dt=0.25_real64
   real(real64), parameter :: mass_gate=1.0e-12_real64
   integer(int64), parameter :: column_id=527027_int64
 
