@@ -1126,6 +1126,7 @@ contains
     write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
   end subroutine verify_irrigation_restart_bundle
   subroutine verify_pending_irrigation_trial(profile,source,template)
+    use mod_canonical_contracts, only: canonical_numerical_config_t
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
          kernel_result_t,kernel_diagnostics_t
@@ -1147,6 +1148,7 @@ contains
     type(kernel_diagnostics_t)::rejected_diagnostics
     type(fmr_logical_column_t)::column
     type(fmr_b110_physical_forcing_t)::forcing
+    type(canonical_numerical_config_t)::limited
     type(ppa_irrigation_event_state_t)::seed
     class(transaction_state_t),allocatable::initial,snapshot
     real(real64)::finish,time
@@ -1169,6 +1171,15 @@ contains
     call backend%initialize(top)
     call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
     call backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+    limited=profile%numerical
+    limited%max_committed_substeps=1
+    call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
+         limited,1,T0,finish,checkpoint,result,candidate,diagnostics)
+    if(result%completed.or.candidate%ready()) error stop 'limited pending trial unexpectedly completed'
+    if(diagnostics%accepted_substeps<1) error stop 'pending rollback did not exercise internal progress'
+    call committed%current_time(time,ok)
+    if(.not.ok.or.time/=T0.or.committed%current_revision()/=0_int64) error stop 'pending rollback advanced owner'
+    write(*,'(a)') 'PPA_IRR_PENDING_INTERNAL_PROGRESS_ROLLBACK=PASS'
     call backend%run_trial(column,template,profile%tiles(1)%parameters,committed,forcing,profile%numerical, &
          T0,finish,checkpoint,result,candidate,diagnostics)
     if(result%completed.or.candidate%ready()) error stop 'ordinary trial admitted pending carrier'
@@ -1268,6 +1279,7 @@ contains
       call fresh%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,restored(1),forcing, &
            profile%numerical,1,start,finish,checkpoint(2),result(2),candidate(2),diagnostics(2))
       if(.not.all(result%completed)) error stop 'pending hydraulic restart continuation failed'
+      if(.not.all(result%mass%complete)) error stop 'pending hydraulic restart mass incomplete'
       if(any(abs(result%mass%residual)>1.0e-12_real64)) error stop 'pending hydraulic restart hard mass'
       call backend%commit_trial_candidate(committed,candidate(1),diagnostics(1),ok,code)
       if(.not.ok) error stop 'original pending continuation commit'
@@ -1303,6 +1315,8 @@ contains
       if(.not.ok.or.right_time/=finish) error stop 'restored pending endpoint'
       if(committed%current_revision()/=restored(1)%current_revision()) error stop 'pending restart revision differs'
       if(result(1)%mass%residual/=result(2)%mass%residual) error stop 'pending restart mass differs'
+      if(result(1)%mass%total_in/=result(2)%mass%total_in.or.result(1)%mass%total_out/=result(2)%mass%total_out) &
+           error stop 'pending restart external exchange differs'
       start=finish
     end do
     write(*,'(a)') 'PPA_IRR_PENDING_HYDRAULIC_MIDPOINT_RESTART_STOP_IDENTITY=PASS'
