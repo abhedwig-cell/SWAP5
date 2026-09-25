@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28A",
+  "phase": "NO_COPY_REPRESENTATION_REPAIR_EVALUATED",
+  "status": "REJECTED_REVERTED",
+  "baseline_warm_bind_seconds": 5.6449e-7,
+  "repair_warm_bind_seconds": 3.88605e-7,
+  "measured_reduction_fraction": 0.311586,
+  "preregistered_required_reduction_fraction": 0.5,
+  "provider_evaluate_16_heads_seconds": 1.681425e-6,
+  "bind_over_eval16_ratio_after_repair": 0.231116,
+  "semantic_regressions_observed": {
+    "production_provider_extraction": "PASS",
+    "prescribed_head_matrix": "12/12 PASS"
+  },
+  "decision": "REJECT_AND_REVERT_NO_COPY_POINTER_REPAIR",
+  "reason": "The repair preserved the qualified hydraulic behavior but reduced warm-bind overhead by only about 31 percent, below the prospectively frozen 50 percent retention threshold.",
+  "reversion": {
+    "cache_module": "restored to pre-F-AHL28A value-owned table semantics",
+    "provider_module": "restored to pre-F-AHL28A provider-owned table semantics"
+  },
+  "interpretation": "Deep copying is real and measurable but is not the dominant remaining warm-bind cost. Key generation, one-node sampler reconstruction and shared-cache lookup are now the leading lifecycle suspects.",
+  "next_direction": "Provider-level same-key memoization: retain an already acquired representation within a long-lived provider when the exact representation key is unchanged, while rebinding only the step-duration-dependent analytical fallback.",
+  "nonclaims": [
+    "The no-copy design is not incorrect hydraulically; it is rejected because it missed its own performance gate.",
+    "No application-level performance conclusion follows directly from this microbenchmark."
+  ]
+}
