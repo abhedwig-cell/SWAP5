@@ -74,14 +74,14 @@ contains
     if(output%mass%complete) then
       mass_abs=abs(output%mass%residual)
     else
-      mass_abs=huge(1.0_real64)
+      mass_abs=-1.0_real64
     end if
 
-    write(*,'(A,1X,A,1X,A,ES14.6,1X,A,ES14.6,1X,A,L1,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,ES14.6,1X,A,I0,1X,A,I0)') &
+    write(*,'(A,1X,A,1X,A,ES14.6,1X,A,ES14.6,1X,A,L1,1X,A,L1,1X,A,I0,1X,A,I0,1X,A,L1,1X,A,ES14.6,1X,A,I0,1X,A,I0)') &
          'FAHL27_FIXTURE',trim(case_id),'HBOT=',bottom_head,'DT=',duration, &
          'COMPLETED=',output%completed,'COMMITTED=',output%committed,'KERNEL=',output%kernel_status, &
-         'SUBSTEPS=',output%accepted_substeps,'MASS=',mass_abs,'RETRIES=',diagnostic%retries, &
-         'REJECTED=',diagnostic%rejected
+         'SUBSTEPS=',output%accepted_substeps,'MASS_COMPLETE=',output%mass%complete,'MASS=',mass_abs, &
+         'RETRIES=',diagnostic%retries,'REJECTED=',diagnostic%rejected
   end subroutine execute_analytical
 
   subroutine initialize_parameters(p)
