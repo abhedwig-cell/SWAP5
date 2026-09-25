@@ -1114,12 +1114,84 @@ contains
         if(.not.available) error stop 'irrigation restored history missing'
         if(size(actual_history)/=size(expected_history)) error stop 'irrigation restored history shape'
         if(any(actual_history/=expected_history)) error stop 'irrigation restored history changed'
+        if(source%irrigation%active_event) call verify_restored_irrigation_delivery(source,snapshot,checkpoint_time)
       class default
         error stop 'irrigation restored dynamic type lost'
       end select
     end do
     write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
   end subroutine verify_irrigation_restart_bundle
+  subroutine verify_restored_irrigation_delivery(original,resumed,boundary)
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
+    use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t, &
+         irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_SPLIT_REQUIRED,IRRIGATION_OK
+    use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source
+    use mod_process_hydraulic_view, only: process_hydraulic_view_t
+    type(ppa_irrigation_event_state_t),intent(in)::original,resumed
+    real(real64),intent(in)::boundary
+    type(scheduled_irrigation_parameters_t)::parameters
+    type(scheduled_irrigation_request_t)::request
+    type(irrigation_state_t)::base,candidate,completed
+    type(irrigation_flux_result_t)::flux
+    type(irrigation_diagnostics_t)::diagnostics
+    type(process_hydraulic_view_t)::hydraulic
+    type(fmr_b110_physical_forcing_t)::previous
+    type(fmr_b110_physical_forcing_t),allocatable::forcing
+    real(real64)::expected,amount(2),rate(2)
+    logical::ok
+    integer::path,attempt
+    ! Process/source replay from actual restored snapshots, not hydraulic
+    ! acceptance. Both paths must deliver only the remaining event amount.
+    parameters%scheduled_irrigation_enabled=.true.
+    parameters%active_nodes=original%active_nodes
+    parameters%sensor_node=1; parameters%single_ssdi_node=1
+    parameters%tcs7_knot_count=2; parameters%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    parameters%dcs2_knot_count=2; parameters%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+    allocate(previous%subsurface_irrigation_source(original%active_nodes))
+    previous%subsurface_irrigation_source=0.0_real64
+    expected=(original%irrigation%active_event_end-boundary)*original%irrigation%active_event_rate
+    do path=1,2
+      base=original%irrigation
+      if(path==2) base=resumed%irrigation
+      request%t0=boundary
+      request%t1=base%active_event_end+0.125_real64
+      call evaluate_ppa_irrigation_source(parameters,base,request,hydraulic,previous, &
+           candidate,flux,diagnostics,forcing,ok)
+      if(ok.or.allocated(forcing)) error stop 'restored event overrun produced forcing'
+      if(diagnostics%status/=IRRIGATION_SPLIT_REQUIRED.or..not.diagnostics%split_required) &
+           error stop 'restored event missing split'
+      if(diagnostics%split_time/=base%active_event_end.or..not.candidate%active_event) &
+           error stop 'restored event split changed pending gift'
+      request%t1=base%active_event_end
+      ! Re-evaluating an unpublished trial must not consume the base gift.
+      do attempt=1,2
+        call evaluate_ppa_irrigation_source(parameters,base,request,hydraulic,previous, &
+             candidate,flux,diagnostics,forcing,ok)
+        if(.not.ok.or.diagnostics%status/=IRRIGATION_OK) error stop 'restored event completion rejected'
+        if(.not.flux%event_finished.or.candidate%active_event) error stop 'restored event not completed'
+        if(abs(flux%external_inflow_amount-expected)>8.0_real64*epsilon(expected)*max(1.0_real64,expected)) &
+             error stop 'restored event duplicated or lost remaining delivery'
+        amount(path)=flux%external_inflow_amount
+        rate(path)=forcing%subsurface_irrigation_source(1)
+        if(rate(path)/=base%active_event_rate) error stop 'restored event source rate changed'
+        if(any(forcing%subsurface_irrigation_source(2:)/=0.0_real64)) error stop 'restored event wrong source node'
+      end do
+      completed=candidate
+      previous=forcing
+      request%t0=request%t1; request%t1=request%t0+0.125_real64
+      call evaluate_ppa_irrigation_source(parameters,completed,request,hydraulic,previous, &
+           candidate,flux,diagnostics,forcing,ok)
+      if(.not.ok.or.flux%applied.or.candidate%active_event) error stop 'restored event duplicate after completion'
+      if(flux%external_inflow_amount/=0.0_real64.or.any(forcing%subsurface_irrigation_source/=0.0_real64)) &
+           error stop 'restored event stop retained delivery'
+      if(.not.forcing%temporal_forcing_event.or.forcing%temporal_forcing_event_time/=request%t0) &
+           error stop 'restored event stop missing boundary marker'
+      previous%subsurface_irrigation_source=0.0_real64
+      previous%temporal_forcing_event=.false.
+    end do
+    if(amount(1)/=amount(2).or.rate(1)/=rate(2)) error stop 'restored event delivery differs'
+    write(*,'(a)') 'PPA_IRR_EVENT_RESTORED_PROCESS_SOURCE_REPLAY=PASS'
+  end subroutine verify_restored_irrigation_delivery
   subroutine verify_atm02_owner(profile,events)
     type(fmr_production_application_config_t),intent(in)::profile
     logical,intent(in)::events
