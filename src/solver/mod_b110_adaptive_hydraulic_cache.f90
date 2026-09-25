@@ -20,7 +20,7 @@ module mod_b110_adaptive_hydraulic_cache
   type :: b110_adaptive_hydraulic_cache_entry_t
     logical :: occupied=.false.
     type(b110_adaptive_hydraulic_cache_key_t) :: key
-    type(b110_adaptive_hydraulic_table_t) :: table
+    type(b110_adaptive_hydraulic_table_t), pointer :: table => null()
   end type b110_adaptive_hydraulic_cache_entry_t
 
   type, public :: b110_adaptive_hydraulic_cache_t
@@ -87,17 +87,18 @@ contains
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
     type(b110_default_mvg_parameters_t),intent(in)::parameters
     type(b110_default_mvg_provider_t),intent(in)::provider
-    type(b110_adaptive_hydraulic_table_t),intent(out)::table
+    type(b110_adaptive_hydraulic_table_t),pointer,intent(out)::table
     logical,intent(out)::was_hit,ok
     integer::i,slot
     logical::build_ok
 
     was_hit=.false.;ok=.false.;slot=0
+    nullify(table)
     do i=1,B110_AHL_MAX_CACHE
       if(self%entry(i)%occupied)then
         if(self%entry(i)%key%fingerprint==key%fingerprint)then
           if(same_key(self%entry(i)%key,key))then
-            table=self%entry(i)%table
+            table=>self%entry(i)%table
             self%hits=self%hits+1
             was_hit=.true.;ok=.true.;return
           end if
@@ -109,11 +110,16 @@ contains
 
     self%misses=self%misses+1
     if(slot==0)return
-    call build_b110_adaptive_hydraulic_table(provider,parameters%cofgen(1,1),parameters%cofgen(2,1),table,build_ok)
-    if(.not.build_ok)return
+    allocate(self%entry(slot)%table)
+    call build_b110_adaptive_hydraulic_table(provider,parameters%cofgen(1,1),parameters%cofgen(2,1), &
+         self%entry(slot)%table,build_ok)
+    if(.not.build_ok)then
+      deallocate(self%entry(slot)%table)
+      return
+    end if
     self%entry(slot)%occupied=.true.
     self%entry(slot)%key=key
-    self%entry(slot)%table=table
+    table=>self%entry(slot)%table
     self%builds=self%builds+1
     ok=.true.
   end subroutine b110_ahl_get_or_build
