@@ -63,6 +63,10 @@ contains
       provider%ready=.false.
       return
     end if
+    if(.not.b110_adaptive_hydraulic_profile_homogeneous(parameters))then
+      provider%ready=.false.
+      return
+    end if
 
     ! Step-dependent analytical semantics are always rebound. Only the immutable
     ! adaptive representation may survive a same-key rebind.
@@ -134,6 +138,23 @@ contains
     provider%acquired_from_cache=was_hit
     provider%ready=.true.
   end subroutine bind_b110_adaptive_hydraulic_provider
+
+  pure logical function b110_adaptive_hydraulic_profile_homogeneous(parameters) result(homogeneous)
+    type(b110_default_mvg_parameters_t),intent(in)::parameters
+    integer(int64) :: reference_bits(42), node_bits(42)
+    integer :: i
+
+    homogeneous=.false.
+    if(.not.allocated(parameters%cofgen))return
+    if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42 .or. &
+         size(parameters%cofgen,2)/=parameters%active_nodes)return
+    reference_bits=transfer(parameters%cofgen(1:42,1),reference_bits)
+    do i=2,parameters%active_nodes
+      node_bits=transfer(parameters%cofgen(1:42,i),node_bits)
+      if(any(node_bits/=reference_bits))return
+    end do
+    homogeneous=.true.
+  end function b110_adaptive_hydraulic_profile_homogeneous
 
   pure logical function same_local_authority(key,parameters) result(equal)
     type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key

@@ -110,9 +110,37 @@ program test_ahl27_production_provider_extract
   call solver_candidate%solve(request,workspace_candidate,candidate_result)
   call require(candidate_result%status==SW_SOLVE_CONVERGED,'lookup solve converged')
 
+  call verify_heterogeneous_provider_rejected()
   call report_and_gate(trim(label),reference_result,candidate_result)
 
 contains
+
+  subroutine verify_heterogeneous_provider_rejected()
+    type(b110_default_mvg_parameters_t),target :: heterogeneous_parameters
+    type(b110_adaptive_hydraulic_provider_t) :: heterogeneous_provider
+    real(real64),allocatable :: heterogeneous_cofgen(:,:)
+    logical :: heterogeneous_ok, heterogeneous_hit
+    integer :: before_builds,before_hits,before_misses,before_entries
+    integer :: after_builds,after_hits,after_misses,after_entries
+
+    call require(numnod>=2,'heterogeneous provider regression requires at least two nodes')
+    allocate(heterogeneous_cofgen(24,numnod))
+    heterogeneous_cofgen=cofgen
+    heterogeneous_cofgen(3,2)=0.5_real64*heterogeneous_cofgen(3,2)
+    heterogeneous_cofgen(10,2)=heterogeneous_cofgen(3,2)
+    heterogeneous_cofgen(12,2)=0.99_real64*heterogeneous_cofgen(3,2)
+    call initialize_b110_default_mvg_parameters(heterogeneous_parameters,heterogeneous_cofgen)
+    call b110_adaptive_hydraulic_cache_stats(before_builds,before_hits,before_misses,before_entries)
+    call bind_b110_adaptive_hydraulic_provider(heterogeneous_provider,heterogeneous_parameters,total_dt, &
+         heterogeneous_ok,heterogeneous_hit)
+    call b110_adaptive_hydraulic_cache_stats(after_builds,after_hits,after_misses,after_entries)
+    call require(.not.heterogeneous_ok,'heterogeneous hydraulic profile must fail adaptive bind')
+    call require(.not.heterogeneous_hit,'heterogeneous hydraulic profile cannot be a cache hit')
+    call require(after_builds==before_builds .and. after_hits==before_hits .and. &
+         after_misses==before_misses .and. after_entries==before_entries, &
+         'heterogeneous rejection must not touch adaptive cache')
+    write(*,'(A)') 'FAHL42_HETEROGENEOUS_PROVIDER_FAIL_CLOSED=PASS'
+  end subroutine verify_heterogeneous_provider_rejected
 
   subroutine report_and_gate(name,ref,cand)
     character(len=*), intent(in) :: name

@@ -471,6 +471,22 @@ module mod_fmr_serialized_reference_backend
 
 contains
 
+  pure logical function fmr_b110_hydraulic_profile_homogeneous(parameters) result(homogeneous)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer(int64) :: reference_bits(24), node_bits(24)
+    integer :: i
+
+    homogeneous=.false.
+    if(parameters%active_nodes<1 .or. .not.allocated(parameters%cofgen))return
+    if(size(parameters%cofgen,1)<24 .or. size(parameters%cofgen,2)/=parameters%active_nodes)return
+    reference_bits=transfer(parameters%cofgen(1:24,1),reference_bits)
+    do i=2,parameters%active_nodes
+      node_bits=transfer(parameters%cofgen(1:24,i),node_bits)
+      if(any(node_bits/=reference_bits))return
+    end do
+    homogeneous=.true.
+  end function fmr_b110_hydraulic_profile_homogeneous
+
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
     class(fmr_b110_physical_state_t), intent(inout) :: target
@@ -1379,7 +1395,8 @@ contains
         ! and unqualified modes use the authoritative analytical provider.
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              .not. self%temporal_indicator_history_enabled .and. &
-             .not. parameters%ksatexm_extension_active
+             .not. parameters%ksatexm_extension_active .and. &
+             fmr_b110_hydraulic_profile_homogeneous(parameters)
       end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &

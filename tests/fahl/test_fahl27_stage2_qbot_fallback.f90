@@ -36,6 +36,8 @@ program test_fahl27_stage2_qbot_fallback
   call verify_no_adaptive_cache_use()
   call verify_adaptive_ksatexm_scope_rejected(qeq)
   call verify_no_adaptive_cache_use()
+  call verify_adaptive_heterogeneous_scope_rejected(qeq)
+  call verify_no_adaptive_cache_use()
   write(*,'(A,ES26.17E3)') 'FAHL27_QBOT_QEQ=', qeq
   write(*,'(A)') 'FAHL27_QBOT_ANALYTICAL_FALLBACK=PASS'
 
@@ -78,6 +80,18 @@ contains
     call require(.not. observation%solver_executed, 'adaptive plus KSATEXM rejected before solver')
     write(*,'(A)') 'FAHL42_ADAPTIVE_KSATEXM_FAIL_CLOSED=PASS'
   end subroutine verify_adaptive_ksatexm_scope_rejected
+
+  subroutine verify_adaptive_heterogeneous_scope_rejected(q)
+    real(real64), intent(in) :: q
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    call execute_case(5, q, 0.0_real64, -50.0_real64, equilibrium_dt, .false., .false., output, observation, &
+         heterogeneous_hydraulics=.true.)
+    call require(.not. output%committed, 'heterogeneous adaptive profile must not commit')
+    call require(output%final_revision == 0_int64, 'heterogeneous adaptive profile revision unchanged')
+    call require(.not. observation%solver_executed, 'heterogeneous adaptive profile rejected before solver')
+    write(*,'(A)') 'FAHL42_HETEROGENEOUS_FMR_FAIL_CLOSED=PASS'
+  end subroutine verify_adaptive_heterogeneous_scope_rejected
 
   subroutine verify_positive_bottom_inflow(q)
     real(real64), intent(in) :: q
@@ -151,11 +165,11 @@ contains
   end subroutine verify_unowned_mode_rejected
 
   subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, output, observation, &
-       enable_ksatexm)
+       enable_ksatexm, heterogeneous_hydraulics)
     integer, intent(in) :: bottom_mode
     real(real64), intent(in) :: top_flux, bottom_flux, bottom_head, duration
     logical, intent(in) :: use_certificate, hydrostatic
-    logical, intent(in), optional :: enable_ksatexm
+    logical, intent(in), optional :: enable_ksatexm, heterogeneous_hydraulics
     type(fmr_serialized_column_result_t), intent(out) :: output
     type(fmr_serialized_physical_observation_t), intent(out) :: observation
     type(fmr_serialized_reference_backend_t) :: backend
@@ -172,7 +186,7 @@ contains
     integer :: active_physical_calls
     logical :: ok
 
-    call initialize_parameters(parameters, bottom_mode, enable_ksatexm)
+    call initialize_parameters(parameters, bottom_mode, enable_ksatexm, heterogeneous_hydraulics)
     if (use_certificate) then
       call initialize_temporal_committed(committed, parameters, hydrostatic, ok)
     else
@@ -234,10 +248,10 @@ contains
     observation = backend%observation()
   end subroutine execute_case
 
-  subroutine initialize_parameters(parameters, bottom_mode, enable_ksatexm)
+  subroutine initialize_parameters(parameters, bottom_mode, enable_ksatexm, heterogeneous_hydraulics)
     type(fmr_b110_physical_parameters_t), intent(out) :: parameters
     integer, intent(in) :: bottom_mode
-    logical, intent(in), optional :: enable_ksatexm
+    logical, intent(in), optional :: enable_ksatexm, heterogeneous_hydraulics
     integer :: k
     parameters%parameter_set_id = 440044_int64
     parameters%active_nodes = numnod
@@ -281,6 +295,13 @@ contains
       parameters%cofgen(10,:) = 1.2_real64*parameters%cofgen(3,:)
       parameters%cofgen(11,:) = 0.999_real64
       parameters%cofgen(12,:) = 0.99_real64*parameters%cofgen(3,:)
+    end if
+    if (present(heterogeneous_hydraulics)) then
+      if (heterogeneous_hydraulics .and. numnod>=2) then
+        parameters%cofgen(3,2)=0.5_real64*parameters%cofgen(3,2)
+        parameters%cofgen(10,2)=parameters%cofgen(3,2)
+        parameters%cofgen(12,2)=0.99_real64*parameters%cofgen(3,2)
+      end if
     end if
   end subroutine initialize_parameters
 
