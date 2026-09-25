@@ -1349,6 +1349,24 @@ contains
     end select
   end subroutine fmr_serialized_restore_attempt_context
 
+  pure logical function fmr_raw_adaptive_profile_supported(parameters) result(supported)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer :: i,j
+
+    supported=.false.
+    if(.not.parameters%adaptive_hydraulics_active)return
+    if(parameters%ksatexm_extension_active)return
+    if(parameters%active_nodes<1 .or. .not.allocated(parameters%cofgen))return
+    if(size(parameters%cofgen,1)<24 .or. size(parameters%cofgen,2)/=parameters%active_nodes)return
+
+    do i=2,parameters%active_nodes
+      do j=1,24
+        if(transfer(parameters%cofgen(j,i),0_int64)/=transfer(parameters%cofgen(j,1),0_int64))return
+      end do
+    end do
+    supported=.true.
+  end function fmr_raw_adaptive_profile_supported
+
   logical function fmr_serialized_execution_admitted(self, parameters, numerical_config)
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(kernel_parameters_t), intent(in) :: parameters
@@ -1374,10 +1392,10 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
-      if (parameters%adaptive_hydraulics_active) then
-        ! Adaptive hydraulics is qualified only on the Reference route.
-        ! Prescribed-head mode 5 may use AHL; prescribed-qbot and other
-        ! non-qualified lower-boundary modes retain authoritative analytical hydraulics.
+      if (fmr_raw_adaptive_profile_supported(parameters)) then
+        ! Only a genuinely supported AHL request receives the bounded AHL
+        ! admission restrictions. Unsupported requests fall back analytically
+        ! and retain the ordinary analytical admission envelope.
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              .not. self%temporal_indicator_history_enabled
       end if
