@@ -1,0 +1,25 @@
+name: F-AHL27 Stage2 paired timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'tests/fahl/test_fahl27_stage2_paired_timing.f90'
+      - 'tests/fahl/run_fahl27_stage2_paired_timing.sh'
+      - 'integration/f-ahl/F-AHL27_STAGE2_TIMING_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl27-stage2-paired-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired serialized FMR timing
+        run: |
+          bash tests/fahl/run_fahl27_stage2_paired_timing.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27-stage2-timing-${{ github.run_id }}
+          path: /tmp/fahl27_stage2_paired_timing.txt
