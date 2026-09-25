@@ -1,23 +1,32 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-AHL",
   "record": "CLOSEOUT",
-  "status": "RESEARCH_CLOSED_PRODUCTION_NOT_ADMITTED",
+  "status": "RESEARCH_CLOSED_THROUGH_F_AHL29_PRODUCTION_NOT_ADMITTED",
   "research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
   "central_scientific_answer": "Yes, automatically generated branch-aware derivative-consistent hydraulic representations can materially reduce strict Richards computational cost while preserving the scientifically relevant solution and nonlinear convergence behaviour, but the representation must be family-aware and boundary-aware.",
   "qualified_family_results": {
     "default_MvG": {
       "strict_Richards_fidelity": "12/12 PASS",
-      "cpu_reduction_fraction_range": [0.205364,0.242290]
+      "cpu_reduction_fraction_range": [
+        0.205364,
+        0.24229
+      ]
     },
     "bi_modal_MvG_model3": {
       "strict_Richards_fidelity": "9/9 PASS",
-      "cpu_reduction_fraction_range": [0.352169,0.390877],
+      "cpu_reduction_fraction_range": [
+        0.352169,
+        0.390877
+      ],
       "key_learning": "retention/C stays compact, but K requires much denser family-specific support"
     },
     "PDI_NoVap": {
       "strict_Richards_fidelity": "6/6 PASS",
-      "cpu_reduction_fraction_range": [0.533837,0.655556],
+      "cpu_reduction_fraction_range": [
+        0.533837,
+        0.655556
+      ],
       "key_learning": "default-MvG effective saturation is invalid because PDI theta may fall below theta_r; logit(theta/theta_s) restores a bounded derivative-consistent transform"
     }
   },
@@ -33,26 +42,46 @@
     "a scalar accepted-state fallback trigger was prospectively falsified",
     "vapor-enabled PDI cannot yet be strictly qualified because the authoritative Kvap temperature formula is not numerically valid across the documented negative-C tsoil domain"
   ],
-  "dry_domain_answer": "The remembered ~1e-13 item is a capacity/storage relevance scale and historical Jacobian regularization C_J=max(C,dt*1e-13), not a physical K cutoff. The representation should not chase irrelevant extreme-dry storage detail, but an explicit tail replacement remains separately qualifiable.",
+  "dry_domain_answer": "The remembered ~1e-13 item is a capacity/storage relevance scale and historical Jacobian regularization C_J=max(C,dt*1e-13), not a physical K cutoff. For default MvG the adaptive builder now uses a material-specific raw-C=1e-13 relevance bound and authoritative analytical fallback outside the represented domain; no theta(h) or K(h) physics is truncated.",
   "recommended_automatic_architecture": {
     "input": "ordinary SWAP hydraulic parameters only",
     "build": "authoritative family-specific sampler generates the representation automatically before solving",
     "retention_capacity": "one family-valid transformed retention interpolant with C derived from the same mathematical object",
     "conductivity": "separately controlled family-specific representation",
-    "cache": "immutable exact-key internal cache",
+    "cache": "immutable exact-key internal cache with provider-local same-key memoization; full-cache misses build a valid uncached representation so cache capacity is never a correctness limit",
     "runtime_refinement": false,
     "user_supplied_tables": false,
     "unsupported_or_unqualified_modes": "fall back to authoritative analytical hydraulics"
   },
   "production_admission_requirements": [
-    "typed production providers for the qualified families",
-    "whole-SWAP accepted-trajectory and wall-time qualification",
-    "additional lower-boundary qualification",
+    "a canonically valid production workload or timing surface on which net application or whole-SWAP benefit can be measured without altering transaction semantics",
+    "canonical governance admission",
+    "separate qualification for lower-boundary modes beyond the current prescribed-head envelope",
     "SWKIMPL=1/dKdh qualification if targeted",
-    "dry-tail policy qualification if introduced",
-    "upstream resolution of PDI vapor-temperature source semantics before vapor-on admission",
-    "canonical CI/governance admission"
+    "upstream resolution of PDI vapor-temperature source semantics before vapor-on admission"
   ],
   "follow_up": "integration/f-ahl/MULTISWAP_APPROXIMATE_HYDRAULIC_ACCELERATION_PROMPT.md",
-  "production_status": "NOT_ADMITTED"
+  "production_status": "NOT_ADMITTED",
+  "post_closeout_engineering": {
+    "F_AHL28": {
+      "result": "ACTIONABLE_OVERHEAD_CONFIRMED",
+      "finding": "Warm adaptive acquisition costs about 0.58 microseconds and occurs once per adaptive physical advance in serialized FMR."
+    },
+    "F_AHL28A": {
+      "result": "FAIL_STANDALONE_REPAIR_GATE",
+      "finding": "No-copy ownership reduced warm bind cost by about one third but missed its preregistered 50% gate."
+    },
+    "F_AHL28B_C": {
+      "result": "PASS_RETAIN_MEMOIZATION",
+      "finding": "Long-lived provider exact same-key reuse preserves analytical fallback rebinding and exact authority semantics.",
+      "paired_median_ratio": 0.2408146,
+      "paired_reduction_fraction": 0.7591854
+    },
+    "F_AHL29": {
+      "result": "PASS",
+      "finding": "The 32-entry shared cache is optimization-only after repair; a full-cache miss builds and returns a valid uncached representation.",
+      "unique_over_capacity_test": "40/40 successful",
+      "amortization_test": "16 builds and 9984 hits over 10000 requests"
+    }
+  }
 }
