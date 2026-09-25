@@ -22,6 +22,7 @@ program test_fgc49a_groundwater_application_plan
   call qualify_multicell()
   call qualify_mixed()
   call qualify_order_invariance()
+  call qualify_canonical_fastpath_equivalence()
   call qualify_fail_closed()
 
   write(*,'(A)') 'FGC49A_FGC44_ONE_TO_ONE_PLAN=PASS'
@@ -29,6 +30,7 @@ program test_fgc49a_groundwater_application_plan
   write(*,'(A)') 'FGC49A_FGC46_MULTICELL_PLAN=PASS'
   write(*,'(A)') 'FGC49A_FGC47_MIXED_PLAN=PASS'
   write(*,'(A)') 'FGC49A_INPUT_ORDER_INVARIANCE=PASS'
+  write(*,'(A)') 'FGC49A_CANONICAL_FASTPATH_EQUIVALENCE=PASS'
   write(*,'(A)') 'FGC49A_FAIL_CLOSED_PROVENANCE_AND_AREA=PASS'
   write(*,'(A)') 'F-GC49A APPLICATION PLAN GATE PASS'
 
@@ -197,6 +199,61 @@ contains
            aa(i)%package_slot==ab(i)%package_slot .and. aa(i)%modflow_node_id==ab(i)%modflow_node_id,'order api')
     end do
   end subroutine qualify_order_invariance
+
+  subroutine qualify_canonical_fastpath_equivalence()
+    type(groundwater_topology_tile_t) :: tiles(3)
+    type(groundwater_topology_cell_t) :: cells(2)
+    type(groundwater_tile_predictor_input_t) :: pred_generic(3),pred_fast(3)
+    type(groundwater_cell_area_input_t) :: area_generic(2),area_fast(2)
+    type(groundwater_topology_t) :: topology
+    type(groundwater_application_plan_t) :: plan_generic,plan_fast
+    type(groundwater_application_cell_plan_t), allocatable :: cg(:),cf(:)
+    type(modflow6_linear_boundary_term_t), allocatable :: tg(:),tf(:)
+    type(modflow6_api_slot_binding_t), allocatable :: ag(:),af(:)
+    integer(int64), allocatable :: rg(:),rf(:)
+    integer :: status,i
+
+    call mixed_fixture(tiles,cells,pred_generic,area_generic)
+    call build_topology(tiles,cells,topology)
+
+    ! Topology canonicalizes mixed_fixture to tiles 301,302,303 and cells 7001,7002.
+    ! Keep the original shuffled inputs as the generic-fallback oracle.
+    pred_fast=[pred_generic(3),pred_generic(1),pred_generic(2)]
+    area_fast=[area_generic(2),area_generic(1)]
+
+    call materialize_groundwater_application_plan(topology,pred_generic,area_generic,plan_generic,status)
+    call require(status==GW_APP_PLAN_OK .and. plan_generic%ready(),'fastpath generic oracle')
+    call materialize_groundwater_application_plan(topology,pred_fast,area_fast,plan_fast,status)
+    call require(status==GW_APP_PLAN_OK .and. plan_fast%ready(),'fastpath aligned candidate')
+
+    call plan_generic%copy_cells(cg,status); call require(status==GW_APP_PLAN_OK,'fastpath generic cells')
+    call plan_fast%copy_cells(cf,status); call require(status==GW_APP_PLAN_OK,'fastpath candidate cells')
+    call plan_generic%copy_linear_terms(tg,status); call require(status==GW_APP_PLAN_OK,'fastpath generic terms')
+    call plan_fast%copy_linear_terms(tf,status); call require(status==GW_APP_PLAN_OK,'fastpath candidate terms')
+    call plan_generic%copy_api_bindings(ag,status); call require(status==GW_APP_PLAN_OK,'fastpath generic api')
+    call plan_fast%copy_api_bindings(af,status); call require(status==GW_APP_PLAN_OK,'fastpath candidate api')
+    call plan_generic%copy_tile_swap_origin_revisions(rg,status)
+    call require(status==GW_APP_PLAN_OK,'fastpath generic revisions')
+    call plan_fast%copy_tile_swap_origin_revisions(rf,status)
+    call require(status==GW_APP_PLAN_OK,'fastpath candidate revisions')
+
+    call require(size(cg)==size(cf) .and. size(tg)==size(tf) .and. size(ag)==size(af) .and. size(rg)==size(rf), &
+         'fastpath transcript shapes')
+    call require(all(rg==rf),'fastpath revision identity')
+    do i=1,size(cg)
+      call require(cg(i)%topology%groundwater_cell_id==cf(i)%topology%groundwater_cell_id, &
+           'fastpath cell identity')
+      call require(cg(i)%tile_begin==cf(i)%tile_begin .and. cg(i)%tile_count==cf(i)%tile_count, &
+           'fastpath tile range identity')
+      call require(cg(i)%reference_head_m==cf(i)%reference_head_m,'fastpath reference-head bit identity')
+      call require(tg(i)%groundwater_cell_id==tf(i)%groundwater_cell_id .and. &
+           tg(i)%hcof_m2_per_day==tf(i)%hcof_m2_per_day .and. tg(i)%rhs_m3_per_day==tf(i)%rhs_m3_per_day, &
+           'fastpath linear-term bit identity')
+      call require(ag(i)%groundwater_cell_id==af(i)%groundwater_cell_id .and. &
+           ag(i)%package_slot==af(i)%package_slot .and. ag(i)%modflow_node_id==af(i)%modflow_node_id, &
+           'fastpath api identity')
+    end do
+  end subroutine qualify_canonical_fastpath_equivalence
 
   subroutine qualify_fail_closed()
     type(groundwater_topology_tile_t) :: tiles(3)

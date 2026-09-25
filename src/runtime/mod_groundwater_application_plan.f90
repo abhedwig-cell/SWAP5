@@ -132,10 +132,11 @@ contains
     type(groundwater_direct_tile_binding_t), allocatable :: bindings(:)
     type(modflow6_swap_predictor_response_t), allocatable :: cell_responses(:)
     type(groundwater_coupling_window_t) :: common_window
-    integer :: i, j, k, predictor_index, area_index, first_tile, topology_status
+    integer :: i, j, k, idx, predictor_index, area_index, first_tile, topology_status
+    integer :: cell_cursor, binding_count
     real(real64) :: reference_head, compensation, term, y, t
     integer(int64) :: common_service_id
-    logical :: have_window
+    logical :: have_window, canonical_alignment
 
     plan%materialized = .false.
     status = GW_APP_PLAN_INVALID_TOPOLOGY
@@ -156,27 +157,46 @@ contains
     status = GW_APP_PLAN_INVALID_AREA_COUNT
     if (size(cell_areas) /= size(cells)) return
 
+    canonical_alignment = .true.
     do i = 1, size(predictors)
-      status = GW_APP_PLAN_INVALID_PREDICTOR
-      if (.not. predictors(i)%valid()) return
-      do j = 1, i - 1
-        if (predictors(j)%tile_id == predictors(i)%tile_id) then
-          status = GW_APP_PLAN_DUPLICATE_PREDICTOR_TILE
-          return
-        end if
-      end do
+      if (predictors(i)%tile_id /= tiles(i)%tile_id) canonical_alignment = .false.
+    end do
+    do i = 1, size(cell_areas)
+      if (cell_areas(i)%groundwater_cell_id /= cells(i)%groundwater_cell_id) canonical_alignment = .false.
     end do
 
-    do i = 1, size(cell_areas)
-      status = GW_APP_PLAN_INVALID_AREA
-      if (.not. cell_areas(i)%valid()) return
-      do j = 1, i - 1
-        if (cell_areas(j)%groundwater_cell_id == cell_areas(i)%groundwater_cell_id) then
-          status = GW_APP_PLAN_DUPLICATE_AREA_CELL
-          return
-        end if
+    if (canonical_alignment) then
+      do i = 1, size(predictors)
+        status = GW_APP_PLAN_INVALID_PREDICTOR
+        if (.not. predictors(i)%valid()) return
       end do
-    end do
+      do i = 1, size(cell_areas)
+        status = GW_APP_PLAN_INVALID_AREA
+        if (.not. cell_areas(i)%valid()) return
+      end do
+    else
+      do i = 1, size(predictors)
+        status = GW_APP_PLAN_INVALID_PREDICTOR
+        if (.not. predictors(i)%valid()) return
+        do j = 1, i - 1
+          if (predictors(j)%tile_id == predictors(i)%tile_id) then
+            status = GW_APP_PLAN_DUPLICATE_PREDICTOR_TILE
+            return
+          end if
+        end do
+      end do
+
+      do i = 1, size(cell_areas)
+        status = GW_APP_PLAN_INVALID_AREA
+        if (.not. cell_areas(i)%valid()) return
+        do j = 1, i - 1
+          if (cell_areas(j)%groundwater_cell_id == cell_areas(i)%groundwater_cell_id) then
+            status = GW_APP_PLAN_DUPLICATE_AREA_CELL
+            return
+          end if
+        end do
+      end do
+    end if
 
     have_window = .false.
     common_service_id = cells(1)%groundwater_service_id
@@ -187,20 +207,35 @@ contains
       end if
     end do
 
+    cell_cursor = 1
     do i = 1, size(tiles)
-      predictor_index = find_predictor_index(predictors, tiles(i)%tile_id)
-      if (predictor_index <= 0) then
-        status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
-        return
-      end if
-      if (predictors(predictor_index)%response%lineage%swap_lineage_id /= tiles(i)%swap_lineage_id) then
-        status = GW_APP_PLAN_PREDICTOR_LINEAGE_MISMATCH
-        return
+      if (canonical_alignment) then
+        predictor_index = i
+        do while (cell_cursor <= size(cells) .and. &
+             cells(cell_cursor)%groundwater_cell_id < tiles(i)%groundwater_cell_id)
+          cell_cursor = cell_cursor + 1
+        end do
+        if (cell_cursor > size(cells) .or. &
+            cells(cell_cursor)%groundwater_cell_id /= tiles(i)%groundwater_cell_id) then
+          status = GW_APP_PLAN_INVALID_TOPOLOGY
+          return
+        end if
+        j = cell_cursor
+      else
+        predictor_index = find_predictor_index(predictors, tiles(i)%tile_id)
+        if (predictor_index <= 0) then
+          status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
+          return
+        end if
+        j = find_cell_index(cells, tiles(i)%groundwater_cell_id)
+        if (j <= 0) then
+          status = GW_APP_PLAN_INVALID_TOPOLOGY
+          return
+        end if
       end if
 
-      j = find_cell_index(cells, tiles(i)%groundwater_cell_id)
-      if (j <= 0) then
-        status = GW_APP_PLAN_INVALID_TOPOLOGY
+      if (predictors(predictor_index)%response%lineage%swap_lineage_id /= tiles(i)%swap_lineage_id) then
+        status = GW_APP_PLAN_PREDICTOR_LINEAGE_MISMATCH
         return
       end if
       if (predictors(predictor_index)%response%lineage%coupling_id /= cells(j)%coupling_id .or. &
@@ -219,13 +254,15 @@ contains
       end if
     end do
 
-    do i = 1, size(cells)
-      area_index = find_area_index(cell_areas, cells(i)%groundwater_cell_id)
-      if (area_index <= 0) then
-        status = GW_APP_PLAN_MISSING_AREA_CELL
-        return
-      end if
-    end do
+    if (.not. canonical_alignment) then
+      do i = 1, size(cells)
+        area_index = find_area_index(cell_areas, cells(i)%groundwater_cell_id)
+        if (area_index <= 0) then
+          status = GW_APP_PLAN_MISSING_AREA_CELL
+          return
+        end if
+      end do
+    end if
 
     allocate(plan%tiles(size(tiles)))
     allocate(plan%tile_swap_origin_revisions(size(tiles)))
@@ -233,10 +270,14 @@ contains
     allocate(plan%api(size(api)))
     plan%tiles = tiles
     do i = 1, size(tiles)
-      predictor_index = find_predictor_index(predictors, tiles(i)%tile_id)
-      if (predictor_index <= 0) then
-        status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
-        return
+      if (canonical_alignment) then
+        predictor_index = i
+      else
+        predictor_index = find_predictor_index(predictors, tiles(i)%tile_id)
+        if (predictor_index <= 0) then
+          status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
+          return
+        end if
       end if
       plan%tile_swap_origin_revisions(i) = predictors(predictor_index)%response%lineage%swap_origin_revision
     end do
@@ -245,22 +286,50 @@ contains
 
     first_tile = 1
     do i = 1, size(cells)
-      call topology%direct_bindings_for_cell(cells(i)%groundwater_cell_id, bindings, topology_status)
-      if (topology_status /= GW_TOPOLOGY_OK .or. .not. allocated(bindings)) then
-        status = GW_APP_PLAN_BINDING_FAILED
-        return
+      if (canonical_alignment) then
+        if (first_tile > size(tiles) .or. tiles(first_tile)%groundwater_cell_id /= cells(i)%groundwater_cell_id) then
+          status = GW_APP_PLAN_BINDING_FAILED
+          return
+        end if
+        binding_count = 0
+        idx = first_tile
+        do while (idx <= size(tiles))
+          if (tiles(idx)%groundwater_cell_id /= cells(i)%groundwater_cell_id) exit
+          binding_count = binding_count + 1
+          idx = idx + 1
+        end do
+        if (binding_count <= 0) then
+          status = GW_APP_PLAN_BINDING_FAILED
+          return
+        end if
+        allocate(bindings(binding_count), cell_responses(binding_count))
+        do k = 1, binding_count
+          idx = first_tile + k - 1
+          bindings(k)%groundwater_cell_id = cells(i)%groundwater_cell_id
+          bindings(k)%tile_id = tiles(idx)%tile_id
+          bindings(k)%area_fraction = tiles(idx)%area_fraction
+          cell_responses(k) = predictors(idx)%response
+        end do
+      else
+        call topology%direct_bindings_for_cell(cells(i)%groundwater_cell_id, bindings, topology_status)
+        if (topology_status /= GW_TOPOLOGY_OK .or. .not. allocated(bindings)) then
+          status = GW_APP_PLAN_BINDING_FAILED
+          return
+        end if
+        allocate(cell_responses(size(bindings)))
+        do k = 1, size(bindings)
+          predictor_index = find_predictor_index(predictors, bindings(k)%tile_id)
+          if (predictor_index <= 0) then
+            status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
+            return
+          end if
+          cell_responses(k) = predictors(predictor_index)%response
+        end do
       end if
-      allocate(cell_responses(size(bindings)))
 
       reference_head = 0.0_real64
       compensation = 0.0_real64
       do k = 1, size(bindings)
-        predictor_index = find_predictor_index(predictors, bindings(k)%tile_id)
-        if (predictor_index <= 0) then
-          status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
-          return
-        end if
-        cell_responses(k) = predictors(predictor_index)%response
         term = bindings(k)%area_fraction * cell_responses(k)%h_bot_end_m
         y = term - compensation
         t = reference_head + y
@@ -287,7 +356,11 @@ contains
         return
       end if
 
-      area_index = find_area_index(cell_areas, cells(i)%groundwater_cell_id)
+      if (canonical_alignment) then
+        area_index = i
+      else
+        area_index = find_area_index(cell_areas, cells(i)%groundwater_cell_id)
+      end if
       call compose_modflow6_linear_boundary_term(plan%cells(i)%response, cell_areas(area_index)%cell_area_m2, &
            plan%cells(i)%linear_term, status)
       if (status /= MODFLOW6_LINEAR_BACKEND_OK .or. .not. plan%cells(i)%linear_term%valid) then

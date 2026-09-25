@@ -18,13 +18,17 @@ fail() {
   exit 1
 }
 
-cat > "$BUILD/expected-source-delta.txt" <<'EOF'
+if [[ "${FPE_H09_SEMANTIC_ONLY:-0}" != "1" ]]; then
+  cat > "$BUILD/expected-source-delta.txt" <<'EOF'
 src/runtime/mod_fmr_accepted_commit_receipt.f90
 src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 EOF
-git diff --name-only "$FMR18_BASE"..HEAD -- src | sort > "$BUILD/actual-source-delta.txt"
-diff -u "$BUILD/expected-source-delta.txt" "$BUILD/actual-source-delta.txt" || fail "unexpected production source delta"
-echo 'FMR18C_EXACT_TWO_FILE_SOURCE_DELTA=PASS'
+  git diff --name-only "$FMR18_BASE"..HEAD -- src | sort > "$BUILD/actual-source-delta.txt"
+  diff -u "$BUILD/expected-source-delta.txt" "$BUILD/actual-source-delta.txt" || fail "unexpected production source delta"
+  echo 'FMR18C_EXACT_TWO_FILE_SOURCE_DELTA=PASS'
+else
+  echo 'FPE_ZERO_WASTE01_H09_HISTORICAL_SOURCE_DELTA=SKIPPED_SEMANTIC_ONLY'
+fi
 
 python3 - <<'PY'
 from pathlib import Path
@@ -35,13 +39,21 @@ for forbidden in ['wofost', 'snow_process', 'irrigation_process', 'root_water_up
 start = runtime.index('type, public :: fmr_serialized_column_result_t')
 end = runtime.index('end type fmr_serialized_column_result_t', start)
 assert 'receipt' not in runtime[start:end], 'receipt state leaked into every column result'
-for required in [
+base_required = [
     'receipt_column_ids', 'commit_receipts', 'fmr_commit_candidate_with_receipt',
-    'fmr_commit_candidate(transaction_control', 'fmr_serial_dispatch_receipt_request_rejected',
-    'receipt_request_valid', 'find_receipt_slot'
-]:
+    'fmr_commit_candidate(transaction_control', 'fmr_serial_dispatch_receipt_request_rejected'
+]
+for required in base_required:
     assert required in runtime, f'missing Gate C runtime token: {required}'
-assert runtime.index('receipt_request_valid') < runtime.index('call backend%initialize'), 'receipt validation must precede backend init'
+semantic_only = __import__('os').environ.get('FPE_H09_SEMANTIC_ONLY','0') == '1'
+if semantic_only:
+    assert 'build_receipt_slot_map' in runtime, 'indexed receipt map missing'
+    assert runtime.index('build_receipt_slot_map') < runtime.index('call backend%initialize'),         'indexed receipt validation must precede backend init'
+    print('FPE_ZERO_WASTE01_H09_INDEXED_RECEIPT_STATIC=PASS')
+else:
+    for required in ['receipt_request_valid', 'find_receipt_slot']:
+        assert required in runtime, f'missing historical Gate C runtime token: {required}'
+    assert runtime.index('receipt_request_valid') < runtime.index('call backend%initialize'),         'receipt validation must precede backend init'
 print('FMR18C_GENERIC_RUNTIME_BOUNDARY=PASS')
 print('FMR18C_NO_PER_COLUMN_RECEIPT_STATE=PASS')
 print('FMR18C_NO_RECEIPT_COMMIT_ROUTE_RETAINED=PASS')
@@ -88,26 +100,69 @@ echo 'FMR18C_FMR05_FIXTURE_REHYDRATED_AND_CURRENT_ADMISSION_MAIN_BUILT=PASS'
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   "$BUILD/fsi04_real_headcalc_stubs.f90"
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+  src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
+  src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_runtime_core.f90
+  src/runtime/mod_fmr_bottom_thermal_carrier.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
+  src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_drainage_process.f90
+  src/process/mod_drainage_tabulated_response.f90
+  src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+  src/process/mod_drainage_hooghoudt_ipos1_response.f90
+  src/process/mod_drainage_hooghoudt_ipos23_response.f90
+  src/process/mod_drainage_ernst_ipos45_preparation.f90
+  src/process/mod_drainage_ernst_ipos45_response.f90
+  src/process/mod_drainage_empirical_interflow_response.f90
+  src/process/mod_drainage_multilevel_aggregation.f90
+  src/process/mod_drainage_extended_exchange.f90
+  src/runtime/mod_fmr_drainage_response_binding.f90
+  src/solver/mod_b110_smooth_freatic_projection.f90
+  src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
+  src/process/mod_soil_temperature_contract.f90
+  src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
+  src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
+  src/solver/mod_fixed_flux_top_boundary_provider.f90
+  src/process/mod_restricted_surface_evaporation.f90
+  src/solver/mod_b110_dynamic_top_boundary_provider.f90
+  src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+  src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
+  src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
+  src/process/mod_restricted_fixed_weir_surface_water.f90
+  src/runtime/mod_fmr_soil_water_application_host.f90
+  src/runtime/mod_rossfast_d3r_execution_policy.f90
+  src/runtime/mod_rossfast_d3r_model_binding.f90
+  src/solver/mod_rossfast_d3r_table_kernel.f90
+  src/solver/mod_rossfast_d3r_table_provider.f90
+  src/solver/mod_rossfast_d3r_soil_water_solver.f90
+  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
-  src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   "$BUILD/mod_fmr04_fixed_top_provider.f90"
 )
@@ -139,6 +194,7 @@ cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt" || fail "Gate C O0/O2 output mismatc
 echo 'FMR18C_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/out.txt"
 
+if [[ "${FPE_H09_SEMANTIC_ONLY:-0}" != "1" ]]; then
 # The accepted-window crop oracle itself is independent of Gate C but must keep
 # its exact transcript on this composition tree.
 for opt in 0 2; do
@@ -217,5 +273,9 @@ grep -Fq 'FCI19_O0_O2_PRESERVATION=PASS' "$BUILD/fci19.out"
 grep -Fq 'FMR18C_FCI19_EXACT_SOURCE_DELTA=PASS' "$BUILD/fci19.out"
 grep -Fq 'FMR18C_FCI19_POST_REPLAY_SOURCE_DELTA_STABLE=PASS' "$BUILD/fci19.out"
 echo 'FMR18C_FCI19_SEMANTIC_PRESERVATION=PASS'
+
+else
+  echo 'FPE_ZERO_WASTE01_H09_HISTORICAL_PRESERVATION=SKIPPED_SEMANTIC_ONLY'
+fi
 
 echo 'FMR18_MULTISWAP_RECEIPT_GATE PASS'

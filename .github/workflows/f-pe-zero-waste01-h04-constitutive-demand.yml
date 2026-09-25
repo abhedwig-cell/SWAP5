@@ -1,0 +1,33 @@
+name: F-PE-ZERO-WASTE01 constitutive phase demand
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fpe/test_fpe_profile03_h03_application_host_timing.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'docs/performance/F-PE-ZERO-WASTE01_H04_CONSTITUTIVE_PHASE_DEMAND.md'
+      - '.github/workflows/f-pe-zero-waste01-h04-constitutive-demand.yml'
+  workflow_dispatch:
+
+jobs:
+  phase-demand:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run FKT22 production runtime gate and assert H03 phase demand
+        run: |
+          OUT="$(mktemp)"
+          bash tests/fkt/run_fkt22_fmr_runtime_gate.sh | tee "$OUT"
+          grep -Fq 'FKT22_FMR_CONSTITUTIVE_INITIAL_FULL_PER_SOLVE=1' "$OUT"
+          grep -Fq 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=0' "$OUT"
+          grep -Fq 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_DEMAND_PER_SOLVE=1' "$OUT"
+          grep -Fq 'FKT22_FMR_CONSTITUTIVE_CAPACITY_ONLY_PER_SOLVE=0' "$OUT"
+          grep -Fq 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=1' "$OUT"
+          grep -Fq 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_CAPACITY_REUSES_PER_SOLVE=0' "$OUT"

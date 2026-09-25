@@ -1,0 +1,37 @@
+name: F-PE-ZERO-WASTE01 GW registry resolution
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_gwreg_resolution.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_gwreg_resolution.sh'
+      - '.github/workflows/f-pe-zero-waste01-gwreg-resolution.yml'
+  workflow_dispatch:
+
+jobs:
+  gwreg-resolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure participant handle resolution scaling
+        run: bash tests/fpe/run_fpe_zero_waste01_gwreg_resolution.sh
+
+  gwreg-semantics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran python3-numpy
+      - name: F-GC49B registry lifecycle
+        run: bash tests/fgc/run_fgc49b_fmr_participant_registry.sh
+      - name: F-VQ122 independent registry qualification
+        run: bash tests/fvq/run_fvq122_fgc49b_independent.sh
+      - name: FGC49D production context
+        run: bash tests/fgc/run_fgc49d_production_application_context.sh

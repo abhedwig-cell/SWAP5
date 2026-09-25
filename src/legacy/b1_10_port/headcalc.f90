@@ -16,14 +16,15 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    ! input
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
-   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
+   use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
    use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
         soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
-        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
+        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD, &
+        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -73,7 +74,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
-   logical :: provider_tuple_valid
+   logical :: provider_tuple_valid, provider_tuple_from_candidate
+   logical :: provider_point_conductivity_supported, provider_point_conductivity_available
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
@@ -174,6 +176,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_dynamic_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
    provider_tuple_valid = .false.
+   provider_tuple_from_candidate = .false.
+   provider_point_conductivity_supported = .false.
+   provider_point_conductivity_available = .false.
    provider_source_sink_active = .false.
    provider_root_sink_active = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
@@ -181,6 +186,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       provider_source_sink_active = associated(evaluation_context%source_sink)
       provider_root_sink_active = associated(evaluation_context%root_sink)
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
+      provider_point_conductivity_supported = evaluation_context%constitutive%supports_point_conductivity()
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
       if (provider_root_sink_active .and. SwKimpl /= 0) &
            error stop 'HeadCalc: root-sink provider requires swkimpl=0 in F-SI11'
@@ -201,7 +207,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    else
       fsi_ws => local_fsi_workspace
    end if
-   call initialize_reference_workspace(fsi_ws, numnod)
+   call prepare_reference_workspace_for_solve(fsi_ws, numnod)
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
 
 !  reset some variables at the start of a new day
@@ -212,7 +218,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
  
 !  summation of fsi_ws%sink terms (constant for the current time step)
    iBackTr        = 0
-   fsi_ws%unsaturated_flags(1:3) = .FALSE.
    if (provider_source_sink_active) then
       call evaluation_context%source_sink%evaluate(state%h(1:numnod), state%theta(1:numnod), &
            fsi_ws%source(1:numnod), fsi_ws%sink(1:numnod))
@@ -225,7 +230,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
       fsi_ws%source(1:numnod) = qssdi(1:numnod)
    end if
-   fsi_ws%provider_root_sink = 0.0d0
    if (provider_root_sink_active) then
       call evaluation_context%root_sink%evaluate(state%h(1:numnod), state%theta(1:numnod), &
            fsi_ws%provider_root_sink(1:numnod))
@@ -297,9 +301,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !  reset conductivities (state%k, state%kmean) to time level t
    if (provider_constitutive_active) then
       ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+      ctx%diagnostics%constitutive_initial_full_evaluations = &
+           ctx%diagnostics%constitutive_initial_full_evaluations + 1
       call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
            fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
       provider_tuple_valid = .true.
+      provider_tuple_from_candidate = .false.
       state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
    else
       do i = 1, numnod
@@ -314,8 +321,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  lower and upper diagnal elements
    if (SwKimpl == 0) then
-      fsi_ws%dfdh_upper = 0.0d0
-      fsi_ws%dfdh_lower = 0.0d0
       do i = 2, numnod
          fsi_ws%dfdh_upper(i)   = - state%kmean(i)  /grid_disnod(i)
          fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
@@ -328,7 +333,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end do
 
 !  calculate vector fsi_ws%residual (first time)
-   fsi_ws%residual = 0.0d0
    call vector_F(1)
 
 !  initial estimate of fsi_ws%residual inner product
@@ -353,10 +357,22 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
       if (provider_constitutive_active) then
          if (.not. provider_tuple_valid) then
-            ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-            call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-                 fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            provider_tuple_valid = .true.
+            if (provider_tuple_from_candidate .and. SwKimpl == 0) then
+               ctx%diagnostics%constitutive_capacity_only_evaluations = &
+                    ctx%diagnostics%constitutive_capacity_only_evaluations + 1
+               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), CONSTITUTIVE_DEMAND_CAPACITY, &
+                    fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               provider_tuple_valid = .true.
+            else
+               ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+               call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               provider_tuple_valid = .true.
+               provider_tuple_from_candidate = .false.
+            end if
+         else if (provider_tuple_from_candidate) then
+            ctx%diagnostics%constitutive_candidate_capacity_reuses = &
+                 ctx%diagnostics%constitutive_candidate_capacity_reuses + 1
          end if
          state%dimoca(1:NN) = fsi_ws%provider_capacity(1:NN)
       else
@@ -384,7 +400,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
       call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
-           fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror)
+           fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror, &
+           capture_in_gamma_requested=fsi_ws%tridag_factorization_capture_active)
 
 !     in the rare case that TRIDAG fails, use alternative solution
       if (ierror /= 0) then
@@ -427,9 +444,36 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (provider_constitutive_active) then
             provider_tuple_valid = .false.
             ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-      call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-                 fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            provider_tuple_valid = .true.
+            if (SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
+               ctx%diagnostics%constitutive_candidate_demand_evaluations = &
+                    ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
+               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+            else if (SwKimpl == 0 .and. (swbotb == 7 .or. swbotb == -2) .and. &
+                     provider_point_conductivity_supported) then
+               ctx%diagnostics%constitutive_candidate_demand_evaluations = &
+                    ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
+               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               call evaluation_context%constitutive%evaluate_point_conductivity(NN, state%h(NN), &
+                    fsi_ws%provider_theta(NN), fsi_ws%provider_k(NN), provider_point_conductivity_available)
+               if (.not. provider_point_conductivity_available) then
+                  ctx%diagnostics%constitutive_candidate_full_evaluations = &
+                       ctx%diagnostics%constitutive_candidate_full_evaluations + 1
+                  call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, &
+                       fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+                  provider_tuple_valid = .true.
+               end if
+            else
+               ctx%diagnostics%constitutive_candidate_full_evaluations = &
+                    ctx%diagnostics%constitutive_candidate_full_evaluations + 1
+               call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               provider_tuple_valid = .true.
+            end if
+            provider_tuple_from_candidate = .true.
             state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
          else
             do i = 1, NN
@@ -476,9 +520,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     main flag for testing the convergence
       flnonconv = .FALSE.
 
-!     flags introduced for debugging purposes
-      fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
-      fsi_ws%nonconverged_head(1:numnod) = .FALSE.
+!     flags introduced for debugging/macropore iteration policy
+      if (swmacro == 1) then
+         fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
+         fsi_ws%nonconverged_head(1:numnod) = .FALSE.
+      end if
       flnonconv3 = .FALSE.
 
 !     apply performance criteria per compartment
@@ -486,19 +532,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (swmacro == 1) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               fsi_ws%nonconverged_head(i) = .TRUE.
+               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               fsi_ws%nonconverged_head(i) = .TRUE.
+               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
@@ -569,6 +615,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       sumold = sump
 
       if (.NOT.flnonconv) then      ! convergence has been reached
+         if (provider_constitutive_active .and. provider_tuple_from_candidate) then
+            ctx%diagnostics%constitutive_candidate_terminal_evaluations = &
+                 ctx%diagnostics%constitutive_candidate_terminal_evaluations + 1
+         end if
      
 !        special case for macropores
          if (swmacro == 1) then
@@ -1070,7 +1120,7 @@ subroutine jacobian_F()
    else if (swbotb == 5 .OR. (swbotb == 1 .AND. state%fllowgwl) .OR. swbotb == 9) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)         
    else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: state%kmean(NN+1)
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%dconductivity_dhead(NN) * 0.5d0
+      if (SwKimpl == 1) fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%dconductivity_dhead(NN) * 0.5d0
    else if (swbotb == 8 .AND. flboth) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)
    end if

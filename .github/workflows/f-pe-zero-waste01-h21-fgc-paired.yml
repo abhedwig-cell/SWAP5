@@ -1,0 +1,23 @@
+name: F-PE-ZERO-WASTE01 H21 FGC paired diagnosis
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fgc/run_fgc49d_production_application_context.sh'
+      - 'tests/fgc/test_fgc49d_production_application_context.py'
+      - 'tests/fpe/run_fpe_zero_waste01_h21_fgc_paired.sh'
+      - '.github/workflows/f-pe-zero-waste01-h21-fgc-paired.yml'
+  workflow_dispatch:
+
+jobs:
+  paired-fgc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python dependency
+        run: python3 -m pip install numpy
+      - name: Compare pre-H21 and H21 FGC49D
+        run: bash tests/fpe/run_fpe_zero_waste01_h21_fgc_paired.sh

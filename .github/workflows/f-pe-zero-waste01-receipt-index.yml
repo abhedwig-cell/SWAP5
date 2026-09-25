@@ -1,0 +1,26 @@
+name: F-PE-ZERO-WASTE01 receipt indexing
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'tests/fmr/test_fmr18_multiswap_receipt_integration.f90'
+      - 'tests/fmr/run_fmr18_multiswap_receipt_gate.sh'
+      - 'docs/performance/F-PE-ZERO-WASTE01_H09_RECEIPT_INDEX_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-zero-waste01-receipt-index.yml'
+  workflow_dispatch:
+
+jobs:
+  receipt-semantics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run current-tree FMR18 receipt semantics
+        env:
+          FPE_H09_SEMANTIC_ONLY: '1'
+        run: bash tests/fmr/run_fmr18_multiswap_receipt_gate.sh

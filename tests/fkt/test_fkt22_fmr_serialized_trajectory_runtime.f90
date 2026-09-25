@@ -11,7 +11,7 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -23,24 +23,33 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   real(real64), parameter :: mass_tolerance = 1.0e-12_real64
   integer(int64), parameter :: column_id = 440044_int64
 
-  type(fmr_b110_physical_parameters_t) :: parameters
+  type(fmr_b110_physical_parameters_t) :: parameters, mutated_stale, mutated_fresh
   type(fmr_b110_physical_forcing_t) :: forcing
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
   type(canonical_numerical_config_t) :: config_off, config_on
-  type(kernel_committed_state_t) :: committed_off, committed_on
-  type(kernel_checkpoint_t) :: checkpoint_off, checkpoint_on
-  type(kernel_result_t) :: result_off, result_on
-  type(kernel_candidate_state_t) :: candidate_off, candidate_on
-  type(kernel_diagnostics_t) :: diagnostics_off, diagnostics_on
-  type(fmr_serialized_reference_backend_t) :: backend_off, backend_on
+  type(kernel_committed_state_t) :: committed_off, committed_on, committed_trusted, &
+       committed_mutated_stale, committed_mutated_fresh, committed_reuse_a1, committed_reuse_b, committed_reuse_a2
+  type(kernel_checkpoint_t) :: checkpoint_off, checkpoint_on, checkpoint_trusted, &
+       checkpoint_mutated_stale, checkpoint_mutated_fresh, checkpoint_reuse_a1, checkpoint_reuse_b, checkpoint_reuse_a2
+  type(kernel_result_t) :: result_off, result_on, result_trusted, result_mutated_stale, result_mutated_fresh, &
+       result_reuse_a1, result_reuse_b, result_reuse_a2
+  type(kernel_candidate_state_t) :: candidate_off, candidate_on, candidate_trusted, &
+       candidate_mutated_stale, candidate_mutated_fresh, candidate_reuse_a1, candidate_reuse_b, candidate_reuse_a2
+  type(kernel_diagnostics_t) :: diagnostics_off, diagnostics_on, diagnostics_trusted, &
+       diagnostics_mutated_stale, diagnostics_mutated_fresh, diagnostics_reuse_a1, diagnostics_reuse_b, diagnostics_reuse_a2
+  type(fmr_serialized_reference_backend_t) :: backend_off, backend_on, backend_trusted, &
+       backend_mutated_stale, backend_mutated_fresh, backend_reuse
   type(fmr_serialized_physical_observation_t) :: observation_off
   type(fixed_flux_top_boundary_provider_t), target :: top
-  class(transaction_state_t), allocatable :: snapshot_off, snapshot_on
-  real(real64) :: k0, qeq
+  class(transaction_state_t), allocatable :: snapshot_off, snapshot_on, snapshot_trusted, &
+       snapshot_mutated_stale, snapshot_mutated_fresh, snapshot_reuse_a1, snapshot_reuse_a2
+  real(real64) :: k0, qeq, mutated_k0, mutated_qeq
   logical :: ok, available_off, available_on
 
   call initialize_parameters(parameters)
+  call prepare_fmr_b110_default_mvg(parameters, ok)
+  call require(ok, 'H22A baseline prepared hydraulics built')
   call determine_initial_conductivity(parameters, k0)
   qeq = -k0
   call initialize_forcing(forcing, qeq)
@@ -52,18 +61,26 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   call require(ok, 'default-off committed state initialized')
   call initialize_committed(committed_on, parameters, ok)
   call require(ok, 'requested committed state initialized')
+  call initialize_committed(committed_trusted, parameters, ok)
+  call require(ok, 'trusted prepared committed state initialized')
   call fmr_capture_checkpoint(committed_off, checkpoint_off, ok)
   call require(ok, 'default-off checkpoint captured')
   call fmr_capture_checkpoint(committed_on, checkpoint_on, ok)
   call require(ok, 'requested checkpoint captured')
+  call fmr_capture_checkpoint(committed_trusted, checkpoint_trusted, ok)
+  call require(ok, 'trusted prepared checkpoint captured')
 
   call backend_off%initialize(top)
   call backend_on%initialize(top)
+  call backend_trusted%initialize(top)
 
   call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
        0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
   call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
        0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  call backend_trusted%run_trial(column, template, parameters, committed_trusted, forcing, config_off, &
+       0.0_real64, duration, checkpoint_trusted, result_trusted, candidate_trusted, diagnostics_trusted, &
+       trusted_prepared_parameters=.true.)
   observation_off = backend_off%observation()
 
   call require(result_off%status == CANONICAL_STATUS_COMPLETED .and. result_off%completed, &
@@ -135,10 +152,10 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        'rejected full-trial tangent work absent from publication')
   write(*,'(A)') 'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS'
 
-  call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
-       'reference solve performs three full workspace resets on current path')
-  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
-       'workspace reset observer records positive zeroed byte volume')
+  call require(observation_off%solver_diagnostics%workspace_full_resets == 0, &
+       'Reference solve performs no full workspace reset after ZW01-H7 minimal preparation')
+  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes == 0_int64, &
+       'minimal solve preparation records no full-reset zeroed-byte volume')
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
@@ -146,16 +163,39 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
   call require(observation_off%solver_diagnostics%constitutive_evaluations == 2, &
        'H03 reuse removes one duplicate constitutive evaluation on one-iteration Reference solve')
+  call require(observation_off%solver_diagnostics%constitutive_initial_full_evaluations == 1, &
+       'H04 H03 initial constitutive full evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_full_evaluations == 0, &
+       'H04A H03 candidate full evaluation removed on SWKIMPL=0')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_demand_evaluations == 1, &
+       'H04A H03 candidate demand-aware theta evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_capacity_only_evaluations == 0, &
+       'H04A H03 terminal candidate requires no C-only materialization')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations == 1, &
+       'H04 H03 terminal candidate constitutive evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses == 0, &
+       'H04 H03 terminal candidate capacity is not reused')
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_INITIAL_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_initial_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_DEMAND_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_demand_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CAPACITY_ONLY_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_capacity_only_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_CAPACITY_REUSES_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
-  call require(diagnostics_off%workspace_full_resets == 9, &
-       'external full-half interval aggregates three resets across three Reference solves')
-  call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
-       observation_off%solver_diagnostics%workspace_zeroed_bytes, &
-       'interval reset bytes equal three Reference-solve reset payloads')
+  call require(diagnostics_off%workspace_full_resets == 0, &
+       'external full-half interval performs no full workspace resets')
+  call require(diagnostics_off%workspace_zeroed_bytes == 0_int64, &
+       'interval records no full-reset zeroed-byte volume')
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_INTERVAL=', diagnostics_off%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_INTERVAL=', diagnostics_off%workspace_zeroed_bytes
 
@@ -169,6 +209,102 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        same_bits(result_off%mass%total_out, result_on%mass%total_out) .and. &
        same_bits(result_off%mass%residual, result_on%mass%residual), &
        'trajectory request leaves accepted mass accounting bit-identical')
+  call candidate_trusted%snapshot(snapshot_trusted, available_on)
+  call require(available_on, 'trusted prepared candidate snapshot available')
+  call require_physical_identity(snapshot_off, snapshot_trusted)
+  call require(same_bits(result_off%mass%storage_start, result_trusted%mass%storage_start) .and. &
+       same_bits(result_off%mass%storage_end, result_trusted%mass%storage_end) .and. &
+       same_bits(result_off%mass%total_in, result_trusted%mass%total_in) .and. &
+       same_bits(result_off%mass%total_out, result_trusted%mass%total_out) .and. &
+       same_bits(result_off%mass%residual, result_trusted%mass%residual), &
+       'trusted prepared route preserves mass bits')
+  call require(diagnostics_off%nonlinear_iterations == diagnostics_trusted%nonlinear_iterations .and. &
+       diagnostics_off%linear_solves == diagnostics_trusted%linear_solves, &
+       'trusted prepared route preserves solve counts')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_H22A_TRUSTED_UNTRUSTED_IDENTITY=PASS'
+
+  mutated_stale = parameters
+  mutated_stale%cofgen(3,:) = 0.97_real64*mutated_stale%cofgen(3,:)
+  mutated_fresh = mutated_stale
+  call prepare_fmr_b110_default_mvg(mutated_fresh, ok)
+  call require(ok, 'H22A mutated fresh prepared hydraulics built')
+  call determine_initial_conductivity(mutated_fresh, mutated_k0)
+  mutated_qeq = -mutated_k0
+  call initialize_forcing(forcing, mutated_qeq)
+  call initialize_committed(committed_mutated_stale, mutated_fresh, ok)
+  call require(ok, 'H22A stale-cache committed initialized')
+  call initialize_committed(committed_mutated_fresh, mutated_fresh, ok)
+  call require(ok, 'H22A fresh-cache committed initialized')
+  call fmr_capture_checkpoint(committed_mutated_stale, checkpoint_mutated_stale, ok)
+  call require(ok, 'H22A stale-cache checkpoint captured')
+  call fmr_capture_checkpoint(committed_mutated_fresh, checkpoint_mutated_fresh, ok)
+  call require(ok, 'H22A fresh-cache checkpoint captured')
+  call backend_mutated_stale%initialize(top)
+  call backend_mutated_fresh%initialize(top)
+  call backend_mutated_stale%run_trial(column, template, mutated_stale, committed_mutated_stale, forcing, config_off, &
+       0.0_real64, duration, checkpoint_mutated_stale, result_mutated_stale, candidate_mutated_stale, &
+       diagnostics_mutated_stale)
+  call backend_mutated_fresh%run_trial(column, template, mutated_fresh, committed_mutated_fresh, forcing, config_off, &
+       0.0_real64, duration, checkpoint_mutated_fresh, result_mutated_fresh, candidate_mutated_fresh, &
+       diagnostics_mutated_fresh)
+  call require(result_mutated_stale%completed .and. result_mutated_fresh%completed, &
+       'H22A stale/fresh mutation trials complete')
+  call candidate_mutated_stale%snapshot(snapshot_mutated_stale, available_off)
+  call candidate_mutated_fresh%snapshot(snapshot_mutated_fresh, available_on)
+  call require(available_off .and. available_on, 'H22A stale/fresh mutation snapshots available')
+  call require_physical_identity(snapshot_mutated_stale, snapshot_mutated_fresh)
+  call require(same_bits(result_mutated_stale%mass%residual, result_mutated_fresh%mass%residual), &
+       'H22A untrusted stale cache falls back to current raw parameters')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_H22A_UNTRUSTED_STALE_FALLBACK=PASS'
+
+  ! H22B: one backend must not retain a borrowed prepared-hydraulics pointer
+  ! across trusted A -> trusted B -> trusted A reuse.
+  call initialize_committed(committed_reuse_a1, parameters, ok)
+  call require(ok, 'H22B reuse A1 committed initialized')
+  call initialize_committed(committed_reuse_b, mutated_fresh, ok)
+  call require(ok, 'H22B reuse B committed initialized')
+  call initialize_committed(committed_reuse_a2, parameters, ok)
+  call require(ok, 'H22B reuse A2 committed initialized')
+  call fmr_capture_checkpoint(committed_reuse_a1, checkpoint_reuse_a1, ok)
+  call require(ok, 'H22B reuse A1 checkpoint captured')
+  call fmr_capture_checkpoint(committed_reuse_b, checkpoint_reuse_b, ok)
+  call require(ok, 'H22B reuse B checkpoint captured')
+  call fmr_capture_checkpoint(committed_reuse_a2, checkpoint_reuse_a2, ok)
+  call require(ok, 'H22B reuse A2 checkpoint captured')
+  call backend_reuse%initialize(top)
+
+  call initialize_forcing(forcing, qeq)
+  call backend_reuse%run_trial(column, template, parameters, committed_reuse_a1, forcing, config_off, &
+       0.0_real64, duration, checkpoint_reuse_a1, result_reuse_a1, candidate_reuse_a1, diagnostics_reuse_a1, &
+       trusted_prepared_parameters=.true.)
+
+  call initialize_forcing(forcing, mutated_qeq)
+  call backend_reuse%run_trial(column, template, mutated_fresh, committed_reuse_b, forcing, config_off, &
+       0.0_real64, duration, checkpoint_reuse_b, result_reuse_b, candidate_reuse_b, diagnostics_reuse_b, &
+       trusted_prepared_parameters=.true.)
+
+  call initialize_forcing(forcing, qeq)
+  call backend_reuse%run_trial(column, template, parameters, committed_reuse_a2, forcing, config_off, &
+       0.0_real64, duration, checkpoint_reuse_a2, result_reuse_a2, candidate_reuse_a2, diagnostics_reuse_a2, &
+       trusted_prepared_parameters=.true.)
+
+  call require(result_reuse_a1%completed .and. result_reuse_b%completed .and. result_reuse_a2%completed, &
+       'H22B trusted A-B-A trials complete')
+  call candidate_reuse_a1%snapshot(snapshot_reuse_a1, available_off)
+  call candidate_reuse_a2%snapshot(snapshot_reuse_a2, available_on)
+  call require(available_off .and. available_on, 'H22B trusted A snapshots available')
+  call require_physical_identity(snapshot_reuse_a1, snapshot_reuse_a2)
+  call require(same_bits(result_reuse_a1%mass%storage_start, result_reuse_a2%mass%storage_start) .and. &
+       same_bits(result_reuse_a1%mass%storage_end, result_reuse_a2%mass%storage_end) .and. &
+       same_bits(result_reuse_a1%mass%total_in, result_reuse_a2%mass%total_in) .and. &
+       same_bits(result_reuse_a1%mass%total_out, result_reuse_a2%mass%total_out) .and. &
+       same_bits(result_reuse_a1%mass%residual, result_reuse_a2%mass%residual), &
+       'H22B trusted A-B-A mass identity')
+  call require(diagnostics_reuse_a1%nonlinear_iterations == diagnostics_reuse_a2%nonlinear_iterations .and. &
+       diagnostics_reuse_a1%linear_solves == diagnostics_reuse_a2%linear_solves, &
+       'H22B trusted A-B-A solve-count identity')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_H22B_TRUSTED_ABA_BINDING=PASS'
+
   write(*,'(A)') 'FKT22_FMR_TRAJECTORY_PHYSICAL_IDENTITY=PASS'
   write(*,'(A)') 'FKT22_FMR_SERIALIZED_RUNTIME_GATE=PASS'
 

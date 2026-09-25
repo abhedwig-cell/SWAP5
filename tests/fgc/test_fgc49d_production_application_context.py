@@ -93,6 +93,7 @@ def main() -> None:
     require(library_path.is_file(), "production ABI qualification library")
 
     lib = ctypes.CDLL(str(library_path))
+    print("FGC49D_TRACE library_loaded", flush=True)
     initialize = lib.fgc49d_fixture_initialize_c
     initialize.restype = ctypes.c_int
     initialize.argtypes = [
@@ -109,6 +110,7 @@ def main() -> None:
         "fixture initialization",
     )
     require(handle.value > 0, "opaque context handle")
+    print("FGC49D_TRACE fixture_initialized", flush=True)
 
     runtime = FmrGroundwaterApplicationRuntime(library_path, handle.value)
     plan = runtime.materialize_plan()
@@ -120,11 +122,38 @@ def main() -> None:
     )
     require(len(set(runtime.participant_handles)) == 3, "three distinct F-GC49B handles")
     require(all(value > 0 for value in runtime.participant_handles), "opaque participant handles")
+    print("FGC49D_TRACE plan_materialized", flush=True)
 
     before = fixture_state(lib)
     require(before == (0, 0, 0, 0, 0, 0), "no committed mutation before service")
 
     groundwater = DeterministicPreparedSolve(href1.value, href2.value)
+    for _trace_name in (
+        "materialize_plan",
+        "capture_origins",
+        "evaluate_groundwater_fluxes",
+        "trial_cell_heads",
+        "discard_candidates",
+        "relinearize_terms",
+        "swap_preflight",
+        "prepare_ledgers",
+        "ledgers_preflight",
+        "abort_prepublication",
+        "commit_swaps",
+        "commit_ledgers",
+    ):
+        _trace_original = getattr(runtime, _trace_name)
+
+        def _trace_call(*args, _name=_trace_name, _original=_trace_original, **kwargs):
+            print(f"FGC49D_TRACE {_name}_begin", flush=True)
+            value = _original(*args, **kwargs)
+            print(f"FGC49D_TRACE {_name}_end", flush=True)
+            return value
+
+        setattr(runtime, _trace_name, _trace_call)
+    print("FGC49D_TRACE runtime_method_wrappers_installed", flush=True)
+
+    print("FGC49D_TRACE service_begin", flush=True)
     result = run_groundwater_application_window(
         runtime,
         groundwater,
@@ -134,6 +163,7 @@ def main() -> None:
         ),
     )
 
+    print("FGC49D_TRACE service_returned", flush=True)
     require(result.status == GroundwaterApplicationServiceStatus.OK, f"service status {result.failure_stage}")
     require(result.published, "whole-window publication")
     require(result.iterations >= 2, "first corrector must force authoritative reanchor")

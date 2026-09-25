@@ -674,7 +674,7 @@ contains
     type(canonical_interval_t) :: interval
     type(canonical_numerical_config_t) :: model_config
     real(real64) :: storage0, storage1, mass_residual
-    logical :: storage_start_complete, storage_end_complete, mass_ok
+    logical :: storage_start_complete, storage_end_complete, mass_ok, context_required
     integer(int64) :: start_missing_mask, end_missing_mask, missing_mask
 
     result = kernel_reference_floor_result_t()
@@ -717,12 +717,13 @@ contains
     interval%t0 = t0
     interval%t1 = t1
     call self%model%prepare_interval(forcing, interval, model_config)
+    context_required = self%model%attempt_context_required()
 
     call committed_state%physical_state%clone(start_state)
     call committed_state%physical_state%clone(working)
     storage0 = self%model%storage(start_state)
     call self%model%storage_accounting_status(start_state, storage_start_complete, start_missing_mask)
-    call self%model%capture_attempt_context(checkpoint_context)
+    if (context_required) call self%model%capture_attempt_context(checkpoint_context)
 
     call self%model%advance(working, t0, t1, outcome)
     result%physical_advances = 1
@@ -743,7 +744,7 @@ contains
     diagnostics%alternative_solver_calls = outcome%alternative_solver_calls
 
     if (.not. outcome%solver_ok) then
-      call self%model%restore_attempt_context(checkpoint_context)
+      if (context_required) call self%model%restore_attempt_context(checkpoint_context)
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_SOLVER_FAILED
       diagnostics%solver_rejections = 1
       return
@@ -774,7 +775,7 @@ contains
     if (mass_ok) mass_ok = abs(mass_residual) <= mass_tolerance
     result%mass%complete = mass_ok
     if (.not. mass_ok) then
-      call self%model%restore_attempt_context(checkpoint_context)
+      if (context_required) call self%model%restore_attempt_context(checkpoint_context)
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_MASS_FAILED
       diagnostics%mass_rejections = 1
       if (ieee_is_finite(mass_residual)) diagnostics%max_abs_step_mass_residual = abs(mass_residual)

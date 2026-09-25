@@ -4,13 +4,14 @@ module mod_fmr_production_application_bootstrap
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
+       fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state
+       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
@@ -74,6 +75,7 @@ module mod_fmr_production_application_bootstrap
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
+    type(fmr_serialized_execution_plan_t) :: execution_plan
     type(fmr_b110_physical_parameters_t), pointer :: parameters(:) => null()
     type(fmr_b110_physical_forcing_t), pointer :: base_forcing(:) => null()
     type(kernel_committed_state_t), pointer :: committed(:) => null()
@@ -106,7 +108,7 @@ contains
     integer, intent(out) :: status
 
     integer :: i, local_status, n
-    logical :: ok, groundwater_profile, standalone_profile, prescribed_qbot_profile
+    logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
 
@@ -180,6 +182,7 @@ contains
       self%columns(i)%execution_class = config%tiles(i)%execution_class
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
+      call prepare_fmr_b110_default_mvg(self%parameters(i), hydraulic_prepared)
       self%base_forcing(i) = config%tiles(i)%base_forcing
       if (groundwater_profile) call self%materializers(i)%initialize(self%base_forcing(i))
 
@@ -218,7 +221,7 @@ contains
       if (groundwater_profile) then
         call self%registry%bind(config%tiles(i)%tile_id, self%backend, self%columns(i), self%templates(i), &
              self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
-             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status)
+             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status, immutable_parameters=.true.)
         if (local_status /= FMR_GW_REGISTRY_OK .or. self%participant_handles(i) <= 0_int64) then
           status = FMR_APP_BOOT_REGISTRY_FAILED
           call discard_owner_storage(self)
@@ -233,6 +236,9 @@ contains
         end if
       end if
     end do
+
+    call fmr_build_serialized_execution_plan(self%columns, self%templates, size(self%committed), &
+         self%execution_plan, ok)
 
     self%initialized = .true.
     status = FMR_APP_BOOT_OK
@@ -296,7 +302,6 @@ contains
 
     type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t) :: aggregate
-    type(fmr_serialized_batch_diagnostics_t) :: runtime
     integer :: dispatch_status
 
     if (allocated(results)) deallocate(results)
@@ -315,9 +320,19 @@ contains
       return
     end if
 
-    call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
-         self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-         aggregate, dispatch_status, runtime)
+    if (self%execution_plan%ready()) then
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+    else
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, materialize_worker_assignments=.false., &
+           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+    end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
     if (dispatch_status /= FMR_SERIAL_DISPATCH_OK) return
@@ -612,6 +627,7 @@ contains
     nullify(self%backend)
     nullify(self%top_boundary)
 
+    call self%execution_plan%clear()
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)

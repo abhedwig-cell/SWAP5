@@ -6,8 +6,8 @@ module mod_reference_richards_legacy_binding
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
        SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request
-  use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
-       reset_reference_workspace, prepare_reference_tridag_factorization_capture, &
+  use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
+       prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
   use mod_reference_linear_solver, only: reference_tridag_backsolve
   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
@@ -29,7 +29,8 @@ module mod_reference_richards_legacy_binding
   type, extends(soil_water_solver_workspace_base_t), public :: reference_richards_legacy_workspace_t
      type(reference_richards_workspace_t) :: richards
      type(a23bu_worker_context_t) :: legacy_worker
-  end type reference_richards_legacy_workspace_t
+     type(reference_richards_state_binding_t) :: state_binding
+   end type reference_richards_legacy_workspace_t
 
   type, extends(soil_water_solver_t), public :: reference_richards_legacy_solver_t
      integer :: reserved = 0
@@ -113,7 +114,6 @@ contains
 
     logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
-    type(reference_richards_state_binding_t) :: state_binding
     integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
     integer(int64) :: reset_bytes_before
 
@@ -137,13 +137,12 @@ contains
        call a23bu_reset_attempt_control(ws%legacy_worker)
        reset_calls_before = ws%richards%profile_full_reset_calls
        reset_bytes_before = ws%richards%profile_zeroed_bytes
-       call initialize_reference_workspace(ws%richards, n)
-       call reset_reference_workspace(ws%richards)
+       call ensure_reference_workspace_shape(ws%richards, n)
 
        ! F-KT owns the committed/base state. F-SI materializes only this solve's
        ! explicit candidate state and lets HeadCalc rebuild reconstructible
        ! hydraulic intermediates in worker-owned scratch/state.
-       call initialize_reference_state_binding(state_binding, request)
+       call initialize_reference_state_binding(ws%state_binding, request)
 
        ! Only the qualified prescribed-qbot route needs reusable-factor capture.
        ! Expanding the existing gamma scratch is temporary worker state; the
@@ -151,7 +150,7 @@ contains
        sensitivity_capture = request%request_interface_sensitivity .and. request%boundary%bottom_mode == 2
        if (sensitivity_capture) call prepare_reference_tridag_factorization_capture(ws%richards)
 
-       call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
+       call headcalc(ws%legacy_worker, ws%richards, call_history, ws%state_binding, &
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
 
@@ -161,9 +160,9 @@ contains
        ! Materialize qbot with exact B1.10 watstor()+fluxes() arithmetic grouping
        ! from explicit request/state/provider data; do not call legacy fluxes(),
        ! which mutates integration globals outside the focused solver service.
-       if (request%boundary%bottom_mode == 5 .and. .not. state_binding%fldecdt .and. &
+       if (request%boundary%bottom_mode == 5 .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
-          call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
+          call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
           result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
@@ -177,7 +176,7 @@ contains
        ! by HeadCalc's total-balance convergence criterion. Preserve that exact
        ! value in the compatibility field, expose it explicitly as cm/day, and
        ! separately publish its time-integrated equation-balance residual in cm.
-       if (request%boundary%bottom_mode == 2 .and. .not. state_binding%fldecdt .and. &
+       if (request%boundary%bottom_mode == 2 .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
@@ -194,7 +193,7 @@ contains
        ! second nonlinear trajectory. Any retry or alternative-solver use is
        ! fail-closed because the captured normal TRIDAG factorization is then
        ! not a qualified accepted-path authority.
-       if (sensitivity_capture .and. .not. state_binding%fldecdt .and. &
+       if (sensitivity_capture .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction .and. &
            ws%legacy_worker%diagnostics%alternative_solver_calls == 0 .and. &
            size(ws%richards%tridag_gamma) >= 2*n) then
@@ -213,12 +212,12 @@ contains
 
        result%candidate_state%active_nodes = n
        allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
-       result%candidate_state%pressure_head = state_binding%h
-       result%candidate_state%water_content = state_binding%theta
-       result%candidate_state%ponding_depth = state_binding%pond
-       result%candidate_state%groundwater_level = state_binding%gwl
-       result%top_flux = state_binding%qtop
-       result%bottom_flux = state_binding%qbot
+       result%candidate_state%pressure_head = ws%state_binding%h
+       result%candidate_state%water_content = ws%state_binding%theta
+       result%candidate_state%ponding_depth = ws%state_binding%pond
+       result%candidate_state%groundwater_level = ws%state_binding%gwl
+       result%top_flux = ws%state_binding%qtop
+       result%bottom_flux = ws%state_binding%qbot
        result%diagnostics%nonlinear_iterations = ws%legacy_worker%diagnostics%nonlinear_iterations
        result%diagnostics%jacobian_builds = ws%legacy_worker%diagnostics%jacobian_builds
        result%diagnostics%linear_solves = ws%legacy_worker%diagnostics%linear_solves
@@ -227,12 +226,24 @@ contains
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
        result%diagnostics%interface_sensitivity_backsolves = interface_sensitivity_backsolves
        result%diagnostics%constitutive_evaluations = ws%legacy_worker%diagnostics%constitutive_evaluations
+       result%diagnostics%constitutive_initial_full_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_initial_full_evaluations
+       result%diagnostics%constitutive_candidate_full_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_full_evaluations
+       result%diagnostics%constitutive_candidate_demand_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_demand_evaluations
+       result%diagnostics%constitutive_capacity_only_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_capacity_only_evaluations
+       result%diagnostics%constitutive_candidate_terminal_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_terminal_evaluations
+       result%diagnostics%constitutive_candidate_capacity_reuses = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_capacity_reuses
        result%diagnostics%workspace_full_resets = ws%richards%profile_full_reset_calls - reset_calls_before
        result%diagnostics%workspace_zeroed_bytes = ws%richards%profile_zeroed_bytes - reset_bytes_before
 
        if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 
-       if (state_binding%fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
+       if (ws%state_binding%fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
           result%status = SW_SOLVE_RETRY_ADVISED
           result%retry_advised = .true.
           result%diagnostics%route = 'legacy-reference-retry'

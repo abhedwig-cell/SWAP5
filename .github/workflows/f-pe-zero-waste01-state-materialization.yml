@@ -1,0 +1,20 @@
+name: F-PE-ZERO-WASTE01 state materialization
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_state_materialization.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_state_materialization.sh'
+      - '.github/workflows/f-pe-zero-waste01-state-materialization.yml'
+  workflow_dispatch:
+
+jobs:
+  state-materialization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure base-state materialization
+        run: bash tests/fpe/run_fpe_zero_waste01_state_materialization.sh

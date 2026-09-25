@@ -1,0 +1,20 @@
+name: F-PE-ZERO-WASTE01 state binding reuse
+
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_state_binding_reuse.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_state_binding_reuse.sh'
+      - '.github/workflows/f-pe-zero-waste01-state-binding-reuse.yml'
+  workflow_dispatch:
+
+jobs:
+  state-binding-reuse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure fresh versus persistent Reference state binding
+        run: bash tests/fpe/run_fpe_zero_waste01_state_binding_reuse.sh

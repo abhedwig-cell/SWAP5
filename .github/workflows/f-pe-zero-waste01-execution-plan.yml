@@ -1,0 +1,20 @@
+name: F-PE-ZERO-WASTE01 execution plan
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_execution_plan.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_execution_plan.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_execution_plan.sh'
+      - '.github/workflows/f-pe-zero-waste01-execution-plan.yml'
+  workflow_dispatch:
+
+jobs:
+  execution-plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify H19A execution plan contract
+        run: bash tests/fpe/run_fpe_zero_waste01_execution_plan.sh

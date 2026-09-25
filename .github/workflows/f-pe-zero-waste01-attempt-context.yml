@@ -1,0 +1,18 @@
+name: F-PE-ZERO-WASTE01 attempt context
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_zero_waste01_attempt_context.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_attempt_context.sh'
+      - '.github/workflows/f-pe-zero-waste01-attempt-context.yml'
+  workflow_dispatch:
+
+jobs:
+  attempt-context:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure inactive transaction attempt context
+        run: bash tests/fpe/run_fpe_zero_waste01_attempt_context.sh

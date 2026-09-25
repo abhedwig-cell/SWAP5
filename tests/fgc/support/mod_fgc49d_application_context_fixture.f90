@@ -11,7 +11,8 @@ module mod_fgc49d_application_context_fixture
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, FMR_GW_REGISTRY_OK
-  use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK
+  use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK, &
+       FMR_GW_APP_CONTEXT_HANDLE_FAILED
   use mod_fmr_groundwater_application_c_api, only: register_fmr_groundwater_application_context, FMR_GW_APP_C_API_OK
   use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, &
        groundwater_interface_mass_snapshot_t, GW_MASS_LEDGER_OK
@@ -78,6 +79,8 @@ contains
     type(groundwater_tile_predictor_input_t) :: predictors(NPART)
     type(groundwater_cell_area_input_t) :: areas(2)
     type(groundwater_topology_t) :: topology
+    type(fmr_groundwater_application_context_t) :: duplicate_context
+    integer(int64) :: duplicate_handles(NPART)
     type(groundwater_head_datum_t) :: datum
     integer(int64) :: handle
     logical :: ok
@@ -136,6 +139,11 @@ contains
 
     call materialize_groundwater_application_plan(topology, predictors, areas, plan, status)
     if (status /= GW_APP_PLAN_OK .or. .not. plan%ready()) return
+
+    duplicate_handles = handles
+    duplicate_handles(2) = duplicate_handles(1)
+    call duplicate_context%bind(plan, registry, duplicate_handles, ledgers, status)
+    if (status /= FMR_GW_APP_CONTEXT_HANDLE_FAILED .or. duplicate_context%ready()) return
 
     call context%bind(plan, registry, handles, ledgers, status)
     if (status /= FMR_GW_APP_CONTEXT_OK .or. .not. context%ready()) return

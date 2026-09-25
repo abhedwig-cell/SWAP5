@@ -1,0 +1,21 @@
+name: F-PE-ZERO-WASTE01 H04C isolated paired
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h04c_paired.sh'
+      - 'tests/fpe/run_fpe_zero_waste01_paired_runtime.sh'
+      - '.github/workflows/f-pe-zero-waste01-h04c-paired.yml'
+  workflow_dispatch:
+
+jobs:
+  h04c-paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Isolate H04C provider demand-loop effect
+        run: bash tests/fpe/run_fpe_zero_waste01_h04c_paired.sh

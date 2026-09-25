@@ -1,0 +1,20 @@
+name: F-PE-ZERO-WASTE01 H04 component cost
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_h04_component_cost.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h04_component_cost.sh'
+      - '.github/workflows/f-pe-zero-waste01-h04-component-cost.yml'
+  workflow_dispatch:
+
+jobs:
+  component-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure exact MvG component costs
+        run: bash tests/fpe/run_fpe_zero_waste01_h04_component_cost.sh

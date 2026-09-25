@@ -166,6 +166,8 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: dz(:)
     real(real64), allocatable :: node_distance(:)
     real(real64), allocatable :: cofgen(:,:)
+    logical :: prepared_default_mvg_available = .false.
+    type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
     integer :: swkmean = 1
@@ -334,7 +336,9 @@ module mod_fmr_serialized_reference_backend
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
+    type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
+    type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
@@ -353,6 +357,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
+    real(real64), pointer :: qrot_zero(:) => null()
+    real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
     integer :: swkmean = 1
@@ -373,6 +379,7 @@ module mod_fmr_serialized_reference_backend
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
+    logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
@@ -425,6 +432,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: storage => fmr_serialized_storage
     procedure :: storage_accounting_status => fmr_serialized_storage_accounting_status
     procedure :: temporal_error => fmr_serialized_temporal_identity
+    procedure :: attempt_context_required => fmr_serialized_attempt_context_required
     procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
     procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
     procedure :: accepted_trajectory_direction_snapshot => fmr_serialized_accepted_trajectory_direction_snapshot
@@ -457,6 +465,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: discard_trial_candidate => fmr_serialized_backend_discard_trial_candidate
   end type fmr_serialized_reference_backend_t
 
+  public :: prepare_fmr_b110_default_mvg
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
@@ -464,6 +473,58 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_boesten_evaporation_committed_state
 
 contains
+
+  subroutine prepare_fmr_b110_default_mvg(parameters, prepared)
+    type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
+    logical, intent(out) :: prepared
+    integer :: i
+
+    prepared = .false.
+    parameters%prepared_default_mvg_available = .false.
+    parameters%prepared_default_mvg = b110_default_mvg_parameters_t()
+
+    if (parameters%active_nodes <= 0) return
+    if (.not. allocated(parameters%cofgen)) return
+    if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
+
+    if (parameters%ksatexm_extension_active) then
+      do i = 1, parameters%active_nodes
+        if (parameters%cofgen(10,i) > parameters%cofgen(3,i)) then
+          if (.not. ieee_is_finite(parameters%cofgen(10,i)) .or. parameters%cofgen(10,i) <= 0.0_real64) return
+          if (.not. ieee_is_finite(parameters%cofgen(11,i)) .or. parameters%cofgen(11,i) < 0.0_real64 .or. &
+              parameters%cofgen(11,i) >= 1.0_real64) return
+          if (.not. ieee_is_finite(parameters%cofgen(12,i)) .or. parameters%cofgen(12,i) < 0.0_real64) return
+        end if
+      end do
+    end if
+
+    call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
+         enable_ksatexm_extension=parameters%ksatexm_extension_active)
+    parameters%prepared_default_mvg_available = .true.
+    prepared = .true.
+  end subroutine prepare_fmr_b110_default_mvg
+
+  logical function prepared_default_mvg_structurally_compatible(parameters) result(compatible)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    compatible = .false.
+    if (.not. parameters%prepared_default_mvg_available) return
+    if (.not. allocated(parameters%cofgen)) return
+    if (.not. allocated(parameters%prepared_default_mvg%cofgen)) return
+    if (parameters%active_nodes <= 0) return
+    if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
+    if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
+    if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
+    if (size(parameters%prepared_default_mvg%cofgen,1) /= 42) return
+    if (size(parameters%prepared_default_mvg%cofgen,2) /= parameters%active_nodes) return
+    compatible = .true.
+  end function prepared_default_mvg_structurally_compatible
+
+  logical function prepared_default_mvg_compatible(parameters) result(compatible)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    compatible = prepared_default_mvg_structurally_compatible(parameters)
+    if (.not. compatible) return
+    if (.not. all(parameters%prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:))) compatible = .false.
+  end function prepared_default_mvg_compatible
 
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
@@ -786,6 +847,9 @@ contains
     self%bottom_thermal_requested = .false.
     call configure_trajectory_direction(self%model%trajectory_direction, .false.)
     call self%model%bottom_thermal_carrier%clear()
+    self%model%trusted_prepared_default_mvg = .false.
+    nullify(self%model%trusted_parameter_source)
+    nullify(self%model%hydraulic_parameters)
     call self%bottom_thermal_candidate%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
@@ -1112,11 +1176,12 @@ contains
   end subroutine fmr_serialized_backend_run_reference_floor_sample
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
-                                               t0, t1, checkpoint, result, candidate, diagnostics)
+                                               t0, t1, checkpoint, result, candidate, diagnostics, &
+                                               trusted_prepared_parameters)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
-    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_parameters_t), target, intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed
     type(fmr_b110_physical_forcing_t), intent(in) :: forcing
     type(canonical_numerical_config_t), intent(in) :: config
@@ -1125,6 +1190,7 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
+    logical, intent(in), optional :: trusted_prepared_parameters
     logical :: bottom_thermal_ok, top_sensible_ok
 
     call self%bottom_thermal_candidate%clear()
@@ -1252,8 +1318,20 @@ contains
       self%model%top_sensible_boundary_carrier_active = top_sensible_ok
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
+    self%model%trusted_prepared_default_mvg = .false.
+    nullify(self%model%trusted_parameter_source)
+    if (present(trusted_prepared_parameters)) then
+      if (trusted_prepared_parameters .and. prepared_default_mvg_structurally_compatible(parameters)) then
+        self%model%trusted_prepared_default_mvg = .true.
+        self%model%trusted_parameter_source => parameters
+      end if
+    end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
+    if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
+    nullify(self%model%hydraulic_parameters)
+    nullify(self%model%trusted_parameter_source)
+    self%model%trusted_prepared_default_mvg = .false.
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
@@ -1294,6 +1372,14 @@ contains
     type(fmr_serialized_physical_observation_t) :: obs
     obs = self%model%last_observation
   end function fmr_serialized_backend_observation
+
+  logical function fmr_serialized_attempt_context_required(self) result(required)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+
+    required = self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+         self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
+         self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
+  end function fmr_serialized_attempt_context_required
 
   subroutine fmr_serialized_capture_attempt_context(self, context)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
@@ -1428,20 +1514,42 @@ contains
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
-      if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
-      if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
-      if (associated(self%constitutive)) deallocate(self%constitutive)
-      if (associated(self%source_sink)) deallocate(self%source_sink)
-      if (associated(self%root_sink)) deallocate(self%root_sink)
-      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
+      if (.not. associated(self%soil_parameters)) allocate(self%soil_parameters)
+      if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
+      nullify(self%hydraulic_parameters)
+      if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%source_sink)) allocate(self%source_sink)
+      if (.not. associated(self%root_sink)) allocate(self%root_sink)
+
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
-      allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
+      if (allocated(self%soil_parameters%z)) then
+        if (size(self%soil_parameters%z) /= n) deallocate(self%soil_parameters%z)
+      end if
+      if (allocated(self%soil_parameters%dz)) then
+        if (size(self%soil_parameters%dz) /= n) deallocate(self%soil_parameters%dz)
+      end if
+      if (allocated(self%soil_parameters%node_distance)) then
+        if (size(self%soil_parameters%node_distance) /= n) deallocate(self%soil_parameters%node_distance)
+      end if
+      if (.not. allocated(self%soil_parameters%z)) allocate(self%soil_parameters%z(n))
+      if (.not. allocated(self%soil_parameters%dz)) allocate(self%soil_parameters%dz(n))
+      if (.not. allocated(self%soil_parameters%node_distance)) allocate(self%soil_parameters%node_distance(n))
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
-      call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
-           enable_ksatexm_extension=parameters%ksatexm_extension_active)
+      if (self%trusted_prepared_default_mvg .and. associated(self%trusted_parameter_source) .and. &
+          prepared_default_mvg_structurally_compatible(parameters)) then
+        self%hydraulic_parameters => self%trusted_parameter_source%prepared_default_mvg
+      else
+        if (prepared_default_mvg_compatible(parameters)) then
+          self%owned_hydraulic_parameters = parameters%prepared_default_mvg
+        else
+          call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
+               enable_ksatexm_extension=parameters%ksatexm_extension_active)
+        end if
+        self%hydraulic_parameters => self%owned_hydraulic_parameters
+      end if
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
@@ -1495,8 +1603,6 @@ contains
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
     self%drainage_response_window_signed_exchange_native = 0.0_real64
-    if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
-    if (allocated(self%legacy_swbotb2_control)) deallocate(self%legacy_swbotb2_control)
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
@@ -1559,8 +1665,10 @@ contains
       if (allocated(forcing%legacy_swbotb2_control)) then
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
         if (.not. forcing%legacy_swbotb2_control%ready()) return
-        allocate(self%legacy_swbotb2_control)
+        if (.not. allocated(self%legacy_swbotb2_control)) allocate(self%legacy_swbotb2_control)
         self%legacy_swbotb2_control = forcing%legacy_swbotb2_control
+      else if (allocated(self%legacy_swbotb2_control)) then
+        deallocate(self%legacy_swbotb2_control)
       end if
       if (self%snow_active) then
         if (.not. self%snow_event_prepared .or. .not. allocated(forcing%snow)) return
@@ -1568,13 +1676,13 @@ contains
       else
         if (allocated(forcing%snow)) return
       end if
-      if (allocated(self%soil_temperature_forcing)) deallocate(self%soil_temperature_forcing)
       if (self%soil_temperature_active) then
         if (.not. allocated(forcing%soil_temperature)) return
-        allocate(self%soil_temperature_forcing)
+        if (.not. allocated(self%soil_temperature_forcing)) allocate(self%soil_temperature_forcing)
         self%soil_temperature_forcing = forcing%soil_temperature
       else
         if (allocated(forcing%soil_temperature)) return
+        if (allocated(self%soil_temperature_forcing)) deallocate(self%soil_temperature_forcing)
       end if
 
       self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
@@ -1626,21 +1734,60 @@ contains
         if (allocated(forcing%boesten_evaporation)) return
       end if
 
-      if (associated(self%qdra)) deallocate(self%qdra)
-      if (associated(self%qssdi)) deallocate(self%qssdi)
-      if (associated(self%qrot)) deallocate(self%qrot)
       if (self%drainage_response_active) then
-        allocate(self%qdra(size(self%drainage_response_levels),n))
+        if (associated(self%qdra)) then
+          if (size(self%qdra,1) /= size(self%drainage_response_levels) .or. size(self%qdra,2) /= n) then
+            deallocate(self%qdra)
+          end if
+        end if
+        if (.not. associated(self%qdra)) allocate(self%qdra(size(self%drainage_response_levels),n))
         self%qdra = 0.0_real64
-        allocate(self%drainage_response_controls(size(forcing%drainage_response_controls)))
+        if (allocated(self%drainage_response_controls)) then
+          if (size(self%drainage_response_controls) /= size(forcing%drainage_response_controls)) &
+               deallocate(self%drainage_response_controls)
+        end if
+        if (.not. allocated(self%drainage_response_controls)) &
+             allocate(self%drainage_response_controls(size(forcing%drainage_response_controls)))
         self%drainage_response_controls = forcing%drainage_response_controls
       else
-        allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
+        if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
+        if (associated(self%qdra)) then
+          if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n) then
+            deallocate(self%qdra)
+          end if
+        end if
+        if (.not. associated(self%qdra)) allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
         self%qdra = forcing%drainage_flux_by_level
       end if
-      allocate(self%qssdi(n), self%qrot(n))
+
+      if (associated(self%qssdi)) then
+        if (size(self%qssdi) /= n) deallocate(self%qssdi)
+      end if
+      if (.not. associated(self%qssdi)) allocate(self%qssdi(n))
+
+      if (associated(self%qrot)) then
+        if (size(self%qrot) /= n) deallocate(self%qrot)
+      end if
+      if (.not. associated(self%qrot)) allocate(self%qrot(n))
+
+      if (associated(self%qrot_zero)) then
+        if (size(self%qrot_zero) /= n) deallocate(self%qrot_zero)
+      end if
+      if (.not. associated(self%qrot_zero)) allocate(self%qrot_zero(n))
+
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
+      self%qrot_zero = 0.0_real64
+
+      if (self%drainage_qbot_smooth_freatic_projection) then
+        if (allocated(self%projection_zero_direction)) then
+          if (size(self%projection_zero_direction) /= n) deallocate(self%projection_zero_direction)
+        end if
+        if (.not. allocated(self%projection_zero_direction)) allocate(self%projection_zero_direction(n))
+        self%projection_zero_direction = 0.0_real64
+      else if (allocated(self%projection_zero_direction)) then
+        deallocate(self%projection_zero_direction)
+      end if
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
@@ -1812,8 +1959,7 @@ contains
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
     type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
-    real(real64), allocatable, target :: source_sink_root_zero(:)
-    real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
+    real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: step_drainage_exchange
@@ -2032,10 +2178,10 @@ contains
 
     if (self%drainage_response_active) then
       if (self%drainage_qbot_smooth_freatic_projection) then
-        allocate(projection_zero_direction(hydraulic_start%active_nodes))
-        projection_zero_direction = 0.0_real64
+        if (.not. allocated(self%projection_zero_direction) .or. &
+            size(self%projection_zero_direction) /= hydraulic_start%active_nodes) return
         call evaluate_b110_smooth_freatic_projection(self%bottom_mode, .false., self%soil_parameters%z, &
-             self%soil_parameters%node_distance, hydraulic_start%pressure_head, projection_zero_direction, &
+             self%soil_parameters%node_distance, hydraulic_start%pressure_head, self%projection_zero_direction, &
              projected_groundwater_level, ignored_groundwater_direction, projection_diagnostics)
         if (projection_diagnostics%status /= B110_GWL_PROJECTION_OK .or. &
             .not. projection_diagnostics%value_defined) return
@@ -2053,9 +2199,8 @@ contains
     end if
 
     if (self%root_extraction_active) then
-      allocate(source_sink_root_zero(size(self%qrot)))
-      source_sink_root_zero = 0.0_real64
-      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, source_sink_root_zero)
+      if (.not. associated(self%qrot_zero) .or. size(self%qrot_zero) /= size(self%qrot)) return
+      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot_zero)
       call bind_b110_root_sink_provider(self%root_sink, self%qrot)
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
@@ -2100,8 +2245,7 @@ contains
            drainage_groundwater_direction, drainage_direction_status, drainage_direction_route)
       drainage_direction_available = drainage_direction_status == FMR_QBOT_DRAIN_DIRECTION_OK
       if (drainage_direction_available) then
-        allocate(direction_request%incoming_sink_direction(size(drainage_sink_direction)))
-        direction_request%incoming_sink_direction = drainage_sink_direction
+        call move_alloc(drainage_sink_direction, direction_request%incoming_sink_direction)
       end if
     end if
 

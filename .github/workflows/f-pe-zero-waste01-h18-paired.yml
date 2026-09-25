@@ -1,0 +1,21 @@
+name: F-PE-ZERO-WASTE01 H18 isolated paired
+
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_h18_paired.sh'
+      - 'tests/fpe/run_fpe_zero_waste01_paired_runtime.sh'
+      - '.github/workflows/f-pe-zero-waste01-h18-paired.yml'
+  workflow_dispatch:
+
+jobs:
+  h18-paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Isolate Reference state-binding capacity reuse
+        run: bash tests/fpe/run_fpe_zero_waste01_h18_paired.sh

@@ -5,10 +5,11 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
+       fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, prepare_fmr_b110_default_mvg
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
+       FMR_APP_BOOT_RUNTIME_FAILED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -32,8 +33,9 @@ program test_ppa_wu01_production_application_bootstrap
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config
-  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
+  type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config, &
+       registry_bad_config
+  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app, registry_bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
@@ -45,10 +47,30 @@ program test_ppa_wu01_production_application_bootstrap
   integer :: i, status, topology_status
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
+  type(fmr_b110_physical_parameters_t) :: prepared_parameters
+  type(b110_default_mvg_parameters_t) :: direct_hydraulic
+  logical :: prepared_ok
 
   ! Standalone authority: use the already-qualified serialized Reference
   ! profile rather than inventing a new mode-5 standalone trajectory.
   call initialize_application_config(config)
+
+  prepared_parameters = config%tiles(1)%parameters
+  call prepare_fmr_b110_default_mvg(prepared_parameters, prepared_ok)
+  call require(prepared_ok .and. prepared_parameters%prepared_default_mvg_available, &
+       'prepared default MvG available')
+  call initialize_b110_default_mvg_parameters(direct_hydraulic, config%tiles(1)%parameters%cofgen, &
+       enable_ksatexm_extension=config%tiles(1)%parameters%ksatexm_extension_active)
+  call require(prepared_parameters%prepared_default_mvg%active_nodes == direct_hydraulic%active_nodes, &
+       'prepared default MvG node identity')
+  call require(prepared_parameters%prepared_default_mvg%ksatexm_extension_enabled .eqv. &
+       direct_hydraulic%ksatexm_extension_enabled, 'prepared default MvG KSATEXM identity')
+  call require(allocated(prepared_parameters%prepared_default_mvg%cofgen) .and. allocated(direct_hydraulic%cofgen), &
+       'prepared default MvG arrays allocated')
+  call require(all(prepared_parameters%prepared_default_mvg%cofgen == direct_hydraulic%cofgen), &
+       'prepared default MvG exact matrix identity')
+  print '(a)', 'FPE_ZERO_WASTE01_PREPARED_MVG_EXACT_IDENTITY=PASS'
+
   call app%initialize(config, status)
   call require(status == FMR_APP_BOOT_OK, 'standalone production bootstrap initialize')
   call require(app%ready(), 'standalone production bootstrap ready')
@@ -155,6 +177,20 @@ program test_ppa_wu01_production_application_bootstrap
   call require(c_status /= 0_c_int, 'released context handle fails closed')
   call gw_app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. gw_app%ready(), 'clean groundwater owner close')
+
+  ! H-PLAN01 preserves historical failure timing for structurally invalid registries.
+  registry_bad_config = config
+  registry_bad_config%tiles(2)%template%template_id = registry_bad_config%tiles(1)%template%template_id
+  call registry_bad_app%initialize(registry_bad_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. registry_bad_app%ready(), &
+       'invalid structural registry preserves bootstrap initialization semantics')
+  call registry_bad_app%run_standalone(T0, T1, results, status)
+  call require(status == FMR_APP_BOOT_RUNTIME_FAILED, &
+       'invalid structural registry remains fail-closed at serialized dispatch')
+  call registry_bad_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. registry_bad_app%ready(), &
+       'invalid structural registry owner closes cleanly')
+  print '(a)', 'FPE_ZERO_WASTE01_PLAN_FALLBACK_FAILURE_TIMING=PASS'
 
   bad_config = config
   bad_config%tiles(1)%parameters%bottom_mode = 6

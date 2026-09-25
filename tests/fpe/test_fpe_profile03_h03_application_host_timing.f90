@@ -40,12 +40,22 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   real(real64) :: k0, qeq, elapsed_seconds, checksum
   integer(int64) :: clock_start, clock_end, clock_rate
   integer :: calls, warmups, i
-  character(len=64) :: arg
-  logical :: ok, available_off, available_on
+  character(len=64) :: arg, timing_mode
+  logical :: ok, available_off, available_on, timing_directional, skip_workspace_reset_observation
 
   call get_command_argument(1, arg)
   read(arg,*) calls
   if (calls <= 0) error stop 'PROFILE03 invalid call count'
+  timing_directional = .false.
+  skip_workspace_reset_observation = .false.
+  if (command_argument_count() >= 2) then
+    call get_command_argument(2, timing_mode)
+    timing_directional = trim(timing_mode) == 'directional'
+  end if
+  if (command_argument_count() >= 3) then
+    call get_command_argument(3, arg)
+    skip_workspace_reset_observation = trim(arg) == 'zero-waste-paired'
+  end if
 
   call initialize_parameters(parameters)
   call determine_initial_conductivity(parameters, k0)
@@ -68,30 +78,56 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   call backend_on%initialize(top)
 
   warmups = min(100, max(10, calls/100))
-  do i = 1, warmups
-    call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
-         0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
-  end do
+  if (timing_directional) then
+    do i = 1, warmups
+      call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
+           0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+    end do
+  else
+    do i = 1, warmups
+      call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
+           0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
+    end do
+  end if
 
   checksum = 0.0_real64
   call system_clock(clock_start, clock_rate)
-  do i = 1, calls
-    call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
-         0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
-    checksum = checksum + result_off%mass%storage_end + result_off%mass%residual
-  end do
+  if (timing_directional) then
+    do i = 1, calls
+      call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
+           0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+      checksum = checksum + result_on%mass%storage_end + result_on%mass%residual
+    end do
+    observation_off = backend_on%observation()
+  else
+    do i = 1, calls
+      call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
+           0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
+      checksum = checksum + result_off%mass%storage_end + result_off%mass%residual
+    end do
+    observation_off = backend_off%observation()
+  end if
   call system_clock(clock_end)
   elapsed_seconds = real(clock_end-clock_start,real64)/real(clock_rate,real64)
-  observation_off = backend_off%observation()
 
-  call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
-       0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  if (timing_directional) then
+    call backend_off%run_trial(column, template, parameters, committed_off, forcing, config_off, &
+         0.0_real64, duration, checkpoint_off, result_off, candidate_off, diagnostics_off)
+  else
+    call backend_on%run_trial(column, template, parameters, committed_on, forcing, config_on, &
+         0.0_real64, duration, checkpoint_on, result_on, candidate_on, diagnostics_on)
+  end if
 
   write(*,'(A,I0,A,ES24.16,A,ES24.16,A,I0,A,I0,A,ES24.16)') &
        'PROFILE03_E1_TIMING,calls=',calls,',seconds=',elapsed_seconds,',ns_per_interval=', &
        1.0e9_real64*elapsed_seconds/real(calls,real64),',nonlinear_iterations_per_solve=', &
        observation_off%solver_diagnostics%nonlinear_iterations,',constitutive_evaluations_per_solve=', &
        observation_off%solver_diagnostics%constitutive_evaluations,',checksum=',checksum
+  if (timing_directional) then
+    write(*,'(A)') 'PROFILE03_E1_TIMING_MODE=directional'
+  else
+    write(*,'(A)') 'PROFILE03_E1_TIMING_MODE=reference'
+  end if
 
   call require(result_off%status == CANONICAL_STATUS_COMPLETED .and. result_off%completed, &
        'default-off production interval completed')
@@ -162,25 +198,41 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        'rejected full-trial tangent work absent from publication')
   write(*,'(A)') 'FKT22_FMR_REJECTED_TRIAL_ISOLATION=PASS'
 
-  call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
-       'reference solve performs three full workspace resets on current path')
-  call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
-       'workspace reset observer records positive zeroed byte volume')
+  if (.not. skip_workspace_reset_observation) then
+    call require(observation_off%solver_diagnostics%workspace_full_resets == 3, &
+         'reference solve performs three full workspace resets on current path')
+    call require(observation_off%solver_diagnostics%workspace_zeroed_bytes > 0_int64, &
+         'workspace reset observer records positive zeroed byte volume')
+  end if
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_SOLVE=', &
        observation_off%solver_diagnostics%workspace_zeroed_bytes
-  write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  if (skip_workspace_reset_observation) then
+    write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=SKIPPED_ZERO_WASTE_PAIRED'
+  else
+    write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
+  end if
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_INITIAL_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_initial_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_CAPACITY_REUSES_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
-  call require(diagnostics_off%workspace_full_resets == 9, &
-       'external full-half interval aggregates three resets across three Reference solves')
-  call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
-       observation_off%solver_diagnostics%workspace_zeroed_bytes, &
-       'interval reset bytes equal three Reference-solve reset payloads')
+  if (.not. skip_workspace_reset_observation) then
+    call require(diagnostics_off%workspace_full_resets == 9, &
+         'external full-half interval aggregates three resets across three Reference solves')
+    call require(diagnostics_off%workspace_zeroed_bytes == 3_int64 * &
+         observation_off%solver_diagnostics%workspace_zeroed_bytes, &
+         'interval reset bytes equal three Reference-solve reset payloads')
+  end if
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_FULL_RESETS_PER_INTERVAL=', diagnostics_off%workspace_full_resets
   write(*,'(A,I0)') 'FKT22_FMR_WORKSPACE_ZEROED_BYTES_PER_INTERVAL=', diagnostics_off%workspace_zeroed_bytes
 

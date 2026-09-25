@@ -1,0 +1,30 @@
+name: F-PE-ZERO-WASTE01 H22B borrowed binding
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
+      - 'docs/performance/F-PE-ZERO-WASTE01_H22B_BORROWED_PREPARED_BINDING.md'
+      - '.github/workflows/f-pe-zero-waste01-h22b-borrowed-binding.yml'
+  workflow_dispatch:
+
+jobs:
+  h22b-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: FKT22 borrowed-binding identity
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+      - name: Production bootstrap owner gate
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+      - name: Groundwater Python dependency
+        run: python3 -m pip install numpy
+      - name: Groundwater production context gate
+        run: bash tests/fgc/run_fgc49d_production_application_context.sh

@@ -1,0 +1,18 @@
+name: F-PE-ZERO-WASTE01 HDIR04 copy cost
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_zero_waste01_hdir04_copy_cost.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_hdir04_copy_cost.sh'
+      - '.github/workflows/f-pe-zero-waste01-hdir04-copy-cost.yml'
+  workflow_dispatch:
+
+jobs:
+  copy-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure trajectory vector ownership costs
+        run: bash tests/fpe/run_fpe_zero_waste01_hdir04_copy_cost.sh

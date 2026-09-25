@@ -1,0 +1,56 @@
+name: F-PE-ZERO-WASTE01 GWALLOC01 measurement
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_tile_aggregation.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_gwalloc01.f90'
+      - '.github/workflows/f-pe-zero-waste01-gwalloc01.yml'
+  workflow_dispatch:
+
+jobs:
+  gwalloc01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile measurement
+        run: |
+          mkdir -p /tmp/gwalloc01
+          gfortran -std=f2008 -O2 -J/tmp/gwalloc01 -I/tmp/gwalloc01 \
+            src/runtime/mod_groundwater_tile_aggregation.f90 \
+            tests/fpe/test_fpe_zero_waste01_gwalloc01.f90 \
+            -o /tmp/gwalloc01/test
+      - name: Measure per-cell allocation structure
+        run: |
+          set -euo pipefail
+          : > /tmp/gwalloc01/out.txt
+          for ntile in 1 4; do
+            for ncell in 100 1000 10000; do
+              repeats=$((2000000 / ncell))
+              if (( repeats < 20 )); then repeats=20; fi
+              /tmp/gwalloc01/test "$ncell" "$ntile" "$repeats" | tee -a /tmp/gwalloc01/out.txt
+            done
+          done
+          python3 - /tmp/gwalloc01/out.txt <<'PY'
+          import re,sys
+          rows=[]
+          for line in open(sys.argv[1]):
+              if not line.startswith("GWALLOC01,"):
+                  continue
+              def v(name):
+                  m=re.search(rf"{name}=\s*([^,]+)",line)
+                  if not m: raise SystemExit(f"missing {name}: {line}")
+                  return m.group(1).strip()
+              row=(int(v("ncell")),int(v("ntile")),float(v("old_seconds")),float(v("reuse_seconds")),float(v("ratio")))
+              rows.append(row)
+              print("GWALLOC01_OBSERVATION",*row)
+          if len(rows) != 6:
+              raise SystemExit(f"expected six observations, got {len(rows)}")
+          if not all(r[2] > 0 and r[3] > 0 for r in rows):
+              raise SystemExit("non-positive timing")
+          if not any(r[0] == 10000 and r[4] < 1.0 for r in rows):
+              raise SystemExit("large-N scratch reuse showed no positive observation")
+          print("FPE_ZERO_WASTE01_GWALLOC01_MEASUREMENT=PASS")
+          PY

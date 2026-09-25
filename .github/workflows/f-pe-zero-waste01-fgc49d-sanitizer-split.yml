@@ -1,0 +1,27 @@
+name: F-PE-ZERO-WASTE01 FGC49D sanitizer split
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh'
+      - '.github/workflows/f-pe-zero-waste01-fgc49d-sanitizer-split.yml'
+  workflow_dispatch:
+
+jobs:
+  split:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [address, undefined]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python test dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-numpy
+      - name: Run sanitizer mode
+        env:
+          FGC49D_SANITIZER_MODE: ${{ matrix.mode }}
+        run: bash tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh
