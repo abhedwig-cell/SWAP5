@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41",
+  "title": "Prescribed-qbot Richards falsification",
+  "parent": "F-AHL40",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Can the derivative-consistent adaptive hydraulic representation preserve the authoritative Richards response under a prescribed bottom-flux boundary, where bottom pressure head is an emergent state rather than a prescribed boundary value?",
+  "authority": {
+    "typed_bottom_mode": 2,
+    "native_qbot_sign": "qbot > 0 enters the soil profile; qbot < 0 leaves the profile",
+    "source_binding": "F-SI27 / PPA-WU02 typed prescribed-qbot semantics",
+    "production_status": "mode 2 exists canonically, but adaptive hydraulics remain analytically fallback-bound for prescribed qbot; F-AHL41 is research only"
+  },
+  "materials": ["B01","B12","O05","O14"],
+  "initial_head_regimes_cm": [
+    {"id":"wet","h0":-10.0},
+    {"id":"mid","h0":-75.0},
+    {"id":"dry","h0":-500.0}
+  ],
+  "bottom_flux_controls": [
+    {"id":"zero","qbot_over_initial_K":0.0},
+    {"id":"in","qbot_over_initial_K":0.25},
+    {"id":"out","qbot_over_initial_K":-0.25}
+  ],
+  "case_count": 36,
+  "top_boundary": "fixed top flux equal to negative authoritative initial K, identical between analytical and adaptive arms",
+  "step_duration_day": 0.25,
+  "representation": "current derivative-consistent adaptive B1.10 representation with raw-C 1e-13 dry relevance bound and analytical fallback outside represented domain",
+  "gates_per_case": {
+    "both_converged": true,
+    "same_nonlinear_iteration_count": true,
+    "same_backtracking_count": true,
+    "max_abs_profile_pressure_head_delta_cm": 0.05,
+    "bottom_node_pressure_head_delta_cm": 0.02,
+    "max_abs_water_content_delta": 1e-4,
+    "realized_bottom_flux_delta_cm_per_day": 1e-10,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "diagnostic_outputs": [
+    "analytical and adaptive bottom-node pressure heads",
+    "bottom-node head delta",
+    "iteration/backtracking counts",
+    "realized bottom flux",
+    "case-specific K0 and prescribed qbot"
+  ],
+  "decision_rule": "Do not broaden adaptive-hydraulic boundary qualification unless all 36 prospectively defined cases pass. Any failure is classified by material, moisture regime, flux direction and observable. Gates are not retuned.",
+  "hard_exclusions": [
+    "NO_MODFLOW_COUPLING_CLAIM",
+    "NO_SURFACE_BOUNDARY_REDESIGN",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_PERFORMANCE_TIMING_UNLESS_FIDELITY_MATRIX_PASSES",
+    "NO_POSTHOC_GATE_RETUNING"
+  ]
+}
