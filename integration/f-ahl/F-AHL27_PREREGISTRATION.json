@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "title": "Default-MvG production implementation and admission",
+  "branch": "work/f-ahl27-production-admission",
+  "phase": "PREREGISTERED_PRODUCTION_ADMISSION",
+  "objective": "Implement the already-qualified default-MvG self-building derivative-consistent hydraulic representation behind production typed contracts without changing authoritative hydraulic physics or solver ownership.",
+  "stages": [
+    "P1 port production representation/builder/cache types from research authority with explicit policy constants",
+    "P2 bind provider selection only inside the qualified default-MvG prescribed-head-like envelope",
+    "P3 add fail-closed analytical fallback for qbot, unsupported families, near-saturation and outside represented dry domain",
+    "P4 reproduce research constitutive, cache and 12-case Richards gates from production source paths",
+    "P5 run accepted-trajectory/application regression and canonical CI",
+    "P6 measure whole-application timing separately from Richards micro/fixture timing",
+    "P7 admit only after evidence bundle and governance review"
+  ],
+  "frozen_numerical_principles": {
+    "theta_C_derivative_consistency_required": true,
+    "runtime_table_refinement": false,
+    "external_table_input": false,
+    "cache_identity": "exact initialized authority coefficients + family id + representation policy version + branch policy version",
+    "dry_relevance_quantity": "raw authoritative C=dtheta/dh",
+    "dry_relevance_threshold": 1e-13,
+    "dry_tail_semantics": "analytical fallback, never constant extrapolation or zeroing"
+  },
+  "hard_exclusions": [
+    "NO_NEW_PHYSICS",
+    "NO_GATE_RETUNING",
+    "NO_QBOT_ACCELERATION",
+    "NO_MODEL3_OR_PDI_PRODUCTION_PORT_IN_STAGE1",
+    "NO_VAPOR_REPAIR",
+    "NO_SWKIMPL1_DKDH_ACCELERATION",
+    "NO_WHOLE_SWAP_SPEED_CLAIM_FROM_RICHARDS_FIXTURES"
+  ]
+}
