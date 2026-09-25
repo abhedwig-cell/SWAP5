@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42A",
+  "title": "Canonical admission dry-side conductivity floor repair",
+  "parent": "F-AHL42",
+  "branch": "work/f-ahl42-canonical-admission",
+  "phase": "PREREGISTERED_REPAIR",
+  "problem": "The production-shaped builder uses K_FLOOR=1e-10 both in the K error metric and when storing log(K). For represented very-dry O05 states this can replace authoritative conductivities near 1e-22 cm/day by an artificial 1e-10 lookup value.",
+  "authority": {
+    "dry_relevance_rule": "raw C=1e-13 bounds adaptive support; outside the table use authoritative analytical fallback",
+    "conductivity_semantics": "No physical K truncation is admitted inside the represented domain.",
+    "O05_probe_head_cm": -200000.0,
+    "O05_authoritative_K_order_cm_per_day": "approximately 3e-22"
+  },
+  "repair": {
+    "separate_error_floor_from_stored_value": true,
+    "K_error_floor": 1e-10,
+    "stored_logK": "log(max(authoritative_K,tiny(real64)))",
+    "physics_change": false,
+    "refinement_policy_change": false
+  },
+  "prospective_checks": [
+    "O05 h=-2e5 cm remains inside the adaptive representation",
+    "adaptive K at h=-2e5 is not clamped to 1e-10",
+    "adaptive K remains positive and in the authoritative very-dry magnitude range",
+    "O05 h=-5e5 cm remains analytical fallback and matches authoritative theta/C/K",
+    "F-AHL42 bounded admission workflow remains PASS",
+    "prescribed-head 12-case matrix remains PASS",
+    "prescribed-qbot remains analytical fallback with zero adaptive cache activity"
+  ],
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_CHANGE_TO_C_1E13_RELEVANCE_BOUND",
+    "NO_ZEROING_OR_CONSTANT_DRY_TAIL",
+    "NO_DEFAULT_ON_CHANGE",
+    "NO_CANONICAL_ADMISSION_FROM_REPAIR_ALONE"
+  ]
+}
