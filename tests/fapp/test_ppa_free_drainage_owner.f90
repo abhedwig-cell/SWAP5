@@ -155,6 +155,10 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
+    use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
+    use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+    use mod_transaction_reference, only: transaction_state_t
     use mod_irrigation_process
     use mod_ppa_irr_dcs1_composition, only: evaluate_profile_scheduled_irrigation
     use mod_process_hydraulic_view, only: process_hydraulic_view_t
@@ -164,6 +168,10 @@ contains
     type(fmr_committed_restart_bundle_t)::bundle
     integer::code,tile
     logical::ok
+    logical::history_available,clone_history_available
+    type(ppa_irrigation_event_state_t)::carrier
+    class(transaction_state_t),allocatable::carrier_copy
+    real(real64),allocatable::history(:),clone_history(:)
     type(scheduled_irrigation_parameters_t)::irrigation
     type(scheduled_irrigation_request_t)::request
     type(irrigation_state_t)::base,candidate
@@ -194,6 +202,43 @@ contains
     end do
     call owner%export_committed_restart(92001_int64,bundle,ok,code)
     if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'hydraulic copy export'
+    select type(physical=>bundle%records(1)%physical_state)
+    type is(fmr_b110_temporal_indicator_state_t)
+      carrier%fmr_b110_temporal_indicator_state_t=physical
+    class default
+      error stop 'irrigation carrier requires temporal history'
+    end select
+    carrier%irrigation%active_event=.true.
+    carrier%irrigation%active_event_origin=IRRIGATION_EVENT_SCHEDULED
+    carrier%irrigation%active_event_start=T0
+    carrier%irrigation%active_event_end=T0+0.5_real64
+    carrier%irrigation%active_event_rate=0.01_real64
+    call carrier%clone(carrier_copy)
+    select type(cloned=>carrier_copy)
+    type is(ppa_irrigation_event_state_t)
+      if(.not.cloned%irrigation%active_event) error stop 'carrier clone lost event'
+      if(cloned%irrigation%active_event_origin/=IRRIGATION_EVENT_SCHEDULED) error stop 'carrier clone lost origin'
+      if(abs(cloned%irrigation%active_event_rate-0.01_real64)>0.0_real64.or. &
+           abs(cloned%irrigation%active_event_start-T0)>0.0_real64.or. &
+           abs(cloned%irrigation%active_event_end-(T0+0.5_real64))>0.0_real64) error stop 'carrier clone event values'
+      call carrier%temporal_history_snapshot(history,history_available)
+      call cloned%temporal_history_snapshot(clone_history,clone_history_available)
+      if(.not.history_available.or..not.clone_history_available) error stop 'carrier clone history missing'
+      if(size(history)/=size(clone_history)) error stop 'carrier clone history shape'
+      if(any(abs(history-clone_history)>0.0_real64)) error stop 'carrier clone history changed'
+      if(any(abs(cloned%water_content-carrier%water_content)>0.0_real64).or. &
+           any(abs(cloned%pressure_head-carrier%pressure_head)>0.0_real64)) error stop 'carrier clone physical fields'
+      cloned%water_content=-1.0_real64
+      cloned%irrigation%active_event_rate=99.0_real64
+      if(any(abs(carrier%water_content-profile%tiles(1)%initial_state%water_content)>0.0_real64)) &
+           error stop 'carrier clone aliases original'
+      if(abs(carrier%irrigation%active_event_rate-0.01_real64)>0.0_real64) error stop 'carrier event aliases original'
+    class default
+      error stop 'carrier clone sliced dynamic type'
+    end select
+    if(fmr_restart_state_matches_template(carrier,profile%tiles(1)%template)) &
+         error stop 'unregistered carrier admitted as BASE'
+    write(*,'(a)') 'PPA_IRR_EVENT_CARRIER_CLONE_BASE_REJECTION=PASS'
     copied(1)%water_content=-99.0_real64
     copied(1)%pressure_head_cm=99.0_real64
     call owner%copy_committed_hydraulic_states(again,code)
