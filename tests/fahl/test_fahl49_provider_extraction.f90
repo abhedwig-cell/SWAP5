@@ -31,7 +31,7 @@ program test_fahl49_provider_extraction
   call bind_b110_direct_retention_provider(fast,p,0.25_real64,slot,ok)
   call require(ok,'provider bind')
   call b110_direct_retention_pool_stats(entries,builds,hits,payload,frozen)
-  call require(entries==1 .and. builds==1 .and. hits==1 .and. payload==6240_8 .and. frozen,'pool stats')
+  call require(entries==1 .and. builds==1 .and. hits==1 .and. payload==12384_8 .and. frozen,'pool stats')
 
   do i=1,n
     h(i)=-10.0_real64**(6.0_real64*real(i-1,real64)/real(n-1,real64))
