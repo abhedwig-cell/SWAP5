@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "CANONICAL_GOVERNANCE_HANDOFF",
+  "status": "READY_FOR_MINIMAL_PATCH_EXTRACTION",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "reviewed_research_state": "c314d0f72f5014d69de86495ac08cc6545ef6bb4",
+  "research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "central_result": "Auto-generated derivative-consistent hydraulic representations are technically qualified as an explicit opt-in for bounded prescribed-head-like Reference Richards execution. Retention and capacity are one mathematical object; conductivity is represented independently; unsupported modes fall back to authoritative analytical hydraulics.",
+  "minimal_production_shaped_candidate_files": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "required_governance_action": [
+    "Extract and review only the production-shaped delta and its transitive compile dependencies.",
+    "Do not merge the research branch wholesale.",
+    "Verify default-off behavior and explicit opt-in routing against canonical.",
+    "Retain prescribed-qbot analytical fallback.",
+    "Retain near-saturation and dry-domain analytical fallbacks.",
+    "Re-run the minimal retained regression set after rebasing/extracting onto canonical."
+  ],
+  "selected_architecture": {
+    "retention_capacity": "family-valid transformed cubic-Hermite representation; C is derived by differentiating the same interpolant",
+    "conductivity": "independently controlled log(K) representation with family-specific gates",
+    "default_MvG_global_abs_logK_tolerance": 0.0003,
+    "near_saturation": "authoritative analytical handling above the represented core",
+    "dry_domain": {
+      "relevance_quantity": "raw C=dtheta/dh",
+      "relevance_floor": 1e-13,
+      "meaning": "representation lower bound only",
+      "outside_domain": "authoritative analytical fallback",
+      "physics_truncated": false
+    },
+    "runtime_refinement": false,
+    "external_user_tables": false,
+    "cache": "finite non-evicting exact-key registry with stable integer slot handles and valid uncached overflow fallback"
+  },
+  "retained_core_evidence": [
+    "integration/f-ahl/F-AHL09R_RESULT.json",
+    "integration/f-ahl/F-AHL10_RESULT.json",
+    "integration/f-ahl/F-AHL25_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL26_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL27_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL27_DRY_DOMAIN_AUTHORITY.json",
+    "integration/f-ahl/F-AHL28B_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL32_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL38_RESULT.json",
+    "integration/f-ahl/F-AHL40_RESULT.json",
+    "integration/f-ahl/F-AHL40R_RESULT.json",
+    "integration/f-ahl/F-AHL41_CLOSEOUT.json",
+    "integration/f-ahl/F-AHL_POST40_CLOSEOUT.json"
+  ],
+  "bounded_performance_evidence": {
+    "strict_default_MvG_Richards_cpu_reduction_fraction_range": [0.205364, 0.24229],
+    "serialized_reference_floor_post_memoization_reduction_fraction": 0.066145,
+    "serialized_16_authority_reconciled_reduction_fraction_range": [0.029188, 0.045454],
+    "interpretation": "These are bounded workload results. Do not translate them into a whole-SWAP or national MultiSWAP speed claim."
+  },
+  "explicit_exclusions": [
+    "prescribed-qbot adaptive hydraulics",
+    "accepted-trajectory directional adaptive hydraulics",
+    "SWKIMPL=1/dKdh adaptive extension",
+    "vapor-enabled PDI acceleration",
+    "parallel/thread-safety claims",
+    "whole-SWAP or national MultiSWAP performance claims",
+    "research/ahl prototypes and one-off workflows unless governance explicitly retains them as evidence"
+  ],
+  "prescribed_qbot_closeout": {
+    "current_provider_result": "near-zero physical difference but nonlinear-path identity fails",
+    "attribution": "retention/capacity controlled; exact retention+capacity restores analytical path, exact K does not",
+    "decision": "keep fully analytical authoritative hydraulics"
+  },
+  "canonical_admission_gate": "No production admission is granted by this handoff. Canonical governance must independently review the minimal source delta, retained evidence and rebase effects before admission."
+}
