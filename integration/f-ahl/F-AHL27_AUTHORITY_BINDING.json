@@ -13,7 +13,7 @@
     "retention_capacity": "auto-generated derivative-consistent representation; theta and C from the same interpolant",
     "conductivity": "independently error-controlled log(K) representation",
     "near_saturation": "authoritative analytical handling",
-    "dry_tail": "material-specific represented-domain bound; authoritative analytical fallback beyond it",
+    "dry_tail": "nominal qualified lookup domain to -1e6 cm; authoritative analytical fallback outside that domain",
     "runtime_refinement": false,
     "external_user_table": false,
     "cache": "immutable exact-key internal cache"
@@ -27,7 +27,7 @@
   "bound_research_evidence": {
     "default_MvG_self_build": "F-AHL20 PASS: 12/12 Richards, cache build/hit semantics, approximately 20.0% paired complete-Richards CPU reduction on its frozen case",
     "default_MvG_broad_matrix": "F-AHL10F PASS: 12/12 wet-mid-dry cases, all speed-positive, matrix median ratio 0.848800",
-    "dry_tail": "F-AHL10E PASS: O05 analytical fallback beyond raw-C=1e-13 relevance boundary",
+    "dry_tail": "F-AHL10E establishes relevance-bounded fallback semantics as a separate research result, but the F-AHL20 self-building provider qualified for Stage 1 does not yet integrate material-specific dry-tail termination.",
     "qbot_policy": "F-AHL24 SELECT_FULL_ANALYTICAL_QBOT_FALLBACK",
     "model3": "F-AHL25 positive research family, separate later production gate",
     "PDI_NoVap": "F-AHL26 positive research family, separate later production gate",
@@ -39,7 +39,8 @@
     "vapor-enabled PDI",
     "prescribed qbot acceleration",
     "SWKIMPL=1/dKdh acceleration",
-    "whole-SWAP speedup claim"
+    "whole-SWAP speedup claim",
+    "material-specific raw-C=1e-13 self-builder termination until separately integrated and qualified"
   ],
-  "governance_rule": "Production implementation must preserve the bound fallback policy. No research-only approximation may become reachable outside its qualified envelope."
+  "governance_rule": "Production Stage 1 must reproduce the F-AHL20 self-built provider policy exactly enough to preserve its qualified envelope. The F-AHL10E dry-tail optimization may only be added in a later bounded work unit."
 }
