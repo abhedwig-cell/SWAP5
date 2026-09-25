@@ -57,3 +57,7 @@ done
 [[ "$count" -eq 108 ]]
 grep -c '^FAHL42A .* PASS$' "$RESULT" | grep -qx '108'
 echo 'F-AHL42A_PRODUCTION_MATRIX_108_OF_108=PASS' | tee -a "$RESULT"
+
+gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl42a_policy_identity.f90 -o "$BUILD/policy_test.o"
+gfortran -O2 "${objects[@]}" "$BUILD/policy_test.o" -o "$BUILD/policy_test"
+"$BUILD/policy_test" | tee -a "$RESULT"
