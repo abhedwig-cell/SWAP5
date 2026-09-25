@@ -1,0 +1,26 @@
+name: F-AHL37 registry handle potential
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'research/ahl/test_ahl37_registry_handle_potential.f90'
+      - 'research/ahl/run_ahl37_registry_handle_potential.sh'
+      - 'integration/f-ahl/F-AHL37_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl37-registry-handle-potential.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run registry handle potential characterization
+        run: |
+          bash research/ahl/run_ahl37_registry_handle_potential.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl37-${{ github.run_id }}
+          path: /tmp/ahl37_result.txt
