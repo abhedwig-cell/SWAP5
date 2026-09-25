@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_REFERENCE_FLOOR_TIMING_RECONCILIATION",
+  "phase": "SERIALIZED_REFERENCE_FLOOR_TIMING_RECONCILED",
+  "status": "EQUIVOCAL_APPLICATION_PROVIDER_SPEED",
+  "valid_runs": [
+    {
+      "workflow_run": 36078431061,
+      "median_adaptive_over_analytical_ratio": 0.984431,
+      "reduction_fraction": 0.015569,
+      "fidelity": "PASS"
+    },
+    {
+      "workflow_run": 36078524613,
+      "workflow_job": 107895044065,
+      "median_adaptive_over_analytical_ratio": 1.012523,
+      "reduction_fraction": -0.012523,
+      "fidelity": "PASS"
+    }
+  ],
+  "second_run_pairs": [1.008690,1.016775,1.009538,1.017667,1.012881,1.012523,1.010807],
+  "frozen_decision_band": {
+    "pass": "ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "fail": "ratio > 1.02"
+  },
+  "decision": "EQUIVOCAL_DO_NOT_USE_AS_APPLICATION_SPEED_ADMISSION",
+  "interpretation": [
+    "Both valid serialized Reference-floor runs pass the physical fidelity and nonlinear-path gates.",
+    "The two valid timing medians have opposite signs but both lie inside the preregistered equivocal band.",
+    "The lower-level complete-Richards acceleration remains valid evidence, but current serialized FMR configuration/provider-binding/cache overhead is of the same order as the remaining net benefit for this small single-column workload.",
+    "No application-level speedup should be claimed from F-AHL27."
+  ],
+  "governance": [
+    "Do not average the two runs into a synthetic speed claim.",
+    "Do not lower the 2 percent threshold post hoc.",
+    "Do not default-enable adaptive hydraulics on performance grounds.",
+    "Retain research-qualified opt-in/fallback semantics pending broader workload evidence or overhead reduction."
+  ]
+}
