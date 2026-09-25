@@ -7,10 +7,10 @@ program test_ahl28b_same_key_memoization
 
   integer, parameter :: NBIND=200000, NREP=5
   real(real64), parameter :: dt=0.25_real64
-  real(real64), allocatable :: cofgen(:,:)
-  type(b110_default_mvg_parameters_t), target :: hp
+  real(real64), allocatable :: cofgen(:,:),cofgen2(:,:)
+  type(b110_default_mvg_parameters_t), target :: hp,hp2
   type(b110_adaptive_hydraulic_provider_t) :: provider
-  real(real64) :: tb(NREP),t0,t1
+  real(real64) :: tb(NREP),t0,t1,hprobe(1),wprobe(1),kprobe(1),cprobe(1),dprobe(1)
   logical :: ok,hit
   integer :: j,r,b0,h0,m0,e0,b1,h1,m1,e1
 
@@ -43,6 +43,40 @@ program test_ahl28b_same_key_memoization
     call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
     if(b1/=b0 .or. h1/=h0 .or. m1/=m0 .or. e1/=e0) error stop 'memoized binds touched shared cache'
   end do
+
+  ! Same hydraulic authority with a different step duration must reuse the
+  ! immutable table while rebinding the analytical fallback. Saturated
+  ! capacity is exactly step_duration*1e-7 and therefore exposes stale fallback
+  ! state immediately.
+  call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
+  call bind_b110_adaptive_hydraulic_provider(provider,hp,0.5_real64,ok,hit)
+  if(.not.ok .or. .not.hit) error stop 'same-key changed-dt reuse failed'
+  call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
+  if(b1/=b0 .or. h1/=h0 .or. m1/=m0 .or. e1/=e0) error stop 'changed-dt reuse touched shared cache'
+  hprobe=0.0_real64
+  call provider%evaluate(hprobe,wprobe,kprobe,cprobe,dprobe)
+  if(cprobe(1)/=0.5_real64*1.0e-7_real64) error stop 'analytical fallback step duration stale'
+  call bind_b110_adaptive_hydraulic_provider(provider,hp,dt,ok,hit)
+  call provider%evaluate(hprobe,wprobe,kprobe,cprobe,dprobe)
+  if(cprobe(1)/=dt*1.0e-7_real64) error stop 'analytical fallback step duration restore failed'
+
+  ! A bitwise hydraulic-authority change must never take the local fast path.
+  allocate(cofgen2(42,1));cofgen2=cofgen
+  cofgen2(4,1)=0.0136_real64
+  call initialize_b110_default_mvg_parameters(hp2,cofgen2)
+  call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
+  call bind_b110_adaptive_hydraulic_provider(provider,hp2,dt,ok,hit)
+  if(.not.ok .or. hit) error stop 'changed authority incorrectly reused same-key table'
+  call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
+  if(b1/=b0+1 .or. m1/=m0+1 .or. h1/=h0 .or. e1/=e0+1) error stop 'changed authority cache accounting'
+  call bind_b110_adaptive_hydraulic_provider(provider,hp2,dt,ok,hit)
+  if(.not.ok .or. .not.hit) error stop 'changed authority second bind did not local-reuse'
+  call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
+  call bind_b110_adaptive_hydraulic_provider(provider,hp,dt,ok,hit)
+  if(.not.ok .or. .not.hit) error stop 'restore original authority did not cache-hit'
+  call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
+  if(h1/=h0+1 .or. b1/=b0 .or. m1/=m0 .or. e1/=e0) error stop 'restore authority cache accounting'
+  write(*,'(A)') 'AHL28B_AUTHORITY_AND_DT_GATES=PASS'
 
   call sort5(tb)
   call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
