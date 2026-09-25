@@ -488,15 +488,21 @@ contains
     valid_state = state%next_fixed_event_index >= 1
     if (.not. valid_state) return
     if (state%active_event) then
+      valid_state = .false.
+      if (.not. ieee_is_finite(state%active_event_start)) return
+      if (.not. ieee_is_finite(state%active_event_end)) return
       valid_state = state%active_event_end > state%active_event_start
       if (.not. valid_state) return
       select case (state%active_event_origin)
       case (IRRIGATION_EVENT_FIXED)
+        valid_state = .false.
+        if (state%active_event_index < 1 .or. state%active_event_index == huge(state%active_event_index)) return
         valid_state = state%active_event_index >= 1 .and. &
                       state%next_fixed_event_index == state%active_event_index + 1
       case (IRRIGATION_EVENT_SCHEDULED)
-        valid_state = state%active_event_index == 0 .and. ieee_is_finite(state%active_event_rate) .and. &
-                      state%active_event_rate > 0.0_real64
+        valid_state = .false.
+        if (.not. ieee_is_finite(state%active_event_rate)) return
+        valid_state = state%active_event_index == 0 .and. state%active_event_rate > 0.0_real64
       case default
         valid_state = .false.
       end select

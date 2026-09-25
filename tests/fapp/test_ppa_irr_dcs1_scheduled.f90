@@ -1,6 +1,6 @@
 program test_ppa_irr_dcs1_scheduled
   use, intrinsic :: iso_fortran_env, only: real64,int64
-  use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
+  use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan,ieee_positive_inf,ieee_negative_inf
   use mod_irrigation_process
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_dcs1_depth, only: evaluate_dcs1_depth,IRR_DCS1_OK
@@ -233,6 +233,22 @@ program test_ppa_irr_dcs1_scheduled
        'profile composition rejects rooted-node count beyond hydraulic view')
   write(*,'(a)') 'PPA_IRR_PROFILE_BYPASS_AND_ARRAY_GUARDS=PASS'
   write(*,'(a)') 'PPA_IRR_PROFILE_COMPOSITION_GUARDS_CONTINUATION=PASS'
+  do i=1,5
+    candidate=first
+    select case(i)
+    case(1); candidate%active_event_start=nan
+    case(2); candidate%active_event_end=ieee_value(0.0_real64,ieee_positive_inf)
+    case(3); candidate%active_event_start=ieee_value(0.0_real64,ieee_negative_inf)
+    case(4)
+      candidate%active_event_origin=IRRIGATION_EVENT_FIXED
+      candidate%active_event_index=huge(1)
+    case(5); candidate%active_event_rate=nan
+    end select
+    call evaluate_scheduled_irrigation_interval(p,candidate,r,h,base,f,d)
+    call require(d%status==IRRIGATION_INVALID_STATE.and..not.f%applied, &
+         'malformed active continuation state rejects before unsafe arithmetic')
+  end do
+  write(*,'(a)') 'PPA_IRR_ACTIVE_STATE_NONFINITE_INDEX_GUARDS=PASS'
 contains
   subroutine require(ok,message)
     logical,intent(in)::ok
