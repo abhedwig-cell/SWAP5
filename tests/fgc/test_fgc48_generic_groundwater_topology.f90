@@ -237,6 +237,10 @@ contains
     bad_tiles=tiles; bad_tiles(2)%tile_id=bad_tiles(1)%tile_id
     call expect_status(bad_tiles,cells,GW_TOPOLOGY_DUPLICATE_TILE_ID,'duplicate tile')
 
+    bad_tiles=tiles; bad_tiles(2)%tile_id=bad_tiles(1)%tile_id
+    bad_cells=cells; bad_cells(1)%package_slot=0
+    call expect_status(bad_tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_TILE_ID,'duplicate tile precedes invalid cell')
+
     bad_tiles=tiles; bad_tiles(2)%swap_lineage_id=bad_tiles(1)%swap_lineage_id
     call expect_status(bad_tiles,cells,GW_TOPOLOGY_DUPLICATE_SWAP_LINEAGE,'duplicate SWAP lineage')
 
