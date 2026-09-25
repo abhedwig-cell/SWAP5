@@ -105,6 +105,11 @@ contains
     call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
          forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
     observation=backend%observation()
+    write(*,'(A,L1,A,I0,A,I0,A,I0,A,I0,A,A,A,L1,A,I0,A,ES14.6)') &
+         'FAHL27_CASE_DEBUG adaptive=',adaptive,' attempts=',diagnostic%attempts, &
+         ' retries=',diagnostic%retries,' accepted=',diagnostic%accepted,' rejected=',diagnostic%rejected, &
+         ' failure=',trim(diagnostic%failure_classification),' solver_executed=',observation%solver_executed, &
+         ' solver_status=',observation%solver_status,' mass_residual=',diagnostic%unrounded_mass_residual
   end subroutine
 
   subroutine initialize_parameters(p,adaptive)
