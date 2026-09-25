@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "record": "DRY_DOMAIN_AUTHORITY_BINDING",
+  "authority": {
+    "raw_capacity_stop": 1e-13,
+    "meaning": "Adaptive refinement stops when the authoritative raw hydraulic capacity falls below the bound relevance threshold. Physics is not zeroed; evaluation outside the represented domain falls back to the authoritative analytical constitutive provider."
+  },
+  "material_relevance_lower_bound_cm": {
+    "B01": -1000000.0,
+    "B12": -1000000.0,
+    "O05": -264277.52309014817,
+    "O14": -1000000.0
+  },
+  "production_rule": "Do not spend adaptive support points beyond the bound relevance domain. Preserve analytical fallback outside that domain.",
+  "motivation": "Avoid representational work in the extremely dry tail where additional adaptive resolution is numerically irrelevant under the bound capacity criterion, while preserving authoritative behavior.",
+  "status": "BOUND_FOR_F_AHL27"
+}
