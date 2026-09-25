@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "phase": "CANONICAL_MINIMAL_EXTRACTION_GATE_COMPLETE",
+  "status": "PASS_READY_FOR_GOVERNANCE_REVIEW",
+  "branch": "work/f-ahl42-canonical-admission",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "workflow_run": 36110372401,
+  "workflow_job": 107992248853,
+  "source_delta": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "retained_regressions": {
+    "production_provider_extraction": "PASS",
+    "prescribed_head_12_case_matrix": "PASS",
+    "prescribed_qbot_analytical_fallback": "PASS",
+    "O05_dry_tail_semantics": "PASS",
+    "same_key_provider_memoization": "PASS"
+  },
+  "runtime_policy": {
+    "default": "analytical",
+    "adaptive_opt_in_default": false,
+    "qualified_adaptive_boundary": "prescribed-head bottom mode 5",
+    "prescribed_qbot": "authoritative analytical fallback",
+    "near_saturation": "authoritative analytical fallback outside represented core",
+    "dry_tail": "material-specific C=1e-13 representation bound with authoritative analytical fallback; no physics truncation"
+  },
+  "decision": "OPEN_DRAFT_CANONICAL_GOVERNANCE_PR",
+  "nonclaims": [
+    "This result is not canonical production admission.",
+    "No whole-SWAP or MultiSWAP performance claim is made.",
+    "Unqualified hydraulic families and SWKIMPL=1/dKdh remain excluded."
+  ]
+}
