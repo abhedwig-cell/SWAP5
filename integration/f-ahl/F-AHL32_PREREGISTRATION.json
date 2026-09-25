@@ -45,7 +45,8 @@
     },
     "stage3": {
       "workload": "16385 unique keys",
-      "gate": "the 16385th request succeeds via uncached fallback and registry entries remain exactly 16384"
+      "gate": "the 16385th request succeeds via uncached fallback and registry entries remain exactly 16384",
+      "probe_observable": "report probes consumed by the 16385th full-registry miss separately"
     },
     "regression": [
       "F-AHL29 postrepair semantics PASS",
@@ -58,8 +59,10 @@
       "maximum probes"
     ],
     "hash_gate": {
+      "scope": "Stages 1 and 2 at 10000 occupied entries only",
       "mean_second_pass_probes_max": 4,
-      "maximum_probes_max": 128
+      "maximum_probes_max": 128,
+      "stage3_full_registry_exception": "The 16385th unique full-registry miss is a correctness-boundary test and may probe all 16384 occupied slots before the preregistered uncached fallback. Its probe count is reported separately and is not compared with the Stage1/2 <=128 operational-load gate."
     }
   },
   "decision_rule": "Retain only if all correctness/cache-accounting gates pass and memory remains bounded by the fixed 16384-entry registry plus per-entry adaptive payload. No application speed claim is made from this synthetic registry qualification.",
