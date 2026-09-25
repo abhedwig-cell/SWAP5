@@ -6,7 +6,9 @@ Status: `READY_ADMISSION_CANDIDATE`
 
 PR: #619
 
-Current head: `fb8e4cf02f91d684d0073b6606eb181ce4eedd1a`
+Qualification evidence head: `0797888f57ebf2eec422db3d28dad7d7dcf6a7ce`
+
+The final closeout documentation commit may advance the branch head beyond this SHA. The qualification evidence below is from `0797888f57ebf2eec422db3d28dad7d7dcf6a7ce`; the closure change after it is documentation-only.
 
 Parent authority: F-AHL48 closed shared immutable ownership, resolution 128 intervals per decade.
 
@@ -136,15 +138,15 @@ Representative maximum observed deltas across the current matrix remain very sma
 
 Current-postimage paired timing:
 
-- median candidate/analytical ratio: `0.849161499`;
-- minimum case ratio: `0.762394712`;
-- maximum case ratio: `0.971639657`;
+- median candidate/analytical ratio: `0.836649753`;
+- minimum case ratio: `0.819536668`;
+- maximum case ratio: `0.879662915`;
 - positive cases: 12;
 - negative cases: 0.
 
 Interpretation:
 
-- median solver reduction is approximately 15.1%;
+- median solver reduction is approximately 16.3%;
 - every matrix case remains speed-positive;
 - exact nonlinear/backtracking path is retained.
 
@@ -168,7 +170,7 @@ Interpretation:
 
 - N=1 is dominated by the one-time table build;
 - setup overhead rapidly amortizes;
-- at N=10,000 the direct-retention setup overhead is approximately 3.45%.
+- at N=10,000 the direct-retention setup overhead is approximately 3.18%.
 
 For a repeated single hydraulic authority:
 
@@ -214,6 +216,23 @@ Qualified behavior includes:
 
 Current-head application opt-in workflow: PASS.
 
+
+## Current-head gate reconciliation
+
+On qualification evidence head `0797888f57ebf2eec422db3d28dad7d7dcf6a7ce`:
+
+- F-AHL49 provider extraction: PASS;
+- F-AHL49 production provider matrix: PASS;
+- F-AHL49 default-off preservation: PASS;
+- F-AHL49 fail-closed envelope: PASS;
+- F-AHL49 multi-application ownership: PASS;
+- F-AHL49 application scale qualification: PASS;
+- F-AHL49 application opt-in / F-GC49D production application context: PASS;
+- inherited PPA-WU01 production application bootstrap: PASS;
+- inherited F-PE-ZERO-WASTE01 parameter configuration reuse, including FKT22 serialized runtime: PASS.
+
+The inherited parameter-configuration-reuse red run was a compile-list closure defect, not a production numerical failure. FKT22 compiled `mod_reference_richards_temporal_indicator` after that module had gained a dependency on the direct-retention provider, but the runner had not yet compiled the direct-retention core/provider. The runner was corrected to compile those dependencies first and the inherited gate then passed without production-code changes.
+
 ## Reconciled qualification failures
 
 Several intermediate red runs were harness or qualification-boundary defects and are not production failures:
@@ -222,7 +241,8 @@ Several intermediate red runs were harness or qualification-boundary defects and
 2. a generated runner lost its repository root after relocation;
 3. the F-GC49D Python test dependency `python3-numpy` was initially absent;
 4. compile lists initially ordered the direct-retention provider before its new directional dependency;
-5. the opt-in wrapper wrote and grepped different temporary output filenames.
+5. the opt-in wrapper wrote and grepped different temporary output filenames;
+6. the inherited FKT22 runner initially omitted the direct-retention core/provider from its compile-order closure after the temporal-indicator dependency was added.
 
 The real application-level gap discovered during this process was missing accepted-step directional support for the direct-retention constitutive provider. That gap was repaired in production code and subsequently qualified by provider and F-GC49D application gates.
 
@@ -247,3 +267,7 @@ Recommended admission state:
 `F-AHL49 = READY_ADMISSION_CANDIDATE_OPT_IN`
 
 A separate canonical admission step should preserve the same envelope and default-OFF policy.
+
+## Next work unit
+
+The logical successor is F-AHL50: controlled opt-in production admission and canonical integration with preservation. F-AHL50 should not make the feature default-on and should not broaden the qualified envelope. F-AHL47/F-AHL48/F-AHL49 should only be reopened if a concrete admission failure demonstrates that this is necessary.
