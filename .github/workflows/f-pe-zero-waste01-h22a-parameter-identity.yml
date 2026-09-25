@@ -3,6 +3,7 @@ name: F-PE-ZERO-WASTE01 H22A parameter identity
 on:
   pull_request:
     paths:
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
       - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'

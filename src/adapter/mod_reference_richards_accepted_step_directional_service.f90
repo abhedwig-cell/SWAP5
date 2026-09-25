@@ -512,11 +512,14 @@ contains
     case (SW_STEP_CONTROL_BOTTOM_HEAD)
        ! Exact derivative of materialize_prescribed_head_bottom_flux():
        ! qtop + accepted-minus-base storage + sink - source. Root terms remain
-       ! excluded by direction_route_eligible().
+       ! excluded by direction_route_eligible(). When no source/sink direction
+       ! was supplied, the omitted contribution is exactly zero and the local
+       ! direction vectors are deliberately unallocated.
        direction_result%bottom_flux_derivative = top_flux_direction + &
             (sum(direction_result%outgoing_water_content * request%parameters%dz) - &
-             sum(direction_request%incoming_water_content * request%parameters%dz)) / request%step_duration + &
-            sum(sink_direction) - sum(source_direction)
+             sum(direction_request%incoming_water_content * request%parameters%dz)) / request%step_duration
+       if (source_sink_direction_present) direction_result%bottom_flux_derivative = &
+            direction_result%bottom_flux_derivative + sum(sink_direction) - sum(source_direction)
     end select
 
     if (.not. ieee_is_finite(direction_result%top_flux_derivative) .or. &
