@@ -146,9 +146,9 @@ contains
     ! Measurement only. The preregistered F-AHL04A contract is applied after
     ! all three candidates have executed, so an early baseline failure cannot
     ! hide later candidate evidence and gate values cannot drift in this test.
-    write(*,'(A,1X,A,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,ES14.6,1X,A,I0,1X,A,I0)') &
-         'FAHL48_MATRIX_METRIC',trim(material)//':'//trim(name),'RES=',resolution,'MAX_DH_CM=',dh,'MAX_DTHETA=',dw,'DTOP=',dtf,'DBOTTOM=',dbf,'MASS=',mass, &
-         'ITER_DELTA=',diter,'BACKTRACK_DELTA=',dbt
+    write(*,'(*(g0))') 'FAHL48_MATRIX_METRIC|CASE=',trim(material)//':'//trim(name),'|RES=',resolution, &
+         '|MAX_DH_CM=',dh,'|MAX_DTHETA=',dw,'|DTOP=',dtf,'|DBOTTOM=',dbf,'|MASS=',mass, &
+         '|ITER_DELTA=',diter,'|BACKTRACK_DELTA=',dbt
     write(*,'(A,1X,A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
          'FAHL48_MATRIX_DIAG',trim(material)//':'//trim(name),'REF_ITER=',ref%diagnostics%nonlinear_iterations, &
          'CAND_ITER=',cand%diagnostics%nonlinear_iterations,'REF_BACKTRACK=',ref%diagnostics%backtracking_attempts, &
