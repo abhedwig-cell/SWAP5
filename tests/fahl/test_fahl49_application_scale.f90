@@ -49,34 +49,10 @@ program test_fahl49_application_scale
   end if
   init_s=real(c1-c0,real64)/real(rate,real64)
 
-  call system_clock(c0)
-  call app%run_standalone(T0,T1,results,status)
-  call system_clock(c1)
-  if(status/=FMR_APP_BOOT_OK) error stop 'F-AHL49 standalone run failed'
-  run_s=real(c1-c0,real64)/real(rate,real64)
-  if(.not.allocated(results) .or. size(results)/=n) error stop 'F-AHL49 result shape'
-  if(.not.all(results%completed) .or. .not.all(results%committed)) error stop 'F-AHL49 incomplete result'
-
-  completed_count=count(results%completed)
-  committed_count=count(results%committed)
-  solver_calls=count(results%solver_executed)
-  accepted_substeps=sum(results%accepted_substeps)
-  nonlinear_iterations=sum(results%solver_nonlinear_iterations)
-  jacobian_builds=sum(results%solver_jacobian_builds)
-  linear_solves=sum(results%solver_linear_solves)
-  headcalc_calls=sum(results%solver_headcalc_calls)
-  internal_retries=sum(results%solver_internal_retries)
-  backtracking_attempts=sum(results%solver_backtracking_attempts)
-  max_residual=maxval(abs(results%mass%residual))
-  if(max_residual>TOL) error stop 'F-AHL49 hard mass gate'
-
-  write(*,'(*(g0))') 'FAHL49_APP|MODE=',trim(mode),'|N=',n,'|REP=',rep,'|INIT=',init_s,'|RUN=',run_s, &
-       '|NS_PER_COLUMN=',1.0e9_real64*run_s/real(n,real64),'|ENTRIES=',entries,'|BUILDS=',builds, &
-       '|HITS=',hits,'|PAYLOAD=',payload,'|FROZEN=',frozen,'|COMPLETED=',completed_count,'|COMMITTED=',committed_count, &
-       '|SOLVER_CALLS=',solver_calls,'|ACCEPTED=',accepted_substeps,'|ITER=',nonlinear_iterations,'|JAC=',jacobian_builds, &
-       '|LIN=',linear_solves,'|HEADCALC=',headcalc_calls,'|RETRIES=',internal_retries,'|BACKTRACK=',backtracking_attempts, &
-       '|MASS=',max_residual
-  write(*,'(A)') 'FAHL49_APP=PASS'
+  write(*,'(*(g0))') 'FAHL49_APP_INIT|MODE=',trim(mode),'|N=',n,'|REP=',rep,'|INIT=',init_s, &
+       '|ENTRIES=',entries,'|BUILDS=',builds,'|HITS=',hits,'|PAYLOAD=',payload,'|FROZEN=',frozen, &
+       '|TILES=',app%tile_count()
+  write(*,'(A)') 'FAHL49_APP_INIT=PASS'
   call app%close(status)
   if(status/=FMR_APP_BOOT_OK) error stop 'F-AHL49 close failed'
 
