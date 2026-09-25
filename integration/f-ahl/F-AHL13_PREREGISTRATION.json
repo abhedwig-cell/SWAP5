@@ -2,40 +2,37 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL13",
-  "title": "Derivative-consistent retention with analytical conductivity",
-  "parent": "F-AHL10A",
+  "title": "Prescribed-qbot local Newton-trajectory attribution",
+  "parent": "F-AHL12F",
   "phase": "PREREGISTERED_RESEARCH",
-  "question": "Can the derivative-consistent adaptive theta/C interpolant paired with analytical K close the full 12-case F-AHL10 fidelity matrix and still reduce constitutive and complete Richards solve cost?",
-  "candidate": {
-    "theta": "cubic-Hermite logit(Se) interpolant",
-    "capacity": "derivative of the same interpolant via chain rule",
-    "conductivity": "authoritative analytical K evaluated from represented theta",
-    "near_saturation": "authoritative analytical handling for h>-1 cm",
-    "runtime_refinement": false
+  "question": "Where along the analytical prescribed-qbot Newton trajectory does the derivative-consistent retention/capacity representation create the solver-facing discrepancy that causes one extra nonlinear iteration?",
+  "frozen_case": {
+    "material": "B01",
+    "regime": "wet",
+    "bottom_mode": 2,
+    "prescribed_qbot_cm_per_day": 1e-6,
+    "step_duration_day": 0.01,
+    "reference_iterations": 2,
+    "candidate_iterations": 3
   },
-  "stage_1": {
-    "scope": "all 12 frozen F-AHL10 material-regime cases",
-    "gates": "identical to F-AHL10",
-    "advance_rule": "all 12 cases pass and iteration/backtracking deltas remain zero"
-  },
-  "stage_2": {
-    "scope": "B01,B12,O05,O14 optimized constitutive timing",
-    "advance_rule": "candidate faster than full analytical theta+C+K for all four materials"
-  },
-  "stage_3": {
-    "scope": "long paired FSI24-style Reference Richards timing",
-    "protocol": "7 alternating paired batches of 32768 solves",
-    "decision_rule": {
-      "advance": "median candidate/analytical ratio < 0.98",
-      "equivocal": "0.98 <= ratio <= 1.02",
-      "reject": "ratio > 1.02"
-    }
-  },
+  "instrumentation": [
+    "record per-iteration pressure head vectors evaluated by analytical and candidate providers",
+    "record theta and C from both providers at identical sampled heads",
+    "record storage Jacobian contribution C*dz/dt per node",
+    "record residual and tridiagonal main-diagonal differences before the nonlinear update when available without changing solver policy",
+    "record min/max head envelope actually visited by the accepted analytical trajectory"
+  ],
+  "analysis_rule": "Attribute the path shift only to a bounded head/node region if the dominant theta/C or storage-Jacobian discrepancy is concentrated there on the visited analytical trajectory. Do not infer a repair envelope from endpoint error alone.",
+  "prospective_repair_candidates_after_attribution_only": [
+    "exact authoritative theta/C inside a trajectory-justified head envelope and derivative-consistent interpolation outside",
+    "a different local interpolant family inside the identified envelope"
+  ],
   "hard_exclusions": [
-    "NO_CONDUCTIVITY_LOOKUP",
+    "NO_GLOBAL_DENSIFICATION",
     "NO_GATE_RETUNING",
-    "NO_SOLVER_POLICY_CHANGE",
-    "NO_PRODUCTION_ADMISSION",
-    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+    "NO_SOLVER_TOLERANCE_CHANGE",
+    "NO_LINE_SEARCH_POLICY_CHANGE",
+    "NO_CASE_SPECIFIC_MAGIC_HEAD_THRESHOLD_WITHOUT_ATTRIBUTION",
+    "NO_PRODUCTION_ADMISSION"
   ]
 }
