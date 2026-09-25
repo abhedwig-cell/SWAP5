@@ -1,7 +1,10 @@
 {
   "work_unit": "PPA-IRR-EVENT-OWNER",
   "baseline": "d1f6ce128e66f7d9bddc39ad1acfe9182e530bca",
-  "status": "IMPLEMENTED_PENDING_CLEAN_VALIDATION",
+  "status": "DEPENDENCY_RELOCATION_TESTED_NOT_REGISTERED",
+  "implementation_commit": "a7fb16de5",
+  "additional_build_lists_commit": "c4fb6ad38",
+  "validation": "Clean IrrigationSource runner/static checks PASS O0/O2, build swap-ppa-wu01-74507adaa98b4990a37af4a2d7614f84. Complete output is identical between O0/O2 and also identical to the pre-refactor clean build swap-ppa-wu01-b2d41b84092847ccb1fb2304170743d7 at each optimization. Same clean binaries pass HydraulicCopy and guards with complete O0/O2 identity. All moved method bodies match the pre-refactor text exactly. All 66 changed shell scripts pass bash syntax checks; 64 literal backend compile lists pass ordering checks, plus testbank and variable-named Ross backend lists were reconciled. Documentation source checks and strict build PASS. Other qualification runners were not executed and are not newly qualified.",
   "decision": "Locate ppa_irrigation_event_state_t, its clone, candidate validation and assembly beside the temporal parent in mod_fmr_serialized_reference_backend. Retain mod_ppa_irrigation_event_state as a compatibility re-export facade. The backend can subsequently use exact-type dispatch without importing a module that imports itself.",
   "dependency": "The backend now explicitly imports the existing mod_irrigation_process. Compile it after mod_process_hydraulic_view and before the backend. Update explicit MODULE_SRC, REAL_SRC and RESTART_MODULES lists; remove the duplicate late process entry from the PowerShell owner runner. Historical reference hashes and admission assertions remain unchanged.",
   "invariants": "State/parameter separation, single authoritative physical owner, deep clone and private temporal history remain unchanged. No generic inheritance admission, public history mutation, acceptance-threshold change, event scheduling or new owner.",
