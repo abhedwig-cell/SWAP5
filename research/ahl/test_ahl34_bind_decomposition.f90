@@ -49,7 +49,7 @@ program test_ahl34_bind_decomposition
   write(*,'(A,1X,ES18.10)') 'AHL34_TABLE_COPY_SEC',t_copy(3)
   write(*,'(A,1X,ES18.10)') 'AHL34_SAME_KEY_SEC',t_same(3)
   write(*,'(A,1X,ES18.10)') 'AHL34_CHANGED_AUTHORITY_SEC',t_switch(3)
-  write(*,'(A,1X,F10.4,1X,A,F10.4,1X,A,F10.4,1X,A,F10.4)') &
+  write(*,'(A,1X,A,F10.4,1X,A,F10.4,1X,A,F10.4,1X,A,F10.4)') &
        'AHL34_COMPONENT_FRACTIONS','KEY=',t_key(3)/t_switch(3), &
        'SAMPLER=',t_sampler(3)/t_switch(3),'COPY=',t_copy(3)/t_switch(3), &
        'SAME_BASE=',t_same(3)/t_switch(3)
