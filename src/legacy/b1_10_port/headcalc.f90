@@ -353,7 +353,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
       if (provider_constitutive_active) then
          if (.not. provider_tuple_valid) then
-            ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
             if (provider_tuple_from_candidate .and. SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
                ctx%diagnostics%constitutive_capacity_only_evaluations = &
                     ctx%diagnostics%constitutive_capacity_only_evaluations + 1
@@ -361,6 +360,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                     fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
                provider_tuple_valid = .true.
             else
+               ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
                call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
                     fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
                provider_tuple_valid = .true.
