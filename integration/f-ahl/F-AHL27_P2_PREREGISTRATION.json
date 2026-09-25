@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "phase": "P2_RUNTIME_SELECTION_PREREGISTERED",
+  "status": "READY_TO_IMPLEMENT",
+  "selection_scope": {
+    "solver": "Reference Richards only",
+    "effective_bottom_mode": 5,
+    "bottom_mode_semantics": "prescribed pressure head",
+    "swkimpl": 0,
+    "hydraulic_family": "B110 default unimodal MvG production provider route",
+    "existing_tabulated_hydraulics_active": false,
+    "hysteresis_active": false,
+    "macropore_active": false,
+    "elasticity_active": false,
+    "frost_active": false
+  },
+  "analytical_fallback_required_when": [
+    "effective bottom mode is not 5",
+    "SWKIMPL is not 0",
+    "adaptive provider bind/build fails",
+    "existing tabulated hydraulics are active",
+    "unsupported physical hydraulic options are active",
+    "pressure head lies outside the provider's qualified lookup interval",
+    "another solver such as RossFast is selected"
+  ],
+  "implementation_rule": "Always preserve an authoritative analytical provider. The adaptive provider is an optional bounded runtime binding, never a replacement for analytical authority.",
+  "verification": [
+    "backend mode-5 route uses adaptive provider when eligible",
+    "mode-2/prescribed-qbot route remains analytical",
+    "mode-7 and -2 remain analytical in Stage 1",
+    "SWKIMPL=1 remains analytical",
+    "adaptive bind failure falls back analytically",
+    "canonical pre-existing serialized-reference tests remain unchanged outside the eligible route"
+  ],
+  "hard_exclusions": [
+    "NO_DEFAULT_ENABLEMENT_OUTSIDE_MODE5",
+    "NO_QBOT_ACCELERATION",
+    "NO_FREE_DRAINAGE_ACCELERATION_IN_STAGE1",
+    "NO_SWKIMPL1_ACCELERATION",
+    "NO_ROSSFAST_CHANGE"
+  ]
+}
