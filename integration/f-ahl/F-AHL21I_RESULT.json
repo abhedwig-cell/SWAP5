@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21I",
+  "phase": "PRESCRIBED_QBOT_EXACT_RETENTION_PAIRED_TIMING_MATRIX_COMPLETE",
+  "status": "REJECT_PARTIAL_QBOT_ACCELERATION",
+  "workflow_run": 36106066653,
+  "workflow_job": 107978747286,
+  "fidelity_precondition": "F-AHL21H 12/12 PASS with identical nonlinear iteration and backtracking path.",
+  "case_median_candidate_over_analytical_ratios": {
+    "B01:wet": 1.018573,
+    "B01:mid": 1.021188,
+    "B01:dry": 1.029964,
+    "B12:wet": 1.021881,
+    "B12:mid": 1.007765,
+    "B12:dry": 1.020597,
+    "O05:wet": 1.020928,
+    "O05:mid": 1.035493,
+    "O05:dry": 1.039808,
+    "O14:wet": 1.010021,
+    "O14:mid": 1.021310,
+    "O14:dry": 1.032430
+  },
+  "classification": {
+    "positive_cases_ratio_below_0_98": 0,
+    "equivocal_cases_ratio_0_98_to_1_02": 3,
+    "negative_cases_ratio_above_1_02": 9
+  },
+  "finding": "Authoritative theta/C plus selected K lookup is numerically clean under the qualified prescribed-qbot matrix but provides no complete-Richards speed benefit. Most tested cases are modestly slower than the fully analytical provider.",
+  "decision": "PREFER_FULLY_ANALYTICAL_HYDRAULICS_FOR_PRESCRIBED_QBOT",
+  "architectural_implication": "Adaptive hydraulic acceleration should be boundary-mode aware. The qualified lookup representation remains a speed candidate for prescribed-head routes, while prescribed-qbot should fall back to the authoritative analytical provider unless a future different representation demonstrates benefit.",
+  "nonclaims": [
+    "This does not reject adaptive hydraulics for other lower-boundary modes.",
+    "No MODFLOW coupling performance claim is made.",
+    "No production admission is implied."
+  ]
+}
