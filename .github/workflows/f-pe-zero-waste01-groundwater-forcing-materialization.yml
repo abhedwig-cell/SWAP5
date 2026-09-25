@@ -3,9 +3,6 @@ name: F-PE-ZERO-WASTE01 groundwater forcing materialization
 on:
   pull_request:
     paths:
-      - 'src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90'
-      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
-      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
       - 'tests/fpe/test_fpe_zero_waste01_groundwater_forcing_materialization.f90'
       - 'tests/fpe/run_fpe_zero_waste01_groundwater_forcing_materialization.sh'
       - '.github/workflows/f-pe-zero-waste01-groundwater-forcing-materialization.yml'

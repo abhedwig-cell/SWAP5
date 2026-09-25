@@ -8,7 +8,6 @@ module mod_fmr_groundwater_swap_participant
   use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t, groundwater_head_datum_t, &
        swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, GW_INTERFACE_OK
   use mod_groundwater_swap_forcing_adapter, only: groundwater_swap_forcing_materializer_t, GW_SWAP_FORCING_OK
-  use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, &
        GW_SWAP_PARTICIPANT_OK, GW_SWAP_PARTICIPANT_INVALID_REQUEST, GW_SWAP_PARTICIPANT_ORIGIN_CAPTURE_FAILED, &
        GW_SWAP_PARTICIPANT_ORIGIN_DRIFT, GW_SWAP_PARTICIPANT_CANDIDATE_BUSY, GW_SWAP_PARTICIPANT_FORCING_FAILED, &
@@ -37,8 +36,6 @@ module mod_fmr_groundwater_swap_participant
     real(real64) :: origin_time = 0.0_real64
     logical :: origin_captured = .false.
     logical :: live_candidate = .false.
-    type(fmr_b110_physical_forcing_t) :: forcing_scratch
-    logical :: forcing_scratch_initialized = .false.
   contains
     procedure, public :: capture_origin => fmr_swap_capture_origin
     procedure, public :: trial_from_origin => fmr_swap_trial_from_origin
@@ -76,13 +73,11 @@ contains
     self%origin_revision = self%origin_checkpoint%origin_revision()
     if (self%origin_lineage_id <= 0_int64 .or. self%origin_revision < 0_int64) return
     self%origin_captured = .true.
-    self%forcing_scratch_initialized = .false.
     status = GW_SWAP_PARTICIPANT_OK
   end subroutine fmr_swap_capture_origin
 
   subroutine fmr_swap_trial_from_origin(self, backend, column, template, parameters, committed, materializer, &
-       numerical, datum, window, prescribed_head_m, trial, status, trusted_prepared_parameters, &
-       reuse_forcing_materialization)
+       numerical, datum, window, prescribed_head_m, trial, status, trusted_prepared_parameters)
     class(fmr_groundwater_swap_participant_t), intent(inout) :: self
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(fmr_logical_column_t), intent(in) :: column
@@ -97,18 +92,14 @@ contains
     type(groundwater_swap_trial_t), intent(out) :: trial
     integer, intent(out) :: status
     logical, intent(in), optional :: trusted_prepared_parameters
-    logical, intent(in), optional :: reuse_forcing_materialization
 
     class(canonical_forcing_t), allocatable :: forcing
     type(canonical_numerical_config_t) :: trial_numerical
     real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s
     integer :: forcing_status, interface_status
-    logical :: do_reuse_forcing
 
     trial = groundwater_swap_trial_t()
     status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
-    do_reuse_forcing = .false.
-    if (present(reuse_forcing_materialization)) do_reuse_forcing = reuse_forcing_materialization
     if (.not. self%origin_captured) return
     if (.not. self%origin_checkpoint%ready()) return
     if (self%live_candidate) then
@@ -131,46 +122,25 @@ contains
       return
     end if
 
-    if (do_reuse_forcing) then
-      select type (typed_materializer => materializer)
-      type is (fmr_groundwater_head_forcing_materializer_t)
-        call typed_materializer%materialize_reused(prescribed_head_m, datum, self%forcing_scratch, &
-             .not. self%forcing_scratch_initialized, forcing_status)
-        if (forcing_status == GW_SWAP_FORCING_OK) self%forcing_scratch_initialized = .true.
-      class default
-        forcing_status = -1
-      end select
-      if (forcing_status /= GW_SWAP_FORCING_OK) then
-        status = GW_SWAP_PARTICIPANT_FORCING_FAILED
-        return
-      end if
-    else
-      call materializer%materialize(prescribed_head_m, datum, forcing, forcing_status)
-      if (forcing_status /= GW_SWAP_FORCING_OK .or. .not. allocated(forcing)) then
-        status = GW_SWAP_PARTICIPANT_FORCING_FAILED
-        return
-      end if
+    call materializer%materialize(prescribed_head_m, datum, forcing, forcing_status)
+    if (forcing_status /= GW_SWAP_FORCING_OK .or. .not. allocated(forcing)) then
+      status = GW_SWAP_PARTICIPANT_FORCING_FAILED
+      return
     end if
 
     trial_numerical = numerical
     trial_numerical%accepted_trajectory_direction%requested = .true.
     trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
 
-    if (do_reuse_forcing) then
-      call backend%run_trial(column, template, parameters, committed, self%forcing_scratch, trial_numerical, &
+    select type (typed_forcing => forcing)
+    type is (fmr_b110_physical_forcing_t)
+      call backend%run_trial(column, template, parameters, committed, typed_forcing, trial_numerical, &
            window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics, &
            trusted_prepared_parameters=trusted_prepared_parameters)
-    else
-      select type (typed_forcing => forcing)
-      type is (fmr_b110_physical_forcing_t)
-        call backend%run_trial(column, template, parameters, committed, typed_forcing, trial_numerical, &
-             window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics, &
-             trusted_prepared_parameters=trusted_prepared_parameters)
-      class default
-        status = GW_SWAP_PARTICIPANT_FORCING_FAILED
-        return
-      end select
-    end if
+    class default
+      status = GW_SWAP_PARTICIPANT_FORCING_FAILED
+      return
+    end select
 
     if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then
       if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
