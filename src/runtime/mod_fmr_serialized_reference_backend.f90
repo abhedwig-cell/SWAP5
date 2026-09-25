@@ -45,6 +45,8 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_adaptive_hydraulic_provider, only: b110_adaptive_hydraulic_provider_t, &
+       bind_b110_adaptive_hydraulic_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -183,6 +185,8 @@ module mod_fmr_serialized_reference_backend
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
+    ! F-AHL27 opt-in. Default false preserves the authoritative analytical route.
+    logical :: adaptive_hydraulics_active = .false.
     ! F-SI39: explicit opt-in to the exact B1.11 near-saturated KSATEXM
     ! conductivity extension. Default false preserves all pre-F-SI39 routes.
     logical :: ksatexm_extension_active = .false.
@@ -336,6 +340,8 @@ module mod_fmr_serialized_reference_backend
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b110_adaptive_hydraulic_provider_t), pointer :: adaptive_constitutive => null()
+    logical :: adaptive_hydraulics_active = .false.
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
@@ -1367,6 +1373,15 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
+      if (parameters%adaptive_hydraulics_active) then
+        ! F-AHL27 Stage 2: opt-in is admitted on the Reference route, but the
+        ! actual constitutive provider remains boundary-contract dependent.
+        ! Prescribed-head mode 5 may use AHL; prescribed-qbot and other
+        ! non-qualified lower-boundary modes fall back to authoritative
+        ! analytical hydraulics rather than being rejected or approximated.
+        ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+             .not. self%temporal_indicator_history_enabled
+      end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
              .not. self%fixed_weir_surface_water_active
@@ -1431,9 +1446,18 @@ contains
       if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
       if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
       if (associated(self%constitutive)) deallocate(self%constitutive)
+      ! F-AHL28B: retain only the adaptive provider object across repeated
+      ! adaptive configurations so it can reuse an exact same-key immutable
+      ! representation. Its analytical fallback and cofgen pointer are rebound
+      ! before every physical advance. Disablement still releases the provider.
+      if (associated(self%adaptive_constitutive) .and. .not. parameters%adaptive_hydraulics_active) &
+           deallocate(self%adaptive_constitutive)
       if (associated(self%source_sink)) deallocate(self%source_sink)
       if (associated(self%root_sink)) deallocate(self%root_sink)
       allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
+      if (parameters%adaptive_hydraulics_active .and. .not. associated(self%adaptive_constitutive)) &
+           allocate(self%adaptive_constitutive)
+      self%adaptive_hydraulics_active = parameters%adaptive_hydraulics_active
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
       allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
@@ -1820,7 +1844,7 @@ contains
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, ahl_ok, ahl_cache_hit
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
@@ -1891,6 +1915,16 @@ contains
       end select
     end if
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    ! F-AHL27 Stage 2 ownership boundary: adaptive hydraulics is qualified only
+    ! for prescribed-head mode 5. Prescribed-qbot and other lower-boundary
+    ! modes must remain fully analytical, including avoiding adaptive cache
+    ! construction or lookup side effects.
+    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5) then
+      if (.not. associated(self%adaptive_constitutive)) return
+      call bind_b110_adaptive_hydraulic_provider(self%adaptive_constitutive, self%hydraulic_parameters, &
+           step_duration, ahl_ok, ahl_cache_hit)
+      if (.not. ahl_ok) return
+    end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
     if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
@@ -2060,7 +2094,11 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    request%evaluation%constitutive => self%constitutive
+    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5) then
+      request%evaluation%constitutive => self%adaptive_constitutive
+    else
+      request%evaluation%constitutive => self%constitutive
+    end if
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
