@@ -395,6 +395,14 @@ contains
     if (.not. self%initialized .or. .not. allocated(self%slots)) return
     status = FMR_GW_REGISTRY_INVALID_HANDLE
     if (handle <= 0_int64) return
+    if (handle <= int(size(self%slots), int64)) then
+      i = int(handle)
+      if (self%slots(i)%active .and. self%slots(i)%handle_id == handle) then
+        idx = i
+        status = FMR_GW_REGISTRY_OK
+        return
+      end if
+    end if
     do i = 1, size(self%slots)
       if (.not. self%slots(i)%active) cycle
       if (self%slots(i)%handle_id == handle) then
@@ -418,6 +426,14 @@ contains
     if (.not. self%initialized .or. .not. allocated(self%slots)) return
     status = FMR_GW_REGISTRY_INVALID_HANDLE
     if (handle <= 0_int64) return
+    if (handle <= int(size(self%slots), int64)) then
+      i = int(handle)
+      if (self%slots(i)%active .and. self%slots(i)%handle_id == handle) then
+        idx = i
+        status = FMR_GW_REGISTRY_OK
+        return
+      end if
+    end if
     do i = 1, size(self%slots)
       if (.not. self%slots(i)%active) cycle
       if (self%slots(i)%handle_id == handle) then

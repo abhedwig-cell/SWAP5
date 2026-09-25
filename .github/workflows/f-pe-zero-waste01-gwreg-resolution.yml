@@ -3,6 +3,7 @@ name: F-PE-ZERO-WASTE01 GW registry resolution
 on:
   pull_request:
     paths:
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
       - 'tests/fpe/test_fpe_zero_waste01_gwreg_resolution.f90'
       - 'tests/fpe/run_fpe_zero_waste01_gwreg_resolution.sh'
       - '.github/workflows/f-pe-zero-waste01-gwreg-resolution.yml'
