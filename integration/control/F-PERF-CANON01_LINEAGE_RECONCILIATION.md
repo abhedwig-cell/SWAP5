@@ -213,3 +213,33 @@ The bounded reconstruction can now start after A0:
 7. D: F-AHL50 six-file opt-in delta.
 
 The next active discriminator is A3.
+
+
+## A3 resolved: PROFILE03-H03-E2E is measurement-only
+
+Direct compare from PR #600 qualified H03 head `91f73a32...` to `work/f-pe-profile03-h03-e2e` shows:
+- 16 commits ahead;
+- only workflows, performance documentation and `tests/fpe/**`;
+- **zero `src/**` changes**;
+- zero `reference/**` changes.
+
+Therefore PROFILE03-H03-E2E contributes no production delta.
+
+### A3 decision
+
+`A3_PROFILE03_H03_E2E = MEASUREMENT_ONLY_NO_PRODUCTION_ADMISSION`
+
+The production parent for ZERO-WASTE01 is semantically the PR #600 H03 production postimage plus measurement-only history.
+
+## Tranche-A closure
+
+Tranche A is now decomposed completely:
+
+- A0: no production patch required; source-equivalent to F-CI81 authority;
+- A1 PROFILE01: observation only;
+- A2 PROFILE02-H03: exactly one qualified production file, `src/legacy/b1_10_port/headcalc.f90`;
+- A3 PROFILE03-H03-E2E: measurement only.
+
+Thus the only production capability that must be carried forward from Tranche A is the bounded H03 HeadCalc repair.
+
+Next active work is Tranche B: decompose ZERO-WASTE01 into admitted exact-P0 production patches and exclude rejected/rolled-back/measurement-only experiments.
