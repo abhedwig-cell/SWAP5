@@ -22,6 +22,9 @@ jobs:
       - name: Compile and run production port-equivalence gate
         run: |
           bash tests/ahl/run_fahl27_adaptive_provider.sh
+      - name: Verify heterogeneous profile and local cache ownership
+        run: |
+          bash tests/ahl/run_fahl27_heterogeneous_profile.sh
       - name: Verify fail-closed runtime policy
         run: |
           gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror             src/runtime/mod_b110_adaptive_runtime_policy.f90             tests/ahl/test_fahl27_runtime_policy.f90             -o /tmp/fahl27_policy
@@ -47,6 +50,7 @@ jobs:
           name: f-ahl27-${{ github.run_id }}
           path: |
             /tmp/fahl27_stage1.txt
+            /tmp/fahl27_heterogeneous.txt
             /tmp/fahl27_policy.txt
             /tmp/fahl27_backend_compile.txt
             /tmp/fahl27_backend_runtime.txt
