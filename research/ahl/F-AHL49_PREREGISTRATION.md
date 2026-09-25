@@ -1,43 +1,81 @@
-# F-AHL49 — immutable direct-retention ownership and bind qualification
+# F-AHL49 — production-shaped direct-retention extraction and application qualification
 
 Date: 2026-09-25
 
-Status: `PREREGISTERED_OWNERSHIP_SCREEN`
+Status: `PREREGISTERED_PRODUCTION_SHAPED_EXTRACTION`
 
-Parent: F-AHL48, resolution frozen at 64 intervals per decade.
+Parent authority: F-AHL48 closed shared immutable ownership, resolution 64 intervals per decade.
 
 ## Question
 
-Can the qualified direct-retention representation be shared per exact hydraulic authority without reintroducing hot-path registry overhead or per-column table duplication?
+Can the F-AHL48 shared direct-retention architecture be extracted into production modules and wired into the current serialized Reference application without reintroducing per-trial authority lookup, changing default behavior, or broadening the qualified physics envelope?
 
-## Architecture under test
+## Frozen architecture
 
-- exact-key lookup occurs only during provider bind;
-- table construction occurs only on a genuine key miss;
-- one immutable theta/C table is owned per unique homogeneous hydraulic authority;
-- a bound provider stores direct pointers to the immutable theta/C arrays;
-- candidate evaluation uses only those direct pointers plus direct decade/index arithmetic;
-- no cache search, hashing, registry method call or table copy occurs inside `evaluate_demand()`.
+Representation:
 
-Resolution is fixed at 64 intervals per decade.
+- 64 intervals per decade over |h| = 1..1e6 cm;
+- direct decade selection and direct interval arithmetic;
+- cubic Hermite theta representation;
+- C is the exact derivative of the same interpolant;
+- full hydraulics and K remain analytical;
+- analytical fallback outside the represented domain.
 
-## Key authority
+Ownership:
 
-For this screen an authority key is exact bitwise identity of the initialized first-node 42-coefficient hydraulic authority plus the KSATEXM extension flag.
+- one immutable theta/C table per exact homogeneous hydraulic authority;
+- exact-key acquire/build occurs during parameter preprocessing;
+- persistent physical parameters store the acquired integer representation slot;
+- solve-time provider bind receives that slot directly and performs no key lookup;
+- application bootstrap freezes the pool before execution starts.
 
-Homogeneous profiles only. Layered profiles remain unsupported and must fail closed.
+## Initial admitted candidate envelope
+
+Opt-in only, default OFF.
+
+Required for direct-retention routing:
+
+- default B1.10 MvG authority;
+- hydraulically homogeneous active profile;
+- prescribed-head bottom mode 5;
+- explicit conductivity, SWKIMPL = 0;
+- no tabulated hydraulics;
+- no hysteresis;
+- no KSATEXM composition in this first extraction.
+
+Explicitly excluded pending separate qualification:
+
+- prescribed qbot;
+- layered/heterogeneous hydraulic authorities;
+- SWKIMPL=1;
+- KSATEXM composition;
+- default-on behavior;
+- replacement of analytical K;
+- practical/approximate tolerance changes.
 
 ## Gates
 
-1. First bind of authority A builds exactly one table.
-2. Second and later binds of authority A are hits and do not build or duplicate table storage.
-3. Authority B creates exactly one additional table.
-4. Providers bound to the same authority point to the same immutable theta/C storage.
-5. Provider demand values are bit-identical regardless of first-build or cache-hit bind.
-6. Hot-path timing of shared immutable provider is not materially worse than F-AHL47 provider-local direct indexing.
-7. Table build/bind timing is reported separately from solve-time demand.
-8. No production routing change.
+1. Production provider extraction reproduces F-AHL48 direct theta/C demand values.
+2. Same-authority setup builds once and stores/reuses one slot.
+3. Trial-time bind performs no exact-key search/build.
+4. Default-off Reference route is unchanged.
+5. Unsupported opt-in compositions fail closed or retain explicitly qualified analytical fallback.
+6. B01/B12/O05/O14 × wet/mid/dry prescribed-head matrix retains identical nonlinear iteration and backtracking counts.
+7. Current-postimage paired timing remains materially positive.
+8. Production application initialization at N=1/100/1000/10000 reports setup/build cost separately.
+9. Large-N table memory scales with unique authorities, not columns.
+10. No canonical admission until all production-shaped gates pass.
 
 ## Concurrency boundary
 
-The owner is mutable during serial bind/build and immutable for already-built entries. No parallel mutation/thread-safety claim is made. Any future parallel worker admission requires a separate qualification.
+Supported candidate lifecycle:
+
+`serial setup/build -> freeze -> immutable reads`
+
+F-AHL48 qualified concurrent frozen reads. F-AHL49 does not admit concurrent pool mutation.
+
+## Decision boundary
+
+This workunit may create a production-shaped opt-in candidate.
+
+It must not enable the feature by default or claim canonical admission merely from source extraction.
