@@ -19,11 +19,6 @@ for source in "${SRC[@]}"; do
 done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fahl/test_fahl49_multiapp_slot_stability.f90 -o "$BUILD/test.o"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
-set +e
-"$BUILD/test" > "$BUILD/output.txt" 2>&1
-rc=$?
-set -e
-cat "$BUILD/output.txt"
-grep -Fq 'FAHL49_MULTIAPP_SLOT_STABILITY=FALSIFIED' "$BUILD/output.txt"
-test "$rc" -ne 0
-echo 'FAHL49_MULTIAPP_FALSIFICATION_REPRODUCED=PASS'
+"$BUILD/test" | tee "$BUILD/output.txt"
+grep -Fq 'FAHL49_MULTIAPP_SLOT_STABILITY=PASS' "$BUILD/output.txt"
+echo 'FAHL49_MULTIAPP_OWNERSHIP=PASS'
