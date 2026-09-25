@@ -9,6 +9,7 @@ module mod_reference_richards_workspace
      integer :: active_nodes = 0
      integer(int64) :: generation = 0_int64
      logical :: poisoned = .false.
+     logical :: tridag_factorization_capture_active = .false.
      real(real64), allocatable :: dfdh_lower(:)
      real(real64), allocatable :: dfdh_main(:)
      real(real64), allocatable :: dfdh_upper(:)
@@ -36,9 +37,14 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: warm_start_head(:)
      logical :: has_warm_start = .false.
      type(soil_water_solver_diagnostics_t) :: diagnostics
+     integer :: profile_full_reset_calls = 0
+     integer(int64) :: profile_zeroed_bytes = 0_int64
+     integer(int64) :: profile_reset_payload_bytes = 0_int64
   end type reference_richards_workspace_t
 
   public :: initialize_reference_workspace
+  public :: prepare_reference_workspace_for_solve
+  public :: ensure_reference_workspace_shape
   public :: reset_reference_workspace
   public :: poison_reference_workspace
   public :: release_reference_workspace
@@ -48,7 +54,7 @@ module mod_reference_richards_workspace
 
 contains
 
-  subroutine initialize_reference_workspace(workspace, active_nodes)
+  subroutine ensure_reference_workspace_shape(workspace, active_nodes)
     type(reference_richards_workspace_t), intent(inout) :: workspace
     integer, intent(in) :: active_nodes
 
@@ -68,16 +74,47 @@ contains
        allocate(workspace%nonconverged_balance(active_nodes), workspace%nonconverged_head(active_nodes))
        allocate(workspace%warm_start_head(active_nodes))
        workspace%active_nodes = active_nodes
+       workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
+    else if (workspace%profile_reset_payload_bytes <= 0_int64) then
+       workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
     end if
+  end subroutine ensure_reference_workspace_shape
+
+
+  subroutine initialize_reference_workspace(workspace, active_nodes)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+    integer, intent(in) :: active_nodes
+
+    call ensure_reference_workspace_shape(workspace, active_nodes)
     workspace%generation = workspace%generation + 1_int64
     call reset_reference_workspace(workspace)
   end subroutine initialize_reference_workspace
+
+  subroutine prepare_reference_workspace_for_solve(workspace, active_nodes)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+    integer, intent(in) :: active_nodes
+
+    call ensure_reference_workspace_shape(workspace, active_nodes)
+    workspace%generation = workspace%generation + 1_int64
+
+    ! Only establish solve-start authority that is read before overwrite.
+    ! Bulk scratch arrays are deliberately left untouched and must therefore
+    ! be fully materialized by the solver before their first active read.
+    workspace%dfdh_upper(1) = 0.0_real64
+    workspace%dfdh_lower(active_nodes) = 0.0_real64
+    workspace%unsaturated_flags = .false.
+    workspace%has_warm_start = .false.
+    workspace%diagnostics = soil_water_solver_diagnostics_t()
+    workspace%poisoned = .false.
+  end subroutine prepare_reference_workspace_for_solve
 
   subroutine reset_reference_workspace(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
 
     if (workspace%active_nodes <= 0) return
     if (.not. allocated(workspace%residual)) return
+    workspace%profile_full_reset_calls = workspace%profile_full_reset_calls + 1
+    workspace%profile_zeroed_bytes = workspace%profile_zeroed_bytes + workspace%profile_reset_payload_bytes
     workspace%dfdh_lower = 0.0_real64
     workspace%dfdh_main = 0.0_real64
     workspace%dfdh_upper = 0.0_real64
@@ -105,6 +142,7 @@ contains
     workspace%warm_start_head = 0.0_real64
     workspace%has_warm_start = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
+    workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .false.
   end subroutine reset_reference_workspace
 
@@ -116,28 +154,19 @@ contains
     n = workspace%active_nodes
     if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) &
          error stop 'TRIDAG factorization capture requires initialized workspace'
-    if (size(workspace%tridag_gamma) /= 2*n) then
+    if (size(workspace%tridag_gamma) < 2*n) then
        allocate(expanded(2*n))
-       expanded = 0.0_real64
        deallocate(workspace%tridag_gamma)
        call move_alloc(expanded, workspace%tridag_gamma)
-    else
-       workspace%tridag_gamma = 0.0_real64
+       workspace%profile_reset_payload_bytes = reference_workspace_payload_bytes(workspace)
     end if
+    workspace%tridag_factorization_capture_active = .true.
   end subroutine prepare_reference_tridag_factorization_capture
 
   subroutine release_reference_tridag_factorization_capture(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
-    real(real64), allocatable :: compact(:)
-    integer :: n
 
-    n = workspace%active_nodes
-    if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) return
-    if (size(workspace%tridag_gamma) == n) return
-    allocate(compact(n))
-    compact = 0.0_real64
-    deallocate(workspace%tridag_gamma)
-    call move_alloc(compact, workspace%tridag_gamma)
+    workspace%tridag_factorization_capture_active = .false.
   end subroutine release_reference_tridag_factorization_capture
 
   subroutine poison_reference_workspace(workspace)
@@ -174,6 +203,7 @@ contains
     workspace%warm_start_head = qnan
     workspace%has_warm_start = .true.
     workspace%diagnostics%route = 'poisoned'
+    workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .true.
   end subroutine poison_reference_workspace
 
@@ -206,9 +236,13 @@ contains
     if (allocated(workspace%warm_start_head)) deallocate(workspace%warm_start_head)
     workspace%active_nodes = 0
     workspace%poisoned = .false.
+    workspace%tridag_factorization_capture_active = .false.
     workspace%has_warm_start = .false.
     workspace%unsaturated_flags = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
+    workspace%profile_full_reset_calls = 0
+    workspace%profile_zeroed_bytes = 0_int64
+    workspace%profile_reset_payload_bytes = 0_int64
   end subroutine release_reference_workspace
 
   function reference_workspace_payload_bytes(workspace) result(nbytes)
