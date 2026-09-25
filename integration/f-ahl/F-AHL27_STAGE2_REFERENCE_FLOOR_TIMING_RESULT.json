@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_REFERENCE_FLOOR_TIMING",
+  "phase": "SERIALIZED_REFERENCE_FLOOR_PAIRED_TIMING_COMPLETE",
+  "status": "EQUIVOCAL_APPLICATION_PROVIDER_SPEED",
+  "workflow_run": 36078431061,
+  "workflow_job": 107894758205,
+  "measurement_layer": "fmr_serialized_reference_backend_t%run_reference_floor_sample",
+  "candidate_policy": {
+    "global_abs_logK_tolerance": 3e-4,
+    "wet_abs_logK_tolerance": 3e-4,
+    "raw_capacity_relevance_floor": 1e-13,
+    "outside_represented_domain": "authoritative analytical fallback"
+  },
+  "fidelity": {
+    "reference_sample_valid": true,
+    "adaptive_sample_valid": true,
+    "max_abs_pressure_head_delta_cm": 1.038717e-6,
+    "max_abs_water_content_delta": 1.143307e-9,
+    "bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "nonlinear_iterations": 4,
+    "backtracking_attempts": 4,
+    "verdict": "PASS"
+  },
+  "paired_adaptive_over_analytical_ratios": [
+    0.983857,
+    0.988440,
+    0.982894,
+    0.989523,
+    0.979857,
+    0.984431,
+    0.989330
+  ],
+  "median_ratio": 0.984431,
+  "median_reduction_fraction": 0.015569,
+  "decision_rule": {
+    "pass": "ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "fail": "ratio > 1.02"
+  },
+  "decision": "EQUIVOCAL_DO_NOT_USE_AS_APPLICATION_SPEED_ADMISSION",
+  "interpretation": [
+    "The production-shaped adaptive route preserves the serialized Reference-floor physical response and nonlinear path.",
+    "The measured provider/application-layer speed benefit is about 1.6 percent and falls inside the preregistered equivocal band.",
+    "This does not invalidate the stronger lower-level complete-Richards paired timing evidence; it shows that serialized FMR routing/configuration/cache overhead largely absorbs that benefit in this small single-column sample."
+  ],
+  "governance": [
+    "Do not lower the 2 percent application speed threshold post hoc.",
+    "Do not claim application-level or whole-SWAP speedup from F-AHL27 Stage 2.",
+    "Retain the feature as research-qualified opt-in/fallback architecture only unless a broader production workload demonstrates material net benefit."
+  ]
+}
