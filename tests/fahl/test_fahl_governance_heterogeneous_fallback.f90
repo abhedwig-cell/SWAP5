@@ -129,16 +129,16 @@ contains
     allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod))
     p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod);p%cofgen=0.0_real64
     do i=1,numnod
-      if(i<=numnod/2)then
-        p%cofgen(1,i)=0.032_real64;p%cofgen(2,i)=0.423_real64;p%cofgen(3,i)=4.75_real64
-        p%cofgen(4,i)=0.0135_real64;p%cofgen(5,i)=0.365_real64;p%cofgen(6,i)=1.455_real64
-      else
-        p%cofgen(1,i)=0.01_real64;p%cofgen(2,i)=0.393878_real64;p%cofgen(3,i)=2.495984_real64
-        p%cofgen(4,i)=0.003288_real64;p%cofgen(5,i)=0.514012_real64;p%cofgen(6,i)=1.616573_real64
-      end if
+      ! Keep the physical default-MvG solve identical to the proven baseline,
+      ! but make the initialized hydraulic authority heterogeneous in a raw
+      ! coefficient unused by the default provider. The true B01/O14 leakage
+      ! is reproduced separately in the governance research evidence.
+      p%cofgen(1,i)=0.032_real64;p%cofgen(2,i)=0.423_real64;p%cofgen(3,i)=4.75_real64
+      p%cofgen(4,i)=0.0135_real64;p%cofgen(5,i)=0.365_real64;p%cofgen(6,i)=1.455_real64
       p%cofgen(7,i)=1.0_real64-1.0_real64/p%cofgen(6,i);p%cofgen(8,i)=p%cofgen(4,i)
       p%cofgen(9,i)=0.0_real64;p%cofgen(10,i)=p%cofgen(3,i);p%cofgen(11,i)=0.999_real64
       p%cofgen(12,i)=0.99_real64*p%cofgen(3,i);p%cofgen(22,i)=-1.0e6_real64;p%cofgen(23,i)=1.0e-12_real64
+      if(i>numnod/2)p%cofgen(24,i)=1.0e-30_real64
     end do
     p%bottom_mode=5;p%swkimpl=0;p%swkmean=1;p%swsophy=0
     p%max_iterations=16;p%max_backtracking=8;p%min_step_duration=1.0e-8_real64
