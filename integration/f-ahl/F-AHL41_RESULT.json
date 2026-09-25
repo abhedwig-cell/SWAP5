@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41",
+  "phase": "INITIAL_PRESCRIBED_QBOT_MATRIX_EXECUTION",
+  "status": "INVALID_BASELINE_FIXTURE_NO_ADAPTIVE_CONCLUSION",
+  "workflow_run": 36104678290,
+  "workflow_job": 107974466390,
+  "failure": {
+    "case": "first prospectively ordered case: B01 wet zero-qbot",
+    "arm": "fully analytical authority",
+    "symptom": "analytical Reference Richards solve did not converge before adaptive provider was evaluated"
+  },
+  "interpretation": "The original AHL41 construction combined a uniform-pressure initial profile, top_flux=-K0 and qbot=0 over dt=0.25 d. That is not the already-qualified mode-2 control construction and produced an analytically nonconvergent baseline. Therefore this run cannot falsify or qualify adaptive hydraulics.",
+  "gate_policy": "No AHL41 fidelity gate is retuned. The fixture is abandoned because the authority arm itself is invalid.",
+  "reconciled_successor_authority": {
+    "FSI38": "hydrostatic predecessor profile; top_flux=qbot; bottom_mode=2; q values ±1e-6, ±1e-10, 0; qualified dt values 1e-2 and 1e-4 d",
+    "historical_AHL12": "recognized the same Neumann-head-response question but did not reach closure because an earlier extreme-dry logK builder metric failed before the current dry-relevance/fallback architecture existed"
+  },
+  "next_action": "F-AHL41A re-tests the current adaptive provider on the FSI38-controlled prescribed-qbot construction."
+}
