@@ -49,18 +49,19 @@ done
 python3 - "$RESULT" <<'PY'
 import re, statistics, sys
 path=sys.argv[1]
-rows=[]
+ratios=[]
 for line in open(path):
-    m=re.search(r'AHL10F_CASE\s+(\S+)\s+(\S+)\s+([0-9.]+)', line)
+    m=re.search(r'AHL10F_MEDIAN_PAIRED_RATIO\s+([0-9.]+)', line)
     if m:
-        rows.append((m.group(1),m.group(2),float(m.group(3))))
-if len(rows)!=12:
-    raise SystemExit(f'expected 12 case medians, found {len(rows)}')
-ratios=[r for _,_,r in rows]
+        ratios.append(float(m.group(1)))
+labels=[f"{m}:{g}" for m in ("B01","B12","O05","O14") for g in ("wet","mid","dry")]
+if len(ratios)!=12:
+    raise SystemExit(f'expected 12 case medians, found {len(ratios)}')
+rows=list(zip(labels,ratios))
 med=statistics.median(ratios)
-neg=[f"{m}:{g}={r:.6f}" for m,g,r in rows if r>1.02]
-pos=[f"{m}:{g}={r:.6f}" for m,g,r in rows if r<0.98]
-eq=[f"{m}:{g}={r:.6f}" for m,g,r in rows if 0.98<=r<=1.02]
+neg=[f"{label}={ratio:.6f}" for label,ratio in rows if ratio>1.02]
+pos=[f"{label}={ratio:.6f}" for label,ratio in rows if ratio<0.98]
+eq=[f"{label}={ratio:.6f}" for label,ratio in rows if 0.98<=ratio<=1.02]
 print("AHL10F_MATRIX_MEDIAN_RATIO",f"{med:.6f}")
 print("AHL10F_SPEED_POSITIVE",",".join(pos))
 print("AHL10F_EQUIVOCAL",",".join(eq))
