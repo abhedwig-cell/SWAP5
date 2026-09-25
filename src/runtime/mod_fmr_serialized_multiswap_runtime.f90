@@ -198,6 +198,7 @@ contains
     integer, allocatable :: order(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
     logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
+    logical :: track_physical_concurrency
 
     do_worker_assignments = .true.
     if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
@@ -213,6 +214,7 @@ contains
       do_worker_assignments = .false.
       do_diagnostic_metadata = .false.
     end if
+    track_physical_concurrency = do_summary_diagnostics .or. present(runtime_diagnostics)
     call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments, &
          do_diagnostic_metadata, do_column_diagnostics)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
@@ -312,7 +314,8 @@ contains
             if (do_column_diagnostics) then
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint)
+                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
+                 track_physical_concurrency)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
@@ -322,7 +325,8 @@ contains
             if (do_column_diagnostics) then
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt)
+                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
+                 track_physical_concurrency=track_physical_concurrency)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
@@ -334,7 +338,8 @@ contains
             if (do_column_diagnostics) then
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, template_index_hint=template_index_hint)
+                   local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
+                 track_physical_concurrency=track_physical_concurrency)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
@@ -344,11 +349,11 @@ contains
             if (do_column_diagnostics) then
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls)
+                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls)
+                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency)
             end if
           end if
         end if
@@ -587,7 +592,7 @@ contains
   ! shared transaction boundary.
   subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
                             state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
-                            commit_receipt, template_index_hint)
+                            commit_receipt, template_index_hint, track_physical_concurrency)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -603,6 +608,7 @@ contains
     integer, intent(inout) :: active_physical_calls
     type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
     integer, intent(in), optional :: template_index_hint
+    logical, intent(in), optional :: track_physical_concurrency
 
     integer :: state_index, parameter_index, forcing_index, template_index
     logical :: routable
@@ -634,11 +640,13 @@ contains
     if (present(commit_receipt)) then
       call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
            parameter_registry(parameter_index), forcing_registry(forcing_index), state_registry(state_index), &
-           numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, commit_receipt)
+           numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, commit_receipt, &
+           track_physical_concurrency=track_physical_concurrency)
     else
       call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
            parameter_registry(parameter_index), forcing_registry(forcing_index), state_registry(state_index), &
-           numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
+           numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
+           track_physical_concurrency=track_physical_concurrency)
     end if
   end subroutine execute_column
 
@@ -647,7 +655,7 @@ contains
   subroutine execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
                                      committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
                                      active_physical_calls, commit_receipt, bottom_energy_parameters, &
-                                     bottom_thermal_provider, bottom_energy_publication)
+                                     bottom_thermal_provider, bottom_energy_publication, track_physical_concurrency)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -665,6 +673,7 @@ contains
     type(liquid_water_sensible_enthalpy_parameters_t), intent(in), optional :: bottom_energy_parameters
     procedure(fmr_external_bottom_thermal_provider_i), optional :: bottom_thermal_provider
     type(fmr_serialized_bottom_energy_publication_t), intent(out), optional :: bottom_energy_publication
+    logical, intent(in), optional :: track_physical_concurrency
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -676,6 +685,10 @@ contains
     type(fmr_owned_commit_receipt_t) :: local_energy_receipt
     integer :: commit_status, receipt_status, simultaneous_physical_calls
     logical :: checkpoint_ok, candidate_ready, did_commit, energy_requested, receipt_path, exported_receipt_available
+    logical :: do_track_physical_concurrency
+
+    do_track_physical_concurrency = .true.
+    if (present(track_physical_concurrency)) do_track_physical_concurrency = track_physical_concurrency
 
     output%initial_revision = committed_state%current_revision()
     energy_requested = present(bottom_energy_parameters) .and. present(bottom_thermal_provider) .and. &
@@ -701,10 +714,14 @@ contains
     diagnostic%checkpoint_replays = 1
     diagnostic%runtime_attempts = 1
 
-    !$omp atomic capture
-    active_physical_calls = active_physical_calls + 1
-    simultaneous_physical_calls = active_physical_calls
-    !$omp end atomic
+    if (do_track_physical_concurrency) then
+      !$omp atomic capture
+      active_physical_calls = active_physical_calls + 1
+      simultaneous_physical_calls = active_physical_calls
+      !$omp end atomic
+    else
+      simultaneous_physical_calls = 1
+    end if
     if (energy_requested) call backend%set_bottom_thermal_carrier_enabled(.true.)
     call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
          numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
@@ -746,14 +763,16 @@ contains
       output%solver_executed = observation%solver_executed
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
-      if (output%solver_executed) then
+      if (output%solver_executed .and. do_track_physical_concurrency) then
         runtime%max_simultaneous_real_physical_solves = max( &
              runtime%max_simultaneous_real_physical_solves, simultaneous_physical_calls)
       end if
     end if
-    !$omp atomic update
-    active_physical_calls = active_physical_calls - 1
-    !$omp end atomic
+    if (do_track_physical_concurrency) then
+      !$omp atomic update
+      active_physical_calls = active_physical_calls - 1
+      !$omp end atomic
+    end if
 
     if (.not. kernel_result%completed) then
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
