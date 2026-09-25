@@ -1,0 +1,27 @@
+name: F-AHL46 direct-Hermite screen
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/F-AHL46_PREREGISTRATION.md'
+      - 'research/ahl/test_fahl46_direct_hermite_screen.f90'
+      - 'research/ahl/run_fahl46_direct_hermite_screen.sh'
+      - '.github/workflows/f-ahl46-direct-hermite.yml'
+  workflow_dispatch:
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run derivative-consistent direct-Hermite screen
+        run: |
+          bash research/ahl/run_fahl46_direct_hermite_screen.sh | tee fahl46-direct-hermite.txt
+          grep -Fq 'FAHL46_DIRECT_HERMITE_SCREEN=PASS' fahl46-direct-hermite.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl46-direct-hermite
+          path: fahl46-direct-hermite.txt
