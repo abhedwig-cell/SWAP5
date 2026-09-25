@@ -1,5 +1,6 @@
 module mod_soil_water_solver_contract
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   implicit none
   private
 
@@ -88,6 +89,8 @@ module mod_soil_water_solver_contract
    contains
      procedure(constitutive_evaluate_ifc), deferred :: evaluate
      procedure :: evaluate_demand => constitutive_evaluate_demand_fallback
+     procedure :: supports_point_conductivity => constitutive_supports_point_conductivity_fallback
+     procedure :: evaluate_point_conductivity => constitutive_evaluate_point_conductivity_unavailable
   end type constitutive_hydraulics_provider_t
 
   type, abstract, public :: source_sink_provider_t
@@ -297,6 +300,25 @@ contains
     if (demand_mask < 0) error stop 'constitutive demand mask must be nonnegative'
     call self%evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
   end subroutine constitutive_evaluate_demand_fallback
+
+  logical function constitutive_supports_point_conductivity_fallback(self) result(supported)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    supported = .false.
+    if (.not. same_type_as(self,self)) supported = .false.
+  end function constitutive_supports_point_conductivity_fallback
+
+  subroutine constitutive_evaluate_point_conductivity_unavailable(self, node_index, pressure_head, water_content, &
+                                                                   conductivity, available)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    integer, intent(in) :: node_index
+    real(real64), intent(in) :: pressure_head, water_content
+    real(real64), intent(out) :: conductivity
+    logical, intent(out) :: available
+    conductivity = 0.0_real64
+    available = .false.
+    if (node_index < 1 .or. .not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
+    if (.not. same_type_as(self,self)) return
+  end subroutine constitutive_evaluate_point_conductivity_unavailable
 
   subroutine validate_soil_water_request(request, ok)
     type(soil_water_solve_request_t), intent(in) :: request

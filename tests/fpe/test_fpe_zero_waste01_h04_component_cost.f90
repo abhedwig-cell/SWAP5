@@ -13,7 +13,8 @@ program test_fpe_zero_waste01_h04_component_cost
   real(real64), allocatable :: theta_m(:), kval_m(:), cap_m(:), theta_only(:)
   integer :: n, reps, r, i
   integer(int64) :: c0,c1,rate
-  real(real64) :: checksum, bottom_k
+  real(real64) :: checksum, bottom_k, point_k
+  logical :: point_available
   character(len=32) :: arg
 
   call get_command_argument(1,arg); read(arg,*) n
@@ -30,6 +31,10 @@ program test_fpe_zero_waste01_h04_component_cost
   end do
 
   call provider%evaluate(head,theta,kval,cap,dkdh)
+  if (.not. provider%supports_point_conductivity()) error stop 'H04 B110 point conductivity capability unavailable'
+  call provider%evaluate_point_conductivity(n,head(n),theta(n),point_k,point_available)
+  if (.not. point_available) error stop 'H04 B110 point conductivity evaluation unavailable'
+  if (transfer(point_k,0_int64) /= transfer(kval(n),0_int64)) error stop 'H04 point K not bit-identical to full K(NN)'
   theta_only = -huge(0.0_real64)
   cap_m = -huge(0.0_real64)
   call provider%evaluate_demand(head,CONSTITUTIVE_DEMAND_WATER_CONTENT,theta_only,kval_m,cap_m,dkdh)
@@ -64,7 +69,8 @@ program test_fpe_zero_waste01_h04_component_cost
   checksum=0.0_real64
   call system_clock(c0,rate)
   do r=1,reps
-    call mirror_bottom_k(hydraulic%cofgen,head,bottom_k)
+    call provider%evaluate_point_conductivity(n,head(n),theta(n),bottom_k,point_available)
+    if (.not. point_available) error stop 'H04 timed point conductivity unavailable'
     checksum=checksum+bottom_k
   end do
   call system_clock(c1)

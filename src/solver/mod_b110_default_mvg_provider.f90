@@ -23,6 +23,8 @@ module mod_b110_default_mvg_provider
    contains
      procedure :: evaluate => b110_default_mvg_evaluate
      procedure :: evaluate_demand => b110_default_mvg_evaluate_demand
+     procedure :: supports_point_conductivity => b110_default_mvg_supports_point_conductivity
+     procedure :: evaluate_point_conductivity => b110_default_mvg_evaluate_point_conductivity
   end type b110_default_mvg_provider_t
 
   public :: initialize_b110_default_mvg_parameters
@@ -142,6 +144,33 @@ contains
     end if
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity
+
+  logical function b110_default_mvg_supports_point_conductivity(self) result(supported)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    supported = associated(self%parameters)
+  end function b110_default_mvg_supports_point_conductivity
+
+  subroutine b110_default_mvg_evaluate_point_conductivity(self, node_index, pressure_head, water_content, conductivity, &
+                                                           available)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    integer, intent(in) :: node_index
+    real(real64), intent(in) :: pressure_head, water_content
+    real(real64), intent(out) :: conductivity
+    logical, intent(out) :: available
+
+    conductivity = 0.0_real64
+    available = .false.
+    if (.not. associated(self%parameters)) return
+    if (node_index < 1 .or. node_index > self%parameters%active_nodes) return
+    if (.not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
+    conductivity = b110_hconduc(self%parameters%cofgen(:,node_index), pressure_head, water_content, &
+         self%parameters%ksatexm_extension_enabled)
+    if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
+      conductivity = 0.0_real64
+      return
+    end if
+    available = .true.
+  end subroutine b110_default_mvg_evaluate_point_conductivity
 
   subroutine b110_default_mvg_evaluate_demand(self, pressure_head, demand_mask, water_content, conductivity, &
                                                 capacity, dconductivity_dhead)

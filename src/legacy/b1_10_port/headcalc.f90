@@ -75,6 +75,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: explicit_geometry
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
    logical :: provider_tuple_valid, provider_tuple_from_candidate
+   logical :: provider_point_conductivity_supported, provider_point_conductivity_available
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
@@ -176,6 +177,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_constitutive_active = .false.
    provider_tuple_valid = .false.
    provider_tuple_from_candidate = .false.
+   provider_point_conductivity_supported = .false.
+   provider_point_conductivity_available = .false.
    provider_source_sink_active = .false.
    provider_root_sink_active = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
@@ -183,6 +186,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       provider_source_sink_active = associated(evaluation_context%source_sink)
       provider_root_sink_active = associated(evaluation_context%root_sink)
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
+      provider_point_conductivity_supported = evaluation_context%constitutive%supports_point_conductivity()
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
       if (provider_root_sink_active .and. SwKimpl /= 0) &
            error stop 'HeadCalc: root-sink provider requires swkimpl=0 in F-SI11'
@@ -353,7 +357,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
       if (provider_constitutive_active) then
          if (.not. provider_tuple_valid) then
-            if (provider_tuple_from_candidate .and. SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
+            if (provider_tuple_from_candidate .and. SwKimpl == 0) then
                ctx%diagnostics%constitutive_capacity_only_evaluations = &
                     ctx%diagnostics%constitutive_capacity_only_evaluations + 1
                call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), CONSTITUTIVE_DEMAND_CAPACITY, &
@@ -446,6 +450,22 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
                     CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
                     fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+            else if (SwKimpl == 0 .and. (swbotb == 7 .or. swbotb == -2) .and. &
+                     provider_point_conductivity_supported) then
+               ctx%diagnostics%constitutive_candidate_demand_evaluations = &
+                    ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
+               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               call evaluation_context%constitutive%evaluate_point_conductivity(NN, state%h(NN), &
+                    fsi_ws%provider_theta(NN), fsi_ws%provider_k(NN), provider_point_conductivity_available)
+               if (.not. provider_point_conductivity_available) then
+                  ctx%diagnostics%constitutive_candidate_full_evaluations = &
+                       ctx%diagnostics%constitutive_candidate_full_evaluations + 1
+                  call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, &
+                       fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+                  provider_tuple_valid = .true.
+               end if
             else
                ctx%diagnostics%constitutive_candidate_full_evaluations = &
                     ctx%diagnostics%constitutive_candidate_full_evaluations + 1

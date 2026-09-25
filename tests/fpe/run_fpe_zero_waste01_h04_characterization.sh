@@ -49,5 +49,29 @@ for row in rows:
 if not parsed: raise SystemExit("no H04 rows")
 for r in parsed:
     print("H04_OBSERVATION", *r)
+
+# H04B exact free-drainage narrowing gate. The current-head baseline has one
+# initial full evaluation and one candidate evaluation per backtracking trial.
+# After H04B the candidate evaluations must all use the narrow demand path.
+mode7=[r for r in parsed if r[0]=="7"]
+if len(mode7) != 6:
+    raise SystemExit(f"expected 6 free-drainage observations, got {len(mode7)}")
+expected={
+    "1.000":("1","T","1","2"),
+    "0.000":("2","F","16","17"),
+    "0.500":("2","F","16","17"),
+    "1.500":("2","F","16","17"),
+    "2.000":("2","F","16","17"),
+    "5.000":("2","F","16","30"),
+}
+for r in mode7:
+    mode,mult,status,conv,iters,evals,initial,cfull,cdemand,conly,terminal,creuse=r
+    if (status,conv,iters,evals) != expected[mult]:
+        raise SystemExit(f"free-drainage trajectory drift for {mult}: {r}")
+    if initial != "1" or cfull != "0":
+        raise SystemExit(f"free-drainage full candidate evaluation remains for {mult}: {r}")
+    if int(cdemand) != int(evals)-1:
+        raise SystemExit(f"free-drainage candidate demand count mismatch for {mult}: {r}")
+print("FPE_ZERO_WASTE01_H04B_FREE_DRAINAGE_NARROWING=PASS")
 print("FPE_ZERO_WASTE01_H04_CHARACTERIZATION=PASS")
 PY
