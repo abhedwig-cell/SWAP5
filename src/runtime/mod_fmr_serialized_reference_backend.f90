@@ -336,7 +336,9 @@ module mod_fmr_serialized_reference_backend
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
+    type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
+    type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
@@ -845,6 +847,8 @@ contains
     call configure_trajectory_direction(self%model%trajectory_direction, .false.)
     call self%model%bottom_thermal_carrier%clear()
     self%model%trusted_prepared_default_mvg = .false.
+    nullify(self%model%trusted_parameter_source)
+    nullify(self%model%hydraulic_parameters)
     call self%bottom_thermal_candidate%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
@@ -1176,7 +1180,7 @@ contains
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
-    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_parameters_t), target, intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed
     type(fmr_b110_physical_forcing_t), intent(in) :: forcing
     type(canonical_numerical_config_t), intent(in) :: config
@@ -1313,9 +1317,19 @@ contains
       self%model%top_sensible_boundary_carrier_active = top_sensible_ok
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
-    if (present(trusted_prepared_parameters)) self%model%trusted_prepared_default_mvg = trusted_prepared_parameters
+    self%model%trusted_prepared_default_mvg = .false.
+    nullify(self%model%trusted_parameter_source)
+    if (present(trusted_prepared_parameters)) then
+      if (trusted_prepared_parameters .and. prepared_default_mvg_structurally_compatible(parameters)) then
+        self%model%trusted_prepared_default_mvg = .true.
+        self%model%trusted_parameter_source => parameters
+      end if
+    end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
+    if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
+    nullify(self%model%hydraulic_parameters)
+    nullify(self%model%trusted_parameter_source)
     self%model%trusted_prepared_default_mvg = .false.
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
@@ -1492,7 +1506,8 @@ contains
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
       if (.not. associated(self%soil_parameters)) allocate(self%soil_parameters)
-      if (.not. associated(self%hydraulic_parameters)) allocate(self%hydraulic_parameters)
+      if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
+      nullify(self%hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -1514,12 +1529,17 @@ contains
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
-      if ((self%trusted_prepared_default_mvg .and. prepared_default_mvg_structurally_compatible(parameters)) .or. &
-          (.not. self%trusted_prepared_default_mvg .and. prepared_default_mvg_compatible(parameters))) then
-        self%hydraulic_parameters = parameters%prepared_default_mvg
+      if (self%trusted_prepared_default_mvg .and. associated(self%trusted_parameter_source) .and. &
+          prepared_default_mvg_structurally_compatible(parameters)) then
+        self%hydraulic_parameters => self%trusted_parameter_source%prepared_default_mvg
       else
-        call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
-             enable_ksatexm_extension=parameters%ksatexm_extension_active)
+        if (prepared_default_mvg_compatible(parameters)) then
+          self%owned_hydraulic_parameters = parameters%prepared_default_mvg
+        else
+          call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
+               enable_ksatexm_extension=parameters%ksatexm_extension_active)
+        end if
+        self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl

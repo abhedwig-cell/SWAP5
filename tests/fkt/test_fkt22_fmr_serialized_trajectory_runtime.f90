@@ -29,20 +29,21 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   type(fmr_template_t) :: template
   type(canonical_numerical_config_t) :: config_off, config_on
   type(kernel_committed_state_t) :: committed_off, committed_on, committed_trusted, &
-       committed_mutated_stale, committed_mutated_fresh
+       committed_mutated_stale, committed_mutated_fresh, committed_reuse_a1, committed_reuse_b, committed_reuse_a2
   type(kernel_checkpoint_t) :: checkpoint_off, checkpoint_on, checkpoint_trusted, &
-       checkpoint_mutated_stale, checkpoint_mutated_fresh
-  type(kernel_result_t) :: result_off, result_on, result_trusted, result_mutated_stale, result_mutated_fresh
+       checkpoint_mutated_stale, checkpoint_mutated_fresh, checkpoint_reuse_a1, checkpoint_reuse_b, checkpoint_reuse_a2
+  type(kernel_result_t) :: result_off, result_on, result_trusted, result_mutated_stale, result_mutated_fresh, &
+       result_reuse_a1, result_reuse_b, result_reuse_a2
   type(kernel_candidate_state_t) :: candidate_off, candidate_on, candidate_trusted, &
-       candidate_mutated_stale, candidate_mutated_fresh
+       candidate_mutated_stale, candidate_mutated_fresh, candidate_reuse_a1, candidate_reuse_b, candidate_reuse_a2
   type(kernel_diagnostics_t) :: diagnostics_off, diagnostics_on, diagnostics_trusted, &
-       diagnostics_mutated_stale, diagnostics_mutated_fresh
+       diagnostics_mutated_stale, diagnostics_mutated_fresh, diagnostics_reuse_a1, diagnostics_reuse_b, diagnostics_reuse_a2
   type(fmr_serialized_reference_backend_t) :: backend_off, backend_on, backend_trusted, &
-       backend_mutated_stale, backend_mutated_fresh
+       backend_mutated_stale, backend_mutated_fresh, backend_reuse
   type(fmr_serialized_physical_observation_t) :: observation_off
   type(fixed_flux_top_boundary_provider_t), target :: top
   class(transaction_state_t), allocatable :: snapshot_off, snapshot_on, snapshot_trusted, &
-       snapshot_mutated_stale, snapshot_mutated_fresh
+       snapshot_mutated_stale, snapshot_mutated_fresh, snapshot_reuse_a1, snapshot_reuse_a2
   real(real64) :: k0, qeq, mutated_k0, mutated_qeq
   logical :: ok, available_off, available_on
 
@@ -255,6 +256,54 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   call require(same_bits(result_mutated_stale%mass%residual, result_mutated_fresh%mass%residual), &
        'H22A untrusted stale cache falls back to current raw parameters')
   write(*,'(A)') 'FPE_ZERO_WASTE01_H22A_UNTRUSTED_STALE_FALLBACK=PASS'
+
+  ! H22B: one backend must not retain a borrowed prepared-hydraulics pointer
+  ! across trusted A -> trusted B -> trusted A reuse.
+  call initialize_committed(committed_reuse_a1, parameters, ok)
+  call require(ok, 'H22B reuse A1 committed initialized')
+  call initialize_committed(committed_reuse_b, mutated_fresh, ok)
+  call require(ok, 'H22B reuse B committed initialized')
+  call initialize_committed(committed_reuse_a2, parameters, ok)
+  call require(ok, 'H22B reuse A2 committed initialized')
+  call fmr_capture_checkpoint(committed_reuse_a1, checkpoint_reuse_a1, ok)
+  call require(ok, 'H22B reuse A1 checkpoint captured')
+  call fmr_capture_checkpoint(committed_reuse_b, checkpoint_reuse_b, ok)
+  call require(ok, 'H22B reuse B checkpoint captured')
+  call fmr_capture_checkpoint(committed_reuse_a2, checkpoint_reuse_a2, ok)
+  call require(ok, 'H22B reuse A2 checkpoint captured')
+  call backend_reuse%initialize(top)
+
+  call initialize_forcing(forcing, qeq)
+  call backend_reuse%run_trial(column, template, parameters, committed_reuse_a1, forcing, config_off, &
+       0.0_real64, duration, checkpoint_reuse_a1, result_reuse_a1, candidate_reuse_a1, diagnostics_reuse_a1, &
+       trusted_prepared_parameters=.true.)
+
+  call initialize_forcing(forcing, mutated_qeq)
+  call backend_reuse%run_trial(column, template, mutated_fresh, committed_reuse_b, forcing, config_off, &
+       0.0_real64, duration, checkpoint_reuse_b, result_reuse_b, candidate_reuse_b, diagnostics_reuse_b, &
+       trusted_prepared_parameters=.true.)
+
+  call initialize_forcing(forcing, qeq)
+  call backend_reuse%run_trial(column, template, parameters, committed_reuse_a2, forcing, config_off, &
+       0.0_real64, duration, checkpoint_reuse_a2, result_reuse_a2, candidate_reuse_a2, diagnostics_reuse_a2, &
+       trusted_prepared_parameters=.true.)
+
+  call require(result_reuse_a1%completed .and. result_reuse_b%completed .and. result_reuse_a2%completed, &
+       'H22B trusted A-B-A trials complete')
+  call candidate_reuse_a1%snapshot(snapshot_reuse_a1, available_off)
+  call candidate_reuse_a2%snapshot(snapshot_reuse_a2, available_on)
+  call require(available_off .and. available_on, 'H22B trusted A snapshots available')
+  call require_physical_identity(snapshot_reuse_a1, snapshot_reuse_a2)
+  call require(same_bits(result_reuse_a1%mass%storage_start, result_reuse_a2%mass%storage_start) .and. &
+       same_bits(result_reuse_a1%mass%storage_end, result_reuse_a2%mass%storage_end) .and. &
+       same_bits(result_reuse_a1%mass%total_in, result_reuse_a2%mass%total_in) .and. &
+       same_bits(result_reuse_a1%mass%total_out, result_reuse_a2%mass%total_out) .and. &
+       same_bits(result_reuse_a1%mass%residual, result_reuse_a2%mass%residual), &
+       'H22B trusted A-B-A mass identity')
+  call require(diagnostics_reuse_a1%nonlinear_iterations == diagnostics_reuse_a2%nonlinear_iterations .and. &
+       diagnostics_reuse_a1%linear_solves == diagnostics_reuse_a2%linear_solves, &
+       'H22B trusted A-B-A solve-count identity')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_H22B_TRUSTED_ABA_BINDING=PASS'
 
   write(*,'(A)') 'FKT22_FMR_TRAJECTORY_PHYSICAL_IDENTITY=PASS'
   write(*,'(A)') 'FKT22_FMR_SERIALIZED_RUNTIME_GATE=PASS'
