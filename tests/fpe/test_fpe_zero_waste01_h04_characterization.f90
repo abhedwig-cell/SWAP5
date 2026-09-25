@@ -124,8 +124,9 @@ program test_fpe_zero_waste01_h04_characterization
   if (result%diagnostics%constitutive_evaluations /= &
       result%diagnostics%constitutive_initial_full_evaluations + &
       result%diagnostics%constitutive_candidate_full_evaluations + &
-      result%diagnostics%constitutive_candidate_demand_evaluations + &
-      result%diagnostics%constitutive_capacity_only_evaluations) error stop 'H04 counter partition mismatch'
+      result%diagnostics%constitutive_candidate_demand_evaluations) error stop 'H04 logical counter partition mismatch'
+  if (result%diagnostics%constitutive_capacity_only_evaluations > &
+      result%diagnostics%constitutive_candidate_demand_evaluations) error stop 'H04 capacity-only count invalid'
   if (result%diagnostics%constitutive_candidate_terminal_evaluations > &
       result%diagnostics%constitutive_candidate_full_evaluations + &
       result%diagnostics%constitutive_candidate_demand_evaluations) error stop 'H04 terminal count invalid'
