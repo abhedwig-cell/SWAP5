@@ -4,13 +4,16 @@ program test_fpe_zero_waste01_gwplan01
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t, &
-       groundwater_application_plan_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
+       groundwater_application_plan_t, groundwater_application_cell_plan_t, materialize_groundwater_application_plan, &
+       GW_APP_PLAN_OK
+  use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
+  use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t
   use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, &
        modflow6_derivative_coverage_t, compose_modflow6_swap_predictor_response, MODFLOW6_PREDICTOR_OK, &
        MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT
   implicit none
 
-  integer :: n, i, status
+  integer :: n, i, status, rep, copy_reps
   integer(int64) :: c0, c1, rate
   character(len=32) :: arg
   type(groundwater_topology_tile_t), allocatable :: tiles(:)
@@ -19,7 +22,12 @@ program test_fpe_zero_waste01_gwplan01
   type(groundwater_cell_area_input_t), allocatable :: areas(:)
   type(groundwater_topology_t) :: topology
   type(groundwater_application_plan_t) :: plan
-  real(real64) :: seconds, ns_total, checksum, topology_seconds, topology_ns_total
+  type(groundwater_topology_tile_t), allocatable :: copy_tiles(:)
+  integer(int64), allocatable :: copy_revisions(:)
+  type(groundwater_application_cell_plan_t), allocatable :: copy_cells(:)
+  type(modflow6_api_slot_binding_t), allocatable :: copy_api(:)
+  type(modflow6_linear_boundary_term_t), allocatable :: copy_terms(:)
+  real(real64) :: seconds, ns_total, checksum, topology_seconds, topology_ns_total, copy_seconds
 
   call get_command_argument(1,arg)
   read(arg,*) n
@@ -56,6 +64,27 @@ program test_fpe_zero_waste01_gwplan01
   checksum=real(plan%tile_count()+plan%cell_count(),real64)
   write(*,'(A,I0,A,ES24.16,A,ES24.16,A,ES24.16)') &
        'GWPLAN01_CURRENT,n=',n,',seconds=',seconds,',ns_total=',ns_total,',checksum=',checksum
+
+  copy_reps=max(1,100000/max(1,n))
+  call system_clock(c0,rate)
+  do rep=1,copy_reps
+    call plan%copy_tiles(copy_tiles,status)
+    if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy tiles failed'
+    call plan%copy_tile_swap_origin_revisions(copy_revisions,status)
+    if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy revisions failed'
+    call plan%copy_cells(copy_cells,status)
+    if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy cells failed'
+    call plan%copy_api_bindings(copy_api,status)
+    if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy api failed'
+    call plan%copy_linear_terms(copy_terms,status)
+    if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy terms failed'
+  end do
+  call system_clock(c1)
+  copy_seconds=real(c1-c0,real64)/real(rate,real64)
+  checksum=real(size(copy_tiles)+size(copy_revisions)+size(copy_cells)+size(copy_api)+size(copy_terms),real64)
+  write(*,'(A,I0,A,I0,A,ES24.16,A,ES24.16,A,ES24.16)') &
+       'GWCTX02_COPY,n=',n,',reps=',copy_reps,',seconds=',copy_seconds, &
+       ',seconds_per_bind=',copy_seconds/real(copy_reps,real64),',checksum=',checksum
 
 contains
 
