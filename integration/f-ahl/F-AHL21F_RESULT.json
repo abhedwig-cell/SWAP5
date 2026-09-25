@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21F",
+  "phase": "O05_DRY_RETENTION_RESOLUTION_SWEEP_COMPLETE",
+  "status": "FAIL_NO_TESTED_INTERPOLATED_RETENTION_RESTORES_PATH",
+  "workflow_run": 36105562946,
+  "workflow_job": 107977185205,
+  "frozen_case": {
+    "material": "O05",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "frozen_K_support_points": 122,
+  "variants": {
+    "selected": {"support_points":28,"theta_span_tolerance":1e-5,"abs_logC_tolerance":1e-2,"iteration_gate":"FAIL"},
+    "ret3": {"support_points":29,"theta_span_tolerance":3e-6,"abs_logC_tolerance":3e-3,"iteration_gate":"FAIL"},
+    "ret1": {"support_points":31,"theta_span_tolerance":1e-6,"abs_logC_tolerance":1e-3,"iteration_gate":"FAIL"}
+  },
+  "finding": "Prospectively tightening the same derivative-consistent cubic-Hermite retention/capacity representation does not recover the analytical prescribed-qbot nonlinear path for O05-dry.",
+  "interpretation": "The remaining qbot path difference is representation-form or trajectory-local, not a simple lack of global retention/capacity knot density. Further global densification of this interpolant family is falsified as the repair strategy.",
+  "bound_prior_evidence": "F-AHL21E showed that authoritative analytical theta/C with the unchanged selected K lookup restores the analytical nonlinear path.",
+  "next_action": "Measure a boundary-mode-specific analytical-theta/C plus selected-K-lookup fallback under prescribed qbot before considering a different interpolant family.",
+  "hard_nonclaims": [
+    "NO_GATE_RETUNING",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_CLAIM_THAT_EXACT_THETA_C_IS_REQUIRED_FOR_ALL_BOTTOM_BOUNDARY_MODES"
+  ]
+}
