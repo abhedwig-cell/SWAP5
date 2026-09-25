@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41B",
+  "title": "Prescribed-qbot nonlinear-path component attribution",
+  "parent": "F-AHL41A",
+  "phase": "PREREGISTERED_RESEARCH",
+  "source_failure": {
+    "material": "B01",
+    "regime": "wet",
+    "top_initial_head_cm": -10.0,
+    "qbot_cm_per_day": -1e-6,
+    "analytical_iterations": 2,
+    "adaptive_iterations": 3,
+    "analytical_backtracking": 2,
+    "adaptive_backtracking": 3
+  },
+  "question": "Which approximated constitutive component in the current production-shaped adaptive provider causes the one-step prescribed-qbot nonlinear-path drift?",
+  "variants": [
+    "current_adaptive_all",
+    "exact_retention_capacity_plus_adaptive_K",
+    "adaptive_retention_capacity_plus_exact_K",
+    "fully_analytical"
+  ],
+  "implementation_rule": "All adaptive components must come from the current b110_adaptive_hydraulic_provider. Exact-component variants may only overwrite selected outputs with the authoritative b110_default_mvg_provider after evaluating the same pressure-head vector.",
+  "primary_gate": "recover analytical nonlinear iteration and backtracking counts",
+  "secondary_observables": [
+    "max profile head delta",
+    "bottom-node head delta",
+    "water-content delta",
+    "bottom-flux delta",
+    "mass residual"
+  ],
+  "decision_rule": "Attribute control only if restoring one component family to analytical recovers the analytical nonlinear path while the complementary exact-component variant does not.",
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_TABLE_REBUILD_POLICY_CHANGE",
+    "NO_QBOT_PERFORMANCE_TIMING",
+    "NO_MODFLOW_COUPLER_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
