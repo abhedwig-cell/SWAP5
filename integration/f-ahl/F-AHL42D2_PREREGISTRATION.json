@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42D2",
+  "title": "Post-catalog-repair application performance check",
+  "parent": "F-AHL42D",
+  "phase": "PREREGISTERED_PERFORMANCE_GATE",
+  "candidate": {
+    "global_abs_logK_tolerance": 1e-4,
+    "wet_abs_logK_tolerance": 3e-4,
+    "full_catalog_fidelity": "108/108 PASS"
+  },
+  "timing": {
+    "route": "serialized FMR reference-floor physical advance",
+    "paired_repetitions": 7,
+    "replays_per_batch": 8192,
+    "primary_statistic": "median adaptive/analytical CPU ratio"
+  },
+  "decision_rule": {
+    "retain_catalog_repair": "median ratio < 0.98 and all fidelity/path gates PASS",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "reject_as_performance_candidate": "median ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_FIDELITY_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_ADOPTION_OF_1E4_FROM_FIDELITY_ALONE"
+  ]
+}

@@ -1,0 +1,26 @@
+name: F-AHL42D2 catalog repair performance
+on:
+  push:
+    branches:
+      - work/f-ahl42d-full-catalog-k-repair
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'tests/fahl/run_fahl27_reference_floor_timing.sh'
+      - 'tests/fahl/test_fahl27_reference_floor_timing.f90'
+      - 'integration/f-ahl/F-AHL42D2_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl42d2-catalog-repair-performance.yml'
+  workflow_dispatch:
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paired production-shaped timing
+        run: |
+          bash tests/fahl/run_fahl27_reference_floor_timing.sh
+          grep -Fq 'FAHL27_REFERENCE_FLOOR_TIMING=PASS' /tmp/fahl27_reference_floor_timing.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl42d2-${{ github.run_id }}
+          path: /tmp/fahl27_reference_floor_timing.txt
