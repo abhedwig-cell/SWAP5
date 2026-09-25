@@ -189,6 +189,37 @@ contains
          error stop 'B1.10 default MvG provider: shape mismatch'
     if (self%step_duration <= 0.0_real64) error stop 'B1.10 default MvG provider: invalid step_duration'
 
+    select case (demand_mask)
+    case (CONSTITUTIVE_DEMAND_WATER_CONTENT)
+       do i = 1, n
+          water_content(i) = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+       end do
+       return
+    case (CONSTITUTIVE_DEMAND_CAPACITY)
+       do i = 1, n
+          capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+       end do
+       return
+    case (CONSTITUTIVE_DEMAND_WATER_CONTENT + CONSTITUTIVE_DEMAND_CONDUCTIVITY)
+       do i = 1, n
+          theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          water_content(i) = theta_local
+          conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
+               self%parameters%ksatexm_extension_enabled)
+       end do
+       return
+    case (CONSTITUTIVE_DEMAND_CONDUCTIVITY + CONSTITUTIVE_DEMAND_CAPACITY)
+       do i = 1, n
+          theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
+               self%parameters%ksatexm_extension_enabled)
+          capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+       end do
+       return
+    case default
+       continue
+    end select
+
     need_theta = iand(demand_mask, CONSTITUTIVE_DEMAND_WATER_CONTENT) /= 0
     need_k = iand(demand_mask, CONSTITUTIVE_DEMAND_CONDUCTIVITY) /= 0
     need_capacity = iand(demand_mask, CONSTITUTIVE_DEMAND_CAPACITY) /= 0
