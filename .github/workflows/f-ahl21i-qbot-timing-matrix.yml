@@ -1,0 +1,24 @@
+name: F-AHL21I qbot paired timing matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/run_ahl21i_qbot_timing_matrix.sh'
+      - 'integration/f-ahl/F-AHL21I_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl21i-qbot-timing-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run qbot paired timing matrix
+        run: |
+          bash research/ahl/run_ahl21i_qbot_timing_matrix.sh /tmp/ahl21i_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl21i-${{ github.run_id }}
+          path: /tmp/ahl21i_result.txt
