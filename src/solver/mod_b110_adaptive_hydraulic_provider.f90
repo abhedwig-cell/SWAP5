@@ -11,7 +11,7 @@ module mod_b110_adaptive_hydraulic_provider
   real(real64), parameter :: LOOKUP_H_MAX=-1.0_real64
   real(real64), parameter :: LOOKUP_H_MIN=-1.0e6_real64
   real(real64), parameter :: LN10=log(10.0_real64)
-  integer, parameter :: POLICY_VERSION=1, BRANCH_POLICY_VERSION=1
+  integer, parameter :: POLICY_VERSION=2, BRANCH_POLICY_VERSION=1
   character(len=*), parameter :: MODEL_ID='B110_DEFAULT_MVG'
 
   type(b110_adaptive_hydraulic_cache_t), save :: shared_cache
@@ -77,13 +77,19 @@ contains
 
     if(.not.self%ready .or. .not.associated(self%cofgen))error stop 'B110 adaptive hydraulic provider not ready'
 
-    if(any(pressure_head>LOOKUP_H_MAX) .or. any(pressure_head<LOOKUP_H_MIN))then
+    if(any(pressure_head>LOOKUP_H_MAX) .or. &
+         any(log10(max(-pressure_head, tiny(1.0_real64)))<self%table%x(1)) .or. &
+         any(log10(max(-pressure_head, tiny(1.0_real64)))>self%table%x(self%table%n)))then
       call self%analytical%evaluate(pressure_head,wa,ka,ca,da)
     end if
 
     do i=1,size(pressure_head)
-      if(pressure_head(i)<=LOOKUP_H_MAX .and. pressure_head(i)>=LOOKUP_H_MIN)then
+      if(pressure_head(i)<=LOOKUP_H_MAX)then
         xv=log10(-pressure_head(i))
+      else
+        xv=0.0_real64
+      end if
+      if(pressure_head(i)<=LOOKUP_H_MAX .and. xv>=self%table%x(1) .and. xv<=self%table%x(self%table%n))then
         call locate(self%table%x,xv,idx,f)
         dx=self%table%x(idx+1)-self%table%x(idx);t=f
         h00=2*t**3-3*t**2+1;h10=t**3-2*t**2+t;h01=-2*t**3+3*t**2;h11=t**3-t**2
