@@ -1,0 +1,45 @@
+name: F-AHL38 stable registry-slot repair
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'research/ahl/test_ahl38_slot_handle_repair.f90'
+      - 'research/ahl/run_ahl38_slot_handle_repair.sh'
+      - 'integration/f-ahl/F-AHL38_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl38-stable-registry-slot.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: F-AHL32 registry regression
+        run: |
+          bash research/ahl/run_ahl32_registry.sh
+
+      - name: F-AHL29 full-cache fallback regression
+        run: |
+          bash research/ahl/run_ahl29_postrepair_cache_semantics.sh
+
+      - name: F-AHL28B same-key memoization regression
+        run: |
+          bash research/ahl/run_ahl28b_same_key_memoization.sh
+
+      - name: F-AHL10E dry-tail fallback regression
+        run: |
+          bash research/ahl/run_ahl10e_dry_tail_fallback.sh
+
+      - name: F-AHL38 handle qualification
+        run: |
+          bash research/ahl/run_ahl38_slot_handle_repair.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl38-${{ github.run_id }}
+          path: /tmp/ahl38_result.txt
