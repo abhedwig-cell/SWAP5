@@ -51,8 +51,8 @@ program test_fahl_governance_heterogeneous_fallback
        'same nonlinear iterations')
   call require(off_obs%solver_diagnostics%backtracking_attempts==on_obs%solver_diagnostics%backtracking_attempts, &
        'same backtracking')
-  call require(abs(off_obs%top_flux-on_obs%top_flux)<=1.0e-5_real64,'top flux envelope')
-  call require(abs(off_obs%bottom_flux-on_obs%bottom_flux)<=1.0e-5_real64,'bottom flux envelope')
+  call require(same_bits(off_obs%top_flux,on_obs%top_flux),'top flux bit-identical analytical fallback')
+  call require(same_bits(off_obs%bottom_flux,on_obs%bottom_flux),'bottom flux bit-identical analytical fallback')
 
   call off_committed%snapshot(off_state,off_av)
   call on_committed%snapshot(on_state,on_av)
@@ -218,6 +218,10 @@ contains
       select type(y=>b)
       type is(fmr_b110_physical_state_t)
         dh=maxval(abs(x%pressure_head-y%pressure_head));dw=maxval(abs(x%water_content-y%water_content))
+        call require(same_vector_bits(x%pressure_head,y%pressure_head),'pressure head bit-identical analytical fallback')
+        call require(same_vector_bits(x%water_content,y%water_content),'water content bit-identical analytical fallback')
+        call require(same_bits(x%ponding_depth,y%ponding_depth),'ponding bit-identical analytical fallback')
+        call require(same_bits(x%groundwater_level,y%groundwater_level),'groundwater level bit-identical analytical fallback')
       class default
         call require(.false.,'adaptive state type')
       end select
@@ -225,6 +229,22 @@ contains
       call require(.false.,'analytical state type')
     end select
   end subroutine
+
+  pure logical function same_bits(a,b)
+    real(real64),intent(in)::a,b
+    same_bits=transfer(a,0_int64)==transfer(b,0_int64)
+  end function same_bits
+
+  pure logical function same_vector_bits(a,b)
+    real(real64),intent(in)::a(:),b(:)
+    integer::i
+    same_vector_bits=.false.
+    if(size(a)/=size(b))return
+    do i=1,size(a)
+      if(.not.same_bits(a(i),b(i)))return
+    end do
+    same_vector_bits=.true.
+  end function same_vector_bits
 
   subroutine require(cond,msg)
     logical,intent(in)::cond
