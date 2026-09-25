@@ -1475,6 +1475,11 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
+      if (parameters%direct_retention_active) then
+        ok = ok .and. parameters%bottom_mode == 5 .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%ksatexm_extension_active .and. parameters%prepared_default_mvg_available .and. &
+             parameters%prepared_direct_retention_slot > 0
+      end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
              .not. self%fixed_weir_surface_water_active
